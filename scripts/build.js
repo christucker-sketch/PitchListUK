@@ -4,7 +4,7 @@ const root = path.join(__dirname, '..');
 const out = path.join(root, 'public');
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
-for (const file of ['index.html', 'styles.css']) {
+for (const file of ['index.html', 'styles.css', 'robots.txt', 'sitemap.xml', '3e62e44f456eab6fd6254a32b0c810c4.txt']) {
   fs.copyFileSync(path.join(root, 'src', file), path.join(out, file));
 }
 const assetsSrc = path.join(root, 'src', 'assets');
