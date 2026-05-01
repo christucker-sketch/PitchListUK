@@ -122,6 +122,46 @@
       </ul>
     </section>
 
+    <section id="coverage" class="panel map-panel">
+      <div class="map-copy">
+        <p class="eyebrow">Choose your patch</p>
+        <h2>Tell us where you want pitches.</h2>
+        <p>Hover over the UK map to preview areas. Click to select the counties/regions you care about, then send us your coverage request.</p>
+        <form class="coverage-form" id="coverageForm" action="mailto:hello@pitchlist.uk" method="post" enctype="text/plain">
+          <label><span>Your name</span><input name="name" autocomplete="name" placeholder="Jane Smith" /></label>
+          <label><span>Business</span><input name="business" autocomplete="organization" placeholder="Your food business" /></label>
+          <label><span>Email</span><input name="email" type="email" autocomplete="email" placeholder="you@example.co.uk" /></label>
+          <input type="hidden" name="selected_areas" id="selectedAreasInput" />
+          <div class="selected-areas" id="selectedAreas" aria-live="polite">No areas selected yet.</div>
+          <button type="submit">Send selected areas</button>
+        </form>
+      </div>
+      <div class="map-wrap" aria-label="Interactive UK coverage map">
+        <svg class="uk-map" viewBox="0 0 420 720" role="img" aria-labelledby="ukMapTitle ukMapDesc">
+          <title id="ukMapTitle">UK coverage selector</title>
+          <desc id="ukMapDesc">Click regions of the UK to select pitch opportunity coverage areas.</desc>
+          <g class="map-shadow" aria-hidden="true">
+            <path d="M206 28 162 58 146 112 108 142 118 204 88 250 104 314 78 376 112 446 96 510 128 628 194 692 260 658 282 574 330 510 308 426 338 342 308 258 328 182 278 118 262 58Z" />
+          </g>
+          <g class="map-regions">
+            <path class="region-path" data-area="Scotland" tabindex="0" d="M206 28 162 58 146 112 108 142 118 204 88 250 104 314 158 326 198 286 244 302 292 264 278 210 328 182 278 118 262 58Z" />
+            <path class="region-path" data-area="North East England" tabindex="0" d="M244 302 292 264 314 306 296 358 250 354 226 326Z" />
+            <path class="region-path" data-area="North West England" tabindex="0" d="M158 326 198 286 226 326 250 354 232 408 178 404 140 368Z" />
+            <path class="region-path" data-area="Yorkshire" tabindex="0" d="M250 354 296 358 318 404 288 446 234 432 232 408Z" />
+            <path class="region-path" data-area="East Midlands" tabindex="0" d="M234 432 288 446 298 506 252 532 216 494Z" />
+            <path class="region-path" data-area="West Midlands" tabindex="0" d="M178 404 232 408 234 432 216 494 166 494 140 452Z" />
+            <path class="region-path" data-area="Wales" tabindex="0" d="M140 368 178 404 166 494 128 548 96 510 78 376Z" />
+            <path class="region-path" data-area="East of England" tabindex="0" d="M298 506 330 510 308 574 268 590 252 532Z" />
+            <path class="region-path" data-area="London" tabindex="0" d="M244 594 268 590 282 610 262 628 238 616Z" />
+            <path class="region-path" data-area="South East England" tabindex="0" d="M216 606 238 616 262 628 282 610 302 636 260 658 212 646Z" />
+            <path class="region-path" data-area="South West England" tabindex="0" d="M128 548 166 494 216 494 252 532 244 594 212 646 194 692 128 628 110 574Z" />
+            <path class="region-path" data-area="Northern Ireland" tabindex="0" d="M56 250 24 274 30 326 72 344 102 314 92 266Z" />
+          </g>
+        </svg>
+        <p class="map-hint">Selected areas stay orange. Click again to remove.</p>
+      </div>
+    </section>
+
     <section class="offer">
       <div>
         <p class="eyebrow">Free sample</p>
@@ -155,5 +195,60 @@
     <strong>PitchList UK</strong>
     <span>Source-linked pitch opportunities for UK food traders.</span>
   </footer>
+
+  <script>
+    (() => {
+      const paths = Array.from(document.querySelectorAll('.region-path'));
+      const selectedBox = document.getElementById('selectedAreas');
+      const hiddenInput = document.getElementById('selectedAreasInput');
+      const form = document.getElementById('coverageForm');
+      const selected = new Set();
+
+      function renderSelection() {
+        const areas = Array.from(selected).sort();
+        hiddenInput.value = areas.join(', ');
+        selectedBox.textContent = areas.length ? `Selected: ${areas.join(', ')}` : 'No areas selected yet.';
+      }
+
+      function toggleArea(path) {
+        const area = path.dataset.area;
+        if (selected.has(area)) {
+          selected.delete(area);
+          path.classList.remove('selected');
+          path.setAttribute('aria-pressed', 'false');
+        } else {
+          selected.add(area);
+          path.classList.add('selected');
+          path.setAttribute('aria-pressed', 'true');
+        }
+        renderSelection();
+      }
+
+      paths.forEach(path => {
+        path.setAttribute('role', 'button');
+        path.setAttribute('aria-label', `Select ${path.dataset.area}`);
+        path.setAttribute('aria-pressed', 'false');
+        path.addEventListener('click', () => toggleArea(path));
+        path.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleArea(path);
+          }
+        });
+      });
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        const data = new FormData(form);
+        const body = [
+          `Name: ${data.get('name') || ''}`,
+          `Business: ${data.get('business') || ''}`,
+          `Email: ${data.get('email') || ''}`,
+          `Selected areas: ${hiddenInput.value || 'No areas selected'}`
+        ].join('\n');
+        window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK coverage request')}&body=${encodeURIComponent(body)}`;
+      });
+    })();
+  </script>
 </body>
 </html>
