@@ -134,7 +134,12 @@
           <input type="hidden" name="selected_areas" id="selectedAreasInput" />
           <input type="hidden" name="selected_region_ids" id="selectedRegionIdsInput" />
           <input type="hidden" name="selected_counties" id="selectedCountiesInput" />
+          <input type="hidden" name="coverage_payload_json" id="coveragePayloadInput" />
           <div class="selected-areas" id="selectedAreas" aria-live="polite">No areas selected yet.</div>
+          <details class="county-preview" id="countyPreview" hidden>
+            <summary>Counties/areas included</summary>
+            <div id="selectedCountiesPreview"></div>
+          </details>
           <button type="submit">Send selected areas</button>
         </form>
       </div>
@@ -394,6 +399,9 @@
       const areaInput = document.getElementById('selectedAreasInput');
       const regionIdsInput = document.getElementById('selectedRegionIdsInput');
       const countiesInput = document.getElementById('selectedCountiesInput');
+      const payloadInput = document.getElementById('coveragePayloadInput');
+      const countyPreview = document.getElementById('countyPreview');
+      const countiesPreview = document.getElementById('selectedCountiesPreview');
       const form = document.getElementById('coverageForm');
       const selected = new Set();
 
@@ -406,10 +414,14 @@
 
       function renderSelection() {
         const { keys, labels, counties } = selectedRegionData();
+        const payload = { selectedRegions: keys, selectedRegionLabels: labels, selectedCounties: counties };
         areaInput.value = labels.join(', ');
         regionIdsInput.value = keys.join(', ');
         countiesInput.value = counties.join(', ');
+        payloadInput.value = JSON.stringify(payload);
         selectedBox.textContent = labels.length ? `Selected: ${labels.join(', ')} (${counties.length} counties/areas)` : 'No areas selected yet.';
+        countyPreview.hidden = !counties.length;
+        countiesPreview.textContent = counties.join(', ');
       }
 
       function toggleArea(path) {
@@ -453,7 +465,8 @@
           `Email: ${data.get('email')}`,
           `Selected region IDs: ${keys.join(', ')}`,
           `Selected regions: ${labels.join(', ')}`,
-          `Expanded counties/areas: ${counties.join(', ')}`
+          `Expanded counties/areas: ${counties.join(', ')}`,
+          `Coverage payload JSON: ${JSON.stringify({ selectedRegions: keys, selectedRegionLabels: labels, selectedCounties: counties })}`
         ].join('\n');
         window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK coverage request')}&body=${encodeURIComponent(body)}`;
       });
