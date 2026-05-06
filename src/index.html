@@ -56,8 +56,8 @@
       "@type": "Offer",
       "price": "19",
       "priceCurrency": "GBP",
-      "availability": "https://schema.org/InStock",
-      "url": "https://buy.stripe.com/aFaeVdeap6Hk34s5XWfAc00"
+      "availability": "https://schema.org/PreOrder",
+      "url": "https://pitchlist.uk/#coverage"
     }
   }
   </script>
@@ -74,9 +74,8 @@
         <h1>Find your next food-trading pitch without spending hours trawling event websites.</h1>
         <p class="lede">UK pitch opportunities with direct links to organiser pages, application forms, trader packs, or published contact routes.</p>
         <div class="actions">
-          <a href="#sample">Get a free sample for your area</a>
-          <a class="ghost" href="https://buy.stripe.com/aFaeVdeap6Hk34s5XWfAc00">Buy starter pack — £19</a>
-          <a class="ghost" href="#coverage">Choose your region</a>
+          <a href="#coverage">Choose your area</a>
+          <a class="ghost" href="#sample">See what you get</a>
         </div>
       </div>
       <figure class="hero-card">
@@ -136,11 +135,22 @@
       </div>
     </section>
 
+    <section class="panel flow-panel">
+      <p class="eyebrow">How it works</p>
+      <h2>An area-first process.</h2>
+      <ol class="flow-steps">
+        <li><strong>Choose your patch</strong><span>Select the UK areas you actually trade in or want to target.</span></li>
+        <li><strong>Get 5 sample rows</strong><span>Check the format, source links and usefulness before paying.</span></li>
+        <li><strong>Buy the £19 starter pack</strong><span>If it looks useful, pay securely and we prepare 25+ rows around your chosen area.</span></li>
+      </ol>
+      <p class="flow-note">The starter pack is prepared around the geography you choose, so the rows are relevant before payment is requested.</p>
+    </section>
+
     <section id="coverage" class="panel map-panel">
       <div class="map-copy">
         <p class="eyebrow">Choose your patch</p>
         <h2>Tell us where you want pitches.</h2>
-        <p>Hover over the UK map to preview areas. Click to select the counties/regions you care about, then send us your coverage request.</p>
+        <p>Select the counties/regions you care about, then send us your coverage request. We’ll use that area for the free sample and any starter pack that follows.</p>
         <form class="coverage-form" id="coverageForm" action="mailto:hello@pitchlist.uk" method="post" enctype="text/plain">
           <label><span>Your name</span><input name="name" autocomplete="name" placeholder="Jane Smith" /></label>
           <label><span>Business</span><input name="business" autocomplete="organization" placeholder="Your food business" /></label>
@@ -154,7 +164,7 @@
             <summary>Counties/areas included</summary>
             <div id="selectedCountiesPreview"></div>
           </details>
-          <button type="submit">Send selected areas</button>
+          <button type="submit">Request sample for selected areas</button>
         </form>
       </div>
       <div class="map-wrap" aria-label="Interactive UK coverage map">
@@ -368,9 +378,9 @@
       </div>
       <div>
         <p class="eyebrow">Starter pack</p>
-        <h2>25+ opportunities for £19.</h2>
-        <p>Start with 25+ checked opportunities for £19. Pay securely by card via Stripe, then send your preferred area/region so we can prioritise useful rows for your patch.</p>
-        <a href="https://buy.stripe.com/aFaeVdeap6Hk34s5XWfAc00">Buy starter pack securely</a>
+        <h2>Ready after you choose your area.</h2>
+        <p>The paid pack only makes sense once we know your patch. Choose your area first, request the free sample, then buy the £19 starter pack if the rows look useful.</p>
+        <a class="ghost" href="#coverage">Choose your area first</a>
       </div>
     </section>
 
