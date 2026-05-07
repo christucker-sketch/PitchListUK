@@ -1,0 +1,5 @@
+# Canonical host/protocol redirects for Google Search indexing
+http://pitchlist.uk/* https://pitchlist.uk/:splat 301!
+http://www.pitchlist.uk/* https://pitchlist.uk/:splat 301!
+https://www.pitchlist.uk/* https://pitchlist.uk/:splat 301!
+/index.html / 301!
