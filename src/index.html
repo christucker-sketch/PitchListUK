@@ -74,7 +74,7 @@
         <h1>Get a checked list of food-trading pitches for the areas you actually work.</h1>
         <p class="lede">PitchList UK prepares area-based starter packs of UK street food, market and event opportunities, with direct links to organiser pages, application forms, trader packs, or published contact routes.</p>
         <div class="actions">
-          <a href="#coverage">Choose your area</a>
+          <a href="#coverage">Request free sample</a>
           <a class="ghost" href="#sample">See what you get</a>
         </div>
       </div>
@@ -150,7 +150,7 @@
       <div class="map-copy">
         <p class="eyebrow">Choose your patch</p>
         <h2>Tell us where you want pitches.</h2>
-        <p>Select the counties/regions you care about, then send us your coverage request. We’ll use that area for the free sample and check whether there is enough current coverage for a £19 starter pack.</p>
+        <p>Select the counties/regions you care about, then send us your free sample request. We’ll use that area for the 5 sample rows and check whether there is enough current coverage for a £19 starter pack.</p>
         <form class="coverage-form" id="coverageForm" action="mailto:hello@pitchlist.uk" method="post" enctype="text/plain">
           <label><span>Your name</span><input name="name" autocomplete="name" placeholder="Jane Smith" /></label>
           <label><span>Business</span><input name="business" autocomplete="organization" placeholder="Your food business" /></label>
@@ -164,7 +164,7 @@
             <summary>Counties/areas included</summary>
             <div id="selectedCountiesPreview"></div>
           </details>
-          <button type="submit">Request sample for selected areas</button>
+          <button type="submit">Request free sample for selected areas</button>
         </form>
       </div>
       <div class="map-wrap" aria-label="Interactive UK coverage map">
@@ -373,8 +373,8 @@
       <div>
         <p class="eyebrow">Free sample</p>
         <h2>Try 5 rows first.</h2>
-        <p>Check the format first and see whether it would save you research time.</p>
-        <a href="mailto:hello@pitchlist.uk?subject=PitchList%20UK%20free%20sample">Request free sample</a>
+        <p>Choose your area first so the sample rows are relevant to where you actually trade.</p>
+        <a href="#coverage">Choose area and request sample</a>
       </div>
       <div>
         <p class="eyebrow">Starter pack</p>
@@ -484,15 +484,20 @@
           return;
         }
         const body = [
+          'Free sample request',
+          '',
           `Name: ${data.get('name')}`,
           `Business: ${data.get('business')}`,
           `Email: ${data.get('email')}`,
           `Selected region IDs: ${keys.join(', ')}`,
           `Selected regions: ${labels.join(', ')}`,
           `Expanded counties/areas: ${counties.join(', ')}`,
+          '',
+          'Please send 5 sample rows for this area and let me know whether there is enough coverage for the £19 Starter Pack.',
+          '',
           `Coverage payload JSON: ${JSON.stringify({ selectedRegions: keys, selectedRegionLabels: labels, selectedCounties: counties })}`
         ].join('\n');
-        window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK coverage request')}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK free sample request')}&body=${encodeURIComponent(body)}`;
       });
     })();
   </script>
