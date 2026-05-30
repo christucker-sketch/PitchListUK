@@ -50,7 +50,7 @@ Primary terms:
 
 Best page:
 
-- `/festival-trader-applications.html`
+- `/festival-trader-applications`
 
 CTA:
 
@@ -71,7 +71,7 @@ Primary terms:
 
 Best page:
 
-- `/stall-holders-wanted.html`
+- `/stall-holders-wanted`
 
 CTA:
 
@@ -92,7 +92,7 @@ Primary terms:
 
 Best page:
 
-- `/food-traders-wanted.html`
+- `/food-traders-wanted`
 
 CTA:
 
@@ -144,12 +144,12 @@ Homepage supporting terms:
 Minimum SEO landing pages now implemented/planned:
 
 1. `/` — conversion hub for all trader opportunity research
-2. `/festival-trader-applications.html` — food festivals, shows, large events
-3. `/festival-vendors-wanted.html` — festival vendors wanted / festival traders query cluster
-4. `/stall-holders-wanted.html` — markets, craft fairs, local/community events
-5. `/food-traders-wanted.html` — street food/mobile catering angle
-6. `/buy.html` — noindex payment page
-7. `/success.html` — noindex thank-you page
+2. `/festival-trader-applications` — food festivals, shows, large events
+3. `/festival-vendors-wanted` — festival vendors wanted / festival traders query cluster
+4. `/stall-holders-wanted` — markets, craft fairs, local/community events
+5. `/food-traders-wanted` — street food/mobile catering angle
+6. `/buy` — noindex payment page
+7. `/success` — noindex thank-you page
 
 Future expansion once real query data arrives:
 
@@ -188,5 +188,5 @@ When Search Console is connected, review weekly:
 
 1. Keep indexable landing pages for the strongest query clusters.
 2. Monitor Search Console for live impressions/clicks and expand only where there is real signal.
-3. Added `/festival-vendors-wanted.html` on 2026-05-30 after Search Console showed first clicks for `festival traders` and `festival vendors wanted`.
+3. Added `/festival-vendors-wanted` on 2026-05-30 after Search Console showed first clicks for `festival traders` and `festival vendors wanted`.
 4. Do not build county pages yet — too easy to create thin rubbish.

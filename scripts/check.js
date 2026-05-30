@@ -11,7 +11,7 @@ const stallholders = fs.readFileSync('src/stall-holders-wanted.html', 'utf8');
 const foodTraders = fs.readFileSync('src/food-traders-wanted.html', 'utf8');
 const festivalVendors = fs.readFileSync('src/festival-vendors-wanted.html', 'utf8');
 const sitemap = fs.readFileSync('src/sitemap.xml', 'utf8');
-for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/buy.html']) {
+for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/buy']) {
   if (!html.includes(text)) throw new Error(`Missing expected text: ${text}`);
 }
 for (const text of ['£19 Starter Pack', 'Pay securely with Stripe', 'https://buy.stripe.com/aFaeVdeap6Hk34s5XWfAc00']) {
@@ -30,7 +30,7 @@ for (const [name, page, expected] of [
     if (!page.includes(text)) throw new Error(`Missing ${name} text: ${text}`);
   }
 }
-for (const url of ['/festival-trader-applications.html', '/stall-holders-wanted.html', '/food-traders-wanted.html', '/festival-vendors-wanted.html']) {
+for (const url of ['/festival-trader-applications', '/stall-holders-wanted', '/food-traders-wanted', '/festival-vendors-wanted']) {
   if (!html.includes(url)) throw new Error(`Homepage missing internal link: ${url}`);
   if (!sitemap.includes(`https://pitchlist.uk${url}`)) throw new Error(`Sitemap missing URL: ${url}`);
 }
