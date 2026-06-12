@@ -11,6 +11,7 @@ const stallholders = fs.readFileSync('src/stall-holders-wanted.html', 'utf8');
 const foodTraders = fs.readFileSync('src/food-traders-wanted.html', 'utf8');
 const festivalVendors = fs.readFileSync('src/festival-vendors-wanted.html', 'utf8');
 const sitemap = fs.readFileSync('src/sitemap.xml', 'utf8');
+if (sitemap.includes('https://pitchlist.uk/buy')) throw new Error('Sitemap must not include noindex page: /buy');
 for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/buy']) {
   if (!html.includes(text)) throw new Error(`Missing expected text: ${text}`);
 }
