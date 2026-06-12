@@ -1,5 +1,5 @@
 const fs = require('fs');
-const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/styles.css', 'src/sitemap.xml', 'src/_worker.js', 'scripts/build.js'];
+const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/styles.css', 'src/sitemap.xml', 'functions/[[path]].js', 'scripts/build.js'];
 for (const file of required) {
   if (!fs.existsSync(file)) throw new Error(`Missing ${file}`);
 }
@@ -11,7 +11,7 @@ const stallholders = fs.readFileSync('src/stall-holders-wanted.html', 'utf8');
 const foodTraders = fs.readFileSync('src/food-traders-wanted.html', 'utf8');
 const festivalVendors = fs.readFileSync('src/festival-vendors-wanted.html', 'utf8');
 const sitemap = fs.readFileSync('src/sitemap.xml', 'utf8');
-const worker = fs.readFileSync('src/_worker.js', 'utf8');
+const worker = fs.readFileSync('functions/[[path]].js', 'utf8');
 if (sitemap.includes('https://pitchlist.uk/buy')) throw new Error('Sitemap must not include noindex page: /buy');
 for (const text of ["url.protocol !== 'https:'", "url.hostname !== 'pitchlist.uk'", "Response.redirect(url.toString(), 301)", 'env.ASSETS.fetch(request)']) {
   if (!worker.includes(text)) throw new Error(`Canonical redirect worker missing: ${text}`);
