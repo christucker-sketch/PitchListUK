@@ -72,7 +72,7 @@
       <div>
         <p class="eyebrow">For street food vendors, mobile caterers & stallholders</p>
         <h1>Find UK festival trader applications and stallholder opportunities for your area.</h1>
-        <p class="lede">PitchList UK prepares area-based starter packs of festival trader applications, stall holders wanted posts, market opportunities and food-trading event leads, with direct links to organiser pages, application forms, trader packs, or published contact routes.</p>
+        <p class="lede">PitchList UK prepares starter packs of festival trader applications, stall holders wanted posts, market opportunities and food-trading event leads matched around your real base and travel range, with direct links to organiser pages, application forms, trader packs, or published contact routes.</p>
         <div class="actions">
           <a href="#coverage">Request free sample</a>
           <a class="ghost" href="#sample">See what you get</a>
@@ -114,7 +114,7 @@
         <li>Event/opportunity name</li>
         <li>Organiser/source</li>
         <li>Application/contact route</li>
-        <li>Location and region</li>
+        <li>Location, region and distance fit</li>
         <li>Event date or date range</li>
         <li>Known fee/deadline where published</li>
         <li>Vendor categories accepted</li>
@@ -139,11 +139,11 @@
       <p class="eyebrow">How it works</p>
       <h2>An area-first process.</h2>
       <ol class="flow-steps">
-        <li><strong>Choose your patch</strong><span>Select the UK areas you actually trade in or want to target.</span></li>
+        <li><strong>Set your base</strong><span>Tell us your town/postcode and realistic travel radius first.</span></li>
         <li><strong>Get 5 sample rows</strong><span>Check the format, source links and usefulness before paying.</span></li>
         <li><strong>Buy the £19 starter pack</strong><span>If the sample looks useful, we confirm coverage, then you pay securely for a manually prepared pack.</span></li>
       </ol>
-      <p class="flow-note">This is not a generic instant-download list. We check your chosen geography first. If coverage is too narrow for 25 useful rows, we’ll suggest nearby areas or tell you before payment.</p>
+      <p class="flow-note">This is not a generic instant-download list. We check your base location and travel range first, then use selected regions/counties as guidance. If coverage is too narrow for 25 useful rows, we’ll suggest nearby areas or tell you before payment.</p>
     </section>
 
 
@@ -162,22 +162,36 @@
     <section id="coverage" class="panel map-panel">
       <div class="map-copy">
         <p class="eyebrow">Choose your patch</p>
-        <h2>Tell us where you want pitches.</h2>
-        <p>Select the counties/regions you care about, then send us your free sample request. We’ll use that area for the 5 sample rows and check whether there is enough current coverage for a £19 starter pack.</p>
+        <h2>Start with your base, then use the map.</h2>
+        <p>Tell us where you are based and how far you realistically travel. The map is still useful, but it now acts as broad guidance rather than a blunt regional filter.</p>
         <form class="coverage-form" id="coverageForm" action="mailto:hello@pitchlist.uk" method="post" enctype="text/plain">
           <label><span>Your name</span><input name="name" autocomplete="name" placeholder="Jane Smith" /></label>
           <label><span>Business</span><input name="business" autocomplete="organization" placeholder="Your food business" /></label>
           <label><span>Email</span><input name="email" type="email" autocomplete="email" placeholder="you@example.co.uk" /></label>
+          <div class="geo-grid">
+            <label><span>Base town or postcode</span><input name="base_location" autocomplete="postal-code" placeholder="Maidstone, Kent or ME14" /></label>
+            <label><span>Max travel range</span>
+              <select name="travel_radius">
+                <option value="">Choose radius</option>
+                <option value="25 miles">25 miles</option>
+                <option value="50 miles">50 miles</option>
+                <option value="75 miles">75 miles</option>
+                <option value="100 miles">100 miles</option>
+                <option value="UK-wide for the right event">UK-wide for the right event</option>
+              </select>
+            </label>
+          </div>
+          <label><span>Useful counties or notes</span><textarea name="area_notes" rows="3" placeholder="Example: Kent, South East London and Sussex. Avoid Devon/Bristol unless it is a major event."></textarea></label>
           <input type="hidden" name="selected_areas" id="selectedAreasInput" />
           <input type="hidden" name="selected_region_ids" id="selectedRegionIdsInput" />
           <input type="hidden" name="selected_counties" id="selectedCountiesInput" />
           <input type="hidden" name="coverage_payload_json" id="coveragePayloadInput" />
-          <div class="selected-areas" id="selectedAreas" aria-live="polite">No areas selected yet.</div>
+          <div class="selected-areas" id="selectedAreas" aria-live="polite">Map optional: select broad regions if they help explain your patch.</div>
           <details class="county-preview" id="countyPreview" hidden>
             <summary>Counties/areas included</summary>
             <div id="selectedCountiesPreview"></div>
           </details>
-          <button type="submit">Request free sample for selected areas</button>
+          <button type="submit">Request local free sample</button>
         </form>
       </div>
       <div class="map-wrap" aria-label="Interactive UK coverage map">
@@ -451,12 +465,20 @@
 
       function renderSelection() {
         const { keys, labels, counties } = selectedRegionData();
-        const payload = { selectedRegions: keys, selectedRegionLabels: labels, selectedCounties: counties };
+        const formData = form ? new FormData(form) : new FormData();
+        const payload = {
+          baseLocation: String(formData.get('base_location') || ''),
+          travelRadius: String(formData.get('travel_radius') || ''),
+          areaNotes: String(formData.get('area_notes') || ''),
+          selectedRegions: keys,
+          selectedRegionLabels: labels,
+          selectedCounties: counties
+        };
         areaInput.value = labels.join(', ');
         regionIdsInput.value = keys.join(', ');
         countiesInput.value = counties.join(', ');
         payloadInput.value = JSON.stringify(payload);
-        selectedBox.textContent = labels.length ? `Selected: ${labels.join(', ')} (${counties.length} counties/areas)` : 'No areas selected yet.';
+        selectedBox.textContent = labels.length ? `Map guidance: ${labels.join(', ')} (${counties.length} counties/areas)` : 'Map optional: select broad regions if they help explain your patch.';
         countyPreview.hidden = !counties.length;
         countiesPreview.textContent = counties.join(', ');
       }
@@ -492,8 +514,8 @@
         event.preventDefault();
         const data = new FormData(form);
         const { keys, labels, counties } = selectedRegionData();
-        if (!data.get('name') || !data.get('business') || !data.get('email') || !keys.length) {
-          selectedBox.textContent = !keys.length ? 'Please select at least one area before sending.' : 'Please complete name, business, and email before sending.';
+        if (!data.get('name') || !data.get('business') || !data.get('email') || !data.get('base_location') || !data.get('travel_radius')) {
+          selectedBox.textContent = 'Please complete name, business, email, base town/postcode and travel range before sending.';
           return;
         }
         const body = [
@@ -502,13 +524,23 @@
           `Name: ${data.get('name')}`,
           `Business: ${data.get('business')}`,
           `Email: ${data.get('email')}`,
-          `Selected region IDs: ${keys.join(', ')}`,
-          `Selected regions: ${labels.join(', ')}`,
-          `Expanded counties/areas: ${counties.join(', ')}`,
+          `Base town/postcode: ${data.get('base_location')}`,
+          `Max travel range: ${data.get('travel_radius')}`,
+          `Useful counties/notes: ${data.get('area_notes') || '(not specified)'}`,
+          `Map-selected region IDs: ${keys.join(', ') || '(none selected)'}`,
+          `Map-selected regions: ${labels.join(', ') || '(none selected)'}`,
+          `Expanded counties/areas from map: ${counties.join(', ') || '(none selected)'}`,
           '',
-          'Please send 5 sample rows for this area and let me know whether there is enough coverage for the £19 Starter Pack.',
+          'Please send 5 sample rows matched around my base/travel range and let me know whether there is enough coverage for the £19 Starter Pack.',
           '',
-          `Coverage payload JSON: ${JSON.stringify({ selectedRegions: keys, selectedRegionLabels: labels, selectedCounties: counties })}`
+          `Coverage payload JSON: ${JSON.stringify({
+            baseLocation: data.get('base_location'),
+            travelRadius: data.get('travel_radius'),
+            areaNotes: data.get('area_notes') || '',
+            selectedRegions: keys,
+            selectedRegionLabels: labels,
+            selectedCounties: counties
+          })}`
         ].join('\n');
         window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK free sample request')}&body=${encodeURIComponent(body)}`;
       });
