@@ -5,7 +5,11 @@
   "description": "Static public landing page for PitchList UK.",
   "scripts": {
     "build": "node scripts/build.js",
-    "check": "node scripts/check.js"
+    "check": "node scripts/check.js",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "wrangler": "^4.113.0"
+  }
 }
