@@ -72,10 +72,10 @@
       <div>
         <p class="eyebrow">For street food vendors, mobile caterers & stallholders</p>
         <h1>Find UK festival trader applications, stallholder leads and food truck pitches for your area.</h1>
-        <p class="lede">PitchList UK prepares starter packs of festival trader applications, stall holders wanted posts, market stallholder opportunities, council event trader routes and food truck pitches matched around your real base and travel range, with direct links to organiser pages, application forms, trader packs, or published contact routes.</p>
+        <p class="lede">PitchList UK gives traders searchable access to checked festival trader applications, stall holders wanted posts, market stallholder opportunities, council event trader routes and food truck pitches, with source links and application routes unlocked after trial signup.</p>
         <div class="actions">
-          <a href="#coverage">Request free sample</a>
-          <a class="ghost" href="#sample">See what you get</a>
+          <a href="/database">Search the database</a>
+          <a class="ghost" href="#coverage">Request free sample</a>
         </div>
       </div>
       <figure class="hero-card">
@@ -87,9 +87,9 @@
 
   <main>
     <section class="stats" aria-label="PitchList validation stats">
-      <article><b>25+</b><span>matched opportunities where coverage allows</span></article>
+      <article><b>100+</b><span>customer-ready database rows</span></article>
       <article><b>5</b><span>free sample rows</span></article>
-      <article><b>£19</b><span>introductory starter pack</span></article>
+      <article><b>£4.99</b><span>monthly access after trial</span></article>
       <article><b>100%</b><span>rows with source/contact routes</span></article>
     </section>
 
@@ -167,7 +167,7 @@
         <p class="eyebrow">Choose your patch</p>
         <h2>Start with your base, then use the map.</h2>
         <p>Tell us where you are based and how far you realistically travel. The map is still useful, but it now acts as broad guidance rather than a blunt regional filter.</p>
-        <form class="coverage-form" id="coverageForm" action="mailto:hello@pitchlist.uk" method="post" enctype="text/plain">
+        <form class="coverage-form" id="coverageForm" action="/api/sample-request" method="post">
           <label><span>Your name</span><input name="name" autocomplete="name" placeholder="Jane Smith" /></label>
           <label><span>Business</span><input name="business" autocomplete="organization" placeholder="Your food business" /></label>
           <label><span>Email</span><input name="email" type="email" autocomplete="email" placeholder="you@example.co.uk" /></label>
@@ -190,6 +190,7 @@
           <input type="hidden" name="selected_counties" id="selectedCountiesInput" />
           <input type="hidden" name="coverage_payload_json" id="coveragePayloadInput" />
           <div class="selected-areas" id="selectedAreas" aria-live="polite">Map optional: select broad regions if they help explain your patch.</div>
+          <div class="selected-areas" id="sampleRequestStatus" aria-live="polite" hidden></div>
           <details class="county-preview" id="countyPreview" hidden>
             <summary>Counties/areas included</summary>
             <div id="selectedCountiesPreview"></div>
@@ -407,10 +408,10 @@
         <a href="#coverage">Choose area and request sample</a>
       </div>
       <div>
-        <p class="eyebrow">Starter pack</p>
-        <h2>£19 Starter Pack after coverage check.</h2>
-        <p>After you choose your patch, we check current coverage and manually prepare a source-linked pack around your area and nearby regions where needed. You see the 5-row sample first, then buy only if the format and coverage look useful.</p>
-        <a class="ghost" href="/buy">View payment page</a>
+        <p class="eyebrow">Database access</p>
+        <h2>7-day free trial, then £4.99/month.</h2>
+        <p>Search the database first in preview mode. If the coverage looks useful, start the trial to unlock source links, application routes and saved shortlist export.</p>
+        <a class="ghost" href="/database">Preview database</a>
       </div>
     </section>
 
@@ -456,6 +457,7 @@
       const payloadInput = document.getElementById('coveragePayloadInput');
       const countyPreview = document.getElementById('countyPreview');
       const countiesPreview = document.getElementById('selectedCountiesPreview');
+      const statusMessage = document.getElementById('sampleRequestStatus');
       const form = document.getElementById('coverageForm');
       const selected = new Set();
 
@@ -521,31 +523,48 @@
           selectedBox.textContent = 'Please complete name, business, email, base town/postcode and travel range before sending.';
           return;
         }
+        const payload = {
+          name: data.get('name'),
+          business: data.get('business'),
+          email: data.get('email'),
+          base_location: data.get('base_location'),
+          travel_radius: data.get('travel_radius'),
+          area_notes: data.get('area_notes') || '',
+          selected_region_ids: keys,
+          selected_regions: labels,
+          selected_counties: counties,
+          coverage_payload_json: payloadInput.value
+        };
         const body = [
           'Free sample request',
           '',
-          `Name: ${data.get('name')}`,
-          `Business: ${data.get('business')}`,
-          `Email: ${data.get('email')}`,
-          `Base town/postcode: ${data.get('base_location')}`,
-          `Max travel range: ${data.get('travel_radius')}`,
-          `Useful counties/notes: ${data.get('area_notes') || '(not specified)'}`,
+          `Name: ${payload.name}`,
+          `Business: ${payload.business}`,
+          `Email: ${payload.email}`,
+          `Base town/postcode: ${payload.base_location}`,
+          `Max travel range: ${payload.travel_radius}`,
+          `Useful counties/notes: ${payload.area_notes || '(not specified)'}`,
           `Map-selected region IDs: ${keys.join(', ') || '(none selected)'}`,
           `Map-selected regions: ${labels.join(', ') || '(none selected)'}`,
           `Expanded counties/areas from map: ${counties.join(', ') || '(none selected)'}`,
           '',
-          'Please check whether my area/category has enough useful current opportunities for a Starter Pack.',
+          'Please check whether my area/category has enough useful current opportunities for PitchList UK.',
           '',
-          `Coverage payload JSON: ${JSON.stringify({
-            baseLocation: data.get('base_location'),
-            travelRadius: data.get('travel_radius'),
-            areaNotes: data.get('area_notes') || '',
-            selectedRegions: keys,
-            selectedRegionLabels: labels,
-            selectedCounties: counties
-          })}`
+          `Coverage payload JSON: ${payloadInput.value}`
         ].join('\n');
-        window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK free sample request')}&body=${encodeURIComponent(body)}`;
+        statusMessage.hidden = false;
+        statusMessage.textContent = 'Sending sample request...';
+        fetch('/api/sample-request', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(response => {
+          if (!response.ok) throw new Error('sample request delivery failed');
+          statusMessage.textContent = 'Request sent. We will check your area and reply from hello@pitchlist.uk.';
+        }).catch(() => {
+          statusMessage.textContent = 'Email fallback opened. Send the prepared request from your mail app.';
+          window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK free sample request')}&body=${encodeURIComponent(body)}`;
+        });
       });
     })();
   </script>

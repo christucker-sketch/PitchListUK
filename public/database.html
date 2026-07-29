@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Search UK Trader Opportunities | PitchList UK</title>
+  <meta name="description" content="Search current UK trader opportunities by postcode, radius, category and confidence. Preview page for PitchList UK subscribers." />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <link rel="canonical" href="https://pitchlist.uk/database" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="database-page">
+  <header class="database-shell">
+    <nav>
+      <strong>PitchList UK</strong>
+      <a href="/">Back to PitchList UK</a>
+    </nav>
+    <section class="database-hero">
+      <div>
+        <p class="eyebrow">PitchList database</p>
+        <h1>Find current UK trader pitches without trawling council pages.</h1>
+        <p class="lede">Search the live PitchList database by postcode, category and confidence. Preview tiles show the shape of the data; the trial unlocks source links and application routes.</p>
+        <form class="vendor-signup-form" id="vendorSignup">
+          <div class="vendor-signup-grid">
+            <label><span>Business name</span><input name="business_name" autocomplete="organization" required /></label>
+            <label><span>Your name</span><input name="contact_name" autocomplete="name" required /></label>
+            <label><span>Email</span><input name="email" type="email" autocomplete="email" required /></label>
+            <label><span>Phone</span><input name="phone" type="tel" autocomplete="tel" /></label>
+            <label><span>Base postcode</span><input name="base_postcode" autocomplete="postal-code" placeholder="CB9 9ED" /></label>
+            <label><span>Specialty</span><input name="specialty" placeholder="mobile bar, street food, jewellery" required /></label>
+          </div>
+          <label><span>Regions covered</span><textarea name="regions" placeholder="Suffolk, Norfolk, London, UK-wide for the right event"></textarea></label>
+          <label class="vendor-opt-in"><input name="public_listing_opt_in" type="checkbox" checked /> <span>Create my public vendor profile so event organisers can find and contact me.</span></label>
+          <div class="database-actions">
+            <button type="submit" id="startTrial">Start free trial</button>
+          </div>
+          <small id="vendorSignupStatus"></small>
+        </form>
+        <div class="database-actions">
+          <button type="button" class="ghost" id="manageBilling" hidden>Manage billing</button>
+          <button type="button" class="ghost subtle" id="clearAccess" hidden>Sign out</button>
+        </div>
+        <form class="database-access-form" id="accessForm">
+          <label>
+            <span>Already subscribed?</span>
+            <input name="email" type="email" placeholder="Email used at checkout" autocomplete="email" />
+          </label>
+          <button type="submit">Send access link</button>
+          <small id="accessFormStatus"></small>
+        </form>
+        <div class="database-account" id="databaseAccount" hidden>
+          <span id="accountLabel">Access unlocked</span>
+          <strong id="accountEmail">Subscriber</strong>
+          <small id="accountNote">Full source and application routes are visible on this browser.</small>
+        </div>
+        <div class="database-proof">
+          <span>90 checked rows</span>
+          <span>food, markets and events</span>
+          <span>£4.99/month after trial</span>
+        </div>
+      </div>
+      <div class="database-showcase" aria-label="PitchList opportunity preview">
+        <img src="/assets/hero-food-festival.jpg" alt="Food traders serving customers at a UK event" />
+        <div class="database-status" id="databaseStatus">
+          <b>...</b>
+          <span>loading opportunities</span>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main class="database-main">
+    <form class="cloud-search" id="cloudSearch">
+      <label><span>Postcode / outcode</span><input name="postcode" placeholder="LS1, RH12, SW1A" autocomplete="postal-code" /></label>
+      <label><span>Radius</span><select name="radius_miles"><option value="">Any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option><option value="250">UK-wide</option></select></label>
+      <label><span>Category</span><input name="category" value="food" placeholder="street food, coffee, craft" /></label>
+      <label><span>Keywords</span><input name="q" placeholder="festival, market, Christmas..." /></label>
+      <label><span>Confidence</span><select name="confidence"><option value="">Any confidence</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+      <button type="submit">Search</button>
+    </form>
+
+    <section class="cloud-metrics" id="cloudMetrics" aria-live="polite"></section>
+    <section class="saved-shortlist" id="savedShortlist" aria-live="polite"></section>
+    <section class="cloud-results" id="cloudResults" aria-live="polite"></section>
+  </main>
+
+  <script src="/database.js?v=20260726-1"></script>
+</body>
+</html>
