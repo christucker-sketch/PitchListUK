@@ -1,11 +1,13 @@
 const fs = require('fs');
-const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/stripe.mjs', 'functions/_data/opportunities.mjs'];
+const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/stripe.mjs', 'functions/_data/opportunities.mjs'];
 for (const file of required) {
   if (!fs.existsSync(file)) throw new Error(`Missing ${file}`);
 }
 const html = fs.readFileSync('src/index.html', 'utf8');
 const buy = fs.readFileSync('src/buy.html', 'utf8');
 const success = fs.readFileSync('src/success.html', 'utf8');
+const terms = fs.readFileSync('src/terms.html', 'utf8');
+const privacy = fs.readFileSync('src/privacy.html', 'utf8');
 const festival = fs.readFileSync('src/festival-trader-applications.html', 'utf8');
 const stallholders = fs.readFileSync('src/stall-holders-wanted.html', 'utf8');
 const foodTraders = fs.readFileSync('src/food-traders-wanted.html', 'utf8');
@@ -50,6 +52,19 @@ for (const url of ['/festival-trader-applications', '/stall-holders-wanted', '/f
 }
 for (const text of ['Search UK Trader Opportunities', 'postcode', 'radius', '/database.js', 'Start free trial', 'savedShortlist']) {
   if (!database.includes(text)) throw new Error(`Missing database page text: ${text}`);
+}
+for (const text of ['100+ checked rows', '/terms', '/privacy']) {
+  if (!database.includes(text)) throw new Error(`Missing database legal/proof text: ${text}`);
+}
+for (const text of ['PitchList UK Terms', '£4.99', 'Cancel any time', 'No guaranteed event acceptance']) {
+  if (!terms.includes(text)) throw new Error(`Missing terms page text: ${text}`);
+}
+for (const text of ['PitchList UK Privacy Notice', 'sample requests', 'Stripe', 'hello@pitchlist.uk']) {
+  if (!privacy.includes(text)) throw new Error(`Missing privacy page text: ${text}`);
+}
+for (const url of ['/terms', '/privacy']) {
+  if (!html.includes(url)) throw new Error(`Homepage missing legal link: ${url}`);
+  if (!sitemap.includes(`https://pitchlist.uk${url}`)) throw new Error(`Sitemap missing legal URL: ${url}`);
 }
 for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV']) {
   if (!databaseJs.includes(text)) throw new Error(`Missing database JS text: ${text}`);
