@@ -65,12 +65,14 @@
 .locked-pill{background:#fff3c4;border-color:#f5d56b;color:#7a4a00}
 .shortlist-toggle.is-saved{background:#256f5b;border-color:#256f5b;color:#fff}
 @media(max-width:520px){
+  html,.database-page{max-width:100%;overflow-x:hidden}
   .database-page{overflow-x:hidden}
-  .database-page nav{gap:16px;padding:18px 6vw}
-  .database-page nav strong{flex:0 0 auto}
-  .database-page nav a{max-width:44%;text-align:right;line-height:1.25;overflow-wrap:anywhere}
+  .database-page nav{gap:14px;padding:18px 5vw}
+  .database-page nav strong{flex:0 0 auto;font-size:20px}
+  .database-page nav a{max-width:40%;text-align:right;line-height:1.25;overflow-wrap:anywhere;font-size:14px}
   .database-hero{display:block;overflow:hidden;padding-left:6vw;padding-right:6vw}
-  .database-hero .lede{max-width:100%;overflow-wrap:anywhere}
+  .database-hero h1{font-size:34px;line-height:1}
+  .database-hero .lede{max-width:100%;font-size:18px;overflow-wrap:anywhere}
   .database-hero>div,.database-showcase,.database-access-form,.database-account{min-width:0;width:100%;max-width:100%}
   .database-access-form{grid-template-columns:1fr!important}
   .database-showcase img{width:100%}
@@ -88,4 +90,4 @@
 .vendor-opt-in span{color:#dbeafe!important;font-size:13px!important;letter-spacing:0!important;text-transform:none!important}
 .vendor-signup-form small{color:#dbe6f5;min-height:18px}
 @media(max-width:900px){.vendor-signup-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.vendor-signup-grid{grid-template-columns:1fr}.vendor-signup-form .database-actions button{width:100%}}
+@media(max-width:640px){.vendor-signup-form{width:100%;max-width:100%}.vendor-signup-grid{grid-template-columns:1fr}.vendor-signup-form .database-actions button{width:100%}}
