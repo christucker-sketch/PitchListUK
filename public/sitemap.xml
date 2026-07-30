@@ -193,6 +193,12 @@
     <priority>0.65</priority>
   </url>
   <url>
+    <loc>https://pitchlist.uk/areas/northern-ireland</loc>
+    <lastmod>2026-07-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
     <loc>https://pitchlist.uk/areas/oxfordshire</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>weekly</changefreq>

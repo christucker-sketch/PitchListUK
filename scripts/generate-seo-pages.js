@@ -52,9 +52,9 @@ function categoryLabel(row) {
     row.vendor_categories,
     row.event_name
   ].join(' ').toLowerCase();
+  if (haystack.includes('council') || haystack.includes('street_trading')) return 'council event';
   if (haystack.includes('market')) return 'market stallholder';
   if (haystack.includes('truck')) return 'food truck';
-  if (haystack.includes('council') || haystack.includes('street_trading')) return 'council event';
   if (haystack.includes('festival')) return 'festival trader';
   return 'trader';
 }
