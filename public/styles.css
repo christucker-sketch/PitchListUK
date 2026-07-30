@@ -91,3 +91,5 @@
 .vendor-signup-form small{color:#dbe6f5;min-height:18px}
 @media(max-width:900px){.vendor-signup-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.vendor-signup-form{width:100%;max-width:100%}.vendor-signup-grid{grid-template-columns:1fr}.vendor-signup-form .database-actions button{width:100%}}
+
+.seo-hero{min-height:auto}.seo-stats{margin-top:-36px}.seo-area-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.seo-area-grid article{display:grid;gap:8px;border:1px solid var(--line);border-radius:18px;background:rgba(14,23,41,.68);padding:16px}.seo-area-grid article span{color:var(--accent2);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.1em}.seo-area-grid article strong{font-size:20px;line-height:1.2}.seo-area-grid article a{text-decoration:none}.seo-area-grid article p{margin:0;color:var(--muted);line-height:1.45}.seo-sample-table{padding:0}@media(max-width:900px){.seo-area-grid{grid-template-columns:1fr 1fr}}@media(max-width:640px){.seo-area-grid{grid-template-columns:1fr}.seo-stats{margin-top:0}}

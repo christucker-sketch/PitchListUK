@@ -21,4 +21,5 @@ for (const file of fs.readdirSync(path.join(root, 'src'))) {
   const dest = path.join(out, file);
   copyRecursive(source, dest);
 }
+require('./generate-seo-pages').generateSeoPages({ root, out });
 console.log('Built public site to ./public');

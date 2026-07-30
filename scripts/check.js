@@ -1,5 +1,5 @@
 const fs = require('fs');
-const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/stripe.mjs', 'functions/_data/opportunities.mjs'];
+const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'scripts/generate-seo-pages.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/stripe.mjs', 'functions/_data/opportunities.mjs'];
 for (const file of required) {
   if (!fs.existsSync(file)) throw new Error(`Missing ${file}`);
 }
@@ -23,6 +23,7 @@ for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/dat
   if (!html.includes(text)) throw new Error(`Missing expected text: ${text}`);
 }
 if (!html.includes('/database')) throw new Error('Homepage missing database link');
+if (!html.includes('/areas')) throw new Error('Homepage missing area coverage link');
 if (!html.includes('£4.99')) throw new Error('Homepage missing subscription price');
 if (!html.includes('/api/sample-request')) throw new Error('Homepage missing sample request API submit');
 if (html.includes('id="coverageForm" action="mailto:hello@pitchlist.uk"')) throw new Error('Homepage coverage form must not depend on mailto action');
@@ -53,7 +54,7 @@ for (const url of ['/festival-trader-applications', '/stall-holders-wanted', '/f
 for (const text of ['Search UK Trader Opportunities', 'postcode', 'radius', '/database.js', 'Start free trial', 'savedShortlist']) {
   if (!database.includes(text)) throw new Error(`Missing database page text: ${text}`);
 }
-for (const text of ['100+ checked rows', '/terms', '/privacy']) {
+for (const text of ['90+ checked rows', '/terms', '/privacy']) {
   if (!database.includes(text)) throw new Error(`Missing database legal/proof text: ${text}`);
 }
 for (const text of ['PitchList UK Terms', '£4.99', 'Cancel any time', 'No guaranteed event acceptance']) {
@@ -88,4 +89,8 @@ for (const text of ['PITCHLIST_SAMPLE_WEBHOOK_URL', 'PITCHLIST_FORM_SMTP2GO_API_
 const dataModule = fs.readFileSync('functions/_data/opportunities.mjs', 'utf8');
 const opportunityData = JSON.parse(dataModule.replace(/^export const opportunitySnapshot = /, '').replace(/;\s*$/, ''));
 if (!Array.isArray(opportunityData.rows) || opportunityData.rows.length < 50) throw new Error('Expected at least 50 exported opportunities');
+const generator = fs.readFileSync('scripts/generate-seo-pages.js', 'utf8');
+for (const text of ['generateSeoPages', '/areas', 'UK_EXCLUDED_AREAS', 'CollectionPage']) {
+  if (!generator.includes(text)) throw new Error(`Missing SEO generator text: ${text}`);
+}
 console.log('Checks passed');
