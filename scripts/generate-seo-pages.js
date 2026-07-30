@@ -5,6 +5,19 @@ const SITE_URL = 'https://pitchlist.uk';
 const TODAY = new Date().toISOString().slice(0, 10);
 const UK_EXCLUDED_AREAS = new Set(['ireland']);
 const MIN_AREA_ROWS = 2;
+const MIN_EXTRA_AREA_ROWS = 1;
+const EXTRA_AREA_PAGES = [
+  {
+    area: 'Belfast',
+    slug: 'belfast',
+    match: row => /\bbelfast\b/i.test(row.event_name || '') || /\bbelfast\b/i.test(row.organiser || '') || /\bbelfast\b/i.test(row.source_url || '')
+  },
+  {
+    area: 'Antrim',
+    slug: 'antrim',
+    match: row => /\bantrim\b/i.test(row.event_name || '') || /\bantrim\b/i.test(row.organiser || '') || /\bantrim\b/i.test(row.source_url || '')
+  }
+];
 
 function escapeHtml(value) {
   return String(value || '')
@@ -94,6 +107,32 @@ function groupRows(rows) {
   return [...groups.values()]
     .filter(group => group.rows.length >= MIN_AREA_ROWS)
     .sort((a, b) => b.rows.length - a.rows.length || a.area.localeCompare(b.area));
+}
+
+function makeGroup(area, slug, rows) {
+  const group = {
+    area,
+    slug,
+    rows,
+    categories: new Map(),
+    routeTypes: new Map(),
+    updatedDates: []
+  };
+  for (const row of rows) {
+    const label = categoryLabel(row);
+    group.categories.set(label, (group.categories.get(label) || 0) + 1);
+    if (row.route_type) group.routeTypes.set(row.route_type, (group.routeTypes.get(row.route_type) || 0) + 1);
+    if (row.last_checked) group.updatedDates.push(row.last_checked);
+  }
+  return group;
+}
+
+function extraAreaGroups(rows, existingGroups) {
+  const existingSlugs = new Set(existingGroups.map(group => group.slug));
+  return EXTRA_AREA_PAGES
+    .filter(page => !existingSlugs.has(page.slug))
+    .map(page => makeGroup(page.area, page.slug, rows.filter(row => page.match(row))))
+    .filter(group => group.rows.length >= MIN_EXTRA_AREA_ROWS);
 }
 
 function topList(map, limit) {
@@ -204,7 +243,7 @@ function areaPage(group, total) {
 }
 
 function hubPage(groups, snapshot) {
-  const total = groups.reduce((sum, group) => sum + group.rows.length, 0);
+  const total = snapshot.total;
   const cards = groups.map(group => {
     const categories = topList(group.categories, 3).join(', ');
     const rowLabel = group.rows.length === 1 ? '1 row' : `${group.rows.length} rows`;
@@ -268,10 +307,12 @@ function appendSitemap(out, groups) {
 
 function generateSeoPages({ root = path.join(__dirname, '..'), out = path.join(root, 'public') } = {}) {
   const snapshot = loadSnapshot(root);
-  const groups = groupRows(snapshot.rows || []);
+  const baseGroups = groupRows(snapshot.rows || []);
+  const groups = [...baseGroups, ...extraAreaGroups(snapshot.rows || [], baseGroups)]
+    .sort((a, b) => b.rows.length - a.rows.length || a.area.localeCompare(b.area));
   const areaDir = path.join(out, 'areas');
   fs.mkdirSync(areaDir, { recursive: true });
-  const total = groups.reduce((sum, group) => sum + group.rows.length, 0);
+  const total = snapshot.total;
   fs.writeFileSync(path.join(areaDir, 'index.html'), hubPage(groups, snapshot));
   for (const group of groups) {
     fs.writeFileSync(path.join(areaDir, `${group.slug}.html`), areaPage(group, total));
