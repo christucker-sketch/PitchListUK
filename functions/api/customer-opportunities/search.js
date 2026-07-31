@@ -161,7 +161,8 @@ export async function onRequestGet(context) {
   const queryTerms = splitTerms(url.searchParams.get('q'));
   const confidence = String(url.searchParams.get('confidence') || '').trim().toLowerCase();
   const requestedLimit = Math.min(Math.max(Number(url.searchParams.get('limit') || 75), 1), 250);
-  const limit = fullAccess ? requestedLimit : Math.min(requestedLimit, 3);
+  const previewLimit = 24;
+  const limit = fullAccess ? requestedLimit : Math.min(requestedLimit, previewLimit);
 
   let origin = null;
   if (postcode) {
@@ -206,7 +207,7 @@ export async function onRequestGet(context) {
     access: fullAccess ? 'subscriber' : 'preview',
     access_reason: access.reason,
     account_email: fullAccess ? (access.email || '') : '',
-    preview_limit: fullAccess ? null : 3,
+    preview_limit: fullAccess ? null : previewLimit,
     locked_fields: fullAccess ? [] : ['application_url', 'source_url'],
     total: opportunitySnapshot.total,
     count: rows.length,

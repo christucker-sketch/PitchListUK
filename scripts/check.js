@@ -62,8 +62,14 @@ for (const url of ['/festival-trader-applications', '/stall-holders-wanted', '/f
 for (const text of ['Search UK Trader Opportunities', 'postcode', 'radius', '/database.js', 'Start free trial', 'savedShortlist']) {
   if (!database.includes(text)) throw new Error(`Missing database page text: ${text}`);
 }
-for (const text of ['90+ checked rows', '/terms', '/privacy']) {
+for (const text of ['Live searchable database', '/terms', '/privacy']) {
   if (!database.includes(text)) throw new Error(`Missing database legal/proof text: ${text}`);
+}
+for (const text of ['value="food"', 'public_listing_opt_in" type="checkbox" checked']) {
+  if (database.includes(text)) throw new Error(`Database must not include risky/default filter state: ${text}`);
+}
+for (const text of ['og:title', 'og:image', 'twitter:card']) {
+  if (!database.includes(text)) throw new Error(`Database page missing share metadata: ${text}`);
 }
 for (const text of ['PitchList UK Terms', '£4.99', 'Cancel any time', 'No guaranteed event acceptance']) {
   if (!terms.includes(text)) throw new Error(`Missing terms page text: ${text}`);
@@ -82,6 +88,7 @@ const functionApi = fs.readFileSync('functions/api/customer-opportunities/search
 for (const text of ['PITCHLIST_DATABASE_ACCESS_CODE', 'postcodes.io', 'haversineMiles', 'opportunitySnapshot', 'checkoutSessionAccess', 'previewRow']) {
   if (!functionApi.includes(text)) throw new Error(`Missing customer API text: ${text}`);
 }
+if (!functionApi.includes('previewLimit = 24')) throw new Error('Preview should show enough rows to prove coverage');
 const checkoutApi = fs.readFileSync('functions/api/billing/checkout.js', 'utf8');
 for (const text of ['STRIPE_SECRET_KEY', 'STRIPE_PRICE_ID', 'trial_period_days', 'payment_method_collection']) {
   if (!checkoutApi.includes(text)) throw new Error(`Missing checkout API text: ${text}`);
@@ -97,6 +104,15 @@ for (const text of ['PITCHLIST_SAMPLE_WEBHOOK_URL', 'PITCHLIST_FORM_SMTP2GO_API_
 const dataModule = fs.readFileSync('functions/_data/opportunities.mjs', 'utf8');
 const opportunityData = JSON.parse(dataModule.replace(/^export const opportunitySnapshot = /, '').replace(/;\s*$/, ''));
 if (!Array.isArray(opportunityData.rows) || opportunityData.rows.length < 50) throw new Error('Expected at least 50 exported opportunities');
+for (const row of opportunityData.rows) {
+  const text = [row.event_name, row.organiser, row.source_url, row.application_url].join(' ');
+  if (/downtownkentwa|farmingvillechamber|visitsuffolkva|smmarket\.org|essexct|londonderrynh|watersidedistrict|downtownnorfolk/i.test(text)) {
+    throw new Error(`Export includes non-UK leakage: ${row.event_name}`);
+  }
+  if (/skip to main content|to help us give you the best experience|accept all|your privacy/i.test(row.event_name || '')) {
+    throw new Error(`Export includes boilerplate title: ${row.event_name}`);
+  }
+}
 const generator = fs.readFileSync('scripts/generate-seo-pages.js', 'utf8');
 for (const text of ['generateSeoPages', '/areas', 'UK_EXCLUDED_AREAS', 'CollectionPage']) {
   if (!generator.includes(text)) throw new Error(`Missing SEO generator text: ${text}`);

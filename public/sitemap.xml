@@ -85,13 +85,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/south-east</loc>
+    <loc>https://pitchlist.uk/areas/scotland</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/scotland</loc>
+    <loc>https://pitchlist.uk/areas/south-east</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -175,12 +175,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/berkshire</loc>
-    <lastmod>2026-07-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.65</priority>
-  </url>
-  <url>
     <loc>https://pitchlist.uk/areas/cambridgeshire</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -206,6 +200,12 @@
   </url>
   <url>
     <loc>https://pitchlist.uk/areas/west-sussex</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/berkshire</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
@@ -247,12 +247,6 @@
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/belfast</loc>
-    <lastmod>2026-07-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.65</priority>
-  </url>
-  <url>
     <loc>https://pitchlist.uk/areas/buckinghamshire</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -260,12 +254,6 @@
   </url>
   <url>
     <loc>https://pitchlist.uk/areas/cornwall</loc>
-    <lastmod>2026-07-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.65</priority>
-  </url>
-  <url>
-    <loc>https://pitchlist.uk/areas/cumbria</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
@@ -290,6 +278,12 @@
   </url>
   <url>
     <loc>https://pitchlist.uk/areas/west-midlands</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/belfast</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>

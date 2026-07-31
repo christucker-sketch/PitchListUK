@@ -14,15 +14,62 @@ const result = searchOpportunities(pitchlistRoot, {
 }, new Date());
 
 const publicStatuses = new Set(['customer_ready', 'review']);
+const BOILERPLATE_TITLE = /(skip to main content|we use cookies|to help us give you the best experience|accept all|your privacy|hit enter to search|esc to close|no results found)/i;
+const NON_UK_HOST = /(\.ca$|\.nyc$|(^|\.)(downtownkentwa|farmingvillechamber|visitsuffolkva|smmarket|devon\.ca|essexmarket|essexct|londonderrynh|watersidedistrict|downtownnorfolk|festevents|thefairiscoming)\b)/i;
+const NON_UK_PLACE = /\b(kent wa|kent washington|south milwaukee|suffolk downtown|suffolk va|farmingville|essex ct|londonderry nh|norfolk waterfront|isle of wight county fair)\b/i;
+
+function hostFor(value) {
+  try {
+    return new URL(value).hostname.replace(/^www\./, '').toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+function isUkPublicRow(row) {
+  const sourceHost = hostFor(row.source_url);
+  const applicationHost = hostFor(row.application_url);
+  const text = [
+    row.event_name,
+    row.organiser,
+    row.location,
+    row.region,
+    row.notes,
+    row.source_url,
+    row.application_url
+  ].join(' ');
+
+  if (NON_UK_HOST.test(sourceHost) || NON_UK_HOST.test(applicationHost) || NON_UK_PLACE.test(text)) return false;
+  if (BOILERPLATE_TITLE.test(row.event_name || '')) return false;
+  if ((row.event_name || '').length > 120) return false;
+  if (row.area_confidence === 'unknown' || /^unknown$/i.test(row.region || '')) return false;
+  if (!(row.market_domain === 'pitchlist.uk' || row.tax_region === 'UK' || row.country === 'United Kingdom')) return false;
+  return true;
+}
+
+function cleanTitle(value) {
+  return String(value || '')
+    .replace(/\s*[-|]\s*Skip to main content.*$/i, '')
+    .replace(/\s+Skip to main content.*$/i, '')
+    .replace(/\s+(facebook|instagram|twitter|x)\b.*$/i, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 100);
+}
+
+function displayOrganiser(row, eventName) {
+  const organiser = cleanTitle(row.organiser);
+  if (!organiser || organiser.toLowerCase() === eventName.toLowerCase()) return '';
+  return organiser;
+}
+
 const rows = result.rows.filter(row => (
   publicStatuses.has(row.quality_status) &&
-  row.area_confidence !== 'unknown' &&
-  !/^unknown$/i.test(row.region || '') &&
-  (row.market_domain === 'pitchlist.uk' || row.tax_region === 'UK' || row.country === 'United Kingdom')
+  isUkPublicRow(row)
 )).map(row => ({
   id: row.id,
-  event_name: row.event_name,
-  organiser: row.organiser,
+  event_name: cleanTitle(row.event_name),
+  organiser: displayOrganiser(row, cleanTitle(row.event_name)),
   location: row.location,
   county: row.county,
   region: row.region,

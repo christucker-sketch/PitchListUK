@@ -258,7 +258,7 @@ function renderMetrics(data) {
     <article><b>${esc(placeLevel)}</b><span>place-level distance</span></article>
     <article><b>${esc(savedCount)}</b><span>saved to shortlist</span></article>
     <article><b>${accessLabel}</b><span>${esc(data.access === 'subscriber' ? 'Full source and application routes visible.' : 'Routes are hidden until trial signup.')}</span></article>`;
-  statusEl.innerHTML = `<b>${esc(data.returned)}</b><span>${esc(data.access === 'subscriber' ? `${data.count} matches unlocked` : `${data.total} opportunities, preview mode`)}</span>`;
+  statusEl.innerHTML = `<b>${esc(data.total)}</b><span>${esc(`${data.total} live opportunities`)}</span>`;
 }
 
 function storedAccount() {
@@ -340,22 +340,27 @@ function renderResults(rows) {
     return;
   }
   const selected = new Set(savedRows().map(row => row.key));
-  resultsEl.innerHTML = rows.slice(0, 75).map((row, index) => {
+  const summary = latestData
+    ? `<div class="results-summary"><strong>Showing ${esc(latestData.returned)} of ${esc(latestData.count)} matches</strong><span>${esc(latestData.access === 'subscriber' ? 'Source links are unlocked.' : 'Preview rows show coverage; source links unlock after trial signup.')}</span></div>`
+    : '';
+  resultsEl.innerHTML = summary + rows.slice(0, 75).map((row, index) => {
     const key = rowKey(row);
     const isSaved = selected.has(key);
-    const distance = row.distance_miles !== null && row.distance_miles !== undefined
-      ? `${row.distance_miles} miles${row.coordinate_label ? ` from ${row.coordinate_label}` : ''}`
-      : '';
+    const preciseDistance = latestData && latestData.postcode_distance_ready && ['exact', 'place'].includes(row.coordinate_precision);
+    const distance = row.distance_miles !== null && row.distance_miles !== undefined && preciseDistance
+      ? `${row.distance_miles} miles from searched postcode`
+      : latestData && latestData.postcode_distance_ready && row.coordinate_precision === 'area'
+        ? `${row.county || row.region || row.coordinate_label} area match`
+        : row.distance_miles !== null && row.distance_miles !== undefined && row.coordinate_label
+          ? `${row.distance_miles} miles from ${row.coordinate_label}`
+          : '';
     const meta = distance ? [distance, ...chips(row)] : chips(row);
     const lockedCopy = row.locked ? `Preview hides source and application route${row.source_host ? ` from ${row.source_host}` : ''}.` : 'Source and application route unlocked.';
     return `<article class="opportunity-card ${esc(imageClass(row, index))} ${row.locked ? 'is-locked' : 'is-unlocked'}">
-      <div class="opportunity-art" style="--opportunity-image:url('${esc(imageUrl(row, index))}')">
-        <span>${esc(routeLabel(row))}</span>
-        <b class="${esc(row.freshness_status)}">${esc(row.freshness_status || 'current')}</b>
-      </div>
       <header>
         <strong>${esc(displayName(row))}</strong>
-        <span>${esc(row.organiser || 'Organiser to verify')}</span>
+        ${row.organiser && row.organiser !== displayName(row) ? `<span>${esc(row.organiser)}</span>` : ''}
+        <b class="${esc(row.freshness_status)}">${esc(row.freshness_status || 'current')}</b>
       </header>
       <div class="cloud-facts">
         ${meta.map(item => `<span>${esc(item)}</span>`).join('')}

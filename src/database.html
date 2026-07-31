@@ -6,6 +6,13 @@
   <title>Search UK Trader Opportunities | PitchList UK</title>
   <meta name="description" content="Search current UK trader opportunities by postcode, radius, category and confidence. Preview page for PitchList UK subscribers." />
   <link rel="canonical" href="https://pitchlist.uk/database" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="PitchList UK" />
+  <meta property="og:title" content="Search UK Trader Opportunities | PitchList UK" />
+  <meta property="og:description" content="Search live UK trader opportunities by postcode, radius, category and confidence. Preview locked rows before starting a trial." />
+  <meta property="og:url" content="https://pitchlist.uk/database" />
+  <meta property="og:image" content="https://pitchlist.uk/assets/hero-food-festival.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body class="database-page">
@@ -29,7 +36,7 @@
             <label><span>Specialty</span><input name="specialty" placeholder="mobile bar, street food, jewellery" required /></label>
           </div>
           <label><span>Regions covered</span><textarea name="regions" placeholder="Suffolk, Norfolk, London, UK-wide for the right event"></textarea></label>
-          <label class="vendor-opt-in"><input name="public_listing_opt_in" type="checkbox" checked /> <span>Create my public vendor profile so event organisers can find and contact me.</span></label>
+          <label class="vendor-opt-in"><input name="public_listing_opt_in" type="checkbox" /> <span>Create my public vendor profile so event organisers can find and contact me.</span></label>
           <div class="database-actions">
             <button type="submit" id="startTrial">Start free trial</button>
           </div>
@@ -50,10 +57,10 @@
         <div class="database-account" id="databaseAccount" hidden>
           <span id="accountLabel">Access unlocked</span>
           <strong id="accountEmail">Subscriber</strong>
-          <small id="accountNote">Full source and application routes are visible on this browser.</small>
+          <small id="accountNote">Full source and application routes unlock for active subscribers.</small>
         </div>
         <div class="database-proof">
-          <span>90+ checked rows</span>
+          <span>Live searchable database</span>
           <span>food, markets and events</span>
           <span>£4.99/month after trial</span>
         </div>
@@ -72,7 +79,7 @@
     <form class="cloud-search" id="cloudSearch">
       <label><span>Postcode / outcode</span><input name="postcode" placeholder="LS1, RH12, SW1A" autocomplete="postal-code" /></label>
       <label><span>Radius</span><select name="radius_miles"><option value="">Any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option><option value="250">UK-wide</option></select></label>
-      <label><span>Category</span><input name="category" value="food" placeholder="street food, coffee, craft" /></label>
+      <label><span>Category</span><input name="category" placeholder="street food, coffee, craft" /></label>
       <label><span>Keywords</span><input name="q" placeholder="festival, market, Christmas..." /></label>
       <label><span>Confidence</span><select name="confidence"><option value="">Any confidence</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
       <button type="submit">Search</button>
@@ -83,7 +90,7 @@
     <section class="cloud-results" id="cloudResults" aria-live="polite"></section>
   </main>
 
-  <script src="/database.js?v=20260726-1"></script>
+  <script src="/database.js?v=20260731-1"></script>
   <footer>
     <strong>PitchList UK</strong>
     <span><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="mailto:hello@pitchlist.uk">hello@pitchlist.uk</a></span>
