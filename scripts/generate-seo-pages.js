@@ -143,6 +143,12 @@ function topList(map, limit) {
     .map(([label]) => label);
 }
 
+function formatDisplayDate(value) {
+  const match = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return String(value || '');
+  return `${match[3]}/${match[2]}/${match[1]}`;
+}
+
 function pageShell({ title, description, canonical, body, structuredData, robots = 'index,follow,max-image-preview:large' }) {
   const jsonLd = structuredData ? `\n  <script type="application/ld+json">\n${JSON.stringify(structuredData, null, 2).replace(/^/gm, '  ')}\n  </script>` : '';
   return `<!doctype html>
@@ -199,7 +205,7 @@ function areaPage(group, total) {
   <main>
     <section class="stats seo-stats" aria-label="${escapeHtml(area)} PitchList coverage stats">
       <article><b>${count}</b><span>online ${area} rows</span></article>
-      <article><b>${escapeHtml(latest)}</b><span>latest checked date</span></article>
+      <article><b>${escapeHtml(formatDisplayDate(latest))}</b><span>latest checked date</span></article>
       <article><b>${total}</b><span>UK customer-ready rows</span></article>
       <article><b>£4.99</b><span>monthly access after trial</span></article>
     </section>
@@ -212,7 +218,7 @@ function areaPage(group, total) {
       <h2>Examples from the locked database.</h2>
       <div class="sample-table seo-sample-table" role="table">
         <div role="row" class="sample-row sample-header"><span>Opportunity</span><span>Area</span><span>Type</span><span>Checked</span></div>
-        ${polishedExamples.map(({ row, name }) => `<div role="row" class="sample-row"><span>${escapeHtml(name)}</span><span>${escapeHtml(row.county || row.region || area)}</span><span>${escapeHtml(categoryLabel(row))}</span><span>${escapeHtml(row.last_checked || 'Recent')}</span></div>`).join('\n        ')}
+        ${polishedExamples.map(({ row, name }) => `<div role="row" class="sample-row"><span>${escapeHtml(name)}</span><span>${escapeHtml(row.county || row.region || area)}</span><span>${escapeHtml(categoryLabel(row))}</span><span>${escapeHtml(row.last_checked ? formatDisplayDate(row.last_checked) : 'Recent')}</span></div>`).join('\n        ')}
         <div role="row" class="sample-row locked-row"><span>Full source and application routes unlock after trial signup</span><span>${escapeHtml(area)}</span><span>Subscriber database</span><span>Live search</span></div>
       </div>
     </section>
@@ -267,7 +273,7 @@ function hubPage(groups, snapshot) {
     <section class="stats seo-stats" aria-label="PitchList area coverage stats">
       <article><b>${groups.length}</b><span>UK areas with online rows</span></article>
       <article><b>${total}</b><span>indexed online rows</span></article>
-      <article><b>${escapeHtml(snapshot.exported_at.slice(0, 10))}</b><span>latest database export</span></article>
+      <article><b>${escapeHtml(formatDisplayDate(snapshot.exported_at.slice(0, 10)))}</b><span>latest database export</span></article>
       <article><b>7 days</b><span>free trial before monthly access</span></article>
     </section>
     <section class="panel">

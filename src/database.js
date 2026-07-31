@@ -128,7 +128,7 @@ function routeLabel(row) {
 
 function checkedLabel(row) {
   const checked = String(row.last_checked || '').slice(0, 10);
-  return checked ? `Checked ${checked}` : 'Checked recently';
+  return checked ? `Checked ${formatDate(checked)}` : 'Checked recently';
 }
 
 function chips(row) {
