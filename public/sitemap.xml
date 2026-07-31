@@ -73,12 +73,6 @@
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/unknown</loc>
-    <lastmod>2026-07-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pitchlist.uk/areas/london</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
