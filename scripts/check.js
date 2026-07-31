@@ -88,7 +88,7 @@ const functionApi = fs.readFileSync('functions/api/customer-opportunities/search
 for (const text of ['PITCHLIST_DATABASE_ACCESS_CODE', 'postcodes.io', 'haversineMiles', 'opportunitySnapshot', 'checkoutSessionAccess', 'previewRow', 'status_summary', 'coordinate_precision']) {
   if (!functionApi.includes(text)) throw new Error(`Missing customer API text: ${text}`);
 }
-if (!functionApi.includes('previewLimit = 24')) throw new Error('Preview should show enough rows to prove coverage');
+if (!functionApi.includes('previewLimit = 50')) throw new Error('Preview should show enough rows to prove coverage');
 const checkoutApi = fs.readFileSync('functions/api/billing/checkout.js', 'utf8');
 for (const text of ['STRIPE_SECRET_KEY', 'STRIPE_PRICE_ID', 'trial_period_days', 'payment_method_collection']) {
   if (!checkoutApi.includes(text)) throw new Error(`Missing checkout API text: ${text}`);

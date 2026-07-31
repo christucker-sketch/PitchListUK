@@ -6,6 +6,7 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const UK_EXCLUDED_AREAS = new Set(['ireland']);
 const MIN_AREA_ROWS = 2;
 const MIN_EXTRA_AREA_ROWS = 1;
+const MIN_INDEXABLE_AREA_ROWS = 8;
 const EXTRA_AREA_PAGES = [
   {
     area: 'Belfast',
@@ -142,7 +143,7 @@ function topList(map, limit) {
     .map(([label]) => label);
 }
 
-function pageShell({ title, description, canonical, body, structuredData }) {
+function pageShell({ title, description, canonical, body, structuredData, robots = 'index,follow,max-image-preview:large' }) {
   const jsonLd = structuredData ? `\n  <script type="application/ld+json">\n${JSON.stringify(structuredData, null, 2).replace(/^/gm, '  ')}\n  </script>` : '';
   return `<!doctype html>
 <html lang="en-GB">
@@ -151,7 +152,7 @@ function pageShell({ title, description, canonical, body, structuredData }) {
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}" />
-  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="robots" content="${escapeHtml(robots)}" />
   <meta name="theme-color" content="#0b1020" />
   <link rel="canonical" href="${escapeHtml(canonical)}" />
   <link rel="stylesheet" href="/styles.css" />
@@ -231,6 +232,7 @@ function areaPage(group, total) {
     description,
     canonical,
     body,
+    robots: count >= MIN_INDEXABLE_AREA_ROWS ? 'index,follow,max-image-preview:large' : 'noindex,follow,max-image-preview:large',
     structuredData: {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
@@ -296,7 +298,9 @@ function appendSitemap(out, groups) {
   let sitemap = fs.readFileSync(sitemapFile, 'utf8').replace('</urlset>', '').trimEnd();
   const urls = [
     { loc: `${SITE_URL}/areas`, priority: '0.85' },
-    ...groups.map(group => ({ loc: `${SITE_URL}/areas/${group.slug}`, priority: group.rows.length >= 5 ? '0.8' : '0.65' }))
+    ...groups
+      .filter(group => group.rows.length >= MIN_INDEXABLE_AREA_ROWS)
+      .map(group => ({ loc: `${SITE_URL}/areas/${group.slug}`, priority: '0.8' }))
   ];
   for (const url of urls) {
     sitemap += `\n  <url>\n    <loc>${url.loc}</loc>\n    <lastmod>${TODAY}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${url.priority}</priority>\n  </url>`;

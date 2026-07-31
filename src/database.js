@@ -130,12 +130,17 @@ function routeLabel(row) {
   return String(row.route_type || 'trader pitch').replace(/_/g, ' ');
 }
 
+function checkedLabel(row) {
+  const checked = String(row.last_checked || '').slice(0, 10);
+  return checked ? `Checked ${checked}` : 'Checked recently';
+}
+
 function chips(row) {
   return [
     row.county || row.region || 'Area to verify',
     dateRange(row),
-    `${row.confidence || 'unknown'} confidence`,
-    routeLabel(row)
+    routeLabel(row),
+    checkedLabel(row)
   ].filter(Boolean);
 }
 
@@ -361,7 +366,7 @@ function renderResults(rows) {
       <header>
         <strong>${esc(displayName(row))}</strong>
         ${row.organiser && row.organiser !== displayName(row) ? `<span>${esc(row.organiser)}</span>` : ''}
-        <b class="${esc(row.freshness_status)}">${esc(row.freshness_status || 'current')}</b>
+        <b>${esc(checkedLabel(row))}</b>
       </header>
       <div class="cloud-facts">
         ${meta.map(item => `<span>${esc(item)}</span>`).join('')}

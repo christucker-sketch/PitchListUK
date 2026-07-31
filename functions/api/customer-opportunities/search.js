@@ -157,6 +157,27 @@ function statusSummary(rows) {
   }, {});
 }
 
+function isBroadAreaCentroid(row) {
+  if (String(row.coordinate_precision || '').toLowerCase() !== 'place') return false;
+  const label = String(row.coordinate_label || '').trim().toLowerCase();
+  if (!label) return false;
+  const county = String(row.county || '').trim().toLowerCase();
+  const region = String(row.region || '').trim().toLowerCase();
+  const broadLabels = new Set([
+    'london',
+    'scotland',
+    'wales',
+    'northern ireland',
+    'south east',
+    'south west',
+    'north west',
+    'north east',
+    'midlands',
+    'east of england'
+  ]);
+  return broadLabels.has(label) && (label === county || label === region);
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
@@ -169,7 +190,7 @@ export async function onRequestGet(context) {
   const queryTerms = splitTerms(url.searchParams.get('q'));
   const confidence = String(url.searchParams.get('confidence') || '').trim().toLowerCase();
   const requestedLimit = Math.min(Math.max(Number(url.searchParams.get('limit') || 75), 1), 250);
-  const previewLimit = 24;
+  const previewLimit = 50;
   const limit = fullAccess ? requestedLimit : Math.min(requestedLimit, previewLimit);
 
   let origin = null;
@@ -189,6 +210,7 @@ export async function onRequestGet(context) {
     return {
       ...row,
       distance_miles: distance === null ? null : Math.round(distance * 10) / 10,
+      _broad_area_centroid: isBroadAreaCentroid(row),
       _search: searchable(row)
     };
   }).filter(row => {
@@ -198,11 +220,14 @@ export async function onRequestGet(context) {
     if (origin && radius > 0 && (
       row.distance_miles === null ||
       row.distance_miles > radius ||
-      !['exact', 'place'].includes(row.coordinate_precision)
+      (!['exact', 'place'].includes(row.coordinate_precision) && !row._broad_area_centroid)
     )) return false;
     return true;
   }).sort((a, b) => {
     const confidenceRank = { high: 0, medium: 1, low: 2 };
+    if (origin && a._broad_area_centroid !== b._broad_area_centroid) {
+      return a._broad_area_centroid ? 1 : -1;
+    }
     if (origin && a.distance_miles !== b.distance_miles) {
       if (a.distance_miles === null) return 1;
       if (b.distance_miles === null) return -1;
@@ -226,6 +251,11 @@ export async function onRequestGet(context) {
     returned: Math.min(rows.length, limit),
     status_summary: statusSummary(rows),
     postcode_distance_ready: Boolean(origin),
-    rows: rows.slice(0, limit).map(({ _search, ...row }) => fullAccess ? row : previewRow(row))
+    rows: rows.slice(0, limit).map(({ _search, _broad_area_centroid, ...row }) => {
+      const output = _broad_area_centroid
+        ? { ...row, coordinate_precision: 'area', distance_miles: null }
+        : row;
+      return fullAccess ? output : previewRow(output);
+    })
   }, 200, access.set_cookie ? { 'set-cookie': access.set_cookie } : {});
 }
