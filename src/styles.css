@@ -115,7 +115,9 @@
 @media(max-width:980px){.home-nav{align-items:flex-start}.home-nav div{justify-content:flex-end}.database-strip,.product-split,.database-callout,.link-section,.trust-line{grid-template-columns:1fr}.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-hero-content{padding-top:48px}.home-hero .lede{font-size:19px}}
 @media(max-width:640px){.home-nav{display:grid;grid-template-columns:1fr;gap:14px;padding:18px 5vw}.home-nav div{justify-content:flex-start;gap:12px}.home-nav div a{font-size:14px}.home-hero{min-height:780px}.home-hero:before{background:linear-gradient(180deg,rgba(10,16,27,.96) 0%,rgba(10,16,27,.76) 58%,rgba(10,16,27,.38) 100%),url('/assets/hero-food-festival.jpg') center/cover no-repeat}.home-hero-content{width:100%;padding:34px 5vw 64px}.home-hero h1{font-size:38px}.home-hero .lede{font-size:18px}.home-main{padding-left:5vw;padding-right:5vw}.database-strip{margin-top:-22px}.category-grid,.field-list{grid-template-columns:1fr}.category-grid a{min-height:180px}.product-section{padding:20px}.price-panel strong{font-size:36px}.home-footer{display:block}.home-footer span{display:block;margin-top:8px}}
 
-.results-summary{grid-column:1/-1;display:flex;justify-content:space-between;gap:14px;align-items:center;border:1px solid var(--db-line);border-radius:8px;background:#fff;padding:12px 14px;box-shadow:0 10px 28px rgba(15,23,42,.05)}
+.cloud-results{display:block}
+.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+.results-summary{display:flex;justify-content:space-between;gap:14px;align-items:center;border:1px solid var(--db-line);border-radius:8px;background:#fff;padding:12px 14px;margin-bottom:14px;box-shadow:0 10px 28px rgba(15,23,42,.05)}
 .results-summary strong{color:#101827}
 .results-summary span{color:var(--db-muted);font-size:13px;line-height:1.35}
 .cloud-results article.opportunity-card{min-height:0}
@@ -127,4 +129,5 @@
 .cloud-results article.opportunity-card header b.aging{background:#fef3c7;color:#92400e}
 .opportunity-art{display:none}
 
-@media(max-width:760px){.results-summary{display:block}.results-summary span{display:block;margin-top:4px}.cloud-results article.opportunity-card header{grid-template-columns:1fr}.cloud-results article.opportunity-card header b{grid-column:1;grid-row:auto;justify-self:start}}
+@media(max-width:1180px){.result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.result-grid{grid-template-columns:1fr}.results-summary{display:block}.results-summary span{display:block;margin-top:4px}.cloud-results article.opportunity-card header{grid-template-columns:1fr}.cloud-results article.opportunity-card header b{grid-column:1;grid-row:auto;justify-self:start}}

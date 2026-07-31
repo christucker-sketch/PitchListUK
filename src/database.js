@@ -248,13 +248,14 @@ function renderShortlist() {
 
 function renderMetrics(data) {
   const rows = data.rows || [];
-  const fresh = rows.filter(row => row.freshness_status === 'fresh').length;
+  const summary = data.status_summary || {};
+  const recentlyChecked = Number(summary.fresh || 0);
   const placeLevel = rows.filter(row => ['place', 'exact'].includes(row.coordinate_precision)).length;
   const accessLabel = data.access === 'subscriber' ? 'Unlocked' : 'Preview';
   const savedCount = savedRows().length;
   metricsEl.innerHTML = `
     <article><b>${esc(data.count)}</b><span>matching opportunities</span></article>
-    <article><b>${esc(fresh)}</b><span>fresh results</span></article>
+    <article><b>${esc(recentlyChecked)}</b><span>checked in last 14 days</span></article>
     <article><b>${esc(placeLevel)}</b><span>place-level distance</span></article>
     <article><b>${esc(savedCount)}</b><span>saved to shortlist</span></article>
     <article><b>${accessLabel}</b><span>${esc(data.access === 'subscriber' ? 'Full source and application routes visible.' : 'Routes are hidden until trial signup.')}</span></article>`;
@@ -343,7 +344,7 @@ function renderResults(rows) {
   const summary = latestData
     ? `<div class="results-summary"><strong>Showing ${esc(latestData.returned)} of ${esc(latestData.count)} matches</strong><span>${esc(latestData.access === 'subscriber' ? 'Source links are unlocked.' : 'Preview rows show coverage; source links unlock after trial signup.')}</span></div>`
     : '';
-  resultsEl.innerHTML = summary + rows.slice(0, 75).map((row, index) => {
+  const cards = rows.slice(0, 75).map((row, index) => {
     const key = rowKey(row);
     const isSaved = selected.has(key);
     const preciseDistance = latestData && latestData.postcode_distance_ready && ['exact', 'place'].includes(row.coordinate_precision);
@@ -375,6 +376,7 @@ function renderResults(rows) {
       </footer>
     </article>`;
   }).join('');
+  resultsEl.innerHTML = `${summary}<div class="result-grid">${cards}</div>`;
 }
 
 function storedSessionId() {

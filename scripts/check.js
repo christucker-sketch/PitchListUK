@@ -81,11 +81,11 @@ for (const url of ['/terms', '/privacy']) {
   if (!html.includes(url)) throw new Error(`Homepage missing legal link: ${url}`);
   if (!sitemap.includes(`https://pitchlist.uk${url}`)) throw new Error(`Sitemap missing legal URL: ${url}`);
 }
-for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV']) {
+for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV', 'checked in last 14 days', 'result-grid']) {
   if (!databaseJs.includes(text)) throw new Error(`Missing database JS text: ${text}`);
 }
 const functionApi = fs.readFileSync('functions/api/customer-opportunities/search.js', 'utf8');
-for (const text of ['PITCHLIST_DATABASE_ACCESS_CODE', 'postcodes.io', 'haversineMiles', 'opportunitySnapshot', 'checkoutSessionAccess', 'previewRow']) {
+for (const text of ['PITCHLIST_DATABASE_ACCESS_CODE', 'postcodes.io', 'haversineMiles', 'opportunitySnapshot', 'checkoutSessionAccess', 'previewRow', 'status_summary', 'coordinate_precision']) {
   if (!functionApi.includes(text)) throw new Error(`Missing customer API text: ${text}`);
 }
 if (!functionApi.includes('previewLimit = 24')) throw new Error('Preview should show enough rows to prove coverage');
@@ -106,11 +106,14 @@ const opportunityData = JSON.parse(dataModule.replace(/^export const opportunity
 if (!Array.isArray(opportunityData.rows) || opportunityData.rows.length < 50) throw new Error('Expected at least 50 exported opportunities');
 for (const row of opportunityData.rows) {
   const text = [row.event_name, row.organiser, row.source_url, row.application_url].join(' ');
-  if (/downtownkentwa|farmingvillechamber|visitsuffolkva|smmarket\.org|essexct|londonderrynh|watersidedistrict|downtownnorfolk/i.test(text)) {
+  if (/downtownkentwa|farmingvillechamber|visitsuffolkva|smmarket\.org|essexct|londonderrynh|watersidedistrict|downtownnorfolk|pitchlist\.uk|festfinder|pitchmarketsandeventsuk|kfma|moderngov|streetfoodfests/i.test(text)) {
     throw new Error(`Export includes non-UK leakage: ${row.event_name}`);
   }
   if (/skip to main content|to help us give you the best experience|accept all|your privacy/i.test(row.event_name || '')) {
     throw new Error(`Export includes boilerplate title: ${row.event_name}`);
+  }
+  if (/\b(policy|guidance|checklist|terms and conditions|licensing policy)\b/i.test(row.event_name || '')) {
+    throw new Error(`Export includes non-opportunity title: ${row.event_name}`);
   }
 }
 const generator = fs.readFileSync('scripts/generate-seo-pages.js', 'utf8');

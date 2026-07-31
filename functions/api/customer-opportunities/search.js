@@ -149,6 +149,14 @@ function previewRow(row) {
   };
 }
 
+function statusSummary(rows) {
+  return rows.reduce((summary, row) => {
+    const key = String(row.freshness_status || 'unknown').toLowerCase() || 'unknown';
+    summary[key] = (summary[key] || 0) + 1;
+    return summary;
+  }, {});
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
@@ -187,7 +195,11 @@ export async function onRequestGet(context) {
     if (confidence && String(row.confidence || '').toLowerCase() !== confidence) return false;
     if (categoryTerms.length && !categoryTerms.every(term => row._search.includes(term))) return false;
     if (queryTerms.length && !queryTerms.every(term => row._search.includes(term))) return false;
-    if (origin && radius > 0 && (row.distance_miles === null || row.distance_miles > radius)) return false;
+    if (origin && radius > 0 && (
+      row.distance_miles === null ||
+      row.distance_miles > radius ||
+      !['exact', 'place'].includes(row.coordinate_precision)
+    )) return false;
     return true;
   }).sort((a, b) => {
     const confidenceRank = { high: 0, medium: 1, low: 2 };
@@ -212,6 +224,7 @@ export async function onRequestGet(context) {
     total: opportunitySnapshot.total,
     count: rows.length,
     returned: Math.min(rows.length, limit),
+    status_summary: statusSummary(rows),
     postcode_distance_ready: Boolean(origin),
     rows: rows.slice(0, limit).map(({ _search, ...row }) => fullAccess ? row : previewRow(row))
   }, 200, access.set_cookie ? { 'set-cookie': access.set_cookie } : {});
