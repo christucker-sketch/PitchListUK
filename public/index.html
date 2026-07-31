@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>UK Festival Trader Applications & Stallholder Opportunities | PitchList UK</title>
-  <meta name="description" content="Find UK festival trader applications, market stallholder opportunities, council event trader routes and food truck pitches matched to your area, with direct links to organiser pages, application forms, trader packs or published contact routes." />
+  <title>PitchList UK | Search UK Trader Opportunities</title>
+  <meta name="description" content="Search live UK festival trader applications, market stallholder opportunities, council event trader routes and food truck pitches. Preview the database, then start a 7-day free trial to unlock source links and application routes." />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <meta name="author" content="PitchList UK" />
-  <meta name="theme-color" content="#0b1020" />
+  <meta name="theme-color" content="#101827" />
   <link rel="canonical" href="https://pitchlist.uk/" />
   <link rel="stylesheet" href="/styles.css" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="PitchList UK" />
-  <meta property="og:title" content="UK Festival Trader Applications & Stallholder Opportunities | PitchList UK" />
-  <meta property="og:description" content="Area-based UK festival trader applications, market stallholder opportunities, council event trader routes and food truck pitches with direct links to organiser pages, application forms, trader packs and published contact routes." />
+  <meta property="og:title" content="PitchList UK | Search UK Trader Opportunities" />
+  <meta property="og:description" content="Search checked UK trader opportunities by area, category and freshness. Start a 7-day free trial to unlock source links and application routes." />
   <meta property="og:url" content="https://pitchlist.uk/" />
   <meta property="og:image" content="https://pitchlist.uk/assets/hero-food-festival.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="UK Festival Trader Applications & Stallholder Opportunities | PitchList UK" />
-  <meta name="twitter:description" content="Find festival trader applications, market stallholder opportunities, council event trader routes and food truck pitches without spending hours trawling organiser websites." />
+  <meta name="twitter:title" content="PitchList UK | Search UK Trader Opportunities" />
+  <meta name="twitter:description" content="Festival trader applications, stallholder opportunities, council event trader routes and food truck pitches in one searchable database." />
   <meta name="twitter:image" content="https://pitchlist.uk/assets/hero-food-festival.jpg" />
   <script type="application/ld+json">
   {
@@ -26,13 +26,18 @@
     "@type": "WebSite",
     "name": "PitchList UK",
     "url": "https://pitchlist.uk/",
-    "description": "Area-based UK festival trader applications, market stallholder opportunities, council event trader routes and food truck pitches with direct links to organiser pages, application forms, trader packs and published contact routes.",
+    "description": "Search checked UK festival trader applications, market stallholder opportunities, council event trader routes and food truck pitches.",
     "inLanguage": "en-GB",
     "publisher": {
       "@type": "Organization",
       "name": "PitchList UK",
       "url": "https://pitchlist.uk/",
       "email": "hello@pitchlist.uk"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://pitchlist.uk/database?q={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
   }
   </script>
@@ -40,12 +45,12 @@
   {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "PitchList UK starter pack",
-    "serviceType": "Festival trader application and stallholder opportunity research",
+    "name": "PitchList UK database access",
+    "serviceType": "Trader opportunity database",
     "areaServed": "GB",
     "audience": {
       "@type": "Audience",
-      "audienceType": "Street food vendors and mobile caterers"
+      "audienceType": "Street food vendors, mobile caterers and stallholders"
     },
     "provider": {
       "@type": "Organization",
@@ -54,507 +59,229 @@
     },
     "offers": {
       "@type": "Offer",
-      "price": "19",
+      "price": "4.99",
       "priceCurrency": "GBP",
-      "availability": "https://schema.org/PreOrder",
-      "url": "https://pitchlist.uk/#coverage"
+      "availability": "https://schema.org/InStock",
+      "url": "https://pitchlist.uk/database"
     }
   }
   </script>
 </head>
-<body>
-  <header class="hero">
-    <nav>
-      <strong>PitchList UK</strong>
-      <a href="mailto:hello@pitchlist.uk">hello@pitchlist.uk</a>
-    </nav>
-    <section class="hero-grid">
+<body class="home-redesign">
+  <header class="home-hero">
+    <nav class="home-nav">
+      <a class="brand-mark" href="/" aria-label="PitchList UK home">
+        <strong>PitchList UK</strong>
+        <span>Trader opportunity database</span>
+      </a>
       <div>
-        <p class="eyebrow">For street food vendors, mobile caterers & stallholders</p>
-        <h1>Find UK festival trader applications, stallholder leads and food truck pitches for your area.</h1>
-        <p class="lede">PitchList UK gives traders searchable access to checked festival trader applications, stall holders wanted posts, market stallholder opportunities, council event trader routes and food truck pitches, with source links and application routes unlocked after trial signup.</p>
-        <div class="actions">
-          <a href="/database">Search the database</a>
-          <a class="ghost" href="#coverage">Request free sample</a>
-        </div>
+        <a href="/areas">Areas</a>
+        <a href="/database">Database</a>
+        <a href="mailto:hello@pitchlist.uk">hello@pitchlist.uk</a>
       </div>
-      <figure class="hero-card">
-        <div class="photo"></div>
-        <figcaption>Built for traders who want real application routes, not scraped names, dead links, or vague lead lists.</figcaption>
-      </figure>
+    </nav>
+
+    <section class="home-hero-content">
+      <p class="eyebrow">For street food vendors, mobile caterers and stallholders</p>
+      <h1>Find live UK trader opportunities before the deadline disappears.</h1>
+      <p class="lede">Search checked festival trader applications, market stallholder openings, council event routes and food truck pitches by area, category and freshness. Preview the database free; unlock source links and application routes with a 7-day trial.</p>
+      <div class="home-actions" aria-label="Primary actions">
+        <a class="primary-action" href="/database">Search the database</a>
+        <a class="secondary-action" href="#sample-request">Request a sample</a>
+      </div>
+      <div class="home-proof" aria-label="PitchList quick facts">
+        <span><strong>104</strong> customer-ready rows</span>
+        <span><strong>£4.99/month</strong> after trial</span>
+        <span><strong>Source-linked</strong> routes</span>
+      </div>
     </section>
   </header>
 
-  <main>
-    <section class="stats" aria-label="PitchList validation stats">
-      <article><b>90+</b><span>customer-ready database rows</span></article>
-      <article><b>5</b><span>free sample rows</span></article>
-      <article><b>£4.99</b><span>monthly access after trial</span></article>
-      <article><b>100%</b><span>rows with source/contact routes</span></article>
+  <main class="home-main">
+    <section class="database-strip" aria-label="Database preview summary">
+      <article>
+        <span>Preview</span>
+        <strong>Search first, pay only when the coverage looks useful.</strong>
+      </article>
+      <article>
+        <span>Unlock</span>
+        <strong>Trialing and active subscribers see full source and application links.</strong>
+      </article>
+      <article>
+        <span>Cancel</span>
+        <strong>Stripe Customer Portal is live for billing changes and cancellation.</strong>
+      </article>
     </section>
 
-    <section class="panel split">
+    <section class="product-section product-split">
       <div>
-        <p class="eyebrow">The problem</p>
-        <h2>Finding pitch applications takes longer than it should.</h2>
+        <p class="eyebrow">What it replaces</p>
+        <h2>Stop trawling organiser websites one by one.</h2>
+        <p>Pitch opportunities are scattered across festival pages, council sites, market operators, showgrounds, shopping centres, breweries, universities and venue calendars. PitchList turns that research into a searchable working database with the useful fields pulled forward.</p>
       </div>
-      <p>Pitch opportunities are spread across festival websites, council market pages, organiser forms, showground trader packs, farmers market directories, shopping-centre leasing pages, university catering routes, brewery taproom calendars, sports-event concession pages, fireworks nights, car shows and social posts. The useful information is rarely in one place, and deadlines are often buried.</p>
-    </section>
-
-    <section class="cards">
-      <article><span>Festivals & shows</span><strong>Food festivals, county shows, beer, cider, music, cultural, seasonal and public-event trader packs</strong></article>
-      <article><span>Markets & councils</span><strong>Farmers markets, artisan markets, night markets, street trading routes, BIDs and council events</strong></article>
-      <article><span>Food trucks & pop-ups</span><strong>Office parks, universities, breweries, shopping centres, venues, sports events and mobile catering pitches</strong></article>
-    </section>
-
-    <section id="sample" class="panel">
-      <p class="eyebrow">What each listing includes</p>
-      <h2>Checked opportunities with practical routes.</h2>
-      <ul class="ticks">
-        <li>Event/opportunity name</li>
-        <li>Organiser/source</li>
-        <li>Application/contact route</li>
-        <li>Location, region and distance fit</li>
-        <li>Event date or date range</li>
-        <li>Known fee/deadline where published</li>
-        <li>Vendor categories accepted</li>
-        <li>Last checked date and confidence marker</li>
-      </ul>
-      <div class="reach-strip" aria-label="Opportunity types covered">
-        <span>Festival trader applications</span><span>Stall holders wanted</span><span>Food traders wanted</span><span>Market stallholder applications</span><span>Council event trader applications</span><span>Food truck pitches</span><span>Farmers markets</span><span>Night markets</span><span>Office pop-ups</span><span>University campuses</span><span>Brewery taprooms</span><span>Shopping centres</span><span>Visitor attractions</span><span>County shows</span><span>Sports events</span>
-      </div>
-      <div class="sample-preview sample-teaser" aria-label="Example PitchList row format">
-        <div class="sample-head"><p class="eyebrow">Sample preview</p><h3>See the format — request the rows.</h3></div>
-        <div class="sample-table" role="table">
-          <div role="row" class="sample-row sample-header"><span>Opportunity</span><span>Area</span><span>Type</span><span>Checked</span></div>
-          <div role="row" class="sample-row"><span>[Redacted] Food Festival trader applications</span><span>Kent</span><span>Street food / artisan producers</span><span>This week</span></div>
-          <div role="row" class="sample-row"><span>[Redacted] market / public event pitches</span><span>Sussex</span><span>Hot food / drinks / desserts</span><span>Recently checked</span></div>
-          <div role="row" class="sample-row locked-row"><span>Request the free sample to unlock real rows</span><span>5 rows</span><span>Verified routes</span><span>No spam</span></div>
-        </div>
-        <p class="sample-note">Request a free sample and we’ll send 5 real rows for your chosen area, so you can check the format before buying. We don’t publish the full sample openly because the value is in the direct application route.</p>
+      <div class="field-list" aria-label="Database fields">
+        <span>Application route</span>
+        <span>Source page</span>
+        <span>Area and county</span>
+        <span>Freshness status</span>
+        <span>Event date</span>
+        <span>Fee or deadline</span>
+        <span>Trader category</span>
+        <span>Confidence marker</span>
       </div>
     </section>
 
-    <section class="panel flow-panel">
-      <p class="eyebrow">How it works</p>
-      <h2>An area-first process.</h2>
-      <ol class="flow-steps">
-        <li><strong>Set your base</strong><span>Tell us your town/postcode and realistic travel radius first.</span></li>
-        <li><strong>Get 5 sample rows</strong><span>Check the format, source links and usefulness before paying.</span></li>
-        <li><strong>Buy the £19 starter pack</strong><span>If the sample looks useful, we confirm coverage, then you pay securely for a manually prepared pack.</span></li>
-      </ol>
-      <p class="flow-note">This is not a generic instant-download list. We check your base location and travel range first, then use selected regions/counties as guidance. If coverage is too narrow for 25 useful rows, we’ll suggest nearby areas or tell you before payment.</p>
-    </section>
-
-
-    <section class="panel">
-      <p class="eyebrow">Popular searches</p>
-      <h2>Find opportunities using the words organisers and traders actually use.</h2>
-      <p>We now organise PitchList around high-intent trader search language: festival trader applications, stall holders wanted, food traders wanted, market stallholder applications, council event trader applications, food truck pitches and festival vendors wanted.</p>
-      <div class="reach-strip">
-        <a href="/festival-trader-applications">Festival trader applications</a>
-        <a href="/stall-holders-wanted">Stall holders wanted</a>
-        <a href="/food-traders-wanted">Food traders wanted</a>
-        <a href="/festival-vendors-wanted">Festival vendors wanted</a>
-        <a href="/market-stallholder-applications">Market stallholder applications</a>
-        <a href="/council-event-trader-applications">Council event trader applications</a>
-        <a href="/food-truck-pitches">Food truck pitches</a>
-        <a href="/areas">Area coverage</a>
+    <section class="product-section">
+      <div class="section-head">
+        <p class="eyebrow">Coverage</p>
+        <h2>Built around the searches traders actually make.</h2>
+      </div>
+      <div class="category-grid">
+        <a href="/festival-trader-applications">
+          <img src="/assets/card-festival-vendors.jpg" alt="" />
+          <span>Festival trader applications</span>
+        </a>
+        <a href="/stall-holders-wanted">
+          <img src="/assets/card-markets.jpg" alt="" />
+          <span>Stall holders wanted</span>
+        </a>
+        <a href="/food-traders-wanted">
+          <img src="/assets/card-street-food.jpg" alt="" />
+          <span>Food traders wanted</span>
+        </a>
+        <a href="/market-stallholder-applications">
+          <img src="/assets/card-farmers-market.jpg" alt="" />
+          <span>Market stallholder applications</span>
+        </a>
+        <a href="/council-event-trader-applications">
+          <img src="/assets/card-council-event.jpg" alt="" />
+          <span>Council event trader routes</span>
+        </a>
+        <a href="/food-truck-pitches">
+          <img src="/assets/card-food-truck-pitches.jpg" alt="" />
+          <span>Food truck pitches</span>
+        </a>
       </div>
     </section>
 
-    <section id="coverage" class="panel map-panel">
-      <div class="map-copy">
-        <p class="eyebrow">Choose your patch</p>
-        <h2>Start with your base, then use the map.</h2>
-        <p>Tell us where you are based and how far you realistically travel. The map is still useful, but it now acts as broad guidance rather than a blunt regional filter.</p>
-        <form class="coverage-form" id="coverageForm" action="/api/sample-request" method="post">
-          <label><span>Your name</span><input name="name" autocomplete="name" placeholder="Jane Smith" /></label>
-          <label><span>Business</span><input name="business" autocomplete="organization" placeholder="Your food business" /></label>
-          <label><span>Email</span><input name="email" type="email" autocomplete="email" placeholder="you@example.co.uk" /></label>
-          <div class="geo-grid">
-            <label><span>Base town or postcode</span><input name="base_location" autocomplete="postal-code" placeholder="Maidstone, Kent or ME14" /></label>
-            <label><span>Max travel range</span>
-              <select name="travel_radius">
-                <option value="">Choose radius</option>
-                <option value="25 miles">25 miles</option>
-                <option value="50 miles">50 miles</option>
-                <option value="75 miles">75 miles</option>
-                <option value="100 miles">100 miles</option>
-                <option value="UK-wide for the right event">UK-wide for the right event</option>
-              </select>
-            </label>
-          </div>
-          <label><span>Useful counties or notes</span><textarea name="area_notes" rows="3" placeholder="Example: Kent, South East London and Sussex. Avoid Devon/Bristol unless it is a major event."></textarea></label>
-          <input type="hidden" name="selected_areas" id="selectedAreasInput" />
-          <input type="hidden" name="selected_region_ids" id="selectedRegionIdsInput" />
-          <input type="hidden" name="selected_counties" id="selectedCountiesInput" />
-          <input type="hidden" name="coverage_payload_json" id="coveragePayloadInput" />
-          <div class="selected-areas" id="selectedAreas" aria-live="polite">Map optional: select broad regions if they help explain your patch.</div>
-          <div class="selected-areas" id="sampleRequestStatus" aria-live="polite" hidden></div>
-          <details class="county-preview" id="countyPreview" hidden>
-            <summary>Counties/areas included</summary>
-            <div id="selectedCountiesPreview"></div>
-          </details>
-          <button type="submit">Request local free sample</button>
-        </form>
-      </div>
-      <div class="map-wrap" aria-label="Interactive UK coverage map">
-<svg class="uk-map" viewBox="0 0 520 760" role="img" aria-labelledby="ukMapTitle ukMapDesc">
-          <title id="ukMapTitle">UK coverage selector map</title>
-          <desc id="ukMapDesc">Simplified clickable UK coverage regions for customer area selection.</desc>
-  <g id="uk-coverage-map" transform="translate(5 5)">
-
-    <!-- Scotland -->
-    <path
-      id="region-scotland"
-      class="coverage-region"
-      data-region-key="scotland"
-      data-region-name="Scotland"
-      role="button"
-      tabindex="0"
-      aria-label="Scotland"
-      aria-pressed="false"
-      d="M318 28
-         L345 44 L376 50 L392 76 L386 112
-         L414 148 L382 170 L392 208 L356 238
-         L318 224 L288 262 L246 254 L218 226
-         L206 178 L222 150 L212 110 L244 82
-         L252 44 Z"
-    />
-
-    <!-- Northern Ireland -->
-    <path
-      id="region-northern-ireland"
-      class="coverage-region"
-      data-region-key="northern_ireland"
-      data-region-name="Northern Ireland"
-      role="button"
-      tabindex="0"
-      aria-label="Northern Ireland"
-      aria-pressed="false"
-      d="M118 262
-         L148 246 L184 258 L194 292
-         L174 326 L134 330 L102 310
-         L86 280 Z"
-    />
-
-    <!-- North East -->
-    <path
-      id="region-north-east"
-      class="coverage-region"
-      data-region-key="north_east"
-      data-region-name="North East"
-      role="button"
-      tabindex="0"
-      aria-label="North East"
-      aria-pressed="false"
-      d="M356 238
-         L392 208 L418 260 L440 308
-         L418 350 L374 342 L344 302 Z"
-    />
-
-    <!-- North West -->
-    <path
-      id="region-north-west"
-      class="coverage-region"
-      data-region-key="north_west"
-      data-region-name="North West"
-      role="button"
-      tabindex="0"
-      aria-label="North West"
-      aria-pressed="false"
-      d="M288 262
-         L318 224 L356 238 L344 302
-         L350 372 L316 430 L268 416
-         L250 346 Z"
-    />
-
-    <!-- Yorkshire and the Humber -->
-    <path
-      id="region-yorkshire-humber"
-      class="coverage-region"
-      data-region-key="yorkshire_humber"
-      data-region-name="Yorkshire & The Humber"
-      role="button"
-      tabindex="0"
-      aria-label="Yorkshire and The Humber"
-      aria-pressed="false"
-      d="M344 302
-         L374 342 L418 350 L444 404
-         L426 466 L362 458 L316 430
-         L350 372 Z"
-    />
-
-    <!-- Wales -->
-    <path
-      id="region-wales"
-      class="coverage-region"
-      data-region-key="wales"
-      data-region-name="Wales"
-      role="button"
-      tabindex="0"
-      aria-label="Wales"
-      aria-pressed="false"
-      d="M250 346
-         L268 416 L292 490 L276 556
-         L222 566 L172 546 L146 500
-         L158 450 L194 418 L210 370 Z"
-    />
-
-    <!-- Midlands -->
-    <path
-      id="region-midlands"
-      class="coverage-region"
-      data-region-key="midlands"
-      data-region-name="Midlands"
-      role="button"
-      tabindex="0"
-      aria-label="Midlands"
-      aria-pressed="false"
-      d="M316 430
-         L362 458 L426 466 L430 528
-         L396 570 L336 560 L292 490
-         L268 416 Z"
-    />
-
-    <!-- South West -->
-    <path
-      id="region-south-west"
-      class="coverage-region"
-      data-region-key="south_west"
-      data-region-name="South West"
-      role="button"
-      tabindex="0"
-      aria-label="South West"
-      aria-pressed="false"
-      d="M292 490
-         L336 560 L302 620 L232 656 L148 666
-         L82 704 L56 694 L86 650 L136 614
-         L172 546 L222 566 Z"
-    />
-
-    <!-- South East -->
-    <path
-      id="region-south-east"
-      class="coverage-region"
-      data-region-key="south_east"
-      data-region-name="South East"
-      role="button"
-      tabindex="0"
-      aria-label="South East"
-      aria-pressed="false"
-      d="M336 560
-         L396 570 L430 528 L474 558
-         L488 620 L456 670 L382 684
-         L302 620 Z"
-    />
-
-    <!-- London -->
-    <path
-      id="region-london"
-      class="coverage-region"
-      data-region-key="london"
-      data-region-name="London"
-      role="button"
-      tabindex="0"
-      aria-label="London"
-      aria-pressed="false"
-      d="M416 596
-         L442 586 L466 602 L462 632
-         L436 648 L410 632 Z"
-    />
-
-    <!-- Labels -->
-    <text class="coverage-label" x="310" y="142">SCOTLAND</text>
-    <text class="coverage-label small" x="145" y="292">
-      <tspan x="145" dy="-7">NORTHERN</tspan>
-      <tspan x="145" dy="16">IRELAND</tspan>
-    </text>
-    <text class="coverage-label small" x="396" y="306">
-      <tspan x="396" dy="-7">NORTH</tspan>
-      <tspan x="396" dy="16">EAST</tspan>
-    </text>
-    <text class="coverage-label small" x="306" y="338">
-      <tspan x="306" dy="-7">NORTH</tspan>
-      <tspan x="306" dy="16">WEST</tspan>
-    </text>
-    <text class="coverage-label small" x="386" y="410">
-      <tspan x="386" dy="-10">YORKSHIRE &amp;</tspan>
-      <tspan x="386" dy="17">THE HUMBER</tspan>
-    </text>
-    <text class="coverage-label" x="217" y="494">WALES</text>
-    <text class="coverage-label" x="363" y="512">MIDLANDS</text>
-    <text class="coverage-label small" x="250" y="614">
-      <tspan x="250" dy="-7">SOUTH</tspan>
-      <tspan x="250" dy="16">WEST</tspan>
-    </text>
-    <text class="coverage-label small" x="397" y="616">
-      <tspan x="397" dy="-7">SOUTH</tspan>
-      <tspan x="397" dy="16">EAST</tspan>
-    </text>
-    <text class="coverage-label small" x="438" y="617">LONDON</text>
-  </g>
-
-        </svg>
-        <p class="map-hint">Selected areas stay orange. Click again to remove.</p>
-      </div>
-    </section>
-
-    <section class="offer">
-      <div>
-        <p class="eyebrow">Free sample</p>
-        <h2>Try 5 rows first.</h2>
-        <p>Choose your area first so the sample rows are relevant to where you actually trade.</p>
-        <a href="#coverage">Choose area and request sample</a>
-      </div>
+    <section class="product-section database-callout">
       <div>
         <p class="eyebrow">Database access</p>
-        <h2>7-day free trial, then £4.99/month.</h2>
-        <p>Search the database first in preview mode. If the coverage looks useful, start the trial to unlock source links, application routes and saved shortlist export.</p>
-        <a class="ghost" href="/database">Preview database</a>
+        <h2>Preview locked rows now. Start the trial when you are ready.</h2>
+        <p>Anonymous visitors see proof of coverage with source and application routes hidden. Subscribers unlock the direct routes, shortlist useful leads and manage billing through Stripe.</p>
+      </div>
+      <div class="price-panel">
+        <span>7-day free trial</span>
+        <strong>£4.99/month</strong>
+        <p>Card-backed trial. Cancel any time. No guaranteed event acceptance, footfall or pitch availability.</p>
+        <a href="/database">Open database</a>
       </div>
     </section>
 
-    <section class="panel organiser-cta">
-      <p class="eyebrow">For organisers</p>
-      <h2>Need food traders for your event?</h2>
-      <p>Submit your trader opportunity and we’ll review it for PitchList UK. Free listings help keep vendor data useful; featured placements can put your opportunity in front of relevant street food and mobile catering businesses.</p>
-      <a href="mailto:hello@pitchlist.uk?subject=List%20my%20event%20on%20PitchList%20UK">List your event</a>
+    <section id="sample-request" class="product-section sample-section">
+      <div>
+        <p class="eyebrow">Need a quick proof check?</p>
+        <h2>Ask for 5 sample rows for your patch.</h2>
+        <p>Use this if you want us to sanity-check your base area before starting the trial, or if your category is awkward enough that a human coverage pass makes sense.</p>
+      </div>
+      <form class="sample-form" id="coverageForm" action="/api/sample-request" method="post">
+        <label>
+          <span>Your name</span>
+          <input name="name" autocomplete="name" placeholder="Jane Smith" required />
+        </label>
+        <label>
+          <span>Business</span>
+          <input name="business" autocomplete="organization" placeholder="Your food business" required />
+        </label>
+        <label>
+          <span>Email</span>
+          <input name="email" type="email" autocomplete="email" placeholder="you@example.co.uk" required />
+        </label>
+        <label>
+          <span>Base town or postcode</span>
+          <input name="base_location" autocomplete="postal-code" placeholder="Maidstone, Kent or ME14" required />
+        </label>
+        <label>
+          <span>Travel range</span>
+          <select name="travel_radius" required>
+            <option value="">Choose radius</option>
+            <option value="25 miles">25 miles</option>
+            <option value="50 miles">50 miles</option>
+            <option value="75 miles">75 miles</option>
+            <option value="100 miles">100 miles</option>
+            <option value="UK-wide for the right event">UK-wide for the right event</option>
+          </select>
+        </label>
+        <label class="sample-wide">
+          <span>Useful notes</span>
+          <textarea name="area_notes" rows="4" placeholder="Example: Kent, Sussex and South East London. Burger/fries setup, halal-friendly preferred."></textarea>
+        </label>
+        <input type="hidden" name="selected_areas" id="selectedAreasInput" />
+        <input type="hidden" name="selected_region_ids" id="selectedRegionIdsInput" />
+        <input type="hidden" name="selected_counties" id="selectedCountiesInput" />
+        <input type="hidden" name="coverage_payload_json" id="coveragePayloadInput" />
+        <div class="sample-status" id="sampleRequestStatus" aria-live="polite" hidden></div>
+        <button type="submit">Request free sample</button>
+      </form>
     </section>
 
-    <section class="panel trust">
-      <p class="eyebrow">Trust rule</p>
-      <h2>No fake leads. No AI guesswork.</h2>
-      <p>Each row includes a source link, organiser page, application form, or published contact route wherever available. PitchList UK does not guarantee acceptance, sales, footfall, profitability, event suitability or pitch availability. It saves research time by surfacing factual application opportunities you can verify yourself, then filtering them around the area you ask for. If your selected area is too narrow for a useful pack, we say so before asking for payment.</p>
+    <section class="product-section link-section">
+      <div>
+        <p class="eyebrow">Popular routes</p>
+        <h2>Search by area or opportunity type.</h2>
+      </div>
+      <div class="text-links">
+        <a href="/areas">Area coverage</a>
+        <a href="/festival-vendors-wanted">Festival vendors wanted</a>
+        <a href="/food-traders-wanted">Food traders wanted</a>
+        <a href="/food-truck-pitches">Food truck pitches</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+      </div>
+    </section>
+
+    <section class="trust-line">
+      <strong>No fake leads. No AI guesswork.</strong>
+      <span>PitchList surfaces factual application opportunities you can verify yourself. Listings do not guarantee acceptance, pitch availability, sales or profitability.</span>
     </section>
   </main>
 
-  <footer>
+  <footer class="home-footer">
     <strong>PitchList UK</strong>
     <span>Festival trader applications, stallholder opportunities and food trader leads for UK independents. <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
   </footer>
 
   <script>
     (() => {
-      const coverageRegions = {
-        scotland: { label: 'Scotland', counties: ['Aberdeenshire','Angus','Argyll and Bute','City of Aberdeen','City of Dundee','City of Edinburgh','City of Glasgow','Clackmannanshire','Dumfries and Galloway','East Ayrshire','East Dunbartonshire','East Lothian','East Renfrewshire','Falkirk','Fife','Highland','Inverclyde','Midlothian','Moray','Na h-Eileanan Siar','North Ayrshire','North Lanarkshire','Orkney Islands','Perth and Kinross','Renfrewshire','Scottish Borders','Shetland Islands','South Ayrshire','South Lanarkshire','Stirling','West Dunbartonshire','West Lothian'] },
-        northern_ireland: { label: 'Northern Ireland', counties: ['Antrim','Armagh','Down','Fermanagh','Londonderry','Tyrone'] },
-        north_east: { label: 'North East', counties: ['County Durham','Northumberland','Tyne and Wear'] },
-        north_west: { label: 'North West', counties: ['Cheshire','Cumbria','Greater Manchester','Lancashire','Merseyside'] },
-        yorkshire_humber: { label: 'Yorkshire & The Humber', counties: ['East Riding of Yorkshire','North Yorkshire','South Yorkshire','West Yorkshire'] },
-        midlands: { label: 'Midlands', counties: ['Derbyshire','Herefordshire','Leicestershire','Lincolnshire','Northamptonshire','Nottinghamshire','Rutland','Shropshire','Staffordshire','Warwickshire','West Midlands','Worcestershire'] },
-        wales: { label: 'Wales', counties: ['Anglesey','Blaenau Gwent','Bridgend','Caerphilly','Cardiff','Carmarthenshire','Ceredigion','Conwy','Denbighshire','Flintshire','Gwynedd','Merthyr Tydfil','Monmouthshire','Neath Port Talbot','Newport','Pembrokeshire','Powys','Rhondda Cynon Taf','Swansea','Torfaen','Vale of Glamorgan','Wrexham'] },
-        south_west: { label: 'South West', counties: ['Bristol','Cornwall','Devon','Dorset','Gloucestershire','Somerset','Wiltshire'] },
-        south_east: { label: 'South East', counties: ['Bedfordshire','Berkshire','Buckinghamshire','Cambridgeshire','East Sussex','Essex','Hampshire','Hertfordshire','Isle of Wight','Kent','Norfolk','Oxfordshire','Suffolk','Surrey','West Sussex'] },
-        london: { label: 'London', counties: ['Greater London'] }
-      };
-
-      const paths = Array.from(document.querySelectorAll('.coverage-region'));
-      const selectedBox = document.getElementById('selectedAreas');
+      const form = document.getElementById('coverageForm');
+      const statusMessage = document.getElementById('sampleRequestStatus');
+      const payloadInput = document.getElementById('coveragePayloadInput');
       const areaInput = document.getElementById('selectedAreasInput');
       const regionIdsInput = document.getElementById('selectedRegionIdsInput');
       const countiesInput = document.getElementById('selectedCountiesInput');
-      const payloadInput = document.getElementById('coveragePayloadInput');
-      const countyPreview = document.getElementById('countyPreview');
-      const countiesPreview = document.getElementById('selectedCountiesPreview');
-      const statusMessage = document.getElementById('sampleRequestStatus');
-      const form = document.getElementById('coverageForm');
-      const selected = new Set();
-
-      function selectedRegionData() {
-        const keys = Array.from(selected).sort();
-        const labels = keys.map(key => coverageRegions[key]?.label || key);
-        const counties = Array.from(new Set(keys.flatMap(key => coverageRegions[key]?.counties || []))).sort();
-        return { keys, labels, counties };
-      }
-
-      function renderSelection() {
-        const { keys, labels, counties } = selectedRegionData();
-        const formData = form ? new FormData(form) : new FormData();
-        const payload = {
-          baseLocation: String(formData.get('base_location') || ''),
-          travelRadius: String(formData.get('travel_radius') || ''),
-          areaNotes: String(formData.get('area_notes') || ''),
-          selectedRegions: keys,
-          selectedRegionLabels: labels,
-          selectedCounties: counties
-        };
-        areaInput.value = labels.join(', ');
-        regionIdsInput.value = keys.join(', ');
-        countiesInput.value = counties.join(', ');
-        payloadInput.value = JSON.stringify(payload);
-        selectedBox.textContent = labels.length ? `Map guidance: ${labels.join(', ')} (${counties.length} counties/areas)` : 'Map optional: select broad regions if they help explain your patch.';
-        countyPreview.hidden = !counties.length;
-        countiesPreview.textContent = counties.join(', ');
-      }
-
-      function toggleArea(path) {
-        const key = path.dataset.regionKey;
-        if (selected.has(key)) {
-          selected.delete(key);
-          path.classList.remove('selected');
-          path.setAttribute('aria-pressed', 'false');
-        } else {
-          selected.add(key);
-          path.classList.add('selected');
-          path.setAttribute('aria-pressed', 'true');
-        }
-        renderSelection();
-      }
-
-      paths.forEach(path => {
-        path.setAttribute('role', 'button');
-        path.setAttribute('aria-label', `Select ${path.dataset.regionName || path.dataset.regionKey}`);
-        path.setAttribute('aria-pressed', 'false');
-        path.addEventListener('click', () => toggleArea(path));
-        path.addEventListener('keydown', event => {
-          if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            toggleArea(path);
-          }
-        });
-      });
+      if (!form) return;
 
       form.addEventListener('submit', event => {
         event.preventDefault();
         const data = new FormData(form);
-        const { keys, labels, counties } = selectedRegionData();
-        if (!data.get('name') || !data.get('business') || !data.get('email') || !data.get('base_location') || !data.get('travel_radius')) {
-          selectedBox.textContent = 'Please complete name, business, email, base town/postcode and travel range before sending.';
-          return;
-        }
         const payload = {
-          name: data.get('name'),
-          business: data.get('business'),
-          email: data.get('email'),
-          base_location: data.get('base_location'),
-          travel_radius: data.get('travel_radius'),
-          area_notes: data.get('area_notes') || '',
-          selected_region_ids: keys,
-          selected_regions: labels,
-          selected_counties: counties,
-          coverage_payload_json: payloadInput.value
+          name: String(data.get('name') || '').trim(),
+          business: String(data.get('business') || '').trim(),
+          email: String(data.get('email') || '').trim(),
+          base_location: String(data.get('base_location') || '').trim(),
+          travel_radius: String(data.get('travel_radius') || '').trim(),
+          area_notes: String(data.get('area_notes') || '').trim(),
+          selected_region_ids: [],
+          selected_regions: [],
+          selected_counties: []
         };
-        const body = [
-          'Free sample request',
-          '',
-          `Name: ${payload.name}`,
-          `Business: ${payload.business}`,
-          `Email: ${payload.email}`,
-          `Base town/postcode: ${payload.base_location}`,
-          `Max travel range: ${payload.travel_radius}`,
-          `Useful counties/notes: ${payload.area_notes || '(not specified)'}`,
-          `Map-selected region IDs: ${keys.join(', ') || '(none selected)'}`,
-          `Map-selected regions: ${labels.join(', ') || '(none selected)'}`,
-          `Expanded counties/areas from map: ${counties.join(', ') || '(none selected)'}`,
-          '',
-          'Please check whether my area/category has enough useful current opportunities for PitchList UK.',
-          '',
-          `Coverage payload JSON: ${payloadInput.value}`
-        ].join('\n');
+        areaInput.value = payload.base_location;
+        regionIdsInput.value = '';
+        countiesInput.value = '';
+        payloadInput.value = JSON.stringify(payload);
         statusMessage.hidden = false;
         statusMessage.textContent = 'Sending sample request...';
+
         fetch('/api/sample-request', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
@@ -563,6 +290,20 @@
           if (!response.ok) throw new Error('sample request delivery failed');
           statusMessage.textContent = 'Request sent. We will check your area and reply from hello@pitchlist.uk.';
         }).catch(() => {
+          const body = [
+            'Free sample request',
+            '',
+            `Name: ${payload.name}`,
+            `Business: ${payload.business}`,
+            `Email: ${payload.email}`,
+            `Base town/postcode: ${payload.base_location}`,
+            `Max travel range: ${payload.travel_radius}`,
+            `Useful notes: ${payload.area_notes || '(not specified)'}`,
+            '',
+            'Please check whether my area/category has enough useful current opportunities for PitchList UK.',
+            '',
+            `Coverage payload JSON: ${payloadInput.value}`
+          ].join('\n');
           statusMessage.textContent = 'Email fallback opened. Send the prepared request from your mail app.';
           window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK free sample request')}&body=${encodeURIComponent(body)}`;
         });
