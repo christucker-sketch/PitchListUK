@@ -4,11 +4,7 @@ const metricsEl = document.getElementById('cloudMetrics');
 const savedShortlistEl = document.getElementById('savedShortlist');
 const resultsEl = document.getElementById('cloudResults');
 const startTrial = document.getElementById('startTrial');
-const manageBilling = document.getElementById('manageBilling');
-const clearAccess = document.getElementById('clearAccess');
-const accountEl = document.getElementById('databaseAccount');
-const accountEmail = document.getElementById('accountEmail');
-const accountNote = document.getElementById('accountNote');
+const subscriberAccess = document.getElementById('subscriberAccess');
 const accessForm = document.getElementById('accessForm');
 const accessFormStatus = document.getElementById('accessFormStatus');
 const vendorSignup = document.getElementById('vendorSignup');
@@ -293,14 +289,51 @@ function clearStoredAccess() {
   document.cookie = 'pitchlist_access_token=; Path=/; Max-Age=0; SameSite=Lax; Secure';
 }
 
+async function openBillingPortal(button) {
+  const sessionId = storedSessionId();
+  const accessToken = storedAccessToken();
+  button.disabled = true;
+  try {
+    const response = await fetch('/api/billing/portal', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, access_token: accessToken })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || 'Billing portal is not available yet');
+    window.location.href = data.url;
+  } catch (err) {
+    resultsEl.innerHTML = `<div class="cloud-empty error"><strong>Portal unavailable</strong><span>${esc(err.message)}</span></div>`;
+    button.disabled = false;
+  }
+}
+
+function renderSubscriberControls(account, status) {
+  subscriberAccess.innerHTML = `
+    <div class="database-actions">
+      <button type="button" class="ghost" data-manage-billing>Manage billing</button>
+      <button type="button" class="ghost subtle" data-clear-access>Sign out</button>
+    </div>
+    <div class="database-account">
+      <span>Access unlocked</span>
+      <strong>${esc(account.email || 'Subscriber')}</strong>
+      <small>${esc(`${status.charAt(0).toUpperCase()}${status.slice(1)} access. Full source links and application routes are unlocked on this browser.`)}</small>
+    </div>`;
+  subscriberAccess.querySelector('[data-manage-billing]').addEventListener('click', event => {
+    openBillingPortal(event.currentTarget);
+  });
+  subscriberAccess.querySelector('[data-clear-access]').addEventListener('click', () => {
+    clearStoredAccess();
+    runSearch();
+  });
+}
+
 function renderAccount(data) {
   if (data.access !== 'subscriber') {
-    accountEl.hidden = true;
+    subscriberAccess.innerHTML = '';
     startTrial.hidden = false;
     startTrial.disabled = false;
     startTrial.textContent = 'Start free trial';
-    manageBilling.hidden = true;
-    clearAccess.hidden = true;
     accessForm.hidden = false;
     vendorSignup.hidden = false;
     if (data.access_reason === 'stripe_session_invalid') clearStoredAccess();
@@ -309,15 +342,10 @@ function renderAccount(data) {
 
   const account = saveAccount({ ...storedAccount(), ...data });
   const status = String(account.status || 'active').replace(/_/g, ' ');
-  accountEmail.textContent = account.email || 'Subscriber';
-  accountNote.textContent = `${status.charAt(0).toUpperCase()}${status.slice(1)} access. Full source links and application routes are unlocked on this browser.`;
-  accountEl.hidden = false;
   startTrial.hidden = true;
-  manageBilling.hidden = false;
-  manageBilling.disabled = false;
-  clearAccess.hidden = false;
   accessForm.hidden = true;
   vendorSignup.hidden = true;
+  renderSubscriberControls(account, status);
 }
 
 function vendorProfileFromForm() {
@@ -508,30 +536,6 @@ vendorSignup.addEventListener('submit', async event => {
     startTrial.disabled = false;
     startTrial.textContent = 'Start free trial';
   }
-});
-
-manageBilling.addEventListener('click', async () => {
-  const sessionId = storedSessionId();
-  const accessToken = storedAccessToken();
-  manageBilling.disabled = true;
-  try {
-    const response = await fetch('/api/billing/portal', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ session_id: sessionId, access_token: accessToken })
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.message || 'Billing portal is not available yet');
-    window.location.href = data.url;
-  } catch (err) {
-    resultsEl.innerHTML = `<div class="cloud-empty error"><strong>Portal unavailable</strong><span>${esc(err.message)}</span></div>`;
-    manageBilling.disabled = false;
-  }
-});
-
-clearAccess.addEventListener('click', () => {
-  clearStoredAccess();
-  runSearch();
 });
 
 accessForm.addEventListener('submit', async event => {

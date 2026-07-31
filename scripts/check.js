@@ -18,6 +18,7 @@ const foodTruckPitches = fs.readFileSync('src/food-truck-pitches.html', 'utf8');
 const database = fs.readFileSync('src/database.html', 'utf8');
 const databaseJs = fs.readFileSync('src/database.js', 'utf8');
 const sitemap = fs.readFileSync('src/sitemap.xml', 'utf8');
+const publicHome = fs.existsSync('public/index.html') ? fs.readFileSync('public/index.html', 'utf8') : '';
 if (sitemap.includes('https://pitchlist.uk/buy')) throw new Error('Sitemap must not include noindex page: /buy');
 if (!sitemap.includes('https://pitchlist.uk/database')) throw new Error('Sitemap missing database page');
 if (/noindex/i.test(database)) throw new Error('Database page must be indexable');
@@ -30,6 +31,9 @@ if (!html.includes('/areas')) throw new Error('Homepage missing area coverage li
 if (!html.includes('£4.99')) throw new Error('Homepage missing subscription price');
 if (!html.includes('liveDatabaseCount')) throw new Error('Homepage missing live database count hook');
 if (!html.includes('/api/customer-opportunities/search?limit=1')) throw new Error('Homepage missing live database count fetch');
+for (const text of ['Fee or deadline', 'Confidence marker', 'before the deadline disappears']) {
+  if (html.includes(text)) throw new Error(`Homepage must not overclaim unavailable fields/copy: ${text}`);
+}
 for (const text of ['/api/sample-request', 'sampleRequestStatus', 'Request a sample', 'Request free sample', 'Request 5 sample rows', '/#coverage', '/#sample', '£19']) {
   if (html.includes(text)) throw new Error(`Homepage must not include old sample funnel text: ${text}`);
 }
@@ -68,10 +72,10 @@ for (const text of ['Live searchable database', '/terms', '/privacy']) {
 for (const text of ['value="food"', 'public_listing_opt_in" type="checkbox" checked']) {
   if (database.includes(text)) throw new Error(`Database must not include risky/default filter state: ${text}`);
 }
-for (const text of ['Business name', 'Your name', 'Specialty', 'Regions covered', 'public vendor profile']) {
+for (const text of ['Business name', 'Your name', 'Specialty', 'Regions covered', 'public vendor profile', 'Manage billing', 'Sign out', 'Any confidence']) {
   if (database.includes(text)) throw new Error(`Database signup must stay low-friction and private by default: ${text}`);
 }
-if (!database.includes('/database.js?v=20260731-4')) throw new Error('Database JS cache-bust version must be current');
+if (!database.includes('/database.js?v=20260731-5')) throw new Error('Database JS cache-bust version must be current');
 for (const text of ['og:title', 'og:image', 'twitter:card']) {
   if (!database.includes(text)) throw new Error(`Database page missing share metadata: ${text}`);
 }
@@ -87,6 +91,9 @@ for (const url of ['/terms', '/privacy']) {
 }
 for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV', 'checked in last 14 days', 'result-grid', 'data-load-more', 'next_offset']) {
   if (!databaseJs.includes(text)) throw new Error(`Missing database JS text: ${text}`);
+}
+for (const text of ["document.getElementById('manageBilling')", "document.getElementById('clearAccess')", "document.getElementById('databaseAccount')"]) {
+  if (databaseJs.includes(text)) throw new Error(`Subscriber controls must be conditionally rendered: ${text}`);
 }
 const functionApi = fs.readFileSync('functions/api/customer-opportunities/search.js', 'utf8');
 for (const text of ['PITCHLIST_DATABASE_ACCESS_CODE', 'postcodes.io', 'haversineMiles', 'opportunitySnapshot', 'checkoutSessionAccess', 'previewRow', 'status_summary', 'coordinate_precision', 'offset', 'next_offset', 'has_more']) {
@@ -108,6 +115,9 @@ for (const text of ['PITCHLIST_SAMPLE_WEBHOOK_URL', 'PITCHLIST_FORM_SMTP2GO_API_
 const dataModule = fs.readFileSync('functions/_data/opportunities.mjs', 'utf8');
 const opportunityData = JSON.parse(dataModule.replace(/^export const opportunitySnapshot = /, '').replace(/;\s*$/, ''));
 if (!Array.isArray(opportunityData.rows) || opportunityData.rows.length < 50) throw new Error('Expected at least 50 exported opportunities');
+if (publicHome && !publicHome.includes(`<strong id="liveDatabaseCount">${opportunityData.total}</strong>`)) {
+  throw new Error('Built homepage fallback count must match exported opportunity total');
+}
 for (const row of opportunityData.rows) {
   const text = [row.event_name, row.organiser, row.source_url, row.application_url].join(' ');
   if (/downtownkentwa|farmingvillechamber|visitsuffolkva|smmarket\.org|essexct|londonderrynh|watersidedistrict|downtownnorfolk|pitchlist\.uk|festfinder|pitchmarketsandeventsuk|kfma|moderngov|streetfoodfests|certificates\.lsba|spaceandpeople|britisheventcatering|foodmarketplace|themarketwfd|youtube|whatsonni/i.test(text)) {
@@ -124,6 +134,9 @@ for (const row of opportunityData.rows) {
   }
   if (/^(street trading|apply to trade|pop-up events|retail services|vendor application|food and drink vendors)$/i.test(row.event_name || '') && !row.organiser) {
     throw new Error(`Export includes generic title with no organiser: ${row.event_name}`);
+  }
+  if (/Autumn Festival registration|Culture Litter Markets Parks|Download food and vendor application form/i.test(row.event_name || row.organiser || '')) {
+    throw new Error(`Export includes missed title rewrite: ${row.event_name}`);
   }
 }
 if (fs.existsSync('public/areas')) {

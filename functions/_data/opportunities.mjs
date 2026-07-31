@@ -1,5 +1,5 @@
 export const opportunitySnapshot = {
-  "exported_at": "2026-07-31T11:25:08.486Z",
+  "exported_at": "2026-07-31T12:02:49.276Z",
   "source": "pitchlist-hal-events-active",
   "total": 239,
   "rows": [
@@ -565,8 +565,8 @@ export const opportunitySnapshot = {
     },
     {
       "id": "OPP-00229",
-      "event_name": "Autumn Festival registration",
-      "organiser": "",
+      "event_name": "Broadstairs Food Festival trader application",
+      "organiser": "Broadstairs Food Festival",
       "location": "Kent",
       "county": "Kent",
       "region": "Kent",
@@ -600,8 +600,8 @@ export const opportunitySnapshot = {
     },
     {
       "id": "OPP-00334",
-      "event_name": "Culture Litter Markets Parks",
-      "organiser": "Food Vendor Application Form",
+      "event_name": "Northampton Town Council food vendor application",
+      "organiser": "Northampton Town Council",
       "location": "Northamptonshire",
       "county": "Northamptonshire",
       "region": "Northamptonshire",
@@ -2245,8 +2245,8 @@ export const opportunitySnapshot = {
     },
     {
       "id": "OPP-00234",
-      "event_name": "Sandwich Community Events vendor application form",
-      "organiser": "Vendor Application Form",
+      "event_name": "Sandwich Community Events vendor application",
+      "organiser": "Sandwich Community Events",
       "location": "Kent",
       "county": "Kent",
       "region": "Kent",
@@ -5955,8 +5955,8 @@ export const opportunitySnapshot = {
     },
     {
       "id": "OPP-00286",
-      "event_name": "St George's Day - Food and Drink Vendor Application Form",
-      "organiser": "",
+      "event_name": "Salisbury St George's Day food vendor application",
+      "organiser": "Salisbury City Council",
       "location": "Wiltshire",
       "county": "Wiltshire",
       "region": "Wiltshire",
@@ -6690,11 +6690,11 @@ export const opportunitySnapshot = {
     },
     {
       "id": "OPP-00342",
-      "event_name": "Download food and vendor application form",
-      "organiser": "",
-      "location": "Northern Ireland",
-      "county": "Northern Ireland",
-      "region": "Northern Ireland",
+      "event_name": "Wyre Council food and drink trader application",
+      "organiser": "Wyre Council",
+      "location": "North West",
+      "county": "North West",
+      "region": "North West",
       "event_start": "",
       "event_end": "",
       "application_deadline": "",

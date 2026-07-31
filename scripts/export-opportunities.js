@@ -113,7 +113,12 @@ function publicDisplay(row) {
     [/midsussex\.gov\.uk/, 'Mid Sussex Council street trading application', 'Mid Sussex District Council'],
     [/npt\.gov\.uk/, 'Neath Port Talbot Council street trading application', 'Neath Port Talbot Council'],
     [/stanstedpark\.co\.uk/, 'Stansted Park food and drink vendor application', 'Stansted Park'],
-    [/solsticefest\.uk/, 'SolsticeFest trader application', 'SolsticeFest']
+    [/solsticefest\.uk/, 'SolsticeFest trader application', 'SolsticeFest'],
+    [/broadstairsfoodfestival\.org\.uk/, 'Broadstairs Food Festival trader application', 'Broadstairs Food Festival'],
+    [/sandwichevents\.org\.uk/, 'Sandwich Community Events vendor application', 'Sandwich Community Events'],
+    [/northamptontowncouncil\.gov\.uk/, 'Northampton Town Council food vendor application', 'Northampton Town Council'],
+    [/wyre\.gov\.uk/, 'Wyre Council food and drink trader application', 'Wyre Council'],
+    [/salisburycitycouncil\.gov\.uk.*st-georges-day-food-and-drink-vendor-application/, "Salisbury St George's Day food vendor application", 'Salisbury City Council']
   ];
   const hit = overrides.find(([pattern]) => pattern.test(host) || pattern.test(text));
   if (hit) return { title: hit[1], organiser: hit[2] };
@@ -137,6 +142,7 @@ function areaOverride(row) {
     ['West Sussex', /midsussex|mid sussex|haywards heath/],
     ['Kent', /\bkent county show\b|\brochester\b|\bbroadstairs\b|\bsandwich\b/],
     ['Tyne and Wear', /\bnewcastle\b/],
+    ['North West', /wyre\.gov\.uk/],
     ['Northern Ireland', /\bnorthern ireland\b|\barmagh\b|amptrunning/]
   ];
   const hit = matches.find(([, pattern]) => pattern.test(text));
