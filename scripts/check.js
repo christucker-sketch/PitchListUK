@@ -29,6 +29,7 @@ for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/dat
 if (!html.includes('/database')) throw new Error('Homepage missing database link');
 if (!html.includes('/areas')) throw new Error('Homepage missing area coverage link');
 if (!html.includes('£4.99')) throw new Error('Homepage missing subscription price');
+if (!html.includes('/styles.css?v=20260731-4')) throw new Error('Homepage stylesheet cache-bust version must be current');
 if (!html.includes('liveDatabaseCount')) throw new Error('Homepage missing live database count hook');
 if (!html.includes('/api/customer-opportunities/search?limit=1')) throw new Error('Homepage missing live database count fetch');
 for (const text of ['hero-search', 'name="postcode"', 'name="radius"', 'Show my pitches', 'proof-row-list', 'This is what a row looks like', 'comparison-strip', '£4.99 a month, or an evening a week', 'faq-section', 'FAQPage']) {
@@ -69,6 +70,7 @@ for (const url of ['/festival-trader-applications', '/stall-holders-wanted', '/f
 for (const text of ['Search UK Trader Opportunities', 'postcode', 'radius', '/database.js', 'Start free trial', 'savedShortlist']) {
   if (!database.includes(text)) throw new Error(`Missing database page text: ${text}`);
 }
+if (!database.includes('/styles.css?v=20260731-4')) throw new Error('Database stylesheet cache-bust version must be current');
 for (const text of ['Live searchable database', '/terms', '/privacy']) {
   if (!database.includes(text)) throw new Error(`Missing database legal/proof text: ${text}`);
 }
