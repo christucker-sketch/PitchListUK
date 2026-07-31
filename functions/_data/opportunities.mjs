@@ -1,10 +1,10 @@
 export const opportunitySnapshot = {
-  "exported_at": "2026-07-30T16:08:50.831Z",
+  "exported_at": "2026-07-31T09:16:09.987Z",
   "source": "pitchlist-hal-events-active",
   "total": 104,
   "rows": [
     {
-      "id": "OPP-00475",
+      "id": "OPP-00480",
       "event_name": "Beverley Festival of Christmas stallholder applications",
       "organiser": "Stallholders",
       "location": "Yorkshire",
@@ -17,7 +17,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food vendors; mobile catering; event concessions",
       "last_checked": "2026-07-27",
       "freshness_status": "fresh",
-      "freshness_age_days": 3,
+      "freshness_age_days": 4,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -34,8 +34,8 @@ export const opportunitySnapshot = {
       "coordinate_label": "West Yorkshire"
     },
     {
-      "id": "OPP-00154",
-      "event_name": "Cambridge Folk Festival caterer and trader applications",
+      "id": "OPP-00001",
+      "event_name": "Caterer & Trader Applications - Folk Festival Skip to main content To help us give you the best experience possible",
       "organiser": "Caterer & Trader Applications",
       "location": "Cambridgeshire",
       "county": "Cambridgeshire",
@@ -45,7 +45,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -54,17 +54,17 @@ export const opportunitySnapshot = {
       "route_type": "food_festival",
       "organiser_type": "festival_company",
       "buyer_fit_tags": "festival;food_festival;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: Cambridgeshire food festival trader application 2026 | Area enrichment 2026-07-30: inferred Cambridgeshire",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Cambridgeshire food festival trader application 2026 | Area enrichment 2026-07-31: inferred Cambridgeshire",
       "application_url": "https://www.cambridgefolkfestival.co.uk/get-involved/caterer-trader-applications#main-content",
       "source_url": "https://www.cambridgefolkfestival.co.uk/get-involved/caterer-trader-applications",
       "latitude": 52.2053,
       "longitude": 0.1218,
-      "coordinate_source": "place-centroid",
-      "coordinate_precision": "place",
-      "coordinate_label": "Cambridge"
+      "coordinate_source": "area-centroid",
+      "coordinate_precision": "area",
+      "coordinate_label": "Cambridgeshire"
     },
     {
-      "id": "OPP-00140",
+      "id": "OPP-00152",
       "event_name": "Traders - Valley Fest - Bristol Music & Food Festival",
       "organiser": "Traders - Valley Fest - Bristol Music & Food Festival, 31st July",
       "location": "Bristol",
@@ -75,7 +75,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -94,7 +94,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00141",
+      "id": "OPP-00153",
       "event_name": "Bristol Balloon Fiesta - Traders & Exhibitors",
       "organiser": "Bristol Balloon Fiesta - Traders & Exhibitors",
       "location": "Bristol",
@@ -107,7 +107,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-25",
       "freshness_status": "fresh",
-      "freshness_age_days": 5,
+      "freshness_age_days": 6,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -124,7 +124,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00177",
+      "id": "OPP-00184",
       "event_name": "Apply to Trade at the Love Local Food Festival",
       "organiser": "Apply to Trade at the Love Local Food Festival",
       "location": "Devon",
@@ -137,7 +137,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-30",
       "freshness_status": "fresh",
-      "freshness_age_days": 0,
+      "freshness_age_days": 1,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -154,7 +154,37 @@ export const opportunitySnapshot = {
       "coordinate_label": "Devon"
     },
     {
-      "id": "OPP-00476",
+      "id": "OPP-00185",
+      "event_name": "Apply to Trade at the Love Local Food Festival",
+      "organiser": "Apply to Trade at the Love Local Food Festival",
+      "location": "Devon",
+      "county": "Devon",
+      "region": "Devon",
+      "event_start": "2026-08-15",
+      "event_end": "",
+      "application_deadline": "",
+      "stall_fee": "",
+      "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
+      "last_checked": "2026-07-31",
+      "freshness_status": "fresh",
+      "freshness_age_days": 0,
+      "confidence": "high",
+      "quality_status": "customer_ready",
+      "area_confidence": "exact",
+      "route_type": "food_festival",
+      "organiser_type": "festival_company",
+      "buyer_fit_tags": "festival;food_festival",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Staffordshire food festival trader application 2026",
+      "application_url": "https://greendalefoodfestival.com/traders/",
+      "source_url": "https://greendalefoodfestival.com/apply/",
+      "latitude": 50.7156,
+      "longitude": -3.5309,
+      "coordinate_source": "area-centroid",
+      "coordinate_precision": "area",
+      "coordinate_label": "Devon"
+    },
+    {
+      "id": "OPP-00481",
       "event_name": "boomtownfair.festivalpro.com",
       "organiser": "Food Trader Application 2026 -",
       "location": "Yorkshire",
@@ -167,7 +197,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-27",
       "freshness_status": "fresh",
-      "freshness_age_days": 3,
+      "freshness_age_days": 4,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -184,8 +214,8 @@ export const opportunitySnapshot = {
       "coordinate_label": "West Yorkshire"
     },
     {
-      "id": "OPP-00142",
-      "event_name": "FORWARDS 2026 Trader Application",
+      "id": "OPP-00154",
+      "event_name": "form.jotform.com",
       "organiser": "FORWARDS 2026 Trader Application",
       "location": "Bristol",
       "county": "Bristol",
@@ -195,7 +225,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -214,8 +244,8 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00414",
-      "event_name": "Lichfield food and drink festivals trader applications",
+      "id": "OPP-00004",
+      "event_name": "lichfielddc.gov.uk",
       "organiser": "Lichfield food & drink festivals – Apply to trade",
       "location": "Staffordshire",
       "county": "Staffordshire",
@@ -225,16 +255,16 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-29",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
-      "freshness_age_days": 1,
+      "freshness_age_days": 0,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
       "route_type": "food_festival",
       "organiser_type": "local_council",
       "buyer_fit_tags": "council_route;festival;food_festival;late_night;market;night_market;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: Staffordshire food festival trader application 2026 | Area enrichment 2026-07-29: inferred Staffordshire",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Staffordshire food festival trader application 2026 | Area enrichment 2026-07-31: inferred Staffordshire",
       "application_url": "https://www.lichfielddc.gov.uk/street-trading-licences/trader-information-applications/2#content",
       "source_url": "https://www.lichfielddc.gov.uk/street-trading-licences/trader-information-applications/2",
       "latitude": 52.6835,
@@ -244,7 +274,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Lichfield"
     },
     {
-      "id": "OPP-00415",
+      "id": "OPP-00423",
       "event_name": "lichfielddc.gov.uk",
       "organiser": "Lichfield food & drink festivals – Community grants and free ...",
       "location": "Staffordshire",
@@ -257,7 +287,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-18",
       "freshness_status": "fresh",
-      "freshness_age_days": 12,
+      "freshness_age_days": 13,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -274,7 +304,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Lichfield"
     },
     {
-      "id": "OPP-00218",
+      "id": "OPP-00228",
       "event_name": "Apply to be a stallholder at Rochester Christmas Market",
       "organiser": "Apply to be a stallholder at Rochester Christmas Market",
       "location": "Kent",
@@ -287,7 +317,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-21",
       "freshness_status": "fresh",
-      "freshness_age_days": 9,
+      "freshness_age_days": 10,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -304,7 +334,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Kent"
     },
     {
-      "id": "OPP-00179",
+      "id": "OPP-00187",
       "event_name": "Ashburton Food Festival jqueryParams",
       "organiser": "Traders",
       "location": "Devon",
@@ -315,7 +345,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -334,7 +364,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Devon"
     },
     {
-      "id": "OPP-00143",
+      "id": "OPP-00155",
       "event_name": "Home - South Gloucestershire Food & Drink Festival",
       "organiser": "Home - South Gloucestershire Food & Drink Festival",
       "location": "Bristol",
@@ -347,7 +377,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-24",
       "freshness_status": "fresh",
-      "freshness_age_days": 6,
+      "freshness_age_days": 7,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -364,7 +394,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00201",
+      "id": "OPP-00210",
       "event_name": "Box Moor Trust Autumn Festival",
       "organiser": "Food and Drink Vendors (to consume at event)",
       "location": "Hertfordshire",
@@ -377,7 +407,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -394,7 +424,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Box Moor"
     },
     {
-      "id": "OPP-00477",
+      "id": "OPP-00482",
       "event_name": "Exhibiting at The Festival of Food and Drink",
       "organiser": "Exhibiting at The Festival of Food and Drink",
       "location": "Yorkshire",
@@ -405,7 +435,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -424,7 +454,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "West Yorkshire"
     },
     {
-      "id": "OPP-00219",
+      "id": "OPP-00229",
       "event_name": "Autumn Festival registration",
       "organiser": "Autumn Festival registration",
       "location": "Kent",
@@ -437,7 +467,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-18",
       "freshness_status": "fresh",
-      "freshness_age_days": 12,
+      "freshness_age_days": 13,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -454,7 +484,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Kent"
     },
     {
-      "id": "OPP-00326",
+      "id": "OPP-00334",
       "event_name": "Culture Litter Markets Parks",
       "organiser": "Food Vendor Application Form",
       "location": "Northamptonshire",
@@ -465,16 +495,16 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food vendors; mobile catering; stallholders",
-      "last_checked": "2026-07-26",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
-      "freshness_age_days": 4,
+      "freshness_age_days": 0,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
-      "route_type": "seasonal_event",
+      "route_type": "food_festival",
       "organiser_type": "local_council",
-      "buyer_fit_tags": "council_route;market;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: fireworks event food vendor application UK 2026",
+      "buyer_fit_tags": "council_route;festival;food_festival;market;street_food",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Northamptonshire food festival trader application 2026",
       "application_url": "https://www.northamptontowncouncil.gov.uk/food-vendor-application#content",
       "source_url": "https://www.northamptontowncouncil.gov.uk/food-vendor-application",
       "latitude": 52.2405,
@@ -484,7 +514,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Northamptonshire"
     },
     {
-      "id": "OPP-00196",
+      "id": "OPP-00205",
       "event_name": "Street Market",
       "organiser": "Street Market | Sell at Shaftesbury Food Festival 2nd May ...",
       "location": "Greater Manchester",
@@ -497,7 +527,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food vendors; mobile catering; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -514,7 +544,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Heaton Park"
     },
     {
-      "id": "OPP-00169",
+      "id": "OPP-00010",
       "event_name": "The Great Estate Festival",
       "organiser": "The Great Estate Festival 4-6 June 2027- Scorrier Estate",
       "location": "Cornwall",
@@ -525,7 +555,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -534,7 +564,7 @@ export const opportunitySnapshot = {
       "route_type": "food_festival",
       "organiser_type": "festival_company",
       "buyer_fit_tags": "festival;food_festival",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: Cornwall food festival trader application 2026 | Area enrichment 2026-07-30: inferred Cornwall",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Cornwall food festival trader application 2026 | Area enrichment 2026-07-31: inferred Cornwall",
       "application_url": "https://docs.google.com/forms/d/e/1FAIpQLSc1NQ-5gjxsYDYM7sEoWMVidDxiYI1uNp3uG9Fe-X39T9PqBA/viewform",
       "source_url": "https://www.greatestatefestival.co.uk/trading-at-the-great-estate/",
       "latitude": null,
@@ -544,7 +574,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00205",
+      "id": "OPP-00215",
       "event_name": "solsticefest.uk",
       "organiser": "Trader Application Form",
       "location": "Ireland",
@@ -555,7 +585,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -564,7 +594,7 @@ export const opportunitySnapshot = {
       "route_type": "food_festival",
       "organiser_type": "festival_company",
       "buyer_fit_tags": "festival;food_festival;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: Somerset food festival trader application 2026 | Manual cleanup 2026-07-30: location classification conflicted with Somerset/Ireland signals; hold for manual verification",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Somerset food festival trader application 2026",
       "application_url": "https://solsticefest.uk/trader-application-form/#content",
       "source_url": "https://solsticefest.uk/trader-application-form/",
       "latitude": null,
@@ -574,7 +604,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00133",
+      "id": "OPP-00145",
       "event_name": "angus.gov.uk",
       "organiser": "Street trader",
       "location": "Angus",
@@ -587,7 +617,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-26",
       "freshness_status": "fresh",
-      "freshness_age_days": 4,
+      "freshness_age_days": 5,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "inferred",
@@ -604,7 +634,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00158",
+      "id": "OPP-00168",
       "event_name": "Apply to Trade at Knutsford Christmas Market",
       "organiser": "Apply to Trade at Knutsford Christmas Market 2026",
       "location": "Cheshire",
@@ -617,7 +647,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-27",
       "freshness_status": "fresh",
-      "freshness_age_days": 3,
+      "freshness_age_days": 4,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -634,7 +664,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Knutsford"
     },
     {
-      "id": "OPP-00134",
+      "id": "OPP-00146",
       "event_name": "argyll-bute.gov.uk",
       "organiser": "Application for a Street Traders Licence",
       "location": "Argyll and Bute",
@@ -647,7 +677,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-24",
       "freshness_status": "fresh",
-      "freshness_age_days": 6,
+      "freshness_age_days": 7,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "inferred",
@@ -664,7 +694,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00368",
+      "id": "OPP-00377",
       "event_name": "bathnes.gov.uk",
       "organiser": "Food Trader - Event Checklist",
       "location": "Somerset",
@@ -677,7 +707,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-26",
       "freshness_status": "fresh",
-      "freshness_age_days": 4,
+      "freshness_age_days": 5,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -694,7 +724,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bath"
     },
     {
-      "id": "OPP-00144",
+      "id": "OPP-00156",
       "event_name": "Become a trader at Platt Group Market",
       "organiser": "BECOME A TRADER - The Platt Group",
       "location": "Bristol",
@@ -707,7 +737,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "car boot traders; stallholders; food vendors",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -724,7 +754,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00329",
+      "id": "OPP-00337",
       "event_name": "Belfast street trading licence applications",
       "organiser": "Belfast City Council",
       "location": "Northern Ireland",
@@ -737,7 +767,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-30",
       "freshness_status": "fresh",
-      "freshness_age_days": 0,
+      "freshness_age_days": 1,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -754,7 +784,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Northern Ireland"
     },
     {
-      "id": "OPP-00136",
+      "id": "OPP-00148",
       "event_name": "Berkshire Yoga Festival vendor applications",
       "organiser": "Be A Vendor",
       "location": "Berkshire",
@@ -767,7 +797,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-22",
       "freshness_status": "fresh",
-      "freshness_age_days": 8,
+      "freshness_age_days": 9,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -784,7 +814,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Berkshire"
     },
     {
-      "id": "OPP-00145",
+      "id": "OPP-00157",
       "event_name": "Bristol Feast On",
       "organiser": "Trader Applications | Bristol Feast On",
       "location": "Bristol",
@@ -795,7 +825,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -814,7 +844,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00146",
+      "id": "OPP-00158",
       "event_name": "bristol.gov.uk",
       "organiser": "Street trading",
       "location": "Bristol",
@@ -827,7 +857,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-26",
       "freshness_status": "fresh",
-      "freshness_age_days": 4,
+      "freshness_age_days": 5,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -844,7 +874,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00147",
+      "id": "OPP-00159",
       "event_name": "bristol.gov.uk",
       "organiser": "Pitches for traders in Bristol's city docks and parks",
       "location": "Bristol",
@@ -857,7 +887,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-24",
       "freshness_status": "fresh",
-      "freshness_age_days": 6,
+      "freshness_age_days": 7,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -874,7 +904,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00152",
+      "id": "OPP-00164",
       "event_name": "buckinghamshire.gov.uk",
       "organiser": "Apply for street trading consent in the former Chiltern ...",
       "location": "Buckinghamshire",
@@ -887,7 +917,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-25",
       "freshness_status": "fresh",
-      "freshness_age_days": 5,
+      "freshness_age_days": 6,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -904,7 +934,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Buckinghamshire"
     },
     {
-      "id": "OPP-00156",
+      "id": "OPP-00035",
       "event_name": "cambridgerockfestival.co.uk",
       "organiser": "Vendors & Stalls Application 2026 | thecrf",
       "location": "Cambridgeshire",
@@ -915,7 +945,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -924,7 +954,7 @@ export const opportunitySnapshot = {
       "route_type": "food_festival",
       "organiser_type": "festival_company",
       "buyer_fit_tags": "festival;food_festival",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: Cambridgeshire food festival trader application 2026 | Area enrichment 2026-07-30: inferred Cambridgeshire",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Cambridgeshire food festival trader application 2026 | Area enrichment 2026-07-31: inferred Cambridgeshire",
       "application_url": "https://www.cambridgerockfestival.co.uk/copy-of-vendors-stalls-application",
       "source_url": "https://www.cambridgerockfestival.co.uk/copy-of-vendors-stalls-application",
       "latitude": 52.2053,
@@ -934,7 +964,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cambridgeshire"
     },
     {
-      "id": "OPP-00193",
+      "id": "OPP-00203",
       "event_name": "Cheltenham Racecourse",
       "organiser": "Apply To Become A Tradestand | Cheltenham Racecourse",
       "location": "Gloucestershire",
@@ -947,7 +977,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food vendors; mobile catering; stallholders",
       "last_checked": "2026-07-25",
       "freshness_status": "fresh",
-      "freshness_age_days": 5,
+      "freshness_age_days": 6,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -964,7 +994,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Gloucestershire"
     },
     {
-      "id": "OPP-00159",
+      "id": "OPP-00169",
       "event_name": "Cheshire Fair",
       "organiser": "Fair Vendor Application",
       "location": "Cheshire",
@@ -977,7 +1007,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-26",
       "freshness_status": "fresh",
-      "freshness_age_days": 4,
+      "freshness_age_days": 5,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -994,7 +1024,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cheshire"
     },
     {
-      "id": "OPP-00160",
+      "id": "OPP-00170",
       "event_name": "Cheshire Fall Festival",
       "organiser": "Cheshire Fall Festival – 2026 Cheshire Prospect Fall Festival ...",
       "location": "Cheshire",
@@ -1007,7 +1037,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-25",
       "freshness_status": "fresh",
-      "freshness_age_days": 5,
+      "freshness_age_days": 6,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1024,7 +1054,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cheshire"
     },
     {
-      "id": "OPP-00161",
+      "id": "OPP-00171",
       "event_name": "Cheshire Fall Festival",
       "organiser": "Vendors – Cheshire Fall Festival",
       "location": "Cheshire",
@@ -1037,7 +1067,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-27",
       "freshness_status": "fresh",
-      "freshness_age_days": 3,
+      "freshness_age_days": 4,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1054,7 +1084,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cheshire"
     },
     {
-      "id": "OPP-00162",
+      "id": "OPP-00172",
       "event_name": "cocoweddingvenues.co.uk",
       "organiser": "Wedding Venues For Street Food Vendors (page 2)",
       "location": "Cheshire",
@@ -1067,7 +1097,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-26",
       "freshness_status": "fresh",
-      "freshness_age_days": 4,
+      "freshness_age_days": 5,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1084,7 +1114,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cheshire"
     },
     {
-      "id": "OPP-00194",
+      "id": "OPP-00204",
       "event_name": "cocoweddingvenues.co.uk",
       "organiser": "Wedding Venues For Street Food Vendors",
       "location": "Gloucestershire",
@@ -1097,7 +1127,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-28",
       "freshness_status": "fresh",
-      "freshness_age_days": 2,
+      "freshness_age_days": 3,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1114,7 +1144,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Gloucestershire"
     },
     {
-      "id": "OPP-00195",
+      "id": "OPP-00042",
       "event_name": "cotswold.gov.uk",
       "organiser": "Street trading",
       "location": "Gloucestershire",
@@ -1125,16 +1155,16 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-28",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
-      "freshness_age_days": 2,
+      "freshness_age_days": 0,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
       "route_type": "street_trading_pitch",
       "organiser_type": "local_council",
       "buyer_fit_tags": "council_route;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: site:.gov.uk street trading food vendor application 2026 | Area enrichment 2026-07-28: inferred Gloucestershire",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: site:.gov.uk street trading food vendor application 2026 | Area enrichment 2026-07-31: inferred Gloucestershire",
       "application_url": "https://www.cotswold.gov.uk/business-and-licensing/apply-or-renew-business-licences-and-permits/street-trading/#main-content",
       "source_url": "https://www.cotswold.gov.uk/business-and-licensing/apply-or-renew-business-licences-and-permits/street-trading/",
       "latitude": 51.8642,
@@ -1144,7 +1174,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Gloucestershire"
     },
     {
-      "id": "OPP-00163",
+      "id": "OPP-00173",
       "event_name": "Craft Fairs in Hertfordshire",
       "organiser": "Craft Fairs in Hertfordshire",
       "location": "Cheshire",
@@ -1157,7 +1187,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "car boot traders; stallholders; food vendors",
       "last_checked": "2026-07-22",
       "freshness_status": "fresh",
-      "freshness_age_days": 8,
+      "freshness_age_days": 9,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1174,7 +1204,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cheshire"
     },
     {
-      "id": "OPP-00221",
+      "id": "OPP-00231",
       "event_name": "downtownkentwa.com",
       "organiser": "Call to Vendors",
       "location": "Kent",
@@ -1187,7 +1217,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-23",
       "freshness_status": "fresh",
-      "freshness_age_days": 7,
+      "freshness_age_days": 8,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1204,7 +1234,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Kent"
     },
     {
-      "id": "OPP-00327",
+      "id": "OPP-00335",
       "event_name": "Drag Racing At Santa Pod Raceway UK",
       "organiser": "Traders | Drag Racing At Santa Pod Raceway UK",
       "location": "Northamptonshire",
@@ -1217,7 +1247,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food vendors; trade stands; exhibitors",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1234,7 +1264,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Northamptonshire"
     },
     {
-      "id": "OPP-00182",
+      "id": "OPP-00190",
       "event_name": "eastdevon.gov.uk",
       "organiser": "Apply for a general street trading consent - East Devon",
       "location": "Devon",
@@ -1247,7 +1277,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-22",
       "freshness_status": "fresh",
-      "freshness_age_days": 8,
+      "freshness_age_days": 9,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1264,7 +1294,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Devon"
     },
     {
-      "id": "OPP-00478",
+      "id": "OPP-00483",
       "event_name": "eastriding.gov.uk",
       "organiser": "Street traders",
       "location": "Yorkshire",
@@ -1277,7 +1307,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-30",
       "freshness_status": "fresh",
-      "freshness_age_days": 0,
+      "freshness_age_days": 1,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1294,7 +1324,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "West Yorkshire"
     },
     {
-      "id": "OPP-00171",
+      "id": "OPP-00061",
       "event_name": "Exhibitors - Seaham Food Festival Skip to main content Visiting What",
       "organiser": "Exhibitors",
       "location": "County Durham",
@@ -1305,7 +1335,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -1314,7 +1344,7 @@ export const opportunitySnapshot = {
       "route_type": "food_festival",
       "organiser_type": "festival_company",
       "buyer_fit_tags": "festival;food_festival;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: County Durham food festival trader application 2026 | Area enrichment 2026-07-30: inferred County Durham",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: County Durham food festival trader application 2026 | Area enrichment 2026-07-31: inferred County Durham",
       "application_url": "https://seahamfoodfestival.co.uk/exhibitors/#",
       "source_url": "https://seahamfoodfestival.co.uk/exhibitors/",
       "latitude": 54.839,
@@ -1324,7 +1354,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Seaham"
     },
     {
-      "id": "OPP-00138",
+      "id": "OPP-00150",
       "event_name": "festfinder.co.uk",
       "organiser": "Food Trader Pitch Opportunities in Berkshire - FestFinder",
       "location": "Berkshire",
@@ -1337,7 +1367,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-23",
       "freshness_status": "fresh",
-      "freshness_age_days": 7,
+      "freshness_age_days": 8,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1354,7 +1384,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Berkshire"
     },
     {
-      "id": "OPP-00153",
+      "id": "OPP-00165",
       "event_name": "festfinder.co.uk",
       "organiser": "Food Trader Pitch Opportunities in Buckinghamshire",
       "location": "Buckinghamshire",
@@ -1367,7 +1397,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-23",
       "freshness_status": "fresh",
-      "freshness_age_days": 7,
+      "freshness_age_days": 8,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1384,7 +1414,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Buckinghamshire"
     },
     {
-      "id": "OPP-00197",
+      "id": "OPP-00206",
       "event_name": "festfinder.co.uk",
       "organiser": "Food Trader Pitch Opportunities in Greater Manchester",
       "location": "Greater Manchester",
@@ -1397,7 +1427,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-25",
       "freshness_status": "fresh",
-      "freshness_age_days": 5,
+      "freshness_age_days": 6,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1414,7 +1444,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Heaton Park"
     },
     {
-      "id": "OPP-00226",
+      "id": "OPP-00236",
       "event_name": "festfinder.co.uk",
       "organiser": "Food Trader Pitch Opportunities in Lancashire",
       "location": "Lancashire",
@@ -1425,7 +1455,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -1444,7 +1474,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Lancashire"
     },
     {
-      "id": "OPP-00148",
+      "id": "OPP-00160",
       "event_name": "Finmere Car Boot Sale",
       "organiser": "Finmere Car Boot Sale",
       "location": "Bristol",
@@ -1457,7 +1487,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "car boot traders; stallholders; food vendors",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1474,7 +1504,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00198",
+      "id": "OPP-00207",
       "event_name": "gillinghamandshaftesburyshow.co.uk",
       "organiser": "TRADE STAND APPLICATION FORM",
       "location": "Greater Manchester",
@@ -1487,7 +1517,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1504,7 +1534,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Heaton Park"
     },
     {
-      "id": "OPP-00199",
+      "id": "OPP-00208",
       "event_name": "Glastonbury Festival Traders Form - Enter Trader Information",
       "organiser": "Glastonbury Festival Traders Form - Enter Trader Information",
       "location": "Greater Manchester",
@@ -1517,7 +1547,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1534,7 +1564,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Heaton Park"
     },
     {
-      "id": "OPP-00164",
+      "id": "OPP-00174",
       "event_name": "Great British Food Festival",
       "organiser": "Traders, stalls and artisan producers at Great British Food Festival",
       "location": "Cheshire",
@@ -1545,16 +1575,16 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-29",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
-      "freshness_age_days": 1,
+      "freshness_age_days": 0,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
       "route_type": "food_festival",
       "organiser_type": "festival_company",
       "buyer_fit_tags": "artisan;crafts;festival;food_festival;premium;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: Staffordshire food festival trader application 2026",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: South Yorkshire food festival trader application 2026",
       "application_url": "https://greatbritishfoodfestival.com/traders/create-account",
       "source_url": "https://greatbritishfoodfestival.com/traders/",
       "latitude": 53.2326,
@@ -1564,7 +1594,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cheshire"
     },
     {
-      "id": "OPP-00188",
+      "id": "OPP-00198",
       "event_name": "hastings.gov.uk",
       "organiser": "Street trading licenses in Hastings",
       "location": "East Sussex",
@@ -1577,7 +1607,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-25",
       "freshness_status": "fresh",
-      "freshness_age_days": 5,
+      "freshness_age_days": 6,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "inferred",
@@ -1594,7 +1624,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00294",
+      "id": "OPP-00303",
       "event_name": "Heaton Park Food & Drink Festival",
       "organiser": "Trader Application",
       "location": "Manchester",
@@ -1605,7 +1635,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -1624,7 +1654,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Heaton Park"
     },
     {
-      "id": "OPP-00462",
+      "id": "OPP-00468",
       "event_name": "Heysham Viking Festival trade applications",
       "organiser": "Trade Applications",
       "location": "Warwickshire",
@@ -1637,7 +1667,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-27",
       "freshness_status": "fresh",
-      "freshness_age_days": 3,
+      "freshness_age_days": 4,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1654,7 +1684,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00423",
+      "id": "OPP-00431",
       "event_name": "hinckley-summer-fest.co.uk",
       "organiser": "Trade Application | Hinckley Summer Fest",
       "location": "Surrey",
@@ -1667,7 +1697,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-21",
       "freshness_status": "fresh",
-      "freshness_age_days": 9,
+      "freshness_age_days": 10,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1684,7 +1714,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Surrey"
     },
     {
-      "id": "OPP-00190",
+      "id": "OPP-00200",
       "event_name": "Lewes Farmers' Market Stallholder Application Form",
       "organiser": "Lewes Farmers' Market Stallholder Application Form",
       "location": "East Sussex",
@@ -1697,7 +1727,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-22",
       "freshness_status": "fresh",
-      "freshness_age_days": 8,
+      "freshness_age_days": 9,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1714,7 +1744,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00418",
+      "id": "OPP-00426",
       "event_name": "Lichfield food and drink festivals trader FAQs",
       "organiser": "Lichfield food & drink festivals – Frequently asked questions",
       "location": "Staffordshire",
@@ -1727,7 +1757,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1744,7 +1774,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Lichfield"
     },
     {
-      "id": "OPP-00470",
+      "id": "OPP-00475",
       "event_name": "Medieval Festival Note",
       "organiser": "NEW Food Trader Space Application Form",
       "location": "West Sussex",
@@ -1757,7 +1787,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-27",
       "freshness_status": "fresh",
-      "freshness_age_days": 3,
+      "freshness_age_days": 4,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1774,37 +1804,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "West Sussex"
     },
     {
-      "id": "OPP-00332",
-      "event_name": "Mid and East Antrim street trading applications",
-      "organiser": "Mid and East Antrim Borough Council",
-      "location": "Northern Ireland",
-      "county": "Northern Ireland",
-      "region": "Northern Ireland",
-      "event_start": "",
-      "event_end": "",
-      "application_deadline": "",
-      "stall_fee": "",
-      "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-30",
-      "freshness_status": "fresh",
-      "freshness_age_days": 0,
-      "confidence": "high",
-      "quality_status": "customer_ready",
-      "area_confidence": "exact",
-      "route_type": "street_trading_pitch",
-      "organiser_type": "local_council",
-      "buyer_fit_tags": "council_route;street_food",
-      "notes": "Verified 2026-07-30: official council street trading route includes temporary event licences and application forms",
-      "application_url": "https://www.midandeastantrim.gov.uk/downloads/Street_Trading_App_-_Temporary_1224.pdf",
-      "source_url": "https://www.midandeastantrim.gov.uk/business/environmental-health/licensing/street-trading",
-      "latitude": 54.5973,
-      "longitude": -5.9301,
-      "coordinate_source": "area-centroid",
-      "coordinate_precision": "area",
-      "coordinate_label": "Northern Ireland"
-    },
-    {
-      "id": "OPP-00313",
+      "id": "OPP-00092",
       "event_name": "Non-food trader applications for Big Love Festival",
       "organiser": "Non-food trader applications for Big Love Festival",
       "location": "Monmouthshire",
@@ -1815,16 +1815,16 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-19",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 0,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
-      "route_type": "festival",
+      "route_type": "food_festival",
       "organiser_type": "festival_company",
-      "buyer_fit_tags": "festival;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: inurl:traders \"public event\" \"apply\" UK | Area enrichment 2026-07-19: inferred Monmouthshire",
+      "buyer_fit_tags": "festival;food_festival;street_food",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Bedfordshire food festival trader application 2026 | Area enrichment 2026-07-31: inferred Monmouthshire",
       "application_url": "https://biglovefestival.co.uk/contact/food-traders/",
       "source_url": "https://biglovefestival.co.uk/contact/traders/",
       "latitude": 51.8116,
@@ -1834,7 +1834,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Monmouthshire"
     },
     {
-      "id": "OPP-00463",
+      "id": "OPP-00469",
       "event_name": "northwarks.gov.uk",
       "organiser": "Street trading licensing",
       "location": "Warwickshire",
@@ -1847,7 +1847,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-23",
       "freshness_status": "fresh",
-      "freshness_age_days": 7,
+      "freshness_age_days": 8,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1864,7 +1864,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00333",
+      "id": "OPP-00343",
       "event_name": "oxford.gov.uk",
       "organiser": "Street Trading at an Event Application Form",
       "location": "Oxfordshire",
@@ -1877,7 +1877,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1894,7 +1894,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Oxford"
     },
     {
-      "id": "OPP-00489",
+      "id": "OPP-00494",
       "event_name": "Peddler Market Sheffield N",
       "organiser": "Street Food Trader Applications 2026",
       "location": "Yorkshire & The Humber",
@@ -1907,7 +1907,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-28",
       "freshness_status": "fresh",
-      "freshness_age_days": 2,
+      "freshness_age_days": 3,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1924,7 +1924,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Sheffield"
     },
     {
-      "id": "OPP-00222",
+      "id": "OPP-00232",
       "event_name": "Pitch Markets and Events UK become a trader",
       "organiser": "Become a Trader",
       "location": "Kent",
@@ -1937,7 +1937,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-25",
       "freshness_status": "fresh",
-      "freshness_age_days": 5,
+      "freshness_age_days": 6,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -1954,7 +1954,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Kent"
     },
     {
-      "id": "OPP-00223",
+      "id": "OPP-00233",
       "event_name": "pitchlist.uk",
       "organiser": "PitchList UK: UK Festival Trader Applications & Stallholder ...",
       "location": "Kent",
@@ -1965,7 +1965,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food vendors; mobile catering; stallholders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -1984,37 +1984,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Kent"
     },
     {
-      "id": "OPP-00200",
-      "event_name": "salford.gov.uk",
-      "organiser": "Organising an event in a Salford public park, green space ...",
-      "location": "Greater Manchester",
-      "county": "Greater Manchester",
-      "region": "Greater Manchester",
-      "event_start": "",
-      "event_end": "",
-      "application_deadline": "",
-      "stall_fee": "",
-      "vendor_categories": "car boot traders; stallholders; food vendors",
-      "last_checked": "2026-07-16",
-      "freshness_status": "fresh",
-      "freshness_age_days": 14,
-      "confidence": "high",
-      "quality_status": "customer_ready",
-      "area_confidence": "exact",
-      "route_type": "council_event",
-      "organiser_type": "local_council",
-      "buyer_fit_tags": "council_route;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: site:.gov.uk event trader application food vendor | Area enrichment 2026-07-16: inferred Greater Manchester",
-      "application_url": "https://www.salford.gov.uk/static/licensing/street_traders.pdf",
-      "source_url": "https://www.salford.gov.uk/parks-and-open-spaces/organising-an-event-in-a-salford-public-park-green-space-or-open-space/",
-      "latitude": 53.5346,
-      "longitude": -2.2536,
-      "coordinate_source": "place-centroid",
-      "coordinate_precision": "place",
-      "coordinate_label": "Heaton Park"
-    },
-    {
-      "id": "OPP-00224",
+      "id": "OPP-00234",
       "event_name": "Sandwich Community Events vendor application form",
       "organiser": "Vendor Application Form",
       "location": "Kent",
@@ -2027,7 +1997,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2044,7 +2014,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Kent"
     },
     {
-      "id": "OPP-00225",
+      "id": "OPP-00235",
       "event_name": "Sandwich Community Events vendor opportunities",
       "organiser": "SCEA Vendors",
       "location": "Kent",
@@ -2057,7 +2027,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-18",
       "freshness_status": "fresh",
-      "freshness_age_days": 12,
+      "freshness_age_days": 13,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2074,7 +2044,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Kent"
     },
     {
-      "id": "OPP-00149",
+      "id": "OPP-00161",
       "event_name": "South Gloucestershire Food & Drink Festival",
       "organiser": "South Gloucestershire Food & Drink Festival 2026 (Autumn) - FestFinder",
       "location": "Bristol",
@@ -2087,7 +2057,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-23",
       "freshness_status": "fresh",
-      "freshness_age_days": 7,
+      "freshness_age_days": 8,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2104,7 +2074,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00296",
+      "id": "OPP-00305",
       "event_name": "South Manchester Food Festival trader application",
       "organiser": "Trader Application",
       "location": "Manchester",
@@ -2117,7 +2087,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-28",
       "freshness_status": "fresh",
-      "freshness_age_days": 2,
+      "freshness_age_days": 3,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2134,7 +2104,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Heaton Park"
     },
     {
-      "id": "OPP-00227",
+      "id": "OPP-00237",
       "event_name": "southribble.gov.uk",
       "organiser": "Street trading | South Ribble",
       "location": "Lancashire",
@@ -2145,9 +2115,9 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-07-28",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
-      "freshness_age_days": 2,
+      "freshness_age_days": 0,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2164,7 +2134,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Lancashire"
     },
     {
-      "id": "OPP-00202",
+      "id": "OPP-00211",
       "event_name": "Spring Festival on Sunday",
       "organiser": "Events Trader Information",
       "location": "Hertfordshire",
@@ -2177,7 +2147,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-27",
       "freshness_status": "fresh",
-      "freshness_age_days": 3,
+      "freshness_age_days": 4,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2194,7 +2164,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Hertfordshire"
     },
     {
-      "id": "OPP-00165",
+      "id": "OPP-00175",
       "event_name": "Stallfinder Hertfordshire events",
       "organiser": "Find an Event for 'Hertfordshire'",
       "location": "Cheshire",
@@ -2207,7 +2177,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "car boot traders; stallholders; food vendors",
       "last_checked": "2026-07-25",
       "freshness_status": "fresh",
-      "freshness_age_days": 5,
+      "freshness_age_days": 6,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2224,7 +2194,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cheshire"
     },
     {
-      "id": "OPP-00314",
+      "id": "OPP-00322",
       "event_name": "Street Food Market",
       "organiser": "Street Food Market",
       "location": "Monmouthshire",
@@ -2237,7 +2207,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-22",
       "freshness_status": "fresh",
-      "freshness_age_days": 8,
+      "freshness_age_days": 9,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2254,7 +2224,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Monmouthshire"
     },
     {
-      "id": "OPP-00492",
+      "id": "OPP-00497",
       "event_name": "Street Trading - Leeds Kirkgate Market",
       "organiser": "Street Trading - Leeds Kirkgate Market",
       "location": "Yorkshire & The Humber",
@@ -2267,7 +2237,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-21",
       "freshness_status": "fresh",
-      "freshness_age_days": 9,
+      "freshness_age_days": 10,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2284,7 +2254,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Leeds"
     },
     {
-      "id": "OPP-00425",
+      "id": "OPP-00433",
       "event_name": "Surrey Hills artisan events stallholder expression of interest",
       "organiser": "Surrey Hills Events 2026 - Stallholder application",
       "location": "Surrey",
@@ -2297,7 +2267,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-24",
       "freshness_status": "fresh",
-      "freshness_age_days": 6,
+      "freshness_age_days": 7,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2314,7 +2284,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Surrey"
     },
     {
-      "id": "OPP-00426",
+      "id": "OPP-00434",
       "event_name": "Surrey Street Market",
       "organiser": "Surrey Street Market",
       "location": "Surrey",
@@ -2327,7 +2297,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-23",
       "freshness_status": "fresh",
-      "freshness_age_days": 7,
+      "freshness_age_days": 8,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2344,7 +2314,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Surrey"
     },
     {
-      "id": "OPP-00370",
+      "id": "OPP-00379",
       "event_name": "The Big Eat Festival trader applications",
       "organiser": "Trader Applications 2026",
       "location": "Somerset",
@@ -2357,7 +2327,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-29",
       "freshness_status": "fresh",
-      "freshness_age_days": 1,
+      "freshness_age_days": 2,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2374,7 +2344,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Somerset"
     },
     {
-      "id": "OPP-00494",
+      "id": "OPP-00499",
       "event_name": "The Graves Park Food Festival",
       "organiser": "Trader Application | The Graves Park Food Festival | Sheffield",
       "location": "Yorkshire & The Humber",
@@ -2385,9 +2355,9 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-29",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
-      "freshness_age_days": 1,
+      "freshness_age_days": 0,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2404,7 +2374,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Sheffield"
     },
     {
-      "id": "OPP-00150",
+      "id": "OPP-00162",
       "event_name": "The Platt Group Market Rules & Regulations",
       "organiser": "The Platt Group Market Rules & Regulations",
       "location": "Bristol",
@@ -2417,7 +2387,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "car boot traders; stallholders; food vendors",
       "last_checked": "2026-07-18",
       "freshness_status": "fresh",
-      "freshness_age_days": 12,
+      "freshness_age_days": 13,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2434,7 +2404,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00421",
+      "id": "OPP-00429",
       "event_name": "Trade at the Festival",
       "organiser": "Trade at the Festival",
       "location": "Suffolk",
@@ -2447,7 +2417,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-28",
       "freshness_status": "fresh",
-      "freshness_age_days": 2,
+      "freshness_age_days": 3,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2464,7 +2434,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00371",
+      "id": "OPP-00380",
       "event_name": "Trade at the Minehead Bay Festival",
       "organiser": "Trade at the Minehead Bay Festival",
       "location": "Somerset",
@@ -2477,7 +2447,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-28",
       "freshness_status": "fresh",
-      "freshness_age_days": 2,
+      "freshness_age_days": 3,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2494,7 +2464,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Somerset"
     },
     {
-      "id": "OPP-00172",
+      "id": "OPP-00132",
       "event_name": "Trader applications open for Bishop Food Festival",
       "organiser": "Trader applications open for Bishop Food Festival",
       "location": "County Durham",
@@ -2505,7 +2475,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "food vendors; mobile catering; event concessions",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -2514,7 +2484,7 @@ export const opportunitySnapshot = {
       "route_type": "food_festival",
       "organiser_type": "festival_company",
       "buyer_fit_tags": "festival;food_festival;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: County Durham food festival trader application 2026 | Area enrichment 2026-07-30: inferred County Durham",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: County Durham food festival trader application 2026 | Area enrichment 2026-07-31: inferred County Durham",
       "application_url": "https://bishopaucklandfoodfestival.co.uk/trader-applications-open-for-bishop-food-festival/#content",
       "source_url": "https://bishopaucklandfoodfestival.co.uk/trader-applications-open-for-bishop-food-festival/",
       "latitude": 54.7294,
@@ -2524,7 +2494,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "County Durham"
     },
     {
-      "id": "OPP-00135",
+      "id": "OPP-00147",
       "event_name": "Traders - The UK's Biggest & Longest Running Tribute",
       "organiser": "Traders - The UK's Biggest & Longest Running Tribute ...",
       "location": "Argyll and Bute",
@@ -2537,7 +2507,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "inferred",
@@ -2554,7 +2524,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00157",
+      "id": "OPP-00167",
       "event_name": "Traders Applications Now Open for Strawberry Fair",
       "organiser": "Traders Applications Now Open for Strawberry Fair",
       "location": "Cambridgeshire",
@@ -2567,7 +2537,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2584,7 +2554,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cambridge"
     },
     {
-      "id": "OPP-00480",
+      "id": "OPP-00485",
       "event_name": "Walton Street Market Hull - Town and Country Markets",
       "organiser": "Walton Street Market Hull - Town and Country Markets",
       "location": "Yorkshire",
@@ -2597,7 +2567,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "car boot traders; stallholders; food vendors",
       "last_checked": "2026-07-19",
       "freshness_status": "fresh",
-      "freshness_age_days": 11,
+      "freshness_age_days": 12,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2614,7 +2584,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "West Yorkshire"
     },
     {
-      "id": "OPP-00464",
+      "id": "OPP-00470",
       "event_name": "Warwick Autumn Food Festival",
       "organiser": "Warwick Autumn Food Festival 2026",
       "location": "Warwickshire",
@@ -2627,7 +2597,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-28",
       "freshness_status": "fresh",
-      "freshness_age_days": 2,
+      "freshness_age_days": 3,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2644,7 +2614,7 @@ export const opportunitySnapshot = {
       "coordinate_label": ""
     },
     {
-      "id": "OPP-00335",
+      "id": "OPP-00345",
       "event_name": "westoxon.gov.uk",
       "organiser": "Street trading",
       "location": "Oxfordshire",
@@ -2657,7 +2627,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-23",
       "freshness_status": "fresh",
-      "freshness_age_days": 7,
+      "freshness_age_days": 8,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2674,7 +2644,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Oxfordshire"
     },
     {
-      "id": "OPP-00481",
+      "id": "OPP-00486",
       "event_name": "wetherbybrewco.com",
       "organiser": "Street food vendor info",
       "location": "Yorkshire",
@@ -2687,7 +2657,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-24",
       "freshness_status": "fresh",
-      "freshness_age_days": 6,
+      "freshness_age_days": 7,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2704,7 +2674,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "West Yorkshire"
     },
     {
-      "id": "OPP-00482",
+      "id": "OPP-00487",
       "event_name": "York Food Festival",
       "organiser": "Trade – York Food Festival",
       "location": "Yorkshire",
@@ -2715,7 +2685,7 @@ export const opportunitySnapshot = {
       "application_deadline": "",
       "stall_fee": "",
       "vendor_categories": "street food; mobile catering; food traders",
-      "last_checked": "2026-07-30",
+      "last_checked": "2026-07-31",
       "freshness_status": "fresh",
       "freshness_age_days": 0,
       "confidence": "high",
@@ -2724,7 +2694,7 @@ export const opportunitySnapshot = {
       "route_type": "food_festival",
       "organiser_type": "festival_company",
       "buyer_fit_tags": "confectionery;festival;food_festival;street_food",
-      "notes": "Staged by fresh PitchList acquisition engine from search result: South Yorkshire food festival trader application 2026",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: Northamptonshire food festival trader application 2026",
       "application_url": "https://yorkfoodfest.wufoo.co.uk/forms/york-chocolate-festival-traders-application/",
       "source_url": "https://www.yorkfoodfestival.com/trade/",
       "latitude": 53.959,
@@ -2734,7 +2704,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "York"
     },
     {
-      "id": "OPP-00176",
+      "id": "OPP-00183",
       "event_name": "Apply to Trade at the Love Local Food Festival",
       "organiser": "Apply to Trade at the Love Local Food Festival",
       "location": "Devon",
@@ -2747,7 +2717,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-13",
       "freshness_status": "aging",
-      "freshness_age_days": 17,
+      "freshness_age_days": 18,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2764,7 +2734,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Devon"
     },
     {
-      "id": "OPP-00170",
+      "id": "OPP-00179",
       "event_name": "billingham-tc.gov.uk",
       "organiser": "STALLHOLDER APPLICATION FORM THE BILLINGHAM SHOW 2026",
       "location": "County Durham",
@@ -2777,7 +2747,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-07",
       "freshness_status": "aging",
-      "freshness_age_days": 23,
+      "freshness_age_days": 24,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2794,7 +2764,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Billingham"
     },
     {
-      "id": "OPP-00220",
+      "id": "OPP-00230",
       "event_name": "Trader T&Cs - Broadstairs Food Festival",
       "organiser": "Trader T&Cs - Broadstairs Food Festival",
       "location": "Kent",
@@ -2807,7 +2777,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-13",
       "freshness_status": "aging",
-      "freshness_age_days": 17,
+      "freshness_age_days": 18,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2824,7 +2794,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Broadstairs"
     },
     {
-      "id": "OPP-00416",
+      "id": "OPP-00424",
       "event_name": "Trade stands at the Stone Food & Drink Festival",
       "organiser": "Trade stands at the Stone Food & Drink Festival",
       "location": "Staffordshire",
@@ -2837,7 +2807,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-07",
       "freshness_status": "aging",
-      "freshness_age_days": 23,
+      "freshness_age_days": 24,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2854,7 +2824,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Stone"
     },
     {
-      "id": "OPP-00180",
+      "id": "OPP-00188",
       "event_name": "Application Forms - Devon County Show",
       "organiser": "Application Forms - Devon County Show",
       "location": "Devon",
@@ -2867,7 +2837,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-07",
       "freshness_status": "aging",
-      "freshness_age_days": 23,
+      "freshness_age_days": 24,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2884,7 +2854,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Devon"
     },
     {
-      "id": "OPP-00155",
+      "id": "OPP-00166",
       "event_name": "Apply to trade - Strawberry Fair",
       "organiser": "Apply to trade - Strawberry Fair",
       "location": "Cambridgeshire",
@@ -2897,7 +2867,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-07",
       "freshness_status": "aging",
-      "freshness_age_days": 23,
+      "freshness_age_days": 24,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2914,7 +2884,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Cambridge"
     },
     {
-      "id": "OPP-00487",
+      "id": "OPP-00492",
       "event_name": "Leeds Christmas Market",
       "organiser": "Traders FAQs | Join Now - Boost Your Holiday Sales — Leeds ...",
       "location": "Yorkshire & The Humber",
@@ -2927,7 +2897,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-07",
       "freshness_status": "aging",
-      "freshness_age_days": 23,
+      "freshness_age_days": 24,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2944,7 +2914,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Leeds"
     },
     {
-      "id": "OPP-00419",
+      "id": "OPP-00427",
       "event_name": "lichfielddc.gov.uk",
       "organiser": "Special event traders application (DNU) | Instructions ...",
       "location": "Staffordshire",
@@ -2957,7 +2927,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-07",
       "freshness_status": "aging",
-      "freshness_age_days": 23,
+      "freshness_age_days": 24,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -2974,7 +2944,37 @@ export const opportunitySnapshot = {
       "coordinate_label": "Staffordshire"
     },
     {
-      "id": "OPP-00424",
+      "id": "OPP-00209",
+      "event_name": "salford.gov.uk",
+      "organiser": "Organising an event in a Salford public park, green space ...",
+      "location": "Greater Manchester",
+      "county": "Greater Manchester",
+      "region": "Greater Manchester",
+      "event_start": "",
+      "event_end": "",
+      "application_deadline": "",
+      "stall_fee": "",
+      "vendor_categories": "car boot traders; stallholders; food vendors",
+      "last_checked": "2026-07-16",
+      "freshness_status": "aging",
+      "freshness_age_days": 15,
+      "confidence": "high",
+      "quality_status": "customer_ready",
+      "area_confidence": "exact",
+      "route_type": "council_event",
+      "organiser_type": "local_council",
+      "buyer_fit_tags": "council_route;street_food",
+      "notes": "Staged by fresh PitchList acquisition engine from search result: site:.gov.uk event trader application food vendor | Area enrichment 2026-07-16: inferred Greater Manchester",
+      "application_url": "https://www.salford.gov.uk/static/licensing/street_traders.pdf",
+      "source_url": "https://www.salford.gov.uk/parks-and-open-spaces/organising-an-event-in-a-salford-public-park-green-space-or-open-space/",
+      "latitude": 53.5346,
+      "longitude": -2.2536,
+      "coordinate_source": "place-centroid",
+      "coordinate_precision": "place",
+      "coordinate_label": "Heaton Park"
+    },
+    {
+      "id": "OPP-00432",
       "event_name": "Surrey Hills artisan events stallholder expression of interest",
       "organiser": "Surrey Hills Events 2026 - Stallholder application",
       "location": "Surrey",
@@ -2987,7 +2987,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-10",
       "freshness_status": "aging",
-      "freshness_age_days": 20,
+      "freshness_age_days": 21,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -3004,7 +3004,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Surrey"
     },
     {
-      "id": "OPP-00203",
+      "id": "OPP-00212",
       "event_name": "Trade at St Albans markets",
       "organiser": "Trade at St Albans markets",
       "location": "Hertfordshire",
@@ -3017,7 +3017,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "street food; mobile catering; food traders",
       "last_checked": "2026-07-07",
       "freshness_status": "aging",
-      "freshness_age_days": 23,
+      "freshness_age_days": 24,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -3034,7 +3034,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "St Albans"
     },
     {
-      "id": "OPP-00151",
+      "id": "OPP-00163",
       "event_name": "Traders & Caterers - Bristol Harbour Festival",
       "organiser": "Traders & Caterers - Bristol Harbour Festival",
       "location": "Bristol",
@@ -3047,7 +3047,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food vendors; mobile catering; event concessions",
       "last_checked": "2026-07-12",
       "freshness_status": "aging",
-      "freshness_age_days": 18,
+      "freshness_age_days": 19,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -3064,7 +3064,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Bristol"
     },
     {
-      "id": "OPP-00139",
+      "id": "OPP-00151",
       "event_name": "Twyford Village Fete stallholder application",
       "organiser": "Twyford Village Fete Stallholder Application Form",
       "location": "Berkshire",
@@ -3077,7 +3077,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-07",
       "freshness_status": "aging",
-      "freshness_age_days": 23,
+      "freshness_age_days": 24,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
@@ -3094,7 +3094,7 @@ export const opportunitySnapshot = {
       "coordinate_label": "Twyford"
     },
     {
-      "id": "OPP-00473",
+      "id": "OPP-00478",
       "event_name": "wealdfest.co.uk",
       "organiser": "Stallholder Application - Weald Fest",
       "location": "West Sussex",
@@ -3107,7 +3107,7 @@ export const opportunitySnapshot = {
       "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
       "last_checked": "2026-07-10",
       "freshness_status": "aging",
-      "freshness_age_days": 20,
+      "freshness_age_days": 21,
       "confidence": "high",
       "quality_status": "customer_ready",
       "area_confidence": "exact",
