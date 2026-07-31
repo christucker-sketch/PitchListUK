@@ -178,7 +178,7 @@ function areaPage(group, total) {
   const categoryText = categories.length ? categories.join(', ') : 'festival trader and stallholder';
   const canonical = `${SITE_URL}/areas/${group.slug}`;
   const title = `${area} Trader Opportunities | PitchList UK`;
-  const description = `Find ${area} trader opportunities, including ${categoryText} routes, from the PitchList UK customer-ready database.`;
+  const description = `Find ${area} trader opportunities, including ${categoryText} routes, from the PitchList UK online database.`;
   const polishedExamples = rows
     .map(row => ({ row, name: displayOpportunityName(row) }))
     .filter(item => item.name && !/community grants/i.test(item.name))
@@ -189,15 +189,15 @@ function areaPage(group, total) {
       <div>
         <p class="eyebrow">Area coverage</p>
         <h1>${escapeHtml(area)} trader opportunities and stallholder application routes.</h1>
-        <p class="lede">PitchList currently tracks ${count} customer-ready ${area} ${count === 1 ? 'row' : 'rows'} across ${escapeHtml(categoryText)} searches, with source and application routes unlocked inside the subscriber database.</p>
+        <p class="lede">PitchList currently tracks ${count} online ${area} ${count === 1 ? 'row' : 'rows'} across ${escapeHtml(categoryText)} searches, with source and application routes unlocked inside the subscriber database.</p>
         <div class="actions"><a href="/database?q=${encodeURIComponent(area)}">Search ${escapeHtml(area)}</a><a class="ghost" href="/database">Preview locked rows</a></div>
       </div>
-      <figure class="hero-card"><div class="photo"></div><figcaption>Coverage pages are generated from checked customer-ready database rows, not generic directory lists.</figcaption></figure>
+      <figure class="hero-card"><div class="photo"></div><figcaption>Coverage pages are generated from checked online database rows, not generic directory lists.</figcaption></figure>
     </section>
   </header>
   <main>
     <section class="stats seo-stats" aria-label="${escapeHtml(area)} PitchList coverage stats">
-      <article><b>${count}</b><span>customer-ready ${area} rows</span></article>
+      <article><b>${count}</b><span>online ${area} rows</span></article>
       <article><b>${escapeHtml(latest)}</b><span>latest checked date</span></article>
       <article><b>${total}</b><span>UK customer-ready rows</span></article>
       <article><b>£4.99</b><span>monthly access after trial</span></article>
@@ -255,7 +255,7 @@ function hubPage(groups, snapshot) {
       <div>
         <p class="eyebrow">UK area coverage</p>
         <h1>Trader opportunity coverage by UK area.</h1>
-        <p class="lede">Browse indexable PitchList area pages generated from ${total} customer-ready database rows. The public pages show coverage and examples; source links and application routes stay inside the subscriber database.</p>
+        <p class="lede">Browse indexable PitchList area pages generated from ${total} online database rows. The public pages show coverage and examples; source links and application routes stay inside the subscriber database.</p>
         <div class="actions"><a href="/database">Search the database</a><a class="ghost" href="/areas">Browse area previews</a></div>
       </div>
       <figure class="hero-card"><div class="photo"></div><figcaption>Area pages help traders find coverage without exposing the paid lead routes.</figcaption></figure>
@@ -263,8 +263,8 @@ function hubPage(groups, snapshot) {
   </header>
   <main>
     <section class="stats seo-stats" aria-label="PitchList area coverage stats">
-      <article><b>${groups.length}</b><span>UK areas with customer-ready rows</span></article>
-      <article><b>${total}</b><span>indexed customer-ready rows</span></article>
+      <article><b>${groups.length}</b><span>UK areas with online rows</span></article>
+      <article><b>${total}</b><span>indexed online rows</span></article>
       <article><b>${escapeHtml(snapshot.exported_at.slice(0, 10))}</b><span>latest database export</span></article>
       <article><b>7 days</b><span>free trial before monthly access</span></article>
     </section>

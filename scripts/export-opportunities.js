@@ -13,7 +13,13 @@ const result = searchOpportunities(pitchlistRoot, {
   limit: 1000
 }, new Date());
 
-const rows = result.rows.filter(row => row.quality_status === 'customer_ready').map(row => ({
+const publicStatuses = new Set(['customer_ready', 'review']);
+const rows = result.rows.filter(row => (
+  publicStatuses.has(row.quality_status) &&
+  row.area_confidence !== 'unknown' &&
+  !/^unknown$/i.test(row.region || '') &&
+  (row.market_domain === 'pitchlist.uk' || row.tax_region === 'UK' || row.country === 'United Kingdom')
+)).map(row => ({
   id: row.id,
   event_name: row.event_name,
   organiser: row.organiser,
@@ -33,6 +39,11 @@ const rows = result.rows.filter(row => row.quality_status === 'customer_ready').
   area_confidence: row.area_confidence,
   route_type: row.route_type,
   organiser_type: row.organiser_type,
+  country: row.country,
+  jurisdiction: row.jurisdiction,
+  currency: row.currency,
+  market_domain: row.market_domain,
+  tax_region: row.tax_region,
   buyer_fit_tags: row.buyer_fit_tags,
   notes: row.notes,
   application_url: row.application_url,
