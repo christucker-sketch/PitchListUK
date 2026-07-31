@@ -120,6 +120,8 @@
 .results-summary{display:flex;justify-content:space-between;gap:14px;align-items:center;border:1px solid var(--db-line);border-radius:8px;background:#fff;padding:12px 14px;margin-bottom:14px;box-shadow:0 10px 28px rgba(15,23,42,.05)}
 .results-summary strong{color:#101827}
 .results-summary span{color:var(--db-muted);font-size:13px;line-height:1.35}
+.results-more{display:flex;justify-content:center;margin-top:16px}
+.results-more button{border:1px solid #bfd2e2;border-radius:6px;background:#f7fbff;color:#075985;font-weight:900;padding:11px 14px;cursor:pointer}
 .cloud-results article.opportunity-card{min-height:0}
 .cloud-results article.opportunity-card header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;padding:16px 16px 0}
 .cloud-results article.opportunity-card header strong{grid-column:1;overflow-wrap:anywhere}

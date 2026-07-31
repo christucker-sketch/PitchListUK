@@ -190,6 +190,7 @@ export async function onRequestGet(context) {
   const queryTerms = splitTerms(url.searchParams.get('q'));
   const confidence = String(url.searchParams.get('confidence') || '').trim().toLowerCase();
   const requestedLimit = Math.min(Math.max(Number(url.searchParams.get('limit') || 75), 1), 250);
+  const requestedOffset = Math.min(Math.max(Number(url.searchParams.get('offset') || 0), 0), 10000);
   const previewLimit = 50;
   const limit = fullAccess ? requestedLimit : Math.min(requestedLimit, previewLimit);
 
@@ -238,6 +239,11 @@ export async function onRequestGet(context) {
       || String(a.event_name || '').localeCompare(String(b.event_name || ''));
   });
 
+  const visibleRows = fullAccess ? rows : rows.slice(0, previewLimit);
+  const offset = Math.min(requestedOffset, visibleRows.length);
+  const pageRows = visibleRows.slice(offset, offset + limit);
+  const nextOffset = offset + pageRows.length < visibleRows.length ? offset + pageRows.length : null;
+
   return json({
     updated: opportunitySnapshot.exported_at,
     source: opportunitySnapshot.source,
@@ -248,10 +254,13 @@ export async function onRequestGet(context) {
     locked_fields: fullAccess ? [] : ['application_url', 'source_url'],
     total: opportunitySnapshot.total,
     count: rows.length,
-    returned: Math.min(rows.length, limit),
+    offset,
+    returned: pageRows.length,
+    next_offset: nextOffset,
+    has_more: nextOffset !== null,
     status_summary: statusSummary(rows),
     postcode_distance_ready: Boolean(origin),
-    rows: rows.slice(0, limit).map(({ _search, _broad_area_centroid, ...row }) => {
+    rows: pageRows.map(({ _search, _broad_area_centroid, ...row }) => {
       const output = _broad_area_centroid
         ? { ...row, coordinate_precision: 'area', distance_miles: null }
         : row;

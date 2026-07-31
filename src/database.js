@@ -347,7 +347,7 @@ function renderResults(rows) {
   }
   const selected = new Set(savedRows().map(row => row.key));
   const summary = latestData
-    ? `<div class="results-summary"><strong>Showing ${esc(latestData.returned)} of ${esc(latestData.count)} matches</strong><span>${esc(latestData.access === 'subscriber' ? 'Source links are unlocked.' : 'Preview rows show coverage; source links unlock after trial signup.')}</span></div>`
+    ? `<div class="results-summary"><strong>Showing ${esc(rows.length)} of ${esc(latestData.count)} matches</strong><span>${esc(latestData.access === 'subscriber' ? 'Source links are unlocked.' : 'Preview rows show coverage; source links unlock after trial signup.')}</span></div>`
     : '';
   const cards = rows.slice(0, 75).map((row, index) => {
     const key = rowKey(row);
@@ -381,7 +381,10 @@ function renderResults(rows) {
       </footer>
     </article>`;
   }).join('');
-  resultsEl.innerHTML = `${summary}<div class="result-grid">${cards}</div>`;
+  const more = latestData?.has_more
+    ? '<div class="results-more"><button type="button" data-load-more>Show more matches</button></div>'
+    : '';
+  resultsEl.innerHTML = `${summary}<div class="result-grid">${cards}</div>${more}`;
 }
 
 function storedSessionId() {
@@ -418,10 +421,11 @@ async function verifyReturnedAccessToken() {
   window.history.replaceState({}, '', url.toString());
 }
 
-async function runSearch() {
+function buildSearchParams(offset = 0) {
   const formData = new FormData(form);
   const params = new URLSearchParams(formData);
-  params.set('limit', '75');
+  params.set('limit', '50');
+  if (offset > 0) params.set('offset', String(offset));
   const sessionId = storedSessionId();
   if (sessionId) params.set('session_id', sessionId);
   const token = storedAccessToken();
@@ -429,15 +433,27 @@ async function runSearch() {
   for (const [key, value] of [...params.entries()]) {
     if (!String(value || '').trim()) params.delete(key);
   }
-  resultsEl.innerHTML = '<div class="cloud-empty"><strong>Searching</strong><span>Checking the protected PitchList database...</span></div>';
+  return params;
+}
+
+async function runSearch({ append = false } = {}) {
+  const params = append && latestData?.next_offset !== null
+    ? buildSearchParams(Number(latestData.next_offset || 0))
+    : buildSearchParams(0);
+  if (!append) {
+    latestRows = [];
+    resultsEl.innerHTML = '<div class="cloud-empty"><strong>Searching</strong><span>Checking the protected PitchList database...</span></div>';
+  }
   const response = await fetch(`/api/customer-opportunities/search?${params.toString()}`, { cache: 'no-store' });
   const text = await response.text();
   const data = JSON.parse(text);
   if (!response.ok) throw new Error(data.message || 'Search failed');
-  latestData = data;
+  const mergedRows = append ? [...latestRows, ...(data.rows || [])] : (data.rows || []);
+  latestRows = mergedRows;
+  latestData = { ...data, rows: mergedRows, returned: mergedRows.length };
   renderMetrics(data);
   renderAccount(data);
-  renderResults(data.rows || []);
+  renderResults(mergedRows);
 }
 
 form.addEventListener('submit', event => {
@@ -446,6 +462,10 @@ form.addEventListener('submit', event => {
 });
 
 resultsEl.addEventListener('click', event => {
+  if (event.target.closest('[data-load-more]')) {
+    runSearch({ append: true });
+    return;
+  }
   const button = event.target.closest('[data-shortlist-key]');
   if (!button) return;
   toggleSaved(button.dataset.shortlistKey);

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'scripts/generate-seo-pages.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/stripe.mjs', 'functions/_data/opportunities.mjs'];
+const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'scripts/generate-seo-pages.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/stripe.mjs', 'functions/_lib/vendor-profiles.mjs', 'functions/_data/opportunities.mjs'];
 for (const file of required) {
   if (!fs.existsSync(file)) throw new Error(`Missing ${file}`);
 }
@@ -68,6 +68,10 @@ for (const text of ['Live searchable database', '/terms', '/privacy']) {
 for (const text of ['value="food"', 'public_listing_opt_in" type="checkbox" checked']) {
   if (database.includes(text)) throw new Error(`Database must not include risky/default filter state: ${text}`);
 }
+for (const text of ['Business name', 'Your name', 'Specialty', 'Regions covered', 'public vendor profile']) {
+  if (database.includes(text)) throw new Error(`Database signup must stay low-friction and private by default: ${text}`);
+}
+if (!database.includes('/database.js?v=20260731-4')) throw new Error('Database JS cache-bust version must be current');
 for (const text of ['og:title', 'og:image', 'twitter:card']) {
   if (!database.includes(text)) throw new Error(`Database page missing share metadata: ${text}`);
 }
@@ -81,11 +85,11 @@ for (const url of ['/terms', '/privacy']) {
   if (!html.includes(url)) throw new Error(`Homepage missing legal link: ${url}`);
   if (!sitemap.includes(`https://pitchlist.uk${url}`)) throw new Error(`Sitemap missing legal URL: ${url}`);
 }
-for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV', 'checked in last 14 days', 'result-grid']) {
+for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV', 'checked in last 14 days', 'result-grid', 'data-load-more', 'next_offset']) {
   if (!databaseJs.includes(text)) throw new Error(`Missing database JS text: ${text}`);
 }
 const functionApi = fs.readFileSync('functions/api/customer-opportunities/search.js', 'utf8');
-for (const text of ['PITCHLIST_DATABASE_ACCESS_CODE', 'postcodes.io', 'haversineMiles', 'opportunitySnapshot', 'checkoutSessionAccess', 'previewRow', 'status_summary', 'coordinate_precision']) {
+for (const text of ['PITCHLIST_DATABASE_ACCESS_CODE', 'postcodes.io', 'haversineMiles', 'opportunitySnapshot', 'checkoutSessionAccess', 'previewRow', 'status_summary', 'coordinate_precision', 'offset', 'next_offset', 'has_more']) {
   if (!functionApi.includes(text)) throw new Error(`Missing customer API text: ${text}`);
 }
 if (!functionApi.includes('previewLimit = 50')) throw new Error('Preview should show enough rows to prove coverage');
@@ -106,14 +110,29 @@ const opportunityData = JSON.parse(dataModule.replace(/^export const opportunity
 if (!Array.isArray(opportunityData.rows) || opportunityData.rows.length < 50) throw new Error('Expected at least 50 exported opportunities');
 for (const row of opportunityData.rows) {
   const text = [row.event_name, row.organiser, row.source_url, row.application_url].join(' ');
-  if (/downtownkentwa|farmingvillechamber|visitsuffolkva|smmarket\.org|essexct|londonderrynh|watersidedistrict|downtownnorfolk|pitchlist\.uk|festfinder|pitchmarketsandeventsuk|kfma|moderngov|streetfoodfests/i.test(text)) {
+  if (/downtownkentwa|farmingvillechamber|visitsuffolkva|smmarket\.org|essexct|londonderrynh|watersidedistrict|downtownnorfolk|pitchlist\.uk|festfinder|pitchmarketsandeventsuk|kfma|moderngov|streetfoodfests|certificates\.lsba|spaceandpeople|britisheventcatering|foodmarketplace|themarketwfd|youtube|whatsonni/i.test(text)) {
     throw new Error(`Export includes non-UK leakage: ${row.event_name}`);
   }
-  if (/skip to main content|to help us give you the best experience|accept all|your privacy/i.test(row.event_name || '')) {
+  if (/skip to main content|skip to content|to help us give you the best experience|accept all|your privacy|lorem ipsum|save changes close|our food hall|showcasing local makers/i.test(row.event_name || '')) {
     throw new Error(`Export includes boilerplate title: ${row.event_name}`);
   }
-  if (/\b(policy|guidance|checklist|terms and conditions|licensing policy)\b/i.test(row.event_name || '')) {
+  if (/\b(policy|guidance|checklist|terms and conditions|licensing policy|glossary|case study)\b/i.test(row.event_name || '')) {
     throw new Error(`Export includes non-opportunity title: ${row.event_name}`);
+  }
+  if (/^(ireland|unknown)$/i.test(row.county || row.region || '')) {
+    throw new Error(`Export includes invalid public area: ${row.event_name}`);
+  }
+  if (/^(street trading|apply to trade|pop-up events|retail services|vendor application|food and drink vendors)$/i.test(row.event_name || '') && !row.organiser) {
+    throw new Error(`Export includes generic title with no organiser: ${row.event_name}`);
+  }
+}
+if (fs.existsSync('public/areas')) {
+  for (const file of fs.readdirSync('public/areas').filter(name => name.endsWith('.html') && name !== 'index.html')) {
+    const areaHtml = fs.readFileSync(`public/areas/${file}`, 'utf8');
+    const slug = file.replace(/\.html$/, '');
+    if (/noindex/i.test(areaHtml) && sitemap.includes(`https://pitchlist.uk/areas/${slug}`)) {
+      throw new Error(`Sitemap includes noindexed area page: ${slug}`);
+    }
   }
 }
 const generator = fs.readFileSync('scripts/generate-seo-pages.js', 'utf8');
