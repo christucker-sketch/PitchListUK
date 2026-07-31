@@ -28,6 +28,8 @@ for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/dat
 if (!html.includes('/database')) throw new Error('Homepage missing database link');
 if (!html.includes('/areas')) throw new Error('Homepage missing area coverage link');
 if (!html.includes('£4.99')) throw new Error('Homepage missing subscription price');
+if (!html.includes('liveDatabaseCount')) throw new Error('Homepage missing live database count hook');
+if (!html.includes('/api/customer-opportunities/search?limit=1')) throw new Error('Homepage missing live database count fetch');
 for (const text of ['/api/sample-request', 'sampleRequestStatus', 'Request a sample', 'Request free sample', 'Request 5 sample rows', '/#coverage', '/#sample', '£19']) {
   if (html.includes(text)) throw new Error(`Homepage must not include old sample funnel text: ${text}`);
 }

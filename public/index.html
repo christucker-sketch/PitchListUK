@@ -90,7 +90,7 @@
         <a class="secondary-action" href="/areas">Preview by area</a>
       </div>
       <div class="home-proof" aria-label="PitchList quick facts">
-        <span><strong>350+</strong> searchable rows</span>
+        <span><strong id="liveDatabaseCount">350+</strong> searchable rows</span>
         <span><strong>£4.99/month</strong> after trial</span>
         <span><strong>Source-linked</strong> routes</span>
       </div>
@@ -203,5 +203,18 @@
     <strong>PitchList UK</strong>
     <span>Festival trader applications, stallholder opportunities and food trader leads for UK independents. <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
   </footer>
+  <script>
+    (() => {
+      const count = document.getElementById('liveDatabaseCount');
+      if (!count) return;
+      fetch('/api/customer-opportunities/search?limit=1', { cache: 'no-store' })
+        .then(response => response.ok ? response.json() : null)
+        .then(data => {
+          const total = Number(data && data.total);
+          if (Number.isFinite(total) && total > 0) count.textContent = total.toLocaleString('en-GB');
+        })
+        .catch(() => {});
+    })();
+  </script>
 </body>
 </html>
