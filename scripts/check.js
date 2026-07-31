@@ -31,6 +31,9 @@ if (!html.includes('/areas')) throw new Error('Homepage missing area coverage li
 if (!html.includes('£4.99')) throw new Error('Homepage missing subscription price');
 if (!html.includes('liveDatabaseCount')) throw new Error('Homepage missing live database count hook');
 if (!html.includes('/api/customer-opportunities/search?limit=1')) throw new Error('Homepage missing live database count fetch');
+for (const text of ['hero-search', 'name="postcode"', 'name="radius"', 'Show my pitches', 'proof-row-list', 'This is what a row looks like', 'comparison-strip', '£4.99 a month, or an evening a week', 'faq-section', 'FAQPage']) {
+  if (!html.includes(text)) throw new Error(`Homepage missing conversion structure: ${text}`);
+}
 for (const text of ['Fee or deadline', 'Confidence marker', 'before the deadline disappears']) {
   if (html.includes(text)) throw new Error(`Homepage must not overclaim unavailable fields/copy: ${text}`);
 }
@@ -75,7 +78,7 @@ for (const text of ['value="food"', 'public_listing_opt_in" type="checkbox" chec
 for (const text of ['Business name', 'Your name', 'Specialty', 'Regions covered', 'public vendor profile', 'Manage billing', 'Sign out', 'Any confidence']) {
   if (database.includes(text)) throw new Error(`Database signup must stay low-friction and private by default: ${text}`);
 }
-if (!database.includes('/database.js?v=20260731-5')) throw new Error('Database JS cache-bust version must be current');
+if (!database.includes('/database.js?v=20260731-6')) throw new Error('Database JS cache-bust version must be current');
 for (const text of ['og:title', 'og:image', 'twitter:card']) {
   if (!database.includes(text)) throw new Error(`Database page missing share metadata: ${text}`);
 }
@@ -89,7 +92,7 @@ for (const url of ['/terms', '/privacy']) {
   if (!html.includes(url)) throw new Error(`Homepage missing legal link: ${url}`);
   if (!sitemap.includes(`https://pitchlist.uk${url}`)) throw new Error(`Sitemap missing legal URL: ${url}`);
 }
-for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV', 'checked in last 14 days', 'result-grid', 'data-load-more', 'next_offset']) {
+for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV', 'checked in last 14 days', 'result-grid', 'data-load-more', 'next_offset', 'applyInboundSearchParams', 'radius_miles', 'result-row', 'result-title']) {
   if (!databaseJs.includes(text)) throw new Error(`Missing database JS text: ${text}`);
 }
 for (const text of ["document.getElementById('manageBilling')", "document.getElementById('clearAccess')", "document.getElementById('databaseAccount')"]) {

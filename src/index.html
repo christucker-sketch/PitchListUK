@@ -9,7 +9,7 @@
   <meta name="author" content="PitchList UK" />
   <meta name="theme-color" content="#101827" />
   <link rel="canonical" href="https://pitchlist.uk/" />
-  <link rel="stylesheet" href="/styles.css?v=e2aec34" />
+  <link rel="stylesheet" href="/styles.css?v=20260731-3" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="PitchList UK" />
   <meta property="og:title" content="UK Festival Trader Applications & Stallholder Opportunities | PitchList UK" />
@@ -66,6 +66,62 @@
     }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How often is the database updated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rows carry a checked date. The database is re-checked continuously and every row shows when it was last verified."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens after the 7-day trial?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "After the trial it is GBP 4.99 per month, cancellable any time through the Stripe portal."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you guarantee I'll get a pitch?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. PitchList surfaces application routes; acceptance is always the organiser's decision."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What areas do you cover?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Coverage varies by area and is strongest in London, Scotland, Wales and West Yorkshire. Check your area before subscribing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's actually in a row?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Organiser, application route, source page, county, distance from your postcode, event date where published, trader categories and last checked date."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I cancel easily?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, self-serve via the Stripe customer portal. No email required."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="home-redesign">
   <header class="home-hero">
@@ -83,21 +139,77 @@
 
     <section class="home-hero-content">
       <p class="eyebrow">For street food vendors, mobile caterers and stallholders</p>
-      <h1>Find current UK trader pitches without trawling organiser sites.</h1>
+      <h1>Find UK trader pitches near you, in one search.</h1>
       <p class="lede">Search checked festival trader applications, market stallholder openings, council event routes and food truck pitches by area, category and last checked date. Preview the database free; unlock source links and application routes with a 7-day trial.</p>
-      <div class="home-actions" aria-label="Primary actions">
-        <a class="primary-action" href="/database">Search the database</a>
-        <a class="secondary-action" href="/areas">Preview by area</a>
-      </div>
+      <form class="hero-search" action="/database" method="get">
+        <label class="sr-only" for="hero-postcode">Your postcode or outcode</label>
+        <input id="hero-postcode" name="postcode" type="text" placeholder="Enter your postcode, e.g. ME15" autocomplete="postal-code" inputmode="text" />
+        <select name="radius" aria-label="Travel radius">
+          <option value="25">25 miles</option>
+          <option value="50" selected>50 miles</option>
+          <option value="100">100 miles</option>
+        </select>
+        <button type="submit" class="btn-primary">Show my pitches</button>
+      </form>
+      <p class="hero-search-note">Free to search. No card needed to see what's near you.</p>
       <div class="home-proof" aria-label="PitchList quick facts">
         <span><strong id="liveDatabaseCount">239</strong> searchable rows</span>
         <span><strong>£4.99/month</strong> after trial</span>
-        <span><strong>Source-linked</strong> routes</span>
+        <span><strong>Checked</strong> this week</span>
       </div>
     </section>
   </header>
 
   <main class="home-main">
+    <section class="product-section proof-rows-section">
+      <div class="section-head">
+        <p class="eyebrow">Database preview</p>
+        <h2>This is what a row looks like.</h2>
+        <p>Every row carries a real organiser, a checked date and a direct application route. The route unlocks with the trial.</p>
+      </div>
+      <div class="proof-row-list" aria-label="Example PitchList rows">
+        <article class="proof-row">
+          <div>
+            <strong>General Trade - Kent County Show</strong>
+            <span>4.1 miles · Kent · Checked 31 Jul 2026</span>
+          </div>
+          <b>Locked: kcas.org.uk</b>
+        </article>
+        <article class="proof-row">
+          <div>
+            <strong>Apply to be a stallholder at Rochester Christmas Market</strong>
+            <span>9.5 miles · Kent · Event date 01 Sep 2026</span>
+          </div>
+          <b>Locked: medway.gov.uk</b>
+        </article>
+        <article class="proof-row">
+          <div>
+            <strong>Borough Market trader application</strong>
+            <span>32.1 miles · London · Checked 25 Jul 2026</span>
+          </div>
+          <b>Locked: boroughmarket.org.uk</b>
+        </article>
+      </div>
+    </section>
+
+    <section class="comparison-strip" aria-label="PitchList comparison">
+      <h2>£4.99 a month, or an evening a week.</h2>
+      <div class="comparison-grid">
+        <article>
+          <span>Doing it yourself</span>
+          <p>3-4 hours a week trawling organiser sites</p>
+          <p>Deadlines found after they have passed</p>
+          <p>Bookmarks, spreadsheets, screenshots</p>
+        </article>
+        <article>
+          <span>PitchList</span>
+          <p>One search by postcode</p>
+          <p>Event dates and checked dates on every row</p>
+          <p>Shortlist built in</p>
+        </article>
+      </div>
+    </section>
+
     <section class="database-strip" aria-label="Database preview summary">
       <article>
         <span>Preview</span>
@@ -187,6 +299,39 @@
         <a href="/festival-vendors-wanted">Festival vendors wanted</a>
         <a href="/food-traders-wanted">Food traders wanted</a>
         <a href="/food-truck-pitches">Food truck pitches</a>
+      </div>
+    </section>
+
+    <section class="product-section faq-section">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>Before you start the trial.</h2>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>How often is the database updated?</summary>
+          <p>Rows carry a checked date. The database is re-checked continuously and every row shows when it was last verified.</p>
+        </details>
+        <details>
+          <summary>What happens after the 7-day trial?</summary>
+          <p>£4.99/month, cancel any time through the Stripe portal.</p>
+        </details>
+        <details>
+          <summary>Do you guarantee I'll get a pitch?</summary>
+          <p>No. PitchList surfaces application routes; acceptance is always the organiser's decision.</p>
+        </details>
+        <details>
+          <summary>What areas do you cover?</summary>
+          <p>Coverage varies by area and is strongest in London, Scotland, Wales and West Yorkshire. Check your area before subscribing.</p>
+        </details>
+        <details>
+          <summary>What's actually in a row?</summary>
+          <p>Organiser, application route, source page, county, distance from your postcode, event date where published, trader categories and last checked date.</p>
+        </details>
+        <details>
+          <summary>Can I cancel easily?</summary>
+          <p>Yes, self-serve via the Stripe customer portal. No email required.</p>
+        </details>
       </div>
     </section>
 

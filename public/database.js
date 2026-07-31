@@ -390,13 +390,13 @@ function renderResults(rows) {
           : '';
     const meta = distance ? [distance, ...chips(row)] : chips(row);
     const lockedCopy = row.locked ? `Preview hides source and application route${row.source_host ? ` from ${row.source_host}` : ''}.` : 'Source and application route unlocked.';
-    return `<article class="opportunity-card ${esc(imageClass(row, index))} ${row.locked ? 'is-locked' : 'is-unlocked'}">
+    return `<article class="opportunity-card result-row ${esc(imageClass(row, index))} ${row.locked ? 'is-locked' : 'is-unlocked'}">
       <header>
-        <strong>${esc(displayName(row))}</strong>
-        ${row.organiser && row.organiser !== displayName(row) ? `<span>${esc(row.organiser)}</span>` : ''}
-        <b>${esc(checkedLabel(row))}</b>
+        <strong class="result-title">${esc(displayName(row))}</strong>
+        ${row.organiser && row.organiser !== displayName(row) ? `<span class="result-org">${esc(row.organiser)}</span>` : ''}
+        <b class="result-checked">${esc(checkedLabel(row))}</b>
       </header>
-      <div class="cloud-facts">
+      <div class="cloud-facts result-meta">
         ${meta.map(item => `<span>${esc(item)}</span>`).join('')}
       </div>
       <p>${esc(row.vendor_categories || row.notes || 'Trader categories to verify from source.')}</p>
@@ -413,6 +413,25 @@ function renderResults(rows) {
     ? '<div class="results-more"><button type="button" data-load-more>Show more matches</button></div>'
     : '';
   resultsEl.innerHTML = `${summary}<div class="result-grid">${cards}</div>${more}`;
+}
+
+function applyInboundSearchParams() {
+  const params = new URLSearchParams(window.location.search);
+  const postcode = params.get('postcode');
+  const radius = params.get('radius') || params.get('radius_miles');
+  const category = params.get('category');
+  const q = params.get('q');
+  const mappings = [
+    ['postcode', postcode],
+    ['radius_miles', radius],
+    ['category', category],
+    ['q', q]
+  ];
+  for (const [name, value] of mappings) {
+    if (value === null || value === '') continue;
+    const field = form.elements[name];
+    if (field) field.value = value;
+  }
 }
 
 function storedSessionId() {
@@ -564,6 +583,7 @@ accessForm.addEventListener('submit', async event => {
 Promise.resolve()
   .then(verifyReturnedSession)
   .then(verifyReturnedAccessToken)
+  .then(applyInboundSearchParams)
   .then(runSearch)
   .catch(err => {
   resultsEl.innerHTML = `<div class="cloud-empty error"><strong>Database unavailable</strong><span>${esc(err.message)}</span></div>`;
