@@ -467,8 +467,8 @@ vendorSignup.addEventListener('submit', async event => {
   vendorSignupStatus.textContent = 'Creating your PitchList vendor profile...';
   try {
     const vendorProfile = vendorProfileFromForm();
-    if (!vendorProfile.business_name || !vendorProfile.email || !vendorProfile.specialty) {
-      throw new Error('Business name, email and specialty are required.');
+    if (!vendorProfile.email) {
+      throw new Error('Email is required.');
     }
     const response = await fetch('/api/billing/checkout', {
       method: 'POST',
@@ -480,7 +480,7 @@ vendorSignup.addEventListener('submit', async event => {
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || 'Stripe checkout is not available yet');
-    vendorSignupStatus.textContent = 'Profile started. Opening Stripe...';
+    vendorSignupStatus.textContent = 'Opening Stripe...';
     window.location.href = data.url;
   } catch (err) {
     vendorSignupStatus.textContent = err.message;

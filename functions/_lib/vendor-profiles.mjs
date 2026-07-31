@@ -144,8 +144,8 @@ export function normaliseProfileInput(input = {}, existing = null) {
 
 export function assertProfileInput(profile) {
   if (!emailValid(profile.private_account.email)) return 'A valid email is required.';
-  if (!profile.public_profile.business_name) return 'Business name is required.';
-  if (!profile.public_profile.specialty) return 'Business type or specialty is required.';
+  if (profile.public_listing_opt_in && !profile.public_profile.business_name) return 'Business name is required for public listings.';
+  if (profile.public_listing_opt_in && !profile.public_profile.specialty) return 'Business type or specialty is required for public listings.';
   return '';
 }
 

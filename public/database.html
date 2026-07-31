@@ -28,15 +28,9 @@
         <p class="lede">Search the live PitchList database by postcode, category and last checked date. Preview tiles show the shape of the data; the trial unlocks source links and application routes.</p>
         <form class="vendor-signup-form" id="vendorSignup">
           <div class="vendor-signup-grid">
-            <label><span>Business name</span><input name="business_name" autocomplete="organization" required /></label>
-            <label><span>Your name</span><input name="contact_name" autocomplete="name" required /></label>
             <label><span>Email</span><input name="email" type="email" autocomplete="email" required /></label>
-            <label><span>Phone</span><input name="phone" type="tel" autocomplete="tel" /></label>
             <label><span>Base postcode</span><input name="base_postcode" autocomplete="postal-code" placeholder="CB9 9ED" /></label>
-            <label><span>Specialty</span><input name="specialty" placeholder="mobile bar, street food, jewellery" required /></label>
           </div>
-          <label><span>Regions covered</span><textarea name="regions" placeholder="Suffolk, Norfolk, London, UK-wide for the right event"></textarea></label>
-          <label class="vendor-opt-in"><input name="public_listing_opt_in" type="checkbox" /> <span>Create my public vendor profile so event organisers can find and contact me.</span></label>
           <div class="database-actions">
             <button type="submit" id="startTrial">Start free trial</button>
           </div>
@@ -90,7 +84,7 @@
     <section class="cloud-results" id="cloudResults" aria-live="polite"></section>
   </main>
 
-  <script src="/database.js?v=20260731-2"></script>
+  <script src="/database.js?v=20260731-3"></script>
   <footer>
     <strong>PitchList UK</strong>
     <span><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="mailto:hello@pitchlist.uk">hello@pitchlist.uk</a></span>
