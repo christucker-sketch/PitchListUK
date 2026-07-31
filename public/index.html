@@ -87,7 +87,7 @@
       <p class="lede">Search checked festival trader applications, market stallholder openings, council event routes and food truck pitches by area, category and freshness. Preview the database free; unlock source links and application routes with a 7-day trial.</p>
       <div class="home-actions" aria-label="Primary actions">
         <a class="primary-action" href="/database">Search the database</a>
-        <a class="secondary-action" href="#sample-request">Request a sample</a>
+        <a class="secondary-action" href="/areas">Preview by area</a>
       </div>
       <div class="home-proof" aria-label="PitchList quick facts">
         <span><strong>104</strong> customer-ready rows</span>
@@ -178,53 +178,6 @@
       </div>
     </section>
 
-    <section id="sample-request" class="product-section sample-section">
-      <div>
-        <p class="eyebrow">Need a quick proof check?</p>
-        <h2>Ask for 5 sample rows for your patch.</h2>
-        <p>Use this if you want us to sanity-check your base area before starting the trial, or if your category is awkward enough that a human coverage pass makes sense.</p>
-      </div>
-      <form class="sample-form" id="coverageForm" action="/api/sample-request" method="post">
-        <label>
-          <span>Your name</span>
-          <input name="name" autocomplete="name" placeholder="Jane Smith" required />
-        </label>
-        <label>
-          <span>Business</span>
-          <input name="business" autocomplete="organization" placeholder="Your food business" required />
-        </label>
-        <label>
-          <span>Email</span>
-          <input name="email" type="email" autocomplete="email" placeholder="you@example.co.uk" required />
-        </label>
-        <label>
-          <span>Base town or postcode</span>
-          <input name="base_location" autocomplete="postal-code" placeholder="Maidstone, Kent or ME14" required />
-        </label>
-        <label>
-          <span>Travel range</span>
-          <select name="travel_radius" required>
-            <option value="">Choose radius</option>
-            <option value="25 miles">25 miles</option>
-            <option value="50 miles">50 miles</option>
-            <option value="75 miles">75 miles</option>
-            <option value="100 miles">100 miles</option>
-            <option value="UK-wide for the right event">UK-wide for the right event</option>
-          </select>
-        </label>
-        <label class="sample-wide">
-          <span>Useful notes</span>
-          <textarea name="area_notes" rows="4" placeholder="Example: Kent, Sussex and South East London. Burger/fries setup, halal-friendly preferred."></textarea>
-        </label>
-        <input type="hidden" name="selected_areas" id="selectedAreasInput" />
-        <input type="hidden" name="selected_region_ids" id="selectedRegionIdsInput" />
-        <input type="hidden" name="selected_counties" id="selectedCountiesInput" />
-        <input type="hidden" name="coverage_payload_json" id="coveragePayloadInput" />
-        <div class="sample-status" id="sampleRequestStatus" aria-live="polite" hidden></div>
-        <button type="submit">Request free sample</button>
-      </form>
-    </section>
-
     <section class="product-section link-section">
       <div>
         <p class="eyebrow">Popular routes</p>
@@ -250,65 +203,5 @@
     <strong>PitchList UK</strong>
     <span>Festival trader applications, stallholder opportunities and food trader leads for UK independents. <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
   </footer>
-
-  <script>
-    (() => {
-      const form = document.getElementById('coverageForm');
-      const statusMessage = document.getElementById('sampleRequestStatus');
-      const payloadInput = document.getElementById('coveragePayloadInput');
-      const areaInput = document.getElementById('selectedAreasInput');
-      const regionIdsInput = document.getElementById('selectedRegionIdsInput');
-      const countiesInput = document.getElementById('selectedCountiesInput');
-      if (!form) return;
-
-      form.addEventListener('submit', event => {
-        event.preventDefault();
-        const data = new FormData(form);
-        const payload = {
-          name: String(data.get('name') || '').trim(),
-          business: String(data.get('business') || '').trim(),
-          email: String(data.get('email') || '').trim(),
-          base_location: String(data.get('base_location') || '').trim(),
-          travel_radius: String(data.get('travel_radius') || '').trim(),
-          area_notes: String(data.get('area_notes') || '').trim(),
-          selected_region_ids: [],
-          selected_regions: [],
-          selected_counties: []
-        };
-        areaInput.value = payload.base_location;
-        regionIdsInput.value = '';
-        countiesInput.value = '';
-        payloadInput.value = JSON.stringify(payload);
-        statusMessage.hidden = false;
-        statusMessage.textContent = 'Sending sample request...';
-
-        fetch('/api/sample-request', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).then(response => {
-          if (!response.ok) throw new Error('sample request delivery failed');
-          statusMessage.textContent = 'Request sent. We will check your area and reply from hello@pitchlist.uk.';
-        }).catch(() => {
-          const body = [
-            'Free sample request',
-            '',
-            `Name: ${payload.name}`,
-            `Business: ${payload.business}`,
-            `Email: ${payload.email}`,
-            `Base town/postcode: ${payload.base_location}`,
-            `Max travel range: ${payload.travel_radius}`,
-            `Useful notes: ${payload.area_notes || '(not specified)'}`,
-            '',
-            'Please check whether my area/category has enough useful current opportunities for PitchList UK.',
-            '',
-            `Coverage payload JSON: ${payloadInput.value}`
-          ].join('\n');
-          statusMessage.textContent = 'Email fallback opened. Send the prepared request from your mail app.';
-          window.location.href = `mailto:hello@pitchlist.uk?subject=${encodeURIComponent('PitchList UK free sample request')}&body=${encodeURIComponent(body)}`;
-        });
-      });
-    })();
-  </script>
 </body>
 </html>

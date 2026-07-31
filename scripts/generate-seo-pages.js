@@ -190,7 +190,7 @@ function areaPage(group, total) {
         <p class="eyebrow">Area coverage</p>
         <h1>${escapeHtml(area)} trader opportunities and stallholder application routes.</h1>
         <p class="lede">PitchList currently tracks ${count} customer-ready ${area} ${count === 1 ? 'row' : 'rows'} across ${escapeHtml(categoryText)} searches, with source and application routes unlocked inside the subscriber database.</p>
-        <div class="actions"><a href="/database?q=${encodeURIComponent(area)}">Search ${escapeHtml(area)}</a><a class="ghost" href="/#coverage">Request sample rows</a></div>
+        <div class="actions"><a href="/database?q=${encodeURIComponent(area)}">Search ${escapeHtml(area)}</a><a class="ghost" href="/database">Preview locked rows</a></div>
       </div>
       <figure class="hero-card"><div class="photo"></div><figcaption>Coverage pages are generated from checked customer-ready database rows, not generic directory lists.</figcaption></figure>
     </section>
@@ -256,7 +256,7 @@ function hubPage(groups, snapshot) {
         <p class="eyebrow">UK area coverage</p>
         <h1>Trader opportunity coverage by UK area.</h1>
         <p class="lede">Browse indexable PitchList area pages generated from ${total} customer-ready database rows. The public pages show coverage and examples; source links and application routes stay inside the subscriber database.</p>
-        <div class="actions"><a href="/database">Search the database</a><a class="ghost" href="/#coverage">Request sample rows</a></div>
+        <div class="actions"><a href="/database">Search the database</a><a class="ghost" href="/areas">Browse area previews</a></div>
       </div>
       <figure class="hero-card"><div class="photo"></div><figcaption>Area pages help traders find coverage without exposing the paid lead routes.</figcaption></figure>
     </section>

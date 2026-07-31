@@ -28,9 +28,9 @@ for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/dat
 if (!html.includes('/database')) throw new Error('Homepage missing database link');
 if (!html.includes('/areas')) throw new Error('Homepage missing area coverage link');
 if (!html.includes('£4.99')) throw new Error('Homepage missing subscription price');
-if (!html.includes('/api/sample-request')) throw new Error('Homepage missing sample request API submit');
-if (html.includes('id="coverageForm" action="mailto:hello@pitchlist.uk"')) throw new Error('Homepage coverage form must not depend on mailto action');
-if (!html.includes('sampleRequestStatus')) throw new Error('Homepage missing sample request status message');
+for (const text of ['/api/sample-request', 'sampleRequestStatus', 'Request a sample', 'Request free sample', 'Request 5 sample rows', '/#coverage', '/#sample', '£19']) {
+  if (html.includes(text)) throw new Error(`Homepage must not include old sample funnel text: ${text}`);
+}
 for (const text of ['7-day free trial', '£4.99/month', '/database']) {
   if (!buy.includes(text)) throw new Error(`Missing buy page text: ${text}`);
 }
@@ -38,16 +38,19 @@ for (const text of ['Subscription started', 'hello@pitchlist.uk']) {
   if (!success.includes(text)) throw new Error(`Missing success page text: ${text}`);
 }
 for (const [name, page, expected] of [
-  ['festival page', festival, ['Festival Trader Applications UK', 'festival trader applications', '/#coverage']],
-  ['stallholders page', stallholders, ['Stall Holders Wanted UK', 'stall holders wanted', '/#coverage']],
-  ['food traders page', foodTraders, ['Food Traders Wanted UK', 'food traders wanted', '/#coverage']],
-  ['festival vendors page', festivalVendors, ['Festival Vendors Wanted UK', 'festival vendors wanted', '/#coverage']],
-  ['market stallholder page', marketStallholders, ['Market Stallholder Applications UK', 'market stallholder applications', '/#coverage']],
-  ['council event page', councilEvents, ['Council Event Trader Applications UK', 'council event trader applications', '/#coverage']],
-  ['food truck page', foodTruckPitches, ['Food Truck Pitches UK', 'food truck pitches', '/#coverage']],
+  ['festival page', festival, ['Festival Trader Applications UK', 'festival trader applications', '/database']],
+  ['stallholders page', stallholders, ['Stall Holders Wanted UK', 'stall holders wanted', '/database']],
+  ['food traders page', foodTraders, ['Food Traders Wanted UK', 'food traders wanted', '/database']],
+  ['festival vendors page', festivalVendors, ['Festival Vendors Wanted UK', 'festival vendors wanted', '/database']],
+  ['market stallholder page', marketStallholders, ['Market Stallholder Applications UK', 'market stallholder applications', '/database']],
+  ['council event page', councilEvents, ['Council Event Trader Applications UK', 'council event trader applications', '/database']],
+  ['food truck page', foodTruckPitches, ['Food Truck Pitches UK', 'food truck pitches', '/database']],
 ]) {
   for (const text of expected) {
     if (!page.includes(text)) throw new Error(`Missing ${name} text: ${text}`);
+  }
+  for (const text of ['Request free sample', 'Request 5 sample rows', 'Request sample rows', '/#coverage', '/#sample', '£19']) {
+    if (page.includes(text)) throw new Error(`${name} must not include old sample funnel text: ${text}`);
   }
 }
 for (const url of ['/festival-trader-applications', '/stall-holders-wanted', '/food-traders-wanted', '/festival-vendors-wanted', '/market-stallholder-applications', '/council-event-trader-applications', '/food-truck-pitches']) {
@@ -63,7 +66,7 @@ for (const text of ['90+ checked rows', '/terms', '/privacy']) {
 for (const text of ['PitchList UK Terms', '£4.99', 'Cancel any time', 'No guaranteed event acceptance']) {
   if (!terms.includes(text)) throw new Error(`Missing terms page text: ${text}`);
 }
-for (const text of ['PitchList UK Privacy Notice', 'sample requests', 'Stripe', 'hello@pitchlist.uk']) {
+for (const text of ['PitchList UK Privacy Notice', 'trial signups', 'Stripe', 'hello@pitchlist.uk']) {
   if (!privacy.includes(text)) throw new Error(`Missing privacy page text: ${text}`);
 }
 for (const url of ['/terms', '/privacy']) {

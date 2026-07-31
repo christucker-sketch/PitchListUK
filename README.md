@@ -18,13 +18,13 @@ Cloudflare Pages should publish the `public/` directory.
 - Build output directory: `public`
 - Production branch: `main`
 
-## Sample Request Endpoint
+## Legacy Sample Request Endpoint
 
-The homepage form posts to `/api/sample-request` first and falls back to a visible `mailto:` prompt if delivery is not configured.
+The public homepage no longer links to a sample request funnel. Customers should preview locked rows in `/database`, then start the Stripe trial if coverage looks useful. `/api/sample-request` is retained as a legacy/support intake route only.
 
 Configure at least one delivery path in Cloudflare Pages environment variables:
 
-- `PITCHLIST_FORM_SMTP2GO_API_KEY` - SMTP2GO API key for sending sample requests to email
+- `PITCHLIST_FORM_SMTP2GO_API_KEY` - SMTP2GO API key for legacy/support intake email
 - `PITCHLIST_FORM_TO` - destination inbox, defaults to `hello@pitchlist.uk`
 - `PITCHLIST_FORM_FROM` - verified sender, defaults to `hello@pitchlist.uk`
 - `PITCHLIST_SAMPLE_WEBHOOK_URL` - optional webhook endpoint instead of SMTP2GO
@@ -99,4 +99,4 @@ Keep the pre-payment form short. Use the post-checkout profile page to collect r
 
 ## Boundaries
 
-This repo is public-site only. Do not commit HAL back-office files, prospect CRM state, credentials, inbox exports, or private sample packs here.
+This repo is public-site only. Do not commit HAL back-office files, prospect CRM state, credentials, inbox exports, or private customer exports here.
