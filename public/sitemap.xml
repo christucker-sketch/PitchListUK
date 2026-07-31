@@ -73,13 +73,67 @@
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/bristol</loc>
+    <loc>https://pitchlist.uk/areas/unknown</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/london</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/wales</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/south-east</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/scotland</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pitchlist.uk/areas/west-yorkshire</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/bristol</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/midlands</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/devon</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/greater-manchester</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/south-west</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -97,13 +151,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/greater-manchester</loc>
-    <lastmod>2026-07-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pitchlist.uk/areas/devon</loc>
+    <loc>https://pitchlist.uk/areas/northern-ireland</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -115,19 +163,55 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://pitchlist.uk/areas/north-east</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/surrey</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/somerset</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/berkshire</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
     <loc>https://pitchlist.uk/areas/cambridgeshire</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/surrey</loc>
+    <loc>https://pitchlist.uk/areas/east-sussex</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/berkshire</loc>
+    <loc>https://pitchlist.uk/areas/north-west</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/warwickshire</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/west-sussex</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
@@ -151,13 +235,13 @@
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/somerset</loc>
+    <loc>https://pitchlist.uk/areas/oxfordshire</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/warwickshire</loc>
+    <loc>https://pitchlist.uk/areas/antrim</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
@@ -169,13 +253,25 @@
     <priority>0.65</priority>
   </url>
   <url>
+    <loc>https://pitchlist.uk/areas/belfast</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
     <loc>https://pitchlist.uk/areas/buckinghamshire</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/east-sussex</loc>
+    <loc>https://pitchlist.uk/areas/cornwall</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://pitchlist.uk/areas/cumbria</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
@@ -199,19 +295,7 @@
     <priority>0.65</priority>
   </url>
   <url>
-    <loc>https://pitchlist.uk/areas/oxfordshire</loc>
-    <lastmod>2026-07-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.65</priority>
-  </url>
-  <url>
-    <loc>https://pitchlist.uk/areas/west-sussex</loc>
-    <lastmod>2026-07-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.65</priority>
-  </url>
-  <url>
-    <loc>https://pitchlist.uk/areas/belfast</loc>
+    <loc>https://pitchlist.uk/areas/west-midlands</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
