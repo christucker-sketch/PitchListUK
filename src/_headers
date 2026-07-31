@@ -1,12 +1,6 @@
 /delivery/*
   X-Robots-Tag: noindex, nofollow, noarchive
   Cache-Control: no-store
-/database*
-  X-Robots-Tag: noindex, nofollow, noarchive
-  Cache-Control: no-store
-/database.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-  Cache-Control: no-store
 /data/opportunities.json
   X-Robots-Tag: noindex, nofollow, noarchive
   Cache-Control: no-store

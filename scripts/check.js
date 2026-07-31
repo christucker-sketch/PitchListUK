@@ -19,6 +19,9 @@ const database = fs.readFileSync('src/database.html', 'utf8');
 const databaseJs = fs.readFileSync('src/database.js', 'utf8');
 const sitemap = fs.readFileSync('src/sitemap.xml', 'utf8');
 if (sitemap.includes('https://pitchlist.uk/buy')) throw new Error('Sitemap must not include noindex page: /buy');
+if (!sitemap.includes('https://pitchlist.uk/database')) throw new Error('Sitemap missing database page');
+if (/noindex/i.test(database)) throw new Error('Database page must be indexable');
+if (fs.readFileSync('src/_headers', 'utf8').includes('/database')) throw new Error('Database route must not have noindex headers');
 for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/database']) {
   if (!html.includes(text)) throw new Error(`Missing expected text: ${text}`);
 }
