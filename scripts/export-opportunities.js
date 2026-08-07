@@ -54,6 +54,8 @@ function isUkPublicRow(row) {
   if (NON_OPPORTUNITY_DOC.test(row.event_name || '')) return false;
   if (NON_OPPORTUNITY_DOC.test(text) && !APPLICATION_SIGNAL.test(row.application_url || row.source_url || '')) return false;
   if (row.area_confidence === 'unknown' || /^unknown$/i.test(row.region || '')) return false;
+  const publicArea = areaOverride(row) || row.county || row.region || row.location || '';
+  if (/^(ireland|republic of ireland|ireland\s*-)/i.test(String(publicArea).trim())) return false;
   if (!(row.market_domain === 'pitchlist.uk' || row.tax_region === 'UK' || row.country === 'United Kingdom')) return false;
   return true;
 }
