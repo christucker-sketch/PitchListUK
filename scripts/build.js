@@ -39,6 +39,22 @@ function stampHomepageCount() {
   fs.writeFileSync(indexFile, html);
 }
 
+function injectAnalyticsScripts(dir) {
+  for (const entry of fs.readdirSync(dir)) {
+    const file = path.join(dir, entry);
+    const stat = fs.statSync(file);
+    if (stat.isDirectory()) {
+      injectAnalyticsScripts(file);
+      continue;
+    }
+    if (!entry.endsWith('.html') || entry === 'activity.html') continue;
+    let html = fs.readFileSync(file, 'utf8');
+    if (html.includes('/analytics.js?v=20260809-1')) continue;
+    html = html.replace('</body>', '  <script src="/analytics.js?v=20260809-1" defer></script>\n</body>');
+    fs.writeFileSync(file, html);
+  }
+}
+
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
 for (const file of fs.readdirSync(path.join(root, 'src'))) {
@@ -48,4 +64,5 @@ for (const file of fs.readdirSync(path.join(root, 'src'))) {
 }
 stampHomepageCount();
 require('./generate-seo-pages').generateSeoPages({ root, out });
+injectAnalyticsScripts(out);
 console.log('Built public site to ./public');

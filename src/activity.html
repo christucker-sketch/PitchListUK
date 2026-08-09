@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>PitchList Activity Monitor</title>
+  <link rel="stylesheet" href="/styles.css?v=20260731-4" />
+</head>
+<body class="activity-page">
+  <header class="activity-header">
+    <nav>
+      <strong>PitchList Activity</strong>
+      <a href="/database">Database</a>
+    </nav>
+    <section>
+      <p class="eyebrow">Campaign pulse</p>
+      <h1>Site and database usage monitor.</h1>
+      <p class="lede">First-party activity for campaign drops: visits, database searches, checkout starts, referrers and recent events.</p>
+      <form id="activityAuth" class="activity-controls">
+        <label><span>Token</span><input name="token" type="password" autocomplete="off" placeholder="Analytics token or access code" /></label>
+        <label><span>Window</span><select name="days"><option value="1">24 hours</option><option value="3">3 days</option><option value="7" selected>7 days</option><option value="14">14 days</option><option value="30">30 days</option></select></label>
+        <button type="submit">Load activity</button>
+      </form>
+      <p id="activityStatus" class="activity-status">Enter the private token to load activity.</p>
+    </section>
+  </header>
+  <main class="activity-main">
+    <section id="activityTotals" class="activity-totals"></section>
+    <section class="activity-grid">
+      <article><h2>Campaigns</h2><div id="activityCampaigns"></div></article>
+      <article><h2>Referrers</h2><div id="activityReferrers"></div></article>
+      <article><h2>Top pages</h2><div id="activityPages"></div></article>
+      <article><h2>Events</h2><div id="activityEvents"></div></article>
+    </section>
+    <section class="activity-table-wrap">
+      <h2>Recent database searches</h2>
+      <div id="activitySearches"></div>
+    </section>
+    <section class="activity-table-wrap">
+      <h2>Recent events</h2>
+      <div id="activityRecent"></div>
+    </section>
+  </main>
+  <script src="/activity.js?v=20260809-1"></script>
+</body>
+</html>

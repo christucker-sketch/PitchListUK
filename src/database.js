@@ -16,6 +16,25 @@ const SHORTLIST_KEY = 'pitchlist_saved_shortlist';
 let latestRows = [];
 let latestData = null;
 
+function trackEvent(event, properties = {}) {
+  if (window.pitchlistTrack) {
+    window.pitchlistTrack(event, properties);
+    return;
+  }
+  fetch('/api/analytics/event', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      event,
+      url: window.location.href,
+      page: document.title,
+      referrer: document.referrer,
+      properties
+    }),
+    keepalive: true
+  }).catch(() => {});
+}
+
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({
   '&': '&amp;',
   '<': '&lt;',
@@ -185,6 +204,7 @@ function csvValue(value) {
 function downloadShortlist() {
   const rows = savedRows();
   if (!rows.length) return;
+  trackEvent('shortlist_export', { rows: rows.length, access: latestData?.access || 'unknown' });
   const headers = ['name', 'organiser', 'county', 'date', 'route', 'confidence', 'application_url', 'source_url'];
   const csv = [
     headers.join(','),
@@ -207,6 +227,7 @@ function toggleSaved(key) {
   if (existing >= 0) rows.splice(existing, 1);
   else rows.unshift(shortlistRow(match));
   saveRows(rows);
+  trackEvent(existing >= 0 ? 'shortlist_remove' : 'shortlist_save', { access: latestData?.access || 'unknown' });
   renderShortlist();
   renderResults(latestRows);
   if (latestData) renderMetrics(latestData);
@@ -294,6 +315,7 @@ async function openBillingPortal(button) {
   const accessToken = storedAccessToken();
   button.disabled = true;
   try {
+    trackEvent('billing_portal_open', {});
     const response = await fetch('/api/billing/portal', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -451,6 +473,7 @@ async function verifyReturnedSession() {
   if (!response.ok) throw new Error(data.message || 'Could not verify subscription session');
   localStorage.setItem(SESSION_KEY, returned);
   saveAccount(data);
+  trackEvent('checkout_return', { status: data.subscription_status || data.status || 'subscriber' });
   url.searchParams.delete('session_id');
   window.history.replaceState({}, '', url.toString());
 }
@@ -464,8 +487,21 @@ async function verifyReturnedAccessToken() {
   if (!response.ok) throw new Error(data.message || 'Access link is invalid or expired');
   localStorage.setItem(ACCESS_TOKEN_KEY, token);
   saveAccount(data);
+  trackEvent('access_unlock', { source: 'email_access_link' });
   url.searchParams.delete('access_token');
   window.history.replaceState({}, '', url.toString());
+}
+
+function analyticsSearchProperties(params, data = {}) {
+  return {
+    postcode: String(params.get('postcode') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4),
+    radius: params.get('radius_miles') || '',
+    category: params.get('category') || '',
+    q: params.get('q') || '',
+    access: data.access || latestData?.access || 'unknown',
+    count: data.count ?? '',
+    returned: data.returned ?? ''
+  };
 }
 
 function buildSearchParams(offset = 0) {
@@ -495,6 +531,7 @@ async function runSearch({ append = false } = {}) {
   const text = await response.text();
   const data = JSON.parse(text);
   if (!response.ok) throw new Error(data.message || 'Search failed');
+  trackEvent('database_search', analyticsSearchProperties(params, data));
   const mergedRows = append ? [...latestRows, ...(data.rows || [])] : (data.rows || []);
   latestRows = mergedRows;
   latestData = { ...data, rows: mergedRows, returned: mergedRows.length };
@@ -537,6 +574,10 @@ vendorSignup.addEventListener('submit', async event => {
     if (!vendorProfile.email) {
       throw new Error('Email is required.');
     }
+    trackEvent('checkout_start', {
+      postcode: String(vendorProfile.base_postcode || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4),
+      email_domain: vendorProfile.email.includes('@') ? vendorProfile.email.split('@').pop().toLowerCase() : ''
+    });
     const response = await fetch('/api/billing/checkout', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -548,8 +589,10 @@ vendorSignup.addEventListener('submit', async event => {
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || 'Stripe checkout is not available yet');
     vendorSignupStatus.textContent = 'Opening Stripe...';
+    trackEvent('checkout_redirect', { vendor_id: data.vendor_id || '' });
     window.location.href = data.url;
   } catch (err) {
+    trackEvent('checkout_error', { message: err.message });
     vendorSignupStatus.textContent = err.message;
     resultsEl.innerHTML = `<div class="cloud-empty error"><strong>Checkout unavailable</strong><span>${esc(err.message)}</span></div>`;
     startTrial.disabled = false;
@@ -563,6 +606,7 @@ accessForm.addEventListener('submit', async event => {
   const email = String(formData.get('email') || '').trim();
   accessFormStatus.textContent = 'Checking access...';
   try {
+    trackEvent('access_link_request', { email_domain: email.includes('@') ? email.split('@').pop().toLowerCase() : '' });
     const response = await fetch('/api/billing/access', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },

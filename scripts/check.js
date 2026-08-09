@@ -1,5 +1,5 @@
 const fs = require('fs');
-const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'scripts/generate-seo-pages.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/stripe.mjs', 'functions/_lib/vendor-profiles.mjs', 'functions/_data/opportunities.mjs'];
+const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/analytics.js', 'src/activity.html', 'src/activity.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'scripts/generate-seo-pages.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/analytics/event.js', 'functions/api/analytics/summary.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/analytics.mjs', 'functions/_lib/stripe.mjs', 'functions/_lib/vendor-profiles.mjs', 'functions/_data/opportunities.mjs'];
 for (const file of required) {
   if (!fs.existsSync(file)) throw new Error(`Missing ${file}`);
 }
@@ -17,6 +17,9 @@ const councilEvents = fs.readFileSync('src/council-event-trader-applications.htm
 const foodTruckPitches = fs.readFileSync('src/food-truck-pitches.html', 'utf8');
 const database = fs.readFileSync('src/database.html', 'utf8');
 const databaseJs = fs.readFileSync('src/database.js', 'utf8');
+const analyticsJs = fs.readFileSync('src/analytics.js', 'utf8');
+const activity = fs.readFileSync('src/activity.html', 'utf8');
+const activityJs = fs.readFileSync('src/activity.js', 'utf8');
 const sitemap = fs.readFileSync('src/sitemap.xml', 'utf8');
 const publicHome = fs.existsSync('public/index.html') ? fs.readFileSync('public/index.html', 'utf8') : '';
 if (sitemap.includes('https://pitchlist.uk/buy')) throw new Error('Sitemap must not include noindex page: /buy');
@@ -87,14 +90,14 @@ for (const text of ['og:title', 'og:image', 'twitter:card']) {
 for (const text of ['PitchList UK Terms', '£4.99', 'Cancel any time', 'No guaranteed event acceptance']) {
   if (!terms.includes(text)) throw new Error(`Missing terms page text: ${text}`);
 }
-for (const text of ['PitchList UK Privacy Notice', 'trial signups', 'Stripe', 'hello@pitchlist.uk']) {
+for (const text of ['PitchList UK Privacy Notice', 'trial signups', 'Stripe', 'site activity', 'raw IP addresses', 'hello@pitchlist.uk']) {
   if (!privacy.includes(text)) throw new Error(`Missing privacy page text: ${text}`);
 }
 for (const url of ['/terms', '/privacy']) {
   if (!html.includes(url)) throw new Error(`Homepage missing legal link: ${url}`);
   if (!sitemap.includes(`https://pitchlist.uk${url}`)) throw new Error(`Sitemap missing legal URL: ${url}`);
 }
-for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', 'pitchlist_saved_shortlist', 'Export CSV', 'checked in last 14 days', 'result-grid', 'data-load-more', 'next_offset', 'applyInboundSearchParams', 'radius_miles', 'result-row', 'result-title']) {
+for (const text of ['/api/customer-opportunities/search', '/api/billing/checkout', '/api/billing/portal', '/api/analytics/event', 'database_search', 'checkout_start', 'pitchlist_saved_shortlist', 'Export CSV', 'checked in last 14 days', 'result-grid', 'data-load-more', 'next_offset', 'applyInboundSearchParams', 'radius_miles', 'result-row', 'result-title']) {
   if (!databaseJs.includes(text)) throw new Error(`Missing database JS text: ${text}`);
 }
 for (const text of ["document.getElementById('manageBilling')", "document.getElementById('clearAccess')", "document.getElementById('databaseAccount')"]) {
@@ -116,6 +119,19 @@ for (const text of ['STRIPE_WEBHOOK_SECRET', 'checkout.session.completed', 'cust
 const sampleRequestApi = fs.readFileSync('functions/api/sample-request.js', 'utf8');
 for (const text of ['PITCHLIST_SAMPLE_WEBHOOK_URL', 'PITCHLIST_FORM_SMTP2GO_API_KEY', 'delivery_not_configured']) {
   if (!sampleRequestApi.includes(text)) throw new Error(`Missing sample request API text: ${text}`);
+}
+const analyticsLib = fs.readFileSync('functions/_lib/analytics.mjs', 'utf8');
+for (const text of ['PITCHLIST_ANALYTICS_KV', 'PITCHLIST_ANALYTICS_TOKEN', 'analytics:event:', 'summariseAnalytics', 'database_search']) {
+  if (!analyticsLib.includes(text)) throw new Error(`Missing analytics library text: ${text}`);
+}
+for (const text of ['/api/analytics/event', 'page_view', 'database_cta_click', 'sendBeacon']) {
+  if (!analyticsJs.includes(text)) throw new Error(`Missing analytics JS text: ${text}`);
+}
+for (const text of ['PitchList Activity Monitor', '/api/analytics/summary', 'Campaigns', 'Recent database searches']) {
+  if (!activity.includes(text) && !activityJs.includes(text)) throw new Error(`Missing activity monitor text: ${text}`);
+}
+if (publicHome && !publicHome.includes('/analytics.js?v=20260809-1')) {
+  throw new Error('Built homepage missing analytics script');
 }
 const dataModule = fs.readFileSync('functions/_data/opportunities.mjs', 'utf8');
 const opportunityData = JSON.parse(dataModule.replace(/^export const opportunitySnapshot = /, '').replace(/;\s*$/, ''));

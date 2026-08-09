@@ -57,6 +57,8 @@ Cloudflare Pages environment variables:
 - `PITCHLIST_DATABASE_PUBLIC_FULL_ACCESS=true` - optional local/demo bypass only; do not enable in production.
 - `PITCHLIST_ACCESS_KV` - optional Cloudflare KV binding used by webhook access records.
 - `PITCHLIST_VENDOR_KV` - optional Cloudflare KV binding for PitchList vendor profiles; falls back to `PITCHLIST_ACCESS_KV` when separate storage is not configured.
+- `PITCHLIST_ANALYTICS_TOKEN` - private token for `/activity` and `/api/analytics/summary`.
+- `PITCHLIST_ANALYTICS_KV` - optional Cloudflare KV binding for first-party activity events; falls back to `PITCHLIST_ACCESS_KV`.
 
 Runtime flow:
 
@@ -66,6 +68,19 @@ Runtime flow:
 4. `/api/billing/session` verifies the Checkout Session and stores a short access cookie.
 5. `/api/customer-opportunities/search` shows full source/application routes for valid trialing/active subscriptions.
 6. `/api/billing/portal` opens the Stripe Customer Portal for cancellation/card updates.
+
+## Activity Monitor
+
+Campaign/site activity is tracked first-party through `/api/analytics/event`.
+
+Tracked signals:
+
+- page views with referrer host and UTM/campaign params
+- `/database` searches, including postcode/outcode, radius, category, access mode and result count
+- checkout starts, Stripe redirects, checkout returns, access-link requests and shortlist actions
+- recent events and campaign/referrer/page aggregates in `/activity`
+
+Open `/activity`, enter `PITCHLIST_ANALYTICS_TOKEN`, and choose the reporting window. The monitor stores hashed visitor/session signals and does not store raw IP addresses.
 
 ## Vendor Profile Backend
 
