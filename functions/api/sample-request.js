@@ -30,7 +30,7 @@ function sampleText(payload) {
     `Map-selected regions: ${(payload.selected_regions || []).join(', ') || '(none selected)'}`,
     `Expanded counties/areas from map: ${(payload.selected_counties || []).join(', ') || '(none selected)'}`,
     '',
-    'Please check whether my area/category needs manual review beyond the searchable database preview.'
+    'Please check whether my area/category needs manual review beyond the searchable pitch finder preview.'
   ].join('\n');
 }
 

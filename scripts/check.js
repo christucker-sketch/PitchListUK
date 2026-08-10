@@ -23,18 +23,18 @@ const activityJs = fs.readFileSync('src/activity.js', 'utf8');
 const sitemap = fs.readFileSync('src/sitemap.xml', 'utf8');
 const publicHome = fs.existsSync('public/index.html') ? fs.readFileSync('public/index.html', 'utf8') : '';
 if (sitemap.includes('https://pitchlist.uk/buy')) throw new Error('Sitemap must not include noindex page: /buy');
-if (!sitemap.includes('https://pitchlist.uk/database')) throw new Error('Sitemap missing database page');
-if (/noindex/i.test(database)) throw new Error('Database page must be indexable');
-if (fs.readFileSync('src/_headers', 'utf8').includes('/database')) throw new Error('Database route must not have noindex headers');
-for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/database']) {
+if (!sitemap.includes('https://pitchlist.uk/find-pitches')) throw new Error('Sitemap missing pitch finder page');
+if (/noindex/i.test(database)) throw new Error('Pitch finder page must be indexable');
+if (fs.readFileSync('src/_headers', 'utf8').includes('/find-pitches')) throw new Error('Pitch finder route must not have noindex headers');
+for (const text of ['PitchList UK', 'hello@pitchlist.uk', 'No fake leads', '/find-pitches']) {
   if (!html.includes(text)) throw new Error(`Missing expected text: ${text}`);
 }
-if (!html.includes('/database')) throw new Error('Homepage missing database link');
+if (!html.includes('/find-pitches')) throw new Error('Homepage missing pitch finder link');
 if (!html.includes('/areas')) throw new Error('Homepage missing area coverage link');
 if (!html.includes('£4.99')) throw new Error('Homepage missing subscription price');
 if (!html.includes('/styles.css?v=20260731-4')) throw new Error('Homepage stylesheet cache-bust version must be current');
-if (!html.includes('liveDatabaseCount')) throw new Error('Homepage missing live database count hook');
-if (!html.includes('/api/customer-opportunities/search?limit=1')) throw new Error('Homepage missing live database count fetch');
+if (!html.includes('liveDatabaseCount')) throw new Error('Homepage missing live opportunity count hook');
+if (!html.includes('/api/customer-opportunities/search?limit=1')) throw new Error('Homepage missing live opportunity count fetch');
 for (const text of ['hero-search', 'name="postcode"', 'name="radius"', 'Show my pitches', 'proof-row-list', 'This is what a row looks like', 'comparison-strip', '£4.99 a month, or an evening a week', 'faq-section', 'FAQPage']) {
   if (!html.includes(text)) throw new Error(`Homepage missing conversion structure: ${text}`);
 }
@@ -44,20 +44,20 @@ for (const text of ['Fee or deadline', 'Confidence marker', 'before the deadline
 for (const text of ['/api/sample-request', 'sampleRequestStatus', 'Request a sample', 'Request free sample', 'Request 5 sample rows', '/#coverage', '/#sample', '£19']) {
   if (html.includes(text)) throw new Error(`Homepage must not include old sample funnel text: ${text}`);
 }
-for (const text of ['7-day free trial', '£4.99/month', '/database']) {
+for (const text of ['7-day free trial', '£4.99/month', '/find-pitches']) {
   if (!buy.includes(text)) throw new Error(`Missing buy page text: ${text}`);
 }
 for (const text of ['Subscription started', 'hello@pitchlist.uk']) {
   if (!success.includes(text)) throw new Error(`Missing success page text: ${text}`);
 }
 for (const [name, page, expected] of [
-  ['festival page', festival, ['Festival Trader Applications UK', 'festival trader applications', '/database']],
-  ['stallholders page', stallholders, ['Stall Holders Wanted UK', 'stall holders wanted', '/database']],
-  ['food traders page', foodTraders, ['Food Traders Wanted UK', 'food traders wanted', '/database']],
-  ['festival vendors page', festivalVendors, ['Festival Vendors Wanted UK', 'festival vendors wanted', '/database']],
-  ['market stallholder page', marketStallholders, ['Market Stallholder Applications UK', 'market stallholder applications', '/database']],
-  ['council event page', councilEvents, ['Council Event Trader Applications UK', 'council event trader applications', '/database']],
-  ['food truck page', foodTruckPitches, ['Food Truck Pitches UK', 'food truck pitches', '/database']],
+  ['festival page', festival, ['Festival Trader Applications UK', 'festival trader applications', '/find-pitches']],
+  ['stallholders page', stallholders, ['Stall Holders Wanted UK', 'stall holders wanted', '/find-pitches']],
+  ['food traders page', foodTraders, ['Food Traders Wanted UK', 'food traders wanted', '/find-pitches']],
+  ['festival vendors page', festivalVendors, ['Festival Vendors Wanted UK', 'festival vendors wanted', '/find-pitches']],
+  ['market stallholder page', marketStallholders, ['Market Stallholder Applications UK', 'market stallholder applications', '/find-pitches']],
+  ['council event page', councilEvents, ['Council Event Trader Applications UK', 'council event trader applications', '/find-pitches']],
+  ['food truck page', foodTruckPitches, ['Food Truck Pitches UK', 'food truck pitches', '/find-pitches']],
 ]) {
   for (const text of expected) {
     if (!page.includes(text)) throw new Error(`Missing ${name} text: ${text}`);
@@ -70,22 +70,22 @@ for (const url of ['/festival-trader-applications', '/stall-holders-wanted', '/f
   if (!html.includes(url)) throw new Error(`Homepage missing internal link: ${url}`);
   if (!sitemap.includes(`https://pitchlist.uk${url}`)) throw new Error(`Sitemap missing URL: ${url}`);
 }
-for (const text of ['Search UK Trader Opportunities', 'postcode', 'radius', '/database.js', 'Start free trial', 'savedShortlist']) {
-  if (!database.includes(text)) throw new Error(`Missing database page text: ${text}`);
+for (const text of ['Find UK Trader Pitches', 'postcode', 'radius', '/database.js', 'Start free trial', 'savedShortlist']) {
+  if (!database.includes(text)) throw new Error(`Missing pitch finder page text: ${text}`);
 }
-if (!database.includes('/styles.css?v=20260731-4')) throw new Error('Database stylesheet cache-bust version must be current');
-for (const text of ['Live searchable database', '/terms', '/privacy']) {
-  if (!database.includes(text)) throw new Error(`Missing database legal/proof text: ${text}`);
+if (!database.includes('/styles.css?v=20260731-4')) throw new Error('Pitch finder stylesheet cache-bust version must be current');
+for (const text of ['Live searchable pitch finder', '/terms', '/privacy']) {
+  if (!database.includes(text)) throw new Error(`Missing pitch finder legal/proof text: ${text}`);
 }
 for (const text of ['value="food"', 'public_listing_opt_in" type="checkbox" checked']) {
   if (database.includes(text)) throw new Error(`Database must not include risky/default filter state: ${text}`);
 }
 for (const text of ['Business name', 'Your name', 'Specialty', 'Regions covered', 'public vendor profile', 'Manage billing', 'Sign out', 'Any confidence']) {
-  if (database.includes(text)) throw new Error(`Database signup must stay low-friction and private by default: ${text}`);
+  if (database.includes(text)) throw new Error(`Pitch finder signup must stay low-friction and private by default: ${text}`);
 }
-if (!database.includes('/database.js?v=20260731-7')) throw new Error('Database JS cache-bust version must be current');
+if (!database.includes('/database.js?v=20260731-7')) throw new Error('Pitch finder JS cache-bust version must be current');
 for (const text of ['og:title', 'og:image', 'twitter:card']) {
-  if (!database.includes(text)) throw new Error(`Database page missing share metadata: ${text}`);
+  if (!database.includes(text)) throw new Error(`Pitch finder page missing share metadata: ${text}`);
 }
 for (const text of ['PitchList UK Terms', '£4.99', 'Cancel any time', 'No guaranteed event acceptance']) {
   if (!terms.includes(text)) throw new Error(`Missing terms page text: ${text}`);
@@ -127,7 +127,7 @@ for (const text of ['PITCHLIST_ANALYTICS_KV', 'PITCHLIST_ANALYTICS_TOKEN', 'anal
 for (const text of ['/api/analytics/event', 'page_view', 'database_cta_click', 'sendBeacon']) {
   if (!analyticsJs.includes(text)) throw new Error(`Missing analytics JS text: ${text}`);
 }
-for (const text of ['PitchList Activity Monitor', '/api/analytics/summary', 'Campaigns', 'Recent database searches']) {
+for (const text of ['PitchList Activity Monitor', '/api/analytics/summary', 'Campaigns', 'Recent pitch finder searches']) {
   if (!activity.includes(text) && !activityJs.includes(text)) throw new Error(`Missing activity monitor text: ${text}`);
 }
 if (publicHome && !publicHome.includes('/analytics.js?v=20260809-1')) {

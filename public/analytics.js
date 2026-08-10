@@ -85,7 +85,7 @@
       window.pitchlistTrack('link_click', { label: link.textContent.trim().slice(0, 80), href: url.hostname });
       return;
     }
-    if (url.pathname === '/database') {
+    if (url.pathname === '/find-pitches' || url.pathname === '/database') {
       window.pitchlistTrack('database_cta_click', { label: link.textContent.trim().slice(0, 80), from: window.location.pathname });
     }
   }, { capture: true });

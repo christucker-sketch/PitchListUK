@@ -39,6 +39,12 @@ function stampHomepageCount() {
   fs.writeFileSync(indexFile, html);
 }
 
+function createPitchFinderRoute() {
+  const databaseFile = path.join(out, 'database.html');
+  const pitchFinderFile = path.join(out, 'find-pitches.html');
+  if (fs.existsSync(databaseFile)) fs.copyFileSync(databaseFile, pitchFinderFile);
+}
+
 function injectAnalyticsScripts(dir) {
   for (const entry of fs.readdirSync(dir)) {
     const file = path.join(dir, entry);
@@ -63,6 +69,7 @@ for (const file of fs.readdirSync(path.join(root, 'src'))) {
   copyRecursive(source, dest);
 }
 stampHomepageCount();
+createPitchFinderRoute();
 require('./generate-seo-pages').generateSeoPages({ root, out });
 injectAnalyticsScripts(out);
 console.log('Built public site to ./public');

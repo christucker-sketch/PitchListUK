@@ -525,7 +525,7 @@ async function runSearch({ append = false } = {}) {
     : buildSearchParams(0);
   if (!append) {
     latestRows = [];
-    resultsEl.innerHTML = '<div class="cloud-empty"><strong>Searching</strong><span>Checking the protected PitchList database...</span></div>';
+    resultsEl.innerHTML = '<div class="cloud-empty"><strong>Searching</strong><span>Checking the protected PitchList pitch finder...</span></div>';
   }
   const response = await fetch(`/api/customer-opportunities/search?${params.toString()}`, { cache: 'no-store' });
   const text = await response.text();
@@ -630,6 +630,6 @@ Promise.resolve()
   .then(applyInboundSearchParams)
   .then(runSearch)
   .catch(err => {
-  resultsEl.innerHTML = `<div class="cloud-empty error"><strong>Database unavailable</strong><span>${esc(err.message)}</span></div>`;
+  resultsEl.innerHTML = `<div class="cloud-empty error"><strong>Pitch finder unavailable</strong><span>${esc(err.message)}</span></div>`;
   });
 renderShortlist();

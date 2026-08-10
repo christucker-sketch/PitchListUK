@@ -34,7 +34,7 @@ export async function onRequestPost(context) {
   const baseUrl = baseUrlFrom(request, env);
   const portal = await stripeRequest(env, 'POST', '/billing_portal/sessions', {
     customer: access.customer,
-    return_url: `${baseUrl}/database`
+    return_url: `${baseUrl}/find-pitches`
   });
   return json({ ok: true, url: portal.url });
 }

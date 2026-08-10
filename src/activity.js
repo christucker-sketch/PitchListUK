@@ -35,7 +35,7 @@ function formatTime(value) {
 }
 
 function renderSearches(rows) {
-  if (!rows.length) return '<p class="activity-empty">No database searches yet.</p>';
+  if (!rows.length) return '<p class="activity-empty">No pitch finder searches yet.</p>';
   return `<table class="activity-table"><thead><tr><th>Time</th><th>Postcode</th><th>Radius</th><th>Category</th><th>Keywords</th><th>Access</th><th>Matches</th></tr></thead><tbody>${rows.map(row => `
     <tr>
       <td>${esc(formatTime(row.ts))}</td>
@@ -66,7 +66,7 @@ function render(data) {
     metric('events', totals.events || 0),
     metric('visitors', totals.visitors || 0),
     metric('page views', totals.page_views || 0),
-    metric('DB searches', totals.database_searches || 0),
+    metric('Pitch searches', totals.database_searches || 0),
     metric('checkout starts', totals.checkout_starts || 0),
     metric('checkout returns', totals.checkout_returns || 0)
   ].join('');

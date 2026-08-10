@@ -65,7 +65,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     let filePath = url.pathname === '/' ? '/index.html' : url.pathname;
-    if (filePath === '/database') filePath = '/database.html';
+    if (filePath === '/find-pitches' || filePath === '/database') filePath = '/database.html';
     const fullPath = path.normalize(path.join(publicRoot, filePath));
     if (!fullPath.startsWith(publicRoot)) throw new Error('Invalid path');
     const body = await fs.readFile(fullPath);
@@ -78,5 +78,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(port, '127.0.0.1', () => {
-  console.log(`PitchList test backend on http://127.0.0.1:${port}/database?access=${accessCode}`);
+  console.log(`PitchList test backend on http://127.0.0.1:${port}/find-pitches?access=${accessCode}`);
 });

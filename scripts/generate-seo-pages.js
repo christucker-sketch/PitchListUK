@@ -170,7 +170,7 @@ function pageShell({ title, description, canonical, body, structuredData, robots
 </head>
 <body>
 ${body}
-  <footer><strong>PitchList UK</strong><span><a href="/areas">UK area coverage</a> · <a href="/database">Search database</a> · <a href="mailto:hello@pitchlist.uk">hello@pitchlist.uk</a></span></footer>
+  <footer><strong>PitchList UK</strong><span><a href="/areas">UK area coverage</a> · <a href="/find-pitches">Find pitches</a> · <a href="mailto:hello@pitchlist.uk">hello@pitchlist.uk</a></span></footer>
 </body>
 </html>
 `;
@@ -185,21 +185,21 @@ function areaPage(group, total) {
   const categoryText = categories.length ? categories.join(', ') : 'festival trader and stallholder';
   const canonical = `${SITE_URL}/areas/${group.slug}`;
   const title = `${area} Trader Opportunities | PitchList UK`;
-  const description = `Find ${area} trader opportunities, including ${categoryText} routes, from the PitchList UK online database.`;
+  const description = `Find ${area} trader opportunities, including ${categoryText} routes, from the PitchList UK pitch finder.`;
   const polishedExamples = rows
     .map(row => ({ row, name: displayOpportunityName(row) }))
     .filter(item => item.name && !/community grants/i.test(item.name))
     .slice(0, 5);
   const body = `  <header class="hero seo-hero">
-    <nav><strong><a href="/">PitchList UK</a></strong><a href="/database">Search database</a></nav>
+    <nav><strong><a href="/">PitchList UK</a></strong><a href="/find-pitches">Find pitches</a></nav>
     <section class="hero-grid">
       <div>
         <p class="eyebrow">Area coverage</p>
         <h1>${escapeHtml(area)} trader opportunities and stallholder application routes.</h1>
-        <p class="lede">PitchList currently tracks ${count} online ${area} ${count === 1 ? 'row' : 'rows'} across ${escapeHtml(categoryText)} searches, with source and application routes unlocked inside the subscriber database.</p>
-        <div class="actions"><a href="/database?q=${encodeURIComponent(area)}">Search ${escapeHtml(area)}</a><a class="ghost" href="/database">Preview locked rows</a></div>
+        <p class="lede">PitchList currently tracks ${count} online ${area} ${count === 1 ? 'row' : 'rows'} across ${escapeHtml(categoryText)} searches, with source and application routes unlocked inside the subscriber pitch finder.</p>
+        <div class="actions"><a href="/find-pitches?q=${encodeURIComponent(area)}">Search ${escapeHtml(area)}</a><a class="ghost" href="/find-pitches">Preview locked rows</a></div>
       </div>
-      <figure class="hero-card"><div class="photo"></div><figcaption>Coverage pages are generated from checked online database rows, not generic directory lists.</figcaption></figure>
+      <figure class="hero-card"><div class="photo"></div><figcaption>Coverage pages are generated from checked online pitch opportunity rows, not generic directory lists.</figcaption></figure>
     </section>
   </header>
   <main>
@@ -211,15 +211,15 @@ function areaPage(group, total) {
     </section>
     <section class="panel split">
       <div><p class="eyebrow">What we track</p><h2>${escapeHtml(area)} searches need source-linked routes.</h2></div>
-      <p>Useful ${escapeHtml(area)} opportunities may appear under food festival trader applications, market stallholder forms, council event routes, food truck pitches, seasonal events, showground trader packs and organiser contact pages. PitchList groups those routes into a searchable database so traders can filter by area, postcode, category, freshness and confidence.</p>
+      <p>Useful ${escapeHtml(area)} opportunities may appear under food festival trader applications, market stallholder forms, council event routes, food truck pitches, seasonal events, showground trader packs and organiser contact pages. PitchList groups those routes into a searchable pitch finder so traders can filter by area, postcode, category, freshness and confidence.</p>
     </section>
     <section class="panel">
       <p class="eyebrow">Current examples</p>
-      <h2>Examples from the locked database.</h2>
+      <h2>Examples from the locked pitch finder.</h2>
       <div class="sample-table seo-sample-table" role="table">
         <div role="row" class="sample-row sample-header"><span>Opportunity</span><span>Area</span><span>Type</span><span>Checked</span></div>
         ${polishedExamples.map(({ row, name }) => `<div role="row" class="sample-row"><span>${escapeHtml(name)}</span><span>${escapeHtml(row.county || row.region || area)}</span><span>${escapeHtml(categoryLabel(row))}</span><span>${escapeHtml(row.last_checked ? formatDisplayDate(row.last_checked) : 'Recent')}</span></div>`).join('\n        ')}
-        <div role="row" class="sample-row locked-row"><span>Full source and application routes unlock after trial signup</span><span>${escapeHtml(area)}</span><span>Subscriber database</span><span>Live search</span></div>
+        <div role="row" class="sample-row locked-row"><span>Full source and application routes unlock after trial signup</span><span>${escapeHtml(area)}</span><span>Subscriber pitch finder</span><span>Live search</span></div>
       </div>
     </section>
     <section class="panel">
@@ -258,13 +258,13 @@ function hubPage(groups, snapshot) {
     return `<article><span>${rowLabel}</span><strong><a href="/areas/${group.slug}">${escapeHtml(group.area)} trader opportunities</a></strong><p>${escapeHtml(categories || 'festival trader and stallholder routes')}.</p></article>`;
   }).join('\n        ');
   const body = `  <header class="hero seo-hero">
-    <nav><strong><a href="/">PitchList UK</a></strong><a href="/database">Search database</a></nav>
+    <nav><strong><a href="/">PitchList UK</a></strong><a href="/find-pitches">Find pitches</a></nav>
     <section class="hero-grid">
       <div>
         <p class="eyebrow">UK area coverage</p>
         <h1>Trader opportunity coverage by UK area.</h1>
-        <p class="lede">Browse indexable PitchList area pages generated from ${total} online database rows. The public pages show coverage and examples; source links and application routes stay inside the subscriber database.</p>
-        <div class="actions"><a href="/database">Search the database</a><a class="ghost" href="/areas">Browse area previews</a></div>
+        <p class="lede">Browse indexable PitchList area pages generated from ${total} online pitch opportunity rows. The public pages show coverage and examples; source links and application routes stay inside the subscriber pitch finder.</p>
+        <div class="actions"><a href="/find-pitches">Find pitches</a><a class="ghost" href="/areas">Browse area previews</a></div>
       </div>
       <figure class="hero-card"><div class="photo"></div><figcaption>Area pages help traders find coverage without exposing the paid lead routes.</figcaption></figure>
     </section>
@@ -273,7 +273,7 @@ function hubPage(groups, snapshot) {
     <section class="stats seo-stats" aria-label="PitchList area coverage stats">
       <article><b>${groups.length}</b><span>UK areas with online rows</span></article>
       <article><b>${total}</b><span>indexed online rows</span></article>
-      <article><b>${escapeHtml(formatDisplayDate(snapshot.exported_at.slice(0, 10)))}</b><span>latest database export</span></article>
+      <article><b>${escapeHtml(formatDisplayDate(snapshot.exported_at.slice(0, 10)))}</b><span>latest opportunity export</span></article>
       <article><b>7 days</b><span>free trial before monthly access</span></article>
     </section>
     <section class="panel">

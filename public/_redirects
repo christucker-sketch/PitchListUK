@@ -1,4 +1,6 @@
 # Cloudflare Pages redirects
 # Host/protocol canonicalisation belongs in Cloudflare Redirect Rules, not this file.
 /index.html / 301
+/database /find-pitches 301
+/database.html /find-pitches 301
 /areas/unknown /areas 301

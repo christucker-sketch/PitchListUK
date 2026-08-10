@@ -14,7 +14,7 @@ function subscriberAllowed(record) {
 
 function accessUrl(request, token) {
   const url = new URL(request.url);
-  return `${url.origin}/database?access_token=${encodeURIComponent(token)}`;
+  return `${url.origin}/find-pitches?access_token=${encodeURIComponent(token)}`;
 }
 
 async function sendAccessEmail(env, email, link) {
@@ -28,9 +28,9 @@ async function sendAccessEmail(env, email, link) {
       api_key: apiKey,
       to: [email],
       sender,
-      subject: 'Your PitchList UK database access link',
+      subject: 'Your PitchList UK pitch finder access link',
       text_body: [
-        'Use this link to unlock your PitchList UK database access:',
+        'Use this link to unlock your PitchList UK pitch finder access:',
         '',
         link,
         '',
