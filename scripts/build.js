@@ -42,7 +42,10 @@ function stampHomepageCount() {
 function createPitchFinderRoute() {
   const databaseFile = path.join(out, 'database.html');
   const pitchFinderFile = path.join(out, 'find-pitches.html');
-  if (fs.existsSync(databaseFile)) fs.copyFileSync(databaseFile, pitchFinderFile);
+  if (fs.existsSync(databaseFile)) {
+    fs.copyFileSync(databaseFile, pitchFinderFile);
+    fs.rmSync(databaseFile);
+  }
 }
 
 function injectAnalyticsScripts(dir) {
