@@ -109,7 +109,7 @@ for (const text of ['PITCHLIST_DATABASE_ACCESS_CODE', 'postcodes.io', 'haversine
 }
 if (!functionApi.includes('previewLimit = 50')) throw new Error('Preview should show enough rows to prove coverage');
 const checkoutApi = fs.readFileSync('functions/api/billing/checkout.js', 'utf8');
-for (const text of ['STRIPE_SECRET_KEY', 'STRIPE_PRICE_ID', 'trial_period_days', 'payment_method_collection']) {
+for (const text of ['STRIPE_SECRET_KEY', 'STRIPE_PRICE_ID', 'trial_period_days', 'payment_method_collection', 'trial_already_used', 'existing_active_access']) {
   if (!checkoutApi.includes(text)) throw new Error(`Missing checkout API text: ${text}`);
 }
 const webhookApi = fs.readFileSync('functions/api/billing/webhook.js', 'utf8');

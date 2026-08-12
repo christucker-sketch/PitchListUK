@@ -1,4 +1,12 @@
-import { baseUrlFrom, json, stripeRequest } from '../../_lib/stripe.mjs';
+import {
+  accessRecord,
+  baseUrlFrom,
+  json,
+  normaliseEmail,
+  stripeRequest,
+  subscriptionAllowsAccess,
+  subscriptionHasHadAccess
+} from '../../_lib/stripe.mjs';
 import { assertProfileInput, normaliseProfileInput, saveVendorProfile } from '../../_lib/vendor-profiles.mjs';
 
 export async function onRequestPost(context) {
@@ -18,11 +26,28 @@ export async function onRequestPost(context) {
   }
 
   const baseUrl = baseUrlFrom(request, env);
+  const email = normaliseEmail(input.email || input.vendor_profile?.email || '');
+  if (email) {
+    const existingAccess = await accessRecord(env, `stripe:email:${email}`);
+    if (subscriptionAllowsAccess(existingAccess)) {
+      return json({
+        error: 'existing_active_access',
+        message: 'That email already has active PitchList access. Use the access link form or manage billing instead.'
+      }, 409);
+    }
+    if (subscriptionHasHadAccess(existingAccess)) {
+      return json({
+        error: 'trial_already_used',
+        message: 'That email has already used a PitchList trial. Restart access from the existing billing account or contact hello@pitchlist.uk.'
+      }, 409);
+    }
+  }
+
   let profile = null;
   if (input.vendor_profile || input.business_name || input.category || input.specialty) {
     profile = normaliseProfileInput({
       ...(input.vendor_profile || {}),
-      email: input.email || input.vendor_profile?.email,
+      email,
       signup_source: 'stripe_checkout_seed'
     });
     const profileError = assertProfileInput(profile);
@@ -46,7 +71,6 @@ export async function onRequestPost(context) {
     allow_promotion_codes: 'true'
   };
 
-  const email = String(input.email || '').trim();
   if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)) params.customer_email = email;
 
   try {

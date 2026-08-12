@@ -55,6 +55,19 @@ export function subscriptionAllowsAccess(subscription) {
   return ACCESS_STATUSES.has(status);
 }
 
+export function subscriptionHasHadAccess(record) {
+  const status = String(record?.status || '').toLowerCase();
+  return Boolean(
+    record?.subscription ||
+    record?.customer ||
+    status === 'trialing' ||
+    status === 'active' ||
+    status === 'canceled' ||
+    status === 'past_due' ||
+    status === 'unpaid'
+  );
+}
+
 export async function checkoutSessionAccess(env, sessionId) {
   if (!sessionId || !env.STRIPE_SECRET_KEY) return { allowed: false, reason: 'missing_session' };
   const session = await stripeGet(env, `/checkout/sessions/${encodeURIComponent(sessionId)}`, {
