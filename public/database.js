@@ -13,23 +13,203 @@ const SESSION_KEY = 'pitchlist_checkout_session_id';
 const ACCESS_TOKEN_KEY = 'pitchlist_access_token';
 const ACCOUNT_KEY = 'pitchlist_account';
 const SHORTLIST_KEY = 'pitchlist_saved_shortlist';
+const ANALYTICS_SESSION_KEY = 'pitchlist_analytics_session_v2';
+const ANALYTICS_SESSION_PATTERN = /^as_[a-f0-9]{32}$/;
+const ANALYTICS_ATTRIBUTION_KEY = 'pitchlist_attribution';
+const ANALYTICS_ATTRIBUTION_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+const ANALYTICS_CLICK_ID_KEYS = ['gclid', 'fbclid'];
+const ANALYTICS_ATTRIBUTION_ALIASES = {
+  utm_source: 'source',
+  utm_medium: 'medium',
+  utm_campaign: 'campaign',
+  utm_term: 'term',
+  utm_content: 'content'
+};
 let latestRows = [];
 let latestData = null;
+let volatileAnalyticsSessionId = '';
+
+function analyticsDecoded(value) {
+  let output = String(value || '');
+  for (let i = 0; i < 3; i += 1) {
+    try {
+      const next = decodeURIComponent(output.replace(/\+/g, ' '));
+      if (next === output) break;
+      output = next;
+    } catch {
+      break;
+    }
+  }
+  return output;
+}
+
+function analyticsSensitiveKey(value) {
+  const key = analyticsDecoded(value).toLowerCase().replace(/[^a-z0-9]/g, '');
+  return key === 'token'
+    || key === 'session'
+    || key === 'checkout'
+    || key.endsWith('token')
+    || key.startsWith('session')
+    || key.endsWith('session')
+    || key.includes('accesstoken')
+    || key.includes('sessionid')
+    || key.includes('sessionidentifier')
+    || key.includes('stripesession')
+    || key.includes('checkoutsession')
+    || key.includes('checkoutid')
+    || key.includes('checkoutidentifier');
+}
+
+function analyticsSensitiveFragment(value) {
+  const text = analyticsDecoded(value).toLowerCase();
+  return /(?:access[\s_-]*token|session[\s_-]*(?:id|identifier)|checkout[\s_-]*(?:session|id)|(?:^|[?&#;\s])(?:token|session|checkout)\s*[=:])/.test(text)
+    || /\b(?:cs_(?:test|live)|sess_|cus_|sub_)[a-z0-9_-]+\b/.test(text)
+    || /\bas_[a-f0-9]{32}\b/.test(text)
+    || /^(?:[a-f0-9]{24}|[a-f0-9]{64})$/.test(text.trim());
+}
+
+function analyticsSafeValue(value, max) {
+  if (!['string', 'number', 'boolean'].includes(typeof value)) return '';
+  const output = String(value).replace(/\s+/g, ' ').trim().slice(0, max);
+  return analyticsSensitiveFragment(output) ? '' : output;
+}
+
+function analyticsClickIdPresence(value) {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') return value.trim().length > 0;
+  if (typeof value === 'number') return Number.isFinite(value);
+  return undefined;
+}
+
+function analyticsSafeReferrer(value) {
+  const raw = String(value || '').trim();
+  if (!raw || /%(?![0-9a-f]{2})/i.test(raw)) return '';
+  try {
+    const url = new URL(raw);
+    if (!['http:', 'https:'].includes(url.protocol) || analyticsSensitiveFragment(url.pathname)) return '';
+    return `${url.origin}${url.pathname}`.slice(0, 220);
+  } catch {
+    return '';
+  }
+}
+
+function analyticsSafeProperties(value, depth = 0) {
+  if (depth > 5) return undefined;
+  if (Array.isArray(value)) {
+    return value.map(item => analyticsSafeProperties(item, depth + 1)).filter(item => item !== undefined).slice(0, 20);
+  }
+  if (value && typeof value === 'object') {
+    const output = {};
+    for (const [rawKey, item] of Object.entries(value).slice(0, 80)) {
+      const key = analyticsDecoded(rawKey).toLowerCase().replace(/[^a-z0-9_:-]+/g, '_').slice(0, 50);
+      const compact = key.replace(/[^a-z0-9]/g, '');
+      if (!key || analyticsSensitiveKey(rawKey) || ['query', 'search', 'searchparams'].includes(compact)) continue;
+      if (ANALYTICS_CLICK_ID_KEYS.includes(compact)) {
+        const presence = analyticsClickIdPresence(item);
+        if (presence !== undefined) output[key] = presence;
+        continue;
+      }
+      let cleaned;
+      if (typeof item === 'string' && ['url', 'href', 'path'].includes(compact)) {
+        try {
+          const url = new URL(item, window.location.origin);
+          cleaned = analyticsSensitiveFragment(url.pathname)
+            ? ''
+            : (url.origin === window.location.origin ? url.pathname : url.hostname);
+        } catch {
+          cleaned = '';
+        }
+      } else if (typeof item === 'string' && compact === 'referrer') {
+        cleaned = analyticsSafeReferrer(item);
+      } else {
+        cleaned = analyticsSafeProperties(item, depth + 1);
+      }
+      if (cleaned !== undefined && cleaned !== '') output[key] = cleaned;
+    }
+    return output;
+  }
+  if (typeof value === 'number' || typeof value === 'boolean') return value;
+  return analyticsSafeValue(value, 160) || undefined;
+}
+
+function analyticsAttribution() {
+  const current = {};
+  const params = new URLSearchParams(window.location.search);
+  for (const key of ANALYTICS_ATTRIBUTION_KEYS) {
+    const value = analyticsSafeValue(params.get(key) || '', 160);
+    if (value) current[key] = value;
+  }
+  const clickPresence = Object.fromEntries(ANALYTICS_CLICK_ID_KEYS.map(key => [
+    key,
+    params.getAll(key).some(value => String(value).trim().length > 0)
+  ]));
+  const hasAttribution = Object.keys(current).length > 0 || ANALYTICS_CLICK_ID_KEYS.some(key => clickPresence[key]);
+  const currentAttribution = { ...current, ...clickPresence };
+  try {
+    if (hasAttribution) {
+      window.localStorage.setItem(ANALYTICS_ATTRIBUTION_KEY, JSON.stringify(currentAttribution));
+      return currentAttribution;
+    }
+    const stored = JSON.parse(window.localStorage.getItem(ANALYTICS_ATTRIBUTION_KEY) || '{}');
+    const storedCampaign = Object.fromEntries(ANALYTICS_ATTRIBUTION_KEYS.map(key => {
+      const alias = ANALYTICS_ATTRIBUTION_ALIASES[key];
+      return [key, analyticsSafeValue(stored[key] ?? (alias ? stored[alias] : ''), 160)];
+    }).filter(([, value]) => value));
+    const storedAttribution = {
+      ...storedCampaign,
+      ...Object.fromEntries(ANALYTICS_CLICK_ID_KEYS.map(key => [key, stored[key] === true]))
+    };
+    window.localStorage.setItem(ANALYTICS_ATTRIBUTION_KEY, JSON.stringify(storedAttribution));
+    return storedAttribution;
+  } catch {
+    return currentAttribution;
+  }
+}
+
+function analyticsSessionId() {
+  if (!window.crypto || typeof window.crypto.getRandomValues !== 'function') return '';
+  if (ANALYTICS_SESSION_PATTERN.test(volatileAnalyticsSessionId)) return volatileAnalyticsSessionId;
+  try {
+    const stored = window.sessionStorage.getItem(ANALYTICS_SESSION_KEY) || '';
+    if (ANALYTICS_SESSION_PATTERN.test(stored)) {
+      volatileAnalyticsSessionId = stored;
+      return stored;
+    }
+  } catch {
+    // Storage is optional.
+  }
+  const bytes = new Uint8Array(16);
+  try {
+    window.crypto.getRandomValues(bytes);
+  } catch {
+    return '';
+  }
+  volatileAnalyticsSessionId = `as_${[...bytes].map(byte => byte.toString(16).padStart(2, '0')).join('')}`;
+  try {
+    window.sessionStorage.setItem(ANALYTICS_SESSION_KEY, volatileAnalyticsSessionId);
+  } catch {
+    // Analytics must continue without persistent session storage.
+  }
+  return volatileAnalyticsSessionId;
+}
 
 function trackEvent(event, properties = {}) {
   if (window.pitchlistTrack) {
     window.pitchlistTrack(event, properties);
     return;
   }
+  const sessionId = analyticsSessionId();
   fetch('/api/analytics/event', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
-      event,
-      url: window.location.href,
-      page: document.title,
-      referrer: document.referrer,
-      properties
+      event: analyticsSafeValue(event, 80) || 'event',
+      path: window.location.pathname || '/',
+      page: analyticsSafeValue(document.title, 120),
+      referrer: analyticsSafeReferrer(document.referrer),
+      ...analyticsAttribution(),
+      ...(sessionId ? { analytics_session_id: sessionId } : {}),
+      properties: analyticsSafeProperties(properties) || {}
     }),
     keepalive: true
   }).catch(() => {});
