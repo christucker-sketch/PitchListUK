@@ -114,6 +114,63 @@ function splitTerms(value) {
   return String(value || '').toLowerCase().split(/[,\s]+/).map(v => v.trim()).filter(Boolean);
 }
 
+function categoryPhrases(value) {
+  return String(value || '').toLowerCase().split(/[,\n]+/).map(v => v.trim()).filter(Boolean);
+}
+
+const CATEGORY_ALIASES = [
+  {
+    match: /coffee|matcha|espresso|latte|cappuccino|cafe|café|hot drink|tea\b|bubble tea/,
+    terms: ['coffee', 'hot drinks', 'drinks', 'beverages', 'dessert', 'food traders', 'street food', 'mobile catering', 'market']
+  },
+  {
+    match: /toastie|toasties|sandwich|panini|bagel|cuban|wrap|snack/,
+    terms: ['sandwich', 'hot food', 'snacks', 'street food', 'mobile catering', 'food traders', 'market']
+  },
+  {
+    match: /bar|cocktail|prosecco|fizz|beer|wine|gin|rum|alcohol|mobile bar|drinks?/,
+    terms: ['bar', 'drinks', 'beverages', 'independent drinks', 'food traders', 'street food', 'festival', 'market']
+  },
+  {
+    match: /pizza|burger|bbq|grill|taco|burrito|curry|noodle|loaded|fries|wings|kebab|gyros|wrap/,
+    terms: ['street food', 'hot food', 'mobile catering', 'food traders', 'festival', 'market']
+  },
+  {
+    match: /cake|bakery|bakes|dessert|ice cream|donut|doughnut|waffle|crepe|sweet/,
+    terms: ['dessert', 'bakery', 'food traders', 'street food', 'market', 'artisan']
+  },
+  {
+    match: /craft|artisan|maker|gift|jewellery|jewelry|ceramic|candle|soap|art\b/,
+    terms: ['crafts', 'artisan', 'market', 'stallholders', 'exhibitors']
+  },
+  {
+    match: /food|cater|vendor|trader|street food|truck|trailer|stall/,
+    terms: ['food traders', 'street food', 'mobile catering', 'stallholders', 'event concessions', 'market']
+  }
+];
+
+function expandedCategoryTerms(value) {
+  const terms = new Set();
+  for (const phrase of categoryPhrases(value)) {
+    terms.add(phrase);
+    for (const token of phrase.split(/\s+/).map(v => v.trim()).filter(v => v.length > 2)) {
+      terms.add(token);
+    }
+    for (const group of CATEGORY_ALIASES) {
+      if (group.match.test(phrase)) {
+        for (const term of group.terms) terms.add(term);
+      }
+    }
+  }
+  return [...terms].filter(Boolean);
+}
+
+function categoryMatches(row, requestedCategory) {
+  const terms = expandedCategoryTerms(requestedCategory);
+  if (!terms.length) return true;
+  return terms.some(term => row._search.includes(term));
+}
+
 function searchable(row) {
   return [
     row.event_name,
@@ -186,7 +243,7 @@ export async function onRequestGet(context) {
 
   const postcode = url.searchParams.get('postcode') || url.searchParams.get('outcode') || '';
   const radius = Number(url.searchParams.get('radius_miles') || url.searchParams.get('radius') || 0);
-  const categoryTerms = splitTerms(url.searchParams.get('category'));
+  const category = url.searchParams.get('category') || '';
   const queryTerms = splitTerms(url.searchParams.get('q'));
   const confidence = String(url.searchParams.get('confidence') || '').trim().toLowerCase();
   const requestedLimit = Math.min(Math.max(Number(url.searchParams.get('limit') || 75), 1), 250);
@@ -216,7 +273,7 @@ export async function onRequestGet(context) {
     };
   }).filter(row => {
     if (confidence && String(row.confidence || '').toLowerCase() !== confidence) return false;
-    if (categoryTerms.length && !categoryTerms.every(term => row._search.includes(term))) return false;
+    if (!categoryMatches(row, category)) return false;
     if (queryTerms.length && !queryTerms.every(term => row._search.includes(term))) return false;
     if (origin && radius > 0 && (
       row.distance_miles === null ||
