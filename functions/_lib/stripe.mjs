@@ -150,6 +150,71 @@ export async function accessRecord(env, key) {
   }
 }
 
+function bindingValue(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+export async function resolveCanonicalBinding(env, binding) {
+  if (!binding || typeof binding !== 'object' || Array.isArray(binding)) {
+    return { verified: false, reason: 'invalid_binding' };
+  }
+
+  const subscription = bindingValue(binding.subscription);
+  const customer = bindingValue(binding.customer);
+  const email = typeof binding.email === 'string' ? normaliseEmail(binding.email) : '';
+  if (!subscription || !customer || !email) {
+    return { verified: false, reason: 'incomplete_binding' };
+  }
+
+  const canonical = await accessRecord(env, `stripe:subscription:${subscription}`);
+  if (!canonical || typeof canonical !== 'object' || Array.isArray(canonical)) {
+    return { verified: false, reason: 'canonical_subscription_missing' };
+  }
+
+  const canonicalSubscription = bindingValue(canonical.subscription);
+  const canonicalCustomer = bindingValue(canonical.customer);
+  const canonicalEmail = typeof canonical.email === 'string' ? normaliseEmail(canonical.email) : '';
+  if (
+    canonicalSubscription !== subscription
+    || canonicalCustomer !== customer
+    || canonicalEmail !== email
+  ) {
+    return { verified: false, reason: 'canonical_binding_mismatch' };
+  }
+
+  return {
+    verified: true,
+    reason: 'canonical_binding_verified',
+    subscription,
+    customer,
+    email,
+    status: String(canonical.status || '').toLowerCase(),
+    canonical
+  };
+}
+
+export async function resolveCanonicalTokenBinding(env, token) {
+  const value = bindingValue(token);
+  if (!value) return { verified: false, reason: 'missing_token' };
+  const record = await accessRecord(env, `stripe:access-token:${value}`);
+  if (!record) return { verified: false, reason: 'token_not_found' };
+  const binding = await resolveCanonicalBinding(env, record);
+  return { ...binding, record };
+}
+
+export function resolveCanonicalEntitlement(binding) {
+  if (!binding?.verified || !binding.canonical) {
+    return { ...binding, allowed: false };
+  }
+  const allowed = binding.canonical.access === 'allowed'
+    && subscriptionAllowsAccess(binding.canonical);
+  return {
+    ...binding,
+    allowed,
+    reason: allowed ? 'canonical_subscription_allowed' : 'canonical_subscription_blocked'
+  };
+}
+
 export function emailValid(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(String(value || ''));
 }

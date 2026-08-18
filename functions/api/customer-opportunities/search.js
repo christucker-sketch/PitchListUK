@@ -1,5 +1,5 @@
 import { opportunitySnapshot } from '../../_data/opportunities.mjs';
-import { accessRecord, accessTokenCookie, checkoutSessionAccess, getCookie, json as stripeJson, sessionCookie } from '../../_lib/stripe.mjs';
+import { accessTokenCookie, checkoutSessionAccess, getCookie, json as stripeJson, resolveCanonicalEntitlement, resolveCanonicalTokenBinding, sessionCookie } from '../../_lib/stripe.mjs';
 
 function json(payload, status = 200, headers = {}) {
   return stripeJson(payload, status, headers);
@@ -48,13 +48,13 @@ async function accessContext(request, env, url) {
     || ''
   ).trim();
   if (token) {
-    const record = await accessRecord(env, `stripe:access-token:${token}`);
-    if (record?.access === 'allowed') {
+    const entitlement = resolveCanonicalEntitlement(await resolveCanonicalTokenBinding(env, token));
+    if (entitlement.allowed) {
       return {
         mode: 'subscriber',
         reason: 'stripe_access_token',
-        email: record.email || '',
-        customer: record.customer || '',
+        email: entitlement.email,
+        customer: entitlement.customer,
         set_cookie: accessTokenCookie(token)
       };
     }

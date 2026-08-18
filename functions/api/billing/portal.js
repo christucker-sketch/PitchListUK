@@ -1,4 +1,4 @@
-import { accessRecord, baseUrlFrom, checkoutSessionAccess, getCookie, json, stripeRequest } from '../../_lib/stripe.mjs';
+import { baseUrlFrom, checkoutSessionAccess, getCookie, json, resolveCanonicalTokenBinding, stripeRequest } from '../../_lib/stripe.mjs';
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -28,7 +28,10 @@ export async function onRequestPost(context) {
       access = {};
     }
   }
-  if (!access.customer && token) access = await accessRecord(env, `stripe:access-token:${token}`) || {};
+  if (!access.customer && token) {
+    const binding = await resolveCanonicalTokenBinding(env, token);
+    access = binding.verified ? binding : {};
+  }
   if (!access.customer) return json({ error: 'customer_not_found' }, 404);
 
   const baseUrl = baseUrlFrom(request, env);

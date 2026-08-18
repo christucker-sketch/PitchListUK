@@ -5,12 +5,11 @@ import {
   emailValid,
   json,
   normaliseEmail,
-  putAccessToken
+  putAccessToken,
+  resolveCanonicalBinding,
+  resolveCanonicalEntitlement,
+  resolveCanonicalTokenBinding
 } from '../../_lib/stripe.mjs';
-
-function subscriberAllowed(record) {
-  return record && record.access === 'allowed';
-}
 
 function accessUrl(request, token) {
   const url = new URL(request.url);
@@ -56,7 +55,8 @@ export async function onRequestPost(context) {
   if (!emailValid(email)) return json({ error: 'invalid_email' }, 400);
 
   const record = await accessRecord(env, `stripe:email:${email}`);
-  if (!subscriberAllowed(record)) {
+  const entitlement = resolveCanonicalEntitlement(await resolveCanonicalBinding(env, record));
+  if (!entitlement.allowed) {
     return json({
       ok: true,
       sent: false,
@@ -89,15 +89,15 @@ export async function onRequestGet(context) {
   const token = String(url.searchParams.get('token') || '').trim();
   if (!token) return json({ error: 'missing_token' }, 400);
 
-  const record = await accessRecord(env, `stripe:access-token:${token}`);
-  if (!subscriberAllowed(record)) return json({ error: 'invalid_or_expired_token' }, 404);
+  const entitlement = resolveCanonicalEntitlement(await resolveCanonicalTokenBinding(env, token));
+  if (!entitlement.allowed) return json({ error: 'invalid_or_expired_token' }, 404);
 
   return json({
     ok: true,
     access: 'subscriber',
-    email: record.email || '',
-    customer: record.customer || '',
-    subscription_status: record.status || ''
+    email: entitlement.email,
+    customer: entitlement.customer,
+    subscription_status: entitlement.status
   }, 200, {
     'set-cookie': accessTokenCookie(token)
   });
