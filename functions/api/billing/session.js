@@ -1,4 +1,5 @@
 import { checkoutSessionAccess, json, sessionCookie } from '../../_lib/stripe.mjs';
+import { vendorSearchDefaults } from '../../_lib/vendor-profiles.mjs';
 
 export async function onRequestGet(context) {
   const { request, env } = context;
@@ -15,12 +16,15 @@ export async function onRequestGet(context) {
     }, 402);
   }
 
+  const searchDefaults = await vendorSearchDefaults(env, access.email);
+
   return json({
     ok: true,
     access: 'subscriber',
     email: access.email,
     customer: access.customer,
-    subscription_status: access.subscription?.status || ''
+    subscription_status: access.subscription?.status || '',
+    search_defaults: searchDefaults
   }, 200, {
     'set-cookie': sessionCookie(sessionId)
   });

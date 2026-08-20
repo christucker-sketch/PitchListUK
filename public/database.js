@@ -332,6 +332,13 @@ function checkedLabel(row) {
 
 function chips(row) {
   return [
+    row.match_basis?.category === 'direct'
+      ? 'Direct category match'
+      : row.match_basis?.category === 'alias'
+        ? 'Related category match'
+        : row.match_basis?.category === 'broad_food_fallback'
+          ? 'Broader food-trader opportunity'
+          : '',
     row.county || row.region || 'Area to verify',
     dateRange(row),
     routeLabel(row),
@@ -455,13 +462,22 @@ function renderMetrics(data) {
   const placeLevel = rows.filter(row => ['place', 'exact'].includes(row.coordinate_precision)).length;
   const accessLabel = data.access === 'subscriber' ? 'Unlocked' : 'Preview';
   const savedCount = savedRows().length;
+  const headlineCount = data.search_filtered ? data.count : data.total;
+  const headlineLabel = data.search_filtered ? 'matches for this search' : 'opportunities tracked UK-wide';
+  const nationalContext = data.search_filtered
+    ? `<small>${esc(`${data.total} opportunities tracked UK-wide.`)}</small>`
+    : '';
+  const resolution = data.postcode_resolution;
+  const postcodeNotice = resolution?.fallback_used
+    ? `<small class="postcode-resolution-notice">${esc(`${resolution.requested} wasn’t recognised; showing results from the ${resolution.resolved} area.`)}</small>`
+    : '';
   metricsEl.innerHTML = `
     <article><b>${esc(data.count)}</b><span>matching opportunities</span></article>
     <article><b>${esc(recentlyChecked)}</b><span>checked in last 14 days</span></article>
     <article><b>${esc(placeLevel)}</b><span>place-level distance</span></article>
     <article><b>${esc(savedCount)}</b><span>saved to shortlist</span></article>
     <article><b>${accessLabel}</b><span>${esc(data.access === 'subscriber' ? 'Full source and application routes visible.' : 'Routes are hidden until trial signup.')}</span></article>`;
-  statusEl.innerHTML = `<b>${esc(data.total)}</b><span>${esc(`${data.total} live opportunities`)}</span>`;
+  statusEl.innerHTML = `<b>${esc(headlineCount)}</b><span>${esc(headlineLabel)}</span>${nationalContext}${postcodeNotice}`;
 }
 
 function storedAccount() {
@@ -480,6 +496,18 @@ function saveAccount(data) {
   };
   localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
   return account;
+}
+
+function applySearchDefaults(defaults) {
+  if (!defaults || typeof defaults !== 'object') return;
+  const postcode = form.elements.postcode;
+  const category = form.elements.category;
+  if (postcode && !postcode.value.trim() && typeof defaults.postcode === 'string') {
+    postcode.value = defaults.postcode;
+  }
+  if (category && !category.value.trim() && typeof defaults.category === 'string') {
+    category.value = defaults.category;
+  }
 }
 
 function clearStoredAccess() {
@@ -572,7 +600,21 @@ function vendorProfileFromForm() {
 function renderResults(rows) {
   latestRows = rows;
   if (!rows.length) {
-    resultsEl.innerHTML = '<div class="cloud-empty"><strong>No matching opportunities</strong><span>Try a wider radius, fewer keywords, or a broader category.</span></div>';
+    const recovery = latestData?.recovery || {};
+    const withoutKeywords = Number(recovery.without_keywords?.count || 0);
+    const withoutCategory = Number(recovery.without_category?.count || 0);
+    const geographic = Number(recovery.geographic_matches || 0);
+    let guidance = 'No opportunities match the current filters.';
+    if (!geographic) {
+      guidance = 'No geographically matched opportunities were found. Try a wider radius or remove the postcode.';
+    } else if (recovery.without_keywords?.recovers_matches) {
+      guidance = `Remove the keyword filter to recover ${withoutKeywords} geographically relevant ${withoutKeywords === 1 ? 'opportunity' : 'opportunities'}.`;
+    } else if (recovery.without_category?.recovers_matches) {
+      guidance = `Remove the category filter to recover ${withoutCategory} geographically relevant ${withoutCategory === 1 ? 'opportunity' : 'opportunities'}.`;
+    } else if (recovery.without_category_and_keywords?.recovers_matches) {
+      guidance = `Remove both category and keywords to recover ${geographic} geographically relevant ${geographic === 1 ? 'opportunity' : 'opportunities'}.`;
+    }
+    resultsEl.innerHTML = `<div class="cloud-empty"><strong>No matching opportunities</strong><span>${esc(guidance)}</span></div>`;
     return;
   }
   const selected = new Set(savedRows().map(row => row.key));
@@ -653,6 +695,7 @@ async function verifyReturnedSession() {
   if (!response.ok) throw new Error(data.message || 'Could not verify subscription session');
   localStorage.setItem(SESSION_KEY, returned);
   saveAccount(data);
+  applySearchDefaults(data.search_defaults);
   trackEvent('checkout_return', { status: data.subscription_status || data.status || 'subscriber' });
   url.searchParams.delete('session_id');
   window.history.replaceState({}, '', url.toString());
@@ -667,6 +710,7 @@ async function verifyReturnedAccessToken() {
   if (!response.ok) throw new Error(data.message || 'Access link is invalid or expired');
   localStorage.setItem(ACCESS_TOKEN_KEY, token);
   saveAccount(data);
+  applySearchDefaults(data.search_defaults);
   trackEvent('access_unlock', { source: 'email_access_link' });
   url.searchParams.delete('access_token');
   window.history.replaceState({}, '', url.toString());

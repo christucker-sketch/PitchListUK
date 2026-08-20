@@ -179,6 +179,30 @@ export async function loadVendorById(env, id) {
   return getJson(kv, `vendor:${id}`);
 }
 
+export async function loadVendorByEmail(env, email) {
+  const kv = profileKv(env);
+  const normalised = normaliseEmail(email);
+  if (!kv || typeof kv.get !== 'function' || !normalised) return null;
+  try {
+    const ref = await getJson(kv, `vendor:email:${normalised}`);
+    if (!ref?.vendor_id) return null;
+    const profile = await getJson(kv, `vendor:${ref.vendor_id}`);
+    if (normaliseEmail(profile?.private_account?.email) !== normalised) return null;
+    return profile;
+  } catch {
+    return null;
+  }
+}
+
+export async function vendorSearchDefaults(env, email) {
+  const profile = await loadVendorByEmail(env, email);
+  if (!profile) return null;
+  const postcode = clean(profile.private_account?.base_postcode, 40);
+  const category = clean(profile.public_profile?.specialty, 160);
+  if (!postcode && !category) return null;
+  return { postcode, category };
+}
+
 export async function updateVendorBilling(env, vendor_id, billing) {
   const existing = await loadVendorById(env, vendor_id);
   if (!existing) return { updated: false };
