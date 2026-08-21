@@ -117,6 +117,30 @@ test('general council licence guidance is not treated as an available trading pi
   assert.ok(row.quality_reasons.includes('available_pitch_evidence_missing'));
 });
 
+test('council permit renewals are not treated as available pitches', () => {
+  const row = evaluateOpportunity(ready({
+    event_name: 'redcar-cleveland.gov.uk',
+    organiser: 'Redcar and Cleveland Borough Council',
+    source_url: 'https://redcar-cleveland.gov.uk/licensing-and-permits/street-trading',
+    application_url: 'https://redcar-cleveland.gov.uk/forms/renew-street-trading-permit.pdf',
+    source_evidence: 'Application to renew a street trading permit in Redcar and Cleveland, England.'
+  }), { now: new Date('2026-08-21T00:00:00Z') });
+  assert.equal(row.quality_status, 'needs_work');
+  assert.ok(row.quality_reasons.includes('available_pitch_evidence_missing'));
+});
+
+test('council pages with explicit open trader applications may become customer-ready', () => {
+  const row = evaluateOpportunity(ready({
+    event_name: 'Bishop Food Festival',
+    organiser: 'Durham County Council',
+    source_url: 'https://durham.gov.uk/bishop-food-festival',
+    application_url: 'https://durham.gov.uk/bishop-food-festival/apply',
+    location: 'County Durham, England',
+    source_evidence: 'Trader applications are open for Bishop Food Festival on 10 October 2026.'
+  }), { now: new Date('2026-08-21T00:00:00Z') });
+  assert.equal(row.quality_status, 'customer_ready');
+});
+
 test('approved source registry has explicit robots, terms and throttle policies', () => {
   assert.ok(APPROVED_SOURCES.length >= 23);
   for (const source of APPROVED_SOURCES) {

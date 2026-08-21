@@ -13,8 +13,7 @@ const FOREIGN_FIXTURES = /(?:berkshireyogafestival|vendorsmap\.com\/cities\/manc
 const DIRECT_EVIDENCE = /\b(apply|application|register|registration|booking|become a trader|trade with us|vendor form|stallholder form|exhibitor form|caterer form|street trading consent|street trader licence|pitch enquiry)\b/i;
 const ONE_OFF_EVENT = /\b(festival|fair|show|christmas market|winter wonderland|carnival|feast|fireworks|bonfire|race|marathon)\b/i;
 const GENERIC_TITLE = /^(street trading|street trading licence|street trader licence|apply to trade|vendor application|caterers|market)$/i;
-const GENERAL_PERMISSION = /\b(street trading (?:licen[cs]e|consent)|apply for (?:a )?(?:street trading )?(?:licen[cs]e|consent)|general guidance|permission to trade)\b/i;
-const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)? available|vacant pitch(?:es)?|named market|at (?:the )?[A-Z][A-Za-z' -]+ market|specific trading location|trade at (?:our|the)|trader applications? (?:are )?open|stallholder applications? (?:are )?open)\b/i;
+const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)? available|vacant pitch(?:es)?|traders? wanted|seeking (?:food |market )?traders?|apply to trade at|book (?:a )?pitch at|trader applications? (?:are )?open|stallholder applications? (?:are )?open|vendor applications? (?:are )?open)\b/i;
 
 function canonicalUrl(value) {
   try {
@@ -133,7 +132,7 @@ function evaluateOpportunity(raw, options = {}) {
   if (!DIRECT_EVIDENCE.test(directText) && !row.contact_email) reasons.push('direct_application_or_contact_missing');
   const rule = sourceRuleFor(row.source_url);
   if (!rule.approved) reasons.push('source_not_approved');
-  if (rule.type === 'local-authority' && GENERAL_PERMISSION.test(sourceText) && !AVAILABLE_PITCH.test(sourceText)) {
+  if (rule.type === 'local-authority' && !AVAILABLE_PITCH.test(sourceText)) {
     reasons.push('available_pitch_evidence_missing');
   }
   if (ONE_OFF_EVENT.test(row.event_name || '') && !row.event_start && !row.application_deadline) reasons.push('undated_one_off_event');
