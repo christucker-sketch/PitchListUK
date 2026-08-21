@@ -7,7 +7,7 @@ const { spawnSync } = require('node:child_process');
 const {
   parseSnapshot, serializeSnapshot, assertGitState, validateManifest, planChanges,
   changedFilesFromPorcelain, assertAllowedChanges, assertRequiredHeaders, assertLiveHeaders, resultStatus,
-  parseDeployments, atomicWrite
+  runSequentialGates, parseDeployments, atomicWrite
 } = require('./lib/reviewed-opportunity-publisher');
 
 const root = path.resolve(__dirname, '..');
@@ -74,12 +74,12 @@ function main() {
   assertRequiredHeaders(fs.readFileSync(path.join(root, 'src/_headers'), 'utf8'), fs.readFileSync(path.join(root, 'public/_headers'), 'utf8'));
   const files = changedFilesFromPorcelain(commandOutput('git', ['status', '--porcelain'], 'git_changed_files'));
   assertAllowedChanges(files);
-  for (const [command, commandArgs, label] of [
-    [process.execPath, ['scripts/check.js'], 'site_check'],
-    [process.execPath, ['--test', 'tests/*.test.mjs'], 'regression_tests'],
-    ['git', ['diff', '--check'], 'diff_check'],
-    ['sh', ['-c', 'cmp -s src/database.js public/database.js && cmp -s src/analytics.js public/analytics.js && cmp -s src/styles.css public/styles.css && cmp -s src/_headers public/_headers'], 'asset_parity']
-  ]) resultStatus(run(command, commandArgs, label === 'regression_tests' ? { shell: true } : {}), label);
+  runSequentialGates([
+    { label: 'site_check', run: () => run(process.execPath, ['scripts/check.js']) },
+    { label: 'regression_tests', run: () => run(process.execPath, ['--test', 'tests/*.test.mjs'], { shell: true }) },
+    { label: 'diff_check', run: () => run('git', ['diff', '--check']) },
+    { label: 'asset_parity', run: () => run('sh', ['-c', 'cmp -s src/database.js public/database.js && cmp -s src/analytics.js public/analytics.js && cmp -s src/styles.css public/styles.css && cmp -s src/_headers public/_headers']) }
+  ]);
   resultStatus(run('git', ['add', '--', ...files]), 'git_add');
   resultStatus(run('git', ['commit', '-m', `Publish reviewed opportunities: ${manifest.review_id || path.basename(manifestPath)}`]), 'git_commit');
   const publishedSha = commandOutput('git', ['rev-parse', 'HEAD'], 'published_sha');

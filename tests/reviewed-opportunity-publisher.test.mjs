@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   parseSnapshot, serializeSnapshot, assertGitState, validateManifest, planChanges,
   changedFilesFromPorcelain, assertAllowedChanges, assertRequiredHeaders, assertLiveHeaders,
-  resultStatus, parseDeployments
+  resultStatus, runSequentialGates, parseDeployments
 } = require('../scripts/lib/reviewed-opportunity-publisher.js');
 
 const sha = 'a'.repeat(40);
@@ -88,6 +88,17 @@ test('spawn errors, signals, null status and nonzero codes fail the publishing s
     assert.throws(() => resultStatus(result, 'gate'), /gate_failed/);
   }
   assert.equal(resultStatus({ status: 0 }, 'gate').status, 0);
+});
+
+test('a failed gate prevents Git push and deployment from running', () => {
+  const calls = [];
+  assert.throws(() => runSequentialGates([
+    { label: 'generation', run: () => { calls.push('generation'); return { status: 0 }; } },
+    { label: 'tests', run: () => { calls.push('tests'); return { status: 9 }; } },
+    { label: 'git_push', run: () => { calls.push('git_push'); return { status: 0 }; } },
+    { label: 'wrangler_deploy', run: () => { calls.push('wrangler_deploy'); return { status: 0 }; } }
+  ]), /tests_failed/);
+  assert.deepEqual(calls, ['generation', 'tests']);
 });
 
 test('Cloudflare deployment metadata captures rollback and deployed identifiers', () => {

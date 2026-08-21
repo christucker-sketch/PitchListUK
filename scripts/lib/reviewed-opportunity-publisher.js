@@ -119,6 +119,11 @@ function resultStatus(result, label) {
   return result;
 }
 
+function runSequentialGates(gates) {
+  for (const gate of gates) resultStatus(gate.run(), gate.label);
+  return true;
+}
+
 function parseDeployments(output) {
   const records = JSON.parse(String(output || '[]'));
   const production = records.find(item => String(item.Environment).toLowerCase() === 'production');
@@ -135,5 +140,5 @@ function atomicWrite(file, content, fsImpl = fs) {
 module.exports = {
   REQUIRED_HEADERS, ALLOWED_CHANGE, canonicalUrl, parseSnapshot, serializeSnapshot, assertGitState,
   validateManifest, planChanges, changedFilesFromPorcelain, assertAllowedChanges, assertRequiredHeaders, assertLiveHeaders,
-  resultStatus, parseDeployments, atomicWrite
+  resultStatus, runSequentialGates, parseDeployments, atomicWrite
 };
