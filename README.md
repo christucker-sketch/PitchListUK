@@ -11,6 +11,14 @@ npm run build
 
 Cloudflare Pages should publish the `public/` directory.
 
+Production deployments use the tracked fail-closed wrapper:
+
+```bash
+PITCHLIST_DEPLOY_ENV_FILE=/absolute/path/to/secure.env npm run deploy:production
+```
+
+The environment file remains outside Git and supplies `CLOUDFLARE_API_TOKEN`. Optional configuration is `PITCHLIST_CLOUDFLARE_PAGES_PROJECT` (default `pitchlistuk`), `PITCHLIST_CLOUDFLARE_PAGES_BRANCH` (default `main`) and `PITCHLIST_PUBLIC_SITE_ROOT` (default repository root). The wrapper reports success only when Wrangler starts and exits with code zero.
+
 ## Recommended Cloudflare Pages settings
 
 - Framework preset: None / Static HTML
