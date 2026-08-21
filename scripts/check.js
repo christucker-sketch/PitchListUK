@@ -1,5 +1,5 @@
 const fs = require('fs');
-const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/analytics.js', 'src/activity.html', 'src/activity.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'scripts/generate-seo-pages.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/analytics/event.js', 'functions/api/analytics/summary.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/analytics.mjs', 'functions/_lib/stripe.mjs', 'functions/_lib/vendor-profiles.mjs', 'functions/_data/opportunities.mjs'];
+const required = ['src/index.html', 'src/buy.html', 'src/success.html', 'src/terms.html', 'src/privacy.html', 'src/festival-trader-applications.html', 'src/stall-holders-wanted.html', 'src/food-traders-wanted.html', 'src/festival-vendors-wanted.html', 'src/market-stallholder-applications.html', 'src/council-event-trader-applications.html', 'src/food-truck-pitches.html', 'src/database.html', 'src/database.js', 'src/analytics.js', 'src/activity.html', 'src/activity.js', 'src/styles.css', 'src/sitemap.xml', 'scripts/build.js', 'scripts/export-opportunities.js', 'scripts/generate-seo-pages.js', 'functions/api/customer-opportunities/search.js', 'functions/api/sample-request.js', 'functions/api/analytics/event.js', 'functions/api/analytics/summary.js', 'functions/api/billing/checkout.js', 'functions/api/billing/session.js', 'functions/api/billing/portal.js', 'functions/api/billing/webhook.js', 'functions/_lib/analytics.mjs', 'functions/_lib/email.mjs', 'functions/_lib/stripe.mjs', 'functions/_lib/vendor-profiles.mjs', 'functions/_data/opportunities.mjs'];
 for (const file of required) {
   if (!fs.existsSync(file)) throw new Error(`Missing ${file}`);
 }
@@ -117,8 +117,12 @@ for (const text of ['STRIPE_WEBHOOK_SECRET', 'checkout.session.completed', 'cust
   if (!webhookApi.includes(text)) throw new Error(`Missing webhook API text: ${text}`);
 }
 const sampleRequestApi = fs.readFileSync('functions/api/sample-request.js', 'utf8');
-for (const text of ['PITCHLIST_SAMPLE_WEBHOOK_URL', 'PITCHLIST_FORM_SMTP2GO_API_KEY', 'delivery_not_configured']) {
+for (const text of ['PITCHLIST_SAMPLE_WEBHOOK_URL', 'sendTransactionalEmail', 'delivery_not_configured']) {
   if (!sampleRequestApi.includes(text)) throw new Error(`Missing sample request API text: ${text}`);
+}
+const emailLib = fs.readFileSync('functions/_lib/email.mjs', 'utf8');
+for (const text of ['SMTP2GO_API_KEY', 'x-smtp2go-api-key', 'subscriber_access_link', 'subscriber_welcome', 'email_provider_timeout']) {
+  if (!emailLib.includes(text)) throw new Error(`Missing transactional email service text: ${text}`);
 }
 const analyticsLib = fs.readFileSync('functions/_lib/analytics.mjs', 'utf8');
 for (const text of ['PITCHLIST_ANALYTICS_KV', 'PITCHLIST_ANALYTICS_TOKEN', 'analytics:event:', 'summariseAnalytics', 'database_search']) {

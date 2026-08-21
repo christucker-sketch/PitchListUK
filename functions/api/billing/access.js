@@ -11,36 +11,11 @@ import {
   resolveCanonicalTokenBinding
 } from '../../_lib/stripe.mjs';
 import { vendorSearchDefaults } from '../../_lib/vendor-profiles.mjs';
+import { accessLinkEmail, EmailDeliveryError, sendTransactionalEmail } from '../../_lib/email.mjs';
 
 function accessUrl(request, token) {
   const url = new URL(request.url);
   return `${url.origin}/find-pitches?access_token=${encodeURIComponent(token)}`;
-}
-
-async function sendAccessEmail(env, email, link) {
-  const apiKey = env.PITCHLIST_FORM_SMTP2GO_API_KEY || env.SMTP2GO_API_KEY || '';
-  if (!apiKey) return null;
-  const sender = env.PITCHLIST_FORM_FROM || 'hello@pitchlist.uk';
-  const response = await fetch('https://api.smtp2go.com/v3/email/send', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      api_key: apiKey,
-      to: [email],
-      sender,
-      subject: 'Your PitchList UK pitch finder access link',
-      text_body: [
-        'Use this link to unlock your PitchList UK pitch finder access:',
-        '',
-        link,
-        '',
-        'This link is for your subscriber access and expires after 30 days.'
-      ].join('\n')
-    })
-  });
-  const result = await response.json().catch(() => ({}));
-  if (!response.ok || result.data?.error_code) throw new Error(`SMTP2GO failed with HTTP ${response.status}`);
-  return { provider: 'smtp2go' };
 }
 
 export async function onRequestPost(context) {
@@ -72,15 +47,25 @@ export async function onRequestPost(context) {
     access_source: 'email_access_link'
   });
   const link = accessUrl(request, token);
-  const delivery = await sendAccessEmail(env, email, link);
-  const isPreview = /(^|\.)pages\.dev$/i.test(new URL(request.url).hostname) || env.CF_PAGES_BRANCH !== 'main';
+  let delivery;
+  try {
+    delivery = await sendTransactionalEmail(env, accessLinkEmail(link), {
+      to: email,
+      logger: context.logger || console
+    });
+  } catch (error) {
+    const status = error instanceof EmailDeliveryError ? error.status : 502;
+    return json({
+      error: 'email_delivery_unavailable',
+      message: 'Email delivery is temporarily unavailable. Please try again shortly.'
+    }, status);
+  }
 
   return json({
     ok: true,
-    sent: Boolean(delivery),
-    delivery: delivery?.provider || (isPreview ? 'preview_link' : 'not_configured'),
-    message: delivery ? 'Access link sent.' : 'Access link created.',
-    preview_url: delivery ? undefined : (isPreview ? link : undefined)
+    sent: true,
+    delivery: delivery.provider,
+    message: 'Access link sent.'
   });
 }
 

@@ -1,3 +1,5 @@
+import { EmailDeliveryError, sendTransactionalEmail, supportRequestEmail } from '../_lib/email.mjs';
+
 function json(payload, status = 200) {
   return new Response(JSON.stringify(payload, null, 2), {
     status,
@@ -50,30 +52,18 @@ async function sendWebhook(env, payload, text) {
   return { provider: 'webhook' };
 }
 
-async function sendSmtp2go(env, payload, text) {
-  const apiKey = env.PITCHLIST_FORM_SMTP2GO_API_KEY || env.SMTP2GO_API_KEY || '';
-  if (!apiKey) return null;
-  const sender = env.PITCHLIST_FORM_FROM || 'hello@pitchlist.uk';
-  const recipient = env.PITCHLIST_FORM_TO || 'hello@pitchlist.uk';
-  const response = await fetch('https://api.smtp2go.com/v3/email/send', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      api_key: apiKey,
-      to: [recipient],
-      sender,
-      subject: `PitchList UK free sample request - ${payload.business}`,
-      text_body: text,
-      custom_headers: [
-        { header: 'Reply-To', value: payload.email }
-      ]
-    })
-  });
-  const result = await response.json().catch(() => ({}));
-  if (!response.ok || result.data?.error_code) {
-    throw new Error(`SMTP2GO failed with HTTP ${response.status}`);
-  }
-  return { provider: 'smtp2go' };
+async function sendSmtp2go(context, payload, text) {
+  if (!context.env.SMTP2GO_API_KEY) return null;
+  const recipient = context.env.PITCHLIST_FORM_TO || 'hello@pitchlist.uk';
+  return sendTransactionalEmail(
+    context.env,
+    supportRequestEmail(`PitchList UK free sample request - ${payload.business}`, text),
+    {
+      to: recipient,
+      replyTo: payload.email,
+      logger: context.logger || console
+    }
+  ).then(() => ({ provider: 'smtp2go' }));
 }
 
 export async function onRequestPost(context) {
@@ -106,7 +96,16 @@ export async function onRequestPost(context) {
   if (!emailValid(payload.email)) return json({ error: 'invalid_email' }, 400);
 
   const text = sampleText(payload);
-  const delivery = await sendWebhook(env, payload, text) || await sendSmtp2go(env, payload, text);
+  let delivery;
+  try {
+    delivery = await sendWebhook(env, payload, text) || await sendSmtp2go(context, payload, text);
+  } catch (error) {
+    const status = error instanceof EmailDeliveryError ? error.status : 502;
+    return json({
+      error: 'delivery_unavailable',
+      message: 'Request delivery is temporarily unavailable. Please try again shortly.'
+    }, status);
+  }
   if (!delivery) {
     return json({
       error: 'delivery_not_configured',
