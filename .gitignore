@@ -5,3 +5,4 @@ logs/
 .wrangler/
 public/delivery/
 src/delivery/
+operations/opportunity-pipeline/data/
