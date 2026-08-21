@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/check.js && node --test tests/*.test.mjs",
+    "deploy:production": "node scripts/deploy-public-site.js",
     "data:export": "node scripts/export-opportunities.js"
   },
   "devDependencies": {}
