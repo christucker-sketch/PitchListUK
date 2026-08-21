@@ -2,6 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { duplicateKeys } = require('../../operations/opportunity-pipeline/lib/opportunity-safety');
 
 const REQUIRED_HEADERS = [
   'Content-Security-Policy:', 'X-Frame-Options: DENY', 'X-Content-Type-Options: nosniff',
@@ -76,6 +77,16 @@ function planChanges(snapshot, manifest) {
     sourceKeys.add(key);
     rows.push(item.row);
   }
+  const countKeys = inputRows => {
+    const counts = new Map();
+    for (const row of inputRows) for (const key of duplicateKeys(row)) counts.set(key, (counts.get(key) || 0) + 1);
+    return counts;
+  };
+  const beforeDuplicateCounts = countKeys(existing);
+  const afterDuplicateCounts = countKeys(rows);
+  for (const [key, count] of afterDuplicateCounts) {
+    if (count > Math.max(1, beforeDuplicateCounts.get(key) || 0)) throw new Error(`manifest_introduces_duplicate:${key}`);
+  }
   const summary = {
     before_count: existing.length,
     after_count: rows.length,
@@ -127,7 +138,7 @@ function runSequentialGates(gates) {
 function parseDeployments(output) {
   const records = JSON.parse(String(output || '[]'));
   const production = records.find(item => String(item.Environment).toLowerCase() === 'production');
-  if (!production?.Id || !production?.Deployment) throw new Error('deployment_metadata_missing');
+  if (!production?.Id || !production?.Deployment || !production?.Source) throw new Error('deployment_metadata_missing');
   return { id: production.Id, url: production.Deployment, source: production.Source || '', branch: production.Branch || '' };
 }
 

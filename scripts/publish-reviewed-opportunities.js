@@ -56,6 +56,7 @@ function main() {
   if (!manifestArg) throw new Error('Usage: node scripts/publish-reviewed-opportunities.js MANIFEST.json [--dry-run|--apply]');
   const manifestPath = path.resolve(manifestArg);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  resultStatus(run('git', ['fetch', '--quiet', 'origin', 'main']), 'git_fetch_origin_main');
   const state = gitState();
   const reviewedCommit = manifest.approval?.reviewed_commit;
   assertGitState(state, reviewedCommit);
@@ -86,7 +87,7 @@ function main() {
   resultStatus(run('git', ['push', 'origin', 'main']), 'git_push');
   resultStatus(run('npm', ['run', 'deploy:production'], { stdio: 'inherit' }), 'wrangler_deploy');
   const deployed = parseDeployments(commandOutput('npx', deploymentListArgs(), 'deployment_lookup'));
-  if (deployed.source && !publishedSha.startsWith(deployed.source)) throw new Error('deployed_sha_mismatch');
+  if (!(publishedSha.startsWith(deployed.source) || deployed.source.startsWith(publishedSha))) throw new Error('deployed_sha_mismatch');
   assertLiveHeaders(commandOutput('curl', ['--fail', '--silent', '--show-error', '--head', 'https://pitchlist.uk/'], 'live_header_check'));
   const receipt = { generated_at: new Date().toISOString(), git_sha: publishedSha, before_count: planned.summary.before_count, after_count: planned.summary.after_count, deployment: deployed, rollback_deployment: rollback, manifest: path.basename(manifestPath) };
   console.log(JSON.stringify({ ...receipt, receipt_file: writeReceipt(receipt) }, null, 2));

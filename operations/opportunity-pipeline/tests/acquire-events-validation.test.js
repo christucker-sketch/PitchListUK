@@ -70,3 +70,9 @@ test('extractor uses a reviewed source organisation and never trusts a search ti
   assert.equal(approved.organiser, 'Bristol City Council');
   assert.equal(unknown.organiser, '');
 });
+
+test('extractor uses the versioned complete UK region list', () => {
+  const row = sourceCandidateToRow({ url: 'https://durham.gov.uk/markets', title: 'Durham market', snippet: 'County Durham trader applications', query_lane: 'county-county-durham', query: 'test' }, '<p>Market traders in County Durham can apply.</p><a href="/apply">Apply</a>', '2026-08-21');
+  assert.equal(row.region, 'County Durham');
+  assert.equal(row.location, 'County Durham');
+});

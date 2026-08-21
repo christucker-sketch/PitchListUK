@@ -64,6 +64,7 @@ test('manifest cannot remove or update missing rows or duplicate an addition', (
   assert.throws(() => planChanges({ rows: [row()] }, manifest({ changes: { additions: [], updates: [], removals: [{ reason: 'x', source_url: 'https://missing.example' }] } })), /removal_not_found/);
   assert.throws(() => planChanges({ rows: [row()] }, manifest({ changes: { additions: [], updates: [{ reason: 'x', match_source_url: 'https://missing.example', row: row() }], removals: [] } })), /update_not_found/);
   assert.throws(() => planChanges({ rows: [row()] }, manifest({ changes: { additions: [{ reason: 'x', row: row() }], updates: [], removals: [] } })), /addition_duplicate/);
+  assert.throws(() => planChanges({ rows: [row()] }, manifest({ changes: { additions: [{ reason: 'x', row: row({ source_url: 'https://different.example/source' }) }], updates: [], removals: [] } })), /introduces_duplicate/);
 });
 
 test('diff gate permits only data and expected generated pages', () => {
@@ -104,4 +105,5 @@ test('a failed gate prevents Git push and deployment from running', () => {
 test('Cloudflare deployment metadata captures rollback and deployed identifiers', () => {
   assert.deepEqual(parseDeployments(JSON.stringify([{ Id: 'dep-1', Environment: 'Production', Branch: 'main', Source: 'abcdef0', Deployment: 'https://dep-1.example' }])), { id: 'dep-1', url: 'https://dep-1.example', source: 'abcdef0', branch: 'main' });
   assert.throws(() => parseDeployments('[]'), /metadata_missing/);
+  assert.throws(() => parseDeployments(JSON.stringify([{ Id: 'dep-1', Environment: 'Production', Deployment: 'https://dep-1.example' }])), /metadata_missing/);
 });

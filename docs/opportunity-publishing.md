@@ -2,6 +2,8 @@
 
 Opportunity publishing is deliberately separate from discovery. `scripts/publish-reviewed-opportunities.js` runs only from the canonical clean `main` checkout and accepts a machine-readable manifest whose reviewer, approval flag and reviewed Git commit are explicit.
 
+The versioned staging commands coexist at the repository root as `npm run staging:discover`, `npm run staging:review`, `npm run staging:refresh`, and `npm run staging:health`. They write only to the external `PITCHLIST_PIPELINE_RUNTIME_DIR`; none invokes this publisher.
+
 Dry-run is the default:
 
 ```sh

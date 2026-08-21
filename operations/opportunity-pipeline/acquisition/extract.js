@@ -2,14 +2,14 @@ const { URL } = require('url');
 const { cleanHtml, extractLinks } = require('./fetch-page');
 const { extractDateFields } = require('../lib/date-extraction');
 const { sourceRuleFor } = require('../config/sources');
+const { REGIONS } = require('./config');
 
 const RELEVANT = /(trader|stallholder|vendor|exhibitor|caterer|street food|food trader|food vendor|trade stand|concession|mobile catering|apply|application|pitch|booking|public event|car boot|fireworks|bonfire|car show|classic car|motorsport|sports event|marathon|running event|community event|council event)/i;
 const NEGATIVE = /(ticket|visitor|spectator|sponsor|volunteer|job|careers|race results|parking)/i;
 const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/ig;
 
 function guessRegion(text) {
-  const regions = ['Dublin','Cork','Galway','Limerick','Waterford','Kilkenny','Kerry','Mayo','Donegal','Sligo','Wexford','Kildare','Meath','Wicklow','Tipperary','Clare','Ireland','Cheshire','Greater Manchester','Manchester','London','Bristol','Oxfordshire','Buckinghamshire','Gloucestershire','West Sussex','South Yorkshire','Yorkshire','Merseyside','Staffordshire','Kent','Surrey','Somerset','Devon','Lancashire','West Midlands','Northamptonshire','Wiltshire','Berkshire','Warwickshire'];
-  return regions.find(r => new RegExp(`\\b${r.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text)) || '';
+  return REGIONS.find(region => new RegExp(`\\b${region.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text)) || '';
 }
 function guessDate(text) {
   const iso = text.match(/\b20\d{2}-\d{2}-\d{2}\b/);
