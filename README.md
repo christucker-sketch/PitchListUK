@@ -24,11 +24,24 @@ The public homepage no longer links to a sample request funnel. Customers should
 
 Configure at least one delivery path in Cloudflare Pages environment variables:
 
-- `PITCHLIST_FORM_SMTP2GO_API_KEY` - SMTP2GO API key for legacy/support intake email
+- `SMTP2GO_API_KEY` - SMTP2GO HTTPS API key, configured as an encrypted Cloudflare secret only
 - `PITCHLIST_FORM_TO` - destination inbox, defaults to `hello@pitchlist.uk`
-- `PITCHLIST_FORM_FROM` - verified sender, defaults to `hello@pitchlist.uk`
 - `PITCHLIST_SAMPLE_WEBHOOK_URL` - optional webhook endpoint instead of SMTP2GO
 - `PITCHLIST_SAMPLE_WEBHOOK_TOKEN` - optional bearer token for the webhook
+
+## Transactional Email
+
+PitchList sends subscriber sign-in links and post-checkout welcome/access messages through the SMTP2GO HTTPS API. The legacy support/sample endpoint uses the same server-side service when its webhook route is not configured.
+
+Cloudflare Pages production settings:
+
+- `SMTP2GO_API_KEY` - required encrypted secret; never expose it to browser code or commit it
+- `PITCHLIST_EMAIL_FROM` - verified sender address, intended value `hello@pitchlist.uk`
+- `PITCHLIST_EMAIL_FROM_NAME` - sender display name, intended value `PitchList UK`
+- `SMTP2GO_API_URL` - optional regional HTTPS endpoint; defaults to SMTP2GO's global `/v3/email/send` endpoint
+- `SMTP2GO_TIMEOUT_MS` - optional bounded request timeout from 1000 to 15000 ms; defaults to 8000 ms
+
+The sender domain or single sender must be verified in SMTP2GO before enabling production delivery. Apply only the exact CNAME records supplied by SMTP2GO; do not replace the domain's existing Zoho SPF record with a guessed include.
 
 ## Stripe Subscription MVP
 
@@ -68,6 +81,7 @@ Runtime flow:
 4. `/api/billing/session` verifies the Checkout Session and stores a short access cookie.
 5. `/api/customer-opportunities/search` shows full source/application routes for valid trialing/active subscriptions.
 6. `/api/billing/portal` opens the Stripe Customer Portal for cancellation/card updates.
+7. `checkout.session.completed` sends one idempotent welcome/access email when SMTP2GO is configured; access-link requests use the same email service.
 
 ## Activity Monitor
 
