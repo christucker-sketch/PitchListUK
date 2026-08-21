@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const { spawnSync } = require('node:child_process');
 const path = require('node:path');
-const { LANES, allLaneIds, selectLanes, COUNTY_LANES, IRELAND_LANES } = require('../acquisition/lanes');
+const { LANES, allLaneIds, selectLanes, COUNTY_LANES, IRELAND_LANES, FIRST_PARTY_WEAK_REGION_LANES } = require('../acquisition/lanes');
 
 const root = path.resolve(__dirname, '..');
 
@@ -32,7 +32,7 @@ test('Republic-of-Ireland lanes are retained for history but excluded from the U
 
 test('selectLanes defaults to priority order and respects max lanes', () => {
   const lanes = selectLanes([], 2);
-  assert.deepEqual(lanes.map(lane => lane.id), ['london-food-trucks', 'north-east-council-markets']);
+  assert.deepEqual(lanes.map(lane => lane.id), ['london-food-trucks', 'weak-regions-first-party-applications']);
 });
 
 test('all UK regions are scheduled and audited weak regions are prioritised', () => {
@@ -40,6 +40,16 @@ test('all UK regions are scheduled and audited weak regions are prioritised', ()
   for (const id of required) assert.ok(allLaneIds().includes(id), id);
   const selected = selectLanes([], LANES.length);
   for (const id of required) assert.ok(selected.findIndex(lane => lane.id === id) < 20, id);
+});
+
+test('weak-region first-party lane targets exact official application routes', () => {
+  assert.equal(FIRST_PARTY_WEAK_REGION_LANES.length, 1);
+  const lane = FIRST_PARTY_WEAK_REGION_LANES[0];
+  assert.equal(lane.queries.length, 8);
+  for (const host of ['durhammarkets.co.uk', 'newcastle.gov.uk', 'northumberland.gov.uk', 'tastecumbria.co.uk', 'barnsley.gov.uk', 'rotherham.gov.uk', 'dorchester-tc.gov.uk', 'saundersmarkets.co.uk']) {
+    assert.ok(lane.queries.some(query => query.includes(host)), host);
+  }
+  assert.equal(lane.queries.some(query => /street trading licence|street trading consent/i.test(query)), false);
 });
 
 test('county lanes script the same local searches used for sample discovery', () => {

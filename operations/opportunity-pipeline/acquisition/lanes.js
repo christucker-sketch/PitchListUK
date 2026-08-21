@@ -130,6 +130,28 @@ const CORE_LANES = [
   }
 ];
 
+const FIRST_PARTY_WEAK_REGION_LANES = [
+  {
+    id: 'weak-regions-first-party-applications',
+    title: 'Weak-region first-party trader applications',
+    category: 'food_and_craft',
+    priority: 99,
+    lane_type: 'approved_source_route',
+    route_type: 'market',
+    organiser_type: 'market_operator',
+    queries: [
+      'site:durhammarkets.co.uk/become-a-trader "Become A Trader"',
+      'site:newcastle.gov.uk/business/newcastle-markets "apply for a stall" farmers market',
+      'site:online.northumberland.gov.uk/citizenportal "Market Stall Application"',
+      'site:tastecumbria.co.uk/trader-application-form "Trader Application Form"',
+      'site:barnsley.gov.uk/services/markets/trade-at-our-local-markets "apply for a stall"',
+      'site:rotherham.gov.uk/markets/apply-market-street-trader-licence "market trader"',
+      'site:dorchester-tc.gov.uk/Our-Services/Markets stallholder',
+      'site:saundersmarkets.co.uk/aylesbury-market "Trader Application"'
+    ]
+  }
+];
+
 const EXPANSION_LANES = [
   {
     id: 'farmers-markets',
@@ -791,7 +813,7 @@ const IRELAND_LANES = [...IRELAND_ROUTE_LANES, ...IRELAND_REGION_LANES];
 // PitchListUK is a UK product. Republic-of-Ireland lanes remain exported only so
 // historical reports can be interpreted, but they are deliberately excluded
 // from every selectable/scheduled lane set.
-const LANES = [...CORE_LANES, ...EXPANSION_LANES, ...COUNTY_LANES];
+const LANES = [...CORE_LANES, ...FIRST_PARTY_WEAK_REGION_LANES, ...EXPANSION_LANES, ...COUNTY_LANES];
 
 function allLaneIds() {
   return LANES.map(lane => lane.id);
@@ -814,6 +836,7 @@ module.exports = {
   LANES,
   CORE_LANES,
   EXPANSION_LANES,
+  FIRST_PARTY_WEAK_REGION_LANES,
   IRELAND_REGION_GROUPS,
   IRELAND_ROUTE_LANES,
   IRELAND_REGION_LANES,

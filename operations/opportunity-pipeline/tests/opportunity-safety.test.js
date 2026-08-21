@@ -141,6 +141,22 @@ test('council pages with explicit open trader applications may become customer-r
   assert.equal(row.quality_status, 'customer_ready');
 });
 
+test('official recurring-market application wording is direct opportunity evidence', () => {
+  for (const fixture of [
+    ['https://www.newcastle.gov.uk/business/newcastle-markets/trade-market-newcastle/apply-stall-farmers-market', 'Apply for a stall at the farmers market'],
+    ['https://online.northumberland.gov.uk/citizenportal/form.aspx?form=market_app', 'Market Stall Application'],
+    ['https://www.barnsley.gov.uk/services/markets/trade-at-our-local-markets/', 'How to apply for a stall at our markets']
+  ]) {
+    const row = evaluateOpportunity({
+      event_name: fixture[1], organiser: 'Council Markets', source_url: fixture[0], application_url: fixture[0],
+      location: 'England', region: 'England', source_evidence: `${fixture[1]} currently welcomes traders`,
+      query_lane: 'weak-regions-first-party-applications', query_text: 'official source query'
+    }, { now: new Date('2026-08-21T00:00:00Z') });
+    assert.equal(row.quality_status, 'customer_ready', `${fixture[0]}: ${row.quality_reasons}`);
+    assert.equal(row.publishable, true);
+  }
+});
+
 test('approved source registry has explicit robots, terms and throttle policies', () => {
   assert.ok(APPROVED_SOURCES.length >= 23);
   for (const source of APPROVED_SOURCES) {

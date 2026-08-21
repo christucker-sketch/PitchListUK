@@ -26,7 +26,7 @@ The apply command also requires a securely injected `SERPER_API_KEY`. Never put 
 
 ## Cron safety change (21 August 2026)
 
-The existing system crontab is preserved and still starts `/home/ct_admin/.openclaw/workspace/pitchlist-uk/scripts/cron-database-cycle.sh` at `03:17` daily. That operational script still runs discovery with `npm run database:grow -- --apply`, but the former next line:
+The existing system crontab is preserved and still starts `/home/ct_admin/.openclaw/workspace/pitchlist-uk/scripts/cron-database-cycle.sh` at `03:17` daily. That operational script runs the version-controlled `scripts/grow-database.js` from the clean canonical checkout with runtime data and credentials held in the external operational directory. The former production step:
 
 ```sh
 npm run database:publish-customer-ready
@@ -37,6 +37,20 @@ is replaced by an explicit `automatic_publish_paused` log entry. No other schedu
 ## Source approval
 
 `config/sources.js` is the source registry. Each approved source states jurisdiction, robots handling, terms-policy basis, minimum request interval and concurrency. New sources require a reviewed registry change before fetching. Republic-of-Ireland lanes remain exported only for historical report interpretation and cannot be selected or scheduled.
+
+For recurring first-party sources the registry also records the owner, geographic coverage, opportunity type, official application/contact route, recurrence, last successful discovery placeholder, observed yield placeholder and recommended polling interval. Each staging run records actual per-source yield, last successful discovery and rejection reasons in its external runtime report. Runtime metrics are deliberately excluded from Git.
+
+The `weak-regions-first-party-applications` lane targets exact official routes rather than generic licence searches. Its reviewed sources currently cover County Durham, Tyne and Wear, Northumberland, Cumbria, South Yorkshire, Dorset and Buckinghamshire. Search-result provenance and classified fetch outcomes are retained in the external acquisition report so a zero-yield lane can be diagnosed without repeating Serper queries.
+
+## Promotion operating model
+
+- Automatic refresh is permitted only for an already approved first-party recurring source when the canonical source URL, stable opportunity identity and evidence type remain unchanged.
+- A new domain, new opportunity identity, source-route change, ambiguous date/status change or proposed removal always requires a reviewed manifest.
+- Foreign, expired, closed, duplicated and weak-evidence rows are automatically rejected or quarantined and never promoted to customer-ready staging.
+- Routine refresh may update currentness evidence in external staging, but production publishing remains disabled until a separate approved manifest passes the clean-main publisher gates.
+- Alerts cover stale production data, zero valid growth, source failures and weak-region coverage regression. A source with repeated zero yield or policy ambiguity is removed from automatic polling pending review.
+
+Recommended rollout: observe the first-party lane for two weeks at an eight-query nightly cap; manually review its first two manifests; then permit identity-stable refreshes for sources with two clean runs while retaining manual approval for additions and removals. Do not enable automatic production publishing as part of that rollout.
 
 ## Monitoring
 

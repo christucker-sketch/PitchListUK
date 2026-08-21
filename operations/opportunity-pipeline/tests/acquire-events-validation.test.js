@@ -4,7 +4,7 @@ const {
   emailFromMailto,
   prepareRowsForExport
 } = require('../scripts/acquire-events');
-const { sourceCandidateToRow } = require('../acquisition/extract');
+const { sourceCandidateToRow, nextFutureDate } = require('../acquisition/extract');
 
 function baseRow(overrides = {}) {
   return {
@@ -75,4 +75,18 @@ test('extractor uses the versioned complete UK region list', () => {
   const row = sourceCandidateToRow({ url: 'https://durham.gov.uk/markets', title: 'Durham market', snippet: 'County Durham trader applications', query_lane: 'county-county-durham', query: 'test' }, '<p>Market traders in County Durham can apply.</p><a href="/apply">Apply</a>', '2026-08-21');
   assert.equal(row.region, 'County Durham');
   assert.equal(row.location, 'County Durham');
+});
+
+test('source-specific recurring identities ignore page-furniture dates and pagination', () => {
+  const html = '<p>Past event 1 April 2026. Apply for a market stall at our recurring markets.</p>';
+  const first = sourceCandidateToRow({ url: 'https://www.rotherham.gov.uk/markets/apply-market-street-trader-licence/2', title: 'Page 2', snippet: 'Apply for a stall', query_lane: 'weak-regions-first-party-applications', query: 'test' }, html, '2026-08-21');
+  const second = sourceCandidateToRow({ url: 'https://www.rotherham.gov.uk/markets/apply-market-street-trader-licence/3', title: 'Page 3', snippet: 'Apply for a stall', query_lane: 'weak-regions-first-party-applications', query: 'test' }, html, '2026-08-21');
+  assert.equal(first.source_url, second.source_url);
+  assert.equal(first.event_name, 'Rotherham market trader applications');
+  assert.equal(first.region, 'South Yorkshire');
+  assert.equal(first.event_start, '');
+});
+
+test('festival source selects the next future event date rather than a passed date', () => {
+  assert.equal(nextFutureDate('25 April 2026, 4 July 2026, 26 September 2026 and 5 December 2026', '2026-08-21'), '2026-09-26');
 });
