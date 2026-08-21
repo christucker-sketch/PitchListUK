@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { creditPreflight } = require('../lib/credit-budget');
 const { classifyFetchFailure, parseRobots, robotsAllows, createPolicyFetcher, mapBounded } = require('../lib/fetch-policy');
+const { sourceRuleFor } = require('../config/sources');
 
 function response(status, body = '', url = '') {
   return { status, ok: status >= 200 && status < 300, url, text: async () => body };
@@ -47,6 +48,26 @@ test('unapproved sources and robot exclusions fail closed', async () => {
   assert.equal((await denied.fetchWithPolicy('https://unknown.example/vendors')).classification, 'source_not_approved');
   const robot = createPolicyFetcher({ fetchImpl: async url => url.endsWith('/robots.txt') ? response(200, 'User-agent: *\nDisallow: /private') : response(200, 'ok') });
   assert.equal((await robot.fetchWithPolicy('https://bristol.gov.uk/private/vendor')).classification, 'robots_disallowed');
+});
+
+test('approved weak-region sources retain operational ownership and polling metadata', () => {
+  for (const url of [
+    'https://durhammarkets.co.uk/become-a-trader/',
+    'https://tastecumbria.co.uk/trader-application-form/',
+    'https://www.barnsley.gov.uk/services/markets/trade-at-our-local-markets/',
+    'https://www.dorchester-tc.gov.uk/Our-Services/Markets',
+    'https://www.saundersmarkets.co.uk/aylesbury-market'
+  ]) {
+    const rule = sourceRuleFor(url);
+    assert.equal(rule.approved, true, url);
+    assert.ok(rule.organisation, url);
+    assert.ok(rule.geographic_coverage, url);
+    assert.ok(rule.opportunity_type, url);
+    assert.match(rule.official_application_route, /^https:/, url);
+    assert.equal(rule.recurring, true, url);
+    assert.equal(rule.robots_policy, 'fetch-and-obey', url);
+    assert.ok(rule.recommended_polling_days > 0, url);
+  }
 });
 
 test('page requests have a bounded timeout and retry with a classified failure', async () => {
