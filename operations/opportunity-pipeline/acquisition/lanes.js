@@ -152,6 +152,44 @@ const FIRST_PARTY_WEAK_REGION_LANES = [
   }
 ];
 
+const APPROVED_SOURCE_NETWORK_LANES = [
+  {
+    id: 'approved-source-network-expansion',
+    title: 'Expanded first-party UK trader application network',
+    category: 'food_and_craft',
+    priority: 97,
+    lane_type: 'approved_source_route',
+    route_type: 'market_and_event',
+    organiser_type: 'first_party_operator',
+    queries: [
+      'site:bishopaucklandfoodfestival.co.uk/trader-applications-open-for-bishop-food-festival trader applications',
+      'site:seahamfoodfestival.co.uk trader applications food festival',
+      'site:quaysidemarket.co.uk/traders "APPLY TO BECOME A TRADER"',
+      'site:peddler.market/street-food-applications "Trader Applications 2026"',
+      'site:bcpcouncil.gov.uk/business/starting-and-growing-your-business/street-food-corner-trader "Apply to trade"',
+      'site:northyorks.gov.uk/business-and-economy/commercial-services-and-venues/apply-market-pitch Northallerton market',
+      'site:markets.leeds.gov.uk/trade-our-markets/street-trading pitch expression of interest',
+      'site:knutsfordtowncouncil.gov.uk/christmas-market/trade "Apply to Trade" 2026',
+      'site:broadstairsfoodfestival.org.uk/apply-to-exhibit trader',
+      'site:bristol.feaston.co.uk/traderapplications trader application',
+      'site:trurofoodfestival.co.uk/applications trader application',
+      'site:aldeburghfoodanddrink.co.uk/exhibit "Trader applications are open"',
+      'site:croydon.gov.uk/business-licences-and-tenders/markets/apply-market-stall-pitch apply stall',
+      'site:stalbans.gov.uk/trade-st-albans-markets "Apply to trade"',
+      'site:medway.gov.uk/info/200725/christmas_in_rochester stallholder applications 2026',
+      'site:surreyhills.org/surrey-hills-artisan-events-2026 stallholder expression interest',
+      'site:visitardsandnorthdown.com/dbimgs "Trading Application" 2026',
+      'site:northamptontowncouncil.gov.uk/food-vendor-application 2026',
+      'site:greatbritishfoodfestival.com/traders "APPLY NOW"',
+      'site:yorkfoodfestival.com/trade trader application',
+      'site:townandcountrymarkets.co.uk/markets/walton-street-hull-market/register-to-trade register',
+      'site:santapod.co.uk/commercial/traders trader application',
+      'site:thejockeyclub.co.uk/cheltenham/plan-your-day/shopping/apply tradestand',
+      'site:mineheadbayfestival.co.uk/traders trader application'
+    ]
+  }
+];
+
 const EXPANSION_LANES = [
   {
     id: 'farmers-markets',
@@ -813,7 +851,7 @@ const IRELAND_LANES = [...IRELAND_ROUTE_LANES, ...IRELAND_REGION_LANES];
 // PitchListUK is a UK product. Republic-of-Ireland lanes remain exported only so
 // historical reports can be interpreted, but they are deliberately excluded
 // from every selectable/scheduled lane set.
-const LANES = [...CORE_LANES, ...FIRST_PARTY_WEAK_REGION_LANES, ...EXPANSION_LANES, ...COUNTY_LANES];
+const LANES = [...CORE_LANES, ...FIRST_PARTY_WEAK_REGION_LANES, ...APPROVED_SOURCE_NETWORK_LANES, ...EXPANSION_LANES, ...COUNTY_LANES];
 
 function allLaneIds() {
   return LANES.map(lane => lane.id);
@@ -837,6 +875,7 @@ module.exports = {
   CORE_LANES,
   EXPANSION_LANES,
   FIRST_PARTY_WEAK_REGION_LANES,
+  APPROVED_SOURCE_NETWORK_LANES,
   IRELAND_REGION_GROUPS,
   IRELAND_ROUTE_LANES,
   IRELAND_REGION_LANES,
