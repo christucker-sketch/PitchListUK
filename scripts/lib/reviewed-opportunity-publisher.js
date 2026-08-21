@@ -1,0 +1,139 @@
+'use strict';
+
+const fs = require('node:fs');
+const path = require('node:path');
+
+const REQUIRED_HEADERS = [
+  'Content-Security-Policy:', 'X-Frame-Options: DENY', 'X-Content-Type-Options: nosniff',
+  'Referrer-Policy: strict-origin-when-cross-origin', 'Permissions-Policy:'
+];
+const ALLOWED_CHANGE = /^(functions\/_data\/opportunities\.mjs|public\/index\.html|public\/sitemap\.xml|public\/areas\/[a-z0-9-]+\.html)$/;
+const PROTECTED_CHANGE = /^(functions\/|src\/|scripts\/|tests\/|\.github\/|public\/(?:analytics\.js|database\.js|styles\.css|_headers))/;
+
+function canonicalUrl(value) {
+  try {
+    const url = new URL(value);
+    url.hash = '';
+    url.hostname = url.hostname.toLowerCase().replace(/^www\./, '');
+    for (const key of [...url.searchParams.keys()]) if (/^(utm_.+|gclid|fbclid|ref|source|campaign)$/i.test(key)) url.searchParams.delete(key);
+    url.searchParams.sort();
+    return url.toString().replace(/\/$/, '');
+  } catch { return ''; }
+}
+
+function parseSnapshot(source) {
+  return JSON.parse(String(source).replace(/^export const opportunitySnapshot = /, '').replace(/;\s*$/, ''));
+}
+
+function serializeSnapshot(snapshot) {
+  return `export const opportunitySnapshot = ${JSON.stringify(snapshot, null, 2)};\n`;
+}
+
+function assertGitState(state, reviewedCommit) {
+  if (state.detached || !state.branch) throw new Error('publisher_refused_detached_worktree');
+  if (state.branch !== 'main') throw new Error('publisher_refused_non_main_branch');
+  if (String(state.porcelain || '').trim()) throw new Error('publisher_refused_dirty_worktree');
+  if (!state.head || state.head !== state.originMain) throw new Error('publisher_refused_stale_main');
+  if (!reviewedCommit || state.head !== reviewedCommit) throw new Error('publisher_refused_reviewed_commit_mismatch');
+  return true;
+}
+
+function validateManifest(manifest, reviewedCommit) {
+  if (!manifest || manifest.manifest_version !== 1) throw new Error('manifest_invalid_version');
+  if (manifest.approval?.reviewed !== true || manifest.approval?.approved_for_publish !== true) throw new Error('manifest_not_approved');
+  if (!manifest.approval?.reviewed_by) throw new Error('manifest_reviewer_missing');
+  if (manifest.approval?.reviewed_commit !== reviewedCommit) throw new Error('manifest_reviewed_commit_mismatch');
+  const changes = manifest.changes;
+  if (!changes || !Array.isArray(changes.additions) || !Array.isArray(changes.updates) || !Array.isArray(changes.removals)) throw new Error('manifest_changes_invalid');
+  for (const item of [...changes.additions, ...changes.updates]) {
+    const row = item.row;
+    if (!item.reason || !row || row.quality_status !== 'customer_ready' || row.publishable !== true) throw new Error('manifest_contains_non_customer_ready_change');
+    if (!row.event_name || !row.organiser || !canonicalUrl(row.source_url) || !canonicalUrl(row.application_url || row.source_url)) throw new Error('manifest_change_missing_evidence');
+  }
+  for (const item of changes.removals) if (!item.reason || !canonicalUrl(item.source_url)) throw new Error('manifest_removal_invalid');
+  return true;
+}
+
+function planChanges(snapshot, manifest) {
+  const existing = snapshot.rows || [];
+  const removalMap = new Map(manifest.changes.removals.map(item => [canonicalUrl(item.source_url), item]));
+  const updateMap = new Map(manifest.changes.updates.map(item => [canonicalUrl(item.match_source_url || item.row.source_url), item]));
+  const seenRemoval = new Set();
+  const seenUpdate = new Set();
+  const rows = [];
+  for (const row of existing) {
+    const key = canonicalUrl(row.source_url);
+    if (removalMap.has(key)) { seenRemoval.add(key); continue; }
+    if (updateMap.has(key)) { rows.push(updateMap.get(key).row); seenUpdate.add(key); continue; }
+    rows.push(row);
+  }
+  for (const key of removalMap.keys()) if (!seenRemoval.has(key)) throw new Error(`manifest_removal_not_found:${key}`);
+  for (const key of updateMap.keys()) if (!seenUpdate.has(key)) throw new Error(`manifest_update_not_found:${key}`);
+  const sourceKeys = new Set(rows.map(row => canonicalUrl(row.source_url)));
+  for (const item of manifest.changes.additions) {
+    const key = canonicalUrl(item.row.source_url);
+    if (sourceKeys.has(key)) throw new Error(`manifest_addition_duplicate:${key}`);
+    sourceKeys.add(key);
+    rows.push(item.row);
+  }
+  const summary = {
+    before_count: existing.length,
+    after_count: rows.length,
+    additions: manifest.changes.additions.map(item => ({ event_name: item.row.event_name, source_url: item.row.source_url, reason: item.reason })),
+    updates: manifest.changes.updates.map(item => ({ event_name: item.row.event_name, source_url: item.row.source_url, reason: item.reason })),
+    removals: manifest.changes.removals.map(item => ({ source_url: item.source_url, reason: item.reason }))
+  };
+  return { rows, summary };
+}
+
+function changedFilesFromPorcelain(output) {
+  return String(output || '').split(/\r?\n/).filter(Boolean).map(line => line.slice(3).trim()).map(file => file.includes(' -> ') ? file.split(' -> ').at(-1) : file);
+}
+
+function assertAllowedChanges(files) {
+  const rejected = files.filter(file => !ALLOWED_CHANGE.test(file));
+  if (rejected.length) {
+    const protectedFiles = rejected.filter(file => PROTECTED_CHANGE.test(file));
+    throw new Error(`${protectedFiles.length ? 'publisher_refused_protected_changes' : 'publisher_refused_unexpected_changes'}:${rejected.join(',')}`);
+  }
+  if (!files.includes('functions/_data/opportunities.mjs')) throw new Error('publisher_expected_opportunity_snapshot_change');
+  return true;
+}
+
+function assertRequiredHeaders(sourceHeaders, generatedHeaders) {
+  if (sourceHeaders !== generatedHeaders) throw new Error('security_headers_source_generated_mismatch');
+  for (const header of REQUIRED_HEADERS) if (!sourceHeaders.includes(header)) throw new Error(`required_security_header_missing:${header}`);
+  return true;
+}
+
+function assertLiveHeaders(headers) {
+  const normalised = String(headers || '').toLowerCase();
+  for (const header of ['content-security-policy:', 'x-frame-options: deny', 'x-content-type-options: nosniff', 'referrer-policy: strict-origin-when-cross-origin', 'permissions-policy:']) {
+    if (!normalised.includes(header)) throw new Error(`live_security_header_missing:${header}`);
+  }
+  return true;
+}
+
+function resultStatus(result, label) {
+  if (result?.error || result?.signal || !Number.isInteger(result?.status) || result.status !== 0) throw new Error(`${label}_failed`);
+  return result;
+}
+
+function parseDeployments(output) {
+  const records = JSON.parse(String(output || '[]'));
+  const production = records.find(item => String(item.Environment).toLowerCase() === 'production');
+  if (!production?.Id || !production?.Deployment) throw new Error('deployment_metadata_missing');
+  return { id: production.Id, url: production.Deployment, source: production.Source || '', branch: production.Branch || '' };
+}
+
+function atomicWrite(file, content, fsImpl = fs) {
+  const temporary = `${file}.${process.pid}.tmp`;
+  fsImpl.writeFileSync(temporary, content);
+  fsImpl.renameSync(temporary, file);
+}
+
+module.exports = {
+  REQUIRED_HEADERS, ALLOWED_CHANGE, canonicalUrl, parseSnapshot, serializeSnapshot, assertGitState,
+  validateManifest, planChanges, changedFilesFromPorcelain, assertAllowedChanges, assertRequiredHeaders, assertLiveHeaders,
+  resultStatus, parseDeployments, atomicWrite
+};
