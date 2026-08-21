@@ -4,6 +4,7 @@ const {
   emailFromMailto,
   prepareRowsForExport
 } = require('../scripts/acquire-events');
+const { sourceCandidateToRow } = require('../acquisition/extract');
 
 function baseRow(overrides = {}) {
   return {
@@ -60,4 +61,12 @@ test('quarantines invalid rows while keeping valid rows exportable', () => {
   assert.equal(prepared.validationErrors.length, 1);
   assert.equal(prepared.quarantinedRows.length, 1);
   assert.equal(prepared.quarantinedRows[0].row.event_name, 'Bad Row');
+});
+
+test('extractor uses a reviewed source organisation and never trusts a search title as organiser', () => {
+  const html = '<html><body><h1>Apply for a street trading pitch</h1><a href="/apply">Apply</a></body></html>';
+  const approved = sourceCandidateToRow({ url: 'https://bristol.gov.uk/business/street-trading', title: 'SEO search title', snippet: 'Apply for a pitch', query_lane: 'county-bristol', query: 'test' }, html, '2026-08-21');
+  const unknown = sourceCandidateToRow({ url: 'https://unknown.example/traders', title: 'Plausible Event Organiser', snippet: 'Apply for a pitch', query_lane: 'manual', query: 'test' }, html, '2026-08-21');
+  assert.equal(approved.organiser, 'Bristol City Council');
+  assert.equal(unknown.organiser, '');
 });

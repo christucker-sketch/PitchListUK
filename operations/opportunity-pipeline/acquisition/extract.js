@@ -1,6 +1,7 @@
 const { URL } = require('url');
 const { cleanHtml, extractLinks } = require('./fetch-page');
 const { extractDateFields } = require('../lib/date-extraction');
+const { sourceRuleFor } = require('../config/sources');
 
 const RELEVANT = /(trader|stallholder|vendor|exhibitor|caterer|street food|food trader|food vendor|trade stand|concession|mobile catering|apply|application|pitch|booking|public event|car boot|fireworks|bonfire|car show|classic car|motorsport|sports event|marathon|running event|community event|council event)/i;
 const NEGATIVE = /(ticket|visitor|spectator|sponsor|volunteer|job|careers|race results|parking)/i;
@@ -43,10 +44,11 @@ function sourceCandidateToRow(candidate, html, today) {
   const relevant = RELEVANT.test(relevantText) || appLink;
   const confidence = relevant && appLink ? 'medium' : relevant ? 'low' : 'low';
   const dates = extractDateFields(relevantText, new Date(`${today}T00:00:00Z`));
+  const sourceRule = sourceRuleFor(candidate.url);
   return {
     stable_id: '',
     event_name: titleFromPage(`${candidate.title}. ${text.slice(0,1200)}`, candidate.url),
-    organiser: candidate.title || '',
+    organiser: sourceRule.approved ? sourceRule.organisation : '',
     source_url: candidate.url,
     application_url: appLink || candidate.url,
     contact_email: emails[0] || '',

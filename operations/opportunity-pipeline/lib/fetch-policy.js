@@ -33,10 +33,22 @@ function createPolicyFetcher(options = {}) {
   const fetchImpl = options.fetchImpl || fetch;
   const sleep = options.sleep || (ms => new Promise(resolve => setTimeout(resolve, ms)));
   const now = options.now || Date.now;
+  const timeoutMs = Math.max(1, Number(options.timeoutMs || 25000));
   const lastByDomain = new Map();
   const robotsByOrigin = new Map();
+  const queuesByDomain = new Map();
 
-  async function fetchWithPolicy(url, requestOptions = {}) {
+  async function fetchTimed(url, fetchOptions = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetchImpl(url, { ...fetchOptions, signal: controller.signal });
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  async function fetchUnlocked(url, requestOptions = {}) {
     const parsed = new URL(url);
     const rule = sourceRuleFor(url);
     if (!rule.approved) return { ok: false, classification: 'source_not_approved', attempts: 0 };
@@ -44,7 +56,7 @@ function createPolicyFetcher(options = {}) {
 
     if (!robotsByOrigin.has(parsed.origin)) {
       try {
-        const response = await fetchImpl(`${parsed.origin}/robots.txt`, { headers: { 'user-agent': 'PitchListUKBot/1.0 (+https://pitchlist.uk)' } });
+        const response = await fetchTimed(`${parsed.origin}/robots.txt`, { headers: { 'user-agent': 'PitchListUKBot/1.0 (+https://pitchlist.uk)' } });
         robotsByOrigin.set(parsed.origin, response.ok ? parseRobots(await response.text()) : []);
       } catch {
         return { ok: false, classification: 'robots_unavailable', attempts: 0 };
@@ -62,7 +74,7 @@ function createPolicyFetcher(options = {}) {
       let response;
       let error;
       try {
-        response = await fetchImpl(url, { redirect: 'follow', headers: { 'user-agent': 'PitchListUKBot/1.0 (+https://pitchlist.uk)' } });
+        response = await fetchTimed(url, { redirect: 'follow', headers: { 'user-agent': 'PitchListUKBot/1.0 (+https://pitchlist.uk)' } });
       } catch (caught) {
         error = caught;
       }
@@ -75,6 +87,19 @@ function createPolicyFetcher(options = {}) {
       await sleep(Math.min(8000, 250 * (2 ** (attempt - 1))));
     }
     return { ok: false, classification: 'unexpected_termination', attempts: maxAttempts };
+  }
+
+  async function fetchWithPolicy(url, requestOptions = {}) {
+    const parsed = new URL(url);
+    const domainKey = sourceRuleFor(url).host || parsed.hostname;
+    const previous = queuesByDomain.get(domainKey) || Promise.resolve();
+    const current = previous.catch(() => {}).then(() => fetchUnlocked(url, requestOptions));
+    queuesByDomain.set(domainKey, current);
+    try {
+      return await current;
+    } finally {
+      if (queuesByDomain.get(domainKey) === current) queuesByDomain.delete(domainKey);
+    }
   }
 
   return { fetchWithPolicy };

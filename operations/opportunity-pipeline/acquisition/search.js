@@ -9,7 +9,7 @@ function postJson(url, payload, headers = {}) {
       res.setEncoding('utf8');
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        if (res.statusCode < 200 || res.statusCode >= 300) return reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0,300)}`));
+        if (res.statusCode < 200 || res.statusCode >= 300) return reject(new Error(`Serper request failed with HTTP ${res.statusCode}`));
         try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
       });
     });

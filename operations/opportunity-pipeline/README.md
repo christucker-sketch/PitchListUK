@@ -6,7 +6,7 @@ This directory is the version-controlled implementation of PitchListUK opportuni
 
 - `PITCHLIST_PIPELINE_RUNTIME_DIR` must be an absolute operational path outside this repository. On Hal it remains `/home/ct_admin/.openclaw/workspace/pitchlist-uk`.
 - `SERPER_API_KEY` is supplied by the process environment. Secrets and `.env` files are never read from or stored in this repository.
-- `SERPER_CREDITS_REMAINING` and the reserve must pass preflight before any search request.
+- `PITCHLIST_SERPER_RUN_BUDGET` is a mandatory hard cap when an account balance is unavailable. If `SERPER_CREDITS_REMAINING` is also supplied, the account reserve must pass independently. The aggregate nightly entry point checks the complete selected-query cost before starting any lane.
 - Search results from unapproved sources are recorded as classified failures and are not fetched or promoted.
 - Only `quality_status=customer_ready` plus `publishable=true` enters the local customer-ready staging CSV. `review`, `needs_work`, and `rejected` remain in the review manifest.
 - The operational refresh updates only the external local active/archive files. It cannot write `functions/_data/opportunities.mjs`, generate area pages, invoke Git, or deploy Cloudflare Pages.
@@ -18,11 +18,11 @@ From this directory:
 ```sh
 npm test
 node scripts/grow-database.js --dry-run --all
-PITCHLIST_PIPELINE_RUNTIME_DIR=/home/ct_admin/.openclaw/workspace/pitchlist-uk node scripts/grow-database.js --apply
-PITCHLIST_PIPELINE_RUNTIME_DIR=/home/ct_admin/.openclaw/workspace/pitchlist-uk node scripts/health-check.js
+PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git PITCHLIST_SERPER_RUN_BUDGET=8 node scripts/grow-database.js --apply --max-lanes 8 --query-limit 1
+PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git node scripts/health-check.js
 ```
 
-The apply command also requires securely injected Serper settings. Never put secret values on a command line or in Git.
+The apply command also requires a securely injected `SERPER_API_KEY`. Never put secret values on a command line or in Git. The run budget is deliberately non-secret and should match the maximum number of planned queries.
 
 ## Cron safety change (21 August 2026)
 

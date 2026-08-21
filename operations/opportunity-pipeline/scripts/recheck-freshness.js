@@ -2,8 +2,9 @@
 const path = require('path');
 const { fetchText } = require('../acquisition/fetch-page');
 const { runFreshnessEngine } = require('../lib/freshness-engine');
+const { runtimeRoot } = require('../lib/staging-store');
 
-const APP = path.resolve(__dirname, '..');
+const APP = runtimeRoot();
 
 function args(argv) {
   const out = { limit: 10, apply: false };

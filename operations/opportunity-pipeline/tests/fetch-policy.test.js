@@ -8,9 +8,12 @@ function response(status, body = '', url = '') {
 }
 
 test('credit preflight blocks missing and insufficient budgets', () => {
-  assert.equal(creditPreflight({ configured: false, queries: 2 }).reason, 'credit_balance_missing');
+  assert.equal(creditPreflight({ configured: false, queries: 2 }).reason, 'credit_budget_missing');
   assert.equal(creditPreflight({ available: 101, reserve: 100, queries: 2 }).allowed, false);
   assert.equal(creditPreflight({ available: 110, reserve: 100, queries: 2 }).allowed, true);
+  assert.equal(creditPreflight({ runBudget: 2, queries: 2 }).allowed, true);
+  assert.equal(creditPreflight({ runBudget: 1, queries: 2 }).reason, 'run_budget_exceeded');
+  assert.equal(creditPreflight({ runBudget: 2, available: 101, reserve: 100, queries: 2 }).allowed, false);
 });
 
 test('robots policy is parsed and enforced', () => {
@@ -46,10 +49,46 @@ test('unapproved sources and robot exclusions fail closed', async () => {
   assert.equal((await robot.fetchWithPolicy('https://bristol.gov.uk/private/vendor')).classification, 'robots_disallowed');
 });
 
+test('page requests have a bounded timeout and retry with a classified failure', async () => {
+  let pageAttempts = 0;
+  const fetchImpl = async (url, options) => {
+    if (url.endsWith('/robots.txt')) return response(200, 'User-agent: *\nDisallow:');
+    pageAttempts++;
+    return new Promise((resolve, reject) => {
+      options.signal.addEventListener('abort', () => reject(Object.assign(new Error('aborted'), { name: 'AbortError' })), { once: true });
+    });
+  };
+  const { fetchWithPolicy } = createPolicyFetcher({ fetchImpl, timeoutMs: 2, sleep: async () => {} });
+  const result = await fetchWithPolicy('https://bristol.gov.uk/traders', { maxAttempts: 2 });
+  assert.equal(result.ok, false);
+  assert.equal(result.classification, 'timeout');
+  assert.equal(result.attempts, 2);
+  assert.equal(pageAttempts, 2);
+});
+
 test('fetch failures are classified and concurrency stays bounded', async () => {
   assert.equal(classifyFetchFailure({ name: 'AbortError' }), 'timeout');
   assert.equal(classifyFetchFailure(null, response(403)), 'access_denied');
   let active = 0, peak = 0;
   await mapBounded([1, 2, 3, 4], 2, async value => { active++; peak = Math.max(peak, active); await new Promise(resolve => setImmediate(resolve)); active--; return value; });
   assert.equal(peak, 2);
+});
+
+test('requests to one approved domain are serialised even under global concurrency', async () => {
+  let activePages = 0;
+  let peakPages = 0;
+  const fetchImpl = async url => {
+    if (url.endsWith('/robots.txt')) return response(200, 'User-agent: *\nDisallow:');
+    activePages++;
+    peakPages = Math.max(peakPages, activePages);
+    await new Promise(resolve => setImmediate(resolve));
+    activePages--;
+    return response(200, 'ok', url);
+  };
+  const { fetchWithPolicy } = createPolicyFetcher({ fetchImpl, sleep: async () => {}, now: (() => { let value = 0; return () => value += 5000; })() });
+  await Promise.all([
+    fetchWithPolicy('https://bristol.gov.uk/traders/a'),
+    fetchWithPolicy('https://bristol.gov.uk/traders/b')
+  ]);
+  assert.equal(peakPages, 1);
 });

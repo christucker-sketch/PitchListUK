@@ -4,7 +4,13 @@ const path = require('path');
 function runtimeRoot(env = process.env) {
   const root = env.PITCHLIST_PIPELINE_RUNTIME_DIR;
   if (!root || !path.isAbsolute(root)) throw new Error('PITCHLIST_PIPELINE_RUNTIME_DIR must be an absolute path outside Git');
-  return root;
+  const resolved = path.resolve(root);
+  const repositoryRoot = path.resolve(__dirname, '../../..');
+  const relative = path.relative(repositoryRoot, resolved);
+  if (!relative || (!relative.startsWith('..') && !path.isAbsolute(relative))) {
+    throw new Error('PITCHLIST_PIPELINE_RUNTIME_DIR must be outside the Git checkout');
+  }
+  return resolved;
 }
 
 function atomicWriteJson(target, value, fsImpl = fs) {
@@ -16,7 +22,7 @@ function atomicWriteJson(target, value, fsImpl = fs) {
 
 function writeStagingManifest(name, value, env = process.env) {
   if (!/^[a-z0-9][a-z0-9._-]*\.json$/i.test(name)) throw new Error('Invalid manifest filename');
-  const target = path.join(runtimeRoot(env), 'staging', name);
+  const target = path.join(runtimeRoot(env), 'data', 'staging', name);
   atomicWriteJson(target, value);
   return target;
 }

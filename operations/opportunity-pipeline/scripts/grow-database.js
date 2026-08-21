@@ -4,7 +4,8 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const { selectLanes, LANES } = require('../acquisition/lanes');
 const { searchOpportunities, freshnessReviewQueue } = require('../lib/opportunity-database');
-const { runtimeRoot } = require('../lib/staging-store');
+const { runtimeRoot, atomicWriteJson } = require('../lib/staging-store');
+const { preflightFromEnv } = require('../lib/credit-budget');
 
 const CODE_ROOT = path.resolve(__dirname, '..');
 const APP = process.env.PITCHLIST_PIPELINE_RUNTIME_DIR ? runtimeRoot() : CODE_ROOT;
@@ -230,6 +231,12 @@ async function main() {
     throw new Error('PITCHLIST_PIPELINE_RUNTIME_DIR is required for --apply; production writes are not supported');
   }
 
+  const plannedQueries = lanes.reduce((total, lane) => total + selectQueries(lane, options.queryLimit).length, 0);
+  const creditPreflight = options.skipAcquire ? null : preflightFromEnv(plannedQueries);
+  if (creditPreflight && !creditPreflight.allowed) {
+    throw new Error(`Serper run preflight blocked acquisition: ${creditPreflight.reason}`);
+  }
+
   fs.mkdirSync(REPORT_DIR, { recursive: true });
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
   const before = stats();
@@ -261,6 +268,10 @@ async function main() {
     ? parseJsonFromOutput(quality.stdout, 'quality enrichment')
     : { error: quality.stderr || quality.stdout, status: quality.status };
 
+  for (const [step, result] of [['freshness', freshness], ['area_enrichment', enrichment], ['quality_enrichment', quality]]) {
+    if (result.status !== 0) failures.push({ step, error: `maintenance subprocess exited ${result.status}` });
+  }
+
   const after = stats();
   const reportFile = path.join(REPORT_DIR, `database-growth-${stamp}.json`);
   const report = {
@@ -274,6 +285,7 @@ async function main() {
       freshness_limit: options.freshnessLimit,
       skip_acquire: options.skipAcquire
     },
+    credit_preflight: creditPreflight,
     lanes: laneResults,
     failures,
     maintenance: {
@@ -291,7 +303,7 @@ async function main() {
       needs_review: after.needs_review - before.needs_review
     }
   };
-  fs.writeFileSync(reportFile, JSON.stringify(report, null, 2));
+  atomicWriteJson(reportFile, report);
   console.log(JSON.stringify({
     report_file: path.relative(APP, reportFile),
     lanes: laneResults.map(lane => ({

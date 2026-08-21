@@ -68,3 +68,15 @@ test('database growth dry-run does not require network or mutate data', () => {
   assert.equal(output.selected_lanes.length, 1);
   assert.equal(output.selected_lanes[0].planned_queries.length, 2);
 });
+
+test('scheduled apply entry point refuses to start without an aggregate credit cap', () => {
+  const runtime = require('node:fs').mkdtempSync(path.join(require('node:os').tmpdir(), 'pitchlist-pipeline-'));
+  const result = spawnSync(process.execPath, ['scripts/grow-database.js', '--apply', '--lane', 'county-county-durham', '--query-limit', '1'], {
+    cwd: root,
+    encoding: 'utf8',
+    env: { ...process.env, PITCHLIST_PIPELINE_RUNTIME_DIR: runtime, SERPER_CREDITS_REMAINING: '', PITCHLIST_SERPER_RUN_BUDGET: '' }
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /Serper run preflight blocked acquisition: credit_budget_missing/);
+  assert.equal(require('node:fs').existsSync(path.join(runtime, 'data')), false);
+});

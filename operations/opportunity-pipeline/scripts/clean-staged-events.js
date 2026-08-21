@@ -43,15 +43,20 @@ function main() {
   const staging = path.join(runtimeRoot(), 'data', 'staging');
   const csvPath = process.argv[2] ? path.resolve(process.argv[2]) : fs.readdirSync(staging).filter(name => /^events-.*\.csv$/.test(name)).map(name => path.join(staging, name)).sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs)[0];
   if (!csvPath) throw new Error('No staged events CSV files found');
-  const result = reviewRows(parseCsv(fs.readFileSync(csvPath, 'utf8')));
+  const inputRows = parseCsv(fs.readFileSync(csvPath, 'utf8'));
+  const result = reviewRows(inputRows);
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
   const reviewPath = path.join(staging, `reviewed-events-${stamp}.json`);
   const customerReadyPath = path.join(staging, `customer-ready-events-${stamp}.csv`);
   atomicWriteJson(reviewPath, { source: csvPath, records: result.reviewed, production_write_enabled: false });
   atomicWriteText(customerReadyPath, toCsv(result.customerReady, FIELDNAMES));
   const report = {
-    generated_at: new Date().toISOString(), source: csvPath, input_rows: result.reviewed.length,
+    generated_at: new Date().toISOString(), source: csvPath, input_rows: inputRows.length,
     status_counts: result.statusCounts, customer_ready_rows: result.customerReady.length,
+    accepted_rows: result.customerReady.length,
+    rejected_rows: result.reviewed.length - result.customerReady.length,
+    duplicate_rows: inputRows.length - result.reviewed.length,
+    top_reject_reasons: result.reviewed.filter(row => row.quality_status !== 'customer_ready').flatMap(row => row.quality_reasons || []).reduce((counts, reason) => ({ ...counts, [reason]: (counts[reason] || 0) + 1 }), {}),
     reviewed_manifest: reviewPath, customer_ready_staging_csv: customerReadyPath,
     output_csv: customerReadyPath, output_json: reviewPath, production_write_enabled: false
   };

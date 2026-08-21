@@ -21,8 +21,10 @@ test('monitoring reports every required operational alert', () => {
 
 test('runtime state must be outside Git and writes atomically to staging', () => {
   assert.throws(() => runtimeRoot({}), /must be an absolute path outside Git/);
+  assert.throws(() => runtimeRoot({ PITCHLIST_PIPELINE_RUNTIME_DIR: path.resolve(__dirname, '..') }), /outside the Git checkout/);
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'pitchlist-runtime-'));
   const target = writeStagingManifest('test.json', { production_write_enabled: false }, { PITCHLIST_PIPELINE_RUNTIME_DIR: root });
   assert.deepEqual(JSON.parse(fs.readFileSync(target, 'utf8')), { production_write_enabled: false });
+  assert.equal(target, path.join(root, 'data', 'staging', 'test.json'));
   assert.equal(fs.readdirSync(path.dirname(target)).some(name => name.endsWith('.tmp')), false);
 });

@@ -53,10 +53,30 @@ test('canonical URLs discard tracking noise and stable IDs ignore row ordering',
   const a = ready();
   const b = Object.fromEntries(Object.entries(a).reverse());
   assert.equal(stableOpportunityId(a), stableOpportunityId(b));
+  assert.equal(stableOpportunityId(a), stableOpportunityId({
+    ...a,
+    event_name: 'Corrected Kings Grove Festival title',
+    organiser: 'Corrected organiser display name',
+    application_url: 'https://englandsmedievalfestival.com/apply-new?utm_source=email'
+  }));
+  assert.notEqual(stableOpportunityId(a), stableOpportunityId({ ...a, event_start: '2027-10-10' }));
+});
+
+test('legitimate UK place-name collisions retain UK evidence', () => {
+  const now = new Date('2026-08-21T00:00:00Z');
+  const examples = [
+    ready({ source_url: 'https://bristol.gov.uk/business/street-trading', location: 'Bristol BS1 5TR, England' }),
+    ready({ source_url: 'https://newcastle.gov.uk/services/business-and-commerce/licences/street-trading', location: 'Newcastle upon Tyne NE1 1AD, England' }),
+    ready({ source_url: 'https://northumberland.gov.uk/trading', location: 'Northumberland NE61 2EF, England' })
+  ];
+  for (const example of examples) {
+    const row = evaluateOpportunity(example, { now });
+    assert.ok(!row.quality_reasons.includes('non_uk_evidence'), example.source_url);
+  }
 });
 
 test('semantic and application URL duplicates collapse across sources', () => {
-  const rows = [ready(), ready({ source_url: 'https://bristol.gov.uk/events/kings-grove', application_url: 'https://forms.office.com/example' })];
+  const rows = [ready(), ready({ event_name: 'Apply to trade at Kings Grove Medieval Festival 2026', source_url: 'https://bristol.gov.uk/events/kings-grove', application_url: 'https://forms.office.com/example' })];
   const merged = mergeDuplicates(rows);
   assert.equal(merged.length, 1);
   assert.equal(merged[0].duplicate_count, 2);
@@ -85,8 +105,20 @@ test('organiser, approved source, direct evidence and provenance are mandatory',
   assert.equal(customerReadyOnly([evaluateOpportunity(ready(), { now }), evaluateOpportunity(ready({ organiser: '' }), { now })]).length, 1);
 });
 
+test('general council licence guidance is not treated as an available trading pitch', () => {
+  const row = evaluateOpportunity(ready({
+    event_name: 'Street trading licence',
+    organiser: 'Bristol City Council',
+    source_url: 'https://bristol.gov.uk/business/street-trading',
+    application_url: 'https://bristol.gov.uk/business/street-trading/apply',
+    source_evidence: 'Apply for a street trading licence or consent in Bristol, England.'
+  }), { now: new Date('2026-08-21T00:00:00Z') });
+  assert.equal(row.quality_status, 'needs_work');
+  assert.ok(row.quality_reasons.includes('available_pitch_evidence_missing'));
+});
+
 test('approved source registry has explicit robots, terms and throttle policies', () => {
-  assert.equal(APPROVED_SOURCES.length, 12);
+  assert.ok(APPROVED_SOURCES.length >= 23);
   for (const source of APPROVED_SOURCES) {
     assert.equal(source.approved, true);
     assert.equal(source.country, 'GB');
@@ -94,6 +126,7 @@ test('approved source registry has explicit robots, terms and throttle policies'
     assert.ok(source.terms_policy);
     assert.ok(source.min_interval_ms >= 1000);
     assert.equal(source.max_concurrency, 1);
+    assert.ok(source.organisation);
   }
   assert.equal(sourceRuleFor('https://unknown.example/traders').approved, false);
 });

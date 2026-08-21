@@ -13,6 +13,8 @@ const FOREIGN_FIXTURES = /(?:berkshireyogafestival|vendorsmap\.com\/cities\/manc
 const DIRECT_EVIDENCE = /\b(apply|application|register|registration|booking|become a trader|trade with us|vendor form|stallholder form|exhibitor form|caterer form|street trading consent|street trader licence|pitch enquiry)\b/i;
 const ONE_OFF_EVENT = /\b(festival|fair|show|christmas market|winter wonderland|carnival|feast|fireworks|bonfire|race|marathon)\b/i;
 const GENERIC_TITLE = /^(street trading|street trading licence|street trader licence|apply to trade|vendor application|caterers|market)$/i;
+const GENERAL_PERMISSION = /\b(street trading (?:licen[cs]e|consent)|apply for (?:a )?(?:street trading )?(?:licen[cs]e|consent)|general guidance|permission to trade)\b/i;
+const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)? available|vacant pitch(?:es)?|named market|at (?:the )?[A-Z][A-Za-z' -]+ market|specific trading location|trade at (?:our|the)|trader applications? (?:are )?open|stallholder applications? (?:are )?open)\b/i;
 
 function canonicalUrl(value) {
   try {
@@ -34,18 +36,18 @@ function normaliseText(value) {
 }
 
 function stableOpportunityId(row) {
-  const identity = [
-    normaliseText(row.event_name),
-    normaliseText(row.organiser),
-    normaliseText(row.location || row.region),
-    String(row.event_start || ''),
-    canonicalUrl(row.application_url || row.source_url),
-  ].join('|');
+  const source = canonicalUrl(row.source_url);
+  const identity = source
+    ? ['source', source, String(row.event_start || '')].join('|')
+    : ['semantic', normaliseText(row.event_name), normaliseText(row.organiser), normaliseText(row.location || row.region), String(row.event_start || '')].join('|');
   return `opp_${crypto.createHash('sha256').update(identity).digest('hex').slice(0, 20)}`;
 }
 
 function duplicateKeys(row) {
-  const title = normaliseText(row.event_name).replace(/\b(application|form|vendor|trader|stallholder|exhibitor)\b/g, '').replace(/\s+/g, ' ').trim();
+  const title = normaliseText(row.event_name)
+    .replace(/\b(application|form|vendor|trader|stallholder|exhibitor|apply|trade|become|register|registration|at|to|for|the)\b/g, '')
+    .replace(/\b20\d{2}\b/g, '')
+    .replace(/\s+/g, ' ').trim();
   const place = normaliseText(row.location || row.region);
   const date = String(row.event_start || '');
   return new Set([
@@ -131,11 +133,14 @@ function evaluateOpportunity(raw, options = {}) {
   if (!DIRECT_EVIDENCE.test(directText) && !row.contact_email) reasons.push('direct_application_or_contact_missing');
   const rule = sourceRuleFor(row.source_url);
   if (!rule.approved) reasons.push('source_not_approved');
+  if (rule.type === 'local-authority' && GENERAL_PERMISSION.test(sourceText) && !AVAILABLE_PITCH.test(sourceText)) {
+    reasons.push('available_pitch_evidence_missing');
+  }
   if (ONE_OFF_EVENT.test(row.event_name || '') && !row.event_start && !row.application_deadline) reasons.push('undated_one_off_event');
   if (!row.query_lane || !row.query_text) reasons.push('provenance_missing');
 
   const rejected = reasons.some(reason => ['non_uk_evidence', 'event_expired', 'application_closed'].includes(reason));
-  const needsWork = reasons.some(reason => ['uk_evidence_missing', 'named_organiser_missing', 'direct_application_or_contact_missing', 'provenance_missing'].includes(reason));
+  const needsWork = reasons.some(reason => ['uk_evidence_missing', 'named_organiser_missing', 'direct_application_or_contact_missing', 'provenance_missing', 'available_pitch_evidence_missing'].includes(reason));
   const review = reasons.some(reason => ['source_not_approved', 'undated_one_off_event'].includes(reason));
   row.quality_status = rejected ? 'rejected' : needsWork ? 'needs_work' : review ? 'review' : 'customer_ready';
   row.quality_reasons = [...new Set(reasons)];
