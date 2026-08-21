@@ -45,7 +45,7 @@ function main() {
   const dryRun = jsonOutput(process.execPath, ['scripts/publish-reviewed-opportunities.js', manifestPath, '--dry-run'], 'publisher_dry_run');
   const enabled = String(process.env.PITCHLIST_AUTOMATIC_ADDITIONS_ENABLED || '').toLowerCase() === 'true';
   let publication = null;
-  if (dryRun.additions.length && enabled) publication = jsonOutput(process.execPath, ['scripts/publish-reviewed-opportunities.js', manifestPath, '--apply'], 'publisher_apply');
+  if ((dryRun.additions.length || dryRun.updates.length) && enabled) publication = jsonOutput(process.execPath, ['scripts/publish-reviewed-opportunities.js', manifestPath, '--apply'], 'publisher_apply');
   const report = { generated_at: new Date().toISOString(), head, approved_sources_checked: direct.approvedSourcesChecked, pages_fetched: direct.pagesFetched, customer_ready_rows: review.customer_ready_rows, proposed_additions: manifest.additions, dry_run: dryRun, automatic_additions_enabled: enabled, published: Boolean(publication), publication, serper_credits_used: 0 };
   const reportPath = path.join(runtime, 'data', 'growth', `approved-source-growth-${Date.now()}.json`);
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
