@@ -1,0 +1,11 @@
+{
+  "name": "@pitchlist/opportunity-pipeline",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Staging-only opportunity discovery, validation and review tooling.",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "dry-run": "node scripts/grow-database.js --dry-run",
+    "health": "node scripts/health-check.js"
+  }
+}
