@@ -22,6 +22,12 @@ const activity = fs.readFileSync('src/activity.html', 'utf8');
 const activityJs = fs.readFileSync('src/activity.js', 'utf8');
 const sitemap = fs.readFileSync('src/sitemap.xml', 'utf8');
 const publicHome = fs.existsSync('public/index.html') ? fs.readFileSync('public/index.html', 'utf8') : '';
+const sourceHeaders = fs.readFileSync('src/_headers', 'utf8');
+const publicHeaders = fs.readFileSync('public/_headers', 'utf8');
+if (sourceHeaders !== publicHeaders) throw new Error('Source/generated security headers must be identical');
+for (const header of ['Content-Security-Policy:', 'X-Frame-Options: DENY', 'X-Content-Type-Options: nosniff', 'Referrer-Policy: strict-origin-when-cross-origin', 'Permissions-Policy:']) {
+  if (!sourceHeaders.includes(header)) throw new Error(`Missing required security header: ${header}`);
+}
 if (sitemap.includes('https://pitchlist.uk/buy')) throw new Error('Sitemap must not include noindex page: /buy');
 if (!sitemap.includes('https://pitchlist.uk/find-pitches')) throw new Error('Sitemap missing pitch finder page');
 if (/noindex/i.test(database)) throw new Error('Pitch finder page must be indexable');
