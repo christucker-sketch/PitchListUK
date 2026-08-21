@@ -44,6 +44,18 @@ test('manifest approval and customer-ready evidence fail closed', () => {
   assert.throws(() => validateManifest(manifest({ changes: { additions: [{ reason: 'x', row: row({ organiser: '' }) }], updates: [], removals: [] } }), sha), /missing_evidence/);
 });
 
+test('automatic manifests are strictly addition-only and restricted to directly fetched approved routes', () => {
+  const source = 'https://www.quaysidemarket.co.uk/traders';
+  const automatic = manifest({
+    approval: { reviewed: true, approved_for_publish: true, reviewed_by: 'PitchList approved-source automation', reviewed_commit: sha, mode: 'approved_source_automatic_addition', policy_version: 1 },
+    automation: { addition_only: true, removals_allowed: false, updates_allowed: false, max_additions: 1 },
+    changes: { additions: [{ reason: 'automatic', automation_evidence: { directly_fetched: true, source_evidence_present: true, fetched_at: '2026-08-21T15:00:00Z' }, row: row({ source_url: source, application_url: source, country: 'United Kingdom', jurisdiction: 'GB' }) }], updates: [], removals: [] }
+  });
+  assert.equal(validateManifest(automatic, sha), true);
+  assert.throws(() => validateManifest({ ...automatic, changes: { ...automatic.changes, removals: [{ reason: 'x', source_url: source }] } }, sha), /addition_only/);
+  assert.throws(() => validateManifest({ ...automatic, changes: { ...automatic.changes, additions: [{ ...automatic.changes.additions[0], row: row({ source_url: 'https://unknown.example/apply', application_url: 'https://unknown.example/apply', country: 'United Kingdom', jurisdiction: 'GB' }) }] } }, sha), /source_not_approved/);
+});
+
 test('dry-run plan shows exact additions updates removals and counts', () => {
   const existing = [row(), row({ id: 'opp_2', event_name: 'Remove Me', source_url: 'https://remove.example/source' })];
   const changes = {
