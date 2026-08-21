@@ -111,7 +111,14 @@ function planChanges(snapshot, manifest) {
 }
 
 function changedFilesFromPorcelain(output) {
-  return String(output || '').split(/\r?\n/).filter(Boolean).map(line => line.slice(3).trim()).map(file => file.includes(' -> ') ? file.split(' -> ').at(-1) : file);
+  return String(output || '').split(/\r?\n/).filter(Boolean).map(line => {
+    // Trimming the complete command output can remove the first line's
+    // leading worktree-status space (` M file` becomes `M file`). Accept
+    // canonical porcelain and that safely-trimmed first-line form.
+    const canonical = line.match(/^[ MARCUD?!]{2}\s+(.*)$/);
+    const trimmedFirstLine = line.match(/^[MARCUD?!]\s+(.*)$/);
+    return (canonical?.[1] || trimmedFirstLine?.[1] || line).trim();
+  }).map(file => file.includes(' -> ') ? file.split(' -> ').at(-1) : file);
 }
 
 function assertAllowedChanges(files) {
