@@ -6,6 +6,7 @@ const { selectLanes, LANES } = require('../acquisition/lanes');
 const { searchOpportunities, freshnessReviewQueue } = require('../lib/opportunity-database');
 const { runtimeRoot, atomicWriteJson } = require('../lib/staging-store');
 const { preflightFromEnv } = require('../lib/credit-budget');
+const { hostname, sourceRuleFor } = require('../config/sources');
 
 const CODE_ROOT = path.resolve(__dirname, '..');
 const APP = process.env.PITCHLIST_PIPELINE_RUNTIME_DIR ? runtimeRoot() : CODE_ROOT;
@@ -154,6 +155,30 @@ function runLane(lane, options) {
   const clean = runNode('scripts/clean-staged-events.js', [acquisitionSummary.csvPath]);
   if (clean.status !== 0) throw new Error(`${lane.id} clean failed: ${clean.stderr || clean.stdout}`);
   const cleanSummary = parseJsonFromOutput(clean.stdout, `${lane.id} clean`);
+  const reviewedRecords = cleanSummary.output_json ? (readJson(cleanSummary.output_json).records || []) : [];
+  const sourceMetrics = Object.values(reviewedRecords.reduce((metrics, row) => {
+    const host = hostname(row.source_url) || 'invalid';
+    const rule = sourceRuleFor(row.source_url);
+    const metric = metrics[host] || {
+      source_owner: rule.organisation || '', domain: host,
+      geographic_coverage: rule.geographic_coverage || row.region || '',
+      opportunity_type: rule.opportunity_type || '',
+      official_application_route: rule.official_application_route || '',
+      recurring: rule.recurring === true,
+      robots_policy: rule.robots_policy,
+      terms_policy: rule.terms_policy,
+      recommended_polling_days: rule.recommended_polling_days || 30,
+      last_successful_discovery: null,
+      fetched: 0, customer_ready: 0, review: 0, needs_work: 0, rejected: 0,
+      rejection_reasons: {}
+    };
+    metric.fetched++;
+    metric[row.quality_status] = (metric[row.quality_status] || 0) + 1;
+    if (row.quality_status === 'customer_ready') metric.last_successful_discovery = new Date().toISOString();
+    for (const reason of row.quality_reasons || []) metric.rejection_reasons[reason] = (metric.rejection_reasons[reason] || 0) + 1;
+    metrics[host] = metric;
+    return metrics;
+  }, {}));
 
   const refresh = runNode('scripts/refresh-active-events.js', [cleanSummary.output_csv]);
   if (refresh.status !== 0) throw new Error(`${lane.id} refresh failed: ${refresh.stderr || refresh.stdout}`);
@@ -170,7 +195,8 @@ function runLane(lane, options) {
       validation_errors: acquisitionSummary.validationErrors,
       quarantined_rows: acquisitionSummary.quarantinedRows,
       report_file: acquisitionSummary.reportPath,
-      csv_file: acquisitionSummary.csvPath
+      csv_file: acquisitionSummary.csvPath,
+      candidate_outcomes: acquisitionReport.candidate_outcomes || []
     },
     clean: {
       input_rows: cleanSummary.input_rows,
@@ -180,6 +206,7 @@ function runLane(lane, options) {
       csv_file: cleanSummary.output_csv,
       top_reject_reasons: cleanSummary.top_reject_reasons || {}
     },
+    source_metrics: sourceMetrics,
     refresh: {
       incoming_rows: refreshSummary.incoming_rows,
       added: refreshSummary.added,

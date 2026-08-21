@@ -96,6 +96,16 @@ async function main() {
     generated_at: new Date().toISOString(), lane, queries, query_limit: queryLimit, search_num: searchNum,
     max_fetch: maxFetch, candidates: deduped.length, rows: prepared.rows.length,
     fetch_failures: outcomes.filter(item => item.failure).reduce((counts, item) => ({ ...counts, [item.failure]: (counts[item.failure] || 0) + 1 }), {}),
+    candidate_outcomes: outcomes.map(item => ({
+      source_url: canonicalUrl(item.candidate?.url),
+      final_url: canonicalUrl(item.row?.source_url || item.candidate?.url),
+      title: String(item.candidate?.title || '').slice(0, 200),
+      query: String(item.candidate?.query || '').slice(0, 300),
+      query_lane: String(item.candidate?.query_lane || lane),
+      result: item.failure ? 'fetch_failed' : 'fetched',
+      failure: item.failure || null,
+      attempts: item.attempts || 0
+    })),
     validation_errors: prepared.validationErrors, credit_preflight: preflight,
     production_write_enabled: false
   });

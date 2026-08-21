@@ -19,6 +19,14 @@ function guessDate(text) {
   const months = {january:'01',february:'02',march:'03',april:'04',may:'05',june:'06',july:'07',august:'08',september:'09',october:'10',november:'11',december:'12'};
   return `${dmy[3]}-${months[dmy[2].toLowerCase()]}-${String(dmy[1]).padStart(2,'0')}`;
 }
+function nextFutureDate(text, today) {
+  const months = {january:'01',february:'02',march:'03',april:'04',may:'05',june:'06',july:'07',august:'08',september:'09',october:'10',november:'11',december:'12'};
+  const dates = [];
+  for (const match of text.matchAll(/\b(\d{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(20\d{2})\b/ig)) {
+    dates.push(`${match[3]}-${months[match[2].toLowerCase()]}-${String(match[1]).padStart(2, '0')}`);
+  }
+  return [...new Set(dates)].filter(date => date >= today).sort()[0] || '';
+}
 function titleFromPage(text, url) {
   const title = text.match(/\b([A-Z][A-Za-z&'’\- ]{3,80}(Festival|Market|Show|Fair|Fiesta|Feast|Food & Drink|Car Boot|Fireworks|Bonfire|Marathon|Run|Race|Rally|Motorsport|Classic Car|Public Event|Community Event)[A-Za-z&'’\- ]*)\b/);
   if (title) return title[1].trim();
@@ -45,17 +53,22 @@ function sourceCandidateToRow(candidate, html, today) {
   const confidence = relevant && appLink ? 'medium' : relevant ? 'low' : 'low';
   const dates = extractDateFields(relevantText, new Date(`${today}T00:00:00Z`));
   const sourceRule = sourceRuleFor(candidate.url);
+  const recurringMarket = sourceRule.opportunity_type === 'recurring_market';
+  const sourceUrl = sourceRule.official_application_route || candidate.url;
+  const selectedEventStart = recurringMarket ? '' : sourceRule.known_open_event_start || (sourceRule.opportunity_type === 'festival_trader_application'
+    ? nextFutureDate(relevantText, today)
+    : dates.event_start || guessDate(relevantText));
   return {
     stable_id: '',
-    event_name: titleFromPage(`${candidate.title}. ${text.slice(0,1200)}`, candidate.url),
+    event_name: sourceRule.opportunity_title || titleFromPage(`${candidate.title}. ${text.slice(0,1200)}`, candidate.url),
     organiser: sourceRule.approved ? sourceRule.organisation : '',
-    source_url: candidate.url,
-    application_url: appLink || candidate.url,
+    source_url: sourceUrl,
+    application_url: sourceRule.official_application_route || appLink || sourceUrl,
     contact_email: emails[0] || '',
-    location: guessRegion(relevantText),
-    region: guessRegion(relevantText),
-    event_start: dates.event_start || guessDate(relevantText),
-    event_end: dates.event_end,
+    location: sourceRule.geographic_coverage || guessRegion(relevantText),
+    region: sourceRule.geographic_coverage || guessRegion(relevantText),
+    event_start: selectedEventStart,
+    event_end: recurringMarket ? '' : sourceRule.known_open_event_end || dates.event_end,
     application_deadline: dates.application_deadline,
     stall_fee: '',
     vendor_categories: /car boot/i.test(relevantText) ? 'car boot traders; stallholders; food vendors' : /fireworks|bonfire/i.test(relevantText) ? 'food vendors; mobile catering; stallholders' : /car show|classic car|motorsport/i.test(relevantText) ? 'food vendors; trade stands; exhibitors' : /sports event|marathon|running event|race/i.test(relevantText) ? 'food vendors; mobile catering; event concessions' : /street food|hot food|cater|food vendor/i.test(relevantText) ? 'street food; mobile catering; food traders' : 'food traders; stallholders; exhibitors; event concessions',
@@ -70,4 +83,4 @@ function sourceCandidateToRow(candidate, html, today) {
     publishable: false,
   };
 }
-module.exports = { sourceCandidateToRow };
+module.exports = { sourceCandidateToRow, nextFutureDate };
