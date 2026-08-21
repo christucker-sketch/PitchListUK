@@ -76,6 +76,31 @@ function outcodeFrom(value) {
   return match ? match[1] : compact;
 }
 
+const FULL_POSTCODE = /^(?:GIR0AA|[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2})$/;
+const OUTCODE = /^(?:GIR|[A-Z]{1,2}\d[A-Z\d]?)$/;
+const TRUNCATED_POSTCODE = /^[A-Z]{1,2}\d[A-Z\d]?\d$/;
+
+function postcodeCandidates(value) {
+  const requested = normalisePostcode(value);
+  if (!requested) return [];
+  if (FULL_POSTCODE.test(requested)) {
+    const outcode = requested === 'GIR0AA' ? 'GIR' : requested.slice(0, -3);
+    return [
+      { type: 'postcodes', value: requested },
+      { type: 'outcodes', value: outcode }
+    ];
+  }
+  if (!OUTCODE.test(requested)) return [];
+  const candidates = [{ type: 'outcodes', value: requested }];
+  if (TRUNCATED_POSTCODE.test(requested)) {
+    const shorter = requested.slice(0, -1);
+    if (OUTCODE.test(shorter) && shorter !== requested) {
+      candidates.push({ type: 'outcodes', value: shorter });
+    }
+  }
+  return candidates;
+}
+
 function haversineMiles(a, b) {
   if (!a || !b) return null;
   const lat1 = Number(a.latitude);
@@ -92,26 +117,30 @@ function haversineMiles(a, b) {
 }
 
 async function resolveOrigin(value) {
-  const postcode = normalisePostcode(value);
-  if (!postcode) return null;
-  const outcode = outcodeFrom(postcode);
-  const urls = postcode.length > outcode.length
-    ? [`https://api.postcodes.io/postcodes/${encodeURIComponent(postcode)}`, `https://api.postcodes.io/outcodes/${encodeURIComponent(outcode)}`]
-    : [`https://api.postcodes.io/outcodes/${encodeURIComponent(outcode)}`];
-  for (const url of urls) {
+  const requested = normalisePostcode(value);
+  if (!requested) return null;
+  const candidates = postcodeCandidates(requested);
+  if (!candidates.length) throw new Error(`Could not resolve postcode/outcode: ${value}`);
+  for (const [index, candidate] of candidates.entries()) {
+    const url = `https://api.postcodes.io/${candidate.type}/${encodeURIComponent(candidate.value)}`;
     const response = await fetch(url);
     if (!response.ok) continue;
     const body = await response.json();
     const result = body.result || {};
     if (Number.isFinite(Number(result.latitude)) && Number.isFinite(Number(result.longitude))) {
-      return { latitude: Number(result.latitude), longitude: Number(result.longitude), outcode };
+      return {
+        latitude: Number(result.latitude),
+        longitude: Number(result.longitude),
+        outcode: candidate.type === 'outcodes' ? candidate.value : outcodeFrom(candidate.value),
+        postcode_resolution: {
+          requested,
+          resolved: candidate.value,
+          fallback_used: index > 0
+        }
+      };
     }
   }
   throw new Error(`Could not resolve postcode/outcode: ${value}`);
-}
-
-function splitTerms(value) {
-  return String(value || '').toLowerCase().split(/[,\s]+/).map(v => v.trim()).filter(Boolean);
 }
 
 function categoryPhrases(value) {
@@ -121,54 +150,131 @@ function categoryPhrases(value) {
 const CATEGORY_ALIASES = [
   {
     match: /coffee|matcha|espresso|latte|cappuccino|cafe|café|hot drink|tea\b|bubble tea/,
-    terms: ['coffee', 'hot drinks', 'drinks', 'beverages', 'dessert', 'food traders', 'street food', 'mobile catering', 'market']
+    terms: ['coffee', 'hot drinks', 'drinks', 'beverages', 'dessert'],
+    food: true
   },
   {
     match: /toastie|toasties|sandwich|panini|bagel|cuban|wrap|snack/,
-    terms: ['sandwich', 'hot food', 'snacks', 'street food', 'mobile catering', 'food traders', 'market']
+    terms: ['sandwich', 'hot food', 'snacks'],
+    food: true
   },
   {
     match: /bar|cocktail|prosecco|fizz|beer|wine|gin|rum|alcohol|mobile bar|drinks?/,
-    terms: ['bar', 'drinks', 'beverages', 'independent drinks', 'food traders', 'street food', 'festival', 'market']
+    terms: ['bar', 'drinks', 'beverages', 'independent drinks'],
+    food: true
   },
   {
     match: /pizza|burger|bbq|grill|taco|burrito|curry|noodle|loaded|fries|wings|kebab|gyros|wrap/,
-    terms: ['street food', 'hot food', 'mobile catering', 'food traders', 'festival', 'market']
+    terms: ['hot food'],
+    food: true
   },
   {
     match: /cake|bakery|bakes|dessert|ice cream|donut|doughnut|waffle|crepe|sweet/,
-    terms: ['dessert', 'bakery', 'food traders', 'street food', 'market', 'artisan']
+    terms: ['dessert', 'bakery', 'artisan'],
+    food: true
   },
   {
     match: /craft|artisan|maker|gift|jewellery|jewelry|ceramic|candle|soap|art\b/,
-    terms: ['crafts', 'artisan', 'market', 'stallholders', 'exhibitors']
+    terms: ['crafts', 'artisan', 'makers', 'stallholders', 'exhibitors'],
+    food: false
   },
   {
     match: /food|cater|vendor|trader|street food|truck|trailer|stall/,
-    terms: ['food traders', 'street food', 'mobile catering', 'stallholders', 'event concessions', 'market']
+    terms: ['food traders', 'street food', 'mobile catering', 'hot food'],
+    food: true
   }
 ];
 
-function expandedCategoryTerms(value) {
-  const terms = new Set();
+const FOOD_TRADER_FALLBACK_TERMS = [
+  'food traders',
+  'street food',
+  'mobile catering',
+  'hot food',
+  'event concessions',
+  'food festival',
+  'food vendor',
+  'food and drink'
+];
+
+function categoryIntent(value) {
+  const direct = new Set();
+  const aliases = new Set();
+  let food = false;
   for (const phrase of categoryPhrases(value)) {
-    terms.add(phrase);
+    direct.add(phrase);
     for (const token of phrase.split(/\s+/).map(v => v.trim()).filter(v => v.length > 2)) {
-      terms.add(token);
+      direct.add(token);
     }
     for (const group of CATEGORY_ALIASES) {
       if (group.match.test(phrase)) {
-        for (const term of group.terms) terms.add(term);
+        for (const term of group.terms) aliases.add(term);
+        if (group.food) food = true;
       }
     }
   }
-  return [...terms].filter(Boolean);
+  for (const term of direct) aliases.delete(term);
+  return { direct: [...direct], aliases: [...aliases], food };
 }
 
-function categoryMatches(row, requestedCategory) {
-  const terms = expandedCategoryTerms(requestedCategory);
-  if (!terms.length) return true;
-  return terms.some(term => row._search.includes(term));
+function categoryMatchBasis(row, requestedCategory) {
+  const intent = categoryIntent(requestedCategory);
+  if (!intent.direct.length) return 'none';
+  if (intent.direct.some(term => row._search.includes(term))) return 'direct';
+  if (intent.aliases.some(term => row._search.includes(term))) return 'alias';
+  if (intent.food && FOOD_TRADER_FALLBACK_TERMS.some(term => row._search.includes(term))) {
+    return 'broad_food_fallback';
+  }
+  return '';
+}
+
+const NEUTRAL_KEYWORD_INTENT = /^(?:pitch|pitches|opportunity|opportunities)$/;
+const MARKET_KEYWORD_INTENT = /^(?:market|markets)$/;
+const MARKET_SIGNAL = /\b(?:markets?|marketplace|farmers?\s+market|artisan\s+market|street\s+market|stallholders?)\b/;
+
+function keywordPhrases(value) {
+  return String(value || '').toLowerCase().split(/[,\n]+/).map(v => v.trim()).filter(Boolean);
+}
+
+function keywordIntent(value) {
+  const direct = new Set();
+  let neutral = false;
+  let market = false;
+  for (const phrase of keywordPhrases(value)) {
+    if (NEUTRAL_KEYWORD_INTENT.test(phrase)) {
+      neutral = true;
+      continue;
+    }
+    if (MARKET_KEYWORD_INTENT.test(phrase)) {
+      market = true;
+      continue;
+    }
+    direct.add(phrase);
+    for (const token of phrase.split(/\s+/).map(v => v.trim()).filter(v => v.length > 2)) {
+      if (NEUTRAL_KEYWORD_INTENT.test(token)) neutral = true;
+      else if (MARKET_KEYWORD_INTENT.test(token)) market = true;
+      else direct.add(token);
+    }
+  }
+  return { direct: [...direct], neutral, market };
+}
+
+function marketSearchable(row) {
+  return [
+    row.route_type,
+    row.event_name,
+    row.location,
+    row.organiser,
+    row.vendor_categories,
+    row.notes
+  ].join(' ').toLowerCase().replace(/[_-]+/g, ' ');
+}
+
+function keywordMatchBasis(row, requestedKeywords) {
+  const intent = keywordIntent(requestedKeywords);
+  if (!intent.direct.length && !intent.market) return intent.neutral ? 'neutral' : 'none';
+  if (intent.market && MARKET_SIGNAL.test(row._market_search)) return 'market';
+  if (intent.direct.some(term => row._search.includes(term))) return 'direct';
+  return '';
 }
 
 function searchable(row) {
@@ -244,8 +350,9 @@ export async function onRequestGet(context) {
   const postcode = url.searchParams.get('postcode') || url.searchParams.get('outcode') || '';
   const radius = Number(url.searchParams.get('radius_miles') || url.searchParams.get('radius') || 0);
   const category = url.searchParams.get('category') || '';
-  const queryTerms = splitTerms(url.searchParams.get('q'));
+  const keywords = url.searchParams.get('q') || '';
   const confidence = String(url.searchParams.get('confidence') || '').trim().toLowerCase();
+  const searchFiltered = Boolean(postcode || category || keywords || confidence);
   const requestedLimit = Math.min(Math.max(Number(url.searchParams.get('limit') || 75), 1), 250);
   const requestedOffset = Math.min(Math.max(Number(url.searchParams.get('offset') || 0), 0), 10000);
   const previewLimit = 50;
@@ -260,7 +367,7 @@ export async function onRequestGet(context) {
     }
   }
 
-  const rows = opportunitySnapshot.rows.map(row => {
+  const preparedRows = opportunitySnapshot.rows.map(row => {
     const coords = Number.isFinite(Number(row.latitude)) && Number.isFinite(Number(row.longitude))
       ? { latitude: Number(row.latitude), longitude: Number(row.longitude) }
       : null;
@@ -269,20 +376,33 @@ export async function onRequestGet(context) {
       ...row,
       distance_miles: distance === null ? null : Math.round(distance * 10) / 10,
       _broad_area_centroid: isBroadAreaCentroid(row),
-      _search: searchable(row)
+      _search: searchable(row),
+      _market_search: marketSearchable(row)
     };
-  }).filter(row => {
+  });
+  const geographicRows = preparedRows.filter(row => {
     if (confidence && String(row.confidence || '').toLowerCase() !== confidence) return false;
-    if (!categoryMatches(row, category)) return false;
-    if (queryTerms.length && !queryTerms.every(term => row._search.includes(term))) return false;
     if (origin && radius > 0 && (
       row.distance_miles === null ||
       row.distance_miles > radius ||
       (!['exact', 'place'].includes(row.coordinate_precision) && !row._broad_area_centroid)
     )) return false;
     return true;
-  }).sort((a, b) => {
+  });
+  const categorisedRows = geographicRows.map(row => ({
+    ...row,
+    _category_basis: categoryMatchBasis(row, category)
+  }));
+  const categoryRows = categorisedRows.filter(row => row._category_basis);
+  const keywordRows = geographicRows.filter(row => keywordMatchBasis(row, keywords));
+  const rows = categoryRows.map(row => ({
+    ...row,
+    _keyword_basis: keywordMatchBasis(row, keywords)
+  })).filter(row => row._keyword_basis).sort((a, b) => {
+    const categoryRank = { direct: 0, alias: 1, broad_food_fallback: 2, none: 3 };
     const confidenceRank = { high: 0, medium: 1, low: 2 };
+    const categoryDifference = (categoryRank[a._category_basis] ?? 9) - (categoryRank[b._category_basis] ?? 9);
+    if (categoryDifference) return categoryDifference;
     if (origin && a._broad_area_centroid !== b._broad_area_centroid) {
       return a._broad_area_centroid ? 1 : -1;
     }
@@ -300,6 +420,26 @@ export async function onRequestGet(context) {
   const offset = Math.min(requestedOffset, visibleRows.length);
   const pageRows = visibleRows.slice(offset, offset + limit);
   const nextOffset = offset + pageRows.length < visibleRows.length ? offset + pageRows.length : null;
+  const matchSummary = rows.reduce((summary, row) => {
+    summary.category[row._category_basis] = (summary.category[row._category_basis] || 0) + 1;
+    summary.keyword[row._keyword_basis] = (summary.keyword[row._keyword_basis] || 0) + 1;
+    return summary;
+  }, { category: {}, keyword: {} });
+  const recovery = {
+    geographic_matches: geographicRows.length,
+    without_keywords: {
+      count: categoryRows.length,
+      recovers_matches: Boolean(keywords) && categoryRows.length > rows.length
+    },
+    without_category: {
+      count: keywordRows.length,
+      recovers_matches: Boolean(category) && keywordRows.length > rows.length
+    },
+    without_category_and_keywords: {
+      count: geographicRows.length,
+      recovers_matches: Boolean(category || keywords) && geographicRows.length > rows.length
+    }
+  };
 
   return json({
     updated: opportunitySnapshot.exported_at,
@@ -315,13 +455,24 @@ export async function onRequestGet(context) {
     returned: pageRows.length,
     next_offset: nextOffset,
     has_more: nextOffset !== null,
+    recovery,
+    match_summary: matchSummary,
     status_summary: statusSummary(rows),
+    search_filtered: searchFiltered,
+    postcode_resolution: origin?.postcode_resolution || null,
     postcode_distance_ready: Boolean(origin),
-    rows: pageRows.map(({ _search, _broad_area_centroid, ...row }) => {
+    rows: pageRows.map(({ _search, _market_search, _broad_area_centroid, _category_basis, _keyword_basis, ...row }) => {
       const output = _broad_area_centroid
         ? { ...row, coordinate_precision: 'area', distance_miles: null }
         : row;
-      return fullAccess ? output : previewRow(output);
+      const qualified = {
+        ...output,
+        match_basis: {
+          category: _category_basis,
+          keyword: _keyword_basis
+        }
+      };
+      return fullAccess ? qualified : previewRow(qualified);
     })
   }, 200, access.set_cookie ? { 'set-cookie': access.set_cookie } : {});
 }

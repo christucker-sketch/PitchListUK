@@ -132,23 +132,25 @@ test('token-binding resolver loads the token and canonical subscription every ti
   assert.equal(missing.verified, false);
 });
 
-test('past_due token is denied subscriber search and access-token validation', async () => {
-  const env = environment({
-    canonicalRecord: canonical({ status: 'past_due', access: 'blocked' })
-  });
-  const accessResponse = await validateAccessToken({
-    request: new Request(`https://pitchlist.uk/api/billing/access?token=${token}`),
-    env
-  });
-  assert.equal(accessResponse.status, 404);
+test('past_due and canceled tokens are denied subscriber search and access-token validation', async () => {
+  for (const status of ['past_due', 'canceled']) {
+    const env = environment({
+      canonicalRecord: canonical({ status, access: 'blocked' })
+    });
+    const accessResponse = await validateAccessToken({
+      request: new Request(`https://pitchlist.uk/api/billing/access?token=${token}`),
+      env
+    });
+    assert.equal(accessResponse.status, 404);
 
-  const searchResponse = await searchOpportunities({
-    request: new Request(
-      `https://pitchlist.uk/api/customer-opportunities/search?access_token=${token}&limit=1`
-    ),
-    env
-  });
-  assert.equal((await searchResponse.json()).access, 'preview');
+    const searchResponse = await searchOpportunities({
+      request: new Request(
+        `https://pitchlist.uk/api/customer-opportunities/search?access_token=${token}&limit=1`
+      ),
+      env
+    });
+    assert.equal((await searchResponse.json()).access, 'preview');
+  }
 });
 
 async function portalResponse(status) {

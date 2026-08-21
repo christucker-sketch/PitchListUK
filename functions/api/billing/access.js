@@ -10,6 +10,7 @@ import {
   resolveCanonicalEntitlement,
   resolveCanonicalTokenBinding
 } from '../../_lib/stripe.mjs';
+import { vendorSearchDefaults } from '../../_lib/vendor-profiles.mjs';
 
 function accessUrl(request, token) {
   const url = new URL(request.url);
@@ -91,13 +92,15 @@ export async function onRequestGet(context) {
 
   const entitlement = resolveCanonicalEntitlement(await resolveCanonicalTokenBinding(env, token));
   if (!entitlement.allowed) return json({ error: 'invalid_or_expired_token' }, 404);
+  const searchDefaults = await vendorSearchDefaults(env, entitlement.email);
 
   return json({
     ok: true,
     access: 'subscriber',
     email: entitlement.email,
     customer: entitlement.customer,
-    subscription_status: entitlement.status
+    subscription_status: entitlement.status,
+    search_defaults: searchDefaults
   }, 200, {
     'set-cookie': accessTokenCookie(token)
   });

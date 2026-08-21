@@ -83,7 +83,7 @@ for (const text of ['value="food"', 'public_listing_opt_in" type="checkbox" chec
 for (const text of ['Business name', 'Your name', 'Specialty', 'Regions covered', 'public vendor profile', 'Manage billing', 'Sign out', 'Any confidence']) {
   if (database.includes(text)) throw new Error(`Pitch finder signup must stay low-friction and private by default: ${text}`);
 }
-if (!database.includes('/database.js?v=20260731-7')) throw new Error('Pitch finder JS cache-bust version must be current');
+if (!database.includes('/database.js?v=20260820-1')) throw new Error('Pitch finder JS cache-bust version must be current');
 for (const text of ['og:title', 'og:image', 'twitter:card']) {
   if (!database.includes(text)) throw new Error(`Pitch finder page missing share metadata: ${text}`);
 }
