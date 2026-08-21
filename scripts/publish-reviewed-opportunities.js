@@ -78,6 +78,7 @@ function main() {
   runSequentialGates([
     { label: 'site_check', run: () => run(process.execPath, ['scripts/check.js']) },
     { label: 'regression_tests', run: () => run(process.execPath, ['--test', 'tests/*.test.mjs'], { shell: true }) },
+    { label: 'pipeline_tests', run: () => run(process.execPath, ['--test', 'operations/opportunity-pipeline/tests/*.test.js'], { shell: true }) },
     { label: 'diff_check', run: () => run('git', ['diff', '--check']) },
     { label: 'asset_parity', run: () => run('sh', ['-c', 'cmp -s src/database.js public/database.js && cmp -s src/analytics.js public/analytics.js && cmp -s src/styles.css public/styles.css && cmp -s src/_headers public/_headers']) }
   ]);

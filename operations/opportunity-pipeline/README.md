@@ -19,6 +19,7 @@ From this directory:
 npm test
 node scripts/grow-database.js --dry-run --all
 PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git PITCHLIST_SERPER_RUN_BUDGET=8 node scripts/grow-database.js --apply --max-lanes 8 --query-limit 1
+PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git node scripts/fetch-approved-sources.js --force
 PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git node scripts/health-check.js
 ```
 
@@ -44,13 +45,12 @@ The `weak-regions-first-party-applications` lane targets exact official routes r
 
 ## Promotion operating model
 
-- Automatic refresh is permitted only for an already approved first-party recurring source when the canonical source URL, stable opportunity identity and evidence type remain unchanged.
-- A new domain, new opportunity identity, source-route change, ambiguous date/status change or proposed removal always requires a reviewed manifest.
+- Approved first-party routes are checked directly at their configured 14- or 30-day cadence; Serper is reserved for bounded new-domain/page discovery.
+- Automatic additions are permitted only from an exact registry route after direct retrieval, live-link, UK, open-opportunity, date/currentness, organiser, location, evidence and duplicate gates all pass. Each run is capped at three additions and produces an addition-only manifest.
+- A new domain, source-route change, ambiguous date/status change or proposed removal always requires manual review. Automatic manifests cannot update or remove rows.
 - Foreign, expired, closed, duplicated and weak-evidence rows are automatically rejected or quarantined and never promoted to customer-ready staging.
-- Routine refresh may update currentness evidence in external staging, but production publishing remains disabled until a separate approved manifest passes the clean-main publisher gates.
+- The automatic publisher still requires clean canonical `main`, exact `origin/main`, complete site and pipeline tests, data/generated-only diffs, security-header parity, a successful Git push and the hardened Cloudflare wrapper. It records deployment and rollback metadata.
 - Alerts cover stale production data, zero valid growth, source failures and weak-region coverage regression. A source with repeated zero yield or policy ambiguity is removed from automatic polling pending review.
-
-Recommended rollout: observe the first-party lane for two weeks at an eight-query nightly cap; manually review its first two manifests; then permit identity-stable refreshes for sources with two clean runs while retaining manual approval for additions and removals. Do not enable automatic production publishing as part of that rollout.
 
 ## Monitoring
 

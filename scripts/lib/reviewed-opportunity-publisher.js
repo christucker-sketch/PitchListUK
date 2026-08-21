@@ -3,6 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { duplicateKeys } = require('../../operations/opportunity-pipeline/lib/opportunity-safety');
+const { sourceRuleFor, termsReviewed } = require('../../operations/opportunity-pipeline/config/sources');
 
 const REQUIRED_HEADERS = [
   'Content-Security-Policy:', 'X-Frame-Options: DENY', 'X-Content-Type-Options: nosniff',
@@ -52,6 +53,18 @@ function validateManifest(manifest, reviewedCommit) {
     if (!row.event_name || !row.organiser || !canonicalUrl(row.source_url) || !canonicalUrl(row.application_url || row.source_url)) throw new Error('manifest_change_missing_evidence');
   }
   for (const item of changes.removals) if (!item.reason || !canonicalUrl(item.source_url)) throw new Error('manifest_removal_invalid');
+  if (manifest.approval?.mode === 'approved_source_automatic_addition') {
+    if (manifest.approval?.policy_version !== 1 || manifest.approval?.reviewed_by !== 'PitchList approved-source automation') throw new Error('automatic_manifest_policy_invalid');
+    if (changes.updates.length || changes.removals.length || manifest.automation?.addition_only !== true || manifest.automation?.removals_allowed !== false || manifest.automation?.updates_allowed !== false) throw new Error('automatic_manifest_must_be_addition_only');
+    const limit = Number(manifest.automation?.max_additions || 0);
+    if (!Number.isInteger(limit) || limit < 1 || changes.additions.length > limit) throw new Error('automatic_manifest_addition_limit_invalid');
+    for (const item of changes.additions) {
+      const row = item.row;
+      const rule = sourceRuleFor(row.source_url);
+      if (!rule.approved || !termsReviewed(rule) || canonicalUrl(rule.official_application_route) !== canonicalUrl(row.source_url)) throw new Error('automatic_manifest_source_not_approved');
+      if (row.country !== 'United Kingdom' || row.jurisdiction !== 'GB' || !row.source_url || !row.application_url || !item.automation_evidence?.directly_fetched || !item.automation_evidence?.source_evidence_present || !item.automation_evidence?.fetched_at) throw new Error('automatic_manifest_evidence_invalid');
+    }
+  }
   return true;
 }
 
