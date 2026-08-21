@@ -86,6 +86,7 @@ test('diff gate permits only data and expected generated pages', () => {
   assert.throws(() => assertAllowedChanges([...allowed, 'src/_headers']), /protected_changes/);
   assert.throws(() => assertAllowedChanges(['public/areas/cumbria.html']), /expected_opportunity_snapshot/);
   assert.deepEqual(changedFilesFromPorcelain(' M public/index.html\nR  old -> public/areas/new.html\n'), ['public/index.html', 'public/areas/new.html']);
+  assert.deepEqual(changedFilesFromPorcelain('M functions/_data/opportunities.mjs\n M public/index.html\n'), ['functions/_data/opportunities.mjs', 'public/index.html']);
 });
 
 test('required headers must match source, generated output and live production', () => {
