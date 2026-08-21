@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const { spawnSync } = require('node:child_process');
 const path = require('node:path');
-const { LANES, allLaneIds, selectLanes, COUNTY_LANES, IRELAND_LANES, FIRST_PARTY_WEAK_REGION_LANES } = require('../acquisition/lanes');
+const { LANES, allLaneIds, selectLanes, COUNTY_LANES, IRELAND_LANES, FIRST_PARTY_WEAK_REGION_LANES, APPROVED_SOURCE_NETWORK_LANES } = require('../acquisition/lanes');
 
 const root = path.resolve(__dirname, '..');
 
@@ -50,6 +50,16 @@ test('weak-region first-party lane targets exact official application routes', (
     assert.ok(lane.queries.some(query => query.includes(host)), host);
   }
   assert.equal(lane.queries.some(query => /street trading licence|street trading consent/i.test(query)), false);
+});
+
+test('expanded approved-source lane covers 24 exact first-party routes', () => {
+  assert.equal(APPROVED_SOURCE_NETWORK_LANES.length, 1);
+  const lane = APPROVED_SOURCE_NETWORK_LANES[0];
+  assert.equal(lane.queries.length, 24);
+  for (const host of ['bishopaucklandfoodfestival.co.uk', 'quaysidemarket.co.uk', 'peddler.market', 'bcpcouncil.gov.uk', 'northyorks.gov.uk', 'knutsfordtowncouncil.gov.uk', 'medway.gov.uk', 'visitardsandnorthdown.com']) {
+    assert.ok(lane.queries.some(query => query.includes(host)), host);
+  }
+  assert.equal(lane.queries.some(query => /generic licence|renewal/i.test(query)), false);
 });
 
 test('county lanes script the same local searches used for sample discovery', () => {

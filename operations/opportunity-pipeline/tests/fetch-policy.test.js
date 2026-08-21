@@ -70,6 +70,27 @@ test('approved weak-region sources retain operational ownership and polling meta
   }
 });
 
+test('expanded approved-source routes carry first-party operating metadata', () => {
+  for (const url of [
+    'https://bishopaucklandfoodfestival.co.uk/trader-applications-open-for-bishop-food-festival/',
+    'https://www.quaysidemarket.co.uk/traders',
+    'https://www.peddler.market/street-food-applications/',
+    'https://www.bcpcouncil.gov.uk/business/starting-and-growing-your-business/street-food-corner-trader/apply-to-trade-at-street-food-corner',
+    'https://www.knutsfordtowncouncil.gov.uk/christmas-market/trade',
+    'https://www.medway.gov.uk/info/200725/christmas_in_rochester/1809/rochester_christmas_market_stallholder_information/5',
+    'https://www.northamptontowncouncil.gov.uk/food-vendor-application'
+  ]) {
+    const rule = sourceRuleFor(url);
+    assert.equal(rule.approved, true, url);
+    assert.ok(rule.organisation, url);
+    assert.ok(rule.geographic_coverage, url);
+    assert.ok(rule.opportunity_type, url);
+    assert.match(rule.official_application_route, /^https:/, url);
+    assert.equal(rule.robots_policy, 'fetch-and-obey', url);
+    assert.ok(rule.recommended_polling_days > 0, url);
+  }
+});
+
 test('page requests have a bounded timeout and retry with a classified failure', async () => {
   let pageAttempts = 0;
   const fetchImpl = async (url, options) => {
