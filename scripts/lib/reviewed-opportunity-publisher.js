@@ -55,15 +55,18 @@ function validateManifest(manifest, reviewedCommit) {
   for (const item of changes.removals) if (!item.reason || !canonicalUrl(item.source_url)) throw new Error('manifest_removal_invalid');
   if (manifest.approval?.mode === 'approved_source_automatic_addition') {
     if (manifest.approval?.policy_version !== 1 || manifest.approval?.reviewed_by !== 'PitchList approved-source automation') throw new Error('automatic_manifest_policy_invalid');
-    if (changes.updates.length || changes.removals.length || manifest.automation?.addition_only !== true || manifest.automation?.removals_allowed !== false || manifest.automation?.updates_allowed !== false) throw new Error('automatic_manifest_must_be_addition_only');
+    if (changes.removals.length || manifest.automation?.removals_allowed !== false || manifest.automation?.updates_allowed !== 'identity_refresh_only') throw new Error('automatic_manifest_changes_invalid');
     const limit = Number(manifest.automation?.max_additions || 0);
     if (!Number.isInteger(limit) || limit < 1 || changes.additions.length > limit) throw new Error('automatic_manifest_addition_limit_invalid');
-    for (const item of changes.additions) {
+    const updateLimit = Number(manifest.automation?.max_updates || 0);
+    if (!Number.isInteger(updateLimit) || updateLimit < 1 || changes.updates.length > updateLimit) throw new Error('automatic_manifest_update_limit_invalid');
+    for (const item of [...changes.additions, ...changes.updates]) {
       const row = item.row;
       const rule = sourceRuleFor(row.source_url);
       if (!rule.approved || !termsReviewed(rule) || canonicalUrl(rule.official_application_route) !== canonicalUrl(row.source_url)) throw new Error('automatic_manifest_source_not_approved');
       if (row.country !== 'United Kingdom' || row.jurisdiction !== 'GB' || !row.source_url || !row.application_url || !item.automation_evidence?.directly_fetched || !item.automation_evidence?.source_evidence_present || !item.automation_evidence?.fetched_at) throw new Error('automatic_manifest_evidence_invalid');
     }
+    for (const item of changes.updates) if (canonicalUrl(item.match_source_url) !== canonicalUrl(item.row.source_url) || item.automation_evidence?.identity_preserved !== true) throw new Error('automatic_manifest_refresh_identity_invalid');
   }
   return true;
 }
@@ -78,7 +81,15 @@ function planChanges(snapshot, manifest) {
   for (const row of existing) {
     const key = canonicalUrl(row.source_url);
     if (removalMap.has(key)) { seenRemoval.add(key); continue; }
-    if (updateMap.has(key)) { rows.push(updateMap.get(key).row); seenUpdate.add(key); continue; }
+    if (updateMap.has(key)) {
+      const update = updateMap.get(key);
+      if (manifest.approval?.mode === 'approved_source_automatic_addition') {
+        const allowed = new Set(['last_checked', 'freshness_status', 'freshness_age_days', 'quality_status', 'publishable', 'notes']);
+        const changed = new Set([...Object.keys(row), ...Object.keys(update.row)].filter(field => JSON.stringify(row[field]) !== JSON.stringify(update.row[field])));
+        if ([...changed].some(field => !allowed.has(field))) throw new Error(`automatic_manifest_refresh_changed_identity:${[...changed].join(',')}`);
+      }
+      rows.push(update.row); seenUpdate.add(key); continue;
+    }
     rows.push(row);
   }
   for (const key of removalMap.keys()) if (!seenRemoval.has(key)) throw new Error(`manifest_removal_not_found:${key}`);
