@@ -52,7 +52,9 @@ function validateManifest(manifest, reviewedCommit) {
     if (!item.reason || !row || row.quality_status !== 'customer_ready' || row.publishable !== true) throw new Error('manifest_contains_non_customer_ready_change');
     if (!row.event_name || !row.organiser || !canonicalUrl(row.source_url) || !canonicalUrl(row.application_url || row.source_url)) throw new Error('manifest_change_missing_evidence');
   }
-  for (const item of changes.removals) if (!item.reason || !canonicalUrl(item.source_url)) throw new Error('manifest_removal_invalid');
+  for (const item of changes.removals) {
+    if (!item.reason || !canonicalUrl(item.source_url) || (item.match_id !== undefined && !String(item.match_id).trim())) throw new Error('manifest_removal_invalid');
+  }
   if (manifest.approval?.mode === 'approved_source_automatic_addition') {
     if (manifest.approval?.policy_version !== 1 || manifest.approval?.reviewed_by !== 'PitchList approved-source automation') throw new Error('automatic_manifest_policy_invalid');
     if (changes.removals.length || manifest.automation?.removals_allowed !== false || manifest.automation?.updates_allowed !== 'identity_refresh_only') throw new Error('automatic_manifest_changes_invalid');
@@ -73,14 +75,23 @@ function validateManifest(manifest, reviewedCommit) {
 
 function planChanges(snapshot, manifest) {
   const existing = snapshot.rows || [];
-  const removalMap = new Map(manifest.changes.removals.map(item => [canonicalUrl(item.source_url), item]));
+  const removalIndexes = new Map();
+  for (const item of manifest.changes.removals) {
+    const sourceKey = canonicalUrl(item.source_url);
+    const matches = existing
+      .map((row, index) => ({ row, index }))
+      .filter(({ row }) => canonicalUrl(row.source_url) === sourceKey && (item.match_id === undefined || String(row.id) === String(item.match_id)));
+    if (!matches.length) throw new Error(`manifest_removal_not_found:${sourceKey}`);
+    if (matches.length > 1) throw new Error(`manifest_removal_ambiguous:${sourceKey}`);
+    if (removalIndexes.has(matches[0].index)) throw new Error(`manifest_removal_duplicate:${sourceKey}`);
+    removalIndexes.set(matches[0].index, item);
+  }
   const updateMap = new Map(manifest.changes.updates.map(item => [canonicalUrl(item.match_source_url || item.row.source_url), item]));
-  const seenRemoval = new Set();
   const seenUpdate = new Set();
   const rows = [];
-  for (const row of existing) {
+  for (const [index, row] of existing.entries()) {
     const key = canonicalUrl(row.source_url);
-    if (removalMap.has(key)) { seenRemoval.add(key); continue; }
+    if (removalIndexes.has(index)) continue;
     if (updateMap.has(key)) {
       const update = updateMap.get(key);
       if (manifest.approval?.mode === 'approved_source_automatic_addition') {
@@ -92,7 +103,6 @@ function planChanges(snapshot, manifest) {
     }
     rows.push(row);
   }
-  for (const key of removalMap.keys()) if (!seenRemoval.has(key)) throw new Error(`manifest_removal_not_found:${key}`);
   for (const key of updateMap.keys()) if (!seenUpdate.has(key)) throw new Error(`manifest_update_not_found:${key}`);
   const sourceKeys = new Set(rows.map(row => canonicalUrl(row.source_url)));
   for (const item of manifest.changes.additions) {
@@ -116,7 +126,7 @@ function planChanges(snapshot, manifest) {
     after_count: rows.length,
     additions: manifest.changes.additions.map(item => ({ event_name: item.row.event_name, source_url: item.row.source_url, reason: item.reason })),
     updates: manifest.changes.updates.map(item => ({ event_name: item.row.event_name, source_url: item.row.source_url, reason: item.reason })),
-    removals: manifest.changes.removals.map(item => ({ source_url: item.source_url, reason: item.reason }))
+    removals: manifest.changes.removals.map(item => ({ match_id: item.match_id || '', source_url: item.source_url, reason: item.reason }))
   };
   return { rows, summary };
 }
