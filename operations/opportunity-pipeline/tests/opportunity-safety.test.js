@@ -157,6 +157,42 @@ test('official recurring-market application wording is direct opportunity eviden
   }
 });
 
+test('authoritative recurring source type overrides ambiguous festival title keywords', () => {
+  const row = evaluateOpportunity({
+    event_name: 'Real Food Festival', organiser: 'Real Food Festival',
+    source_url: 'https://realfoodfestival.co.uk/join-us', application_url: 'https://realfoodfestival.co.uk/join-us',
+    location: 'South East England', region: 'South East England',
+    source_evidence: 'Become a trader at our recurring London market. Applications are open.',
+    query_lane: 'approved-source-controlled-seven', query_text: 'South East food festival trader application'
+  }, { now: new Date('2026-08-26T00:00:00Z') });
+  assert.equal(row.opportunity_type, 'recurring_market');
+  assert.equal(row.recurring, true);
+  assert.equal(row.location, 'London');
+  assert.equal(row.region, 'London');
+  assert.equal(row.event_start, '');
+  assert.ok(!row.quality_reasons.includes('undated_one_off_event'));
+  assert.equal(row.quality_status, 'customer_ready');
+});
+
+test('approved geography rejects a conflicting query region but preserves a consistent reviewed locality', () => {
+  const conflicting = evaluateOpportunity({
+    event_name: 'Acton Saturday Market W3', organiser: 'Action West London',
+    source_url: 'https://ecoactionwestlondon.org/how-to-become-a-trader',
+    application_url: 'https://ecoactionwestlondon.org/how-to-become-a-trader',
+    location: 'South East England', region: 'South East England',
+    source_evidence: 'Apply to become a trader at Acton Saturday Market W3.',
+    query_lane: 'approved-source-controlled-seven', query_text: 'South East market trader application'
+  }, { now: new Date('2026-08-26T00:00:00Z') });
+  const reviewed = evaluateOpportunity({
+    ...conflicting, location: 'Acton, London W3', region: 'London',
+    source_evidence: 'Apply to become a trader at Acton Saturday Market W3.'
+  }, { now: new Date('2026-08-26T00:00:00Z') });
+  assert.equal(conflicting.location, 'London');
+  assert.equal(conflicting.region, 'London');
+  assert.equal(reviewed.location, 'Acton, London W3');
+  assert.equal(reviewed.region, 'London');
+});
+
 test('approved source registry has explicit robots, terms and throttle policies', () => {
   assert.ok(APPROVED_SOURCES.length >= 23);
   for (const source of APPROVED_SOURCES) {

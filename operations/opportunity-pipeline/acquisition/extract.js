@@ -54,6 +54,7 @@ function sourceCandidateToRow(candidate, html, today) {
   const dates = extractDateFields(relevantText, new Date(`${today}T00:00:00Z`));
   const sourceRule = sourceRuleFor(candidate.url);
   const recurringMarket = sourceRule.opportunity_type === 'recurring_market';
+  const verifiedGeography = sourceRule.approved ? sourceRule.geographic_coverage : '';
   const sourceUrl = sourceRule.official_application_route || candidate.url;
   const selectedEventStart = recurringMarket ? '' : sourceRule.known_open_event_start || (sourceRule.opportunity_type === 'festival_trader_application'
     ? nextFutureDate(relevantText, today)
@@ -65,8 +66,10 @@ function sourceCandidateToRow(candidate, html, today) {
     source_url: sourceUrl,
     application_url: sourceRule.official_application_route || appLink || sourceUrl,
     contact_email: emails[0] || '',
-    location: sourceRule.geographic_coverage || guessRegion(relevantText),
-    region: sourceRule.geographic_coverage || guessRegion(relevantText),
+    location: verifiedGeography || guessRegion(relevantText),
+    region: verifiedGeography || guessRegion(relevantText),
+    opportunity_type: sourceRule.approved ? sourceRule.opportunity_type : '',
+    recurring: sourceRule.approved && sourceRule.recurring === true,
     event_start: selectedEventStart,
     event_end: recurringMarket ? '' : sourceRule.known_open_event_end || dates.event_end,
     application_deadline: dates.application_deadline,

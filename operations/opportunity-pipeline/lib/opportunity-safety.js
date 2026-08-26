@@ -103,15 +103,30 @@ function geographicEvidence(row) {
   return { valid: false, reason: 'uk_evidence_missing' };
 }
 
+function locationAgreesWithCoverage(location, coverage) {
+  const place = normaliseText(location);
+  return String(coverage || '').split('/').map(normaliseText).filter(Boolean).some(area => place.includes(area));
+}
+
 function evaluateOpportunity(raw, options = {}) {
   const now = options.now || new Date();
   const sourceText = [raw.source_evidence, raw.notes, raw.event_name, raw.organiser].join(' ');
   const rule = sourceRuleFor(raw.source_url);
-  const parsedDates = rule.opportunity_type === 'recurring_market'
+  const opportunityType = rule.approved && rule.opportunity_type ? rule.opportunity_type : String(raw.opportunity_type || '');
+  const recurring = rule.approved ? rule.recurring === true || opportunityType === 'recurring_market' : raw.recurring === true || opportunityType === 'recurring_market';
+  const parsedDates = recurring
     ? { event_start: '', event_end: '', application_deadline: '', closed_signal: false }
     : extractDateFields(sourceText, now);
+  const verifiedGeography = rule.approved ? String(rule.geographic_coverage || '') : '';
+  const verifiedLocation = verifiedGeography && !locationAgreesWithCoverage(raw.location, verifiedGeography)
+    ? verifiedGeography
+    : raw.location || verifiedGeography;
   const row = {
     ...raw,
+    location: verifiedLocation,
+    region: verifiedGeography || raw.region,
+    opportunity_type: opportunityType,
+    recurring,
     source_url: canonicalUrl(raw.source_url),
     application_url: canonicalUrl(raw.application_url) || canonicalUrl(raw.source_url),
     event_start: raw.event_start || parsedDates.event_start,
@@ -137,7 +152,7 @@ function evaluateOpportunity(raw, options = {}) {
   if (rule.type === 'local-authority' && !AVAILABLE_PITCH.test(sourceText)) {
     reasons.push('available_pitch_evidence_missing');
   }
-  if (ONE_OFF_EVENT.test(row.event_name || '') && !row.event_start && !row.application_deadline) reasons.push('undated_one_off_event');
+  if (!recurring && ONE_OFF_EVENT.test(row.event_name || '') && !row.event_start && !row.application_deadline) reasons.push('undated_one_off_event');
   if (!row.query_lane || !row.query_text) reasons.push('provenance_missing');
 
   const rejected = reasons.some(reason => ['non_uk_evidence', 'event_expired', 'application_closed'].includes(reason));
@@ -160,6 +175,7 @@ module.exports = {
   duplicateKeys,
   mergeDuplicates,
   geographicEvidence,
+  locationAgreesWithCoverage,
   evaluateOpportunity,
   customerReadyOnly,
   FOREIGN_FIXTURES,
