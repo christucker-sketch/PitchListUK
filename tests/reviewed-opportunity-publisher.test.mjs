@@ -84,6 +84,22 @@ test('manifest cannot remove or update missing rows or duplicate an addition', (
   assert.throws(() => planChanges({ rows: [row()] }, manifest({ changes: { additions: [{ reason: 'x', row: row({ source_url: 'https://different.example/source' }) }], updates: [], removals: [] } })), /introduces_duplicate/);
 });
 
+test('shared-source removals fail closed unless an exact row id is supplied', () => {
+  const shared = 'https://example.org/shared-source';
+  const rows = [
+    row({ id: 'opp_1', event_name: 'Ended Event', source_url: shared }),
+    row({ id: 'opp_2', event_name: 'Future Event', source_url: shared })
+  ];
+  const ambiguous = manifest({ changes: { additions: [], updates: [], removals: [{ reason: 'ended', source_url: shared }] } });
+  assert.throws(() => planChanges({ rows }, ambiguous), /removal_ambiguous/);
+  const targeted = manifest({ changes: { additions: [], updates: [], removals: [{ reason: 'ended', match_id: 'opp_1', source_url: shared }] } });
+  const plan = planChanges({ rows }, targeted);
+  assert.equal(plan.summary.before_count, 2);
+  assert.equal(plan.summary.after_count, 1);
+  assert.deepEqual(plan.rows.map(item => item.id), ['opp_2']);
+  assert.equal(plan.summary.removals[0].match_id, 'opp_1');
+});
+
 test('diff gate permits only data and expected generated pages', () => {
   const allowed = ['functions/_data/opportunities.mjs', 'public/index.html', 'public/sitemap.xml', 'public/areas/index.html', 'public/areas/cumbria.html'];
   assert.equal(assertAllowedChanges(allowed), true);
