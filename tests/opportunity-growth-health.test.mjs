@@ -49,3 +49,21 @@ test('notification fingerprint ignores a changing stale-age counter but preserve
   assert.notEqual(first.fingerprint, moreExpired.fingerprint);
   assert.equal(first.summary, 'production_dataset_stale=109, expired_production_records=1');
 });
+
+test('growth health reports source targets, candidate backlog and material net-growth targets', () => {
+  const rows = [...Array(20)].map(() => row());
+  const result = evaluateOpportunityHealth({
+    now: '2026-08-26T12:00:00Z', snapshot: { exported_at: '2026-08-26T11:00:00Z', rows },
+    receipts: [{ generated_at: '2026-08-25T12:00:00Z', before_count: 15, after_count: 20 }], headers,
+    cloudflareSha: 'abc', expectedSha: 'abc', minNorthEast: 0, minSouthYorkshire: 0,
+    sources: [{ observed_yield: { customer_ready: 0 } }, { observed_yield: { customer_ready: 2 } }],
+    sourceCandidates: [{ approval_status: 'pending', classification: 'manual-review-required' }],
+    targetProductionListings: 400, targetApprovedSources: 100, minNetGrowth7Days: 20
+  });
+  const codes = result.alerts.map(item => item.code);
+  for (const code of ['production_listing_target_missed', 'approved_source_target_missed', 'growth_target_missed']) assert.ok(codes.includes(code));
+  assert.equal(result.metrics.net_additions_7_days, 5);
+  assert.equal(result.metrics.candidate_backlog, 1);
+  assert.equal(result.metrics.candidates_awaiting_review, 1);
+  assert.equal(result.metrics.approved_sources_zero_yield, 1);
+});

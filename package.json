@@ -13,6 +13,9 @@
     "staging:manifest-approved-additions": "node scripts/build-automatic-addition-manifest.js",
     "staging:refresh": "node operations/opportunity-pipeline/scripts/refresh-active-events.js",
     "staging:health": "node operations/opportunity-pipeline/scripts/health-check.js",
+    "sources:discover": "node operations/opportunity-pipeline/scripts/discover-source-candidates.js",
+    "sources:manifest": "node operations/opportunity-pipeline/scripts/build-source-promotion-manifest.js",
+    "sources:promote": "node operations/opportunity-pipeline/scripts/apply-source-promotion-manifest.js",
     "deploy:production": "node scripts/deploy-public-site.js",
     "publish:opportunities": "node scripts/publish-reviewed-opportunities.js",
     "data:export": "node scripts/export-opportunities.js"

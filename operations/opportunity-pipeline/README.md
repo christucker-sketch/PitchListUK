@@ -20,6 +20,9 @@ npm test
 node scripts/grow-database.js --dry-run --all
 PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git PITCHLIST_SERPER_RUN_BUDGET=8 node scripts/grow-database.js --apply --max-lanes 8 --query-limit 1
 PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git node scripts/fetch-approved-sources.js --force
+PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git PITCHLIST_SERPER_RUN_BUDGET=12 node scripts/discover-source-candidates.js --apply
+PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git node scripts/build-source-promotion-manifest.js --registry data/source-candidates/registry.json --output data/source-candidates/promotion.json --reviewed-commit "$REVIEWED_SHA" --reviewer "$REVIEWER"
+node scripts/apply-source-promotion-manifest.js /absolute/runtime/data/source-candidates/promotion.json
 PITCHLIST_PIPELINE_RUNTIME_DIR=/absolute/path/outside/git node scripts/health-check.js
 ```
 
@@ -43,14 +46,28 @@ For recurring first-party sources the registry also records the owner, geographi
 
 The `weak-regions-first-party-applications` lane targets exact official routes rather than generic licence searches. Its reviewed sources currently cover County Durham, Tyne and Wear, Northumberland, Cumbria, South Yorkshire, Dorset and Buckinghamshire. Search-result provenance and classified fetch outcomes are retained in the external acquisition report so a zero-yield lane can be diagnosed without repeating Serper queries.
 
+### Source-onboarding factory
+
+New-domain discovery is a separate bounded workflow. It rotates precise organiser-by-organiser queries across every UK region, retrieves at most 50 candidate pages per normal batch, obeys robots, rejects non-HTTPS/private-network targets and stores evidence in the external candidate registry. Discovery never writes production data or the approved registry.
+
+Candidates retain their canonical host and route, organisation, geography, opportunity type, query provenance, first-party and trader-application evidence, robots/terms/fetch results, rejection reason, review decision, recheck date and observed yield. Unchanged decisions are not rediscovered until their recheck date.
+
+Deterministic classifications are:
+
+- `auto-approvable-first-party` for an unambiguous UK public-service route with an actual trader opportunity;
+- `manual-review-required` for private organisers and incomplete public-service metadata;
+- explicit aggregator, licence-only, no-live-route, foreign, duplicate, policy and fetch-failure outcomes.
+
+Auto-approvable means eligible for a reviewed source manifest; it does not mean published. Promotion is addition-only and bound to the reviewed commit, reviewer, exact route/path scope, evidence hashes, manifest hash and expected registry count. Private sources need an explicit reviewer decision. `approved-source-routes.json` contains only successfully applied reviewed manifests and automatic removal remains impossible.
+
 ## Promotion operating model
 
 - Approved first-party routes are checked directly at their configured 14- or 30-day cadence; Serper is reserved for bounded new-domain/page discovery.
-- Automatic additions are permitted only from an exact registry route after direct retrieval, live-link, UK, open-opportunity, date/currentness, organiser, location, evidence and duplicate gates all pass. Each run is capped at three additions and produces an addition-only manifest.
+- Automatic additions are permitted only from an exact registry route after direct retrieval, live-link, UK, open-opportunity, date/currentness, organiser, location, evidence and duplicate gates all pass. Releases use configurable absolute, percentage-growth, per-source and duplicate-rate caps and produce an addition-only manifest.
 - A new domain, source-route change, ambiguous date/status change or proposed removal always requires manual review. Automatic manifests cannot update or remove rows.
 - Foreign, expired, closed, duplicated and weak-evidence rows are automatically rejected or quarantined and never promoted to customer-ready staging.
 - The automatic publisher still requires clean canonical `main`, exact `origin/main`, complete site and pipeline tests, data/generated-only diffs, security-header parity, a successful Git push and the hardened Cloudflare wrapper. It records deployment and rollback metadata.
-- Alerts cover stale production data, zero valid growth, source failures and weak-region coverage regression. A source with repeated zero yield or policy ambiguity is removed from automatic polling pending review.
+- Alerts cover stale production data, zero valid growth, the 100-source/400-listing/20-net-additions targets, candidate backlog, review backlog, zero-yield sources, source failures and weak-region coverage regression. A source with repeated zero yield or policy ambiguity is removed from automatic polling pending review.
 
 ## Monitoring
 
