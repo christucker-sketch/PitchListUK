@@ -5,6 +5,22 @@ const fs = require('fs');
 const path = require('path');
 const { parseSnapshot, REQUIRED_HEADERS } = require('./lib/reviewed-opportunity-publisher');
 
+const DEFAULT_MAX_DATASET_AGE_HOURS = 31 * 24;
+
+function alertNotification(report) {
+  const alerts = Array.isArray(report?.alerts) ? report.alerts : [];
+  const stableAlerts = alerts
+    .map(item => ({
+      code: String(item.code || ''),
+      detail: item.code === 'production_dataset_stale' ? 'over_threshold' : item.detail
+    }))
+    .sort((a, b) => a.code.localeCompare(b.code));
+  return {
+    summary: alerts.map(item => `${item.code}=${item.detail}`).join(', '),
+    fingerprint: JSON.stringify(stableAlerts)
+  };
+}
+
 function evaluateOpportunityHealth(input) {
   const now = Date.parse(input.now || new Date().toISOString());
   const rows = input.snapshot.rows || [];
@@ -18,7 +34,7 @@ function evaluateOpportunityHealth(input) {
   const recentGrowth = (input.receipts || []).filter(receipt => Date.parse(receipt.generated_at || 0) >= now - 7 * 86400000 && Number(receipt.after_count) > Number(receipt.before_count));
   const headers = String(input.headers || '').toLowerCase();
 
-  if (!Number.isFinite(ageHours) || ageHours > Number(input.maxDatasetAgeHours || 72)) add('production_dataset_stale', Math.round(ageHours));
+  if (!Number.isFinite(ageHours) || ageHours > Number(input.maxDatasetAgeHours ?? DEFAULT_MAX_DATASET_AGE_HOURS)) add('production_dataset_stale', Math.round(ageHours));
   if (!recentGrowth.length) add('zero_valid_growth_7_days', 0);
   if (foreign.length) add('foreign_contamination', foreign.length);
   if (expired.length) add('expired_production_records', expired.length);
@@ -75,11 +91,14 @@ async function main() {
     serperRemaining: process.env.SERPER_CREDITS_REMAINING === undefined ? NaN : Number(process.env.SERPER_CREDITS_REMAINING),
     serperReserve: Number(process.env.PITCHLIST_SERPER_CREDIT_RESERVE || 100),
     minNorthEast: Number(process.env.PITCHLIST_MIN_NORTH_EAST_RECORDS || 12),
-    minSouthYorkshire: Number(process.env.PITCHLIST_MIN_SOUTH_YORKSHIRE_RECORDS || 4)
+    minSouthYorkshire: Number(process.env.PITCHLIST_MIN_SOUTH_YORKSHIRE_RECORDS || 4),
+    maxDatasetAgeHours: process.env.PITCHLIST_MAX_DATASET_AGE_HOURS === undefined
+      ? DEFAULT_MAX_DATASET_AGE_HOURS
+      : Number(process.env.PITCHLIST_MAX_DATASET_AGE_HOURS)
   });
   console.log(JSON.stringify(result, null, 2));
   if (!result.healthy) process.exitCode = 2;
 }
 
 if (require.main === module) main().catch(error => { console.error(String(error.message || error).replace(/[^a-z0-9_.,:/ -]+/gi, '')); process.exit(1); });
-module.exports = { evaluateOpportunityHealth, readReceipts };
+module.exports = { DEFAULT_MAX_DATASET_AGE_HOURS, alertNotification, evaluateOpportunityHealth, readReceipts };
