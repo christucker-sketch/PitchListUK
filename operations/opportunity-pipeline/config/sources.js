@@ -1,5 +1,7 @@
 'use strict';
 
+const REVIEWED_SOURCE_ROUTES = require('./approved-source-routes.json');
+
 const APPROVED_SOURCES = Object.freeze([
   ['englandsmedievalfestival.com', 'England\'s Medieval Festival', 'event-organiser', 'manual-reviewed'],
   ['bristol.gov.uk', 'Bristol City Council', 'local-authority', 'public-service'],
@@ -58,7 +60,7 @@ const APPROVED_SOURCES = Object.freeze([
   ['santapod.co.uk', 'Santa Pod Raceway', 'private-venue', 'manual-reviewed', 'Northamptonshire', 'venue_trader_application', 'https://santapod.co.uk/commercial/traders/', true, 30, 'Santa Pod Raceway trader applications', '', '', '/commercial/traders'],
   ['thejockeyclub.co.uk', 'The Jockey Club', 'private-venue', 'manual-reviewed', 'Gloucestershire', 'venue_trader_application', 'https://www.thejockeyclub.co.uk/cheltenham/plan-your-day/shopping/apply/', true, 30, 'Cheltenham Racecourse tradestand applications', '', '', '/cheltenham/plan-your-day/shopping/apply'],
   ['mineheadbayfestival.co.uk', 'Minehead Bay Festival', 'event-organiser', 'manual-reviewed', 'Somerset', 'festival_trader_application', 'https://mineheadbayfestival.co.uk/traders/', false, 14, 'Minehead Bay Festival trader applications', '', '', '/traders'],
-].map(([host, organisation, type, termsPolicy, geographicCoverage = '', opportunityType = '', applicationRoute = '', recurring = false, pollingDays = 30, opportunityTitle = '', knownOpenEventStart = '', knownOpenEventEnd = '', sourcePathPrefix = '']) => Object.freeze({
+].map(([host, organisation, type, termsPolicy, geographicCoverage = '', opportunityType = '', applicationRoute = '', recurring = false, pollingDays = 30, opportunityTitle = '', knownOpenEventStart = '', knownOpenEventEnd = '', sourcePathPrefix = '']) => ({
   host,
   organisation,
   type,
@@ -81,7 +83,14 @@ const APPROVED_SOURCES = Object.freeze([
   known_open_event_start: knownOpenEventStart,
   known_open_event_end: knownOpenEventEnd,
   source_path_prefix: sourcePathPrefix,
-})));
+})).concat(REVIEWED_SOURCE_ROUTES.map(route => ({
+  ...route,
+  country: 'GB', approved: true, robots_policy: 'fetch-and-obey',
+  min_interval_ms: route.type === 'local-authority' ? 1250 : 2000,
+  max_concurrency: 1, allowed_as_application_host: true,
+  last_successful_discovery: null, observed_yield: { customer_ready: 0, rejected: 0 }, rejection_reasons: [],
+  known_open_event_start: route.known_open_event_start || '', known_open_event_end: route.known_open_event_end || ''
+}))).map(rule => Object.freeze(rule)));
 
 const APPLICATION_HOSTS = Object.freeze([
   'form.jotform.com',

@@ -58,3 +58,9 @@ test('automatic manifest holds incomplete legacy identities without blocking val
   assert.equal(manifest.changes.additions.length, 0);
   assert.deepEqual(manifest.changes.updates.map(item => item.row.id), ['opp_valid']);
 });
+
+test('automatic manifest enforces configurable batch, percentage and per-source controls', () => {
+  const one = staged({ source_url: 'https://quaysidemarket.co.uk/traders', application_url: 'https://quaysidemarket.co.uk/traders' });
+  assert.throws(() => buildAutomaticAdditionManifest({ snapshot: { exported_at: 'x', rows: [{}] }, rows: [one], directReport: report, reviewedCommit: 'a'.repeat(40), today: '2026-08-21', maxGrowthPercent: 10 }), /growth_percent/);
+  assert.throws(() => buildAutomaticAdditionManifest({ snapshot: { exported_at: 'x', rows: [] }, rows: [one], directReport: report, reviewedCommit: 'a'.repeat(40), today: '2026-08-21', maxAdditions: 0 }), /addition_limit/);
+});
