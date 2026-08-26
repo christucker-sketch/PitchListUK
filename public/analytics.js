@@ -1,5 +1,6 @@
 (function () {
   const ATTR_KEY = 'pitchlist_attribution';
+  const FIRST_TOUCH_KEY = 'pitchlist_first_touch_v1';
   const ANALYTICS_SESSION_KEY = 'pitchlist_analytics_session_v2';
   const ANALYTICS_SESSION_PATTERN = /^as_[a-f0-9]{32}$/;
   const ATTRIBUTION_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
@@ -116,6 +117,21 @@
     }
   }
 
+  function firstTouch() {
+    const current = {
+      first_landing_path: safeLink(window.location.pathname || '/') || '/',
+      first_referrer: safeReferrer(document.referrer)
+    };
+    try {
+      const stored = safeProperties(JSON.parse(window.sessionStorage.getItem(FIRST_TOUCH_KEY) || '{}'), 0) || {};
+      if (stored.first_landing_path) return stored;
+      window.sessionStorage.setItem(FIRST_TOUCH_KEY, JSON.stringify(current));
+    } catch {
+      // First-touch attribution is optional when session storage is unavailable.
+    }
+    return current;
+  }
+
   function attribution() {
     const params = new URLSearchParams(window.location.search);
     const current = {};
@@ -178,6 +194,7 @@
 
   function post(payload) {
     const sessionId = analyticsSessionId();
+    const properties = safeProperties(payload.properties || {}, 0) || {};
     const body = JSON.stringify({
       path: window.location.pathname || '/',
       page: safeValue(document.title, 120),
@@ -185,7 +202,7 @@
       ...attribution(),
       ...(sessionId ? { analytics_session_id: sessionId } : {}),
       event: safeValue(payload.event, 80) || 'event',
-      properties: safeProperties(payload.properties || {}, 0) || {}
+      properties: { ...properties, ...firstTouch() }
     });
     if (navigator.sendBeacon) {
       navigator.sendBeacon('/api/analytics/event', new Blob([body], { type: 'application/json' }));

@@ -361,6 +361,8 @@ test('browser emits one stable cryptographic ID and no URL credentials', async (
   assert.equal(body.gclid, true);
   assert.equal(body.fbclid, false);
   assert.equal(body.referrer, 'https://referrer.test/source');
+  assert.equal(body.properties.first_landing_path, '/find-pitches');
+  assert.equal(body.properties.first_referrer, 'https://referrer.test/source');
   assert.equal(Object.hasOwn(body.properties, 'query'), false);
   assertNoCredentials(body);
   const storedAttribution = client.localStorage.values.get('pitchlist_attribution');
@@ -384,8 +386,32 @@ test('browser emits one stable cryptographic ID and no URL credentials', async (
   const custom = await beaconBody(client.beacons[1]);
   assert.equal(custom.analytics_session_id, body.analytics_session_id);
   assert.equal(custom.event, 'event');
-  assert.deepEqual(custom.properties, { url: '/internal', href: 'external.test', gclid: true, safe: 'kept' });
+  assert.deepEqual(custom.properties, {
+    url: '/internal', href: 'external.test', gclid: true, safe: 'kept',
+    first_landing_path: '/find-pitches', first_referrer: 'https://referrer.test/source'
+  });
   assertNoCredentials(custom);
+});
+
+test('browser retains privacy-safe first touch across internal navigation', async () => {
+  const sessionStorage = memoryStorage();
+  const first = await runAnalyticsClient({
+    sessionStorage,
+    location: { href: 'https://pitchlist.uk/', pathname: '/', search: '', origin: 'https://pitchlist.uk' },
+    referrer: 'https://www.google.com/search?q=private-search'
+  });
+  const next = await runAnalyticsClient({
+    sessionStorage,
+    location: { href: 'https://pitchlist.uk/database', pathname: '/database', search: '', origin: 'https://pitchlist.uk' },
+    referrer: 'https://pitchlist.uk/'
+  });
+  const firstBody = await beaconBody(first.beacons[0]);
+  const nextBody = await beaconBody(next.beacons[0]);
+  assert.equal(firstBody.properties.first_landing_path, '/');
+  assert.equal(nextBody.properties.first_landing_path, '/');
+  assert.equal(firstBody.properties.first_referrer, 'https://www.google.com/search');
+  assert.equal(nextBody.properties.first_referrer, 'https://www.google.com/search');
+  assertNoCredentials(nextBody);
 });
 
 test('browser click attribution absence is false and raw identifiers never enter payload or storage', async () => {

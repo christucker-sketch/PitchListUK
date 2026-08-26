@@ -27,3 +27,34 @@ test('automatic manifest refreshes exact approved identities and rejects non-rea
   assert.equal(held.changes.additions.length, 0);
   assert.throws(() => buildAutomaticAdditionManifest({ snapshot: { rows: [] }, rows: [staged()], directReport: { ...report, serper_credits_used: 1 }, reviewedCommit: 'a'.repeat(40), today: '2026-08-21' }), /attestation/);
 });
+
+test('automatic manifest holds incomplete legacy identities without blocking valid refreshes', () => {
+  const incomplete = {
+    id: 'opp_incomplete', event_name: 'Quayside Market Sheffield trader applications', organiser: '',
+    source_url: 'https://quaysidemarket.co.uk/traders', application_url: 'https://quaysidemarket.co.uk/traders',
+    country: 'United Kingdom', jurisdiction: 'GB', quality_status: 'review', publishable: false
+  };
+  const valid = {
+    ...incomplete, id: 'opp_valid', event_name: 'Taste Cumbria trader applications', organiser: 'Taste Cumbria',
+    source_url: 'https://tastecumbria.co.uk/trader-application-form/', application_url: 'https://tastecumbria.co.uk/trader-application-form/',
+    quality_status: 'customer_ready', publishable: true
+  };
+  const directReport = {
+    ...report,
+    fetched_urls: ['https://www.quaysidemarket.co.uk/traders', 'https://tastecumbria.co.uk/trader-application-form/']
+  };
+  const rows = [
+    staged(),
+    staged({
+      stable_id: 'opp_valid', event_name: 'Taste Cumbria trader applications', organiser: 'Taste Cumbria',
+      source_url: 'https://tastecumbria.co.uk/trader-application-form/', application_url: 'https://tastecumbria.co.uk/trader-application-form/',
+      location: 'Cumbria', region: 'Cumbria'
+    })
+  ];
+  const manifest = buildAutomaticAdditionManifest({
+    snapshot: { exported_at: 'x', rows: [incomplete, valid] }, rows, directReport,
+    reviewedCommit: 'a'.repeat(40), today: '2026-08-21'
+  });
+  assert.equal(manifest.changes.additions.length, 0);
+  assert.deepEqual(manifest.changes.updates.map(item => item.row.id), ['opp_valid']);
+});

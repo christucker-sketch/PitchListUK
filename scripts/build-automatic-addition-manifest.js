@@ -43,6 +43,10 @@ function buildAutomaticAdditionManifest({ snapshot, rows, directReport, reviewed
     if (!fetched.has(canonicalUrl(staged.source_url)) || !staged.source_evidence || !staged.organiser || !staged.location) continue;
     const existing = existingBySource.get(canonicalUrl(staged.source_url));
     if (existing) {
+      // A directly fetched source can prove that an opportunity still exists,
+      // but it must not promote an incomplete legacy row to customer-ready.
+      // Hold that one refresh for review without blocking unrelated valid rows.
+      if (!existing.event_name || !existing.organiser || !canonicalUrl(existing.source_url) || !canonicalUrl(existing.application_url || existing.source_url)) continue;
       updates.push({
         reason: 'automatic_approved_source_identity_refresh_all_quality_gates_passed',
         match_source_url: existing.source_url,
