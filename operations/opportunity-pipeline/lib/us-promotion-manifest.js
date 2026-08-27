@@ -103,7 +103,11 @@ function verifyTexasPromotionManifest(manifest, stagingManifest, options = {}) {
   }
   if (manifest?.expected_additions !== APPROVED_TEXAS_SOURCE_IDS.length) throw new Error('Texas promotion count mismatch');
   if (manifest?.staging_manifest_sha256 !== rebuilt.staging_manifest_sha256) throw new Error('Texas staging manifest hash mismatch');
+  if (!Array.isArray(manifest?.rows)) throw new Error('Texas promotion manifest rows missing');
+  const actualRowsHash = sha256(stableJson(manifest.rows));
+  if (manifest?.rows_sha256 !== actualRowsHash) throw new Error('Texas promotion rows hash mismatch');
   if (manifest?.rows_sha256 !== rebuilt.rows_sha256) throw new Error('Texas promotion rows hash mismatch');
+  if (stableJson(manifest.rows) !== stableJson(rebuilt.rows)) throw new Error('Texas promotion rows differ from reviewed staging input');
   if (JSON.stringify(manifest.approved_source_ids) !== JSON.stringify(APPROVED_TEXAS_SOURCE_IDS)) throw new Error('Texas approved-source set mismatch');
   return true;
 }
