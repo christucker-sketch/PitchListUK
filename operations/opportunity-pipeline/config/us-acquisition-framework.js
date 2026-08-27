@@ -1,11 +1,11 @@
-const { US_DISCOVERY_QUERIES } = require('./us-acquisition-profile');
+const { TEXAS_DISCOVERY_QUERIES } = require('./us-acquisition-profile');
 
 const US_ACQUISITION_FRAMEWORK = Object.freeze({
   countryCode: 'US',
   regionCode: 'TX',
   runtimeNamespace: 'us',
   sourceRegistryNamespace: 'us',
-  discoveryQueries: Object.freeze([...US_DISCOVERY_QUERIES]),
+  discoveryQueries: Object.freeze([...TEXAS_DISCOVERY_QUERIES]),
   maxDiscoveryResults: 25,
   maxFetchesPerRun: 20,
   serperCreditBudget: 20,
