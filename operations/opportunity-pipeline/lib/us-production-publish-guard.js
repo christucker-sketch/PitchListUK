@@ -2,6 +2,8 @@
 
 const EXPECTED_ADDITIONS = 5;
 const APPLY_TOKEN = 'PUBLISH-EXACTLY-5-TEXAS';
+const SNAPSHOT_PATH = 'functions/_data/opportunities.mjs';
+const BACKUP_PATH = `${SNAPSHOT_PATH}.pli016-backup`;
 
 function assertTexasPublishGitState(state = {}) {
   if (state.branch !== 'main') throw new Error('Texas publisher requires main branch');
@@ -35,10 +37,26 @@ function assertTexasPublishAuthorization(options = {}) {
   return { authorized: true, mode: 'apply' };
 }
 
+function changedPathsFromPorcelain(output) {
+  return String(output || '')
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .map(line => {
+      const canonical = line.match(/^[ MARCUD?!]{2}\s+(.*)$/);
+      const trimmedFirstLine = line.match(/^[MARCUD?!]\s+(.*)$/);
+      const path = (canonical?.[1] || trimmedFirstLine?.[1] || line).trim();
+      return path.includes(' -> ') ? path.split(' -> ').at(-1) : path;
+    })
+    .filter(path => path !== BACKUP_PATH);
+}
+
 module.exports = {
   EXPECTED_ADDITIONS,
   APPLY_TOKEN,
+  SNAPSHOT_PATH,
+  BACKUP_PATH,
   assertTexasPublishGitState,
   assertTexasPublishPlan,
-  assertTexasPublishAuthorization
+  assertTexasPublishAuthorization,
+  changedPathsFromPorcelain
 };
