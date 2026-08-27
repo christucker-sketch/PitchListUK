@@ -1,4 +1,4 @@
-import { opportunitySnapshot } from '../../_data/opportunities.mjs';
+import { usOpportunitySnapshot } from '../../_data/us-opportunities.mjs';
 import { accessTokenCookie, checkoutSessionAccess, getCookie, json as stripeJson, resolveCanonicalEntitlement, resolveCanonicalTokenBinding, sessionCookie } from '../../_lib/stripe.mjs';
 import usSearch from '../../../operations/opportunity-pipeline/lib/us-customer-search.js';
 
@@ -84,7 +84,7 @@ export async function onRequestGet(context) {
   const url = new URL(request.url);
   const access = await resolveUsAccess(request, env, url);
   const result = searchUsCustomerRows(
-    opportunitySnapshot.rows,
+    usOpportunitySnapshot.rows,
     parseUsSearchOptions(url, access.mode === 'subscriber')
   );
 
