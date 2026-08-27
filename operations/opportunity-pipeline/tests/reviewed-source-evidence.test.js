@@ -5,7 +5,8 @@ const test = require('node:test');
 const {
   HASH_DOMAIN,
   reviewedSourceEvidence,
-  assertHashDomainMatch
+  assertHashDomainMatch,
+  assertRequiredWording
 } = require('../lib/reviewed-source-evidence');
 
 const anchor = /Christmas Market Stallholder Application Form Event:/i;
@@ -48,4 +49,14 @@ test('a genuine material evidence change still fails closed', () => {
   const reviewed = reviewedSourceEvidence(page('White-tailed Eagle fact.', 'one'), { anchor });
   const changed = reviewedSourceEvidence(page('White-tailed Eagle fact.', 'one').replace('26 November', '25 November'), { anchor });
   assert.throws(() => assertHashDomainMatch(reviewed.material, changed.material), /material_evidence_changed/);
+});
+
+test('semantic wording is checked across the stable page, not only the bounded hash window', () => {
+  const html = page('White-tailed Eagle fact.', 'one').replace('I wish to apply.', 'Application route.').replace(
+    '<aside>',
+    `<p>${'bounded evidence filler '.repeat(260)}</p><p>I wish to apply for a stall.</p><aside>`
+  );
+  const evidence = reviewedSourceEvidence(html, { anchor });
+  assert.equal(evidence.material.text.includes('I wish to apply'), false);
+  assert.equal(assertRequiredWording(evidence, [/I wish to apply/i]), true);
 });
