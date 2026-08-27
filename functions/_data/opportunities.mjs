@@ -1,7 +1,7 @@
 export const opportunitySnapshot = {
-  "exported_at": "2026-08-27T09:19:02.963Z",
-  "source": "reviewed-manifest:automatic-approved-additions-1787822338307.json",
-  "total": 288,
+  "exported_at": "2026-08-27T09:23:13.154Z",
+  "source": "reviewed-manifest:automatic-approved-additions-1787822588766.json",
+  "total": 289,
   "rows": [
     {
       "id": "OPP-00495",
@@ -10073,6 +10073,42 @@ export const opportunitySnapshot = {
       "notes": "Automatically staged from a directly fetched, approved first-party source on 2026-08-27.",
       "application_url": "https://portsmouth.gov.uk/services/business/business-locations/market-stalls-and-concessional-pitches",
       "source_url": "https://portsmouth.gov.uk/services/business/business-locations/market-stalls-and-concessional-pitches"
+    },
+    {
+      "id": "opp_504c71b70814e68a2454",
+      "event_name": "Leicester Christmas Market 2026 stallholder applications",
+      "organiser": "Leicester Christmas Market",
+      "location": "Leicestershire / East Midlands",
+      "county": "Leicestershire / East Midlands",
+      "region": "Leicestershire / East Midlands",
+      "event_start": "2026-11-12",
+      "event_end": "",
+      "application_deadline": "",
+      "stall_fee": "",
+      "vendor_categories": "street food; mobile catering; food traders",
+      "last_checked": "2026-08-27",
+      "freshness_status": "fresh",
+      "freshness_age_days": 0,
+      "confidence": "medium",
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "area_confidence": "exact",
+      "route_type": "christmas_market",
+      "organiser_type": "market_operator",
+      "country": "United Kingdom",
+      "jurisdiction": "GB",
+      "currency": "GBP",
+      "market_domain": "pitchlist.uk",
+      "tax_region": "UK",
+      "buyer_fit_tags": "street food;mobile catering;food traders",
+      "notes": "Automatically staged from a directly fetched, approved first-party source on 2026-08-27.",
+      "application_url": "https://stallholders.leicesterchristmasmarket.co.uk",
+      "source_url": "https://stallholders.leicesterchristmasmarket.co.uk",
+      "latitude": 52.6369,
+      "longitude": -1.1398,
+      "coordinate_source": "place-centroid",
+      "coordinate_precision": "place",
+      "coordinate_label": "Leicester"
     }
   ]
 };
