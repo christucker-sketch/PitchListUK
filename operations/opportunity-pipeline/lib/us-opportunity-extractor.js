@@ -91,8 +91,10 @@ function extractTexasOpportunity(page, options = {}) {
   const locality = normaliseText(page.locality || page.city || resolved?.locality || firstMatch(text, [/\b([A-Z][A-Za-z .'-]+),\s*TX\s+\d{5}(?:-\d{4})?\b/]));
 
   const eventStart = page.event_start || extractUsDate(text, ['event date', 'date', 'starts', 'start date']);
+  const eventEnd = page.event_end || '';
   const applicationDeadline = page.application_deadline || extractUsDate(text, ['application deadline', 'apply by', 'deadline', 'applications close', 'vendor deadline']);
   const recurring = Boolean(page.recurring) || RECURRING_TERMS.some(term => text.toLowerCase().includes(term));
+  const multiEvent = Boolean(page.multi_event);
   const categories = extractCategories(text);
 
   const reasons = [];
@@ -101,14 +103,15 @@ function extractTexasOpportunity(page, options = {}) {
   if (!eventName) reasons.push('missing_event_name');
   if (!organiser) reasons.push('missing_organiser');
   if (!locality && !resolved) reasons.push('missing_texas_locality');
-  if (!recurring && !eventStart) reasons.push('missing_event_date');
+  if (!recurring && !multiEvent && !eventStart) reasons.push('missing_event_date');
 
   const status = reasons.length ? 'review' : 'candidate';
   const geography = resolved || null;
   const hasPageCoordinates = Number.isFinite(Number(page.latitude)) && Number.isFinite(Number(page.longitude));
+  const temporalIdentity = eventStart || (multiEvent ? 'multi-event' : (recurring ? 'recurring' : ''));
 
   const row = {
-    stable_id: stableId(['US', organiser, eventName, locality || geography?.locality || '', eventStart || (recurring ? 'recurring' : '')]),
+    stable_id: stableId(['US', organiser, eventName, locality || geography?.locality || '', temporalIdentity]),
     event_name: eventName,
     organiser,
     source_url: sourceUrl,
@@ -129,9 +132,11 @@ function extractTexasOpportunity(page, options = {}) {
     coordinate_precision: geography?.coordinate_precision || (hasPageCoordinates ? 'exact' : ''),
     coordinate_label: geography?.coordinate_label || '',
     event_start: eventStart,
+    event_end: eventEnd,
     application_deadline: applicationDeadline,
     recurring,
-    opportunity_type: recurring ? 'recurring' : 'event',
+    multi_event: multiEvent,
+    opportunity_type: multiEvent ? 'multi-event' : (recurring ? 'recurring' : 'event'),
     vendor_categories: categories,
     quality_status: status === 'candidate' ? 'review' : 'needs_work',
     publishable: false
