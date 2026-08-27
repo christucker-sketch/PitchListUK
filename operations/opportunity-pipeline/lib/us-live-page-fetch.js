@@ -10,13 +10,21 @@ function decodeHtmlEntities(value) {
     .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)));
 }
 
-function htmlToText(html) {
-  return decodeHtmlEntities(String(html || '')
+function stripNonContentChrome(html) {
+  return String(html || '')
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ')
     .replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, ' ')
+    .replace(/<nav\b[^>]*>[\s\S]*?<\/nav>/gi, ' ')
+    .replace(/<header\b[^>]*>[\s\S]*?<\/header>/gi, ' ')
+    .replace(/<footer\b[^>]*>[\s\S]*?<\/footer>/gi, ' ')
+    .replace(/<aside\b[^>]*>[\s\S]*?<\/aside>/gi, ' ');
+}
+
+function htmlToText(html) {
+  return decodeHtmlEntities(stripNonContentChrome(html)
     .replace(/<br\s*\/?\s*>/gi, '\n')
-    .replace(/<\/(p|div|li|h[1-6]|tr|section|article|header|footer)>/gi, '\n')
+    .replace(/<\/(p|div|li|h[1-6]|tr|section|article)>/gi, '\n')
     .replace(/<[^>]+>/g, ' '))
     .replace(/[ \t]+/g, ' ')
     .replace(/\n\s+/g, '\n')
@@ -26,14 +34,14 @@ function htmlToText(html) {
 
 function extractTitle(html) {
   const match = String(html || '').match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
-  return match ? htmlToText(match[1]) : '';
+  return match ? decodeHtmlEntities(match[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim() : '';
 }
 
 function extractLinks(html, baseUrl) {
   const links = [];
   const anchor = /<a\b[^>]*href\s*=\s*(["'])(.*?)\1[^>]*>([\s\S]*?)<\/a>/gi;
   let match;
-  while ((match = anchor.exec(String(html || '')))) {
+  while ((match = anchor.exec(stripNonContentChrome(html)))) {
     try {
       const url = new URL(decodeHtmlEntities(match[2]), baseUrl).toString();
       links.push({ text: htmlToText(match[3]), url });
@@ -72,8 +80,10 @@ async function fetchApprovedPage({ source, url }, options = {}) {
     application_url: source.application_url,
     organiser: source.organiser,
     locality: source.locality,
-    recurring: source.recurring
+    recurring: source.recurring,
+    event_start: source.event_start || '',
+    application_deadline: source.application_deadline || ''
   };
 }
 
-module.exports = { decodeHtmlEntities, htmlToText, extractTitle, extractLinks, fetchApprovedPage };
+module.exports = { decodeHtmlEntities, stripNonContentChrome, htmlToText, extractTitle, extractLinks, fetchApprovedPage };
