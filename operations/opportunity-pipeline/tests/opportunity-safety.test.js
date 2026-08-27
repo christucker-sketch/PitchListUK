@@ -141,6 +141,18 @@ test('council pages with explicit open trader applications may become customer-r
   assert.equal(row.quality_status, 'customer_ready');
 });
 
+test('council evidence that pitch locations are available is actionable', () => {
+  const row = evaluateOpportunity(ready({
+    source_url: 'https://eastherts.gov.uk/licences-and-registration/market-traders',
+    application_url: 'https://eastherts.gov.uk/licences-and-registration/market-traders',
+    event_name: 'East Herts market trader applications', organiser: 'East Herts District Council',
+    location: 'Hertfordshire', region: 'East of England',
+    source_evidence: 'New traders are invited to contact the market team. Both commercial markets regularly have a variety of pitch locations available.',
+    contact_email: 'markets.service@eastherts.gov.uk'
+  }), { now: new Date('2026-08-27T00:00:00Z') });
+  assert.equal(row.quality_status, 'customer_ready');
+});
+
 test('official recurring-market application wording is direct opportunity evidence', () => {
   for (const fixture of [
     ['https://www.newcastle.gov.uk/business/newcastle-markets/trade-market-newcastle/apply-stall-farmers-market', 'Apply for a stall at the farmers market'],
