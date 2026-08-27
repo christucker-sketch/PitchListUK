@@ -56,12 +56,13 @@ function validateManifest(manifest, reviewedCommit) {
     if (!item.reason || !canonicalUrl(item.source_url) || (item.match_id !== undefined && !String(item.match_id).trim())) throw new Error('manifest_removal_invalid');
   }
   if (manifest.approval?.mode === 'approved_source_automatic_addition') {
-    if (![1, 2].includes(manifest.approval?.policy_version) || manifest.approval?.reviewed_by !== 'PitchList approved-source automation') throw new Error('automatic_manifest_policy_invalid');
-    if (changes.removals.length || manifest.automation?.removals_allowed !== false || manifest.automation?.updates_allowed !== 'identity_refresh_only') throw new Error('automatic_manifest_changes_invalid');
+    if (![1, 2, 3].includes(manifest.approval?.policy_version) || manifest.approval?.reviewed_by !== 'PitchList approved-source automation') throw new Error('automatic_manifest_policy_invalid');
+    const additionOnly = manifest.approval.policy_version >= 3;
+    if (changes.removals.length || manifest.automation?.removals_allowed !== false || (additionOnly ? manifest.automation?.updates_allowed !== false || changes.updates.length : manifest.automation?.updates_allowed !== 'identity_refresh_only')) throw new Error('automatic_manifest_changes_invalid');
     const limit = Number(manifest.automation?.max_additions || 0);
     if (!Number.isInteger(limit) || limit < 1 || changes.additions.length > limit) throw new Error('automatic_manifest_addition_limit_invalid');
     const updateLimit = Number(manifest.automation?.max_updates || 0);
-    if (!Number.isInteger(updateLimit) || updateLimit < 1 || changes.updates.length > updateLimit) throw new Error('automatic_manifest_update_limit_invalid');
+    if (!Number.isInteger(updateLimit) || (additionOnly ? updateLimit !== 0 : updateLimit < 1) || changes.updates.length > updateLimit) throw new Error('automatic_manifest_update_limit_invalid');
     if (manifest.approval.policy_version >= 2) {
       const growthPercent = Number(manifest.automation?.max_growth_percent);
       const perSource = Number(manifest.automation?.max_per_source);

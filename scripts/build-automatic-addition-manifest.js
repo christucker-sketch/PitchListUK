@@ -28,14 +28,14 @@ function productionRow(row, today) {
   };
 }
 
-function buildAutomaticAdditionManifest({ snapshot, rows, directReport, reviewedCommit, today, maxAdditions = 50, maxUpdates = 100, maxGrowthPercent = 25, maxPerSource = 1, maxDuplicateRate = 60 }) {
+function buildAutomaticAdditionManifest({ snapshot, rows, directReport, reviewedCommit, today, maxAdditions = 50, maxGrowthPercent = 25, maxPerSource = 1, maxDuplicateRate = 60 }) {
   if (!reviewedCommit) throw new Error('automatic_manifest_reviewed_commit_required');
   if (directReport?.mode !== 'direct-approved-source-fetch' || directReport.serper_credits_used !== 0) throw new Error('automatic_manifest_direct_fetch_attestation_required');
   const fetched = new Set((directReport.fetched_urls || []).map(canonicalUrl));
   const existingBySource = new Map((snapshot.rows || []).map(row => [canonicalUrl(row.source_url), row]));
   const existingKeys = new Set((snapshot.rows || []).flatMap(row => [...duplicateKeys(row)]));
   const additions = [];
-  const updates = [];
+  const held = [];
   let eligibleNewRows = 0;
   let duplicateRows = 0;
   const additionsBySource = new Map();
@@ -46,16 +46,7 @@ function buildAutomaticAdditionManifest({ snapshot, rows, directReport, reviewed
     if (!fetched.has(canonicalUrl(staged.source_url)) || !staged.source_evidence || !staged.organiser || !staged.location) continue;
     const existing = existingBySource.get(canonicalUrl(staged.source_url));
     if (existing) {
-      // A directly fetched source can prove that an opportunity still exists,
-      // but it must not promote an incomplete legacy row to customer-ready.
-      // Hold that one refresh for review without blocking unrelated valid rows.
-      if (!existing.event_name || !existing.organiser || !canonicalUrl(existing.source_url) || !canonicalUrl(existing.application_url || existing.source_url)) continue;
-      updates.push({
-        reason: 'automatic_approved_source_identity_refresh_all_quality_gates_passed',
-        match_source_url: existing.source_url,
-        row: { ...existing, last_checked: today, freshness_status: 'fresh', freshness_age_days: 0, quality_status: 'customer_ready', publishable: true, notes: `Directly revalidated from the approved first-party source on ${today}.` },
-        automation_evidence: { source_domain: rule.host, directly_fetched: true, fetched_at: directReport.generated_at, source_evidence_present: true, identity_preserved: true }
-      });
+      held.push({ source_url: staged.source_url, reason: 'existing_route_update_forbidden_by_addition_only_policy' });
       continue;
     }
     const row = productionRow(staged, today);
@@ -74,13 +65,12 @@ function buildAutomaticAdditionManifest({ snapshot, rows, directReport, reviewed
   if (growthPercent > maxGrowthPercent) throw new Error(`automatic_manifest_growth_percent_exceeded:${growthPercent.toFixed(2)}`);
   const duplicateRate = eligibleNewRows ? duplicateRows / eligibleNewRows * 100 : 0;
   if (duplicateRate > maxDuplicateRate) throw new Error(`automatic_manifest_duplicate_rate_exceeded:${duplicateRate.toFixed(2)}`);
-  if (updates.length > maxUpdates) throw new Error(`automatic_manifest_update_limit_exceeded:${updates.length}`);
   return {
     manifest_version: 1, review_id: `automatic-approved-additions-${today}`,
     created_at: new Date().toISOString(), baseline: { production_count: snapshot.rows.length, production_snapshot_exported_at: snapshot.exported_at },
-    approval: { reviewed: true, approved_for_publish: true, reviewed_by: 'PitchList approved-source automation', reviewed_commit: reviewedCommit, mode: 'approved_source_automatic_addition', policy_version: 2 },
-    automation: { source_registry_required: true, direct_fetch_required: true, removals_allowed: false, updates_allowed: 'identity_refresh_only', max_additions: maxAdditions, max_updates: maxUpdates, max_growth_percent: maxGrowthPercent, max_per_source: maxPerSource, max_duplicate_rate: maxDuplicateRate, observed_duplicate_rate: Math.round(duplicateRate * 10) / 10 },
-    changes: { additions, updates, removals: [] }
+    approval: { reviewed: true, approved_for_publish: true, reviewed_by: 'PitchList approved-source automation', reviewed_commit: reviewedCommit, mode: 'approved_source_automatic_addition', policy_version: 3 },
+    automation: { source_registry_required: true, direct_fetch_required: true, removals_allowed: false, updates_allowed: false, max_additions: maxAdditions, max_updates: 0, max_growth_percent: maxGrowthPercent, max_per_source: maxPerSource, max_duplicate_rate: maxDuplicateRate, observed_duplicate_rate: Math.round(duplicateRate * 10) / 10, held_existing_routes: held },
+    changes: { additions, updates: [], removals: [] }
   };
 }
 
@@ -98,7 +88,7 @@ function main() {
   const snapshot = parseSnapshot(fs.readFileSync(path.join(__dirname, '..', 'functions/_data/opportunities.mjs'), 'utf8'));
   const rows = parseCsv(fs.readFileSync(csvFile, 'utf8'));
   const directReport = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
-  const manifest = buildAutomaticAdditionManifest({ snapshot, rows, directReport, reviewedCommit, today: new Date().toISOString().slice(0, 10), maxAdditions: Number(process.env.PITCHLIST_AUTOMATIC_ADDITION_LIMIT || 50), maxUpdates: Number(process.env.PITCHLIST_AUTOMATIC_UPDATE_LIMIT || 100), maxGrowthPercent: Number(process.env.PITCHLIST_AUTOMATIC_MAX_GROWTH_PERCENT || 25), maxPerSource: Number(process.env.PITCHLIST_AUTOMATIC_MAX_PER_SOURCE || 1), maxDuplicateRate: Number(process.env.PITCHLIST_AUTOMATIC_MAX_DUPLICATE_RATE || 60) });
+  const manifest = buildAutomaticAdditionManifest({ snapshot, rows, directReport, reviewedCommit, today: new Date().toISOString().slice(0, 10), maxAdditions: Number(process.env.PITCHLIST_AUTOMATIC_ADDITION_LIMIT || 50), maxGrowthPercent: Number(process.env.PITCHLIST_AUTOMATIC_MAX_GROWTH_PERCENT || 25), maxPerSource: Number(process.env.PITCHLIST_AUTOMATIC_MAX_PER_SOURCE || 1), maxDuplicateRate: Number(process.env.PITCHLIST_AUTOMATIC_MAX_DUPLICATE_RATE || 60) });
   fs.mkdirSync(path.dirname(outputFile), { recursive: true });
   atomicWrite(outputFile, `${JSON.stringify(manifest, null, 2)}\n`);
   console.log(JSON.stringify({ outputFile, beforeCount: snapshot.rows.length, additions: manifest.changes.additions.map(item => ({ event_name: item.row.event_name, source_url: item.row.source_url })), updates: manifest.changes.updates.map(item => ({ event_name: item.row.event_name, source_url: item.row.source_url })), afterCount: snapshot.rows.length + manifest.changes.additions.length }, null, 2));

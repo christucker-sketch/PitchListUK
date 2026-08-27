@@ -9,7 +9,8 @@ const { discoveryQueries } = require('../acquisition/source-discovery');
 const { canonicalUrl } = require('../lib/opportunity-safety');
 const { preflightFromEnv } = require('../lib/credit-budget');
 const { fetchCandidateBatch } = require('../lib/source-candidate-fetch');
-const { classifySourceCandidate, upsertCandidateRegistry } = require('../lib/source-onboarding');
+const { classifySourceCandidate, upsertCandidateRegistry, PLATFORM_HOST } = require('../lib/source-onboarding');
+const { planAcceleratedDiscovery, BLOCKED_FAILURE } = require('../lib/source-growth-planner');
 const { runtimeRoot, atomicWriteJson } = require('../lib/staging-store');
 
 function inferOpportunityType(text) {
@@ -52,10 +53,32 @@ async function discover(options = {}) {
     const found = await (options.search || serperSearch)(plan.query, { num: options.searchNum || 6 });
     results.push(...found.map(item => ({ ...item, region: plan.region })));
   }
-  const unique = [...new Map(results.map(item => [canonicalUrl(item.url), item])).values()].filter(item => item.url).slice(0, options.maxCandidates || 50);
+  const excludedHosts = new Set(options.excludedHosts || []);
+  const skipped = [];
+  const unique = [...new Map(results.map(item => [canonicalUrl(item.url), item])).values()].filter(item => {
+    if (!item.url) return false;
+    let host = '';
+    try { host = new URL(item.url).hostname.replace(/^www\./, ''); } catch { skipped.push({ url: item.url, reason: 'invalid_url' }); return false; }
+    if (PLATFORM_HOST.test(host)) { skipped.push({ url: item.url, reason: 'platform_route_rejected' }); return false; }
+    if (excludedHosts.has(host)) { skipped.push({ url: item.url, reason: 'known_blocked_host' }); return false; }
+    return true;
+  }).slice(0, options.maxCandidates || 50);
   const outcomes = await (options.fetchBatch || fetchCandidateBatch)(unique, { concurrency: options.concurrency || 2 });
   const candidates = outcomes.map(outcome => classifySourceCandidate(candidateInput(outcome, now), { now }));
-  return { plans, candidates, outcomes, preflight };
+  return { plans, candidates, outcomes, preflight, skipped };
+}
+
+function readJson(file, fallback) {
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }
+}
+
+function discoveryReports(directory) {
+  if (!fs.existsSync(directory)) return [];
+  return fs.readdirSync(directory).filter(name => /^discovery-.*\.json$/.test(name)).map(name => readJson(path.join(directory, name), {}));
+}
+
+function blockedHosts(records) {
+  return [...new Set((records || []).filter(item => item.classification === 'fetch-failed' && BLOCKED_FAILURE.test(item.rejection_reason || item.fetch_status)).map(item => item.canonical_host).filter(Boolean))];
 }
 
 async function main() {
@@ -68,25 +91,46 @@ async function main() {
   const root = runtimeRoot();
   const registryPath = path.join(root, 'data', 'source-candidates', 'registry.json');
   const existing = fs.existsSync(registryPath) ? JSON.parse(fs.readFileSync(registryPath, 'utf8')).records || [] : [];
+  const accelerated = String(process.env.PITCHLIST_ACCELERATED_GROWTH || '').toLowerCase() === 'true';
+  const statePath = path.join(root, 'data', 'source-candidates', 'accelerated-growth-state.json');
+  const state = readJson(statePath, { version: 1, completed_batches: [] });
+  const reports = discoveryReports(path.dirname(registryPath));
+  const planned = accelerated ? planAcceleratedDiscovery({ records: existing, reports, completed: state.completed_batches, limit: Number(process.env.PITCHLIST_SOURCE_DISCOVERY_QUERY_LIMIT || 8) }) : null;
   const result = await discover({
+    plans: planned?.plans,
     queryLimit: Number(process.env.PITCHLIST_SOURCE_DISCOVERY_QUERY_LIMIT || 12),
     queryOffset: Number(process.env.PITCHLIST_SOURCE_DISCOVERY_QUERY_OFFSET || 0),
     searchNum: Number(process.env.PITCHLIST_SOURCE_DISCOVERY_SEARCH_NUM || 6),
     maxCandidates: Number(process.env.PITCHLIST_SOURCE_DISCOVERY_MAX_CANDIDATES || 50),
-    concurrency: Number(process.env.PITCHLIST_SOURCE_DISCOVERY_CONCURRENCY || 2)
+    concurrency: Number(process.env.PITCHLIST_SOURCE_DISCOVERY_CONCURRENCY || 2),
+    excludedHosts: blockedHosts(existing)
   });
-  const merged = upsertCandidateRegistry(existing, result.candidates);
   const generatedAt = new Date().toISOString();
+  const reviewedExisting = existing.map(item => item.classification === 'auto-approvable-first-party' && item.approval_status === 'pending' ? {
+    ...item, approval_status: 'approved', reviewer_decision: 'approved_unambiguous_public_service_first_party',
+    reviewer: 'PitchList accelerated deterministic source automation', decision_timestamp: generatedAt
+  } : item);
+  const candidates = result.candidates.map(item => item.classification === 'auto-approvable-first-party' && item.approval_status === 'pending' ? {
+    ...item, approval_status: 'approved', reviewer_decision: 'approved_unambiguous_public_service_first_party',
+    reviewer: 'PitchList accelerated deterministic source automation', decision_timestamp: generatedAt
+  } : item);
+  const merged = upsertCandidateRegistry(reviewedExisting, candidates, { now: generatedAt });
   atomicWriteJson(registryPath, { version: 1, generated_at: generatedAt, records: merged.records });
   const reportPath = path.join(root, 'data', 'source-candidates', `discovery-${generatedAt.replace(/[:.]/g, '-')}.json`);
   atomicWriteJson(reportPath, {
     generated_at: generatedAt, queries: result.plans, credits_used: result.plans.length,
-    candidates_discovered: result.candidates.length, registry_added: merged.added, registry_updated: merged.updated, registry_skipped: merged.skipped,
-    classifications: result.candidates.reduce((counts, item) => ({ ...counts, [item.classification]: (counts[item.classification] || 0) + 1 }), {}),
-    candidates: result.candidates, production_write_enabled: false
+    candidates_discovered: candidates.length, registry_added: merged.added, registry_updated: merged.updated, registry_skipped: merged.skipped,
+    results_skipped: result.skipped, auto_approved: candidates.filter(item => item.approval_status === 'approved').length,
+    review_queue_count: candidates.filter(item => item.classification === 'manual-review-required' && item.approval_status === 'pending').length,
+    classifications: candidates.reduce((counts, item) => ({ ...counts, [item.classification]: (counts[item.classification] || 0) + 1 }), {}),
+    candidates, production_write_enabled: false
   });
-  console.log(JSON.stringify({ registryPath, reportPath, candidates: result.candidates.length, added: merged.added, updated: merged.updated, skipped: merged.skipped, productionWriteEnabled: false }, null, 2));
+  if (accelerated) atomicWriteJson(statePath, { version: 1, updated_at: generatedAt, completed_batches: [...new Set([...(state.completed_batches || []), ...result.plans.map(item => item.batch_id).filter(Boolean)])], suppressed_templates: planned.suppressed_templates });
+  const reviewQueuePath = path.join(root, 'data', 'source-candidates', 'review-queue.json');
+  const reviewQueue = merged.records.filter(item => item.classification === 'manual-review-required' && item.approval_status === 'pending');
+  atomicWriteJson(reviewQueuePath, { version: 1, generated_at: generatedAt, records: reviewQueue });
+  console.log(JSON.stringify({ registryPath, reportPath, statePath: accelerated ? statePath : null, sources_checked: result.outcomes.length, candidates_discovered: candidates.length, auto_approved: candidates.filter(item => item.approval_status === 'approved').length, held_exceptions: reviewQueue.length, credits_used: result.plans.length, added: merged.added, updated: merged.updated, skipped: merged.skipped, productionWriteEnabled: false }, null, 2));
 }
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exit(1); });
-module.exports = { inferOpportunityType, inferOrganisation, candidateInput, discover };
+module.exports = { inferOpportunityType, inferOrganisation, candidateInput, discover, blockedHosts, discoveryReports };

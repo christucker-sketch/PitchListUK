@@ -24,6 +24,7 @@ const AVAILABLE_PITCH = /\b(?:available|vacant|wanted|applications? open|apply t
 const UK_EVIDENCE = /\b(?:United Kingdom|England|Scotland|Wales|Northern Ireland|Great Britain|UK)\b|\b(?:GIR\s?0AA|(?:[A-PR-UWYZ][A-HK-Y]?\d[A-Z\d]?\s?\d[ABD-HJLNP-UW-Z]{2}))\b/i;
 const FOREIGN_EVIDENCE = /\b(?:United States|USA|Canada|Australia|New Zealand|Republic of Ireland|Dublin|\$\d|USD|CAD|AUD)\b/i;
 const PUBLIC_SERVICE_HOST = /(?:^|\.)gov\.uk$/i;
+const PLATFORM_HOST = /(?:^|\.)(?:facebook\.com|instagram\.com|youtube\.com|youtu\.be|eventbrite\.(?:com|co\.uk)|linkedin\.com|tiktok\.com|x\.com|twitter\.com)$/i;
 
 function normalisePathPrefix(value) {
   try {
@@ -70,6 +71,7 @@ function classifySourceCandidate(raw, options = {}) {
   const finish = (classification, reason = '') => ({ ...base, classification, rejection_reason: reason, evidence_hash: evidenceHash({ ...raw, canonical_route: route }) });
 
   if (!route || !/^https:/.test(route)) return finish(STATUS.POLICY, 'https_route_required');
+  if (PLATFORM_HOST.test(host)) return finish(STATUS.AGGREGATOR, 'platform_route_rejected');
   if (raw.fetch_status && raw.fetch_status !== 'fetched') return finish(STATUS.FETCH_FAILED, raw.fetch_status);
   if (raw.robots_result && raw.robots_result !== 'allowed') return finish(STATUS.POLICY, `robots_${raw.robots_result}`);
   if (approvedRule.approved) return { ...finish(STATUS.DUPLICATE, 'approved_route_already_registered'), duplicate_source_result: approvedRule.official_application_route || approvedRule.host };
@@ -102,7 +104,7 @@ function upsertCandidateRegistry(existing, incoming, options = {}) {
       ...previous, ...candidate,
       approval_status: protectedDecision ? previous.approval_status : candidate.approval_status,
       reviewer_decision: protectedDecision ? previous.reviewer_decision : candidate.reviewer_decision,
-      reviewer: protectedDecision ? previous.reviewer : '', decision_timestamp: protectedDecision ? previous.decision_timestamp : '',
+      reviewer: protectedDecision ? previous.reviewer : (candidate.reviewer || ''), decision_timestamp: protectedDecision ? previous.decision_timestamp : (candidate.decision_timestamp || ''),
       last_evaluated_at: now.toISOString(), next_recheck_at: nextRecheckAt(candidate, now)
     });
     if (previous) updated++; else added++;
@@ -161,6 +163,6 @@ function validateSourcePromotionManifest(manifest, options = {}) {
 }
 
 module.exports = {
-  STATUS, candidateKey, evidenceHash, classifySourceCandidate, nextRecheckAt, upsertCandidateRegistry,
+  STATUS, PLATFORM_HOST, candidateKey, evidenceHash, classifySourceCandidate, nextRecheckAt, upsertCandidateRegistry,
   manifestHash, buildSourcePromotionManifest, validateSourcePromotionManifest, normalisePathPrefix
 };

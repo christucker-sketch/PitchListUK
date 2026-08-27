@@ -43,10 +43,12 @@ function main() {
   const manifestPath = path.join(runtime, 'data', 'review', `automatic-approved-additions-${Date.now()}.json`);
   const manifest = jsonOutput(process.execPath, ['scripts/build-automatic-addition-manifest.js', '--customer-ready-csv', review.customer_ready_staging_csv, '--direct-report', direct.reportPath, '--reviewed-commit', head, '--output', manifestPath], 'manifest_build');
   const dryRun = jsonOutput(process.execPath, ['scripts/publish-reviewed-opportunities.js', manifestPath, '--dry-run'], 'publisher_dry_run');
+  if (dryRun.updates.length || dryRun.removals.length) throw new Error('automatic_growth_addition_only_gate_failed');
   const enabled = String(process.env.PITCHLIST_AUTOMATIC_ADDITIONS_ENABLED || '').toLowerCase() === 'true';
   let publication = null;
-  if ((dryRun.additions.length || dryRun.updates.length) && enabled) publication = jsonOutput(process.execPath, ['scripts/publish-reviewed-opportunities.js', manifestPath, '--apply'], 'publisher_apply');
-  const report = { generated_at: new Date().toISOString(), head, approved_sources_checked: direct.approvedSourcesChecked, pages_fetched: direct.pagesFetched, customer_ready_rows: review.customer_ready_rows, proposed_additions: manifest.additions, dry_run: dryRun, automatic_additions_enabled: enabled, published: Boolean(publication), publication, serper_credits_used: 0 };
+  if (dryRun.additions.length && enabled) publication = jsonOutput(process.execPath, ['scripts/publish-reviewed-opportunities.js', manifestPath, '--apply'], 'publisher_apply');
+  const heldExistingRoutes = JSON.parse(fs.readFileSync(manifestPath, 'utf8')).automation?.held_existing_routes || [];
+  const report = { generated_at: new Date().toISOString(), head, approved_sources_checked: direct.approvedSourcesChecked, pages_fetched: direct.pagesFetched, customer_ready_rows: review.customer_ready_rows, proposed_additions: manifest.additions, held_exceptions: heldExistingRoutes.length, dry_run: dryRun, automatic_additions_enabled: enabled, published: Boolean(publication), publication, serper_credits_used: 0 };
   const reportPath = path.join(runtime, 'data', 'growth', `approved-source-growth-${Date.now()}.json`);
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   atomicWrite(reportPath, `${JSON.stringify(report, null, 2)}\n`);
