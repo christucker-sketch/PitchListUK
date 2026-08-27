@@ -25,7 +25,7 @@ const UK_EVIDENCE = /\b(?:United Kingdom|England|Scotland|Wales|Northern Ireland
 const FOREIGN_EVIDENCE = /\b(?:United States|USA|Canada|Australia|New Zealand|Republic of Ireland|Dublin|\$\d|USD|CAD|AUD)\b/i;
 const PUBLIC_SERVICE_HOST = /(?:^|\.)gov\.uk$/i;
 const PLATFORM_HOST = /(?:^|\.)(?:facebook\.com|instagram\.com|youtube\.com|youtu\.be|eventbrite\.(?:com|co\.uk)|linkedin\.com|tiktok\.com|x\.com|twitter\.com)$/i;
-const NON_SOURCE_HOST = /(?:^|\.)(?:pitchlist\.uk|festfinder\.co\.uk)$/i;
+const NON_SOURCE_HOST = /(?:^|\.)(?:pitchlist\.uk|festfinder\.co\.uk|pitchmarketsandeventsuk\.com)$/i;
 
 function normalisePathPrefix(value) {
   try {
