@@ -128,22 +128,6 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
-    "host": "pitchmarketsandeventsuk.com",
-    "organisation": "Markets and Events UK",
-    "type": "event-organiser",
-    "terms_policy": "manual-reviewed",
-    "geographic_coverage": "Kent / Hertfordshire / London / South East England",
-    "opportunity_type": "recurring_market",
-    "official_application_route": "https://pitchmarketsandeventsuk.com/become-a-trader",
-    "recurring": true,
-    "recommended_polling_days": 14,
-    "opportunity_title": "Markets and Events UK trader applications",
-    "source_path_prefix": "/become-a-trader",
-    "approval_evidence_hash": "6d9f055a488c21f6dc798c9fab365849bb704b0aaa147b518f470c4adbe35c4c",
-    "approval_decision": "approved_ai_review_exact_first_party_trader_application_route",
-    "approval_manifest_hash": "289f3bbe61096aa6b0dfed95a3cc5a6e25243d144a1bb3b8ed4b7ad6426f52ba"
-  },
-  {
     "host": "portsmouth.gov.uk",
     "organisation": "Portsmouth City Council",
     "type": "local-authority",
