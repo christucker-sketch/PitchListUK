@@ -84,7 +84,10 @@ export async function runApprovedTexasStaging(options = {}) {
         application_url: fetched?.application_url || source.application_url,
         organiser: fetched?.organiser || source.organiser,
         locality: fetched?.locality || source.locality,
-        recurring: fetched?.recurring ?? source.recurring
+        recurring: fetched?.recurring ?? source.recurring,
+        multi_event: fetched?.multi_event ?? source.multi_event ?? false,
+        event_start: fetched?.event_start || source.event_start || '',
+        event_end: fetched?.event_end || source.event_end || ''
       };
     }
   });
