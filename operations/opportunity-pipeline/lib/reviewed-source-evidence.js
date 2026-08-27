@@ -57,11 +57,19 @@ function assertHashDomainMatch(reviewed, current) {
   return true;
 }
 
+function assertRequiredWording(evidence, patterns) {
+  const text = evidence?.stable_normalised_page?.text;
+  if (!text || !Array.isArray(patterns) || !patterns.length) throw new Error('material_evidence_wording_guard_invalid');
+  if (!patterns.every(pattern => pattern instanceof RegExp && pattern.test(text))) throw new Error('material_evidence_required_wording_changed');
+  return true;
+}
+
 module.exports = {
   HASH_DOMAIN,
   sha256,
   stripNonMaterialDynamicContent,
   materialEvidence,
   reviewedSourceEvidence,
-  assertHashDomainMatch
+  assertHashDomainMatch,
+  assertRequiredWording
 };

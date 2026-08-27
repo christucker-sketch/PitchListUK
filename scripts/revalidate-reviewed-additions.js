@@ -8,7 +8,7 @@ const { APPROVED_SOURCES } = require('../operations/opportunity-pipeline/config/
 const { fetchApprovedSources } = require('../operations/opportunity-pipeline/scripts/fetch-approved-sources');
 const { evaluateOpportunity, stableOpportunityId, canonicalUrl, duplicateKeys } = require('../operations/opportunity-pipeline/lib/opportunity-safety');
 const {
-  HASH_DOMAIN, sha256, reviewedSourceEvidence, assertHashDomainMatch
+  HASH_DOMAIN, sha256, reviewedSourceEvidence, assertHashDomainMatch, assertRequiredWording
 } = require('../operations/opportunity-pipeline/lib/reviewed-source-evidence');
 const {
   parseSnapshot, validateManifest, planChanges, atomicWrite
@@ -127,7 +127,8 @@ async function main() {
 
     const evidence = reviewedSourceEvidence(outcome.html, { anchor: guard.anchor });
     assertHashDomainMatch({ sha256: previousSource.evidence.sha256, hash_domain: HASH_DOMAIN.NORMALISED_MATERIAL }, evidence.material);
-    if (!guard.required.every(pattern => pattern.test(evidence.material.text))) throw new Error(`material_evidence_changed:required_wording:${url}`);
+    try { assertRequiredWording(evidence, guard.required); }
+    catch { throw new Error(`material_evidence_changed:required_wording:${url}`); }
     if (closedSignal(evidence.stable_normalised_page.text || evidence.material.text)) throw new Error(`closed_route:${url}`);
 
     const evaluated = evaluateOpportunity(extracted, { now: new Date(`${today}T00:00:00Z`) });
