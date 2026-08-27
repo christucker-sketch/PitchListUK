@@ -38,6 +38,12 @@ test('aggregators, licence-only pages, foreign pages and pages without live rout
   assert.equal(classifySourceCandidate(candidate({ page_text: 'Visit our historic market every Saturday.' })).classification, STATUS.NO_ROUTE);
 });
 
+test('known platforms are rejected deterministically before evidence heuristics', () => {
+  const result = classifySourceCandidate(candidate({ url: 'https://www.youtube.com/watch?v=abc', page_text: 'Apply to become a market trader in England.' }));
+  assert.equal(result.classification, STATUS.AGGREGATOR);
+  assert.equal(result.rejection_reason, 'platform_route_rejected');
+});
+
 test('approved routes are suppressed as duplicate candidates', () => {
   const result = classifySourceCandidate(candidate({ url: 'https://quaysidemarket.co.uk/traders' }));
   assert.equal(result.classification, STATUS.DUPLICATE);

@@ -61,6 +61,18 @@ test('automatic manifests allow only additions and identity-preserving refreshes
   assert.throws(() => planChanges({ rows: [existing] }, { ...refresh, changes: { ...refresh.changes, updates: [{ ...refresh.changes.updates[0], row: { ...refresh.changes.updates[0].row, event_name: 'Changed identity' } }] } }), /changed_identity/);
 });
 
+test('automatic policy v3 is strictly addition-only', () => {
+  const source = 'https://www.quaysidemarket.co.uk/traders';
+  const addition = { reason: 'automatic', automation_evidence: { directly_fetched: true, source_evidence_present: true, fetched_at: '2026-08-21T15:00:00Z' }, row: row({ source_url: source, application_url: source, country: 'United Kingdom', jurisdiction: 'GB' }) };
+  const automatic = manifest({
+    approval: { reviewed: true, approved_for_publish: true, reviewed_by: 'PitchList approved-source automation', reviewed_commit: sha, mode: 'approved_source_automatic_addition', policy_version: 3 },
+    automation: { removals_allowed: false, updates_allowed: false, max_additions: 1, max_updates: 0, max_growth_percent: 25, max_per_source: 1, max_duplicate_rate: 60 },
+    changes: { additions: [addition], updates: [], removals: [] }
+  });
+  assert.equal(validateManifest(automatic, sha), true);
+  assert.throws(() => validateManifest({ ...automatic, changes: { additions: [], updates: [{ ...addition, match_source_url: source }], removals: [] } }, sha), /changes_invalid/);
+});
+
 test('dry-run plan shows exact additions updates removals and counts', () => {
   const existing = [row(), row({ id: 'opp_2', event_name: 'Remove Me', source_url: 'https://remove.example/source' })];
   const changes = {
