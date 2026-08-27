@@ -28,11 +28,16 @@ function extractDateFields(text, now = new Date()) {
   const year = now.getUTCFullYear();
   const deadlineMatch = source.match(/(?:application|apply|submission|booking)s?\s*(?:deadline|close|closes|by)?\s*[:\-]?\s*((?:\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+|[A-Za-z]+\s+\d{1,2})(?:,?\s+20\d{2})?|20\d{2}-\d{1,2}-\d{1,2})/i)
     || source.match(/(?:deadline|applications? close|apply by)\s*[:\-]?\s*((?:\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+|[A-Za-z]+\s+\d{1,2})(?:,?\s+20\d{2})?|20\d{2}-\d{1,2}-\d{1,2})/i);
-  const range = source.match(/((?:\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+|[A-Za-z]+\s+\d{1,2})(?:,?\s+20\d{2})?|20\d{2}-\d{1,2}-\d{1,2})\s*(?:to|–|—|-)\s*((?:\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+|[A-Za-z]+\s+\d{1,2})(?:,?\s+20\d{2})?|20\d{2}-\d{1,2}-\d{1,2})/i);
-  const dateMatches = [...source.matchAll(/\b(?:20\d{2}-\d{1,2}-\d{1,2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)(?:\s+20\d{2})?|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,?\s+20\d{2})?)\b/ig)].map(match => parseDate(match[0], year)).filter(Boolean);
+  const compactRange = source.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:to|until|through|–|—|-)\s*(\d{1,2})(?:st|nd|rd|th)?\s+(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(20\d{2})\b/i);
+  const range = source.match(/((?:\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+|[A-Za-z]+\s+\d{1,2})(?:,?\s+20\d{2})?|20\d{2}-\d{1,2}-\d{1,2})\s*(?:to|until|through|–|—|-)\s*((?:\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+|[A-Za-z]+\s+\d{1,2})(?:,?\s+20\d{2})?|20\d{2}-\d{1,2}-\d{1,2})/i);
+  const datePattern = /\b(?:20\d{2}-\d{1,2}-\d{1,2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)(?:\s+20\d{2})?|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,?\s+20\d{2})?)\b/ig;
+  const datesFrom = value => [...String(value || '').matchAll(datePattern)].map(match => parseDate(match[0], year)).filter(Boolean);
+  const dateMatches = datesFrom(source);
+  const labelledDateText = source.match(/\bDates?\s*:\s*(.{0,180}?)(?=\b(?:Times?|Venue|Location|What you need)\b|$)/i)?.[1] || '';
+  const labelledDates = datesFrom(labelledDateText);
   return {
-    event_start: range ? parseDate(range[1], year) : (dateMatches.find(date => date !== parseDate(deadlineMatch?.[1], year)) || ''),
-    event_end: range ? parseDate(range[2], year) : '',
+    event_start: compactRange ? iso(compactRange[4], MONTHS[compactRange[3].toLowerCase()], compactRange[1]) : range ? parseDate(range[1], year) : (labelledDates[0] || dateMatches.find(date => date !== parseDate(deadlineMatch?.[1], year)) || ''),
+    event_end: compactRange ? iso(compactRange[4], MONTHS[compactRange[3].toLowerCase()], compactRange[2]) : range ? parseDate(range[2], year) : (labelledDates.length > 1 ? labelledDates.at(-1) : ''),
     application_deadline: deadlineMatch ? parseDate(deadlineMatch[1], year) : '',
     closed_signal: /\b(applications? (?:are |is )?(?:now )?closed|applications? closed|no longer accepting applications?|deadline has passed|fully booked)\b/i.test(source),
   };

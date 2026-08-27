@@ -90,3 +90,48 @@ test('source-specific recurring identities ignore page-furniture dates and pagin
 test('festival source selects the next future event date rather than a passed date', () => {
   assert.equal(nextFutureDate('25 April 2026, 4 July 2026, 26 September 2026 and 5 December 2026', '2026-08-21'), '2026-09-26');
 });
+
+test('Real Food Festival keeps authoritative recurring-market metadata despite its title', () => {
+  const row = sourceCandidateToRow({
+    url: 'https://realfoodfestival.co.uk/join-us', title: 'Festival applications', snippet: 'Apply to trade',
+    query_lane: 'approved-source-controlled-seven', query: 'South East food festival trader application'
+  }, '<p>Become a trader at our weekly market in London.</p>', '2026-08-26');
+  assert.equal(row.organiser, 'Real Food Festival');
+  assert.equal(row.opportunity_type, 'recurring_market');
+  assert.equal(row.recurring, true);
+  assert.equal(row.region, 'London');
+  assert.equal(row.event_start, '');
+  assert.equal(row.event_end, '');
+});
+
+test('Action West London keeps verified London geography instead of the query region', () => {
+  const row = sourceCandidateToRow({
+    url: 'https://ecoactionwestlondon.org/how-to-become-a-trader', title: 'Acton Market', snippet: 'Become a trader',
+    query_lane: 'approved-source-controlled-seven', query: 'South East council markets apply stall trader'
+  }, '<p>Apply to become a trader at Acton Market W3.</p>', '2026-08-26');
+  assert.equal(row.organiser, 'Action West London');
+  assert.equal(row.location, 'London');
+  assert.equal(row.region, 'London');
+  assert.equal(row.opportunity_type, 'recurring_market');
+});
+
+test('Hawk Conservancy preserves the compact first-party 2026 event range', () => {
+  const row = sourceCandidateToRow({
+    url: 'https://hawk-conservancy.org/christmas-market-stallholder-application-form', title: 'Christmas Market', snippet: 'Stallholder applications are open',
+    query_lane: 'approved-source-controlled-seven', query: 'London Christmas market stallholders'
+  }, '<p>Stallholder applications are open. Dates: 26 November, 27 November, 28 November 29 November Times: 3.30pm. Thursday 26 November 2026. Sunday 29 November 2026.</p>', '2026-08-26');
+  assert.equal(row.event_start, '2026-11-26');
+  assert.equal(row.event_end, '2026-11-29');
+  assert.equal(row.opportunity_type, 'christmas_market');
+  assert.equal(row.recurring, false);
+});
+
+test('Love Wimbledon preserves the full first-party cross-month 2026 range', () => {
+  const row = sourceCandidateToRow({
+    url: 'https://lovewimbledon.org/the-bid/trade-at-our-markets/christmas-market', title: 'Christmas Market', snippet: 'Book a stall',
+    query_lane: 'approved-source-controlled-seven', query: 'South East Christmas market stallholders'
+  }, '<p>Book a stall for the Christmas Market from 27 November to 20 December 2026.</p>', '2026-08-26');
+  assert.equal(row.event_start, '2026-11-27');
+  assert.equal(row.event_end, '2026-12-20');
+  assert.equal(row.region, 'London');
+});
