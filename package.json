@@ -18,6 +18,7 @@
     "sources:promote": "node operations/opportunity-pipeline/scripts/apply-source-promotion-manifest.js",
     "deploy:production": "node scripts/deploy-public-site.js",
     "publish:opportunities": "node scripts/publish-reviewed-opportunities.js",
+    "revalidate:reviewed-additions": "node scripts/revalidate-reviewed-additions.js",
     "data:export": "node scripts/export-opportunities.js"
   },
   "devDependencies": {}
