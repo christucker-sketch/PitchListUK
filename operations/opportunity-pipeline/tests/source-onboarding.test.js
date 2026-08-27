@@ -44,6 +44,14 @@ test('known platforms are rejected deterministically before evidence heuristics'
   assert.equal(result.rejection_reason, 'platform_route_rejected');
 });
 
+test('owned and known aggregator hosts cannot enter first-party review', () => {
+  for (const url of ['https://pitchlist.uk/areas/south-west', 'https://festfinder.co.uk/traders']) {
+    const result = classifySourceCandidate(candidate({ url, page_text: 'Apply to become a food festival trader in England.' }));
+    assert.equal(result.classification, STATUS.AGGREGATOR);
+    assert.equal(result.rejection_reason, 'known_non_first_party_route_rejected');
+  }
+});
+
 test('approved routes are suppressed as duplicate candidates', () => {
   const result = classifySourceCandidate(candidate({ url: 'https://quaysidemarket.co.uk/traders' }));
   assert.equal(result.classification, STATUS.DUPLICATE);
