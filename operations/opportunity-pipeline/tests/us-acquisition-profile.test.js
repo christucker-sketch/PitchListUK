@@ -69,6 +69,25 @@ test('US classifier rejects procurement even when the page says vendor', () => {
   assert.ok(result.negativeSignals.includes('supplier portal'));
 });
 
+test('mixed event pages may contain sponsor calls without becoming sponsorship-only', () => {
+  const result = classifyUsOpportunityEvidence({
+    title: 'Fall Festival',
+    body: 'Become a Vendor. Download the food vendor application. Become a Sponsor for other festival opportunities.'
+  });
+  assert.equal(result.decision, 'candidate');
+  assert.ok(result.positiveSignals.includes('vendor application'));
+  assert.ok(result.negativeSignals.includes('become a sponsor'));
+});
+
+test('sponsorship-only pages remain rejected', () => {
+  const result = classifyUsOpportunityEvidence({
+    title: 'Festival Sponsorship Opportunities',
+    body: 'Become a sponsor and support our annual event.'
+  });
+  assert.equal(result.decision, 'rejected');
+  assert.ok(result.negativeSignals.includes('become a sponsor'));
+});
+
 test('US classifier leaves weak generic pages for review rather than promoting them', () => {
   const result = classifyUsOpportunityEvidence({
     title: 'Community Events',

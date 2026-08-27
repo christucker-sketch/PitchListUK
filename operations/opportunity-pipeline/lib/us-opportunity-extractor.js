@@ -20,7 +20,7 @@ function extractUsDate(text, labels = []) {
   const prefix = escapedLabels.length ? `(?:${escapedLabels.join('|')})\\s*[:\\-]?\\s*` : '';
   const patterns = [
     new RegExp(`${prefix}(January|February|March|April|May|June|July|August|September|October|November|December)\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,)?\\s+(20\\d{2})`, 'i'),
-    new RegExp(`${prefix}(\\d{1,2})[\\/-](\\d{1,2})[\\/-](20\\d{2})`, 'i')
+    new RegExp(`${prefix}(\\d{1,2})[\\/-](\\d{1,2})[\\/-](20\\d{2}|\\d{2})(?!\\d)`, 'i')
   ];
 
   for (const pattern of patterns) {
@@ -29,8 +29,9 @@ function extractUsDate(text, labels = []) {
     if (/^\d/.test(match[1])) {
       const month = Number(match[1]);
       const day = Number(match[2]);
-      const year = Number(match[3]);
-      if (month < 1 || month > 12 || day < 1 || day > 31) continue;
+      const rawYear = Number(match[3]);
+      const year = rawYear < 100 ? 2000 + rawYear : rawYear;
+      if (month < 1 || month > 12 || day < 1 || day > 31 || year < 2000 || year > 2099) continue;
       return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     }
     const months = ['january','february','march','april','may','june','july','august','september','october','november','december'];
@@ -90,8 +91,10 @@ function extractTexasOpportunity(page, options = {}) {
   const locality = normaliseText(page.locality || page.city || resolved?.locality || firstMatch(text, [/\b([A-Z][A-Za-z .'-]+),\s*TX\s+\d{5}(?:-\d{4})?\b/]));
 
   const eventStart = page.event_start || extractUsDate(text, ['event date', 'date', 'starts', 'start date']);
+  const eventEnd = page.event_end || '';
   const applicationDeadline = page.application_deadline || extractUsDate(text, ['application deadline', 'apply by', 'deadline', 'applications close', 'vendor deadline']);
   const recurring = Boolean(page.recurring) || RECURRING_TERMS.some(term => text.toLowerCase().includes(term));
+  const multiEvent = Boolean(page.multi_event);
   const categories = extractCategories(text);
 
   const reasons = [];
@@ -100,13 +103,15 @@ function extractTexasOpportunity(page, options = {}) {
   if (!eventName) reasons.push('missing_event_name');
   if (!organiser) reasons.push('missing_organiser');
   if (!locality && !resolved) reasons.push('missing_texas_locality');
-  if (!recurring && !eventStart) reasons.push('missing_event_date');
+  if (!recurring && !multiEvent && !eventStart) reasons.push('missing_event_date');
 
   const status = reasons.length ? 'review' : 'candidate';
   const geography = resolved || null;
+  const hasPageCoordinates = Number.isFinite(Number(page.latitude)) && Number.isFinite(Number(page.longitude));
+  const temporalIdentity = eventStart || (multiEvent ? 'multi-event' : (recurring ? 'recurring' : ''));
 
   const row = {
-    stable_id: stableId(['US', organiser, eventName, locality || geography?.locality || '', eventStart || (recurring ? 'recurring' : '')]),
+    stable_id: stableId(['US', organiser, eventName, locality || geography?.locality || '', temporalIdentity]),
     event_name: eventName,
     organiser,
     source_url: sourceUrl,
@@ -121,14 +126,17 @@ function extractTexasOpportunity(page, options = {}) {
     jurisdiction: 'US-TX',
     currency: 'USD',
     postal_code: postalCode || '',
-    latitude: geography?.latitude ?? page.latitude ?? '',
-    longitude: geography?.longitude ?? page.longitude ?? '',
-    coordinate_source: geography?.source || (page.latitude && page.longitude ? 'page' : ''),
-    coordinate_precision: geography?.precision || (page.latitude && page.longitude ? 'exact' : ''),
+    latitude: geography?.latitude ?? (hasPageCoordinates ? Number(page.latitude) : ''),
+    longitude: geography?.longitude ?? (hasPageCoordinates ? Number(page.longitude) : ''),
+    coordinate_source: geography?.coordinate_source || (hasPageCoordinates ? 'page' : ''),
+    coordinate_precision: geography?.coordinate_precision || (hasPageCoordinates ? 'exact' : ''),
+    coordinate_label: geography?.coordinate_label || '',
     event_start: eventStart,
+    event_end: eventEnd,
     application_deadline: applicationDeadline,
     recurring,
-    opportunity_type: recurring ? 'recurring' : 'event',
+    multi_event: multiEvent,
+    opportunity_type: multiEvent ? 'multi-event' : (recurring ? 'recurring' : 'event'),
     vendor_categories: categories,
     quality_status: status === 'candidate' ? 'review' : 'needs_work',
     publishable: false

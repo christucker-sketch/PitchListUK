@@ -4,6 +4,8 @@ const {
   US_VALIDATION_RULES
 } = require('../config/us-acquisition-profile.js');
 
+const CONTEXTUAL_SPONSOR_TERMS = new Set(['sponsorship only', 'become a sponsor']);
+
 function normaliseText(value) {
   return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
 }
@@ -17,8 +19,10 @@ function classifyUsOpportunityEvidence({ title = '', body = '', sourceUrl = '', 
   const combined = [title, body, sourceUrl, applicationUrl].join(' ');
   const positiveSignals = findSignals(combined, US_VENDOR_TERMS);
   const negativeSignals = findSignals(combined, US_NEGATIVE_TERMS);
+  const hardNegativeSignals = negativeSignals.filter(term => !CONTEXTUAL_SPONSOR_TERMS.has(term));
+  const sponsorshipSignals = negativeSignals.filter(term => CONTEXTUAL_SPONSOR_TERMS.has(term));
 
-  if (negativeSignals.length) {
+  if (hardNegativeSignals.length || (sponsorshipSignals.length && !positiveSignals.length)) {
     return {
       decision: 'rejected',
       reason: 'us-negative-signal',
