@@ -9,7 +9,7 @@ const { discoveryQueries } = require('../acquisition/source-discovery');
 const { canonicalUrl } = require('../lib/opportunity-safety');
 const { preflightFromEnv } = require('../lib/credit-budget');
 const { fetchCandidateBatch } = require('../lib/source-candidate-fetch');
-const { classifySourceCandidate, upsertCandidateRegistry, PLATFORM_HOST } = require('../lib/source-onboarding');
+const { classifySourceCandidate, upsertCandidateRegistry, PLATFORM_HOST, NON_SOURCE_HOST } = require('../lib/source-onboarding');
 const { planAcceleratedDiscovery, BLOCKED_FAILURE } = require('../lib/source-growth-planner');
 const { runtimeRoot, atomicWriteJson } = require('../lib/staging-store');
 
@@ -60,6 +60,7 @@ async function discover(options = {}) {
     let host = '';
     try { host = new URL(item.url).hostname.replace(/^www\./, ''); } catch { skipped.push({ url: item.url, reason: 'invalid_url' }); return false; }
     if (PLATFORM_HOST.test(host)) { skipped.push({ url: item.url, reason: 'platform_route_rejected' }); return false; }
+    if (NON_SOURCE_HOST.test(host)) { skipped.push({ url: item.url, reason: 'known_non_first_party_route_rejected' }); return false; }
     if (excludedHosts.has(host)) { skipped.push({ url: item.url, reason: 'known_blocked_host' }); return false; }
     return true;
   }).slice(0, options.maxCandidates || 50);

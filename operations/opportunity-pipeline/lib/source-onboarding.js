@@ -25,6 +25,7 @@ const UK_EVIDENCE = /\b(?:United Kingdom|England|Scotland|Wales|Northern Ireland
 const FOREIGN_EVIDENCE = /\b(?:United States|USA|Canada|Australia|New Zealand|Republic of Ireland|Dublin|\$\d|USD|CAD|AUD)\b/i;
 const PUBLIC_SERVICE_HOST = /(?:^|\.)gov\.uk$/i;
 const PLATFORM_HOST = /(?:^|\.)(?:facebook\.com|instagram\.com|youtube\.com|youtu\.be|eventbrite\.(?:com|co\.uk)|linkedin\.com|tiktok\.com|x\.com|twitter\.com)$/i;
+const NON_SOURCE_HOST = /(?:^|\.)(?:pitchlist\.uk|festfinder\.co\.uk)$/i;
 
 function normalisePathPrefix(value) {
   try {
@@ -72,6 +73,7 @@ function classifySourceCandidate(raw, options = {}) {
 
   if (!route || !/^https:/.test(route)) return finish(STATUS.POLICY, 'https_route_required');
   if (PLATFORM_HOST.test(host)) return finish(STATUS.AGGREGATOR, 'platform_route_rejected');
+  if (NON_SOURCE_HOST.test(host)) return finish(STATUS.AGGREGATOR, 'known_non_first_party_route_rejected');
   if (raw.fetch_status && raw.fetch_status !== 'fetched') return finish(STATUS.FETCH_FAILED, raw.fetch_status);
   if (raw.robots_result && raw.robots_result !== 'allowed') return finish(STATUS.POLICY, `robots_${raw.robots_result}`);
   if (approvedRule.approved) return { ...finish(STATUS.DUPLICATE, 'approved_route_already_registered'), duplicate_source_result: approvedRule.official_application_route || approvedRule.host };
@@ -163,6 +165,6 @@ function validateSourcePromotionManifest(manifest, options = {}) {
 }
 
 module.exports = {
-  STATUS, PLATFORM_HOST, candidateKey, evidenceHash, classifySourceCandidate, nextRecheckAt, upsertCandidateRegistry,
+  STATUS, PLATFORM_HOST, NON_SOURCE_HOST, candidateKey, evidenceHash, classifySourceCandidate, nextRecheckAt, upsertCandidateRegistry,
   manifestHash, buildSourcePromotionManifest, validateSourcePromotionManifest, normalisePathPrefix
 };
