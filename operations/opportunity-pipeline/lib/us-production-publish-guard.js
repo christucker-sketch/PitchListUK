@@ -2,8 +2,8 @@
 
 const EXPECTED_ADDITIONS = 5;
 const APPLY_TOKEN = 'PUBLISH-EXACTLY-5-TEXAS';
-const SNAPSHOT_PATH = 'functions/_data/opportunities.mjs';
-const BACKUP_PATH = `${SNAPSHOT_PATH}.pli016-backup`;
+const SNAPSHOT_PATH = 'functions/_data/us-opportunities.mjs';
+const BACKUP_PATH = `${SNAPSHOT_PATH}.pli017-backup`;
 
 function assertTexasPublishGitState(state = {}) {
   if (state.branch !== 'main') throw new Error('Texas publisher requires main branch');
