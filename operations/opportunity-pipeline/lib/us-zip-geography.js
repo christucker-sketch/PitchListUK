@@ -1,5 +1,5 @@
 const { haversineMiles } = require('./geo-radius');
-const { TEXAS_ZIP_PREFIXES, TEXAS_PILOT_ZIPS } = require('../config/texas-zip-seed');
+const { TEXAS_ZIP_PREFIXES, TEXAS_ZIP_EXCEPTIONS, TEXAS_PILOT_ZIPS } = require('../config/texas-zip-seed');
 
 function normaliseUsZip(value) {
   const raw = String(value || '').trim();
@@ -10,7 +10,7 @@ function normaliseUsZip(value) {
 function isTexasZip(value) {
   const zip = normaliseUsZip(value);
   if (!zip) return false;
-  return TEXAS_ZIP_PREFIXES.has(zip.slice(0, 3));
+  return TEXAS_ZIP_EXCEPTIONS.has(zip) || TEXAS_ZIP_PREFIXES.has(zip.slice(0, 3));
 }
 
 function normaliseIndexRecord(zip, record) {

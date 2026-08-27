@@ -18,12 +18,14 @@ test('US ZIP normalisation accepts 5-digit and ZIP+4 only', () => {
   assert.equal(normaliseUsZip('SW1A 1AA'), '');
 });
 
-test('Texas ZIP detection uses Texas ZIP3 prefixes and fails closed', () => {
+test('Texas ZIP detection uses Texas ZIP3 routing plus exact exceptions and fails closed', () => {
   assert.equal(isTexasZip('78701'), true);
   assert.equal(isTexasZip('77002'), true);
   assert.equal(isTexasZip('79901'), true);
   assert.equal(isTexasZip('73301'), true);
   assert.equal(isTexasZip('88510'), true);
+  assert.equal(isTexasZip('73960'), true);
+  assert.equal(isTexasZip('73949'), false);
   assert.equal(isTexasZip('10001'), false);
   assert.equal(isTexasZip('90210'), false);
   assert.equal(isTexasZip('nope'), false);
@@ -44,6 +46,7 @@ test('Texas resolver returns canonical international geography', () => {
 
 test('resolver does not invent coordinates for unseeded ZIPs', () => {
   assert.equal(resolveTexasZip('78702'), null);
+  assert.equal(resolveTexasZip('73960'), null);
   assert.equal(resolveTexasZip('10001'), null);
 });
 
@@ -61,6 +64,27 @@ test('resolver accepts an injected offline full ZIP index', () => {
   const resolved = resolveTexasZip('78702', { index });
   assert.equal(resolved.locality, 'Austin');
   assert.equal(resolved.coordinate_source, 'test-offline-index');
+});
+
+test('Texas ZIP exception resolves only when the offline index confirms Texas', () => {
+  const texasIndex = {
+    '73960': {
+      locality: 'Texhoma',
+      region_code: 'TX',
+      latitude: 36.4992,
+      longitude: -101.7838
+    }
+  };
+  const wrongStateIndex = {
+    '73960': {
+      locality: 'Texhoma',
+      region_code: 'OK',
+      latitude: 36.4992,
+      longitude: -101.7838
+    }
+  };
+  assert.equal(resolveTexasZip('73960', { index: texasIndex }).locality, 'Texhoma');
+  assert.equal(resolveTexasZip('73960', { index: wrongStateIndex }), null);
 });
 
 test('injected non-Texas index records are rejected even for a Texas-looking key', () => {
