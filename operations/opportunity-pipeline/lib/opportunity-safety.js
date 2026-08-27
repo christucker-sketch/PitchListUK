@@ -13,7 +13,7 @@ const FOREIGN_FIXTURES = /(?:berkshireyogafestival|vendorsmap\.com\/cities\/manc
 const DIRECT_EVIDENCE = /\b(apply|application|register|registration|booking|become a trader|trade with us|vendor form|stallholder form|exhibitor form|caterer form|street trading consent|street trader licence|pitch enquiry)\b/i;
 const ONE_OFF_EVENT = /\b(festival|fair|show|christmas market|winter wonderland|carnival|feast|fireworks|bonfire|race|marathon)\b/i;
 const GENERIC_TITLE = /^(street trading|street trading licence|street trader licence|apply to trade|vendor application|caterers|market)$/i;
-const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)? available|vacant pitch(?:es)?|traders? wanted|seeking (?:food |market )?traders?|new (?:traders|faces) (?:are )?always welcome(?:d)?|apply to trade at|apply for (?:a )?(?:market )?stall|apply to sell at (?:one of )?(?:our |the )?markets?|market stall application|how to apply for (?:a )?stall|book (?:a )?pitch at|trader applications? (?:are )?open|stallholder applications? (?:are )?open|vendor applications? (?:are )?open)\b/i;
+const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)?(?: locations?)? available|vacant pitch(?:es)?|traders? wanted|seeking (?:food |market )?traders?|new (?:traders|faces) (?:are )?always welcome(?:d)?|apply to trade at|apply for (?:a )?(?:market )?stall|apply to sell at (?:one of )?(?:our |the )?markets?|market stall application|how to apply for (?:a )?stall|book (?:a )?pitch at|trader applications? (?:are )?open|stallholder applications? (?:are )?open|vendor applications? (?:are )?open)\b/i;
 
 function canonicalUrl(value) {
   try {
