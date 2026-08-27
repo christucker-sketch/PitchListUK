@@ -12,6 +12,56 @@ const __dirname = path.dirname(__filename);
 const outputPath = process.env.PITCHLIST_US_STAGING_OUTPUT
   || path.resolve(__dirname, '../data/us/texas-approved-manifest.json');
 
+function sourceLabel(item) {
+  return item?.source?.name
+    || item?.candidate?.source?.name
+    || item?.candidate?.source_id
+    || item?.row?.event_name
+    || item?.row?.source_url
+    || item?.candidate?.url
+    || 'unknown source';
+}
+
+function reasonLabel(item) {
+  return item?.reason
+    || item?.classification?.reason
+    || item?.validation?.reason
+    || item?.validation?.reasons?.join(', ')
+    || item?.reasons?.join(', ')
+    || item?.status
+    || 'unspecified';
+}
+
+function printVerdicts(manifest) {
+  if (manifest.rows?.length) {
+    console.log('\nStaged:');
+    for (const row of manifest.rows) {
+      console.log(`  + ${row.event_name || row.source_url}`);
+    }
+  }
+
+  if (manifest.rejected?.length) {
+    console.log('\nRejected:');
+    for (const item of manifest.rejected) {
+      console.log(`  - ${sourceLabel(item)} :: ${reasonLabel(item)}`);
+    }
+  }
+
+  if (manifest.held?.length) {
+    console.log('\nHeld:');
+    for (const item of manifest.held) {
+      console.log(`  ? ${sourceLabel(item)} :: ${reasonLabel(item)}`);
+    }
+  }
+
+  if (manifest.duplicates?.length) {
+    console.log('\nDuplicates:');
+    for (const item of manifest.duplicates) {
+      console.log(`  = ${sourceLabel(item)} :: duplicate`);
+    }
+  }
+}
+
 const now = new Date();
 const manifest = await runApprovedTexasStaging({
   sources: TEXAS_PILOT_SOURCES,
@@ -23,13 +73,14 @@ const manifest = await runApprovedTexasStaging({
 await fs.mkdir(path.dirname(outputPath), { recursive: true });
 await fs.writeFile(outputPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
 
-console.log(`Texas approved-source staging complete`);
+console.log('Texas approved-source staging complete');
 console.log(`Sources: ${manifest.source_count}`);
 console.log(`Discovered: ${manifest.discovered_count}`);
 console.log(`Staged: ${manifest.staged_count}`);
 console.log(`Rejected: ${manifest.rejected_count}`);
 console.log(`Held: ${manifest.held_count}`);
 console.log(`Duplicates: ${manifest.duplicate_count}`);
-console.log(`Manifest: ${outputPath}`);
+printVerdicts(manifest);
+console.log(`\nManifest: ${outputPath}`);
 console.log('Production writes: disabled');
 console.log('Automatic publish: disabled');
