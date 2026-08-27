@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath, createRequire } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { TEXAS_PILOT_SOURCES } from '../config/texas-pilot-sources.js';
 
 const require = createRequire(import.meta.url);
