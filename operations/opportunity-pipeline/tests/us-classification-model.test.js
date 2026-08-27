@@ -11,6 +11,7 @@ const {
 test('US dates parse month-day-year without changing GB date code', () => {
   assert.equal(extractUsDate('Event Date: August 29, 2026', ['event date']), '2026-08-29');
   assert.equal(extractUsDate('Application deadline 09/15/2026', ['application deadline']), '2026-09-15');
+  assert.equal(extractUsDate('Event Date 10/24/26', ['event date']), '2026-10-24');
   assert.equal(extractUsDate('Deadline 15/09/2026', ['deadline']), '');
 });
 
@@ -103,6 +104,9 @@ test('injected ZIP index enriches geography without changing extractor code path
   });
   assert.equal(result.row.latitude, 30.2638);
   assert.equal(result.row.longitude, -97.7145);
+  assert.equal(result.row.coordinate_source, 'offline-zip-index');
+  assert.equal(result.row.coordinate_precision, 'postal');
+  assert.equal(result.row.coordinate_label, '78702 Austin');
 });
 
 test('stable IDs include US identity material and are deterministic', () => {
