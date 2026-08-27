@@ -7,6 +7,8 @@ const { pathToFileURL } = require('node:url');
 const { planTexasProductionSnapshot } = require('../lib/us-promotion-apply');
 const {
   APPLY_TOKEN,
+  SNAPSHOT_PATH,
+  BACKUP_PATH,
   assertTexasPublishGitState,
   assertTexasPublishPlan,
   assertTexasPublishAuthorization,
@@ -14,7 +16,8 @@ const {
 } = require('../lib/us-production-publish-guard');
 
 const root = path.resolve(__dirname, '../../..');
-const snapshotPath = path.join(root, 'functions/_data/opportunities.mjs');
+const snapshotPath = path.join(root, SNAPSHOT_PATH);
+const backupPath = path.join(root, BACKUP_PATH);
 const stagingPath = process.env.PITCHLIST_US_STAGING_INPUT || path.join(root, 'operations/opportunity-pipeline/data/us/texas-approved-manifest.json');
 const promotionPath = process.env.PITCHLIST_US_PROMOTION_INPUT || path.join(root, 'operations/opportunity-pipeline/data/us/texas-promotion-manifest.json');
 
@@ -38,7 +41,7 @@ function gitState() {
 }
 
 function serializeSnapshot(snapshot) {
-  return `export const opportunitySnapshot = ${JSON.stringify(snapshot, null, 2)};\n`;
+  return `export const usOpportunitySnapshot = ${JSON.stringify(snapshot, null, 2)};\n`;
 }
 
 function check(command, args, label, options = {}) {
@@ -59,7 +62,7 @@ async function main() {
   const promotionManifest = JSON.parse(fs.readFileSync(promotionPath, 'utf8'));
   const snapshotModule = await import(`${pathToFileURL(snapshotPath).href}?publish=${Date.now()}`);
   const { TEXAS_PILOT_SOURCES } = await import(`${pathToFileURL(path.join(root, 'operations/opportunity-pipeline/config/texas-pilot-sources.js')).href}?publish=${Date.now()}`);
-  const planned = planTexasProductionSnapshot(snapshotModule.opportunitySnapshot, promotionManifest, stagingManifest, { sources: TEXAS_PILOT_SOURCES });
+  const planned = planTexasProductionSnapshot(snapshotModule.usOpportunitySnapshot, promotionManifest, stagingManifest, { sources: TEXAS_PILOT_SOURCES });
   assertTexasPublishPlan(planned);
 
   const summary = {
@@ -68,6 +71,7 @@ async function main() {
     after: planned.summary.after_count,
     additions: planned.summary.additions,
     ids: planned.summary.added_ids,
+    uk_snapshot_unchanged: true,
     production_write_authorized: auth.authorized,
     deploy_authorized: false
   };
@@ -84,8 +88,7 @@ async function main() {
     source: `reviewed-us-texas-promotion:${promotionManifest.rows_sha256}`,
     total: planned.summary.after_count
   };
-  const backup = `${snapshotPath}.pli016-backup`;
-  fs.copyFileSync(snapshotPath, backup);
+  fs.copyFileSync(snapshotPath, backupPath);
   try {
     fs.writeFileSync(snapshotPath, serializeSnapshot(nextSnapshot), 'utf8');
     check('npm', ['run', 'build'], 'build');
@@ -94,18 +97,17 @@ async function main() {
     check('git', ['diff', '--check'], 'diff check');
 
     const changedPaths = changedPathsFromPorcelain(output('git', ['status', '--porcelain'], 'git changed files'));
-    const allowed = /^(functions\/_data\/opportunities\.mjs|public\/index\.html|public\/sitemap\.xml|public\/areas\/[a-z0-9-]+\.html)$/;
-    const unexpected = changedPaths.filter(file => !allowed.test(file));
+    const unexpected = changedPaths.filter(file => file !== SNAPSHOT_PATH);
     if (unexpected.length) throw new Error(`unexpected production changes: ${unexpected.join(', ')}`);
-    if (!changedPaths.includes('functions/_data/opportunities.mjs')) throw new Error('production snapshot did not change');
+    if (!changedPaths.includes(SNAPSHOT_PATH)) throw new Error('US production snapshot did not change');
 
-    console.log(JSON.stringify({ ...summary, changed_files: changedPaths, backup }, null, 2));
-    console.log('Snapshot write complete; commit/push/deploy remain manual and separate.');
+    console.log(JSON.stringify({ ...summary, changed_files: changedPaths, backup: backupPath }, null, 2));
+    console.log('Isolated US snapshot write complete; UK snapshot unchanged; commit/push/deploy remain manual and separate.');
   } catch (error) {
-    fs.copyFileSync(backup, snapshotPath);
+    fs.copyFileSync(backupPath, snapshotPath);
     throw error;
   } finally {
-    if (fs.existsSync(backup)) fs.unlinkSync(backup);
+    if (fs.existsSync(backupPath)) fs.unlinkSync(backupPath);
   }
 }
 
