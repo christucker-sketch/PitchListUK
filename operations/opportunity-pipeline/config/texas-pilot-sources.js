@@ -26,8 +26,9 @@ export const TEXAS_PILOT_SOURCES = Object.freeze([
     region_code: 'TX',
     locality: 'The Colony',
     recurring: false,
+    multi_event: true,
     status: 'approved-pilot',
-    evidence: 'Live 2026 food-and-drink vendor route with dated events, fees and application deadlines.',
+    evidence: 'Live 2026 food-and-drink vendor route covering multiple dated events, fees and application deadlines.',
   }),
   Object.freeze({
     id: 'tx-greenville-farmers-market-2026',
@@ -57,7 +58,7 @@ export const TEXAS_PILOT_SOURCES = Object.freeze([
     locality: 'Frisco',
     recurring: false,
     status: 'approved-pilot',
-    evidence: 'Live 2026 vendor route including food-vendor category and November 1, 2026 application deadline.',
+    evidence: 'Live 2026 vendor route including food-vendor category and November 1, 2026 application deadline; event date remains held for conflicting first-party evidence.',
   }),
   Object.freeze({
     id: 'tx-flower-mound-fall-festival-2026',
@@ -71,8 +72,10 @@ export const TEXAS_PILOT_SOURCES = Object.freeze([
     region_code: 'TX',
     locality: 'Flower Mound',
     recurring: false,
+    event_start: '2026-10-09',
+    event_end: '2026-10-10',
     status: 'approved-pilot',
-    evidence: 'Official 2026 festival page exposes vendor, food-vendor, veterans and nonprofit application routes.',
+    evidence: 'Official 2026 festival page exposes vendor, food-vendor, veterans and nonprofit application routes and confirms October 9-10, 2026.',
   }),
   Object.freeze({
     id: 'tx-state-fair-concessions-2026',
