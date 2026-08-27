@@ -55,6 +55,39 @@ test('recurring Texas market does not require a one-off event date', () => {
   assert.equal(result.row.locality, 'Dallas');
 });
 
+test('verified multi-event Texas application does not require one arbitrary event date', () => {
+  const result = extractTexasOpportunity({
+    title: '2026 Food & Drink Vendor Application',
+    text: 'Food vendor application covering Family Fright Fest, American Heroes, and Holiday in the Park.',
+    organiser: 'City of Example Special Events',
+    locality: 'Example',
+    url: 'https://example.gov/vendors',
+    application_url: 'https://example.gov/vendors/apply',
+    multi_event: true
+  });
+  assert.equal(result.status, 'candidate');
+  assert.equal(result.row.multi_event, true);
+  assert.equal(result.row.opportunity_type, 'multi-event');
+  assert.equal(result.row.event_start, '');
+  assert.equal(result.row.publishable, false);
+});
+
+test('verified event metadata preserves start and end dates', () => {
+  const result = extractTexasOpportunity({
+    title: 'Fall Festival Vendor Application',
+    text: 'Vendor applications are open for the annual fall festival.',
+    organiser: 'Town of Example',
+    locality: 'Example',
+    url: 'https://example.gov/fallfestival',
+    application_url: 'https://example.gov/fallfestival',
+    event_start: '2026-10-09',
+    event_end: '2026-10-10'
+  });
+  assert.equal(result.status, 'candidate');
+  assert.equal(result.row.event_start, '2026-10-09');
+  assert.equal(result.row.event_end, '2026-10-10');
+});
+
 test('procurement page is rejected even with vendor registration language', () => {
   const result = extractTexasOpportunity({
     title: 'City Vendor Registration',
