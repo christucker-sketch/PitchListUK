@@ -17,7 +17,7 @@ function normaliseIndexRecord(zip, record) {
   if (!record || typeof record !== 'object') return null;
   const latitude = Number(record.latitude);
   const longitude = Number(record.longitude);
-  const stateCode = String(record.state_code || record.stateCode || '').toUpperCase();
+  const stateCode = String(record.state_code || record.stateCode || record.region_code || record.regionCode || '').toUpperCase();
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
   if (stateCode !== 'TX') return null;
   return {
@@ -30,7 +30,7 @@ function normaliseIndexRecord(zip, record) {
     longitude,
     coordinate_source: String(record.coordinate_source || 'offline-zip-index'),
     coordinate_precision: 'postal',
-    coordinate_label: `${zip}${record.city ? ` ${record.city}` : ''}`.trim()
+    coordinate_label: `${zip}${record.city || record.locality ? ` ${record.city || record.locality}` : ''}`.trim()
   };
 }
 
