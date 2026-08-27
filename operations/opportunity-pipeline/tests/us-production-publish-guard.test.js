@@ -6,7 +6,8 @@ const {
   APPLY_TOKEN,
   assertTexasPublishGitState,
   assertTexasPublishPlan,
-  assertTexasPublishAuthorization
+  assertTexasPublishAuthorization,
+  changedPathsFromPorcelain
 } = require('../lib/us-production-publish-guard');
 
 function planned() {
@@ -48,4 +49,19 @@ test('Texas production write requires an explicit exact authorization token', ()
   assert.deepEqual(assertTexasPublishAuthorization({ apply: false }), { authorized: false, mode: 'dry-run' });
   assert.throws(() => assertTexasPublishAuthorization({ apply: true, authorization: '' }), /not explicitly authorized/);
   assert.deepEqual(assertTexasPublishAuthorization({ apply: true, authorization: APPLY_TOKEN }), { authorized: true, mode: 'apply' });
+});
+
+test('Texas production changed-file parsing preserves the snapshot path and ignores the temporary rollback backup', () => {
+  const porcelain = [
+    ' M functions/_data/opportunities.mjs',
+    '?? functions/_data/opportunities.mjs.pli016-backup',
+    ' M public/index.html'
+  ].join('\n');
+  assert.deepEqual(changedPathsFromPorcelain(porcelain), [
+    'functions/_data/opportunities.mjs',
+    'public/index.html'
+  ]);
+
+  const trimmedFirstLine = 'M functions/_data/opportunities.mjs\n?? functions/_data/opportunities.mjs.pli016-backup';
+  assert.deepEqual(changedPathsFromPorcelain(trimmedFirstLine), ['functions/_data/opportunities.mjs']);
 });

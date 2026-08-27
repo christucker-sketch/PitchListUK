@@ -9,7 +9,8 @@ const {
   APPLY_TOKEN,
   assertTexasPublishGitState,
   assertTexasPublishPlan,
-  assertTexasPublishAuthorization
+  assertTexasPublishAuthorization,
+  changedPathsFromPorcelain
 } = require('../lib/us-production-publish-guard');
 
 const root = path.resolve(__dirname, '../../..');
@@ -92,8 +93,7 @@ async function main() {
     check('npm', ['run', 'test:pipeline'], 'pipeline tests');
     check('git', ['diff', '--check'], 'diff check');
 
-    const changed = output('git', ['status', '--porcelain'], 'git changed files').split(/\r?\n/).filter(Boolean);
-    const changedPaths = changed.map(line => line.slice(3).trim());
+    const changedPaths = changedPathsFromPorcelain(output('git', ['status', '--porcelain'], 'git changed files'));
     const allowed = /^(functions\/_data\/opportunities\.mjs|public\/index\.html|public\/sitemap\.xml|public\/areas\/[a-z0-9-]+\.html)$/;
     const unexpected = changedPaths.filter(file => !allowed.test(file));
     if (unexpected.length) throw new Error(`unexpected production changes: ${unexpected.join(', ')}`);
