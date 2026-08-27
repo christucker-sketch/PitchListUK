@@ -16,6 +16,7 @@
     "staging:texas-approved": "node operations/opportunity-pipeline/scripts/run-texas-approved-staging.js",
     "staging:texas-promotion": "node operations/opportunity-pipeline/scripts/build-texas-promotion-manifest.js",
     "staging:texas-production-preview": "node operations/opportunity-pipeline/scripts/preview-texas-production-apply.js",
+    "staging:texas-production-publish": "node operations/opportunity-pipeline/scripts/publish-texas-production.js",
     "sources:discover": "node operations/opportunity-pipeline/scripts/discover-source-candidates.js",
     "sources:manifest": "node operations/opportunity-pipeline/scripts/build-source-promotion-manifest.js",
     "sources:promote": "node operations/opportunity-pipeline/scripts/apply-source-promotion-manifest.js",
