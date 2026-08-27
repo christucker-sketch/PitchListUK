@@ -158,5 +158,21 @@
     "approval_evidence_hash": "485e1d8df21a3e5d0193b39c6416014810c94fc7d25d51c98ce3019908439491",
     "approval_decision": "approved_by_human_review",
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
+  },
+  {
+    "host": "stallholders.leicesterchristmasmarket.co.uk",
+    "organisation": "Leicester Christmas Market",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "Leicestershire / East Midlands",
+    "opportunity_type": "christmas_market",
+    "official_application_route": "https://stallholders.leicesterchristmasmarket.co.uk",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Leicester Christmas Market 2026 stallholder applications",
+    "source_path_prefix": "/",
+    "approval_evidence_hash": "aed3389fa1c0f4f70f6896298b9b3421ab4f640df391ccce3c3430f674791ab0",
+    "approval_decision": "approved_ai_review_exact_2026_first_party_stallholder_route",
+    "approval_manifest_hash": "6796416eeba63bf826e68527777a620df4433aaeff43d35bb7ef2f826afaa643"
   }
 ]
