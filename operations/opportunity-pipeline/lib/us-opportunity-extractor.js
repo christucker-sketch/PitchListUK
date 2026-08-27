@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { classifyUsAcquisitionText } = require('./us-acquisition-classifier');
+const { classifyUsOpportunityEvidence } = require('./us-acquisition-classifier');
 const { resolveTexasZip, normaliseUsZip } = require('./us-zip-geography');
 const { US_VENDOR_CATEGORIES, RECURRING_TERMS, APPLICATION_TERMS } = require('../config/us-classification-model');
 
@@ -66,17 +66,18 @@ function stableId(parts) {
 function extractTexasOpportunity(page, options = {}) {
   const title = normaliseText(page.title);
   const body = normaliseText(page.text || page.body);
-  const text = `${title} ${body}`.trim();
-  const classification = classifyUsAcquisitionText(text);
-  if (classification.status === 'rejected') {
-    return { status: 'rejected', reasons: classification.reasons || ['us_classification_rejected'] };
-  }
-  if (classification.status !== 'candidate') {
-    return { status: 'review', reasons: classification.reasons || ['insufficient_vendor_evidence'] };
-  }
-
   const sourceUrl = page.url || page.source_url || '';
   const applicationUrl = page.application_url || extractApplicationUrl(page);
+  const classification = classifyUsOpportunityEvidence({ title, body, sourceUrl, applicationUrl });
+
+  if (classification.decision === 'rejected') {
+    return { status: 'rejected', reasons: [classification.reason, ...classification.negativeSignals] };
+  }
+  if (classification.decision !== 'candidate') {
+    return { status: 'review', reasons: [classification.reason] };
+  }
+
+  const text = `${title} ${body}`.trim();
   const organiser = normaliseText(page.organiser || firstMatch(body, [
     /(?:hosted|organized|organised|presented) by\s+([^.;|]+)/i,
     /(?:contact|about)\s+([^.;|]+?)\s+(?:for vendor|vendor applications?)/i
