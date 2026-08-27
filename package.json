@@ -14,6 +14,7 @@
     "staging:refresh": "node operations/opportunity-pipeline/scripts/refresh-active-events.js",
     "staging:health": "node operations/opportunity-pipeline/scripts/health-check.js",
     "staging:texas-approved": "node operations/opportunity-pipeline/scripts/run-texas-approved-staging.js",
+    "staging:texas-promotion": "node operations/opportunity-pipeline/scripts/build-texas-promotion-manifest.js",
     "sources:discover": "node operations/opportunity-pipeline/scripts/discover-source-candidates.js",
     "sources:manifest": "node operations/opportunity-pipeline/scripts/build-source-promotion-manifest.js",
     "sources:promote": "node operations/opportunity-pipeline/scripts/apply-source-promotion-manifest.js",
