@@ -70,7 +70,7 @@ function buildTexasPromotionManifest(stagingManifest, options = {}) {
     source_id: sourceIds[index],
     quality_status: 'customer_ready',
     publishable: true,
-    market_domain: 'pitchlist.com',
+    market_domain: 'findpitches.com',
     currency: 'USD',
     promotion_source: 'pli-014-reviewed-texas-pilot'
   }));
