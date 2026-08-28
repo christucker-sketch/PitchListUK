@@ -52,26 +52,80 @@ function extractLinks(html, baseUrl) {
   return links;
 }
 
+function isRetryableStatus(status) {
+  return status === 408 || status === 425 || status === 429 || status >= 500;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchTextTarget(target, options = {}) {
+  const fetchImpl = options.fetchImpl || fetch;
+  const timeoutMs = Number(options.timeoutMs || 15000);
+  const retries = Math.max(0, Number(options.retries ?? 2));
+  let lastError = null;
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      const signal = typeof AbortSignal?.timeout === 'function' ? AbortSignal.timeout(timeoutMs) : undefined;
+      const response = await fetchImpl(target, {
+        redirect: 'follow',
+        signal,
+        headers: {
+          'user-agent': 'FindPitches-Opportunity-Research/1.0 (+https://findpitches.com)',
+          'accept': 'text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1',
+          'accept-language': 'en-US,en;q=0.9'
+        }
+      });
+
+      if (!response.ok) {
+        const error = new Error(`fetch ${response.status} ${response.statusText}`);
+        error.status = response.status;
+        throw error;
+      }
+
+      const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+      if (contentType && !contentType.includes('text/html') && !contentType.includes('application/xhtml+xml') && !contentType.includes('text/plain')) {
+        throw new Error(`unsupported content-type: ${contentType}`);
+      }
+
+      return {
+        html: await response.text(),
+        finalUrl: response.url || target
+      };
+    } catch (error) {
+      lastError = error;
+      const retryable = !error?.status || isRetryableStatus(Number(error.status));
+      if (!retryable || attempt >= retries) break;
+      await sleep(Math.min(1000 * (2 ** attempt), 4000));
+    }
+  }
+
+  throw lastError || new Error('fetch failed');
+}
+
 async function fetchApprovedPage({ source, url }, options = {}) {
   if (!source || source.status !== 'approved-pilot') throw new Error('live fetch requires approved Texas source');
-  const target = url || source.source_url;
-  const timeoutMs = Number(options.timeoutMs || 15000);
-  const signal = typeof AbortSignal?.timeout === 'function' ? AbortSignal.timeout(timeoutMs) : undefined;
-  const response = await fetch(target, {
-    redirect: 'follow',
-    signal,
-    headers: {
-      'user-agent': 'PitchList-US-Staging/1.0 (+staging-only)',
-      'accept': 'text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1'
+
+  const primary = url || source.source_url;
+  const fallback = source.application_url && source.application_url !== primary ? source.application_url : '';
+  let fetched;
+  let primaryError = null;
+
+  try {
+    fetched = await fetchTextTarget(primary, options);
+  } catch (error) {
+    primaryError = error;
+    if (!fallback) throw error;
+    try {
+      fetched = await fetchTextTarget(fallback, options);
+    } catch (fallbackError) {
+      throw new Error(`source fetch failed (${primaryError.message}); application fallback failed (${fallbackError.message})`);
     }
-  });
-  if (!response.ok) throw new Error(`fetch ${response.status} ${response.statusText}`);
-  const contentType = String(response.headers.get('content-type') || '').toLowerCase();
-  if (contentType && !contentType.includes('text/html') && !contentType.includes('application/xhtml+xml') && !contentType.includes('text/plain')) {
-    throw new Error(`unsupported content-type: ${contentType}`);
   }
-  const html = await response.text();
-  const finalUrl = response.url || target;
+
+  const { html, finalUrl } = fetched;
   return {
     url: finalUrl,
     title: extractTitle(html) || source.name,
@@ -82,8 +136,18 @@ async function fetchApprovedPage({ source, url }, options = {}) {
     locality: source.locality,
     recurring: source.recurring,
     event_start: source.event_start || '',
-    application_deadline: source.application_deadline || ''
+    application_deadline: source.application_deadline || '',
+    fetch_route: primaryError ? 'application_fallback' : 'source'
   };
 }
 
-module.exports = { decodeHtmlEntities, stripNonContentChrome, htmlToText, extractTitle, extractLinks, fetchApprovedPage };
+module.exports = {
+  decodeHtmlEntities,
+  stripNonContentChrome,
+  htmlToText,
+  extractTitle,
+  extractLinks,
+  isRetryableStatus,
+  fetchTextTarget,
+  fetchApprovedPage
+};
