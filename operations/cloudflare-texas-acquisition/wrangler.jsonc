@@ -1,0 +1,21 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "pitchlist-texas-acquisition",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-28",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "workflows": [
+    {
+      "name": "pitchlist-texas-acquisition",
+      "binding": "TEXAS_ACQUISITION",
+      "class_name": "TexasAcquisitionWorkflow",
+      "schedules": ["17 4 * * *"]
+    }
+  ],
+  "vars": {
+    "GITHUB_REPO": "christucker-sketch/PitchListUK"
+  }
+}
