@@ -5,9 +5,17 @@ const APPROVED_TEXAS_SOURCE_IDS = Object.freeze([
   'tx-the-colony-food-drink-2026',
   'tx-greenville-farmers-market-2026',
   'tx-flower-mound-fall-festival-2026',
-  'tx-state-fair-concessions-2026'
+  'tx-state-fair-concessions-2026',
+  'tx-renaissance-festival-vendors-2026',
+  'tx-oatmeal-festival-vendors-2026',
+  'tx-old-settlers-reunion-vendors-2026',
+  'tx-gainesville-wine-country-vendors-2026'
 ]);
-const HELD_TEXAS_SOURCE_IDS = Object.freeze(['tx-frisco-merry-main-street-2026']);
+const HELD_TEXAS_SOURCE_IDS = Object.freeze([
+  'tx-frisco-merry-main-street-2026',
+  'tx-corpus-christi-dia-de-los-muertos-2026',
+  'tx-round-rock-trailside-market-2026'
+]);
 
 function stableJson(value) {
   if (Array.isArray(value)) return `[${value.map(stableJson).join(',')}]`;
