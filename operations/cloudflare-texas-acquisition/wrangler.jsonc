@@ -11,10 +11,12 @@
     {
       "name": "pitchlist-texas-acquisition",
       "binding": "TEXAS_ACQUISITION",
-      "class_name": "TexasAcquisitionWorkflow",
-      "schedules": ["17 4 * * *"]
+      "class_name": "TexasAcquisitionWorkflow"
     }
   ],
+  "triggers": {
+    "crons": ["17 4 * * *"]
+  },
   "vars": {
     "GITHUB_REPO": "christucker-sketch/PitchListUK"
   }

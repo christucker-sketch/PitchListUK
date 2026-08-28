@@ -190,6 +190,10 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
 }
 
 export default {
+  async scheduled(controller, env, ctx) {
+    ctx.waitUntil(env.TEXAS_ACQUISITION.create({ params: { trigger: 'cron', cron: controller.cron, scheduled_time: controller.scheduledTime } }));
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method === 'GET' && url.pathname === '/health') return Response.json({ ok: true, service: 'pitchlist-texas-acquisition', source_count: TEXAS_SOURCES.length });
@@ -197,7 +201,7 @@ export default {
       const expected = requireEnv(env, 'ADMIN_TOKEN');
       const supplied = String(request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
       if (!supplied || supplied !== expected) return new Response('Unauthorized', { status: 401 });
-      const instance = await env.TEXAS_ACQUISITION.create();
+      const instance = await env.TEXAS_ACQUISITION.create({ params: { trigger: 'manual' } });
       return Response.json({ ok: true, instance_id: instance.id }, { status: 202 });
     }
     return new Response('Not found', { status: 404 });
