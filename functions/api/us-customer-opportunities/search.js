@@ -95,7 +95,7 @@ export async function onRequestGet(context) {
     ...result,
     access_mode: access.mode,
     access_reason: access.reason,
-    market_domain: 'pitchlist.com',
+    market_domain: 'findpitches.com',
     currency: 'USD'
   }, 200, headers);
 }

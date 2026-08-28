@@ -20,7 +20,7 @@ function planned() {
     jurisdiction: 'US-TX',
     publishable: true,
     quality_status: 'customer_ready',
-    market_domain: 'pitchlist.com',
+    market_domain: 'findpitches.com',
     currency: 'USD'
   }));
   return {

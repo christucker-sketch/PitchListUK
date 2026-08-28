@@ -37,7 +37,7 @@ export const usOpportunitySnapshot = {
       "quality_status": "customer_ready",
       "publishable": true,
       "source_id": "tx-crossroads-community-market-2026",
-      "market_domain": "pitchlist.com",
+      "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_81ba2719ced4f3075983"
     },
@@ -76,7 +76,7 @@ export const usOpportunitySnapshot = {
       "quality_status": "customer_ready",
       "publishable": true,
       "source_id": "tx-the-colony-food-drink-2026",
-      "market_domain": "pitchlist.com",
+      "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_066e45d3a0e4611d9003"
     },
@@ -114,7 +114,7 @@ export const usOpportunitySnapshot = {
       "quality_status": "customer_ready",
       "publishable": true,
       "source_id": "tx-greenville-farmers-market-2026",
-      "market_domain": "pitchlist.com",
+      "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_853e40f007cd3b5203cc"
     },
@@ -152,7 +152,7 @@ export const usOpportunitySnapshot = {
       "quality_status": "customer_ready",
       "publishable": true,
       "source_id": "tx-flower-mound-fall-festival-2026",
-      "market_domain": "pitchlist.com",
+      "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_7b5b40807a539ed1648d"
     },
@@ -189,7 +189,7 @@ export const usOpportunitySnapshot = {
       "quality_status": "customer_ready",
       "publishable": true,
       "source_id": "tx-state-fair-concessions-2026",
-      "market_domain": "pitchlist.com",
+      "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_62b35ab50105c9db9eea"
     }

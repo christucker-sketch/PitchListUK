@@ -37,7 +37,7 @@ test('US API reads the production snapshot but cannot leak GB rows', async () =>
   const body = await response.json();
   assert.equal(body.country_code, 'US');
   assert.equal(body.region_code, 'TX');
-  assert.equal(body.market_domain, 'pitchlist.com');
+  assert.equal(body.market_domain, 'findpitches.com');
   assert.equal(body.currency, 'USD');
   assert.ok(body.rows.every(row => row.country_code === 'US' && row.region_code === 'TX'));
   assert.ok(body.rows.every(row => row.publishable === true && row.quality_status === 'customer_ready'));
