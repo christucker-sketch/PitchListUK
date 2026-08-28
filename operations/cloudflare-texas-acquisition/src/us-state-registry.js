@@ -1,6 +1,7 @@
 import { TEXAS_SOURCES } from '../../opportunity-pipeline/config/texas-source-registry.js';
 import { FLORIDA_SOURCES } from '../../opportunity-pipeline/config/florida-sources.js';
 import { CALIFORNIA_SOURCES } from '../../opportunity-pipeline/config/california-source-registry.js';
+import { NEW_YORK_SOURCES } from '../../opportunity-pipeline/config/new-york-source-registry.js';
 
 export const US_STATE_ACQUISITION = Object.freeze({
   TX: Object.freeze({
@@ -31,6 +32,16 @@ export const US_STATE_ACQUISITION = Object.freeze({
     enabled: true,
     schedule_order: 30,
     sources: CALIFORNIA_SOURCES,
+    snapshot_path: 'functions/_data/us-opportunities.mjs'
+  }),
+  NY: Object.freeze({
+    code: 'NY',
+    name: 'New York',
+    slug: 'new-york',
+    jurisdiction: 'US-NY',
+    enabled: true,
+    schedule_order: 40,
+    sources: NEW_YORK_SOURCES,
     snapshot_path: 'functions/_data/us-opportunities.mjs'
   })
 });
