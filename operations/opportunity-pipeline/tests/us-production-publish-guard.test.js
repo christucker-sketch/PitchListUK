@@ -7,6 +7,7 @@ const {
   APPLY_TOKEN,
   SNAPSHOT_PATH,
   BACKUP_PATH,
+  GENERATED_TEXAS_PATHS,
   assertTexasPublishGitState,
   assertTexasPublishPlan,
   assertTexasPublishAuthorization,
@@ -45,11 +46,14 @@ function planned() {
   };
 }
 
-test('Texas production publisher accepts only a clean current main worktree', () => {
+test('Texas production publisher accepts current clean main plus only known generated Texas inputs', () => {
   assert.equal(assertTexasPublishGitState({ branch: 'main', head: 'abc', originMain: 'abc', porcelain: '' }), true);
+  const generatedOnly = GENERATED_TEXAS_PATHS.map(path => `?? ${path}`).join('\n');
+  assert.equal(assertTexasPublishGitState({ branch: 'main', head: 'abc', originMain: 'abc', porcelain: generatedOnly }), true);
   assert.throws(() => assertTexasPublishGitState({ branch: 'feature', head: 'abc', originMain: 'abc', porcelain: '' }), /main branch/);
   assert.throws(() => assertTexasPublishGitState({ branch: 'main', head: 'abc', originMain: 'def', porcelain: '' }), /current origin\/main/);
   assert.throws(() => assertTexasPublishGitState({ branch: 'main', head: 'abc', originMain: 'abc', porcelain: ' M file' }), /clean worktree/);
+  assert.throws(() => assertTexasPublishGitState({ branch: 'main', head: 'abc', originMain: 'abc', porcelain: '?? operations/opportunity-pipeline/data/us/unexpected.json' }), /clean worktree/);
 });
 
 test('Texas production publisher requires the exact reviewed 5-to-9 net-new delta and US market routing', () => {
@@ -69,10 +73,11 @@ test('Texas production write requires an explicit exact authorization token', ()
   assert.deepEqual(assertTexasPublishAuthorization({ apply: true, authorization: APPLY_TOKEN }), { authorized: true, mode: 'apply' });
 });
 
-test('Texas production changed-file parsing preserves only the isolated US snapshot path and ignores its rollback backup', () => {
+test('Texas production changed-file parsing keeps real changes while ignoring generated inputs and rollback backup', () => {
   const porcelain = [
     ` M ${SNAPSHOT_PATH}`,
     `?? ${BACKUP_PATH}`,
+    ...GENERATED_TEXAS_PATHS.map(path => `?? ${path}`),
     ' M public/index.html'
   ].join('\n');
   assert.deepEqual(changedPathsFromPorcelain(porcelain), [
