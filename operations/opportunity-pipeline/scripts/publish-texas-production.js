@@ -25,9 +25,17 @@ function run(command, args, options = {}) {
   return spawnSync(command, args, { cwd: root, env: process.env, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, ...options });
 }
 
+function commandFailure(result, label) {
+  const details = [result?.stdout, result?.stderr]
+    .map(value => String(value || '').trim())
+    .filter(Boolean)
+    .join('\n');
+  return new Error(`${label} failed${details ? `\n${details}` : ''}`);
+}
+
 function output(command, args, label) {
   const result = run(command, args);
-  if (result.error || result.signal || result.status !== 0) throw new Error(`${label} failed`);
+  if (result.error || result.signal || result.status !== 0) throw commandFailure(result, label);
   return String(result.stdout || '').trim();
 }
 
@@ -46,7 +54,8 @@ function serializeSnapshot(snapshot) {
 
 function check(command, args, label, options = {}) {
   const result = run(command, args, options);
-  if (result.error || result.signal || result.status !== 0) throw new Error(`${label} failed`);
+  if (result.error || result.signal || result.status !== 0) throw commandFailure(result, label);
+  return result;
 }
 
 function cleanupGeneratedPublic() {
