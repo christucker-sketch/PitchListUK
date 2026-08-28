@@ -36,7 +36,7 @@ function gitState() {
     branch: output('git', ['branch', '--show-current'], 'git branch'),
     head: output('git', ['rev-parse', 'HEAD'], 'git head'),
     originMain: output('git', ['rev-parse', 'origin/main'], 'git origin main'),
-    porcelain: output('git', ['status', '--porcelain'], 'git status')
+    porcelain: output('git', ['status', '--porcelain', '--untracked-files=all'], 'git status')
   };
 }
 
@@ -96,7 +96,7 @@ async function main() {
     check('npm', ['run', 'test:pipeline'], 'pipeline tests');
     check('git', ['diff', '--check'], 'diff check');
 
-    const changedPaths = changedPathsFromPorcelain(output('git', ['status', '--porcelain'], 'git changed files'));
+    const changedPaths = changedPathsFromPorcelain(output('git', ['status', '--porcelain', '--untracked-files=all'], 'git changed files'));
     const unexpected = changedPaths.filter(file => file !== SNAPSHOT_PATH);
     if (unexpected.length) throw new Error(`unexpected production changes: ${unexpected.join(', ')}`);
     if (!changedPaths.includes(SNAPSHOT_PATH)) throw new Error('US production snapshot did not change');
