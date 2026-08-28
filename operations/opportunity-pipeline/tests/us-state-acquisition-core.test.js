@@ -4,7 +4,7 @@ import { assertApprovedStateSources, buildStateStagingManifest, createStateAdapt
 import { runApprovedStateStaging } from '../lib/us-state-staging-runner.js';
 
 const texas = { code: 'TX', name: 'Texas', slug: 'texas', jurisdiction: 'US-TX' };
-const source = { id: 'tx-test', source_url: 'https://example.com/event', application_url: 'https://example.com/apply', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX', status: 'approved-pilot' };
+const source = { id: 'tx-test', name: 'Test Vendor Market', organiser: 'Test Market Association', locality: 'Austin', recurring: false, event_start: '2026-10-10', event_end: '2026-10-10', source_url: 'https://example.com/event', application_url: 'https://example.com/apply', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX', status: 'approved-pilot' };
 
 test('generic US state descriptor enforces jurisdiction boundary', () => {
   assert.equal(requireState(texas).jurisdiction, 'US-TX');
@@ -40,7 +40,7 @@ test('expired application deadlines are held before fetch and cannot reach promo
       fetchCount += 1;
       return {
         url: approved.source_url,
-        title: approved.name || 'Open Vendor Application',
+        title: approved.name,
         text: 'Vendor application is open. Apply now for a vendor booth at this market.',
         application_url: approved.application_url
       };
