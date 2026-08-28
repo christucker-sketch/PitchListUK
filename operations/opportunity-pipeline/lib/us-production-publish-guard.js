@@ -1,7 +1,7 @@
 'use strict';
 
-const EXPECTED_ADDITIONS = 5;
-const APPLY_TOKEN = 'PUBLISH-EXACTLY-5-TEXAS';
+const EXPECTED_ADDITIONS = 4;
+const APPLY_TOKEN = 'PUBLISH-EXACTLY-4-TEXAS';
 const SNAPSHOT_PATH = 'functions/_data/us-opportunities.mjs';
 const BACKUP_PATH = `${SNAPSHOT_PATH}.pli017-backup`;
 
@@ -15,7 +15,7 @@ function assertTexasPublishGitState(state = {}) {
 function assertTexasPublishPlan(planned) {
   const summary = planned?.summary || {};
   const rows = planned?.preview?.rows || [];
-  if (summary.additions !== EXPECTED_ADDITIONS) throw new Error('Texas publisher requires exactly five additions');
+  if (summary.additions !== EXPECTED_ADDITIONS) throw new Error(`Texas publisher requires exactly ${EXPECTED_ADDITIONS} additions`);
   if (summary.after_count !== summary.before_count + EXPECTED_ADDITIONS) throw new Error('Texas publisher count delta mismatch');
   if (rows.length !== summary.after_count) throw new Error('Texas publisher snapshot count mismatch');
   if (!Array.isArray(summary.added_ids) || summary.added_ids.length !== EXPECTED_ADDITIONS || new Set(summary.added_ids).size !== EXPECTED_ADDITIONS) {
