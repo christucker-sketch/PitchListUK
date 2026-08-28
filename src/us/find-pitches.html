@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Find US Vendor Opportunities | FindPitches</title>
+  <meta name="description" content="Search current US vendor opportunities by ZIP Code, radius, category and keyword. FindPitches US is launching with Texas coverage first." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://findpitches.com/find-pitches" />
+  <link rel="stylesheet" href="/styles.css?v=20260731-4" />
+</head>
+<body class="database-page">
+  <header class="database-shell">
+    <nav>
+      <strong>FindPitches</strong>
+      <a href="/">Back to FindPitches</a>
+    </nav>
+    <section class="database-hero">
+      <div>
+        <p class="eyebrow">FindPitches US preview</p>
+        <h1>Find current US vendor pitches and event opportunities.</h1>
+        <p class="lede">Search the first live US rows by ZIP Code, category and keyword. Texas is the first active market; additional states will follow behind the same evidence and safety gates.</p>
+        <div class="database-proof">
+          <span>Texas launch coverage</span>
+          <span>food, markets and events</span>
+          <span>preview access while coverage grows</span>
+        </div>
+      </div>
+      <div class="database-showcase" aria-label="FindPitches opportunity preview">
+        <img src="/assets/hero-food-festival.jpg" alt="Food vendors serving customers at an outdoor event" />
+        <div class="database-status" id="databaseStatus"><b>...</b><span>loading opportunities</span></div>
+      </div>
+    </section>
+  </header>
+
+  <main class="database-main">
+    <form class="cloud-search" id="cloudSearch">
+      <label><span>ZIP Code</span><input name="zip" placeholder="75201" autocomplete="postal-code" inputmode="numeric" /></label>
+      <label><span>Radius</span><select name="radius_miles"><option value="" selected>Any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50">50 miles</option><option value="100">100 miles</option><option value="250">250 miles</option></select></label>
+      <label><span>Category</span><input name="category" placeholder="food truck, craft, market vendor" /></label>
+      <label><span>Keywords</span><input name="q" placeholder="festival, market, fair..." /></label>
+      <button type="submit">Search</button>
+    </form>
+    <section class="cloud-metrics" id="cloudMetrics" aria-live="polite"></section>
+    <section class="cloud-results" id="cloudResults" aria-live="polite"></section>
+  </main>
+
+  <script src="/analytics.js?v=20260809-1" defer></script>
+  <script src="/us/find-pitches.js?v=20260828-1"></script>
+  <footer>
+    <strong>FindPitches</strong>
+    <span>US preview · findpitches.com</span>
+  </footer>
+</body>
+</html>
