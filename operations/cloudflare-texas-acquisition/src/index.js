@@ -1,15 +1,18 @@
 import { WorkflowEntrypoint } from 'cloudflare:workers';
 
 import { runApprovedTexasStaging } from '../../opportunity-pipeline/lib/texas-staging-runner.js';
+import { runApprovedStateStaging } from '../../opportunity-pipeline/lib/us-state-staging-runner.js';
 import liveFetch from '../../opportunity-pipeline/lib/us-live-page-fetch.js';
 import promotionLib from '../../opportunity-pipeline/lib/us-promotion-manifest.js';
 import applyLib from '../../opportunity-pipeline/lib/us-promotion-apply.js';
+import statePublicationLib from '../../opportunity-pipeline/lib/us-state-publication-core.js';
 import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acquisition-core.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
 const { fetchApprovedPage } = liveFetch;
 const { buildTexasPromotionManifest } = promotionLib;
 const { planTexasProductionSnapshot } = applyLib;
+const { buildStatePromotionManifest, planStateProductionSnapshot } = statePublicationLib;
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -150,19 +153,34 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base)
 }
 
 function acquisitionAdapter(state) {
-  if (state.code !== 'TX') throw new Error(`No acquisition implementation registered for ${state.code}`);
+  if (state.code === 'TX') {
+    return createStateAdapter(state, {
+      stage: async () => {
+        const now = new Date();
+        return runApprovedTexasStaging({
+          sources: state.sources,
+          generatedAt: now.toISOString(),
+          runId: `cloudflare-${state.slug}-${now.toISOString().replace(/[:.]/g, '-')}`,
+          fetchPage: candidate => fetchApprovedPage(candidate, { timeoutMs: 15000 })
+        });
+      },
+      promote: staging => buildTexasPromotionManifest(staging, { sources: state.sources }),
+      plan: (snapshot, promotion, staging) => planTexasProductionSnapshot(snapshot, promotion, staging, { sources: state.sources })
+    });
+  }
+
   return createStateAdapter(state, {
     stage: async () => {
       const now = new Date();
-      return runApprovedTexasStaging({
+      return runApprovedStateStaging(state, {
         sources: state.sources,
         generatedAt: now.toISOString(),
         runId: `cloudflare-${state.slug}-${now.toISOString().replace(/[:.]/g, '-')}`,
         fetchPage: candidate => fetchApprovedPage(candidate, { timeoutMs: 15000 })
       });
     },
-    promote: staging => buildTexasPromotionManifest(staging, { sources: state.sources }),
-    plan: (snapshot, promotion, staging) => planTexasProductionSnapshot(snapshot, promotion, staging, { sources: state.sources })
+    promote: staging => buildStatePromotionManifest(state, staging, { sources: state.sources }),
+    plan: (snapshot, promotion, staging) => planStateProductionSnapshot(state, snapshot, promotion, staging, { sources: state.sources })
   });
 }
 
