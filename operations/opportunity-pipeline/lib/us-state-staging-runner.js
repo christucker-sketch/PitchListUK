@@ -13,6 +13,16 @@ function canonical(value) {
   }
 }
 
+function normaliseDate(value) {
+  const date = String(value || '').trim();
+  return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : '';
+}
+
+function stagingDate(generatedAt) {
+  const explicit = String(generatedAt || '').slice(0, 10);
+  return normaliseDate(explicit) || new Date().toISOString().slice(0, 10);
+}
+
 function dedupe(results = []) {
   const ids = new Set();
   const routes = new Set();
@@ -42,9 +52,16 @@ export async function runApprovedStateStaging(state, options = {}) {
   const extracted = [];
   const rejected = [];
   const held = [];
+  const asOfDate = stagingDate(options.generatedAt);
 
   for (const source of sources) {
     const candidate = { url: source.source_url, source_id: source.id, source };
+    const applicationDeadline = normaliseDate(source.application_deadline);
+    if (applicationDeadline && applicationDeadline < asOfDate) {
+      held.push({ candidate, reason: 'application_deadline_passed', application_deadline: applicationDeadline, as_of_date: asOfDate });
+      continue;
+    }
+
     let fetched;
     try {
       fetched = await options.fetchPage(candidate);
