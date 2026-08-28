@@ -11,7 +11,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -26,6 +26,12 @@ jobs:
 
       - name: Run regression tests
         run: node --test tests/*.test.mjs
+
+      - name: Run opportunity pipeline tests
+        run: npm run test:pipeline
+
+      - name: Compile Cloudflare Texas acquisition workflow
+        run: npx --yes wrangler@4.127.0 deploy --dry-run --config operations/cloudflare-texas-acquisition/wrangler.jsonc
 
       - name: Check patch whitespace
         run: git diff --check
