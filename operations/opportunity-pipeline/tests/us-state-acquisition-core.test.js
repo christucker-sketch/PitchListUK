@@ -55,6 +55,27 @@ test('expired application deadlines are held before fetch and cannot reach promo
   assert.equal(manifest.rows[0].source_id, 'tx-open');
 });
 
+test('deadlines discovered from fetched page data are held after extraction', async () => {
+  const liveDeadline = { ...source, id: 'tx-live-deadline', source_url: 'https://example.com/live', application_url: 'https://example.com/live/apply' };
+  const manifest = await runApprovedStateStaging(texas, {
+    sources: [liveDeadline],
+    generatedAt: '2026-08-28T12:00:00.000Z',
+    runId: 'live-deadline-gate-test',
+    fetchPage: async ({ source: approved }) => ({
+      url: approved.source_url,
+      title: approved.name,
+      text: 'Vendor application is open. Apply now for a vendor booth at this market.',
+      application_url: approved.application_url,
+      application_deadline: '2026-08-01'
+    })
+  });
+
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held_count, 1);
+  assert.equal(manifest.held[0].reason, 'application_deadline_passed');
+  assert.equal(manifest.held[0].application_deadline, '2026-08-01');
+});
+
 test('state adapters require stage promote and plan contracts', () => {
   const adapter = createStateAdapter(texas, { stage() {}, promote() {}, plan() {} });
   assert.equal(adapter.state.code, 'TX');
