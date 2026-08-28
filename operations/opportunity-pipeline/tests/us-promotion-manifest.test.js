@@ -56,7 +56,7 @@ test('Texas promotion manifest converts exactly five reviewed rows to customer-r
   assert.deepEqual(manifest.held_source_ids, HELD_TEXAS_SOURCE_IDS);
   assert.ok(manifest.rows.every(row => row.publishable === true));
   assert.ok(manifest.rows.every(row => row.quality_status === 'customer_ready'));
-  assert.ok(manifest.rows.every(row => row.market_domain === 'pitchlist.com'));
+  assert.ok(manifest.rows.every(row => row.market_domain === 'findpitches.com'));
 });
 
 test('Frisco held source cannot enter the Texas promotion manifest', () => {
