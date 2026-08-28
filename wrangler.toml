@@ -2,3 +2,7 @@ name = "pitchlistuk"
 pages_build_output_dir = "./public"
 compatibility_date = "2026-08-27"
 compatibility_flags = ["nodejs_compat"]
+
+[[kv_namespaces]]
+binding = "PITCHLIST_ACCESS_KV"
+id = "58a00aa2b7a34071ba9de8783810d92e"
