@@ -12,11 +12,11 @@ const sources = APPROVED_TEXAS_SOURCE_IDS.map((id, index) => ({
   id,
   source_url: `https://example.org/source-${index + 1}`,
   application_url: `https://example.org/apply-${index + 1}`
-})).concat({
-  id: HELD_TEXAS_SOURCE_IDS[0],
-  source_url: 'https://example.org/frisco',
-  application_url: 'https://example.org/frisco'
-});
+})).concat(HELD_TEXAS_SOURCE_IDS.map((id, index) => ({
+  id,
+  source_url: `https://example.org/held-${index + 1}`,
+  application_url: `https://example.org/held-${index + 1}`
+})));
 
 function stagingRow(index) {
   return {
@@ -45,10 +45,10 @@ function stagingManifest() {
   };
 }
 
-test('Texas promotion manifest converts exactly five reviewed rows to customer-ready additions', () => {
+test('Texas promotion manifest converts exactly nine reviewed rows to customer-ready additions', () => {
   const manifest = buildTexasPromotionManifest(stagingManifest(), { sources });
-  assert.equal(manifest.expected_additions, 5);
-  assert.equal(manifest.rows.length, 5);
+  assert.equal(manifest.expected_additions, 9);
+  assert.equal(manifest.rows.length, 9);
   assert.equal(manifest.mode, 'addition-only');
   assert.equal(manifest.automatic_publish, false);
   assert.equal(manifest.production_write_authorized, false);
@@ -59,14 +59,17 @@ test('Texas promotion manifest converts exactly five reviewed rows to customer-r
   assert.ok(manifest.rows.every(row => row.market_domain === 'findpitches.com'));
 });
 
-test('Frisco held source cannot enter the Texas promotion manifest', () => {
-  const input = stagingManifest();
-  input.rows[4] = {
-    ...input.rows[4],
-    source_url: 'https://example.org/frisco',
-    application_url: 'https://example.org/frisco'
-  };
-  assert.throws(() => buildTexasPromotionManifest(input, { sources }), /not approved|Held Texas source/);
+test('held Texas sources cannot enter the Texas promotion manifest', () => {
+  for (const heldIndex of HELD_TEXAS_SOURCE_IDS.keys()) {
+    const input = stagingManifest();
+    const heldSource = sources[APPROVED_TEXAS_SOURCE_IDS.length + heldIndex];
+    input.rows[input.rows.length - 1] = {
+      ...input.rows[input.rows.length - 1],
+      source_url: heldSource.source_url,
+      application_url: heldSource.application_url
+    };
+    assert.throws(() => buildTexasPromotionManifest(input, { sources }), /not approved|Held Texas source/);
+  }
 });
 
 test('Texas promotion fails closed on country contamination or premature publishable rows', () => {
