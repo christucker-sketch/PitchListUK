@@ -25,9 +25,7 @@
         <strong>FindPitches</strong>
         <span>Vendor opportunity finder</span>
       </a>
-      <div>
-        <a href="/find-pitches">Find pitches</a>
-      </div>
+      <div><a href="/find-pitches">Find pitches</a></div>
     </nav>
 
     <section class="home-hero-content">
@@ -38,8 +36,9 @@
         <label class="sr-only" for="hero-zip">Your ZIP Code</label>
         <input id="hero-zip" name="zip" type="text" placeholder="Enter ZIP Code, e.g. 75201" autocomplete="postal-code" inputmode="numeric" />
         <select name="radius" aria-label="Travel radius">
+          <option value="" selected>Any distance</option>
           <option value="25">25 miles</option>
-          <option value="50" selected>50 miles</option>
+          <option value="50">50 miles</option>
           <option value="100">100 miles</option>
         </select>
         <button type="submit" class="btn-primary">Show my pitches</button>
