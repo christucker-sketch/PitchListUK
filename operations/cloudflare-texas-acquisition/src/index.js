@@ -4,6 +4,7 @@ import { runApprovedTexasStaging } from '../../opportunity-pipeline/lib/texas-st
 import liveFetch from '../../opportunity-pipeline/lib/us-live-page-fetch.js';
 import promotionLib from '../../opportunity-pipeline/lib/us-promotion-manifest.js';
 import applyLib from '../../opportunity-pipeline/lib/us-promotion-apply.js';
+import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acquisition-core.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
 const { fetchApprovedPage } = liveFetch;
@@ -148,9 +149,9 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base)
   return { created: true, branch, pr_number: pr.number, pr_url: pr.html_url, additions };
 }
 
-function texasAdapter(state) {
-  if (state.code !== 'TX') throw new Error(`No acquisition adapter registered for ${state.code}`);
-  return {
+function acquisitionAdapter(state) {
+  if (state.code !== 'TX') throw new Error(`No acquisition implementation registered for ${state.code}`);
+  return createStateAdapter(state, {
     stage: async () => {
       const now = new Date();
       return runApprovedTexasStaging({
@@ -162,13 +163,13 @@ function texasAdapter(state) {
     },
     promote: staging => buildTexasPromotionManifest(staging, { sources: state.sources }),
     plan: (snapshot, promotion, staging) => planTexasProductionSnapshot(snapshot, promotion, staging, { sources: state.sources })
-  };
+  });
 }
 
 export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
     const state = getStateConfig(event?.payload?.state_code || 'TX');
-    const adapter = texasAdapter(state);
+    const adapter = acquisitionAdapter(state);
 
     const staging = await step.do(`fetch and stage approved ${state.name} sources`, {
       retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' }, timeout: '20 minutes'
