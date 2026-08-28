@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { TEXAS_PILOT_SOURCES } from '../config/texas-pilot-sources.js';
+import { TEXAS_SOURCES } from '../config/texas-source-registry.js';
 
 const require = createRequire(import.meta.url);
 const { buildTexasPromotionManifest, verifyTexasPromotionManifest } = require('../lib/us-promotion-manifest');
@@ -15,8 +15,8 @@ const outputPath = process.env.PITCHLIST_US_PROMOTION_OUTPUT
   || path.resolve(__dirname, '../data/us/texas-promotion-manifest.json');
 
 const stagingManifest = JSON.parse(await fs.readFile(inputPath, 'utf8'));
-const promotionManifest = buildTexasPromotionManifest(stagingManifest, { sources: TEXAS_PILOT_SOURCES });
-verifyTexasPromotionManifest(promotionManifest, stagingManifest, { sources: TEXAS_PILOT_SOURCES });
+const promotionManifest = buildTexasPromotionManifest(stagingManifest, { sources: TEXAS_SOURCES });
+verifyTexasPromotionManifest(promotionManifest, stagingManifest, { sources: TEXAS_SOURCES });
 
 await fs.mkdir(path.dirname(outputPath), { recursive: true });
 await fs.writeFile(outputPath, `${JSON.stringify(promotionManifest, null, 2)}\n`, 'utf8');
