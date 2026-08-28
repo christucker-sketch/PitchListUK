@@ -1,6 +1,6 @@
 'use strict';
 
-const { verifyTexasPromotionManifest, APPROVED_TEXAS_SOURCE_IDS } = require('./us-promotion-manifest');
+const { verifyTexasPromotionManifest } = require('./us-promotion-manifest');
 
 function canonicalUrl(value) {
   try {
@@ -23,8 +23,8 @@ function planTexasProductionSnapshot(snapshot, promotionManifest, stagingManifes
   verifyTexasPromotionManifest(promotionManifest, stagingManifest, options);
   const existing = Array.isArray(snapshot?.rows) ? snapshot.rows : [];
   const candidates = promotionManifest.rows || [];
-  if (candidates.length !== APPROVED_TEXAS_SOURCE_IDS.length) {
-    throw new Error(`Texas production preview requires exactly ${APPROVED_TEXAS_SOURCE_IDS.length} reviewed rows`);
+  if (!Number.isInteger(promotionManifest.expected_additions) || promotionManifest.expected_additions < 1 || candidates.length !== promotionManifest.expected_additions) {
+    throw new Error('Texas production preview reviewed-row count mismatch');
   }
 
   const existingBySource = new Map();
