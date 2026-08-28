@@ -50,19 +50,12 @@ function planTexasProductionSnapshot(snapshot, promotionManifest, stagingManifes
     const identity = identityOf(row);
     if (!identity.source || !identity.application || !identity.id) throw new Error('Texas production row missing identity evidence');
 
-    const matches = [
-      existingBySource.get(identity.source),
-      existingByApplication.get(identity.application),
-      existingById.get(identity.id)
-    ].filter(Boolean);
-
+    const matches = [existingBySource.get(identity.source), existingByApplication.get(identity.application), existingById.get(identity.id)].filter(Boolean);
     if (matches.length) {
       const first = matches[0];
       if (matches.some(match => match !== first)) throw new Error(`Texas production identity collision:${identity.id}`);
       const existingIdentity = identityOf(first);
-      if (existingIdentity.source !== identity.source || existingIdentity.application !== identity.application || existingIdentity.id !== identity.id) {
-        throw new Error(`Texas production identity collision:${identity.id}`);
-      }
+      if (existingIdentity.source !== identity.source || existingIdentity.application !== identity.application || existingIdentity.id !== identity.id) throw new Error(`Texas production identity collision:${identity.id}`);
       alreadyPresent.push({ ...row, id: identity.id });
       continue;
     }
@@ -79,12 +72,7 @@ function planTexasProductionSnapshot(snapshot, promotionManifest, stagingManifes
 
   const rows = [...existing, ...prepared];
   return {
-    preview: {
-      ...snapshot,
-      source: 'preview:pli-015-texas-controlled-apply',
-      total: rows.length,
-      rows
-    },
+    preview: { ...snapshot, source: 'preview:pli-015-texas-controlled-apply', total: rows.length, rows },
     summary: {
       before_count: existing.length,
       after_count: rows.length,
