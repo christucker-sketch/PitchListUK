@@ -2,29 +2,24 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 const {
-  APPROVED_TEXAS_SOURCE_IDS,
-  HELD_TEXAS_SOURCE_IDS,
   buildTexasPromotionManifest,
   verifyTexasPromotionManifest
 } = require('../lib/us-promotion-manifest');
 
-const sources = APPROVED_TEXAS_SOURCE_IDS.map((id, index) => ({
-  id,
-  source_url: `https://example.org/source-${index + 1}`,
-  application_url: `https://example.org/apply-${index + 1}`
-})).concat(HELD_TEXAS_SOURCE_IDS.map((id, index) => ({
-  id,
-  source_url: `https://example.org/held-${index + 1}`,
-  application_url: `https://example.org/held-${index + 1}`
-})));
+const sources = [
+  { id: 'tx-a', source_url: 'https://example.org/a', application_url: 'https://example.org/apply-a', status: 'approved-pilot', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX' },
+  { id: 'tx-b', source_url: 'https://example.org/b', application_url: 'https://example.org/apply-b', status: 'approved-pilot', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX' },
+  { id: 'tx-c', source_url: 'https://example.org/c', application_url: 'https://example.org/apply-c', status: 'approved-pilot', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX' },
+  { id: 'tx-held', source_url: 'https://example.org/held', application_url: 'https://example.org/held', status: 'approved-pilot', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX' }
+];
 
-function stagingRow(index) {
+function stagingRow(source, index) {
   return {
     stable_id: `opp_us_test_${index + 1}`,
     event_name: `Texas Opportunity ${index + 1}`,
     organiser: `Texas Organiser ${index + 1}`,
-    source_url: sources[index].source_url,
-    application_url: sources[index].application_url,
+    source_url: source.source_url,
+    application_url: source.application_url,
     country_code: 'US',
     region_code: 'TX',
     jurisdiction: 'US-TX',
@@ -34,42 +29,49 @@ function stagingRow(index) {
   };
 }
 
-function stagingManifest() {
+function stagingManifest(count = 3) {
   return {
     country_code: 'US',
     region_code: 'TX',
     staging_only: true,
     automatic_publish: false,
     production_writes: false,
-    rows: APPROVED_TEXAS_SOURCE_IDS.map((_, index) => stagingRow(index))
+    rows: sources.slice(0, count).map((source, index) => stagingRow(source, index)),
+    held: [{ source: sources[3], reason: 'missing_event_date' }]
   };
 }
 
-test('Texas promotion manifest converts exactly nine reviewed rows to customer-ready additions', () => {
-  const manifest = buildTexasPromotionManifest(stagingManifest(), { sources });
-  assert.equal(manifest.expected_additions, 9);
-  assert.equal(manifest.rows.length, 9);
+test('Texas promotion manifest derives approved row count and source set from reviewed staging output', () => {
+  const input = stagingManifest(3);
+  const manifest = buildTexasPromotionManifest(input, { sources });
+  assert.equal(manifest.schema_version, 2);
+  assert.equal(manifest.expected_additions, 3);
+  assert.equal(manifest.rows.length, 3);
   assert.equal(manifest.mode, 'addition-only');
   assert.equal(manifest.automatic_publish, false);
   assert.equal(manifest.production_write_authorized, false);
-  assert.deepEqual(manifest.approved_source_ids, APPROVED_TEXAS_SOURCE_IDS);
-  assert.deepEqual(manifest.held_source_ids, HELD_TEXAS_SOURCE_IDS);
+  assert.deepEqual(manifest.approved_source_ids, ['tx-a', 'tx-b', 'tx-c']);
+  assert.deepEqual(manifest.held_source_ids, ['tx-held']);
   assert.ok(manifest.rows.every(row => row.publishable === true));
   assert.ok(manifest.rows.every(row => row.quality_status === 'customer_ready'));
   assert.ok(manifest.rows.every(row => row.market_domain === 'findpitches.com'));
 });
 
-test('held Texas sources cannot enter the Texas promotion manifest', () => {
-  for (const heldIndex of HELD_TEXAS_SOURCE_IDS.keys()) {
-    const input = stagingManifest();
-    const heldSource = sources[APPROVED_TEXAS_SOURCE_IDS.length + heldIndex];
-    input.rows[input.rows.length - 1] = {
-      ...input.rows[input.rows.length - 1],
-      source_url: heldSource.source_url,
-      application_url: heldSource.application_url
-    };
-    assert.throws(() => buildTexasPromotionManifest(input, { sources }), /not approved|Held Texas source/);
-  }
+test('Texas promotion can grow to a different reviewed row count without a code change', () => {
+  const extra = { id: 'tx-d', source_url: 'https://example.org/d', application_url: 'https://example.org/apply-d', status: 'approved-pilot', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX' };
+  const expandedSources = [...sources, extra];
+  const input = stagingManifest(3);
+  input.rows.push(stagingRow(extra, 3));
+  const manifest = buildTexasPromotionManifest(input, { sources: expandedSources });
+  assert.equal(manifest.expected_additions, 4);
+  assert.deepEqual(manifest.approved_source_ids, ['tx-a', 'tx-b', 'tx-c', 'tx-d']);
+});
+
+test('Texas promotion rejects held or unapproved sources unless staging has actually approved them', () => {
+  const input = stagingManifest(3);
+  input.rows[2] = stagingRow({ ...sources[3], status: 'held' }, 2);
+  const heldSources = sources.map(source => source.id === 'tx-held' ? { ...source, status: 'held' } : source);
+  assert.throws(() => buildTexasPromotionManifest(input, { sources: heldSources }), /not approved/);
 });
 
 test('Texas promotion fails closed on country contamination or premature publishable rows', () => {
