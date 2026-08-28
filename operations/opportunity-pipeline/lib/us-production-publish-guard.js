@@ -26,7 +26,7 @@ function assertTexasPublishPlan(planned) {
   for (const row of additions) {
     if (row.country_code !== 'US' || row.region_code !== 'TX' || row.jurisdiction !== 'US-TX') throw new Error('Texas publisher country boundary failed');
     if (row.publishable !== true || row.quality_status !== 'customer_ready') throw new Error('Texas publisher row is not customer ready');
-    if (row.market_domain !== 'pitchlist.com' || row.currency !== 'USD') throw new Error('Texas publisher market routing failed');
+    if (row.market_domain !== 'findpitches.com' || row.currency !== 'USD') throw new Error('Texas publisher market routing failed');
   }
   return true;
 }
