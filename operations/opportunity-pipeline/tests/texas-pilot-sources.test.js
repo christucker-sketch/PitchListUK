@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { TEXAS_PILOT_SOURCES, TEXAS_PILOT_EXCLUSIONS } from '../config/texas-pilot-sources.js';
 
 test('Texas pilot contains only reviewed US-TX first-party opportunity sources', () => {
-  assert.equal(TEXAS_PILOT_SOURCES.length, 12);
+  assert.equal(TEXAS_PILOT_SOURCES.length, 16);
   for (const source of TEXAS_PILOT_SOURCES) {
     assert.equal(source.country_code, 'US');
     assert.equal(source.region_code, 'TX');
