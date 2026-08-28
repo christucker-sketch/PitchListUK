@@ -82,7 +82,7 @@ export async function runApprovedStateStaging(state, options = {}) {
       multi_event: source.multi_event ?? false,
       event_start: source.event_start || '',
       event_end: source.event_end || '',
-      application_deadline: source.application_deadline || ''
+      application_deadline: source.application_deadline || fetched?.application_deadline || ''
     };
 
     const result = extractStateOpportunity(page, {
@@ -102,6 +102,13 @@ export async function runApprovedStateStaging(state, options = {}) {
       held.push({ ...result, candidate });
       continue;
     }
+
+    const extractedDeadline = normaliseDate(result.row.application_deadline);
+    if (extractedDeadline && extractedDeadline < asOfDate) {
+      held.push({ ...result, candidate, reason: 'application_deadline_passed', application_deadline: extractedDeadline, as_of_date: asOfDate });
+      continue;
+    }
+
     if (result.row.country_code !== 'US' || result.row.region_code !== state.code || result.row.jurisdiction !== state.jurisdiction) {
       held.push({ ...result, candidate, reason: 'state_boundary_mismatch' });
       continue;
