@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { TEXAS_PILOT_SOURCES } from '../config/texas-pilot-sources.js';
+import { TEXAS_SOURCES } from '../config/texas-source-registry.js';
 import { runApprovedTexasStaging } from '../lib/texas-staging-runner.js';
 import liveFetch from '../lib/us-live-page-fetch.js';
 
@@ -35,36 +35,25 @@ function reasonLabel(item) {
 function printVerdicts(manifest) {
   if (manifest.rows?.length) {
     console.log('\nStaged:');
-    for (const row of manifest.rows) {
-      console.log(`  + ${row.event_name || row.source_url}`);
-    }
+    for (const row of manifest.rows) console.log(`  + ${row.event_name || row.source_url}`);
   }
-
   if (manifest.rejected?.length) {
     console.log('\nRejected:');
-    for (const item of manifest.rejected) {
-      console.log(`  - ${sourceLabel(item)} :: ${reasonLabel(item)}`);
-    }
+    for (const item of manifest.rejected) console.log(`  - ${sourceLabel(item)} :: ${reasonLabel(item)}`);
   }
-
   if (manifest.held?.length) {
     console.log('\nHeld:');
-    for (const item of manifest.held) {
-      console.log(`  ? ${sourceLabel(item)} :: ${reasonLabel(item)}`);
-    }
+    for (const item of manifest.held) console.log(`  ? ${sourceLabel(item)} :: ${reasonLabel(item)}`);
   }
-
   if (manifest.duplicates?.length) {
     console.log('\nDuplicates:');
-    for (const item of manifest.duplicates) {
-      console.log(`  = ${sourceLabel(item)} :: duplicate`);
-    }
+    for (const item of manifest.duplicates) console.log(`  = ${sourceLabel(item)} :: duplicate`);
   }
 }
 
 const now = new Date();
 const manifest = await runApprovedTexasStaging({
-  sources: TEXAS_PILOT_SOURCES,
+  sources: TEXAS_SOURCES,
   generatedAt: now.toISOString(),
   runId: `texas-approved-${now.toISOString().replace(/[:.]/g, '-')}`,
   fetchPage: candidate => fetchApprovedPage(candidate)

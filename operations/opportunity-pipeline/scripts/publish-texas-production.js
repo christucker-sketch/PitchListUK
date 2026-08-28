@@ -66,8 +66,8 @@ async function main() {
   const promotionManifest = JSON.parse(fs.readFileSync(promotionPath, 'utf8'));
   const auth = assertTexasPublishAuthorization({ apply, authorization, promotionManifest });
   const snapshotModule = await import(`${pathToFileURL(snapshotPath).href}?publish=${Date.now()}`);
-  const { TEXAS_PILOT_SOURCES } = await import(`${pathToFileURL(path.join(root, 'operations/opportunity-pipeline/config/texas-pilot-sources.js')).href}?publish=${Date.now()}`);
-  const planned = planTexasProductionSnapshot(snapshotModule.usOpportunitySnapshot, promotionManifest, stagingManifest, { sources: TEXAS_PILOT_SOURCES });
+  const { TEXAS_SOURCES } = await import(`${pathToFileURL(path.join(root, 'operations/opportunity-pipeline/config/texas-source-registry.js')).href}?publish=${Date.now()}`);
+  const planned = planTexasProductionSnapshot(snapshotModule.usOpportunitySnapshot, promotionManifest, stagingManifest, { sources: TEXAS_SOURCES });
   assertTexasPublishPlan(planned);
 
   const summary = {
