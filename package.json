@@ -20,6 +20,7 @@
     "sources:discover": "node operations/opportunity-pipeline/scripts/discover-source-candidates.js",
     "sources:manifest": "node operations/opportunity-pipeline/scripts/build-source-promotion-manifest.js",
     "sources:promote": "node operations/opportunity-pipeline/scripts/apply-source-promotion-manifest.js",
+    "predeploy:production": "npm run build",
     "deploy:production": "node scripts/deploy-public-site.js",
     "publish:opportunities": "node scripts/publish-reviewed-opportunities.js",
     "revalidate:reviewed-additions": "node scripts/revalidate-reviewed-additions.js",
