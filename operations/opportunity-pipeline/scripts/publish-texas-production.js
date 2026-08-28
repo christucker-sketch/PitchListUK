@@ -49,6 +49,11 @@ function check(command, args, label, options = {}) {
   if (result.error || result.signal || result.status !== 0) throw new Error(`${label} failed`);
 }
 
+function cleanupGeneratedPublic() {
+  check('git', ['restore', '--worktree', '--', 'public'], 'restore generated public');
+  check('git', ['clean', '-fd', '--', 'public'], 'clean generated public');
+}
+
 async function main() {
   const apply = process.argv.includes('--apply');
   const authorization = process.env.PITCHLIST_US_PRODUCTION_WRITE_AUTHORIZATION || '';
@@ -96,6 +101,11 @@ async function main() {
     check('npm', ['run', 'test:pipeline'], 'pipeline tests');
     check('git', ['diff', '--check'], 'diff check');
 
+    // Build validation deliberately regenerates public/. The apply is allowed to
+    // persist only the isolated US snapshot, so return generated output to HEAD
+    // before enforcing the final changed-file boundary.
+    cleanupGeneratedPublic();
+
     const changedPaths = changedPathsFromPorcelain(output('git', ['status', '--porcelain', '--untracked-files=all'], 'git changed files'));
     const unexpected = changedPaths.filter(file => file !== SNAPSHOT_PATH);
     if (unexpected.length) throw new Error(`unexpected production changes: ${unexpected.join(', ')}`);
@@ -104,6 +114,10 @@ async function main() {
     console.log(JSON.stringify({ ...summary, changed_files: changedPaths, backup: backupPath }, null, 2));
     console.log('Isolated US snapshot write complete; UK snapshot unchanged; commit/push/deploy remain manual and separate.');
   } catch (error) {
+    // The pre-apply guard guarantees public/ was clean, so it is safe to remove
+    // only build-generated output while rolling back the snapshot.
+    run('git', ['restore', '--worktree', '--', 'public']);
+    run('git', ['clean', '-fd', '--', 'public']);
     fs.copyFileSync(backupPath, snapshotPath);
     throw error;
   } finally {
