@@ -72,6 +72,7 @@ export function parseUsSearchOptions(url, fullAccess = false) {
     fullAccess,
     q: url.searchParams.get('q') || '',
     category: url.searchParams.get('category') || '',
+    state: url.searchParams.get('state') || url.searchParams.get('region_code') || '',
     zip: url.searchParams.get('zip') || url.searchParams.get('postal_code') || '',
     radius_miles: url.searchParams.get('radius_miles') || url.searchParams.get('radius') || 0,
     limit: url.searchParams.get('limit') || 75,
