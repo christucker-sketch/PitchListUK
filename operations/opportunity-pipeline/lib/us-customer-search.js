@@ -11,18 +11,26 @@ function searchable(row) {
     row.location,
     row.locality,
     row.region_name,
+    row.region_code,
     row.vendor_categories,
     row.opportunity_type,
     row.notes
   ].join(' ').toLowerCase();
 }
 
+function isUsRow(row) {
+  const code = String(row?.region_code || '').toUpperCase();
+  return row?.country_code === 'US'
+    && /^[A-Z]{2}$/.test(code)
+    && String(row?.jurisdiction || '').toUpperCase() === `US-${code}`;
+}
+
 function isUsTexasRow(row) {
-  return row?.country_code === 'US' && row?.region_code === 'TX' && String(row?.jurisdiction || '').startsWith('US-TX');
+  return isUsRow(row) && row.region_code === 'TX';
 }
 
 function isCustomerVisibleUsRow(row) {
-  return isUsTexasRow(row)
+  return isUsRow(row)
     && row?.publishable === true
     && String(row?.quality_status || '').toLowerCase() === 'customer_ready';
 }
@@ -41,6 +49,7 @@ function searchUsCustomerRows(rows = [], options = {}) {
   const fullAccess = Boolean(options.fullAccess);
   const q = normalise(options.q);
   const category = normalise(options.category);
+  const stateCode = String(options.state || options.region_code || '').trim().toUpperCase();
   const zip = String(options.zip || options.postal_code || '').trim();
   const radius = Number(options.radius_miles || options.radius || 0);
   const limit = Math.min(Math.max(Number(options.limit || 75), 1), 250);
@@ -48,8 +57,11 @@ function searchUsCustomerRows(rows = [], options = {}) {
 
   let filtered = rows
     .filter(isCustomerVisibleUsRow)
+    .filter(row => !stateCode || row.region_code === stateCode)
     .map(row => {
-      const distance = zip ? distanceFromTexasZip(zip, row, { index: options.zipIndex }) : null;
+      const distance = zip && row.region_code === 'TX'
+        ? distanceFromTexasZip(zip, row, { index: options.zipIndex })
+        : null;
       return {
         ...row,
         distance_miles: distance === null ? null : Math.round(distance * 10) / 10,
@@ -81,7 +93,7 @@ function searchUsCustomerRows(rows = [], options = {}) {
 
   return {
     country_code: 'US',
-    region_code: 'TX',
+    region_code: stateCode || null,
     total,
     offset,
     limit,
@@ -90,6 +102,7 @@ function searchUsCustomerRows(rows = [], options = {}) {
 }
 
 module.exports = {
+  isUsRow,
   isUsTexasRow,
   isCustomerVisibleUsRow,
   previewUsRow,
