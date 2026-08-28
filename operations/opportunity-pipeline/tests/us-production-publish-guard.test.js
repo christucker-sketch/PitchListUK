@@ -3,6 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {
+  EXPECTED_ADDITIONS,
   APPLY_TOKEN,
   SNAPSHOT_PATH,
   BACKUP_PATH,
@@ -13,7 +14,17 @@ const {
 } = require('../lib/us-production-publish-guard');
 
 function planned() {
-  const additions = Array.from({ length: 5 }, (_, index) => ({
+  const existing = Array.from({ length: 5 }, (_, index) => ({
+    id: `opp_existing_${index}`,
+    country_code: 'US',
+    region_code: 'TX',
+    jurisdiction: 'US-TX',
+    publishable: true,
+    quality_status: 'customer_ready',
+    market_domain: 'findpitches.com',
+    currency: 'USD'
+  }));
+  const additions = Array.from({ length: EXPECTED_ADDITIONS }, (_, index) => ({
     id: `opp_us_${index}`,
     country_code: 'US',
     region_code: 'TX',
@@ -24,8 +35,13 @@ function planned() {
     currency: 'USD'
   }));
   return {
-    preview: { rows: [...additions] },
-    summary: { before_count: 0, after_count: 5, additions: 5, added_ids: additions.map(row => row.id) }
+    preview: { rows: [...existing, ...additions] },
+    summary: {
+      before_count: existing.length,
+      after_count: existing.length + additions.length,
+      additions: additions.length,
+      added_ids: additions.map(row => row.id)
+    }
   };
 }
 
@@ -36,10 +52,11 @@ test('Texas production publisher accepts only a clean current main worktree', ()
   assert.throws(() => assertTexasPublishGitState({ branch: 'main', head: 'abc', originMain: 'abc', porcelain: ' M file' }), /clean worktree/);
 });
 
-test('Texas production publisher requires the exact reviewed isolated 0-to-5 delta and US market routing', () => {
+test('Texas production publisher requires the exact reviewed 5-to-9 net-new delta and US market routing', () => {
+  assert.equal(EXPECTED_ADDITIONS, 4);
   assert.equal(assertTexasPublishPlan(planned()), true);
   const wrongCount = planned();
-  wrongCount.summary.after_count = 6;
+  wrongCount.summary.after_count += 1;
   assert.throws(() => assertTexasPublishPlan(wrongCount), /count delta mismatch/);
   const wrongMarket = planned();
   wrongMarket.preview.rows.at(-1).currency = 'GBP';
