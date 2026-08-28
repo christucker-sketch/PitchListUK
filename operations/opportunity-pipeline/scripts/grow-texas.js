@@ -27,6 +27,11 @@ function run(command, args, options = {}) {
   return options.capture ? String(result.stdout || '').trim() : '';
 }
 
+function cleanupGeneratedPublic() {
+  run('git', ['restore', '--worktree', '--', 'public']);
+  run('git', ['clean', '-fd', '--', 'public']);
+}
+
 function branchName() {
   return `data/texas-growth-${new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14)}`;
 }
@@ -63,6 +68,11 @@ async function main() {
     console.log('\nPreview cycle complete. Re-run with --apply to write the isolated US snapshot.');
     return;
   }
+
+  // Previous builds/deploys can leave regenerated public/ files behind. public/ is
+  // build output, not source. Return it to HEAD before the guarded apply so the
+  // publisher evaluates only real source/data changes plus its known manifests.
+  cleanupGeneratedPublic();
 
   const token = authorizationTokenForPromotion(promotionManifest);
   run('npm', ['run', 'staging:texas-production-publish', '--', '--apply'], {
