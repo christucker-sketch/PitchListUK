@@ -6,9 +6,9 @@ const { spawnSync } = require('node:child_process');
 const { pathToFileURL } = require('node:url');
 const { planTexasProductionSnapshot } = require('../lib/us-promotion-apply');
 const {
-  APPLY_TOKEN,
   SNAPSHOT_PATH,
   BACKUP_PATH,
+  authorizationTokenForPromotion,
   assertTexasPublishGitState,
   assertTexasPublishPlan,
   assertTexasPublishAuthorization,
@@ -57,7 +57,6 @@ function cleanupGeneratedPublic() {
 async function main() {
   const apply = process.argv.includes('--apply');
   const authorization = process.env.PITCHLIST_US_PRODUCTION_WRITE_AUTHORIZATION || '';
-  const auth = assertTexasPublishAuthorization({ apply, authorization });
 
   output('git', ['fetch', '--quiet', 'origin', 'main'], 'git fetch origin main');
   const state = gitState();
@@ -65,6 +64,7 @@ async function main() {
 
   const stagingManifest = JSON.parse(fs.readFileSync(stagingPath, 'utf8'));
   const promotionManifest = JSON.parse(fs.readFileSync(promotionPath, 'utf8'));
+  const auth = assertTexasPublishAuthorization({ apply, authorization, promotionManifest });
   const snapshotModule = await import(`${pathToFileURL(snapshotPath).href}?publish=${Date.now()}`);
   const { TEXAS_PILOT_SOURCES } = await import(`${pathToFileURL(path.join(root, 'operations/opportunity-pipeline/config/texas-pilot-sources.js')).href}?publish=${Date.now()}`);
   const planned = planTexasProductionSnapshot(snapshotModule.usOpportunitySnapshot, promotionManifest, stagingManifest, { sources: TEXAS_PILOT_SOURCES });
@@ -76,6 +76,7 @@ async function main() {
     after: planned.summary.after_count,
     additions: planned.summary.additions,
     ids: planned.summary.added_ids,
+    promotion_rows_sha256: promotionManifest.rows_sha256,
     uk_snapshot_unchanged: true,
     production_write_authorized: auth.authorized,
     deploy_authorized: false
@@ -83,7 +84,7 @@ async function main() {
 
   if (!apply) {
     console.log(JSON.stringify(summary, null, 2));
-    console.log(`Apply requires: PITCHLIST_US_PRODUCTION_WRITE_AUTHORIZATION=${APPLY_TOKEN}`);
+    console.log(`Apply requires: PITCHLIST_US_PRODUCTION_WRITE_AUTHORIZATION=${authorizationTokenForPromotion(promotionManifest)}`);
     return;
   }
 
@@ -101,9 +102,6 @@ async function main() {
     check('npm', ['run', 'test:pipeline'], 'pipeline tests');
     check('git', ['diff', '--check'], 'diff check');
 
-    // Build validation deliberately regenerates public/. The apply is allowed to
-    // persist only the isolated US snapshot, so return generated output to HEAD
-    // before enforcing the final changed-file boundary.
     cleanupGeneratedPublic();
 
     const changedPaths = changedPathsFromPorcelain(output('git', ['status', '--porcelain', '--untracked-files=all'], 'git changed files'));
@@ -114,8 +112,6 @@ async function main() {
     console.log(JSON.stringify({ ...summary, changed_files: changedPaths, backup: backupPath }, null, 2));
     console.log('Isolated US snapshot write complete; UK snapshot unchanged; commit/push/deploy remain manual and separate.');
   } catch (error) {
-    // The pre-apply guard guarantees public/ was clean, so it is safe to remove
-    // only build-generated output while rolling back the snapshot.
     run('git', ['restore', '--worktree', '--', 'public']);
     run('git', ['clean', '-fd', '--', 'public']);
     fs.copyFileSync(backupPath, snapshotPath);

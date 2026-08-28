@@ -1,7 +1,5 @@
 'use strict';
 
-const EXPECTED_ADDITIONS = 4;
-const APPLY_TOKEN = 'PUBLISH-EXACTLY-4-TEXAS';
 const SNAPSHOT_PATH = 'functions/_data/us-opportunities.mjs';
 const BACKUP_PATH = `${SNAPSHOT_PATH}.pli017-backup`;
 const GENERATED_TEXAS_PATHS = Object.freeze([
@@ -33,15 +31,16 @@ function assertTexasPublishGitState(state = {}) {
 function assertTexasPublishPlan(planned) {
   const summary = planned?.summary || {};
   const rows = planned?.preview?.rows || [];
-  if (summary.additions !== EXPECTED_ADDITIONS) throw new Error(`Texas publisher requires exactly ${EXPECTED_ADDITIONS} additions`);
-  if (summary.after_count !== summary.before_count + EXPECTED_ADDITIONS) throw new Error('Texas publisher count delta mismatch');
+  const additions = Number(summary.additions);
+  if (!Number.isInteger(additions) || additions < 1) throw new Error('Texas publisher requires at least one net-new addition');
+  if (summary.after_count !== summary.before_count + additions) throw new Error('Texas publisher count delta mismatch');
   if (rows.length !== summary.after_count) throw new Error('Texas publisher snapshot count mismatch');
-  if (!Array.isArray(summary.added_ids) || summary.added_ids.length !== EXPECTED_ADDITIONS || new Set(summary.added_ids).size !== EXPECTED_ADDITIONS) {
+  if (!Array.isArray(summary.added_ids) || summary.added_ids.length !== additions || new Set(summary.added_ids).size !== additions) {
     throw new Error('Texas publisher addition identities invalid');
   }
-  const additions = rows.slice(summary.before_count);
-  if (additions.length !== EXPECTED_ADDITIONS) throw new Error('Texas publisher planned additions mismatch');
-  for (const row of additions) {
+  const plannedAdditions = rows.slice(summary.before_count);
+  if (plannedAdditions.length !== additions) throw new Error('Texas publisher planned additions mismatch');
+  for (const row of plannedAdditions) {
     if (row.country_code !== 'US' || row.region_code !== 'TX' || row.jurisdiction !== 'US-TX') throw new Error('Texas publisher country boundary failed');
     if (row.publishable !== true || row.quality_status !== 'customer_ready') throw new Error('Texas publisher row is not customer ready');
     if (row.market_domain !== 'findpitches.com' || row.currency !== 'USD') throw new Error('Texas publisher market routing failed');
@@ -49,20 +48,26 @@ function assertTexasPublishPlan(planned) {
   return true;
 }
 
+function authorizationTokenForPromotion(promotionManifest = {}) {
+  const hash = String(promotionManifest.rows_sha256 || '').trim().toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(hash)) throw new Error('Texas promotion hash is invalid');
+  return `PUBLISH-TEXAS-${hash}`;
+}
+
 function assertTexasPublishAuthorization(options = {}) {
   if (options.apply !== true) return { authorized: false, mode: 'dry-run' };
-  if (options.authorization !== APPLY_TOKEN) throw new Error('Texas production write is not explicitly authorized');
+  const expected = authorizationTokenForPromotion(options.promotionManifest);
+  if (options.authorization !== expected) throw new Error('Texas production write is not explicitly authorized for this promotion manifest');
   return { authorized: true, mode: 'apply' };
 }
 
 module.exports = {
-  EXPECTED_ADDITIONS,
-  APPLY_TOKEN,
   SNAPSHOT_PATH,
   BACKUP_PATH,
   GENERATED_TEXAS_PATHS,
   assertTexasPublishGitState,
   assertTexasPublishPlan,
+  authorizationTokenForPromotion,
   assertTexasPublishAuthorization,
   changedPathsFromPorcelain
 };
