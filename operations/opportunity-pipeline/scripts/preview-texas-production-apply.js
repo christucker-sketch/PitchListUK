@@ -15,8 +15,8 @@ async function main() {
   const stagingManifest = JSON.parse(fs.readFileSync(stagingPath, 'utf8'));
   const promotionManifest = JSON.parse(fs.readFileSync(promotionPath, 'utf8'));
   const snapshotModule = await import(`${pathToFileURL(snapshotPath).href}?preview=${Date.now()}`);
-  const { TEXAS_PILOT_SOURCES } = await import(`${pathToFileURL(path.join(root, 'operations/opportunity-pipeline/config/texas-pilot-sources.js')).href}?preview=${Date.now()}`);
-  const planned = planTexasProductionSnapshot(snapshotModule.usOpportunitySnapshot, promotionManifest, stagingManifest, { sources: TEXAS_PILOT_SOURCES });
+  const { TEXAS_SOURCES } = await import(`${pathToFileURL(path.join(root, 'operations/opportunity-pipeline/config/texas-source-registry.js')).href}?preview=${Date.now()}`);
+  const planned = planTexasProductionSnapshot(snapshotModule.usOpportunitySnapshot, promotionManifest, stagingManifest, { sources: TEXAS_SOURCES });
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, `${JSON.stringify(planned.preview, null, 2)}\n`, 'utf8');
