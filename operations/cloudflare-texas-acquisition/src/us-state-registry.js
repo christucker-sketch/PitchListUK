@@ -22,6 +22,11 @@ import { MINNESOTA_SOURCES } from '../../opportunity-pipeline/config/minnesota-s
 import { WISCONSIN_SOURCES } from '../../opportunity-pipeline/config/wisconsin-source-registry.js';
 import { OREGON_SOURCES } from '../../opportunity-pipeline/config/oregon-source-registry.js';
 import { SOUTH_CAROLINA_SOURCES } from '../../opportunity-pipeline/config/south-carolina-source-registry.js';
+import { ALABAMA_SOURCES } from '../../opportunity-pipeline/config/alabama-source-registry.js';
+import { KENTUCKY_SOURCES } from '../../opportunity-pipeline/config/kentucky-source-registry.js';
+import { LOUISIANA_SOURCES } from '../../opportunity-pipeline/config/louisiana-source-registry.js';
+import { OKLAHOMA_SOURCES } from '../../opportunity-pipeline/config/oklahoma-source-registry.js';
+import { CONNECTICUT_SOURCES } from '../../opportunity-pipeline/config/connecticut-source-registry.js';
 
 const entry = (code, name, slug, order, sources) => Object.freeze({ code, name, slug, jurisdiction: `US-${code}`, enabled: true, schedule_order: order, sources, snapshot_path: 'functions/_data/us-opportunities.mjs' });
 
@@ -30,7 +35,8 @@ export const US_STATE_ACQUISITION = Object.freeze({
   PA: entry('PA','Pennsylvania','pennsylvania',50,PENNSYLVANIA_SOURCES), IL: entry('IL','Illinois','illinois',60,ILLINOIS_SOURCES), OH: entry('OH','Ohio','ohio',70,OHIO_SOURCES), GA: entry('GA','Georgia','georgia',80,GEORGIA_SOURCES), NC: entry('NC','North Carolina','north-carolina',90,NORTH_CAROLINA_SOURCES),
   MI: entry('MI','Michigan','michigan',100,MICHIGAN_SOURCES), VA: entry('VA','Virginia','virginia',110,VIRGINIA_SOURCES), WA: entry('WA','Washington','washington',120,WASHINGTON_SOURCES), MA: entry('MA','Massachusetts','massachusetts',130,MASSACHUSETTS_SOURCES), CO: entry('CO','Colorado','colorado',140,COLORADO_SOURCES),
   AZ: entry('AZ','Arizona','arizona',150,ARIZONA_SOURCES), NJ: entry('NJ','New Jersey','new-jersey',160,NEW_JERSEY_SOURCES), TN: entry('TN','Tennessee','tennessee',170,TENNESSEE_SOURCES), IN: entry('IN','Indiana','indiana',180,INDIANA_SOURCES), MO: entry('MO','Missouri','missouri',190,MISSOURI_SOURCES),
-  MD: entry('MD','Maryland','maryland',200,MARYLAND_SOURCES), MN: entry('MN','Minnesota','minnesota',210,MINNESOTA_SOURCES), WI: entry('WI','Wisconsin','wisconsin',220,WISCONSIN_SOURCES), OR: entry('OR','Oregon','oregon',230,OREGON_SOURCES), SC: entry('SC','South Carolina','south-carolina',240,SOUTH_CAROLINA_SOURCES)
+  MD: entry('MD','Maryland','maryland',200,MARYLAND_SOURCES), MN: entry('MN','Minnesota','minnesota',210,MINNESOTA_SOURCES), WI: entry('WI','Wisconsin','wisconsin',220,WISCONSIN_SOURCES), OR: entry('OR','Oregon','oregon',230,OREGON_SOURCES), SC: entry('SC','South Carolina','south-carolina',240,SOUTH_CAROLINA_SOURCES),
+  AL: entry('AL','Alabama','alabama',250,ALABAMA_SOURCES), KY: entry('KY','Kentucky','kentucky',260,KENTUCKY_SOURCES), LA: entry('LA','Louisiana','louisiana',270,LOUISIANA_SOURCES), OK: entry('OK','Oklahoma','oklahoma',280,OKLAHOMA_SOURCES), CT: entry('CT','Connecticut','connecticut',290,CONNECTICUT_SOURCES)
 });
 
 export function getStateConfig(code) {
