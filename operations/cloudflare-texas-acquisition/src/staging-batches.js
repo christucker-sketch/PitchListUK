@@ -1,4 +1,4 @@
-const MAX_SOURCES_PER_BATCH = 5;
+const MAX_FETCH_SUBREQUESTS_PER_BATCH = 36;
 
 function canonicalUrl(value) {
   try {
@@ -12,9 +12,19 @@ function canonicalUrl(value) {
 
 export function stagingSourceBatches(sources) {
   if (!Array.isArray(sources) || sources.length < 1) throw new Error('Staging sources are required');
-  const batches = [];
-  for (let index = 0; index < sources.length; index += MAX_SOURCES_PER_BATCH) {
-    batches.push(sources.slice(index, index + MAX_SOURCES_PER_BATCH));
+  const batches = [[]];
+  let batchBudget = 0;
+  for (const source of sources) {
+    const primary = canonicalUrl(source?.source_url);
+    const fallback = canonicalUrl(source?.application_url);
+    if (!primary || !fallback) throw new Error('Staging source URLs are required');
+    const sourceBudget = primary === fallback ? 3 : 6;
+    if (batchBudget + sourceBudget > MAX_FETCH_SUBREQUESTS_PER_BATCH) {
+      batches.push([]);
+      batchBudget = 0;
+    }
+    batches[batches.length - 1].push(source);
+    batchBudget += sourceBudget;
   }
   return batches;
 }
@@ -81,4 +91,4 @@ export function mergeStagingBatches(state, manifests) {
   };
 }
 
-export { MAX_SOURCES_PER_BATCH };
+export { MAX_FETCH_SUBREQUESTS_PER_BATCH };
