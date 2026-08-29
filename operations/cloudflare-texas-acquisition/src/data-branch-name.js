@@ -11,3 +11,13 @@ export function dataBranchName(state, promotionManifest, mainSha) {
   const baseSha = shortSha(mainSha, 'main');
   return `data/cloud-${slug}-growth-${promotionSha}-base-${baseSha}`;
 }
+
+export function assertMainUnchanged(plannedMainSha, currentMainSha) {
+  const planned = String(plannedMainSha || '').trim().toLowerCase();
+  const current = String(currentMainSha || '').trim().toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(planned) || !/^[a-f0-9]{40}$/.test(current)) {
+    throw new Error('Invalid main SHA for publication guard');
+  }
+  if (planned !== current) throw new Error(`Main changed during acquisition run: planned ${planned}, current ${current}`);
+  return true;
+}

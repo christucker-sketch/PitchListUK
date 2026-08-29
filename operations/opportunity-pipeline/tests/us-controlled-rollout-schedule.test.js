@@ -35,5 +35,8 @@ test('Worker config has no cron while manual single-state Workflow routing remai
   assert.match(workerSource, /scheduled:\s*controlledRolloutScheduled/);
   assert.match(workerSource, /event\?\.payload\?\.state_code/);
   assert.match(workerSource, /getStateConfig\(url\.searchParams\.get\('state'\)/);
+  assert.ok(
+    workerSource.indexOf('read current GitHub ${state.name} production snapshot') < workerSource.indexOf('stagingSourceBatches(state.sources)'),
+    'current production snapshot must be read before network-heavy staging batches'
+  );
 });
-
