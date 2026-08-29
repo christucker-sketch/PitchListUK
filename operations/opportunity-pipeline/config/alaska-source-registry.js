@@ -1,0 +1,3 @@
+export const ALASKA_SOURCES = Object.freeze([
+  Object.freeze({ id:'ak-harvest-moon-local-food-2026', name:'Harvest Moon Local Food Festival 2026 Vendor Application', organiser:'Kenai Local Food Connection', source_url:'https://www.kenailocalfood.org/harvest-moon-local-food-festival', application_url:'https://www.kenailocalfood.org/harvest-moon-local-food-festival', source_class:'festival-organisation', country_code:'US', jurisdiction:'US-AK', region_code:'AK', locality:'Soldotna', recurring:false, event_start:'2026-09-26', event_end:'2026-09-26', status:'approved-pilot', evidence:'Official Kenai Local Food Connection festival page provides the 2026 Vendor Application for Harvest Moon Local Food Festival on September 26.' })
+]);
