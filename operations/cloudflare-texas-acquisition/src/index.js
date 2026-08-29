@@ -8,7 +8,7 @@ import applyLib from '../../opportunity-pipeline/lib/us-promotion-apply.js';
 import statePublicationLib from '../../opportunity-pipeline/lib/us-state-publication-core.js';
 import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acquisition-core.js';
 import { controlledRolloutScheduled } from './controlled-rollout-schedule.js';
-import { dataBranchName } from './data-branch-name.js';
+import { assertMainUnchanged, dataBranchName } from './data-branch-name.js';
 import { mergeStagingBatches, stagingSourceBatches } from './staging-batches.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
@@ -97,6 +97,8 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base)
   const additions = Number(planned?.summary?.additions || 0);
   if (additions < 1) return { created: false, reason: 'no_net_new_rows' };
 
+  const currentMain = await githubJson(env, '/git/ref/heads/main');
+  assertMainUnchanged(base.mainSha, currentMain?.object?.sha);
   const branch = dataBranchName(state, promotionManifest, base.mainSha);
   await ensureBranch(env, branch, base.mainSha);
   const branchFile = await githubJson(env, `/contents/${state.snapshot_path}?ref=${encodeURIComponent(branch)}`);
@@ -187,6 +189,9 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
     const state = getStateConfig(event?.payload?.state_code || 'TX');
     const adapter = acquisitionAdapter(state);
+    const base = await step.do(`read current GitHub ${state.name} production snapshot`, {
+      retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' }, timeout: '5 minutes'
+    }, async () => readMainSnapshot(this.env, state));
     const sourceBatches = stagingSourceBatches(state.sources);
     const stagingBatches = [];
     for (let index = 0; index < sourceBatches.length; index += 1) {
@@ -201,9 +206,6 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
     const staging = await step.do(`combine controlled ${state.name} staging batches`, async () => mergeStagingBatches(state, stagingBatches));
 
     const promotion = await step.do(`build controlled ${state.name} promotion`, async () => adapter.promote(staging));
-    const base = await step.do(`read current GitHub ${state.name} production snapshot`, {
-      retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' }, timeout: '5 minutes'
-    }, async () => readMainSnapshot(this.env, state));
     const planned = await step.do(`plan isolated ${state.name} production delta`, async () => adapter.plan(base.snapshot, promotion, staging));
     const publication = await step.do(`open GitHub ${state.name} data PR if needed`, {
       retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '5 minutes'
