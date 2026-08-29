@@ -1,0 +1,3 @@
+export const NORTH_DAKOTA_SOURCES = Object.freeze([
+  Object.freeze({ id:'nd-junkfest-2026', name:'JunkFest 2026 Vendor Application', organiser:'JunkFest', source_url:'https://form.jotform.com/260343339866161', application_url:'https://form.jotform.com/260343339866161', source_class:'market-organisation', country_code:'US', jurisdiction:'US-ND', region_code:'ND', locality:'Carrington', recurring:false, event_start:'2026-09-12', event_end:'2026-09-12', status:'approved-pilot', evidence:'Current organizer-controlled application recruits vendors for JunkFest on September 12, 2026 in Carrington.' })
+]);
