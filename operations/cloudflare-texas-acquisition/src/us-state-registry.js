@@ -12,6 +12,11 @@ import { VIRGINIA_SOURCES } from '../../opportunity-pipeline/config/virginia-sou
 import { WASHINGTON_SOURCES } from '../../opportunity-pipeline/config/washington-source-registry.js';
 import { MASSACHUSETTS_SOURCES } from '../../opportunity-pipeline/config/massachusetts-source-registry.js';
 import { COLORADO_SOURCES } from '../../opportunity-pipeline/config/colorado-source-registry.js';
+import { ARIZONA_SOURCES } from '../../opportunity-pipeline/config/arizona-source-registry.js';
+import { NEW_JERSEY_SOURCES } from '../../opportunity-pipeline/config/new-jersey-source-registry.js';
+import { TENNESSEE_SOURCES } from '../../opportunity-pipeline/config/tennessee-source-registry.js';
+import { INDIANA_SOURCES } from '../../opportunity-pipeline/config/indiana-source-registry.js';
+import { MISSOURI_SOURCES } from '../../opportunity-pipeline/config/missouri-source-registry.js';
 
 export const US_STATE_ACQUISITION = Object.freeze({
   TX: Object.freeze({ code: 'TX', name: 'Texas', slug: 'texas', jurisdiction: 'US-TX', enabled: true, schedule_order: 10, sources: TEXAS_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
@@ -27,7 +32,12 @@ export const US_STATE_ACQUISITION = Object.freeze({
   VA: Object.freeze({ code: 'VA', name: 'Virginia', slug: 'virginia', jurisdiction: 'US-VA', enabled: true, schedule_order: 110, sources: VIRGINIA_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
   WA: Object.freeze({ code: 'WA', name: 'Washington', slug: 'washington', jurisdiction: 'US-WA', enabled: true, schedule_order: 120, sources: WASHINGTON_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
   MA: Object.freeze({ code: 'MA', name: 'Massachusetts', slug: 'massachusetts', jurisdiction: 'US-MA', enabled: true, schedule_order: 130, sources: MASSACHUSETTS_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
-  CO: Object.freeze({ code: 'CO', name: 'Colorado', slug: 'colorado', jurisdiction: 'US-CO', enabled: true, schedule_order: 140, sources: COLORADO_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' })
+  CO: Object.freeze({ code: 'CO', name: 'Colorado', slug: 'colorado', jurisdiction: 'US-CO', enabled: true, schedule_order: 140, sources: COLORADO_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
+  AZ: Object.freeze({ code: 'AZ', name: 'Arizona', slug: 'arizona', jurisdiction: 'US-AZ', enabled: true, schedule_order: 150, sources: ARIZONA_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
+  NJ: Object.freeze({ code: 'NJ', name: 'New Jersey', slug: 'new-jersey', jurisdiction: 'US-NJ', enabled: true, schedule_order: 160, sources: NEW_JERSEY_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
+  TN: Object.freeze({ code: 'TN', name: 'Tennessee', slug: 'tennessee', jurisdiction: 'US-TN', enabled: true, schedule_order: 170, sources: TENNESSEE_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
+  IN: Object.freeze({ code: 'IN', name: 'Indiana', slug: 'indiana', jurisdiction: 'US-IN', enabled: true, schedule_order: 180, sources: INDIANA_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' }),
+  MO: Object.freeze({ code: 'MO', name: 'Missouri', slug: 'missouri', jurisdiction: 'US-MO', enabled: true, schedule_order: 190, sources: MISSOURI_SOURCES, snapshot_path: 'functions/_data/us-opportunities.mjs' })
 });
 
 export function getStateConfig(code) {
