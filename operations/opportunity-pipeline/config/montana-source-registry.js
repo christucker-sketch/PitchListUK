@@ -1,0 +1,3 @@
+export const MONTANA_SOURCES = Object.freeze([
+  Object.freeze({ id:'mt-billings-harvestfest-2026', name:'Billings HarvestFest 2026 Vendor Application', organiser:'Downtown Billings Alliance', source_url:'https://downtownbillings.com/event/22nd-billings-harvestfest/', application_url:'https://downtownbillings.com/event/22nd-billings-harvestfest/', source_class:'festival-organisation', country_code:'US', jurisdiction:'US-MT', region_code:'MT', locality:'Billings', recurring:false, event_start:'2026-10-10', event_end:'2026-10-10', application_deadline:'2026-09-23', status:'approved-pilot', evidence:'Official Downtown Billings event page provides 2026 HarvestFest vendor applications with a September 23 deadline.' })
+]);
