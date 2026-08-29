@@ -207,9 +207,12 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
 
     const promotion = await step.do(`build controlled ${state.name} promotion`, async () => adapter.promote(staging));
     const planned = await step.do(`plan isolated ${state.name} production delta`, async () => adapter.plan(base.snapshot, promotion, staging));
-    const publication = await step.do(`open GitHub ${state.name} data PR if needed`, {
-      retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '5 minutes'
-    }, async () => openDataPullRequest(this.env, state, planned, promotion, base));
+    let publication = { created: false, reason: 'no_net_new_rows' };
+    if (Number(planned?.summary?.additions || 0) > 0) {
+      publication = await step.do(`open GitHub ${state.name} data PR`, {
+        retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '5 minutes'
+      }, async () => openDataPullRequest(this.env, state, planned, promotion, base));
+    }
 
     return {
       state_code: state.code,
