@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  MAX_SOURCES_PER_BATCH,
+  MAX_FETCH_SUBREQUESTS_PER_BATCH,
   mergeStagingBatches,
   stagingSourceBatches
 } from '../../cloudflare-texas-acquisition/src/staging-batches.js';
@@ -21,11 +21,28 @@ function manifest(rows, overrides = {}) {
 }
 
 test('Workflow source batches stay below the free-plan subrequest ceiling', () => {
-  const batches = stagingSourceBatches(Array.from({ length: 51 }, (_, index) => ({ id: `source-${index}` })));
-  assert.equal(MAX_SOURCES_PER_BATCH, 5);
-  assert.equal(batches.length, 11);
-  assert.ok(batches.every(batch => batch.length <= 5));
+  const sources = Array.from({ length: 51 }, (_, index) => ({
+    id: `source-${index}`,
+    source_url: `https://example.com/${index}`,
+    application_url: index % 4 === 0 ? `https://apply.example.com/${index}` : `https://example.com/${index}`
+  }));
+  const batches = stagingSourceBatches(sources);
+  assert.equal(MAX_FETCH_SUBREQUESTS_PER_BATCH, 36);
+  assert.equal(batches.length, 6);
+  assert.ok(batches.every(batch => batch.reduce((total, source) => (
+    total + (source.source_url === source.application_url ? 3 : 6)
+  ), 0) <= MAX_FETCH_SUBREQUESTS_PER_BATCH));
   assert.deepEqual(batches.flat().map(source => source.id), Array.from({ length: 51 }, (_, index) => `source-${index}`));
+});
+
+test('source batching reserves all retry and fallback subrequests and rejects bad routes', () => {
+  const fallbackSources = Array.from({ length: 13 }, (_, index) => ({
+    source_url: `https://source.example/${index}`,
+    application_url: `https://application.example/${index}`
+  }));
+  const batches = stagingSourceBatches(fallbackSources);
+  assert.deepEqual(batches.map(batch => batch.length), [6, 6, 1]);
+  assert.throws(() => stagingSourceBatches([{ source_url: 'bad', application_url: 'https://example.com' }]), /URLs are required/);
 });
 
 test('batch merge preserves controls, counts and cross-batch deduplication', () => {
