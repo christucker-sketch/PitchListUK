@@ -1,0 +1,3 @@
+export const WEST_VIRGINIA_SOURCES = Object.freeze([
+  Object.freeze({ id:'wv-pubfest-2026', name:'WVPubFest 2026 Vendor Application', organiser:'WVPubFest', source_url:'https://www.wvpubfest.com/vendor-application/', application_url:'https://www.wvpubfest.com/vendor-application/', source_class:'festival-organisation', country_code:'US', jurisdiction:'US-WV', region_code:'WV', locality:'West Virginia', recurring:false, event_start:'2026-10-01', event_end:'2026-10-31', status:'approved-pilot', evidence:'Official WVPubFest site has an active 2026 vendor signup for retail, services and food vendors.' })
+]);

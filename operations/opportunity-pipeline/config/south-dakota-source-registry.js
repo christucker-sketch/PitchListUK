@@ -1,0 +1,3 @@
+export const SOUTH_DAKOTA_SOURCES = Object.freeze([
+  Object.freeze({ id:'sd-south-side-farmers-market-2026', name:'South Side Farmers Market 2026 Vendor Application', organiser:'Landscape Garden Centers', source_url:'https://www.landscapegardencenters.com/southsidefarmersmarket', application_url:'https://www.landscapegardencenters.com/southsidefarmersmarket', source_class:'market-organisation', country_code:'US', jurisdiction:'US-SD', region_code:'SD', locality:'Sioux Falls', recurring:true, multi_event:true, event_start:'2026-06-01', event_end:'2026-10-31', status:'approved-pilot', evidence:'Official South Side Farmers Market page provides the 2026 vendor application for the Sioux Falls market running June through October.' })
+]);
