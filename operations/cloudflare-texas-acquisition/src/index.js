@@ -9,6 +9,7 @@ import statePublicationLib from '../../opportunity-pipeline/lib/us-state-publica
 import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acquisition-core.js';
 import { controlledRolloutScheduled } from './controlled-rollout-schedule.js';
 import { dataBranchName } from './data-branch-name.js';
+import { mergeStagingBatches, stagingSourceBatches } from './staging-batches.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
 const { fetchApprovedPage } = liveFetch;
@@ -153,10 +154,10 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base)
 function acquisitionAdapter(state) {
   if (state.code === 'TX') {
     return createStateAdapter(state, {
-      stage: async () => {
+      stage: async (sources = state.sources) => {
         const now = new Date();
         return runApprovedTexasStaging({
-          sources: state.sources,
+          sources,
           generatedAt: now.toISOString(),
           runId: `cloudflare-${state.slug}-${now.toISOString().replace(/[:.]/g, '-')}`,
           fetchPage: candidate => fetchApprovedPage(candidate, { timeoutMs: 15000 })
@@ -168,10 +169,10 @@ function acquisitionAdapter(state) {
   }
 
   return createStateAdapter(state, {
-    stage: async () => {
+    stage: async (sources = state.sources) => {
       const now = new Date();
       return runApprovedStateStaging(state, {
-        sources: state.sources,
+        sources,
         generatedAt: now.toISOString(),
         runId: `cloudflare-${state.slug}-${now.toISOString().replace(/[:.]/g, '-')}`,
         fetchPage: candidate => fetchApprovedPage(candidate, { timeoutMs: 15000 })
@@ -186,10 +187,18 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
     const state = getStateConfig(event?.payload?.state_code || 'TX');
     const adapter = acquisitionAdapter(state);
+    const sourceBatches = stagingSourceBatches(state.sources);
+    const stagingBatches = [];
+    for (let index = 0; index < sourceBatches.length; index += 1) {
+      const batchNumber = index + 1;
+      const stagingBatch = await step.do(`fetch and stage approved ${state.name} sources batch ${batchNumber} of ${sourceBatches.length}`, {
+        retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' }, timeout: '20 minutes'
+      }, async () => adapter.stage(sourceBatches[index]));
+      stagingBatches.push(stagingBatch);
+      await step.sleep(`reset ${state.name} subrequest budget after batch ${batchNumber}`, '1 second');
+    }
 
-    const staging = await step.do(`fetch and stage approved ${state.name} sources`, {
-      retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' }, timeout: '20 minutes'
-    }, adapter.stage);
+    const staging = await step.do(`combine controlled ${state.name} staging batches`, async () => mergeStagingBatches(state, stagingBatches));
 
     const promotion = await step.do(`build controlled ${state.name} promotion`, async () => adapter.promote(staging));
     const base = await step.do(`read current GitHub ${state.name} production snapshot`, {
