@@ -1,0 +1,3 @@
+export const MAINE_SOURCES = Object.freeze([
+  Object.freeze({ id:'me-eastport-salmon-seafood-2026', name:'Eastport Salmon and Seafood Festival 2026 Vendor Application', organiser:'Eastport Area Chamber of Commerce', source_url:'https://www.eastportchamber.net/salmon', application_url:'https://www.eastportchamber.net/salmon', source_class:'festival-organisation', country_code:'US', jurisdiction:'US-ME', region_code:'ME', locality:'Eastport', recurring:false, event_start:'2026-09-04', event_end:'2026-09-06', status:'approved-pilot', evidence:'Official Eastport Chamber festival page states the 2026 Vendor Application is online now for the September 4-6 Salmon and Seafood Festival.' })
+]);
