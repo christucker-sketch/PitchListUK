@@ -7,6 +7,7 @@ import promotionLib from '../../opportunity-pipeline/lib/us-promotion-manifest.j
 import applyLib from '../../opportunity-pipeline/lib/us-promotion-apply.js';
 import statePublicationLib from '../../opportunity-pipeline/lib/us-state-publication-core.js';
 import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acquisition-core.js';
+import { controlledRolloutScheduled } from './controlled-rollout-schedule.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
 const { fetchApprovedPage } = liveFetch;
@@ -220,13 +221,7 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
 }
 
 export default {
-  async scheduled(controller, env, ctx) {
-    for (const state of enabledStates()) {
-      ctx.waitUntil(env.TEXAS_ACQUISITION.create({ params: {
-        trigger: 'cron', state_code: state.code, cron: controller.cron, scheduled_time: controller.scheduledTime
-      } }));
-    }
-  },
+  scheduled: controlledRolloutScheduled,
 
   async fetch(request, env) {
     const url = new URL(request.url);

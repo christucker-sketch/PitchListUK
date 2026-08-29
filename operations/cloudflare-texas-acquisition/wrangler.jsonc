@@ -14,9 +14,6 @@
       "class_name": "TexasAcquisitionWorkflow"
     }
   ],
-  "triggers": {
-    "crons": ["17 4 * * *"]
-  },
   "vars": {
     "GITHUB_REPO": "christucker-sketch/PitchListUK"
   }

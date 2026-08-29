@@ -15,9 +15,17 @@ The Workflow may:
 
 It does **not** merge pull requests or deploy production. GitHub CI remains the publication gate.
 
-## Schedule
+## Controlled rollout schedule
 
-The Workflow is scheduled for `04:17 UTC` daily using a Workflow `schedules` entry.
+Automatic acquisition scheduling is deliberately disabled during the 50-state production-data rollout. The Worker configuration declares no cron trigger, and the scheduled handler is a fail-closed no-op that queues zero Workflow instances. Run exactly one state at a time with the manual Workflow trigger and wait for its data PR to be reviewed and merged, or for a confirmed zero-addition result, before starting the next state.
+
+```bash
+npx wrangler@4.127.0 workflows trigger pitchlist-texas-acquisition \
+  --config operations/cloudflare-texas-acquisition/wrangler.jsonc \
+  --params '{"state_code":"CA","trigger":"manual"}'
+```
+
+Direct single-state Workflow triggers and the authenticated manual `/run?state=XX` endpoint remain available. Restore an automatic schedule only after the controlled rollout has completed and a separate sequential scheduler has been designed and tested.
 
 ## Required Cloudflare secrets
 
@@ -42,8 +50,8 @@ The public `GET /health` endpoint reports only service health and reviewed sourc
 
 ## Rollout
 
-1. Deploy the Worker and secrets.
-2. Trigger one manual cloud run.
+1. Deploy the Worker and secrets without an acquisition cron.
+2. Trigger exactly one manual state run.
 3. Confirm the resulting PR changes only the US snapshot and passes GitHub CI.
-4. Merge/deploy normally.
-5. After the cloud run is proven, stop using Hal for routine Texas acquisition.
+4. Merge the exact reviewed PR head; do not deploy the customer-facing site as part of this Worker rollout.
+5. Refresh local `main`, then trigger the next unfinished state only after the previous state is fully resolved.
