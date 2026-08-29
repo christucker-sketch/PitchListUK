@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-29T04:18:22.958Z",
+  "exported_at": "2026-08-29T18:59:08.129Z",
   "source": "reviewed-us-california-cloud-promotion:8ddb0dc290296116a510b7e66c9c727b053f8be28d1a7351967f9be675a66867",
-  "total": 80,
+  "total": 81,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -3032,6 +3032,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_84da847b2a02f2059bab"
+    },
+    {
+      "stable_id": "opp_us_00eb5cb21ea232b01517",
+      "event_name": "Great New York State Flea Rochester 2026 Vendor Application",
+      "organiser": "City of Rochester Public Market",
+      "source_url": "https://www.cityofrochester.gov/events/great-new-york-state-flea-public-market-2026",
+      "application_url": "https://www.cityofrochester.gov/events/great-new-york-state-flea-public-market-2026",
+      "location": "Rochester",
+      "locality": "Rochester",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "14606",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-13",
+      "event_end": "2026-10-11",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": true,
+      "opportunity_type": "multi-event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-rochester-state-flea-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_00eb5cb21ea232b01517"
     },
     {
       "stable_id": "opp_us_e51eb643fe41bf8c0be7",
