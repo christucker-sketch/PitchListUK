@@ -8,6 +8,7 @@ import applyLib from '../../opportunity-pipeline/lib/us-promotion-apply.js';
 import statePublicationLib from '../../opportunity-pipeline/lib/us-state-publication-core.js';
 import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acquisition-core.js';
 import { controlledRolloutScheduled } from './controlled-rollout-schedule.js';
+import { dataBranchName } from './data-branch-name.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
 const { fetchApprovedPage } = liveFetch;
@@ -77,10 +78,6 @@ function serializeSnapshot(snapshot) {
   return `export const usOpportunitySnapshot = ${JSON.stringify(snapshot, null, 2)};\n`;
 }
 
-function branchName(state, promotionManifest) {
-  return `data/cloud-${state.slug}-growth-${promotionManifest.rows_sha256.slice(0, 16)}`;
-}
-
 async function readMainSnapshot(env, state) {
   const [ref, file] = await Promise.all([
     githubJson(env, '/git/ref/heads/main'),
@@ -99,7 +96,7 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base)
   const additions = Number(planned?.summary?.additions || 0);
   if (additions < 1) return { created: false, reason: 'no_net_new_rows' };
 
-  const branch = branchName(state, promotionManifest);
+  const branch = dataBranchName(state, promotionManifest, base.mainSha);
   await ensureBranch(env, branch, base.mainSha);
   const branchFile = await githubJson(env, `/contents/${state.snapshot_path}?ref=${encodeURIComponent(branch)}`);
   const branchSnapshot = parseSnapshotModule(decodeBase64Utf8(branchFile.content));
