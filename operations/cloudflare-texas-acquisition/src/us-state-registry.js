@@ -2,6 +2,8 @@ import { TEXAS_SOURCES } from '../../opportunity-pipeline/config/texas-source-re
 import { FLORIDA_SOURCES } from '../../opportunity-pipeline/config/florida-sources.js';
 import { CALIFORNIA_SOURCES } from '../../opportunity-pipeline/config/california-source-registry.js';
 import { NEW_YORK_SOURCES } from '../../opportunity-pipeline/config/new-york-source-registry.js';
+import { PENNSYLVANIA_SOURCES } from '../../opportunity-pipeline/config/pennsylvania-source-registry.js';
+import { ILLINOIS_SOURCES } from '../../opportunity-pipeline/config/illinois-source-registry.js';
 
 export const US_STATE_ACQUISITION = Object.freeze({
   TX: Object.freeze({
@@ -42,6 +44,26 @@ export const US_STATE_ACQUISITION = Object.freeze({
     enabled: true,
     schedule_order: 40,
     sources: NEW_YORK_SOURCES,
+    snapshot_path: 'functions/_data/us-opportunities.mjs'
+  }),
+  PA: Object.freeze({
+    code: 'PA',
+    name: 'Pennsylvania',
+    slug: 'pennsylvania',
+    jurisdiction: 'US-PA',
+    enabled: true,
+    schedule_order: 50,
+    sources: PENNSYLVANIA_SOURCES,
+    snapshot_path: 'functions/_data/us-opportunities.mjs'
+  }),
+  IL: Object.freeze({
+    code: 'IL',
+    name: 'Illinois',
+    slug: 'illinois',
+    jurisdiction: 'US-IL',
+    enabled: true,
+    schedule_order: 60,
+    sources: ILLINOIS_SOURCES,
     snapshot_path: 'functions/_data/us-opportunities.mjs'
   })
 });
