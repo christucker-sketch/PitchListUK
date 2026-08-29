@@ -32,6 +32,14 @@ import { KANSAS_SOURCES } from '../../opportunity-pipeline/config/kansas-source-
 import { NEVADA_SOURCES } from '../../opportunity-pipeline/config/nevada-source-registry.js';
 import { UTAH_SOURCES } from '../../opportunity-pipeline/config/utah-source-registry.js';
 import { ARKANSAS_SOURCES } from '../../opportunity-pipeline/config/arkansas-source-registry.js';
+import { NEBRASKA_SOURCES } from '../../opportunity-pipeline/config/nebraska-source-registry.js';
+import { NEW_MEXICO_SOURCES } from '../../opportunity-pipeline/config/new-mexico-source-registry.js';
+import { IDAHO_SOURCES } from '../../opportunity-pipeline/config/idaho-source-registry.js';
+import { MAINE_SOURCES } from '../../opportunity-pipeline/config/maine-source-registry.js';
+import { ALASKA_SOURCES } from '../../opportunity-pipeline/config/alaska-source-registry.js';
+import { HAWAII_SOURCES } from '../../opportunity-pipeline/config/hawaii-source-registry.js';
+import { MISSISSIPPI_SOURCES } from '../../opportunity-pipeline/config/mississippi-source-registry.js';
+import { MONTANA_SOURCES } from '../../opportunity-pipeline/config/montana-source-registry.js';
 
 const entry = (code, name, slug, order, sources) => Object.freeze({ code, name, slug, jurisdiction: `US-${code}`, enabled: true, schedule_order: order, sources, snapshot_path: 'functions/_data/us-opportunities.mjs' });
 
@@ -42,7 +50,9 @@ export const US_STATE_ACQUISITION = Object.freeze({
   AZ: entry('AZ','Arizona','arizona',150,ARIZONA_SOURCES), NJ: entry('NJ','New Jersey','new-jersey',160,NEW_JERSEY_SOURCES), TN: entry('TN','Tennessee','tennessee',170,TENNESSEE_SOURCES), IN: entry('IN','Indiana','indiana',180,INDIANA_SOURCES), MO: entry('MO','Missouri','missouri',190,MISSOURI_SOURCES),
   MD: entry('MD','Maryland','maryland',200,MARYLAND_SOURCES), MN: entry('MN','Minnesota','minnesota',210,MINNESOTA_SOURCES), WI: entry('WI','Wisconsin','wisconsin',220,WISCONSIN_SOURCES), OR: entry('OR','Oregon','oregon',230,OREGON_SOURCES), SC: entry('SC','South Carolina','south-carolina',240,SOUTH_CAROLINA_SOURCES),
   AL: entry('AL','Alabama','alabama',250,ALABAMA_SOURCES), KY: entry('KY','Kentucky','kentucky',260,KENTUCKY_SOURCES), LA: entry('LA','Louisiana','louisiana',270,LOUISIANA_SOURCES), OK: entry('OK','Oklahoma','oklahoma',280,OKLAHOMA_SOURCES), CT: entry('CT','Connecticut','connecticut',290,CONNECTICUT_SOURCES),
-  IA: entry('IA','Iowa','iowa',300,IOWA_SOURCES), KS: entry('KS','Kansas','kansas',310,KANSAS_SOURCES), NV: entry('NV','Nevada','nevada',320,NEVADA_SOURCES), UT: entry('UT','Utah','utah',330,UTAH_SOURCES), AR: entry('AR','Arkansas','arkansas',340,ARKANSAS_SOURCES)
+  IA: entry('IA','Iowa','iowa',300,IOWA_SOURCES), KS: entry('KS','Kansas','kansas',310,KANSAS_SOURCES), NV: entry('NV','Nevada','nevada',320,NEVADA_SOURCES), UT: entry('UT','Utah','utah',330,UTAH_SOURCES), AR: entry('AR','Arkansas','arkansas',340,ARKANSAS_SOURCES),
+  NE: entry('NE','Nebraska','nebraska',350,NEBRASKA_SOURCES), NM: entry('NM','New Mexico','new-mexico',360,NEW_MEXICO_SOURCES), ID: entry('ID','Idaho','idaho',370,IDAHO_SOURCES), ME: entry('ME','Maine','maine',380,MAINE_SOURCES),
+  AK: entry('AK','Alaska','alaska',390,ALASKA_SOURCES), HI: entry('HI','Hawaii','hawaii',400,HAWAII_SOURCES), MS: entry('MS','Mississippi','mississippi',410,MISSISSIPPI_SOURCES), MT: entry('MT','Montana','montana',420,MONTANA_SOURCES)
 });
 
 export function getStateConfig(code) {
