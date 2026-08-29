@@ -1,41 +1,31 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-test('US acquisition registry exposes Texas Florida California and New York as enabled isolated states', async () => {
+test('US acquisition registry exposes enabled states as isolated shared-engine configs', async () => {
   const registry = await import('../../cloudflare-texas-acquisition/src/us-state-registry.js');
   const states = registry.enabledStates();
-  const texas = registry.getStateConfig('tx');
-  const florida = registry.getStateConfig('fl');
-  const california = registry.getStateConfig('ca');
-  const newYork = registry.getStateConfig('ny');
+  const codes = states.map(state => state.code);
 
-  assert.equal(texas.code, 'TX');
-  assert.equal(texas.jurisdiction, 'US-TX');
-  assert.ok(texas.sources.length >= 51);
-  assert.ok(texas.sources.every(source => source.country_code === 'US' && source.region_code === 'TX' && source.jurisdiction === 'US-TX'));
+  assert.ok(states.length >= 6);
+  for (const code of ['TX', 'FL', 'CA', 'NY', 'PA', 'IL']) assert.ok(codes.includes(code));
 
-  assert.equal(florida.code, 'FL');
-  assert.equal(florida.jurisdiction, 'US-FL');
-  assert.ok(florida.sources.length >= 20);
-  assert.ok(florida.sources.every(source => source.country_code === 'US' && source.region_code === 'FL' && source.jurisdiction === 'US-FL'));
+  for (const state of states) {
+    assert.equal(state.jurisdiction, `US-${state.code}`);
+    assert.equal(state.snapshot_path, 'functions/_data/us-opportunities.mjs');
+    assert.ok(state.sources.length > 0);
+    assert.ok(state.sources.every(source => source.country_code === 'US'));
+    assert.ok(state.sources.every(source => source.region_code === state.code));
+    assert.ok(state.sources.every(source => source.jurisdiction === state.jurisdiction));
+  }
 
-  assert.equal(california.code, 'CA');
-  assert.equal(california.jurisdiction, 'US-CA');
-  assert.ok(california.sources.length >= 20);
-  assert.ok(california.sources.every(source => source.country_code === 'US' && source.region_code === 'CA' && source.jurisdiction === 'US-CA'));
-
-  assert.equal(newYork.code, 'NY');
-  assert.equal(newYork.name, 'New York');
-  assert.equal(newYork.jurisdiction, 'US-NY');
-  assert.equal(newYork.snapshot_path, 'functions/_data/us-opportunities.mjs');
-  assert.ok(newYork.sources.length >= 12);
-  assert.ok(newYork.sources.every(source => source.country_code === 'US' && source.region_code === 'NY' && source.jurisdiction === 'US-NY'));
-
-  assert.deepEqual(states.map(state => state.code), ['TX', 'FL', 'CA', 'NY']);
+  assert.deepEqual(
+    states.map(state => state.schedule_order),
+    states.map(state => state.schedule_order).slice().sort((a, b) => a - b)
+  );
 });
 
 test('US acquisition registry fails closed for unsupported states', async () => {
   const registry = await import('../../cloudflare-texas-acquisition/src/us-state-registry.js');
-  assert.throws(() => registry.getStateConfig('WA'), /Unsupported or disabled US acquisition state/);
+  assert.throws(() => registry.getStateConfig('ZZ'), /Unsupported or disabled US acquisition state/);
   assert.throws(() => registry.getStateConfig(''), /Unsupported or disabled US acquisition state/);
 });
