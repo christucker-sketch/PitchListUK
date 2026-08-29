@@ -34,6 +34,7 @@ test('Worker config has no cron while manual single-state Workflow routing remai
   assert.equal(config.triggers, undefined);
   assert.match(workerSource, /scheduled:\s*controlledRolloutScheduled/);
   assert.match(workerSource, /event\?\.payload\?\.state_code/);
+  assert.match(workerSource, /event\?\.payload\?\.batch_number/);
   assert.match(workerSource, /getStateConfig\(url\.searchParams\.get\('state'\)/);
   assert.ok(
     workerSource.indexOf('read current GitHub ${state.name} production snapshot') < workerSource.indexOf('stagingSourceBatches(state.sources)'),
@@ -41,4 +42,7 @@ test('Worker config has no cron while manual single-state Workflow routing remai
   );
   assert.match(workerSource, /if \(Number\(planned\?\.summary\?\.additions \|\| 0\) > 0\)/);
   assert.match(workerSource, /reason: 'no_net_new_rows'/);
+  assert.doesNotMatch(workerSource, /for \(let index = 0; index < sourceBatches\.length/);
+  assert.match(workerSource, /requires batch_number between 1 and/);
+  assert.match(workerSource, /adapter\.stage\(selectedSources\)/);
 });

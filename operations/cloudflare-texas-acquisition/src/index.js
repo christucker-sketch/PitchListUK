@@ -93,7 +93,7 @@ async function ensureBranch(env, branch, mainSha) {
   return githubJson(env, '/git/refs', { method: 'POST', body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: mainSha }) });
 }
 
-async function openDataPullRequest(env, state, planned, promotionManifest, base) {
+async function openDataPullRequest(env, state, planned, promotionManifest, base, reviewedSourceCount = state.sources.length) {
   const additions = Number(planned?.summary?.additions || 0);
   if (additions < 1) return { created: false, reason: 'no_net_new_rows' };
 
@@ -140,7 +140,7 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base)
       body: [
         'Cloudflare US acquisition workflow run.', '',
         `- state: ${state.name} (${state.code})`,
-        `- reviewed routes: ${state.sources.length}`,
+        `- reviewed routes: ${reviewedSourceCount}`,
         `- reviewed rows: ${planned.summary.reviewed_rows}`,
         `- production snapshot: ${planned.summary.before_count} -> ${planned.summary.after_count}`,
         `- net-new additions: ${additions}`,
@@ -165,8 +165,8 @@ function acquisitionAdapter(state) {
           fetchPage: candidate => fetchApprovedPage(candidate, { timeoutMs: 15000 })
         });
       },
-      promote: staging => buildTexasPromotionManifest(staging, { sources: state.sources }),
-      plan: (snapshot, promotion, staging) => planTexasProductionSnapshot(snapshot, promotion, staging, { sources: state.sources })
+      promote: (staging, sources = state.sources) => buildTexasPromotionManifest(staging, { sources }),
+      plan: (snapshot, promotion, staging, sources = state.sources) => planTexasProductionSnapshot(snapshot, promotion, staging, { sources })
     });
   }
 
@@ -180,8 +180,8 @@ function acquisitionAdapter(state) {
         fetchPage: candidate => fetchApprovedPage(candidate, { timeoutMs: 15000 })
       });
     },
-    promote: staging => buildStatePromotionManifest(state, staging, { sources: state.sources }),
-    plan: (snapshot, promotion, staging) => planStateProductionSnapshot(state, snapshot, promotion, staging, { sources: state.sources })
+    promote: (staging, sources = state.sources) => buildStatePromotionManifest(state, staging, { sources }),
+    plan: (snapshot, promotion, staging, sources = state.sources) => planStateProductionSnapshot(state, snapshot, promotion, staging, { sources })
   });
 }
 
@@ -193,32 +193,40 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
       retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' }, timeout: '5 minutes'
     }, async () => readMainSnapshot(this.env, state));
     const sourceBatches = stagingSourceBatches(state.sources);
-    const stagingBatches = [];
-    for (let index = 0; index < sourceBatches.length; index += 1) {
-      const batchNumber = index + 1;
-      const stagingBatch = await step.do(`fetch and stage approved ${state.name} sources batch ${batchNumber} of ${sourceBatches.length}`, {
-        retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' }, timeout: '20 minutes'
-      }, async () => adapter.stage(sourceBatches[index]));
-      stagingBatches.push(stagingBatch);
-      await step.sleep(`reset ${state.name} subrequest budget after batch ${batchNumber}`, '1 second');
+    const requestedBatch = event?.payload?.batch_number;
+    const batchNumber = requestedBatch == null && sourceBatches.length === 1
+      ? 1
+      : Number(requestedBatch);
+    if (!Number.isInteger(batchNumber) || batchNumber < 1 || batchNumber > sourceBatches.length) {
+      throw new Error(`${state.name} requires batch_number between 1 and ${sourceBatches.length}`);
     }
+    const selectedSources = sourceBatches[batchNumber - 1];
+    const stagingBatch = await step.do(`fetch and stage approved ${state.name} sources batch ${batchNumber} of ${sourceBatches.length}`, {
+      retries: { limit: 3, delay: '30 seconds', backoff: 'exponential' }, timeout: '20 minutes'
+    }, async () => adapter.stage(selectedSources));
+    const staging = await step.do(`validate controlled ${state.name} staging batch ${batchNumber}`, async () => (
+      mergeStagingBatches(state, [stagingBatch])
+    ));
 
-    const staging = await step.do(`combine controlled ${state.name} staging batches`, async () => mergeStagingBatches(state, stagingBatches));
-
-    const promotion = await step.do(`build controlled ${state.name} promotion`, async () => adapter.promote(staging));
-    const planned = await step.do(`plan isolated ${state.name} production delta`, async () => adapter.plan(base.snapshot, promotion, staging));
+    const promotion = await step.do(`build controlled ${state.name} promotion`, async () => adapter.promote(staging, selectedSources));
+    const planned = await step.do(`plan isolated ${state.name} production delta`, async () => (
+      adapter.plan(base.snapshot, promotion, staging, selectedSources)
+    ));
     let publication = { created: false, reason: 'no_net_new_rows' };
     if (Number(planned?.summary?.additions || 0) > 0) {
       publication = await step.do(`open GitHub ${state.name} data PR`, {
         retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '5 minutes'
-      }, async () => openDataPullRequest(this.env, state, planned, promotion, base));
+      }, async () => openDataPullRequest(this.env, state, planned, promotion, base, selectedSources.length));
     }
 
     return {
       state_code: state.code,
       state_name: state.name,
       trigger: event?.payload?.trigger || (event.schedule ? 'schedule' : 'manual'),
-      source_count: state.sources.length,
+      state_source_count: state.sources.length,
+      batch_number: batchNumber,
+      batch_count: sourceBatches.length,
+      source_count: selectedSources.length,
       staged_count: staging.staged_count,
       held_count: staging.held_count,
       rejected_count: staging.rejected_count,
@@ -248,8 +256,15 @@ export default {
       const supplied = String(request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
       if (!supplied || supplied !== expected) return new Response('Unauthorized', { status: 401 });
       const state = getStateConfig(url.searchParams.get('state') || 'TX');
-      const instance = await env.TEXAS_ACQUISITION.create({ params: { trigger: 'manual', state_code: state.code } });
-      return Response.json({ ok: true, state_code: state.code, instance_id: instance.id }, { status: 202 });
+      const requestedBatch = url.searchParams.get('batch');
+      const params = { trigger: 'manual', state_code: state.code };
+      if (requestedBatch != null) {
+        const batchNumber = Number(requestedBatch);
+        if (!Number.isInteger(batchNumber) || batchNumber < 1) return new Response('Invalid batch', { status: 400 });
+        params.batch_number = batchNumber;
+      }
+      const instance = await env.TEXAS_ACQUISITION.create({ params });
+      return Response.json({ ok: true, state_code: state.code, batch_number: params.batch_number || null, instance_id: instance.id }, { status: 202 });
     }
     return new Response('Not found', { status: 404 });
   }

@@ -1,11 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import {
   MAX_FETCH_SUBREQUESTS_PER_BATCH,
   mergeStagingBatches,
   stagingSourceBatches
 } from '../../cloudflare-texas-acquisition/src/staging-batches.js';
+
+const repositoryRoot = path.resolve(import.meta.dirname, '../../..');
 
 const state = { code: 'TX', name: 'Texas', slug: 'texas', jurisdiction: 'US-TX' };
 
@@ -33,6 +37,16 @@ test('Workflow source batches stay below the free-plan subrequest ceiling', () =
     total + (source.source_url === source.application_url ? 3 : 6)
   ), 0) <= MAX_FETCH_SUBREQUESTS_PER_BATCH));
   assert.deepEqual(batches.flat().map(source => source.id), Array.from({ length: 51 }, (_, index) => `source-${index}`));
+});
+
+test('multi-batch states must be split across fresh Workflow instances', () => {
+  const workerSource = fs.readFileSync(
+    path.join(repositoryRoot, 'operations/cloudflare-texas-acquisition/src/index.js'),
+    'utf8'
+  );
+  assert.doesNotMatch(workerSource, /for \(let index = 0; index < sourceBatches\.length/);
+  assert.match(workerSource, /const selectedSources = sourceBatches\[batchNumber - 1\]/);
+  assert.match(workerSource, /mergeStagingBatches\(state, \[stagingBatch\]\)/);
 });
 
 test('source batching reserves all retry and fallback subrequests and rejects bad routes', () => {
