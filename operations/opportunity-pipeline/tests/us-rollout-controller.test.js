@@ -9,7 +9,8 @@ import {
   parseInstanceId,
   parseWorkflowStatus,
   repositoryHeadAcceptable,
-  retryClosedReviewState
+  retryClosedReviewState,
+  retryFailedWorkflowState
 } from '../../cloudflare-texas-acquisition/scripts/rollout-controller.mjs';
 
 test('controller parses only compact Workflow output instead of exposing snapshots', () => {
@@ -86,4 +87,19 @@ test('closed unmerged review can be checkpointed and safely rerun at the same ba
   assert.equal(ready.next_batch, 1);
   assert.equal(ready.results.at(-1).discarded.reason, 'live_application_year_mismatch');
   assert.throws(() => retryClosedReviewState(pending, { prState: 'MERGED', snapshotCount: 128, reason: 'bad' }), /not closed unmerged/);
+});
+
+test('terminated or errored Workflow can be checkpointed and safely rerun at the same state', () => {
+  const running = initialState({ nextState: 'WI', snapshotCount: 166 });
+  running.status = 'running';
+  running.active_instance = { id: `cf_${'d'.repeat(64)}`, state_name: 'Wisconsin', batch_count: 1 };
+  const ready = retryFailedWorkflowState(running, {
+    workflowStatus: 'terminated',
+    reason: 'zero_addition_promotion_retry_loop'
+  });
+  assert.equal(ready.status, 'ready');
+  assert.equal(ready.next_state, 'WI');
+  assert.equal(ready.active_instance, null);
+  assert.equal(ready.failed_instances.at(-1).reason, 'zero_addition_promotion_retry_loop');
+  assert.throws(() => retryFailedWorkflowState(running, { workflowStatus: 'running', reason: 'bad' }), /only failed instances/);
 });

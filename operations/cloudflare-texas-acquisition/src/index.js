@@ -224,12 +224,22 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
       mergeStagingBatches(state, [stagingBatch])
     ));
 
-    const promotion = await step.do(`build controlled ${state.name} promotion`, async () => adapter.promote(staging, selectedSources));
-    const planned = await step.do(`plan isolated ${state.name} production delta`, async () => (
-      adapter.plan(base.snapshot, promotion, staging, selectedSources)
-    ));
+    let promotion = null;
+    let planned = {
+      summary: {
+        before_count: Number(base.snapshot?.total || 0),
+        after_count: Number(base.snapshot?.total || 0),
+        additions: 0
+      }
+    };
     let publication = { created: false, reason: 'no_net_new_rows' };
-    if (Number(planned?.summary?.additions || 0) > 0) {
+    if (Number(staging.staged_count || 0) > 0) {
+      promotion = await step.do(`build controlled ${state.name} promotion`, async () => adapter.promote(staging, selectedSources));
+      planned = await step.do(`plan isolated ${state.name} production delta`, async () => (
+        adapter.plan(base.snapshot, promotion, staging, selectedSources)
+      ));
+    }
+    if (promotion && Number(planned?.summary?.additions || 0) > 0) {
       publication = await step.do(`open GitHub ${state.name} data PR`, {
         retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '5 minutes'
       }, async () => openDataPullRequest(this.env, state, planned, promotion, base, selectedSources.length, staging.evidence_receipts));
@@ -249,7 +259,7 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
       before: planned.summary.before_count,
       after: planned.summary.after_count,
       additions: planned.summary.additions,
-      promotion_rows_sha256: promotion.rows_sha256,
+      promotion_rows_sha256: promotion?.rows_sha256 || null,
       held_reasons: reasonCounts(staging.held),
       rejected_reasons: reasonCounts(staging.rejected),
       evidence_passed_count: staging.evidence_receipts.length,
