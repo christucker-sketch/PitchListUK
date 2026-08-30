@@ -24,22 +24,33 @@ function stagingDate(generatedAt) {
 }
 
 const MONTHS = Object.freeze({
-  january: '01', february: '02', march: '03', april: '04', may: '05', june: '06',
-  july: '07', august: '08', september: '09', october: '10', november: '11', december: '12'
+  january: '01', jan: '01', february: '02', feb: '02', march: '03', mar: '03', april: '04', apr: '04', may: '05',
+  june: '06', jun: '06', july: '07', jul: '07', august: '08', aug: '08', september: '09', sept: '09', sep: '09',
+  october: '10', oct: '10', november: '11', nov: '11', december: '12', dec: '12'
 });
+
+const NAMED_DATE_RANGE = /\b(january|jan|february|feb|march|mar|april|apr|may|june|jun|july|jul|august|aug|september|sept?|october|oct|november|nov|december|dec)\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:\s*[-\u2013\u2014]\s*(\d{1,2})(?:st|nd|rd|th)?)?(?:,?\s+(20\d{2}))?\b/gi;
+
+function validNamedDate(year, month, day) {
+  const candidate = `${year}-${month}-${String(Number(day)).padStart(2, '0')}`;
+  const date = new Date(`${candidate}T00:00:00Z`);
+  return normaliseDate(candidate) && !Number.isNaN(date.valueOf()) && date.toISOString().slice(0, 10) === candidate
+    ? candidate
+    : '';
+}
 
 function explicitNamedDates(value, defaultYear, sentenceFilter) {
   const dates = new Set();
   const sentences = String(value || '').split(/[.!?\n]+/);
-  const pattern = /\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(20\d{2}))?\b/gi;
   for (const sentence of sentences) {
     if (!sentenceFilter(sentence)) continue;
-    for (const match of sentence.matchAll(pattern)) {
-      const year = match[3] || defaultYear;
+    for (const match of sentence.matchAll(NAMED_DATE_RANGE)) {
+      const year = match[4] || defaultYear;
       const month = MONTHS[match[1].toLowerCase()];
-      const day = String(Number(match[2])).padStart(2, '0');
-      const date = normaliseDate(`${year}-${month}-${day}`);
-      if (date && Number(day) >= 1 && Number(day) <= 31) dates.add(date);
+      const start = validNamedDate(year, month, match[2]);
+      const end = match[3] ? validNamedDate(year, month, match[3]) : '';
+      if (start) dates.add(start);
+      if (end) dates.add(end);
     }
   }
   return [...dates].sort();
@@ -54,8 +65,10 @@ export function explicitApplicationDeadlines(value, defaultYear) {
 
 export function explicitLiveEventDates(value, defaultYear) {
   return explicitNamedDates(value, defaultYear, sentence =>
-    /\b(?:event|market|festival|fair)\b/i.test(sentence) &&
-    !/\b(?:applications?|applying|apply)\b[^.]{0,120}\b(?:close[sd]?|closing|deadline|due)\b/i.test(sentence)
+    (/\b(?:event|market|festival|fair)\b/i.test(sentence) ||
+      /\b(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s+\d{1,2}(?:st|nd|rd|th)?\s*[-\u2013\u2014]\s*\d{1,2}(?:st|nd|rd|th)?(?:,?\s+20\d{2})\b/i.test(sentence)) &&
+    !/\b(?:applications?|applying|apply)\b[^.]{0,120}\b(?:close[sd]?|closing|deadline|due|through|until|by)\b/i.test(sentence) &&
+    !/\b(?:booking|discount|payment|reservation|cancellation|setup|move-in|load-in)\s+(?:close[sd]?|closing|deadline|due|date)\b/i.test(sentence)
   );
 }
 
@@ -166,11 +179,23 @@ export async function runApprovedStateStaging(state, options = {}) {
     }
 
     const liveEventDates = explicitLiveEventDates(liveText, sourceEventYear || asOfDate.slice(0, 4));
-    if (source.recurring !== true && sourceEventDate && liveEventDates.length && !liveEventDates.includes(sourceEventDate)) {
+    const sourceEventEnd = normaliseDate(source.event_end) || sourceEventDate;
+    if (fetched?.fetch_route && source.recurring !== true && sourceEventDate && liveEventDates.length === 0) {
+      held.push({
+        candidate,
+        reason: 'live_event_date_unattested',
+        source_event_date: sourceEventDate,
+        source_event_end: sourceEventEnd
+      });
+      continue;
+    }
+    if (source.recurring !== true && sourceEventDate && liveEventDates.length &&
+        (!liveEventDates.includes(sourceEventDate) || (sourceEventEnd && !liveEventDates.includes(sourceEventEnd)))) {
       held.push({
         candidate,
         reason: 'live_event_date_mismatch',
         source_event_date: sourceEventDate,
+        source_event_end: sourceEventEnd,
         live_event_dates: liveEventDates
       });
       continue;
