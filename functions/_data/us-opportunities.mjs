@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T10:44:26.518Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:7890f1087893851ad4a0fe743e058abdc395870ef50fc98a6040a4ce69f5d695",
-  "total": 160,
+  "exported_at": "2026-08-30T10:53:56.784Z",
+  "source": "reviewed-us-tennessee-cloud-promotion:b2ff4bf8a56e4b717748b007416fc40cf89c4e47ad05891257279c9236c33739",
+  "total": 161,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -6139,6 +6139,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_06f7bfdf7af92b16921f"
+    },
+    {
+      "stable_id": "opp_us_3490cb0ccbc6726a7c76",
+      "event_name": "Nashville Oktoberfest 2026 Vendor Application",
+      "organiser": "Nashville Oktoberfest",
+      "source_url": "https://oktoberfest.thinkswell.com/vendor",
+      "application_url": "https://oktoberfest.thinkswell.com/vendor",
+      "location": "Nashville",
+      "locality": "Nashville",
+      "region": "Tennessee",
+      "region_code": "TN",
+      "region_name": "Tennessee",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-08",
+      "event_end": "2026-10-11",
+      "application_deadline": "2026-09-07",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tn-nashville-oktoberfest-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-tennessee",
+      "id": "opp_us_3490cb0ccbc6726a7c76"
     }
   ]
 };
