@@ -109,6 +109,58 @@ test('contradictory live application years override stale registry event dates',
   assert.equal(confirmed.held_count, 0);
 });
 
+test('past application closing dates discovered in live text are held', async () => {
+  const fircrest = {
+    ...source,
+    id: 'wa-fircrest-holiday-market-2026',
+    name: 'Fircrest Holiday Market 2026 Vendor Application',
+    region_code: 'WA',
+    jurisdiction: 'US-WA',
+    event_start: '2026-12-06',
+    event_end: '2026-12-06'
+  };
+  const washington = { code: 'WA', name: 'Washington', slug: 'washington', jurisdiction: 'US-WA' };
+  const manifest = await runApprovedStateStaging(washington, {
+    sources: [fircrest],
+    generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      title: 'Fircrest 2026 Holiday Market Vendor Application',
+      text: 'The event will take place on Sunday, December 6th. Applications will close on August 28th. Vendor application form.'
+    })
+  });
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held_count, 1);
+  assert.equal(manifest.held[0].reason, 'application_deadline_passed');
+  assert.equal(manifest.held[0].application_deadline, '2026-08-28');
+  assert.equal(manifest.held[0].evidence_source, 'live_page_text');
+});
+
+test('contradictory exact event dates discovered in live text are held', async () => {
+  const fircrest = {
+    ...source,
+    id: 'wa-fircrest-holiday-market-2026',
+    name: 'Fircrest Holiday Market 2026 Vendor Application',
+    region_code: 'WA',
+    jurisdiction: 'US-WA',
+    event_start: '2026-12-05',
+    event_end: '2026-12-05'
+  };
+  const washington = { code: 'WA', name: 'Washington', slug: 'washington', jurisdiction: 'US-WA' };
+  const manifest = await runApprovedStateStaging(washington, {
+    sources: [fircrest],
+    generatedAt: '2026-08-27T00:00:00.000Z',
+    fetchPage: async () => ({
+      title: 'Fircrest 2026 Holiday Market Vendor Application',
+      text: 'The event will take place on Sunday, December 6th. Applications will close on August 28th. Vendor application form.'
+    })
+  });
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held_count, 1);
+  assert.equal(manifest.held[0].reason, 'live_event_date_mismatch');
+  assert.equal(manifest.held[0].source_event_date, '2026-12-05');
+  assert.deepEqual(manifest.held[0].live_event_dates, ['2026-12-06']);
+});
+
 test('state adapters require stage promote and plan contracts', () => {
   const adapter = createStateAdapter(texas, { stage() {}, promote() {}, plan() {} });
   assert.equal(adapter.state.code, 'TX');
