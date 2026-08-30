@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T17:49:41.162Z",
-  "source": "reviewed-us-hawaii-cloud-promotion:559ad51f812e637bf538aa1f7e67b5d0cfc24e0c34253fb42c97c3b425ce31a5",
-  "total": 184,
+  "exported_at": "2026-08-30T17:51:23.253Z",
+  "source": "reviewed-us-delaware-cloud-promotion:3597e3e4cd372bf70b63b77fa75c774cd919ec63fe7dfed727418a00a691b611",
+  "total": 185,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7048,6 +7048,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-hawaii",
       "id": "opp_us_e1ce268cfd62f1158d88"
+    },
+    {
+      "stable_id": "opp_us_ceb38f22ccfdc7b19591",
+      "event_name": "Downtown Wilmington Farmers Market 2026 Vendor Application",
+      "organiser": "Downtown Visions",
+      "source_url": "https://downtownwilmingtonde.com/form-farmers-market-application",
+      "application_url": "https://downtownwilmingtonde.com/form-farmers-market-application",
+      "location": "Wilmington",
+      "locality": "Wilmington",
+      "region": "Delaware",
+      "region_code": "DE",
+      "region_name": "Delaware",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-05-06",
+      "event_end": "2026-10-28",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": true,
+      "opportunity_type": "multi-event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "de-wilmington-farmers-market-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-delaware",
+      "id": "opp_us_ceb38f22ccfdc7b19591"
     }
   ]
 };
