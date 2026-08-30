@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T11:02:47.747Z",
-  "source": "reviewed-us-indiana-cloud-promotion:da91d33d3b7467b09fc90834a1b5af7e49822641efe4837e8467237a16c0afb3",
-  "total": 163,
+  "exported_at": "2026-08-30T11:03:55.928Z",
+  "source": "reviewed-us-missouri-cloud-promotion:645c1ccec12fec62d24f936eb99f5e06c8e68f95c8585ad5cd9ee21f5ba12c77",
+  "total": 164,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -6251,6 +6251,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-indiana",
       "id": "opp_us_1e94e59f767dfa9e4132"
+    },
+    {
+      "stable_id": "opp_us_a2baec4e2844a1c7986b",
+      "event_name": "Mid-Missouri Christmas Festival 2026 Vendor Application",
+      "organiser": "Moberly Area Chamber of Commerce",
+      "source_url": "https://form.jotform.com/260206141053138",
+      "application_url": "https://form.jotform.com/260206141053138",
+      "location": "Moberly",
+      "locality": "Moberly",
+      "region": "Missouri",
+      "region_code": "MO",
+      "region_name": "Missouri",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "application_deadline": "2026-10-30",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mo-mid-missouri-christmas-festival-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-missouri",
+      "id": "opp_us_a2baec4e2844a1c7986b"
     }
   ]
 };
