@@ -1,5 +1,6 @@
 import framework from './us-acquisition-framework.js';
 import { assertCountryScopedManifest } from './country-boundary.js';
+import { applicationRouteAttestation, explicitApplicationDeadlines, explicitApplicationYears, explicitLiveEventDates } from './us-state-staging-runner.js';
 
 const { canonicalUrl, runTexasAcquisitionCycle } = framework;
 
@@ -49,7 +50,8 @@ export function buildTexasStagingManifest(report, options = {}) {
     rows,
     rejected: report?.rejected || [],
     held: report?.held || [],
-    duplicates: report?.duplicates || []
+    duplicates: report?.duplicates || [],
+    evidence_receipts: report?.evidence_receipts || []
   };
 
   assertCountryScopedManifest(manifest, {
@@ -70,6 +72,7 @@ export async function runApprovedTexasStaging(options = {}) {
   assertApprovedTexasSources(sources);
   if (typeof options.fetchPage !== 'function') throw new Error('Texas staging runner requires injected fetchPage function');
 
+  const evidenceBySource = new Map();
   const report = await runTexasAcquisitionCycle({
     zipIndex: options.zipIndex,
     discover: async () => sources.map(source => ({ url: source.source_url, source_id: source.id })),
@@ -77,6 +80,19 @@ export async function runApprovedTexasStaging(options = {}) {
       const source = sourceForCandidate(sources, candidate);
       if (!source) throw new Error('candidate_not_in_approved_source_set');
       const fetched = await options.fetchPage({ ...candidate, source });
+      const attestation = applicationRouteAttestation(source, fetched);
+      if (!attestation.attested) throw new Error('application_route_not_attested');
+      const liveText = `${fetched?.title || ''}\n${fetched?.text || fetched?.body || ''}`;
+      const sourceYear = String(source.event_start || '').slice(0, 4);
+      evidenceBySource.set(source.id, {
+        source_id: source.id,
+        application_route_attested: true,
+        attestation_method: attestation.method,
+        fetch_route: fetched?.fetch_route || 'injected',
+        live_application_years: explicitApplicationYears(liveText),
+        live_event_dates: explicitLiveEventDates(liveText, sourceYear),
+        live_application_deadlines: explicitApplicationDeadlines(liveText, sourceYear)
+      });
       return {
         ...fetched,
         url: fetched?.url || source.source_url,
@@ -91,6 +107,11 @@ export async function runApprovedTexasStaging(options = {}) {
       };
     }
   });
+  report.evidence_receipts = report.staging_rows.map(row => {
+    const source = sources.find(item => canonicalUrl(item.source_url) === canonicalUrl(row.source_url)
+      || canonicalUrl(item.application_url) === canonicalUrl(row.application_url));
+    return evidenceBySource.get(source?.id);
+  }).filter(Boolean);
 
   return buildTexasStagingManifest(report, {
     runId: options.runId,

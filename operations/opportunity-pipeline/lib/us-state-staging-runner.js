@@ -59,6 +59,23 @@ export function explicitLiveEventDates(value, defaultYear) {
   );
 }
 
+export function applicationRouteAttestation(source, fetched = {}) {
+  const applicationRoute = canonical(source?.application_url);
+  const sourceRoute = canonical(source?.source_url);
+  if (!applicationRoute) return { attested: false, method: 'missing_application_route' };
+  if (applicationRoute === sourceRoute) return { attested: true, method: 'same_as_source' };
+  // Offline adapters inject already-reviewed page objects. Production
+  // fetchApprovedPage always supplies fetch_route and must pass the live-link gate below.
+  if (!fetched?.fetch_route) return { attested: true, method: 'injected_adapter_contract' };
+  if (fetched?.fetch_route === 'application_fallback') return { attested: true, method: 'fetched_application_fallback' };
+  const liveRoutes = [fetched?.url, ...(Array.isArray(fetched?.links) ? fetched.links.map(link => link?.url) : [])]
+    .map(canonical)
+    .filter(Boolean);
+  return liveRoutes.includes(applicationRoute)
+    ? { attested: true, method: 'linked_from_live_source' }
+    : { attested: false, method: 'not_linked_from_live_source' };
+}
+
 export function explicitApplicationYears(value) {
   const years = new Set();
   const sentences = String(value || '').split(/[.!?\n]+/);
@@ -127,6 +144,12 @@ export async function runApprovedStateStaging(state, options = {}) {
         source_event_year: sourceEventYear,
         live_application_years: liveApplicationYears
       });
+      continue;
+    }
+
+    const routeAttestation = applicationRouteAttestation(source, fetched);
+    if (!routeAttestation.attested) {
+      held.push({ candidate, reason: 'application_route_not_attested', attestation_method: routeAttestation.method });
       continue;
     }
 
@@ -200,6 +223,15 @@ export async function runApprovedStateStaging(state, options = {}) {
     result.row.source_id = source.id;
     result.row.publishable = false;
     result.row.quality_status = 'review';
+    result.evidence_receipt = {
+      source_id: source.id,
+      application_route_attested: true,
+      attestation_method: routeAttestation.method,
+      fetch_route: fetched?.fetch_route || 'injected',
+      live_application_years: liveApplicationYears,
+      live_event_dates: liveEventDates,
+      live_application_deadlines: liveApplicationDeadlines
+    };
     extracted.push(result);
   }
 
@@ -215,7 +247,8 @@ export async function runApprovedStateStaging(state, options = {}) {
     staging_rows: unique.map(result => result.row),
     rejected,
     held,
-    duplicates
+    duplicates,
+    evidence_receipts: unique.map(result => result.evidence_receipt)
   };
 
   return buildStateStagingManifest(state, report, {

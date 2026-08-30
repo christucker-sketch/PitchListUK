@@ -35,6 +35,7 @@ export function mergeStagingBatches(state, manifests) {
   const rejected = [];
   const held = [];
   const duplicates = [];
+  const evidenceReceipts = [];
   const stableIds = new Set();
   const routes = new Set();
   let sourceCount = 0;
@@ -54,6 +55,7 @@ export function mergeStagingBatches(state, manifests) {
     rejected.push(...(manifest.rejected || []));
     held.push(...(manifest.held || []));
     duplicates.push(...(manifest.duplicates || []));
+    const receiptsBySource = new Map((manifest.evidence_receipts || []).map(receipt => [receipt?.source_id, receipt]));
 
     for (const row of manifest.rows || []) {
       const stableId = String(row?.stable_id || '');
@@ -65,6 +67,11 @@ export function mergeStagingBatches(state, manifests) {
       if (stableId) stableIds.add(stableId);
       if (route) routes.add(route);
       rows.push(row);
+      const receipt = receiptsBySource.get(row?.source_id);
+      if (!receipt || receipt.application_route_attested !== true) {
+        throw new Error(`${state.name} staging row is missing a passed evidence receipt`);
+      }
+      evidenceReceipts.push(receipt);
     }
   }
 
@@ -87,7 +94,8 @@ export function mergeStagingBatches(state, manifests) {
     rows,
     rejected,
     held,
-    duplicates
+    duplicates,
+    evidence_receipts: evidenceReceipts
   };
 }
 
