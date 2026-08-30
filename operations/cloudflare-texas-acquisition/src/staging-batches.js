@@ -10,8 +10,12 @@ function canonicalUrl(value) {
   }
 }
 
-export function stagingSourceBatches(sources) {
+export function stagingSourceBatches(sources, options = {}) {
   if (!Array.isArray(sources) || sources.length < 1) throw new Error('Staging sources are required');
+  const maxSources = options.maxSources == null ? Number.POSITIVE_INFINITY : Number(options.maxSources);
+  if (!(maxSources === Number.POSITIVE_INFINITY || (Number.isInteger(maxSources) && maxSources > 0))) {
+    throw new Error('Maximum staging sources per batch must be a positive integer');
+  }
   const batches = [[]];
   let batchBudget = 0;
   for (const source of sources) {
@@ -19,7 +23,7 @@ export function stagingSourceBatches(sources) {
     const fallback = canonicalUrl(source?.application_url);
     if (!primary || !fallback) throw new Error('Staging source URLs are required');
     const sourceBudget = primary === fallback ? 3 : 6;
-    if (batchBudget + sourceBudget > MAX_FETCH_SUBREQUESTS_PER_BATCH) {
+    if (batches.at(-1).length >= maxSources || batchBudget + sourceBudget > MAX_FETCH_SUBREQUESTS_PER_BATCH) {
       batches.push([]);
       batchBudget = 0;
     }
