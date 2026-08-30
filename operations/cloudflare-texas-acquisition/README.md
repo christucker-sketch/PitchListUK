@@ -68,3 +68,10 @@ node operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs run
 ```
 
 Run it again only after the reported PR has been live-reviewed, passed CI and merged. On resume it verifies the merge, fast-forwards clean local `main`, checks the exact snapshot count, and advances to the next batch/state. Any dirty worktree, stale `main`, open acquisition PR, snapshot drift, errored Workflow or malformed compact result blocks further triggers.
+
+If live review rejects a PR, close it unmerged, fix and deploy the acquisition guard, then explicitly checkpoint the discarded attempt before rerunning the same batch:
+
+```bash
+node operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs retry-closed --reason live_evidence_mismatch
+node operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs run
+```

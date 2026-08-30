@@ -8,7 +8,8 @@ import {
   parseCompactWorkflowOutput,
   parseInstanceId,
   parseWorkflowStatus,
-  repositoryHeadAcceptable
+  repositoryHeadAcceptable,
+  retryClosedReviewState
 } from '../../cloudflare-texas-acquisition/scripts/rollout-controller.mjs';
 
 test('controller parses only compact Workflow output instead of exposing snapshots', () => {
@@ -70,4 +71,19 @@ test('repository preflight permits only an ancestor main while reconciling a mer
   assert.equal(repositoryHeadAcceptable(local, remote, local, false), false);
   assert.equal(repositoryHeadAcceptable(local, remote, local, true), true);
   assert.equal(repositoryHeadAcceptable(local, remote, 'c'.repeat(40), true), false);
+});
+
+test('closed unmerged review can be checkpointed and safely rerun at the same batch', () => {
+  const pending = advanceAfterResult(initialState({ nextState: 'GA', snapshotCount: 120 }), {
+    state_code: 'GA', state_name: 'Georgia', batch_number: 1, batch_count: 1,
+    before: 120, after: 128, additions: 8, publication: { pr_number: 114 }
+  });
+  const ready = retryClosedReviewState(pending, {
+    prState: 'CLOSED', snapshotCount: 120, reason: 'live_application_year_mismatch'
+  });
+  assert.equal(ready.status, 'ready');
+  assert.equal(ready.next_state, 'GA');
+  assert.equal(ready.next_batch, 1);
+  assert.equal(ready.results.at(-1).discarded.reason, 'live_application_year_mismatch');
+  assert.throws(() => retryClosedReviewState(pending, { prState: 'MERGED', snapshotCount: 128, reason: 'bad' }), /not closed unmerged/);
 });

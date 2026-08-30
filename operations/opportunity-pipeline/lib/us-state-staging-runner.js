@@ -23,6 +23,16 @@ function stagingDate(generatedAt) {
   return normaliseDate(explicit) || new Date().toISOString().slice(0, 10);
 }
 
+export function explicitApplicationYears(value) {
+  const years = new Set();
+  const sentences = String(value || '').split(/[.!?\n]+/);
+  for (const sentence of sentences) {
+    if (!/\b(applications?|apply|applying)\b/i.test(sentence)) continue;
+    for (const match of sentence.matchAll(/\b(20\d{2})\b/g)) years.add(match[1]);
+  }
+  return [...years].sort();
+}
+
 function dedupe(results = []) {
   const ids = new Set();
   const routes = new Set();
@@ -67,6 +77,18 @@ export async function runApprovedStateStaging(state, options = {}) {
       fetched = await options.fetchPage(candidate);
     } catch (error) {
       held.push({ candidate, reason: 'fetch_failed', error: String(error?.message || error) });
+      continue;
+    }
+
+    const sourceEventYear = normaliseDate(source.event_start).slice(0, 4);
+    const liveApplicationYears = explicitApplicationYears(`${fetched?.title || ''}\n${fetched?.text || fetched?.body || ''}`);
+    if (sourceEventYear && liveApplicationYears.length && !liveApplicationYears.includes(sourceEventYear)) {
+      held.push({
+        candidate,
+        reason: 'live_application_year_mismatch',
+        source_event_year: sourceEventYear,
+        live_application_years: liveApplicationYears
+      });
       continue;
     }
 
