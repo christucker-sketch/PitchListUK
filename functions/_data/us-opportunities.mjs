@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T17:44:12.925Z",
-  "source": "reviewed-us-nevada-cloud-promotion:4583caad7c9df8361dbc33bdc14e32bed84785da6b95d3d9dca4067e76fc49ee",
-  "total": 178,
+  "exported_at": "2026-08-30T17:45:19.933Z",
+  "source": "reviewed-us-utah-cloud-promotion:54a65fcf34f57dd7ed047e7dfe1b9e5b4db77e979ed3b4ca68e77301090ebbfc",
+  "total": 179,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -6819,6 +6819,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nevada",
       "id": "opp_us_f876e3ae964adf4ea828"
+    },
+    {
+      "stable_id": "opp_us_54b1ac99a8e03d790011",
+      "event_name": "Dream Events Utah Fall and Holiday 2026 Vendor Applications",
+      "organiser": "Dream Events Utah",
+      "source_url": "https://www.dreameventsut.com/",
+      "application_url": "https://www.dreameventsut.com/",
+      "location": "West Point",
+      "locality": "West Point",
+      "region": "Utah",
+      "region_code": "UT",
+      "region_name": "Utah",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "currency": "USD",
+      "postal_code": "84015",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-25",
+      "event_end": "2026-11-21",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": true,
+      "opportunity_type": "multi-event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ut-dream-events-fall-holiday-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-utah",
+      "id": "opp_us_54b1ac99a8e03d790011"
     }
   ]
 };
