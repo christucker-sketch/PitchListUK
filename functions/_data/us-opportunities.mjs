@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T17:47:36.539Z",
-  "source": "reviewed-us-nebraska-cloud-promotion:3f6ab8f98ee4629bd331d4f7d7da7c8af5f3aaa2efe23c237fe2f0ff661c8670",
-  "total": 183,
+  "exported_at": "2026-08-30T17:49:41.162Z",
+  "source": "reviewed-us-hawaii-cloud-promotion:559ad51f812e637bf538aa1f7e67b5d0cfc24e0c34253fb42c97c3b425ce31a5",
+  "total": 184,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7009,6 +7009,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nebraska",
       "id": "opp_us_a38b93b0e7f363af30a6"
+    },
+    {
+      "stable_id": "opp_us_e1ce268cfd62f1158d88",
+      "event_name": "Kona Coffee Cultural Festival 2026 Vendor Application",
+      "organiser": "Kona Coffee Cultural Festival",
+      "source_url": "https://form.jotform.com/261307648463461",
+      "application_url": "https://form.jotform.com/261307648463461",
+      "location": "Kailua-Kona",
+      "locality": "Kailua-Kona",
+      "region": "Hawaii",
+      "region_code": "HI",
+      "region_name": "Hawaii",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-HI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-15",
+      "application_deadline": "2026-10-12",
+      "recurring": true,
+      "multi_event": true,
+      "opportunity_type": "multi-event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "hi-kona-coffee-festival-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-hawaii",
+      "id": "opp_us_e1ce268cfd62f1158d88"
     }
   ]
 };
