@@ -41,3 +41,16 @@ test('US acquisition registry fails closed for unsupported states', async () => 
   assert.throws(() => registry.getStateConfig('ZZ'), /Unsupported or disabled US acquisition state/);
   assert.throws(() => registry.getStateConfig(''), /Unsupported or disabled US acquisition state/);
 });
+
+test('Colorado live-evidence corrections do not turn pricing or payment milestones into application deadlines', async () => {
+  const registry = await import('../../cloudflare-texas-acquisition/src/us-state-registry.js');
+  const colorado = registry.getStateConfig('CO');
+  const wildcraft = colorado.sources.find(source => source.id === 'co-wildcraft-winter-market-2026');
+  const giftShow = colorado.sources.find(source => source.id === 'co-country-christmas-gift-show-2026');
+
+  assert.equal(wildcraft.event_start, '2026-11-07');
+  assert.equal(wildcraft.application_deadline, undefined);
+  assert.equal(wildcraft.application_url, 'https://www.wildcraftmarkets.com/vendors');
+  assert.equal(giftShow.application_deadline, undefined);
+  assert.equal(giftShow.application_url, 'https://www.coloradogiftshow.com/looking-to-exhibit/get-a-booth-quote');
+});
