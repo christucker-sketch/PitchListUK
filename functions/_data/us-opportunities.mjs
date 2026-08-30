@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T17:42:32.095Z",
-  "source": "reviewed-us-kansas-cloud-promotion:4b0e56dcc28589a839e1624f4da432b9a4541e179c5f045ef7b1de561a56559f",
-  "total": 177,
+  "exported_at": "2026-08-30T17:44:12.925Z",
+  "source": "reviewed-us-nevada-cloud-promotion:4583caad7c9df8361dbc33bdc14e32bed84785da6b95d3d9dca4067e76fc49ee",
+  "total": 178,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -6782,6 +6782,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kansas",
       "id": "opp_us_fef5aa74536574183dc3"
+    },
+    {
+      "stable_id": "opp_us_f876e3ae964adf4ea828",
+      "event_name": "Power of the Purse 2026 Vendor Application",
+      "organiser": "Nevada Women’s Fund",
+      "source_url": "https://form.jotform.com/261587508355163",
+      "application_url": "https://form.jotform.com/261587508355163",
+      "location": "Reno",
+      "locality": "Reno",
+      "region": "Nevada",
+      "region_code": "NV",
+      "region_name": "Nevada",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "currency": "USD",
+      "postal_code": "89502",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-20",
+      "event_end": "2026-11-20",
+      "application_deadline": "2026-09-11",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nv-power-purse-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nevada",
+      "id": "opp_us_f876e3ae964adf4ea828"
     }
   ]
 };
