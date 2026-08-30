@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { assertApprovedStateSources, buildStateStagingManifest, createStateAdapter, requireState } from '../lib/us-state-acquisition-core.js';
-import { applicationRouteAttestation, runApprovedStateStaging } from '../lib/us-state-staging-runner.js';
+import { applicationRouteAttestation, explicitLiveEventDates, runApprovedStateStaging } from '../lib/us-state-staging-runner.js';
+import { TENNESSEE_SOURCES } from '../config/tennessee-source-registry.js';
 
 const texas = { code: 'TX', name: 'Texas', slug: 'texas', jurisdiction: 'US-TX' };
 const source = { id: 'tx-test', name: 'Test Vendor Market', organiser: 'Test Market Association', locality: 'Austin', recurring: false, event_start: '2026-10-10', event_end: '2026-10-10', source_url: 'https://example.com/event', application_url: 'https://example.com/apply', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX', status: 'approved-pilot' };
@@ -189,6 +190,49 @@ test('contradictory exact event dates discovered in live text are held', async (
   assert.equal(manifest.held[0].reason, 'live_event_date_mismatch');
   assert.equal(manifest.held[0].source_event_date, '2026-12-05');
   assert.deepEqual(manifest.held[0].live_event_dates, ['2026-12-06']);
+});
+
+test('abbreviated live event date ranges attest both exact endpoints', () => {
+  assert.deepEqual(explicitLiveEventDates('OCT 1\u20134, 2026 Tickets and more information', '2026'), [
+    '2026-10-01',
+    '2026-10-04'
+  ]);
+  const oktoberfest = TENNESSEE_SOURCES.find(item => item.id === 'tn-nashville-oktoberfest-2026');
+  assert.equal(oktoberfest.event_start, '2026-10-01');
+  assert.equal(oktoberfest.event_end, '2026-10-04');
+});
+
+test('production fetches hold one-off registry dates without exact live attestation', async () => {
+  const manifest = await runApprovedStateStaging(texas, {
+    sources: [{ ...source, source_url: 'https://example.com/event', application_url: 'https://example.com/event' }],
+    generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      url: 'https://example.com/event',
+      fetch_route: 'source',
+      title: '2026 Vendor Application',
+      text: 'Vendor applications are open for this festival.'
+    })
+  });
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held[0].reason, 'live_event_date_unattested');
+});
+
+test('live date ranges must match both registered endpoints', async () => {
+  const oktoberfest = TENNESSEE_SOURCES.find(item => item.id === 'tn-nashville-oktoberfest-2026');
+  const tennessee = { code: 'TN', name: 'Tennessee', slug: 'tennessee', jurisdiction: 'US-TN' };
+  const manifest = await runApprovedStateStaging(tennessee, {
+    sources: [{ ...oktoberfest, event_start: '2026-10-08', event_end: '2026-10-11' }],
+    generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      url: oktoberfest.source_url,
+      fetch_route: 'source',
+      title: oktoberfest.name,
+      text: 'Vendor applications close September 7, 2026. OCT 1\u20134, 2026 Tickets and more information.'
+    })
+  });
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held[0].reason, 'live_event_date_mismatch');
+  assert.deepEqual(manifest.held[0].live_event_dates, ['2026-10-01', '2026-10-04']);
 });
 
 test('unrelated logistics deadlines are not emitted as application deadlines', async () => {
