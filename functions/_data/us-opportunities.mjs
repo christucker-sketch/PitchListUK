@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T11:08:51.609Z",
-  "source": "reviewed-us-maryland-cloud-promotion:de2b7a423c85ec4e5359ae5d3ae732e6176246de9e698a53a9dbd82a02b80902",
-  "total": 165,
+  "exported_at": "2026-08-30T11:09:53.088Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:e4b72c40ac4b38616e680796e1b14c52193b900aa008ba7fc2437fe3b71890c3",
+  "total": 166,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -6330,6 +6330,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-maryland",
       "id": "opp_us_90177e4a57aadf014081"
+    },
+    {
+      "stable_id": "opp_us_559d75ac803803db6bb9",
+      "event_name": "Viking Fest Minnesota 2026 Vendor Application",
+      "organiser": "Viking Fest Minnesota",
+      "source_url": "https://vikingfest.com/vendors/",
+      "application_url": "https://vikingfest.com/vendors/",
+      "location": "Farmington",
+      "locality": "Farmington",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-18",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": true,
+      "opportunity_type": "multi-event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-viking-fest-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_559d75ac803803db6bb9"
     }
   ]
 };
