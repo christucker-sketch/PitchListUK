@@ -4,11 +4,13 @@ import assert from 'node:assert/strict';
 import {
   advanceAfterResult,
   compactStatus,
+  ciRollupState,
   initialState,
   parseCompactWorkflowOutput,
   parseInstanceId,
   parseWorkflowStatus,
   repositoryHeadAcceptable,
+  validateAutoMergeCandidate,
   retryClosedReviewState,
   retryFailedWorkflowState
 } from '../../cloudflare-texas-acquisition/scripts/rollout-controller.mjs';
@@ -102,4 +104,43 @@ test('terminated or errored Workflow can be checkpointed and safely rerun at the
   assert.equal(ready.active_instance, null);
   assert.equal(ready.failed_instances.at(-1).reason, 'zero_addition_promotion_retry_loop');
   assert.throws(() => retryFailedWorkflowState(running, { workflowStatus: 'running', reason: 'bad' }), /only failed instances/);
+});
+
+test('auto-merge accepts only an exact-head snapshot PR with successful verify CI and complete evidence', () => {
+  const baseSha = 'a'.repeat(40);
+  const headOid = 'b'.repeat(40);
+  const result = {
+    state_code: 'IL', state_name: 'Illinois', before: 105, after: 112, additions: 7,
+    staged_count: 7, evidence_passed_count: 7,
+    publication: {
+      pr_number: 110,
+      branch: `data/cloud-illinois-growth-1234567890abcdef-base-${baseSha.slice(0, 16)}`
+    }
+  };
+  const pr = {
+    number: 110, state: 'OPEN', isDraft: false, baseRefName: 'main', baseRefOid: baseSha,
+    headRefName: result.publication.branch, headRefOid: headOid, mergeable: 'MERGEABLE',
+    commits: [{ oid: headOid }], files: [{ path: 'functions/_data/us-opportunities.mjs', additions: 10, deletions: 3 }],
+    statusCheckRollup: [{ __typename: 'CheckRun', name: 'verify', status: 'COMPLETED', conclusion: 'SUCCESS' }],
+    body: [
+      '- state: Illinois (IL)',
+      '- production snapshot: 105 -> 112',
+      '- net-new additions: 7',
+      '- deterministic evidence receipts: 7/7 passed',
+      '- no automatic merge or deploy requested'
+    ].join('\n')
+  };
+  assert.equal(ciRollupState(pr.statusCheckRollup), 'passed');
+  assert.equal(validateAutoMergeCandidate(pr, result, { baseSha, snapshotPath: 'functions/_data/us-opportunities.mjs' }), headOid);
+  assert.throws(() => validateAutoMergeCandidate({ ...pr, headRefOid: 'c'.repeat(40) }, result, { baseSha, snapshotPath: 'functions/_data/us-opportunities.mjs' }), /one exact reviewed head/);
+  assert.throws(() => validateAutoMergeCandidate({ ...pr, files: [{ path: 'README.md' }] }, result, { baseSha, snapshotPath: 'functions/_data/us-opportunities.mjs' }), /outside the production snapshot/);
+  assert.throws(() => validateAutoMergeCandidate(pr, { ...result, evidence_passed_count: 6 }, { baseSha, snapshotPath: 'functions/_data/us-opportunities.mjs' }), /complete deterministic evidence/);
+});
+
+test('CI rollup fails closed on missing verify, failure or unknown check types', () => {
+  assert.equal(ciRollupState([]), 'pending');
+  assert.equal(ciRollupState([{ __typename: 'CheckRun', name: 'verify', status: 'IN_PROGRESS', conclusion: '' }]), 'pending');
+  assert.equal(ciRollupState([{ __typename: 'CheckRun', name: 'verify', status: 'COMPLETED', conclusion: 'FAILURE' }]), 'failed');
+  assert.equal(ciRollupState([{ __typename: 'CheckRun', name: 'lint', status: 'COMPLETED', conclusion: 'SUCCESS' }]), 'failed');
+  assert.equal(ciRollupState([{ __typename: 'Unexpected' }]), 'failed');
 });
