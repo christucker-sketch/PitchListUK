@@ -7,7 +7,8 @@ import {
   initialState,
   parseCompactWorkflowOutput,
   parseInstanceId,
-  parseWorkflowStatus
+  parseWorkflowStatus,
+  repositoryHeadAcceptable
 } from '../../cloudflare-texas-acquisition/scripts/rollout-controller.mjs';
 
 test('controller parses only compact Workflow output instead of exposing snapshots', () => {
@@ -60,4 +61,13 @@ test('compact status preserves resumable active Workflow metadata', () => {
   state.status = 'running';
   state.active_instance = { id: `cf_${'c'.repeat(64)}`, state_name: 'Illinois', batch_count: 1 };
   assert.deepEqual(compactStatus(state).active_instance, state.active_instance);
+});
+
+test('repository preflight permits only an ancestor main while reconciling a merged review', () => {
+  const local = 'a'.repeat(40);
+  const remote = 'b'.repeat(40);
+  assert.equal(repositoryHeadAcceptable(local, local, local), true);
+  assert.equal(repositoryHeadAcceptable(local, remote, local, false), false);
+  assert.equal(repositoryHeadAcceptable(local, remote, local, true), true);
+  assert.equal(repositoryHeadAcceptable(local, remote, 'c'.repeat(40), true), false);
 });

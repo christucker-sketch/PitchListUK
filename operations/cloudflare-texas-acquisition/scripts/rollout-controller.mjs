@@ -43,6 +43,10 @@ export function parseWorkflowStatus(output) {
   return 'unknown';
 }
 
+export function repositoryHeadAcceptable(head, originMain, mergeBase, allowBehind = false) {
+  return head === originMain || (allowBehind && mergeBase === head);
+}
+
 export function parseCompactWorkflowOutput(output, stateName) {
   const text = stripAnsi(output);
   const marker = `Name:      emit compact ${stateName} rollout result`;
@@ -147,13 +151,16 @@ function wranglerArgs(envFile, tail) {
   return ['--yes', 'wrangler@4.127.0', ...tail, '--config', workerConfig, '--env-file', envFile];
 }
 
-function assertRepositoryReady() {
+function assertRepositoryReady({ allowBehind = false } = {}) {
   if (run('git', ['status', '--short']).trim()) throw new Error('Repository worktree is not clean');
   if (run('git', ['branch', '--show-current']).trim() !== 'main') throw new Error('Controller must run from main');
   run('git', ['fetch', 'origin', 'main', '--quiet']);
   const head = run('git', ['rev-parse', 'HEAD']).trim();
   const originMain = run('git', ['rev-parse', 'origin/main']).trim();
-  if (head !== originMain) throw new Error(`Local main ${head} does not match origin/main ${originMain}`);
+  const mergeBase = run('git', ['merge-base', head, originMain]).trim();
+  if (!repositoryHeadAcceptable(head, originMain, mergeBase, allowBehind)) {
+    throw new Error(`Local main ${head} does not safely match origin/main ${originMain}`);
+  }
   const open = JSON.parse(run('gh', ['pr', 'list', '--repo', 'christucker-sketch/PitchListUK', '--state', 'open', '--limit', '100', '--json', 'number,headRefName,title']));
   const dataPrs = open.filter(pr => String(pr.headRefName || '').startsWith('data/cloud-'));
   if (dataPrs.length) throw new Error(`Unresolved acquisition PR: #${dataPrs[0].number}`);
@@ -254,7 +261,7 @@ export function main(argv = process.argv.slice(2)) {
   }
   if (command !== 'run') throw new Error('Usage: rollout-controller.mjs init|status|run');
 
-  assertRepositoryReady();
+  assertRepositoryReady({ allowBehind: Boolean(state.pending_review) });
   if (state.pending_review) {
     state = reconcileReview(state);
     saveState(stateFile, state);
