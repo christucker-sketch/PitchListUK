@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T11:22:02.346Z",
-  "source": "reviewed-us-kentucky-cloud-promotion:d4a794bb2105476274c8a8ab5acac512194f79c64e1484ad7c831ea5612845e2",
-  "total": 171,
+  "exported_at": "2026-08-30T11:23:04.807Z",
+  "source": "reviewed-us-louisiana-cloud-promotion:ee8688abbae7ecd0d62468a8ff385057762df6bf1a4efdff5fd7110bfc3a0d36",
+  "total": 172,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -6558,6 +6558,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kentucky",
       "id": "opp_us_51a1e3ab184d7d5e42f3"
+    },
+    {
+      "stable_id": "opp_us_bdab6b6d5773420bc297",
+      "event_name": "Louisiana Cattle Festival 2026 Arts and Crafts Vendor Application",
+      "organiser": "Louisiana Cattle Festival",
+      "source_url": "https://form.jotform.com/260146488235056",
+      "application_url": "https://form.jotform.com/260146488235056",
+      "location": "Abbeville",
+      "locality": "Abbeville",
+      "region": "Louisiana",
+      "region_code": "LA",
+      "region_name": "Louisiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-LA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-02",
+      "event_end": "2026-10-04",
+      "application_deadline": "2026-09-25",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "la-cattle-festival-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-louisiana",
+      "id": "opp_us_bdab6b6d5773420bc297"
     }
   ]
 };
