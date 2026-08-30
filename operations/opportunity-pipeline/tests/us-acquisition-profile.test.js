@@ -79,6 +79,24 @@ test('US classifier does not confuse a future closing date with an already close
   assert.ok(!result.negativeSignals.includes('applications closed'));
 });
 
+test('US classifier rejects applications restricted to returning or invited vendors', () => {
+  const result = classifyUsOpportunityEvidence({
+    title: '2026 Vendor Application',
+    body: 'We are only accepting applications for our 2026 season from returning vendors or those invited to apply directly by the market manager. Everyone else should not apply.'
+  });
+  assert.equal(result.decision, 'rejected');
+  assert.ok(result.negativeSignals.includes('application restricted to returning or invited vendors'));
+});
+
+test('US classifier keeps genuinely open applications that also welcome returning vendors', () => {
+  const result = classifyUsOpportunityEvidence({
+    title: '2026 Vendor Application',
+    body: 'Returning vendors are welcome, and new vendors may apply through this open application.'
+  });
+  assert.equal(result.decision, 'candidate');
+  assert.ok(!result.negativeSignals.includes('application restricted to returning or invited vendors'));
+});
+
 test('US classifier rejects procurement even when the page says vendor', () => {
   const result = classifyUsOpportunityEvidence({
     title: 'Vendor Registration',

@@ -12,6 +12,11 @@ const CLOSED_APPLICATION_PATTERNS = [
   /\bno longer accepting (?:vendor )?applications?\b/i,
   /\bvendor applications? closed\b/i
 ];
+const RESTRICTED_APPLICATION_PATTERNS = [
+  /\bonly accepting applications?[^.]{0,240}\b(?:returning vendors?|those invited|invited to apply|by invitation)\b/i,
+  /\bapplications? (?:are )?(?:open|available) (?:only|exclusively) to (?:returning|invited)\b/i,
+  /\b(?:returning vendors?|invited applicants?) only\b/i
+];
 
 function normaliseText(value) {
   return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
@@ -28,6 +33,9 @@ function classifyUsOpportunityEvidence({ title = '', body = '', sourceUrl = '', 
   const negativeSignals = findSignals(combined, US_NEGATIVE_TERMS);
   if (CLOSED_APPLICATION_PATTERNS.some(pattern => pattern.test(combined))) {
     negativeSignals.push('applications closed');
+  }
+  if (RESTRICTED_APPLICATION_PATTERNS.some(pattern => pattern.test(combined))) {
+    negativeSignals.push('application restricted to returning or invited vendors');
   }
   const hardNegativeSignals = negativeSignals.filter(term => !CONTEXTUAL_SPONSOR_TERMS.has(term));
   const sponsorshipSignals = negativeSignals.filter(term => CONTEXTUAL_SPONSOR_TERMS.has(term));
@@ -76,6 +84,7 @@ module.exports = {
   normaliseText,
   findSignals,
   CLOSED_APPLICATION_PATTERNS,
+  RESTRICTED_APPLICATION_PATTERNS,
   classifyUsOpportunityEvidence,
   validateTexasPilotRow
 };
