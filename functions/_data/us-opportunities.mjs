@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T17:46:47.121Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:e922a7b70ac8107dd3fdf8978655408df0d5ad6d9b89757350a0b3b9f415a728",
-  "total": 182,
+  "exported_at": "2026-08-30T17:47:36.539Z",
+  "source": "reviewed-us-nebraska-cloud-promotion:3f6ab8f98ee4629bd331d4f7d7da7c8af5f3aaa2efe23c237fe2f0ff661c8670",
+  "total": 183,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -6971,6 +6971,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_5727499dbc68a317f76c"
+    },
+    {
+      "stable_id": "opp_us_a38b93b0e7f363af30a6",
+      "event_name": "Omaha Holiday Boutique 2026 Vendor Application",
+      "organiser": "Marketplace Events",
+      "source_url": "https://www.omahaholidayboutique.com/looking-to-exhibit/booth-rates",
+      "application_url": "https://www.omahaholidayboutique.com/looking-to-exhibit/booth-rates",
+      "location": "Omaha",
+      "locality": "Omaha",
+      "region": "Nebraska",
+      "region_code": "NE",
+      "region_name": "Nebraska",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-13",
+      "event_end": "2026-11-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ne-omaha-holiday-boutique-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nebraska",
+      "id": "opp_us_a38b93b0e7f363af30a6"
     }
   ]
 };
