@@ -33,7 +33,7 @@ function extractStateOpportunity(page, options={}) {
   const geography=typeof options.resolvePostal==='function'&&postalCode?options.resolvePostal(postalCode,options):null;
   const localityPattern=new RegExp(`\\b([A-Z][A-Za-z .'-]+),\\s*${state.code}\\s+\\d{5}(?:-\\d{4})?\\b`);
   const locality=normaliseText(page.locality||page.city||geography?.locality||firstMatch(text,[localityPattern]));
-  const eventStart=page.event_start||extractUsDate(text,['event date','date','starts','start date']); const eventEnd=page.event_end||''; const applicationDeadline=page.application_deadline||extractUsDate(text,['application deadline','apply by','deadline','applications close','vendor deadline']);
+  const eventStart=page.event_start||extractUsDate(text,['event date','date','starts','start date']); const eventEnd=page.event_end||''; const applicationDeadline=page.application_deadline||extractUsDate(text,['application deadline','apply by','applications close','vendor deadline']);
   const recurring=Boolean(page.recurring)||RECURRING_TERMS.some(t=>text.toLowerCase().includes(t)); const multiEvent=Boolean(page.multi_event); const reasons=[];
   if(!sourceUrl)reasons.push('missing_source_url'); if(!applicationUrl)reasons.push('missing_application_route'); if(!eventName)reasons.push('missing_event_name'); if(!organiser)reasons.push('missing_organiser'); if(!locality&&!geography)reasons.push(`missing_${state.code.toLowerCase()}_locality`); if(!recurring&&!multiEvent&&!eventStart)reasons.push('missing_event_date');
   const status=reasons.length?'review':'candidate'; const hasPageCoordinates=Number.isFinite(Number(page.latitude))&&Number.isFinite(Number(page.longitude)); const temporalIdentity=eventStart||(multiEvent?'multi-event':(recurring?'recurring':''));
