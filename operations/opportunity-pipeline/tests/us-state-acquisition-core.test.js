@@ -161,6 +161,31 @@ test('contradictory exact event dates discovered in live text are held', async (
   assert.deepEqual(manifest.held[0].live_event_dates, ['2026-12-06']);
 });
 
+test('unrelated logistics deadlines are not emitted as application deadlines', async () => {
+  const colorado = { code: 'CO', name: 'Colorado', slug: 'colorado', jurisdiction: 'US-CO' };
+  const giftShow = {
+    ...source,
+    id: 'co-gift-show',
+    name: 'Colorado Country Christmas Gift Show 2026 Exhibitor Interest Form',
+    region_code: 'CO',
+    jurisdiction: 'US-CO',
+    locality: 'Colorado Springs',
+    event_start: '2026-11-13',
+    event_end: '2026-11-15'
+  };
+  const manifest = await runApprovedStateStaging(colorado, {
+    sources: [giftShow],
+    generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      title: giftShow.name,
+      text: 'Vendor application and exhibitor interest are open. Booking deadline October 27, 2026. Vendor Services Discount Deadline October 26, 2026. Looking to exhibit? Get a booth quote.'
+    })
+  });
+
+  assert.equal(manifest.staged_count, 1);
+  assert.equal(manifest.rows[0].application_deadline, '');
+});
+
 test('state adapters require stage promote and plan contracts', () => {
   const adapter = createStateAdapter(texas, { stage() {}, promote() {}, plan() {} });
   assert.equal(adapter.state.code, 'TX');
