@@ -217,6 +217,52 @@ test('production fetches hold one-off registry dates without exact live attestat
   assert.equal(manifest.held[0].reason, 'live_event_date_unattested');
 });
 
+test('production fetches also hold recurring registry dates without exact live attestation', async () => {
+  const recurring = {
+    ...source,
+    id: 'tx-recurring-unattested',
+    recurring: true,
+    multi_event: true,
+    source_url: 'https://example.com/markets',
+    application_url: 'https://example.com/markets'
+  };
+  const manifest = await runApprovedStateStaging(texas, {
+    sources: [recurring],
+    generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      url: recurring.source_url,
+      fetch_route: 'source',
+      title: '2026 Recurring Market Vendor Applications',
+      text: 'Vendor applications are open for our 2026 markets.'
+    })
+  });
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held[0].reason, 'live_event_date_unattested');
+});
+
+test('production recurring date ranges must match both registered endpoints', async () => {
+  const recurring = {
+    ...source,
+    id: 'tx-recurring-mismatch',
+    recurring: true,
+    multi_event: true,
+    source_url: 'https://example.com/markets',
+    application_url: 'https://example.com/markets'
+  };
+  const manifest = await runApprovedStateStaging(texas, {
+    sources: [recurring],
+    generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      url: recurring.source_url,
+      fetch_route: 'source',
+      title: '2026 Recurring Market Vendor Applications',
+      text: 'Festival events run October 11-12, 2026.'
+    })
+  });
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held[0].reason, 'live_event_date_mismatch');
+});
+
 test('live date ranges must match both registered endpoints', async () => {
   const oktoberfest = TENNESSEE_SOURCES.find(item => item.id === 'tn-nashville-oktoberfest-2026');
   const tennessee = { code: 'TN', name: 'Tennessee', slug: 'tennessee', jurisdiction: 'US-TN' };

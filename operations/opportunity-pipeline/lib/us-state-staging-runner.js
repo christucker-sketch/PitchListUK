@@ -180,7 +180,7 @@ export async function runApprovedStateStaging(state, options = {}) {
 
     const liveEventDates = explicitLiveEventDates(liveText, sourceEventYear || asOfDate.slice(0, 4));
     const sourceEventEnd = normaliseDate(source.event_end) || sourceEventDate;
-    if (fetched?.fetch_route && source.recurring !== true && sourceEventDate && liveEventDates.length === 0) {
+    if (fetched?.fetch_route && sourceEventDate && liveEventDates.length === 0) {
       held.push({
         candidate,
         reason: 'live_event_date_unattested',
@@ -189,7 +189,7 @@ export async function runApprovedStateStaging(state, options = {}) {
       });
       continue;
     }
-    if (source.recurring !== true && sourceEventDate && liveEventDates.length &&
+    if ((fetched?.fetch_route || source.recurring !== true) && sourceEventDate && liveEventDates.length &&
         (!liveEventDates.includes(sourceEventDate) || (sourceEventEnd && !liveEventDates.includes(sourceEventEnd)))) {
       held.push({
         candidate,
