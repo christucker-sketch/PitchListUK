@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { assertApprovedStateSources, buildStateStagingManifest, createStateAdapter, requireState } from '../lib/us-state-acquisition-core.js';
 import { applicationRouteAttestation, explicitLiveEventDates, runApprovedStateStaging } from '../lib/us-state-staging-runner.js';
 import { TENNESSEE_SOURCES } from '../config/tennessee-source-registry.js';
+import { NEW_HAMPSHIRE_SOURCES } from '../config/new-hampshire-source-registry.js';
 
 const texas = { code: 'TX', name: 'Texas', slug: 'texas', jurisdiction: 'US-TX' };
 const source = { id: 'tx-test', name: 'Test Vendor Market', organiser: 'Test Market Association', locality: 'Austin', recurring: false, event_start: '2026-10-10', event_end: '2026-10-10', source_url: 'https://example.com/event', application_url: 'https://example.com/apply', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX', status: 'approved-pilot' };
@@ -70,6 +71,11 @@ test('explicit source holds fail closed before any network fetch', async () => {
   assert.equal(manifest.staged_count, 0);
   assert.equal(manifest.held[0].reason, 'source_configured_hold');
   assert.equal(manifest.held[0].hold_detail, 'cloudflare_cpu_limit_on_route');
+});
+
+test('New Hampshire CPU-heavy Squarespace route remains held fail closed', () => {
+  const heldSource = NEW_HAMPSHIRE_SOURCES.find(candidate => candidate.id === 'nh-north-country-night-market-2026');
+  assert.equal(heldSource?.acquisition_hold_reason, 'cloudflare_cpu_limit_on_squarespace_route');
 });
 
 test('expired application deadlines are held before fetch and cannot reach promotion', async () => {
