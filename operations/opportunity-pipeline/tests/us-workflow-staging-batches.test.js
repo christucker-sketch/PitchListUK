@@ -63,13 +63,15 @@ test('source batching reserves all retry and fallback subrequests and rejects ba
 
 test('state-specific CPU isolation can force one source per Workflow batch', async () => {
   const { getStateConfig } = await import('../../cloudflare-texas-acquisition/src/us-state-registry.js');
-  const connecticut = getStateConfig('CT');
-  const batches = stagingSourceBatches(connecticut.sources, { maxSources: connecticut.workflow_batch_max_sources });
-  assert.equal(connecticut.workflow_batch_max_sources, 1);
-  assert.equal(batches.length, connecticut.sources.length);
-  assert.ok(batches.every(batch => batch.length === 1));
-  assert.deepEqual(batches.flat().map(source => source.id), connecticut.sources.map(source => source.id));
-  assert.throws(() => stagingSourceBatches(connecticut.sources, { maxSources: 0 }), /positive integer/);
+  for (const stateCode of ['CT', 'NH']) {
+    const stateConfig = getStateConfig(stateCode);
+    const batches = stagingSourceBatches(stateConfig.sources, { maxSources: stateConfig.workflow_batch_max_sources });
+    assert.equal(stateConfig.workflow_batch_max_sources, 1);
+    assert.equal(batches.length, stateConfig.sources.length);
+    assert.ok(batches.every(batch => batch.length === 1));
+    assert.deepEqual(batches.flat().map(source => source.id), stateConfig.sources.map(source => source.id));
+    assert.throws(() => stagingSourceBatches(stateConfig.sources, { maxSources: 0 }), /positive integer/);
+  }
 });
 
 test('batch merge preserves controls, counts and cross-batch deduplication', () => {

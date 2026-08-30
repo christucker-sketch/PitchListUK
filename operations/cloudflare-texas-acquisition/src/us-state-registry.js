@@ -61,7 +61,7 @@ export const US_STATE_ACQUISITION = Object.freeze({
   IA: entry('IA','Iowa','iowa',300,IOWA_SOURCES), KS: entry('KS','Kansas','kansas',310,KANSAS_SOURCES), NV: entry('NV','Nevada','nevada',320,NEVADA_SOURCES), UT: entry('UT','Utah','utah',330,UTAH_SOURCES), AR: entry('AR','Arkansas','arkansas',340,ARKANSAS_SOURCES),
   NE: entry('NE','Nebraska','nebraska',350,NEBRASKA_SOURCES), NM: entry('NM','New Mexico','new-mexico',360,NEW_MEXICO_SOURCES), ID: entry('ID','Idaho','idaho',370,IDAHO_SOURCES), ME: entry('ME','Maine','maine',380,MAINE_SOURCES),
   AK: entry('AK','Alaska','alaska',390,ALASKA_SOURCES), HI: entry('HI','Hawaii','hawaii',400,HAWAII_SOURCES), MS: entry('MS','Mississippi','mississippi',410,MISSISSIPPI_SOURCES), MT: entry('MT','Montana','montana',420,MONTANA_SOURCES),
-  DE: entry('DE','Delaware','delaware',430,DELAWARE_SOURCES), NH: entry('NH','New Hampshire','new-hampshire',440,NEW_HAMPSHIRE_SOURCES), ND: entry('ND','North Dakota','north-dakota',450,NORTH_DAKOTA_SOURCES), RI: entry('RI','Rhode Island','rhode-island',460,RHODE_ISLAND_SOURCES),
+  DE: entry('DE','Delaware','delaware',430,DELAWARE_SOURCES), NH: entry('NH','New Hampshire','new-hampshire',440,NEW_HAMPSHIRE_SOURCES,{ workflow_batch_max_sources: 1 }), ND: entry('ND','North Dakota','north-dakota',450,NORTH_DAKOTA_SOURCES), RI: entry('RI','Rhode Island','rhode-island',460,RHODE_ISLAND_SOURCES),
   SD: entry('SD','South Dakota','south-dakota',470,SOUTH_DAKOTA_SOURCES), VT: entry('VT','Vermont','vermont',480,VERMONT_SOURCES), WV: entry('WV','West Virginia','west-virginia',490,WEST_VIRGINIA_SOURCES), WY: entry('WY','Wyoming','wyoming',500,WYOMING_SOURCES)
 });
 
