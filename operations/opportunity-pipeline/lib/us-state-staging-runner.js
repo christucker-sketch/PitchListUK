@@ -23,6 +23,42 @@ function stagingDate(generatedAt) {
   return normaliseDate(explicit) || new Date().toISOString().slice(0, 10);
 }
 
+const MONTHS = Object.freeze({
+  january: '01', february: '02', march: '03', april: '04', may: '05', june: '06',
+  july: '07', august: '08', september: '09', october: '10', november: '11', december: '12'
+});
+
+function explicitNamedDates(value, defaultYear, sentenceFilter) {
+  const dates = new Set();
+  const sentences = String(value || '').split(/[.!?\n]+/);
+  const pattern = /\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(20\d{2}))?\b/gi;
+  for (const sentence of sentences) {
+    if (!sentenceFilter(sentence)) continue;
+    for (const match of sentence.matchAll(pattern)) {
+      const year = match[3] || defaultYear;
+      const month = MONTHS[match[1].toLowerCase()];
+      const day = String(Number(match[2])).padStart(2, '0');
+      const date = normaliseDate(`${year}-${month}-${day}`);
+      if (date && Number(day) >= 1 && Number(day) <= 31) dates.add(date);
+    }
+  }
+  return [...dates].sort();
+}
+
+export function explicitApplicationDeadlines(value, defaultYear) {
+  return explicitNamedDates(value, defaultYear, sentence =>
+    /\b(?:applications?|applying|apply)\b/i.test(sentence) &&
+    /\b(?:close[sd]?|closing|deadline|due|through|until|by)\b/i.test(sentence)
+  );
+}
+
+export function explicitLiveEventDates(value, defaultYear) {
+  return explicitNamedDates(value, defaultYear, sentence =>
+    /\b(?:event|market|festival|fair)\b/i.test(sentence) &&
+    !/\b(?:applications?|applying|apply)\b[^.]{0,120}\b(?:close[sd]?|closing|deadline|due)\b/i.test(sentence)
+  );
+}
+
 export function explicitApplicationYears(value) {
   const years = new Set();
   const sentences = String(value || '').split(/[.!?\n]+/);
@@ -80,14 +116,39 @@ export async function runApprovedStateStaging(state, options = {}) {
       continue;
     }
 
-    const sourceEventYear = normaliseDate(source.event_start).slice(0, 4);
-    const liveApplicationYears = explicitApplicationYears(`${fetched?.title || ''}\n${fetched?.text || fetched?.body || ''}`);
+    const sourceEventDate = normaliseDate(source.event_start);
+    const sourceEventYear = sourceEventDate.slice(0, 4);
+    const liveText = `${fetched?.title || ''}\n${fetched?.text || fetched?.body || ''}`;
+    const liveApplicationYears = explicitApplicationYears(liveText);
     if (sourceEventYear && liveApplicationYears.length && !liveApplicationYears.includes(sourceEventYear)) {
       held.push({
         candidate,
         reason: 'live_application_year_mismatch',
         source_event_year: sourceEventYear,
         live_application_years: liveApplicationYears
+      });
+      continue;
+    }
+
+    const liveApplicationDeadlines = explicitApplicationDeadlines(liveText, sourceEventYear || asOfDate.slice(0, 4));
+    if (liveApplicationDeadlines.length && liveApplicationDeadlines.at(-1) < asOfDate) {
+      held.push({
+        candidate,
+        reason: 'application_deadline_passed',
+        application_deadline: liveApplicationDeadlines.at(-1),
+        as_of_date: asOfDate,
+        evidence_source: 'live_page_text'
+      });
+      continue;
+    }
+
+    const liveEventDates = explicitLiveEventDates(liveText, sourceEventYear || asOfDate.slice(0, 4));
+    if (source.recurring !== true && sourceEventDate && liveEventDates.length && !liveEventDates.includes(sourceEventDate)) {
+      held.push({
+        candidate,
+        reason: 'live_event_date_mismatch',
+        source_event_date: sourceEventDate,
+        live_event_dates: liveEventDates
       });
       continue;
     }
