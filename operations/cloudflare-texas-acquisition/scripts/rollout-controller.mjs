@@ -134,6 +134,25 @@ export function retryClosedReviewState(state, { prState, mergedAt = null, snapsh
   return next;
 }
 
+export function retryFailedWorkflowState(state, { workflowStatus, reason }) {
+  if (state.status !== 'running' || !state.active_instance?.id) throw new Error('No active Workflow can be retried');
+  if (!['errored', 'terminated'].includes(workflowStatus)) throw new Error(`Workflow is ${workflowStatus}; only failed instances can be retried`);
+  const cleanReason = String(reason || '').trim();
+  if (!cleanReason) throw new Error('Failed Workflow retry requires a reason');
+  const next = structuredClone(state);
+  next.failed_instances = Array.isArray(next.failed_instances) ? next.failed_instances : [];
+  next.failed_instances.push({
+    ...next.active_instance,
+    status: workflowStatus,
+    reason: cleanReason,
+    recorded_at: new Date().toISOString()
+  });
+  next.active_instance = null;
+  next.status = 'ready';
+  next.updated_at = new Date().toISOString();
+  return next;
+}
+
 function advanceBatchOrState(state, result) {
   if (Number(result.batch_number) < Number(result.batch_count)) {
     state.next_batch = Number(result.batch_number) + 1;
@@ -296,7 +315,20 @@ export function main(argv = process.argv.slice(2)) {
     process.stdout.write(`${JSON.stringify(compactStatus(state))}\n`);
     return;
   }
-  if (command !== 'run') throw new Error('Usage: rollout-controller.mjs init|status|retry-closed|run');
+  if (command === 'retry-failed') {
+    assertRepositoryReady();
+    const active = state.active_instance;
+    if (!active?.id) throw new Error('No active Workflow can be retried');
+    const workflowStatus = parseWorkflowStatus(describeWorkflow(active.id, envFile));
+    state = retryFailedWorkflowState(state, {
+      workflowStatus,
+      reason: argumentValue(argv, '--reason', '')
+    });
+    saveState(stateFile, state);
+    process.stdout.write(`${JSON.stringify(compactStatus(state))}\n`);
+    return;
+  }
+  if (command !== 'run') throw new Error('Usage: rollout-controller.mjs init|status|retry-closed|retry-failed|run');
 
   assertRepositoryReady({ allowBehind: Boolean(state.pending_review) });
   if (state.pending_review) {

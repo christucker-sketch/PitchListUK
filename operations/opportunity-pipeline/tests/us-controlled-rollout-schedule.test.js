@@ -40,8 +40,10 @@ test('Worker config has no cron while manual single-state Workflow routing remai
     workerSource.indexOf('read current GitHub ${state.name} production snapshot') < workerSource.indexOf('stagingSourceBatches(state.sources)'),
     'current production snapshot must be read before network-heavy staging batches'
   );
-  assert.match(workerSource, /if \(Number\(planned\?\.summary\?\.additions \|\| 0\) > 0\)/);
+  assert.match(workerSource, /if \(promotion && Number\(planned\?\.summary\?\.additions \|\| 0\) > 0\)/);
   assert.match(workerSource, /reason: 'no_net_new_rows'/);
+  assert.match(workerSource, /if \(Number\(staging\.staged_count \|\| 0\) > 0\)/);
+  assert.match(workerSource, /promotion_rows_sha256: promotion\?\.rows_sha256 \|\| null/);
   assert.doesNotMatch(workerSource, /for \(let index = 0; index < sourceBatches\.length/);
   assert.match(workerSource, /requires batch_number between 1 and/);
   assert.match(workerSource, /adapter\.stage\(selectedSources\)/);
