@@ -185,6 +185,20 @@ function acquisitionAdapter(state) {
   });
 }
 
+function reasonCounts(items = []) {
+  const counts = {};
+  for (const item of items) {
+    const reasons = Array.isArray(item?.reasons) && item.reasons.length
+      ? item.reasons
+      : [item?.reason || 'unspecified'];
+    for (const reason of reasons) {
+      const key = String(reason || 'unspecified');
+      counts[key] = (counts[key] || 0) + 1;
+    }
+  }
+  return counts;
+}
+
 export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
     const state = getStateConfig(event?.payload?.state_code || 'TX');
@@ -219,7 +233,7 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
       }, async () => openDataPullRequest(this.env, state, planned, promotion, base, selectedSources.length));
     }
 
-    return {
+    const compactResult = {
       state_code: state.code,
       state_name: state.name,
       trigger: event?.payload?.trigger || (event.schedule ? 'schedule' : 'manual'),
@@ -234,8 +248,11 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
       after: planned.summary.after_count,
       additions: planned.summary.additions,
       promotion_rows_sha256: promotion.rows_sha256,
+      held_reasons: reasonCounts(staging.held),
+      rejected_reasons: reasonCounts(staging.rejected),
       publication
     };
+    return step.do(`emit compact ${state.name} rollout result`, async () => compactResult);
   }
 }
 

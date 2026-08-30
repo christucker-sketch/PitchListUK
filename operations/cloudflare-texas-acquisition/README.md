@@ -55,3 +55,16 @@ The public `GET /health` endpoint reports only service health and reviewed sourc
 3. Confirm the resulting PR changes only the US snapshot and passes GitHub CI.
 4. Merge the exact reviewed PR head; do not deploy the customer-facing site as part of this Worker rollout.
 5. Refresh local `main`, then trigger the next unfinished state only after the previous state is fully resolved.
+
+## Compact sequential controller
+
+The controller keeps verbose Wrangler Workflow descriptions out of the agent context. It stores a small atomic checkpoint, triggers exactly one state batch at a time, automatically continues through zero-addition results, and stops whenever a data PR requires review. It resumes an already-running Workflow from its saved instance ID after a local interruption. It never reviews, merges or deploys.
+
+```bash
+export PITCHLIST_ROLLOUT_ENV_FILE=/absolute/path/to/external.env
+node operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs init --next IL --snapshot-count 105
+node operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs status
+node operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs run
+```
+
+Run it again only after the reported PR has been live-reviewed, passed CI and merged. On resume it verifies the merge, fast-forwards clean local `main`, checks the exact snapshot count, and advances to the next batch/state. Any dirty worktree, stale `main`, open acquisition PR, snapshot drift, errored Workflow or malformed compact result blocks further triggers.

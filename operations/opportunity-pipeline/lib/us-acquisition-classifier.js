@@ -5,6 +5,13 @@ const {
 } = require('../config/us-acquisition-profile.js');
 
 const CONTEXTUAL_SPONSOR_TERMS = new Set(['sponsorship only', 'become a sponsor']);
+const CLOSED_APPLICATION_PATTERNS = [
+  /\bapplications? (?:are |is )?(?:now )?closed\b/i,
+  /\bapplications? (?:period|window) (?:has |have )?(?:now )?closed\b/i,
+  /\bapplications? (?:period|window) (?:is |are )closed\b/i,
+  /\bno longer accepting (?:vendor )?applications?\b/i,
+  /\bvendor applications? closed\b/i
+];
 
 function normaliseText(value) {
   return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
@@ -19,6 +26,9 @@ function classifyUsOpportunityEvidence({ title = '', body = '', sourceUrl = '', 
   const combined = [title, body, sourceUrl, applicationUrl].join(' ');
   const positiveSignals = findSignals(combined, US_VENDOR_TERMS);
   const negativeSignals = findSignals(combined, US_NEGATIVE_TERMS);
+  if (CLOSED_APPLICATION_PATTERNS.some(pattern => pattern.test(combined))) {
+    negativeSignals.push('applications closed');
+  }
   const hardNegativeSignals = negativeSignals.filter(term => !CONTEXTUAL_SPONSOR_TERMS.has(term));
   const sponsorshipSignals = negativeSignals.filter(term => CONTEXTUAL_SPONSOR_TERMS.has(term));
 
@@ -65,6 +75,7 @@ function validateTexasPilotRow(row = {}) {
 module.exports = {
   normaliseText,
   findSignals,
+  CLOSED_APPLICATION_PATTERNS,
   classifyUsOpportunityEvidence,
   validateTexasPilotRow
 };
