@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-30T11:03:55.928Z",
-  "source": "reviewed-us-missouri-cloud-promotion:645c1ccec12fec62d24f936eb99f5e06c8e68f95c8585ad5cd9ee21f5ba12c77",
-  "total": 164,
+  "exported_at": "2026-08-30T11:08:51.609Z",
+  "source": "reviewed-us-maryland-cloud-promotion:de2b7a423c85ec4e5359ae5d3ae732e6176246de9e698a53a9dbd82a02b80902",
+  "total": 165,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -6290,6 +6290,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-missouri",
       "id": "opp_us_a2baec4e2844a1c7986b"
+    },
+    {
+      "stable_id": "opp_us_90177e4a57aadf014081",
+      "event_name": "West Annapolis Oktoberfest 2026 Vendor Application",
+      "organiser": "West Annapolis Business Association",
+      "source_url": "https://www.west-annapolis.com/oktoberfest-vendor-application",
+      "application_url": "https://www.west-annapolis.com/oktoberfest-vendor-application",
+      "location": "Annapolis",
+      "locality": "Annapolis",
+      "region": "Maryland",
+      "region_code": "MD",
+      "region_name": "Maryland",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MD",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "md-west-annapolis-oktoberfest-2026",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-maryland",
+      "id": "opp_us_90177e4a57aadf014081"
     }
   ]
 };
