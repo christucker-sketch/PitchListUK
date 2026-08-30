@@ -20,6 +20,7 @@ const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, '../../..');
 const workerConfig = path.join(repositoryRoot, 'operations/cloudflare-texas-acquisition/wrangler.jsonc');
 const workflowName = 'pitchlist-texas-acquisition';
+const githubRepository = 'christucker-sketch/PitchListUK';
 const defaultStateFile = path.join(os.homedir(), '.local/state/findpitches-us-rollout/controller.json');
 
 function stripAnsi(value) {
@@ -45,6 +46,69 @@ export function parseWorkflowStatus(output) {
 
 export function repositoryHeadAcceptable(head, originMain, mergeBase, allowBehind = false) {
   return head === originMain || (allowBehind && mergeBase === head);
+}
+
+export function ciRollupState(checks = []) {
+  if (!Array.isArray(checks) || checks.length === 0) return 'pending';
+  let verifyPassed = false;
+  for (const check of checks) {
+    const name = String(check?.name || check?.context || '');
+    const isVerify = /(?:^|\b)verify(?:$|\b)/i.test(name);
+    if (check?.__typename === 'CheckRun') {
+      if (check.status !== 'COMPLETED') return 'pending';
+      if (check.conclusion !== 'SUCCESS') return 'failed';
+      if (isVerify) verifyPassed = true;
+      continue;
+    }
+    if (check?.__typename === 'StatusContext') {
+      if (check.state === 'PENDING' || check.state === 'EXPECTED') return 'pending';
+      if (check.state !== 'SUCCESS') return 'failed';
+      if (isVerify) verifyPassed = true;
+      continue;
+    }
+    return 'failed';
+  }
+  return verifyPassed ? 'passed' : 'failed';
+}
+
+export function validateAutoMergeCandidate(pr, result, { baseSha, snapshotPath }) {
+  const additions = Number(result?.additions);
+  const staged = Number(result?.staged_count);
+  const evidence = Number(result?.evidence_passed_count);
+  const expectedBranch = String(result?.publication?.branch || '');
+  const expectedPr = Number(result?.publication?.pr_number);
+  if (!Number.isInteger(additions) || additions < 1 || Number(result.after) !== Number(result.before) + additions) {
+    throw new Error('Auto-merge result has inconsistent addition counts');
+  }
+  if (!Number.isInteger(staged) || staged < additions || evidence !== staged) {
+    throw new Error('Auto-merge result does not have complete deterministic evidence');
+  }
+  if (pr?.state !== 'OPEN' || pr?.isDraft || pr?.baseRefName !== 'main' || pr?.mergeable !== 'MERGEABLE') {
+    throw new Error('Auto-merge PR is not an open mergeable main-branch PR');
+  }
+  if (Number(pr?.number) !== expectedPr || pr?.headRefName !== expectedBranch || !expectedBranch.startsWith('data/cloud-')) {
+    throw new Error('Auto-merge PR identity does not match the Workflow result');
+  }
+  if (pr?.baseRefOid !== baseSha || !expectedBranch.endsWith(`-base-${String(baseSha).slice(0, 16)}`)) {
+    throw new Error('Auto-merge PR is not based on the exact current main SHA');
+  }
+  if (!/^[a-f0-9]{40}$/i.test(String(pr?.headRefOid || '')) || pr?.commits?.length !== 1 || pr.commits[0]?.oid !== pr.headRefOid) {
+    throw new Error('Auto-merge PR does not have one exact reviewed head commit');
+  }
+  if (pr?.files?.length !== 1 || pr.files[0]?.path !== snapshotPath) {
+    throw new Error('Auto-merge PR changes files outside the production snapshot');
+  }
+  const body = String(pr?.body || '');
+  const requiredBodyLines = [
+    `- state: ${result.state_name} (${result.state_code})`,
+    `- production snapshot: ${result.before} -> ${result.after}`,
+    `- net-new additions: ${additions}`,
+    `- deterministic evidence receipts: ${evidence}/${staged} passed`,
+    '- no automatic merge or deploy requested'
+  ];
+  if (requiredBodyLines.some(line => !body.includes(line))) throw new Error('Auto-merge PR body does not match the compact Workflow result');
+  if (ciRollupState(pr.statusCheckRollup) !== 'passed') throw new Error('Auto-merge PR required CI is not successful');
+  return pr.headRefOid;
 }
 
 export function parseCompactWorkflowOutput(output, stateName) {
@@ -191,7 +255,7 @@ function wranglerArgs(envFile, tail) {
   return ['--yes', 'wrangler@4.127.0', ...tail, '--config', workerConfig, '--env-file', envFile];
 }
 
-function assertRepositoryReady({ allowBehind = false } = {}) {
+function assertRepositoryReady({ allowBehind = false, allowedDataPr = null } = {}) {
   if (run('git', ['status', '--short']).trim()) throw new Error('Repository worktree is not clean');
   if (run('git', ['branch', '--show-current']).trim() !== 'main') throw new Error('Controller must run from main');
   run('git', ['fetch', 'origin', 'main', '--quiet']);
@@ -201,9 +265,55 @@ function assertRepositoryReady({ allowBehind = false } = {}) {
   if (!repositoryHeadAcceptable(head, originMain, mergeBase, allowBehind)) {
     throw new Error(`Local main ${head} does not safely match origin/main ${originMain}`);
   }
-  const open = JSON.parse(run('gh', ['pr', 'list', '--repo', 'christucker-sketch/PitchListUK', '--state', 'open', '--limit', '100', '--json', 'number,headRefName,title']));
-  const dataPrs = open.filter(pr => String(pr.headRefName || '').startsWith('data/cloud-'));
+  const open = JSON.parse(run('gh', ['pr', 'list', '--repo', githubRepository, '--state', 'open', '--limit', '100', '--json', 'number,headRefName,title']));
+  const dataPrs = open.filter(pr => String(pr.headRefName || '').startsWith('data/cloud-') && Number(pr.number) !== Number(allowedDataPr));
   if (dataPrs.length) throw new Error(`Unresolved acquisition PR: #${dataPrs[0].number}`);
+}
+
+function readAutoMergePr(prNumber) {
+  return JSON.parse(run('gh', [
+    'pr', 'view', String(prNumber), '--repo', githubRepository,
+    '--json', 'number,state,isDraft,baseRefName,baseRefOid,headRefName,headRefOid,mergeable,body,files,commits,statusCheckRollup'
+  ]));
+}
+
+function waitForAutoMergeCandidate(state, result) {
+  const timeoutSeconds = Number(process.env.PITCHLIST_ROLLOUT_CI_TIMEOUT_SECONDS || 1800);
+  const pollSeconds = Number(process.env.PITCHLIST_ROLLOUT_CI_POLL_SECONDS || 10);
+  if (!Number.isFinite(timeoutSeconds) || timeoutSeconds < 60 || !Number.isFinite(pollSeconds) || pollSeconds < 1) {
+    throw new Error('Invalid auto-merge CI polling configuration');
+  }
+  const deadline = Date.now() + timeoutSeconds * 1000;
+  for (;;) {
+    const pr = readAutoMergePr(state.pending_review.pr_number);
+    const checks = ciRollupState(pr.statusCheckRollup);
+    if (checks === 'failed') throw new Error(`PR #${pr.number} CI failed or returned an unexpected check state`);
+    if (checks === 'passed' && pr.mergeable === 'MERGEABLE') {
+      const baseSha = run('git', ['rev-parse', 'HEAD']).trim();
+      return {
+        pr,
+        headOid: validateAutoMergeCandidate(pr, result, {
+          baseSha,
+          snapshotPath: getStateConfig(result.state_code).snapshot_path
+        })
+      };
+    }
+    if (Date.now() >= deadline) throw new Error(`PR #${pr.number} CI/mergeability timed out`);
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, pollSeconds * 1000);
+  }
+}
+
+function autoMergePendingReview(state) {
+  const result = state.results.at(-1);
+  if (!result || Number(result?.publication?.pr_number) !== Number(state.pending_review?.pr_number)) {
+    throw new Error('Pending auto-merge review does not match the latest Workflow result');
+  }
+  assertRepositoryReady({ allowBehind: false, allowedDataPr: state.pending_review.pr_number });
+  const { pr, headOid } = waitForAutoMergeCandidate(state, result);
+  run('gh', [
+    'pr', 'merge', String(pr.number), '--repo', githubRepository, '--merge', '--delete-branch',
+    '--match-head-commit', headOid
+  ]);
 }
 
 function assertNoActiveWorkflow(envFile) {
@@ -303,7 +413,7 @@ export function main(argv = process.argv.slice(2)) {
     assertRepositoryReady();
     const pending = state.pending_review;
     if (!pending) throw new Error('No pending review can be retried');
-    const pr = JSON.parse(run('gh', ['pr', 'view', String(pending.pr_number), '--repo', 'christucker-sketch/PitchListUK', '--json', 'state,mergedAt']));
+    const pr = JSON.parse(run('gh', ['pr', 'view', String(pending.pr_number), '--repo', githubRepository, '--json', 'state,mergedAt']));
     const actual = JSON.parse(run('node', ['-e', "import('./functions/_data/us-opportunities.mjs').then(({usOpportunitySnapshot:s})=>process.stdout.write(JSON.stringify(s.total)))"]));
     state = retryClosedReviewState(state, {
       prState: pr.state,
@@ -330,8 +440,10 @@ export function main(argv = process.argv.slice(2)) {
   }
   if (command !== 'run') throw new Error('Usage: rollout-controller.mjs init|status|retry-closed|retry-failed|run');
 
-  assertRepositoryReady({ allowBehind: Boolean(state.pending_review) });
+  const autoMerge = process.env.PITCHLIST_ROLLOUT_AUTO_MERGE === '1';
+  assertRepositoryReady({ allowBehind: Boolean(state.pending_review), allowedDataPr: state.pending_review?.pr_number });
   if (state.pending_review) {
+    if (autoMerge) autoMergePendingReview(state);
     state = reconcileReview(state);
     saveState(stateFile, state);
   }
@@ -342,7 +454,14 @@ export function main(argv = process.argv.slice(2)) {
   if (!['ready', 'running'].includes(state.status)) throw new Error(`Controller is not ready: ${state.status}`);
 
   let latestResult = null;
-  while (state.status !== 'complete' && !state.pending_review) {
+  while (state.status !== 'complete') {
+    if (state.pending_review) {
+      if (!autoMerge) break;
+      autoMergePendingReview(state);
+      state = reconcileReview(state);
+      saveState(stateFile, state);
+      continue;
+    }
     if (state.status === 'ready') {
       assertRepositoryReady();
       assertNoActiveWorkflow(envFile);
