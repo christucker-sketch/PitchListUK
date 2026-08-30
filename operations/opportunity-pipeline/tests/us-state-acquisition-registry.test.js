@@ -54,3 +54,13 @@ test('Colorado live-evidence corrections do not turn pricing or payment mileston
   assert.equal(giftShow.application_deadline, undefined);
   assert.equal(giftShow.application_url, 'https://www.coloradogiftshow.com/looking-to-exhibit/get-a-booth-quote');
 });
+
+test('Arizona new-vendor intake is labelled and routed as an interest form rather than a public application', async () => {
+  const registry = await import('../../cloudflare-texas-acquisition/src/us-state-registry.js');
+  const arizona = registry.getStateConfig('AZ');
+  const communityMarkets = arizona.sources.find(source => source.id === 'az-community-farmers-markets-2026');
+
+  assert.match(communityMarkets.name, /New Vendor Interest Form$/);
+  assert.equal(communityMarkets.application_url, 'https://pci.jotform.com/form/262025360418046');
+  assert.match(communityMarkets.evidence, /reviewed before an application is issued/i);
+});
