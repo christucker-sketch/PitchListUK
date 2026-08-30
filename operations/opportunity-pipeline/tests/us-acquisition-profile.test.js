@@ -60,6 +60,25 @@ test('US classifier accepts genuine vendor applications', () => {
   assert.ok(result.positiveSignals.length > 0);
 });
 
+test('US classifier rejects a vendor route when the application period is explicitly closed', () => {
+  const result = classifyUsOpportunityEvidence({
+    title: '61st Street Farmers Market Vendor Application',
+    body: 'The 2026 outdoor market vendor application period has CLOSED. Join the waitlist by email.'
+  });
+  assert.equal(result.decision, 'rejected');
+  assert.ok(result.positiveSignals.includes('vendor application'));
+  assert.ok(result.negativeSignals.includes('applications closed'));
+});
+
+test('US classifier does not confuse a future closing date with an already closed application', () => {
+  const result = classifyUsOpportunityEvidence({
+    title: 'Holiday Market Vendor Application',
+    body: 'Vendor applications are open now and applications close September 15, 2026.'
+  });
+  assert.equal(result.decision, 'candidate');
+  assert.ok(!result.negativeSignals.includes('applications closed'));
+});
+
 test('US classifier rejects procurement even when the page says vendor', () => {
   const result = classifyUsOpportunityEvidence({
     title: 'Vendor Registration',
