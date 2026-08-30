@@ -146,7 +146,7 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base,
         `- net-new additions: ${additions}`,
         `- promotion rows SHA256: ${promotionManifest.rows_sha256}`,
         `- deterministic evidence receipts: ${evidenceReceipts.length}/${planned.summary.reviewed_rows} passed`,
-        ...evidenceReceipts.map(receipt => `  - ${receipt.source_id}: route=${receipt.attestation_method}; years=${receipt.live_application_years.join(',') || 'none'}; event_dates=${receipt.live_event_dates.join(',') || 'registry'}; deadlines=${receipt.live_application_deadlines.join(',') || 'none'}`),
+        ...evidenceReceipts.map(receipt => `  - ${receipt.source_id}: route=${receipt.attestation_method}; years=${receipt.live_application_years.join(',') || 'none'}; event_dates=${receipt.live_event_dates.join(',') || 'none'}; deadlines=${receipt.live_application_deadlines.join(',') || 'none'}`),
         '- no automatic merge or deploy requested', '',
         'This PR was created by the scheduled Cloudflare US acquisition workflow; GitHub CI remains the publication gate.'
       ].join('\n')
