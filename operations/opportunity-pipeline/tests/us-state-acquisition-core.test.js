@@ -76,6 +76,39 @@ test('deadlines discovered from fetched page data are held after extraction', as
   assert.equal(manifest.held[0].application_deadline, '2026-08-01');
 });
 
+test('contradictory live application years override stale registry event dates', async () => {
+  const source = {
+    id: 'ga-year-mismatch', name: 'Georgia Festival Fall 2026 Vendor Application', organiser: 'Georgia Festival',
+    source_url: 'https://example.com/vendors', application_url: 'https://example.com/vendors',
+    source_class: 'festival-organisation', country_code: 'US', region_code: 'GA', jurisdiction: 'US-GA',
+    locality: 'Fairburn', recurring: false, event_start: '2026-10-31', event_end: '2026-12-05', status: 'approved-pilot'
+  };
+  const state = { code: 'GA', name: 'Georgia', slug: 'georgia', jurisdiction: 'US-GA' };
+  const mismatch = await runApprovedStateStaging(state, {
+    sources: [source], generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      url: source.source_url,
+      title: 'Vendor Applications',
+      text: 'Start Vendor Application. Applications are reviewed for Spring 2027 and Fall 2027.'
+    })
+  });
+  assert.equal(mismatch.staged_count, 0);
+  assert.equal(mismatch.held_count, 1);
+  assert.equal(mismatch.held[0].reason, 'live_application_year_mismatch');
+  assert.deepEqual(mismatch.held[0].live_application_years, ['2027']);
+
+  const confirmed = await runApprovedStateStaging(state, {
+    sources: [source], generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      url: source.source_url,
+      title: '2026 Vendor Application',
+      text: 'Applications are open for Fall 2026 vendors.'
+    })
+  });
+  assert.equal(confirmed.staged_count, 1);
+  assert.equal(confirmed.held_count, 0);
+});
+
 test('state adapters require stage promote and plan contracts', () => {
   const adapter = createStateAdapter(texas, { stage() {}, promote() {}, plan() {} });
   assert.equal(adapter.state.code, 'TX');

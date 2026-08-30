@@ -113,6 +113,27 @@ export function advanceAfterResult(state, result) {
   return next;
 }
 
+export function retryClosedReviewState(state, { prState, mergedAt = null, snapshotCount, reason }) {
+  if (!state.pending_review || state.status !== 'awaiting_review') throw new Error('No pending review can be retried');
+  if (prState !== 'CLOSED' || mergedAt) throw new Error('Pending PR is not closed unmerged');
+  if (Number(snapshotCount) !== Number(state.pending_review.before)) {
+    throw new Error(`Closed-review retry snapshot drift: expected ${state.pending_review.before}, found ${snapshotCount}`);
+  }
+  const cleanReason = String(reason || '').trim();
+  if (!cleanReason) throw new Error('Closed-review retry requires a reason');
+  const next = structuredClone(state);
+  const result = next.results.at(-1);
+  if (!result || Number(result.publication?.pr_number) !== Number(next.pending_review.pr_number)) {
+    throw new Error('Pending review does not match the latest controller result');
+  }
+  result.discarded = { reason: cleanReason, recorded_at: new Date().toISOString() };
+  next.pending_review = null;
+  next.active_instance = null;
+  next.status = 'ready';
+  next.updated_at = new Date().toISOString();
+  return next;
+}
+
 function advanceBatchOrState(state, result) {
   if (Number(result.batch_number) < Number(result.batch_count)) {
     state.next_batch = Number(result.batch_number) + 1;
@@ -259,7 +280,23 @@ export function main(argv = process.argv.slice(2)) {
     process.stdout.write(`${JSON.stringify(compactStatus(state))}\n`);
     return;
   }
-  if (command !== 'run') throw new Error('Usage: rollout-controller.mjs init|status|run');
+  if (command === 'retry-closed') {
+    assertRepositoryReady();
+    const pending = state.pending_review;
+    if (!pending) throw new Error('No pending review can be retried');
+    const pr = JSON.parse(run('gh', ['pr', 'view', String(pending.pr_number), '--repo', 'christucker-sketch/PitchListUK', '--json', 'state,mergedAt']));
+    const actual = JSON.parse(run('node', ['-e', "import('./functions/_data/us-opportunities.mjs').then(({usOpportunitySnapshot:s})=>process.stdout.write(JSON.stringify(s.total)))"]));
+    state = retryClosedReviewState(state, {
+      prState: pr.state,
+      mergedAt: pr.mergedAt,
+      snapshotCount: actual,
+      reason: argumentValue(argv, '--reason', '')
+    });
+    saveState(stateFile, state);
+    process.stdout.write(`${JSON.stringify(compactStatus(state))}\n`);
+    return;
+  }
+  if (command !== 'run') throw new Error('Usage: rollout-controller.mjs init|status|retry-closed|run');
 
   assertRepositoryReady({ allowBehind: Boolean(state.pending_review) });
   if (state.pending_review) {
