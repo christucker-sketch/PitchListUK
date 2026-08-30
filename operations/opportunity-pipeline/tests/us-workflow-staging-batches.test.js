@@ -20,7 +20,9 @@ function manifest(rows, overrides = {}) {
     staging_only: true, automatic_publish: false, production_writes: false,
     source_count: rows.length, discovered_count: rows.length,
     staged_count: rows.length, rejected_count: 0, held_count: 0, duplicate_count: 0,
-    rows, rejected: [], held: [], duplicates: [], ...overrides
+    rows, rejected: [], held: [], duplicates: [],
+    evidence_receipts: rows.map(row => ({ source_id: row.source_id, application_route_attested: true })),
+    ...overrides
   };
 }
 
@@ -60,9 +62,9 @@ test('source batching reserves all retry and fallback subrequests and rejects ba
 });
 
 test('batch merge preserves controls, counts and cross-batch deduplication', () => {
-  const first = { stable_id: 'one', source_url: 'https://example.com/one', application_url: 'https://example.com/app' };
-  const duplicate = { stable_id: 'two', source_url: 'https://example.com/two', application_url: 'https://example.com/app/' };
-  const unique = { stable_id: 'three', source_url: 'https://example.com/three', application_url: 'https://example.com/three' };
+  const first = { stable_id: 'one', source_id: 'source-one', source_url: 'https://example.com/one', application_url: 'https://example.com/app' };
+  const duplicate = { stable_id: 'two', source_id: 'source-two', source_url: 'https://example.com/two', application_url: 'https://example.com/app/' };
+  const unique = { stable_id: 'three', source_id: 'source-three', source_url: 'https://example.com/three', application_url: 'https://example.com/three' };
   const merged = mergeStagingBatches(state, [
     manifest([first], { held_count: 1, held: [{ reason: 'fetch_failed' }] }),
     manifest([duplicate, unique], { rejected_count: 1, rejected: [{ reasons: ['closed'] }] })
@@ -78,6 +80,7 @@ test('batch merge preserves controls, counts and cross-batch deduplication', () 
   assert.equal(merged.duplicates[0].reason, 'cross_batch_duplicate');
   assert.equal(merged.staging_only, true);
   assert.equal(merged.production_writes, false);
+  assert.deepEqual(merged.evidence_receipts.map(receipt => receipt.source_id), ['source-one', 'source-three']);
 });
 
 test('batch merge fails closed on state or publication-control drift', () => {

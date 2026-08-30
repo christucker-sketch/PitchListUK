@@ -37,7 +37,8 @@ export function buildStateStagingManifest(state, report, options = {}) {
     mode: 'addition-only', staging_only: true, automatic_publish: false, production_writes: false,
     source_count: Number(options.sourceCount || 0), discovered_count: Number(report?.discovered_count || 0),
     staged_count: rows.length, rejected_count: Number(report?.rejected_count || 0), held_count: Number(report?.held_count || 0),
-    duplicate_count: Number(report?.duplicate_count || 0), rows, rejected: report?.rejected || [], held: report?.held || [], duplicates: report?.duplicates || []
+    duplicate_count: Number(report?.duplicate_count || 0), rows, rejected: report?.rejected || [], held: report?.held || [], duplicates: report?.duplicates || [],
+    evidence_receipts: report?.evidence_receipts || []
   };
   assertCountryScopedManifest(manifest, { countryCode: 'US', jurisdictionPrefix: 'US-', requireAdditionOnly: true });
   if (manifest.region_code !== scoped.code || manifest.jurisdiction !== scoped.jurisdiction) throw new Error(`${scoped.name} staging manifest escaped state boundary`);

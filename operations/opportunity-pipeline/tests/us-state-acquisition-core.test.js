@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { assertApprovedStateSources, buildStateStagingManifest, createStateAdapter, requireState } from '../lib/us-state-acquisition-core.js';
-import { runApprovedStateStaging } from '../lib/us-state-staging-runner.js';
+import { applicationRouteAttestation, runApprovedStateStaging } from '../lib/us-state-staging-runner.js';
 
 const texas = { code: 'TX', name: 'Texas', slug: 'texas', jurisdiction: 'US-TX' };
 const source = { id: 'tx-test', name: 'Test Vendor Market', organiser: 'Test Market Association', locality: 'Austin', recurring: false, event_start: '2026-10-10', event_end: '2026-10-10', source_url: 'https://example.com/event', application_url: 'https://example.com/apply', country_code: 'US', region_code: 'TX', jurisdiction: 'US-TX', status: 'approved-pilot' };
@@ -26,6 +26,36 @@ test('generic staging manifest remains isolated and staging-only', () => {
   assert.equal(manifest.production_writes, false);
   assert.equal(manifest.rows[0].publishable, false);
   assert.equal(manifest.rows[0].quality_status, 'review');
+});
+
+test('external application routes must be attested by the live organiser page', () => {
+  const source = { source_url: 'https://example.org/vendors', application_url: 'https://forms.example.org/apply' };
+  assert.deepEqual(applicationRouteAttestation(source, {
+    url: source.source_url,
+    fetch_route: 'source',
+    links: [{ text: 'Apply', url: source.application_url }]
+  }), { attested: true, method: 'linked_from_live_source' });
+  assert.deepEqual(applicationRouteAttestation(source, {
+    url: source.source_url,
+    fetch_route: 'source',
+    links: [{ text: 'Unrelated', url: 'https://forms.example.org/other' }]
+  }), { attested: false, method: 'not_linked_from_live_source' });
+});
+
+test('unattested external application routes are held before extraction', async () => {
+  const external = { ...source, id: 'tx-unattested', source_url: 'https://example.com/vendors', application_url: 'https://forms.example.com/apply' };
+  const manifest = await runApprovedStateStaging(texas, {
+    sources: [external], generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => ({
+      url: external.source_url,
+      fetch_route: 'source',
+      title: '2026 Vendor Application',
+      text: 'Vendor applications are open.',
+      links: []
+    })
+  });
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held[0].reason, 'application_route_not_attested');
 });
 
 test('expired application deadlines are held before fetch and cannot reach promotion', async () => {

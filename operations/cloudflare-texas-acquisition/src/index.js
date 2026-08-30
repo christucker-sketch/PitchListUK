@@ -93,7 +93,7 @@ async function ensureBranch(env, branch, mainSha) {
   return githubJson(env, '/git/refs', { method: 'POST', body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: mainSha }) });
 }
 
-async function openDataPullRequest(env, state, planned, promotionManifest, base, reviewedSourceCount = state.sources.length) {
+async function openDataPullRequest(env, state, planned, promotionManifest, base, reviewedSourceCount = state.sources.length, evidenceReceipts = []) {
   const additions = Number(planned?.summary?.additions || 0);
   if (additions < 1) return { created: false, reason: 'no_net_new_rows' };
 
@@ -145,6 +145,8 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base,
         `- production snapshot: ${planned.summary.before_count} -> ${planned.summary.after_count}`,
         `- net-new additions: ${additions}`,
         `- promotion rows SHA256: ${promotionManifest.rows_sha256}`,
+        `- deterministic evidence receipts: ${evidenceReceipts.length}/${planned.summary.reviewed_rows} passed`,
+        ...evidenceReceipts.map(receipt => `  - ${receipt.source_id}: route=${receipt.attestation_method}; years=${receipt.live_application_years.join(',') || 'none'}; event_dates=${receipt.live_event_dates.join(',') || 'registry'}; deadlines=${receipt.live_application_deadlines.join(',') || 'none'}`),
         '- no automatic merge or deploy requested', '',
         'This PR was created by the scheduled Cloudflare US acquisition workflow; GitHub CI remains the publication gate.'
       ].join('\n')
@@ -230,7 +232,7 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
     if (Number(planned?.summary?.additions || 0) > 0) {
       publication = await step.do(`open GitHub ${state.name} data PR`, {
         retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '5 minutes'
-      }, async () => openDataPullRequest(this.env, state, planned, promotion, base, selectedSources.length));
+      }, async () => openDataPullRequest(this.env, state, planned, promotion, base, selectedSources.length, staging.evidence_receipts));
     }
 
     const compactResult = {
@@ -250,6 +252,7 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
       promotion_rows_sha256: promotion.rows_sha256,
       held_reasons: reasonCounts(staging.held),
       rejected_reasons: reasonCounts(staging.rejected),
+      evidence_passed_count: staging.evidence_receipts.length,
       publication
     };
     return step.do(`emit compact ${state.name} rollout result`, async () => compactResult);
