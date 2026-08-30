@@ -271,10 +271,12 @@ function assertRepositoryReady({ allowBehind = false, allowedDataPr = null } = {
 }
 
 function readAutoMergePr(prNumber) {
-  return JSON.parse(run('gh', [
+  const pr = JSON.parse(run('gh', [
     'pr', 'view', String(prNumber), '--repo', githubRepository,
-    '--json', 'number,state,isDraft,baseRefName,baseRefOid,headRefName,headRefOid,mergeable,body,files,commits,statusCheckRollup'
+    '--json', 'number,state,isDraft,baseRefName,headRefName,headRefOid,mergeable,body,files,commits,statusCheckRollup'
   ]));
+  const pull = JSON.parse(run('gh', ['api', `repos/${githubRepository}/pulls/${prNumber}`, '--jq', '{baseRefOid:.base.sha}']));
+  return { ...pr, baseRefOid: pull.baseRefOid };
 }
 
 function waitForAutoMergeCandidate(state, result) {
