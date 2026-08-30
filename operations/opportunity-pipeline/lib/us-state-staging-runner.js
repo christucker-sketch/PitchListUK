@@ -132,6 +132,11 @@ export async function runApprovedStateStaging(state, options = {}) {
 
   for (const source of sources) {
     const candidate = { url: source.source_url, source_id: source.id, source };
+    const configuredHold = String(source.acquisition_hold_reason || '').trim();
+    if (configuredHold) {
+      held.push({ candidate, reason: 'source_configured_hold', hold_detail: configuredHold });
+      continue;
+    }
     const applicationDeadline = normaliseDate(source.application_deadline);
     if (applicationDeadline && applicationDeadline < asOfDate) {
       held.push({ candidate, reason: 'application_deadline_passed', application_deadline: applicationDeadline, as_of_date: asOfDate });

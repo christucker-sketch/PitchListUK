@@ -59,6 +59,19 @@ test('unattested external application routes are held before extraction', async 
   assert.equal(manifest.held[0].reason, 'application_route_not_attested');
 });
 
+test('explicit source holds fail closed before any network fetch', async () => {
+  let fetchCount = 0;
+  const heldSource = { ...source, id: 'tx-resource-limit', acquisition_hold_reason: 'cloudflare_cpu_limit_on_route' };
+  const manifest = await runApprovedStateStaging(texas, {
+    sources: [heldSource], generatedAt: '2026-08-30T00:00:00.000Z',
+    fetchPage: async () => { fetchCount += 1; return {}; }
+  });
+  assert.equal(fetchCount, 0);
+  assert.equal(manifest.staged_count, 0);
+  assert.equal(manifest.held[0].reason, 'source_configured_hold');
+  assert.equal(manifest.held[0].hold_detail, 'cloudflare_cpu_limit_on_route');
+});
+
 test('expired application deadlines are held before fetch and cannot reach promotion', async () => {
   let fetchCount = 0;
   const expired = { ...source, id: 'tx-expired', application_deadline: '2026-08-01' };
