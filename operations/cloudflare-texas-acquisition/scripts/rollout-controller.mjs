@@ -218,7 +218,7 @@ function assertNoActiveWorkflow(envFile) {
 
 function triggerWorkflow(state, envFile) {
   const config = getStateConfig(state.next_state);
-  const batches = stagingSourceBatches(config.sources);
+  const batches = stagingSourceBatches(config.sources, { maxSources: config.workflow_batch_max_sources });
   if (state.next_batch > batches.length) throw new Error(`Invalid batch checkpoint for ${config.name}`);
   const params = JSON.stringify({ state_code: config.code, batch_number: state.next_batch, trigger: 'controller' });
   const output = run('npx', wranglerArgs(envFile, ['workflows', 'trigger', workflowName, '--params', params]));

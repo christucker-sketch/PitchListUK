@@ -208,7 +208,7 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
     const base = await step.do(`read current GitHub ${state.name} production snapshot`, {
       retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' }, timeout: '5 minutes'
     }, async () => readMainSnapshot(this.env, state));
-    const sourceBatches = stagingSourceBatches(state.sources);
+    const sourceBatches = stagingSourceBatches(state.sources, { maxSources: state.workflow_batch_max_sources });
     const requestedBatch = event?.payload?.batch_number;
     const batchNumber = requestedBatch == null && sourceBatches.length === 1
       ? 1
