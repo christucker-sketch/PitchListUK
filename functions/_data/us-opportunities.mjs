@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T14:59:40.601Z",
-  "source": "reviewed-us-ohio-cloud-promotion:32378c44595f230710f40a0da993a7a7265cd5faf93ab3a4df054795be4e91fd",
-  "total": 220,
+  "exported_at": "2026-08-31T15:07:25.430Z",
+  "source": "reviewed-us-virginia-cloud-promotion:dcf093e4a8fc73677054fa04b6aa83689e0d848d645c9a8c2c76bdca0d89bcf8",
+  "total": 221,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8428,6 +8428,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_720f774e9eafd96c8d30"
+    },
+    {
+      "stable_id": "opp_us_082a93c90403a45314ac",
+      "event_name": "Farm Markets Continue to Serve during Coronavirus Vendor Opportunity",
+      "organiser": "Farm Markets Continue to Serve during Coronavirus",
+      "source_url": "https://coastalvirginiamag.com/article/farm-markets-continue-to-serve-during-coronavirus/",
+      "application_url": "https://coastalvirginiamag.com/article/farm-markets-continue-to-serve-during-coronavirus",
+      "location": "Virginia Beach",
+      "locality": "Virginia Beach",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "12601",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-25",
+      "event_end": "2027-05-02",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-farm-markets-continue-to-serve-during-coronavirus-2027-04-25-7201cc9c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_082a93c90403a45314ac"
     }
   ]
 };
