@@ -1,0 +1,29 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { getCountryPageModule, listCountryPageModules } from '../platform/country-pages.mjs';
+
+test('US page module is on the shared shell', () => {
+  const us = getCountryPageModule('us');
+  assert.equal(us.country.code, 'us');
+  assert.equal(us.canonicalBase, '/us/');
+  assert.equal(us.homepage, 'src/us/index.html');
+  assert.equal(us.migrationState, 'shared-shell-live');
+  assert.equal(us.navigation.home, '/us/');
+});
+
+test('UK page module preserves legacy live host while targeting canonical /uk/', () => {
+  const uk = getCountryPageModule('uk');
+  assert.equal(uk.country.code, 'uk');
+  assert.equal(uk.legacyHost, 'pitchlist.uk');
+  assert.equal(uk.canonicalBase, '/uk/');
+  assert.equal(uk.homepage, 'src/index.html');
+  assert.equal(uk.searchPage, 'src/database.html');
+  assert.equal(uk.migrationState, 'legacy-live-ready-for-shared-shell');
+  assert.equal(uk.navigation.home, '/uk/');
+  assert.equal(uk.navigation.items[0].href, '/uk/find-pitches');
+});
+
+test('only implemented country page modules are listed', () => {
+  assert.deepEqual(listCountryPageModules().map(module => module.code), ['us', 'uk']);
+  assert.equal(getCountryPageModule('ca'), null);
+});
