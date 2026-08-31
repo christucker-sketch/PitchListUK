@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:17:11.933Z",
+  "updated_at": "2026-08-31T13:23:00.748Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -307,6 +307,24 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-pueblo-2026-farmers-market: live first-party route attests Pueblo, CO, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "co-summer-market-2026-09-16-02ee3f77",
+      "name": "Summer Market Vendor Opportunity",
+      "organiser": "Summer Market",
+      "source_url": "https://www.superiorcolorado.gov/Community/Calendars/Events/2026-Summer-Market",
+      "application_url": "https://www.superiorcolorado.gov/Community/Calendars/Events/2026-Summer-Market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Boulder",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-16",
+      "event_end": "2026-09-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-boulder-2026-government-events: live first-party route attests Boulder, CO, actionable vendor terms, and exact event date 2026-09-16."
     },
     {
       "id": "co-territory-days-mdash-old-colorado-city-2027-05-29-bb112a6c",
