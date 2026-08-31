@@ -44,13 +44,28 @@ test('FindPitches finder maps to the isolated US finder asset', async () => {
 });
 
 test('FindPitches API and shared assets pass through to existing handlers', async () => {
-  for (const path of ['/api/us-customer-opportunities/search', '/styles.css', '/assets/hero-food-festival.jpg', '/us/find-pitches.js']) {
+  for (const path of ['/api/us-customer-opportunities/search', '/styles.css', '/assets/hero-food-festival.jpg', '/shared/findpitches-shell.css', '/uk/home.css', '/us/find-pitches.js']) {
     const fixture = contextFor(`https://findpitches.com${path}`);
     const response = await onRequest(fixture.context);
     assert.equal(response.status, 200);
     assert.equal(fixture.nextCalls(), 1);
     assert.deepEqual(fixture.assetRequests, []);
   }
+});
+
+test('UK redesign is available only through the noindex review route', async () => {
+  const preview = contextFor('https://findpitches.com/preview/uk/');
+  const previewResponse = await onRequest(preview.context);
+  assert.equal(previewResponse.status, 200);
+  assert.equal(previewResponse.headers.get('x-robots-tag'), 'noindex, nofollow');
+  assert.deepEqual(preview.assetRequests, ['/uk/']);
+  assert.equal(preview.nextCalls(), 0);
+
+  const publicUk = contextFor('https://findpitches.com/uk/');
+  const publicUkResponse = await onRequest(publicUk.context);
+  assert.equal(publicUkResponse.status, 404);
+  assert.equal(publicUkResponse.headers.get('x-robots-tag'), 'noindex');
+  assert.deepEqual(publicUk.assetRequests, []);
 });
 
 test('pitchlist.uk remains completely untouched by host middleware', async () => {
