@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T13:38:08.953Z",
-  "source": "reviewed-us-colorado-cloud-promotion:56e45d15dfb63143b13937862a1949c7d513e6f79fe2b7e8a3164e95d319c0b8",
-  "total": 210,
+  "exported_at": "2026-08-31T13:41:19.857Z",
+  "source": "reviewed-us-california-cloud-promotion:53f08f23a8f3909404a508cbbc560115cb89fcd63b0ccf61df7278a59ecefd8d",
+  "total": 211,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8045,6 +8045,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_2ac0d62d80384902fdd9"
+    },
+    {
+      "stable_id": "opp_us_2d37860d4da656f2608d",
+      "event_name": "International Street Fair and Diversity Festival- Saturday, October 3, 2026 Vendor Opportunity",
+      "organiser": "International Street Fair and Diversity Festival- Saturday, October 3, 2026",
+      "source_url": "https://www.cityofartesia.us/ISFDF",
+      "application_url": "https://www.cityofartesia.us/ISFDF",
+      "location": "Los Angeles",
+      "locality": "Los Angeles",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-international-street-fair-and-diversity-festival-saturday-october-3-20-2026-10-03-b7e28b03",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_2d37860d4da656f2608d"
     }
   ]
 };
