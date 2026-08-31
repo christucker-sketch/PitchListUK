@@ -3,92 +3,106 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Find Vendor Pitches & Event Opportunities | FindPitches</title>
-  <meta name="description" content="Find current US vendor opportunities, food truck pitches, market applications, festival vendor calls and concession opportunities in one searchable place." />
+  <title>Find Vendor Opportunities Across America | FindPitches</title>
+  <meta name="description" content="Find current vendor opportunities across the USA: fairs, festivals, markets, food truck events, pop-ups and concession calls in one searchable place." />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <meta name="author" content="FindPitches" />
-  <meta name="theme-color" content="#101827" />
+  <meta name="theme-color" content="#071a33" />
   <link rel="canonical" href="https://findpitches.com/" />
   <link rel="stylesheet" href="/styles.css?v=20260731-4" />
+  <link rel="stylesheet" href="/us/home.css?v=20260831-3" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="FindPitches" />
-  <meta property="og:title" content="Find Vendor Pitches & Event Opportunities | FindPitches" />
-  <meta property="og:description" content="Search current US vendor opportunities, food truck pitches, market applications and event vendor calls." />
+  <meta property="og:title" content="Find Vendor Opportunities Across America | FindPitches" />
+  <meta property="og:description" content="Search current US vendor opportunities across fairs, festivals, markets, food truck events, pop-ups and more." />
   <meta property="og:url" content="https://findpitches.com/" />
   <meta property="og:image" content="https://findpitches.com/assets/hero-food-festival.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 </head>
-<body class="home-redesign">
-  <header class="home-hero">
-    <nav class="home-nav">
-      <a class="brand-mark" href="/" aria-label="FindPitches home">
-        <strong>FindPitches</strong>
-        <span>Vendor opportunity finder</span>
-      </a>
-      <div><a href="/find-pitches">Find pitches</a></div>
+<body class="us-home">
+  <header class="us-topbar">
+    <a class="us-logo" href="/" aria-label="FindPitches home"><span>Find</span><strong>Pitches</strong><small>Markets. Fairs. Festivals. Opportunities.</small></a>
+    <nav class="us-nav" aria-label="Primary navigation">
+      <a class="active" href="/find-pitches">Find Opportunities</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#categories">Categories</a>
+      <a href="#about">About</a>
+      <a class="us-country" href="#coverage">🇺🇸 US</a>
     </nav>
-
-    <section class="home-hero-content">
-      <p class="eyebrow">For food trucks, market vendors, makers and event traders</p>
-      <h1>Find vendor pitches and event opportunities without the endless searching.</h1>
-      <p class="lede">Search checked vendor applications, market opportunities, festival calls and concession routes in one place. The US database is launching state by state, starting with Texas.</p>
-      <form class="hero-search" action="/find-pitches" method="get">
-        <label class="sr-only" for="hero-zip">Your ZIP Code</label>
-        <input id="hero-zip" name="zip" type="text" placeholder="Enter ZIP Code, e.g. 75201" autocomplete="postal-code" inputmode="numeric" />
-        <select name="radius" aria-label="Travel radius">
-          <option value="" selected>Any distance</option>
-          <option value="25">25 miles</option>
-          <option value="50">50 miles</option>
-          <option value="100">100 miles</option>
-        </select>
-        <button type="submit" class="btn-primary">Show my pitches</button>
-      </form>
-      <p class="hero-search-note">Free preview while US coverage expands.</p>
-      <div class="home-proof" aria-label="FindPitches quick facts">
-        <span><strong>Texas</strong> first live market</span>
-        <span><strong>Official sources</strong> prioritized</span>
-        <span><strong>Checked</strong> application routes</span>
-      </div>
-    </section>
   </header>
 
-  <main class="home-main">
-    <section class="product-section proof-rows-section">
-      <div class="section-head">
-        <p class="eyebrow">US launch</p>
-        <h2>Useful opportunities, not generic business directories.</h2>
-        <p>FindPitches is built around actionable vendor calls: applications, concessions, markets and events where a trader can actually apply.</p>
-      </div>
-      <div class="proof-row-list" aria-label="Example FindPitches rows">
-        <article class="proof-row"><div><strong>Community market vendor applications</strong><span>Local markets · Texas</span></div><b>Official organizer source</b></article>
-        <article class="proof-row"><div><strong>Food & drink vendor opportunities</strong><span>Events · Texas</span></div><b>Direct application route</b></article>
-        <article class="proof-row"><div><strong>Festival and fair concessions</strong><span>Seasonal opportunities · Texas</span></div><b>Checked source</b></article>
+  <section class="us-hero">
+    <div class="us-hero-shade"></div>
+    <div class="us-hero-copy">
+      <p class="us-stamp">OPPORTUNITIES · ALL ACROSS AMERICA</p>
+      <h1>Find your next<br><em>place to sell.</em></h1>
+      <p>Discover vendor opportunities across America.<br>From bustling city markets to small-town festivals.<br><strong>Your next great spot is out there.</strong></p>
+    </div>
+
+    <form class="us-search" action="/find-pitches" method="get">
+      <label><span>ZIP Code</span><input name="zip" type="text" placeholder="e.g. 90210" autocomplete="postal-code" inputmode="numeric" /></label>
+      <label><span>Search Distance</span><select name="radius"><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option><option value="">Any distance</option></select></label>
+      <label><span>Category</span><select name="category"><option value="" selected>All Categories</option><option>Fairs</option><option>Festivals</option><option>Markets</option><option>Food Trucks</option><option>Pop-ups</option><option>Concessions</option></select></label>
+      <button type="submit">Search Opportunities</button>
+      <div class="us-popular"><b>Popular searches:</b><span>Farmers' Markets</span><span>Food Truck Locations</span><span>Craft Fairs</span><span>Street Festivals</span><span>Pop-up Events</span><span>Concessions</span></div>
+    </form>
+  </section>
+
+  <section id="coverage" class="us-stats" aria-label="FindPitches quick facts">
+    <article><i>↗</i><div><strong id="usOpportunityCount">193+</strong><span>LIVE OPPORTUNITIES</span><small>Updated daily</small></div></article>
+    <article><i>★</i><div><strong>50</strong><span>STATES COVERED</span><small>Opportunities nationwide</small></div></article>
+    <article><i>✓</i><div><strong>CHECKED</strong><span>FIRST-PARTY SOURCES</span><small>Verified. Reliable. Real.</small></div></article>
+  </section>
+
+  <main>
+    <section id="how-it-works" class="us-how">
+      <p class="us-mini-title">★ HOW FINDPITCHES WORKS ★</p>
+      <p class="us-subtitle">Find. Connect. Sell more.</p>
+      <div class="us-steps">
+        <article><b>1</b><i>●</i><h3>Search</h3><p>Enter your ZIP code and preferences.</p></article>
+        <article><b>2</b><i>⌕</i><h3>Discover</h3><p>Browse opportunities that match your business.</p></article>
+        <article><b>3</b><i>▣</i><h3>View & Connect</h3><p>See details and connect with event organizers.</p></article>
+        <article><b>4</b><i>★</i><h3>Show Up & Sell</h3><p>Set up, show up, and grow your business.</p></article>
       </div>
     </section>
 
-    <section class="product-section database-callout">
-      <div>
-        <p class="eyebrow">FindPitches US</p>
-        <h2>Texas is live. More states follow behind the same quality gates.</h2>
-        <p>The US side stays isolated from the UK dataset while coverage is proved. That means country, state, currency and vendor-language rules can evolve without disturbing the existing UK service.</p>
-      </div>
-      <div class="price-panel">
-        <span>US preview</span>
-        <strong>Search the first live rows</strong>
-        <p>Commercial subscriptions for the US market are not enabled yet.</p>
-        <a href="/find-pitches">Find pitches</a>
+    <section id="categories" class="us-categories">
+      <h2>EXPLORE OPPORTUNITIES</h2>
+      <p>Opportunities come in all shapes and sizes.</p>
+      <div class="us-category-cards">
+        <a href="/find-pitches?category=Fairs" style="--img:url('/assets/card-county-show.jpg')"><strong>Fairs</strong><span>County fairs, state fairs & more</span></a>
+        <a href="/find-pitches?category=Festivals" style="--img:url('/assets/card-festival-vendors.jpg')"><strong>Festivals</strong><span>Music, arts, food & cultural events</span></a>
+        <a href="/find-pitches?category=Markets" style="--img:url('/assets/card-farmers-market.jpg')"><strong>Markets</strong><span>Farmers' markets & local markets</span></a>
+        <a href="/find-pitches?category=Food%20Trucks" style="--img:url('/assets/card-food-truck-pitches.jpg')"><strong>Food Trucks</strong><span>Truck spots & rally locations</span></a>
+        <a href="/find-pitches?category=Pop-ups" style="--img:url('/assets/card-night-market.jpg')"><strong>Pop-ups</strong><span>Short-term pop-up events</span></a>
+        <a href="/find-pitches?category=Concessions" style="--img:url('/assets/card-shows-festivals.jpg')"><strong>Concessions</strong><span>Stadiums, arenas & venues</span></a>
       </div>
     </section>
 
-    <section class="trust-line">
-      <strong>No fake leads. No AI guesswork.</strong>
-      <span>FindPitches surfaces factual vendor opportunities from checked sources. Listings do not guarantee acceptance, availability, sales or profitability.</span>
+    <section id="about" class="us-trust">
+      <p class="us-trust-title">Verified opportunities from checked sources</p>
+      <div class="us-trust-grid">
+        <article><i>✓</i><div><strong>Real Opportunities</strong><span>Sourced from official listings, organizer websites & permits.</span></div></article>
+        <article><i>★</i><div><strong>Human Checked</strong><span>Quality gates review every lead before it goes live.</span></div></article>
+        <article><i>⌖</i><div><strong>Transparent Details</strong><span>Know who, what, when, where & how to apply.</span></div></article>
+        <article><i>↗</i><div><strong>Built for Vendors</strong><span>Tools and filters to help you find the right fit, fast.</span></div></article>
+      </div>
+      <div class="us-built">BUILT IN THE USA <span>★ ★ ★</span><small>Supporting local businesses from coast to coast.</small></div>
     </section>
   </main>
 
-  <footer class="home-footer">
-    <strong>FindPitches</strong>
-    <span>US vendor opportunity finder · findpitches.com</span>
-  </footer>
+  <footer class="us-footer"><strong>FindPitches</strong><span>Vendor opportunity finder · USA</span></footer>
+
+  <script>
+    (async () => {
+      try {
+        const response = await fetch('/api/us-customer-opportunities/search?limit=1', { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        const total = Number(data.total);
+        if (Number.isFinite(total) && total > 0) document.getElementById('usOpportunityCount').textContent = total.toLocaleString('en-US') + '+';
+      } catch (_) {}
+    })();
+  </script>
 </body>
 </html>
