@@ -210,11 +210,37 @@ test('growth controller accepts only an exact-head additions-only source PR with
     statusCheckRollup: [{ __typename: 'CheckRun', name: 'verify', status: 'COMPLETED', conclusion: 'SUCCESS' }],
     body: [
       '- state: California (CA)', '- net-new approved sources: 1',
-      '- deterministic source evidence receipts: 1/1 passed', '- additions only; no source removals',
+      '- deterministic source evidence receipts: 1/1 passed', `  - ${added.id}: https://example.test/vendors`, '- additions only; no source removals',
       '- no automatic merge or deploy requested'
     ].join('\n')
   };
   assert.equal(validateSourcePr(pr, result, before, after, baseSha), headOid);
   assert.throws(() => validateSourcePr({ ...pr, files: [{ path: 'README.md' }] }, result, before, after, baseSha), /outside the growth registry/);
   assert.throws(() => validateSourcePr(pr, result, after, before, baseSha), /count is not additions-only/);
+});
+
+test('compact source handoff derives exact IDs from the PR diff and binds every evidence receipt', () => {
+  const baseSha = 'a'.repeat(40);
+  const headOid = 'b'.repeat(40);
+  const added = source({ id: `ca-${'long-source-id-'.repeat(5)}1234abcd` });
+  const before = { version: 1, updated_at: null, sources: [] };
+  const after = { version: 1, updated_at: '2026-08-31T13:00:00.000Z', sources: [added] };
+  const result = {
+    state_code: 'CA', state_name: 'California', generated_source_count: 1, evidence_passed_count: 1,
+    publication: { source_count: 1, pr_number: 227, branch: `sources/cloud-us-california-growth-12345678-base-${baseSha.slice(0, 16)}` }
+  };
+  const pr = {
+    number: 227, state: 'OPEN', isDraft: false, baseRefName: 'main', baseRefOid: baseSha,
+    headRefName: result.publication.branch, headRefOid: headOid, mergeable: 'MERGEABLE',
+    commits: [{ oid: headOid }], files: [{ path: 'operations/opportunity-pipeline/config/us-growth-source-registry.json' }],
+    statusCheckRollup: [{ __typename: 'CheckRun', name: 'verify', status: 'COMPLETED', conclusion: 'SUCCESS' }],
+    body: [
+      '- state: California (CA)', '- net-new approved sources: 1',
+      '- deterministic source evidence receipts: 1/1 passed', `  - ${added.id}: https://example.test/vendors`,
+      '- additions only; no source removals', '- no automatic merge or deploy requested'
+    ].join('\n')
+  };
+  assert.equal(validateSourcePr(pr, result, before, after, baseSha), headOid);
+  assert.throws(() => validateSourcePr({ ...pr, body: pr.body.replace(`  - ${added.id}:`, '  - wrong-id:') }, result, before, after, baseSha), /lacks an evidence receipt/);
+  assert.ok(JSON.stringify(JSON.stringify({ ...result, publication: { ...result.publication, source_ids: undefined } })).length < 1024);
 });

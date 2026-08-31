@@ -323,7 +323,13 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
     evidence_passed_count: discovery.receipts.length,
     held_count: discovery.held.length,
     held_reasons: discovery.held_reasons,
-    publication
+    publication: publication.source_ids?.length ? {
+      created: publication.created,
+      reused: publication.reused === true,
+      branch: publication.branch,
+      pr_number: publication.pr_number,
+      source_count: publication.source_ids.length
+    } : publication
   };
   return step.do(`emit compact ${state.name} growth discovery result`, async () => compactResult);
 }
