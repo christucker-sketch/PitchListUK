@@ -153,8 +153,8 @@ function waitForPr(prNumber) {
 }
 
 export function validateSourcePr(pr, result, currentRegistry, nextRegistry, baseSha, options = {}) {
-  const expectedIds = [...(result?.publication?.source_ids || [])].sort();
-  if (!expectedIds.length || Number(result.generated_source_count) !== Number(result.evidence_passed_count)) {
+  const expectedCount = Number(result?.publication?.source_count || result?.publication?.source_ids?.length || 0);
+  if (expectedCount < 1 || expectedCount !== Number(result.generated_source_count) || Number(result.generated_source_count) !== Number(result.evidence_passed_count)) {
     throw new Error('Source PR lacks complete deterministic evidence');
   }
   const exactState = pr?.state === 'OPEN' || (options.allowMerged === true && pr?.state === 'MERGED' && pr?.mergedAt && pr?.mergeCommit?.oid);
@@ -165,19 +165,21 @@ export function validateSourcePr(pr, result, currentRegistry, nextRegistry, base
   if (ciRollupState(pr.statusCheckRollup) !== 'passed') throw new Error('Source PR required CI is not successful');
   const before = parseGrowthRegistry(currentRegistry);
   const after = parseGrowthRegistry(nextRegistry);
-  if (after.sources.length !== before.sources.length + expectedIds.length) throw new Error('Source PR count is not additions-only');
+  if (after.sources.length !== before.sources.length + expectedCount) throw new Error('Source PR count is not additions-only');
   const afterById = new Map(after.sources.map(source => [source.id, source]));
   for (const source of before.sources) if (JSON.stringify(afterById.get(source.id)) !== JSON.stringify(source)) throw new Error(`Source PR changed existing source ${source.id}`);
   const addedIds = after.sources.filter(source => !before.sources.some(item => item.id === source.id)).map(source => source.id).sort();
-  if (JSON.stringify(addedIds) !== JSON.stringify(expectedIds)) throw new Error('Source PR additions do not match Workflow output');
+  const outputIds = [...(result?.publication?.source_ids || [])].sort();
+  if (outputIds.length && JSON.stringify(addedIds) !== JSON.stringify(outputIds)) throw new Error('Source PR additions do not match Workflow output');
   const body = String(pr.body || '');
   for (const line of [
     `- state: ${result.state_name} (${result.state_code})`,
-    `- net-new approved sources: ${expectedIds.length}`,
+    `- net-new approved sources: ${expectedCount}`,
     `- deterministic source evidence receipts: ${result.evidence_passed_count}/${result.generated_source_count} passed`,
     '- additions only; no source removals',
     '- no automatic merge or deploy requested'
   ]) if (!body.includes(line)) throw new Error('Source PR body does not match compact Workflow output');
+  for (const id of addedIds) if (!body.includes(`  - ${id}:`)) throw new Error(`Source PR lacks an evidence receipt for ${id}`);
   return pr.headRefOid;
 }
 
@@ -194,12 +196,15 @@ function mergeSourcePr(state, result) {
   const current = fileAt(baseSha, growthRegistryPath);
   const next = fileAt(pr.headRefOid, growthRegistryPath);
   const headOid = validateSourcePr(pr, result, current, next, baseSha, { allowMerged: true });
+  const before = parseGrowthRegistry(current);
+  const after = parseGrowthRegistry(next);
+  const sourceIds = after.sources.filter(source => !before.sources.some(item => item.id === source.id)).map(source => source.id).sort();
   if (pr.state === 'OPEN') run('gh', ['pr', 'merge', String(pr.number), '--repo', githubRepository, '--merge', '--delete-branch', '--match-head-commit', headOid]);
   run('git', ['fetch', 'origin', 'main', '--quiet']);
   const localHead = run('git', ['rev-parse', 'HEAD']).trim();
   if (localHead !== run('git', ['rev-parse', 'origin/main']).trim()) run('git', ['merge', '--ff-only', 'origin/main']);
   state.approved_source_count = approvedSourceCount();
-  return result.publication.source_ids;
+  return sourceIds;
 }
 
 function mergeDataPr(result) {
@@ -352,8 +357,8 @@ async function cycle(state, envFile, stateFile) {
     if (active.mode === 'discover') {
       state.query_offsets[active.state_code] = Number(result.next_query_offset);
       state.priority_cursor = Number(state.current?.next_priority_cursor || state.priority_cursor);
-      const sourceIds = result.publication?.source_ids || [];
-      if (sourceIds.length) {
+      const sourceCount = Number(result.publication?.source_count || result.publication?.source_ids?.length || 0);
+      if (sourceCount > 0) {
         state.current = { ...state.current, discovery_instance_id: active.id, source_pr: result.publication.pr_number };
         state.status = 'reviewing_source_pr';
       } else {
