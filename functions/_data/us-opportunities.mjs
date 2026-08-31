@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T14:36:46.385Z",
-  "source": "reviewed-us-illinois-cloud-promotion:832a3a024ef4721eee70b239b88d074179cbde8a9706f98ca441c08ef2de5b0a",
-  "total": 217,
+  "exported_at": "2026-08-31T14:44:35.205Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:7e68e94c4b180db6fc09bc2f774f4068cb5b976fc9056f8ade84b9f4988e40d3",
+  "total": 218,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8315,6 +8315,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_465f151a788552870632"
+    },
+    {
+      "stable_id": "opp_us_5bd6645b1bc0d40c638b",
+      "event_name": "Downtown Newark Transforms Into a Winter Wonderland Vendor Opportunity",
+      "organiser": "Downtown Newark Transforms Into a Winter Wonderland",
+      "source_url": "https://jerseybites.com/downtown-newark-transforms-into-a-winter-wonderland/",
+      "application_url": "https://jerseybites.com/downtown-newark-transforms-into-a-winter-wonderland",
+      "location": "Newark",
+      "locality": "Newark",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-20",
+      "event_end": "2026-12-20",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-downtown-newark-transforms-into-a-winter-wonderland-2026-12-20-bda802de",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_5bd6645b1bc0d40c638b"
     }
   ]
 };
