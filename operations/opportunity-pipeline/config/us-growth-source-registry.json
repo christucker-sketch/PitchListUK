@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:04:09.911Z",
+  "updated_at": "2026-08-31T13:05:40.357Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -37,6 +37,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-fort-collins-2026-festival: live first-party route attests Fort Collins, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
+    },
+    {
+      "id": "co-2026-arvada-summer-guide-2026-09-27-0ceff3b5",
+      "name": "2026 Arvada Summer Guide Vendor Opportunity",
+      "organiser": "2026 Arvada Summer Guide",
+      "source_url": "https://www.visitarvada.org/2026-arvada-summer-guide",
+      "application_url": "https://www.visitarvada.org/2026-arvada-summer-guide",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Arvada",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-arvada-2026-festival: live first-party route attests Arvada, CO, actionable vendor terms, and exact event date 2026-09-27."
     },
     {
       "id": "co-2026-havana-street-night-markets-last-saturdays-of-the-month-may-to-se-2026-09-26-a94a1acb",
