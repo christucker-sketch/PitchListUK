@@ -1,7 +1,25 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T10:03:34.180Z",
+  "updated_at": "2026-08-31T10:06:21.476Z",
   "sources": [
+    {
+      "id": "ga-2026-2026-11-21-aa99b9e6",
+      "name": "2026 Vendor Application - Druid Hills Farmers Market 2026 - Eventeny",
+      "organiser": "2026",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=40850&srsltid=AfmBOor0slpXrLS2nOzVcr4PlQfhxAXzSvQmndSPzdmS0V3RU1YV3swQ",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=40850&srsltid=AfmBOor0slpXrLS2nOzVcr4PlQfhxAXzSvQmndSPzdmS0V3RU1YV3swQ",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Atlanta",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-atlanta-2026-farmers-market: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2026-11-21."
+    },
     {
       "id": "il-vendors-2026-09-12-87e06125",
       "name": "Vendors Vendor Opportunity",
