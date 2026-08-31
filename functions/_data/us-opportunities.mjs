@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T10:19:10.767Z",
-  "source": "reviewed-us-arizona-cloud-promotion:646626dfa248c798e2a07ecaf148fad9f209ef2a8ab200565bb8550ab2f63dd8",
-  "total": 192,
+  "exported_at": "2026-08-31T12:17:33.888Z",
+  "source": "reviewed-us-colorado-cloud-promotion:83cc91c3adbfefbdf596c2463d423edc1eeb1425fdfe0f64376d7fd32f91eaef",
+  "total": 193,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7360,6 +7360,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_c40dd5139022a2b18473"
+    },
+    {
+      "stable_id": "opp_us_c54ef310c5cc664af9c3",
+      "event_name": "Tomato Festival at Trapper Days! Vendor Opportunity",
+      "organiser": "Tomato Festival at Trapper Days!",
+      "source_url": "https://www.fortluptonco.gov/472/Tomato-Festival-Trapper-Days",
+      "application_url": "https://www.fortluptonco.gov/472/Tomato-Festival-Trapper-Days",
+      "location": "Denver",
+      "locality": "Denver",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-tomato-festival-at-trapper-days-2026-09-11-809667cb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_c54ef310c5cc664af9c3"
     }
   ]
 };
