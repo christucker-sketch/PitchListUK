@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T12:30:08.374Z",
-  "source": "reviewed-us-colorado-cloud-promotion:ab63189d451d2f5b9840c6b8c4c258dbc281dbe161772a5254821d50b691eead",
-  "total": 195,
+  "exported_at": "2026-08-31T12:32:52.951Z",
+  "source": "reviewed-us-colorado-cloud-promotion:347588591a7f5ae84baaa40f40f7d282f7bcb223e1f738d7fe89266820646955",
+  "total": 196,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7474,6 +7474,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_208f2c9d8fda997ee715"
+    },
+    {
+      "stable_id": "opp_us_69a090ffd17f3ebe03cd",
+      "event_name": "Market in the Park - The Aurora Highlands Vendor Opportunity",
+      "organiser": "Market in the Park - The Aurora Highlands",
+      "source_url": "https://theaurorahighlands.com/marketinthepark/",
+      "application_url": "https://theaurorahighlands.com/marketinthepark",
+      "location": "Aurora",
+      "locality": "Aurora",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "23578",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-market-in-the-park-the-aurora-highlands-2026-09-12-9ff163db",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_69a090ffd17f3ebe03cd"
     }
   ]
 };
