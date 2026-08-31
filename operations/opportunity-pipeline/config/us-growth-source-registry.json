@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:26:41.923Z",
+  "updated_at": "2026-08-31T13:31:48.270Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -253,6 +253,24 @@
       "event_end": "2027-06-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-boulder-2027-food-truck: live first-party route attests Boulder, CO, actionable vendor terms, and exact event date 2027-06-21."
+    },
+    {
+      "id": "co-greeley-blues-jam-colorado-s-camping-blues-festival-2027-06-04-1898b126",
+      "name": "Greeley Blues Jam | Colorado's Camping Blues Festival Vendor Opportunity",
+      "organiser": "Greeley Blues Jam | Colorado's Camping Blues Festival",
+      "source_url": "https://greeleybluesjam.org",
+      "application_url": "https://greeleybluesjam.org",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Greeley",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-04",
+      "event_end": "2027-06-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-greeley-2027-festival: live first-party route attests Greeley, CO, actionable vendor terms, and exact event date range 2027-06-04 to 2027-06-05."
     },
     {
       "id": "co-how-to-sell-at-farmers-markets-in-colorado-cottage-foods-act-top-marke-2026-10-04-dae2e9de",
