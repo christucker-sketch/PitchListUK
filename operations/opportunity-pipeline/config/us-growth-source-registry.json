@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:16:42.074Z",
+  "updated_at": "2026-08-31T12:22:47.124Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -37,6 +37,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-denver-2026-farmers-market: live first-party route attests Denver, CO, actionable vendor terms, and exact event date 2026-10-11."
+    },
+    {
+      "id": "co-farmers-markets-in-colorado-springs-your-guide-to-fresh-local-finds-2026-09-06-c018f9aa",
+      "name": "Farmers' Markets in Colorado Springs: Your Guide to Fresh, Local Finds Vendor Opportunity",
+      "organiser": "Farmers' Markets in Colorado Springs: Your Guide to Fresh, Local Finds",
+      "source_url": "https://www.pikes-peak.com/farmers-markets-in-colorado-springs",
+      "application_url": "https://www.pikes-peak.com/farmers-markets-in-colorado-springs",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Colorado Springs",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-colorado-springs-2026-farmers-market: live first-party route attests Colorado Springs, CO, actionable vendor terms, and exact event date 2026-09-06."
     },
     {
       "id": "co-how-to-sell-at-farmers-markets-in-colorado-cottage-foods-act-top-marke-2026-10-04-dae2e9de",
