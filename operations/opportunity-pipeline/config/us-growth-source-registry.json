@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:58:34.260Z",
+  "updated_at": "2026-08-31T13:04:09.911Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -73,6 +73,24 @@
       "event_end": "2027-02-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-aurora-2027-festival: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2027-02-06."
+    },
+    {
+      "id": "co-arvada-farmers-market-2026-09-27-74ecd31b",
+      "name": "Arvada Farmers Market Vendor Opportunity",
+      "organiser": "Arvada Farmers Market",
+      "source_url": "https://www.arvadafarmersmarket.com",
+      "application_url": "https://www.arvadafarmersmarket.com",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Arvada",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-arvada-2026-farmers-market: live first-party route attests Arvada, CO, actionable vendor terms, and exact event date 2026-09-27."
     },
     {
       "id": "co-aurora-fest-city-of-aurora-2027-06-13-002ee6df",
@@ -325,6 +343,24 @@
       "event_end": "2026-10-10",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-aurora-2026-festival: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
+      "id": "co-vendor-events-in-arvada-co-2026-09-26-06bfa030",
+      "name": "Vendor Events in Arvada, CO",
+      "organiser": "Vendor Events in Arvada, CO",
+      "source_url": "https://vendorsmap.com/cities/arvada",
+      "application_url": "https://vendorsmap.com/cities/arvada",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Arvada",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-arvada-2026-farmers-market: live first-party route attests Arvada, CO, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "co-vendor-events-in-lakewood-co-2026-09-27-f8b34ae8",
