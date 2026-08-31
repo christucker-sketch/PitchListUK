@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T12:47:49.898Z",
-  "source": "reviewed-us-colorado-cloud-promotion:c5a1a4b73530ebf408d38c68350ef3a8c80cb1e17074619799b08f96331b58d6",
-  "total": 202,
+  "exported_at": "2026-08-31T13:06:33.927Z",
+  "source": "reviewed-us-colorado-cloud-promotion:9c958cb82309bccb8a395d2c7cf204b346e094261aea3ffab86ce1b495e91763",
+  "total": 203,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7740,6 +7740,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_34f2765da9ce574774e3"
+    },
+    {
+      "stable_id": "opp_us_3cc365a0f5fa4cf448b1",
+      "event_name": "2026 Arvada Summer Guide Vendor Opportunity",
+      "organiser": "2026 Arvada Summer Guide",
+      "source_url": "https://www.visitarvada.org/2026-arvada-summer-guide",
+      "application_url": "https://www.visitarvada.org/2026-arvada-summer-guide",
+      "location": "Arvada",
+      "locality": "Arvada",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-2026-arvada-summer-guide-2026-09-27-0ceff3b5",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_3cc365a0f5fa4cf448b1"
     }
   ]
 };
