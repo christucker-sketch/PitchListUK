@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:05:40.357Z",
+  "updated_at": "2026-08-31T13:10:34.641Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -397,6 +397,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-lakewood-2026-farmers-market: live first-party route attests Lakewood, CO, actionable vendor terms, and exact event date 2026-09-27."
+    },
+    {
+      "id": "co-vendor-events-in-westminster-co-2026-09-26-17528273",
+      "name": "Vendor Events in Westminster, CO",
+      "organiser": "Vendor Events in Westminster, CO",
+      "source_url": "https://vendorsmap.com/cities/westminster-co",
+      "application_url": "https://vendorsmap.com/cities/westminster-co",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Westminster",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-westminster-2026-farmers-market: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
     },
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
