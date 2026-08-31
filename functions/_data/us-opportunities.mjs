@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T12:17:33.888Z",
-  "source": "reviewed-us-colorado-cloud-promotion:83cc91c3adbfefbdf596c2463d423edc1eeb1425fdfe0f64376d7fd32f91eaef",
-  "total": 193,
+  "exported_at": "2026-08-31T12:26:40.315Z",
+  "source": "reviewed-us-colorado-cloud-promotion:4525f1b6061b49367aa778561ca76cf19dba527f6969f2501001523f84339c8b",
+  "total": 194,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7400,6 +7400,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_c54ef310c5cc664af9c3"
+    },
+    {
+      "stable_id": "opp_us_74cd9ce2bab0f987a671",
+      "event_name": "Colorado Country Christmas Gift Show | November 13-15, 2026 Vendor Opportunity",
+      "organiser": "Colorado Country Christmas Gift Show | November 13-15, 2026",
+      "source_url": "https://www.coloradogiftshow.com/",
+      "application_url": "https://www.coloradogiftshow.com",
+      "location": "Colorado Springs",
+      "locality": "Colorado Springs",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-13",
+      "event_end": "2026-11-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-colorado-country-christmas-gift-show-november-13-15-2026-2026-11-13-81ce441a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_74cd9ce2bab0f987a671"
     }
   ]
 };
