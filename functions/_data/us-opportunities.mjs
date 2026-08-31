@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T14:22:43.494Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:e9c239f99af65fbdbff8ae8d2635e8bdcb7ec5a82b4dd4ee8809eeb8fedb44f7",
-  "total": 216,
+  "exported_at": "2026-08-31T14:36:46.385Z",
+  "source": "reviewed-us-illinois-cloud-promotion:832a3a024ef4721eee70b239b88d074179cbde8a9706f98ca441c08ef2de5b0a",
+  "total": 217,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8277,6 +8277,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_2902bb8354b378afff4f"
+    },
+    {
+      "stable_id": "opp_us_465f151a788552870632",
+      "event_name": "Hyde Park Farmers Market - South East Chicago Commission Vendor Opportunity",
+      "organiser": "Hyde Park Farmers Market - South East Chicago Commission",
+      "source_url": "https://secc-chicago.org/hpfm/",
+      "application_url": "https://secc-chicago.org/hpfm",
+      "location": "Chicago",
+      "locality": "Chicago",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-hyde-park-farmers-market-south-east-chicago-commission-2026-09-27-f0b3a693",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_465f151a788552870632"
     }
   ]
 };
