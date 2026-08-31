@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T13:41:19.857Z",
-  "source": "reviewed-us-california-cloud-promotion:53f08f23a8f3909404a508cbbc560115cb89fcd63b0ccf61df7278a59ecefd8d",
-  "total": 211,
+  "exported_at": "2026-08-31T13:49:07.806Z",
+  "source": "reviewed-us-illinois-cloud-promotion:90164188e07bbb408669a83d2b53ff975361fcde5fd6a02d12f74b0f5926b77d",
+  "total": 212,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8085,6 +8085,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_2d37860d4da656f2608d"
+    },
+    {
+      "stable_id": "opp_us_6e122eece4badaf59719",
+      "event_name": "Chicago Fall Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Chicago Fall Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/chicagofallgurneemills/",
+      "application_url": "https://hometownvendormarket.com/chicagofallgurneemills",
+      "location": "Chicago",
+      "locality": "Chicago",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "60031",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-13",
+      "event_end": "2026-11-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-chicago-fall-craft-vendor-market-hometown-vendor-market-2026-11-13-37cf0ee7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_6e122eece4badaf59719"
     }
   ]
 };
