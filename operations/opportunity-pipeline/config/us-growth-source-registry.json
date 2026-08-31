@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:22:47.124Z",
+  "updated_at": "2026-08-31T12:25:38.625Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -37,6 +37,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-denver-2026-farmers-market: live first-party route attests Denver, CO, actionable vendor terms, and exact event date 2026-10-11."
+    },
+    {
+      "id": "co-colorado-country-christmas-gift-show-november-13-15-2026-2026-11-13-81ce441a",
+      "name": "Colorado Country Christmas Gift Show | November 13-15, 2026 Vendor Opportunity",
+      "organiser": "Colorado Country Christmas Gift Show | November 13-15, 2026",
+      "source_url": "https://www.coloradogiftshow.com",
+      "application_url": "https://www.coloradogiftshow.com",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Colorado Springs",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-13",
+      "event_end": "2026-11-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-colorado-springs-2026-holiday-market: live first-party route attests Colorado Springs, CO, actionable vendor terms, and exact event date range 2026-11-13 to 2026-11-15."
     },
     {
       "id": "co-farmers-markets-in-colorado-springs-your-guide-to-fresh-local-finds-2026-09-06-c018f9aa",
