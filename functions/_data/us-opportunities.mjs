@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T09:58:18.106Z",
-  "source": "reviewed-us-illinois-cloud-promotion:f05d7e58ec379deecd72e215fbbaa180c2d1315acad8ca1a65c67d10d0e906bd",
-  "total": 186,
+  "exported_at": "2026-08-31T10:04:21.599Z",
+  "source": "reviewed-us-ohio-cloud-promotion:fd5cd8a29c99f8f715b8d83013e8e2f6430f770730d8c8e8748a003feb40b156",
+  "total": 187,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7126,6 +7126,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_67bb21ba937040bb34e3"
+    },
+    {
+      "stable_id": "opp_us_b86ac903ff27964c87e9",
+      "event_name": "Vendors &mdash; Scioto Arts Market Vendor Opportunity",
+      "organiser": "Vendors &mdash; Scioto Arts Market",
+      "source_url": "https://www.sciotoartsmarket.com/vendors",
+      "application_url": "https://www.sciotoartsmarket.com/vendors",
+      "location": "Columbus",
+      "locality": "Columbus",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-20",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-vendors-mdash-scioto-arts-market-2026-09-20-cffe2d13",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_b86ac903ff27964c87e9"
     }
   ]
 };
