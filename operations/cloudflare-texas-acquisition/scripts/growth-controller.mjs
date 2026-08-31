@@ -179,7 +179,8 @@ export function validateSourcePr(pr, result, currentRegistry, nextRegistry, base
     '- additions only; no source removals',
     '- no automatic merge or deploy requested'
   ]) if (!body.includes(line)) throw new Error('Source PR body does not match compact Workflow output');
-  for (const id of addedIds) if (!body.includes(`  - ${id}:`)) throw new Error(`Source PR lacks an evidence receipt for ${id}`);
+  const normalizedBody = body.toLowerCase();
+  for (const id of addedIds) if (!normalizedBody.includes(`  - ${id.toLowerCase()}:`)) throw new Error(`Source PR lacks an evidence receipt for ${id}`);
   return pr.headRefOid;
 }
 
