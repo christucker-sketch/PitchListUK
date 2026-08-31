@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T09:57:24.227Z",
+  "updated_at": "2026-08-31T10:03:34.180Z",
   "sources": [
     {
       "id": "il-vendors-2026-09-12-87e06125",
@@ -19,6 +19,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-chicago-2026-government-events: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "oh-vendors-mdash-scioto-arts-market-2026-09-20-cffe2d13",
+      "name": "Vendors &mdash; Scioto Arts Market Vendor Opportunity",
+      "organiser": "Vendors &mdash; Scioto Arts Market",
+      "source_url": "https://www.sciotoartsmarket.com/vendors",
+      "application_url": "https://www.sciotoartsmarket.com/vendors",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Columbus",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
     }
   ]
 }
