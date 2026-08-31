@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:51:31.007Z",
+  "updated_at": "2026-08-31T13:53:58.121Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -721,6 +721,60 @@
       "event_end": "2026-09-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2026-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2026-09-24."
+    },
+    {
+      "id": "nc-2026-charlotte-fall-arts-crafts-food-festival-nc-eat-play-2026-09-25-bbbf3705",
+      "name": "2026 Charlotte Fall Arts, Crafts & Food Festival - NC Eat & Play Vendor Opportunity",
+      "organiser": "2026 Charlotte Fall Arts, Crafts & Food Festival - NC Eat & Play",
+      "source_url": "https://nceatandplay.com/event/2026-charlotte-fall-arts-crafts-food-festival",
+      "application_url": "https://nceatandplay.com/event/2026-charlotte-fall-arts-crafts-food-festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Charlotte",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-charlotte-2026-arts-crafts: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-27."
+    },
+    {
+      "id": "nc-ccaf2026-artisan-vendors-2026-10-17-27e94c1f",
+      "name": "CCAF2026 - ARTISAN VENDORS Application - Charlotte Chalk Art Festival 2026 - Eventeny Vendor Opportunity",
+      "organiser": "CCAF2026 - ARTISAN VENDORS",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=50934&srsltid=AfmBOoqYzQnRfnjNgB2xxjq78qnpZJgommQzB8zj0OM6eNZsKzATr2P9",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=50934&srsltid=AfmBOoqYzQnRfnjNgB2xxjq78qnpZJgommQzB8zj0OM6eNZsKzATr2P9",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Charlotte",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-charlotte-2026-festival: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "nc-foodees-fest-charlotte-nc-2026-09-11-b386fec4",
+      "name": "Foodees Fest Charlotte, NC Vendor Opportunity",
+      "organiser": "Foodees Fest Charlotte, NC",
+      "source_url": "https://www.foodeesfest.com/event/charlotte-nc-2026",
+      "application_url": "https://www.foodeesfest.com/event/charlotte-nc-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Charlotte",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-charlotte-2026-festival: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
     },
     {
       "id": "nc-north-carolina-farmers-market-vendor-permit-guide-2026-2026-12-31-7a5157f7",
