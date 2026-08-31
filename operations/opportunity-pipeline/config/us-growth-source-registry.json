@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T14:47:16.317Z",
+  "updated_at": "2026-08-31T14:48:58.565Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -793,6 +793,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2026-festival: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "ma-ultimate-guide-to-massachusetts-holiday-markets-2025-2026-12-06-e47d95ea",
+      "name": "Ultimate Guide to Massachusetts Holiday Markets 2025 Vendor Opportunity",
+      "organiser": "Ultimate Guide to Massachusetts Holiday Markets 2025",
+      "source_url": "https://keolismassadventures.com/blog/14-festive-holiday-markets-to-visit-this-december-in-the-greater-boston-area",
+      "application_url": "https://keolismassadventures.com/blog/14-festive-holiday-markets-to-visit-this-december-in-the-greater-boston-area",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Boston",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-boston-2026-holiday-market: live first-party route attests Boston, MA, actionable vendor terms, and exact event date range 2026-12-06 to 2026-12-13."
     },
     {
       "id": "mi-dodge-park-thursdays-2026-09-24-4effc43d",
