@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T12:32:52.951Z",
-  "source": "reviewed-us-colorado-cloud-promotion:347588591a7f5ae84baaa40f40f7d282f7bcb223e1f738d7fe89266820646955",
-  "total": 196,
+  "exported_at": "2026-08-31T12:35:19.255Z",
+  "source": "reviewed-us-colorado-cloud-promotion:80f566767112cfad7761fe9a910eb4b2296ce6e91a37d98ebf4d57e610a7520a",
+  "total": 197,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7512,6 +7512,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_69a090ffd17f3ebe03cd"
+    },
+    {
+      "stable_id": "opp_us_8620facdf6d8d47c6b76",
+      "event_name": "Unicorn Festival - Home Vendor Opportunity",
+      "organiser": "Unicorn Festival - Home",
+      "source_url": "https://www.unicornfestivalcolorado.com/",
+      "application_url": "https://www.unicornfestivalcolorado.com",
+      "location": "Aurora",
+      "locality": "Aurora",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-unicorn-festival-home-2026-10-10-097d8ef3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_8620facdf6d8d47c6b76"
     }
   ]
 };
