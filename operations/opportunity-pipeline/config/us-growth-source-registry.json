@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T15:03:31.180Z",
+  "updated_at": "2026-08-31T15:06:21.619Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1135,6 +1135,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-food-truck: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "va-farm-markets-continue-to-serve-during-coronavirus-2027-04-25-7201cc9c",
+      "name": "Farm Markets Continue to Serve during Coronavirus Vendor Opportunity",
+      "organiser": "Farm Markets Continue to Serve during Coronavirus",
+      "source_url": "https://coastalvirginiamag.com/article/farm-markets-continue-to-serve-during-coronavirus",
+      "application_url": "https://coastalvirginiamag.com/article/farm-markets-continue-to-serve-during-coronavirus",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Virginia Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-25",
+      "event_end": "2027-05-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-virginia-beach-2027-farmers-market: live first-party route attests Virginia Beach, VA, actionable vendor terms, and exact event date range 2027-04-25 to 2027-05-02."
     },
     {
       "id": "va-old-beach-farmers-market-2026-09-04-e3bda645",
