@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:25:38.625Z",
+  "updated_at": "2026-08-31T12:29:18.573Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -91,6 +91,24 @@
       "event_end": "2026-10-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-denver-2026-farmers-market: live first-party route attests Denver, CO, actionable vendor terms, and exact event date 2026-10-04."
+    },
+    {
+      "id": "co-territory-days-mdash-old-colorado-city-2027-05-29-bb112a6c",
+      "name": "Territory Days &mdash; Old Colorado City Vendor Opportunity",
+      "organiser": "Territory Days &mdash; Old Colorado City",
+      "source_url": "https://www.shopoldcoloradocity.com/territory-days",
+      "application_url": "https://www.shopoldcoloradocity.com/territory-days",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Colorado Springs",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-29",
+      "event_end": "2027-05-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-colorado-springs-2027-holiday-market: live first-party route attests Colorado Springs, CO, actionable vendor terms, and exact event date range 2027-05-29 to 2027-05-31."
     },
     {
       "id": "co-tomato-festival-at-trapper-days-2026-09-11-809667cb",
