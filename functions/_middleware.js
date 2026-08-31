@@ -1,4 +1,5 @@
-const FINDPITCHES_HOSTS = new Set(['findpitches.com', 'www.findpitches.com']);
+import { isFindPitchesHost } from '../platform/routing.mjs';
+
 const INTERNAL_US_PAGES = new Set(['/us', '/us/', '/us/find-pitches', '/us/find-pitches/']);
 
 function notFound() {
@@ -20,10 +21,9 @@ function isSharedAsset(pathname) {
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
-  const hostname = url.hostname.toLowerCase();
 
   if (INTERNAL_US_PAGES.has(url.pathname)) return notFound();
-  if (!FINDPITCHES_HOSTS.has(hostname)) return context.next();
+  if (!isFindPitchesHost(url.hostname)) return context.next();
 
   if (url.pathname.startsWith('/api/') || isSharedAsset(url.pathname)) {
     return context.next();
