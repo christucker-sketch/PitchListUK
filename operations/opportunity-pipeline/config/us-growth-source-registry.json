@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:53:58.121Z",
+  "updated_at": "2026-08-31T14:25:07.966Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -811,6 +811,42 @@
       "event_end": "2026-12-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-newark-2026-farmers-market: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-12-20."
+    },
+    {
+      "id": "nj-jcast-handmade-market-2026-jersey-city-nj-2026-10-01-f3e417c8",
+      "name": "JCAST Handmade Market 2026, Jersey City, NJ Vendor Opportunity",
+      "organiser": "JCAST Handmade Market 2026, Jersey City, NJ",
+      "source_url": "https://vendorsmap.com/events/25998",
+      "application_url": "https://vendorsmap.com/events/25998",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Newark",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-01",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-newark-2026-arts-crafts: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date range 2026-10-01 to 2026-10-04."
+    },
+    {
+      "id": "nj-may-31-call-for-vendors-weekly-maker-market-2026-09-02-1ea58c95",
+      "name": "May 31 | Call for Vendors! Weekly Maker Market Vendor Opportunity",
+      "organiser": "May 31 | Call for Vendors! Weekly Maker Market",
+      "source_url": "https://patch.com/new-jersey/newarknj/calendar/event/20260531/e0213fe7-0644-4779-9d82-d9803d613afc/call-for-vendors-weekly-maker-market",
+      "application_url": "https://patch.com/new-jersey/newarknj/calendar/event/20260531/e0213fe7-0644-4779-9d82-d9803d613afc/call-for-vendors-weekly-maker-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Newark",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-02",
+      "event_end": "2026-09-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-newark-2026-arts-crafts: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-09-02."
     },
     {
       "id": "ny-eventeny-com-2026-09-19-8cd6c855",
