@@ -154,37 +154,64 @@ function reasonCounts(items) {
   return items.reduce((counts, item) => ({ ...counts, [item.reason]: (counts[item.reason] || 0) + 1 }), {});
 }
 
-export async function discoverGrowthSources(env, state, options = {}) {
-  const asOfDate = String(options.asOfDate || new Date().toISOString()).slice(0, 10);
-  const plans = growthQueryBatch(state, { offset: options.queryOffset, limit: options.queryLimit, years: options.years });
-  if (!plans.length) return { plans, sources: [], receipts: [], held: [], metrics: { plan_size: growthPlanSize(state, { years: options.years }), queries_used: 0, results_seen: 0, pages_fetched: 0 } };
+export async function searchGrowthPlan(env, plan, options = {}) {
   const search = options.search || ((query, searchOptions) => serperSearch(env, query, searchOptions));
-  const fetchPage = options.fetchPage;
-  if (typeof fetchPage !== 'function') throw new Error('Cloudflare growth discovery requires injected live page fetch');
-  const existingRoutes = new Set((options.existingSources || []).flatMap(source => [canonicalUrl(source.source_url), canonicalUrl(source.application_url)]).filter(Boolean));
+  const results = await search(plan.query, { num: options.searchNum || 8 });
+  return {
+    plan_id: plan.id,
+    results: results.map(result => ({
+      rank: Number(result.rank || 0),
+      title: String(result.title || ''),
+      url: canonicalUrl(result.url),
+      snippet: String(result.snippet || '')
+    })).filter(result => result.url)
+  };
+}
+
+export function normalizeGrowthCandidates({ plans = [], searchBatches = [], existingSources = [], candidateCap = 16 } = {}) {
+  const existingRoutes = new Set(existingSources.flatMap(source => [
+    canonicalUrl(source.source_url),
+    canonicalUrl(source.application_url)
+  ]).filter(Boolean));
+  const batchesByPlan = new Map(searchBatches.map(batch => [batch.plan_id, batch.results || []]));
   const unique = new Map();
   let resultsSeen = 0;
   for (const plan of plans) {
-    const results = await search(plan.query, { num: options.searchNum || 8 });
+    const results = batchesByPlan.get(plan.id) || [];
     resultsSeen += results.length;
     for (const result of results) {
       const route = canonicalUrl(result.url);
       if (!route || existingRoutes.has(route)) continue;
-      const key = `${plan.id}|${route}`;
+      const key = route;
       if (!unique.has(key)) unique.set(key, { plan, result: { ...result, url: route } });
     }
   }
-  const cap = Math.max(1, Math.min(24, Number(options.candidateCap || 16)));
+  const cap = Math.max(1, Math.min(24, Number(candidateCap || 16)));
+  return {
+    candidates: [...unique.values()].slice(0, cap),
+    metrics: { results_seen: resultsSeen, unique_routes_considered: unique.size, candidates_selected: Math.min(unique.size, cap) }
+  };
+}
+
+export function chunkGrowthCandidates(candidates = [], options = {}) {
+  const batchSize = Math.max(1, Math.min(8, Number(options.batchSize || 4)));
+  const batches = [];
+  for (let index = 0; index < candidates.length; index += batchSize) batches.push(candidates.slice(index, index + batchSize));
+  return batches;
+}
+
+export async function validateGrowthCandidateBatch({ candidates = [], state, asOfDate, fetchPage } = {}) {
+  if (typeof fetchPage !== 'function') throw new Error('Cloudflare growth discovery requires injected live page fetch');
   const sources = [];
   const receipts = [];
   const held = [];
   let pagesFetched = 0;
-  for (const item of [...unique.values()].slice(0, cap)) {
+  for (const item of candidates) {
     let fetched;
     try {
       fetched = await fetchPage({ url: item.result.url, source_id: item.plan.id });
       pagesFetched += 1;
-    } catch (error) {
+    } catch {
       held.push({ query_id: item.plan.id, route: item.result.url, reason: 'fetch_failed' });
       continue;
     }
@@ -193,12 +220,29 @@ export async function discoverGrowthSources(env, state, options = {}) {
       held.push({ query_id: item.plan.id, route: item.result.url, reason: verdict.reason });
       continue;
     }
-    if (sources.some(source => source.id === verdict.source.id || source.application_url === verdict.source.application_url)) {
-      held.push({ query_id: item.plan.id, route: item.result.url, reason: 'in_batch_duplicate' });
-      continue;
-    }
     sources.push(verdict.source);
     receipts.push(verdict.receipt);
+  }
+  return { sources, receipts, held, pages_fetched: pagesFetched };
+}
+
+export function finalizeGrowthDiscovery({ plans = [], validationBatches = [], planSize = 0, queryOffset = 0, searchMetrics = {} } = {}) {
+  const sources = [];
+  const receipts = [];
+  const held = validationBatches.flatMap(batch => batch.held || []);
+  let pagesFetched = 0;
+  for (const batch of validationBatches) {
+    pagesFetched += Number(batch.pages_fetched || 0);
+    for (let index = 0; index < (batch.sources || []).length; index += 1) {
+      const source = batch.sources[index];
+      const receipt = (batch.receipts || [])[index];
+      if (sources.some(item => item.id === source.id || item.application_url === source.application_url)) {
+        held.push({ query_id: receipt?.query_id, route: source.application_url, reason: 'in_batch_duplicate' });
+        continue;
+      }
+      sources.push(source);
+      if (receipt) receipts.push(receipt);
+    }
   }
   return {
     plans,
@@ -207,13 +251,41 @@ export async function discoverGrowthSources(env, state, options = {}) {
     held,
     held_reasons: reasonCounts(held),
     metrics: {
-      plan_size: growthPlanSize(state, { years: options.years }),
-      query_offset: Math.max(0, Number(options.queryOffset || 0)),
+      plan_size: Number(planSize || plans.length),
+      query_offset: Math.max(0, Number(queryOffset || 0)),
       queries_used: plans.length,
-      results_seen: resultsSeen,
-      unique_routes_considered: unique.size,
+      results_seen: Number(searchMetrics.results_seen || 0),
+      unique_routes_considered: Number(searchMetrics.unique_routes_considered || 0),
+      candidates_selected: Number(searchMetrics.candidates_selected || 0),
       pages_fetched: pagesFetched,
+      validation_batches: validationBatches.length,
       sources_generated: sources.length
     }
   };
+}
+
+export async function discoverGrowthSources(env, state, options = {}) {
+  const asOfDate = String(options.asOfDate || new Date().toISOString()).slice(0, 10);
+  const plans = growthQueryBatch(state, { offset: options.queryOffset, limit: options.queryLimit, years: options.years });
+  if (!plans.length) return { plans, sources: [], receipts: [], held: [], metrics: { plan_size: growthPlanSize(state, { years: options.years }), queries_used: 0, results_seen: 0, pages_fetched: 0 } };
+  const fetchPage = options.fetchPage;
+  const searchBatches = [];
+  for (const plan of plans) searchBatches.push(await searchGrowthPlan(env, plan, options));
+  const normalized = normalizeGrowthCandidates({
+    plans,
+    searchBatches,
+    existingSources: options.existingSources,
+    candidateCap: options.candidateCap
+  });
+  const validationBatches = [];
+  for (const candidates of chunkGrowthCandidates(normalized.candidates, { batchSize: options.candidateBatchSize })) {
+    validationBatches.push(await validateGrowthCandidateBatch({ candidates, state, asOfDate, fetchPage }));
+  }
+  return finalizeGrowthDiscovery({
+    plans,
+    validationBatches,
+    planSize: growthPlanSize(state, { years: options.years }),
+    queryOffset: options.queryOffset,
+    searchMetrics: normalized.metrics
+  });
 }

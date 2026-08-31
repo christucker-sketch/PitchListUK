@@ -3,7 +3,14 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { candidateFromLivePage, discoverGrowthSources } from '../../cloudflare-texas-acquisition/src/us-growth-discovery.js';
+import {
+  candidateFromLivePage,
+  chunkGrowthCandidates,
+  discoverGrowthSources,
+  finalizeGrowthDiscovery,
+  normalizeGrowthCandidates,
+  validateGrowthCandidateBatch
+} from '../../cloudflare-texas-acquisition/src/us-growth-discovery.js';
 import { growthQueryBatch, growthQueryPlan, PRIORITY_STATE_CODES } from '../../cloudflare-texas-acquisition/src/us-growth-plan.js';
 import { mergeGrowthSources, parseGrowthRegistry, sourcesForState, validateGrowthSource } from '../../cloudflare-texas-acquisition/src/us-growth-registry.js';
 import { initialState, parseCompactWorkflowOutput, validateSourcePr } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
@@ -88,10 +95,89 @@ test('discovery performs injected Cloudflare search/fetch and returns compact ev
   assert.equal(result.sources[0].status, 'approved-pilot');
 });
 
+test('large discovery result sets are capped and split into bounded validation batches', async () => {
+  const plans = growthQueryBatch(state, { years: [2026], offset: 0, limit: 4 });
+  const searchBatches = plans.map((plan, planIndex) => ({
+    plan_id: plan.id,
+    results: Array.from({ length: 10 }, (_, resultIndex) => ({
+      rank: resultIndex + 1,
+      title: `Candidate ${planIndex}-${resultIndex}`,
+      url: `https://candidate-${planIndex}-${resultIndex}.example/vendors`
+    }))
+  }));
+  const normalized = normalizeGrowthCandidates({ plans, searchBatches, candidateCap: 24 });
+  assert.equal(normalized.metrics.results_seen, 40);
+  assert.equal(normalized.metrics.unique_routes_considered, 40);
+  assert.equal(normalized.metrics.candidates_selected, 24);
+  assert.deepEqual(chunkGrowthCandidates(normalized.candidates, { batchSize: 4 }).map(batch => batch.length), [4, 4, 4, 4, 4, 4]);
+});
+
+test('normalization fetches the same route only once when multiple queries return it', () => {
+  const plans = growthQueryBatch(state, { years: [2026], offset: 0, limit: 2 });
+  const repeated = { rank: 1, title: 'Shared Vendor Route', url: 'https://shared.example/vendors' };
+  const normalized = normalizeGrowthCandidates({
+    plans,
+    searchBatches: plans.map(plan => ({ plan_id: plan.id, results: [repeated] }))
+  });
+  assert.equal(normalized.metrics.results_seen, 2);
+  assert.equal(normalized.metrics.unique_routes_considered, 1);
+  assert.equal(normalized.candidates.length, 1);
+  assert.equal(normalized.candidates[0].plan.id, plans[0].id);
+});
+
+test('multiple candidate batches preserve evidence validation and deterministic output', async () => {
+  const plan = { id: 'ca-riverside-2026-festival', locality: 'Riverside', state_code: 'CA', state_name: 'California', year: 2026 };
+  const candidates = Array.from({ length: 9 }, (_, index) => ({
+    plan,
+    result: { title: `Riverside Fair ${index} Vendor Application`, url: `https://fair-${index}.example/vendors` }
+  }));
+  const validate = batch => validateGrowthCandidateBatch({
+    candidates: batch,
+    state,
+    asOfDate: '2026-08-31',
+    fetchPage: async candidate => ({
+      url: candidate.url,
+      title: `Riverside Fair Vendor Application`,
+      text: 'Riverside, California Fair event November 7-8, 2026. Vendor applications are open for artists and food vendors.'
+    })
+  });
+  const batchesOfFour = await Promise.all(chunkGrowthCandidates(candidates, { batchSize: 4 }).map(validate));
+  const batchesOfThree = await Promise.all(chunkGrowthCandidates(candidates, { batchSize: 3 }).map(validate));
+  const first = finalizeGrowthDiscovery({ plans: [plan], validationBatches: batchesOfFour, planSize: 1, searchMetrics: { candidates_selected: 9 } });
+  const second = finalizeGrowthDiscovery({ plans: [plan], validationBatches: batchesOfThree, planSize: 1, searchMetrics: { candidates_selected: 9 } });
+  assert.equal(first.metrics.validation_batches, 3);
+  assert.equal(first.sources.length, 9);
+  assert.deepEqual(first.sources, second.sources);
+  assert.deepEqual(first.receipts, second.receipts);
+});
+
+test('resumed validation output cannot create duplicate approved sources', async () => {
+  const plan = { id: 'ca-riverside-2026-festival', locality: 'Riverside', state_code: 'CA', state_name: 'California', year: 2026 };
+  const batch = await validateGrowthCandidateBatch({
+    candidates: [{ plan, result: { title: 'Riverside Fair Vendor Application', url: 'https://retry.example/vendors' } }],
+    state,
+    asOfDate: '2026-08-31',
+    fetchPage: async candidate => ({
+      url: candidate.url,
+      title: 'Riverside Fair Vendor Application',
+      text: 'Riverside, California Fair event November 7-8, 2026. Vendor applications are open.'
+    })
+  });
+  const resumed = finalizeGrowthDiscovery({ plans: [plan], validationBatches: [batch, batch], planSize: 1 });
+  assert.equal(resumed.sources.length, 1);
+  assert.equal(resumed.receipts.length, 1);
+  assert.equal(resumed.held_reasons.in_batch_duplicate, 1);
+});
+
 test('Worker source routes discovery and selected growth sources through Cloudflare Workflow steps', () => {
   const worker = fs.readFileSync(path.join(repositoryRoot, 'operations/cloudflare-texas-acquisition/src/index.js'), 'utf8');
+  const wrangler = JSON.parse(fs.readFileSync(path.join(repositoryRoot, 'operations/cloudflare-texas-acquisition/wrangler.jsonc'), 'utf8'));
+  assert.equal(wrangler.limits.cpu_ms, 300000);
   assert.match(worker, /event\?\.payload\?\.mode === 'discover'/);
-  assert.match(worker, /discover and validate \$\{state\.name\} growth sources in Cloudflare/);
+  assert.match(worker, /search \$\{state\.code\} growth query \$\{plan\.id\}/);
+  assert.match(worker, /normalize \$\{state\.code\} growth candidates offset/);
+  assert.match(worker, /validate \$\{state\.code\} growth candidates batch/);
+  assert.match(worker, /dedupe and approve \$\{state\.code\} growth candidates offset/);
   assert.match(worker, /fetchTextTarget\(candidate\.url/);
   assert.match(worker, /sourcesForState\(base\.growthRegistry, state\.code, requestedSourceIds\)/);
   assert.match(worker, /open GitHub \$\{state\.name\} source registry PR/);

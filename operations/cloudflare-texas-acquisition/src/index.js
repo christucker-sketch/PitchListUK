@@ -10,7 +10,14 @@ import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acqu
 import { controlledRolloutScheduled } from './controlled-rollout-schedule.js';
 import { assertMainUnchanged, dataBranchName } from './data-branch-name.js';
 import { mergeStagingBatches, stagingSourceBatches } from './staging-batches.js';
-import { discoverGrowthSources } from './us-growth-discovery.js';
+import {
+  chunkGrowthCandidates,
+  finalizeGrowthDiscovery,
+  normalizeGrowthCandidates,
+  searchGrowthPlan,
+  validateGrowthCandidateBatch
+} from './us-growth-discovery.js';
+import { growthPlanSize, growthQueryBatch } from './us-growth-plan.js';
 import { mergeGrowthSources, parseGrowthRegistry, sourcesForState } from './us-growth-registry.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
@@ -245,23 +252,52 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
   }, async () => readMainGrowthRegistry(env));
   const queryOffset = Math.max(0, Number(event?.payload?.query_offset || 0));
   const queryLimit = Math.max(1, Math.min(4, Number(event?.payload?.query_limit || 2)));
-  const discovery = await step.do(`discover and validate ${state.name} growth sources in Cloudflare`, {
-    retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '20 minutes'
-  }, async () => discoverGrowthSources(env, state, {
-    queryOffset,
-    queryLimit,
-    existingSources: [...state.sources, ...base.registry.sources],
-    fetchPage: async candidate => {
-      const fetched = await fetchTextTarget(candidate.url, { timeoutMs: 15000, retries: 1 });
-      return {
-        url: fetched.finalUrl,
-        title: extractTitle(fetched.html),
-        text: htmlToText(fetched.html),
-        links: extractLinks(fetched.html, fetched.finalUrl),
-        fetch_route: 'discovery_source'
-      };
-    }
-  }));
+  const asOfDate = String(event?.payload?.as_of_date || new Date().toISOString()).slice(0, 10);
+  const plans = growthQueryBatch(state, { offset: queryOffset, limit: queryLimit });
+  const searchBatches = [];
+  for (const plan of plans) {
+    searchBatches.push(await step.do(`search ${state.code} growth query ${plan.id}`, {
+      retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' }, timeout: '2 minutes'
+    }, async () => searchGrowthPlan(env, plan)));
+  }
+  const normalized = await step.do(`normalize ${state.code} growth candidates offset ${queryOffset}`, async () => (
+    normalizeGrowthCandidates({
+      plans,
+      searchBatches,
+      existingSources: [...state.sources, ...base.registry.sources]
+    })
+  ));
+  const candidateBatches = chunkGrowthCandidates(normalized.candidates, { batchSize: 4 });
+  const validationBatches = [];
+  for (let index = 0; index < candidateBatches.length; index += 1) {
+    const candidates = candidateBatches[index];
+    validationBatches.push(await step.do(`validate ${state.code} growth candidates batch ${index + 1} of ${candidateBatches.length}`, {
+      retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '10 minutes'
+    }, async () => validateGrowthCandidateBatch({
+      candidates,
+      state,
+      asOfDate,
+      fetchPage: async candidate => {
+        const fetched = await fetchTextTarget(candidate.url, { timeoutMs: 15000, retries: 1 });
+        return {
+          url: fetched.finalUrl,
+          title: extractTitle(fetched.html),
+          text: htmlToText(fetched.html),
+          links: extractLinks(fetched.html, fetched.finalUrl),
+          fetch_route: 'discovery_source'
+        };
+      }
+    })));
+  }
+  const discovery = await step.do(`dedupe and approve ${state.code} growth candidates offset ${queryOffset}`, async () => (
+    finalizeGrowthDiscovery({
+      plans,
+      validationBatches,
+      planSize: growthPlanSize(state),
+      queryOffset,
+      searchMetrics: normalized.metrics
+    })
+  ));
   let publication = { created: false, reason: 'no_net_new_sources', source_ids: [] };
   if (discovery.sources.length) {
     publication = await step.do(`open GitHub ${state.name} source registry PR`, {
@@ -280,6 +316,8 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
     plan_size: discovery.metrics.plan_size,
     queries_used: discovery.metrics.queries_used,
     search_results_seen: discovery.metrics.results_seen,
+    candidate_count: discovery.metrics.candidates_selected,
+    validation_batches: discovery.metrics.validation_batches,
     direct_source_pages_polled: discovery.metrics.pages_fetched,
     generated_source_count: discovery.sources.length,
     evidence_passed_count: discovery.receipts.length,
