@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T10:09:46.164Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:d68e5d751806d094a6796c4554385fe8f7f4d5e14f5e7928f9e2a6af33a064e9",
-  "total": 189,
+  "exported_at": "2026-08-31T10:12:10.313Z",
+  "source": "reviewed-us-michigan-cloud-promotion:f521d50b05a109b660e63d9b0210360a18c70ec9bd51f1ce8480540fb010e7dc",
+  "total": 190,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7242,6 +7242,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_bdf21255a5fee5c185f6"
+    },
+    {
+      "stable_id": "opp_us_b68a3eb71187274dfbdb",
+      "event_name": "Dodge Park Thursdays Vendor Opportunity",
+      "organiser": "Dodge Park Thursdays",
+      "source_url": "https://www.sterlingheights.gov/1236/Dodge-Park-Thursdays",
+      "application_url": "https://www.sterlingheights.gov/1236/Dodge-Park-Thursdays",
+      "location": "Detroit",
+      "locality": "Detroit",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "24639",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-24",
+      "event_end": "2026-09-24",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-dodge-park-thursdays-2026-09-24-4effc43d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_b68a3eb71187274dfbdb"
     }
   ]
 };
