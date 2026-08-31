@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T10:12:10.313Z",
-  "source": "reviewed-us-michigan-cloud-promotion:f521d50b05a109b660e63d9b0210360a18c70ec9bd51f1ce8480540fb010e7dc",
-  "total": 190,
+  "exported_at": "2026-08-31T10:17:20.649Z",
+  "source": "reviewed-us-washington-cloud-promotion:6ed46b44fb8289cdb80e3f50abf6977bf09db5fa069041871842a984d6584b04",
+  "total": 191,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7281,6 +7281,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_b68a3eb71187274dfbdb"
+    },
+    {
+      "stable_id": "opp_us_41e1d68fb1f8ec6d6504",
+      "event_name": "Legacy Square Vendor Opportunity",
+      "organiser": "Legacy Square",
+      "source_url": "https://yourvoice.rentonwa.gov/legacy-square",
+      "application_url": "https://yourvoice.rentonwa.gov/legacy-square",
+      "location": "Seattle",
+      "locality": "Seattle",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "98057",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-legacy-square-2026-09-19-b9a7d78b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_41e1d68fb1f8ec6d6504"
     }
   ]
 };
