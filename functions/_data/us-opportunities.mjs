@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T14:44:35.205Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:7e68e94c4b180db6fc09bc2f774f4068cb5b976fc9056f8ade84b9f4988e40d3",
-  "total": 218,
+  "exported_at": "2026-08-31T14:55:36.511Z",
+  "source": "reviewed-us-florida-cloud-promotion:c5ee92f8900fcd4b64e76f34350f2a3fdebdf07e7bdb0492271a5bac9524842c",
+  "total": 219,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8352,6 +8352,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_5bd6645b1bc0d40c638b"
+    },
+    {
+      "stable_id": "opp_us_ec131914e482eabbfc92",
+      "event_name": "Jacksonville.gov - 2026 JACKSONVILLE JAZZ FESTIVAL RETURNS TO DOWNTOWN THIS MEMORIAL DAY WEEKEND WITH A STAR-STUDDED LINEUP Vendor Opportunity",
+      "organiser": "Jacksonville.gov - 2026 JACKSONVILLE JAZZ FESTIVAL RETURNS TO DOWNTOWN THIS MEMORIAL DAY WEEKEND WITH A STAR-STUDDED LINEUP",
+      "source_url": "https://www.jacksonville.gov/welcome/featured-news/2026-jacksonville-jazz-festival-returns-to-downtown",
+      "application_url": "https://www.jacksonville.gov/welcome/featured-news/2026-jacksonville-jazz-festival-returns-to-downtown",
+      "location": "Jacksonville",
+      "locality": "Jacksonville",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "32202",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-21",
+      "event_end": "2027-05-24",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-jacksonville-gov-2026-jacksonville-jazz-festival-returns-to-downtown-t-2027-05-21-a5e62de1",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_ec131914e482eabbfc92"
     }
   ]
 };
