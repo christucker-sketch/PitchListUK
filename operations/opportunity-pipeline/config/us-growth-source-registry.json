@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:36:49.871Z",
+  "updated_at": "2026-08-31T12:39:46.208Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -37,6 +37,42 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-aurora-2026-food-truck: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "co-2027-lunar-new-year-on-havana-street-on-havana-street-aurora-co-2027-02-06-ea0bc84e",
+      "name": "2027 Lunar New Year On Havana Street - On Havana Street Aurora, CO Vendor Opportunity",
+      "organiser": "2027 Lunar New Year On Havana Street - On Havana Street Aurora, CO",
+      "source_url": "https://onhavanastreet.com/events/2027-lunar-new-year-on-havana-street",
+      "application_url": "https://onhavanastreet.com/events/2027-lunar-new-year-on-havana-street",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Aurora",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-06",
+      "event_end": "2027-02-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-aurora-2027-festival: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2027-02-06."
+    },
+    {
+      "id": "co-aurora-fest-city-of-aurora-2027-06-13-002ee6df",
+      "name": "Aurora Fest - City of Aurora Vendor Opportunity",
+      "organiser": "Aurora Fest - City of Aurora",
+      "source_url": "https://www.auroragov.org/things_to_do/events/aurora_fest",
+      "application_url": "https://www.auroragov.org/things_to_do/events/aurora_fest",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Aurora",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-13",
+      "event_end": "2027-06-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-aurora-2027-festival: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2027-06-13."
     },
     {
       "id": "co-central-park-farmers-market-2026-10-11-df7705fe",
