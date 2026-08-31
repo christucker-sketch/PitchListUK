@@ -1,7 +1,25 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T10:16:28.284Z",
+  "updated_at": "2026-08-31T10:18:23.747Z",
   "sources": [
+    {
+      "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
+      "name": "How to Sell at Farmers Markets in Arizona (2026) Vendor Opportunity",
+      "organiser": "How to Sell at Farmers Markets in Arizona (2026)",
+      "source_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-arizona",
+      "application_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-arizona",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Phoenix",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-phoenix-2026-farmers-market: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date 2026-09-07."
+    },
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
       "name": "2026 Vendor Application - Druid Hills Farmers Market 2026 - Eventeny",
