@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T12:43:14.697Z",
-  "source": "reviewed-us-colorado-cloud-promotion:d013f26f4fa43b2dc006c991c8f9dea20a7bafa16da2ebc662c0b37ea23a39a1",
-  "total": 201,
+  "exported_at": "2026-08-31T12:47:49.898Z",
+  "source": "reviewed-us-colorado-cloud-promotion:c5a1a4b73530ebf408d38c68350ef3a8c80cb1e17074619799b08f96331b58d6",
+  "total": 202,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7703,6 +7703,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_8919965c67d4c7062074"
+    },
+    {
+      "stable_id": "opp_us_34f2765da9ce574774e3",
+      "event_name": "18 Festivals to Put on your Calendar Now Vendor Opportunity",
+      "organiser": "18 Festivals to Put on your Calendar Now",
+      "source_url": "https://www.visitftcollins.com/blog/stories/post/festivals-to-put-on-your-calendar-now/",
+      "application_url": "https://www.visitftcollins.com/blog/stories/post/festivals-to-put-on-your-calendar-now",
+      "location": "Fort Collins",
+      "locality": "Fort Collins",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-18-festivals-to-put-on-your-calendar-now-2026-09-26-2fa052b3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_34f2765da9ce574774e3"
     }
   ]
 };
