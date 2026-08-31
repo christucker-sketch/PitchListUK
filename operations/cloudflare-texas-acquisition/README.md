@@ -75,3 +75,20 @@ If live review rejects a PR, close it unmerged, fix and deploy the acquisition g
 node operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs retry-closed --reason live_evidence_mismatch
 node operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs run
 ```
+
+## Cloudflare nationwide growth controller
+
+After the controlled 50-state launch, the production Workflow also supports bounded US source discovery. Discovery is executed inside Cloudflare with `mode: "discover"`; it uses the `SERPER_API_KEY` Worker secret, fetches candidate pages from Cloudflare, requires deterministic first-party/place/vendor/date evidence, and opens an additions-only source-registry PR. It never creates production rows directly.
+
+After an exact source PR passes CI and is merged, acquisition is triggered with the exact new `source_ids`. Cloudflare then performs the existing fetch, extraction, validation, dedupe and data-PR publication steps. The detached local controller only triggers and polls Workflow instances, validates exact-head PRs and CI, merges, deploys approved snapshots, verifies Cloudflare Pages and the live FindPitches API, and writes a compact atomic checkpoint.
+
+```bash
+export PITCHLIST_GROWTH_ENV_FILE=/absolute/path/to/external.env
+node operations/cloudflare-texas-acquisition/scripts/growth-controller.mjs init \
+  --target 1100 \
+  --worker-version CLOUDFLARE_VERSION_ID
+node operations/cloudflare-texas-acquisition/scripts/growth-controller.mjs status
+node operations/cloudflare-texas-acquisition/scripts/growth-controller.mjs run
+```
+
+The growth controller resumes from Workflow, PR, merge and deployment checkpoints. It fails closed on dirty/stale Git state, another active Workflow, non-exact PR content, incomplete evidence, CI failure, snapshot drift, deployment SHA mismatch, or live API count mismatch. It performs no local search, scraping, extraction or opportunity generation.
