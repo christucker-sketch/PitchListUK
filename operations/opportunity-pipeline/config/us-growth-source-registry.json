@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T14:58:49.839Z",
+  "updated_at": "2026-08-31T15:03:31.180Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -847,6 +847,24 @@
       "event_end": "2026-09-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2026-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2026-09-24."
+    },
+    {
+      "id": "mi-wyandotte-street-art-fair-2027-07-08-548cd137",
+      "name": "Wyandotte Street Art Fair Vendor Opportunity",
+      "organiser": "Wyandotte Street Art Fair",
+      "source_url": "https://www.wyandottemi.gov/591/Wyandotte-Street-Art-Fair",
+      "application_url": "https://www.wyandottemi.gov/591/Wyandotte-Street-Art-Fair",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Detroit",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-08",
+      "event_end": "2027-07-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-detroit-2027-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date range 2027-07-08 to 2027-07-11."
     },
     {
       "id": "nc-2026-charlotte-fall-arts-crafts-food-festival-nc-eat-play-2026-09-25-bbbf3705",
