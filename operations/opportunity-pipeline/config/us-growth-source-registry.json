@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T14:33:05.598Z",
+  "updated_at": "2026-08-31T14:34:34.367Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -937,6 +937,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-festival: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "pa-wish-upon-a-food-truck-festival-2026-09-12-0b1a0459",
+      "name": "Wish Upon A Food Truck Festival",
+      "organiser": "Wish Upon A Food Truck Festival",
+      "source_url": "https://wish.org/philadesv/wish-upon-food-truck-festival",
+      "application_url": "https://wish.org/philadesv/wish-upon-food-truck-festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Philadelphia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-philadelphia-2026-food-truck: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "va-old-beach-farmers-market-2026-09-04-e3bda645",
