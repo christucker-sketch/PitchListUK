@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:42:22.547Z",
+  "updated_at": "2026-08-31T12:45:35.630Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -181,6 +181,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-aurora-2026-farmers-market: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "co-open-streets-2026-city-of-fort-collins-2026-10-18-afcd143a",
+      "name": "Open Streets 2026 City of Fort Collins Vendor Opportunity",
+      "organiser": "Open Streets 2026 City of Fort Collins",
+      "source_url": "https://www.fortcollins.gov/Event-Folder/2026-Events/2026-Q3/Open-Streets-2026",
+      "application_url": "https://www.fortcollins.gov/Event-Folder/2026-Events/2026-Q3/Open-Streets-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Fort Collins",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-18",
+      "event_end": "2026-10-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-fort-collins-2026-government-events: live first-party route attests Fort Collins, CO, actionable vendor terms, and exact event date 2026-10-18."
     },
     {
       "id": "co-territory-days-mdash-old-colorado-city-2027-05-29-bb112a6c",
