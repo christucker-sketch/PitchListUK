@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T12:26:40.315Z",
-  "source": "reviewed-us-colorado-cloud-promotion:4525f1b6061b49367aa778561ca76cf19dba527f6969f2501001523f84339c8b",
-  "total": 194,
+  "exported_at": "2026-08-31T12:30:08.374Z",
+  "source": "reviewed-us-colorado-cloud-promotion:ab63189d451d2f5b9840c6b8c4c258dbc281dbe161772a5254821d50b691eead",
+  "total": 195,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7437,6 +7437,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_74cd9ce2bab0f987a671"
+    },
+    {
+      "stable_id": "opp_us_208f2c9d8fda997ee715",
+      "event_name": "Territory Days &mdash; Old Colorado City Vendor Opportunity",
+      "organiser": "Territory Days &mdash; Old Colorado City",
+      "source_url": "https://www.shopoldcoloradocity.com/territory-days",
+      "application_url": "https://www.shopoldcoloradocity.com/territory-days",
+      "location": "Colorado Springs",
+      "locality": "Colorado Springs",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-29",
+      "event_end": "2027-05-31",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-territory-days-mdash-old-colorado-city-2027-05-29-bb112a6c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_208f2c9d8fda997ee715"
     }
   ]
 };
