@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T10:17:20.649Z",
-  "source": "reviewed-us-washington-cloud-promotion:6ed46b44fb8289cdb80e3f50abf6977bf09db5fa069041871842a984d6584b04",
-  "total": 191,
+  "exported_at": "2026-08-31T10:19:10.767Z",
+  "source": "reviewed-us-arizona-cloud-promotion:646626dfa248c798e2a07ecaf148fad9f209ef2a8ab200565bb8550ab2f63dd8",
+  "total": 192,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7320,6 +7320,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_41e1d68fb1f8ec6d6504"
+    },
+    {
+      "stable_id": "opp_us_c40dd5139022a2b18473",
+      "event_name": "How to Sell at Farmers Markets in Arizona (2026) Vendor Opportunity",
+      "organiser": "How to Sell at Farmers Markets in Arizona (2026)",
+      "source_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-arizona",
+      "application_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-arizona",
+      "location": "Phoenix",
+      "locality": "Phoenix",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_c40dd5139022a2b18473"
     }
   ]
 };
