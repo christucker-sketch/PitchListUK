@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T10:13:40.735Z",
+  "updated_at": "2026-08-31T10:15:04.105Z",
   "sources": [
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
@@ -109,6 +109,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "va-old-beach-farmers-market-2026-09-04-e3bda645",
+      "name": "Old Beach Farmers Market Vendor Opportunity",
+      "organiser": "Old Beach Farmers Market",
+      "source_url": "https://vibecreativedistrict.org/event/old-beach-farmers-market-every-saturday-9am-to-noon-2/2025-01-04",
+      "application_url": "https://vibecreativedistrict.org/event/old-beach-farmers-market-every-saturday-9am-to-noon-2/2025-01-04",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Virginia Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-virginia-beach-2026-farmers-market: live first-party route attests Virginia Beach, VA, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-05."
     }
   ]
 }
