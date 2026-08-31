@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T10:04:21.599Z",
-  "source": "reviewed-us-ohio-cloud-promotion:fd5cd8a29c99f8f715b8d83013e8e2f6430f770730d8c8e8748a003feb40b156",
-  "total": 187,
+  "exported_at": "2026-08-31T10:07:08.896Z",
+  "source": "reviewed-us-georgia-cloud-promotion:ce231819e47180d576334c0868ff14830b1fc5317a2c80e534115f5c16875e54",
+  "total": 188,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7165,6 +7165,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_b86ac903ff27964c87e9"
+    },
+    {
+      "stable_id": "opp_us_f7e5dd1082671c550d20",
+      "event_name": "2026 Vendor Application - Druid Hills Farmers Market 2026 - Eventeny",
+      "organiser": "2026",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=40850&srsltid=AfmBOor0slpXrLS2nOzVcr4PlQfhxAXzSvQmndSPzdmS0V3RU1YV3swQ",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=40850&srsltid=AfmBOor0slpXrLS2nOzVcr4PlQfhxAXzSvQmndSPzdmS0V3RU1YV3swQ",
+      "location": "Atlanta",
+      "locality": "Atlanta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-2026-2026-11-21-aa99b9e6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_f7e5dd1082671c550d20"
     }
   ]
 };
