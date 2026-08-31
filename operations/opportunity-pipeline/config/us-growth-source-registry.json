@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:40:17.512Z",
+  "updated_at": "2026-08-31T13:43:53.915Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -595,6 +595,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-westminster-2026-farmers-market: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
+    },
+    {
+      "id": "fl-home-market-days-2026-12-06-12093b95",
+      "name": "Home - Market Days Vendor Opportunity",
+      "organiser": "Home - Market Days",
+      "source_url": "https://marketdays.org",
+      "application_url": "https://marketdays.org",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Jacksonville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-jacksonville-2026-arts-crafts: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date 2026-12-06."
     },
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
