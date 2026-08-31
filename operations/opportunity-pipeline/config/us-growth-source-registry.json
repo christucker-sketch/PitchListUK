@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T10:11:08.929Z",
+  "updated_at": "2026-08-31T10:13:40.735Z",
   "sources": [
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
@@ -73,6 +73,24 @@
       "event_end": "2026-12-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-farmers-market: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2026-12-31."
+    },
+    {
+      "id": "nj-how-to-sell-at-farmers-markets-in-new-jersey-home-baker-rule-jersey-fr-2026-12-20-69e0c274",
+      "name": "How to Sell at Farmers Markets in New Jersey: Home Baker Rule, Jersey Fresh & Top Markets (2026) Vendor Opportunity",
+      "organiser": "How to Sell at Farmers Markets in New Jersey: Home Baker Rule, Jersey Fresh & Top Markets (2026)",
+      "source_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-new-jersey",
+      "application_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-new-jersey",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Newark",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-20",
+      "event_end": "2026-12-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-newark-2026-farmers-market: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-12-20."
     },
     {
       "id": "oh-vendors-mdash-scioto-arts-market-2026-09-20-cffe2d13",
