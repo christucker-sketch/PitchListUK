@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:46:58.295Z",
+  "updated_at": "2026-08-31T12:49:37.760Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -181,6 +181,24 @@
       "event_end": "2026-10-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-denver-2026-farmers-market: live first-party route attests Denver, CO, actionable vendor terms, and exact event date 2026-10-04."
+    },
+    {
+      "id": "co-independence-day-community-celebration-city-of-fort-collins-2027-07-04-fecd9874",
+      "name": "Independence Day Community Celebration City of Fort Collins Vendor Opportunity",
+      "organiser": "Independence Day Community Celebration City of Fort Collins",
+      "source_url": "https://www.fortcollins.gov/Event-Folder/2026-Events/2026-Q3/Independence-Day-Community-Celebration",
+      "application_url": "https://www.fortcollins.gov/Event-Folder/2026-Events/2026-Q3/Independence-Day-Community-Celebration",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Fort Collins",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-fort-collins-2027-government-events: live first-party route attests Fort Collins, CO, actionable vendor terms, and exact event date 2027-07-04."
     },
     {
       "id": "co-market-in-the-park-the-aurora-highlands-2026-09-12-9ff163db",
