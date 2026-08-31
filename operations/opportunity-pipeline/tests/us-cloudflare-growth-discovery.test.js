@@ -236,11 +236,11 @@ test('compact source handoff derives exact IDs from the PR diff and binds every 
     statusCheckRollup: [{ __typename: 'CheckRun', name: 'verify', status: 'COMPLETED', conclusion: 'SUCCESS' }],
     body: [
       '- state: California (CA)', '- net-new approved sources: 1',
-      '- deterministic source evidence receipts: 1/1 passed', `  - ${added.id}: https://example.test/vendors`,
+      '- deterministic source evidence receipts: 1/1 passed', `  - ${added.id.toUpperCase()}: https://example.test/vendors`,
       '- additions only; no source removals', '- no automatic merge or deploy requested'
     ].join('\n')
   };
   assert.equal(validateSourcePr(pr, result, before, after, baseSha), headOid);
-  assert.throws(() => validateSourcePr({ ...pr, body: pr.body.replace(`  - ${added.id}:`, '  - wrong-id:') }, result, before, after, baseSha), /lacks an evidence receipt/);
+  assert.throws(() => validateSourcePr({ ...pr, body: pr.body.replace(`  - ${added.id.toUpperCase()}:`, '  - wrong-id:') }, result, before, after, baseSha), /lacks an evidence receipt/);
   assert.ok(JSON.stringify(JSON.stringify({ ...result, publication: { ...result.publication, source_ids: undefined } })).length < 1024);
 });
