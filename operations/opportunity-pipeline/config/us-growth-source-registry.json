@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:23:00.748Z",
+  "updated_at": "2026-08-31T13:26:41.923Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -147,6 +147,24 @@
       "evidence": "Cloudflare discovery co-aurora-2027-food-truck: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2027-09-26."
     },
     {
+      "id": "co-boulder-county-holiday-markets-artisan-fairs-for-2025-holiday-season-2027-03-16-43eedf78",
+      "name": "Boulder County holiday markets, artisan fairs for 2025 holiday season Vendor Opportunity",
+      "organiser": "Boulder County holiday markets, artisan fairs for 2025 holiday season",
+      "source_url": "https://www.dailycamera.com/2025/11/07/shop-local-boulder-county-holiday-markets",
+      "application_url": "https://www.dailycamera.com/2025/11/07/shop-local-boulder-county-holiday-markets",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Boulder",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-16",
+      "event_end": "2027-03-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-boulder-2027-holiday-market: live first-party route attests Boulder, CO, actionable vendor terms, and exact event date 2027-03-16."
+    },
+    {
       "id": "co-central-park-farmers-market-2026-10-11-df7705fe",
       "name": "Central Park Farmers Market Vendor Opportunity",
       "organiser": "Central Park Farmers Market",
@@ -217,6 +235,24 @@
       "event_end": "2026-09-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-colorado-springs-2026-farmers-market: live first-party route attests Colorado Springs, CO, actionable vendor terms, and exact event date 2026-09-06."
+    },
+    {
+      "id": "co-flatiron-sounds-music-festival-2027-06-21-ffbddd84",
+      "name": "Flatiron Sounds Music Festival Vendor Opportunity",
+      "organiser": "Flatiron Sounds Music Festival",
+      "source_url": "https://www.chautauqua.com/event/flatiron-sounds",
+      "application_url": "https://www.chautauqua.com/event/flatiron-sounds",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Boulder",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-21",
+      "event_end": "2027-06-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-boulder-2027-food-truck: live first-party route attests Boulder, CO, actionable vendor terms, and exact event date 2027-06-21."
     },
     {
       "id": "co-how-to-sell-at-farmers-markets-in-colorado-cottage-foods-act-top-marke-2026-10-04-dae2e9de",
