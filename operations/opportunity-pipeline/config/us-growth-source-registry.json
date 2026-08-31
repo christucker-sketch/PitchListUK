@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:48:09.158Z",
+  "updated_at": "2026-08-31T13:51:31.007Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -631,6 +631,24 @@
       "event_end": "2026-11-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-farmers-market: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2026-11-21."
+    },
+    {
+      "id": "ga-yellow-daisy-festival-at-stone-mountain-park-a-celebration-of-arts-cra-2026-09-10-8fe5dcb6",
+      "name": "Yellow Daisy Festival at Stone Mountain Park: A Celebration of Arts, Crafts, and Music Vendor Opportunity",
+      "organiser": "Yellow Daisy Festival at Stone Mountain Park: A Celebration of Arts, Crafts, and Music",
+      "source_url": "https://stonemountainpark.com/yellow-daisy-festival",
+      "application_url": "https://stonemountainpark.com/yellow-daisy-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Atlanta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-10",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-atlanta-2026-festival: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-09-10 to 2026-09-13."
     },
     {
       "id": "il-chicago-craft-art-festival-2026-illinois-2026-08-31-0091302f",
