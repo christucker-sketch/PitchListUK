@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T14:39:00.497Z",
+  "updated_at": "2026-08-31T14:40:31.374Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -631,6 +631,42 @@
       "event_end": "2026-11-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-farmers-market: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2026-11-21."
+    },
+    {
+      "id": "ga-atlanta-international-night-market-2026-11-06-6a678636",
+      "name": "Atlanta International Night Market Vendor Opportunity",
+      "organiser": "Atlanta International Night Market",
+      "source_url": "https://www.norcrossga.net/2388/Atlanta-International-Night-Market",
+      "application_url": "https://www.norcrossga.net/2388/Atlanta-International-Night-Market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Atlanta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-atlanta-2026-holiday-market: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
+    },
+    {
+      "id": "ga-food-2026-10-11-d6c15402",
+      "name": "Food Vendor Applications Open and a New Facebook Page Launches! - Atlanta Pride",
+      "organiser": "Food",
+      "source_url": "https://atlantapride.org/2025/05/21/food-vendor-applications-open",
+      "application_url": "https://atlantapride.org/2025/05/21/food-vendor-applications-open",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Atlanta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-atlanta-2026-food-truck: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-10-11 to 2026-10-12."
     },
     {
       "id": "ga-yellow-daisy-festival-at-stone-mountain-park-a-celebration-of-arts-cra-2026-09-10-8fe5dcb6",
