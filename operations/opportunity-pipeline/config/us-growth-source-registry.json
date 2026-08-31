@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T14:48:58.565Z",
+  "updated_at": "2026-08-31T14:54:42.105Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -631,6 +631,24 @@
       "event_end": "2026-12-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-jacksonville-2026-arts-crafts: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date 2026-12-06."
+    },
+    {
+      "id": "fl-jacksonville-gov-2026-jacksonville-jazz-festival-returns-to-downtown-t-2027-05-21-a5e62de1",
+      "name": "Jacksonville.gov - 2026 JACKSONVILLE JAZZ FESTIVAL RETURNS TO DOWNTOWN THIS MEMORIAL DAY WEEKEND WITH A STAR-STUDDED LINEUP Vendor Opportunity",
+      "organiser": "Jacksonville.gov - 2026 JACKSONVILLE JAZZ FESTIVAL RETURNS TO DOWNTOWN THIS MEMORIAL DAY WEEKEND WITH A STAR-STUDDED LINEUP",
+      "source_url": "https://www.jacksonville.gov/welcome/featured-news/2026-jacksonville-jazz-festival-returns-to-downtown",
+      "application_url": "https://www.jacksonville.gov/welcome/featured-news/2026-jacksonville-jazz-festival-returns-to-downtown",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Jacksonville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-21",
+      "event_end": "2027-05-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-jacksonville-2027-government-events: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date range 2027-05-21 to 2027-05-24."
     },
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
