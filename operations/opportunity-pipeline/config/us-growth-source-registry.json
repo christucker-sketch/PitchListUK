@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T15:06:21.619Z",
+  "updated_at": "2026-08-31T15:11:21.466Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -811,6 +811,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2026-festival: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "ma-brookline-bounty-food-coupon-program-2027-06-30-89be95e8",
+      "name": "Brookline Bounty Food Coupon Program Vendor Opportunity",
+      "organiser": "Brookline Bounty Food Coupon Program",
+      "source_url": "https://www.brooklinema.gov/2057/Brookline-Bounty-Food-Coupon-Program",
+      "application_url": "https://www.brooklinema.gov/2057/Brookline-Bounty-Food-Coupon-Program",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Boston",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-30",
+      "event_end": "2027-06-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-boston-2027-farmers-market: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-06-30."
     },
     {
       "id": "ma-ultimate-guide-to-massachusetts-holiday-markets-2025-2026-12-06-e47d95ea",
