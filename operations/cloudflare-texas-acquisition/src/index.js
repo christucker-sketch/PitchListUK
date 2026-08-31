@@ -10,12 +10,15 @@ import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acqu
 import { controlledRolloutScheduled } from './controlled-rollout-schedule.js';
 import { assertMainUnchanged, dataBranchName } from './data-branch-name.js';
 import { mergeStagingBatches, stagingSourceBatches } from './staging-batches.js';
+import { discoverGrowthSources } from './us-growth-discovery.js';
+import { mergeGrowthSources, parseGrowthRegistry, sourcesForState } from './us-growth-registry.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
-const { fetchApprovedPage } = liveFetch;
+const { fetchApprovedPage, fetchTextTarget, extractTitle, htmlToText, extractLinks } = liveFetch;
 const { buildTexasPromotionManifest } = promotionLib;
 const { planTexasProductionSnapshot } = applyLib;
 const { buildStatePromotionManifest, planStateProductionSnapshot } = statePublicationLib;
+const growthRegistryPath = 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -80,11 +83,28 @@ function serializeSnapshot(snapshot) {
 }
 
 async function readMainSnapshot(env, state) {
-  const [ref, file] = await Promise.all([
-    githubJson(env, '/git/ref/heads/main'),
-    githubJson(env, `/contents/${state.snapshot_path}?ref=main`)
+  const ref = await githubJson(env, '/git/ref/heads/main');
+  const [file, growthFile] = await Promise.all([
+    githubJson(env, `/contents/${state.snapshot_path}?ref=main`),
+    githubJson(env, `/contents/${growthRegistryPath}?ref=main`)
   ]);
-  return { mainSha: ref?.object?.sha, fileSha: file?.sha, snapshot: parseSnapshotModule(decodeBase64Utf8(file?.content)) };
+  return {
+    mainSha: ref?.object?.sha,
+    fileSha: file?.sha,
+    snapshot: parseSnapshotModule(decodeBase64Utf8(file?.content)),
+    growthRegistry: parseGrowthRegistry(decodeBase64Utf8(growthFile?.content)),
+    growthRegistryFileSha: growthFile?.sha
+  };
+}
+
+async function readMainGrowthRegistry(env) {
+  const ref = await githubJson(env, '/git/ref/heads/main');
+  const file = await githubJson(env, `/contents/${growthRegistryPath}?ref=main`);
+  return {
+    mainSha: ref?.object?.sha,
+    fileSha: file?.sha,
+    registry: parseGrowthRegistry(decodeBase64Utf8(file?.content))
+  };
 }
 
 async function ensureBranch(env, branch, mainSha) {
@@ -155,6 +175,121 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base,
   return { created: true, branch, pr_number: pr.number, pr_url: pr.html_url, additions };
 }
 
+function sourceBranchName(state, sources, mainSha) {
+  const material = sources.map(source => `${source.id}:${source.application_url}`).sort().join('|');
+  let hash = 2166136261;
+  for (const char of material) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return `sources/cloud-us-${state.slug}-growth-${(hash >>> 0).toString(16).padStart(8, '0')}-base-${String(mainSha).slice(0, 16)}`;
+}
+
+async function openSourcePullRequest(env, state, base, discovery) {
+  const merged = mergeGrowthSources(base.registry, discovery.sources, { stateCode: state.code });
+  if (!merged.added.length) return { created: false, reason: 'no_net_new_sources', source_ids: [] };
+  const currentMain = await githubJson(env, '/git/ref/heads/main');
+  assertMainUnchanged(base.mainSha, currentMain?.object?.sha);
+  const branch = sourceBranchName(state, merged.added, base.mainSha);
+  await ensureBranch(env, branch, base.mainSha);
+  const branchFile = await githubJson(env, `/contents/${growthRegistryPath}?ref=${encodeURIComponent(branch)}`);
+  const branchRegistry = parseGrowthRegistry(decodeBase64Utf8(branchFile.content));
+  const expectedIds = merged.added.map(source => source.id).sort();
+  const alreadyWritten = expectedIds.every(id => branchRegistry.sources.some(source => source.id === id));
+  if (!alreadyWritten) {
+    await githubJson(env, `/contents/${growthRegistryPath}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        message: `Add ${merged.added.length} Cloudflare-discovered ${state.name} sources`,
+        content: encodeBase64Utf8(`${JSON.stringify(merged.registry, null, 2)}\n`),
+        sha: branchFile.sha,
+        branch
+      })
+    });
+  }
+  const owner = requireEnv(env, 'GITHUB_REPO').split('/')[0];
+  const existingPrs = await githubJson(env, `/pulls?state=open&head=${encodeURIComponent(`${owner}:${branch}`)}&base=main`);
+  if (Array.isArray(existingPrs) && existingPrs.length) {
+    const pr = existingPrs[0];
+    return { created: false, reused: true, branch, pr_number: pr.number, pr_url: pr.html_url, source_ids: expectedIds };
+  }
+  const beforeCount = base.registry.sources.length;
+  const afterCount = merged.registry.sources.length;
+  const pr = await githubJson(env, '/pulls', {
+    method: 'POST',
+    body: JSON.stringify({
+      title: `Add ${merged.added.length} cloud-discovered ${state.name} sources`,
+      head: branch,
+      base: 'main',
+      body: [
+        'Cloudflare US source-discovery Workflow run.', '',
+        `- state: ${state.name} (${state.code})`,
+        `- discovery queries: ${discovery.metrics.queries_used}`,
+        `- direct source pages fetched: ${discovery.metrics.pages_fetched}`,
+        `- approved source registry: ${beforeCount} -> ${afterCount}`,
+        `- net-new approved sources: ${merged.added.length}`,
+        `- deterministic source evidence receipts: ${discovery.receipts.length}/${merged.added.length} passed`,
+        ...discovery.receipts.map(receipt => `  - ${receipt.source_id}: ${receipt.route}; locality=${receipt.locality}; event_dates=${receipt.live_event_dates.join(',')}`),
+        '- additions only; no source removals',
+        '- no automatic merge or deploy requested', '',
+        'This PR was generated from search and live-page evidence fetched inside the production Cloudflare Workflow. GitHub CI remains the publication gate.'
+      ].join('\n')
+    })
+  });
+  return { created: true, branch, pr_number: pr.number, pr_url: pr.html_url, source_ids: expectedIds };
+}
+
+async function runGrowthDiscoveryWorkflow(env, event, step, state) {
+  const base = await step.do(`read current GitHub ${state.name} growth source registry`, {
+    retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' }, timeout: '5 minutes'
+  }, async () => readMainGrowthRegistry(env));
+  const queryOffset = Math.max(0, Number(event?.payload?.query_offset || 0));
+  const queryLimit = Math.max(1, Math.min(4, Number(event?.payload?.query_limit || 2)));
+  const discovery = await step.do(`discover and validate ${state.name} growth sources in Cloudflare`, {
+    retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '20 minutes'
+  }, async () => discoverGrowthSources(env, state, {
+    queryOffset,
+    queryLimit,
+    existingSources: [...state.sources, ...base.registry.sources],
+    fetchPage: async candidate => {
+      const fetched = await fetchTextTarget(candidate.url, { timeoutMs: 15000, retries: 1 });
+      return {
+        url: fetched.finalUrl,
+        title: extractTitle(fetched.html),
+        text: htmlToText(fetched.html),
+        links: extractLinks(fetched.html, fetched.finalUrl),
+        fetch_route: 'discovery_source'
+      };
+    }
+  }));
+  let publication = { created: false, reason: 'no_net_new_sources', source_ids: [] };
+  if (discovery.sources.length) {
+    publication = await step.do(`open GitHub ${state.name} source registry PR`, {
+      retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '5 minutes'
+    }, async () => openSourcePullRequest(env, state, base, discovery));
+  }
+  const compactResult = {
+    mode: 'discover',
+    state_code: state.code,
+    state_name: state.name,
+    trigger: event?.payload?.trigger || 'manual',
+    workflow_execution: 'cloudflare',
+    base_main_sha: base.mainSha,
+    query_offset: queryOffset,
+    next_query_offset: queryOffset + discovery.metrics.queries_used,
+    plan_size: discovery.metrics.plan_size,
+    queries_used: discovery.metrics.queries_used,
+    search_results_seen: discovery.metrics.results_seen,
+    direct_source_pages_polled: discovery.metrics.pages_fetched,
+    generated_source_count: discovery.sources.length,
+    evidence_passed_count: discovery.receipts.length,
+    held_count: discovery.held.length,
+    held_reasons: discovery.held_reasons,
+    publication
+  };
+  return step.do(`emit compact ${state.name} growth discovery result`, async () => compactResult);
+}
+
 function acquisitionAdapter(state) {
   if (state.code === 'TX') {
     return createStateAdapter(state, {
@@ -204,11 +339,17 @@ function reasonCounts(items = []) {
 export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
     const state = getStateConfig(event?.payload?.state_code || 'TX');
+    if (event?.payload?.mode === 'discover') return runGrowthDiscoveryWorkflow(this.env, event, step, state);
     const adapter = acquisitionAdapter(state);
     const base = await step.do(`read current GitHub ${state.name} production snapshot`, {
       retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' }, timeout: '5 minutes'
     }, async () => readMainSnapshot(this.env, state));
-    const sourceBatches = stagingSourceBatches(state.sources, { maxSources: state.workflow_batch_max_sources });
+    const requestedSourceIds = Array.isArray(event?.payload?.source_ids) ? event.payload.source_ids : [];
+    const acquisitionSources = requestedSourceIds.length
+      ? sourcesForState(base.growthRegistry, state.code, requestedSourceIds)
+      : state.sources;
+    if (!acquisitionSources.length) throw new Error(`${state.name} acquisition has no selected approved sources`);
+    const sourceBatches = stagingSourceBatches(acquisitionSources, { maxSources: state.workflow_batch_max_sources });
     const requestedBatch = event?.payload?.batch_number;
     const batchNumber = requestedBatch == null && sourceBatches.length === 1
       ? 1
@@ -249,7 +390,8 @@ export class TexasAcquisitionWorkflow extends WorkflowEntrypoint {
       state_code: state.code,
       state_name: state.name,
       trigger: event?.payload?.trigger || (event.schedule ? 'schedule' : 'manual'),
-      state_source_count: state.sources.length,
+      state_source_count: state.sources.length + sourcesForState(base.growthRegistry, state.code).length,
+      requested_growth_source_count: requestedSourceIds.length,
       batch_number: batchNumber,
       batch_count: sourceBatches.length,
       source_count: selectedSources.length,
@@ -287,7 +429,7 @@ export default {
       if (!supplied || supplied !== expected) return new Response('Unauthorized', { status: 401 });
       const state = getStateConfig(url.searchParams.get('state') || 'TX');
       const requestedBatch = url.searchParams.get('batch');
-      const params = { trigger: 'manual', state_code: state.code };
+      const params = { trigger: 'manual', state_code: state.code, mode: url.searchParams.get('mode') || 'acquire' };
       if (requestedBatch != null) {
         const batchNumber = Number(requestedBatch);
         if (!Number.isInteger(batchNumber) || batchNumber < 1) return new Response('Invalid batch', { status: 400 });
