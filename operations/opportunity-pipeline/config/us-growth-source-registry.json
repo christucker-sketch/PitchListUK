@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:37:23.735Z",
+  "updated_at": "2026-08-31T13:40:17.512Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -19,6 +19,42 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-phoenix-2026-farmers-market: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "ca-international-street-fair-and-diversity-festival-saturday-october-3-20-2026-10-03-b7e28b03",
+      "name": "International Street Fair and Diversity Festival- Saturday, October 3, 2026 Vendor Opportunity",
+      "organiser": "International Street Fair and Diversity Festival- Saturday, October 3, 2026",
+      "source_url": "https://www.cityofartesia.us/ISFDF",
+      "application_url": "https://www.cityofartesia.us/ISFDF",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Los Angeles",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-los-angeles-2026-festival: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "ca-patchwork-show-2026-12-06-669da0ba",
+      "name": "Patchwork Show Vendor Opportunity",
+      "organiser": "Patchwork Show",
+      "source_url": "https://www.patchworkshow.com",
+      "application_url": "https://www.patchworkshow.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Los Angeles",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-los-angeles-2026-arts-crafts: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date 2026-12-06."
     },
     {
       "id": "co-18-festivals-to-put-on-your-calendar-now-2026-09-26-2fa052b3",
