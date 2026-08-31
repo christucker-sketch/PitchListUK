@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T12:40:41.719Z",
-  "source": "reviewed-us-colorado-cloud-promotion:3a2134d705f7d81197d1fe5a87df6b16e689030efde0846bff8312d9332cc56c",
-  "total": 200,
+  "exported_at": "2026-08-31T12:43:14.697Z",
+  "source": "reviewed-us-colorado-cloud-promotion:d013f26f4fa43b2dc006c991c8f9dea20a7bafa16da2ebc662c0b37ea23a39a1",
+  "total": 201,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7663,6 +7663,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_31c14817b6d9917f0ded"
+    },
+    {
+      "stable_id": "opp_us_8919965c67d4c7062074",
+      "event_name": "Aurora Mini Con Food Truck or Trailer (Mobile Food Unit) - Aurora Mini Con 2026 - Eventeny",
+      "organiser": "Aurora Mini Con Food Truck or Trailer (Mobile Food Unit) - Aurora Mini Con 2026 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=42121&srsltid=AfmBOooOmXnPxvNqSwPeY9xFdUw9A-v2HmSJ_7gDlaJxIAzjmo0BqQtT",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=42121&srsltid=AfmBOooOmXnPxvNqSwPeY9xFdUw9A-v2HmSJ_7gDlaJxIAzjmo0BqQtT",
+      "location": "Aurora",
+      "locality": "Aurora",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "15151",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-26",
+      "event_end": "2027-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-aurora-mini-con-food-truck-or-trailer-mobile-food-unit-aurora-mini-con-2027-09-26-4e2fcc4f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_8919965c67d4c7062074"
     }
   ]
 };
