@@ -1,5 +1,24 @@
 {
   "version": 1,
-  "updated_at": null,
-  "sources": []
+  "updated_at": "2026-08-31T09:57:24.227Z",
+  "sources": [
+    {
+      "id": "il-vendors-2026-09-12-87e06125",
+      "name": "Vendors Vendor Opportunity",
+      "organiser": "Vendors",
+      "source_url": "https://elginil.gov/2608/Vendors",
+      "application_url": "https://elginil.gov/2608/Vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Chicago",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-chicago-2026-government-events: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date 2026-09-12."
+    }
+  ]
 }
