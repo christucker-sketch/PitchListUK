@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T12:35:19.255Z",
-  "source": "reviewed-us-colorado-cloud-promotion:80f566767112cfad7761fe9a910eb4b2296ce6e91a37d98ebf4d57e610a7520a",
-  "total": 197,
+  "exported_at": "2026-08-31T12:37:37.212Z",
+  "source": "reviewed-us-colorado-cloud-promotion:36c4dc312ce3ddc64d602a9e34227b9604413fcdcd1890956cc66b27db1db557",
+  "total": 198,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7551,6 +7551,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_8620facdf6d8d47c6b76"
+    },
+    {
+      "stable_id": "opp_us_5702fcd29b696223944e",
+      "event_name": "2026 Havana Street Night Markets - Last Saturdays of the Month - May to September - On Havana Street Aurora, CO Vendor Opportunity",
+      "organiser": "2026 Havana Street Night Markets - Last Saturdays of the Month - May to September - On Havana Street Aurora, CO",
+      "source_url": "https://onhavanastreet.com/events/2026-havana-street-night-markets-last-saturdays-of-the-month-may-to-september/",
+      "application_url": "https://onhavanastreet.com/events/2026-havana-street-night-markets-last-saturdays-of-the-month-may-to-september",
+      "location": "Aurora",
+      "locality": "Aurora",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "80202",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-2026-havana-street-night-markets-last-saturdays-of-the-month-may-to-se-2026-09-26-a94a1acb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_5702fcd29b696223944e"
     }
   ]
 };
