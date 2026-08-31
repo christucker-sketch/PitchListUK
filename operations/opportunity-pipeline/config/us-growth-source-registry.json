@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:10:34.641Z",
+  "updated_at": "2026-08-31T13:17:11.933Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -291,6 +291,24 @@
       "evidence": "Cloudflare discovery co-fort-collins-2026-government-events: live first-party route attests Fort Collins, CO, actionable vendor terms, and exact event date 2026-10-18."
     },
     {
+      "id": "co-pueblo-farmers-market-launches-expanded-2026-season-with-largest-vendo-2026-10-03-8584bfe4",
+      "name": "Pueblo Farmers Market Launches Expanded 2026 Season with Largest Vendor Lineup in Recent Years - Pueblo Star Journal",
+      "organiser": "Pueblo Farmers Market Launches Expanded 2026 Season with Largest Vendor Lineup in Recent Years - Pueblo Star Journal",
+      "source_url": "https://pueblostarjournal.org/business/2026/05/11/pueblo-farmers-market-launches-expanded-2026-season-with-largest-vendor-lineup-in-recent-years",
+      "application_url": "https://pueblostarjournal.org/business/2026/05/11/pueblo-farmers-market-launches-expanded-2026-season-with-largest-vendor-lineup-in-recent-years",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Pueblo",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-pueblo-2026-farmers-market: live first-party route attests Pueblo, CO, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
       "id": "co-territory-days-mdash-old-colorado-city-2027-05-29-bb112a6c",
       "name": "Territory Days &mdash; Old Colorado City Vendor Opportunity",
       "organiser": "Territory Days &mdash; Old Colorado City",
@@ -397,6 +415,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-lakewood-2026-farmers-market: live first-party route attests Lakewood, CO, actionable vendor terms, and exact event date 2026-09-27."
+    },
+    {
+      "id": "co-vendor-events-in-pueblo-co-2026-09-18-559c4e60",
+      "name": "Vendor Events in Pueblo, CO",
+      "organiser": "Vendor Events in Pueblo, CO",
+      "source_url": "https://vendorsmap.com/cities/pueblo",
+      "application_url": "https://vendorsmap.com/cities/pueblo",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Pueblo",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-pueblo-2026-farmers-market: live first-party route attests Pueblo, CO, actionable vendor terms, and exact event date range 2026-09-18 to 2026-09-20."
     },
     {
       "id": "co-vendor-events-in-westminster-co-2026-09-26-17528273",
