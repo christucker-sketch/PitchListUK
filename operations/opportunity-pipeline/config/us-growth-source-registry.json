@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T14:40:31.374Z",
+  "updated_at": "2026-08-31T14:43:31.174Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -865,6 +865,24 @@
       "event_end": "2026-12-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-farmers-market: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2026-12-31."
+    },
+    {
+      "id": "nj-downtown-newark-transforms-into-a-winter-wonderland-2026-12-20-bda802de",
+      "name": "Downtown Newark Transforms Into a Winter Wonderland Vendor Opportunity",
+      "organiser": "Downtown Newark Transforms Into a Winter Wonderland",
+      "source_url": "https://jerseybites.com/downtown-newark-transforms-into-a-winter-wonderland",
+      "application_url": "https://jerseybites.com/downtown-newark-transforms-into-a-winter-wonderland",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Newark",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-20",
+      "event_end": "2026-12-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-newark-2026-holiday-market: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-12-20."
     },
     {
       "id": "nj-how-to-sell-at-farmers-markets-in-new-jersey-home-baker-rule-jersey-fr-2026-12-20-69e0c274",
