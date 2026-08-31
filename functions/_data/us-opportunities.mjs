@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T14:55:36.511Z",
-  "source": "reviewed-us-florida-cloud-promotion:c5ee92f8900fcd4b64e76f34350f2a3fdebdf07e7bdb0492271a5bac9524842c",
-  "total": 219,
+  "exported_at": "2026-08-31T14:59:40.601Z",
+  "source": "reviewed-us-ohio-cloud-promotion:32378c44595f230710f40a0da993a7a7265cd5faf93ab3a4df054795be4e91fd",
+  "total": 220,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8389,6 +8389,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_ec131914e482eabbfc92"
+    },
+    {
+      "stable_id": "opp_us_720f774e9eafd96c8d30",
+      "event_name": "Vendor Resources",
+      "organiser": "Vendor Resources",
+      "source_url": "https://cvfm.org/vendor-resources/",
+      "application_url": "https://cvfm.org/vendor-resources",
+      "location": "Columbus",
+      "locality": "Columbus",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "43609",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-08",
+      "event_end": "2027-01-08",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "market_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-vendor-resources-2027-01-08-39bd0ba9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_720f774e9eafd96c8d30"
     }
   ]
 };
