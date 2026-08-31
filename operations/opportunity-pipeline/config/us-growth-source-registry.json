@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:39:46.208Z",
+  "updated_at": "2026-08-31T12:42:22.547Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -73,6 +73,24 @@
       "event_end": "2027-06-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-aurora-2027-festival: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2027-06-13."
+    },
+    {
+      "id": "co-aurora-mini-con-food-truck-or-trailer-mobile-food-unit-aurora-mini-con-2027-09-26-4e2fcc4f",
+      "name": "Aurora Mini Con Food Truck or Trailer (Mobile Food Unit) - Aurora Mini Con 2026 - Eventeny",
+      "organiser": "Aurora Mini Con Food Truck or Trailer (Mobile Food Unit) - Aurora Mini Con 2026 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=42121&srsltid=AfmBOooOmXnPxvNqSwPeY9xFdUw9A-v2HmSJ_7gDlaJxIAzjmo0BqQtT",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=42121&srsltid=AfmBOooOmXnPxvNqSwPeY9xFdUw9A-v2HmSJ_7gDlaJxIAzjmo0BqQtT",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Aurora",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-26",
+      "event_end": "2027-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-aurora-2027-food-truck: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2027-09-26."
     },
     {
       "id": "co-central-park-farmers-market-2026-10-11-df7705fe",
