@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:31:48.270Z",
+  "updated_at": "2026-08-31T13:37:23.735Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -363,6 +363,24 @@
       "evidence": "Cloudflare discovery co-pueblo-2026-farmers-market: live first-party route attests Pueblo, CO, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
+      "id": "co-rise-vibes-music-festival-on-the-border-of-colorado-and-new-mexico-in--2027-06-04-38f2530e",
+      "name": "Rise & Vibes Music Festival on the border of Colorado and New Mexico in May Vendor Opportunity",
+      "organiser": "Rise & Vibes Music Festival on the border of Colorado and New Mexico in May",
+      "source_url": "https://riseandvibes.com",
+      "application_url": "https://riseandvibes.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Durango",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-04",
+      "event_end": "2027-06-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-durango-2027-festival: live first-party route attests Durango, CO, actionable vendor terms, and exact event date range 2027-06-04 to 2027-06-06."
+    },
+    {
       "id": "co-summer-market-2026-09-16-02ee3f77",
       "name": "Summer Market Vendor Opportunity",
       "organiser": "Summer Market",
@@ -415,6 +433,24 @@
       "event_end": "2026-12-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-thornton-2026-holiday-market: live first-party route attests Thornton, CO, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
+    },
+    {
+      "id": "co-tico-time-bluegrass-festival-2027-05-21-97953627",
+      "name": "Tico Time Bluegrass Festival Vendor Opportunity",
+      "organiser": "Tico Time Bluegrass Festival",
+      "source_url": "https://ticotimebluegrass.com",
+      "application_url": "https://ticotimebluegrass.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Durango",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-21",
+      "event_end": "2027-05-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-durango-2027-festival: live first-party route attests Durango, CO, actionable vendor terms, and exact event date range 2027-05-21 to 2027-05-23."
     },
     {
       "id": "co-tomato-festival-at-trapper-days-2026-09-11-809667cb",
