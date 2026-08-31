@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T13:27:38.694Z",
-  "source": "reviewed-us-colorado-cloud-promotion:5b43db539d4be721fdbf34a996f02eafa6a160c3a3e6dec8377cf011b546b4bd",
-  "total": 207,
+  "exported_at": "2026-08-31T13:32:47.052Z",
+  "source": "reviewed-us-colorado-cloud-promotion:9e28dd6fef7b275c626e015d7b4a90924edb0d46e5ae97a5c222a54e81e2aa99",
+  "total": 208,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -7933,6 +7933,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_06328273f121d586d0fb"
+    },
+    {
+      "stable_id": "opp_us_f0a1c47e0fc169f77570",
+      "event_name": "Greeley Blues Jam | Colorado's Camping Blues Festival Vendor Opportunity",
+      "organiser": "Greeley Blues Jam | Colorado's Camping Blues Festival",
+      "source_url": "https://greeleybluesjam.org/",
+      "application_url": "https://greeleybluesjam.org",
+      "location": "Greeley",
+      "locality": "Greeley",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "80631",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-04",
+      "event_end": "2027-06-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-greeley-blues-jam-colorado-s-camping-blues-festival-2027-06-04-1898b126",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_f0a1c47e0fc169f77570"
     }
   ]
 };
