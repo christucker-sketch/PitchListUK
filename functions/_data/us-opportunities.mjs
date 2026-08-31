@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T13:49:07.806Z",
-  "source": "reviewed-us-illinois-cloud-promotion:90164188e07bbb408669a83d2b53ff975361fcde5fd6a02d12f74b0f5926b77d",
-  "total": 212,
+  "exported_at": "2026-08-31T13:52:24.874Z",
+  "source": "reviewed-us-georgia-cloud-promotion:ca18073e7ae34ff6edeb444a133487096327ee844c136d2f3cdf1a0934ae6eb1",
+  "total": 213,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8122,6 +8122,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_6e122eece4badaf59719"
+    },
+    {
+      "stable_id": "opp_us_bef5e6dcbd0f377ef06d",
+      "event_name": "Yellow Daisy Festival at Stone Mountain Park: A Celebration of Arts, Crafts, and Music Vendor Opportunity",
+      "organiser": "Yellow Daisy Festival at Stone Mountain Park: A Celebration of Arts, Crafts, and Music",
+      "source_url": "https://stonemountainpark.com/yellow-daisy-festival/",
+      "application_url": "https://stonemountainpark.com/yellow-daisy-festival",
+      "location": "Atlanta",
+      "locality": "Atlanta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-10",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-yellow-daisy-festival-at-stone-mountain-park-a-celebration-of-arts-cra-2026-09-10-8fe5dcb6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_bef5e6dcbd0f377ef06d"
     }
   ]
 };
