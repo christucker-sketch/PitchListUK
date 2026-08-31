@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T12:29:18.573Z",
+  "updated_at": "2026-08-31T12:32:01.594Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -91,6 +91,24 @@
       "event_end": "2026-10-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-denver-2026-farmers-market: live first-party route attests Denver, CO, actionable vendor terms, and exact event date 2026-10-04."
+    },
+    {
+      "id": "co-market-in-the-park-the-aurora-highlands-2026-09-12-9ff163db",
+      "name": "Market in the Park - The Aurora Highlands Vendor Opportunity",
+      "organiser": "Market in the Park - The Aurora Highlands",
+      "source_url": "https://theaurorahighlands.com/marketinthepark",
+      "application_url": "https://theaurorahighlands.com/marketinthepark",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Aurora",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-aurora-2026-farmers-market: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "co-territory-days-mdash-old-colorado-city-2027-05-29-bb112a6c",
