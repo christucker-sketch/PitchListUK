@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T13:45:17.718Z",
+  "updated_at": "2026-08-31T13:46:48.783Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -739,6 +739,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "pa-june-events-festivals-2026-09-07-f9ae3721",
+      "name": "June Events & Festivals Vendor Opportunity",
+      "organiser": "June Events & Festivals",
+      "source_url": "https://www.visitpa.com/blog/post/june-events-festivals",
+      "application_url": "https://www.visitpa.com/blog/post/june-events-festivals",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Philadelphia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-philadelphia-2026-festival: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-07."
     },
     {
       "id": "va-old-beach-farmers-market-2026-09-04-e3bda645",
