@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T10:18:23.747Z",
+  "updated_at": "2026-08-31T12:16:42.074Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -19,6 +19,60 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-phoenix-2026-farmers-market: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "co-central-park-farmers-market-2026-10-11-df7705fe",
+      "name": "Central Park Farmers Market Vendor Opportunity",
+      "organiser": "Central Park Farmers Market",
+      "source_url": "https://centralparkfarmersmarket.com",
+      "application_url": "https://centralparkfarmersmarket.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Denver",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-denver-2026-farmers-market: live first-party route attests Denver, CO, actionable vendor terms, and exact event date 2026-10-11."
+    },
+    {
+      "id": "co-how-to-sell-at-farmers-markets-in-colorado-cottage-foods-act-top-marke-2026-10-04-dae2e9de",
+      "name": "How to Sell at Farmers Markets in Colorado: Cottage Foods Act, Top Markets & High-Altitude Rules (2026) Vendor Opportunity",
+      "organiser": "How to Sell at Farmers Markets in Colorado: Cottage Foods Act, Top Markets & High-Altitude Rules (2026)",
+      "source_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-colorado",
+      "application_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-colorado",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Denver",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-04",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-denver-2026-farmers-market: live first-party route attests Denver, CO, actionable vendor terms, and exact event date 2026-10-04."
+    },
+    {
+      "id": "co-tomato-festival-at-trapper-days-2026-09-11-809667cb",
+      "name": "Tomato Festival at Trapper Days! Vendor Opportunity",
+      "organiser": "Tomato Festival at Trapper Days!",
+      "source_url": "https://www.fortluptonco.gov/472/Tomato-Festival-Trapper-Days",
+      "application_url": "https://www.fortluptonco.gov/472/Tomato-Festival-Trapper-Days",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Denver",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-denver-2026-government-events: live first-party route attests Denver, CO, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-12."
     },
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
