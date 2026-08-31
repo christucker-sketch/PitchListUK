@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T14:43:31.174Z",
+  "updated_at": "2026-08-31T14:47:16.317Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -19,6 +19,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-phoenix-2026-farmers-market: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "az-phoestivus-2026-12-12-dd6414ca",
+      "name": "Phoestivus Vendor Opportunity",
+      "organiser": "Phoestivus",
+      "source_url": "https://www.phoestivus.com",
+      "application_url": "https://www.phoestivus.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Phoenix",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-phoenix-2026-holiday-market: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date 2026-12-12."
     },
     {
       "id": "ca-international-street-fair-and-diversity-festival-saturday-october-3-20-2026-10-03-b7e28b03",
