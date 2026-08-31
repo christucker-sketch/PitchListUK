@@ -10,6 +10,7 @@
   <meta name="theme-color" content="#071a33" />
   <link rel="canonical" href="https://findpitches.com/" />
   <link rel="stylesheet" href="/styles.css?v=20260731-4" />
+  <link rel="stylesheet" href="/shared/findpitches-shell.css?v=20260831-1" />
   <link rel="stylesheet" href="/us/home.css?v=20260831-3" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="FindPitches" />
@@ -19,15 +20,15 @@
   <meta property="og:image" content="https://findpitches.com/assets/hero-food-festival.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 </head>
-<body class="us-home">
-  <header class="us-topbar">
-    <a class="us-logo" href="/" aria-label="FindPitches home"><span>Find</span><strong>Pitches</strong><small>Markets. Fairs. Festivals. Opportunities.</small></a>
-    <nav class="us-nav" aria-label="Primary navigation">
+<body class="fp-country fp-country-us us-home" data-country="us">
+  <header class="fp-header us-topbar">
+    <a class="fp-brand us-logo" href="/" aria-label="FindPitches home"><span>Find</span><strong>Pitches</strong><small>Markets. Fairs. Festivals. Opportunities.</small></a>
+    <nav class="fp-nav us-nav" aria-label="Primary navigation">
       <a class="active" href="/find-pitches">Find Opportunities</a>
       <a href="#how-it-works">How It Works</a>
       <a href="#categories">Categories</a>
       <a href="#about">About</a>
-      <a class="us-country" href="#coverage">🇺🇸 US</a>
+      <a class="fp-country-switcher us-country" href="#coverage" aria-label="United States edition">🇺🇸 US</a>
     </nav>
   </header>
 
@@ -69,7 +70,7 @@
     <section id="categories" class="us-categories">
       <h2>EXPLORE OPPORTUNITIES</h2>
       <p>Opportunities come in all shapes and sizes.</p>
-      <div class="us-category-cards">
+      <div class="fp-category-grid us-category-cards">
         <a href="/find-pitches?category=Fairs" style="--img:url('/assets/card-county-show.jpg')"><strong>Fairs</strong><span>County fairs, state fairs & more</span></a>
         <a href="/find-pitches?category=Festivals" style="--img:url('/assets/card-festival-vendors.jpg')"><strong>Festivals</strong><span>Music, arts, food & cultural events</span></a>
         <a href="/find-pitches?category=Markets" style="--img:url('/assets/card-farmers-market.jpg')"><strong>Markets</strong><span>Farmers' markets & local markets</span></a>
@@ -83,15 +84,15 @@
       <p class="us-trust-title">Verified opportunities from checked sources</p>
       <div class="us-trust-grid">
         <article><i>✓</i><div><strong>Real Opportunities</strong><span>Sourced from official listings, organizer websites & permits.</span></div></article>
-        <article><i>★</i><div><strong>Human Checked</strong><span>Quality gates review every lead before it goes live.</span></div></article>
+        <article><i>★</i><div><strong>Evidence Checked</strong><span>Quality gates verify source evidence before an opportunity goes live.</span></div></article>
         <article><i>⌖</i><div><strong>Transparent Details</strong><span>Know who, what, when, where & how to apply.</span></div></article>
         <article><i>↗</i><div><strong>Built for Vendors</strong><span>Tools and filters to help you find the right fit, fast.</span></div></article>
       </div>
-      <div class="us-built">BUILT IN THE USA <span>★ ★ ★</span><small>Supporting local businesses from coast to coast.</small></div>
+      <div class="us-built">BUILT FOR AMERICA <span>★ ★ ★</span><small>Helping vendors find opportunities from coast to coast.</small></div>
     </section>
   </main>
 
-  <footer class="us-footer"><strong>FindPitches</strong><span>Vendor opportunity finder · USA</span></footer>
+  <footer class="fp-footer us-footer"><strong>FindPitches</strong><span>Vendor opportunity finder · USA</span></footer>
 
   <script>
     (async () => {
