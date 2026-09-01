@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T20:29:28.914Z",
-  "source": "reviewed-us-california-cloud-promotion:594b20e3e5736db7c357a1c7d0d2c507f0ed9dc1bf9fa0b82ac839ee4bb270b1",
-  "total": 246,
+  "exported_at": "2026-09-01T20:32:38.190Z",
+  "source": "reviewed-us-texas-cloud-promotion:2e78479de06a133d484aaf14fb2a3515d77949dc58f19d6169ded0415e74a42c",
+  "total": 247,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9414,6 +9414,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_4db7388be130007abf87"
+    },
+    {
+      "stable_id": "opp_us_ef24221869dfcbcc119f",
+      "event_name": "Western Heritage Weekend",
+      "organiser": "Western Heritage Weekend",
+      "source_url": "https://www.sarodeo.com/p/fairgrounds/fundraising-events/western-heritage-parade--weekend",
+      "application_url": "https://www.sarodeo.com/p/fairgrounds/fundraising-events/western-heritage-parade--weekend",
+      "location": "San Antonio",
+      "locality": "San Antonio",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-02-05",
+      "event_end": "2027-02-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-western-heritage-weekend-2027-02-05-81f14de4",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_ef24221869dfcbcc119f"
     }
   ]
 };
