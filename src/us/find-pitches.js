@@ -44,33 +44,33 @@ function buildParams() {
 
 function render(data) {
   const rows = Array.isArray(data.rows) ? data.rows : [];
-  statusEl.innerHTML = `<b>${esc(data.total ?? rows.length)}</b><span>matching Texas opportunities</span>`;
+  statusEl.innerHTML = `<b>${esc(data.total ?? rows.length)}</b><span>matching US opportunities</span>`;
   metricsEl.innerHTML = `
     <article><b>${esc(data.total ?? rows.length)}</b><span>matching opportunities</span></article>
-    <article><b>TX</b><span>first live state</span></article>
-    <article><b>USD</b><span>US market routing</span></article>
-    <article><b>Preview</b><span>source and application routes remain locked</span></article>`;
+    <article><b>50</b><span>states in the acquisition network</span></article>
+    <article><b>CHECKED</b><span>first-party source evidence</span></article>
+    <article><b>LIVE</b><span>coverage grows as new opportunities pass quality gates</span></article>`;
 
   if (!rows.length) {
-    resultsEl.innerHTML = '<div class="cloud-empty"><strong>No matches yet</strong><span>Try removing the ZIP radius, category or keyword. US coverage is still expanding from the Texas pilot.</span></div>';
+    resultsEl.innerHTML = '<div class="cloud-empty"><strong>No matches yet</strong><span>Try widening the distance, removing a category, or changing the keyword. FindPitches coverage is expanding continuously.</span></div>';
     return;
   }
 
-  resultsEl.innerHTML = `<div class="results-summary"><strong>Showing ${esc(rows.length)} matches</strong><span>Preview rows hide source and application links while US commercial access remains disabled.</span></div><div class="result-grid">${rows.map(row => `
+  resultsEl.innerHTML = `<div class="results-summary"><strong>Showing ${esc(rows.length)} matches</strong><span>Search results come from the current FindPitches US opportunity dataset.</span></div><div class="result-grid">${rows.map(row => `
     <article class="opportunity-card result-row is-locked">
       <header>
         <strong class="result-title">${esc(row.event_name || row.organiser || 'Vendor opportunity')}</strong>
         ${row.organiser ? `<span class="result-org">${esc(row.organiser)}</span>` : ''}
       </header>
       <div class="cloud-facts result-meta">
-        <span>${esc(row.locality || row.location || row.region_name || 'Texas')}</span>
+        <span>${esc(row.locality || row.location || row.region_name || 'United States')}</span>
         <span>${esc(dateLabel(row))}</span>
         ${row.application_deadline ? `<span>Apply by ${esc(formatUsDate(row.application_deadline))}</span>` : ''}
         ${row.opportunity_type ? `<span>${esc(String(row.opportunity_type).replace(/_/g, ' '))}</span>` : ''}
       </div>
       <p>${esc(categories(row) || 'Vendor categories available from the checked source.')}</p>
-      <div class="opportunity-lockline">Preview hides the checked source and application route.</div>
-      <footer><span class="locked-pill">Preview</span></footer>
+      <div class="opportunity-lockline">Checked source and application details are shown according to the current access rules.</div>
+      <footer><span class="locked-pill">Opportunity</span></footer>
     </article>`).join('')}</div>`;
 }
 
@@ -82,7 +82,7 @@ async function runSearch() {
   if (!response.ok) throw new Error(data.message || 'Search failed');
   if (window.pitchlistTrack) {
     window.pitchlistTrack('us_database_search', {
-      state: 'TX',
+      state: 'US',
       radius: params.get('radius_miles') || '',
       category: params.get('category') || '',
       count: data.total ?? ''
