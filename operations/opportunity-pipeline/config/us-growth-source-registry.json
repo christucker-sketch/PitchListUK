@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:17:12.105Z",
+  "updated_at": "2026-09-01T20:20:31.726Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1297,6 +1297,24 @@
       "event_end": "2026-10-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-festival: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "nc-christmas-markets-in-raleigh-festive-pop-up-shops-with-holiday-cheer-2026-12-07-a548711f",
+      "name": "Christmas Markets In Raleigh: Festive Pop-Up Shops With Holiday Cheer Vendor Opportunity",
+      "organiser": "Christmas Markets In Raleigh: Festive Pop-Up Shops With Holiday Cheer",
+      "source_url": "https://thisisraleigh.com/christmas-markets-raleigh",
+      "application_url": "https://thisisraleigh.com/christmas-markets-raleigh",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Raleigh",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-07",
+      "event_end": "2026-12-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-raleigh-2026-holiday-market: live first-party route attests Raleigh, NC, actionable vendor terms, and exact event date 2026-12-07."
     },
     {
       "id": "nc-foodees-fest-charlotte-nc-2026-09-11-b386fec4",
