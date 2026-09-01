@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T19:44:03.060Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:55ea0ca526c221cce20295ad4503ca92e82616194db5d4a7d75772acbda9fdc2",
-  "total": 237,
+  "exported_at": "2026-09-01T19:53:49.710Z",
+  "source": "reviewed-us-ohio-cloud-promotion:dde509c652bc651e4ce69d849588cec97655cf67b48d7f65b822dad21c2f8f63",
+  "total": 238,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9073,6 +9073,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_e15cb35fe1ec8fc38396"
+    },
+    {
+      "stable_id": "opp_us_392c8a1c6ed90c0a8a2d",
+      "event_name": "Cleveland Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Cleveland Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/clevelandspooktacular/",
+      "application_url": "https://hometownvendormarket.com/clevelandspooktacular",
+      "location": "Cleveland",
+      "locality": "Cleveland",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "44070",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-cleveland-spooktacular-craft-vendor-market-hometown-vendor-market-2026-10-24-d4ca94bd",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_392c8a1c6ed90c0a8a2d"
     }
   ]
 };
