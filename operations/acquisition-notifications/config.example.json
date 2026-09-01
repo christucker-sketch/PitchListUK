@@ -1,0 +1,15 @@
+{
+  "enabled": "1",
+  "controller_id": "country-controller-id",
+  "market": "Country or market name",
+  "country_code": "XX",
+  "service_name": "findpitches-country-growth.service",
+  "controller_state_file": "/absolute/path/to/controller.json",
+  "controller_log_file": "/absolute/path/to/controller.log",
+  "incident_state_dir": "/absolute/path/to/findpitches-acquisition-notifications",
+  "delivery_log_file": "/absolute/path/to/findpitches-acquisition-notifications/delivery.log",
+  "openclaw_bin": "/absolute/path/to/openclaw",
+  "telegram_channel": "telegram",
+  "telegram_target": "configured-chat-id",
+  "recommended_next_action": "Inspect the preserved checkpoint and exact blocker, fix the cause, then resume from the saved position."
+}
