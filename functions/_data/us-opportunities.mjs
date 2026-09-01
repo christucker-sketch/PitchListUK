@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T19:31:01.585Z",
-  "source": "reviewed-us-ohio-cloud-promotion:103398b64648fa6cbc3842912f940facd8a2168e79e2dab2d7269265f62ae1a4",
-  "total": 234,
+  "exported_at": "2026-09-01T19:37:59.590Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:00fe9aaf972404c2a8b64d5d4966dfc8ccc3053a0ae7c06fa43402eb1706b004",
+  "total": 235,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8958,6 +8958,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_d1416661294e38523234"
+    },
+    {
+      "stable_id": "opp_us_313f354aa8984be2a05e",
+      "event_name": "Governor Sherrill Announces $5 Million NJ World Cup Community Initiative Grant Recipients Vendor Opportunity",
+      "organiser": "Governor Sherrill Announces $5 Million NJ World Cup Community Initiative Grant Recipients",
+      "source_url": "https://www.nj.gov/governor/news/2026/20260506a.shtml",
+      "application_url": "https://www.nj.gov/governor/news/2026/20260506a.shtml",
+      "location": "Jersey City",
+      "locality": "Jersey City",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-governor-sherrill-announces-5-million-nj-world-cup-community-initiativ-2026-09-27-00e29f90",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_313f354aa8984be2a05e"
     }
   ]
 };
