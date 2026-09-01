@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T15:23:00.144Z",
+  "updated_at": "2026-09-01T15:24:51.098Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1099,6 +1099,24 @@
       "event_end": "2026-12-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-farmers-market: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2026-12-31."
+    },
+    {
+      "id": "nc-showfest-event-innovators-conference-2027-2027-01-25-97ecf069",
+      "name": "ShowFest Event Innovators Conference 2027 Vendor Applications",
+      "organiser": "ShowFest Event Innovators Conference 2027",
+      "source_url": "https://www.usefestkit.com/events/north-carolina-association-of-festivals-events/showfest-event-innovators-conference-2027",
+      "application_url": "https://www.usefestkit.com/events/north-carolina-association-of-festivals-events/showfest-event-innovators-conference-2027",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Charlotte",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-25",
+      "event_end": "2027-01-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-charlotte-2027-food-truck: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2027-01-25 to 2027-01-26."
     },
     {
       "id": "nj-downtown-newark-transforms-into-a-winter-wonderland-2026-12-20-bda802de",
