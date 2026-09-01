@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:14:12.177Z",
+  "updated_at": "2026-09-01T20:17:12.105Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -829,6 +829,24 @@
       "event_end": "2026-10-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-food-truck: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-10-11 to 2026-10-12."
+    },
+    {
+      "id": "ga-holiday-craft-fair-2026-11-07-67f62500",
+      "name": "Holiday Craft Fair Vendor Application 2026",
+      "organiser": "Holiday Craft Fair",
+      "source_url": "https://thecentercville.org/calendar/event/142285",
+      "application_url": "https://thecentercville.org/calendar/event/142285",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Augusta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-augusta-2026-holiday-market: live first-party route attests Augusta, GA, actionable vendor terms, and exact event date 2026-11-07."
     },
     {
       "id": "ga-yellow-daisy-festival-at-stone-mountain-park-a-celebration-of-arts-cra-2026-09-10-8fe5dcb6",
