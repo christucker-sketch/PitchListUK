@@ -23,6 +23,11 @@ function sourceForCandidate(sources, candidate) {
   return sources.find(source => canonicalUrl(source.source_url) === candidateUrl) || null;
 }
 
+function sourceForStagedRow(sources, row) {
+  return sources.find(item => canonicalUrl(item.source_url) === canonicalUrl(row?.source_url)
+    || canonicalUrl(item.application_url) === canonicalUrl(row?.application_url)) || null;
+}
+
 export function buildTexasStagingManifest(report, options = {}) {
   const rows = Array.isArray(report?.staging_rows)
     ? report.staging_rows.map(row => ({ ...row, publishable: false, quality_status: 'review' }))
@@ -107,11 +112,13 @@ export async function runApprovedTexasStaging(options = {}) {
       };
     }
   });
-  report.evidence_receipts = report.staging_rows.map(row => {
-    const source = sources.find(item => canonicalUrl(item.source_url) === canonicalUrl(row.source_url)
-      || canonicalUrl(item.application_url) === canonicalUrl(row.application_url));
-    return evidenceBySource.get(source?.id);
-  }).filter(Boolean);
+
+  report.staging_rows = report.staging_rows.map(row => {
+    const source = sourceForStagedRow(sources, row);
+    if (!source) throw new Error('staged_row_not_in_approved_source_set');
+    return { ...row, source_id: source.id };
+  });
+  report.evidence_receipts = report.staging_rows.map(row => evidenceBySource.get(row.source_id)).filter(Boolean);
 
   return buildTexasStagingManifest(report, {
     runId: options.runId,

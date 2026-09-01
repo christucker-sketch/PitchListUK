@@ -6,6 +6,7 @@ import {
   buildTexasStagingManifest,
   runApprovedTexasStaging,
 } from '../lib/texas-staging-runner.js';
+import { mergeStagingBatches } from '../../cloudflare-texas-acquisition/src/staging-batches.js';
 
 const APPROVED_SOURCE = Object.freeze({
   id: 'tx-test-market',
@@ -53,6 +54,16 @@ test('approved Texas staging runner uses the existing acquisition cycle and emit
   assert.equal(manifest.rows[0].quality_status, 'review');
   assert.equal(manifest.rows[0].country_code, 'US');
   assert.equal(manifest.rows[0].region_code, 'TX');
+  assert.equal(manifest.rows[0].source_id, APPROVED_SOURCE.id);
+  assert.equal(manifest.evidence_receipts[0].source_id, APPROVED_SOURCE.id);
+
+  const merged = mergeStagingBatches(
+    { code: 'TX', name: 'Texas', slug: 'texas', jurisdiction: 'US-TX' },
+    [manifest]
+  );
+  assert.equal(merged.staged_count, 1);
+  assert.equal(merged.rows[0].source_id, APPROVED_SOURCE.id);
+  assert.equal(merged.evidence_receipts[0].source_id, APPROVED_SOURCE.id);
 });
 
 test('procurement content from an approved route is rejected rather than staged', async () => {
