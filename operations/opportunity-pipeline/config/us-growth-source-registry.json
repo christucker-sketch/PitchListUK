@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:20:31.726Z",
+  "updated_at": "2026-09-01T20:23:57.139Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1873,6 +1873,24 @@
       "event_end": "2027-07-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-houston-2027-festival: live first-party route attests Houston, TX, actionable vendor terms, and exact event date 2027-07-04."
+    },
+    {
+      "id": "va-2026-chesapeake-rotary-christmas-parade-eventeny-2026-12-05-d38949c6",
+      "name": "2026 Chesapeake Rotary Christmas Parade - Eventeny Vendor Opportunity",
+      "organiser": "2026 Chesapeake Rotary Christmas Parade - Eventeny",
+      "source_url": "https://www.eventeny.com/events/2026-chesapeake-rotary-christmas-parade-32786/?srsltid=AfmBOoqM9brymceKB5-j0B3JcBG7aPezn-Z_NByRQh1hSJCkn1yg_67o",
+      "application_url": "https://www.eventeny.com/events/2026-chesapeake-rotary-christmas-parade-32786/?srsltid=AfmBOoqM9brymceKB5-j0B3JcBG7aPezn-Z_NByRQh1hSJCkn1yg_67o",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Chesapeake",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-chesapeake-2026-holiday-market: live first-party route attests Chesapeake, VA, actionable vendor terms, and exact event date 2026-12-05."
     },
     {
       "id": "va-concert-zone-the-patriotic-festival-virginia-beach-memorial-day-weeken-2027-05-28-e07575f7",
