@@ -1,0 +1,79 @@
+:root{--us-navy:#062a5c;--us-deep:#031b3f;--us-red:#e11f2f;--us-soft:#f5f7fa;--us-line:#d9e0e8}
+
+.us-search-page{margin:0;background:#f6f8fb;color:#102b4c;font-family:Arial,Helvetica,sans-serif}
+.us-search-page *{box-sizing:border-box}
+.us-search-page a{color:inherit}
+.us-search-page .us-topbar{position:sticky;top:0;z-index:40}
+.us-search-page .us-nav a.active:after{bottom:-16px}
+
+.us-search-hero{position:relative;overflow:hidden;padding:58px 7vw 64px;background:linear-gradient(90deg,rgba(2,24,57,.96),rgba(6,42,92,.88)),url('/assets/findpitches-us-hero.png') center 46%/cover no-repeat;color:#fff}
+.us-search-hero:after{content:"";position:absolute;inset:auto 0 0;height:5px;background:var(--us-red)}
+.us-search-hero-inner{position:relative;z-index:2;max-width:1360px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(250px,.65fr);gap:50px;align-items:end}
+.us-search-kicker{margin:0 0 10px;color:#fff;font-size:.76rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.us-search-hero h1{max-width:900px;margin:0;font-size:clamp(2.5rem,4.6vw,5rem);line-height:.95;letter-spacing:-.055em;text-transform:uppercase}
+.us-search-hero h1 em{color:#ff3447;font-style:italic}
+.us-search-hero .lede{max-width:760px;margin:18px 0 0;color:#dfe9f4;font-size:1.03rem;line-height:1.55}
+.us-search-proof{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.us-search-proof span{padding:7px 10px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.us-search-status{justify-self:end;min-width:230px;padding:24px;border:2px solid rgba(255,255,255,.65);background:rgba(2,22,52,.78);box-shadow:8px 8px 0 rgba(225,31,47,.35)}
+.us-search-status b,.us-search-status span{display:block}
+.us-search-status b{font-size:2.6rem;line-height:1}
+.us-search-status span{margin-top:8px;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+
+.us-search-main{max-width:1460px;margin:0 auto;padding:34px 4vw 64px}
+.us-search-panel{position:relative;z-index:3;margin-top:-58px;padding:20px;background:#fff;border:1px solid #d7dee8;border-radius:12px;box-shadow:0 14px 34px rgba(3,27,63,.16)}
+.us-search-page .cloud-search{display:grid;grid-template-columns:.85fr .72fr 1.15fr 1.15fr auto;gap:12px;align-items:end}
+.us-search-page .cloud-search label{display:grid;gap:7px}
+.us-search-page .cloud-search label>span{font-size:.73rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#274766}
+.us-search-page .cloud-search input,.us-search-page .cloud-search select,.us-search-page .cloud-search button{width:100%;min-height:48px;border:1px solid #bfcbd8;border-radius:6px;background:#fff;padding:0 13px;font:inherit;font-size:.9rem;color:#16324f}
+.us-search-page .cloud-search input:focus,.us-search-page .cloud-search select:focus{outline:3px solid rgba(225,31,47,.14);border-color:var(--us-red)}
+.us-search-page .cloud-search button{min-width:132px;border-color:var(--us-red);background:var(--us-red);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 3px 0 #a91421}
+
+.us-search-page .cloud-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 22px}
+.us-search-page .cloud-metrics article{padding:17px 18px;background:#fff;border:1px solid #dce3eb;border-top:4px solid var(--us-navy);border-radius:8px;box-shadow:0 4px 12px rgba(7,42,88,.06)}
+.us-search-page .cloud-metrics b,.us-search-page .cloud-metrics span{display:block}
+.us-search-page .cloud-metrics b{font-size:1.55rem;color:var(--us-deep)}
+.us-search-page .cloud-metrics span{margin-top:4px;font-size:.75rem;line-height:1.35;color:#5b6f85}
+
+.us-search-page .results-summary{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:28px 0 14px;padding:0 2px}
+.us-search-page .results-summary strong{font-size:1.2rem;color:var(--us-deep)}
+.us-search-page .results-summary span{max-width:660px;text-align:right;font-size:.77rem;line-height:1.45;color:#607287}
+.us-search-page .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.us-search-page .opportunity-card{display:flex;flex-direction:column;min-height:270px;padding:22px;background:#fff;border:1px solid #d7e0e9;border-top:5px solid var(--us-red);border-radius:9px;box-shadow:0 6px 18px rgba(4,31,70,.08)}
+.us-search-page .opportunity-card header{display:block;margin:0 0 14px}
+.us-search-page .result-title{display:block;font-size:1.08rem;line-height:1.3;color:var(--us-deep)}
+.us-search-page .result-org{display:block;margin-top:5px;font-size:.78rem;font-weight:700;color:#60758b}
+.us-search-page .cloud-facts{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.us-search-page .cloud-facts span{padding:6px 8px;border-radius:999px;background:#edf3f8;color:#274967;font-size:.7rem;font-weight:700}
+.us-search-page .opportunity-card p{margin:0;color:#4a6178;font-size:.88rem;line-height:1.55}
+.us-search-page .opportunity-lockline{margin-top:auto;padding-top:18px;font-size:.72rem;color:#78889a}
+.us-search-page .opportunity-card footer{margin-top:10px;padding:0;background:transparent}
+.us-search-page .locked-pill{display:inline-block;padding:6px 9px;border-radius:999px;background:#092f66;color:#fff;font-size:.67rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.us-search-page .cloud-empty{padding:34px;background:#fff;border:1px solid #dbe2ea;border-radius:9px;text-align:center}
+.us-search-page .cloud-empty strong,.us-search-page .cloud-empty span{display:block}
+.us-search-page .cloud-empty strong{font-size:1.15rem;color:var(--us-deep)}
+.us-search-page .cloud-empty span{margin-top:7px;color:#66788c;line-height:1.5}
+.us-search-page .cloud-empty.error{border-color:#efb6bc;background:#fff8f8}
+.us-search-page .us-footer{margin-top:0}
+
+@media(max-width:1080px){
+  .us-search-hero-inner{grid-template-columns:1fr}
+  .us-search-status{justify-self:start}
+  .us-search-page .cloud-search{grid-template-columns:1fr 1fr}
+  .us-search-page .cloud-search button{grid-column:1/-1}
+  .us-search-page .cloud-metrics{grid-template-columns:1fr 1fr}
+  .us-search-page .result-grid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:700px){
+  .us-search-hero{padding:44px 5vw 74px;background-position:58% center}
+  .us-search-status{min-width:0;width:100%}
+  .us-search-main{padding-left:5vw;padding-right:5vw}
+  .us-search-panel{margin-top:-48px;padding:15px}
+  .us-search-page .cloud-search{grid-template-columns:1fr}
+  .us-search-page .cloud-search button{grid-column:auto}
+  .us-search-page .cloud-metrics{grid-template-columns:1fr}
+  .us-search-page .result-grid{grid-template-columns:1fr}
+  .us-search-page .results-summary{display:block}
+  .us-search-page .results-summary span{display:block;margin-top:6px;text-align:left}
+}
