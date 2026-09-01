@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:01:23.613Z",
+  "updated_at": "2026-09-01T20:03:46.406Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1875,6 +1875,42 @@
       "evidence": "Cloudflare discovery va-virginia-beach-2027-festival: live first-party route attests Virginia Beach, VA, actionable vendor terms, and exact event date range 2027-06-04 to 2027-06-06."
     },
     {
+      "id": "wa-2026-spokane-renaissance-faire-2026-10-03-0d59d55e",
+      "name": "2026 Spokane Renaissance Faire-Merchant Application - Spokane Renaissance Faire 2026 - Eventeny",
+      "organiser": "2026 Spokane Renaissance Faire",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45743&srsltid=AfmBOop5AZO2EM87HvG9nK0rPjelAhf1lGyrwBJb02GbL0sFecxde2pt",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45743&srsltid=AfmBOop5AZO2EM87HvG9nK0rPjelAhf1lGyrwBJb02GbL0sFecxde2pt",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Spokane",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-spokane-2026-festival: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "wa-2026-spokane-renaissance-faire-2026-10-03-1e5af4b5",
+      "name": "2026 Spokane Renaissance Faire-Merchant Application - Spokane Renaissance Faire 2026 - Eventeny",
+      "organiser": "2026 Spokane Renaissance Faire",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45743&srsltid=AfmBOoogwNifEBOwsnwgybA8Q44lAy6I16nucNoT-8yKT8OCtTPRhh1O",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45743&srsltid=AfmBOoogwNifEBOwsnwgybA8Q44lAy6I16nucNoT-8yKT8OCtTPRhh1O",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Spokane",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-spokane-2026-arts-crafts: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
       "id": "wa-legacy-square-2026-09-19-b9a7d78b",
       "name": "Legacy Square Vendor Opportunity",
       "organiser": "Legacy Square",
@@ -1891,6 +1927,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-seattle-2026-government-events: live first-party route attests Seattle, WA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "wa-mead-bandwagon-annual-craft-fair-2026-2026-11-15-d7c98e62",
+      "name": "Mead Bandwagon Annual Craft Fair 2026 Vendor Opportunity",
+      "organiser": "Mead Bandwagon Annual Craft Fair 2026",
+      "source_url": "https://vendorsmap.com/events/31733",
+      "application_url": "https://vendorsmap.com/events/31733",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Spokane",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-15",
+      "event_end": "2026-11-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-spokane-2026-arts-crafts: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date range 2026-11-15 to 2026-11-16."
     },
     {
       "id": "wa-renegade-craft-fair-seattle-spring-2027-2027-05-30-c87cbd54",
