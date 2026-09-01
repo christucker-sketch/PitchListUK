@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:08:31.708Z",
+  "updated_at": "2026-09-01T19:13:13.262Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -883,6 +883,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-chicago-2026-government-events: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "ma-2026-food-2027-01-05-f5dd060b",
+      "name": "2026 Food Vendor Application",
+      "organiser": "2026 Food",
+      "source_url": "https://www.danceforworldcommunity.org/food-vendor-application",
+      "application_url": "https://www.danceforworldcommunity.org/food-vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Boston",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-05",
+      "event_end": "2027-01-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-boston-2027-food-truck: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-01-05."
     },
     {
       "id": "ma-boston-local-food-festival-mdash-boston-local-food-2026-09-20-7d436934",
