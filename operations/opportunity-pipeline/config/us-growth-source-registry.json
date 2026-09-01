@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:40:50.896Z",
+  "updated_at": "2026-09-01T19:43:09.923Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1027,6 +1027,24 @@
       "event_end": "2027-10-23",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2027-festival: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-10-23."
+    },
+    {
+      "id": "ma-out-to-lunch-downtown-worcester-2026-09-02-1a006585",
+      "name": "Out to Lunch - Downtown Worcester Vendor Opportunity",
+      "organiser": "Out to Lunch - Downtown Worcester",
+      "source_url": "https://www.downtownworcester.org/things-to-do/outtolunch",
+      "application_url": "https://www.downtownworcester.org/things-to-do/outtolunch",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Worcester",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-02",
+      "event_end": "2026-09-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-worcester-2026-farmers-market: live first-party route attests Worcester, MA, actionable vendor terms, and exact event date range 2026-09-02 to 2026-09-09."
     },
     {
       "id": "ma-ultimate-guide-to-massachusetts-holiday-markets-2025-2026-12-06-e47d95ea",
