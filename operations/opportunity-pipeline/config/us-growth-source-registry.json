@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:18:12.541Z",
+  "updated_at": "2026-09-01T19:24:24.929Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1261,6 +1261,24 @@
       "event_end": "2026-09-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-newark-2026-arts-crafts: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-09-02."
+    },
+    {
+      "id": "ny-downtown-buffalo-country-market-2026-10-15-b4b1996b",
+      "name": "Downtown Buffalo Country Market Vendor Opportunity",
+      "organiser": "Downtown Buffalo Country Market",
+      "source_url": "https://www3.erie.gov/eriegrown/growers/downtown-buffalo-country-market",
+      "application_url": "https://www3.erie.gov/eriegrown/growers/downtown-buffalo-country-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Buffalo",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-15",
+      "event_end": "2026-10-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-buffalo-2026-farmers-market: live first-party route attests Buffalo, NY, actionable vendor terms, and exact event date 2026-10-15."
     },
     {
       "id": "ny-eventeny-com-2026-09-19-70c56b29",
