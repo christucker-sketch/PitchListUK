@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T08:38:26.338Z",
+  "updated_at": "2026-09-01T08:40:51.061Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -991,6 +991,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-festival: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
+    },
+    {
+      "id": "nc-magical-meetups-the-emperor-s-new-market-eventeny-2027-06-06-65425c62",
+      "name": "Magical Meetups - The Emperor's New Market - Eventeny Vendor Opportunity",
+      "organiser": "Magical Meetups - The Emperor's New Market - Eventeny",
+      "source_url": "https://www.eventeny.com/events/magical-meetups-the-emperors-new-market-32751/?srsltid=AfmBOor_6-pHUd2svgxJ4xOybqZCznlXPVeiPnwB3x8rIalNT8N4XGMy",
+      "application_url": "https://www.eventeny.com/events/magical-meetups-the-emperors-new-market-32751/?srsltid=AfmBOor_6-pHUd2svgxJ4xOybqZCznlXPVeiPnwB3x8rIalNT8N4XGMy",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Charlotte",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-06",
+      "event_end": "2027-06-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-charlotte-2027-arts-crafts: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2027-06-06."
     },
     {
       "id": "nc-north-carolina-farmers-market-vendor-permit-guide-2026-2026-12-31-7a5157f7",
