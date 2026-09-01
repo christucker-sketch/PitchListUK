@@ -4,52 +4,64 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Find US Vendor Opportunities | FindPitches</title>
-  <meta name="description" content="Search current US vendor opportunities by ZIP Code, radius, category and keyword. FindPitches US is launching with Texas coverage first." />
+  <meta name="description" content="Search current US vendor opportunities by ZIP Code, radius, category and keyword across FindPitches nationwide coverage." />
   <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#05285a" />
   <link rel="canonical" href="https://findpitches.com/us/find-pitches" />
   <link rel="stylesheet" href="/styles.css?v=20260731-4" />
+  <link rel="stylesheet" href="/shared/findpitches-shell.css?v=20260831-1" />
+  <link rel="stylesheet" href="/us/home.css?v=20260901-2" />
+  <link rel="stylesheet" href="/us/readability.css?v=20260901-1" />
+  <link rel="stylesheet" href="/us/find-pitches.css?v=20260901-1" />
 </head>
-<body class="database-page">
-  <header class="database-shell">
-    <nav>
-      <strong>FindPitches</strong>
-      <a href="/us/">Back to FindPitches US</a>
+<body class="fp-country fp-country-us us-search-page" data-country="us">
+  <header class="fp-header us-topbar">
+    <a class="fp-brand us-logo" href="/" aria-label="FindPitches home"><span>Find</span><strong>Pitches</strong><small>FAIRS · FESTIVALS · OPPORTUNITIES</small></a>
+    <nav class="fp-nav us-nav" aria-label="Primary navigation">
+      <a class="active" href="/us/find-pitches">Find Opportunities</a>
+      <a href="/us/#how-it-works">How It Works</a>
+      <a href="/us/#categories">Categories</a>
+      <a href="/us/#about">About</a>
+      <a class="fp-country-switcher us-country" href="/" aria-label="Choose country">🇺🇸 US</a>
     </nav>
-    <section class="database-hero">
-      <div>
-        <p class="eyebrow">FindPitches US preview</p>
-        <h1>Find current US vendor pitches and event opportunities.</h1>
-        <p class="lede">Search the first live US rows by ZIP Code, category and keyword. Texas is the first active market; additional states will follow behind the same evidence and safety gates.</p>
-        <div class="database-proof">
-          <span>Texas launch coverage</span>
-          <span>food, markets and events</span>
-          <span>preview access while coverage grows</span>
-        </div>
-      </div>
-      <div class="database-showcase" aria-label="FindPitches opportunity preview">
-        <img src="/assets/hero-food-festival.jpg" alt="Food vendors serving customers at an outdoor event" />
-        <div class="database-status" id="databaseStatus"><b>...</b><span>loading opportunities</span></div>
-      </div>
-    </section>
+    <a class="us-list-cta" href="/us/">US Home</a>
   </header>
 
-  <main class="database-main">
-    <form class="cloud-search" id="cloudSearch">
-      <label><span>ZIP Code</span><input name="zip" placeholder="75201" autocomplete="postal-code" inputmode="numeric" /></label>
-      <label><span>Radius</span><select name="radius_miles"><option value="" selected>Any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50">50 miles</option><option value="100">100 miles</option><option value="250">250 miles</option></select></label>
-      <label><span>Category</span><input name="category" placeholder="food truck, craft, market vendor" /></label>
-      <label><span>Keywords</span><input name="q" placeholder="festival, market, fair..." /></label>
-      <button type="submit">Search</button>
-    </form>
-    <section class="cloud-metrics" id="cloudMetrics" aria-live="polite"></section>
-    <section class="cloud-results" id="cloudResults" aria-live="polite"></section>
+  <main>
+    <section class="us-search-hero">
+      <div class="us-search-hero-inner">
+        <div>
+          <p class="us-search-kicker">VENDOR OPPORTUNITIES · COAST TO COAST</p>
+          <h1>Find your next <em>place to sell.</em></h1>
+          <p class="lede">Search live FindPitches opportunities across America by ZIP Code, distance, category and keyword. Checked first-party sources, one place to search.</p>
+          <div class="us-search-proof">
+            <span>50-state coverage</span>
+            <span>evidence checked</span>
+            <span>updated continuously</span>
+          </div>
+          <p class="us-access-note">Preview access while coverage grows; US commercial access remains disabled.</p>
+        </div>
+        <div class="us-search-status" id="databaseStatus"><b>...</b><span>loading opportunities</span></div>
+      </div>
+    </section>
+
+    <section class="us-search-main">
+      <div class="us-search-panel">
+        <form class="cloud-search" id="cloudSearch">
+          <label><span>ZIP Code</span><input name="zip" placeholder="e.g. 90210" autocomplete="postal-code" inputmode="numeric" /></label>
+          <label><span>Distance</span><select name="radius_miles"><option value="" selected>Any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50">50 miles</option><option value="100">100 miles</option><option value="250">250 miles</option></select></label>
+          <label><span>Category</span><input name="category" placeholder="food truck, craft, market vendor" /></label>
+          <label><span>Keywords</span><input name="q" placeholder="festival, market, fair..." /></label>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <section class="cloud-metrics" id="cloudMetrics" aria-live="polite"></section>
+      <section class="cloud-results" id="cloudResults" aria-live="polite"></section>
+    </section>
   </main>
 
   <script src="/analytics.js?v=20260809-1" defer></script>
-  <script src="/us/find-pitches.js?v=20260828-1"></script>
-  <footer>
-    <strong>FindPitches</strong>
-    <span>US preview · findpitches.com</span>
-  </footer>
+  <script src="/us/find-pitches.js?v=20260901-2"></script>
+  <footer class="fp-footer us-footer"><strong>FindPitches USA</strong><span>Find the crowd. Claim the pitch. Make the sale.</span></footer>
 </body>
 </html>
