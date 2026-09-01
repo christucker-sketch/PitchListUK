@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:26:16.369Z",
+  "updated_at": "2026-09-01T20:28:35.580Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -129,6 +129,24 @@
       "evidence": "Cloudflare discovery ca-san-diego-2026-government-events: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2026-10-17."
     },
     {
+      "id": "ca-farmers-market-2027-06-26-9cd35c10",
+      "name": "Farmers Market Vendor Application | Ocean Beach San Diego CA",
+      "organiser": "Farmers Market",
+      "source_url": "https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=AfmBOoodyqfkWZxeYoguHnata6EvkSCMS9LUSvHuEQQXAJwuEqXW_PnD",
+      "application_url": "https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=AfmBOoodyqfkWZxeYoguHnata6EvkSCMS9LUSvHuEQQXAJwuEqXW_PnD",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-26",
+      "event_end": "2027-06-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
+    },
+    {
       "id": "ca-international-street-fair-and-diversity-festival-saturday-october-3-20-2026-10-03-b7e28b03",
       "name": "International Street Fair and Diversity Festival- Saturday, October 3, 2026 Vendor Opportunity",
       "organiser": "International Street Fair and Diversity Festival- Saturday, October 3, 2026",
@@ -163,6 +181,24 @@
       "event_end": "2026-12-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-los-angeles-2026-arts-crafts: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date 2026-12-06."
+    },
+    {
+      "id": "ca-san-marcos-farmers-market-2027-10-25-83c68d1e",
+      "name": "San Marcos Farmers Market Vendor Application",
+      "organiser": "San Marcos Farmers Market",
+      "source_url": "https://citygatesevents.com/san-marcos-farmers-market-vendor-application",
+      "application_url": "https://citygatesevents.com/san-marcos-farmers-market-vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-25",
+      "event_end": "2027-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-10-25."
     },
     {
       "id": "co-18-festivals-to-put-on-your-calendar-now-2026-09-26-2fa052b3",
