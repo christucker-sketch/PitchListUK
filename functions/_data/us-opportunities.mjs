@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T20:02:26.908Z",
-  "source": "reviewed-us-virginia-cloud-promotion:14276f865eb04045be17f482dfde47e61477dbdf4eafd8823d4fe5502658c971",
-  "total": 240,
+  "exported_at": "2026-09-01T20:04:42.053Z",
+  "source": "reviewed-us-washington-cloud-promotion:664a0b18a8bbc3039d13d29801ec22fb69fe3b47031d19061aed4e7f9c97652b",
+  "total": 241,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9185,6 +9185,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_ee146d6ac1403e4eb0ea"
+    },
+    {
+      "stable_id": "opp_us_0db89f5a80637a5ec5c3",
+      "event_name": "2026 Spokane Renaissance Faire-Merchant Application - Spokane Renaissance Faire 2026 - Eventeny",
+      "organiser": "2026 Spokane Renaissance Faire",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45743&srsltid=AfmBOop5AZO2EM87HvG9nK0rPjelAhf1lGyrwBJb02GbL0sFecxde2pt",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45743&srsltid=AfmBOop5AZO2EM87HvG9nK0rPjelAhf1lGyrwBJb02GbL0sFecxde2pt",
+      "location": "Spokane",
+      "locality": "Spokane",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-2026-spokane-renaissance-faire-2026-10-03-0d59d55e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_0db89f5a80637a5ec5c3"
     }
   ]
 };
