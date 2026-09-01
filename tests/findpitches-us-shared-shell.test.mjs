@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const homeUrl = new URL('../src/us/index.html', import.meta.url);
-const heroCssUrl = new URL('../src/us/hero.css', import.meta.url);
+const heroCssUrl = new URL('../src/assets/findpitches-us-hero.css', import.meta.url);
 const heroAssetUrl = new URL('../src/assets/findpitches-us-hero.png', import.meta.url);
 const shellCssUrl = new URL('../src/shared/findpitches-shell.css', import.meta.url);
 
@@ -25,6 +25,7 @@ test('US hero uses the single approved image without the stitched scene treatmen
     readFile(heroAssetUrl)
   ]);
   assert.match(home, /https:\/\/findpitches\.com\/assets\/findpitches-us-hero\.png/);
+  assert.match(home, /\/assets\/findpitches-us-hero\.css/);
   assert.match(css, /url\(['"]?\/assets\/findpitches-us-hero\.png['"]?\)/);
   assert.match(css, /background-size:\s*cover|\/cover/);
   assert.doesNotMatch(home, /us-hero-flag|us-hero-scene|us-scene-/);

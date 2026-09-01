@@ -56,7 +56,7 @@ test('US and UK country roots are public on their canonical paths', async () => 
 });
 
 test('FindPitches API and shared assets pass through to existing handlers', async () => {
-  for (const path of ['/api/us-customer-opportunities/search', '/styles.css', '/assets/hero-food-festival.jpg', '/shared/findpitches-shell.css', '/global/home.css', '/uk/home.css', '/us/home.css', '/us/find-pitches.css', '/us/find-pitches.js']) {
+  for (const path of ['/api/us-customer-opportunities/search', '/styles.css', '/assets/hero-food-festival.jpg', '/assets/findpitches-us-hero.png', '/assets/findpitches-us-hero.css', '/shared/findpitches-shell.css', '/global/home.css', '/uk/home.css', '/us/home.css', '/us/find-pitches.css', '/us/find-pitches.js']) {
     const fixture = contextFor(`https://findpitches.com${path}`);
     const response = await onRequest(fixture.context);
     assert.equal(response.status, 200);
