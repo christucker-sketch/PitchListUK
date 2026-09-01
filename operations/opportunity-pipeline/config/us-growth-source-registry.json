@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:46:08.449Z",
+  "updated_at": "2026-09-01T20:48:10.242Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1189,6 +1189,24 @@
       "event_end": "2026-12-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2026-holiday-market: live first-party route attests Boston, MA, actionable vendor terms, and exact event date range 2026-12-06 to 2026-12-13."
+    },
+    {
+      "id": "ma-vendor-events-in-east-longmeadow-ma-2027-06-12-1a1ff268",
+      "name": "Vendor Events in East Longmeadow, MA",
+      "organiser": "Vendor Events in East Longmeadow, MA",
+      "source_url": "https://vendorsmap.com/cities/east-longmeadow",
+      "application_url": "https://vendorsmap.com/cities/east-longmeadow",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Worcester",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-12",
+      "event_end": "2027-06-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-worcester-2027-farmers-market: live first-party route attests Worcester, MA, actionable vendor terms, and exact event date 2027-06-12."
     },
     {
       "id": "ma-worcester-night-market-open-call-for-vendors-and-sponsors-aug-3-2026-t-2026-09-19-8582a7a4",
