@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T19:58:08.898Z",
-  "source": "reviewed-us-michigan-cloud-promotion:464f4b6b17e0abd782d34526ffea0037d75eed4fa9c10eb6bdb141d2e35a1413",
-  "total": 239,
+  "exported_at": "2026-09-01T20:02:26.908Z",
+  "source": "reviewed-us-virginia-cloud-promotion:14276f865eb04045be17f482dfde47e61477dbdf4eafd8823d4fe5502658c971",
+  "total": 240,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9147,6 +9147,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_21d273469b9c2314029d"
+    },
+    {
+      "stable_id": "opp_us_ee146d6ac1403e4eb0ea",
+      "event_name": "Urbanna Oyster Festival Vendor Opportunity",
+      "organiser": "Urbanna Oyster Festival",
+      "source_url": "https://urbannaoysterfestival.com/",
+      "application_url": "https://urbannaoysterfestival.com",
+      "location": "Chesapeake",
+      "locality": "Chesapeake",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-urbanna-oyster-festival-2026-11-06-f3895928",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_ee146d6ac1403e4eb0ea"
     }
   ]
 };
