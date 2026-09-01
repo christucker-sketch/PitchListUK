@@ -11,6 +11,10 @@ import { PRIORITY_STATE_CODES, growthPlanSize } from '../src/us-growth-plan.js';
 import { parseGrowthRegistry, sourcesForState } from '../src/us-growth-registry.js';
 import { enabledStates, getStateConfig } from '../src/us-state-registry.js';
 import {
+  safeNotifyFailureFromEnvironment,
+  safeNotifyRecoveryFromEnvironment
+} from '../../acquisition-notifications/notifier.mjs';
+import {
   ciRollupState,
   parseInstanceId,
   parseWorkflowStatus,
@@ -454,6 +458,14 @@ async function cycle(state, envFile, stateFile) {
     };
     state.status = 'running_cloudflare_acquisition';
     saveState(stateFile, state);
+    safeNotifyRecoveryFromEnvironment({
+      config: { controller_state_file: stateFile },
+      overrides: {
+        region: scoped.name,
+        cursor: state.current?.query_offset,
+        workflow_id: state.active_instance.id
+      }
+    });
     return true;
   }
 
@@ -472,6 +484,14 @@ async function cycle(state, envFile, stateFile) {
   };
   state.status = 'running_cloudflare_discovery';
   saveState(stateFile, state);
+  safeNotifyRecoveryFromEnvironment({
+    config: { controller_state_file: stateFile },
+    overrides: {
+      region: selected.state.name,
+      cursor: selected.offset,
+      workflow_id: state.active_instance.id
+    }
+  });
   return true;
 }
 
@@ -513,6 +533,11 @@ export async function main(argv = process.argv.slice(2)) {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main().catch(error => {
+    const stateFile = path.resolve(argumentValue(process.argv.slice(2), '--state-file', process.env.PITCHLIST_GROWTH_STATE_FILE || defaultStateFile));
+    safeNotifyFailureFromEnvironment(error, {
+      status: 'blocked',
+      config: { controller_state_file: stateFile }
+    });
     process.stderr.write(`${String(error?.message || error).replace(/[^a-z0-9_.,:/ #=-]+/gi, '')}\n`);
     process.exit(1);
   });

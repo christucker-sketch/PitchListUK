@@ -8,6 +8,10 @@ import { fileURLToPath } from 'node:url';
 
 import { stagingSourceBatches } from '../src/staging-batches.js';
 import { getStateConfig } from '../src/us-state-registry.js';
+import {
+  safeNotifyFailureFromEnvironment,
+  safeNotifyRecoveryFromEnvironment
+} from '../../acquisition-notifications/notifier.mjs';
 
 export const ROLLOUT_ORDER = Object.freeze([
   'CA', 'TX', 'FL', 'NY', 'PA', 'IL', 'OH', 'GA', 'NC', 'MI', 'VA', 'WA', 'MA', 'CO', 'AZ',
@@ -477,6 +481,14 @@ export function main(argv = process.argv.slice(2)) {
       state.status = 'running';
       state.updated_at = new Date().toISOString();
       saveState(stateFile, state);
+      safeNotifyRecoveryFromEnvironment({
+        config: { controller_state_file: stateFile },
+        overrides: {
+          region: triggered.stateName,
+          cursor: state.next_batch,
+          workflow_id: triggered.instanceId
+        }
+      });
     }
 
     const active = state.active_instance;
@@ -502,6 +514,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   try {
     main();
   } catch (error) {
+    const stateFile = path.resolve(argumentValue(process.argv.slice(2), '--state-file', process.env.PITCHLIST_ROLLOUT_STATE_FILE || defaultStateFile));
+    safeNotifyFailureFromEnvironment(error, {
+      status: 'blocked',
+      config: { controller_state_file: stateFile }
+    });
     process.stderr.write(`${JSON.stringify({ status: 'blocked', error: String(error?.message || error) })}\n`);
     process.exitCode = 1;
   }
