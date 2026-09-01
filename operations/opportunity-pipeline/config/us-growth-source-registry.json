@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T08:31:45.038Z",
+  "updated_at": "2026-09-01T08:35:19.684Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1135,6 +1135,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "pa-foodeesfest-vendor-agreement-ndash-pottstown-pa-philadelphia-foodees-f-2027-06-05-3b718d2b",
+      "name": "FoodeesFest Vendor Agreement &ndash; (Pottstown, PA) - Philadelphia Foodees Fest - Eventeny",
+      "organiser": "FoodeesFest Vendor Agreement &ndash; (Pottstown, PA) - Philadelphia Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=40906&srsltid=AfmBOoo308vTR1G0hJicIF2r9y6lnXi6n_G2aXrWI9NoN7l6JCYZ4K-u",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=40906&srsltid=AfmBOoo308vTR1G0hJicIF2r9y6lnXi6n_G2aXrWI9NoN7l6JCYZ4K-u",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Philadelphia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-05",
+      "event_end": "2027-06-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-philadelphia-2027-festival: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date range 2027-06-05 to 2027-06-07."
     },
     {
       "id": "pa-june-events-festivals-2026-09-07-f9ae3721",
