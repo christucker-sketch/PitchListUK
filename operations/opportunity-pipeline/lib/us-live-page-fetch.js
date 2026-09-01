@@ -64,6 +64,7 @@ async function fetchTextTarget(target, options = {}) {
   const fetchImpl = options.fetchImpl || fetch;
   const timeoutMs = Number(options.timeoutMs || 15000);
   const retries = Math.max(0, Number(options.retries ?? 2));
+  const maxBytes = Math.max(0, Number(options.maxBytes || 0));
   let lastError = null;
 
   for (let attempt = 0; attempt <= retries; attempt += 1) {
@@ -91,7 +92,7 @@ async function fetchTextTarget(target, options = {}) {
       }
 
       return {
-        html: await response.text(),
+        html: await readResponseText(response, { maxBytes }),
         finalUrl: response.url || target
       };
     } catch (error) {
@@ -103,6 +104,45 @@ async function fetchTextTarget(target, options = {}) {
   }
 
   throw lastError || new Error('fetch failed');
+}
+
+async function readResponseText(response, options = {}) {
+  const maxBytes = Math.max(0, Number(options.maxBytes || 0));
+  if (!maxBytes) return response.text();
+
+  const contentLength = Number(response.headers?.get?.('content-length'));
+  if (Number.isFinite(contentLength) && contentLength > maxBytes) {
+    throw new Error(`response body exceeds ${maxBytes} byte limit`);
+  }
+
+  if (!response.body?.getReader) {
+    const text = await response.text();
+    if (new TextEncoder().encode(text).byteLength > maxBytes) {
+      throw new Error(`response body exceeds ${maxBytes} byte limit`);
+    }
+    return text;
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  const chunks = [];
+  let bytesRead = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      bytesRead += value.byteLength;
+      if (bytesRead > maxBytes) {
+        await reader.cancel();
+        throw new Error(`response body exceeds ${maxBytes} byte limit`);
+      }
+      chunks.push(decoder.decode(value, { stream: true }));
+    }
+    chunks.push(decoder.decode());
+    return chunks.join('');
+  } finally {
+    reader.releaseLock?.();
+  }
 }
 
 async function fetchApprovedPage({ source, url }, options = {}) {
@@ -148,6 +188,7 @@ module.exports = {
   extractTitle,
   extractLinks,
   isRetryableStatus,
+  readResponseText,
   fetchTextTarget,
   fetchApprovedPage
 };

@@ -12,12 +12,14 @@ import {
   normalizeGrowthCandidates,
   validateGrowthCandidateBatch
 } from '../../cloudflare-texas-acquisition/src/us-growth-discovery.js';
+import liveFetch from '../lib/us-live-page-fetch.js';
 import { growthQueryBatch, growthQueryPlan, PRIORITY_STATE_CODES } from '../../cloudflare-texas-acquisition/src/us-growth-plan.js';
 import { mergeGrowthSources, parseGrowthRegistry, sourcesForState, validateGrowthSource } from '../../cloudflare-texas-acquisition/src/us-growth-registry.js';
 import { cleanupGeneratedDeploymentArtifacts, initialState, parseCompactWorkflowOutput, validateSourcePr } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
 
 const repositoryRoot = path.resolve(import.meta.dirname, '../../..');
 const state = { code: 'CA', name: 'California', slug: 'california', jurisdiction: 'US-CA', sources: [] };
+const { fetchTextTarget } = liveFetch;
 
 function source(overrides = {}) {
   return {
@@ -152,6 +154,17 @@ test('multiple candidate batches preserve evidence validation and deterministic 
   assert.deepEqual(first.receipts, second.receipts);
 });
 
+test('growth discovery fetch fails closed before an oversized response can exhaust Worker memory', async () => {
+  const oversized = 'x'.repeat(1025);
+  await assert.rejects(() => fetchTextTarget('https://oversized.example/vendors', {
+    retries: 0,
+    maxBytes: 1024,
+    fetchImpl: async () => new Response(oversized, {
+      headers: { 'content-type': 'text/html' }
+    })
+  }), /response body exceeds 1024 byte limit/);
+});
+
 test('resumed validation output cannot create duplicate approved sources', async () => {
   const plan = { id: 'ca-riverside-2026-festival', locality: 'Riverside', state_code: 'CA', state_name: 'California', year: 2026 };
   const batch = await validateGrowthCandidateBatch({
@@ -180,6 +193,8 @@ test('Worker source routes discovery and selected growth sources through Cloudfl
   assert.match(worker, /validate \$\{state\.code\} growth candidates batch/);
   assert.match(worker, /dedupe and approve \$\{state\.code\} growth candidates offset/);
   assert.match(worker, /fetchTextTarget\(candidate\.url/);
+  assert.match(worker, /maxBytes: DISCOVERY_HTML_MAX_BYTES/);
+  assert.doesNotMatch(worker, /links: extractLinks\(fetched\.html/);
   assert.match(worker, /sourcesForState\(base\.growthRegistry, state\.code, requestedSourceIds\)/);
   assert.match(worker, /open GitHub \$\{state\.name\} source registry PR/);
 });

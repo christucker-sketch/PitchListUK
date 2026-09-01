@@ -21,11 +21,12 @@ import { growthPlanSize, growthQueryBatch } from './us-growth-plan.js';
 import { mergeGrowthSources, parseGrowthRegistry, sourcesForState } from './us-growth-registry.js';
 import { enabledStates, getStateConfig } from './us-state-registry.js';
 
-const { fetchApprovedPage, fetchTextTarget, extractTitle, htmlToText, extractLinks } = liveFetch;
+const { fetchApprovedPage, fetchTextTarget, extractTitle, htmlToText } = liveFetch;
 const { buildTexasPromotionManifest } = promotionLib;
 const { planTexasProductionSnapshot } = applyLib;
 const { buildStatePromotionManifest, planStateProductionSnapshot } = statePublicationLib;
 const growthRegistryPath = 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
+const DISCOVERY_HTML_MAX_BYTES = 1024 * 1024;
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -278,12 +279,15 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
       state,
       asOfDate,
       fetchPage: async candidate => {
-        const fetched = await fetchTextTarget(candidate.url, { timeoutMs: 15000, retries: 1 });
+        const fetched = await fetchTextTarget(candidate.url, {
+          timeoutMs: 15000,
+          retries: 1,
+          maxBytes: DISCOVERY_HTML_MAX_BYTES
+        });
         return {
           url: fetched.finalUrl,
           title: extractTitle(fetched.html),
           text: htmlToText(fetched.html),
-          links: extractLinks(fetched.html, fetched.finalUrl),
           fetch_route: 'discovery_source'
         };
       }
