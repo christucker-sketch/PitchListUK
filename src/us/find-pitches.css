@@ -15,6 +15,7 @@
 .us-search-hero .lede{max-width:760px;margin:18px 0 0;color:#dfe9f4;font-size:1.03rem;line-height:1.55}
 .us-search-proof{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
 .us-search-proof span{padding:7px 10px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.us-access-note{margin:12px 0 0;color:#bfcde0;font-size:.7rem;line-height:1.4}
 .us-search-status{justify-self:end;min-width:230px;padding:24px;border:2px solid rgba(255,255,255,.65);background:rgba(2,22,52,.78);box-shadow:8px 8px 0 rgba(225,31,47,.35)}
 .us-search-status b,.us-search-status span{display:block}
 .us-search-status b{font-size:2.6rem;line-height:1}
