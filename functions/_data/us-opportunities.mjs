@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T15:25:47.544Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:3b247b1e4b036f34fb25e0cb9f77a0ebdc47024be3e99be19b41e9a524e73825",
-  "total": 229,
+  "exported_at": "2026-09-01T19:14:18.520Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:8e1831b72567e235b99910fde47558ef540416a587536a59cfe2f234b2cc265e",
+  "total": 230,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8767,6 +8767,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_7214f8336fcc1116e593"
+    },
+    {
+      "stable_id": "opp_us_5482a8f9e8866b7ac578",
+      "event_name": "2026 Food Vendor Application",
+      "organiser": "2026 Food",
+      "source_url": "https://www.danceforworldcommunity.org/food-vendor-application",
+      "application_url": "https://www.danceforworldcommunity.org/food-vendor-application",
+      "location": "Boston",
+      "locality": "Boston",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-05",
+      "event_end": "2027-01-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-2026-food-2027-01-05-f5dd060b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_5482a8f9e8866b7ac578"
     }
   ]
 };
