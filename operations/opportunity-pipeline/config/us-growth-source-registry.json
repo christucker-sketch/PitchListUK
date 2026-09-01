@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:03:46.406Z",
+  "updated_at": "2026-09-01T20:06:52.017Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1081,6 +1081,42 @@
       "event_end": "2026-12-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2026-holiday-market: live first-party route attests Boston, MA, actionable vendor terms, and exact event date range 2026-12-06 to 2026-12-13."
+    },
+    {
+      "id": "ma-worcester-night-market-open-call-for-vendors-and-sponsors-aug-3-2026-t-2026-09-19-8582a7a4",
+      "name": "Worcester Night Market - Open Call for Vendors and Sponsors - Aug 3, 2026 to Aug 28, 2026 - Worcester Regional Chamber of Commerce Vendor Opportunity",
+      "organiser": "Worcester Night Market - Open Call for Vendors and Sponsors - Aug 3, 2026 to Aug 28, 2026 - Worcester Regional Chamber of Commerce",
+      "source_url": "https://business.worcesterchamber.org/events/details/worcester-night-market-open-call-for-vendors-and-sponsors-23943",
+      "application_url": "https://business.worcesterchamber.org/events/details/worcester-night-market-open-call-for-vendors-and-sponsors-23943",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Worcester",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-worcester-2026-arts-crafts: live first-party route attests Worcester, MA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ma-worcester-night-market-welcome-2026-09-19-98a74f7d",
+      "name": "Worcester Night Market - Welcome Vendor Opportunity",
+      "organiser": "Worcester Night Market - Welcome",
+      "source_url": "https://ricema.org/woonightmarket",
+      "application_url": "https://ricema.org/woonightmarket",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Worcester",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-worcester-2026-arts-crafts: live first-party route attests Worcester, MA, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "mi-art-apples-festival-2027-09-11-c2f0e112",
