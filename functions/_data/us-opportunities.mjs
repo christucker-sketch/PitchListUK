@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T08:26:04.602Z",
-  "source": "reviewed-us-texas-cloud-promotion:25cad4255f185aed4a742e3939fb21e42b136783aba9cc5d37ad9ec85866c382",
-  "total": 223,
+  "exported_at": "2026-09-01T08:32:52.879Z",
+  "source": "reviewed-us-florida-cloud-promotion:6ee0fd37ebe65bf4790f69ff72d173cee71e580e4c1a1d1c37af2901ab65ab4a",
+  "total": 224,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8541,6 +8541,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_0ec7e4d33da2ab76d2d3"
+    },
+    {
+      "stable_id": "opp_us_1acc3976d317f8039d72",
+      "event_name": "Foodees Fest Jacksonville, FL Vendor Opportunity",
+      "organiser": "Foodees Fest Jacksonville, FL",
+      "source_url": "https://www.foodeesfest.com/event/jacksonville-fl-2027",
+      "application_url": "https://www.foodeesfest.com/event/jacksonville-fl-2027",
+      "location": "Jacksonville",
+      "locality": "Jacksonville",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "32202",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-foodees-fest-jacksonville-fl-2027-01-01-1eea50d9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_1acc3976d317f8039d72"
     }
   ]
 };
