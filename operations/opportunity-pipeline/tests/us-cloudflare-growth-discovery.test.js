@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 
 import {
@@ -13,7 +14,7 @@ import {
 } from '../../cloudflare-texas-acquisition/src/us-growth-discovery.js';
 import { growthQueryBatch, growthQueryPlan, PRIORITY_STATE_CODES } from '../../cloudflare-texas-acquisition/src/us-growth-plan.js';
 import { mergeGrowthSources, parseGrowthRegistry, sourcesForState, validateGrowthSource } from '../../cloudflare-texas-acquisition/src/us-growth-registry.js';
-import { initialState, parseCompactWorkflowOutput, validateSourcePr } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
+import { cleanupGeneratedDeploymentArtifacts, initialState, parseCompactWorkflowOutput, validateSourcePr } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
 
 const repositoryRoot = path.resolve(import.meta.dirname, '../../..');
 const state = { code: 'CA', name: 'California', slug: 'california', jurisdiction: 'US-CA', sources: [] };
@@ -191,6 +192,28 @@ test('growth controller parses only the compact Cloudflare discovery result and 
   assert.equal(checkpoint.snapshot_count, 185);
   assert.equal(checkpoint.target_count, 1100);
   assert.equal(checkpoint.status, 'ready');
+});
+
+test('growth controller removes every generated country-shell deployment directory', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'pitchlist-growth-cleanup-'));
+  try {
+    for (const directory of ['us', 'uk', 'shared']) {
+      const generated = path.join(root, 'public', directory);
+      fs.mkdirSync(generated, { recursive: true });
+      fs.writeFileSync(path.join(generated, 'generated.txt'), 'generated');
+    }
+    const preserved = path.join(root, 'public', 'database.js');
+    fs.writeFileSync(preserved, 'preserved');
+
+    cleanupGeneratedDeploymentArtifacts(root);
+
+    for (const directory of ['us', 'uk', 'shared']) {
+      assert.equal(fs.existsSync(path.join(root, 'public', directory)), false);
+    }
+    assert.equal(fs.readFileSync(preserved, 'utf8'), 'preserved');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test('growth controller accepts only an exact-head additions-only source PR with successful CI', () => {

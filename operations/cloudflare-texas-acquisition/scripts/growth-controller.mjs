@@ -254,10 +254,16 @@ async function verifyProduction(envFile, expectedSha, expectedCount) {
   return { deployment_id: production.id, production_sha: sha, live_api_count: Number(payload.total) };
 }
 
+export function cleanupGeneratedDeploymentArtifacts(root = repositoryRoot) {
+  for (const directory of ['us', 'uk', 'shared']) {
+    fs.rmSync(path.join(root, 'public', directory), { recursive: true, force: true });
+  }
+}
+
 async function deployAndVerify(envFile, sha, count) {
   run('npm', ['run', 'deploy:production'], { env: { ...process.env, PITCHLIST_DEPLOY_ENV_FILE: envFile } });
   run('git', ['restore', '--source=HEAD', '--', 'public/sitemap.xml']);
-  fs.rmSync(path.join(repositoryRoot, 'public/us'), { recursive: true, force: true });
+  cleanupGeneratedDeploymentArtifacts();
   if (run('git', ['status', '--short']).trim()) throw new Error('Deployment left unexpected repository changes');
   return verifyProduction(envFile, sha, count);
 }
