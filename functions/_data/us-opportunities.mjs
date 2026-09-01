@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T20:15:11.364Z",
-  "source": "reviewed-us-ohio-cloud-promotion:d7da870025a4bb7ae4fc8951259132f3a46b97a5c478f7638062cd769b861272",
-  "total": 243,
+  "exported_at": "2026-09-01T20:18:08.922Z",
+  "source": "reviewed-us-georgia-cloud-promotion:c0b1ba4ddddf0756f340bd56e746129389d6de14d3596cccfaabe4f547c63411",
+  "total": 244,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9298,6 +9298,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_6047f24642f4dea163de"
+    },
+    {
+      "stable_id": "opp_us_968ea8de43e4bf51c8f1",
+      "event_name": "Holiday Craft Fair Vendor Application 2026",
+      "organiser": "Holiday Craft Fair",
+      "source_url": "https://thecentercville.org/calendar/event/142285",
+      "application_url": "https://thecentercville.org/calendar/event/142285",
+      "location": "Augusta",
+      "locality": "Augusta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-holiday-craft-fair-2026-11-07-67f62500",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_968ea8de43e4bf51c8f1"
     }
   ]
 };
