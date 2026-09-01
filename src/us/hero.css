@@ -1,0 +1,55 @@
+.us-hero {
+  background-color: #e8ded0;
+  background-image: url('/assets/findpitches-us-hero.png');
+  background-position: center 54%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.us-hero-wash {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(247, 242, 233, 0.08) 0%,
+      rgba(247, 242, 233, 0.86) 31%,
+      rgba(247, 242, 233, 0.78) 60%,
+      rgba(247, 242, 233, 0.08) 86%
+    );
+}
+
+@media (max-width: 1050px) {
+  .us-hero {
+    background-position: center 52%;
+  }
+
+  .us-hero-wash {
+    background: linear-gradient(
+      90deg,
+      rgba(247, 242, 233, 0.16) 0%,
+      rgba(247, 242, 233, 0.84) 27%,
+      rgba(247, 242, 233, 0.82) 68%,
+      rgba(247, 242, 233, 0.14) 100%
+    );
+  }
+}
+
+@media (max-width: 760px) {
+  .us-hero {
+    background-position: 25% center;
+  }
+
+  .us-hero-wash {
+    background: linear-gradient(
+      180deg,
+      rgba(247, 242, 233, 0.78) 0%,
+      rgba(247, 242, 233, 0.68) 58%,
+      rgba(247, 242, 233, 0.42) 100%
+    );
+  }
+}
+
+@media (max-width: 460px) {
+  .us-hero {
+    background-position: 20% center;
+  }
+}

@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const homeUrl = new URL('../src/us/index.html', import.meta.url);
+const heroCssUrl = new URL('../src/us/hero.css', import.meta.url);
+const heroAssetUrl = new URL('../src/assets/findpitches-us-hero.png', import.meta.url);
 const shellCssUrl = new URL('../src/shared/findpitches-shell.css', import.meta.url);
 
 test('US homepage opts into the shared FindPitches shell contract', async () => {
@@ -14,6 +16,22 @@ test('US homepage opts into the shared FindPitches shell contract', async () => 
   assert.match(home, /class="fp-nav us-nav"/);
   assert.match(home, /class="fp-category-grid us-category-cards"/);
   assert.match(home, /class="fp-footer us-footer"/);
+});
+
+test('US hero uses the single approved image without the stitched scene treatment', async () => {
+  const [home, css, asset] = await Promise.all([
+    readFile(homeUrl, 'utf8'),
+    readFile(heroCssUrl, 'utf8'),
+    readFile(heroAssetUrl)
+  ]);
+  assert.match(home, /https:\/\/findpitches\.com\/assets\/findpitches-us-hero\.png/);
+  assert.match(css, /url\(['"]?\/assets\/findpitches-us-hero\.png['"]?\)/);
+  assert.match(css, /background-size:\s*cover|\/cover/);
+  assert.doesNotMatch(home, /us-hero-flag|us-hero-scene|us-scene-/);
+  assert.doesNotMatch(css, /card-shows-festivals\.jpg|card-festival-vendors\.jpg|card-food-truck-pitches\.jpg/);
+  assert.deepEqual([...asset.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+  assert.equal(asset.readUInt32BE(16), 1717);
+  assert.equal(asset.readUInt32BE(20), 916);
 });
 
 test('shared shell exposes country-neutral design tokens', async () => {
