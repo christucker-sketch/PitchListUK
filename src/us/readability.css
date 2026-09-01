@@ -1,0 +1,79 @@
+:root{--us-readable-max:1440px}
+
+/* Desktop readability pass: keep the approved composition, stop shrinking the useful content. */
+@media(min-width:761px){
+  .us-topbar{padding-top:16px;padding-bottom:16px}
+  .us-logo span,.us-logo strong{font-size:1.8rem}
+  .us-logo small{font-size:.52rem}
+  .us-nav a{font-size:.76rem}
+  .us-list-cta{font-size:.76rem;padding:12px 18px}
+
+  .us-hero-copy p{font-size:.92rem;line-height:1.45}
+  .us-radar{left:16%;right:16%;padding:14px 18px 11px}
+  .us-search{gap:10px}
+  .us-search label>span{font-size:.66rem;font-weight:700}
+  .us-search input,.us-search select,.us-search button{min-height:44px;font-size:.79rem;padding-left:12px;padding-right:12px}
+  .us-popular{margin-top:9px;gap:8px;font-size:.59rem}
+  .us-popular span{padding:5px 9px}
+
+  .us-stats{padding-top:12px;padding-bottom:12px}
+  .us-stats article{gap:13px;padding-top:7px;padding-bottom:7px}
+  .us-stats article>b{width:48px;height:48px;font-size:1.2rem}
+  .us-stats strong{font-size:1.5rem}
+  .us-stats span{font-size:.67rem}
+  .us-stats small{font-size:.57rem}
+
+  .us-how{padding:26px 10% 24px}
+  .us-section-title h2{font-size:1.16rem}
+  .us-section-title>span{font-size:.9rem}
+  .us-section-title small{margin-top:4px;font-size:.61rem}
+  .us-steps{gap:18px;margin-top:22px}
+  .us-steps i{width:58px;height:58px;margin-bottom:8px;font-size:1.45rem}
+  .us-steps b{top:43px;left:calc(50% - 38px);width:19px;height:19px;font-size:.58rem}
+  .us-steps h3{font-size:.86rem}
+  .us-steps p{margin-top:4px;max-width:175px;font-size:.66rem;line-height:1.35}
+  .us-arrow{font-size:1.7rem}
+
+  .us-categories{padding:18px 7% 30px}
+  .us-categories-title h2{font-size:1.08rem}
+  .us-categories-title p{margin-top:3px;font-size:.6rem}
+  .us-category-cards{gap:12px;margin-top:13px}
+  .us-card{min-height:150px;padding:70px 12px 13px;border-radius:7px}
+  .us-card strong{font-size:.96rem;text-shadow:0 1px 3px rgba(0,0,0,.75)}
+  .us-card small{margin-top:4px;font-size:.66rem;line-height:1.3;text-shadow:0 1px 2px rgba(0,0,0,.75)}
+
+  .us-trust{padding:18px 7% 20px}
+  .us-trust>p{margin-bottom:14px;font-size:.66rem}
+  .us-trust-grid{gap:16px}
+  .us-trust-grid article{gap:10px}
+  .us-trust-grid article i{width:38px;height:38px;font-size:.82rem;flex:0 0 38px}
+  .us-trust-grid strong{font-size:.66rem}
+  .us-trust-grid span{font-size:.54rem;line-height:1.35}
+  .us-built{padding:11px 42px 11px 13px}
+  .us-built strong{font-size:.72rem}
+  .us-built b{top:12px}
+  .us-footer{font-size:.62rem;padding-top:14px;padding-bottom:14px}
+  .us-footer strong{font-size:.75rem}
+}
+
+@media(min-width:1500px){
+  .us-how{padding-left:13%;padding-right:13%}
+  .us-categories{padding-left:9%;padding-right:9%}
+  .us-trust{padding-left:9%;padding-right:9%}
+  .us-card{min-height:165px}
+}
+
+@media(max-width:760px){
+  .us-section-title h2{font-size:1rem}
+  .us-section-title small{font-size:.56rem}
+  .us-steps i{width:50px;height:50px;font-size:1.25rem}
+  .us-steps h3{font-size:.78rem}
+  .us-steps p{font-size:.61rem;max-width:150px}
+  .us-categories-title h2{font-size:1rem}
+  .us-categories-title p{font-size:.58rem}
+  .us-card{min-height:135px;padding:62px 10px 12px}
+  .us-card strong{font-size:.9rem}
+  .us-card small{font-size:.63rem}
+  .us-trust-grid strong{font-size:.64rem}
+  .us-trust-grid span{font-size:.53rem}
+}
