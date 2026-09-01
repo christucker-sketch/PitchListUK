@@ -116,18 +116,29 @@ jobs:
       - name: Verify production country routes and API
         shell: bash
         run: |
-          verify_page() {
+          verify_live() {
             url="$1"
             marker="$2"
-            body="$(mktemp)"
-            status="$(curl --fail-with-body --silent --show-error --location --retry 8 --retry-delay 3 --retry-all-errors --output "$body" --write-out '%{http_code}' "$url")"
-            test "$status" = 200
-            grep -Fq "$marker" "$body"
+            label="$3"
+            last_status='not-requested'
+            for attempt in $(seq 1 60); do
+              body="$(mktemp)"
+              last_status="$(curl --silent --show-error --location --connect-timeout 10 --max-time 20 --output "$body" --write-out '%{http_code}' "$url" || true)"
+              if [[ "$last_status" == '200' ]] && grep -Fq "$marker" "$body"; then
+                rm -f "$body"
+                echo "Verified $label on attempt $attempt"
+                return 0
+              fi
+              rm -f "$body"
+              if [[ "$attempt" -lt 60 ]]; then sleep 3; fi
+            done
+            echo "::error title=Production verification failed::$label remained unavailable or stale after 60 attempts (last HTTP status: $last_status)"
+            return 1
           }
-          verify_page 'https://findpitches.com/' 'Start with where you trade.'
-          verify_page 'https://findpitches.com/us/' 'data-country="us"'
-          verify_page 'https://findpitches.com/uk/' 'data-country="uk"'
-          curl --fail --silent --show-error --retry 8 --retry-delay 3 --retry-all-errors 'https://findpitches.com/global/home.css' >/dev/null
-          curl --fail --silent --show-error --retry 8 --retry-delay 3 --retry-all-errors 'https://findpitches.com/us/home.css' >/dev/null
-          curl --fail --silent --show-error --retry 8 --retry-delay 3 --retry-all-errors 'https://findpitches.com/uk/home.css' >/dev/null
-          curl --fail --silent --show-error --retry 8 --retry-delay 3 --retry-all-errors 'https://findpitches.com/api/us-customer-opportunities/search?limit=1' | grep -q '"total"'
+          verify_live 'https://findpitches.com/' 'Start with where you trade.' 'global root'
+          verify_live 'https://findpitches.com/us/' 'data-country="us"' 'US country site'
+          verify_live 'https://findpitches.com/uk/' 'data-country="uk"' 'UK country site'
+          verify_live 'https://findpitches.com/global/home.css' '.global-hero' 'global stylesheet'
+          verify_live 'https://findpitches.com/us/home.css' '.us-hero' 'US stylesheet'
+          verify_live 'https://findpitches.com/uk/home.css' '.uk-hero' 'UK stylesheet'
+          verify_live 'https://findpitches.com/api/us-customer-opportunities/search?limit=1' '"total"' 'US opportunity API'
