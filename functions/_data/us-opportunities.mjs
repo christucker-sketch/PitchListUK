@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T19:53:49.710Z",
-  "source": "reviewed-us-ohio-cloud-promotion:dde509c652bc651e4ce69d849588cec97655cf67b48d7f65b822dad21c2f8f63",
-  "total": 238,
+  "exported_at": "2026-09-01T19:58:08.898Z",
+  "source": "reviewed-us-michigan-cloud-promotion:464f4b6b17e0abd782d34526ffea0037d75eed4fa9c10eb6bdb141d2e35a1413",
+  "total": 239,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9110,6 +9110,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_392c8a1c6ed90c0a8a2d"
+    },
+    {
+      "stable_id": "opp_us_21d273469b9c2314029d",
+      "event_name": "Grand Rapids Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Grand Rapids Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/grandrapidsspooktacular/",
+      "application_url": "https://hometownvendormarket.com/grandrapidsspooktacular",
+      "location": "Grand Rapids",
+      "locality": "Grand Rapids",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "49315",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-grand-rapids-spooktacular-craft-vendor-market-hometown-vendor-market-2026-10-24-9889645e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_21d273469b9c2314029d"
     }
   ]
 };
