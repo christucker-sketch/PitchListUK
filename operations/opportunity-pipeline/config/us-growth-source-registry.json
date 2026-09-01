@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:28:35.580Z",
+  "updated_at": "2026-09-01T20:31:35.995Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1927,6 +1927,24 @@
       "event_end": "2027-07-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-houston-2027-festival: live first-party route attests Houston, TX, actionable vendor terms, and exact event date 2027-07-04."
+    },
+    {
+      "id": "tx-western-heritage-weekend-2027-02-05-81f14de4",
+      "name": "Western Heritage Weekend Vendor Opportunity",
+      "organiser": "Western Heritage Weekend",
+      "source_url": "https://www.sarodeo.com/p/fairgrounds/fundraising-events/western-heritage-parade--weekend",
+      "application_url": "https://www.sarodeo.com/p/fairgrounds/fundraising-events/western-heritage-parade--weekend",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "San Antonio",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-05",
+      "event_end": "2027-02-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-san-antonio-2027-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date range 2027-02-05 to 2027-02-07."
     },
     {
       "id": "va-2026-chesapeake-rotary-christmas-parade-eventeny-2026-12-05-d38949c6",
