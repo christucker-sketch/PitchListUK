@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:48:10.242Z",
+  "updated_at": "2026-09-01T20:49:37.741Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -165,6 +165,42 @@
       "evidence": "Cloudflare discovery ca-san-diego-2026-government-events: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2026-10-17."
     },
     {
+      "id": "ca-farmers-market-2027-06-26-01adb5c0",
+      "name": "Farmers Market Vendor Application | Ocean Beach San Diego CA",
+      "organiser": "Farmers Market",
+      "source_url": "https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=AfmBOooM7ShtWfFZKckYlDgMQg-eStpJCKOupA0x85Q0wG5HFXbmtcqU",
+      "application_url": "https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=AfmBOooM7ShtWfFZKckYlDgMQg-eStpJCKOupA0x85Q0wG5HFXbmtcqU",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-26",
+      "event_end": "2027-06-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-festival: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
+    },
+    {
+      "id": "ca-farmers-market-2027-06-26-98e32a9d",
+      "name": "Farmers Market Vendor Application | Ocean Beach San Diego CA",
+      "organiser": "Farmers Market",
+      "source_url": "https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=AfmBOoqyGxVzgETp_rR84CqsQfpzveB4t1YWd5TzYRHrekykDuDTKi1Q",
+      "application_url": "https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=AfmBOoqyGxVzgETp_rR84CqsQfpzveB4t1YWd5TzYRHrekykDuDTKi1Q",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-26",
+      "event_end": "2027-06-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-arts-crafts: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
+    },
+    {
       "id": "ca-farmers-market-2027-06-26-9cd35c10",
       "name": "Farmers Market Vendor Application | Ocean Beach San Diego CA",
       "organiser": "Farmers Market",
@@ -183,6 +219,24 @@
       "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
     },
     {
+      "id": "ca-home-st-patrick-s-day-parade-festival-2027-03-13-b902d1ce",
+      "name": "Home - St. Patrick's Day Parade & Festival Vendor Opportunity",
+      "organiser": "Home - St. Patrick's Day Parade & Festival",
+      "source_url": "https://stpatsparade.org",
+      "application_url": "https://stpatsparade.org",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-13",
+      "event_end": "2027-03-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-festival: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-03-13."
+    },
+    {
       "id": "ca-international-street-fair-and-diversity-festival-saturday-october-3-20-2026-10-03-b7e28b03",
       "name": "International Street Fair and Diversity Festival- Saturday, October 3, 2026 Vendor Opportunity",
       "organiser": "International Street Fair and Diversity Festival- Saturday, October 3, 2026",
@@ -199,6 +253,24 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-los-angeles-2026-festival: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "ca-national-city-community-market-aug-28-2027-national-city-chamber-of-co-2027-08-28-6647f8c9",
+      "name": "National City Community Market - Aug 28, 2027 - National City Chamber of Commerce, CA Vendor Opportunity",
+      "organiser": "National City Community Market - Aug 28, 2027 - National City Chamber of Commerce, CA",
+      "source_url": "https://www.nationalcitychamber.org/events/details/national-city-community-market-08-28-2027-6481",
+      "application_url": "https://www.nationalcitychamber.org/events/details/national-city-community-market-08-28-2027-6481",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-28",
+      "event_end": "2027-08-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-arts-crafts: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-08-28."
     },
     {
       "id": "ca-patchwork-show-2026-12-06-669da0ba",
