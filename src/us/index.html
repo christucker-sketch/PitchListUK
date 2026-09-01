@@ -7,11 +7,11 @@
   <meta name="description" content="Find current vendor opportunities across the USA: fairs, festivals, markets, food truck events, pop-ups and concession calls in one searchable place." />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <meta name="author" content="FindPitches" />
-  <meta name="theme-color" content="#081a2f" />
+  <meta name="theme-color" content="#05285a" />
   <link rel="canonical" href="https://findpitches.com/us/" />
   <link rel="stylesheet" href="/styles.css?v=20260731-4" />
   <link rel="stylesheet" href="/shared/findpitches-shell.css?v=20260831-1" />
-  <link rel="stylesheet" href="/us/home.css?v=20260901-1" />
+  <link rel="stylesheet" href="/us/home.css?v=20260901-2" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="FindPitches" />
   <meta property="og:title" content="Find Vendor Opportunities Across America | FindPitches" />
@@ -22,92 +22,87 @@
 </head>
 <body class="fp-country fp-country-us us-home" data-country="us">
   <header class="fp-header us-topbar">
-    <a class="fp-brand us-logo" href="/" aria-label="FindPitches home">
-      <span>Find</span><strong>Pitches</strong><small>USA</small>
-    </a>
+    <a class="fp-brand us-logo" href="/" aria-label="FindPitches home"><span>Find</span><strong>Pitches</strong><small>FAIRS · FESTIVALS · OPPORTUNITIES</small></a>
     <nav class="fp-nav us-nav" aria-label="Primary navigation">
       <a class="active" href="/us/find-pitches">Find Opportunities</a>
-      <a href="#categories">What’s out there</a>
-      <a href="#how-it-works">How it works</a>
-      <a href="#about">Why trust it</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#categories">Categories</a>
+      <a href="#about">About</a>
       <a class="fp-country-switcher us-country" href="/" aria-label="Choose country">🇺🇸 US</a>
     </nav>
+    <a class="us-list-cta" href="/us/find-pitches">Search America</a>
   </header>
 
   <main>
     <section class="us-hero">
-      <div class="us-hero-media" aria-hidden="true"></div>
+      <div class="us-hero-flag" aria-hidden="true"><span></span></div>
+      <div class="us-hero-scene us-scene-city" aria-hidden="true"></div>
+      <div class="us-hero-scene us-scene-vendors" aria-hidden="true"></div>
+      <div class="us-hero-scene us-scene-truck" aria-hidden="true"></div>
+      <div class="us-hero-wash" aria-hidden="true"></div>
+
       <div class="us-hero-copy">
-        <p class="us-stamp">VENDOR OPPORTUNITIES · COAST TO COAST</p>
-        <h1>Sell where<br><em>America shows up.</em></h1>
-        <p>Fairs. Festivals. Markets. Food truck rallies. Pop-ups. Concessions. We pull the opportunities together so you can spend less time hunting and more time selling.</p>
-        <a class="us-hero-link" href="/us/find-pitches">Browse all opportunities <span>→</span></a>
+        <h1><span>Find your next</span><strong>place to sell.</strong></h1>
+        <p>Discover vendor opportunities across America.<br>From bustling city markets to small-town festivals.<br><b>Your next great spot is out there.</b></p>
       </div>
 
+      <div class="us-america-stamp" aria-hidden="true"><span>OPPORTUNITIES</span><b>ALL ACROSS</b><strong>AMERICA</strong></div>
+
       <aside class="us-radar" aria-label="Search vendor opportunities">
-        <div class="us-radar-title"><span>VENDOR RADAR</span><b>Find your next crowd.</b></div>
         <form class="us-search" action="/us/find-pitches" method="get">
-          <label><span>ZIP Code</span><input name="zip" type="text" placeholder="e.g. 90210" autocomplete="postal-code" inputmode="numeric" /></label>
-          <label><span>Distance</span><select name="radius"><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option><option value="">Anywhere</option></select></label>
-          <label><span>Category</span><select name="category"><option value="" selected>Everything</option><option>Fairs</option><option>Festivals</option><option>Markets</option><option>Food Trucks</option><option>Pop-ups</option><option>Concessions</option></select></label>
-          <button type="submit">SHOW ME THE PITCHES →</button>
+          <label><span>📍 ZIP Code</span><input name="zip" type="text" placeholder="e.g. 90210" autocomplete="postal-code" inputmode="numeric" /></label>
+          <label><span>◎ Search Distance</span><select name="radius"><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option><option value="">Anywhere</option></select></label>
+          <label><span>▦ Category</span><select name="category"><option value="" selected>All Categories</option><option>Fairs</option><option>Festivals</option><option>Markets</option><option>Food Trucks</option><option>Pop-ups</option><option>Concessions</option></select></label>
+          <button type="submit">Search Opportunities 🔍</button>
         </form>
-        <div class="us-popular"><b>QUICK START</b><span>Farmers' Markets</span><span>Food Trucks</span><span>Craft Fairs</span><span>Street Festivals</span></div>
+        <div class="us-popular"><b>Popular searches:</b><span>Farmers' Markets</span><span>Food Truck Locations</span><span>Craft Fairs</span><span>Street Festivals</span><span>Pop-up Events</span><span>Concessions</span></div>
       </aside>
     </section>
 
     <section id="coverage" class="us-stats" aria-label="FindPitches quick facts">
-      <div class="us-stats-label">LIVE MARKET INTELLIGENCE</div>
-      <article><strong id="usOpportunityCount">224+</strong><span>live opportunities</span></article>
-      <article><strong>50</strong><span>states covered</span></article>
-      <article><strong>CHECKED</strong><span>first-party sources</span></article>
-    </section>
-
-    <section id="categories" class="us-categories">
-      <div class="us-section-head">
-        <p>CHOOSE YOUR PLAYGROUND</p>
-        <h2>Big crowds.<br>Small towns.<br><em>Real chances to sell.</em></h2>
-      </div>
-      <div class="fp-category-grid us-category-cards">
-        <a class="us-card us-card-wide" href="/us/find-pitches?category=Fairs" style="--img:url('/assets/card-county-show.jpg')"><span>01</span><strong>FAIRS</strong><small>County fairs, state fairs and the big annual draws.</small></a>
-        <a class="us-card" href="/us/find-pitches?category=Food%20Trucks" style="--img:url('/assets/card-food-truck-pitches.jpg')"><span>02</span><strong>FOOD TRUCKS</strong><small>Rallies, recurring spots and hungry crowds.</small></a>
-        <a class="us-card" href="/us/find-pitches?category=Festivals" style="--img:url('/assets/card-festival-vendors.jpg')"><span>03</span><strong>FESTIVALS</strong><small>Music, food, arts and community events.</small></a>
-        <a class="us-card us-card-tall" href="/us/find-pitches?category=Markets" style="--img:url('/assets/card-farmers-market.jpg')"><span>04</span><strong>MARKETS</strong><small>Farmers' markets, maker markets and local regulars.</small></a>
-        <a class="us-card" href="/us/find-pitches?category=Pop-ups" style="--img:url('/assets/card-night-market.jpg')"><span>05</span><strong>POP-UPS</strong><small>Short-run spaces and one-off events.</small></a>
-        <a class="us-card" href="/us/find-pitches?category=Concessions" style="--img:url('/assets/card-shows-festivals.jpg')"><span>06</span><strong>CONCESSIONS</strong><small>Venues, arenas, parks and seasonal calls.</small></a>
-      </div>
+      <article><b>↗</b><div><strong id="usOpportunityCount">228+</strong><span>LIVE OPPORTUNITIES</span><small>Updated daily</small></div></article>
+      <article><b>●</b><div><strong>50</strong><span>STATES COVERED</span><small>Opportunities nationwide</small></div></article>
+      <article><b>✓</b><div><strong>CHECKED</strong><span>FIRST-PARTY SOURCES</span><small>Verified. Reliable. Real.</small></div></article>
     </section>
 
     <section id="how-it-works" class="us-how">
-      <div class="us-how-copy">
-        <p class="us-mini-title">THE SHORT VERSION</p>
-        <h2>No endless Googling.<br>No dead Facebook posts.</h2>
-        <p>Tell us where you are and what you sell. We surface live opportunities with enough detail to decide whether they deserve your time.</p>
-      </div>
+      <div class="us-section-title"><span>★</span><h2>HOW FINDPITCHES WORKS</h2><span>★</span><small>Find. Connect. Sell more.</small></div>
       <div class="us-steps">
-        <article><b>01</b><h3>DROP A PIN</h3><p>Start with your ZIP and how far you’re willing to roll.</p></article>
-        <article><b>02</b><h3>SCAN THE BOARD</h3><p>See relevant opportunities without trawling dozens of organizer sites.</p></article>
-        <article><b>03</b><h3>CHECK THE RECEIPTS</h3><p>Evidence, dates and location details are surfaced before you click through.</p></article>
-        <article><b>04</b><h3>GO SELL</h3><p>Head straight to the organizer’s application route and make it happen.</p></article>
+        <article><i>📍</i><b>1</b><h3>Search</h3><p>Enter your ZIP code and preferences.</p></article>
+        <span class="us-arrow">→</span>
+        <article><i>⌕</i><b>2</b><h3>Discover</h3><p>Browse opportunities that match your business.</p></article>
+        <span class="us-arrow">→</span>
+        <article><i>▣</i><b>3</b><h3>View & Connect</h3><p>See details and connect with event organizers.</p></article>
+        <span class="us-arrow">→</span>
+        <article><i>▰</i><b>4</b><h3>Show Up & Sell</h3><p>Set up, show up, and grow your business.</p></article>
+      </div>
+    </section>
+
+    <section id="categories" class="us-categories">
+      <div class="us-categories-title"><h2>EXPLORE OPPORTUNITIES</h2><p>Opportunities come in all shapes and sizes.</p></div>
+      <div class="fp-category-grid us-category-cards">
+        <a class="us-card" href="/us/find-pitches?category=Fairs" style="--img:url('/assets/card-county-show.jpg')"><strong>Fairs</strong><small>County fairs, state fairs & more</small></a>
+        <a class="us-card" href="/us/find-pitches?category=Festivals" style="--img:url('/assets/card-festival-vendors.jpg')"><strong>Festivals</strong><small>Music, arts, food & cultural events</small></a>
+        <a class="us-card" href="/us/find-pitches?category=Markets" style="--img:url('/assets/card-farmers-market.jpg')"><strong>Markets</strong><small>Farmers' markets & local markets</small></a>
+        <a class="us-card" href="/us/find-pitches?category=Food%20Trucks" style="--img:url('/assets/card-food-truck-pitches.jpg')"><strong>Food Trucks</strong><small>Truck spots & rally locations</small></a>
+        <a class="us-card" href="/us/find-pitches?category=Pop-ups" style="--img:url('/assets/card-night-market.jpg')"><strong>Pop-ups</strong><small>Short-term pop-up events</small></a>
+        <a class="us-card" href="/us/find-pitches?category=Concessions" style="--img:url('/assets/card-shows-festivals.jpg')"><strong>Concessions</strong><small>Stadiums, arenas & venues</small></a>
       </div>
     </section>
 
     <section id="about" class="us-trust">
-      <div class="us-trust-flag"><span>BUILT FOR AMERICA</span><b>★ ★ ★ ★ ★</b></div>
-      <div class="us-trust-copy">
-        <p>NOT A DIRECTORY DUMP</p>
-        <h2>We care whether the opportunity is actually real.</h2>
-      </div>
+      <p>Verified opportunities from checked sources</p>
       <div class="us-trust-grid">
-        <article><strong>Real Opportunities</strong><span>Sourced from official listings, organizer websites and permit/application routes.</span></article>
-        <article><strong>Evidence Checked</strong><span>Quality gates verify source evidence before an opportunity goes live.</span></article>
-        <article><strong>Useful Details</strong><span>Who, what, when, where and how to apply — without the scavenger hunt.</span></article>
-        <article><strong>Built for Vendors</strong><span>Fast filters and direct routes for people who make money by showing up.</span></article>
+        <article><i>✓</i><div><strong>Real Opportunities</strong><span>Sourced from official listings, organizer websites & permits.</span></div></article>
+        <article><i>★</i><div><strong>Evidence Checked</strong><span>Quality gates verify source evidence before an opportunity goes live.</span></div></article>
+        <article><i>⌖</i><div><strong>Transparent Details</strong><span>Know the who, what, when, where & how to apply.</span></div></article>
+        <article><i>↗</i><div><strong>Built for Vendors</strong><span>Tools and filters to help you find the right fit, fast.</span></div></article>
+        <article class="us-built"><strong>BUILT FOR AMERICA</strong><span>Supporting local businesses from coast to coast.</span><b>★ ★ ★</b></article>
       </div>
     </section>
   </main>
 
-  <footer class="fp-footer us-footer"><strong>FindPitches <em>USA</em></strong><span>Find the crowd. Claim the pitch. Make the sale.</span></footer>
+  <footer class="fp-footer us-footer"><strong>FindPitches USA</strong><span>Find the crowd. Claim the pitch. Make the sale.</span></footer>
 
   <script>
     (async () => {
