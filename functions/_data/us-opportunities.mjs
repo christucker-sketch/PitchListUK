@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-08-31T15:12:15.083Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:8e028bf860aff9c4eb55abe2605c0fcfdd01df50765d1ba6f48978113979680a",
-  "total": 222,
+  "exported_at": "2026-09-01T08:26:04.602Z",
+  "source": "reviewed-us-texas-cloud-promotion:25cad4255f185aed4a742e3939fb21e42b136783aba9cc5d37ad9ec85866c382",
+  "total": 223,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8502,6 +8502,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_b9864b280932d3bd26e4"
+    },
+    {
+      "stable_id": "opp_us_0ec7e4d33da2ab76d2d3",
+      "event_name": "Houston Day Trip Annual Events | Houston Day Trip Ideas",
+      "organiser": "Houston Day Trip Annual Events",
+      "source_url": "https://www.visithoustontexas.com/aroundhouston/annual-events/",
+      "application_url": "https://www.visithoustontexas.com/aroundhouston/annual-events",
+      "location": "Houston",
+      "locality": "Houston",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-houston-day-trip-annual-events-2027-07-04-041444e2",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_0ec7e4d33da2ab76d2d3"
     }
   ]
 };
