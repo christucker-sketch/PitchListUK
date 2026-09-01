@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:24:24.929Z",
+  "updated_at": "2026-09-01T19:26:36.942Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1387,6 +1387,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "pa-farmers-market-in-the-park-2026-10-22-e7e28d06",
+      "name": "Farmers Market in the Park Vendor Opportunity",
+      "organiser": "Farmers Market in the Park",
+      "source_url": "https://www.greentreeboro.com/services/community_events/farmer_s_market_in_the_park.php",
+      "application_url": "https://www.greentreeboro.com/services/community_events/farmer_s_market_in_the_park.php",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Pittsburgh",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-22",
+      "event_end": "2026-10-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-pittsburgh-2026-farmers-market: live first-party route attests Pittsburgh, PA, actionable vendor terms, and exact event date 2026-10-22."
     },
     {
       "id": "pa-foodeesfest-vendor-agreement-ndash-pottstown-pa-philadelphia-foodees-f-2027-06-05-3b718d2b",
