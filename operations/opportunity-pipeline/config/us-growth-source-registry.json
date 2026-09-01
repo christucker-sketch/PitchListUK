@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T15:24:51.098Z",
+  "updated_at": "2026-09-01T19:08:31.708Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -973,6 +973,24 @@
       "event_end": "2027-09-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2027-festival: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2027-09-11."
+    },
+    {
+      "id": "mi-detroit-winterfest-off-road-event-in-holly-michigan-2027-01-16-03d43b3e",
+      "name": "Detroit WinterFest - Off-Road Event in Holly Michigan- Vendor Opportunity",
+      "organiser": "Detroit WinterFest - Off-Road Event in Holly Michigan",
+      "source_url": "https://4festevents.com/event/detroit-winterfest-january-16-2027",
+      "application_url": "https://4festevents.com/event/detroit-winterfest-january-16-2027",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Detroit",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-16",
+      "event_end": "2027-01-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-detroit-2027-food-truck: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2027-01-16."
     },
     {
       "id": "mi-dodge-park-thursdays-2026-09-24-4effc43d",
