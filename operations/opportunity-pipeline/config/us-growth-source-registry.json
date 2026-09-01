@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:57:01.737Z",
+  "updated_at": "2026-09-01T19:59:37.489Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1315,6 +1315,24 @@
       "event_end": "2027-01-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2027-food-truck: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2027-01-25 to 2027-01-26."
+    },
+    {
+      "id": "nj-craft-fairs-shows-in-jersey-city-nj-2026-dates-fees-2026-10-03-f85fd552",
+      "name": "Craft Fairs & Shows in Jersey City, NJ 2026: Dates & Fees Vendor Opportunity",
+      "organiser": "Craft Fairs & Shows in Jersey City, NJ 2026: Dates & Fees",
+      "source_url": "https://www.thecraftmap.com/fairs/new-jersey/jersey-city",
+      "application_url": "https://www.thecraftmap.com/fairs/new-jersey/jersey-city",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Jersey City",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-jersey-city-2026-arts-crafts: live first-party route attests Jersey City, NJ, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "nj-downtown-newark-transforms-into-a-winter-wonderland-2026-12-20-bda802de",
