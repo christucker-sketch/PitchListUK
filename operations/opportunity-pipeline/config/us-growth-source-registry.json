@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:59:37.489Z",
+  "updated_at": "2026-09-01T20:01:23.613Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1837,6 +1837,24 @@
       "event_end": "2026-09-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-virginia-beach-2026-farmers-market: live first-party route attests Virginia Beach, VA, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-05."
+    },
+    {
+      "id": "va-urbanna-oyster-festival-2026-11-06-f3895928",
+      "name": "Urbanna Oyster Festival Vendor Opportunity",
+      "organiser": "Urbanna Oyster Festival",
+      "source_url": "https://urbannaoysterfestival.com",
+      "application_url": "https://urbannaoysterfestival.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Chesapeake",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-chesapeake-2026-festival: live first-party route attests Chesapeake, VA, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
     },
     {
       "id": "va-virginia-beach-ndash-jackalope-2027-06-04-9cdc4f9b",
