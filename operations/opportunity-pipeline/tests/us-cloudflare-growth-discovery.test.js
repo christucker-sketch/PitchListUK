@@ -15,7 +15,17 @@ import {
 import liveFetch from '../lib/us-live-page-fetch.js';
 import { growthQueryBatch, growthQueryPlan, PRIORITY_STATE_CODES } from '../../cloudflare-texas-acquisition/src/us-growth-plan.js';
 import { mergeGrowthSources, parseGrowthRegistry, sourcesForState, validateGrowthSource } from '../../cloudflare-texas-acquisition/src/us-growth-registry.js';
-import { cleanupGeneratedDeploymentArtifacts, initialState, parseCompactWorkflowOutput, validateSourcePr, verifyLiveOpportunityCount } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
+import {
+  assertLiveConsistencyWithinDeadline,
+  classifyLiveConsistency,
+  cleanupGeneratedDeploymentArtifacts,
+  initialState,
+  liveConsistencyBackoffMilliseconds,
+  parseCompactWorkflowOutput,
+  parseUsOpportunitySnapshot,
+  readLiveOpportunityConsistency,
+  validateSourcePr
+} from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
 
 const repositoryRoot = path.resolve(import.meta.dirname, '../../..');
 const state = { code: 'CA', name: 'California', slug: 'california', jurisdiction: 'US-CA', sources: [] };
@@ -236,48 +246,69 @@ test('growth controller removes only known generated shell directories and leave
   }
 });
 
-test('live opportunity readiness tolerates bounded custom-domain propagation delay', async () => {
-  const totals = [241, 241, 242];
-  const sleeps = [];
-  const live = await verifyLiveOpportunityCount(242, {
-    attempts: 3,
-    intervalMs: 25,
-    fetchImpl: async (_url, options) => {
+test('temporary one-record propagation lag waits and then self-recovers by identity and count', () => {
+  const pending = { previous_count: 241, count: 242, additions: 1, opportunity_ids: ['opp-new'] };
+  assert.deepEqual(classifyLiveConsistency(pending, { count: 241, ids: new Set() }), {
+    status: 'waiting', live_count: 241, missing_ids: ['opp-new']
+  });
+  assert.deepEqual(classifyLiveConsistency(pending, { count: 242, ids: new Set(['opp-new']) }), {
+    status: 'consistent', live_count: 242
+  });
+});
+
+test('repeated propagation lag remains a waiting state with bounded backoff', () => {
+  const pending = { previous_count: 241, count: 242, additions: 1, opportunity_ids: ['opp-new'] };
+  for (let attempt = 1; attempt <= 4; attempt += 1) {
+    assert.equal(classifyLiveConsistency(pending, { count: 241, ids: new Set() }).status, 'waiting');
+  }
+  assert.deepEqual([1, 2, 3, 4].map(attempt => liveConsistencyBackoffMilliseconds(attempt)), [5000, 10000, 20000, 20000]);
+});
+
+test('live consistency timeout remains a terminal fail-closed error', () => {
+  const pending = { count: 242 };
+  const waiting = { deadline_at: '2026-09-01T20:02:00.000Z', last_live_count: 241 };
+  assert.throws(() => assertLiveConsistencyWithinDeadline(waiting, pending, Date.parse('2026-09-01T20:02:00.000Z')), /Live consistency timed out: Live FindPitches count is 241; expected 242/);
+});
+
+test('wrong or missing opportunity identity fails closed even when the count matches', () => {
+  const pending = { previous_count: 241, count: 242, additions: 1, opportunity_ids: ['opp-expected'] };
+  assert.throws(() => classifyLiveConsistency(pending, { count: 242, ids: new Set(['opp-wrong']) }), /missing expected opportunity identity opp-expected/);
+});
+
+test('live count ahead of the expected snapshot fails closed immediately', () => {
+  const pending = { previous_count: 241, count: 242, additions: 1, opportunity_ids: ['opp-new'] };
+  assert.throws(() => classifyLiveConsistency(pending, { count: 243, ids: new Set(['opp-new']) }), /count 243 exceeds expected 242/);
+});
+
+test('live consistency reads the global count and exact state opportunity identities', async () => {
+  const requests = [];
+  const live = await readLiveOpportunityConsistency('MA', {
+    fetchImpl: async (url, options) => {
+      requests.push(url);
       assert.equal(options.cache, 'no-store');
-      return { ok: true, json: async () => ({ total: totals.shift() }) };
-    },
-    sleepImpl: async milliseconds => sleeps.push(milliseconds)
+      if (url.includes('state=MA')) return { ok: true, json: async () => ({ total: 2, rows: [{ id: 'opp-old' }, { id: 'opp-new' }] }) };
+      return { ok: true, json: async () => ({ total: 242, rows: [] }) };
+    }
   });
-  assert.equal(live, 242);
-  assert.deepEqual(sleeps, [25, 25]);
+  assert.equal(live.count, 242);
+  assert.deepEqual([...live.ids], ['opp-old', 'opp-new']);
+  assert.equal(requests.length, 2);
 });
 
-test('live opportunity readiness remains fail closed after the bounded window', async () => {
-  let calls = 0;
-  await assert.rejects(() => verifyLiveOpportunityCount(242, {
-    attempts: 3,
-    intervalMs: 0,
-    fetchImpl: async () => {
-      calls += 1;
-      return { ok: true, json: async () => ({ total: 241 }) };
-    },
-    sleepImpl: async () => {}
-  }), /Live FindPitches count is 241; expected 242/);
-  assert.equal(calls, 3);
+test('waiting consistency branch checkpoints and cannot trigger the next acquisition Workflow', () => {
+  const controller = fs.readFileSync(path.join(repositoryRoot, 'operations/cloudflare-texas-acquisition/scripts/growth-controller.mjs'), 'utf8');
+  const start = controller.indexOf("if (state.status === 'waiting_for_live_consistency')");
+  const end = controller.indexOf("if (state.status === 'ready_acquisition')", start);
+  const waitingBranch = controller.slice(start, end);
+  assert.ok(start > 0 && end > start);
+  assert.match(waitingBranch, /saveState\(stateFile, state\)/);
+  assert.doesNotMatch(waitingBranch, /triggerWorkflow/);
 });
 
-test('live opportunity readiness absorbs a transient API failure only when the exact count follows', async () => {
-  const responses = [
-    { ok: false, status: 503 },
-    { ok: true, json: async () => ({ total: 242 }) }
-  ];
-  const live = await verifyLiveOpportunityCount(242, {
-    attempts: 2,
-    intervalMs: 0,
-    fetchImpl: async () => responses.shift(),
-    sleepImpl: async () => {}
-  });
-  assert.equal(live, 242);
+test('generated opportunity snapshot parsing preserves exact published identities', () => {
+  const parsed = parseUsOpportunitySnapshot('export const usOpportunitySnapshot = {"total":1,"rows":[{"id":"opp-new"}]};\n');
+  assert.equal(parsed.total, 1);
+  assert.equal(parsed.rows[0].id, 'opp-new');
 });
 
 test('growth controller accepts only an exact-head additions-only source PR with successful CI', () => {

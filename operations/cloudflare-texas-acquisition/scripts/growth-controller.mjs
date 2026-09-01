@@ -192,6 +192,16 @@ function fileAt(ref, filePath) {
   return run('git', ['show', `${ref}:${filePath}`]);
 }
 
+export function parseUsOpportunitySnapshot(source) {
+  const match = String(source || '').match(/export const usOpportunitySnapshot\s*=\s*([\s\S]+);\s*$/);
+  if (!match) throw new Error('US opportunity snapshot source is malformed');
+  const snapshot = JSON.parse(match[1]);
+  if (!Number.isInteger(snapshot?.total) || !Array.isArray(snapshot?.rows) || snapshot.total !== snapshot.rows.length) {
+    throw new Error('US opportunity snapshot count is malformed');
+  }
+  return snapshot;
+}
+
 function mergeSourcePr(state, result) {
   let pr = readPr(result.publication.pr_number);
   if (pr.state === 'OPEN') pr = waitForPr(result.publication.pr_number);
@@ -219,13 +229,27 @@ function mergeDataPr(result) {
   const baseSha = pr.baseRefOid;
   const validationPr = pr.state === 'MERGED' ? { ...pr, state: 'OPEN', mergeable: 'MERGEABLE' } : pr;
   const headOid = validateAutoMergeCandidate(validationPr, result, { baseSha, snapshotPath });
+  const beforeSnapshot = parseUsOpportunitySnapshot(fileAt(baseSha, snapshotPath));
+  const afterSnapshot = parseUsOpportunitySnapshot(fileAt(pr.headRefOid, snapshotPath));
+  const beforeIds = new Set(beforeSnapshot.rows.map(row => String(row.id || row.stable_id || '')));
+  const opportunityIds = afterSnapshot.rows
+    .map(row => String(row.id || row.stable_id || ''))
+    .filter(id => id && !beforeIds.has(id));
+  if (beforeSnapshot.total + Number(result.additions) !== afterSnapshot.total || opportunityIds.length !== Number(result.additions) || new Set(opportunityIds).size !== opportunityIds.length) {
+    throw new Error('Data PR published opportunity identities do not match the reviewed addition delta');
+  }
   if (pr.state === 'OPEN') run('gh', ['pr', 'merge', String(pr.number), '--repo', githubRepository, '--merge', '--delete-branch', '--match-head-commit', headOid]);
   run('git', ['fetch', 'origin', 'main', '--quiet']);
   const localHead = run('git', ['rev-parse', 'HEAD']).trim();
   if (localHead !== run('git', ['rev-parse', 'origin/main']).trim()) run('git', ['merge', '--ff-only', 'origin/main']);
   const count = readSnapshotCount();
   if (count !== Number(result.after)) throw new Error(`Merged snapshot is ${count}; expected ${result.after}`);
-  return { count, sha: run('git', ['rev-parse', 'HEAD']).trim() };
+  return {
+    count,
+    previous_count: beforeSnapshot.total,
+    opportunity_ids: opportunityIds.sort(),
+    sha: run('git', ['rev-parse', 'HEAD']).trim()
+  };
 }
 
 function parseEnvFile(file) {
@@ -240,7 +264,7 @@ function parseEnvFile(file) {
   return values;
 }
 
-async function verifyProduction(envFile, expectedSha, expectedCount) {
+async function verifyProductionDeployment(envFile, expectedSha) {
   const secrets = parseEnvFile(envFile);
   const token = secrets.CLOUDFLARE_API_TOKEN;
   if (!token) throw new Error('CLOUDFLARE_API_TOKEN is missing from the external environment file');
@@ -251,41 +275,118 @@ async function verifyProduction(envFile, expectedSha, expectedCount) {
   const production = body.result?.find(item => item.environment === 'production');
   const sha = production?.deployment_trigger?.metadata?.commit_hash || '';
   if (sha !== expectedSha || production?.latest_stage?.status !== 'success') throw new Error(`Production deployment SHA/status mismatch: ${sha || 'missing'}`);
-  const liveCount = await verifyLiveOpportunityCount(expectedCount, {
-    attempts: Number(process.env.PITCHLIST_GROWTH_LIVE_POLL_ATTEMPTS || 24),
-    intervalMs: Number(process.env.PITCHLIST_GROWTH_LIVE_POLL_SECONDS || 5) * 1000
-  });
-  return { deployment_id: production.id, production_sha: sha, live_api_count: liveCount };
+  return { deployment_id: production.id, production_sha: sha };
 }
 
-export async function verifyLiveOpportunityCount(expectedCount, options = {}) {
-  const attempts = Number(options.attempts ?? 24);
-  const intervalMs = Number(options.intervalMs ?? 5000);
-  const fetchImpl = options.fetchImpl || fetch;
-  const sleepImpl = options.sleepImpl || (milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds)));
-  if (!Number.isInteger(attempts) || attempts < 1) throw new Error('Live count verification attempts must be a positive integer');
-  if (!Number.isFinite(intervalMs) || intervalMs < 0) throw new Error('Live count verification interval must be non-negative');
-  let lastError = new Error(`Live FindPitches count is unavailable; expected ${expectedCount}`);
-  for (let attempt = 1; attempt <= attempts; attempt += 1) {
-    try {
-      const live = await fetchImpl('https://findpitches.com/api/us-customer-opportunities/search?limit=1', {
-        cache: 'no-store',
-        signal: AbortSignal.timeout(15000)
-      });
-      if (!live.ok) {
-        lastError = new Error(`Live FindPitches API returned ${live.status}`);
-      } else {
-        const payload = await live.json();
-        const liveCount = Number(payload.total);
-        if (liveCount === Number(expectedCount)) return liveCount;
-        lastError = new Error(`Live FindPitches count is ${payload.total}; expected ${expectedCount}`);
-      }
-    } catch (error) {
-      lastError = error instanceof Error ? error : new Error(String(error));
+async function fetchLiveJson(url, fetchImpl) {
+  try {
+    const response = await fetchImpl(url, { cache: 'no-store', signal: AbortSignal.timeout(15000) });
+    if (!response.ok) {
+      const error = new Error(`Live FindPitches API returned ${response.status}`);
+      error.liveConsistencyTransient = true;
+      throw error;
     }
-    if (attempt < attempts) await sleepImpl(intervalMs);
+    return response.json();
+  } catch (error) {
+    if (error?.liveConsistencyTransient) throw error;
+    const transient = new Error(`Live FindPitches API request failed: ${String(error?.message || error)}`);
+    transient.liveConsistencyTransient = true;
+    throw transient;
   }
-  throw lastError;
+}
+
+export async function readLiveOpportunityConsistency(stateCode, options = {}) {
+  const fetchImpl = options.fetchImpl || fetch;
+  const global = await fetchLiveJson('https://findpitches.com/api/us-customer-opportunities/search?limit=1', fetchImpl);
+  const count = Number(global.total);
+  if (!Number.isInteger(count) || count < 0) throw new Error('Live FindPitches API returned an invalid total');
+  const ids = new Set();
+  let offset = 0;
+  let stateTotal = null;
+  do {
+    const url = `https://findpitches.com/api/us-customer-opportunities/search?state=${encodeURIComponent(stateCode)}&limit=250&offset=${offset}`;
+    const page = await fetchLiveJson(url, fetchImpl);
+    const pageTotal = Number(page.total);
+    if (!Number.isInteger(pageTotal) || pageTotal < 0 || !Array.isArray(page.rows)) throw new Error('Live state opportunity response is malformed');
+    if (stateTotal === null) stateTotal = pageTotal;
+    if (pageTotal !== stateTotal) throw new Error('Live state opportunity total changed during consistency verification');
+    for (const row of page.rows) {
+      const id = String(row?.id || row?.stable_id || '');
+      if (id) ids.add(id);
+    }
+    offset += page.rows.length;
+    if (page.rows.length === 0 && offset < stateTotal) throw new Error('Live state opportunity pagination ended early');
+    if (offset > count || offset > 2000) throw new Error('Live state opportunity pagination exceeded its safe bound');
+  } while (offset < stateTotal);
+  return { count, ids };
+}
+
+export function classifyLiveConsistency(pending, live) {
+  const expected = Number(pending?.count);
+  const previous = Number(pending?.previous_count);
+  const additions = Number(pending?.additions);
+  const opportunityIds = [...(pending?.opportunity_ids || [])].map(String);
+  if (!Number.isInteger(expected) || !Number.isInteger(previous) || !Number.isInteger(additions) || additions < 1 || previous + additions !== expected) {
+    throw new Error('Live consistency checkpoint has an invalid published count delta');
+  }
+  if (opportunityIds.length !== additions || new Set(opportunityIds).size !== opportunityIds.length) {
+    throw new Error('Live consistency checkpoint has invalid published opportunity identities');
+  }
+  const liveCount = Number(live?.count);
+  if (!Number.isInteger(liveCount) || liveCount < 0) throw new Error('Live consistency response has an invalid count');
+  if (liveCount > expected) throw new Error(`Live FindPitches count ${liveCount} exceeds expected ${expected}`);
+  const liveIds = live?.ids instanceof Set ? live.ids : new Set(live?.ids || []);
+  const missingIds = opportunityIds.filter(id => !liveIds.has(id));
+  if (liveCount === expected) {
+    if (missingIds.length) throw new Error(`Live FindPitches is missing expected opportunity identity ${missingIds[0]}`);
+    return { status: 'consistent', live_count: liveCount };
+  }
+  if (expected - liveCount !== additions || liveCount !== previous) {
+    throw new Error(`Live FindPitches count is ${liveCount}; expected ${expected} after publishing ${additions}`);
+  }
+  const prematurelyVisible = opportunityIds.find(id => liveIds.has(id));
+  if (prematurelyVisible) throw new Error(`Live FindPitches count is behind but already contains published identity ${prematurelyVisible}`);
+  return { status: 'waiting', live_count: liveCount, missing_ids: missingIds };
+}
+
+export function liveConsistencyBackoffMilliseconds(attempt, options = {}) {
+  const base = Number(options.baseMs ?? 5000);
+  const maximum = Number(options.maximumMs ?? 20000);
+  if (!Number.isFinite(base) || base < 0 || !Number.isFinite(maximum) || maximum < base) throw new Error('Live consistency backoff configuration is invalid');
+  return Math.min(maximum, base * (2 ** Math.max(0, Number(attempt || 1) - 1)));
+}
+
+export function assertLiveConsistencyWithinDeadline(waiting, pending, now = Date.now()) {
+  if (now < Date.parse(waiting?.deadline_at || '')) return;
+  const detail = waiting?.last_error || `Live FindPitches count is ${waiting?.last_live_count}; expected ${pending?.count}`;
+  throw new Error(`Live consistency timed out: ${detail}`);
+}
+
+function beginLiveConsistency(pending, deployment) {
+  const now = new Date();
+  const windowSeconds = Math.max(30, Number(process.env.PITCHLIST_GROWTH_LIVE_CONSISTENCY_TIMEOUT_SECONDS || 120));
+  return {
+    deployment_id: deployment.deployment_id,
+    production_sha: deployment.production_sha,
+    started_at: now.toISOString(),
+    deadline_at: new Date(now.getTime() + windowSeconds * 1000).toISOString(),
+    attempts: 0,
+    last_checked_at: null,
+    last_live_count: null,
+    last_error: null
+  };
+}
+
+function finishProductionDeployment(state, pending, deployment, liveCount) {
+  state.live_api_count = liveCount;
+  if (!state.deployments.some(item => item.production_sha === deployment.production_sha)) {
+    state.deployments.push({ ...deployment, live_api_count: liveCount, state_code: state.current.state_code, additions: pending.additions, pr_number: pending.pr_number, deployed_at: new Date().toISOString() });
+  }
+  for (const milestone of milestones) if (state.snapshot_count >= milestone && !state.completed_milestones.includes(milestone)) state.completed_milestones.push(milestone);
+  delete state.current.pending_deploy;
+  delete state.current.live_consistency;
+  state.acquisition_batch += 1;
+  state.status = 'ready_acquisition';
 }
 
 export function cleanupGeneratedDeploymentArtifacts(root = repositoryRoot) {
@@ -294,12 +395,12 @@ export function cleanupGeneratedDeploymentArtifacts(root = repositoryRoot) {
   }
 }
 
-async function deployAndVerify(envFile, sha, count) {
+async function deployProduction(envFile, sha) {
   run('npm', ['run', 'deploy:production'], { env: { ...process.env, PITCHLIST_DEPLOY_ENV_FILE: envFile } });
   run('git', ['restore', '--source=HEAD', '--', 'public/sitemap.xml']);
   cleanupGeneratedDeploymentArtifacts();
   if (run('git', ['status', '--short']).trim()) throw new Error('Deployment left unexpected repository changes');
-  return verifyProduction(envFile, sha, count);
+  return verifyProductionDeployment(envFile, sha);
 }
 
 function selectDiscovery(state) {
@@ -439,7 +540,14 @@ async function cycle(state, envFile, stateFile) {
     const merged = mergeDataPr(acquisition);
     state.snapshot_count = merged.count;
     state.state_totals = readSnapshotStateTotals();
-    state.current.pending_deploy = { sha: merged.sha, count: merged.count, additions: acquisition.additions, pr_number: acquisition.publication.pr_number };
+    state.current.pending_deploy = {
+      sha: merged.sha,
+      count: merged.count,
+      previous_count: merged.previous_count,
+      additions: acquisition.additions,
+      opportunity_ids: merged.opportunity_ids,
+      pr_number: acquisition.publication.pr_number
+    };
     state.status = 'deploying_production';
     saveState(stateFile, state);
     return true;
@@ -450,19 +558,44 @@ async function cycle(state, envFile, stateFile) {
     if (!pending) throw new Error('Production deployment has no exact merged checkpoint');
     let deployment;
     try {
-      deployment = await verifyProduction(envFile, pending.sha, pending.count);
+      deployment = await verifyProductionDeployment(envFile, pending.sha);
     } catch {
-      deployment = await deployAndVerify(envFile, pending.sha, pending.count);
+      deployment = await deployProduction(envFile, pending.sha);
     }
-    state.live_api_count = deployment.live_api_count;
-    if (!state.deployments.some(item => item.production_sha === deployment.production_sha)) {
-      state.deployments.push({ ...deployment, state_code: state.current.state_code, additions: pending.additions, pr_number: pending.pr_number, deployed_at: new Date().toISOString() });
-    }
-    for (const milestone of milestones) if (state.snapshot_count >= milestone && !state.completed_milestones.includes(milestone)) state.completed_milestones.push(milestone);
-    delete state.current.pending_deploy;
-    state.acquisition_batch += 1;
-    state.status = 'ready_acquisition';
+    state.current.live_consistency = beginLiveConsistency(pending, deployment);
+    state.status = 'waiting_for_live_consistency';
     saveState(stateFile, state);
+    return true;
+  }
+
+  if (state.status === 'waiting_for_live_consistency') {
+    const pending = state.current?.pending_deploy;
+    const waiting = state.current?.live_consistency;
+    if (!pending || !waiting) throw new Error('Live consistency wait has no exact deployment checkpoint');
+    const deployment = await verifyProductionDeployment(envFile, pending.sha);
+    if (deployment.deployment_id !== waiting.deployment_id || deployment.production_sha !== waiting.production_sha) {
+      throw new Error('Live consistency deployment no longer matches the expected publication');
+    }
+    waiting.attempts = Number(waiting.attempts || 0) + 1;
+    waiting.last_checked_at = new Date().toISOString();
+    try {
+      const live = await readLiveOpportunityConsistency(state.current.state_code);
+      const consistency = classifyLiveConsistency(pending, live);
+      waiting.last_live_count = consistency.live_count;
+      waiting.last_error = null;
+      if (consistency.status === 'consistent') {
+        finishProductionDeployment(state, pending, deployment, consistency.live_count);
+        saveState(stateFile, state);
+        return true;
+      }
+    } catch (error) {
+      const message = String(error?.message || error);
+      if (!error?.liveConsistencyTransient) throw error;
+      waiting.last_error = message;
+    }
+    assertLiveConsistencyWithinDeadline(waiting, pending);
+    saveState(stateFile, state);
+    await new Promise(resolve => setTimeout(resolve, liveConsistencyBackoffMilliseconds(waiting.attempts)));
     return true;
   }
 

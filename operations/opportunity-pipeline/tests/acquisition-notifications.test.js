@@ -9,6 +9,7 @@ import {
   notifyFailure,
   notifyRecovery
 } from '../../acquisition-notifications/notifier.mjs';
+import { assertLiveConsistencyWithinDeadline } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
 
 function fixture(controllerId = 'us-nationwide-growth', market = 'United States', countryCode = 'US') {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'findpitches-notify-'));
@@ -125,6 +126,25 @@ test('transient or auto-recovered states do not notify', () => {
   assert.equal(result.status, 'suppressed');
 });
 
+test('expired live consistency window becomes one terminal Telegram failure alert', () => {
+  const { config } = fixture();
+  const messages = [];
+  let error;
+  try {
+    assertLiveConsistencyWithinDeadline(
+      { deadline_at: '2026-09-01T20:02:00.000Z', last_live_count: 241 },
+      { count: 242 },
+      Date.parse('2026-09-01T20:02:00.000Z')
+    );
+  } catch (caught) {
+    error = caught;
+  }
+  const result = notifyFailure({ config, error, deliver: (_config, message) => messages.push(message) });
+  assert.equal(result.status, 'notified');
+  assert.equal(messages.length, 1);
+  assert.match(messages[0], /Live consistency timed out: Live FindPitches count is 241; expected 242/);
+});
+
 test('environment configuration supports future controllers without code changes', () => {
   const { root } = fixture();
   const config = notificationConfigFromEnvironment({
@@ -147,4 +167,3 @@ test('both autonomous controller entry points use the shared notifier', () => {
     assert.match(source, /safeNotifyRecoveryFromEnvironment/);
   }
 });
-
