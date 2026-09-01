@@ -6,10 +6,10 @@
   <title>Find UK Trading Opportunities | FindPitches</title>
   <meta name="description" content="Find live UK opportunities for traders, stallholders and food vendors across markets, fairs, festivals, pop-ups and more." />
   <meta name="robots" content="index,follow,max-image-preview:large" />
-  <meta name="theme-color" content="#17342d" />
+  <meta name="theme-color" content="#20372f" />
   <link rel="canonical" href="https://findpitches.com/uk/" />
   <link rel="stylesheet" href="/shared/findpitches-shell.css" />
-  <link rel="stylesheet" href="/uk/home.css" />
+  <link rel="stylesheet" href="/uk/home.css?v=20260901-1" />
 </head>
 <body class="fp-country uk-home" data-country="uk">
   <header class="uk-topbar fp-header">
@@ -18,9 +18,9 @@
     </a>
     <nav class="uk-nav fp-nav" aria-label="Primary navigation">
       <a href="/uk/find-pitches">Find Opportunities</a>
-      <a href="#how-it-works">How It Works</a>
-      <a href="#categories">Explore</a>
-      <a href="#about">About</a>
+      <a href="#categories">Browse</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#about">Our approach</a>
       <a class="uk-country fp-country-switcher" href="/" aria-label="Choose country">UK</a>
     </nav>
   </header>
@@ -28,85 +28,71 @@
   <main>
     <section class="uk-hero">
       <div class="uk-hero-copy">
-        <p class="uk-kicker">Markets · Fairs · Festivals · Pop-ups</p>
-        <h1>Find your next<br><em>place to trade.</em></h1>
-        <p class="uk-lede">One search for genuine trading opportunities across the UK — from independent markets and county shows to festivals, food events and seasonal pop-ups.</p>
+        <p class="uk-kicker">A BETTER WAY TO FIND YOUR NEXT PLACE TO TRADE</p>
+        <h1>Good pitches<br>are out there.<br><em>Find them.</em></h1>
+        <p class="uk-lede">One place for genuine UK trading opportunities — markets, fairs, festivals, food events, seasonal pitches and pop-ups — built for stallholders, makers and mobile traders.</p>
+        <div class="uk-handnote">Less scrolling. More selling.</div>
       </div>
 
-      <div class="uk-search-wrap">
+      <figure class="uk-hero-visual">
+        <img src="/assets/hero-food-festival.jpg" alt="Busy outdoor trading event" />
+        <figcaption>From village greens to city centres</figcaption>
+      </figure>
+
+      <aside class="uk-search-wrap">
+        <div class="uk-search-title"><span>START HERE</span><strong>Where do you want to trade?</strong></div>
         <form class="uk-search" action="/uk/find-pitches" method="get">
-          <label>
-            <span>Postcode</span>
-            <input name="postcode" type="text" placeholder="e.g. ME15" autocomplete="postal-code" />
-          </label>
-          <label>
-            <span>Distance</span>
-            <select name="radius">
-              <option value="25">25 miles</option>
-              <option value="50" selected>50 miles</option>
-              <option value="100">100 miles</option>
-              <option value="">Anywhere</option>
-            </select>
-          </label>
-          <label>
-            <span>What do you sell?</span>
-            <select name="category">
-              <option value="" selected>All opportunities</option>
-              <option>Street Food</option>
-              <option>Craft & Makers</option>
-              <option>General Trade</option>
-              <option>Produce</option>
-              <option>Vintage</option>
-            </select>
-          </label>
-          <button type="submit">Find Opportunities</button>
+          <label><span>Postcode</span><input name="postcode" type="text" placeholder="e.g. ME15" autocomplete="postal-code" /></label>
+          <label><span>Distance</span><select name="radius"><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option><option value="">Anywhere</option></select></label>
+          <label><span>What do you sell?</span><select name="category"><option value="" selected>All opportunities</option><option>Street Food</option><option>Craft & Makers</option><option>General Trade</option><option>Produce</option><option>Vintage</option></select></label>
+          <button type="submit">Find my pitches</button>
         </form>
-        <div class="uk-quick-links"><span>Popular:</span><b>Food trader pitches</b><b>Christmas markets</b><b>Craft fairs</b><b>Festival traders</b></div>
-      </div>
+        <div class="uk-quick-links"><span>Often searched:</span><b>Food trader pitches</b><b>Christmas markets</b><b>Craft fairs</b><b>Festival traders</b></div>
+      </aside>
     </section>
 
     <section class="uk-signal" aria-label="FindPitches UK benefits">
-      <article><strong>UK-WIDE</strong><span>Search beyond your usual patch</span></article>
-      <article><strong>DIRECT</strong><span>Go to the organiser or application route</span></article>
-      <article><strong>CHECKED</strong><span>Source evidence before opportunities go live</span></article>
+      <article><b>01</b><strong>UK-WIDE</strong><span>Search beyond your usual patch.</span></article>
+      <article><b>02</b><strong>DIRECT</strong><span>Go straight to the organiser or application route.</span></article>
+      <article><b>03</b><strong>CHECKED</strong><span>Source evidence before opportunities go live.</span></article>
     </section>
 
     <section id="categories" class="uk-explore">
       <div class="uk-section-heading">
-        <p>Whatever your setup</p>
-        <h2>There’s more than one kind of pitch.</h2>
+        <p>WHAT SORT OF WEEKEND ARE YOU AFTER?</p>
+        <h2>Markets, shows, festivals — and everything between.</h2>
       </div>
       <div class="uk-grid fp-category-grid">
-        <a class="uk-card uk-card-market" href="/uk/find-pitches?category=Markets"><span>Markets</span><small>Weekly, monthly and independent markets</small></a>
-        <a class="uk-card uk-card-fair" href="/uk/find-pitches?category=Fairs"><span>Fairs & Shows</span><small>County shows, village fairs and major events</small></a>
-        <a class="uk-card uk-card-festival" href="/uk/find-pitches?category=Festivals"><span>Festivals</span><small>Food, music, arts and community events</small></a>
-        <a class="uk-card uk-card-food" href="/uk/find-pitches?category=Food"><span>Food Pitches</span><small>Street food, concessions and mobile catering</small></a>
-        <a class="uk-card uk-card-popup" href="/uk/find-pitches?category=Pop-ups"><span>Pop-ups</span><small>Seasonal, high-street and short-term spaces</small></a>
-        <a class="uk-card uk-card-seasonal" href="/uk/find-pitches?category=Seasonal"><span>Seasonal</span><small>Christmas, summer and special-event trading</small></a>
+        <a class="uk-card uk-card-market" href="/uk/find-pitches?category=Markets"><span>Markets</span><small>Weekly, monthly and independent markets</small><em>Browse →</em></a>
+        <a class="uk-card uk-card-fair" href="/uk/find-pitches?category=Fairs"><span>Fairs & Shows</span><small>County shows, village fairs and major events</small><em>Browse →</em></a>
+        <a class="uk-card uk-card-festival" href="/uk/find-pitches?category=Festivals"><span>Festivals</span><small>Food, music, arts and community events</small><em>Browse →</em></a>
+        <a class="uk-card uk-card-food" href="/uk/find-pitches?category=Food"><span>Food Pitches</span><small>Street food, concessions and mobile catering</small><em>Browse →</em></a>
+        <a class="uk-card uk-card-popup" href="/uk/find-pitches?category=Pop-ups"><span>Pop-ups</span><small>Seasonal, high-street and short-term spaces</small><em>Browse →</em></a>
+        <a class="uk-card uk-card-seasonal" href="/uk/find-pitches?category=Seasonal"><span>Seasonal</span><small>Christmas, summer and special-event trading</small><em>Browse →</em></a>
       </div>
     </section>
 
     <section id="how-it-works" class="uk-how">
-      <div class="uk-section-heading light">
-        <p>Less searching. More selling.</p>
-        <h2>From postcode to pitch in minutes.</h2>
+      <div class="uk-how-intro">
+        <p>HOW IT WORKS</p>
+        <h2>From postcode to pitch<br><em>without the faff.</em></h2>
       </div>
       <div class="uk-how-grid">
-        <article><b>01</b><h3>Search your area</h3><p>Start with a postcode, choose how far you’ll travel and narrow by what you sell.</p></article>
-        <article><b>02</b><h3>See the useful bits</h3><p>Location, dates, organiser, opportunity type and source evidence — without digging through dozens of sites.</p></article>
-        <article><b>03</b><h3>Go straight to source</h3><p>When an opportunity fits, follow the organiser’s route and take it from there.</p></article>
+        <article><b>01</b><h3>Tell us your patch</h3><p>Start with a postcode, choose how far you’ll travel and narrow by what you sell.</p></article>
+        <article><b>02</b><h3>See what matters</h3><p>Dates, location, organiser, opportunity type and source evidence in one place.</p></article>
+        <article><b>03</b><h3>Go straight to source</h3><p>Found a good one? Follow the organiser’s route and take it from there.</p></article>
       </div>
     </section>
 
     <section id="about" class="uk-proof">
-      <div>
-        <p class="uk-proof-kicker">Built for people who trade in the real world</p>
-        <h2>Your next good weekend shouldn’t depend on finding the right Facebook post.</h2>
+      <div class="uk-proof-quote">
+        <p>BUILT FOR PEOPLE WHO TRADE IN THE REAL WORLD</p>
+        <blockquote>“Your next good weekend shouldn’t depend on finding the right Facebook post.”</blockquote>
       </div>
       <div class="uk-proof-list">
-        <article><strong>Official sources first</strong><span>Organisers, councils, venues and established event operators.</span></article>
-        <article><strong>Evidence checked</strong><span>Quality gates verify the source before an opportunity is surfaced.</span></article>
-        <article><strong>UK terminology</strong><span>Postcodes, stallholders, pitches and trader categories that actually make sense here.</span></article>
+        <article><span>01</span><div><strong>Official sources first</strong><p>Organisers, councils, venues and established event operators.</p></div></article>
+        <article><span>02</span><div><strong>Evidence checked</strong><p>Quality gates verify the source before an opportunity is surfaced.</p></div></article>
+        <article><span>03</span><div><strong>Proper UK language</strong><p>Postcodes, stallholders, pitches and trader categories that actually make sense here.</p></div></article>
       </div>
     </section>
   </main>
