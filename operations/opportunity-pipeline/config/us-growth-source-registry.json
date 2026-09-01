@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:30:12.725Z",
+  "updated_at": "2026-09-01T19:35:14.787Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1029,6 +1029,24 @@
       "evidence": "Cloudflare discovery mi-detroit-2027-festival: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2027-09-11."
     },
     {
+      "id": "mi-canton-farmers-market-to-kick-off-2026-regular-season-on-sunday-may-10-2026-09-01-91d4651d",
+      "name": "Canton Farmers Market to Kick Off 2026 Regular Season on Sunday, May 10th • Canton Township, MI Vendor Opportunity",
+      "organiser": "Canton Farmers Market to Kick Off 2026 Regular Season on Sunday, May 10th • Canton Township, MI",
+      "source_url": "https://www.cantonmi.gov/m/newsflash/home/detail/2969",
+      "application_url": "https://www.cantonmi.gov/m/newsflash/home/detail/2969",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Grand Rapids",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-01",
+      "event_end": "2026-09-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-grand-rapids-2026-government-events: live first-party route attests Grand Rapids, MI, actionable vendor terms, and exact event date range 2026-09-01 to 2026-09-09."
+    },
+    {
       "id": "mi-detroit-winterfest-off-road-event-in-holly-michigan-2027-01-16-03d43b3e",
       "name": "Detroit WinterFest - Off-Road Event in Holly Michigan- Vendor Opportunity",
       "organiser": "Detroit WinterFest - Off-Road Event in Holly Michigan",
@@ -1063,6 +1081,24 @@
       "event_end": "2026-09-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2026-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2026-09-24."
+    },
+    {
+      "id": "mi-planning-and-resource-guide-2026-11-01-f87ed149",
+      "name": "Planning and Resource Guide Vendor Opportunity",
+      "organiser": "Planning and Resource Guide",
+      "source_url": "https://www.grandrapidsmi.gov/explore-and-play/special-events/planning-and-resource-guide",
+      "application_url": "https://www.grandrapidsmi.gov/explore-and-play/special-events/planning-and-resource-guide",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Grand Rapids",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-01",
+      "event_end": "2026-11-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-grand-rapids-2026-government-events: live first-party route attests Grand Rapids, MI, actionable vendor terms, and exact event date 2026-11-01."
     },
     {
       "id": "mi-wyandotte-street-art-fair-2027-07-08-548cd137",
