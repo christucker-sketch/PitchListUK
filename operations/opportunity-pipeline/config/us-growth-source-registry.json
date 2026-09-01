@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T08:48:00.857Z",
+  "updated_at": "2026-09-01T08:49:28.545Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -19,6 +19,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-phoenix-2026-farmers-market: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "az-indian-fair-market-march-6-2027-2027-03-06-33bd92dc",
+      "name": "Indian Fair & Market - March 6, 2027 Vendor Opportunity",
+      "organiser": "Indian Fair & Market - March 6, 2027",
+      "source_url": "https://heard.org/event/fair",
+      "application_url": "https://heard.org/event/fair",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Phoenix",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-06",
+      "event_end": "2027-03-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-phoenix-2027-arts-crafts: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date range 2027-03-06 to 2027-03-07."
     },
     {
       "id": "az-phoestivus-2026-12-12-dd6414ca",
