@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:28:02.437Z",
+  "updated_at": "2026-09-01T19:30:12.725Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1335,6 +1335,24 @@
       "evidence": "Cloudflare discovery ny-new-york-city-2026-festival: live first-party route attests New York City, NY, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-20."
     },
     {
+      "id": "oh-city-of-akron-hosting-fourth-annual-akron-city-festival-on-september-5-2026-09-05-ef8eeba9",
+      "name": "City of Akron Hosting Fourth Annual Akron City Festival on September 5 and 6 Vendor Opportunity",
+      "organiser": "City of Akron Hosting Fourth Annual Akron City Festival on September 5 and 6",
+      "source_url": "https://www.akronohio.gov/news_detail_T17_R488.php",
+      "application_url": "https://www.akronohio.gov/news_detail_T17_R488.php",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Cleveland",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-cleveland-2026-government-events: live first-party route attests Cleveland, OH, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-06."
+    },
+    {
       "id": "oh-food-truck-festival-columbus-food-truck-festival-2027-08-14-944d9f0b",
       "name": "Food Truck Festival | Columbus Food Truck Festival™",
       "organiser": "Food Truck Festival | Columbus Food Truck Festival™",
@@ -1369,6 +1387,24 @@
       "event_end": "2026-09-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-food-truck: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date range 2026-08-31 to 2026-09-01."
+    },
+    {
+      "id": "oh-summer-sunset-blast-2026-2026-09-05-ebd9ae6c",
+      "name": "Summer Sunset Blast 2026 Vendor Opportunity",
+      "organiser": "Summer Sunset Blast 2026",
+      "source_url": "https://www.stowohio.gov/593/Summer-Sunset-Blast-2026",
+      "application_url": "https://www.stowohio.gov/593/Summer-Sunset-Blast-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Cleveland",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-cleveland-2026-government-events: live first-party route attests Cleveland, OH, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-06."
     },
     {
       "id": "oh-vendor-resources-2027-01-08-39bd0ba9",
