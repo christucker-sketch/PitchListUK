@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:52:56.762Z",
+  "updated_at": "2026-09-01T19:57:01.737Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1153,6 +1153,24 @@
       "event_end": "2026-09-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2026-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2026-09-24."
+    },
+    {
+      "id": "mi-grand-rapids-spooktacular-craft-vendor-market-hometown-vendor-market-2026-10-24-9889645e",
+      "name": "Grand Rapids Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Grand Rapids Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/grandrapidsspooktacular",
+      "application_url": "https://hometownvendormarket.com/grandrapidsspooktacular",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Grand Rapids",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-grand-rapids-2026-arts-crafts: live first-party route attests Grand Rapids, MI, actionable vendor terms, and exact event date range 2026-10-24 to 2026-10-25."
     },
     {
       "id": "mi-planning-and-resource-guide-2026-11-01-f87ed149",
