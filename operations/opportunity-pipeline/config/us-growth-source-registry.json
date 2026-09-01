@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T08:42:06.312Z",
+  "updated_at": "2026-09-01T08:44:07.106Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1099,6 +1099,24 @@
       "event_end": "2026-10-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-newark-2026-arts-crafts: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date range 2026-10-01 to 2026-10-04."
+    },
+    {
+      "id": "nj-latinobeachfest-com-2027-07-17-b86a7191",
+      "name": "Vendor Application",
+      "organiser": "latinobeachfest.com",
+      "source_url": "https://latinobeachfest.com/vendors",
+      "application_url": "https://latinobeachfest.com/vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Newark",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-17",
+      "event_end": "2027-07-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-newark-2027-festival: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date range 2027-07-17 to 2027-07-18."
     },
     {
       "id": "nj-may-31-call-for-vendors-weekly-maker-market-2026-09-02-1ea58c95",
