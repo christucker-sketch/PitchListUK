@@ -14,11 +14,11 @@ export const COUNTRY_PAGE_MODULES = Object.freeze({
   uk: Object.freeze({
     code: 'uk',
     sourceRoot: 'src',
-    homepage: 'src/index.html',
-    searchPage: 'src/database.html',
+    homepage: 'src/uk/index.html',
+    searchPage: null,
     canonicalBase: '/uk/',
     legacyHost: 'pitchlist.uk',
-    migrationState: 'legacy-live-ready-for-shared-shell'
+    migrationState: 'shared-shell-live'
   })
 });
 

@@ -14,12 +14,12 @@ test('FindPitches hosts are recognized without changing legacy host behavior', (
   assert.equal(isFindPitchesHost('pitchlist.uk'), false);
 });
 
-test('legacy domains resolve to their existing country context', () => {
-  const us = resolveCountryRequest({ hostname: 'findpitches.com', pathname: '/' });
+test('global root is country-neutral while legacy country domains retain context', () => {
+  const global = resolveCountryRequest({ hostname: 'findpitches.com', pathname: '/' });
   const uk = resolveCountryRequest({ hostname: 'pitchlist.uk', pathname: '/' });
 
-  assert.equal(us.country.code, 'us');
-  assert.equal(us.source, 'legacy-findpitches-default');
+  assert.equal(global.country, null);
+  assert.equal(global.source, 'global');
   assert.equal(uk.country.code, 'uk');
   assert.equal(uk.source, 'legacy-host');
   assert.equal(legacyCountryForHost('www.pitchlist.uk').code, 'uk');

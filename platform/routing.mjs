@@ -48,8 +48,8 @@ export function resolveCountryRequest({ hostname, pathname = '/' } = {}) {
     }
 
     return Object.freeze({
-      country: getCountry('us'),
-      source: 'legacy-findpitches-default',
+      country: null,
+      source: 'global',
       hostname: host,
       pathname: path
     });

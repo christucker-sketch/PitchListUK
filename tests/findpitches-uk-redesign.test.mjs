@@ -5,9 +5,10 @@ import test from 'node:test';
 const html = await readFile(new URL('../src/uk/index.html', import.meta.url), 'utf8');
 const css = await readFile(new URL('../src/uk/home.css', import.meta.url), 'utf8');
 
-test('UK redesign is staged and not indexable before launch', () => {
-  assert.match(html, /<meta name="robots" content="noindex,nofollow"/);
-  assert.doesNotMatch(html, /rel="canonical"/);
+test('UK redesign is public, canonical and indexable at /uk/', () => {
+  assert.match(html, /<meta name="robots" content="index,follow(?:,[^"]+)?"/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/findpitches\.com\/uk\/"/);
+  assert.doesNotMatch(html, /noindex/);
 });
 
 test('UK redesign uses FindPitches identity, not legacy PitchList branding', () => {
