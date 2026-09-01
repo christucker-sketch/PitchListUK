@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T19:37:59.590Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:00fe9aaf972404c2a8b64d5d4966dfc8ccc3053a0ae7c06fa43402eb1706b004",
-  "total": 235,
+  "exported_at": "2026-09-01T19:41:45.849Z",
+  "source": "reviewed-us-arizona-cloud-promotion:c26571c0a2d8ba6e292b64434527e374f2b9964bb9c0ae1fa4d4b6031ef5d177",
+  "total": 236,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8995,6 +8995,47 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_313f354aa8984be2a05e"
+    },
+    {
+      "stable_id": "opp_us_5ce27b59cbd0bbf95408",
+      "event_name": "Fall Festival - Town of Marana, AZ Vendor Opportunity",
+      "organiser": "Fall Festival - Town of Marana, AZ",
+      "source_url": "https://www.maranaaz.gov/Departments/Parks-Recreation/Signature-Community-Events/Fall-Festival",
+      "application_url": "https://www.maranaaz.gov/Departments/Parks-Recreation/Signature-Community-Events/Fall-Festival",
+      "location": "Tucson",
+      "locality": "Tucson",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "12375",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-12",
+      "event_end": "2026-10-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "market_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_5ce27b59cbd0bbf95408"
     }
   ]
 };
