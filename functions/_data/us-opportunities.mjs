@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T19:41:45.849Z",
-  "source": "reviewed-us-arizona-cloud-promotion:c26571c0a2d8ba6e292b64434527e374f2b9964bb9c0ae1fa4d4b6031ef5d177",
-  "total": 236,
+  "exported_at": "2026-09-01T19:44:03.060Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:55ea0ca526c221cce20295ad4503ca92e82616194db5d4a7d75772acbda9fdc2",
+  "total": 237,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9036,6 +9036,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_5ce27b59cbd0bbf95408"
+    },
+    {
+      "stable_id": "opp_us_e15cb35fe1ec8fc38396",
+      "event_name": "Out to Lunch - Downtown Worcester Vendor Opportunity",
+      "organiser": "Out to Lunch - Downtown Worcester",
+      "source_url": "https://www.downtownworcester.org/things-to-do/outtolunch/",
+      "application_url": "https://www.downtownworcester.org/things-to-do/outtolunch",
+      "location": "Worcester",
+      "locality": "Worcester",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-02",
+      "event_end": "2026-09-09",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-out-to-lunch-downtown-worcester-2026-09-02-1a006585",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_e15cb35fe1ec8fc38396"
     }
   ]
 };
