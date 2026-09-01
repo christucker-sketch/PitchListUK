@@ -56,6 +56,7 @@ export function ciRollupState(checks = []) {
     const isVerify = /(?:^|\b)verify(?:$|\b)/i.test(name);
     if (check?.__typename === 'CheckRun') {
       if (check.status !== 'COMPLETED') return 'pending';
+      if (check.conclusion === 'SKIPPED' && !isVerify) continue;
       if (check.conclusion !== 'SUCCESS') return 'failed';
       if (isVerify) verifyPassed = true;
       continue;
