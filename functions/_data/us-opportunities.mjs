@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T20:04:42.053Z",
-  "source": "reviewed-us-washington-cloud-promotion:664a0b18a8bbc3039d13d29801ec22fb69fe3b47031d19061aed4e7f9c97652b",
-  "total": 241,
+  "exported_at": "2026-09-01T20:07:50.279Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:d52888e13dcee7e58a2c8138c666a3118a69489156b102a448db4408b32ad5aa",
+  "total": 242,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9224,6 +9224,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_0db89f5a80637a5ec5c3"
+    },
+    {
+      "stable_id": "opp_us_648dd722b2bc6c2ec78b",
+      "event_name": "Worcester Night Market - Open Call for Vendors and Sponsors - Aug 3, 2026 to Aug 28, 2026 - Worcester Regional Chamber of Commerce Vendor Opportunity",
+      "organiser": "Worcester Night Market - Open Call for Vendors and Sponsors - Aug 3, 2026 to Aug 28, 2026 - Worcester Regional Chamber of Commerce",
+      "source_url": "https://business.worcesterchamber.org/events/details/worcester-night-market-open-call-for-vendors-and-sponsors-23943",
+      "application_url": "https://business.worcesterchamber.org/events/details/worcester-night-market-open-call-for-vendors-and-sponsors-23943",
+      "location": "Worcester",
+      "locality": "Worcester",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "01608",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-worcester-night-market-open-call-for-vendors-and-sponsors-aug-3-2026-t-2026-09-19-8582a7a4",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_648dd722b2bc6c2ec78b"
     }
   ]
 };
