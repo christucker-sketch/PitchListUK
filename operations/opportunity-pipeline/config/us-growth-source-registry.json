@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:51:31.169Z",
+  "updated_at": "2026-09-01T19:52:56.762Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1495,6 +1495,24 @@
       "event_end": "2026-09-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-cleveland-2026-government-events: live first-party route attests Cleveland, OH, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-06."
+    },
+    {
+      "id": "oh-cleveland-spooktacular-craft-vendor-market-hometown-vendor-market-2026-10-24-d4ca94bd",
+      "name": "Cleveland Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Cleveland Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/clevelandspooktacular",
+      "application_url": "https://hometownvendormarket.com/clevelandspooktacular",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Cleveland",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-cleveland-2026-arts-crafts: live first-party route attests Cleveland, OH, actionable vendor terms, and exact event date range 2026-10-24 to 2026-10-25."
     },
     {
       "id": "oh-food-truck-festival-columbus-food-truck-festival-2027-08-14-944d9f0b",
