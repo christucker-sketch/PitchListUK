@@ -251,11 +251,41 @@ async function verifyProduction(envFile, expectedSha, expectedCount) {
   const production = body.result?.find(item => item.environment === 'production');
   const sha = production?.deployment_trigger?.metadata?.commit_hash || '';
   if (sha !== expectedSha || production?.latest_stage?.status !== 'success') throw new Error(`Production deployment SHA/status mismatch: ${sha || 'missing'}`);
-  const live = await fetch('https://findpitches.com/api/us-customer-opportunities/search?limit=1', { signal: AbortSignal.timeout(15000) });
-  if (!live.ok) throw new Error(`Live FindPitches API returned ${live.status}`);
-  const payload = await live.json();
-  if (Number(payload.total) !== Number(expectedCount)) throw new Error(`Live FindPitches count is ${payload.total}; expected ${expectedCount}`);
-  return { deployment_id: production.id, production_sha: sha, live_api_count: Number(payload.total) };
+  const liveCount = await verifyLiveOpportunityCount(expectedCount, {
+    attempts: Number(process.env.PITCHLIST_GROWTH_LIVE_POLL_ATTEMPTS || 24),
+    intervalMs: Number(process.env.PITCHLIST_GROWTH_LIVE_POLL_SECONDS || 5) * 1000
+  });
+  return { deployment_id: production.id, production_sha: sha, live_api_count: liveCount };
+}
+
+export async function verifyLiveOpportunityCount(expectedCount, options = {}) {
+  const attempts = Number(options.attempts ?? 24);
+  const intervalMs = Number(options.intervalMs ?? 5000);
+  const fetchImpl = options.fetchImpl || fetch;
+  const sleepImpl = options.sleepImpl || (milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds)));
+  if (!Number.isInteger(attempts) || attempts < 1) throw new Error('Live count verification attempts must be a positive integer');
+  if (!Number.isFinite(intervalMs) || intervalMs < 0) throw new Error('Live count verification interval must be non-negative');
+  let lastError = new Error(`Live FindPitches count is unavailable; expected ${expectedCount}`);
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const live = await fetchImpl('https://findpitches.com/api/us-customer-opportunities/search?limit=1', {
+        cache: 'no-store',
+        signal: AbortSignal.timeout(15000)
+      });
+      if (!live.ok) {
+        lastError = new Error(`Live FindPitches API returned ${live.status}`);
+      } else {
+        const payload = await live.json();
+        const liveCount = Number(payload.total);
+        if (liveCount === Number(expectedCount)) return liveCount;
+        lastError = new Error(`Live FindPitches count is ${payload.total}; expected ${expectedCount}`);
+      }
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+    }
+    if (attempt < attempts) await sleepImpl(intervalMs);
+  }
+  throw lastError;
 }
 
 export function cleanupGeneratedDeploymentArtifacts(root = repositoryRoot) {

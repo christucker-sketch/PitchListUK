@@ -15,7 +15,7 @@ import {
 import liveFetch from '../lib/us-live-page-fetch.js';
 import { growthQueryBatch, growthQueryPlan, PRIORITY_STATE_CODES } from '../../cloudflare-texas-acquisition/src/us-growth-plan.js';
 import { mergeGrowthSources, parseGrowthRegistry, sourcesForState, validateGrowthSource } from '../../cloudflare-texas-acquisition/src/us-growth-registry.js';
-import { cleanupGeneratedDeploymentArtifacts, initialState, parseCompactWorkflowOutput, validateSourcePr } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
+import { cleanupGeneratedDeploymentArtifacts, initialState, parseCompactWorkflowOutput, validateSourcePr, verifyLiveOpportunityCount } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
 
 const repositoryRoot = path.resolve(import.meta.dirname, '../../..');
 const state = { code: 'CA', name: 'California', slug: 'california', jurisdiction: 'US-CA', sources: [] };
@@ -234,6 +234,50 @@ test('growth controller removes only known generated shell directories and leave
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
+});
+
+test('live opportunity readiness tolerates bounded custom-domain propagation delay', async () => {
+  const totals = [241, 241, 242];
+  const sleeps = [];
+  const live = await verifyLiveOpportunityCount(242, {
+    attempts: 3,
+    intervalMs: 25,
+    fetchImpl: async (_url, options) => {
+      assert.equal(options.cache, 'no-store');
+      return { ok: true, json: async () => ({ total: totals.shift() }) };
+    },
+    sleepImpl: async milliseconds => sleeps.push(milliseconds)
+  });
+  assert.equal(live, 242);
+  assert.deepEqual(sleeps, [25, 25]);
+});
+
+test('live opportunity readiness remains fail closed after the bounded window', async () => {
+  let calls = 0;
+  await assert.rejects(() => verifyLiveOpportunityCount(242, {
+    attempts: 3,
+    intervalMs: 0,
+    fetchImpl: async () => {
+      calls += 1;
+      return { ok: true, json: async () => ({ total: 241 }) };
+    },
+    sleepImpl: async () => {}
+  }), /Live FindPitches count is 241; expected 242/);
+  assert.equal(calls, 3);
+});
+
+test('live opportunity readiness absorbs a transient API failure only when the exact count follows', async () => {
+  const responses = [
+    { ok: false, status: 503 },
+    { ok: true, json: async () => ({ total: 242 }) }
+  ];
+  const live = await verifyLiveOpportunityCount(242, {
+    attempts: 2,
+    intervalMs: 0,
+    fetchImpl: async () => responses.shift(),
+    sleepImpl: async () => {}
+  });
+  assert.equal(live, 242);
 });
 
 test('growth controller accepts only an exact-head additions-only source PR with successful CI', () => {
