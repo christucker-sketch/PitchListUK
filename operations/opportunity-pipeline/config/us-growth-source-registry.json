@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T08:35:19.684Z",
+  "updated_at": "2026-09-01T08:36:37.963Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -793,6 +793,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-chicago-2026-holiday-market: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date 2026-09-27."
+    },
+    {
+      "id": "il-old-town-art-fair-2027-chicago-il-2027-06-12-bfb084eb",
+      "name": "Old Town Art Fair 2027, Chicago, IL Vendor Opportunity",
+      "organiser": "Old Town Art Fair 2027, Chicago, IL",
+      "source_url": "https://vendorsmap.com/events/1520",
+      "application_url": "https://vendorsmap.com/events/1520",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Chicago",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-12",
+      "event_end": "2027-06-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-chicago-2027-festival: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date range 2027-06-12 to 2027-06-13."
     },
     {
       "id": "il-vendors-2026-09-12-87e06125",
