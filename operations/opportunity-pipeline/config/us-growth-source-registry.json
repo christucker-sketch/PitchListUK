@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:13:13.262Z",
+  "updated_at": "2026-09-01T19:16:29.587Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -55,6 +55,24 @@
       "event_end": "2026-12-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-phoenix-2026-holiday-market: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date 2026-12-12."
+    },
+    {
+      "id": "ca-2026-brews-and-bites-2026-10-17-8637a782",
+      "name": "2026 Brews and Bites Vendor Opportunity",
+      "organiser": "2026 Brews and Bites",
+      "source_url": "https://www.cityofsanteeca.gov/calendar/events/2026-brews-and-bites/46312",
+      "application_url": "https://www.cityofsanteeca.gov/calendar/events/2026-brews-and-bites/46312",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2026-government-events: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2026-10-17."
     },
     {
       "id": "ca-international-street-fair-and-diversity-festival-saturday-october-3-20-2026-10-03-b7e28b03",
