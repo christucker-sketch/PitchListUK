@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T08:46:23.680Z",
-  "source": "reviewed-us-virginia-cloud-promotion:9935e402b0ff1bff4cb47053f467120fb992b7766bf92be83ee669910831276a",
-  "total": 227,
+  "exported_at": "2026-09-01T08:50:26.387Z",
+  "source": "reviewed-us-arizona-cloud-promotion:7a7defc699c5ab5690da5f56931e129685295f3aa3e93416e01505cfc05b8459",
+  "total": 228,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8693,6 +8693,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_c90deebfb47ded56d816"
+    },
+    {
+      "stable_id": "opp_us_e4c0a2cdb22f780aa8c7",
+      "event_name": "Indian Fair & Market - March 6, 2027 Vendor Opportunity",
+      "organiser": "Indian Fair & Market - March 6, 2027",
+      "source_url": "https://heard.org/event/fair/",
+      "application_url": "https://heard.org/event/fair",
+      "location": "Phoenix",
+      "locality": "Phoenix",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "85004",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-03-06",
+      "event_end": "2027-03-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-indian-fair-market-march-6-2027-2027-03-06-33bd92dc",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_e4c0a2cdb22f780aa8c7"
     }
   ]
 };
