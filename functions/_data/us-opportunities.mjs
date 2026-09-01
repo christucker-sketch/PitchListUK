@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T20:07:50.279Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:d52888e13dcee7e58a2c8138c666a3118a69489156b102a448db4408b32ad5aa",
-  "total": 242,
+  "exported_at": "2026-09-01T20:15:11.364Z",
+  "source": "reviewed-us-ohio-cloud-promotion:d7da870025a4bb7ae4fc8951259132f3a46b97a5c478f7638062cd769b861272",
+  "total": 243,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9261,6 +9261,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_648dd722b2bc6c2ec78b"
+    },
+    {
+      "stable_id": "opp_us_6047f24642f4dea163de",
+      "event_name": "Start Your Gift Shopping at Greater Cleveland's Holiday Markets Vendor Opportunity",
+      "organiser": "Start Your Gift Shopping at Greater Cleveland's Holiday Markets",
+      "source_url": "https://clevelandmagazine.com/articles/start-your-gift-shopping-at-greater-clevelands-holiday-markets/",
+      "application_url": "https://clevelandmagazine.com/articles/start-your-gift-shopping-at-greater-clevelands-holiday-markets",
+      "location": "Cleveland",
+      "locality": "Cleveland",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "29201",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-13",
+      "event_end": "2026-12-14",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-start-your-gift-shopping-at-greater-cleveland-s-holiday-markets-2026-12-13-4e9cf318",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_6047f24642f4dea163de"
     }
   ]
 };
