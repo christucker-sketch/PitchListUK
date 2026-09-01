@@ -24,6 +24,7 @@ import {
   parseCompactWorkflowOutput,
   parseUsOpportunitySnapshot,
   readLiveOpportunityConsistency,
+  reconcileRepositoryMain,
   validateSourcePr
 } from '../../cloudflare-texas-acquisition/scripts/growth-controller.mjs';
 
@@ -309,6 +310,80 @@ test('generated opportunity snapshot parsing preserves exact published identitie
   const parsed = parseUsOpportunitySnapshot('export const usOpportunitySnapshot = {"total":1,"rows":[{"id":"opp-new"}]};\n');
   assert.equal(parsed.total, 1);
   assert.equal(parsed.rows[0].id, 'opp-new');
+});
+
+function fakeRepositoryGit(options = {}) {
+  const calls = [];
+  let head = options.head || 'a'.repeat(40);
+  const originMain = options.originMain || 'b'.repeat(40);
+  let statusCalls = 0;
+  const git = args => {
+    calls.push(args.join(' '));
+    const command = args.join(' ');
+    if (command === 'status --short') {
+      statusCalls += 1;
+      return typeof options.status === 'function' ? options.status(statusCalls) : (options.status || '');
+    }
+    if (command === 'branch --show-current') return options.branch || 'main';
+    if (command === 'fetch origin main --quiet') {
+      if (options.fetchError) throw new Error(options.fetchError);
+      return '';
+    }
+    if (command === 'rev-parse HEAD') return head;
+    if (command === 'rev-parse origin/main') return originMain;
+    if (command.startsWith('rev-list --left-right --count ')) {
+      if (options.ancestryError) throw new Error(options.ancestryError);
+      return options.counts || '0\t1';
+    }
+    if (command === 'merge --ff-only origin/main') {
+      if (options.mergeError) throw new Error(options.mergeError);
+      head = originMain;
+      return 'Fast-forward';
+    }
+    throw new Error(`Unexpected Git command: ${command}`);
+  };
+  return { git, calls };
+}
+
+test('clean local main strictly behind origin/main fast-forwards and continues', () => {
+  const repository = fakeRepositoryGit({ counts: '0\t2' });
+  const result = reconcileRepositoryMain({ git: repository.git });
+  assert.deepEqual(result, { head: 'b'.repeat(40), originMain: 'b'.repeat(40), fast_forwarded: true });
+  assert.ok(repository.calls.includes('merge --ff-only origin/main'));
+});
+
+test('local main with a unique commit remains fail closed', () => {
+  const repository = fakeRepositoryGit({ counts: '1\t0' });
+  assert.throws(() => reconcileRepositoryMain({ git: repository.git }), /has 1 commit\(s\) not present on origin\/main/);
+  assert.equal(repository.calls.includes('merge --ff-only origin/main'), false);
+});
+
+test('divergent local and origin histories remain fail closed', () => {
+  const repository = fakeRepositoryGit({ counts: '1\t2' });
+  assert.throws(() => reconcileRepositoryMain({ git: repository.git }), /has diverged from origin\/main/);
+  assert.equal(repository.calls.includes('merge --ff-only origin/main'), false);
+});
+
+test('dirty repository stops before fetch or fast-forward', () => {
+  const repository = fakeRepositoryGit({ status: ' M unexpected.txt' });
+  assert.throws(() => reconcileRepositoryMain({ git: repository.git }), /worktree is not clean/);
+  assert.equal(repository.calls.includes('fetch origin main --quiet'), false);
+  assert.equal(repository.calls.includes('merge --ff-only origin/main'), false);
+});
+
+test('fetch or ancestry proof failure remains fail closed', () => {
+  const fetchFailure = fakeRepositoryGit({ fetchError: 'network unavailable' });
+  assert.throws(() => reconcileRepositoryMain({ git: fetchFailure.git }), /Failed to fetch origin\/main: network unavailable/);
+  const ancestryFailure = fakeRepositoryGit({ ancestryError: 'history unavailable' });
+  assert.throws(() => reconcileRepositoryMain({ git: ancestryFailure.git }), /Cannot prove local main ancestry: history unavailable/);
+});
+
+test('successful repository sync does not mutate the acquisition checkpoint or cursor', () => {
+  const checkpoint = { status: 'ready', snapshot_count: 247, query_offsets: { MA: 16, GA: 18 }, priority_cursor: 14 };
+  const before = JSON.stringify(checkpoint);
+  const repository = fakeRepositoryGit({ counts: '0\t2' });
+  reconcileRepositoryMain({ git: repository.git });
+  assert.equal(JSON.stringify(checkpoint), before);
 });
 
 test('growth controller accepts only an exact-head additions-only source PR with successful CI', () => {

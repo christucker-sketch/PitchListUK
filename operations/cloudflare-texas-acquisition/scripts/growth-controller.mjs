@@ -80,14 +80,46 @@ function approvedSourceCount() {
   return compiled + growth;
 }
 
-function assertRepositoryReady({ allowPr = null, allowBehind = false } = {}) {
-  if (run('git', ['status', '--short']).trim()) throw new Error('Repository worktree is not clean');
-  if (run('git', ['branch', '--show-current']).trim() !== 'main') throw new Error('Growth controller must run from main');
-  run('git', ['fetch', 'origin', 'main', '--quiet']);
-  const head = run('git', ['rev-parse', 'HEAD']).trim();
-  const originMain = run('git', ['rev-parse', 'origin/main']).trim();
-  const mergeBase = run('git', ['merge-base', head, originMain]).trim();
-  if (head !== originMain && !(allowBehind && mergeBase === head)) throw new Error(`Local main ${head} does not safely match origin/main ${originMain}`);
+export function reconcileRepositoryMain(options = {}) {
+  const git = options.git || (args => run('git', args));
+  if (git(['status', '--short']).trim()) throw new Error('Repository worktree is not clean');
+  if (git(['branch', '--show-current']).trim() !== 'main') throw new Error('Growth controller must run from main');
+  try {
+    git(['fetch', 'origin', 'main', '--quiet']);
+  } catch (error) {
+    throw new Error(`Failed to fetch origin/main: ${String(error?.message || error)}`);
+  }
+  let head = git(['rev-parse', 'HEAD']).trim();
+  const originMain = git(['rev-parse', 'origin/main']).trim();
+  if (head === originMain) return { head, originMain, fast_forwarded: false };
+
+  let counts;
+  try {
+    counts = git(['rev-list', '--left-right', '--count', `${head}...${originMain}`]).trim().split(/\s+/).map(Number);
+  } catch (error) {
+    throw new Error(`Cannot prove local main ancestry: ${String(error?.message || error)}`);
+  }
+  if (counts.length !== 2 || counts.some(value => !Number.isInteger(value) || value < 0)) {
+    throw new Error('Cannot prove local main ancestry from Git history');
+  }
+  const [localOnly, upstreamOnly] = counts;
+  if (localOnly > 0 && upstreamOnly === 0) throw new Error(`Local main ${head} has ${localOnly} commit(s) not present on origin/main ${originMain}`);
+  if (localOnly > 0) throw new Error(`Local main ${head} has diverged from origin/main ${originMain}`);
+  if (upstreamOnly < 1) throw new Error(`Local main ${head} does not safely match origin/main ${originMain}`);
+  if (git(['status', '--short']).trim()) throw new Error('Repository worktree became dirty before fast-forward');
+  try {
+    git(['merge', '--ff-only', 'origin/main']);
+  } catch (error) {
+    throw new Error(`Failed to fast-forward local main: ${String(error?.message || error)}`);
+  }
+  head = git(['rev-parse', 'HEAD']).trim();
+  if (head !== originMain) throw new Error(`Fast-forward verification failed: local main ${head} != origin/main ${originMain}`);
+  if (git(['status', '--short']).trim()) throw new Error('Repository worktree is not clean after fast-forward');
+  return { head, originMain, fast_forwarded: true };
+}
+
+function assertRepositoryReady({ allowPr = null } = {}) {
+  const { head } = reconcileRepositoryMain();
   const open = JSON.parse(run('gh', ['pr', 'list', '--repo', githubRepository, '--state', 'open', '--limit', '100', '--json', 'number,headRefName,title']));
   const acquisition = open.filter(pr => /^(?:data|sources)\/cloud-/.test(String(pr.headRefName || '')) && Number(pr.number) !== Number(allowPr));
   if (acquisition.length) throw new Error(`Unresolved acquisition PR: #${acquisition[0].number}`);
@@ -525,7 +557,7 @@ async function cycle(state, envFile, stateFile) {
   if (state.status === 'reviewing_source_pr') {
     const discovery = resultForInstance(state, state.current?.discovery_instance_id);
     if (!discovery) throw new Error('Source review has no checkpointed Cloudflare discovery result');
-    assertRepositoryReady({ allowPr: discovery.publication.pr_number, allowBehind: true });
+    assertRepositoryReady({ allowPr: discovery.publication.pr_number });
     state.pending_source_ids = mergeSourcePr(state, discovery);
     state.acquisition_batch = 1;
     state.status = 'ready_acquisition';
@@ -536,7 +568,7 @@ async function cycle(state, envFile, stateFile) {
   if (state.status === 'reviewing_data_pr') {
     const acquisition = resultForInstance(state, state.current?.acquisition_instance_id);
     if (!acquisition) throw new Error('Data review has no checkpointed Cloudflare acquisition result');
-    assertRepositoryReady({ allowPr: acquisition.publication.pr_number, allowBehind: true });
+    assertRepositoryReady({ allowPr: acquisition.publication.pr_number });
     const merged = mergeDataPr(acquisition);
     state.snapshot_count = merged.count;
     state.state_totals = readSnapshotStateTotals();
