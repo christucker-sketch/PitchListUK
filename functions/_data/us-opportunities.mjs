@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T08:32:52.879Z",
-  "source": "reviewed-us-florida-cloud-promotion:6ee0fd37ebe65bf4790f69ff72d173cee71e580e4c1a1d1c37af2901ab65ab4a",
-  "total": 224,
+  "exported_at": "2026-09-01T08:39:19.856Z",
+  "source": "reviewed-us-georgia-cloud-promotion:930447f1bf6b7f48a2aac1f18a7daf90dbc3e2e7b58332c0ee64b25b7ffe3d6e",
+  "total": 225,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8581,6 +8581,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_1acc3976d317f8039d72"
+    },
+    {
+      "stable_id": "opp_us_34d4a76a0664afa467ce",
+      "event_name": "Chastain Park Arts Festival Vendor Opportunity",
+      "organiser": "Chastain Park Arts Festival",
+      "source_url": "https://chastainparkartsfestival.com/",
+      "application_url": "https://chastainparkartsfestival.com",
+      "location": "Atlanta",
+      "locality": "Atlanta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "30327",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-08",
+      "event_end": "2027-05-09",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-chastain-park-arts-festival-2027-05-08-6bd23e00",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_34d4a76a0664afa467ce"
     }
   ]
 };
