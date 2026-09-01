@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:23:57.139Z",
+  "updated_at": "2026-09-01T20:26:16.369Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -19,6 +19,24 @@
       "event_end": "2026-10-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-tucson-2026-government-events: live first-party route attests Tucson, AZ, actionable vendor terms, and exact event date 2026-10-12."
+    },
+    {
+      "id": "az-fourth-avenue-winter-street-fair-2026-12-11-c67fca85",
+      "name": "Fourth Avenue Winter Street Fair Vendor Opportunity",
+      "organiser": "Fourth Avenue Winter Street Fair",
+      "source_url": "https://fourthavenue.org/events/fourth-avenue-winter-street-fair",
+      "application_url": "https://fourthavenue.org/events/fourth-avenue-winter-street-fair",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Tucson",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-11",
+      "event_end": "2026-12-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-tucson-2026-holiday-market: live first-party route attests Tucson, AZ, actionable vendor terms, and exact event date 2026-12-11."
     },
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
