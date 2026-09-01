@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:43:09.923Z",
+  "updated_at": "2026-09-01T19:51:31.169Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -847,6 +847,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-festival: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-09-10 to 2026-09-13."
+    },
+    {
+      "id": "il-2026-guide-to-summer-festivals-in-chicagoland-s-fox-river-valley-2026-09-04-0f5e38d9",
+      "name": "2026 Guide to Summer Festivals in Chicagoland’s Fox River Valley Vendor Opportunity",
+      "organiser": "2026 Guide to Summer Festivals in Chicagoland’s Fox River Valley",
+      "source_url": "https://www.enjoyaurora.com/blog/post/your-2026-guide-to-summer-festivals-in-chicagolands-fox-river-valley",
+      "application_url": "https://www.enjoyaurora.com/blog/post/your-2026-guide-to-summer-festivals-in-chicagolands-fox-river-valley",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Aurora",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-aurora-2026-festival: live first-party route attests Aurora, IL, actionable vendor terms, and exact event date 2026-09-04."
     },
     {
       "id": "il-aurora-farmers-market-west-side-aurora-2026-09-02-41bc9f1b",
