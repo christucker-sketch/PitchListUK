@@ -141,6 +141,15 @@ test('CI rollup fails closed on missing verify, failure or unknown check types',
   assert.equal(ciRollupState([]), 'pending');
   assert.equal(ciRollupState([{ __typename: 'CheckRun', name: 'verify', status: 'IN_PROGRESS', conclusion: '' }]), 'pending');
   assert.equal(ciRollupState([{ __typename: 'CheckRun', name: 'verify', status: 'COMPLETED', conclusion: 'FAILURE' }]), 'failed');
+  assert.equal(ciRollupState([{ __typename: 'CheckRun', name: 'verify', status: 'COMPLETED', conclusion: 'SKIPPED' }]), 'failed');
   assert.equal(ciRollupState([{ __typename: 'CheckRun', name: 'lint', status: 'COMPLETED', conclusion: 'SUCCESS' }]), 'failed');
   assert.equal(ciRollupState([{ __typename: 'Unexpected' }]), 'failed');
+});
+
+test('CI rollup permits skipped non-required jobs only when verify passes', () => {
+  const verify = { __typename: 'CheckRun', name: 'verify', status: 'COMPLETED', conclusion: 'SUCCESS' };
+  const skippedFrontend = { __typename: 'CheckRun', name: 'frontend_changes', status: 'COMPLETED', conclusion: 'SKIPPED' };
+  const skippedDeploy = { __typename: 'CheckRun', name: 'deploy_frontend', status: 'COMPLETED', conclusion: 'SKIPPED' };
+  assert.equal(ciRollupState([verify, skippedFrontend, skippedDeploy]), 'passed');
+  assert.equal(ciRollupState([verify, { ...skippedFrontend, conclusion: 'FAILURE' }]), 'failed');
 });
