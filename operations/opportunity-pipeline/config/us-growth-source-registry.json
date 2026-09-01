@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T19:16:29.587Z",
+  "updated_at": "2026-09-01T19:18:12.541Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -1441,6 +1441,42 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-food-truck: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "tx-becoming-a-vendor-2026-09-01-c7e321c3",
+      "name": "Becoming a Vendor",
+      "organiser": "Becoming a Vendor",
+      "source_url": "https://www.marketsquaresa.com/Explore-Shop/Vendor-Opportunities",
+      "application_url": "https://www.marketsquaresa.com/Explore-Shop/Vendor-Opportunities",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "San Antonio",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-01",
+      "event_end": "2026-09-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-san-antonio-2026-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date 2026-09-01."
+    },
+    {
+      "id": "tx-garden-ridge-market-days-farmers-market-san-antonio-texas-2026-09-12-06605cae",
+      "name": "Garden Ridge Market Days - Farmers Market - San Antonio, Texas Vendor Opportunity",
+      "organiser": "Garden Ridge Market Days - Farmers Market - San Antonio, Texas",
+      "source_url": "https://gardenridgemarketdays.com",
+      "application_url": "https://gardenridgemarketdays.com",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "San Antonio",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-san-antonio-2026-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "tx-houston-day-trip-annual-events-2027-07-04-041444e2",
