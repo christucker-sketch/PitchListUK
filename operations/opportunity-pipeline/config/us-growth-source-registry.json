@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-31T15:15:56.065Z",
+  "updated_at": "2026-09-01T08:31:45.038Z",
   "sources": [
     {
       "id": "az-how-to-sell-at-farmers-markets-in-arizona-2026-2026-09-07-b014c7d7",
@@ -613,6 +613,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-westminster-2026-farmers-market: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
+    },
+    {
+      "id": "fl-foodees-fest-jacksonville-fl-2027-01-01-1eea50d9",
+      "name": "Foodees Fest Jacksonville, FL Vendor Opportunity",
+      "organiser": "Foodees Fest Jacksonville, FL",
+      "source_url": "https://www.foodeesfest.com/event/jacksonville-fl-2027",
+      "application_url": "https://www.foodeesfest.com/event/jacksonville-fl-2027",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Jacksonville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-jacksonville-2027-festival: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date range 2027-01-01 to 2027-01-03."
     },
     {
       "id": "fl-home-market-days-2026-12-06-12093b95",
