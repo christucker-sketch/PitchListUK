@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-01T08:50:26.387Z",
-  "source": "reviewed-us-arizona-cloud-promotion:7a7defc699c5ab5690da5f56931e129685295f3aa3e93416e01505cfc05b8459",
-  "total": 228,
+  "exported_at": "2026-09-01T15:25:47.544Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:3b247b1e4b036f34fb25e0cb9f77a0ebdc47024be3e99be19b41e9a524e73825",
+  "total": 229,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -8730,6 +8730,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_e4c0a2cdb22f780aa8c7"
+    },
+    {
+      "stable_id": "opp_us_7214f8336fcc1116e593",
+      "event_name": "ShowFest Event Innovators Conference 2027 Vendor Applications",
+      "organiser": "ShowFest Event Innovators Conference 2027",
+      "source_url": "https://www.usefestkit.com/events/north-carolina-association-of-festivals-events/showfest-event-innovators-conference-2027",
+      "application_url": "https://www.usefestkit.com/events/north-carolina-association-of-festivals-events/showfest-event-innovators-conference-2027",
+      "location": "Charlotte",
+      "locality": "Charlotte",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "28262",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-25",
+      "event_end": "2027-01-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-showfest-event-innovators-conference-2027-2027-01-25-97ecf069",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_7214f8336fcc1116e593"
     }
   ]
 };
