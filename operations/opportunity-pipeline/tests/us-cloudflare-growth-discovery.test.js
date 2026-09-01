@@ -209,23 +209,28 @@ test('growth controller parses only the compact Cloudflare discovery result and 
   assert.equal(checkpoint.status, 'ready');
 });
 
-test('growth controller removes every generated country-shell deployment directory', () => {
+test('growth controller removes only known generated shell directories and leaves unexpected dirtiness visible', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'pitchlist-growth-cleanup-'));
   try {
-    for (const directory of ['us', 'uk', 'shared']) {
+    for (const directory of ['global', 'us', 'uk', 'shared']) {
       const generated = path.join(root, 'public', directory);
       fs.mkdirSync(generated, { recursive: true });
       fs.writeFileSync(path.join(generated, 'generated.txt'), 'generated');
     }
     const preserved = path.join(root, 'public', 'database.js');
     fs.writeFileSync(preserved, 'preserved');
+    const unexpected = path.join(root, 'public', 'unexpected-output.txt');
+    fs.writeFileSync(unexpected, 'unexpected');
 
     cleanupGeneratedDeploymentArtifacts(root);
 
-    for (const directory of ['us', 'uk', 'shared']) {
+    for (const directory of ['global', 'us', 'uk', 'shared']) {
       assert.equal(fs.existsSync(path.join(root, 'public', directory)), false);
     }
     assert.equal(fs.readFileSync(preserved, 'utf8'), 'preserved');
+    assert.equal(fs.readFileSync(unexpected, 'utf8'), 'unexpected');
+    const controller = fs.readFileSync(path.join(repositoryRoot, 'operations/cloudflare-texas-acquisition/scripts/growth-controller.mjs'), 'utf8');
+    assert.match(controller, /Deployment left unexpected repository changes/);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

@@ -255,7 +255,7 @@ async function verifyProduction(envFile, expectedSha, expectedCount) {
 }
 
 export function cleanupGeneratedDeploymentArtifacts(root = repositoryRoot) {
-  for (const directory of ['us', 'uk', 'shared']) {
+  for (const directory of ['global', 'us', 'uk', 'shared']) {
     fs.rmSync(path.join(root, 'public', directory), { recursive: true, force: true });
   }
 }
