@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T09:48:43.277Z",
+  "updated_at": "2026-09-02T09:51:55.647Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -974,6 +974,24 @@
       "event_end": "2027-05-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-jacksonville-2027-government-events: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date range 2027-05-21 to 2027-05-24."
+    },
+    {
+      "id": "fl-miami-all-nartions-water-festival-family-day-july-5th-miami-all-nation-2027-07-05-a46d20d5",
+      "name": "Miami All Nartions Water Festival Family Day July 5th - Miami All Nations Water Festival - July 5th - Eventeny Vendor Opportunity",
+      "organiser": "Miami All Nartions Water Festival Family Day July 5th - Miami All Nations Water Festival - July 5th - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=44967&srsltid=AfmBOopJxdcGGWFID4yybarg-Vq4hlGEmMt3gYTskcCSAKksG299lkch",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=44967&srsltid=AfmBOopJxdcGGWFID4yybarg-Vq4hlGEmMt3gYTskcCSAKksG299lkch",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Miami",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-05",
+      "event_end": "2027-07-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-miami-2027-food-truck: live first-party route attests Miami, FL, actionable vendor terms, and exact event date 2027-07-05."
     },
     {
       "id": "fl-miami-all-nartions-water-festival-family-day-july-5th-miami-all-nation-2027-07-05-c79ce8dd",
