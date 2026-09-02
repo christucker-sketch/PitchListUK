@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:15:07.751Z",
+  "updated_at": "2026-09-02T17:17:53.220Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3837,6 +3837,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-erie-2026-farmers-market: live first-party route attests Erie, PA, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-19."
+    },
+    {
+      "id": "pa-vendor-events-in-scranton-pa-2026-09-04-0426ce8d",
+      "name": "Vendor Events in Scranton, PA",
+      "organiser": "Vendor Events in Scranton, PA",
+      "source_url": "https://vendorsmap.com/cities/scranton",
+      "application_url": "https://vendorsmap.com/cities/scranton",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Scranton",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-scranton-2026-festival: live first-party route attests Scranton, PA, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-07."
     },
     {
       "id": "pa-wish-upon-a-food-truck-festival-2026-09-12-0b1a0459",
