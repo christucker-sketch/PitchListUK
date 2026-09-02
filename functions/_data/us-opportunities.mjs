@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T15:04:44.563Z",
-  "source": "reviewed-us-california-cloud-promotion:10778f6ec9c8fc271b2aedfaaecd281acd3655ff94451424d14c8f0261813873",
-  "total": 300,
+  "exported_at": "2026-09-02T15:07:30.385Z",
+  "source": "reviewed-us-texas-cloud-promotion:80492dd7cf6407b6be856c4aa12e34394432dea3476152aa9ca313a264e0cb14",
+  "total": 301,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11463,6 +11463,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_b952682b2e93648770e3"
+    },
+    {
+      "stable_id": "opp_us_80ed22c245a41ae39149",
+      "event_name": "Contact - Michelada Festival Fort Worth",
+      "organiser": "Contact - Michelada Festival Fort Worth",
+      "source_url": "https://micheladafestival.org/contact/",
+      "application_url": "https://micheladafestival.org/contact",
+      "location": "Fort Worth",
+      "locality": "Fort Worth",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-contact-michelada-festival-fort-worth-2026-10-11-226e6c9d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_80ed22c245a41ae39149"
     }
   ]
 };
