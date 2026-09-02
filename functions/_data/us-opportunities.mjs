@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T09:56:53.596Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:b6c1694fb30fdd5214c95592de791227b8c27b3197da25aa8020b7d41dc85ed0",
-  "total": 255,
+  "exported_at": "2026-09-02T10:04:19.379Z",
+  "source": "reviewed-us-texas-cloud-promotion:e875edf6e407dbd841ba43a6069477d662e4232d13d2b87f13ba0e8138641cbf",
+  "total": 256,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9758,6 +9758,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_5ce44bacfed485d13178"
+    },
+    {
+      "stable_id": "opp_us_fccca00bb1c4a48b02fb",
+      "event_name": "Farmers Markets in Dallas, TX (2026)",
+      "organiser": "Farmers Markets in Dallas, TX (2026)",
+      "source_url": "https://restaunax.com/home-food-business/in/dallas/farmers-markets",
+      "application_url": "https://restaunax.com/home-food-business/in/dallas/farmers-markets",
+      "location": "Dallas",
+      "locality": "Dallas",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-farmers-markets-in-dallas-tx-2026-2026-10-24-34dfd7bb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_fccca00bb1c4a48b02fb"
     }
   ]
 };
