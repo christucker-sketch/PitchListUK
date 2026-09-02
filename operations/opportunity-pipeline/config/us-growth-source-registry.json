@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T19:57:59.979Z",
+  "updated_at": "2026-09-02T20:01:10.137Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1460,6 +1460,24 @@
       "event_end": "2027-01-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-tallahassee-2027-food-truck: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date range 2027-01-22 to 2027-01-24."
+    },
+    {
+      "id": "fl-holiday-markets-winter-festivals-in-broward-2025-2026-11-22-782881fb",
+      "name": "Holiday Markets & Winter Festivals in Broward (2025 Vendor Opportunity",
+      "organiser": "Holiday Markets & Winter Festivals in Broward (2025",
+      "source_url": "https://www.soflohomelistings.com/blog/holiday-markets-winter-festivals-in-broward-20252026",
+      "application_url": "https://www.soflohomelistings.com/blog/holiday-markets-winter-festivals-in-broward-20252026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Fort Lauderdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-22",
+      "event_end": "2026-11-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-fort-lauderdale-2026-holiday-market: live first-party route attests Fort Lauderdale, FL, actionable vendor terms, and exact event date 2026-11-22."
     },
     {
       "id": "fl-home-market-days-2026-12-06-12093b95",
