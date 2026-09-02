@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T11:23:54.815Z",
+  "updated_at": "2026-09-02T11:34:27.555Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -2792,6 +2792,24 @@
       "event_end": "2027-05-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-seattle-2027-arts-crafts: live first-party route attests Seattle, WA, actionable vendor terms, and exact event date range 2027-05-30 to 2027-05-31."
+    },
+    {
+      "id": "wa-spanaway-park-2027-09-13-f29f37a5",
+      "name": "Spanaway Park Vendor Opportunity",
+      "organiser": "Spanaway Park",
+      "source_url": "https://www.piercecountywa.gov/1336/Spanaway-Park",
+      "application_url": "https://www.piercecountywa.gov/1336/Spanaway-Park",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Tacoma",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-09-13",
+      "event_end": "2027-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-tacoma-2027-government-events: live first-party route attests Tacoma, WA, actionable vendor terms, and exact event date 2027-09-13."
     },
     {
       "id": "wa-tacoma-sunday-market-2026-09-06-7b0e2859",
