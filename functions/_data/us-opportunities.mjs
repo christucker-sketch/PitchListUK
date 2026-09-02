@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T11:01:55.432Z",
-  "source": "reviewed-us-florida-cloud-promotion:dac82708b251e2173081aeb4c004a944191ebaaaca91f0693884567cc544d53e",
-  "total": 262,
+  "exported_at": "2026-09-02T11:07:44.945Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:41c81198e00998ffa15eb5a9305034fcc773ac358cf5f9c4d1f857855b45b2fe",
+  "total": 263,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10026,6 +10026,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_cd16ab2ca16777d53b6a"
+    },
+    {
+      "stable_id": "opp_us_3025cf11aee6c69b3a08",
+      "event_name": "HOW TO BECOME A CONCESSIONAIRE Vendor Opportunity",
+      "organiser": "HOW TO BECOME A CONCESSIONAIRE",
+      "source_url": "https://www.allentownfair.com/how-to-become-a-concessionaire/",
+      "application_url": "https://www.allentownfair.com/how-to-become-a-concessionaire",
+      "location": "Allentown",
+      "locality": "Allentown",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-02",
+      "event_end": "2026-09-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-how-to-become-a-concessionaire-2026-09-02-1168b5b7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_3025cf11aee6c69b3a08"
     }
   ]
 };
