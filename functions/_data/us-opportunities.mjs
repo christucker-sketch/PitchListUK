@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:19:03.149Z",
-  "source": "reviewed-us-ohio-cloud-promotion:9c5da0919025c8c34090b1cffc48f00bf76d2d24c24615b5351055098253e742",
-  "total": 283,
+  "exported_at": "2026-09-02T13:22:25.686Z",
+  "source": "reviewed-us-georgia-cloud-promotion:ac275034ab401b7c6ea1a0f9b6e880f3d1389e55332827d841a934a50f65ab57",
+  "total": 284,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10819,6 +10819,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_53393b6fec7bdcae3cfa"
+    },
+    {
+      "stable_id": "opp_us_fdc3254bec7ed516049f",
+      "event_name": "A New Holiday Tradition! Vendor Opportunity",
+      "organiser": "A New Holiday Tradition!",
+      "source_url": "https://visitmacon.org/events/annual-events-and-festivals/maconchristmasmarket/",
+      "application_url": "https://visitmacon.org/events/annual-events-and-festivals/maconchristmasmarket",
+      "location": "Macon",
+      "locality": "Macon",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "31201",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-04",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-a-new-holiday-tradition-2026-12-04-cbed23e6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_fdc3254bec7ed516049f"
     }
   ]
 };
