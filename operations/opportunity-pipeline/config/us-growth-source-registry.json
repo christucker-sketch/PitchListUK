@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:41:15.749Z",
+  "updated_at": "2026-09-02T15:45:47.422Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -55,6 +55,24 @@
       "event_end": "2026-09-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-chandler-2026-food-truck: live first-party route attests Chandler, AZ, actionable vendor terms, and exact event date 2026-09-05."
+    },
+    {
+      "id": "az-food-desert-2026-10-23-82a07572",
+      "name": "Food/Desert Vendor Application - 2026 AZ Spooktacular Hot Air Balloon Festival - Eventeny",
+      "organiser": "Food/Desert",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=50174&srsltid=AfmBOortMWmEoWMkPaTwrkjcOi1XWxKnu7n2ZteiZFyBNaqdErjRgU0c",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=50174&srsltid=AfmBOortMWmEoWMkPaTwrkjcOi1XWxKnu7n2ZteiZFyBNaqdErjRgU0c",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Scottsdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-scottsdale-2026-food-truck: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date range 2026-10-23 to 2026-10-25."
     },
     {
       "id": "az-fourth-avenue-spring-street-fair-2027-03-19-a2985515",
@@ -163,6 +181,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-scottsdale-2026-farmers-market: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
+      "id": "az-merchantile-market-december-12-13-2026-at-scottsdale-civic-center-even-2026-12-12-c1287118",
+      "name": "Merchantile Market -December 12 & 13, 2026 at Scottsdale Civic Center - Eventeny Vendor Opportunity",
+      "organiser": "Merchantile Market -December 12 & 13, 2026 at Scottsdale Civic Center - Eventeny",
+      "source_url": "https://www.eventeny.com/events/merchantile-market-december-2026-32256/?srsltid=AfmBOoo7B4sujKkIRLGzxiU3FB1OloyliHh-DN9NKT2g5dZ5OSOmMUDB",
+      "application_url": "https://www.eventeny.com/events/merchantile-market-december-2026-32256/?srsltid=AfmBOoo7B4sujKkIRLGzxiU3FB1OloyliHh-DN9NKT2g5dZ5OSOmMUDB",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Scottsdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-scottsdale-2026-holiday-market: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
     },
     {
       "id": "az-merry-main-street-holiday-events-in-mesa-az-2026-11-28-bc6b99bb",
