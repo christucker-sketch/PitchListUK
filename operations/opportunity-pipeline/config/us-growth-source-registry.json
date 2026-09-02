@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T20:33:17.669Z",
+  "updated_at": "2026-09-02T20:37:53.729Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3874,6 +3874,24 @@
       "event_end": "2026-09-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-newark-2026-arts-crafts: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-09-02."
+    },
+    {
+      "id": "nj-new-jersey-events-august-14-16-2026-2026-09-13-f0b58631",
+      "name": "New Jersey Events August 14 - 16, 2026 Vendor Opportunity",
+      "organiser": "New Jersey Events August 14 - 16, 2026",
+      "source_url": "https://newjerseyisntboring.com/njibs-guide-to-new-jersey-events-august-14th-16th-2026",
+      "application_url": "https://newjerseyisntboring.com/njibs-guide-to-new-jersey-events-august-14th-16th-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Lakewood",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-13",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-lakewood-2026-food-truck: live first-party route attests Lakewood, NJ, actionable vendor terms, and exact event date 2026-09-13."
     },
     {
       "id": "nj-simpletix-com-2026-09-25-ae16ea26",
