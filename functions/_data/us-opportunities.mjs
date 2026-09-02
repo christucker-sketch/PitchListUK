@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T09:46:25.751Z",
-  "source": "reviewed-us-arizona-cloud-promotion:e22e1a45edeb2f8e34d048bf875c5b34cd70098c7a646f749cf5502da8f39492",
-  "total": 252,
+  "exported_at": "2026-09-02T09:49:41.035Z",
+  "source": "reviewed-us-california-cloud-promotion:2978c795b3e5fa0407c555f4b22d8219459f2c227cdac30b3e6c1f2e2dfa0e73",
+  "total": 253,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9643,6 +9643,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_92fa8f431066b93d434f"
+    },
+    {
+      "stable_id": "opp_us_58eb059d71fcdb04eb63",
+      "event_name": "Vendors Vendor Opportunity",
+      "organiser": "Vendors",
+      "source_url": "https://www.miramesaayso.org/Default.aspx?tabid=974256",
+      "application_url": "https://www.miramesaayso.org/Default.aspx?tabid=974256",
+      "location": "San Diego",
+      "locality": "San Diego",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "92126",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-29",
+      "event_end": "2027-05-30",
+      "application_deadline": "2027-05-01",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-vendors-2027-05-29-7593f2d5",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_58eb059d71fcdb04eb63"
     }
   ]
 };
