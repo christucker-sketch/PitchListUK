@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T16:06:21.207Z",
+  "updated_at": "2026-09-02T16:13:35.776Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3423,6 +3423,24 @@
       "event_end": "2026-11-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-allentown-2026-farmers-market: live first-party route attests Allentown, PA, actionable vendor terms, and exact event date 2026-11-12."
+    },
+    {
+      "id": "pa-celebrateerie-festival-2027-erie-pa-2027-08-14-c07a7225",
+      "name": "CelebrateErie Festival 2027, Erie, PA Vendor Opportunity",
+      "organiser": "CelebrateErie Festival 2027, Erie, PA",
+      "source_url": "https://vendorsmap.com/events/3191",
+      "application_url": "https://vendorsmap.com/events/3191",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Erie",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-14",
+      "event_end": "2027-08-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-erie-2027-festival: live first-party route attests Erie, PA, actionable vendor terms, and exact event date range 2027-08-14 to 2027-08-16."
     },
     {
       "id": "pa-farmers-market-in-the-park-2026-10-22-e7e28d06",
