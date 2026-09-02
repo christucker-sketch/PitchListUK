@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T09:38:44.125Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:aec17dbd02f204d39f9f54bd04baa6e8b708620609290785927e96da12e982e4",
-  "total": 251,
+  "exported_at": "2026-09-02T09:46:25.751Z",
+  "source": "reviewed-us-arizona-cloud-promotion:e22e1a45edeb2f8e34d048bf875c5b34cd70098c7a646f749cf5502da8f39492",
+  "total": 252,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9603,6 +9603,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_685ed126c932acb94a02"
+    },
+    {
+      "stable_id": "opp_us_92fa8f431066b93d434f",
+      "event_name": "Tucson Folk Festival Vendor Application",
+      "organiser": "Tucson Folk Festival",
+      "source_url": "https://www.tucsonfolkfest.org/vendors/",
+      "application_url": "https://www.tucsonfolkfest.org/vendors",
+      "location": "Tucson",
+      "locality": "Tucson",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-02",
+      "event_end": "2027-04-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-tucson-folk-festival-2027-04-02-e0b27b2d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_92fa8f431066b93d434f"
     }
   ]
 };
