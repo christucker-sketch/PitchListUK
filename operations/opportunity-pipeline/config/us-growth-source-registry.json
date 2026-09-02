@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:23:58.981Z",
+  "updated_at": "2026-09-02T13:27:23.588Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3080,6 +3080,24 @@
       "event_end": "2026-12-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-chesapeake-2026-holiday-market: live first-party route attests Chesapeake, VA, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "va-2026-old-town-alexandria-christmas-market-and-holiday-craft-show-2026-12-12-36eafdca",
+      "name": "2026 Old Town Alexandria Christmas Market and Holiday Craft Show Vendor Registration Form",
+      "organiser": "2026 Old Town Alexandria Christmas Market and Holiday Craft Show",
+      "source_url": "https://chiceventsdc.com/2026-old-town-alexandria-christmas-market-and-holiday-craft-show-vendor-registration-form",
+      "application_url": "https://chiceventsdc.com/2026-old-town-alexandria-christmas-market-and-holiday-craft-show-vendor-registration-form",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Richmond",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-richmond-2026-holiday-market: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date 2026-12-12."
     },
     {
       "id": "va-2nd-street-festival-2026-10-03-00eee4d3",
