@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T08:50:11.791Z",
-  "source": "reviewed-us-california-cloud-promotion:e981a45729c7a282b88f11b6195a3602db1f63f3bd3b9f39683b3e6caff9fa4d",
-  "total": 249,
+  "exported_at": "2026-09-02T08:58:19.757Z",
+  "source": "reviewed-us-florida-cloud-promotion:7ae9a689a1354a965f42a54015d468f157afe382b923d3100fb2b8b81a9d65ab",
+  "total": 250,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9525,6 +9525,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_9dc2446117be93c8e218"
+    },
+    {
+      "stable_id": "opp_us_0a3900bca29768d9fe68",
+      "event_name": "2027 Beaux Arts Festival of Art Vendor Opportunity",
+      "organiser": "2027 Beaux Arts Festival of Art",
+      "source_url": "https://beauxartsmiami.org/pages/2027-festival-of-art",
+      "application_url": "https://beauxartsmiami.org/pages/2027-festival-of-art",
+      "location": "Miami",
+      "locality": "Miami",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-16",
+      "event_end": "2027-01-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-2027-beaux-arts-festival-of-art-2027-01-16-b29422c6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_0a3900bca29768d9fe68"
     }
   ]
 };
