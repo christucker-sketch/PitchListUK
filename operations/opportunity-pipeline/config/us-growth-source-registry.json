@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:24:59.964Z",
+  "updated_at": "2026-09-02T17:30:29.258Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3066,6 +3066,24 @@
       "evidence": "Cloudflare discovery nc-durham-2027-farmers-market: live first-party route attests Durham, NC, actionable vendor terms, and exact event date 2027-04-04."
     },
     {
+      "id": "nj-2026-ymca-tot-trot-and-family-fall-festival-2026-10-11-3ac2c64e",
+      "name": "2026 YMCA Tot Trot and Family Fall Festival Vendor Opportunity",
+      "organiser": "2026 YMCA Tot Trot and Family Fall Festival",
+      "source_url": "https://secure.qgiv.com/for/tottrot2025/event/tot",
+      "application_url": "https://secure.qgiv.com/for/tottrot2025/event/tot",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Woodbridge",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-woodbridge-2026-festival: live first-party route attests Woodbridge, NJ, actionable vendor terms, and exact event date 2026-10-11."
+    },
+    {
       "id": "nj-craft-fairs-shows-in-jersey-city-nj-2026-dates-fees-2026-10-03-f85fd552",
       "name": "Craft Fairs & Shows in Jersey City, NJ 2026: Dates & Fees Vendor Opportunity",
       "organiser": "Craft Fairs & Shows in Jersey City, NJ 2026: Dates & Fees",
@@ -3190,6 +3208,24 @@
       "event_end": "2026-09-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-newark-2026-arts-crafts: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-09-02."
+    },
+    {
+      "id": "nj-simpletix-com-2026-09-25-ae16ea26",
+      "name": "Vendor Registration September 25th, 26th and 27th, 2026 NJ Horror Con & Film Festival Tickets",
+      "organiser": "simpletix.com",
+      "source_url": "https://www.simpletix.com/e/vendor-registration-september-25th-26th-an-tickets-255851",
+      "application_url": "https://www.simpletix.com/e/vendor-registration-september-25th-26th-an-tickets-255851",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Woodbridge",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-woodbridge-2026-festival: live first-party route attests Woodbridge, NJ, actionable vendor terms, and exact event date 2026-09-25."
     },
     {
       "id": "nj-the-punk-rock-flea-market-2026-12-12-ec124392",
