@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:28:18.808Z",
-  "source": "reviewed-us-virginia-cloud-promotion:c0368d01bd67ed736d34bb7baab06c0b5711aabea6e841b2cb452604dddccc6f",
-  "total": 286,
+  "exported_at": "2026-09-02T13:31:44.596Z",
+  "source": "reviewed-us-arizona-cloud-promotion:1f636422564e3002f01fe053e421be31ba27135a46c63b7175aa411e4099ccaf",
+  "total": 287,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10936,6 +10936,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_82fb01c61ea8a02ca7d6"
+    },
+    {
+      "stable_id": "opp_us_85fab00bf83ab3eb9be7",
+      "event_name": "Family Fun Festival - Sep 5, 2026 - Events Calendar - Chandler Chamber of Commerce Vendor Opportunity",
+      "organiser": "Family Fun Festival - Sep 5, 2026 - Events Calendar - Chandler Chamber of Commerce",
+      "source_url": "https://business.chandlerchamber.com/events/details/family-fun-festival-53010",
+      "application_url": "https://business.chandlerchamber.com/events/details/family-fun-festival-53010",
+      "location": "Chandler",
+      "locality": "Chandler",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "85225",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-family-fun-festival-sep-5-2026-events-calendar-chandler-chamber-of-com-2026-09-05-c4a43e03",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_85fab00bf83ab3eb9be7"
     }
   ]
 };
