@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:56:12.561Z",
-  "source": "reviewed-us-florida-cloud-promotion:5bf8d522742867fd0a5c97559bc1ee81355c2c049d0b3be689f859204c833b4d",
-  "total": 288,
+  "exported_at": "2026-09-02T14:02:47.843Z",
+  "source": "reviewed-us-georgia-cloud-promotion:56a76881fb6362f887dfa83d05c5f3139884ffb10daf661d7bfefffd25e48bbc",
+  "total": 289,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11011,6 +11011,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_5e16ebe34847c86cfa7d"
+    },
+    {
+      "stable_id": "opp_us_ea30d5e7615e44a03891",
+      "event_name": "All Hands Art Festival Application &mdash; The 567 Center Vendor Opportunity",
+      "organiser": "All Hands Art Festival",
+      "source_url": "https://www.the567center.org/all-hands-art-festival-application",
+      "application_url": "https://www.the567center.org/all-hands-art-festival-application",
+      "location": "Macon",
+      "locality": "Macon",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "31201",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-26",
+      "event_end": "2027-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-all-hands-art-festival-2027-09-26-534318e6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_ea30d5e7615e44a03891"
     }
   ]
 };
