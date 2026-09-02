@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T20:56:09.644Z",
+  "updated_at": "2026-09-02T21:02:36.147Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4774,6 +4774,42 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-festival: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "pa-musikfest-2027-in-bethlehem-pa-2027-08-05-e167bef7",
+      "name": "Musikfest 2027 in Bethlehem, PA Vendor Opportunity",
+      "organiser": "Musikfest 2027 in Bethlehem, PA",
+      "source_url": "https://www.discoverlehighvalley.com/events/major-events-festivals/musikfest",
+      "application_url": "https://www.discoverlehighvalley.com/events/major-events-festivals/musikfest",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Bethlehem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-05",
+      "event_end": "2027-08-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-bethlehem-2027-festival: live first-party route attests Bethlehem, PA, actionable vendor terms, and exact event date range 2027-08-05 to 2027-08-15."
+    },
+    {
+      "id": "pa-musikfest-artsquest-2027-bethlehem-pa-2027-07-31-66f337dd",
+      "name": "Musikfest (ArtsQuest) 2027, Bethlehem, PA Vendor Opportunity",
+      "organiser": "Musikfest (ArtsQuest) 2027, Bethlehem, PA",
+      "source_url": "https://vendorsmap.com/events/26000",
+      "application_url": "https://vendorsmap.com/events/26000",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Bethlehem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-31",
+      "event_end": "2027-08-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-bethlehem-2027-festival: live first-party route attests Bethlehem, PA, actionable vendor terms, and exact event date range 2027-07-31 to 2027-08-09."
     },
     {
       "id": "pa-must-attend-holiday-events-and-festivals-in-pennsylvania-2027-11-22-94fa9fd7",
