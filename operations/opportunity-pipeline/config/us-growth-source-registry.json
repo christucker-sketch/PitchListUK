@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:09:25.409Z",
+  "updated_at": "2026-09-02T12:12:26.287Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2324,6 +2324,24 @@
       "event_end": "2026-09-09",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-rochester-2026-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2026-09-09."
+    },
+    {
+      "id": "oh-cincy-soul-food-truck-festival-cancelled-at-last-minute-impacting-oper-2027-07-10-454ab653",
+      "name": "Cincy Soul Food Truck Festival cancelled at last minute, impacting operators",
+      "organiser": "Cincy Soul Food Truck Festival cancelled at last minute, impacting operators",
+      "source_url": "https://www.foodtruckoperator.com/news/cincy-soul-food-truck-festival-cancelled-at-last-minute-impacting-operators",
+      "application_url": "https://www.foodtruckoperator.com/news/cincy-soul-food-truck-festival-cancelled-at-last-minute-impacting-operators",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Cincinnati",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-10",
+      "event_end": "2027-07-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-cincinnati-2027-food-truck: live first-party route attests Cincinnati, OH, actionable vendor terms, and exact event date range 2027-07-10 to 2027-07-24."
     },
     {
       "id": "oh-city-of-akron-hosting-fourth-annual-akron-city-festival-on-september-5-2026-09-05-ef8eeba9",
