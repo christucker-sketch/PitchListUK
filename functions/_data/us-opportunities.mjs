@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T18:40:53.078Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:ea52748cec7d3d716007087841236b79724aa5e83f1f419e4ab6d1de1402b467",
-  "total": 333,
+  "exported_at": "2026-09-02T18:43:55.535Z",
+  "source": "reviewed-us-michigan-cloud-promotion:c19130c6d45b6f24188e238d0a827d26aab3b5badcdccd5d81a7fbf432c616f8",
+  "total": 334,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12712,6 +12712,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_7897c5e0b850a4241946"
+    },
+    {
+      "stable_id": "opp_us_1e50dd72d88f419ec959",
+      "event_name": "63rd Annual East Lansing Art Festival Set for Saturday-Sunday, May 16-17 • East Lansing, MI Vendor Opportunity",
+      "organiser": "63rd Annual East Lansing Art Festival Set for Saturday-Sunday, May 16-17 • East Lansing, MI",
+      "source_url": "https://www.cityofeastlansing.com/m/newsflash/Home/Detail/2511",
+      "application_url": "https://www.cityofeastlansing.com/m/newsflash/Home/Detail/2511",
+      "location": "Lansing",
+      "locality": "Lansing",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-16",
+      "event_end": "2027-05-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-63rd-annual-east-lansing-art-festival-set-for-saturday-sunday-may-16-1-2027-05-16-ccc981b7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_1e50dd72d88f419ec959"
     }
   ]
 };
