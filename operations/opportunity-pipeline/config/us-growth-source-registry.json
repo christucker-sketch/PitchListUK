@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:12:11.708Z",
+  "updated_at": "2026-09-02T14:14:43.788Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -253,6 +253,24 @@
       "event_end": "2027-04-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-tucson-2027-festival: live first-party route attests Tucson, AZ, actionable vendor terms, and exact event date range 2027-04-02 to 2027-04-04."
+    },
+    {
+      "id": "az-vendors-2027-01-15-9898e8e7",
+      "name": "Vendors Vendor Opportunity",
+      "organiser": "Vendors",
+      "source_url": "https://abcfest.com/vendors",
+      "application_url": "https://abcfest.com/vendors",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Chandler",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-15",
+      "event_end": "2027-01-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-chandler-2027-festival: live first-party route attests Chandler, AZ, actionable vendor terms, and exact event date range 2027-01-15 to 2027-01-17."
     },
     {
       "id": "ca-2026-brews-and-bites-2026-10-17-8637a782",
