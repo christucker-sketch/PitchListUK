@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T10:03:27.684Z",
+  "updated_at": "2026-09-02T10:08:24.766Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -2126,6 +2126,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "pa-allentown-fairgrounds-farmers-market-2026-2026-11-12-f87d8f8b",
+      "name": "Allentown Fairgrounds Farmers Market 2026 Vendor Opportunity",
+      "organiser": "Allentown Fairgrounds Farmers Market 2026",
+      "source_url": "https://vendorsmap.com/events/749",
+      "application_url": "https://vendorsmap.com/events/749",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Allentown",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-12",
+      "event_end": "2026-11-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-allentown-2026-farmers-market: live first-party route attests Allentown, PA, actionable vendor terms, and exact event date 2026-11-12."
     },
     {
       "id": "pa-farmers-market-in-the-park-2026-10-22-e7e28d06",
