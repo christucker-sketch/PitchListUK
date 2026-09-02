@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:17:11.072Z",
+  "updated_at": "2026-09-02T14:20:45.142Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -433,6 +433,24 @@
       "event_end": "2026-12-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-francisco-2026-holiday-market: live first-party route attests San Francisco, CA, actionable vendor terms, and exact event date range 2026-12-06 to 2026-12-07."
+    },
+    {
+      "id": "ca-make-good-market-2025-ndash-heath-ceramics-2027-12-06-7505e02e",
+      "name": "Make Good Market 2025 &ndash; Heath Ceramics Vendor Opportunity",
+      "organiser": "Make Good Market 2025 &ndash; Heath Ceramics",
+      "source_url": "https://www.heathceramics.com/blogs/news-events/make-good-market-2025?srsltid=AfmBOoqN4F4odi1Ef9Xws0hod8rBRvk_PNVdLysyVQWScd2k8HVsXQKL",
+      "application_url": "https://www.heathceramics.com/blogs/news-events/make-good-market-2025?srsltid=AfmBOoqN4F4odi1Ef9Xws0hod8rBRvk_PNVdLysyVQWScd2k8HVsXQKL",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Francisco",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-12-06",
+      "event_end": "2027-12-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-francisco-2027-holiday-market: live first-party route attests San Francisco, CA, actionable vendor terms, and exact event date range 2027-12-06 to 2027-12-07."
     },
     {
       "id": "ca-national-city-community-market-aug-28-2027-national-city-chamber-of-co-2027-08-28-6647f8c9",
