@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T20:48:55.259Z",
+  "updated_at": "2026-09-02T20:56:09.644Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5514,6 +5514,24 @@
       "evidence": "Cloudflare discovery wa-bellevue-2027-festival: live first-party route attests Bellevue, WA, actionable vendor terms, and exact event date range 2027-07-24 to 2027-07-26."
     },
     {
+      "id": "wa-everett-blooms-with-return-of-sorticulture-festival-june-5-7-everett-w-2027-06-05-1af4def2",
+      "name": "Everett blooms with return of Sorticulture Festival June 5 - 7 • Everett, WA Vendor Opportunity",
+      "organiser": "Everett blooms with return of Sorticulture Festival June 5 - 7 • Everett, WA",
+      "source_url": "https://www.everettwa.gov/m/newsflash/Home/Detail/4430",
+      "application_url": "https://www.everettwa.gov/m/newsflash/Home/Detail/4430",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Everett",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-05",
+      "event_end": "2027-06-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-everett-2027-government-events: live first-party route attests Everett, WA, actionable vendor terms, and exact event date range 2027-06-05 to 2027-06-07."
+    },
+    {
       "id": "wa-highlander-festival-2026-09-11-be5acb27",
       "name": "Highlander Festival Vendor Opportunity",
       "organiser": "Highlander Festival",
@@ -5602,6 +5620,24 @@
       "event_end": "2027-05-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-seattle-2027-arts-crafts: live first-party route attests Seattle, WA, actionable vendor terms, and exact event date range 2027-05-30 to 2027-05-31."
+    },
+    {
+      "id": "wa-sorticulture-2027-06-11-dfdfb586",
+      "name": "Sorticulture Vendor Opportunity",
+      "organiser": "Sorticulture",
+      "source_url": "https://www.visiteverett.com/1400/Sorticulture",
+      "application_url": "https://www.visiteverett.com/1400/Sorticulture",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Everett",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-11",
+      "event_end": "2027-06-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-everett-2027-government-events: live first-party route attests Everett, WA, actionable vendor terms, and exact event date range 2027-06-11 to 2027-06-13."
     },
     {
       "id": "wa-spanaway-park-2027-09-13-f29f37a5",
