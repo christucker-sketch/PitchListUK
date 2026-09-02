@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T11:11:18.554Z",
-  "source": "reviewed-us-georgia-cloud-promotion:395914a0acd9b5fb3707c7de48193cd9863f2426cc3388275722f7211f98422b",
-  "total": 264,
+  "exported_at": "2026-09-02T11:13:58.954Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:a87d91310284d5cb5cb243d6b59ccb1edb2fba972f2542087f9fd4869978bb06",
+  "total": 265,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10101,6 +10101,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_767b01f987e396d1d1f6"
+    },
+    {
+      "stable_id": "opp_us_9dd0afa20d55dfb9c16d",
+      "event_name": "Holiday Market Exhibitor Information",
+      "organiser": "Holiday Market",
+      "source_url": "https://gilmoreshows.com/holiday-market-exhibitor-information/",
+      "application_url": "https://gilmoreshows.com/holiday-market-exhibitor-information",
+      "location": "Greensboro",
+      "locality": "Greensboro",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "27403",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-08",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-holiday-market-2026-11-06-d30856c0",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_9dd0afa20d55dfb9c16d"
     }
   ]
 };
