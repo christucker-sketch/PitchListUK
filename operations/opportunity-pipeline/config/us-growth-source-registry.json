@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:20:20.438Z",
+  "updated_at": "2026-09-02T17:22:15.398Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1586,6 +1586,24 @@
       "event_end": "2027-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-macon-2027-festival: live first-party route attests Macon, GA, actionable vendor terms, and exact event date range 2027-09-26 to 2027-09-27."
+    },
+    {
+      "id": "ga-athens-winter-wonderland-craft-and-vendor-market-hometown-vendor-marke-2026-12-12-cdf89d63",
+      "name": "Athens Winter Wonderland Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Athens Winter Wonderland Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/athenswinterwonderland",
+      "application_url": "https://hometownvendormarket.com/athenswinterwonderland",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Athens",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-athens-2026-arts-crafts: live first-party route attests Athens, GA, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
     },
     {
       "id": "ga-atlanta-international-night-market-2026-11-06-6a678636",
