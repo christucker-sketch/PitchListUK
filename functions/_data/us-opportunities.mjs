@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T15:26:12.814Z",
-  "source": "reviewed-us-washington-cloud-promotion:6376f3b0ca9ba72550103b4f22650a0aca00aa7c9330056e667702afdf30ba37",
-  "total": 304,
+  "exported_at": "2026-09-02T15:42:09.058Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:370e28683119eb0a86c2b0bf1111099de305ae03d0f455bc5caafe33ed8405c2",
+  "total": 305,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11612,6 +11612,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_e96efda1704452525ca2"
+    },
+    {
+      "stable_id": "opp_us_a523d0b4d1c7504c342f",
+      "event_name": "ChristmasFest Vendor Opportunity",
+      "organiser": "ChristmasFest",
+      "source_url": "https://moravianmusic.org/christmasfest/",
+      "application_url": "https://moravianmusic.org/christmasfest",
+      "location": "Winston-Salem",
+      "locality": "Winston-Salem",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-christmasfest-2026-12-12-b29a31b5",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_a523d0b4d1c7504c342f"
     }
   ]
 };
