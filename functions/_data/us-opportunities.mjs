@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T20:45:13.988Z",
-  "source": "reviewed-us-texas-cloud-promotion:9466820071053271bb14f06c0165ae0c443cc929c233fb1ed4d969346ccb46f5",
-  "total": 343,
+  "exported_at": "2026-09-02T20:49:49.061Z",
+  "source": "reviewed-us-illinois-cloud-promotion:5a7d4ea09170029713c234fd0cf73b48db168feecb5d5da065adb0258f9a39fb",
+  "total": 344,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13096,6 +13096,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_390d22b8fa250b85c95b"
+    },
+    {
+      "stable_id": "opp_us_4b68e2b080c64d26f734",
+      "event_name": "Vendor Events in Elgin, IL",
+      "organiser": "Vendor Events in Elgin, IL",
+      "source_url": "https://vendorsmap.com/cities/elgin-il",
+      "application_url": "https://vendorsmap.com/cities/elgin-il",
+      "location": "Elgin",
+      "locality": "Elgin",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "60120",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-09",
+      "event_end": "2027-08-10",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-vendor-events-in-elgin-il-2027-08-09-4f486d58",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_4b68e2b080c64d26f734"
     }
   ]
 };
