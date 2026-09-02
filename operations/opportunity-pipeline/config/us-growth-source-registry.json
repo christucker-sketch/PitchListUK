@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T08:57:28.100Z",
+  "updated_at": "2026-09-02T09:37:56.187Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1585,6 +1585,42 @@
       "event_end": "2026-12-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-farmers-market: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2026-12-31."
+    },
+    {
+      "id": "nc-raleigh-foodees-fest-eventeny-2027-03-12-5d4b34c9",
+      "name": "Raleigh Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Raleigh Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/raleigh-foodees-fest-31868/?srsltid=AfmBOop6eQ0ofSewidrfCYhAdyyBS82UC2mqcsNJ8ITyWu-31eoJR9cF",
+      "application_url": "https://www.eventeny.com/events/raleigh-foodees-fest-31868/?srsltid=AfmBOop6eQ0ofSewidrfCYhAdyyBS82UC2mqcsNJ8ITyWu-31eoJR9cF",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Raleigh",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-12",
+      "event_end": "2027-03-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-raleigh-2027-festival: live first-party route attests Raleigh, NC, actionable vendor terms, and exact event date range 2027-03-12 to 2027-03-14."
+    },
+    {
+      "id": "nc-raleigh-foodees-fest-eventeny-2027-03-12-f725f285",
+      "name": "Raleigh Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Raleigh Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/raleigh-foodees-fest-31868/?srsltid=AfmBOooo0OHUsl7Y3PC4VU5muW2u68KLFC6FS_9mg2TyPjd_g8NclrGE",
+      "application_url": "https://www.eventeny.com/events/raleigh-foodees-fest-31868/?srsltid=AfmBOooo0OHUsl7Y3PC4VU5muW2u68KLFC6FS_9mg2TyPjd_g8NclrGE",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Raleigh",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-12",
+      "event_end": "2027-03-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-raleigh-2027-arts-crafts: live first-party route attests Raleigh, NC, actionable vendor terms, and exact event date range 2027-03-12 to 2027-03-14."
     },
     {
       "id": "nc-showfest-event-innovators-conference-2027-2027-01-25-97ecf069",
