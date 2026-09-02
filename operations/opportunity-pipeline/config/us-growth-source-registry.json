@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T19:44:37.535Z",
+  "updated_at": "2026-09-02T19:47:08.570Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3064,6 +3064,24 @@
       "evidence": "Cloudflare discovery mi-detroit-2027-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date range 2027-07-08 to 2027-07-11."
     },
     {
+      "id": "nc-2026-cary-underground-market-bond-brothers-september-eventeny-2026-09-06-5b94320c",
+      "name": "2026 Cary Underground Market (Bond Brothers) - September - Eventeny Vendor Opportunity",
+      "organiser": "2026 Cary Underground Market (Bond Brothers) - September - Eventeny",
+      "source_url": "https://www.eventeny.com/events/2026-cary-underground-market-bond-brothers-25992/?series=9494&srsltid=AfmBOorJBsw5d2LxRskx083eLxhxkahhTJZg8-ywa0B20UVGmIKYHMon",
+      "application_url": "https://www.eventeny.com/events/2026-cary-underground-market-bond-brothers-25992/?series=9494&srsltid=AfmBOorJBsw5d2LxRskx083eLxhxkahhTJZg8-ywa0B20UVGmIKYHMon",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Cary",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-cary-2026-arts-crafts: live first-party route attests Cary, NC, actionable vendor terms, and exact event date 2026-09-06."
+    },
+    {
       "id": "nc-2026-charlotte-fall-arts-crafts-food-festival-nc-eat-play-2026-09-25-bbbf3705",
       "name": "2026 Charlotte Fall Arts, Crafts & Food Festival - NC Eat & Play Vendor Opportunity",
       "organiser": "2026 Charlotte Fall Arts, Crafts & Food Festival - NC Eat & Play",
@@ -3206,6 +3224,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-fayetteville-2026-festival: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
+    },
+    {
+      "id": "nc-farmers-fall-festival-2026-09-19-7d7cf131",
+      "name": "Farmers Fall Festival - Application Page Vendor Opportunity",
+      "organiser": "Farmers Fall Festival -",
+      "source_url": "https://www.caryfarmersmarket.com/fff-2026-app",
+      "application_url": "https://www.caryfarmersmarket.com/fff-2026-app",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Cary",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-cary-2026-arts-crafts: live first-party route attests Cary, NC, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "nc-fiesta-festival-2026-09-19-e99845c6",
