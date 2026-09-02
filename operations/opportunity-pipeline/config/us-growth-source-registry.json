@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T16:32:43.768Z",
+  "updated_at": "2026-09-02T16:35:01.339Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1334,6 +1334,24 @@
       "event_end": "2027-05-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-jacksonville-2027-government-events: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date range 2027-05-21 to 2027-05-24."
+    },
+    {
+      "id": "fl-krampus-america-convention-2027-eventeny-2027-02-05-3df10bdc",
+      "name": "Krampus America Convention 2027 - Eventeny Vendor Opportunity",
+      "organiser": "Krampus America Convention 2027 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/krampusamericaconvention2027-26290/?srsltid=AfmBOorBtdn9LOvzTx7-jrZmft3aC6bRPAqh3ZGcKytZWeXP9eC4jOm2",
+      "application_url": "https://www.eventeny.com/events/krampusamericaconvention2027-26290/?srsltid=AfmBOorBtdn9LOvzTx7-jrZmft3aC6bRPAqh3ZGcKytZWeXP9eC4jOm2",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "St Petersburg",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-05",
+      "event_end": "2027-02-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-st-petersburg-2027-holiday-market: live first-party route attests St Petersburg, FL, actionable vendor terms, and exact event date range 2027-02-05 to 2027-02-06."
     },
     {
       "id": "fl-lake-nona-farmers-market-sept-16-2026-eventeny-2026-09-16-02949331",
