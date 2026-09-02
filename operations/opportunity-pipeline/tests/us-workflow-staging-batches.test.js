@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import {
+  DEFAULT_MAX_SOURCES_PER_BATCH,
   MAX_FETCH_SUBREQUESTS_PER_BATCH,
   mergeStagingBatches,
   stagingSourceBatches
@@ -26,15 +27,17 @@ function manifest(rows, overrides = {}) {
   };
 }
 
-test('Workflow source batches stay below the free-plan subrequest ceiling', () => {
+test('Workflow source batches stay below both source-count and subrequest ceilings', () => {
   const sources = Array.from({ length: 51 }, (_, index) => ({
     id: `source-${index}`,
     source_url: `https://example.com/${index}`,
     application_url: index % 4 === 0 ? `https://apply.example.com/${index}` : `https://example.com/${index}`
   }));
   const batches = stagingSourceBatches(sources);
+  assert.equal(DEFAULT_MAX_SOURCES_PER_BATCH, 4);
   assert.equal(MAX_FETCH_SUBREQUESTS_PER_BATCH, 36);
-  assert.equal(batches.length, 6);
+  assert.equal(batches.length, 13);
+  assert.ok(batches.every(batch => batch.length <= DEFAULT_MAX_SOURCES_PER_BATCH));
   assert.ok(batches.every(batch => batch.reduce((total, source) => (
     total + (source.source_url === source.application_url ? 3 : 6)
   ), 0) <= MAX_FETCH_SUBREQUESTS_PER_BATCH));
@@ -57,7 +60,10 @@ test('source batching reserves all retry and fallback subrequests and rejects ba
     application_url: `https://application.example/${index}`
   }));
   const batches = stagingSourceBatches(fallbackSources);
-  assert.deepEqual(batches.map(batch => batch.length), [6, 6, 1]);
+  assert.deepEqual(batches.map(batch => batch.length), [4, 4, 4, 1]);
+  assert.ok(batches.every(batch => batch.reduce((total, source) => (
+    total + (source.source_url === source.application_url ? 3 : 6)
+  ), 0) <= MAX_FETCH_SUBREQUESTS_PER_BATCH));
   assert.throws(() => stagingSourceBatches([{ source_url: 'bad', application_url: 'https://example.com' }]), /URLs are required/);
 });
 
@@ -72,6 +78,16 @@ test('state-specific CPU isolation can force one source per Workflow batch', asy
     assert.deepEqual(batches.flat().map(source => source.id), stateConfig.sources.map(source => source.id));
     assert.throws(() => stagingSourceBatches(stateConfig.sources, { maxSources: 0 }), /positive integer/);
   }
+});
+
+test('explicit batch limits can only make the default source isolation stricter', () => {
+  const sources = Array.from({ length: 5 }, (_, index) => ({
+    id: `source-${index}`,
+    source_url: `https://example.com/${index}`,
+    application_url: `https://example.com/${index}`
+  }));
+  assert.deepEqual(stagingSourceBatches(sources, { maxSources: 2 }).map(batch => batch.length), [2, 2, 1]);
+  assert.throws(() => stagingSourceBatches(sources, { maxSources: 0 }), /positive integer/);
 });
 
 test('batch merge preserves controls, counts and cross-batch deduplication', () => {
