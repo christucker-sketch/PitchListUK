@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:47:59.809Z",
+  "updated_at": "2026-09-02T12:53:19.577Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1316,6 +1316,24 @@
       "event_end": "2027-02-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2027-food-truck: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2027-02-27."
+    },
+    {
+      "id": "ga-food-2026-09-26-852a4659",
+      "name": "Food Vendor Application for Saturday's Pride Festival - 2026 Macon Pride Street Festival - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=53398&srsltid=AfmBOorb-9o8Eh62z5enJ0ZmDELg60y0eneepYZ_eo-HVtCUJ2B950iQ",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=53398&srsltid=AfmBOorb-9o8Eh62z5enJ0ZmDELg60y0eneepYZ_eo-HVtCUJ2B950iQ",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Macon",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-macon-2026-festival: live first-party route attests Macon, GA, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "ga-food-2026-10-11-d6c15402",
