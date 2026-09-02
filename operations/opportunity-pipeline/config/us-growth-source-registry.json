@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T11:37:35.508Z",
+  "updated_at": "2026-09-02T11:42:20.718Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1442,6 +1442,24 @@
       "event_end": "2027-01-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2027-food-truck: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-01-05."
+    },
+    {
+      "id": "ma-60th-independence-day-celebrations-city-of-fairfax-va-2027-07-04-56fe5392",
+      "name": "60th Independence Day Celebrations City of Fairfax, VA Vendor Opportunity",
+      "organiser": "60th Independence Day Celebrations City of Fairfax, VA",
+      "source_url": "https://www.fairfaxva.gov/Events-directory/Parks-and-Recreation/Special-Events/Independence-Day-Celebrations",
+      "application_url": "https://www.fairfaxva.gov/Events-directory/Parks-and-Recreation/Special-Events/Independence-Day-Celebrations",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Springfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-springfield-2027-government-events: live first-party route attests Springfield, MA, actionable vendor terms, and exact event date 2027-07-04."
     },
     {
       "id": "ma-boston-local-food-festival-mdash-boston-local-food-2026-09-20-7d436934",
