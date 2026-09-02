@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T10:19:00.354Z",
+  "updated_at": "2026-09-02T10:25:42.563Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1010,6 +1010,24 @@
       "event_end": "2027-07-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-miami-2027-festival: live first-party route attests Miami, FL, actionable vendor terms, and exact event date 2027-07-05."
+    },
+    {
+      "id": "fl-temple-terrace-arts-councilvendor-registration-2026-11-14-c8b2a702",
+      "name": "Temple Terrace Arts CouncilVendor Registration Vendor Opportunity",
+      "organiser": "Temple Terrace Arts CouncilVendor Registration",
+      "source_url": "https://www.templeterraceartscouncil.org/arts-crafts-festival/vendor-registration",
+      "application_url": "https://www.templeterraceartscouncil.org/arts-crafts-festival/vendor-registration",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tampa",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tampa-2026-arts-crafts: live first-party route attests Tampa, FL, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
     },
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
