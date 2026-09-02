@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T18:28:16.044Z",
-  "source": "reviewed-us-florida-cloud-promotion:e1f6c864609679d63ed8ad303dadddb3975ddac5ec2641d0ddda5a2bb5cdb9db",
-  "total": 332,
+  "exported_at": "2026-09-02T18:40:53.078Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:ea52748cec7d3d716007087841236b79724aa5e83f1f419e4ab6d1de1402b467",
+  "total": 333,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12672,6 +12672,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_a637f7e380175d004b30"
+    },
+    {
+      "stable_id": "opp_us_7897c5e0b850a4241946",
+      "event_name": "FOOD VENDORS - 2027 Fayetteville Dogwood Festival - Eventeny Vendor Opportunity",
+      "organiser": "FOOD VENDORS - 2027 Fayetteville Dogwood Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=48749&srsltid=AfmBOopb_euYuFUxfHDlHw2HJrut0CjtD5bYIDDPfrPT9zV-RXASK6xQ",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=48749&srsltid=AfmBOopb_euYuFUxfHDlHw2HJrut0CjtD5bYIDDPfrPT9zV-RXASK6xQ",
+      "location": "Fayetteville",
+      "locality": "Fayetteville",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-23",
+      "event_end": "2027-04-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-food-vendors-2027-fayetteville-dogwood-festival-eventeny-2027-04-23-db06b65b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_7897c5e0b850a4241946"
     }
   ]
 };
