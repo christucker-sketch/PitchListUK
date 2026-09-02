@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:04:37.355Z",
+  "updated_at": "2026-09-02T14:09:05.058Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3226,6 +3226,24 @@
       "evidence": "Cloudflare discovery va-richmond-2026-holiday-market: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date 2026-12-12."
     },
     {
+      "id": "va-2027-around-the-world-food-2027-08-28-769fe868",
+      "name": "2027 Around The World Food Vendor Registration",
+      "organiser": "2027 Around The World Food",
+      "source_url": "https://chiceventsdc.com/2026-around-the-world-food-vendor-registration",
+      "application_url": "https://chiceventsdc.com/2026-around-the-world-food-vendor-registration",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Richmond",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-28",
+      "event_end": "2027-08-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-richmond-2027-festival: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date 2027-08-28."
+    },
+    {
       "id": "va-2nd-street-festival-2026-10-03-00eee4d3",
       "name": "2nd Street Festival Vendor Opportunity",
       "organiser": "2nd Street Festival",
@@ -3242,6 +3260,24 @@
       "event_end": "2026-10-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-richmond-2026-festival: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date range 2026-10-03 to 2026-10-04."
+    },
+    {
+      "id": "va-artist-vendor-2027-03-18-ea6b96e5",
+      "name": "Artist, Vendor & Exhibitor applications - GalaxyCon Richmond 2027 - Eventeny",
+      "organiser": "Artist, Vendor &",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=46390&srsltid=AfmBOoqWJFoTr6XzPu-BiWI0X08lD4OrjYAnTfKNUiULy-4i6CPshtMU",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=46390&srsltid=AfmBOoqWJFoTr6XzPu-BiWI0X08lD4OrjYAnTfKNUiULy-4i6CPshtMU",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Richmond",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-18",
+      "event_end": "2027-03-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-richmond-2027-festival: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date range 2027-03-18 to 2027-03-21."
     },
     {
       "id": "va-concert-zone-the-patriotic-festival-virginia-beach-memorial-day-weeken-2027-05-28-e07575f7",
