@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:42:02.263Z",
+  "updated_at": "2026-09-02T12:47:59.809Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1012,6 +1012,24 @@
       "evidence": "Cloudflare discovery fl-miami-2027-festival: live first-party route attests Miami, FL, actionable vendor terms, and exact event date range 2027-01-16 to 2027-01-17."
     },
     {
+      "id": "fl-battlebrosevents-com-2026-10-10-5a3b7114",
+      "name": "Vendor Applications | Orlando Fl",
+      "organiser": "battlebrosevents.com",
+      "source_url": "https://www.battlebrosevents.com/vendorsorlando",
+      "application_url": "https://www.battlebrosevents.com/vendorsorlando",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Orlando",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-orlando-2026-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
       "id": "fl-fair-vendors-at-florida-state-fairgrounds-2027-02-04-6a4e0590",
       "name": "Fair Vendors at Florida State Fairgrounds Vendor Opportunity",
       "organiser": "Fair Vendors at Florida State Fairgrounds",
@@ -1154,6 +1172,24 @@
       "event_end": "2027-07-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-miami-2027-festival: live first-party route attests Miami, FL, actionable vendor terms, and exact event date 2027-07-05."
+    },
+    {
+      "id": "fl-milk-mart-florida-s-largest-local-art-and-food-festival-2026-12-20-fb6e5c88",
+      "name": "Milk Mart - Florida's largest local art and food festival. Vendor Opportunity",
+      "organiser": "Milk Mart - Florida's largest local art and food festival.",
+      "source_url": "https://www.milkmartorlando.com",
+      "application_url": "https://www.milkmartorlando.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Orlando",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-20",
+      "event_end": "2026-12-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-orlando-2026-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-12-20."
     },
     {
       "id": "fl-tampa-florida-concert-tampa-bay-blues-festival-2027-04-09-b7610466",
