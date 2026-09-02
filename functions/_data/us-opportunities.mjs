@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T11:13:58.954Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:a87d91310284d5cb5cb243d6b59ccb1edb2fba972f2542087f9fd4869978bb06",
-  "total": 265,
+  "exported_at": "2026-09-02T11:20:07.096Z",
+  "source": "reviewed-us-arizona-cloud-promotion:313f9537552fa7fe9c485e786f7258d755e2e5be26629a4597165a8e6cd1a285",
+  "total": 266,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10138,6 +10138,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_9dd0afa20d55dfb9c16d"
+    },
+    {
+      "stable_id": "opp_us_e0b0862f17e7e081f653",
+      "event_name": "Merry Main Street | Holiday Events in Mesa, AZ Vendor Opportunity",
+      "organiser": "Merry Main Street | Holiday Events in Mesa, AZ",
+      "source_url": "https://www.visitmesa.com/events/annual-events/merry-main-street/",
+      "application_url": "https://www.visitmesa.com/events/annual-events/merry-main-street",
+      "location": "Mesa",
+      "locality": "Mesa",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-merry-main-street-holiday-events-in-mesa-az-2026-11-28-bc6b99bb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_e0b0862f17e7e081f653"
     }
   ]
 };
