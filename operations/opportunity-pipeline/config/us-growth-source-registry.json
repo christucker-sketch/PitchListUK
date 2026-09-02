@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T11:10:25.074Z",
+  "updated_at": "2026-09-02T11:12:49.988Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1748,6 +1748,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-festival: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
+    },
+    {
+      "id": "nc-holiday-market-2026-11-06-d30856c0",
+      "name": "Holiday Market Exhibitor Information",
+      "organiser": "Holiday Market",
+      "source_url": "https://gilmoreshows.com/holiday-market-exhibitor-information",
+      "application_url": "https://gilmoreshows.com/holiday-market-exhibitor-information",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Greensboro",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-greensboro-2026-holiday-market: live first-party route attests Greensboro, NC, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-08."
     },
     {
       "id": "nc-magical-meetups-the-emperor-s-new-market-eventeny-2027-06-06-65425c62",
