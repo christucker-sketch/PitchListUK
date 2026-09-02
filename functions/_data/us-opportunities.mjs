@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T17:23:27.634Z",
-  "source": "reviewed-us-georgia-cloud-promotion:be8467fce2d0e7f12ce988a021c3a7b380b9d9800dd5542ff1f512e8f0f027d5",
-  "total": 318,
+  "exported_at": "2026-09-02T17:31:30.747Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:18938b8ba15af31b34692be1a91b1338f37a64c9164ee7969a988550f340e85b",
+  "total": 319,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12140,6 +12140,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_44351ca624fa2d7ba740"
+    },
+    {
+      "stable_id": "opp_us_cef1d54d8fe580ad81dd",
+      "event_name": "Vendor Registration September 25th, 26th and 27th, 2026 NJ Horror Con & Film Festival Tickets",
+      "organiser": "simpletix.com",
+      "source_url": "https://www.simpletix.com/e/vendor-registration-september-25th-26th-an-tickets-255851",
+      "application_url": "https://www.simpletix.com/e/vendor-registration-september-25th-26th-an-tickets-255851",
+      "location": "Woodbridge",
+      "locality": "Woodbridge",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "08830",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-simpletix-com-2026-09-25-ae16ea26",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_cef1d54d8fe580ad81dd"
     }
   ]
 };
