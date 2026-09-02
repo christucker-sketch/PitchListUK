@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T15:22:18.714Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:a6e6f8c4622ebb0d7d4a4bf8240c7d8374d01e64de095dbdce008f7cc4292bc4",
-  "total": 303,
+  "exported_at": "2026-09-02T15:26:12.814Z",
+  "source": "reviewed-us-washington-cloud-promotion:6376f3b0ca9ba72550103b4f22650a0aca00aa7c9330056e667702afdf30ba37",
+  "total": 304,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11575,6 +11575,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_a1a8d56fa84f7eb74cb4"
+    },
+    {
+      "stable_id": "opp_us_e96efda1704452525ca2",
+      "event_name": "North-West Ukrainian International Festival 2026 Vendor Opportunity",
+      "organiser": "North-West Ukrainian International Festival 2026",
+      "source_url": "https://ukrainiansociety.org/festival",
+      "application_url": "https://ukrainiansociety.org/festival",
+      "location": "Bellevue",
+      "locality": "Bellevue",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "10201",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-north-west-ukrainian-international-festival-2026-2026-09-12-73fd3827",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_e96efda1704452525ca2"
     }
   ]
 };
