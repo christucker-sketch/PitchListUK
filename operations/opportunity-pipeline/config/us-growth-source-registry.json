@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T10:31:04.209Z",
+  "updated_at": "2026-09-02T10:42:03.528Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1084,6 +1084,24 @@
       "evidence": "Cloudflare discovery ga-atlanta-2027-festival: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2027-05-08 to 2027-05-09."
     },
     {
+      "id": "ga-columbus-fall-craft-and-vendor-market-hometown-vendor-market-2026-11-14-fee596de",
+      "name": "Columbus Fall Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Columbus Fall Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/columbusfall",
+      "application_url": "https://hometownvendormarket.com/columbusfall",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Columbus",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-columbus-2026-festival: live first-party route attests Columbus, GA, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
+    },
+    {
       "id": "ga-event-details-u-s-national-park-service-2027-02-27-2e6e3735",
       "name": "Event Details (U.S. National Park Service) Vendor Opportunity",
       "organiser": "Event Details (U.S. National Park Service)",
@@ -1136,6 +1154,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-augusta-2026-holiday-market: live first-party route attests Augusta, GA, actionable vendor terms, and exact event date 2026-11-07."
+    },
+    {
+      "id": "ga-uptown-columbus-fall-festival-2026-2026-09-19-229024e3",
+      "name": "Uptown Columbus Fall Festival 2026 Vendor Opportunity",
+      "organiser": "Uptown Columbus Fall Festival 2026",
+      "source_url": "https://vendorsmap.com/events/25429",
+      "application_url": "https://vendorsmap.com/events/25429",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Columbus",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-columbus-2026-festival: live first-party route attests Columbus, GA, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-26."
     },
     {
       "id": "ga-yellow-daisy-festival-at-stone-mountain-park-a-celebration-of-arts-cra-2026-09-10-8fe5dcb6",
