@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T16:59:31.562Z",
+  "updated_at": "2026-09-02T17:01:36.006Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3315,6 +3315,24 @@
       "event_end": "2027-08-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-akron-2027-festival: live first-party route attests Akron, OH, actionable vendor terms, and exact event date 2027-08-08."
+    },
+    {
+      "id": "oh-centerville-fall-fest-expands-hours-and-entertainment-offerings-with-o-2026-10-03-71f8593b",
+      "name": "Centerville Fall Fest Expands Hours and Entertainment Offerings with Oct. 3 Event • Centerville, OH Vendor Opportunity",
+      "organiser": "Centerville Fall Fest Expands Hours and Entertainment Offerings with Oct. 3 Event • Centerville, OH",
+      "source_url": "https://www.centervilleohio.gov/m/newsflash/home/detail/449",
+      "application_url": "https://www.centervilleohio.gov/m/newsflash/home/detail/449",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Dayton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-dayton-2026-government-events: live first-party route attests Dayton, OH, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "oh-cincy-soul-food-truck-festival-cancelled-at-last-minute-impacting-oper-2027-07-10-454ab653",
