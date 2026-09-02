@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-01T20:49:37.741Z",
+  "updated_at": "2026-09-02T08:57:28.100Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -849,6 +849,24 @@
       "evidence": "Cloudflare discovery co-westminster-2026-farmers-market: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
     },
     {
+      "id": "fl-2027-beaux-arts-festival-of-art-2027-01-16-b29422c6",
+      "name": "2027 Beaux Arts Festival of Art Vendor Opportunity",
+      "organiser": "2027 Beaux Arts Festival of Art",
+      "source_url": "https://beauxartsmiami.org/pages/2027-festival-of-art",
+      "application_url": "https://beauxartsmiami.org/pages/2027-festival-of-art",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Miami",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-16",
+      "event_end": "2027-01-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-miami-2027-festival: live first-party route attests Miami, FL, actionable vendor terms, and exact event date range 2027-01-16 to 2027-01-17."
+    },
+    {
       "id": "fl-foodees-fest-jacksonville-fl-2027-01-01-1eea50d9",
       "name": "Foodees Fest Jacksonville, FL Vendor Opportunity",
       "organiser": "Foodees Fest Jacksonville, FL",
@@ -901,6 +919,24 @@
       "event_end": "2027-05-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-jacksonville-2027-government-events: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date range 2027-05-21 to 2027-05-24."
+    },
+    {
+      "id": "fl-miami-all-nartions-water-festival-family-day-july-5th-miami-all-nation-2027-07-05-c79ce8dd",
+      "name": "Miami All Nartions Water Festival Family Day July 5th - Miami All Nations Water Festival - July 5th - Eventeny Vendor Opportunity",
+      "organiser": "Miami All Nartions Water Festival Family Day July 5th - Miami All Nations Water Festival - July 5th - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=44967&srsltid=AfmBOopWphHiMMFL46du5t_oCrt2ym06KNoa035gBAexR7S4Eez09K23",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=44967&srsltid=AfmBOopWphHiMMFL46du5t_oCrt2ym06KNoa035gBAexR7S4Eez09K23",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Miami",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-05",
+      "event_end": "2027-07-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-miami-2027-festival: live first-party route attests Miami, FL, actionable vendor terms, and exact event date 2027-07-05."
     },
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
