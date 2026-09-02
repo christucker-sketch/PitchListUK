@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T11:46:35.411Z",
-  "source": "reviewed-us-california-cloud-promotion:0967d73a68402635ca6ae042b1ce298c1a924bf4f1d8cff505623c5be5f0de9d",
-  "total": 269,
+  "exported_at": "2026-09-02T11:49:41.399Z",
+  "source": "reviewed-us-florida-cloud-promotion:691bd41e4f9fd264ed54853e0c172fa31c6fd973f9982acd70aa2d6033424509",
+  "total": 270,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10288,6 +10288,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_778bfb335b36d29d362a"
+    },
+    {
+      "stable_id": "opp_us_08d1ff92414f919f1307",
+      "event_name": "Tampa Florida Concert - Tampa Bay Blues Festival Vendor Opportunity",
+      "organiser": "Tampa Florida Concert - Tampa Bay Blues Festival",
+      "source_url": "https://www.tampabaybluesfest.com/",
+      "application_url": "https://www.tampabaybluesfest.com",
+      "location": "Tampa",
+      "locality": "Tampa",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "33701",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-09",
+      "event_end": "2027-04-09",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-tampa-florida-concert-tampa-bay-blues-festival-2027-04-09-b7610466",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_08d1ff92414f919f1307"
     }
   ]
 };
