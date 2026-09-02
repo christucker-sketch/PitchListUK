@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T14:15:48.413Z",
-  "source": "reviewed-us-arizona-cloud-promotion:5a8e96d4ed9f1b76eed4e8c0c94d52fd0da89a7ba34adb3ae4c705227cbbd534",
-  "total": 294,
+  "exported_at": "2026-09-02T14:31:33.790Z",
+  "source": "reviewed-us-virginia-cloud-promotion:f61750e2e6d4fb52469da7081d04e6f2f4bdf94cfdff4779c397f943b19de2fa",
+  "total": 295,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11238,6 +11238,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_e946839a15e8ad02379a"
+    },
+    {
+      "stable_id": "opp_us_a2d0c10d35c11e512beb",
+      "event_name": "Food Vendors - Arts in the Park Vendor Opportunity",
+      "organiser": "Food Vendors - Arts in the Park",
+      "source_url": "https://richmondartsinthepark.com/food-vendors/",
+      "application_url": "https://richmondartsinthepark.com/food-vendors",
+      "location": "Richmond",
+      "locality": "Richmond",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-01",
+      "event_end": "2027-05-02",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-food-vendors-arts-in-the-park-2027-05-01-2c4c89b0",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_a2d0c10d35c11e512beb"
     }
   ]
 };
