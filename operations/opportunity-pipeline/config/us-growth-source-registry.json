@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:43:04.172Z",
+  "updated_at": "2026-09-02T18:47:24.577Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -19,6 +19,24 @@
       "event_end": "2027-01-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-mesa-2027-festival: live first-party route attests Mesa, AZ, actionable vendor terms, and exact event date range 2027-01-29 to 2027-01-30."
+    },
+    {
+      "id": "az-downtown-glendale-arts-culture-fest-2027-01-30-d8bc907c",
+      "name": "Downtown Glendale Arts, Culture Fest Vendor Opportunity",
+      "organiser": "Downtown Glendale Arts, Culture Fest",
+      "source_url": "https://artstateaz.org/downtown-glendale-arts-culture-fest",
+      "application_url": "https://artstateaz.org/downtown-glendale-arts-culture-fest",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Glendale",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-01-30",
+      "event_end": "2027-01-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-glendale-2027-festival: live first-party route attests Glendale, AZ, actionable vendor terms, and exact event date 2027-01-30."
     },
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
