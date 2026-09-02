@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:31:44.596Z",
-  "source": "reviewed-us-arizona-cloud-promotion:1f636422564e3002f01fe053e421be31ba27135a46c63b7175aa411e4099ccaf",
-  "total": 287,
+  "exported_at": "2026-09-02T13:56:12.561Z",
+  "source": "reviewed-us-florida-cloud-promotion:5bf8d522742867fd0a5c97559bc1ee81355c2c049d0b3be689f859204c833b4d",
+  "total": 288,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10974,6 +10974,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_85fab00bf83ab3eb9be7"
+    },
+    {
+      "stable_id": "opp_us_5e16ebe34847c86cfa7d",
+      "event_name": "Festival Info - Welcome To Rockville | May 6-7-8-9, 2027 Vendor Opportunity",
+      "organiser": "Festival Info - Welcome To Rockville | May 6-7-8-9, 2027",
+      "source_url": "https://welcometorockville.com/festival-info/",
+      "application_url": "https://welcometorockville.com/festival-info",
+      "location": "Orlando",
+      "locality": "Orlando",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "32114",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-06",
+      "event_end": "2027-05-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-festival-info-welcome-to-rockville-may-6-7-8-9-2027-2027-05-06-c8eaffb1",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_5e16ebe34847c86cfa7d"
     }
   ]
 };
