@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T11:20:07.096Z",
-  "source": "reviewed-us-arizona-cloud-promotion:313f9537552fa7fe9c485e786f7258d755e2e5be26629a4597165a8e6cd1a285",
-  "total": 266,
+  "exported_at": "2026-09-02T11:24:41.065Z",
+  "source": "reviewed-us-florida-cloud-promotion:4cbebb64c986232a77835fb6be7c56df87de59c90436e2c389d0056a016391b4",
+  "total": 267,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10175,6 +10175,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_e0b0862f17e7e081f653"
+    },
+    {
+      "stable_id": "opp_us_15ddb6840963805c1ac6",
+      "event_name": "Fair Vendors at Florida State Fairgrounds Vendor Opportunity",
+      "organiser": "Fair Vendors at Florida State Fairgrounds",
+      "source_url": "https://floridastatefairgrounds.com/join-the-fun/vendors/",
+      "application_url": "https://floridastatefairgrounds.com/join-the-fun/vendors",
+      "location": "Tampa",
+      "locality": "Tampa",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-02-04",
+      "event_end": "2027-02-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-fair-vendors-at-florida-state-fairgrounds-2027-02-04-6a4e0590",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_15ddb6840963805c1ac6"
     }
   ]
 };
