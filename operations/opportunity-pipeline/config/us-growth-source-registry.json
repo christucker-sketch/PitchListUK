@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T11:06:53.904Z",
+  "updated_at": "2026-09-02T11:10:25.074Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1154,6 +1154,24 @@
       "event_end": "2026-10-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-food-truck: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-10-11 to 2026-10-12."
+    },
+    {
+      "id": "ga-fountaincityclassic-com-2026-11-06-33edc27f",
+      "name": "Vendor Registration",
+      "organiser": "fountaincityclassic.com",
+      "source_url": "https://fountaincityclassic.com/registration/vendor-registration",
+      "application_url": "https://fountaincityclassic.com/registration/vendor-registration",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Columbus",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-columbus-2026-food-truck: live first-party route attests Columbus, GA, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
     },
     {
       "id": "ga-holiday-craft-fair-2026-11-07-67f62500",
