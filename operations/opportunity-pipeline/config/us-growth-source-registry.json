@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:14:23.321Z",
+  "updated_at": "2026-09-02T18:18:48.221Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3154,6 +3154,24 @@
       "application_deadline": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-fayetteville-2026-arts-crafts: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2026-10-09 to 2026-10-10."
+    },
+    {
+      "id": "nc-vendor-events-in-festival-park-and-downtown-fayetteville-nc-2027-04-24-7edb08c0",
+      "name": "Vendor Events in Festival Park And Downtown Fayetteville, NC",
+      "organiser": "Vendor Events in Festival Park And Downtown Fayetteville, NC",
+      "source_url": "https://vendorsmap.com/cities/festival-park-and-downtown-fayetteville",
+      "application_url": "https://vendorsmap.com/cities/festival-park-and-downtown-fayetteville",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Fayetteville",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-04-24",
+      "event_end": "2027-04-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-fayetteville-2027-farmers-market: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2027-04-24 to 2027-04-26."
     },
     {
       "id": "nc-vendor-events-in-west-jefferson-nc-2027-04-11-f805dae5",
