@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:46:49.654Z",
+  "updated_at": "2026-09-02T14:50:46.216Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2378,6 +2378,25 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-durham-2026-government-events: live first-party route attests Durham, NC, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
+    },
+    {
+      "id": "nc-ncma-winston-salem-north-carolina-museum-of-art-winston-salem-2026-09-12-503de6cb",
+      "name": "NCMA Winston-Salem – North Carolina Museum of Art, Winston-Salem Vendor Opportunity",
+      "organiser": "NCMA Winston-Salem – North Carolina Museum of Art, Winston-Salem",
+      "source_url": "https://ncmawinstonsalem.gov",
+      "application_url": "https://ncmawinstonsalem.gov",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Winston-Salem",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "2026-09-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-winston-salem-2026-government-events: live first-party route attests Winston-Salem, NC, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "nc-north-carolina-farmers-market-vendor-permit-guide-2026-2026-12-31-7a5157f7",
