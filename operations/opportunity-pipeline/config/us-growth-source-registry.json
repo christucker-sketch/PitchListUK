@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:39:50.566Z",
+  "updated_at": "2026-09-02T18:43:04.172Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2576,6 +2576,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-worcester-2026-arts-crafts: live first-party route attests Worcester, MA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "mi-63rd-annual-east-lansing-art-festival-set-for-saturday-sunday-may-16-1-2027-05-16-ccc981b7",
+      "name": "63rd Annual East Lansing Art Festival Set for Saturday-Sunday, May 16-17 • East Lansing, MI Vendor Opportunity",
+      "organiser": "63rd Annual East Lansing Art Festival Set for Saturday-Sunday, May 16-17 • East Lansing, MI",
+      "source_url": "https://www.cityofeastlansing.com/m/newsflash/Home/Detail/2511",
+      "application_url": "https://www.cityofeastlansing.com/m/newsflash/Home/Detail/2511",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Lansing",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-16",
+      "event_end": "2027-05-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-lansing-2027-arts-crafts: live first-party route attests Lansing, MI, actionable vendor terms, and exact event date range 2027-05-16 to 2027-05-17."
     },
     {
       "id": "mi-art-apples-festival-2027-09-11-c2f0e112",
