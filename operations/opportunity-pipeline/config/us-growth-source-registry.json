@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:03:48.810Z",
+  "updated_at": "2026-09-02T15:06:27.477Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3369,6 +3369,24 @@
       "event_end": "2026-09-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-san-antonio-2026-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date 2026-09-01."
+    },
+    {
+      "id": "tx-contact-michelada-festival-fort-worth-2026-10-11-226e6c9d",
+      "name": "Contact - Michelada Festival Fort Worth Vendor Opportunity",
+      "organiser": "Contact - Michelada Festival Fort Worth",
+      "source_url": "https://micheladafestival.org/contact",
+      "application_url": "https://micheladafestival.org/contact",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Fort Worth",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-fort-worth-2026-festival: live first-party route attests Fort Worth, TX, actionable vendor terms, and exact event date 2026-10-11."
     },
     {
       "id": "tx-farmers-markets-in-dallas-tx-2026-2026-10-24-34dfd7bb",
