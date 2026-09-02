@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:47:24.577Z",
+  "updated_at": "2026-09-02T18:53:14.155Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1372,6 +1372,24 @@
       "evidence": "Cloudflare discovery fl-jacksonville-2027-festival: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date range 2027-01-01 to 2027-01-03."
     },
     {
+      "id": "fl-foodeesfest-tallahassee-florida-40-food-trucks-and-craft-vendors-gover-2027-01-22-280b95d4",
+      "name": "FOODEESFEST Tallahassee, Florida (40+ food trucks and craft vendors!), Governor’s Square, Tallahassee, 22 January to 24 January Vendor Opportunity",
+      "organiser": "FOODEESFEST Tallahassee, Florida (40+ food trucks and craft vendors!), Governor’s Square, Tallahassee, 22 January to 24 January",
+      "source_url": "https://allevents.in/tallahassee/foodeesfest-tallahassee-florida-40-food-trucks-and-craft-vendors/100001992363733560",
+      "application_url": "https://allevents.in/tallahassee/foodeesfest-tallahassee-florida-40-food-trucks-and-craft-vendors/100001992363733560",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tallahassee",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-22",
+      "event_end": "2027-01-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tallahassee-2027-food-truck: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date range 2027-01-22 to 2027-01-24."
+    },
+    {
       "id": "fl-home-market-days-2026-12-06-12093b95",
       "name": "Home - Market Days Vendor Opportunity",
       "organiser": "Home - Market Days",
@@ -1514,6 +1532,24 @@
       "event_end": "2026-12-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2026-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-12-20."
+    },
+    {
+      "id": "fl-tallahassee-foodees-fest-eventeny-2027-01-22-7c1aa46d",
+      "name": "Tallahassee Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Tallahassee Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/tallahassee-foodees-fest-31716/?srsltid=AfmBOopOAAnTxH97tnoWl4AgXNU9LgzO-Pjt6wwGpf308D6sLKQoBDZe",
+      "application_url": "https://www.eventeny.com/events/tallahassee-foodees-fest-31716/?srsltid=AfmBOopOAAnTxH97tnoWl4AgXNU9LgzO-Pjt6wwGpf308D6sLKQoBDZe",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tallahassee",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-22",
+      "event_end": "2027-01-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tallahassee-2027-food-truck: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date range 2027-01-22 to 2027-01-24."
     },
     {
       "id": "fl-tallahassee-foodees-fest-eventeny-2027-01-22-811d56e9",
