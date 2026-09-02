@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T20:01:10.137Z",
+  "updated_at": "2026-09-02T20:03:42.603Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3982,6 +3982,24 @@
       "event_end": "2026-12-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-albany-2026-arts-crafts: live first-party route attests Albany, NY, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
+    },
+    {
+      "id": "ny-be-a-sponsor-2026-10-19-6aff3309",
+      "name": "Be A Sponsor Vendor Opportunity",
+      "organiser": "Be A Sponsor",
+      "source_url": "https://newrochellearts.org/be-a-sponsor",
+      "application_url": "https://newrochellearts.org/be-a-sponsor",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "New Rochelle",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-19",
+      "event_end": "2026-10-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-new-rochelle-2026-food-truck: live first-party route attests New Rochelle, NY, actionable vendor terms, and exact event date 2026-10-19."
     },
     {
       "id": "ny-cny-regional-market-2026-syracuse-ny-2026-10-13-f18c8f10",
