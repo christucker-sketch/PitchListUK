@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T16:33:36.894Z",
-  "source": "reviewed-us-texas-cloud-promotion:c6dd7c41b57ca5640ce6e58941dea717cc4d3fb289da34a70782fff6a794ee4e",
-  "total": 311,
+  "exported_at": "2026-09-02T16:49:12.532Z",
+  "source": "reviewed-us-arizona-cloud-promotion:6df2f83e24248b6c6baaa075ff762c9c713130fa4ef91ed21c342c167aab9220",
+  "total": 312,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11878,6 +11878,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_e1cd09e3c2bf13578d4a"
+    },
+    {
+      "stable_id": "opp_us_f6c8ad81902774e4da44",
+      "event_name": "Apply as a Food Vendor",
+      "organiser": "scottsdalebookfestival.com",
+      "source_url": "https://www.scottsdalebookfestival.com/apply/food-vendors",
+      "application_url": "https://www.scottsdalebookfestival.com/apply/food-vendors",
+      "location": "Scottsdale",
+      "locality": "Scottsdale",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-30",
+      "event_end": "2027-01-30",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-scottsdalebookfestival-com-2027-01-30-3ff70137",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_f6c8ad81902774e4da44"
     }
   ]
 };
