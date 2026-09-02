@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T10:32:01.975Z",
-  "source": "reviewed-us-ohio-cloud-promotion:630b02e5d933ed5fc276e10a9afce4ac34ff8371e5cdc223af8649c26d396c59",
-  "total": 258,
+  "exported_at": "2026-09-02T10:42:53.050Z",
+  "source": "reviewed-us-georgia-cloud-promotion:adaedd2ba72aab39d1e4e365c6593885afecaca7850b591bed6d3fdec3bd8483",
+  "total": 259,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9875,6 +9875,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_bd5dc0f0ea5f6813372e"
+    },
+    {
+      "stable_id": "opp_us_da3ee2f169ebeaf5e77b",
+      "event_name": "Columbus Fall Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Columbus Fall Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/columbusfall/",
+      "application_url": "https://hometownvendormarket.com/columbusfall",
+      "location": "Columbus",
+      "locality": "Columbus",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "31909",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-columbus-fall-craft-and-vendor-market-hometown-vendor-market-2026-11-14-fee596de",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_da3ee2f169ebeaf5e77b"
     }
   ]
 };
