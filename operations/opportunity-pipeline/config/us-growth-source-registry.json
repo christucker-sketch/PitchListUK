@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:27:17.276Z",
+  "updated_at": "2026-09-02T18:31:14.204Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2108,6 +2108,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-chicago-2026-holiday-market: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date 2026-09-27."
+    },
+    {
+      "id": "il-iu-board-craft-and-vendor-fair-illini-union-2027-04-11-981287d5",
+      "name": "IU Board Craft and Vendor Fair | Illini Union",
+      "organiser": "IU Board Craft and Vendor Fair | Illini Union",
+      "source_url": "https://union.illinois.edu/iu-board-craft-and-vendor-fair",
+      "application_url": "https://union.illinois.edu/iu-board-craft-and-vendor-fair",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Springfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-11",
+      "event_end": "2027-04-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-springfield-2027-arts-crafts: live first-party route attests Springfield, IL, actionable vendor terms, and exact event date 2027-04-11."
     },
     {
       "id": "il-naperville-food-truck-festival-2026-recap-highlights-annual-guide-2027-05-09-626d9e6b",
