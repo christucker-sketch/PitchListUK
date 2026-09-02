@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:01:52.328Z",
+  "updated_at": "2026-09-02T14:04:37.355Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2270,6 +2270,24 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2027-arts-crafts: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2027-06-06."
+    },
+    {
+      "id": "nc-major-annual-events-2027-01-01-18fbcaa2",
+      "name": "Major Annual Events Vendor Opportunity",
+      "organiser": "Major Annual Events",
+      "source_url": "https://www.discoverdurham.com/events/annual-events",
+      "application_url": "https://www.discoverdurham.com/events/annual-events",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Durham",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-durham-2027-festival: live first-party route attests Durham, NC, actionable vendor terms, and exact event date 2027-01-01."
     },
     {
       "id": "nc-n-c-state-fair-event-calendar-2026-11-06-e8de6574",
