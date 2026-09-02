@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T14:47:51.081Z",
-  "source": "reviewed-us-ohio-cloud-promotion:ef6d72e9e160701d51c36abd37256bb86918cd73a4444589e72ae8e115e6dd36",
-  "total": 297,
+  "exported_at": "2026-09-02T14:59:09.521Z",
+  "source": "reviewed-us-virginia-cloud-promotion:2adfb4b954a726cd236eb765c1ccb30f7eed933e09aa4d08d7dc749df1b2ccd4",
+  "total": 298,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11349,6 +11349,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_e1367666f513e01dcde5"
+    },
+    {
+      "stable_id": "opp_us_ebc3e720682b9e62ecc5",
+      "event_name": "Calendar • Newport News Fall Festival Vendor Opportunity",
+      "organiser": "Calendar • Newport News Fall Festival",
+      "source_url": "https://www.nnva.gov/calendar.aspx?EID=1614",
+      "application_url": "https://www.nnva.gov/calendar.aspx?EID=1614",
+      "location": "Newport News",
+      "locality": "Newport News",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "13560",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-05",
+      "event_end": "2026-10-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-calendar-newport-news-fall-festival-2026-10-05-665fcc51",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_ebc3e720682b9e62ecc5"
     }
   ]
 };
