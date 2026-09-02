@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:28:33.743Z",
+  "updated_at": "2026-09-02T12:34:13.563Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1334,6 +1334,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-augusta-2026-holiday-market: live first-party route attests Augusta, GA, actionable vendor terms, and exact event date 2026-11-07."
+    },
+    {
+      "id": "ga-macon-and-central-georgia-farmer-s-markets-find-a-local-farmer-s-marke-2026-11-06-b07bc897",
+      "name": "Macon and central Georgia Farmer's Markets: Find a local farmer's market near you in Macon and central Georgia for fruit, vegetables, pumpkins, organic foods,lo Vendor Opportunity",
+      "organiser": "Macon and central Georgia Farmer's Markets: Find a local farmer's market near you in Macon and central Georgia for fruit, vegetables, pumpkins, organic foods,lo",
+      "source_url": "https://www.localfarmmarkets.org/GAmaconfarmmarkets.php",
+      "application_url": "https://www.localfarmmarkets.org/GAmaconfarmmarkets.php",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Macon",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-macon-2026-farmers-market: live first-party route attests Macon, GA, actionable vendor terms, and exact event date 2026-11-06."
     },
     {
       "id": "ga-uptown-columbus-fall-festival-2026-2026-09-19-229024e3",
