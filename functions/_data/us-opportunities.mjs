@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:24:52.308Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:f5855c2d4084e1002850f360a33c9d1f0855db275f9b5dfa8954bb4132743e17",
-  "total": 285,
+  "exported_at": "2026-09-02T13:28:18.808Z",
+  "source": "reviewed-us-virginia-cloud-promotion:c0368d01bd67ed736d34bb7baab06c0b5711aabea6e841b2cb452604dddccc6f",
+  "total": 286,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10896,6 +10896,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_dec81dae2ac884496495"
+    },
+    {
+      "stable_id": "opp_us_82fb01c61ea8a02ca7d6",
+      "event_name": "2026 Old Town Alexandria Christmas Market and Holiday Craft Show Vendor Registration Form",
+      "organiser": "2026 Old Town Alexandria Christmas Market and Holiday Craft Show",
+      "source_url": "https://chiceventsdc.com/2026-old-town-alexandria-christmas-market-and-holiday-craft-show-vendor-registration-form/",
+      "application_url": "https://chiceventsdc.com/2026-old-town-alexandria-christmas-market-and-holiday-craft-show-vendor-registration-form",
+      "location": "Richmond",
+      "locality": "Richmond",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-2026-old-town-alexandria-christmas-market-and-holiday-craft-show-2026-12-12-36eafdca",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_82fb01c61ea8a02ca7d6"
     }
   ]
 };
