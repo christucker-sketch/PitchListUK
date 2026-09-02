@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T15:54:26.214Z",
-  "source": "reviewed-us-new-york-cloud-promotion:eb5b6422327c01fee217c78fb6bcc07a222a3c14b9e709cd8814225d28b476d6",
-  "total": 308,
+  "exported_at": "2026-09-02T16:07:22.086Z",
+  "source": "reviewed-us-washington-cloud-promotion:c99a9201234f73b8b760d67c7999d90d55ac74e6b88f1258cce7fb620dc3b6a8",
+  "total": 309,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11765,6 +11765,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_ae6541610795ec293536"
+    },
+    {
+      "stable_id": "opp_us_28a934a6eb6c39b14663",
+      "event_name": "Walkable Wonders: The Tiffin-Seneca Farmers Market Vendor Opportunity",
+      "organiser": "Walkable Wonders: The Tiffin-Seneca Farmers Market",
+      "source_url": "https://inside.heidelberg.edu/news/071522/walkable-wonders-tiffin-seneca-farmers-market",
+      "application_url": "https://inside.heidelberg.edu/news/071522/walkable-wonders-tiffin-seneca-farmers-market",
+      "location": "Bellevue",
+      "locality": "Bellevue",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-10-29",
+      "event_end": "2027-10-29",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-walkable-wonders-the-tiffin-seneca-farmers-market-2027-10-29-8f233981",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_28a934a6eb6c39b14663"
     }
   ]
 };
