@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T17:49:11.413Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:e003059e2e3c35f379065f7fc56cb030c97df98c567d626e0313670fcdd19ead",
-  "total": 325,
+  "exported_at": "2026-09-02T17:52:06.487Z",
+  "source": "reviewed-us-ohio-cloud-promotion:bf1154a71db924c59bd86c7ffd4c7609423144bc5ed54f063c406146c11b6974",
+  "total": 326,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12407,6 +12407,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_152b9afd9d43515e3423"
+    },
+    {
+      "stable_id": "opp_us_515a45d9fc888cdd0e47",
+      "event_name": "Holiday Shopping in Dayton Vendor Opportunity",
+      "organiser": "Holiday Shopping in Dayton",
+      "source_url": "https://www.destinationdayton.org/blog/post/unique-holiday-shopping-ideas-in-dayton/",
+      "application_url": "https://www.destinationdayton.org/blog/post/unique-holiday-shopping-ideas-in-dayton",
+      "location": "Dayton",
+      "locality": "Dayton",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-holiday-shopping-in-dayton-2026-12-05-432b221f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_515a45d9fc888cdd0e47"
     }
   ]
 };
