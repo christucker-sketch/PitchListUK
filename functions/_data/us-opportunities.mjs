@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T08:58:19.757Z",
-  "source": "reviewed-us-florida-cloud-promotion:7ae9a689a1354a965f42a54015d468f157afe382b923d3100fb2b8b81a9d65ab",
-  "total": 250,
+  "exported_at": "2026-09-02T09:38:44.125Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:aec17dbd02f204d39f9f54bd04baa6e8b708620609290785927e96da12e982e4",
+  "total": 251,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9564,6 +9564,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_0a3900bca29768d9fe68"
+    },
+    {
+      "stable_id": "opp_us_685ed126c932acb94a02",
+      "event_name": "Raleigh Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Raleigh Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/raleigh-foodees-fest-31868/?srsltid=AfmBOop6eQ0ofSewidrfCYhAdyyBS82UC2mqcsNJ8ITyWu-31eoJR9cF",
+      "application_url": "https://www.eventeny.com/events/raleigh-foodees-fest-31868/?srsltid=AfmBOop6eQ0ofSewidrfCYhAdyyBS82UC2mqcsNJ8ITyWu-31eoJR9cF",
+      "location": "Raleigh",
+      "locality": "Raleigh",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "27616",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-03-12",
+      "event_end": "2027-03-14",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-raleigh-foodees-fest-eventeny-2027-03-12-5d4b34c9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_685ed126c932acb94a02"
     }
   ]
 };
