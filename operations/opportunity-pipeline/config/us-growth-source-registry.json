@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T16:13:35.776Z",
+  "updated_at": "2026-09-02T16:15:43.654Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3171,6 +3171,24 @@
       "event_end": "2026-09-09",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-rochester-2026-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2026-09-09."
+    },
+    {
+      "id": "oh-akron-pickle-fest-2027-08-08-e8415398",
+      "name": "Akron Pickle Fest Vendor Opportunity",
+      "organiser": "Akron Pickle Fest",
+      "source_url": "https://www.oddmall.info/akron-pickle-fest",
+      "application_url": "https://www.oddmall.info/akron-pickle-fest",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Akron",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-08",
+      "event_end": "2027-08-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-akron-2027-festival: live first-party route attests Akron, OH, actionable vendor terms, and exact event date 2027-08-08."
     },
     {
       "id": "oh-cincy-soul-food-truck-festival-cancelled-at-last-minute-impacting-oper-2027-07-10-454ab653",
