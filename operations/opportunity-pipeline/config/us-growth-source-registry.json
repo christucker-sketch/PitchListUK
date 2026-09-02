@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T21:52:53.297Z",
+  "updated_at": "2026-09-02T22:02:14.619Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5098,6 +5098,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-fort-worth-2026-festival: live first-party route attests Fort Worth, TX, actionable vendor terms, and exact event date 2026-10-11."
+    },
+    {
+      "id": "tx-diadelosmuertoscc-com-2026-10-24-d9093e06",
+      "name": "Vendor Information",
+      "organiser": "diadelosmuertoscc.com",
+      "source_url": "https://www.diadelosmuertoscc.com/vendor-info",
+      "application_url": "https://www.diadelosmuertoscc.com/vendor-info",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Corpus Christi",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-corpus-christi-2026-festival: live first-party route attests Corpus Christi, TX, actionable vendor terms, and exact event date 2026-10-24."
     },
     {
       "id": "tx-farmers-markets-in-dallas-tx-2026-2026-10-24-34dfd7bb",
