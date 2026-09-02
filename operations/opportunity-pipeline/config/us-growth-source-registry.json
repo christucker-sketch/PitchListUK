@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:30:38.513Z",
+  "updated_at": "2026-09-02T13:34:30.243Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1064,6 +1064,24 @@
       "event_end": "2026-10-10",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2026-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
+      "id": "fl-calendar-planes-tunes-bbq-march-1st-2nd-city-event-2027-03-01-0316458c",
+      "name": "Calendar • Planes, Tunes & BBQ - March 1st & 2nd (City Event Vendor Opportunity",
+      "organiser": "Calendar • Planes, Tunes & BBQ - March 1st & 2nd (City Event",
+      "source_url": "https://www.tavaresfl.gov/Calendar.aspx?EID=4909",
+      "application_url": "https://www.tavaresfl.gov/Calendar.aspx?EID=4909",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Orlando",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-01",
+      "event_end": "2027-03-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-orlando-2027-government-events: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date range 2027-03-01 to 2027-03-02."
     },
     {
       "id": "fl-fair-vendors-at-florida-state-fairgrounds-2027-02-04-6a4e0590",
