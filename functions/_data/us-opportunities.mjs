@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T17:10:36.606Z",
-  "source": "reviewed-us-washington-cloud-promotion:34bef1ff2def55004c8154bd1ecd220d76b204ca0b355578c7b136b047b0abd0",
-  "total": 315,
+  "exported_at": "2026-09-02T17:16:21.672Z",
+  "source": "reviewed-us-new-york-cloud-promotion:e7c86384e6729d847c4eb2c1f360736a5ce554c0b73347f7ce61c6585b83797d",
+  "total": 316,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12029,6 +12029,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_89b8b38970153a5d20b1"
+    },
+    {
+      "stable_id": "opp_us_427b0f8da57666d39321",
+      "event_name": "Albany Winter Wonderland Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Albany Winter Wonderland Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/albanywinterwonderland/",
+      "application_url": "https://hometownvendormarket.com/albanywinterwonderland",
+      "location": "Albany",
+      "locality": "Albany",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "12205",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-albany-winter-wonderland-craft-and-vendor-market-hometown-vendor-marke-2026-12-12-1ba7fc93",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_427b0f8da57666d39321"
     }
   ]
 };
