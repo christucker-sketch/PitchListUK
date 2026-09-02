@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:14:02.243Z",
+  "updated_at": "2026-09-02T13:18:09.456Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2666,6 +2666,24 @@
       "event_end": "2026-09-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-food-truck: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date range 2026-08-31 to 2026-09-01."
+    },
+    {
+      "id": "oh-handmade-toledo-2026-11-14-e057483a",
+      "name": "Handmade Toledo Vendor Opportunity",
+      "organiser": "Handmade Toledo",
+      "source_url": "https://shophandmadetoledo.com",
+      "application_url": "https://shophandmadetoledo.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Toledo",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-toledo-2026-holiday-market: live first-party route attests Toledo, OH, actionable vendor terms, and exact event date 2026-11-14."
     },
     {
       "id": "oh-start-your-gift-shopping-at-greater-cleveland-s-holiday-markets-2026-12-13-4e9cf318",
