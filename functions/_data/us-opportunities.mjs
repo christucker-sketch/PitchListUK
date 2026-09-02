@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T18:03:47.812Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:c49186a154b3fe718fbf094cf81b41ba57a2dafb51f7fb018d4ed24ee8fc6040",
-  "total": 329,
+  "exported_at": "2026-09-02T18:15:17.198Z",
+  "source": "reviewed-us-illinois-cloud-promotion:fbcbc808079b5fae21be163ffddf31d2f637ef475afdc5c14a7c786c6bd48f0e",
+  "total": 330,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12559,6 +12559,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_8541d9b0deb8740f82c3"
+    },
+    {
+      "stable_id": "opp_us_52b9e2da0587332f228e",
+      "event_name": "Senior coupons accepted at Ill. Products Farmers' Market through Oct. 14 Vendor Opportunity",
+      "organiser": "Senior coupons accepted at Ill. Products Farmers' Market through Oct. 14",
+      "source_url": "https://newherald.news/senior-coupons-accepted-at-ill-products-farmers-market-through-oct-p17431-103.htm",
+      "application_url": "https://newherald.news/senior-coupons-accepted-at-ill-products-farmers-market-through-oct-p17431-103.htm",
+      "location": "Springfield",
+      "locality": "Springfield",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-10-14",
+      "event_end": "2027-10-14",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-senior-coupons-accepted-at-ill-products-farmers-market-through-oct-14-2027-10-14-f005c75f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_52b9e2da0587332f228e"
     }
   ]
 };
