@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T10:42:53.050Z",
-  "source": "reviewed-us-georgia-cloud-promotion:adaedd2ba72aab39d1e4e365c6593885afecaca7850b591bed6d3fdec3bd8483",
-  "total": 259,
+  "exported_at": "2026-09-02T10:46:33.741Z",
+  "source": "reviewed-us-michigan-cloud-promotion:4d3543e66eb6c21107b10304b4f58419bac110f8ee8d322feb97dd92c358c4d4",
+  "total": 260,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9912,6 +9912,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_da3ee2f169ebeaf5e77b"
+    },
+    {
+      "stable_id": "opp_us_316f06a85e7c3ce2bf2f",
+      "event_name": "Vendor Opportunity",
+      "organiser": "macombgov.org",
+      "source_url": "https://www.macombgov.org/node",
+      "application_url": "https://www.macombgov.org/node",
+      "location": "Warren",
+      "locality": "Warren",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "44575",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-24",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-macombgov-org-2026-09-11-c4a3a0f3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_316f06a85e7c3ce2bf2f"
     }
   ]
 };
