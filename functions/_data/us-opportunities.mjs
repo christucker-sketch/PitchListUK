@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T18:54:10.330Z",
-  "source": "reviewed-us-florida-cloud-promotion:0115dc7ed913ac671a9eb505ad63e83ad3a9cf5f325849a91b9826296e9e18f9",
-  "total": 335,
+  "exported_at": "2026-09-02T19:35:01.200Z",
+  "source": "reviewed-us-texas-cloud-promotion:09417b83ebf85b179ead39d9080a68c25b245daae8ad270bcb482ae6aa191769",
+  "total": 336,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12788,6 +12788,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_2d444b125fa560e39931"
+    },
+    {
+      "stable_id": "opp_us_7538d4f4f262ea4c1bd9",
+      "event_name": "Arlington Comic Fest Vendor Application Form",
+      "organiser": "Arlington Comic Fest",
+      "source_url": "https://form.jotform.com/211365685229158",
+      "application_url": "https://form.jotform.com/211365685229158",
+      "location": "Arlington",
+      "locality": "Arlington",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-arlington-comic-fest-2026-09-05-418024bf",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_7538d4f4f262ea4c1bd9"
     }
   ]
 };
