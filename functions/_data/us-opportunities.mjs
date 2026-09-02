@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T21:03:42.337Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:441a4cf19a3f67aec1bb6acc6379a4d022b6ec0a955632e00597aa6786d49403",
-  "total": 347,
+  "exported_at": "2026-09-02T21:20:16.102Z",
+  "source": "reviewed-us-illinois-cloud-promotion:86478b6f10260832c4e9b2bdcbe1a8ba03bc0a2dd215908eb6c0219ca12e2dc9",
+  "total": 348,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13246,6 +13246,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_15cf001aa0baec7ceeb9"
+    },
+    {
+      "stable_id": "opp_us_f093287e54f187f65160",
+      "event_name": "Special Event Archives - Elgin Alano Club Vendor Opportunity",
+      "organiser": "Special Event Archives - Elgin Alano Club",
+      "source_url": "https://elginalanoclub.com/tag/special-event/",
+      "application_url": "https://elginalanoclub.com/tag/special-event",
+      "location": "Elgin",
+      "locality": "Elgin",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "60120",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-special-event-archives-elgin-alano-club-2027-07-04-3f04044b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_f093287e54f187f65160"
     }
   ]
 };
