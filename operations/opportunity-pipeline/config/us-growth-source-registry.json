@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:01:36.006Z",
+  "updated_at": "2026-09-02T17:03:51.924Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2883,6 +2883,24 @@
       "event_end": "2027-03-14",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-raleigh-2027-arts-crafts: live first-party route attests Raleigh, NC, actionable vendor terms, and exact event date range 2027-03-12 to 2027-03-14."
+    },
+    {
+      "id": "nc-sampson-farmers-market-2026-clinton-nc-2026-10-31-b1ea2219",
+      "name": "Sampson Farmers Market 2026, Clinton, NC Vendor Opportunity",
+      "organiser": "Sampson Farmers Market 2026, Clinton, NC",
+      "source_url": "https://vendorsmap.com/events/6725",
+      "application_url": "https://vendorsmap.com/events/6725",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Fayetteville",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-fayetteville-2026-farmers-market: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
       "id": "nc-showfest-event-innovators-conference-2027-2027-01-25-97ecf069",
