@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:34:13.563Z",
+  "updated_at": "2026-09-02T12:35:23.344Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2018,6 +2018,24 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2027-arts-crafts: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2027-06-06."
+    },
+    {
+      "id": "nc-n-c-state-fair-event-calendar-2026-11-06-e8de6574",
+      "name": "N.C. State Fair - Event Calendar Vendor Opportunity",
+      "organiser": "N.C. State Fair - Event Calendar",
+      "source_url": "https://www.ncagr.gov/divisions/ncstatefair/events",
+      "application_url": "https://www.ncagr.gov/divisions/ncstatefair/events",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Durham",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-durham-2026-government-events: live first-party route attests Durham, NC, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
     },
     {
       "id": "nc-north-carolina-farmers-market-vendor-permit-guide-2026-2026-12-31-7a5157f7",
