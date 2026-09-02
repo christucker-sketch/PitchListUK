@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:15:37.434Z",
+  "updated_at": "2026-09-02T15:19:11.229Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2414,6 +2414,24 @@
       "event_end": "2026-12-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-raleigh-2026-holiday-market: live first-party route attests Raleigh, NC, actionable vendor terms, and exact event date 2026-12-07."
+    },
+    {
+      "id": "nc-fiesta-festival-2026-09-19-e99845c6",
+      "name": "Fiesta Festival Vendor Opportunity",
+      "organiser": "Fiesta Festival",
+      "source_url": "https://www.hispanicleague.org/fiesta",
+      "application_url": "https://www.hispanicleague.org/fiesta",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Winston-Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-winston-salem-2026-festival: live first-party route attests Winston-Salem, NC, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "nc-foodees-fest-charlotte-nc-2026-09-11-b386fec4",
