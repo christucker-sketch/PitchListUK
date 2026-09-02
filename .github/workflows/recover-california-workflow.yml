@@ -1,0 +1,55 @@
+name: Recover California acquisition workflow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/recover-california-workflow.yml
+
+permissions:
+  contents: read
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      WORKFLOW_NAME: pitchlist-texas-acquisition
+      INSTANCE_ID: cf_c865e4b33929e6962714af0ee668e52b7f0fe89cd640f562b9572246e955f752
+      WORKER_CONFIG: operations/cloudflare-texas-acquisition/wrangler.jsonc
+    steps:
+      - name: Check out verified main
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Describe failed California instance
+        run: npx --yes wrangler@4.127.0 workflows instances describe "$WORKFLOW_NAME" "$INSTANCE_ID" --config "$WORKER_CONFIG" || true
+
+      - name: Restart exact failed instance under current Worker
+        run: npx --yes wrangler@4.127.0 workflows instances restart "$WORKFLOW_NAME" "$INSTANCE_ID" --config "$WORKER_CONFIG"
+
+      - name: Wait for restarted instance
+        shell: bash
+        run: |
+          for attempt in $(seq 1 72); do
+            output="$(npx --yes wrangler@4.127.0 workflows instances describe "$WORKFLOW_NAME" "$INSTANCE_ID" --config "$WORKER_CONFIG" 2>&1 || true)"
+            printf '%s\n' "$output"
+            if printf '%s\n' "$output" | grep -Eiq 'Status:[[:space:]]+complete'; then
+              echo "California Workflow completed after restart on attempt $attempt"
+              exit 0
+            fi
+            if printf '%s\n' "$output" | grep -Eiq 'Status:[[:space:]]+(errored|terminated|paused)'; then
+              echo "::error title=California Workflow recovery failed::Instance returned a terminal status after restart"
+              exit 1
+            fi
+            sleep 10
+          done
+          echo "::error title=California Workflow recovery timed out::Instance did not complete within 12 minutes"
+          exit 1
