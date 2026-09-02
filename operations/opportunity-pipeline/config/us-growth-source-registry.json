@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T09:37:56.187Z",
+  "updated_at": "2026-09-02T09:42:02.809Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -2289,6 +2289,24 @@
       "evidence": "Cloudflare discovery wa-spokane-2026-arts-crafts: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
+      "id": "wa-animewashington-com-2027-02-19-a8f21c23",
+      "name": "Vendor Application - 2026 - Anime Washington",
+      "organiser": "animewashington.com",
+      "source_url": "https://animewashington.com/vendor-info/vendor-application",
+      "application_url": "https://animewashington.com/vendor-info/vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Spokane",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-19",
+      "event_end": "2027-02-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-spokane-2027-festival: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date range 2027-02-19 to 2027-02-21."
+    },
+    {
       "id": "wa-legacy-square-2026-09-19-b9a7d78b",
       "name": "Legacy Square Vendor Opportunity",
       "organiser": "Legacy Square",
@@ -2341,6 +2359,24 @@
       "event_end": "2027-05-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-seattle-2027-arts-crafts: live first-party route attests Seattle, WA, actionable vendor terms, and exact event date range 2027-05-30 to 2027-05-31."
+    },
+    {
+      "id": "wa-the-farm-chicks-vintage-handmade-fair-the-farm-chicks-2027-06-06-8dd68081",
+      "name": "The Farm Chicks Vintage & Handmade Fair - The Farm Chicks Vendor Opportunity",
+      "organiser": "The Farm Chicks Vintage & Handmade Fair - The Farm Chicks",
+      "source_url": "https://thefarmchicks.com/fc-vintage-fair",
+      "application_url": "https://thefarmchicks.com/fc-vintage-fair",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Spokane",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-06",
+      "event_end": "2027-06-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-spokane-2027-arts-crafts: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date 2027-06-06."
     }
   ]
 }
