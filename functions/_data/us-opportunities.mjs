@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T21:24:28.918Z",
-  "source": "reviewed-us-ohio-cloud-promotion:2a0facc52ed1a3653dccb9f24bc6b86b4edbbe66094db6f6f653393025214dec",
-  "total": 349,
+  "exported_at": "2026-09-02T21:49:43.240Z",
+  "source": "reviewed-us-michigan-cloud-promotion:45801d8d500b7cb9e966ee12845034e86fccdf2cf0f5e4f7c608bb3d482cb4fc",
+  "total": 350,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13320,6 +13320,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_2b2e1f6383d5e7994947"
+    },
+    {
+      "stable_id": "opp_us_974cfbaf19aefb1657a4",
+      "event_name": "Livonia Farmers Market at Wilson Barn - Taste the Local Difference Vendor Opportunity",
+      "organiser": "Livonia Farmers Market at Wilson Barn - Taste the Local Difference",
+      "source_url": "https://www.localdifference.org/partner/livonia-farmers-market-at-wilson-barn/",
+      "application_url": "https://www.localdifference.org/partner/livonia-farmers-market-at-wilson-barn",
+      "location": "Livonia",
+      "locality": "Livonia",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "29350",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-livonia-farmers-market-at-wilson-barn-taste-the-local-difference-2026-09-19-e7e094c8",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_974cfbaf19aefb1657a4"
     }
   ]
 };
