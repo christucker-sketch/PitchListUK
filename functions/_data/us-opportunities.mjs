@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T14:10:05.551Z",
-  "source": "reviewed-us-virginia-cloud-promotion:06954a3de76a43176f61f67c726b2fbfadc574b5830c64c7efc1b794eb258c02",
-  "total": 292,
+  "exported_at": "2026-09-02T14:13:16.070Z",
+  "source": "reviewed-us-washington-cloud-promotion:77d9fd985138dd20fa74d571b10fea0db0930f6a689fa88944a3ff22a3a29731",
+  "total": 293,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11163,6 +11163,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_b01a26f45bae85898b72"
+    },
+    {
+      "stable_id": "opp_us_1e899c07a7fead08aa8a",
+      "event_name": "Vancouver Arts & Music Festival Vendor Opportunity",
+      "organiser": "Vancouver Arts & Music Festival",
+      "source_url": "https://www.vancouverartsandmusicfestival.com/",
+      "application_url": "https://www.vancouverartsandmusicfestival.com",
+      "location": "Vancouver",
+      "locality": "Vancouver",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-06",
+      "event_end": "2027-08-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-vancouver-arts-music-festival-2027-08-06-20167d35",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_1e899c07a7fead08aa8a"
     }
   ]
 };
