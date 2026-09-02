@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:53:19.577Z",
+  "updated_at": "2026-09-02T12:56:36.456Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1892,6 +1892,24 @@
       "event_end": "2026-09-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-sterling-heights-2026-farmers-market: live first-party route attests Sterling Heights, MI, actionable vendor terms, and exact event date 2026-09-25."
+    },
+    {
+      "id": "mi-macombgov-org-2026-09-06-412ea945",
+      "name": " Vendor Opportunity",
+      "organiser": "macombgov.org",
+      "source_url": "https://www.macombgov.org/node?page=12",
+      "application_url": "https://www.macombgov.org/node?page=12",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Sterling Heights",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-sterling-heights-2026-arts-crafts: live first-party route attests Sterling Heights, MI, actionable vendor terms, and exact event date 2026-09-06."
     },
     {
       "id": "mi-macombgov-org-2026-09-11-c4a3a0f3",
