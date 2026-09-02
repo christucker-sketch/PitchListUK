@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:09:05.058Z",
+  "updated_at": "2026-09-02T14:12:11.708Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3602,6 +3602,42 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-spokane-2027-arts-crafts: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date 2027-06-06."
+    },
+    {
+      "id": "wa-vancouver-arts-music-festival-2027-08-06-20167d35",
+      "name": "Vancouver Arts & Music Festival Vendor Opportunity",
+      "organiser": "Vancouver Arts & Music Festival",
+      "source_url": "https://www.vancouverartsandmusicfestival.com",
+      "application_url": "https://www.vancouverartsandmusicfestival.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Vancouver",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-06",
+      "event_end": "2027-08-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-vancouver-2027-festival: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date range 2027-08-06 to 2027-08-08."
+    },
+    {
+      "id": "wa-vancouver-usa-arts-music-festival-opens-2027-08-07-89610df6",
+      "name": "Vancouver USA Arts & Music Festival opens applications for 2026 performers, artists, and more Vendor Opportunity",
+      "organiser": "Vancouver USA Arts & Music Festival opens",
+      "source_url": "https://www.clarkcountytoday.com/people/vancouver-usa-arts-music-festival-opens-applications-for-2026-performers-artists-and-more",
+      "application_url": "https://www.clarkcountytoday.com/people/vancouver-usa-arts-music-festival-opens-applications-for-2026-performers-artists-and-more",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Vancouver",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-07",
+      "event_end": "2027-08-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-vancouver-2027-festival: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date 2027-08-07."
     },
     {
       "id": "wa-vendor-events-in-lacey-wa-2027-07-30-ab6c309d",
