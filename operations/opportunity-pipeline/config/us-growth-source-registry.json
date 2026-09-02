@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T10:09:53.270Z",
+  "updated_at": "2026-09-02T10:19:00.354Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -2504,6 +2504,24 @@
       "event_end": "2027-02-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-spokane-2027-festival: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date range 2027-02-19 to 2027-02-21."
+    },
+    {
+      "id": "wa-bark-by-the-bay-2026-09-12-9c08bc03",
+      "name": "Bark by the Bay Vendor Opportunity",
+      "organiser": "Bark by the Bay",
+      "source_url": "https://www.piercecountywa.gov/7604/Bark-by-the-Bay",
+      "application_url": "https://www.piercecountywa.gov/7604/Bark-by-the-Bay",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Tacoma",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-tacoma-2026-government-events: live first-party route attests Tacoma, WA, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "wa-legacy-square-2026-09-19-b9a7d78b",
