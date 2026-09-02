@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:53:23.940Z",
+  "updated_at": "2026-09-02T15:56:43.293Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1964,6 +1964,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-chicago-2026-government-events: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "il-winnebago-farmers-market-2027-2027-05-01-d57cb11a",
+      "name": "Winnebago Farmers Market 2027 Vendor Opportunity",
+      "organiser": "Winnebago Farmers Market 2027",
+      "source_url": "https://vendorsmap.com/events/25699",
+      "application_url": "https://vendorsmap.com/events/25699",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Rockford",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-05-01",
+      "event_end": "2027-05-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-rockford-2027-farmers-market: live first-party route attests Rockford, IL, actionable vendor terms, and exact event date 2027-05-01."
     },
     {
       "id": "ma-2026-food-2027-01-05-f5dd060b",
