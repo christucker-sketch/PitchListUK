@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T10:48:45.036Z",
+  "updated_at": "2026-09-02T11:00:58.416Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -974,6 +974,24 @@
       "event_end": "2027-05-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-jacksonville-2027-government-events: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date range 2027-05-21 to 2027-05-24."
+    },
+    {
+      "id": "fl-mezzo-market-2026-10-25-830a6567",
+      "name": "Mezzo Market Vendor Opportunity",
+      "organiser": "Mezzo Market",
+      "source_url": "https://mezzomarket.co",
+      "application_url": "https://mezzomarket.co",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tampa",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-25",
+      "event_end": "2026-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tampa-2026-holiday-market: live first-party route attests Tampa, FL, actionable vendor terms, and exact event date 2026-10-25."
     },
     {
       "id": "fl-miami-all-nartions-water-festival-family-day-july-5th-miami-all-nation-2027-07-05-a46d20d5",
