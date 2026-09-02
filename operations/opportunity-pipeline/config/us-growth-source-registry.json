@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:06:27.477Z",
+  "updated_at": "2026-09-02T15:12:04.415Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1820,6 +1820,42 @@
       "event_end": "2027-06-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-chicago-2027-festival: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date range 2027-06-12 to 2027-06-13."
+    },
+    {
+      "id": "il-rockford-cider-n-cinnamon-arts-and-craft-fair-2026-2026-10-03-788e1b80",
+      "name": "Rockford Cider N Cinnamon Arts And Craft Fair 2026 Vendor Opportunity",
+      "organiser": "Rockford Cider N Cinnamon Arts And Craft Fair 2026",
+      "source_url": "https://vendorsmap.com/events/34853",
+      "application_url": "https://vendorsmap.com/events/34853",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Rockford",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-rockford-2026-arts-crafts: live first-party route attests Rockford, IL, actionable vendor terms, and exact event date range 2026-10-03 to 2026-10-04."
+    },
+    {
+      "id": "il-rockford-fall-craft-and-vendor-market-hometown-vendor-market-2026-11-07-4cb5d644",
+      "name": "Rockford Fall Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Rockford Fall Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/rockfordfall",
+      "application_url": "https://hometownvendormarket.com/rockfordfall",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Rockford",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-rockford-2026-arts-crafts: live first-party route attests Rockford, IL, actionable vendor terms, and exact event date range 2026-11-07 to 2026-11-08."
     },
     {
       "id": "il-vendors-2026-09-12-87e06125",
