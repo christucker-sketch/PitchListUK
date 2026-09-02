@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T11:34:27.555Z",
+  "updated_at": "2026-09-02T11:37:35.508Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -127,6 +127,24 @@
       "event_end": "2026-11-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-mesa-2026-holiday-market: live first-party route attests Mesa, AZ, actionable vendor terms, and exact event date 2026-11-28."
+    },
+    {
+      "id": "az-mesa-market-place-swap-meet-2027-mesa-az-2027-09-15-f306df36",
+      "name": "Mesa Market Place Swap Meet 2027, Mesa, AZ Vendor Opportunity",
+      "organiser": "Mesa Market Place Swap Meet 2027, Mesa, AZ",
+      "source_url": "https://vendorsmap.com/events/1668",
+      "application_url": "https://vendorsmap.com/events/1668",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Mesa",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-09-15",
+      "event_end": "2027-09-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-mesa-2027-farmers-market: live first-party route attests Mesa, AZ, actionable vendor terms, and exact event date 2027-09-15."
     },
     {
       "id": "az-phoestivus-2026-12-12-dd6414ca",
