@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:56:44.969Z",
+  "updated_at": "2026-09-02T18:02:58.857Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2324,6 +2324,24 @@
       "event_end": "2027-10-23",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2027-festival: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-10-23."
+    },
+    {
+      "id": "ma-live-music-jamaican-food-truck-you-re-invited-to-a-free-concert-at-bro-2026-09-03-482de4d6",
+      "name": "Live Music & Jamaican Food Truck: You're Invited to a Free Concert at Brockton City Hall - NewsBreak",
+      "organiser": "Live Music & Jamaican Food Truck: You're Invited to a Free Concert at Brockton City Hall - NewsBreak",
+      "source_url": "https://www.newsbreak.com/dianna-carney-1587871/4756260031350-live-music-jamaican-food-truck-you-re-invited-to-a-free-concert-at-brockton-city-hall",
+      "application_url": "https://www.newsbreak.com/dianna-carney-1587871/4756260031350-live-music-jamaican-food-truck-you-re-invited-to-a-free-concert-at-brockton-city-hall",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Brockton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-03",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-brockton-2026-food-truck: live first-party route attests Brockton, MA, actionable vendor terms, and exact event date range 2026-09-03 to 2026-09-13."
     },
     {
       "id": "ma-out-to-lunch-downtown-worcester-2026-09-02-1a006585",
