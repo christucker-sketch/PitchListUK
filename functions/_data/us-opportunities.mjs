@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T16:52:14.187Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:89575685f117a5ebe42f00d0794515b0f27cebc602ce491b60ab67494ec6afd9",
-  "total": 313,
+  "exported_at": "2026-09-02T16:57:00.920Z",
+  "source": "reviewed-us-texas-cloud-promotion:14eed5df4da9e210db42814038cf420cf6b9ef28f6ca3f406f79b53f7599044e",
+  "total": 314,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11954,6 +11954,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_be90a85c1b5c3d0b33f6"
+    },
+    {
+      "stable_id": "opp_us_178efdaeb5c6ca3d4b09",
+      "event_name": "Artisan Market - Minerpalooza",
+      "organiser": "Artisan Market - Minerpalooza",
+      "source_url": "https://www.utep.edu/student-affairs/minerpalooza/artisan-market/",
+      "application_url": "https://www.utep.edu/student-affairs/minerpalooza/artisan-market",
+      "location": "El Paso",
+      "locality": "El Paso",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-artisan-market-minerpalooza-2026-09-11-fea7925e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_178efdaeb5c6ca3d4b09"
     }
   ]
 };
