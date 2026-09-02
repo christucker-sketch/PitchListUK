@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T09:55:47.084Z",
+  "updated_at": "2026-09-02T09:59:13.632Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1892,6 +1892,24 @@
       "event_end": "2026-09-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-newark-2026-arts-crafts: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-09-02."
+    },
+    {
+      "id": "nj-vendor-events-in-hasbrouck-heights-nj-2027-06-07-bced1b7c",
+      "name": "Vendor Events in Hasbrouck Heights, NJ",
+      "organiser": "Vendor Events in Hasbrouck Heights, NJ",
+      "source_url": "https://vendorsmap.com/cities/hasbrouck-heights",
+      "application_url": "https://vendorsmap.com/cities/hasbrouck-heights",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Jersey City",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-07",
+      "event_end": "2027-06-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-jersey-city-2027-food-truck: live first-party route attests Jersey City, NJ, actionable vendor terms, and exact event date 2027-06-07."
     },
     {
       "id": "nj-welcome-to-the-riverview-farmers-market-2026-11-22-53718923",
