@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:36:07.203Z",
+  "updated_at": "2026-09-02T18:39:50.566Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2972,6 +2972,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-winston-salem-2026-festival: live first-party route attests Winston-Salem, NC, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "nc-food-vendors-2027-fayetteville-dogwood-festival-eventeny-2027-04-23-db06b65b",
+      "name": "FOOD VENDORS - 2027 Fayetteville Dogwood Festival - Eventeny Vendor Opportunity",
+      "organiser": "FOOD VENDORS - 2027 Fayetteville Dogwood Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=48749&srsltid=AfmBOopb_euYuFUxfHDlHw2HJrut0CjtD5bYIDDPfrPT9zV-RXASK6xQ",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=48749&srsltid=AfmBOopb_euYuFUxfHDlHw2HJrut0CjtD5bYIDDPfrPT9zV-RXASK6xQ",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Fayetteville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-23",
+      "event_end": "2027-04-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-fayetteville-2027-festival: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2027-04-23 to 2027-04-25."
     },
     {
       "id": "nc-foodees-fest-charlotte-nc-2026-09-11-b386fec4",
