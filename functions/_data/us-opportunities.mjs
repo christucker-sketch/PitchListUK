@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T17:44:27.572Z",
-  "source": "reviewed-us-florida-cloud-promotion:6c6ed6e7128de11a948dcc0ae1e763ec9af70c4d3058c2481c231e51d1d321cd",
-  "total": 323,
+  "exported_at": "2026-09-02T17:46:51.225Z",
+  "source": "reviewed-us-new-york-cloud-promotion:eecc0bb9eb9c6652da65e639a914df8054391b0dad7adfcf176bb16363553ae9",
+  "total": 324,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12330,6 +12330,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_71d4cdfd2f2399adf3c9"
+    },
+    {
+      "stable_id": "opp_us_c948bfa4b3db704a1832",
+      "event_name": "Food Vendor Application: PearlPalooza 2026 - PearlPalooza - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45010&srsltid=AfmBOorc8kxg0GJ8RJfFK8rRPeWQY5BmNdE7YrgmLrlK_npaZhYJcnbv",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45010&srsltid=AfmBOorc8kxg0GJ8RJfFK8rRPeWQY5BmNdE7YrgmLrlK_npaZhYJcnbv",
+      "location": "Albany",
+      "locality": "Albany",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "12207",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-food-2026-09-12-01a9143a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_c948bfa4b3db704a1832"
     }
   ]
 };
