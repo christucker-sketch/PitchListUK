@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T16:35:01.339Z",
+  "updated_at": "2026-09-02T16:36:55.088Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3621,6 +3621,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-festival: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "pa-must-attend-holiday-events-and-festivals-in-pennsylvania-2027-11-22-94fa9fd7",
+      "name": "Must-Attend Holiday Events and Festivals in Pennsylvania Vendor Opportunity",
+      "organiser": "Must-Attend Holiday Events and Festivals in Pennsylvania",
+      "source_url": "https://www.visitpa.com/blog/post/must-attend-holiday-events-and-festivals-pennsylvania",
+      "application_url": "https://www.visitpa.com/blog/post/must-attend-holiday-events-and-festivals-pennsylvania",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Erie",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-11-22",
+      "event_end": "2027-11-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-erie-2027-holiday-market: live first-party route attests Erie, PA, actionable vendor terms, and exact event date 2027-11-22."
     },
     {
       "id": "pa-open-market-at-leaf-ndash-leaf-erie-2026-09-05-2017be08",
