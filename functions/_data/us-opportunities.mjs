@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T10:49:40.463Z",
-  "source": "reviewed-us-washington-cloud-promotion:d19098d87b7920bf39c8c20b46974f0b97b4105165ee99e32197810e372cd7c3",
-  "total": 261,
+  "exported_at": "2026-09-02T11:01:55.432Z",
+  "source": "reviewed-us-florida-cloud-promotion:dac82708b251e2173081aeb4c004a944191ebaaaca91f0693884567cc544d53e",
+  "total": 262,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9989,6 +9989,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_0ef7509a392a8c86dbe8"
+    },
+    {
+      "stable_id": "opp_us_cd16ab2ca16777d53b6a",
+      "event_name": "Mezzo Market Vendor Opportunity",
+      "organiser": "Mezzo Market",
+      "source_url": "https://mezzomarket.co/",
+      "application_url": "https://mezzomarket.co",
+      "location": "Tampa",
+      "locality": "Tampa",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-25",
+      "event_end": "2026-10-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-mezzo-market-2026-10-25-830a6567",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_cd16ab2ca16777d53b6a"
     }
   ]
 };
