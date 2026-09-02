@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:43:35.887Z",
+  "updated_at": "2026-09-02T17:45:57.843Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3514,6 +3514,42 @@
       "event_end": "2026-10-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-syracuse-2026-farmers-market: live first-party route attests Syracuse, NY, actionable vendor terms, and exact event date 2026-10-13."
+    },
+    {
+      "id": "ny-food-2026-09-12-01a9143a",
+      "name": "Food Vendor Application: PearlPalooza 2026 - PearlPalooza - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45010&srsltid=AfmBOorc8kxg0GJ8RJfFK8rRPeWQY5BmNdE7YrgmLrlK_npaZhYJcnbv",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45010&srsltid=AfmBOorc8kxg0GJ8RJfFK8rRPeWQY5BmNdE7YrgmLrlK_npaZhYJcnbv",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Albany",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-albany-2026-food-truck: live first-party route attests Albany, NY, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "ny-jazz-festival-retail-2026-09-07-aee0c227",
+      "name": "Jazz Festival Retail Vendor Application",
+      "organiser": "Jazz Festival Retail",
+      "source_url": "https://form.jotform.com/91555072383156",
+      "application_url": "https://form.jotform.com/91555072383156",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Albany",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-albany-2026-food-truck: live first-party route attests Albany, NY, actionable vendor terms, and exact event date 2026-09-07."
     },
     {
       "id": "ny-midday-bash-2026-09-09-7393f319",
