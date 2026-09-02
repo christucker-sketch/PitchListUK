@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T16:49:12.532Z",
-  "source": "reviewed-us-arizona-cloud-promotion:6df2f83e24248b6c6baaa075ff762c9c713130fa4ef91ed21c342c167aab9220",
-  "total": 312,
+  "exported_at": "2026-09-02T16:52:14.187Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:89575685f117a5ebe42f00d0794515b0f27cebc602ce491b60ab67494ec6afd9",
+  "total": 313,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11916,6 +11916,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_f6c8ad81902774e4da44"
+    },
+    {
+      "stable_id": "opp_us_be90a85c1b5c3d0b33f6",
+      "event_name": "Eggroll Cafe Food Truck - Lowell - Massachusetts - United States - Meng Kit - Eventeny",
+      "organiser": "Eggroll Cafe Food Truck - Lowell - Massachusetts - United States - Meng Kit - Eventeny",
+      "source_url": "https://www.eventeny.com/company/?c=291466&srsltid=AfmBOoqkeqyjkiMaMHts2w4t9v1u6N9okpcU_Zna5PSu1JouoWWUKfdu",
+      "application_url": "https://www.eventeny.com/company/?c=291466&srsltid=AfmBOoqkeqyjkiMaMHts2w4t9v1u6N9okpcU_Zna5PSu1JouoWWUKfdu",
+      "location": "Lowell",
+      "locality": "Lowell",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-20",
+      "event_end": "2027-09-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-eggroll-cafe-food-truck-lowell-massachusetts-united-states-meng-kit-ev-2027-09-20-9faf6288",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_be90a85c1b5c3d0b33f6"
     }
   ]
 };
