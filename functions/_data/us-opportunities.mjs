@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T15:07:30.385Z",
-  "source": "reviewed-us-texas-cloud-promotion:80492dd7cf6407b6be856c4aa12e34394432dea3476152aa9ca313a264e0cb14",
-  "total": 301,
+  "exported_at": "2026-09-02T15:13:07.585Z",
+  "source": "reviewed-us-illinois-cloud-promotion:c29b008e4673be29469bd3cbcacc613bab6237676b7b76a7a78bae0e10d24813",
+  "total": 302,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11501,6 +11501,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_80ed22c245a41ae39149"
+    },
+    {
+      "stable_id": "opp_us_9fe3d515ccd8ed8ca4f1",
+      "event_name": "Rockford Fall Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Rockford Fall Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/rockfordfall/",
+      "application_url": "https://hometownvendormarket.com/rockfordfall",
+      "location": "Rockford",
+      "locality": "Rockford",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "61112",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-rockford-fall-craft-and-vendor-market-hometown-vendor-market-2026-11-07-4cb5d644",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_9fe3d515ccd8ed8ca4f1"
     }
   ]
 };
