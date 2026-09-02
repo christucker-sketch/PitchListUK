@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T15:13:07.585Z",
-  "source": "reviewed-us-illinois-cloud-promotion:c29b008e4673be29469bd3cbcacc613bab6237676b7b76a7a78bae0e10d24813",
-  "total": 302,
+  "exported_at": "2026-09-02T15:22:18.714Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:a6e6f8c4622ebb0d7d4a4bf8240c7d8374d01e64de095dbdce008f7cc4292bc4",
+  "total": 303,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11538,6 +11538,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_9fe3d515ccd8ed8ca4f1"
+    },
+    {
+      "stable_id": "opp_us_a1a8d56fa84f7eb74cb4",
+      "event_name": "The Punk Rock Flea Market™ Vendor Opportunity",
+      "organiser": "The Punk Rock Flea Market™",
+      "source_url": "https://www.punkmarket.com/",
+      "application_url": "https://www.punkmarket.com",
+      "location": "Edison",
+      "locality": "Edison",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-the-punk-rock-flea-market-2026-12-12-ec124392",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_a1a8d56fa84f7eb74cb4"
     }
   ]
 };
