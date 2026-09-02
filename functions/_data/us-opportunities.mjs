@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T14:37:28.374Z",
-  "source": "reviewed-us-texas-cloud-promotion:ea7d1b2ced5746cbd67923c570c42de92b65957760115feffe81738f480ad291",
-  "total": 296,
+  "exported_at": "2026-09-02T14:47:51.081Z",
+  "source": "reviewed-us-ohio-cloud-promotion:ef6d72e9e160701d51c36abd37256bb86918cd73a4444589e72ae8e115e6dd36",
+  "total": 297,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11312,6 +11312,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_8282a4d8d9e617d1be6e"
+    },
+    {
+      "stable_id": "opp_us_e1367666f513e01dcde5",
+      "event_name": "Event Details (U.S. National Park Service) Vendor Opportunity",
+      "organiser": "Event Details (U.S. National Park Service)",
+      "source_url": "https://www.nps.gov/planyourvisit/event-details.htm?id=B6357CD1-961D-51D5-4A47B4813777A467",
+      "application_url": "https://www.nps.gov/planyourvisit/event-details.htm?id=B6357CD1-961D-51D5-4A47B4813777A467",
+      "location": "Akron",
+      "locality": "Akron",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "44210",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-event-details-u-s-national-park-service-2026-09-04-b647c076",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_e1367666f513e01dcde5"
     }
   ]
 };
