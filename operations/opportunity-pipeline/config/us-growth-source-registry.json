@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:32:57.983Z",
+  "updated_at": "2026-09-02T17:38:33.274Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2216,6 +2216,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-cambridge-2026-festival: live first-party route attests Cambridge, MA, actionable vendor terms, and exact event date range 2026-09-12 to 2026-09-13."
+    },
+    {
+      "id": "ma-city-of-brockton-2026-11-28-2c595cc7",
+      "name": "City of Brockton Vendor Opportunity",
+      "organiser": "City of Brockton",
+      "source_url": "https://meetmeatthefair.com/promoters/city-of-brockton",
+      "application_url": "https://meetmeatthefair.com/promoters/city-of-brockton",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Brockton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-brockton-2026-festival: live first-party route attests Brockton, MA, actionable vendor terms, and exact event date 2026-11-28."
     },
     {
       "id": "ma-eggroll-cafe-food-truck-lowell-massachusetts-united-states-meng-kit-ev-2027-09-20-9faf6288",
