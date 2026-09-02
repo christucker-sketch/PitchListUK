@@ -145,21 +145,26 @@ async function readResponseText(response, options = {}) {
   }
 }
 
+const APPROVED_PAGE_MAX_BYTES = 1024 * 1024;
+
 async function fetchApprovedPage({ source, url }, options = {}) {
   if (!source || source.status !== 'approved-pilot') throw new Error('live fetch requires approved Texas source');
 
+  const fetchOptions = options.maxBytes == null
+    ? { ...options, maxBytes: APPROVED_PAGE_MAX_BYTES }
+    : options;
   const primary = url || source.source_url;
   const fallback = source.application_url && source.application_url !== primary ? source.application_url : '';
   let fetched;
   let primaryError = null;
 
   try {
-    fetched = await fetchTextTarget(primary, options);
+    fetched = await fetchTextTarget(primary, fetchOptions);
   } catch (error) {
     primaryError = error;
     if (!fallback) throw error;
     try {
-      fetched = await fetchTextTarget(fallback, options);
+      fetched = await fetchTextTarget(fallback, fetchOptions);
     } catch (fallbackError) {
       throw new Error(`source fetch failed (${primaryError.message}); application fallback failed (${fallbackError.message})`);
     }
@@ -182,6 +187,7 @@ async function fetchApprovedPage({ source, url }, options = {}) {
 }
 
 module.exports = {
+  APPROVED_PAGE_MAX_BYTES,
   decodeHtmlEntities,
   stripNonContentChrome,
   htmlToText,
