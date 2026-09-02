@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:09:13.481Z",
+  "updated_at": "2026-09-02T13:14:02.243Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2774,6 +2774,24 @@
       "event_end": "2026-10-22",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-pittsburgh-2026-farmers-market: live first-party route attests Pittsburgh, PA, actionable vendor terms, and exact event date 2026-10-22."
+    },
+    {
+      "id": "pa-flea-market-bazaar-2026-2026-11-07-e32d06e3",
+      "name": "Flea Market & Bazaar 2026 Vendor Opportunity",
+      "organiser": "Flea Market & Bazaar 2026",
+      "source_url": "https://mptevents.regfox.com/flea-market-bazaar-2026",
+      "application_url": "https://mptevents.regfox.com/flea-market-bazaar-2026",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Reading",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-reading-2026-holiday-market: live first-party route attests Reading, PA, actionable vendor terms, and exact event date 2026-11-07."
     },
     {
       "id": "pa-food-truck-festival-returns-to-coca-cola-park-on-august-26-2027-08-26-ba314f5f",
