@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T19:42:39.949Z",
-  "source": "reviewed-us-illinois-cloud-promotion:4980028117a7ffbddc974aea9d3e9fcd239cecd33e141e89288656d7a137da29",
-  "total": 337,
+  "exported_at": "2026-09-02T19:45:38.765Z",
+  "source": "reviewed-us-georgia-cloud-promotion:ad542dd0a33e9278221ad7e7fab4625781e13ce1613377253264d6ea8589b6fe",
+  "total": 338,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12863,6 +12863,47 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_ab4b7dc7ae8013854455"
+    },
+    {
+      "stable_id": "opp_us_055bda1fa60f6a1c8a60",
+      "event_name": "Food Vendor Application - Blue Stone Arts & Music Festival 2026 - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49978&srsltid=AfmBOopitz2YoV_J2c4Hkvxxhh0oquE6iCJpZlNXzGAwjdD5Vn-Utwxb",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49978&srsltid=AfmBOopitz2YoV_J2c4Hkvxxhh0oquE6iCJpZlNXzGAwjdD5Vn-Utwxb",
+      "location": "Sandy Springs",
+      "locality": "Sandy Springs",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "market_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-food-2026-09-25-1ff2cea5",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_055bda1fa60f6a1c8a60"
     }
   ]
 };
