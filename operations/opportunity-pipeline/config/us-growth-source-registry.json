@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:50:46.216Z",
+  "updated_at": "2026-09-02T14:54:02.650Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2144,6 +2144,24 @@
       "event_end": "2026-09-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-warren-2026-festival: live first-party route attests Warren, MI, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-24."
+    },
+    {
+      "id": "mi-pittsfield-township-farmers-market-2026-09-26-84434a66",
+      "name": "Pittsfield Township Farmers Market Vendor Opportunity",
+      "organiser": "Pittsfield Township Farmers Market",
+      "source_url": "https://www.pittsfield-mi.gov/760/Farmers-Market",
+      "application_url": "https://www.pittsfield-mi.gov/760/Farmers-Market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Ann Arbor",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-10-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-ann-arbor-2026-farmers-market: live first-party route attests Ann Arbor, MI, actionable vendor terms, and exact event date range 2026-09-26 to 2026-10-08."
     },
     {
       "id": "mi-planning-and-resource-guide-2026-11-01-f87ed149",
