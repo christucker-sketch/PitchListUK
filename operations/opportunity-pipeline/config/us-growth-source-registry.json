@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T16:26:35.037Z",
+  "updated_at": "2026-09-02T16:32:43.768Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3765,6 +3765,24 @@
       "event_end": "2027-07-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-houston-2027-festival: live first-party route attests Houston, TX, actionable vendor terms, and exact event date 2027-07-04."
+    },
+    {
+      "id": "tx-texas-street-food-festival-fort-worth-texas-2026-2027-04-25-c1912793",
+      "name": "Texas Street Food Festival | Fort Worth, Texas | 2026 Vendor Opportunity",
+      "organiser": "Texas Street Food Festival | Fort Worth, Texas | 2026",
+      "source_url": "https://www.streetfoodfests.com/event/texas",
+      "application_url": "https://www.streetfoodfests.com/event/texas",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Fort Worth",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-25",
+      "event_end": "2027-04-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-fort-worth-2027-food-truck: live first-party route attests Fort Worth, TX, actionable vendor terms, and exact event date 2027-04-25."
     },
     {
       "id": "tx-western-heritage-weekend-2027-02-05-81f14de4",
