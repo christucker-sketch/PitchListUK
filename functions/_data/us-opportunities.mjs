@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T10:46:33.741Z",
-  "source": "reviewed-us-michigan-cloud-promotion:4d3543e66eb6c21107b10304b4f58419bac110f8ee8d322feb97dd92c358c4d4",
-  "total": 260,
+  "exported_at": "2026-09-02T10:49:40.463Z",
+  "source": "reviewed-us-washington-cloud-promotion:d19098d87b7920bf39c8c20b46974f0b97b4105165ee99e32197810e372cd7c3",
+  "total": 261,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9949,6 +9949,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_316f06a85e7c3ce2bf2f"
+    },
+    {
+      "stable_id": "opp_us_0ef7509a392a8c86dbe8",
+      "event_name": "Tacoma Sunday Market Vendor Application - September 6, 2026 - Tacoma Sunday Market - September 6, 2026 - Eventeny",
+      "organiser": "Tacoma Sunday Market",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=51833&srsltid=AfmBOopjiUJhzAtFPoOuuUSRZpKWXLCOzAi3o6qpCiSSzRe2SKgXUpyd",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=51833&srsltid=AfmBOopjiUJhzAtFPoOuuUSRZpKWXLCOzAi3o6qpCiSSzRe2SKgXUpyd",
+      "location": "Tacoma",
+      "locality": "Tacoma",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "98402",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "market_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-tacoma-sunday-market-2026-09-06-7b0e2859",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_0ef7509a392a8c86dbe8"
     }
   ]
 };
