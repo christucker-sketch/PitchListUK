@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T11:00:58.416Z",
+  "updated_at": "2026-09-02T11:03:26.579Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -2090,6 +2090,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-new-york-city-2026-festival: live first-party route attests New York City, NY, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-20."
+    },
+    {
+      "id": "ny-midday-bash-2026-09-09-7393f319",
+      "name": "Midday Bash Vendor Opportunity",
+      "organiser": "Midday Bash",
+      "source_url": "https://www.rochesterdowntown.com/midday-bash",
+      "application_url": "https://www.rochesterdowntown.com/midday-bash",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Rochester",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-09",
+      "event_end": "2026-09-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-rochester-2026-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2026-09-09."
     },
     {
       "id": "oh-city-of-akron-hosting-fourth-annual-akron-city-festival-on-september-5-2026-09-05-ef8eeba9",
