@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T18:19:43.589Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:08577319b23352b41cb4362ef16cadb9f744ef2c6e1f13e31e7af8fd0e3b37e3",
-  "total": 331,
+  "exported_at": "2026-09-02T18:28:16.044Z",
+  "source": "reviewed-us-florida-cloud-promotion:e1f6c864609679d63ed8ad303dadddb3975ddac5ec2641d0ddda5a2bb5cdb9db",
+  "total": 332,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12633,6 +12633,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_108afb9751b35061f59a"
+    },
+    {
+      "stable_id": "opp_us_a637f7e380175d004b30",
+      "event_name": "Tallahassee Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Tallahassee Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/tallahassee-foodees-fest-31716/?srsltid=AfmBOort-Um8iR33MaXxePNsFN2EWQlMvhJSRVI8yQUiKwpgKKKrbMam",
+      "application_url": "https://www.eventeny.com/events/tallahassee-foodees-fest-31716/?srsltid=AfmBOort-Um8iR33MaXxePNsFN2EWQlMvhJSRVI8yQUiKwpgKKKrbMam",
+      "location": "Tallahassee",
+      "locality": "Tallahassee",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "32301",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-22",
+      "event_end": "2027-01-24",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-tallahassee-foodees-fest-eventeny-2027-01-22-811d56e9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_a637f7e380175d004b30"
     }
   ]
 };
