@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:55:07.479Z",
+  "updated_at": "2026-09-02T14:01:52.328Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1336,6 +1336,24 @@
       "evidence": "Cloudflare discovery ga-macon-2026-holiday-market: live first-party route attests Macon, GA, actionable vendor terms, and exact event date range 2026-12-04 to 2026-12-13."
     },
     {
+      "id": "ga-all-hands-art-festival-2027-09-26-534318e6",
+      "name": "All Hands Art Festival Application &mdash; The 567 Center Vendor Opportunity",
+      "organiser": "All Hands Art Festival",
+      "source_url": "https://www.the567center.org/all-hands-art-festival-application",
+      "application_url": "https://www.the567center.org/all-hands-art-festival-application",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Macon",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-26",
+      "event_end": "2027-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-macon-2027-festival: live first-party route attests Macon, GA, actionable vendor terms, and exact event date range 2027-09-26 to 2027-09-27."
+    },
+    {
       "id": "ga-atlanta-international-night-market-2026-11-06-6a678636",
       "name": "Atlanta International Night Market Vendor Opportunity",
       "organiser": "Atlanta International Night Market",
@@ -1496,6 +1514,24 @@
       "event_end": "2026-11-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-macon-2026-farmers-market: live first-party route attests Macon, GA, actionable vendor terms, and exact event date 2026-11-06."
+    },
+    {
+      "id": "ga-pan-african-festival-2027-04-25-52a2a5ae",
+      "name": "Pan African Festival Vendor Application",
+      "organiser": "Pan African Festival",
+      "source_url": "https://tubmanmuseum.com/pan-african-festival-vendor-application",
+      "application_url": "https://tubmanmuseum.com/pan-african-festival-vendor-application",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Macon",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-25",
+      "event_end": "2027-04-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-macon-2027-festival: live first-party route attests Macon, GA, actionable vendor terms, and exact event date 2027-04-25."
     },
     {
       "id": "ga-uptown-columbus-fall-festival-2026-2026-09-19-229024e3",
