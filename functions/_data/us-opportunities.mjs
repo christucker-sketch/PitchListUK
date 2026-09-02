@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T11:07:44.945Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:41c81198e00998ffa15eb5a9305034fcc773ac358cf5f9c4d1f857855b45b2fe",
-  "total": 263,
+  "exported_at": "2026-09-02T11:11:18.554Z",
+  "source": "reviewed-us-georgia-cloud-promotion:395914a0acd9b5fb3707c7de48193cd9863f2426cc3388275722f7211f98422b",
+  "total": 264,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10063,6 +10063,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_3025cf11aee6c69b3a08"
+    },
+    {
+      "stable_id": "opp_us_767b01f987e396d1d1f6",
+      "event_name": "Vendor Registration",
+      "organiser": "fountaincityclassic.com",
+      "source_url": "https://fountaincityclassic.com/registration/vendor-registration/",
+      "application_url": "https://fountaincityclassic.com/registration/vendor-registration",
+      "location": "Columbus",
+      "locality": "Columbus",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-fountaincityclassic-com-2026-11-06-33edc27f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_767b01f987e396d1d1f6"
     }
   ]
 };
