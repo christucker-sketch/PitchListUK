@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:48:23.054Z",
+  "updated_at": "2026-09-02T13:55:07.479Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1100,6 +1100,24 @@
       "event_end": "2027-02-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-tampa-2027-farmers-market: live first-party route attests Tampa, FL, actionable vendor terms, and exact event date range 2027-02-04 to 2027-02-15."
+    },
+    {
+      "id": "fl-festival-info-welcome-to-rockville-may-6-7-8-9-2027-2027-05-06-c8eaffb1",
+      "name": "Festival Info - Welcome To Rockville | May 6-7-8-9, 2027 Vendor Opportunity",
+      "organiser": "Festival Info - Welcome To Rockville | May 6-7-8-9, 2027",
+      "source_url": "https://welcometorockville.com/festival-info",
+      "application_url": "https://welcometorockville.com/festival-info",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Orlando",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-06",
+      "event_end": "2027-05-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-orlando-2027-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date range 2027-05-06 to 2027-05-07."
     },
     {
       "id": "fl-foodees-fest-jacksonville-fl-2027-01-01-1eea50d9",
