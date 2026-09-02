@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T16:07:22.086Z",
-  "source": "reviewed-us-washington-cloud-promotion:c99a9201234f73b8b760d67c7999d90d55ac74e6b88f1258cce7fb620dc3b6a8",
-  "total": 309,
+  "exported_at": "2026-09-02T16:20:09.991Z",
+  "source": "reviewed-us-georgia-cloud-promotion:5f29c8781a6dad9ec8dc1d4f014a69316ec49d17ffc7682894554ab11d1eb069",
+  "total": 310,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11802,6 +11802,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_28a934a6eb6c39b14663"
+    },
+    {
+      "stable_id": "opp_us_fb897cc2643fc747488b",
+      "event_name": "Welcome to the Gordonston Art Fair Website Vendor Opportunity",
+      "organiser": "Welcome to the Gordonston Art Fair Website",
+      "source_url": "https://gordonstonartfair.com/",
+      "application_url": "https://gordonstonartfair.com",
+      "location": "Savannah",
+      "locality": "Savannah",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "31404",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-03-06",
+      "event_end": "2027-03-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-welcome-to-the-gordonston-art-fair-website-2027-03-06-d9018253",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_fb897cc2643fc747488b"
     }
   ]
 };
