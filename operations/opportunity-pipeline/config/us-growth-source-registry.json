@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T09:45:31.829Z",
+  "updated_at": "2026-09-02T09:48:43.277Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -201,6 +201,24 @@
       "evidence": "Cloudflare discovery ca-san-diego-2027-festival: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
     },
     {
+      "id": "ca-farmers-market-2027-06-26-42a61f99",
+      "name": "Farmers Market Vendor Application | Ocean Beach San Diego CA",
+      "organiser": "Farmers Market",
+      "source_url": "https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=AfmBOor_LJs79BTeUXq7FMJy3Rv4Y_BgMXotJcFbAKYnJ0dduOk5VduJ",
+      "application_url": "https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=AfmBOor_LJs79BTeUXq7FMJy3Rv4Y_BgMXotJcFbAKYnJ0dduOk5VduJ",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-26",
+      "event_end": "2027-06-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-food-truck: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
+    },
+    {
       "id": "ca-farmers-market-2027-06-26-98e32a9d",
       "name": "Farmers Market Vendor Application | Ocean Beach San Diego CA",
       "organiser": "Farmers Market",
@@ -325,6 +343,25 @@
       "event_end": "2027-10-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-10-25."
+    },
+    {
+      "id": "ca-vendors-2027-05-29-7593f2d5",
+      "name": "Vendors Vendor Opportunity",
+      "organiser": "Vendors",
+      "source_url": "https://www.miramesaayso.org/Default.aspx?tabid=974256",
+      "application_url": "https://www.miramesaayso.org/Default.aspx?tabid=974256",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-29",
+      "event_end": "2027-05-30",
+      "application_deadline": "2027-05-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-food-truck: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date range 2027-05-29 to 2027-05-30."
     },
     {
       "id": "co-18-festivals-to-put-on-your-calendar-now-2026-09-26-2fa052b3",
