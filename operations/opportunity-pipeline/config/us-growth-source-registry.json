@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T19:34:03.150Z",
+  "updated_at": "2026-09-02T19:36:48.804Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1550,6 +1550,24 @@
       "event_end": "2026-12-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2026-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-12-20."
+    },
+    {
+      "id": "fl-riverwalk-international-food-festival-riverwalk-fort-lauderdale-2026-11-14-7127513c",
+      "name": "Riverwalk International Food Festival - Riverwalk Fort Lauderdale Vendor Opportunity",
+      "organiser": "Riverwalk International Food Festival - Riverwalk Fort Lauderdale",
+      "source_url": "https://www.goriverwalk.com/events/events-riverwalk-international-food-festival",
+      "application_url": "https://www.goriverwalk.com/events/events-riverwalk-international-food-festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Fort Lauderdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-fort-lauderdale-2026-festival: live first-party route attests Fort Lauderdale, FL, actionable vendor terms, and exact event date 2026-11-14."
     },
     {
       "id": "fl-tallahassee-foodees-fest-eventeny-2027-01-22-7c1aa46d",
