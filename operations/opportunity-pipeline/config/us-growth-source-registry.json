@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:22:49.836Z",
+  "updated_at": "2026-09-02T14:30:39.474Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3386,6 +3386,24 @@
       "event_end": "2027-05-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-virginia-beach-2027-farmers-market: live first-party route attests Virginia Beach, VA, actionable vendor terms, and exact event date range 2027-04-25 to 2027-05-02."
+    },
+    {
+      "id": "va-food-vendors-arts-in-the-park-2027-05-01-2c4c89b0",
+      "name": "Food Vendors - Arts in the Park Vendor Opportunity",
+      "organiser": "Food Vendors - Arts in the Park",
+      "source_url": "https://richmondartsinthepark.com/food-vendors",
+      "application_url": "https://richmondartsinthepark.com/food-vendors",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Richmond",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-01",
+      "event_end": "2027-05-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-richmond-2027-food-truck: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date range 2027-05-01 to 2027-05-02."
     },
     {
       "id": "va-old-beach-farmers-market-2026-09-04-e3bda645",
