@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T19:47:08.570Z",
+  "updated_at": "2026-09-02T19:51:20.610Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3802,6 +3802,24 @@
       "event_end": "2026-09-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-woodbridge-2026-festival: live first-party route attests Woodbridge, NJ, actionable vendor terms, and exact event date 2026-09-25."
+    },
+    {
+      "id": "nj-spooky-pooch-parade-2026-lakewoodalive-2026-10-10-abe46375",
+      "name": "Spooky Pooch Parade 2026 - LakewoodAlive Vendor Opportunity",
+      "organiser": "Spooky Pooch Parade 2026 - LakewoodAlive",
+      "source_url": "https://lakewoodalive.org/event/spooky-pooch-parade-2026",
+      "application_url": "https://lakewoodalive.org/event/spooky-pooch-parade-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Lakewood",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-lakewood-2026-festival: live first-party route attests Lakewood, NJ, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
       "id": "nj-the-punk-rock-flea-market-2026-12-12-ec124392",
