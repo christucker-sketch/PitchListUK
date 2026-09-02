@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T12:26:55.579Z",
-  "source": "reviewed-us-florida-cloud-promotion:c56711879a85761a87cf43e3aada6e2deb721d20f67d3232ac408e80680cdf78",
-  "total": 275,
+  "exported_at": "2026-09-02T12:48:58.136Z",
+  "source": "reviewed-us-florida-cloud-promotion:ef1dc3b6301524fd3a1fab5212be4766f9e6ba525ed73c9f4c3f6a57a04eaada",
+  "total": 276,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10513,6 +10513,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_e398a4cd38f5c0ca29c0"
+    },
+    {
+      "stable_id": "opp_us_045877782324bfd2f790",
+      "event_name": "Vendor Applications | Orlando Fl",
+      "organiser": "battlebrosevents.com",
+      "source_url": "https://www.battlebrosevents.com/vendorsorlando",
+      "application_url": "https://www.battlebrosevents.com/vendorsorlando",
+      "location": "Orlando",
+      "locality": "Orlando",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-battlebrosevents-com-2026-10-10-5a3b7114",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_045877782324bfd2f790"
     }
   ]
 };
