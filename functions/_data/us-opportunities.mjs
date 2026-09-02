@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T12:48:58.136Z",
-  "source": "reviewed-us-florida-cloud-promotion:ef1dc3b6301524fd3a1fab5212be4766f9e6ba525ed73c9f4c3f6a57a04eaada",
-  "total": 276,
+  "exported_at": "2026-09-02T12:54:26.523Z",
+  "source": "reviewed-us-georgia-cloud-promotion:73a79e37f8971e1d29202d99381269712f830f94c9a59f370a43cd7eed75e693",
+  "total": 277,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10552,6 +10552,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_045877782324bfd2f790"
+    },
+    {
+      "stable_id": "opp_us_2bad2bb3653547ddb12c",
+      "event_name": "Food Vendor Application for Saturday's Pride Festival - 2026 Macon Pride Street Festival - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=53398&srsltid=AfmBOorb-9o8Eh62z5enJ0ZmDELg60y0eneepYZ_eo-HVtCUJ2B950iQ",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=53398&srsltid=AfmBOorb-9o8Eh62z5enJ0ZmDELg60y0eneepYZ_eo-HVtCUJ2B950iQ",
+      "location": "Macon",
+      "locality": "Macon",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-food-2026-09-26-852a4659",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_2bad2bb3653547ddb12c"
     }
   ]
 };
