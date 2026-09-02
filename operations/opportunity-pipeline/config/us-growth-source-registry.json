@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:58:14.630Z",
+  "updated_at": "2026-09-02T15:01:27.766Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -145,6 +145,24 @@
       "event_end": "2027-03-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-phoenix-2027-arts-crafts: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date range 2027-03-06 to 2027-03-07."
+    },
+    {
+      "id": "az-merchantile-market-2026-10-10-038f4ddd",
+      "name": "Merchantile Market Vendor Opportunity",
+      "organiser": "Merchantile Market",
+      "source_url": "https://merchantilemarket.com",
+      "application_url": "https://merchantilemarket.com",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Scottsdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-scottsdale-2026-farmers-market: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
     },
     {
       "id": "az-merry-main-street-holiday-events-in-mesa-az-2026-11-28-bc6b99bb",
