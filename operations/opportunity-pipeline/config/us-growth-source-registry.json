@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:00:19.509Z",
+  "updated_at": "2026-09-02T13:04:28.844Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1676,6 +1676,24 @@
       "event_end": "2027-06-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2027-farmers-market: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-06-30."
+    },
+    {
+      "id": "ma-cambridge-carnival-2026-09-12-3bdc1e0f",
+      "name": "Cambridge Carnival Vendor Opportunity",
+      "organiser": "Cambridge Carnival",
+      "source_url": "https://www.cambridgecarnival.org",
+      "application_url": "https://www.cambridgecarnival.org",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Cambridge",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-cambridge-2026-festival: live first-party route attests Cambridge, MA, actionable vendor terms, and exact event date range 2026-09-12 to 2026-09-13."
     },
     {
       "id": "ma-eventeny-com-2027-10-23-5ca26d46",
