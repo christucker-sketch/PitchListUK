@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:56:43.293Z",
+  "updated_at": "2026-09-02T16:06:21.207Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4287,6 +4287,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-vancouver-2026-farmers-market: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "wa-walkable-wonders-the-tiffin-seneca-farmers-market-2027-10-29-8f233981",
+      "name": "Walkable Wonders: The Tiffin-Seneca Farmers Market Vendor Opportunity",
+      "organiser": "Walkable Wonders: The Tiffin-Seneca Farmers Market",
+      "source_url": "https://inside.heidelberg.edu/news/071522/walkable-wonders-tiffin-seneca-farmers-market",
+      "application_url": "https://inside.heidelberg.edu/news/071522/walkable-wonders-tiffin-seneca-farmers-market",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Bellevue",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-29",
+      "event_end": "2027-10-29",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-bellevue-2027-farmers-market: live first-party route attests Bellevue, WA, actionable vendor terms, and exact event date 2027-10-29."
     }
   ]
 }
