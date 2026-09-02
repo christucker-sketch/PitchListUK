@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:09:47.251Z",
+  "updated_at": "2026-09-02T17:15:07.751Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3171,6 +3171,24 @@
       "event_end": "2027-03-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-syracuse-2027-farmers-market: live first-party route attests Syracuse, NY, actionable vendor terms, and exact event date 2027-03-06."
+    },
+    {
+      "id": "ny-albany-winter-wonderland-craft-and-vendor-market-hometown-vendor-marke-2026-12-12-1ba7fc93",
+      "name": "Albany Winter Wonderland Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Albany Winter Wonderland Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/albanywinterwonderland",
+      "application_url": "https://hometownvendormarket.com/albanywinterwonderland",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Albany",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-albany-2026-arts-crafts: live first-party route attests Albany, NY, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
     },
     {
       "id": "ny-cny-regional-market-2026-syracuse-ny-2026-10-13-f18c8f10",
