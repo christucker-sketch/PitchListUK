@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T14:13:16.070Z",
-  "source": "reviewed-us-washington-cloud-promotion:77d9fd985138dd20fa74d571b10fea0db0930f6a689fa88944a3ff22a3a29731",
-  "total": 293,
+  "exported_at": "2026-09-02T14:15:48.413Z",
+  "source": "reviewed-us-arizona-cloud-promotion:5a8e96d4ed9f1b76eed4e8c0c94d52fd0da89a7ba34adb3ae4c705227cbbd534",
+  "total": 294,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11200,6 +11200,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_1e899c07a7fead08aa8a"
+    },
+    {
+      "stable_id": "opp_us_e946839a15e8ad02379a",
+      "event_name": "Vendors Vendor Opportunity",
+      "organiser": "Vendors",
+      "source_url": "https://abcfest.com/vendors/",
+      "application_url": "https://abcfest.com/vendors",
+      "location": "Chandler",
+      "locality": "Chandler",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "19593",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-15",
+      "event_end": "2027-01-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-vendors-2027-01-15-9898e8e7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_e946839a15e8ad02379a"
     }
   ]
 };
