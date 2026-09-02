@@ -258,6 +258,7 @@ function mergeDataPr(result) {
   let pr = readPr(result.publication.pr_number);
   if (pr.state === 'OPEN') pr = waitForPr(result.publication.pr_number);
   if (!['OPEN', 'MERGED'].includes(pr.state)) throw new Error(`Data PR #${pr.number} is ${pr.state}`);
+  run('git', ['fetch', 'origin', `pull/${pr.number}/head`, '--quiet']);
   const baseSha = pr.baseRefOid;
   const validationPr = pr.state === 'MERGED' ? { ...pr, state: 'OPEN', mergeable: 'MERGEABLE' } : pr;
   const headOid = validateAutoMergeCandidate(validationPr, result, { baseSha, snapshotPath });
