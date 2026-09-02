@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:12:04.415Z",
+  "updated_at": "2026-09-02T15:15:37.434Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1640,6 +1640,24 @@
       "event_end": "2027-04-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-macon-2027-festival: live first-party route attests Macon, GA, actionable vendor terms, and exact event date 2027-04-25."
+    },
+    {
+      "id": "ga-savannah-tacos-treats-festival-2026-craft-fair-eventeny-2026-09-19-5051b005",
+      "name": "Savannah Tacos & Treats Festival 2026 (& CRAFT FAIR) - Eventeny Vendor Opportunity",
+      "organiser": "Savannah Tacos & Treats Festival 2026 (& CRAFT FAIR) - Eventeny",
+      "source_url": "https://www.eventeny.com/events/savannah-tacos-treats-festival-2026-craft-fair-30856/?srsltid=AfmBOoojikrkXWiFt-qyuL1ia0zQ3-mnrhrBbZH5UkboEOEgUaIUFL1x",
+      "application_url": "https://www.eventeny.com/events/savannah-tacos-treats-festival-2026-craft-fair-30856/?srsltid=AfmBOoojikrkXWiFt-qyuL1ia0zQ3-mnrhrBbZH5UkboEOEgUaIUFL1x",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Savannah",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-savannah-2026-festival: live first-party route attests Savannah, GA, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "ga-uptown-columbus-fall-festival-2026-2026-09-19-229024e3",
