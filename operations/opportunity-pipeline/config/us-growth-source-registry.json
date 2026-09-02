@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:40:24.799Z",
+  "updated_at": "2026-09-02T14:41:54.492Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3170,6 +3170,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-festival: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "pa-open-market-at-leaf-ndash-leaf-erie-2026-09-05-2017be08",
+      "name": "Open Market at LEAF &ndash; Leaf Erie Vendor Opportunity",
+      "organiser": "Open Market at LEAF &ndash; Leaf Erie",
+      "source_url": "https://leaferie.org/pages/open-market",
+      "application_url": "https://leaferie.org/pages/open-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Erie",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-erie-2026-farmers-market: live first-party route attests Erie, PA, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-19."
     },
     {
       "id": "pa-wish-upon-a-food-truck-festival-2026-09-12-0b1a0459",
