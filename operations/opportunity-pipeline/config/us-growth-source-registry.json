@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T11:19:09.484Z",
+  "updated_at": "2026-09-02T11:23:54.815Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -938,6 +938,24 @@
       "event_end": "2027-01-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-miami-2027-festival: live first-party route attests Miami, FL, actionable vendor terms, and exact event date range 2027-01-16 to 2027-01-17."
+    },
+    {
+      "id": "fl-fair-vendors-at-florida-state-fairgrounds-2027-02-04-6a4e0590",
+      "name": "Fair Vendors at Florida State Fairgrounds Vendor Opportunity",
+      "organiser": "Fair Vendors at Florida State Fairgrounds",
+      "source_url": "https://floridastatefairgrounds.com/join-the-fun/vendors",
+      "application_url": "https://floridastatefairgrounds.com/join-the-fun/vendors",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tampa",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-04",
+      "event_end": "2027-02-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tampa-2027-farmers-market: live first-party route attests Tampa, FL, actionable vendor terms, and exact event date range 2027-02-04 to 2027-02-15."
     },
     {
       "id": "fl-foodees-fest-jacksonville-fl-2027-01-01-1eea50d9",
