@@ -157,10 +157,47 @@ function triggerWorkflow(envFile, params) {
   return parseInstanceId(output);
 }
 
+function workflowDescribeErrorText(error) {
+  return stripAnsi([
+    error?.message,
+    error?.stderr,
+    error?.stdout
+  ].filter(Boolean).join('\n'));
+}
+
+export function isTransientWorkflowDescribeError(error) {
+  const text = workflowDescribeErrorText(error);
+  return /workflows\.api\.error\.internal_server|code:\s*10001|ECONNRESET|ETIMEDOUT|EAI_AGAIN|fetch failed|socket hang up/i.test(text);
+}
+
+export function workflowDescribeBackoffMilliseconds(attempt, options = {}) {
+  const base = Math.max(1000, Number(options.baseMs ?? 5000));
+  const maximum = Math.max(base, Number(options.maximumMs ?? 60000));
+  return Math.min(maximum, base * (2 ** Math.max(0, Number(attempt || 1) - 1)));
+}
+
 function waitForWorkflow(envFile, active) {
   const pollSeconds = Math.max(3, Number(process.env.PITCHLIST_GROWTH_WORKFLOW_POLL_SECONDS || 10));
+  const maxTransientFailures = Math.max(1, Number(process.env.PITCHLIST_GROWTH_WORKFLOW_DESCRIBE_RETRIES || 6));
+  let transientFailures = 0;
   for (;;) {
-    const output = run('npx', wranglerArgs(envFile, ['workflows', 'instances', 'describe', workflowName, active.id]));
+    let output;
+    try {
+      output = run('npx', wranglerArgs(envFile, ['workflows', 'instances', 'describe', workflowName, active.id]));
+      transientFailures = 0;
+    } catch (error) {
+      if (!isTransientWorkflowDescribeError(error)) throw error;
+      transientFailures += 1;
+      if (transientFailures > maxTransientFailures) {
+        const detail = workflowDescribeErrorText(error).replace(/\s+/g, ' ').trim();
+        throw new Error(`Workflow ${active.id} status describe failed after ${maxTransientFailures} transient Cloudflare API retries; active instance preserved for safe retry: ${detail}`);
+      }
+      sleep(workflowDescribeBackoffMilliseconds(transientFailures, {
+        baseMs: pollSeconds * 1000,
+        maximumMs: 60000
+      }));
+      continue;
+    }
     const status = parseWorkflowStatus(output);
     if (status === 'complete') return parseCompactWorkflowOutput(output, active.state_name, active.mode);
     if (['errored', 'terminated', 'paused'].includes(status)) throw new Error(`Workflow ${active.id} is ${status}`);
