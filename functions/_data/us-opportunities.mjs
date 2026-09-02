@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:22:25.686Z",
-  "source": "reviewed-us-georgia-cloud-promotion:ac275034ab401b7c6ea1a0f9b6e880f3d1389e55332827d841a934a50f65ab57",
-  "total": 284,
+  "exported_at": "2026-09-02T13:24:52.308Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:f5855c2d4084e1002850f360a33c9d1f0855db275f9b5dfa8954bb4132743e17",
+  "total": 285,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10856,6 +10856,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_fdc3254bec7ed516049f"
+    },
+    {
+      "stable_id": "opp_us_dec81dae2ac884496495",
+      "event_name": "2026 Durham Holiday Nightmare Market Vendor Application - 2026 Durham Geek and Grub Market (Holiday Nightmare Edition) - Eventeny",
+      "organiser": "2026 Durham Holiday Nightmare Market",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=38737&srsltid=AfmBOophVDDNtzns8fosHYnhfIzzEYcm4L66yXv5_E7wqh-sDJlt6XZA",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=38737&srsltid=AfmBOophVDDNtzns8fosHYnhfIzzEYcm4L66yXv5_E7wqh-sDJlt6XZA",
+      "location": "Durham",
+      "locality": "Durham",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "market_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-2026-durham-holiday-nightmare-market-2026-12-06-6aa909b2",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_dec81dae2ac884496495"
     }
   ]
 };
