@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:39:07.595Z",
+  "updated_at": "2026-09-02T12:42:02.263Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3046,6 +3046,24 @@
       "evidence": "Cloudflare discovery wa-tacoma-2026-government-events: live first-party route attests Tacoma, WA, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
+      "id": "wa-highlander-festival-2026-09-11-be5acb27",
+      "name": "Highlander Festival Vendor Opportunity",
+      "organiser": "Highlander Festival",
+      "source_url": "https://www.kelso.gov/177/Highlander-Festival",
+      "application_url": "https://www.kelso.gov/177/Highlander-Festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Vancouver",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-vancouver-2026-government-events: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-12."
+    },
+    {
       "id": "wa-legacy-square-2026-09-19-b9a7d78b",
       "name": "Legacy Square Vendor Opportunity",
       "organiser": "Legacy Square",
@@ -3118,6 +3136,24 @@
       "evidence": "Cloudflare discovery wa-tacoma-2027-government-events: live first-party route attests Tacoma, WA, actionable vendor terms, and exact event date 2027-09-13."
     },
     {
+      "id": "wa-sw-washington-farmers-markets-your-2026-complete-guide-2026-09-30-c0d58106",
+      "name": "SW Washington Farmers Markets: Your 2026 Complete Guide Vendor Opportunity",
+      "organiser": "SW Washington Farmers Markets: Your 2026 Complete Guide",
+      "source_url": "https://www.thetierneynetwork.com/blog/your-complete-guide-to-farmers-markets-in-southwest-washington-go-before-everything-sells-out",
+      "application_url": "https://www.thetierneynetwork.com/blog/your-complete-guide-to-farmers-markets-in-southwest-washington-go-before-everything-sells-out",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Vancouver",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-30",
+      "event_end": "2026-10-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-vancouver-2026-farmers-market: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date range 2026-09-30 to 2026-10-02."
+    },
+    {
       "id": "wa-tacoma-sunday-market-2026-09-06-7b0e2859",
       "name": "Tacoma Sunday Market Vendor Application - September 6, 2026 - Tacoma Sunday Market - September 6, 2026 - Eventeny",
       "organiser": "Tacoma Sunday Market",
@@ -3152,6 +3188,24 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-spokane-2027-arts-crafts: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date 2027-06-06."
+    },
+    {
+      "id": "wa-vendor-events-in-vancouver-wa-2026-09-26-ea2965af",
+      "name": "Vendor Events in Vancouver, WA",
+      "organiser": "Vendor Events in Vancouver, WA",
+      "source_url": "https://vendorsmap.com/cities/vancouver-wa",
+      "application_url": "https://vendorsmap.com/cities/vancouver-wa",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Vancouver",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-vancouver-2026-farmers-market: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date 2026-09-26."
     }
   ]
 }
