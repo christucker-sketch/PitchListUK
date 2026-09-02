@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:21:24.998Z",
+  "updated_at": "2026-09-02T13:23:58.981Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2054,6 +2054,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-arts-crafts: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-27."
+    },
+    {
+      "id": "nc-2026-durham-holiday-nightmare-market-2026-12-06-6aa909b2",
+      "name": "2026 Durham Holiday Nightmare Market Vendor Application - 2026 Durham Geek and Grub Market (Holiday Nightmare Edition) - Eventeny",
+      "organiser": "2026 Durham Holiday Nightmare Market",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=38737&srsltid=AfmBOophVDDNtzns8fosHYnhfIzzEYcm4L66yXv5_E7wqh-sDJlt6XZA",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=38737&srsltid=AfmBOophVDDNtzns8fosHYnhfIzzEYcm4L66yXv5_E7wqh-sDJlt6XZA",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Durham",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-durham-2026-holiday-market: live first-party route attests Durham, NC, actionable vendor terms, and exact event date 2026-12-06."
     },
     {
       "id": "nc-ccaf2026-artisan-vendors-2026-10-17-27e94c1f",
