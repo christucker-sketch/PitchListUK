@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T12:10:23.094Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:025408556b71ae31b977f22062224cb3a132d96664a7132c8e443137a7830db1",
-  "total": 274,
+  "exported_at": "2026-09-02T12:26:55.579Z",
+  "source": "reviewed-us-florida-cloud-promotion:c56711879a85761a87cf43e3aada6e2deb721d20f67d3232ac408e80680cdf78",
+  "total": 275,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10474,6 +10474,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_58c3644db10ed712fcc5"
+    },
+    {
+      "stable_id": "opp_us_e398a4cd38f5c0ca29c0",
+      "event_name": "Lake Nona Farmers Market Sept 16 2026 - Eventeny Vendor Opportunity",
+      "organiser": "Lake Nona Farmers Market Sept 16 2026 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/lake-nona-farmers-market-sept-16-2026-31458/?srsltid=AfmBOormAJeCCi8bQp0rS2HRV_zpIseJYFtbEZxPOz53_JdMc3cL7uSM",
+      "application_url": "https://www.eventeny.com/events/lake-nona-farmers-market-sept-16-2026-31458/?srsltid=AfmBOormAJeCCi8bQp0rS2HRV_zpIseJYFtbEZxPOz53_JdMc3cL7uSM",
+      "location": "Orlando",
+      "locality": "Orlando",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "13615",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-16",
+      "event_end": "2026-09-16",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "market_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-lake-nona-farmers-market-sept-16-2026-eventeny-2026-09-16-02949331",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_e398a4cd38f5c0ca29c0"
     }
   ]
 };
