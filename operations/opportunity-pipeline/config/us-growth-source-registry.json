@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:48:18.918Z",
+  "updated_at": "2026-09-02T17:51:11.421Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3570,6 +3570,24 @@
       "evidence": "Cloudflare discovery ny-rochester-2026-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2026-09-09."
     },
     {
+      "id": "oh-2025-2026-festivals-culture-works-2026-09-06-fe5e058a",
+      "name": "2025-2026 Festivals - Culture Works Vendor Opportunity",
+      "organiser": "2025-2026 Festivals - Culture Works",
+      "source_url": "https://cultureworks.org/engage/festivals",
+      "application_url": "https://cultureworks.org/engage/festivals",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Dayton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-dayton-2026-holiday-market: live first-party route attests Dayton, OH, actionable vendor terms, and exact event date 2026-09-06."
+    },
+    {
       "id": "oh-akron-pickle-fest-2027-08-08-e8415398",
       "name": "Akron Pickle Fest Vendor Opportunity",
       "organiser": "Akron Pickle Fest",
@@ -3748,6 +3766,42 @@
       "event_end": "2026-11-14",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-toledo-2026-holiday-market: live first-party route attests Toledo, OH, actionable vendor terms, and exact event date 2026-11-14."
+    },
+    {
+      "id": "oh-holiday-shopping-in-dayton-2026-12-05-432b221f",
+      "name": "Holiday Shopping in Dayton Vendor Opportunity",
+      "organiser": "Holiday Shopping in Dayton",
+      "source_url": "https://www.destinationdayton.org/blog/post/unique-holiday-shopping-ideas-in-dayton",
+      "application_url": "https://www.destinationdayton.org/blog/post/unique-holiday-shopping-ideas-in-dayton",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Dayton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-dayton-2026-holiday-market: live first-party route attests Dayton, OH, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "oh-registration-ys-street-fair-october-2026-2026-09-12-6ceb98dc",
+      "name": "Registration - YS Street Fair October 2026 Vendor Opportunity",
+      "organiser": "Registration - YS Street Fair October 2026",
+      "source_url": "https://app.glueup.com/event/registration-ys-street-fair-october-2026-185529",
+      "application_url": "https://app.glueup.com/event/registration-ys-street-fair-october-2026-185529",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Dayton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-dayton-2026-food-truck: live first-party route attests Dayton, OH, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "oh-start-your-gift-shopping-at-greater-cleveland-s-holiday-markets-2026-12-13-4e9cf318",
