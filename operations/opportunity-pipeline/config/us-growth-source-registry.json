@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:36:34.833Z",
+  "updated_at": "2026-09-02T14:40:24.799Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2686,6 +2686,24 @@
       "evidence": "Cloudflare discovery nj-jersey-city-2026-farmers-market: live first-party route attests Jersey City, NJ, actionable vendor terms, and exact event date range 2026-11-22 to 2026-12-05."
     },
     {
+      "id": "ny-cny-regional-market-2026-syracuse-ny-2026-10-13-f18c8f10",
+      "name": "CNY Regional Market 2026, Syracuse, NY Vendor Opportunity",
+      "organiser": "CNY Regional Market 2026, Syracuse, NY",
+      "source_url": "https://vendorsmap.com/events/722",
+      "application_url": "https://vendorsmap.com/events/722",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Syracuse",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-13",
+      "event_end": "2026-10-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-syracuse-2026-farmers-market: live first-party route attests Syracuse, NY, actionable vendor terms, and exact event date 2026-10-13."
+    },
+    {
       "id": "ny-down-to-earth-yonkers-farmers-market-2026-2026-11-25-e860859f",
       "name": "Down to Earth Yonkers Farmers Market 2026 Vendor Opportunity",
       "organiser": "Down to Earth Yonkers Farmers Market 2026",
@@ -2774,6 +2792,24 @@
       "event_end": "2027-05-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-rochester-2027-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2027-05-31."
+    },
+    {
+      "id": "ny-farmers-market-vendors-2026-10-13-9477c94a",
+      "name": "Farmers Market Vendors Vendor Opportunity",
+      "organiser": "Farmers Market Vendors",
+      "source_url": "https://downtownsyracuse.com/signature-events/downtown-farmers-market/farmers-market-vendors",
+      "application_url": "https://downtownsyracuse.com/signature-events/downtown-farmers-market/farmers-market-vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Syracuse",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-13",
+      "event_end": "2026-10-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-syracuse-2026-farmers-market: live first-party route attests Syracuse, NY, actionable vendor terms, and exact event date 2026-10-13."
     },
     {
       "id": "ny-midday-bash-2026-09-09-7393f319",
