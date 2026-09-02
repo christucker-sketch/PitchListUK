@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:37:14.722Z",
+  "updated_at": "2026-09-02T15:41:15.749Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2452,6 +2452,24 @@
       "evidence": "Cloudflare discovery nc-raleigh-2026-holiday-market: live first-party route attests Raleigh, NC, actionable vendor terms, and exact event date 2026-12-07."
     },
     {
+      "id": "nc-christmasfest-2026-12-12-b29a31b5",
+      "name": "ChristmasFest Vendor Opportunity",
+      "organiser": "ChristmasFest",
+      "source_url": "https://moravianmusic.org/christmasfest",
+      "application_url": "https://moravianmusic.org/christmasfest",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Winston-Salem",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-winston-salem-2026-holiday-market: live first-party route attests Winston-Salem, NC, actionable vendor terms, and exact event date 2026-12-12."
+    },
+    {
       "id": "nc-fiesta-festival-2026-09-19-e99845c6",
       "name": "Fiesta Festival Vendor Opportunity",
       "organiser": "Fiesta Festival",
@@ -2504,6 +2522,24 @@
       "event_end": "2026-11-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-greensboro-2026-holiday-market: live first-party route attests Greensboro, NC, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-08."
+    },
+    {
+      "id": "nc-holiday-market-christmas-tree-lighting-2026-11-21-082dccfc",
+      "name": "Holiday Market & Christmas Tree Lighting Vendor Opportunity",
+      "organiser": "Holiday Market & Christmas Tree Lighting",
+      "source_url": "https://www.500w5th.com/holidaymarket",
+      "application_url": "https://www.500w5th.com/holidaymarket",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Winston-Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-winston-salem-2026-holiday-market: live first-party route attests Winston-Salem, NC, actionable vendor terms, and exact event date 2026-11-21."
     },
     {
       "id": "nc-magical-meetups-the-emperor-s-new-market-eventeny-2027-06-06-65425c62",
