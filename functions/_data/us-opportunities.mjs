@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T14:31:33.790Z",
-  "source": "reviewed-us-virginia-cloud-promotion:f61750e2e6d4fb52469da7081d04e6f2f4bdf94cfdff4779c397f943b19de2fa",
-  "total": 295,
+  "exported_at": "2026-09-02T14:37:28.374Z",
+  "source": "reviewed-us-texas-cloud-promotion:ea7d1b2ced5746cbd67923c570c42de92b65957760115feffe81738f480ad291",
+  "total": 296,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11275,6 +11275,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_a2d0c10d35c11e512beb"
+    },
+    {
+      "stable_id": "opp_us_8282a4d8d9e617d1be6e",
+      "event_name": "Fort Worth Community Market 2026",
+      "organiser": "Fort Worth Community Market 2026",
+      "source_url": "https://vendorsmap.com/events/3348",
+      "application_url": "https://vendorsmap.com/events/3348",
+      "location": "Fort Worth",
+      "locality": "Fort Worth",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "76104",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-13",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-fort-worth-community-market-2026-2026-12-13-a3b6ea45",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_8282a4d8d9e617d1be6e"
     }
   ]
 };
