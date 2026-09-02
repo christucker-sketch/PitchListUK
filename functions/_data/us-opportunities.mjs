@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T21:20:16.102Z",
-  "source": "reviewed-us-illinois-cloud-promotion:86478b6f10260832c4e9b2bdcbe1a8ba03bc0a2dd215908eb6c0219ca12e2dc9",
-  "total": 348,
+  "exported_at": "2026-09-02T21:24:28.918Z",
+  "source": "reviewed-us-ohio-cloud-promotion:2a0facc52ed1a3653dccb9f24bc6b86b4edbbe66094db6f6f653393025214dec",
+  "total": 349,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13283,6 +13283,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_f093287e54f187f65160"
+    },
+    {
+      "stable_id": "opp_us_2b2e1f6383d5e7994947",
+      "event_name": "Back to School 2026-27 - Parma City School District Vendor Opportunity",
+      "organiser": "Back to School 2026-27 - Parma City School District",
+      "source_url": "https://www.parmacityschools.org/back-to-school",
+      "application_url": "https://www.parmacityschools.org/back-to-school",
+      "location": "Parma",
+      "locality": "Parma",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "44130",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-22",
+      "event_end": "2027-08-22",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-back-to-school-2026-27-parma-city-school-district-2027-08-22-ddeced5d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_2b2e1f6383d5e7994947"
     }
   ]
 };
