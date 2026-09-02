@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:41:54.492Z",
+  "updated_at": "2026-09-02T14:46:49.654Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2902,6 +2902,24 @@
       "evidence": "Cloudflare discovery oh-cincinnati-2026-festival: live first-party route attests Cincinnati, OH, actionable vendor terms, and exact event date range 2026-09-17 to 2026-09-20."
     },
     {
+      "id": "oh-event-details-u-s-national-park-service-2026-09-04-b647c076",
+      "name": "Event Details (U.S. National Park Service) Vendor Opportunity",
+      "organiser": "Event Details (U.S. National Park Service)",
+      "source_url": "https://www.nps.gov/planyourvisit/event-details.htm?id=B6357CD1-961D-51D5-4A47B4813777A467",
+      "application_url": "https://www.nps.gov/planyourvisit/event-details.htm?id=B6357CD1-961D-51D5-4A47B4813777A467",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Akron",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-akron-2026-government-events: live first-party route attests Akron, OH, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-06."
+    },
+    {
       "id": "oh-food-truck-festival-columbus-food-truck-festival-2027-08-14-944d9f0b",
       "name": "Food Truck Festival | Columbus Food Truck Festival™",
       "organiser": "Food Truck Festival | Columbus Food Truck Festival™",
@@ -3008,6 +3026,24 @@
       "event_end": "2027-01-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2027-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2027-01-08."
+    },
+    {
+      "id": "oh-vendors-2026-10-10-c8ca83ea",
+      "name": "VENDORS Vendor Opportunity",
+      "organiser": "VENDORS",
+      "source_url": "https://hudsonohiofarmersmarket.org/vendors",
+      "application_url": "https://hudsonohiofarmersmarket.org/vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Akron",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-akron-2026-farmers-market: live first-party route attests Akron, OH, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
       "id": "oh-vendors-mdash-scioto-arts-market-2026-09-20-cffe2d13",
