@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T19:35:01.200Z",
-  "source": "reviewed-us-texas-cloud-promotion:09417b83ebf85b179ead39d9080a68c25b245daae8ad270bcb482ae6aa191769",
-  "total": 336,
+  "exported_at": "2026-09-02T19:42:39.949Z",
+  "source": "reviewed-us-illinois-cloud-promotion:4980028117a7ffbddc974aea9d3e9fcd239cecd33e141e89288656d7a137da29",
+  "total": 337,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12826,6 +12826,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_7538d4f4f262ea4c1bd9"
+    },
+    {
+      "stable_id": "opp_us_ab4b7dc7ae8013854455",
+      "event_name": "Love on the Lawn Day 2026 | 5th Annual Vendor Opportunity",
+      "organiser": "Love on the Lawn Day 2026 | 5th Annual",
+      "source_url": "https://lotlfest.com/",
+      "application_url": "https://lotlfest.com",
+      "location": "Elgin",
+      "locality": "Elgin",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-love-on-the-lawn-day-2026-5th-annual-2026-09-05-acceca3e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_ab4b7dc7ae8013854455"
     }
   ]
 };
