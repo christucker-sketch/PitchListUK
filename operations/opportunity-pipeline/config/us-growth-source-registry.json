@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:54:02.650Z",
+  "updated_at": "2026-09-02T14:58:14.630Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3497,6 +3497,24 @@
       "evidence": "Cloudflare discovery va-richmond-2027-festival: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date range 2027-03-18 to 2027-03-21."
     },
     {
+      "id": "va-calendar-newport-news-fall-festival-2026-10-05-665fcc51",
+      "name": "Calendar • Newport News Fall Festival Vendor Opportunity",
+      "organiser": "Calendar • Newport News Fall Festival",
+      "source_url": "https://www.nnva.gov/calendar.aspx?EID=1614",
+      "application_url": "https://www.nnva.gov/calendar.aspx?EID=1614",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Newport News",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-05",
+      "event_end": "2026-10-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-newport-news-2026-government-events: live first-party route attests Newport News, VA, actionable vendor terms, and exact event date 2026-10-05."
+    },
+    {
       "id": "va-concert-zone-the-patriotic-festival-virginia-beach-memorial-day-weeken-2027-05-28-e07575f7",
       "name": "Concert Zone - The Patriotic Festival - Virginia Beach, Memorial Day Weekend 2027 Vendor Opportunity",
       "organiser": "Concert Zone - The Patriotic Festival - Virginia Beach, Memorial Day Weekend 2027",
@@ -3549,6 +3567,24 @@
       "event_end": "2027-05-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-richmond-2027-food-truck: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date range 2027-05-01 to 2027-05-02."
+    },
+    {
+      "id": "va-newport-news-farmers-market-2026-12-14-85e5c34a",
+      "name": "Newport News Farmers Market Vendor Opportunity",
+      "organiser": "Newport News Farmers Market",
+      "source_url": "https://vendorsmap.com/events/6416",
+      "application_url": "https://vendorsmap.com/events/6416",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Newport News",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-14",
+      "event_end": "2026-12-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-newport-news-2026-farmers-market: live first-party route attests Newport News, VA, actionable vendor terms, and exact event date 2026-12-14."
     },
     {
       "id": "va-old-beach-farmers-market-2026-09-04-e3bda645",
