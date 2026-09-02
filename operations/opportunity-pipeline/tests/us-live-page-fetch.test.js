@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 const {
+  APPROVED_PAGE_MAX_BYTES,
   htmlToText,
   extractTitle,
   extractLinks,
@@ -73,4 +74,63 @@ test('approved source fetch falls back to reviewed application route after sourc
   assert.equal(result.fetch_route, 'application_fallback');
   assert.match(result.text, /2026 Vendor Application/);
   assert.equal(result.application_url, 'https://example.org/apply');
+});
+
+test('approved acquisition fetches default to a strict 1 MiB response body ceiling', async () => {
+  assert.equal(APPROVED_PAGE_MAX_BYTES, 1024 * 1024);
+  const fetchImpl = async () => ({
+    ok: true,
+    status: 200,
+    statusText: 'OK',
+    url: 'https://example.org/vendors',
+    headers: {
+      get(name) {
+        if (String(name).toLowerCase() === 'content-type') return 'text/html; charset=utf-8';
+        if (String(name).toLowerCase() === 'content-length') return String(APPROVED_PAGE_MAX_BYTES + 1);
+        return null;
+      }
+    },
+    text: async () => '<html><body>should never be materialised</body></html>'
+  });
+
+  await assert.rejects(
+    fetchApprovedPage({
+      source: {
+        status: 'approved-pilot',
+        name: 'Oversized Event',
+        source_url: 'https://example.org/vendors',
+        application_url: 'https://example.org/vendors'
+      }
+    }, { fetchImpl, retries: 0 }),
+    /response body exceeds 1048576 byte limit/
+  );
+});
+
+test('approved acquisition response ceiling remains explicitly overridable', async () => {
+  const fetchImpl = async () => ({
+    ok: true,
+    status: 200,
+    statusText: 'OK',
+    url: 'https://example.org/vendors',
+    headers: {
+      get(name) {
+        if (String(name).toLowerCase() === 'content-type') return 'text/html';
+        if (String(name).toLowerCase() === 'content-length') return '65';
+        return null;
+      }
+    },
+    text: async () => 'x'.repeat(65)
+  });
+
+  await assert.rejects(
+    fetchApprovedPage({
+      source: {
+        status: 'approved-pilot',
+        name: 'Controlled Limit Event',
+        source_url: 'https://example.org/vendors',
+        application_url: 'https://example.org/vendors'
+      }
+    }, { fetchImpl, retries: 0, maxBytes: 64 }),
+    /response body exceeds 64 byte limit/
+  );
 });
