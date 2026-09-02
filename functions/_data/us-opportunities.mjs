@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T11:24:41.065Z",
-  "source": "reviewed-us-florida-cloud-promotion:4cbebb64c986232a77835fb6be7c56df87de59c90436e2c389d0056a016391b4",
-  "total": 267,
+  "exported_at": "2026-09-02T11:35:29.007Z",
+  "source": "reviewed-us-washington-cloud-promotion:6c5929ce56fa15b01332713900e9821eae49b11c574757aeb856680361f249a8",
+  "total": 268,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10214,6 +10214,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_15ddb6840963805c1ac6"
+    },
+    {
+      "stable_id": "opp_us_8c83d00e0d783df29a25",
+      "event_name": "Spanaway Park Vendor Opportunity",
+      "organiser": "Spanaway Park",
+      "source_url": "https://www.piercecountywa.gov/1336/Spanaway-Park",
+      "application_url": "https://www.piercecountywa.gov/1336/Spanaway-Park",
+      "location": "Tacoma",
+      "locality": "Tacoma",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "14904",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-13",
+      "event_end": "2027-09-13",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-spanaway-park-2027-09-13-f29f37a5",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_8c83d00e0d783df29a25"
     }
   ]
 };
