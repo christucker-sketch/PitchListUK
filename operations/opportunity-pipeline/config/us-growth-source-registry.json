@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:18:24.453Z",
+  "updated_at": "2026-09-02T12:25:57.591Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1082,6 +1082,24 @@
       "event_end": "2027-05-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-jacksonville-2027-government-events: live first-party route attests Jacksonville, FL, actionable vendor terms, and exact event date range 2027-05-21 to 2027-05-24."
+    },
+    {
+      "id": "fl-lake-nona-farmers-market-sept-16-2026-eventeny-2026-09-16-02949331",
+      "name": "Lake Nona Farmers Market Sept 16 2026 - Eventeny Vendor Opportunity",
+      "organiser": "Lake Nona Farmers Market Sept 16 2026 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/lake-nona-farmers-market-sept-16-2026-31458/?srsltid=AfmBOormAJeCCi8bQp0rS2HRV_zpIseJYFtbEZxPOz53_JdMc3cL7uSM",
+      "application_url": "https://www.eventeny.com/events/lake-nona-farmers-market-sept-16-2026-31458/?srsltid=AfmBOormAJeCCi8bQp0rS2HRV_zpIseJYFtbEZxPOz53_JdMc3cL7uSM",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Orlando",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-16",
+      "event_end": "2026-09-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-orlando-2026-farmers-market: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-09-16."
     },
     {
       "id": "fl-mezzo-market-2026-10-25-830a6567",
