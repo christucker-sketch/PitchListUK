@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T21:02:36.147Z",
+  "updated_at": "2026-09-02T21:18:41.833Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2576,6 +2576,24 @@
       "event_end": "2026-09-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-springfield-2026-arts-crafts: live first-party route attests Springfield, IL, actionable vendor terms, and exact event date 2026-09-02."
+    },
+    {
+      "id": "il-special-event-archives-elgin-alano-club-2027-07-04-3f04044b",
+      "name": "Special Event Archives - Elgin Alano Club Vendor Opportunity",
+      "organiser": "Special Event Archives - Elgin Alano Club",
+      "source_url": "https://elginalanoclub.com/tag/special-event",
+      "application_url": "https://elginalanoclub.com/tag/special-event",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Elgin",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-elgin-2027-food-truck: live first-party route attests Elgin, IL, actionable vendor terms, and exact event date 2027-07-04."
     },
     {
       "id": "il-vendor-events-in-elgin-il-2027-08-09-4f486d58",
