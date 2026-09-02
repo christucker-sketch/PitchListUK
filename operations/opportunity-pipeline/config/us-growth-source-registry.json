@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:30:29.258Z",
+  "updated_at": "2026-09-02T17:32:57.983Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4182,6 +4182,24 @@
       "evidence": "Cloudflare discovery tx-san-antonio-2027-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date range 2027-02-05 to 2027-02-07."
     },
     {
+      "id": "va-2026-alexandria-fall-o-ween-2026-10-31-0a205dab",
+      "name": "2026 Alexandria Fall-O-Ween Vendor Registration",
+      "organiser": "2026 Alexandria Fall-O-Ween",
+      "source_url": "https://chiceventsdc.com/2026-old-town-alexandria-holiday-crafts-and-treats",
+      "application_url": "https://chiceventsdc.com/2026-old-town-alexandria-holiday-crafts-and-treats",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Alexandria",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-alexandria-2026-festival: live first-party route attests Alexandria, VA, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
       "id": "va-2026-chesapeake-rotary-christmas-parade-eventeny-2026-12-05-d38949c6",
       "name": "2026 Chesapeake Rotary Christmas Parade - Eventeny Vendor Opportunity",
       "organiser": "2026 Chesapeake Rotary Christmas Parade - Eventeny",
@@ -4414,6 +4432,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-chesapeake-2026-festival: live first-party route attests Chesapeake, VA, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
+    },
+    {
+      "id": "va-vendor-events-in-alexandria-va-2026-09-26-bc96f528",
+      "name": "Vendor Events in Alexandria, VA",
+      "organiser": "Vendor Events in Alexandria, VA",
+      "source_url": "https://vendorsmap.com/cities/alexandria-va",
+      "application_url": "https://vendorsmap.com/cities/alexandria-va",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Alexandria",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-alexandria-2026-festival: live first-party route attests Alexandria, VA, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
     },
     {
       "id": "va-virginia-beach-ndash-jackalope-2027-06-04-9cdc4f9b",
