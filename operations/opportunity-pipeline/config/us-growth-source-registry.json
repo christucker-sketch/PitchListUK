@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:30:39.474Z",
+  "updated_at": "2026-09-02T14:36:34.833Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3206,6 +3206,24 @@
       "event_end": "2026-10-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-dallas-2026-farmers-market: live first-party route attests Dallas, TX, actionable vendor terms, and exact event date 2026-10-24."
+    },
+    {
+      "id": "tx-fort-worth-community-market-2026-2026-12-13-a3b6ea45",
+      "name": "Fort Worth Community Market 2026 Vendor Opportunity",
+      "organiser": "Fort Worth Community Market 2026",
+      "source_url": "https://vendorsmap.com/events/3348",
+      "application_url": "https://vendorsmap.com/events/3348",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Fort Worth",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-13",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-fort-worth-2026-farmers-market: live first-party route attests Fort Worth, TX, actionable vendor terms, and exact event date 2026-12-13."
     },
     {
       "id": "tx-garden-ridge-market-days-farmers-market-san-antonio-texas-2026-09-12-06605cae",
