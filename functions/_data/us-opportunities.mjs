@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T16:20:09.991Z",
-  "source": "reviewed-us-georgia-cloud-promotion:5f29c8781a6dad9ec8dc1d4f014a69316ec49d17ffc7682894554ab11d1eb069",
-  "total": 310,
+  "exported_at": "2026-09-02T16:33:36.894Z",
+  "source": "reviewed-us-texas-cloud-promotion:c6dd7c41b57ca5640ce6e58941dea717cc4d3fb289da34a70782fff6a794ee4e",
+  "total": 311,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11840,6 +11840,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_fb897cc2643fc747488b"
+    },
+    {
+      "stable_id": "opp_us_e1cd09e3c2bf13578d4a",
+      "event_name": "Texas Street Food Festival | Fort Worth, Texas | 2026 | Street Food Festivals",
+      "organiser": "Texas Street Food Festival | Fort Worth, Texas | 2026",
+      "source_url": "https://www.streetfoodfests.com/event/texas/",
+      "application_url": "https://www.streetfoodfests.com/event/texas",
+      "location": "Fort Worth",
+      "locality": "Fort Worth",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-25",
+      "event_end": "2027-04-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-texas-street-food-festival-fort-worth-texas-2026-2027-04-25-c1912793",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_e1cd09e3c2bf13578d4a"
     }
   ]
 };
