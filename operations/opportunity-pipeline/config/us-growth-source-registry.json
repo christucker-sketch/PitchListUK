@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:45:47.422Z",
+  "updated_at": "2026-09-02T15:53:23.940Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2975,6 +2975,24 @@
       "evidence": "Cloudflare discovery nj-jersey-city-2026-farmers-market: live first-party route attests Jersey City, NJ, actionable vendor terms, and exact event date range 2026-11-22 to 2026-12-05."
     },
     {
+      "id": "ny-2027-cny-women-s-market-2027-03-06-97812f8e",
+      "name": "2027 CNY Women’s Market Vendor Opportunity",
+      "organiser": "2027 CNY Women’s Market",
+      "source_url": "https://www.cnywomensnetwork.com/market",
+      "application_url": "https://www.cnywomensnetwork.com/market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Syracuse",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-06",
+      "event_end": "2027-03-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-syracuse-2027-farmers-market: live first-party route attests Syracuse, NY, actionable vendor terms, and exact event date 2027-03-06."
+    },
+    {
       "id": "ny-cny-regional-market-2026-syracuse-ny-2026-10-13-f18c8f10",
       "name": "CNY Regional Market 2026, Syracuse, NY Vendor Opportunity",
       "organiser": "CNY Regional Market 2026, Syracuse, NY",
@@ -3081,6 +3099,24 @@
       "event_end": "2027-05-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-rochester-2027-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2027-05-31."
+    },
+    {
+      "id": "ny-farmers-market-mdash-cny-regional-market-2027-06-05-37962018",
+      "name": "Farmers Market &mdash; CNY Regional Market Vendor Opportunity",
+      "organiser": "Farmers Market &mdash; CNY Regional Market",
+      "source_url": "https://www.cnyregionalmarket.org/visit-2/saturdayfarmersmarket-mfgpj",
+      "application_url": "https://www.cnyregionalmarket.org/visit-2/saturdayfarmersmarket-mfgpj",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Syracuse",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-05",
+      "event_end": "2027-06-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-syracuse-2027-farmers-market: live first-party route attests Syracuse, NY, actionable vendor terms, and exact event date range 2027-06-05 to 2027-06-08."
     },
     {
       "id": "ny-farmers-market-vendors-2026-10-13-9477c94a",
