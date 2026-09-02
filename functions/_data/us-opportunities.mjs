@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T10:26:42.768Z",
-  "source": "reviewed-us-florida-cloud-promotion:0f41ba0222ceef3d5214e2415789752f161935dc1717d8325e5312d7518bb704",
-  "total": 257,
+  "exported_at": "2026-09-02T10:32:01.975Z",
+  "source": "reviewed-us-ohio-cloud-promotion:630b02e5d933ed5fc276e10a9afce4ac34ff8371e5cdc223af8649c26d396c59",
+  "total": 258,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -9836,6 +9836,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_69fbaa3c83760bea1417"
+    },
+    {
+      "stable_id": "opp_us_bd5dc0f0ea5f6813372e",
+      "event_name": "Community Events Vendor Information - Cincinnati Regional Chamber",
+      "organiser": "Community Events",
+      "source_url": "https://cincinnatichamber.com/community-events/community-events-vendor-information/",
+      "application_url": "https://cincinnatichamber.com/community-events/community-events-vendor-information",
+      "location": "Cincinnati",
+      "locality": "Cincinnati",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-17",
+      "event_end": "2026-09-20",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-community-events-2026-09-17-35aaedcd",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_bd5dc0f0ea5f6813372e"
     }
   ]
 };
