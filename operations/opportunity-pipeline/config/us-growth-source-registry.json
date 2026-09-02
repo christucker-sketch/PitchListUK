@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:19:11.229Z",
+  "updated_at": "2026-09-02T15:21:22.309Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2811,6 +2811,24 @@
       "event_end": "2026-09-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-newark-2026-arts-crafts: live first-party route attests Newark, NJ, actionable vendor terms, and exact event date 2026-09-02."
+    },
+    {
+      "id": "nj-the-punk-rock-flea-market-2026-12-12-ec124392",
+      "name": "The Punk Rock Flea Market™ Vendor Opportunity",
+      "organiser": "The Punk Rock Flea Market™",
+      "source_url": "https://www.punkmarket.com",
+      "application_url": "https://www.punkmarket.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Edison",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-edison-2026-festival: live first-party route attests Edison, NJ, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
     },
     {
       "id": "nj-vendor-events-in-hasbrouck-heights-nj-2027-06-07-bced1b7c",
