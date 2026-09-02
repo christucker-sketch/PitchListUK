@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T12:01:30.059Z",
-  "source": "reviewed-us-arizona-cloud-promotion:744a2aed23148891e3a579a4c35e50e0370a06d539e47c2067696bd200d876f0",
-  "total": 272,
+  "exported_at": "2026-09-02T12:07:26.411Z",
+  "source": "reviewed-us-new-york-cloud-promotion:3a5c4cb9b34adf5f9b1628c6c15889d27480acf80388673fa9c1e736c3676e81",
+  "total": 273,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10399,6 +10399,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_0d3ee68870244da5a038"
+    },
+    {
+      "stable_id": "opp_us_786f2e0aa6ddd9030feb",
+      "event_name": "Food Truck Application",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=47220&srsltid=AfmBOoq2sTzJGNCBH4K43GaKZLNy6MEcksgmnkXQBPwlL1Rz_IDmu9au",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=47220&srsltid=AfmBOoq2sTzJGNCBH4K43GaKZLNy6MEcksgmnkXQBPwlL1Rz_IDmu9au",
+      "location": "Rochester",
+      "locality": "Rochester",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-31",
+      "event_end": "2027-05-31",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-eventeny-com-2027-05-31-768f1c64",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_786f2e0aa6ddd9030feb"
     }
   ]
 };
