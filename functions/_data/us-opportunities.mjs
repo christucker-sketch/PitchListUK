@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T12:54:26.523Z",
-  "source": "reviewed-us-georgia-cloud-promotion:73a79e37f8971e1d29202d99381269712f830f94c9a59f370a43cd7eed75e693",
-  "total": 277,
+  "exported_at": "2026-09-02T12:57:28.895Z",
+  "source": "reviewed-us-michigan-cloud-promotion:deef6aee2eb720128cc7aeec115cef437f742fbe94837e09302f00019b83d13b",
+  "total": 278,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10592,6 +10592,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_2bad2bb3653547ddb12c"
+    },
+    {
+      "stable_id": "opp_us_70d8c801ebe14e654e2e",
+      "event_name": "Vendor Opportunity",
+      "organiser": "macombgov.org",
+      "source_url": "https://www.macombgov.org/node?page=12",
+      "application_url": "https://www.macombgov.org/node?page=12",
+      "location": "Sterling Heights",
+      "locality": "Sterling Heights",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "21800",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-macombgov-org-2026-09-06-412ea945",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_70d8c801ebe14e654e2e"
     }
   ]
 };
