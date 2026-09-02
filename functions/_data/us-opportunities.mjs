@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T16:57:00.920Z",
-  "source": "reviewed-us-texas-cloud-promotion:14eed5df4da9e210db42814038cf420cf6b9ef28f6ca3f406f79b53f7599044e",
-  "total": 314,
+  "exported_at": "2026-09-02T17:10:36.606Z",
+  "source": "reviewed-us-washington-cloud-promotion:34bef1ff2def55004c8154bd1ecd220d76b204ca0b355578c7b136b047b0abd0",
+  "total": 315,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11991,6 +11991,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_178efdaeb5c6ca3d4b09"
+    },
+    {
+      "stable_id": "opp_us_89b8b38970153a5d20b1",
+      "event_name": "Tukwila Village Farmers Market &mdash; New Roots Vendor Opportunity",
+      "organiser": "Tukwila Village Farmers Market &mdash; New Roots",
+      "source_url": "https://www.newrootsseattle.org/tvfm",
+      "application_url": "https://www.newrootsseattle.org/tvfm",
+      "location": "Kent",
+      "locality": "Kent",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "14211",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-30",
+      "event_end": "2026-09-30",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-tukwila-village-farmers-market-mdash-new-roots-2026-09-30-0cab1094",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_89b8b38970153a5d20b1"
     }
   ]
 };
