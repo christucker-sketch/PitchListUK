@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T17:46:51.225Z",
-  "source": "reviewed-us-new-york-cloud-promotion:eecc0bb9eb9c6652da65e639a914df8054391b0dad7adfcf176bb16363553ae9",
-  "total": 324,
+  "exported_at": "2026-09-02T17:49:11.413Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:e003059e2e3c35f379065f7fc56cb030c97df98c567d626e0313670fcdd19ead",
+  "total": 325,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12370,6 +12370,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_c948bfa4b3db704a1832"
+    },
+    {
+      "stable_id": "opp_us_152b9afd9d43515e3423",
+      "event_name": "Railfest at Steamtown National Historic Site - Steamtown National Historic Site (U.S. National Park Service) Vendor Opportunity",
+      "organiser": "Railfest at Steamtown National Historic Site - Steamtown National Historic Site (U.S. National Park Service)",
+      "source_url": "https://www.nps.gov/stea/planyourvisit/railfest-at-steamtown-national-historic-site.htm",
+      "application_url": "https://www.nps.gov/stea/planyourvisit/railfest-at-steamtown-national-historic-site.htm",
+      "location": "Scranton",
+      "locality": "Scranton",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "22130",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-railfest-at-steamtown-national-historic-site-steamtown-national-histor-2026-09-04-24115c66",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_152b9afd9d43515e3423"
     }
   ]
 };
