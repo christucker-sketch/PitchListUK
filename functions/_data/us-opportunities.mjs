@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T14:02:47.843Z",
-  "source": "reviewed-us-georgia-cloud-promotion:56a76881fb6362f887dfa83d05c5f3139884ffb10daf661d7bfefffd25e48bbc",
-  "total": 289,
+  "exported_at": "2026-09-02T14:05:57.782Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:912f55aa82cab0aeefb912403e175ce34d8acad11eb367dea22a111a430ae2f3",
+  "total": 290,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11048,6 +11048,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_ea30d5e7615e44a03891"
+    },
+    {
+      "stable_id": "opp_us_fee61355a7b694ab2ad7",
+      "event_name": "Major Annual Events Vendor Opportunity",
+      "organiser": "Major Annual Events",
+      "source_url": "https://www.discoverdurham.com/events/annual-events/",
+      "application_url": "https://www.discoverdurham.com/events/annual-events",
+      "location": "Durham",
+      "locality": "Durham",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-01",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-major-annual-events-2027-01-01-18fbcaa2",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_fee61355a7b694ab2ad7"
     }
   ]
 };
