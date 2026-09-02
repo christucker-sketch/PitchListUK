@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T19:51:20.610Z",
+  "updated_at": "2026-09-02T19:57:59.979Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -453,6 +453,42 @@
       "evidence": "Cloudflare discovery ca-san-diego-2026-government-events: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2026-10-17."
     },
     {
+      "id": "ca-craft-retail-vendor-sugar-and-spice-holiday-dessert-festival-eventeny-2026-12-19-b84c892e",
+      "name": "Craft/Retail Vendor - Sugar and Spice Holiday Dessert Festival - Eventeny",
+      "organiser": "Craft/Retail Vendor - Sugar and Spice Holiday Dessert Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=53311",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=53311",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Long Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-19",
+      "event_end": "2026-12-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-long-beach-2026-holiday-market: live first-party route attests Long Beach, CA, actionable vendor terms, and exact event date 2026-12-19."
+    },
+    {
+      "id": "ca-dessert-2026-12-19-ac4a37b3",
+      "name": "Dessert Vendor Application - Sugar and Spice Holiday Dessert Festival - Eventeny",
+      "organiser": "Dessert",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=53309",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=53309",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Long Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-19",
+      "event_end": "2026-12-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-long-beach-2026-holiday-market: live first-party route attests Long Beach, CA, actionable vendor terms, and exact event date 2026-12-19."
+    },
+    {
       "id": "ca-farmers-market-2027-06-26-01adb5c0",
       "name": "Farmers Market Vendor Application | Ocean Beach San Diego CA",
       "organiser": "Farmers Market",
@@ -523,6 +559,24 @@
       "event_end": "2027-06-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
+    },
+    {
+      "id": "ca-food-2026-12-19-b0594889",
+      "name": "Food Vendor Application - Sugar and Spice Holiday Dessert Festival - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=53369",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=53369",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Long Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-19",
+      "event_end": "2026-12-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-long-beach-2026-holiday-market: live first-party route attests Long Beach, CA, actionable vendor terms, and exact event date 2026-12-19."
     },
     {
       "id": "ca-galaxycon-san-jose-2027-eventeny-2027-08-20-abd71e0d",
