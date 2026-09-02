@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T10:45:27.091Z",
+  "updated_at": "2026-09-02T10:48:45.036Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -2666,6 +2666,24 @@
       "event_end": "2027-05-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-seattle-2027-arts-crafts: live first-party route attests Seattle, WA, actionable vendor terms, and exact event date range 2027-05-30 to 2027-05-31."
+    },
+    {
+      "id": "wa-tacoma-sunday-market-2026-09-06-7b0e2859",
+      "name": "Tacoma Sunday Market Vendor Application - September 6, 2026 - Tacoma Sunday Market - September 6, 2026 - Eventeny",
+      "organiser": "Tacoma Sunday Market",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=51833&srsltid=AfmBOopjiUJhzAtFPoOuuUSRZpKWXLCOzAi3o6qpCiSSzRe2SKgXUpyd",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=51833&srsltid=AfmBOopjiUJhzAtFPoOuuUSRZpKWXLCOzAi3o6qpCiSSzRe2SKgXUpyd",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Tacoma",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-tacoma-2026-arts-crafts: live first-party route attests Tacoma, WA, actionable vendor terms, and exact event date 2026-09-06."
     },
     {
       "id": "wa-the-farm-chicks-vintage-handmade-fair-the-farm-chicks-2027-06-06-8dd68081",
