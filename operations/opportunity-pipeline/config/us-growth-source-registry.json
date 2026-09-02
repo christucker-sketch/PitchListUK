@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:56:36.456Z",
+  "updated_at": "2026-09-02T13:00:19.509Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2956,6 +2956,24 @@
       "evidence": "Cloudflare discovery va-chesapeake-2026-holiday-market: live first-party route attests Chesapeake, VA, actionable vendor terms, and exact event date 2026-12-05."
     },
     {
+      "id": "va-2nd-street-festival-2026-10-03-00eee4d3",
+      "name": "2nd Street Festival Vendor Opportunity",
+      "organiser": "2nd Street Festival",
+      "source_url": "https://venturerichmond.com/our-events/2nd-street-festival",
+      "application_url": "https://venturerichmond.com/our-events/2nd-street-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Richmond",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-richmond-2026-festival: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date range 2026-10-03 to 2026-10-04."
+    },
+    {
       "id": "va-concert-zone-the-patriotic-festival-virginia-beach-memorial-day-weeken-2027-05-28-e07575f7",
       "name": "Concert Zone - The Patriotic Festival - Virginia Beach, Memorial Day Weekend 2027 Vendor Opportunity",
       "organiser": "Concert Zone - The Patriotic Festival - Virginia Beach, Memorial Day Weekend 2027",
@@ -3008,6 +3026,24 @@
       "event_end": "2026-09-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-virginia-beach-2026-farmers-market: live first-party route attests Virginia Beach, VA, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-05."
+    },
+    {
+      "id": "va-richmond-fall-craft-and-vendor-market-hometown-vendor-market-2026-11-21-f4ad70c8",
+      "name": "Richmond Fall Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Richmond Fall Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/richmondfall",
+      "application_url": "https://hometownvendormarket.com/richmondfall",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Richmond",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-richmond-2026-arts-crafts: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date range 2026-11-21 to 2026-11-22."
     },
     {
       "id": "va-urbanna-oyster-festival-2026-11-06-f3895928",
