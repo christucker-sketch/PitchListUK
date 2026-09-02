@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:14:44.287Z",
+  "updated_at": "2026-09-02T12:18:24.453Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1820,6 +1820,24 @@
       "event_end": "2026-11-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-grand-rapids-2026-government-events: live first-party route attests Grand Rapids, MI, actionable vendor terms, and exact event date 2026-11-01."
+    },
+    {
+      "id": "mi-vendor-events-in-warren-ar-2027-06-12-2d5a373a",
+      "name": "Vendor Events in Warren, AR",
+      "organiser": "Vendor Events in Warren, AR",
+      "source_url": "https://vendorsmap.com/cities/warren-ar",
+      "application_url": "https://vendorsmap.com/cities/warren-ar",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Warren",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-12",
+      "event_end": "2027-06-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-warren-2027-food-truck: live first-party route attests Warren, MI, actionable vendor terms, and exact event date 2027-06-12."
     },
     {
       "id": "mi-wyandotte-street-art-fair-2027-07-08-548cd137",
