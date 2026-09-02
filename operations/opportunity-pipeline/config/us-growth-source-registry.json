@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:53:14.155Z",
+  "updated_at": "2026-09-02T18:58:33.037Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2036,6 +2036,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-savannah-2026-food-truck: live first-party route attests Savannah, GA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ga-tailgates-trailheads-a-public-lands-celebration-athens-ga-sign-up-to-e-2027-09-26-7f72e1cb",
+      "name": "Tailgates & Trailheads - A Public Lands Celebration - Athens, GA - Sign Up To Event Vendor Opportunity",
+      "organiser": "Tailgates & Trailheads - A Public Lands Celebration - Athens, GA - Sign Up To Event",
+      "source_url": "https://www.backcountryhunters.org/events/eventid/5122/e/tailgates-trailheads-a-public-lands-celebration-athens-ga-26-sep-2026",
+      "application_url": "https://www.backcountryhunters.org/events/eventid/5122/e/tailgates-trailheads-a-public-lands-celebration-athens-ga-26-sep-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Athens",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-26",
+      "event_end": "2027-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-athens-2027-food-truck: live first-party route attests Athens, GA, actionable vendor terms, and exact event date 2027-09-26."
     },
     {
       "id": "ga-uptown-columbus-fall-festival-2026-2026-09-19-229024e3",
