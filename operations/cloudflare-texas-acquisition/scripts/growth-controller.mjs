@@ -119,7 +119,7 @@ export function reconcileRepositoryMain(options = {}) {
 }
 
 function assertRepositoryReady({ allowPr = null } = {}) {
-  const { head } = reconcileRepositoryMain();
+  const { head, originMain } = reconcileRepositoryMain();
   const open = JSON.parse(run('gh', ['pr', 'list', '--repo', githubRepository, '--state', 'open', '--limit', '100', '--json', 'number,headRefName,title']));
   const acquisition = open.filter(pr => /^(?:data|sources)\/cloud-/.test(String(pr.headRefName || '')) && Number(pr.number) !== Number(allowPr));
   if (acquisition.length) throw new Error(`Unresolved acquisition PR: #${acquisition[0].number}`);
