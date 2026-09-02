@@ -57,3 +57,85 @@ test('generic California staging, promotion and apply remain addition-only and s
   assert.ok(planned.preview.rows.every(row => row.region_code === 'CA'));
   assert.equal(planned.summary.production_write_authorized, false);
 });
+
+test('California publication treats srsltid variants of an existing production identity as already present', () => {
+  const source = {
+    id: 'ca-ocean-beach-regression',
+    name: 'Farmers Market Vendor Application | Ocean Beach San Diego CA',
+    organiser: 'Farmers Market',
+    source_url: 'https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=NEWTRACKING',
+    application_url: 'https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=NEWTRACKING',
+    source_class: 'government-organisation',
+    country_code: 'US',
+    jurisdiction: 'US-CA',
+    region_code: 'CA',
+    locality: 'San Diego',
+    status: 'approved-pilot'
+  };
+
+  const staging = {
+    run_id: 'california-ocean-beach-regression',
+    generated_at: '2026-09-02T00:00:00.000Z',
+    country_code: 'US',
+    region_code: 'CA',
+    jurisdiction: 'US-CA',
+    mode: 'addition-only',
+    staging_only: true,
+    automatic_publish: false,
+    production_writes: false,
+    held: [],
+    rows: [{
+      stable_id: 'opp_us_0264def229f623f73379',
+      event_name: 'Farmers Market Vendor Application | Ocean Beach San Diego CA',
+      organiser: 'Farmers Market',
+      source_url: source.source_url,
+      application_url: source.application_url,
+      location: 'San Diego',
+      locality: 'San Diego',
+      region: 'California',
+      region_code: 'CA',
+      region_name: 'California',
+      country: 'United States',
+      country_code: 'US',
+      jurisdiction: 'US-CA',
+      event_start: '2027-06-26',
+      quality_status: 'review',
+      publishable: false
+    }]
+  };
+
+  const existing = {
+    stable_id: 'opp_us_0264def229f623f73379',
+    id: 'opp_us_0264def229f623f73379',
+    event_name: 'Farmers Market Vendor Application | Ocean Beach San Diego CA',
+    organiser: 'Farmers Market',
+    source_url: 'https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=OLDTRACKING',
+    application_url: 'https://oceanbeachsandiego.com/attractions/annual-events/farmers-market-wednesdays/vendor-application?srsltid=OLDTRACKING',
+    location: 'San Diego',
+    locality: 'San Diego',
+    region: 'California',
+    region_code: 'CA',
+    region_name: 'California',
+    country: 'United States',
+    country_code: 'US',
+    jurisdiction: 'US-CA',
+    quality_status: 'customer_ready',
+    publishable: true
+  };
+
+  const promotion = buildStatePromotionManifest(california, staging, { sources: [source] });
+
+  const planned = planStateProductionSnapshot(
+    california,
+    { total: 1, rows: [existing] },
+    promotion,
+    staging,
+    { sources: [source] }
+  );
+
+  assert.equal(planned.summary.before_count, 1);
+  assert.equal(planned.summary.after_count, 1);
+  assert.equal(planned.summary.already_present, 1);
+  assert.equal(planned.summary.additions, 0);
+  assert.deepEqual(planned.summary.existing_ids, ['opp_us_0264def229f623f73379']);
+});

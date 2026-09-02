@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
+const { canonicalUrl } = require('./opportunity-safety');
 
 function stableJson(value) {
   if (Array.isArray(value)) return `[${value.map(stableJson).join(',')}]`;
@@ -13,7 +14,6 @@ function requireState(state = {}) {
   if (!/^[A-Z]{2}$/.test(code) || !name || !slug || jurisdiction !== `US-${code}`) throw new Error('Invalid US publication state descriptor');
   return { ...state, code, name, slug, jurisdiction };
 }
-function canonicalUrl(value) { try { const url = new URL(String(value || '')); url.hash=''; url.hostname=url.hostname.toLowerCase().replace(/^www\./,''); return url.toString().replace(/\/$/,''); } catch { return ''; } }
 function identityOf(row) { return { source: canonicalUrl(row?.source_url), application: canonicalUrl(row?.application_url), id: String(row?.id || row?.stable_id || '') }; }
 function sourceIdFromRow(row, sources = []) { const sourceUrl=String(row?.source_url||''), applicationUrl=String(row?.application_url||''); return sources.find(item=>item.source_url===sourceUrl||item.application_url===applicationUrl)?.id||''; }
 function sourceIdFromVerdict(item, sources = []) { const direct=item?.source?.id||item?.candidate?.source?.id||item?.candidate?.source_id||''; if(direct)return direct; const rowId=sourceIdFromRow(item?.row,sources); if(rowId)return rowId; const url=String(item?.candidate?.url||item?.url||''); return sources.find(source=>source.source_url===url||source.application_url===url)?.id||''; }
