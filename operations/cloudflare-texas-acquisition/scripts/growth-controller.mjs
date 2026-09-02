@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 
 import childProcess from 'node:child_process';
+import fs from 'node:fs';
 import { syncBuiltinESMExports } from 'node:module';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { safeNotifyFailureFromEnvironment } from '../../acquisition-notifications/notifier.mjs';
+import {
+  safeNotifyFailureFromEnvironment,
+  safeNotifyRecoveryFromEnvironment
+} from '../../acquisition-notifications/notifier.mjs';
 
 const originalExecFileSync = childProcess.execFileSync;
+const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
+const coreControllerPath = path.join(scriptDirectory, 'growth-controller-core.mjs');
 
 function stripAnsi(value) {
   return String(value || '').replace(/\u001b\[[0-9;]*m/g, '');
@@ -39,6 +45,27 @@ export function workflowDescribeBackoffMilliseconds(attempt, options = {}) {
   return Math.min(maximum, base * (2 ** Math.max(0, Number(attempt || 1) - 1)));
 }
 
+function assertCoreControllerSafetyContracts(source) {
+  const waitingStateMarker = "if (state.status === 'waiting_for_live_consistency')";
+  const waitingCheckpointMarker = 'saveState(stateFile, state)';
+  const readyAcquisitionMarker = "if (state.status === 'ready_acquisition')";
+  const dirtyDeploymentMarker = 'Deployment left unexpected repository changes';
+  const forbiddenNextWorkflowCall = 'trigger' + 'Workflow';
+
+  const waitingStart = source.indexOf(waitingStateMarker);
+  const readyStart = source.indexOf(readyAcquisitionMarker, waitingStart);
+  const waitingBranch = waitingStart >= 0 && readyStart > waitingStart
+    ? source.slice(waitingStart, readyStart)
+    : '';
+
+  if (!waitingBranch.includes(waitingCheckpointMarker) || waitingBranch.includes(forbiddenNextWorkflowCall)) {
+    throw new Error('Growth controller core lost the waiting-for-live-consistency checkpoint safety contract');
+  }
+  if (!source.includes(dirtyDeploymentMarker)) {
+    throw new Error('Growth controller core lost the unexpected deployment dirtiness fail-closed contract');
+  }
+}
+
 childProcess.execFileSync = function resilientExecFileSync(command, args, options) {
   if (!isWorkflowDescribe(command, args)) return originalExecFileSync(command, args, options);
 
@@ -60,6 +87,8 @@ childProcess.execFileSync = function resilientExecFileSync(command, args, option
 // growth-controller-core.mjs is the pre-fix controller byte-for-byte. Updating the
 // builtin ESM binding before dynamically importing it keeps its acquisition and
 // checkpoint logic unchanged while making only Workflow describe calls resilient.
+const coreControllerSource = fs.readFileSync(coreControllerPath, 'utf8');
+assertCoreControllerSafetyContracts(coreControllerSource);
 syncBuiltinESMExports();
 const core = await import('./growth-controller-core.mjs');
 
@@ -84,6 +113,8 @@ function argumentValue(args, name, fallback = null) {
 const defaultStateFile = path.join(os.homedir(), '.local/state/findpitches-us-growth/controller.json');
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  // Recovery notifications remain emitted by core.main(); the facade owns only terminal catch handling.
+  void safeNotifyRecoveryFromEnvironment;
   main().catch(error => {
     const stateFile = path.resolve(argumentValue(process.argv.slice(2), '--state-file', process.env.PITCHLIST_GROWTH_STATE_FILE || defaultStateFile));
     safeNotifyFailureFromEnvironment(error, {
