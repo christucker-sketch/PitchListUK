@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T14:20:45.142Z",
+  "updated_at": "2026-09-02T14:22:49.836Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1118,6 +1118,24 @@
       "event_end": "2027-03-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2027-government-events: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date range 2027-03-01 to 2027-03-02."
+    },
+    {
+      "id": "fl-eventeny-com-2027-05-23-33885eb3",
+      "name": "Food Truck Application - May 23rd Food Truck Rally - May Food Truck Night - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=42174&srsltid=AfmBOorJeAy0URBhVmx86WcQwGGweh7S4BqMctLhdKa7sjSCQWSyjZe1",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=42174&srsltid=AfmBOorJeAy0URBhVmx86WcQwGGweh7S4BqMctLhdKa7sjSCQWSyjZe1",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Orlando",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-23",
+      "event_end": "2027-05-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-orlando-2027-food-truck: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2027-05-23."
     },
     {
       "id": "fl-fair-vendors-at-florida-state-fairgrounds-2027-02-04-6a4e0590",
