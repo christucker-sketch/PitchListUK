@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T13:18:09.456Z",
+  "updated_at": "2026-09-02T13:21:24.998Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1262,6 +1262,24 @@
       "event_end": "2026-11-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-farmers-market: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2026-11-21."
+    },
+    {
+      "id": "ga-a-new-holiday-tradition-2026-12-04-cbed23e6",
+      "name": "A New Holiday Tradition! Vendor Opportunity",
+      "organiser": "A New Holiday Tradition!",
+      "source_url": "https://visitmacon.org/events/annual-events-and-festivals/maconchristmasmarket",
+      "application_url": "https://visitmacon.org/events/annual-events-and-festivals/maconchristmasmarket",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Macon",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-04",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-macon-2026-holiday-market: live first-party route attests Macon, GA, actionable vendor terms, and exact event date range 2026-12-04 to 2026-12-13."
     },
     {
       "id": "ga-atlanta-international-night-market-2026-11-06-6a678636",
