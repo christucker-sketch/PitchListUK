@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T09:59:13.632Z",
+  "updated_at": "2026-09-02T10:03:27.684Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -2234,6 +2234,24 @@
       "event_end": "2026-09-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-san-antonio-2026-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date 2026-09-01."
+    },
+    {
+      "id": "tx-farmers-markets-in-dallas-tx-2026-2026-10-24-34dfd7bb",
+      "name": "Farmers Markets in Dallas, TX (2026) Vendor Opportunity",
+      "organiser": "Farmers Markets in Dallas, TX (2026)",
+      "source_url": "https://restaunax.com/home-food-business/in/dallas/farmers-markets",
+      "application_url": "https://restaunax.com/home-food-business/in/dallas/farmers-markets",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Dallas",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-dallas-2026-farmers-market: live first-party route attests Dallas, TX, actionable vendor terms, and exact event date 2026-10-24."
     },
     {
       "id": "tx-garden-ridge-market-days-farmers-market-san-antonio-texas-2026-09-12-06605cae",
