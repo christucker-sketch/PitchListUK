@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T18:15:17.198Z",
-  "source": "reviewed-us-illinois-cloud-promotion:fbcbc808079b5fae21be163ffddf31d2f637ef475afdc5c14a7c786c6bd48f0e",
-  "total": 330,
+  "exported_at": "2026-09-02T18:19:43.589Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:08577319b23352b41cb4362ef16cadb9f744ef2c6e1f13e31e7af8fd0e3b37e3",
+  "total": 331,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12596,6 +12596,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_52b9e2da0587332f228e"
+    },
+    {
+      "stable_id": "opp_us_108afb9751b35061f59a",
+      "event_name": "Vendor Events in Festival Park And Downtown Fayetteville, NC",
+      "organiser": "Vendor Events in Festival Park And Downtown Fayetteville, NC",
+      "source_url": "https://vendorsmap.com/cities/festival-park-and-downtown-fayetteville",
+      "application_url": "https://vendorsmap.com/cities/festival-park-and-downtown-fayetteville",
+      "location": "Fayetteville",
+      "locality": "Fayetteville",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-24",
+      "event_end": "2027-04-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-vendor-events-in-festival-park-and-downtown-fayetteville-nc-2027-04-24-7edb08c0",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_108afb9751b35061f59a"
     }
   ]
 };
