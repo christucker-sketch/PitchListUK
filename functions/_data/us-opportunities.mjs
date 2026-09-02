@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T18:43:55.535Z",
-  "source": "reviewed-us-michigan-cloud-promotion:c19130c6d45b6f24188e238d0a827d26aab3b5badcdccd5d81a7fbf432c616f8",
-  "total": 334,
+  "exported_at": "2026-09-02T18:54:10.330Z",
+  "source": "reviewed-us-florida-cloud-promotion:0115dc7ed913ac671a9eb505ad63e83ad3a9cf5f325849a91b9826296e9e18f9",
+  "total": 335,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12750,6 +12750,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_1e50dd72d88f419ec959"
+    },
+    {
+      "stable_id": "opp_us_2d444b125fa560e39931",
+      "event_name": "FOODEESFEST Tallahassee, Florida (40+ food trucks and craft vendors!), Governor’s Square, Tallahassee, 22 January to 24 January Vendor Opportunity",
+      "organiser": "FOODEESFEST Tallahassee, Florida (40+ food trucks and craft vendors!), Governor’s Square, Tallahassee, 22 January to 24 January",
+      "source_url": "https://allevents.in/tallahassee/foodeesfest-tallahassee-florida-40-food-trucks-and-craft-vendors/100001992363733560",
+      "application_url": "https://allevents.in/tallahassee/foodeesfest-tallahassee-florida-40-food-trucks-and-craft-vendors/100001992363733560",
+      "location": "Tallahassee",
+      "locality": "Tallahassee",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-22",
+      "event_end": "2027-01-24",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-foodeesfest-tallahassee-florida-40-food-trucks-and-craft-vendors-gover-2027-01-22-280b95d4",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_2d444b125fa560e39931"
     }
   ]
 };
