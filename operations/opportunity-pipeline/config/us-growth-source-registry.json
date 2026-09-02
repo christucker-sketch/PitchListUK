@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:07:14.460Z",
+  "updated_at": "2026-09-02T17:09:47.251Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4521,6 +4521,24 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-spokane-2027-arts-crafts: live first-party route attests Spokane, WA, actionable vendor terms, and exact event date 2027-06-06."
+    },
+    {
+      "id": "wa-tukwila-village-farmers-market-mdash-new-roots-2026-09-30-0cab1094",
+      "name": "Tukwila Village Farmers Market &mdash; New Roots Vendor Opportunity",
+      "organiser": "Tukwila Village Farmers Market &mdash; New Roots",
+      "source_url": "https://www.newrootsseattle.org/tvfm",
+      "application_url": "https://www.newrootsseattle.org/tvfm",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Kent",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-30",
+      "event_end": "2026-09-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-kent-2026-farmers-market: live first-party route attests Kent, WA, actionable vendor terms, and exact event date 2026-09-30."
     },
     {
       "id": "wa-vancouver-arts-music-festival-2027-08-06-20167d35",
