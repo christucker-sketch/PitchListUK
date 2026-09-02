@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T21:44:09.814Z",
+  "updated_at": "2026-09-02T21:48:42.625Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3100,6 +3100,24 @@
       "evidence": "Cloudflare discovery mi-sterling-heights-2026-farmers-market: live first-party route attests Sterling Heights, MI, actionable vendor terms, and exact event date 2026-09-25."
     },
     {
+      "id": "mi-livonia-farmers-market-at-wilson-barn-taste-the-local-difference-2026-09-19-e7e094c8",
+      "name": "Livonia Farmers Market at Wilson Barn - Taste the Local Difference Vendor Opportunity",
+      "organiser": "Livonia Farmers Market at Wilson Barn - Taste the Local Difference",
+      "source_url": "https://www.localdifference.org/partner/livonia-farmers-market-at-wilson-barn",
+      "application_url": "https://www.localdifference.org/partner/livonia-farmers-market-at-wilson-barn",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Livonia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-livonia-2026-farmers-market: live first-party route attests Livonia, MI, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
       "id": "mi-macombgov-org-2026-09-06-412ea945",
       "name": " Vendor Opportunity",
       "organiser": "macombgov.org",
@@ -3188,6 +3206,24 @@
       "event_end": "2026-11-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-grand-rapids-2026-government-events: live first-party route attests Grand Rapids, MI, actionable vendor terms, and exact event date 2026-11-01."
+    },
+    {
+      "id": "mi-search-results-2026-09-20-1724e7ed",
+      "name": "Search Results Vendor Opportunity",
+      "organiser": "Search Results",
+      "source_url": "https://www.localharvest.org/melvindale-mi/farmers-markets",
+      "application_url": "https://www.localharvest.org/melvindale-mi/farmers-markets",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Livonia",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-livonia-2026-farmers-market: live first-party route attests Livonia, MI, actionable vendor terms, and exact event date 2026-09-20."
     },
     {
       "id": "mi-vendor-events-in-warren-ar-2027-06-12-2d5a373a",
