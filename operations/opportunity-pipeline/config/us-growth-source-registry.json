@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T19:17:10.971Z",
+  "updated_at": "2026-09-02T19:25:25.361Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -145,6 +145,24 @@
       "event_end": "2026-12-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-tucson-2026-holiday-market: live first-party route attests Tucson, AZ, actionable vendor terms, and exact event date 2026-12-11."
+    },
+    {
+      "id": "az-gilbert-farmers-market-2026-08-15-07-00-2-2026-09-02-3f35098f",
+      "name": "Gilbert Farmers Market - 2026-08-15 07:00-2 Vendor Opportunity",
+      "organiser": "Gilbert Farmers Market - 2026-08-15 07:00-2",
+      "source_url": "https://www.wigwamarizona.com/events/chandler/gilbert-farmers-market-12089552",
+      "application_url": "https://www.wigwamarizona.com/events/chandler/gilbert-farmers-market-12089552",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Gilbert",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-02",
+      "event_end": "2026-09-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-gilbert-2026-farmers-market: live first-party route attests Gilbert, AZ, actionable vendor terms, and exact event date 2026-09-02."
     },
     {
       "id": "az-heroes-market-2027-03-20-f621abf2",
