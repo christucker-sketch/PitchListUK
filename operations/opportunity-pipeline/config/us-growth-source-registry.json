@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:25:17.659Z",
+  "updated_at": "2026-09-02T15:28:04.184Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -253,6 +253,24 @@
       "event_end": "2027-02-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-mesa-2027-festival: live first-party route attests Mesa, AZ, actionable vendor terms, and exact event date range 2027-02-19 to 2027-02-21."
+    },
+    {
+      "id": "az-the-market-holiday-edition-2026-12-12-755f5d67",
+      "name": "The Market: Holiday Edition Vendor Opportunity",
+      "organiser": "The Market: Holiday Edition",
+      "source_url": "https://calendar.westworldaz.com/scottsdaleaz_westworld/260203130",
+      "application_url": "https://calendar.westworldaz.com/scottsdaleaz_westworld/260203130",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Scottsdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-scottsdale-2026-festival: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
     },
     {
       "id": "az-tucson-folk-festival-2027-04-02-e0b27b2d",
