@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:25:57.591Z",
+  "updated_at": "2026-09-02T12:28:33.743Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2288,6 +2288,24 @@
       "event_end": "2026-12-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-jersey-city-2026-farmers-market: live first-party route attests Jersey City, NJ, actionable vendor terms, and exact event date range 2026-11-22 to 2026-12-05."
+    },
+    {
+      "id": "ny-down-to-earth-yonkers-farmers-market-2026-2026-11-25-e860859f",
+      "name": "Down to Earth Yonkers Farmers Market 2026 Vendor Opportunity",
+      "organiser": "Down to Earth Yonkers Farmers Market 2026",
+      "source_url": "https://vendorsmap.com/events/2059",
+      "application_url": "https://vendorsmap.com/events/2059",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Yonkers",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-25",
+      "event_end": "2026-11-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-yonkers-2026-farmers-market: live first-party route attests Yonkers, NY, actionable vendor terms, and exact event date range 2026-11-25 to 2026-11-30."
     },
     {
       "id": "ny-downtown-buffalo-country-market-2026-10-15-b4b1996b",
