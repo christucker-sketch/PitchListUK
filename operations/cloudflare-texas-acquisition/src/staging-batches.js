@@ -1,4 +1,5 @@
 const MAX_FETCH_SUBREQUESTS_PER_BATCH = 36;
+const DEFAULT_MAX_SOURCES_PER_BATCH = 4;
 
 function canonicalUrl(value) {
   try {
@@ -12,8 +13,8 @@ function canonicalUrl(value) {
 
 export function stagingSourceBatches(sources, options = {}) {
   if (!Array.isArray(sources) || sources.length < 1) throw new Error('Staging sources are required');
-  const maxSources = options.maxSources == null ? Number.POSITIVE_INFINITY : Number(options.maxSources);
-  if (!(maxSources === Number.POSITIVE_INFINITY || (Number.isInteger(maxSources) && maxSources > 0))) {
+  const maxSources = options.maxSources == null ? DEFAULT_MAX_SOURCES_PER_BATCH : Number(options.maxSources);
+  if (!(Number.isInteger(maxSources) && maxSources > 0)) {
     throw new Error('Maximum staging sources per batch must be a positive integer');
   }
   const batches = [[]];
@@ -103,4 +104,4 @@ export function mergeStagingBatches(state, manifests) {
   };
 }
 
-export { MAX_FETCH_SUBREQUESTS_PER_BATCH };
+export { DEFAULT_MAX_SOURCES_PER_BATCH, MAX_FETCH_SUBREQUESTS_PER_BATCH };
