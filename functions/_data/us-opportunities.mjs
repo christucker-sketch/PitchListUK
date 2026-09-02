@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:11:17.298Z",
-  "source": "reviewed-us-texas-cloud-promotion:c614af94042454622bd288acb0bddf2ae50b03a6b42bea10046e8a18cfd0bbf5",
-  "total": 282,
+  "exported_at": "2026-09-02T13:19:03.149Z",
+  "source": "reviewed-us-ohio-cloud-promotion:9c5da0919025c8c34090b1cffc48f00bf76d2d24c24615b5351055098253e742",
+  "total": 283,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10782,6 +10782,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_057cd6eb4391f1ac88a1"
+    },
+    {
+      "stable_id": "opp_us_53393b6fec7bdcae3cfa",
+      "event_name": "Handmade Toledo Vendor Opportunity",
+      "organiser": "Handmade Toledo",
+      "source_url": "https://shophandmadetoledo.com/",
+      "application_url": "https://shophandmadetoledo.com",
+      "location": "Toledo",
+      "locality": "Toledo",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "43604",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-handmade-toledo-2026-11-14-e057483a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_53393b6fec7bdcae3cfa"
     }
   ]
 };
