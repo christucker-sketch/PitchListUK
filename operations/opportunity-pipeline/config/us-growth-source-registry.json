@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T15:01:27.766Z",
+  "updated_at": "2026-09-02T15:03:48.810Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -505,6 +505,42 @@
       "event_end": "2026-12-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-los-angeles-2026-arts-crafts: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date 2026-12-06."
+    },
+    {
+      "id": "ca-sacramento-art-craft-show-2026-2026-10-16-d5bbcfce",
+      "name": "Sacramento Art & Craft Show 2026 Vendor Opportunity",
+      "organiser": "Sacramento Art & Craft Show 2026",
+      "source_url": "https://monolisadesigns.com/pages/sacramento-art-craft-show",
+      "application_url": "https://monolisadesigns.com/pages/sacramento-art-craft-show",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Sacramento",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-16",
+      "event_end": "2026-10-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-sacramento-2026-arts-crafts: live first-party route attests Sacramento, CA, actionable vendor terms, and exact event date range 2026-10-16 to 2026-10-18."
+    },
+    {
+      "id": "ca-sacramentohmongnewyear-com-2026-11-23-fe32813a",
+      "name": "Vendor Information",
+      "organiser": "sacramentohmongnewyear.com",
+      "source_url": "https://sacramentohmongnewyear.com/programs/vendors",
+      "application_url": "https://sacramentohmongnewyear.com/programs/vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Sacramento",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-23",
+      "event_end": "2026-11-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-sacramento-2026-festival: live first-party route attests Sacramento, CA, actionable vendor terms, and exact event date range 2026-11-23 to 2026-11-25."
     },
     {
       "id": "ca-san-marcos-farmers-market-2027-10-25-83c68d1e",
