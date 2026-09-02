@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T19:41:52.414Z",
+  "updated_at": "2026-09-02T19:44:37.535Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1892,6 +1892,42 @@
       "event_end": "2027-02-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2027-food-truck: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2027-02-27."
+    },
+    {
+      "id": "ga-food-2026-09-25-1ff2cea5",
+      "name": "Food Vendor Application - Blue Stone Arts & Music Festival 2026 - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49978&srsltid=AfmBOopitz2YoV_J2c4Hkvxxhh0oquE6iCJpZlNXzGAwjdD5Vn-Utwxb",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49978&srsltid=AfmBOopitz2YoV_J2c4Hkvxxhh0oquE6iCJpZlNXzGAwjdD5Vn-Utwxb",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Sandy Springs",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-sandy-springs-2026-festival: live first-party route attests Sandy Springs, GA, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
+    },
+    {
+      "id": "ga-food-2026-09-25-d66e81a5",
+      "name": "Food Vendor Application - Blue Stone Arts & Music Festival 2026 - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49978&srsltid=AfmBOopwQi2R84cb2gugiK0LzinEjPUTX-Te1R-yVmyB5QBebVeD7N_j",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49978&srsltid=AfmBOopwQi2R84cb2gugiK0LzinEjPUTX-Te1R-yVmyB5QBebVeD7N_j",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Sandy Springs",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-sandy-springs-2026-arts-crafts: live first-party route attests Sandy Springs, GA, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
     },
     {
       "id": "ga-food-2026-09-26-852a4659",
