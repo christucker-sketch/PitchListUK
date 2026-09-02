@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:05:41.498Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:87b53ddbb84c04931e01c303ecb1cee1a01389ced52a734becd8af569c73f4cd",
-  "total": 281,
+  "exported_at": "2026-09-02T13:11:17.298Z",
+  "source": "reviewed-us-texas-cloud-promotion:c614af94042454622bd288acb0bddf2ae50b03a6b42bea10046e8a18cfd0bbf5",
+  "total": 282,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10742,6 +10742,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_38785509b02ddfac9348"
+    },
+    {
+      "stable_id": "opp_us_057cd6eb4391f1ac88a1",
+      "event_name": "2026 Exhibitors & Food Trucks – Texas Book Festival",
+      "organiser": "2026 Exhibitors & Food Trucks",
+      "source_url": "https://texasbookfestival.org/2026-exhibitor-and-food-truck-application/",
+      "application_url": "https://texasbookfestival.org/2026-exhibitor-and-food-truck-application",
+      "location": "Austin",
+      "locality": "Austin",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "78701",
+      "latitude": 30.2711,
+      "longitude": -97.7437,
+      "coordinate_source": "offline-zip-index",
+      "coordinate_precision": "postal",
+      "coordinate_label": "78701 Austin",
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-2026-exhibitors-food-trucks-2026-11-14-cd242096",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_057cd6eb4391f1ac88a1"
     }
   ]
 };
