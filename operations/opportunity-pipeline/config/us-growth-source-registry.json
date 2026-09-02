@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T17:38:33.274Z",
+  "updated_at": "2026-09-02T17:43:35.887Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1532,6 +1532,42 @@
       "event_end": "2026-11-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-tampa-2026-arts-crafts: live first-party route attests Tampa, FL, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
+    },
+    {
+      "id": "fl-the-holidays-were-made-for-market-days-2026-december-5th-6th-tallahass-2026-12-05-ef92f85b",
+      "name": "🎄The holidays were made for Market Days 2026 - December 5th & 6th - Tallahassee, Florida🌞 Vendor Opportunity",
+      "organiser": "🎄The holidays were made for Market Days 2026 - December 5th & 6th - Tallahassee, Florida🌞",
+      "source_url": "https://www.wheretheshowsare.com/email/marketdays",
+      "application_url": "https://www.wheretheshowsare.com/email/marketdays",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tallahassee",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tallahassee-2026-holiday-market: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "fl-vendors-the-north-florida-fair-2026-11-05-a9ca87f3",
+      "name": "Vendors - The North Florida Fair Vendor Opportunity",
+      "organiser": "Vendors - The North Florida Fair",
+      "source_url": "https://northfloridafair.com/vendors",
+      "application_url": "https://northfloridafair.com/vendors",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tallahassee",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-05",
+      "event_end": "2026-11-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tallahassee-2026-food-truck: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date range 2026-11-05 to 2026-11-15."
     },
     {
       "id": "ga-2026-2026-11-21-aa99b9e6",
