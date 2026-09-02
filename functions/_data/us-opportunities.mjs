@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T19:58:59.787Z",
-  "source": "reviewed-us-california-cloud-promotion:e9904b7f9348462affbfa2a6db081bfc32f939b6d55044892055e458418476d9",
-  "total": 341,
+  "exported_at": "2026-09-02T20:02:10.884Z",
+  "source": "reviewed-us-florida-cloud-promotion:c34d9e500d6137f6377335fac3ae6860173cf46b08adc8118f247197dd42a500",
+  "total": 342,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13020,6 +13020,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_de362a305b30430b5eb4"
+    },
+    {
+      "stable_id": "opp_us_e162c3b689edbfa5e03b",
+      "event_name": "Holiday Markets & Winter Festivals in Broward (2025 Vendor Opportunity",
+      "organiser": "Holiday Markets & Winter Festivals in Broward (2025",
+      "source_url": "https://www.soflohomelistings.com/blog/holiday-markets-winter-festivals-in-broward-20252026/",
+      "application_url": "https://www.soflohomelistings.com/blog/holiday-markets-winter-festivals-in-broward-20252026",
+      "location": "Fort Lauderdale",
+      "locality": "Fort Lauderdale",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "12399",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-22",
+      "event_end": "2026-11-22",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-holiday-markets-winter-festivals-in-broward-2025-2026-11-22-782881fb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_e162c3b689edbfa5e03b"
     }
   ]
 };
