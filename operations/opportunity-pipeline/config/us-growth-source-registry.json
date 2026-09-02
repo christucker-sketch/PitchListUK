@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:12:26.287Z",
+  "updated_at": "2026-09-02T12:14:44.287Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1874,6 +1874,24 @@
       "event_end": "2026-10-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-festival: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "nc-center-for-visual-artists-2022-national-dance-day-gso-vendor-market-2027-09-17-64ef07db",
+      "name": "Center for Visual Artists - 2022 NATIONAL DANCE DAY GSO VENDOR MARKET APPLICATION",
+      "organiser": "Center for Visual Artists - 2022 NATIONAL DANCE DAY GSO VENDOR MARKET",
+      "source_url": "https://www.mycvagreensboro.org/event-4896490",
+      "application_url": "https://www.mycvagreensboro.org/event-4896490",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Greensboro",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-17",
+      "event_end": "2027-09-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-greensboro-2027-food-truck: live first-party route attests Greensboro, NC, actionable vendor terms, and exact event date 2027-09-17."
     },
     {
       "id": "nc-christmas-markets-in-raleigh-festive-pop-up-shops-with-holiday-cheer-2026-12-07-a548711f",
