@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:18:48.221Z",
+  "updated_at": "2026-09-02T18:27:17.276Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1496,6 +1496,42 @@
       "event_end": "2026-12-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2026-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-12-20."
+    },
+    {
+      "id": "fl-tallahassee-foodees-fest-eventeny-2027-01-22-811d56e9",
+      "name": "Tallahassee Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Tallahassee Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/tallahassee-foodees-fest-31716/?srsltid=AfmBOort-Um8iR33MaXxePNsFN2EWQlMvhJSRVI8yQUiKwpgKKKrbMam",
+      "application_url": "https://www.eventeny.com/events/tallahassee-foodees-fest-31716/?srsltid=AfmBOort-Um8iR33MaXxePNsFN2EWQlMvhJSRVI8yQUiKwpgKKKrbMam",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tallahassee",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-22",
+      "event_end": "2027-01-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tallahassee-2027-arts-crafts: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date range 2027-01-22 to 2027-01-24."
+    },
+    {
+      "id": "fl-tallahassee-foodees-fest-eventeny-2027-01-22-979fd514",
+      "name": "Tallahassee Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Tallahassee Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/tallahassee-foodees-fest-31716/?srsltid=AfmBOoo0e6WRcv3feS3--RwNbElhAS8sBgtbwer8x3iczroS94ZzdnOQ",
+      "application_url": "https://www.eventeny.com/events/tallahassee-foodees-fest-31716/?srsltid=AfmBOoo0e6WRcv3feS3--RwNbElhAS8sBgtbwer8x3iczroS94ZzdnOQ",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tallahassee",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-22",
+      "event_end": "2027-01-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tallahassee-2027-festival: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date range 2027-01-22 to 2027-01-24."
     },
     {
       "id": "fl-tampa-florida-concert-tampa-bay-blues-festival-2027-04-09-b7610466",
