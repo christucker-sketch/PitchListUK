@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T20:02:10.884Z",
-  "source": "reviewed-us-florida-cloud-promotion:c34d9e500d6137f6377335fac3ae6860173cf46b08adc8118f247197dd42a500",
-  "total": 342,
+  "exported_at": "2026-09-02T20:45:13.988Z",
+  "source": "reviewed-us-texas-cloud-promotion:9466820071053271bb14f06c0165ae0c443cc929c233fb1ed4d969346ccb46f5",
+  "total": 343,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13058,6 +13058,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_e162c3b689edbfa5e03b"
+    },
+    {
+      "stable_id": "opp_us_390d22b8fa250b85c95b",
+      "event_name": "Vendor Events in Abingdon, VA",
+      "organiser": "Vendor Events in Abingdon, VA",
+      "source_url": "https://vendorsmap.com/cities/abingdon",
+      "application_url": "https://vendorsmap.com/cities/abingdon",
+      "location": "Arlington",
+      "locality": "Arlington",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "24210",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-24",
+      "event_end": "2027-08-02",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-vendor-events-in-abingdon-va-2027-07-24-08e6693f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_390d22b8fa250b85c95b"
     }
   ]
 };
