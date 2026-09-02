@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T21:49:43.240Z",
-  "source": "reviewed-us-michigan-cloud-promotion:45801d8d500b7cb9e966ee12845034e86fccdf2cf0f5e4f7c608bb3d482cb4fc",
-  "total": 350,
+  "exported_at": "2026-09-02T22:03:05.455Z",
+  "source": "reviewed-us-texas-cloud-promotion:a4481d7326c2d3c030c10b415e297e511ea7b1e34edb0c80c1a2f9d9dc6dea97",
+  "total": 351,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13358,6 +13358,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_974cfbaf19aefb1657a4"
+    },
+    {
+      "stable_id": "opp_us_4bee924a4e5db691aef5",
+      "event_name": "Vendor Information | DiadelosMuertosCC",
+      "organiser": "diadelosmuertoscc.com",
+      "source_url": "https://www.diadelosmuertoscc.com/vendor-info",
+      "application_url": "https://www.diadelosmuertoscc.com/vendor-info",
+      "location": "Corpus Christi",
+      "locality": "Corpus Christi",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-diadelosmuertoscc-com-2026-10-24-d9093e06",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_4bee924a4e5db691aef5"
     }
   ]
 };
