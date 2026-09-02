@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T16:19:20.092Z",
+  "updated_at": "2026-09-02T16:26:35.037Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4107,6 +4107,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-tacoma-2026-government-events: live first-party route attests Tacoma, WA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "wa-bellevue-arts-fair-2027-bellevue-wa-2027-07-24-8e0673e2",
+      "name": "Bellevue Arts Fair 2027, Bellevue, WA Vendor Opportunity",
+      "organiser": "Bellevue Arts Fair 2027, Bellevue, WA",
+      "source_url": "https://vendorsmap.com/events/1376",
+      "application_url": "https://vendorsmap.com/events/1376",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Bellevue",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-24",
+      "event_end": "2027-07-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-bellevue-2027-festival: live first-party route attests Bellevue, WA, actionable vendor terms, and exact event date range 2027-07-24 to 2027-07-26."
     },
     {
       "id": "wa-highlander-festival-2026-09-11-be5acb27",
