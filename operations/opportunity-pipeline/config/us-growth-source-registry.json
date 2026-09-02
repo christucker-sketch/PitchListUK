@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T21:18:41.833Z",
+  "updated_at": "2026-09-02T21:23:36.276Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4306,6 +4306,24 @@
       "event_end": "2027-08-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-akron-2027-festival: live first-party route attests Akron, OH, actionable vendor terms, and exact event date 2027-08-08."
+    },
+    {
+      "id": "oh-back-to-school-2026-27-parma-city-school-district-2027-08-22-ddeced5d",
+      "name": "Back to School 2026-27 - Parma City School District Vendor Opportunity",
+      "organiser": "Back to School 2026-27 - Parma City School District",
+      "source_url": "https://www.parmacityschools.org/back-to-school",
+      "application_url": "https://www.parmacityschools.org/back-to-school",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Parma",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-22",
+      "event_end": "2027-08-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-parma-2027-food-truck: live first-party route attests Parma, OH, actionable vendor terms, and exact event date 2027-08-22."
     },
     {
       "id": "oh-centerville-fall-fest-expands-hours-and-entertainment-offerings-with-o-2026-10-03-71f8593b",
