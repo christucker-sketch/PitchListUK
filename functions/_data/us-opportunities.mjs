@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T17:18:44.173Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:207bc14adfd2081bb701249ff559ec99d61569a793a5fed2e0d1af5f67324968",
-  "total": 317,
+  "exported_at": "2026-09-02T17:23:27.634Z",
+  "source": "reviewed-us-georgia-cloud-promotion:be8467fce2d0e7f12ce988a021c3a7b380b9d9800dd5542ff1f512e8f0f027d5",
+  "total": 318,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12103,6 +12103,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_1d13f848cead33fdbce2"
+    },
+    {
+      "stable_id": "opp_us_44351ca624fa2d7ba740",
+      "event_name": "Athens Winter Wonderland Craft and Vendor Market - Hometown Vendor Market",
+      "organiser": "Athens Winter Wonderland Craft and Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/athenswinterwonderland/",
+      "application_url": "https://hometownvendormarket.com/athenswinterwonderland",
+      "location": "Athens",
+      "locality": "Athens",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "30529",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-athens-winter-wonderland-craft-and-vendor-market-hometown-vendor-marke-2026-12-12-cdf89d63",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_44351ca624fa2d7ba740"
     }
   ]
 };
