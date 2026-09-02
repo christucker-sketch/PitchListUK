@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T18:02:58.857Z",
+  "updated_at": "2026-09-02T18:07:24.904Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1550,6 +1550,24 @@
       "event_end": "2026-12-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-tallahassee-2026-holiday-market: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "fl-the-pfunk-festival-2027-2027-04-24-72acc9fd",
+      "name": "The PFunk Festival 2027 Vendor Opportunity",
+      "organiser": "The PFunk Festival 2027",
+      "source_url": "https://pfunkfest.com",
+      "application_url": "https://pfunkfest.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tallahassee",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-24",
+      "event_end": "2027-04-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tallahassee-2027-farmers-market: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date 2027-04-24."
     },
     {
       "id": "fl-vendors-the-north-florida-fair-2026-11-05-a9ca87f3",
