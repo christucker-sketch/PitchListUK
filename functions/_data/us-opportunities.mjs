@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T15:42:09.058Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:370e28683119eb0a86c2b0bf1111099de305ae03d0f455bc5caafe33ed8405c2",
-  "total": 305,
+  "exported_at": "2026-09-02T15:46:55.147Z",
+  "source": "reviewed-us-arizona-cloud-promotion:2ee3dd17412372a564368b320ce6748026e8056ee465fb757b8cd35914a367be",
+  "total": 306,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -11651,6 +11651,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_a523d0b4d1c7504c342f"
+    },
+    {
+      "stable_id": "opp_us_b979f385d20570ec8f8e",
+      "event_name": "Food/Desert Vendor Application - 2026 AZ Spooktacular Hot Air Balloon Festival - Eventeny",
+      "organiser": "Food/Desert",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=50174&srsltid=AfmBOortMWmEoWMkPaTwrkjcOi1XWxKnu7n2ZteiZFyBNaqdErjRgU0c",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=50174&srsltid=AfmBOortMWmEoWMkPaTwrkjcOi1XWxKnu7n2ZteiZFyBNaqdErjRgU0c",
+      "location": "Scottsdale",
+      "locality": "Scottsdale",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "85258",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-food-desert-2026-10-23-82a07572",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_b979f385d20570ec8f8e"
     }
   ]
 };
