@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T12:07:26.411Z",
-  "source": "reviewed-us-new-york-cloud-promotion:3a5c4cb9b34adf5f9b1628c6c15889d27480acf80388673fa9c1e736c3676e81",
-  "total": 273,
+  "exported_at": "2026-09-02T12:10:23.094Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:025408556b71ae31b977f22062224cb3a132d96664a7132c8e443137a7830db1",
+  "total": 274,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10437,6 +10437,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_786f2e0aa6ddd9030feb"
+    },
+    {
+      "stable_id": "opp_us_58c3644db10ed712fcc5",
+      "event_name": "Food Truck Festival Returns to Coca-Cola Park on August 26",
+      "organiser": "Food Truck Festival Returns to Coca-Cola Park on August 26",
+      "source_url": "https://www.milb.com/lehigh-valley/news/food-truck-festival-returns-to-coca-cola-park-on-august-26",
+      "application_url": "https://www.milb.com/lehigh-valley/news/food-truck-festival-returns-to-coca-cola-park-on-august-26",
+      "location": "Allentown",
+      "locality": "Allentown",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-26",
+      "event_end": "2027-08-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-food-truck-festival-returns-to-coca-cola-park-on-august-26-2027-08-26-ba314f5f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_58c3644db10ed712fcc5"
     }
   ]
 };
