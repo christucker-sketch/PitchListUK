@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T19:28:50.739Z",
+  "updated_at": "2026-09-02T19:34:03.150Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4576,6 +4576,24 @@
       "event_end": "2026-11-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-austin-2026-food-truck: live first-party route attests Austin, TX, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
+    },
+    {
+      "id": "tx-arlington-comic-fest-2026-09-05-418024bf",
+      "name": "Arlington Comic Fest Vendor Application Form",
+      "organiser": "Arlington Comic Fest",
+      "source_url": "https://form.jotform.com/211365685229158",
+      "application_url": "https://form.jotform.com/211365685229158",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Arlington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-arlington-2026-festival: live first-party route attests Arlington, TX, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-06."
     },
     {
       "id": "tx-artisan-market-minerpalooza-2026-09-11-fea7925e",
