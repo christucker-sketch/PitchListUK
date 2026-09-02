@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T13:01:36.408Z",
-  "source": "reviewed-us-virginia-cloud-promotion:d5bbd7a559c2b1a1879990a5f2a1d82d5b15d8860eeea5c5f9ab93aaf2062e7e",
-  "total": 280,
+  "exported_at": "2026-09-02T13:05:41.498Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:87b53ddbb84c04931e01c303ecb1cee1a01389ced52a734becd8af569c73f4cd",
+  "total": 281,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -10704,6 +10704,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_f2585e5b9ca24d322c96"
+    },
+    {
+      "stable_id": "opp_us_38785509b02ddfac9348",
+      "event_name": "Cambridge Carnival Vendor Opportunity",
+      "organiser": "Cambridge Carnival",
+      "source_url": "https://www.cambridgecarnival.org/",
+      "application_url": "https://www.cambridgecarnival.org",
+      "location": "Cambridge",
+      "locality": "Cambridge",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-cambridge-carnival-2026-09-12-3bdc1e0f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_38785509b02ddfac9348"
     }
   ]
 };
