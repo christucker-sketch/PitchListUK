@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T17:57:39.681Z",
-  "source": "reviewed-us-virginia-cloud-promotion:21ed70fb6c750363f216c34713d929ebb28ae67505ff8e64622c58e56be124ce",
-  "total": 328,
+  "exported_at": "2026-09-02T18:03:47.812Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:c49186a154b3fe718fbf094cf81b41ba57a2dafb51f7fb018d4ed24ee8fc6040",
+  "total": 329,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12522,6 +12522,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_656c6160132f04d72b9d"
+    },
+    {
+      "stable_id": "opp_us_8541d9b0deb8740f82c3",
+      "event_name": "Live Music & Jamaican Food Truck: You're Invited to a Free Concert at Brockton City Hall - NewsBreak",
+      "organiser": "Live Music & Jamaican Food Truck: You're Invited to a Free Concert at Brockton City Hall - NewsBreak",
+      "source_url": "https://www.newsbreak.com/dianna-carney-1587871/4756260031350-live-music-jamaican-food-truck-you-re-invited-to-a-free-concert-at-brockton-city-hall",
+      "application_url": "https://www.newsbreak.com/dianna-carney-1587871/4756260031350-live-music-jamaican-food-truck-you-re-invited-to-a-free-concert-at-brockton-city-hall",
+      "location": "Brockton",
+      "locality": "Brockton",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "02188",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-03",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-live-music-jamaican-food-truck-you-re-invited-to-a-free-concert-at-bro-2026-09-03-482de4d6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_8541d9b0deb8740f82c3"
     }
   ]
 };
