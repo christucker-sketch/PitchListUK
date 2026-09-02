@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T17:16:21.672Z",
-  "source": "reviewed-us-new-york-cloud-promotion:e7c86384e6729d847c4eb2c1f360736a5ce554c0b73347f7ce61c6585b83797d",
-  "total": 316,
+  "exported_at": "2026-09-02T17:18:44.173Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:207bc14adfd2081bb701249ff559ec99d61569a793a5fed2e0d1af5f67324968",
+  "total": 317,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -12066,6 +12066,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_427b0f8da57666d39321"
+    },
+    {
+      "stable_id": "opp_us_1d13f848cead33fdbce2",
+      "event_name": "Vendor Events in Scranton, PA",
+      "organiser": "Vendor Events in Scranton, PA",
+      "source_url": "https://vendorsmap.com/cities/scranton",
+      "application_url": "https://vendorsmap.com/cities/scranton",
+      "location": "Scranton",
+      "locality": "Scranton",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "18508",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-07",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-vendor-events-in-scranton-pa-2026-09-04-0426ce8d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_1d13f848cead33fdbce2"
     }
   ]
 };
