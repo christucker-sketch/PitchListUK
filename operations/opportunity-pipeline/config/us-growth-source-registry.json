@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T16:15:43.654Z",
+  "updated_at": "2026-09-02T16:19:20.092Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1748,6 +1748,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-columbus-2026-festival: live first-party route attests Columbus, GA, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-26."
+    },
+    {
+      "id": "ga-welcome-to-the-gordonston-art-fair-website-2027-03-06-d9018253",
+      "name": "Welcome to the Gordonston Art Fair Website Vendor Opportunity",
+      "organiser": "Welcome to the Gordonston Art Fair Website",
+      "source_url": "https://gordonstonartfair.com",
+      "application_url": "https://gordonstonartfair.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Savannah",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-06",
+      "event_end": "2027-03-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-savannah-2027-arts-crafts: live first-party route attests Savannah, GA, actionable vendor terms, and exact event date 2027-03-06."
     },
     {
       "id": "ga-yellow-daisy-festival-at-stone-mountain-park-a-celebration-of-arts-cra-2026-09-10-8fe5dcb6",
