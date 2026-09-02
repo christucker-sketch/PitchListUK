@@ -30,6 +30,12 @@ function isWorkflowDescribe(command, args) {
   return index >= 0 && args[index + 1] === 'instances' && args[index + 2] === 'describe';
 }
 
+function isWorkflowTrigger(command, args) {
+  if (command !== 'npx' || !Array.isArray(args)) return false;
+  const index = args.indexOf('workflows');
+  return index >= 0 && args[index + 1] === 'trigger';
+}
+
 export function isTransientWorkflowDescribeError(error) {
   const text = stripAnsi([
     error?.message,
@@ -67,9 +73,16 @@ function assertCoreControllerSafetyContracts(source) {
 }
 
 childProcess.execFileSync = function resilientExecFileSync(command, args, options) {
-  if (!isWorkflowDescribe(command, args)) return originalExecFileSync(command, args, options);
+  const workflowDescribe = isWorkflowDescribe(command, args);
+  const workflowTrigger = isWorkflowTrigger(command, args);
+  if (!workflowDescribe && !workflowTrigger) return originalExecFileSync(command, args, options);
 
-  const maxRetries = Math.max(1, Number(process.env.PITCHLIST_GROWTH_WORKFLOW_DESCRIBE_RETRIES || 6));
+  const operation = workflowDescribe ? 'describe' : 'trigger';
+  const maxRetries = Math.max(1, Number(
+    process.env.PITCHLIST_GROWTH_WORKFLOW_API_RETRIES
+      || process.env.PITCHLIST_GROWTH_WORKFLOW_DESCRIBE_RETRIES
+      || 6
+  ));
   let failures = 0;
   for (;;) {
     try {
@@ -78,7 +91,7 @@ childProcess.execFileSync = function resilientExecFileSync(command, args, option
       if (!isTransientWorkflowDescribeError(error) || failures >= maxRetries) throw error;
       failures += 1;
       const delay = workflowDescribeBackoffMilliseconds(failures);
-      process.stderr.write(`Transient Cloudflare Workflow describe failure; retry ${failures}/${maxRetries} in ${delay}ms\n`);
+      process.stderr.write(`Transient Cloudflare Workflow ${operation} failure; retry ${failures}/${maxRetries} in ${delay}ms\n`);
       sleep(delay);
     }
   }
@@ -86,7 +99,8 @@ childProcess.execFileSync = function resilientExecFileSync(command, args, option
 
 // growth-controller-core.mjs is the pre-fix controller byte-for-byte. Updating the
 // builtin ESM binding before dynamically importing it keeps its acquisition and
-// checkpoint logic unchanged while making only Workflow describe calls resilient.
+// checkpoint logic unchanged while making Cloudflare Workflow describe/trigger
+// API calls resilient to bounded transient failures.
 const coreControllerSource = fs.readFileSync(coreControllerPath, 'utf8');
 assertCoreControllerSafetyContracts(coreControllerSource);
 syncBuiltinESMExports();
