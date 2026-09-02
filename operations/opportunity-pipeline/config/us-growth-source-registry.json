@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T12:00:30.731Z",
+  "updated_at": "2026-09-02T12:06:32.326Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2288,6 +2288,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-new-york-city-2026-festival: live first-party route attests New York City, NY, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-20."
+    },
+    {
+      "id": "ny-eventeny-com-2027-05-31-768f1c64",
+      "name": "Food Truck Application",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=47220&srsltid=AfmBOoq2sTzJGNCBH4K43GaKZLNy6MEcksgmnkXQBPwlL1Rz_IDmu9au",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=47220&srsltid=AfmBOoq2sTzJGNCBH4K43GaKZLNy6MEcksgmnkXQBPwlL1Rz_IDmu9au",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Rochester",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-31",
+      "event_end": "2027-05-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-rochester-2027-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2027-05-31."
     },
     {
       "id": "ny-midday-bash-2026-09-09-7393f319",
