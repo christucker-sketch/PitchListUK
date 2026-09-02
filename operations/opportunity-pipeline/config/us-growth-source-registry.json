@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-02T10:42:03.528Z",
+  "updated_at": "2026-09-02T10:45:27.091Z",
   "sources": [
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
@@ -1586,6 +1586,24 @@
       "event_end": "2026-10-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-grand-rapids-2026-arts-crafts: live first-party route attests Grand Rapids, MI, actionable vendor terms, and exact event date range 2026-10-24 to 2026-10-25."
+    },
+    {
+      "id": "mi-macombgov-org-2026-09-11-c4a3a0f3",
+      "name": " Vendor Opportunity",
+      "organiser": "macombgov.org",
+      "source_url": "https://www.macombgov.org/node",
+      "application_url": "https://www.macombgov.org/node",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Warren",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-warren-2026-festival: live first-party route attests Warren, MI, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-24."
     },
     {
       "id": "mi-planning-and-resource-guide-2026-11-01-f87ed149",
