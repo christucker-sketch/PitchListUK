@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T20:57:02.299Z",
-  "source": "reviewed-us-washington-cloud-promotion:8c7638f1f99c359f77fd66c36db0c0bfbef601de5343d79047f100c738a60586",
-  "total": 346,
+  "exported_at": "2026-09-02T21:03:42.337Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:441a4cf19a3f67aec1bb6acc6379a4d022b6ec0a955632e00597aa6786d49403",
+  "total": 347,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13208,6 +13208,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_da9135dc42b7b74520bf"
+    },
+    {
+      "stable_id": "opp_us_15cf001aa0baec7ceeb9",
+      "event_name": "Musikfest 2027 in Bethlehem, PA Vendor Opportunity",
+      "organiser": "Musikfest 2027 in Bethlehem, PA",
+      "source_url": "https://www.discoverlehighvalley.com/events/major-events-festivals/musikfest/",
+      "application_url": "https://www.discoverlehighvalley.com/events/major-events-festivals/musikfest",
+      "location": "Bethlehem",
+      "locality": "Bethlehem",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-05",
+      "event_end": "2027-08-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-musikfest-2027-in-bethlehem-pa-2027-08-05-e167bef7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_15cf001aa0baec7ceeb9"
     }
   ]
 };
