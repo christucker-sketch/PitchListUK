@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T10:01:07.263Z",
-  "source": "reviewed-us-new-york-cloud-promotion:901a5cfcb321706b3fc7e762ec45445a6dada83df9e811e852b390a33dc93794",
-  "total": 370,
+  "exported_at": "2026-09-03T10:08:38.756Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:656735f0456280ac3c6afb1e3f8bba30f22f38fa98ebedea2964fe3639386f5a",
+  "total": 371,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14117,6 +14117,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_f5f657b38ca35f306422"
+    },
+    {
+      "stable_id": "opp_us_23fd5de08ae8090113ae",
+      "event_name": "Vendor Opportunity",
+      "organiser": "highpointnc.gov",
+      "source_url": "https://www.highpointnc.gov/1753/High-Point-Farmers-Market",
+      "application_url": "https://www.highpointnc.gov/1753/High-Point-Farmers-Market",
+      "location": "High Point",
+      "locality": "High Point",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "27262",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-highpointnc-gov-2026-10-31-dfa0bc87",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_23fd5de08ae8090113ae"
     }
   ]
 };
