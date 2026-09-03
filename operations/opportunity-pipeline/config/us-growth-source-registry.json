@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:41:37.073Z",
+  "updated_at": "2026-09-03T13:48:44.067Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2343,6 +2343,24 @@
       "event_end": "2026-11-14",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-albany-2026-government-events: live first-party route attests Albany, GA, actionable vendor terms, and exact event date 2026-11-14."
+    },
+    {
+      "id": "ga-celebrate-the-magic-of-the-holiday-season-in-albany-georgia-with-festi-2026-12-05-1c55915a",
+      "name": "Celebrate the Magic of the Holiday Season in Albany, Georgia, with Festive Events for the Whole Family - Travel Media Press Room Vendor Opportunity",
+      "organiser": "Celebrate the Magic of the Holiday Season in Albany, Georgia, with Festive Events for the Whole Family - Travel Media Press Room",
+      "source_url": "https://www.travelmediapressroom.com/2025/11/25/celebrate-the-magic-of-the-holiday-season-in-albany-georgia-with-festive-events-for-the-whole-family",
+      "application_url": "https://www.travelmediapressroom.com/2025/11/25/celebrate-the-magic-of-the-holiday-season-in-albany-georgia-with-festive-events-for-the-whole-family",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Albany",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-albany-2026-holiday-market: live first-party route attests Albany, GA, actionable vendor terms, and exact event date 2026-12-05."
     },
     {
       "id": "ga-chastain-park-arts-festival-2027-05-08-6bd23e00",
