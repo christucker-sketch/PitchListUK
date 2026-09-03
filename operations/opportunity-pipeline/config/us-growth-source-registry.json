@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:03:31.510Z",
+  "updated_at": "2026-09-03T08:08:45.136Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1424,6 +1424,24 @@
       "event_end": "2026-11-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-gainesville-2026-festival: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
+    },
+    {
+      "id": "fl-community-spring-block-party-2026-10-03-d83201eb",
+      "name": "Community Spring Block Party - Vendor Registration",
+      "organiser": "Community Spring Block Party -",
+      "source_url": "https://secure.qgiv.com/for/blockparty26/event/vendor",
+      "application_url": "https://secure.qgiv.com/for/blockparty26/event/vendor",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Gainesville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-gainesville-2026-food-truck: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "fl-eventeny-com-2027-05-23-33885eb3",
