@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T07:55:10.527Z",
+  "updated_at": "2026-09-03T07:59:04.293Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2830,6 +2830,24 @@
       "evidence": "Cloudflare discovery ma-boston-2027-festival: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-10-23."
     },
     {
+      "id": "ma-food-truck-food-2026-09-26-e1454101",
+      "name": "Food Truck / Food Vendor Application - Lynn Brews, Views, Bites & Beats Festival - Eventeny",
+      "organiser": "Food Truck / Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=50523&srsltid=AfmBOoognuHEd3R3EvZOOkQF6vhr1bMBKyDpZNriF9rdTcs_vPhtLfxw",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=50523&srsltid=AfmBOoognuHEd3R3EvZOOkQF6vhr1bMBKyDpZNriF9rdTcs_vPhtLfxw",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Lynn",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-lynn-2026-festival: live first-party route attests Lynn, MA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
       "id": "ma-live-music-jamaican-food-truck-you-re-invited-to-a-free-concert-at-bro-2026-09-03-482de4d6",
       "name": "Live Music & Jamaican Food Truck: You're Invited to a Free Concert at Brockton City Hall - NewsBreak",
       "organiser": "Live Music & Jamaican Food Truck: You're Invited to a Free Concert at Brockton City Hall - NewsBreak",
@@ -2846,6 +2864,42 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-brockton-2026-food-truck: live first-party route attests Brockton, MA, actionable vendor terms, and exact event date range 2026-09-03 to 2026-09-13."
+    },
+    {
+      "id": "ma-lynn-brews-views-bites-beats-festival-eventeny-2026-09-26-a96c865c",
+      "name": "Lynn Brews, Views, Bites & Beats Festival - Eventeny Vendor Opportunity",
+      "organiser": "Lynn Brews, Views, Bites & Beats Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/lynnbrewsviewsbitesbeatsfestival-31253/?srsltid=AfmBOoqpwQFOK5WqpifdvFOQdvf5tsSKkiTevlE2KLT1HF6SAJtSySFJ",
+      "application_url": "https://www.eventeny.com/events/lynnbrewsviewsbitesbeatsfestival-31253/?srsltid=AfmBOoqpwQFOK5WqpifdvFOQdvf5tsSKkiTevlE2KLT1HF6SAJtSySFJ",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Lynn",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-lynn-2026-festival: live first-party route attests Lynn, MA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "ma-lynn-brews-views-bites-beats-festival-eventeny-2026-09-26-d491d30c",
+      "name": "Lynn Brews, Views, Bites & Beats Festival - Eventeny Vendor Opportunity",
+      "organiser": "Lynn Brews, Views, Bites & Beats Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/lynnbrewsviewsbitesbeatsfestival-31253/?srsltid=AfmBOor_3gD7Rl3FJuoZgtYdWRumf5GxUpcCRgMpRO7IiauJVnFhtvMx",
+      "application_url": "https://www.eventeny.com/events/lynnbrewsviewsbitesbeatsfestival-31253/?srsltid=AfmBOor_3gD7Rl3FJuoZgtYdWRumf5GxUpcCRgMpRO7IiauJVnFhtvMx",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Lynn",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-lynn-2026-arts-crafts: live first-party route attests Lynn, MA, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "ma-out-to-lunch-downtown-worcester-2026-09-02-1a006585",
