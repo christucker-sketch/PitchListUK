@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:23:05.868Z",
+  "updated_at": "2026-09-03T12:27:11.652Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6251,6 +6251,24 @@
       "event_end": "2027-07-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-houston-2027-festival: live first-party route attests Houston, TX, actionable vendor terms, and exact event date 2027-07-04."
+    },
+    {
+      "id": "tx-market-rules-2026-10-24-82f8ba9a",
+      "name": "Market Rules Vendor Opportunity",
+      "organiser": "Market Rules",
+      "source_url": "https://lubbockdowntownfarmersmarket.com/market-rules",
+      "application_url": "https://lubbockdowntownfarmersmarket.com/market-rules",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Lubbock",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-lubbock-2026-farmers-market: live first-party route attests Lubbock, TX, actionable vendor terms, and exact event date 2026-10-24."
     },
     {
       "id": "tx-plano-food-and-wine-festival-mdash-sbg-hospitality-2026-11-07-11e1249d",
