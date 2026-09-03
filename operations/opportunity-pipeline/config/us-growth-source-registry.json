@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:29:35.914Z",
+  "updated_at": "2026-09-03T12:31:10.728Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5297,6 +5297,24 @@
       "event_end": "2026-09-09",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-rochester-2026-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2026-09-09."
+    },
+    {
+      "id": "ny-monthly-member-friends-meetups-mdash-farmers-market-federation-of-new--2026-11-20-ca982617",
+      "name": "Monthly Member & Friends Meetups &mdash; Farmers Market Federation of New York Vendor Opportunity",
+      "organiser": "Monthly Member & Friends Meetups &mdash; Farmers Market Federation of New York",
+      "source_url": "https://www.nyfarmersmarket.com/meetups",
+      "application_url": "https://www.nyfarmersmarket.com/meetups",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Utica",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-20",
+      "event_end": "2026-11-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-utica-2026-farmers-market: live first-party route attests Utica, NY, actionable vendor terms, and exact event date 2026-11-20."
     },
     {
       "id": "ny-mount-vernon-city-fest-2027-08-27-5102c3ec",
