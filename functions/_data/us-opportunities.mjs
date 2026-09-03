@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T13:49:42.868Z",
-  "source": "reviewed-us-georgia-cloud-promotion:afc801feff654e7d28ff0f5913505fe69c13b9d1e7f70684cd8f7508c0fede9a",
-  "total": 398,
+  "exported_at": "2026-09-03T13:55:55.378Z",
+  "source": "reviewed-us-michigan-cloud-promotion:26f108be3c06077723af2d2df17980e1e2210908dacc7de3a656b8d380ae2fd9",
+  "total": 399,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15171,6 +15171,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_322584442a2407b02b2f"
+    },
+    {
+      "stable_id": "opp_us_09441f126e868bfc34fe",
+      "event_name": "Kalamazoo Food Truck Guide: Food Truck Events + Mega List of Mobile Food Vendors - KZOOKIDS",
+      "organiser": "Kalamazoo Food Truck Guide: Food Truck Events + Mega List of Mobile Food Vendors - KZOOKIDS",
+      "source_url": "https://kzookids.com/food-trucks/",
+      "application_url": "https://kzookids.com/food-trucks",
+      "location": "Kalamazoo",
+      "locality": "Kalamazoo",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-kalamazoo-food-truck-guide-food-truck-events-mega-list-of-mobile-food--2026-09-26-c2b80ca7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_09441f126e868bfc34fe"
     }
   ]
 };
