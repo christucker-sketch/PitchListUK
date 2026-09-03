@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T09:05:44.988Z",
-  "source": "reviewed-us-georgia-cloud-promotion:6c3b6ae7303dc9f70080a875f05186257e1fad682072f30b5f2906335f82e828",
-  "total": 363,
+  "exported_at": "2026-09-03T09:13:25.768Z",
+  "source": "reviewed-us-virginia-cloud-promotion:a47879d7a186f226b7f19c2062d26f8cd686d6a919fc148cc282ee91e63452a0",
+  "total": 364,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13852,6 +13852,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_7a1b0d0bfca6f5343470"
+    },
+    {
+      "stable_id": "opp_us_b8c67ea8ab1b8460b75c",
+      "event_name": "FoodeesFest Vendor Agreement &ndash;Roanoke 2027 April 16-18th 2027 - Valley View Roanoke, VA FoodeesFest 2027 - Eventeny",
+      "organiser": "FoodeesFest Vendor Agreement &ndash;Roanoke 2027 April 16-18th 2027 - Valley View Roanoke, VA FoodeesFest 2027 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=53767&srsltid=AfmBOooOgv-7q-WFeB4x0kdS6IiSspmDNJRDGufeSLOZXJoxWr6mAfFM",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=53767&srsltid=AfmBOooOgv-7q-WFeB4x0kdS6IiSspmDNJRDGufeSLOZXJoxWr6mAfFM",
+      "location": "Roanoke",
+      "locality": "Roanoke",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-16",
+      "event_end": "2027-04-18",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-foodeesfest-vendor-agreement-ndash-roanoke-2027-april-16-18th-2027-val-2027-04-16-38442849",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_b8c67ea8ab1b8460b75c"
     }
   ]
 };
