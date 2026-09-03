@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T09:13:25.768Z",
-  "source": "reviewed-us-virginia-cloud-promotion:a47879d7a186f226b7f19c2062d26f8cd686d6a919fc148cc282ee91e63452a0",
-  "total": 364,
+  "exported_at": "2026-09-03T09:24:02.993Z",
+  "source": "reviewed-us-arizona-cloud-promotion:9335689c8b01b90de9709dad62784bb42c43ab3fd3e8ec7ce6778b5e919903b3",
+  "total": 365,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13891,6 +13891,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_b8c67ea8ab1b8460b75c"
+    },
+    {
+      "stable_id": "opp_us_a120c1c5eb303c85ab20",
+      "event_name": "Innings Festival | Tempe, AZ Vendor Opportunity",
+      "organiser": "Innings Festival | Tempe, AZ",
+      "source_url": "https://www.inningsfestival.com/",
+      "application_url": "https://www.inningsfestival.com",
+      "location": "Tempe",
+      "locality": "Tempe",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-02-26",
+      "event_end": "2027-02-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-innings-festival-tempe-az-2027-02-26-82ba39ce",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_a120c1c5eb303c85ab20"
     }
   ]
 };
