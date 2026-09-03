@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:03:02.393Z",
+  "updated_at": "2026-09-03T11:05:17.353Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4270,6 +4270,24 @@
       "application_deadline": "2026-09-10",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-winston-salem-2026-government-events: live first-party route attests Winston-Salem, NC, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "nc-non-food-vendors-10-x-10-space-2026-washington-street-unity-festival-e-2026-10-03-42c73869",
+      "name": "Non-Food Vendors - 10 X 10 Space - 2026 Washington Street Unity Festival - Eventeny Vendor Opportunity",
+      "organiser": "Non-Food Vendors - 10 X 10 Space - 2026 Washington Street Unity Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45296",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45296",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "High Point",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-high-point-2026-food-truck: live first-party route attests High Point, NC, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "nc-north-carolina-farmers-market-vendor-permit-guide-2026-2026-12-31-7a5157f7",
