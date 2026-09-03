@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:07:45.903Z",
+  "updated_at": "2026-09-03T10:10:09.321Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3675,6 +3675,24 @@
       "event_end": "2027-06-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-warren-2027-food-truck: live first-party route attests Warren, MI, actionable vendor terms, and exact event date 2027-06-12."
+    },
+    {
+      "id": "mi-welcome-to-city-of-troy-michigan-2026-09-29-b2006c16",
+      "name": "Welcome to City of Troy, Michigan Vendor Opportunity",
+      "organiser": "Welcome to City of Troy, Michigan",
+      "source_url": "https://troymi.gov/news_detail_T19_R107.php",
+      "application_url": "https://troymi.gov/news_detail_T19_R107.php",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Troy",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-29",
+      "event_end": "2026-09-29",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-troy-2026-farmers-market: live first-party route attests Troy, MI, actionable vendor terms, and exact event date 2026-09-29."
     },
     {
       "id": "mi-wyandotte-street-art-fair-2027-07-08-548cd137",
