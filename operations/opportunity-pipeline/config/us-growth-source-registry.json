@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T15:00:10.509Z",
+  "updated_at": "2026-09-03T15:10:41.176Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -8069,6 +8069,24 @@
       "event_end": "2027-08-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-vancouver-2027-farmers-market: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date range 2027-07-30 to 2027-08-02."
+    },
+    {
+      "id": "wa-vendor-events-in-union-wa-2027-08-14-69649daf",
+      "name": "Vendor Events in Union, WA",
+      "organiser": "Vendor Events in Union, WA",
+      "source_url": "https://vendorsmap.com/cities/union-wa",
+      "application_url": "https://vendorsmap.com/cities/union-wa",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Bellingham",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-08-14",
+      "event_end": "2027-08-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-bellingham-2027-food-truck: live first-party route attests Bellingham, WA, actionable vendor terms, and exact event date 2027-08-14."
     },
     {
       "id": "wa-vendor-events-in-vancouver-wa-2026-09-26-ea2965af",
