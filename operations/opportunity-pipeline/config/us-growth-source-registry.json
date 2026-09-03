@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:14:00.766Z",
+  "updated_at": "2026-09-03T10:15:55.479Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6791,6 +6791,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-vancouver-2026-farmers-market: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "wa-vendor-rules-regulations-2026-10-18-485c00da",
+      "name": "Vendor Rules & Regulations",
+      "organiser": "Vendor Rules & Regulations",
+      "source_url": "https://downtownyakimafarmersmarket.com/vendor-rules-regulations",
+      "application_url": "https://downtownyakimafarmersmarket.com/vendor-rules-regulations",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Yakima",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-18",
+      "event_end": "2026-10-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-yakima-2026-farmers-market: live first-party route attests Yakima, WA, actionable vendor terms, and exact event date 2026-10-18."
     },
     {
       "id": "wa-walkable-wonders-the-tiffin-seneca-farmers-market-2027-10-29-8f233981",
