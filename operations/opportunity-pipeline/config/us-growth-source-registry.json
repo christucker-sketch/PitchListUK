@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T09:30:41.958Z",
+  "updated_at": "2026-09-03T09:40:17.215Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4865,6 +4865,24 @@
       "event_end": "2026-09-09",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-rochester-2026-food-truck: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2026-09-09."
+    },
+    {
+      "id": "ny-mount-vernon-city-fest-2027-08-27-5102c3ec",
+      "name": "Mount Vernon City Fest Vendor Opportunity",
+      "organiser": "Mount Vernon City Fest",
+      "source_url": "https://www.mountvernoncityfest.com",
+      "application_url": "https://www.mountvernoncityfest.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Mount Vernon",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-27",
+      "event_end": "2027-08-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-mount-vernon-2027-food-truck: live first-party route attests Mount Vernon, NY, actionable vendor terms, and exact event date 2027-08-27."
     },
     {
       "id": "oh-2025-2026-festivals-culture-works-2026-09-06-fe5e058a",
