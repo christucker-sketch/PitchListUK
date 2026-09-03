@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:14:22.354Z",
+  "updated_at": "2026-09-03T13:17:28.126Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4215,6 +4215,24 @@
       "event_end": "2026-11-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-asheville-2026-farmers-market: live first-party route attests Asheville, NC, actionable vendor terms, and exact event date range 2026-11-27 to 2026-11-28."
+    },
+    {
+      "id": "nc-asheville-winter-wonderland-craft-vendor-market-hometown-vendor-market-2026-12-12-8433d9cd",
+      "name": "Asheville Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Asheville Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/ashevillewinterwonderland",
+      "application_url": "https://hometownvendormarket.com/ashevillewinterwonderland",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Asheville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-asheville-2026-arts-crafts: live first-party route attests Asheville, NC, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
     },
     {
       "id": "nc-ccaf2026-artisan-vendors-2026-10-17-27e94c1f",
