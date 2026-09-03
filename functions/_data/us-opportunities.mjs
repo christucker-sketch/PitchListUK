@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T11:49:13.170Z",
-  "source": "reviewed-us-california-cloud-promotion:e283f0918c7aedee9d4c003743295518315ad92672b1e94e2107567c3184ea61",
-  "total": 381,
+  "exported_at": "2026-09-03T12:06:21.519Z",
+  "source": "reviewed-us-california-cloud-promotion:c0142ba4cd6b0a5d54332aa108f8ca398873de864968ced90deea93712bf16a4",
+  "total": 382,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14533,6 +14533,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_fc9590b2f37921815b0f"
+    },
+    {
+      "stable_id": "opp_us_5df351141205f3fc021a",
+      "event_name": "Lightning in a Bottle Festival 2027 Vendor Opportunity",
+      "organiser": "Lightning in a Bottle Festival 2027",
+      "source_url": "https://musictravelo.com/event/lightning-in-a-bottle-festival-bakersfield-united-states/",
+      "application_url": "https://musictravelo.com/event/lightning-in-a-bottle-festival-bakersfield-united-states",
+      "location": "Bakersfield",
+      "locality": "Bakersfield",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "13601",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-26",
+      "event_end": "2027-05-30",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-lightning-in-a-bottle-festival-2027-2027-05-26-21d081fb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_5df351141205f3fc021a"
     }
   ]
 };
