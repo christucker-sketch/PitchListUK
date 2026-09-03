@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T11:03:54.601Z",
-  "source": "reviewed-us-georgia-cloud-promotion:a5d2ee878aa041b5a26ba4533900273b73871ac1568070e2461dcded8ba7e876",
-  "total": 375,
+  "exported_at": "2026-09-03T11:06:10.655Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:7a9f42f2c38fe737b248f3c09b9f84b29d1dfc4295be6befa612c7dcbfba5431",
+  "total": 376,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14305,6 +14305,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_70edd07929b86d263716"
+    },
+    {
+      "stable_id": "opp_us_bc5bc31d101be3935750",
+      "event_name": "Non-Food Vendors - 10 X 10 Space - 2026 Washington Street Unity Festival - Eventeny Vendor Opportunity",
+      "organiser": "Non-Food Vendors - 10 X 10 Space - 2026 Washington Street Unity Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45296",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45296",
+      "location": "High Point",
+      "locality": "High Point",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "27260",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-non-food-vendors-10-x-10-space-2026-washington-street-unity-festival-e-2026-10-03-42c73869",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_bc5bc31d101be3935750"
     }
   ]
 };
