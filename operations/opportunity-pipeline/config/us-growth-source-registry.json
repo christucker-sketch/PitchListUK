@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:48:15.233Z",
+  "updated_at": "2026-09-03T11:59:28.249Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6719,6 +6719,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-alexandria-2026-festival: live first-party route attests Alexandria, VA, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
+    },
+    {
+      "id": "va-vendor-events-in-colebrook-nh-2027-06-20-32b65350",
+      "name": "Vendor Events in Colebrook, NH",
+      "organiser": "Vendor Events in Colebrook, NH",
+      "source_url": "https://vendorsmap.com/cities/colebrook-nh",
+      "application_url": "https://vendorsmap.com/cities/colebrook-nh",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Portsmouth",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-20",
+      "event_end": "2027-06-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-portsmouth-2027-arts-crafts: live first-party route attests Portsmouth, VA, actionable vendor terms, and exact event date 2027-06-20."
     },
     {
       "id": "va-vendor-events-in-durham-nh-2027-06-27-7f84dce3",
