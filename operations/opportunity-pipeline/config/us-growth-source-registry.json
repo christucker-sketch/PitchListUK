@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:27:57.710Z",
+  "updated_at": "2026-09-03T10:33:28.359Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2685,6 +2685,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-peoria-2026-food-truck: live first-party route attests Peoria, IL, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "il-champaign-urbana-area-fall-festivals-2026-10-10-e3811fd1",
+      "name": "Champaign-Urbana Area Fall Festivals Vendor Opportunity",
+      "organiser": "Champaign-Urbana Area Fall Festivals",
+      "source_url": "https://www.chambanamoms.com/2026/08/13/fall-fairs-festivals-champaign-urbana",
+      "application_url": "https://www.chambanamoms.com/2026/08/13/fall-fairs-festivals-champaign-urbana",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Champaign",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-champaign-2026-festival: live first-party route attests Champaign, IL, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
       "id": "il-chicago-craft-art-festival-2026-illinois-2026-08-31-0091302f",
