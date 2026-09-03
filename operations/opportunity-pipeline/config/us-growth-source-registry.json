@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:08:10.523Z",
+  "updated_at": "2026-09-03T11:13:08.526Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -37,6 +37,24 @@
       "event_end": "2027-01-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-glendale-2027-festival: live first-party route attests Glendale, AZ, actionable vendor terms, and exact event date 2027-01-30."
+    },
+    {
+      "id": "az-fall-2026-2026-11-14-11801295",
+      "name": "Fall 2026 Vendor Application - Fall Market 2026 - Eventeny",
+      "organiser": "Fall 2026",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=47514&srsltid=AfmBOopOWAiV_JvWEVvOpNhMLLIKpIX7Q_0xIH4L0bacaPr5lkJ5uI2Q",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=47514&srsltid=AfmBOopOWAiV_JvWEVvOpNhMLLIKpIX7Q_0xIH4L0bacaPr5lkJ5uI2Q",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Peoria",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-peoria-2026-food-truck: live first-party route attests Peoria, AZ, actionable vendor terms, and exact event date 2026-11-14."
     },
     {
       "id": "az-fall-festival-town-of-marana-az-2026-10-12-1a1eba3b",
