@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:41:47.889Z",
+  "updated_at": "2026-09-03T10:46:21.066Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6593,6 +6593,24 @@
       "event_end": "2027-07-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-bellevue-2027-festival: live first-party route attests Bellevue, WA, actionable vendor terms, and exact event date range 2027-07-24 to 2027-07-26."
+    },
+    {
+      "id": "wa-central-washington-state-fair-2026-2026-09-25-a9dc8e3b",
+      "name": "Central Washington State Fair 2026 Vendor Opportunity",
+      "organiser": "Central Washington State Fair 2026",
+      "source_url": "https://vendorsmap.com/events/4703",
+      "application_url": "https://vendorsmap.com/events/4703",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Yakima",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-yakima-2026-festival: live first-party route attests Yakima, WA, actionable vendor terms, and exact event date range 2026-09-25 to 2026-10-04."
     },
     {
       "id": "wa-everett-blooms-with-return-of-sorticulture-festival-june-5-7-everett-w-2027-06-05-1af4def2",
