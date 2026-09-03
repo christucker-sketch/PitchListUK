@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T14:09:10.746Z",
-  "source": "reviewed-us-texas-cloud-promotion:df5379950eb009ca5fee2f61c1b1a516b35ab1316b69d6885483767f1b608bdf",
-  "total": 400,
+  "exported_at": "2026-09-03T14:17:01.689Z",
+  "source": "reviewed-us-illinois-cloud-promotion:bed251356ed37996930154d4c7d2cd407f6f0a13479d9168968ee06bdc2bc25e",
+  "total": 401,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15246,6 +15246,41 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_236346ae972dce21c487"
+    },
+    {
+      "stable_id": "opp_us_e1963ec09ae23a636afc",
+      "event_name": "City of Waukegan September 2026 E-News Vendor Opportunity",
+      "organiser": "City of Waukegan September 2026 E-News",
+      "source_url": "https://www.waukeganil.gov/CivicSend/ViewMessage/message/298344",
+      "application_url": "https://www.waukeganil.gov/CivicSend/ViewMessage/message/298344",
+      "location": "Waukegan",
+      "locality": "Waukegan",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "60085",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-13",
+      "event_end": "2027-09-13",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-city-of-waukegan-september-2026-e-news-2027-09-13-81f75a76",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_e1963ec09ae23a636afc"
     }
   ]
 };
