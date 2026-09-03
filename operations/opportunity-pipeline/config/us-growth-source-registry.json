@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T15:36:52.495Z",
+  "updated_at": "2026-09-03T15:39:33.333Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -885,6 +885,24 @@
       "evidence": "Cloudflare discovery ca-san-francisco-2027-holiday-market: live first-party route attests San Francisco, CA, actionable vendor terms, and exact event date range 2027-12-06 to 2027-12-07."
     },
     {
+      "id": "ca-mid-state-fair-markets-2026-12-11-842450fd",
+      "name": "Mid-State Fair Markets Vendor Opportunity",
+      "organiser": "Mid-State Fair Markets",
+      "source_url": "https://www.midstatefair.com/event-center/pages/midstatefairmarket.php",
+      "application_url": "https://www.midstatefair.com/event-center/pages/midstatefairmarket.php",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Riverside",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-11",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-riverside-2026-arts-crafts: live first-party route attests Riverside, CA, actionable vendor terms, and exact event date range 2026-12-11 to 2026-12-13."
+    },
+    {
       "id": "ca-national-city-community-market-aug-28-2027-national-city-chamber-of-co-2027-08-28-6647f8c9",
       "name": "National City Community Market - Aug 28, 2027 - National City Chamber of Commerce, CA Vendor Opportunity",
       "organiser": "National City Community Market - Aug 28, 2027 - National City Chamber of Commerce, CA",
@@ -919,6 +937,24 @@
       "event_end": "2026-12-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-los-angeles-2026-arts-crafts: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date 2026-12-06."
+    },
+    {
+      "id": "ca-riverside-art-market-2026-riverside-art-museum-the-cheech-2026-10-01-34fb2209",
+      "name": "Riverside Art Market 2026 - Riverside Art Museum & The Cheech Vendor Opportunity",
+      "organiser": "Riverside Art Market 2026 - Riverside Art Museum & The Cheech",
+      "source_url": "https://riversideartmuseum.org/event/riverside-art-market-2026",
+      "application_url": "https://riversideartmuseum.org/event/riverside-art-market-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Riverside",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-01",
+      "event_end": "2026-10-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-riverside-2026-festival: live first-party route attests Riverside, CA, actionable vendor terms, and exact event date 2026-10-01."
     },
     {
       "id": "ca-sacramento-art-craft-show-2026-2026-10-16-d5bbcfce",
