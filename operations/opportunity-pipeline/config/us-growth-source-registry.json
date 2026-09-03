@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T09:40:17.215Z",
+  "updated_at": "2026-09-03T09:46:30.985Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3405,6 +3405,24 @@
       "event_end": "2027-09-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2027-festival: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2027-09-11."
+    },
+    {
+      "id": "mi-calendar-livonia-mi-civicengage-2027-06-15-7b29f227",
+      "name": "Calendar • Livonia, MI • CivicEngage Vendor Opportunity",
+      "organiser": "Calendar • Livonia, MI • CivicEngage",
+      "source_url": "https://www.ci.livonia.mi.us/calendar.aspx?view=list&year=2024&month=6&CID=0",
+      "application_url": "https://www.ci.livonia.mi.us/calendar.aspx?view=list&year=2024&month=6&CID=0",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Livonia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-15",
+      "event_end": "2027-06-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-livonia-2027-food-truck: live first-party route attests Livonia, MI, actionable vendor terms, and exact event date range 2027-06-15 to 2027-06-21."
     },
     {
       "id": "mi-canton-farmers-market-to-kick-off-2026-regular-season-on-sunday-may-10-2026-09-01-91d4651d",
