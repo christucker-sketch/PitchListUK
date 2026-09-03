@@ -77,6 +77,23 @@ test('post-merge snapshot lag is retried but remains bounded', () => {
   assert.equal(action.action, 'stop');
 });
 
+test('live API count/identity cache skew waits within the existing consistency deadline', () => {
+  const state = {
+    status: 'waiting_for_live_consistency',
+    current: {
+      state_code: 'VA',
+      pending_deploy: { count: 380, previous_count: 379, additions: 1 },
+      live_consistency: { deadline_at: '2026-09-03T12:00:00.000Z' }
+    }
+  };
+  const action = classifyResilienceAction(
+    new Error('Live FindPitches count is behind but already contains published identity opp_us_e6063078d22d44d1b7d4'),
+    state
+  );
+  assert.equal(action.action, 'wait');
+  assert.equal(action.reason, 'live_api_cache_skew');
+});
+
 test('unknown active workflow is waited on, while evidence and repository failures still stop', () => {
   const activeId = `cf_${'c'.repeat(64)}`;
   assert.equal(
