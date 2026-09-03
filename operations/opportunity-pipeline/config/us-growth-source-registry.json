@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T14:36:50.156Z",
+  "updated_at": "2026-09-03T14:39:44.947Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5837,6 +5837,24 @@
       "event_end": "2026-09-14",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-utica-2026-festival: live first-party route attests Utica, NY, actionable vendor terms, and exact event date 2026-09-14."
+    },
+    {
+      "id": "ny-wine-in-the-wilderness-2027-06-06-b6a4cad7",
+      "name": "Wine in the Wilderness Vendor Opportunity",
+      "organiser": "Wine in the Wilderness",
+      "source_url": "https://www.uticazoo.org/wine",
+      "application_url": "https://www.uticazoo.org/wine",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Utica",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-06",
+      "event_end": "2027-06-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-utica-2027-festival: live first-party route attests Utica, NY, actionable vendor terms, and exact event date 2027-06-06."
     },
     {
       "id": "oh-2025-2026-festivals-culture-works-2026-09-06-fe5e058a",
