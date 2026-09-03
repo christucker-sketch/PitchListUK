@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T16:00:15.769Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:b020fb81f09a66f12f3ffbe03ea90f7e4ff09dd46255cb26bcb9093a865c840f",
-  "total": 410,
+  "exported_at": "2026-09-03T16:04:30.043Z",
+  "source": "reviewed-us-virginia-cloud-promotion:011ba73c9d16325a8d2ecf4604ea779e226f8bc9d59af467b42cb9dc6f53503b",
+  "total": 411,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15625,6 +15625,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_2fb28f1f16b516d53010"
+    },
+    {
+      "stable_id": "opp_us_e1f69c6b99423b0d35bc",
+      "event_name": "Holiday Craft Fair - LYH Vendor Opportunity",
+      "organiser": "Holiday Craft Fair - LYH",
+      "source_url": "https://www.lynchburgvirginia.org/event/holiday-craft-fair/",
+      "application_url": "https://www.lynchburgvirginia.org/event/holiday-craft-fair",
+      "location": "Lynchburg",
+      "locality": "Lynchburg",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "24501",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-04",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-holiday-craft-fair-lyh-2026-09-04-61bbeece",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_e1f69c6b99423b0d35bc"
     }
   ]
 };
