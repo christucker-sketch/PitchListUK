@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-02T22:03:05.455Z",
-  "source": "reviewed-us-texas-cloud-promotion:a4481d7326c2d3c030c10b415e297e511ea7b1e34edb0c80c1a2f9d9dc6dea97",
-  "total": 351,
+  "exported_at": "2026-09-03T07:48:21.057Z",
+  "source": "reviewed-us-ohio-cloud-promotion:4065b5dc7a2df4ef7f8d02dbba692ec2585e2c895aa4d6e41bef45cc6b6c5fd8",
+  "total": 352,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13397,6 +13397,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_4bee924a4e5db691aef5"
+    },
+    {
+      "stable_id": "opp_us_c1636219f6483c9f6049",
+      "event_name": "Find Art Shows, Craft Shows, and Festivals near you Vendor Opportunity",
+      "organiser": "Find Art Shows, Craft Shows, and Festivals near you",
+      "source_url": "https://www.fairsandfestivals.net/",
+      "application_url": "https://www.fairsandfestivals.net",
+      "location": "Canton",
+      "locality": "Canton",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-find-art-shows-craft-shows-and-festivals-near-you-2026-10-31-184d0e33",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_c1636219f6483c9f6049"
     }
   ]
 };
