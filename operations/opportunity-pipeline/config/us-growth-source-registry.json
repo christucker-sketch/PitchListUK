@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T14:31:19.961Z",
+  "updated_at": "2026-09-03T14:36:50.156Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1715,6 +1715,24 @@
       "evidence": "Cloudflare discovery fl-orlando-2027-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date range 2027-05-06 to 2027-05-07."
     },
     {
+      "id": "fl-food-vendor-space-call-first-prices-increase-march-of-2027-2027-pensac-2027-05-15-3f936259",
+      "name": "Food Vendor Space (Call First) (Prices Increase March of 2027) - 2027 Pensacola Pickles & Wings Family Festival - Eventeny",
+      "organiser": "Food Vendor Space (Call First) (Prices Increase March of 2027) - 2027 Pensacola Pickles & Wings Family Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=51295&srsltid=AfmBOorH_RRg1nrNX9eZtyv_ZtrUrg5GX8_MLmt2xopoQJ19dx02zztQ",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=51295&srsltid=AfmBOorH_RRg1nrNX9eZtyv_ZtrUrg5GX8_MLmt2xopoQJ19dx02zztQ",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Pensacola",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-15",
+      "event_end": "2027-05-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-pensacola-2027-festival: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date 2027-05-15."
+    },
+    {
       "id": "fl-food-vendors-2026-11-06-e8de491b",
       "name": "Food Vendors Vendor Opportunity",
       "organiser": "Food Vendors",
@@ -1859,6 +1877,24 @@
       "evidence": "Cloudflare discovery fl-orlando-2026-farmers-market: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-09-16."
     },
     {
+      "id": "fl-merchants-and-entertainers-2027-11-07-ee02a800",
+      "name": "Merchants and Entertainers Vendor Opportunity",
+      "organiser": "Merchants and Entertainers",
+      "source_url": "https://gcrf.us/merchants-entertainers.html",
+      "application_url": "https://gcrf.us/merchants-entertainers.html",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Pensacola",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-11-07",
+      "event_end": "2027-11-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-pensacola-2027-festival: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date range 2027-11-07 to 2027-11-08."
+    },
+    {
       "id": "fl-mezzo-market-2026-10-25-830a6567",
       "name": "Mezzo Market Vendor Opportunity",
       "organiser": "Mezzo Market",
@@ -1947,6 +1983,42 @@
       "event_end": "2026-10-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-pensacola-2026-farmers-market: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "fl-pensacola-foodees-fest-eventeny-2027-02-12-16fd1223",
+      "name": "Pensacola Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Pensacola Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/pensacola-foodees-fest-31713/?srsltid=AfmBOoovgVwplIFxRNO7lJHLunYIip2T4RWAXsCGWDArYA6SmpYlQ0e3",
+      "application_url": "https://www.eventeny.com/events/pensacola-foodees-fest-31713/?srsltid=AfmBOoovgVwplIFxRNO7lJHLunYIip2T4RWAXsCGWDArYA6SmpYlQ0e3",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Pensacola",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-12",
+      "event_end": "2027-02-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-pensacola-2027-festival: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date range 2027-02-12 to 2027-02-14."
+    },
+    {
+      "id": "fl-pensacola-foodees-fest-eventeny-2027-02-12-d95dda80",
+      "name": "Pensacola Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Pensacola Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/pensacola-foodees-fest-31713/?srsltid=AfmBOor5_aXM0P3fF0Uy2OFC1lmncioKvDrf6t3bpl3dN-pT70kC69oc",
+      "application_url": "https://www.eventeny.com/events/pensacola-foodees-fest-31713/?srsltid=AfmBOor5_aXM0P3fF0Uy2OFC1lmncioKvDrf6t3bpl3dN-pT70kC69oc",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Pensacola",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-12",
+      "event_end": "2027-02-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-pensacola-2027-arts-crafts: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date range 2027-02-12 to 2027-02-14."
     },
     {
       "id": "fl-pensacola-seafood-festival-2026-09-25-d99384af",
