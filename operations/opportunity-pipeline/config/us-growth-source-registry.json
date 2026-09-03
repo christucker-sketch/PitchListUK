@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:59:28.249Z",
+  "updated_at": "2026-09-03T12:05:16.743Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -739,6 +739,24 @@
       "event_end": "2027-01-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-oakland-2027-food-truck: live first-party route attests Oakland, CA, actionable vendor terms, and exact event date 2027-01-01."
+    },
+    {
+      "id": "ca-lightning-in-a-bottle-festival-2027-2027-05-26-21d081fb",
+      "name": "Lightning in a Bottle Festival 2027 Vendor Opportunity",
+      "organiser": "Lightning in a Bottle Festival 2027",
+      "source_url": "https://musictravelo.com/event/lightning-in-a-bottle-festival-bakersfield-united-states",
+      "application_url": "https://musictravelo.com/event/lightning-in-a-bottle-festival-bakersfield-united-states",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Bakersfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-26",
+      "event_end": "2027-05-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-bakersfield-2027-food-truck: live first-party route attests Bakersfield, CA, actionable vendor terms, and exact event date range 2027-05-26 to 2027-05-30."
     },
     {
       "id": "ca-make-good-market-2025-ndash-heath-ceramics-2026-12-06-111b7ede",
