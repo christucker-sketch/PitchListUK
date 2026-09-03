@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:17:28.126Z",
+  "updated_at": "2026-09-03T13:19:49.749Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4017,6 +4017,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-livonia-2026-farmers-market: live first-party route attests Livonia, MI, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "mi-thursday-night-market-at-the-kalamazoo-market-thursday-night-markets-a-2026-09-17-abb1455a",
+      "name": "Thursday Night Market at the Kalamazoo Market - Thursday Night Markets at the Kalamazoo Farmers Market - Eventeny Vendor Opportunity",
+      "organiser": "Thursday Night Market at the Kalamazoo Market - Thursday Night Markets at the Kalamazoo Farmers Market - Eventeny",
+      "source_url": "https://www.eventeny.com/events/kzfm-thursday-night-market-30413/?series=11611&srsltid=AfmBOorI1ZiatK9sZAbvxsUSOeBuu7MVF29wyMWGjz_SeB9jf_D2Vll6",
+      "application_url": "https://www.eventeny.com/events/kzfm-thursday-night-market-30413/?series=11611&srsltid=AfmBOorI1ZiatK9sZAbvxsUSOeBuu7MVF29wyMWGjz_SeB9jf_D2Vll6",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Kalamazoo",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-17",
+      "event_end": "2026-09-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-kalamazoo-2026-festival: live first-party route attests Kalamazoo, MI, actionable vendor terms, and exact event date 2026-09-17."
     },
     {
       "id": "mi-vendor-events-in-downtown-troy-al-2027-04-25-7e5ba16a",
