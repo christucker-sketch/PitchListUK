@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T09:27:42.289Z",
-  "source": "reviewed-us-california-cloud-promotion:eee16d4e5ee1020515608bf1f09bffba58d487b853f813e56efb0418f2f25042",
-  "total": 366,
+  "exported_at": "2026-09-03T09:37:26.895Z",
+  "source": "reviewed-us-florida-cloud-promotion:0240b501a4f97edcbe16985c5719225d39f61fe802f70372143d4f73874df74c",
+  "total": 367,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13966,6 +13966,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_c26267e325890936b8d1"
+    },
+    {
+      "stable_id": "opp_us_d037eb440dc19a25b5f1",
+      "event_name": "This Month's Major Events in Florida Vendor Opportunity",
+      "organiser": "This Month's Major Events in Florida",
+      "source_url": "https://www.visitflorida.com/things-to-do/events/",
+      "application_url": "https://www.visitflorida.com/things-to-do/events",
+      "location": "Gainesville",
+      "locality": "Gainesville",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "39784",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-10-16",
+      "event_end": "2027-10-17",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-this-month-s-major-events-in-florida-2027-10-16-a9c694c6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_d037eb440dc19a25b5f1"
     }
   ]
 };
