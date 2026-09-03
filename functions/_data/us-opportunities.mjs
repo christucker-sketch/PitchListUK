@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T13:42:26.312Z",
-  "source": "reviewed-us-florida-cloud-promotion:df8e65a1fadbbd83136dfba565d6f70d59c45bacfe85a64a2384c115da44cc17",
-  "total": 397,
+  "exported_at": "2026-09-03T13:49:42.868Z",
+  "source": "reviewed-us-georgia-cloud-promotion:afc801feff654e7d28ff0f5913505fe69c13b9d1e7f70684cd8f7508c0fede9a",
+  "total": 398,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15134,6 +15134,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_545fb51f315274ba53bd"
+    },
+    {
+      "stable_id": "opp_us_322584442a2407b02b2f",
+      "event_name": "Celebrate the Magic of the Holiday Season in Albany, Georgia, with Festive Events for the Whole Family - Travel Media Press Room Vendor Opportunity",
+      "organiser": "Celebrate the Magic of the Holiday Season in Albany, Georgia, with Festive Events for the Whole Family - Travel Media Press Room",
+      "source_url": "https://www.travelmediapressroom.com/2025/11/25/celebrate-the-magic-of-the-holiday-season-in-albany-georgia-with-festive-events-for-the-whole-family/",
+      "application_url": "https://www.travelmediapressroom.com/2025/11/25/celebrate-the-magic-of-the-holiday-season-in-albany-georgia-with-festive-events-for-the-whole-family",
+      "location": "Albany",
+      "locality": "Albany",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-celebrate-the-magic-of-the-holiday-season-in-albany-georgia-with-festi-2026-12-05-1c55915a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_322584442a2407b02b2f"
     }
   ]
 };
