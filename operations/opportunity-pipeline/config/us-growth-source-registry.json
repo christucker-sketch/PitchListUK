@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:14:49.392Z",
+  "updated_at": "2026-09-03T12:23:05.868Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -919,6 +919,24 @@
       "event_end": "2027-10-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-10-25."
+    },
+    {
+      "id": "ca-vendor-events-in-anaheim-ca-2026-10-24-f09eaa30",
+      "name": "Vendor Events in Anaheim, CA",
+      "organiser": "Vendor Events in Anaheim, CA",
+      "source_url": "https://vendorsmap.com/cities/anaheim",
+      "application_url": "https://vendorsmap.com/cities/anaheim",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Anaheim",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-anaheim-2026-farmers-market: live first-party route attests Anaheim, CA, actionable vendor terms, and exact event date 2026-10-24."
     },
     {
       "id": "ca-vendor-events-in-oakland-ca-2027-04-25-93e76786",
