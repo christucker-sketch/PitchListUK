@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T15:40:45.745Z",
-  "source": "reviewed-us-california-cloud-promotion:cb998c0690df86e67a8e34cb19fef11eb312c47d50bc186746747b4c8c121975",
-  "total": 407,
+  "exported_at": "2026-09-03T15:49:41.628Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:5ae95c3a3fd3c9104d02cf8d88fc2c57dd6a9d478644b54b4ac329a973ef78c2",
+  "total": 408,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15512,6 +15512,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_f5baf14d079c3301b203"
+    },
+    {
+      "stable_id": "opp_us_7638c16aa58a7d60b2a5",
+      "event_name": "Winter Craft Market Vendor Opportunity",
+      "organiser": "Winter Craft Market",
+      "source_url": "https://wintercraftmarket.org/",
+      "application_url": "https://wintercraftmarket.org",
+      "location": "State College",
+      "locality": "State College",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-winter-craft-market-2026-12-05-f412418b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_7638c16aa58a7d60b2a5"
     }
   ]
 };
