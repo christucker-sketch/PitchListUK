@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:37:04.456Z",
+  "updated_at": "2026-09-03T10:41:47.889Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4469,6 +4469,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-toms-river-2026-food-truck: live first-party route attests Toms River, NJ, actionable vendor terms, and exact event date range 2026-09-20 to 2026-09-27."
+    },
+    {
+      "id": "nj-2026-central-jersey-beverage-fest-sponsor-vendor-brand-registration-2026-09-26-e2396472",
+      "name": "2026 Central Jersey Beverage Fest - Sponsor|Vendor|Brand Registration",
+      "organiser": "2026 Central Jersey Beverage Fest - Sponsor|Vendor|Brand Registration",
+      "source_url": "https://events.beerfests.com/e/cjbeerfest2026vendors",
+      "application_url": "https://events.beerfests.com/e/cjbeerfest2026vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Hamilton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-hamilton-2026-festival: live first-party route attests Hamilton, NJ, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "nj-2026-ymca-tot-trot-and-family-fall-festival-2026-10-11-3ac2c64e",
