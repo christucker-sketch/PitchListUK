@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:58:09.517Z",
+  "updated_at": "2026-09-03T14:01:40.052Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7583,6 +7583,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-bellevue-2026-festival: live first-party route attests Bellevue, WA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "wa-red-barn-market-2026-lynden-wa-2026-11-14-52bd8410",
+      "name": "Red Barn Market 2026, Lynden, WA Vendor Opportunity",
+      "organiser": "Red Barn Market 2026, Lynden, WA",
+      "source_url": "https://vendorsmap.com/events/31766",
+      "application_url": "https://vendorsmap.com/events/31766",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Bellingham",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-bellingham-2026-holiday-market: live first-party route attests Bellingham, WA, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
     },
     {
       "id": "wa-renegade-craft-fair-seattle-spring-2027-2027-05-30-c87cbd54",
