@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T15:55:45.068Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:390be7972ce00709d88710092a3538f13c79c71c993d452bb72c9dcda3399fcf",
-  "total": 409,
+  "exported_at": "2026-09-03T16:00:15.769Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:b020fb81f09a66f12f3ffbe03ea90f7e4ff09dd46255cb26bcb9093a865c840f",
+  "total": 410,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15587,6 +15587,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_80cc675443a8c8720ac9"
+    },
+    {
+      "stable_id": "opp_us_2fb28f1f16b516d53010",
+      "event_name": "Clifton Heroes Food Truck, Vendor, & Music Festival Returns - The Clifton Times",
+      "organiser": "Clifton Heroes Food Truck, Vendor, & Music Festival Returns - The Clifton Times",
+      "source_url": "https://www.thecliftontimes.com/articles/news/clifton-heroes-food-truck-vendor-music-festival-returns/",
+      "application_url": "https://www.thecliftontimes.com/articles/news/clifton-heroes-food-truck-vendor-music-festival-returns",
+      "location": "Clifton",
+      "locality": "Clifton",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-clifton-heroes-food-truck-vendor-music-festival-returns-the-clifton-ti-2026-09-06-807f204c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_2fb28f1f16b516d53010"
     }
   ]
 };
