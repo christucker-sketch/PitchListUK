@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:13:08.526Z",
+  "updated_at": "2026-09-03T11:16:44.321Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3083,6 +3083,24 @@
       "evidence": "Cloudflare discovery il-rockford-2027-farmers-market: live first-party route attests Rockford, IL, actionable vendor terms, and exact event date 2027-05-01."
     },
     {
+      "id": "ma-11th-new-bedford-food-truck-craft-beverage-festival-2026-10-31-be7b7400",
+      "name": "11th New Bedford Food Truck & Craft Beverage Festival",
+      "organiser": "11th New Bedford Food Truck & Craft Beverage Festival",
+      "source_url": "https://www.hotel1620.com/events/new-bedford/11th-new-bedford-food-truck-craft-beverage-festival-12650293",
+      "application_url": "https://www.hotel1620.com/events/new-bedford/11th-new-bedford-food-truck-craft-beverage-festival-12650293",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "New Bedford",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-new-bedford-2026-food-truck: live first-party route attests New Bedford, MA, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
       "id": "ma-2026-food-2027-01-05-f5dd060b",
       "name": "2026 Food Vendor Application",
       "organiser": "2026 Food",
@@ -3207,6 +3225,24 @@
       "event_end": "2027-09-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-lowell-2027-food-truck: live first-party route attests Lowell, MA, actionable vendor terms, and exact event date range 2027-09-20 to 2027-09-21."
+    },
+    {
+      "id": "ma-eventeny-com-2026-10-23-6af6de38",
+      "name": "Food Truck Application - 11th New Bedford Food Truck & Craft Beverage Festival - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=50141&srsltid=AfmBOorhFyXcft4leTrDhelS30QP_1cNTdOUE8qvGBTWzmX75vH_i6Tg",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=50141&srsltid=AfmBOorhFyXcft4leTrDhelS30QP_1cNTdOUE8qvGBTWzmX75vH_i6Tg",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "New Bedford",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-new-bedford-2026-food-truck: live first-party route attests New Bedford, MA, actionable vendor terms, and exact event date 2026-10-23."
     },
     {
       "id": "ma-eventeny-com-2026-10-23-706d00a0",
