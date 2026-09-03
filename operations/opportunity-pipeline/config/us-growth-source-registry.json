@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:42:24.303Z",
+  "updated_at": "2026-09-03T12:46:06.679Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3909,6 +3909,24 @@
       "event_end": "2026-11-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-grand-rapids-2026-government-events: live first-party route attests Grand Rapids, MI, actionable vendor terms, and exact event date 2026-11-01."
+    },
+    {
+      "id": "mi-program-offerings-2026-09-21-3a0e8ac1",
+      "name": "Program Offerings Vendor Opportunity",
+      "organiser": "Program Offerings",
+      "source_url": "https://comstockmi.gov/parks-recreation/program-offerings",
+      "application_url": "https://comstockmi.gov/parks-recreation/program-offerings",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Kalamazoo",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-21",
+      "event_end": "2026-09-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-kalamazoo-2026-government-events: live first-party route attests Kalamazoo, MI, actionable vendor terms, and exact event date 2026-09-21."
     },
     {
       "id": "mi-search-results-2026-09-20-1724e7ed",
