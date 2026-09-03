@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:39:27.626Z",
+  "updated_at": "2026-09-03T08:48:50.361Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5764,6 +5764,42 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-roanoke-2026-festival: live first-party route attests Roanoke, VA, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "va-blog-roanoke-recap-2027-08-03-52db58cf",
+      "name": "Blog • Roanoke Recap Vendor Opportunity",
+      "organiser": "Blog • Roanoke Recap",
+      "source_url": "https://www.roanokeva.gov/Blog.aspx?CID=3",
+      "application_url": "https://www.roanokeva.gov/Blog.aspx?CID=3",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Roanoke",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-03",
+      "event_end": "2027-08-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-roanoke-2027-government-events: live first-party route attests Roanoke, VA, actionable vendor terms, and exact event date 2027-08-03."
+    },
+    {
+      "id": "va-blog-roanoke-recap-july-and-august-2026-2027-08-03-0c773818",
+      "name": "Blog • Roanoke Recap - July and August 2026 Vendor Opportunity",
+      "organiser": "Blog • Roanoke Recap - July and August 2026",
+      "source_url": "https://www.roanokeva.gov/Blog.aspx?IID=350",
+      "application_url": "https://www.roanokeva.gov/Blog.aspx?IID=350",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Roanoke",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-03",
+      "event_end": "2027-08-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-roanoke-2027-government-events: live first-party route attests Roanoke, VA, actionable vendor terms, and exact event date 2027-08-03."
     },
     {
       "id": "va-calendar-newport-news-fall-festival-2026-10-05-665fcc51",
