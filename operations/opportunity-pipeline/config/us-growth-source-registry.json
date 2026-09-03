@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T07:59:04.293Z",
+  "updated_at": "2026-09-03T08:03:31.510Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -633,6 +633,24 @@
       "evidence": "Cloudflare discovery ca-los-angeles-2026-festival: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
+      "id": "ca-make-good-market-2025-ndash-heath-ceramics-2026-12-06-111b7ede",
+      "name": "Make Good Market 2025 &ndash; Heath Ceramics Vendor Opportunity",
+      "organiser": "Make Good Market 2025 &ndash; Heath Ceramics",
+      "source_url": "https://www.heathceramics.com/blogs/news-events/make-good-market-2025?srsltid=AfmBOorP1_JD7YpnxIFjzFbdxi6pmaz-bJ6Cs4Bzv6TyhjJ4rnMD3BM3",
+      "application_url": "https://www.heathceramics.com/blogs/news-events/make-good-market-2025?srsltid=AfmBOorP1_JD7YpnxIFjzFbdxi6pmaz-bJ6Cs4Bzv6TyhjJ4rnMD3BM3",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Oakland",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-oakland-2026-holiday-market: live first-party route attests Oakland, CA, actionable vendor terms, and exact event date range 2026-12-06 to 2026-12-07."
+    },
+    {
       "id": "ca-make-good-market-2025-ndash-heath-ceramics-2026-12-06-c636e2ec",
       "name": "Make Good Market 2025 &ndash; Heath Ceramics Vendor Opportunity",
       "organiser": "Make Good Market 2025 &ndash; Heath Ceramics",
@@ -776,6 +794,24 @@
       "application_deadline": "2027-05-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-food-truck: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date range 2027-05-29 to 2027-05-30."
+    },
+    {
+      "id": "ca-winter-events-children-s-fairyland-oakland-california-2026-12-12-8c916246",
+      "name": "Winter Events - Children's Fairyland - Oakland, California Vendor Opportunity",
+      "organiser": "Winter Events - Children's Fairyland - Oakland, California",
+      "source_url": "https://fairyland.org/winter-fun",
+      "application_url": "https://fairyland.org/winter-fun",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Oakland",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-oakland-2026-holiday-market: live first-party route attests Oakland, CA, actionable vendor terms, and exact event date 2026-12-12."
     },
     {
       "id": "co-18-festivals-to-put-on-your-calendar-now-2026-09-26-2fa052b3",
