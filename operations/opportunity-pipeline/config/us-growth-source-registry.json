@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:05:17.353Z",
+  "updated_at": "2026-09-03T11:08:10.523Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4739,6 +4739,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-lakewood-2026-food-truck: live first-party route attests Lakewood, NJ, actionable vendor terms, and exact event date 2026-09-13."
+    },
+    {
+      "id": "nj-search-results-2026-10-18-ae4c6860",
+      "name": "Search Results Vendor Opportunity",
+      "organiser": "Search Results",
+      "source_url": "https://parksrec.egov.basgov.com/hamilton/Search?TagId=585",
+      "application_url": "https://parksrec.egov.basgov.com/hamilton/Search?TagId=585",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Hamilton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-18",
+      "event_end": "2026-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-hamilton-2026-food-truck: live first-party route attests Hamilton, NJ, actionable vendor terms, and exact event date range 2026-10-18 to 2026-10-25."
     },
     {
       "id": "nj-simpletix-com-2026-09-25-ae16ea26",
