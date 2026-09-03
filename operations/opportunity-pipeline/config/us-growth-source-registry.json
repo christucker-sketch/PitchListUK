@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T07:50:25.051Z",
+  "updated_at": "2026-09-03T07:55:10.527Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5422,6 +5422,24 @@
       "event_end": "2027-03-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-richmond-2027-festival: live first-party route attests Richmond, VA, actionable vendor terms, and exact event date range 2027-03-18 to 2027-03-21."
+    },
+    {
+      "id": "va-bent-mountain-fall-festival-2026-10-03-51422824",
+      "name": "Bent Mountain Fall Festival Vendor Information",
+      "organiser": "Bent Mountain Fall Festival",
+      "source_url": "https://www.roanokecountyparks.com/761/Bent-Mountain-Fall-Festival-Vendor-Infor",
+      "application_url": "https://www.roanokecountyparks.com/761/Bent-Mountain-Fall-Festival-Vendor-Infor",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Roanoke",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-roanoke-2026-festival: live first-party route attests Roanoke, VA, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "va-calendar-newport-news-fall-festival-2026-10-05-665fcc51",
