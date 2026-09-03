@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:50:39.897Z",
+  "updated_at": "2026-09-03T12:54:29.238Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7079,6 +7079,24 @@
       "event_end": "2027-07-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-bellevue-2027-festival: live first-party route attests Bellevue, WA, actionable vendor terms, and exact event date range 2027-07-24 to 2027-07-26."
+    },
+    {
+      "id": "wa-bellingham-farmers-market-2026-hours-and-local-tips-2026-12-20-666b83a6",
+      "name": "Bellingham Farmers Market: 2026 Hours And Local Tips Vendor Opportunity",
+      "organiser": "Bellingham Farmers Market: 2026 Hours And Local Tips",
+      "source_url": "https://explorewashingtonstate.com/farmers-markets/bellingham-farmers-market",
+      "application_url": "https://explorewashingtonstate.com/farmers-markets/bellingham-farmers-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Bellingham",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-20",
+      "event_end": "2026-12-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-bellingham-2026-farmers-market: live first-party route attests Bellingham, WA, actionable vendor terms, and exact event date 2026-12-20."
     },
     {
       "id": "wa-central-washington-state-fair-2026-2026-09-25-a9dc8e3b",
