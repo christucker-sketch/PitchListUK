@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T09:04:52.766Z",
+  "updated_at": "2026-09-03T09:07:22.507Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3569,6 +3569,24 @@
       "evidence": "Cloudflare discovery mi-detroit-2027-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date range 2027-07-08 to 2027-07-11."
     },
     {
+      "id": "nc-2026-2027-11-05-4add887b",
+      "name": "2026 Application and Contract - Premier Promotions - Premier Promotions Vendor Opportunity",
+      "organiser": "2026",
+      "source_url": "https://wnypremierpromotions.com/application-contract",
+      "application_url": "https://wnypremierpromotions.com/application-contract",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-11-05",
+      "event_end": "2027-11-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-wilmington-2027-arts-crafts: live first-party route attests Wilmington, NC, actionable vendor terms, and exact event date range 2027-11-05 to 2027-11-13."
+    },
+    {
       "id": "nc-2026-cary-underground-market-bond-brothers-september-eventeny-2026-09-06-5b94320c",
       "name": "2026 Cary Underground Market (Bond Brothers) - September - Eventeny Vendor Opportunity",
       "organiser": "2026 Cary Underground Market (Bond Brothers) - September - Eventeny",
@@ -3837,6 +3855,24 @@
       "event_end": "2027-04-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-fayetteville-2027-festival: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2027-04-23 to 2027-04-25."
+    },
+    {
+      "id": "nc-food-vendors-carolina-coastal-cryptidfest-2027-eventeny-2027-04-10-db8545ee",
+      "name": "Food Vendors - Carolina Coastal CryptidFest 2027 - Eventeny Vendor Opportunity",
+      "organiser": "Food Vendors - Carolina Coastal CryptidFest 2027 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=41222&srsltid=AfmBOorUoVu5NEjRSdzEU-y4Zrc4A1GgCzS3sYmqcmbLqqeytuW2aLkh",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=41222&srsltid=AfmBOorUoVu5NEjRSdzEU-y4Zrc4A1GgCzS3sYmqcmbLqqeytuW2aLkh",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-10",
+      "event_end": "2027-04-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-wilmington-2027-festival: live first-party route attests Wilmington, NC, actionable vendor terms, and exact event date 2027-04-10."
     },
     {
       "id": "nc-foodees-fest-charlotte-nc-2026-09-11-b386fec4",
