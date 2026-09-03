@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T08:58:34.735Z",
-  "source": "reviewed-us-florida-cloud-promotion:9be8d5f72f19a738aff4f05f7c74cdd6d7379eb899e0b8ff2208f4adef0f580b",
-  "total": 361,
+  "exported_at": "2026-09-03T09:02:31.732Z",
+  "source": "reviewed-us-illinois-cloud-promotion:0f55842e7a3e596c4b1c79750777117b566c026074f55eeaf230239cad56f999",
+  "total": 362,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13777,6 +13777,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_8fa73f903d8075ab1342"
+    },
+    {
+      "stable_id": "opp_us_daceaace5595736ede18",
+      "event_name": "Ignite Peoria 2026 | ArtsPartners Vendor Opportunity",
+      "organiser": "Ignite Peoria 2026 | ArtsPartners",
+      "source_url": "https://artspartners.net/ignite-peoria/",
+      "application_url": "https://artspartners.net/ignite-peoria",
+      "location": "Peoria",
+      "locality": "Peoria",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-08",
+      "event_end": "2027-08-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-ignite-peoria-2026-artspartners-2027-08-08-b8d20538",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_daceaace5595736ede18"
     }
   ]
 };
