@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T12:24:12.820Z",
-  "source": "reviewed-us-california-cloud-promotion:78ac359e65fbea6b5a2333e68f7fe0f9e73ae6b69f4614ca0d30b3750ad48bb1",
-  "total": 383,
+  "exported_at": "2026-09-03T12:28:12.836Z",
+  "source": "reviewed-us-texas-cloud-promotion:0f4e51f80dc47a46e14c78de102f95efc2fd245886478f733bca374e4fcb1b45",
+  "total": 384,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14608,6 +14608,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_d58be264d05908e11cb3"
+    },
+    {
+      "stable_id": "opp_us_b9b9054e1235080af32b",
+      "event_name": "Market Rules – Lubbock Downtown Farmers Market",
+      "organiser": "Market Rules",
+      "source_url": "https://lubbockdowntownfarmersmarket.com/market-rules/",
+      "application_url": "https://lubbockdowntownfarmersmarket.com/market-rules",
+      "location": "Lubbock",
+      "locality": "Lubbock",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "79401",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-market-rules-2026-10-24-82f8ba9a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_b9b9054e1235080af32b"
     }
   ]
 };
