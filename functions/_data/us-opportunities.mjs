@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T14:17:01.689Z",
-  "source": "reviewed-us-illinois-cloud-promotion:bed251356ed37996930154d4c7d2cd407f6f0a13479d9168968ee06bdc2bc25e",
-  "total": 401,
+  "exported_at": "2026-09-03T14:24:49.156Z",
+  "source": "reviewed-us-michigan-cloud-promotion:5ff2c76da5651e003f6cbe5832632700972d09ef4c999ad1360bbc7f2a80d263",
+  "total": 402,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15281,6 +15281,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_e1963ec09ae23a636afc"
+    },
+    {
+      "stable_id": "opp_us_28588702dda0599493d4",
+      "event_name": "Portage Zhang Farmers Market opens for 2026 season, moving into newly built space May 31 Vendor Opportunity",
+      "organiser": "Portage Zhang Farmers Market opens for 2026 season, moving into newly built space May 31",
+      "source_url": "https://arcwestmichigan.com/news/local/portage-zhang-farmers-market-opens-2026-season-moving-newly-built-space-may-31-permanent-location-325-million-live-music-food-seasonal-produce-artisan-western-michigan-event-outdoor",
+      "application_url": "https://arcwestmichigan.com/news/local/portage-zhang-farmers-market-opens-2026-season-moving-newly-built-space-may-31-permanent-location-325-million-live-music-food-seasonal-produce-artisan-western-michigan-event-outdoor",
+      "location": "Kalamazoo",
+      "locality": "Kalamazoo",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-24",
+      "event_end": "2027-05-31",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-portage-zhang-farmers-market-opens-for-2026-season-moving-into-newly-b-2027-05-24-29f7b585",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_28588702dda0599493d4"
     }
   ]
 };
