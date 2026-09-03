@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T12:28:12.836Z",
-  "source": "reviewed-us-texas-cloud-promotion:0f4e51f80dc47a46e14c78de102f95efc2fd245886478f733bca374e4fcb1b45",
-  "total": 384,
+  "exported_at": "2026-09-03T12:32:01.812Z",
+  "source": "reviewed-us-new-york-cloud-promotion:c72bf05122c1f6ae6a1c48022ab645556ed1eb424bdcde950f8f23c677d05661",
+  "total": 385,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14646,6 +14646,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_b9b9054e1235080af32b"
+    },
+    {
+      "stable_id": "opp_us_0ee78b2bfc289a5c3db0",
+      "event_name": "Monthly Member & Friends Meetups &mdash; Farmers Market Federation of New York Vendor Opportunity",
+      "organiser": "Monthly Member & Friends Meetups &mdash; Farmers Market Federation of New York",
+      "source_url": "https://www.nyfarmersmarket.com/meetups",
+      "application_url": "https://www.nyfarmersmarket.com/meetups",
+      "location": "Utica",
+      "locality": "Utica",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-20",
+      "event_end": "2026-11-20",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-monthly-member-friends-meetups-mdash-farmers-market-federation-of-new--2026-11-20-ca982617",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_0ee78b2bfc289a5c3db0"
     }
   ]
 };
