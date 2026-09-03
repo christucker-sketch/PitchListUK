@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T09:56:50.498Z",
+  "updated_at": "2026-09-03T10:00:18.572Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4849,6 +4849,24 @@
       "evidence": "Cloudflare discovery ny-syracuse-2026-farmers-market: live first-party route attests Syracuse, NY, actionable vendor terms, and exact event date 2026-10-13."
     },
     {
+      "id": "ny-farmers-markets-2026-11-30-ec3add86",
+      "name": "Farmers Markets Vendor Opportunity",
+      "organiser": "Farmers Markets",
+      "source_url": "https://www.schenectadycountyny.gov/ed-planning/farmersmarket",
+      "application_url": "https://www.schenectadycountyny.gov/ed-planning/farmersmarket",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Schenectady",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-30",
+      "event_end": "2026-11-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-schenectady-2026-farmers-market: live first-party route attests Schenectady, NY, actionable vendor terms, and exact event date 2026-11-30."
+    },
+    {
       "id": "ny-food-2026-09-12-01a9143a",
       "name": "Food Vendor Application: PearlPalooza 2026 - PearlPalooza - Eventeny",
       "organiser": "Food",
@@ -4919,6 +4937,24 @@
       "event_end": "2027-08-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-mount-vernon-2027-food-truck: live first-party route attests Mount Vernon, NY, actionable vendor terms, and exact event date 2027-08-27."
+    },
+    {
+      "id": "ny-schenectady-county-farmers-market-2026-2026-10-31-dc6e3196",
+      "name": "Schenectady County Farmers Market 2026 Vendor Opportunity",
+      "organiser": "Schenectady County Farmers Market 2026",
+      "source_url": "https://vendorsmap.com/events/34374",
+      "application_url": "https://vendorsmap.com/events/34374",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Schenectady",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-schenectady-2026-farmers-market: live first-party route attests Schenectady, NY, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
       "id": "oh-2025-2026-festivals-culture-works-2026-09-06-fe5e058a",
