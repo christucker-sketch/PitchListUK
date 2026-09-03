@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T11:36:53.568Z",
-  "source": "reviewed-us-virginia-cloud-promotion:16b1b9ec58fa54b768d43ed82a547f19faca35e5ae8c2d26d370130806d42d8a",
-  "total": 380,
+  "exported_at": "2026-09-03T11:49:13.170Z",
+  "source": "reviewed-us-california-cloud-promotion:e283f0918c7aedee9d4c003743295518315ad92672b1e94e2107567c3184ea61",
+  "total": 381,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14495,6 +14495,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_e6063078d22d44d1b7d4"
+    },
+    {
+      "stable_id": "opp_us_fc9590b2f37921815b0f",
+      "event_name": "Bakersfield Marathon Health & Wellness Expo & Finish Line Village 2027 | Health and Wellness Expo Vendor 10x10 (Saturday, April 3rd, 2027), Health and Wellness",
+      "organiser": "Bakersfield Marathon Health & Wellness Expo & Finish Line Village 2027 | Health and Wellness Expo Vendor 10x10 (Saturday, April 3rd, 2027), Health and Wellness",
+      "source_url": "https://racediscovery.com/event/bakersfield-marathon-health-wellness-expo-finish-line-village",
+      "application_url": "https://racediscovery.com/event/bakersfield-marathon-health-wellness-expo-finish-line-village",
+      "location": "Bakersfield",
+      "locality": "Bakersfield",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-03",
+      "event_end": "2027-04-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-bakersfield-marathon-health-wellness-expo-finish-line-village-2027-hea-2027-04-03-02a095a3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_fc9590b2f37921815b0f"
     }
   ]
 };
