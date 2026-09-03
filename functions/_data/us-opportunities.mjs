@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T12:32:01.812Z",
-  "source": "reviewed-us-new-york-cloud-promotion:c72bf05122c1f6ae6a1c48022ab645556ed1eb424bdcde950f8f23c677d05661",
-  "total": 385,
+  "exported_at": "2026-09-03T12:47:04.287Z",
+  "source": "reviewed-us-michigan-cloud-promotion:e689de27471ea28b1290e06f4d03d0f436973d8150e85e60f1b4b9116ccb8600",
+  "total": 386,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14684,6 +14684,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_0ee78b2bfc289a5c3db0"
+    },
+    {
+      "stable_id": "opp_us_49afe9a0a81eb1ea8648",
+      "event_name": "Program Offerings Vendor Opportunity",
+      "organiser": "Program Offerings",
+      "source_url": "https://comstockmi.gov/parks-recreation/program-offerings/",
+      "application_url": "https://comstockmi.gov/parks-recreation/program-offerings",
+      "location": "Kalamazoo",
+      "locality": "Kalamazoo",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "49048",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-21",
+      "event_end": "2026-09-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-program-offerings-2026-09-21-3a0e8ac1",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_49afe9a0a81eb1ea8648"
     }
   ]
 };
