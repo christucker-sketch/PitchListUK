@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T09:02:31.732Z",
-  "source": "reviewed-us-illinois-cloud-promotion:0f55842e7a3e596c4b1c79750777117b566c026074f55eeaf230239cad56f999",
-  "total": 362,
+  "exported_at": "2026-09-03T09:05:44.988Z",
+  "source": "reviewed-us-georgia-cloud-promotion:6c3b6ae7303dc9f70080a875f05186257e1fad682072f30b5f2906335f82e828",
+  "total": 363,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13815,6 +13815,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_daceaace5595736ede18"
+    },
+    {
+      "stable_id": "opp_us_7a1b0d0bfca6f5343470",
+      "event_name": "Roswell Spring Arts Festival Vendor Opportunity",
+      "organiser": "Roswell Spring Arts Festival",
+      "source_url": "https://www.affps.com/roswell-art-festival",
+      "application_url": "https://www.affps.com/roswell-art-festival",
+      "location": "Roswell",
+      "locality": "Roswell",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "30075",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-01",
+      "event_end": "2027-05-02",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-roswell-spring-arts-festival-2027-05-01-78a0dd14",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_7a1b0d0bfca6f5343470"
     }
   ]
 };
