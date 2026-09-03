@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:24:05.825Z",
+  "updated_at": "2026-09-03T10:27:57.710Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5909,6 +5909,24 @@
       "event_end": "2027-07-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-houston-2027-festival: live first-party route attests Houston, TX, actionable vendor terms, and exact event date 2027-07-04."
+    },
+    {
+      "id": "tx-plano-food-and-wine-festival-mdash-sbg-hospitality-2026-11-07-11e1249d",
+      "name": "Plano Food and Wine Festival &mdash; SBG Hospitality Vendor Opportunity",
+      "organiser": "Plano Food and Wine Festival &mdash; SBG Hospitality",
+      "source_url": "https://www.sbghospitality.com/plano-food-and-wine-festival",
+      "application_url": "https://www.sbghospitality.com/plano-food-and-wine-festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Plano",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-plano-2026-festival: live first-party route attests Plano, TX, actionable vendor terms, and exact event date 2026-11-07."
     },
     {
       "id": "tx-texas-street-food-festival-fort-worth-texas-2026-2027-04-25-c1912793",
