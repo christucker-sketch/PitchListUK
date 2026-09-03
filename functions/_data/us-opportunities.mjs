@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T07:56:07.646Z",
-  "source": "reviewed-us-virginia-cloud-promotion:fc7079cf19a69ddb8569b70a26973c7b1f2071a4f63ef681531edbcbc9f24f4b",
-  "total": 354,
+  "exported_at": "2026-09-03T08:19:34.386Z",
+  "source": "reviewed-us-georgia-cloud-promotion:b70679a989ee6fb650e74c4dffa70ff34dd3e17e553717a3f974d024d61d74b4",
+  "total": 355,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13509,6 +13509,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_2ef7d2396ae7904938be"
+    },
+    {
+      "stable_id": "opp_us_6a4d3d6c01d6324c288a",
+      "event_name": "Bourbon, BBQ & Bluegrass Festival 2026 Vendor Opportunity",
+      "organiser": "Bourbon, BBQ & Bluegrass Festival 2026",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=54237&srsltid=AfmBOorMxj4DentIGrnlvg5t0WQvP2r-zR5o7-KdvvBuvL36HKPqS6v_",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=54237&srsltid=AfmBOorMxj4DentIGrnlvg5t0WQvP2r-zR5o7-KdvvBuvL36HKPqS6v_",
+      "location": "Roswell",
+      "locality": "Roswell",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "11000",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-bourbon-bbq-bluegrass-festival-2026-2026-09-26-5bf566be",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_6a4d3d6c01d6324c288a"
     }
   ]
 };
