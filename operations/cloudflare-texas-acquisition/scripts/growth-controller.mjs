@@ -223,6 +223,9 @@ export function classifyResilienceAction(error, state, triggerFailureIntent = nu
       return { action: 'wait', reason: 'post_merge_snapshot_visibility_lag', detail: text };
     }
   }
+  if (state?.status === 'waiting_for_live_consistency' && /^Live FindPitches count is behind but already contains published identity /i.test(String(error?.message || '').trim())) {
+    return { action: 'wait', reason: 'live_api_cache_skew', detail: text };
+  }
   return { action: 'stop', reason: 'safety_gate', detail: text };
 }
 
