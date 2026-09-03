@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:54:58.989Z",
+  "updated_at": "2026-09-03T13:58:09.517Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6809,6 +6809,24 @@
       "event_end": "2027-02-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-san-antonio-2027-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date range 2027-02-05 to 2027-02-07."
+    },
+    {
+      "id": "va-18th-annual-mutt-strut-festival-suffolk-humane-society-2026-10-25-58c0cf4c",
+      "name": "18th Annual Mutt Strut Festival - Suffolk Humane Society Vendor Opportunity",
+      "organiser": "18th Annual Mutt Strut Festival - Suffolk Humane Society",
+      "source_url": "https://suffolkhumanesociety.com/event/annual-mutt-strut-festival-2026",
+      "application_url": "https://suffolkhumanesociety.com/event/annual-mutt-strut-festival-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Suffolk",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-25",
+      "event_end": "2026-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-suffolk-2026-food-truck: live first-party route attests Suffolk, VA, actionable vendor terms, and exact event date 2026-10-25."
     },
     {
       "id": "va-2026-alexandria-fall-o-ween-2026-10-31-0a205dab",
