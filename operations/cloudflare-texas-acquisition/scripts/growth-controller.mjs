@@ -97,10 +97,6 @@ childProcess.execFileSync = function resilientExecFileSync(command, args, option
   if (!workflowDescribe && !workflowTrigger) return originalExecFileSync(command, args, options);
 
   if (workflowTrigger) {
-    // Workflow trigger is not idempotent. Never blindly retry a trigger whose response
-    // may have been lost after Cloudflare accepted the request. The outer resilience
-    // policy records/defer-skips this exact unit, then the core's active-workflow and
-    // unresolved-PR guards prevent a duplicate publication if Cloudflare did accept it.
     try {
       const output = originalExecFileSync(command, args, options);
       lastTriggerFailureIntent = null;
@@ -130,10 +126,6 @@ childProcess.execFileSync = function resilientExecFileSync(command, args, option
   }
 };
 
-// growth-controller-core.mjs remains the acquisition/checkpoint authority. Updating
-// the builtin ESM binding before dynamically importing it makes Workflow describe
-// reads resilient while the facade adds a bounded, auditable defer/skip policy for
-// execution units that are confirmed failed or whose trigger result is uncertain.
 const coreControllerSource = fs.readFileSync(coreControllerPath, 'utf8');
 assertCoreControllerSafetyContracts(coreControllerSource);
 syncBuiltinESMExports();
@@ -181,6 +173,18 @@ function normalizedErrorText(error) {
   ].filter(Boolean).join('\n')).replace(/\s+/g, ' ').trim();
 }
 
+function recentMergeVisibilityRetries(state) {
+  const events = Array.isArray(state?.resilience_events) ? state.resilience_events : [];
+  let count = 0;
+  for (let index = events.length - 1; index >= 0; index -= 1) {
+    const event = events[index];
+    if (event?.reason !== 'post_merge_snapshot_visibility_lag') break;
+    if (event?.state_code !== (state?.current?.state_code || null)) break;
+    count += 1;
+  }
+  return count;
+}
+
 export function classifyResilienceAction(error, state, triggerFailureIntent = null) {
   const text = normalizedErrorText(error);
   if (/Another acquisition Workflow is (?:queued|running):\s*cf_[a-f0-9]{64}/i.test(text)) {
@@ -211,6 +215,13 @@ export function classifyResilienceAction(error, state, triggerFailureIntent = nu
   }
   if (state?.active_instance && isTransientWorkflowDescribeError(error) && /workflows instances describe/i.test(text)) {
     return { action: 'wait', reason: 'workflow_describe_retry_exhausted', detail: text };
+  }
+  if (state?.status === 'reviewing_data_pr' && /^Merged snapshot is \d+; expected \d+$/i.test(String(error?.message || '').trim())) {
+    const retries = recentMergeVisibilityRetries(state);
+    const maximum = Math.max(1, Number(process.env.PITCHLIST_GROWTH_MERGE_VISIBILITY_RETRIES || 5));
+    if (retries < maximum) {
+      return { action: 'wait', reason: 'post_merge_snapshot_visibility_lag', detail: text };
+    }
   }
   return { action: 'stop', reason: 'safety_gate', detail: text };
 }
@@ -316,7 +327,6 @@ export async function resilientMain(argv = process.argv.slice(2)) {
 export const main = resilientMain;
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  // Recovery notifications remain emitted by core.main(); the facade owns terminal catch handling.
   void safeNotifyRecoveryFromEnvironment;
   main().catch(error => {
     const stateFile = path.resolve(argumentValue(process.argv.slice(2), '--state-file', process.env.PITCHLIST_GROWTH_STATE_FILE || defaultStateFile));
