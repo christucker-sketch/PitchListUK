@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T14:23:46.632Z",
+  "updated_at": "2026-09-03T14:31:19.961Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -469,6 +469,24 @@
       "event_end": "2027-01-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-chandler-2027-festival: live first-party route attests Chandler, AZ, actionable vendor terms, and exact event date range 2027-01-15 to 2027-01-17."
+    },
+    {
+      "id": "az-vendors-first-friday-surprise-2027-12-04-8357f5a3",
+      "name": "Vendors - First Friday Surprise Vendor Opportunity",
+      "organiser": "Vendors - First Friday Surprise",
+      "source_url": "https://firstfridaysurprise.com/vendors",
+      "application_url": "https://firstfridaysurprise.com/vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Surprise",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-12-04",
+      "event_end": "2027-12-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-surprise-2027-farmers-market: live first-party route attests Surprise, AZ, actionable vendor terms, and exact event date 2027-12-04."
     },
     {
       "id": "az-your-ultimate-guide-to-christmas-in-scottsdale-where-to-go-and-what-to-2027-11-30-2eddde16",
