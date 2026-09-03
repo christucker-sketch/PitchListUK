@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T09:24:02.993Z",
-  "source": "reviewed-us-arizona-cloud-promotion:9335689c8b01b90de9709dad62784bb42c43ab3fd3e8ec7ce6778b5e919903b3",
-  "total": 365,
+  "exported_at": "2026-09-03T09:27:42.289Z",
+  "source": "reviewed-us-california-cloud-promotion:eee16d4e5ee1020515608bf1f09bffba58d487b853f813e56efb0418f2f25042",
+  "total": 366,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13928,6 +13928,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_a120c1c5eb303c85ab20"
+    },
+    {
+      "stable_id": "opp_us_c26267e325890936b8d1",
+      "event_name": "Laws/Rules - Oakland Recycles Vendor Opportunity",
+      "organiser": "Laws/Rules - Oakland Recycles",
+      "source_url": "https://www.oaklandrecycles.com/laws/",
+      "application_url": "https://www.oaklandrecycles.com/laws",
+      "location": "Oakland",
+      "locality": "Oakland",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "17989",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-01",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-laws-rules-oakland-recycles-2027-01-01-18b40e42",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_c26267e325890936b8d1"
     }
   ]
 };
