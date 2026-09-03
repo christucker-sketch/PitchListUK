@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T14:42:30.709Z",
+  "updated_at": "2026-09-03T14:46:34.526Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3171,6 +3171,24 @@
       "event_end": "2027-04-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-springfield-2027-arts-crafts: live first-party route attests Springfield, IL, actionable vendor terms, and exact event date 2027-04-11."
+    },
+    {
+      "id": "il-juneteenth-lake-county-parade-festival-2027-downtown-waukegan-illinois-2027-06-19-4cfbc36a",
+      "name": "Juneteenth Lake County Parade & Festival 2027 , Downtown Waukegan, Illinois, 19 June 2027 Vendor Opportunity",
+      "organiser": "Juneteenth Lake County Parade & Festival 2027 , Downtown Waukegan, Illinois, 19 June 2027",
+      "source_url": "https://allevents.in/waukegan/juneteenth-lake-county-parade-and-festival-2027/200030347192309",
+      "application_url": "https://allevents.in/waukegan/juneteenth-lake-county-parade-and-festival-2027/200030347192309",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Waukegan",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-19",
+      "event_end": "2027-06-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-waukegan-2027-festival: live first-party route attests Waukegan, IL, actionable vendor terms, and exact event date 2027-06-19."
     },
     {
       "id": "il-love-on-the-lawn-day-2026-5th-annual-2026-09-05-acceca3e",
