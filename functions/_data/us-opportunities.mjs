@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T11:33:19.980Z",
-  "source": "reviewed-us-michigan-cloud-promotion:807f7fae86ebf2534cfc1dab5853409c890ee60e1e268d7c8af7eb5a50ec7013",
-  "total": 379,
+  "exported_at": "2026-09-03T11:36:53.568Z",
+  "source": "reviewed-us-virginia-cloud-promotion:16b1b9ec58fa54b768d43ed82a547f19faca35e5ae8c2d26d370130806d42d8a",
+  "total": 380,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14457,6 +14457,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_843a6b9410baa3e4938f"
+    },
+    {
+      "stable_id": "opp_us_e6063078d22d44d1b7d4",
+      "event_name": "Vendor Events in Durham, NH",
+      "organiser": "Vendor Events in Durham, NH",
+      "source_url": "https://vendorsmap.com/cities/durham-nh",
+      "application_url": "https://vendorsmap.com/cities/durham-nh",
+      "location": "Portsmouth",
+      "locality": "Portsmouth",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "03824",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-27",
+      "event_end": "2027-06-28",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-vendor-events-in-durham-nh-2027-06-27-7f84dce3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_e6063078d22d44d1b7d4"
     }
   ]
 };
