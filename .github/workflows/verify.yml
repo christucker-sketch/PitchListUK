@@ -102,7 +102,35 @@ jobs:
         run: npx --yes wrangler@4.127.0 deploy --config operations/cloudflare-texas-acquisition/wrangler.jsonc
 
       - name: Record acquisition Worker deployment
-        run: npx --yes wrangler@4.127.0 deployments list --config operations/cloudflare-texas-acquisition/wrangler.jsonc
+        shell: bash
+        run: |
+          set -u
+          delays=(5 10 20 40 60)
+          for attempt in 1 2 3 4 5 6; do
+            output="$(mktemp)"
+            if npx --yes wrangler@4.127.0 deployments list --config operations/cloudflare-texas-acquisition/wrangler.jsonc >"$output" 2>&1; then
+              cat "$output"
+              rm -f "$output"
+              exit 0
+            fi
+
+            cat "$output" >&2
+            if ! grep -Eqi 'code: 10013|unknown error has occurred|internal_server|code: 10001|ECONNRESET|ETIMEDOUT|EAI_AGAIN|fetch failed|socket hang up' "$output"; then
+              echo '::error title=Acquisition deployment record failed::Non-transient Cloudflare error; not retrying.'
+              rm -f "$output"
+              exit 1
+            fi
+
+            rm -f "$output"
+            if [[ "$attempt" -ge 6 ]]; then
+              echo '::error title=Acquisition deployment record failed::Transient Cloudflare API failure persisted after 6 attempts.'
+              exit 1
+            fi
+
+            delay="${delays[$((attempt - 1))]}"
+            echo "Transient Cloudflare deployment-list failure; retry $attempt/5 in ${delay}s"
+            sleep "$delay"
+          done
 
   frontend_changes:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
