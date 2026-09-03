@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:48:50.361Z",
+  "updated_at": "2026-09-03T08:57:39.320Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1462,6 +1462,25 @@
       "evidence": "Cloudflare discovery fl-gainesville-2026-food-truck: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
+      "id": "fl-downtown-festival-art-show-home-2027-11-14-bc2fc354",
+      "name": "DOWNTOWN FESTIVAL & ART SHOW - Home Vendor Opportunity",
+      "organiser": "DOWNTOWN FESTIVAL & ART SHOW - Home",
+      "source_url": "https://www.gainesvilledowntownartfest.net",
+      "application_url": "https://www.gainesvilledowntownartfest.net",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Gainesville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-11-14",
+      "event_end": "2027-11-14",
+      "application_deadline": "2027-11-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-gainesville-2027-arts-crafts: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date 2027-11-14."
+    },
+    {
       "id": "fl-eventeny-com-2027-05-23-33885eb3",
       "name": "Food Truck Application - May 23rd Food Truck Rally - May Food Truck Night - Eventeny",
       "organiser": "eventeny.com",
@@ -1730,6 +1749,24 @@
       "event_end": "2026-11-14",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-fort-lauderdale-2026-festival: live first-party route attests Fort Lauderdale, FL, actionable vendor terms, and exact event date 2026-11-14."
+    },
+    {
+      "id": "fl-santa-fe-college-spring-arts-festival-2026-april-11-12-2027-04-11-407d9542",
+      "name": "Santa Fe College Spring Arts Festival 2026 | April 11–12 Vendor Opportunity",
+      "organiser": "Santa Fe College Spring Arts Festival 2026 | April 11–12",
+      "source_url": "https://www.sfcollege.edu/spring-arts",
+      "application_url": "https://www.sfcollege.edu/spring-arts",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Gainesville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-11",
+      "event_end": "2027-04-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-gainesville-2027-arts-crafts: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date range 2027-04-11 to 2027-04-12."
     },
     {
       "id": "fl-tallahassee-foodees-fest-eventeny-2027-01-22-7c1aa46d",
