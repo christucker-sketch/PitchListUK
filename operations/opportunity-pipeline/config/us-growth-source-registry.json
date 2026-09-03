@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:46:21.066Z",
+  "updated_at": "2026-09-03T10:49:56.378Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -325,6 +325,24 @@
       "event_end": "2026-12-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-phoenix-2026-holiday-market: live first-party route attests Phoenix, AZ, actionable vendor terms, and exact event date 2026-12-12."
+    },
+    {
+      "id": "az-ps-i-love-az-2026-scheduling-2026-11-27-79950fd5",
+      "name": "PS I Love AZ 2026 Scheduling Vendor Opportunity",
+      "organiser": "PS I Love AZ 2026 Scheduling",
+      "source_url": "https://form.jotform.com/253345192086055",
+      "application_url": "https://form.jotform.com/253345192086055",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Peoria",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-27",
+      "event_end": "2026-11-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-peoria-2026-festival: live first-party route attests Peoria, AZ, actionable vendor terms, and exact event date 2026-11-27."
     },
     {
       "id": "az-rincon-valley-farmers-market-2026-2026-10-04-21132df1",
