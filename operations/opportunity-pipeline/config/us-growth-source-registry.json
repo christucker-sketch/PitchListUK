@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:21:01.173Z",
+  "updated_at": "2026-09-03T08:25:41.717Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4056,6 +4056,24 @@
       "evidence": "Cloudflare discovery nc-wilmington-2026-holiday-market: live first-party route attests Wilmington, NC, actionable vendor terms, and exact event date 2026-11-29."
     },
     {
+      "id": "nj-10-amazing-new-jersey-food-festivals-food-truck-events-this-september--2026-09-20-220e6098",
+      "name": "10+ Amazing New Jersey Food Festivals & Food Truck Events This September 2025 - Jersey City Connects",
+      "organiser": "10+ Amazing New Jersey Food Festivals & Food Truck Events This September 2025 - Jersey City Connects",
+      "source_url": "https://jerseycityconnects.com/2025/09/09/new-jersey-food-festivals-september-2025",
+      "application_url": "https://jerseycityconnects.com/2025/09/09/new-jersey-food-festivals-september-2025",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Toms River",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-toms-river-2026-food-truck: live first-party route attests Toms River, NJ, actionable vendor terms, and exact event date range 2026-09-20 to 2026-09-27."
+    },
+    {
       "id": "nj-2026-ymca-tot-trot-and-family-fall-festival-2026-10-11-3ac2c64e",
       "name": "2026 YMCA Tot Trot and Family Fall Festival Vendor Opportunity",
       "organiser": "2026 YMCA Tot Trot and Family Fall Festival",
@@ -4072,6 +4090,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-woodbridge-2026-festival: live first-party route attests Woodbridge, NJ, actionable vendor terms, and exact event date 2026-10-11."
+    },
+    {
+      "id": "nj-christmas-market-nj-guide-festive-finds-holiday-fun-2026-12-06-5e3b91a8",
+      "name": "Christmas Market NJ Guide: Festive Finds & Holiday Fun Vendor Opportunity",
+      "organiser": "Christmas Market NJ Guide: Festive Finds & Holiday Fun",
+      "source_url": "https://visitnj.org/article/nj-christmas-markets",
+      "application_url": "https://visitnj.org/article/nj-christmas-markets",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Toms River",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-toms-river-2026-holiday-market: live first-party route attests Toms River, NJ, actionable vendor terms, and exact event date 2026-12-06."
     },
     {
       "id": "nj-craft-fairs-shows-in-jersey-city-nj-2026-dates-fees-2026-10-03-f85fd552",
