@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T15:49:41.628Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:5ae95c3a3fd3c9104d02cf8d88fc2c57dd6a9d478644b54b4ac329a973ef78c2",
-  "total": 408,
+  "exported_at": "2026-09-03T15:55:45.068Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:390be7972ce00709d88710092a3538f13c79c71c993d452bb72c9dcda3399fcf",
+  "total": 409,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15550,6 +15550,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_7638c16aa58a7d60b2a5"
+    },
+    {
+      "stable_id": "opp_us_80cc675443a8c8720ac9",
+      "event_name": "Home - concordinternationalfestival.com Vendor Opportunity",
+      "organiser": "Home - concordinternationalfestival.com",
+      "source_url": "https://concordinternationalfestival.com/",
+      "application_url": "https://concordinternationalfestival.com",
+      "location": "Concord",
+      "locality": "Concord",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-home-concordinternationalfestival-com-2026-10-03-f36977f9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_80cc675443a8c8720ac9"
     }
   ]
 };
