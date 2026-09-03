@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T13:18:26.790Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:b3bf8aee609ef6ae21b0baafdbe7880d75d9dba669b1f6dca554a7fc6a77f10f",
-  "total": 395,
+  "exported_at": "2026-09-03T13:28:02.241Z",
+  "source": "reviewed-us-virginia-cloud-promotion:cfe159bd4b66d8a814ef1455527c75b7079602a6ffd7a7744a414bd967ec0680",
+  "total": 396,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15057,6 +15057,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_041547f8a26a006177d2"
+    },
+    {
+      "stable_id": "opp_us_2da2c428cbeb56824e5e",
+      "event_name": "Applications - Suffolk, Virginia Peanut Fest Vendor Opportunity",
+      "organiser": "suffolkpeanutfest.com",
+      "source_url": "https://www.suffolkpeanutfest.com/applications.html",
+      "application_url": "https://www.suffolkpeanutfest.com/applications.html",
+      "location": "Suffolk",
+      "locality": "Suffolk",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-08",
+      "event_end": "2026-10-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-suffolkpeanutfest-com-2026-10-08-b6350cea",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_2da2c428cbeb56824e5e"
     }
   ]
 };
