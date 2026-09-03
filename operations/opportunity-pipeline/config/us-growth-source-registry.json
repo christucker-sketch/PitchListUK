@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T15:48:43.866Z",
+  "updated_at": "2026-09-03T15:52:55.619Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2397,6 +2397,24 @@
       "event_end": "2026-11-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-farmers-market: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2026-11-21."
+    },
+    {
+      "id": "ga-2026-taste-of-marietta-marietta-com-2026-09-03-2effe89f",
+      "name": "2026 Taste of Marietta - Marietta.com Vendor Opportunity",
+      "organiser": "2026 Taste of Marietta - Marietta.com",
+      "source_url": "https://www.marietta.com/taste-of-marietta",
+      "application_url": "https://www.marietta.com/taste-of-marietta",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Marietta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-03",
+      "event_end": "2026-09-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-marietta-2026-festival: live first-party route attests Marietta, GA, actionable vendor terms, and exact event date 2026-09-03."
     },
     {
       "id": "ga-a-new-holiday-tradition-2026-12-04-cbed23e6",
