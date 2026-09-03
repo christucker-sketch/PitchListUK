@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T15:23:57.079Z",
+  "updated_at": "2026-09-03T15:31:53.884Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7783,6 +7783,24 @@
       "evidence": "Cloudflare discovery wa-bellingham-2027-festival: live first-party route attests Bellingham, WA, actionable vendor terms, and exact event date range 2027-09-26 to 2027-09-27."
     },
     {
+      "id": "wa-growers-markets-and-farm-stores-2026-09-30-eb9de2f2",
+      "name": "Growers, Markets, and Farm Stores Vendor Opportunity",
+      "organiser": "Growers, Markets, and Farm Stores",
+      "source_url": "https://doh.wa.gov/you-and-your-family/wic/farmers-market/growers-markets-and-farm-stores",
+      "application_url": "https://doh.wa.gov/you-and-your-family/wic/farmers-market/growers-markets-and-farm-stores",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Olympia",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-30",
+      "event_end": "2026-09-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-olympia-2026-farmers-market: live first-party route attests Olympia, WA, actionable vendor terms, and exact event date 2026-09-30."
+    },
+    {
       "id": "wa-h-street-summer-market-whatcomtalk-2026-09-03-ba186a94",
       "name": "H Street Summer Market - WhatcomTalk Vendor Opportunity",
       "organiser": "H Street Summer Market - WhatcomTalk",
@@ -7871,6 +7889,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-bellevue-2026-festival: live first-party route attests Bellevue, WA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "wa-olympia-farmers-market-2026-olympia-wa-2026-10-31-6944153c",
+      "name": "Olympia Farmers Market 2026, Olympia, WA Vendor Opportunity",
+      "organiser": "Olympia Farmers Market 2026, Olympia, WA",
+      "source_url": "https://vendorsmap.com/events/1110",
+      "application_url": "https://vendorsmap.com/events/1110",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Olympia",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-olympia-2026-farmers-market: live first-party route attests Olympia, WA, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
       "id": "wa-orcas-island-artisan-fair-2027-2027-08-08-90609a95",
