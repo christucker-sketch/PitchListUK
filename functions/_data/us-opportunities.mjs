@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T14:40:54.424Z",
-  "source": "reviewed-us-new-york-cloud-promotion:554b5904f4f9d8312f3e2e4f78b6e1d4946b6614c3a6f99e4d3f6c471a66c64d",
-  "total": 405,
+  "exported_at": "2026-09-03T15:37:51.125Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:e0d4f74fd4354c6f118da819bc0c1ed1f4de0ebe290b69b8f377e16b796d604d",
+  "total": 406,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15436,6 +15436,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_c776b17ac1976fd1b7fd"
+    },
+    {
+      "stable_id": "opp_us_b5cad869ecbb050f52aa",
+      "event_name": "Lenox Farmers Market Vendor Opportunity",
+      "organiser": "Lenox Farmers Market",
+      "source_url": "https://lenox.org/lenox-farmers-market/",
+      "application_url": "https://lenox.org/lenox-farmers-market",
+      "location": "Pittsfield",
+      "locality": "Pittsfield",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-lenox-farmers-market-2026-09-11-77a4306f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_b5cad869ecbb050f52aa"
     }
   ]
 };
