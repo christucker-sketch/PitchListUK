@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:33:28.359Z",
+  "updated_at": "2026-09-03T10:37:04.456Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2343,6 +2343,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-augusta-2026-holiday-market: live first-party route attests Augusta, GA, actionable vendor terms, and exact event date 2026-11-07."
+    },
+    {
+      "id": "ga-johns-creek-arts-on-the-boardwalk-eventeny-2026-09-10-bd350d4e",
+      "name": "Johns Creek Arts on the Boardwalk - Eventeny Vendor Opportunity",
+      "organiser": "Johns Creek Arts on the Boardwalk - Eventeny",
+      "source_url": "https://www.eventeny.com/events/johnscreekartsontheboardwalk-33133",
+      "application_url": "https://www.eventeny.com/events/johnscreekartsontheboardwalk-33133",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Johns Creek",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-10",
+      "event_end": "2026-09-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-johns-creek-2026-arts-crafts: live first-party route attests Johns Creek, GA, actionable vendor terms, and exact event date 2026-09-10."
     },
     {
       "id": "ga-macon-and-central-georgia-farmer-s-markets-find-a-local-farmer-s-marke-2026-11-06-b07bc897",
