@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T13:11:01.832Z",
-  "source": "reviewed-us-new-york-cloud-promotion:c3dd80dacac344e6bd3038488933fccc15ca2e9b41ee3b9c421167e67f63ed66",
-  "total": 393,
+  "exported_at": "2026-09-03T13:15:14.978Z",
+  "source": "reviewed-us-georgia-cloud-promotion:f825f10c2e89dc7ed93756f6348f8c7ac617f9a26b48c39d8a5c3680241a8e12",
+  "total": 394,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14983,6 +14983,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_621d693608a957b24e87"
+    },
+    {
+      "stable_id": "opp_us_3c9363696e9b9a90b2b0",
+      "event_name": "The Heart of Albany Festival Vendor Opportunity",
+      "organiser": "The Heart of Albany Festival",
+      "source_url": "https://www.albanymuseum.com/events/heartfest/",
+      "application_url": "https://www.albanymuseum.com/events/heartfest",
+      "location": "Albany",
+      "locality": "Albany",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-the-heart-of-albany-festival-2026-11-07-363a2770",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_3c9363696e9b9a90b2b0"
     }
   ]
 };
