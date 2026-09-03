@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T08:49:45.486Z",
-  "source": "reviewed-us-virginia-cloud-promotion:05e381fd9eb1b8c117131b0899c83b4b634e141777dd30b6d7b6dac4ee82e496",
-  "total": 360,
+  "exported_at": "2026-09-03T08:58:34.735Z",
+  "source": "reviewed-us-florida-cloud-promotion:9be8d5f72f19a738aff4f05f7c74cdd6d7379eb899e0b8ff2208f4adef0f580b",
+  "total": 361,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13739,6 +13739,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_b8087f213a395c4205ba"
+    },
+    {
+      "stable_id": "opp_us_8fa73f903d8075ab1342",
+      "event_name": "Santa Fe College Spring Arts Festival 2026 | April 11–12 Vendor Opportunity",
+      "organiser": "Santa Fe College Spring Arts Festival 2026 | April 11–12",
+      "source_url": "https://www.sfcollege.edu/spring-arts/",
+      "application_url": "https://www.sfcollege.edu/spring-arts",
+      "location": "Gainesville",
+      "locality": "Gainesville",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-11",
+      "event_end": "2027-04-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-santa-fe-college-spring-arts-festival-2026-april-11-12-2027-04-11-407d9542",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_8fa73f903d8075ab1342"
     }
   ]
 };
