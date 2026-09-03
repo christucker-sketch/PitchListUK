@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:21:20.432Z",
+  "updated_at": "2026-09-03T11:29:53.267Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4197,6 +4197,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-festival: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
+    },
+    {
+      "id": "nc-high-point-farmers-market-farmers-market-in-high-point-nc-2027-10-31-de185b8a",
+      "name": "High Point Farmers Market — Farmers Market in High Point, NC Vendor Opportunity",
+      "organiser": "High Point Farmers Market — Farmers Market in High Point, NC",
+      "source_url": "https://www.farmersmarketmaps.com/farmers-markets/north-carolina/high-point/high-point-farmers-market-high-point-nc",
+      "application_url": "https://www.farmersmarketmaps.com/farmers-markets/north-carolina/high-point/high-point-farmers-market-high-point-nc",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "High Point",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-31",
+      "event_end": "2027-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-high-point-2027-farmers-market: live first-party route attests High Point, NC, actionable vendor terms, and exact event date 2027-10-31."
     },
     {
       "id": "nc-highpointnc-gov-2026-10-31-dfa0bc87",
