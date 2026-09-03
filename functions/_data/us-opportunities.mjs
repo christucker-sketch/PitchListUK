@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T14:37:44.670Z",
-  "source": "reviewed-us-florida-cloud-promotion:5e1f511e3156cf934e3cc58c6567a23773e7318ae2598e73ca31055a9cb44390",
-  "total": 404,
+  "exported_at": "2026-09-03T14:40:54.424Z",
+  "source": "reviewed-us-new-york-cloud-promotion:554b5904f4f9d8312f3e2e4f78b6e1d4946b6614c3a6f99e4d3f6c471a66c64d",
+  "total": 405,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15399,6 +15399,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_8e97b4426157db3a9517"
+    },
+    {
+      "stable_id": "opp_us_c776b17ac1976fd1b7fd",
+      "event_name": "Wine in the Wilderness Vendor Opportunity",
+      "organiser": "Wine in the Wilderness",
+      "source_url": "https://www.uticazoo.org/wine/",
+      "application_url": "https://www.uticazoo.org/wine",
+      "location": "Utica",
+      "locality": "Utica",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-06",
+      "event_end": "2027-06-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-wine-in-the-wilderness-2027-06-06-b6a4cad7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_c776b17ac1976fd1b7fd"
     }
   ]
 };
