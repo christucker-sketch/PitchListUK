@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:25:41.717Z",
+  "updated_at": "2026-09-03T08:30:15.122Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2920,6 +2920,24 @@
       "evidence": "Cloudflare discovery ma-boston-2027-festival: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-10-23."
     },
     {
+      "id": "ma-food-truck-food-2026-09-26-a65bd215",
+      "name": "Food Truck / Food Vendor Application - Lynn Brews, Views, Bites & Beats Festival - Eventeny",
+      "organiser": "Food Truck / Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=50523&srsltid=AfmBOoqTnbxmiVSwFFoRkRjrWWTQIh4RxfzO6X0h5ESK_PxI9XQlyvbj",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=50523&srsltid=AfmBOoqTnbxmiVSwFFoRkRjrWWTQIh4RxfzO6X0h5ESK_PxI9XQlyvbj",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Lynn",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-lynn-2026-food-truck: live first-party route attests Lynn, MA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
       "id": "ma-food-truck-food-2026-09-26-e1454101",
       "name": "Food Truck / Food Vendor Application - Lynn Brews, Views, Bites & Beats Festival - Eventeny",
       "organiser": "Food Truck / Food",
@@ -2972,6 +2990,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-lynn-2026-festival: live first-party route attests Lynn, MA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "ma-lynn-brews-views-bites-beats-festival-eventeny-2026-09-26-b0d00a87",
+      "name": "Lynn Brews, Views, Bites & Beats Festival - Eventeny Vendor Opportunity",
+      "organiser": "Lynn Brews, Views, Bites & Beats Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/lynnbrewsviewsbitesbeatsfestival-31253/?srsltid=AfmBOorGNU8xuvk1kF2PZm_VmfNt53EMUpWMP9dbGmxupwYEBLwjGV11",
+      "application_url": "https://www.eventeny.com/events/lynnbrewsviewsbitesbeatsfestival-31253/?srsltid=AfmBOorGNU8xuvk1kF2PZm_VmfNt53EMUpWMP9dbGmxupwYEBLwjGV11",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Lynn",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-lynn-2026-food-truck: live first-party route attests Lynn, MA, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "ma-lynn-brews-views-bites-beats-festival-eventeny-2026-09-26-d491d30c",
