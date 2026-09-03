@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T13:15:14.978Z",
-  "source": "reviewed-us-georgia-cloud-promotion:f825f10c2e89dc7ed93756f6348f8c7ac617f9a26b48c39d8a5c3680241a8e12",
-  "total": 394,
+  "exported_at": "2026-09-03T13:18:26.790Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:b3bf8aee609ef6ae21b0baafdbe7880d75d9dba669b1f6dca554a7fc6a77f10f",
+  "total": 395,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15020,6 +15020,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_3c9363696e9b9a90b2b0"
+    },
+    {
+      "stable_id": "opp_us_041547f8a26a006177d2",
+      "event_name": "Asheville Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Asheville Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/ashevillewinterwonderland/",
+      "application_url": "https://hometownvendormarket.com/ashevillewinterwonderland",
+      "location": "Asheville",
+      "locality": "Asheville",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "28806",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-asheville-winter-wonderland-craft-vendor-market-hometown-vendor-market-2026-12-12-8433d9cd",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_041547f8a26a006177d2"
     }
   ]
 };
