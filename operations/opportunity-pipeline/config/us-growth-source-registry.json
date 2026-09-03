@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:49:56.378Z",
+  "updated_at": "2026-09-03T10:51:12.106Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3171,6 +3171,24 @@
       "event_end": "2027-09-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-lowell-2027-food-truck: live first-party route attests Lowell, MA, actionable vendor terms, and exact event date range 2027-09-20 to 2027-09-21."
+    },
+    {
+      "id": "ma-eventeny-com-2026-10-23-706d00a0",
+      "name": "Food Truck Application - 11th New Bedford Food Truck & Craft Beverage Festival - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=50141&srsltid=AfmBOoqJTQRcBDZ_FlnBskahpASc_gc-buEgT-ASJh_3UBhAC9gCHrCK",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=50141&srsltid=AfmBOoqJTQRcBDZ_FlnBskahpASc_gc-buEgT-ASJh_3UBhAC9gCHrCK",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "New Bedford",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-new-bedford-2026-festival: live first-party route attests New Bedford, MA, actionable vendor terms, and exact event date 2026-10-23."
     },
     {
       "id": "ma-eventeny-com-2027-10-23-5ca26d46",
