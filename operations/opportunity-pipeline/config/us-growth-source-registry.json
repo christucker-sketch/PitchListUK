@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:46:06.679Z",
+  "updated_at": "2026-09-03T12:50:39.897Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5063,6 +5063,24 @@
       "event_end": "2026-12-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-edison-2026-festival: live first-party route attests Edison, NJ, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
+    },
+    {
+      "id": "nj-the-trenton-farmers-market-contact-us-2026-10-31-e0a76409",
+      "name": "The Trenton Farmers Market - Contact Us Vendor Opportunity",
+      "organiser": "The Trenton Farmers Market - Contact Us",
+      "source_url": "https://thetrentonfarmersmarket.com/contact.php",
+      "application_url": "https://thetrentonfarmersmarket.com/contact.php",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Trenton",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-11-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-trenton-2026-farmers-market: live first-party route attests Trenton, NJ, actionable vendor terms, and exact event date range 2026-10-31 to 2026-11-01."
     },
     {
       "id": "nj-vendor-events-in-hasbrouck-heights-nj-2027-06-07-bced1b7c",
