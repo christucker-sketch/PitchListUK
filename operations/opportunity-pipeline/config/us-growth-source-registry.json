@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T14:15:40.164Z",
+  "updated_at": "2026-09-03T14:18:32.552Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5783,6 +5783,24 @@
       "event_end": "2027-08-22",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-parma-2027-food-truck: live first-party route attests Parma, OH, actionable vendor terms, and exact event date 2027-08-22."
+    },
+    {
+      "id": "oh-calendar-lorain-county-oh-civicengage-2027-07-18-ca41cdd6",
+      "name": "Calendar • Lorain County, OH • CivicEngage Vendor Opportunity",
+      "organiser": "Calendar • Lorain County, OH • CivicEngage",
+      "source_url": "https://www.loraincountyohio.gov/calendar.aspx?view=list&year=2026&month=7&CID=0",
+      "application_url": "https://www.loraincountyohio.gov/calendar.aspx?view=list&year=2026&month=7&CID=0",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Lorain",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-07-18",
+      "event_end": "2027-07-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-lorain-2027-government-events: live first-party route attests Lorain, OH, actionable vendor terms, and exact event date 2027-07-18."
     },
     {
       "id": "oh-centerville-fall-fest-expands-hours-and-entertainment-offerings-with-o-2026-10-03-71f8593b",
