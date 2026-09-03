@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T12:47:04.287Z",
-  "source": "reviewed-us-michigan-cloud-promotion:e689de27471ea28b1290e06f4d03d0f436973d8150e85e60f1b4b9116ccb8600",
-  "total": 386,
+  "exported_at": "2026-09-03T12:51:38.471Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:7a8d3ed255d56a367d69e4e49155a0dff77cca98502e7d1a328156906f9af189",
+  "total": 387,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14721,6 +14721,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_49afe9a0a81eb1ea8648"
+    },
+    {
+      "stable_id": "opp_us_3d5a90e7a41c37110ca8",
+      "event_name": "The Trenton Farmers Market - Contact Us Vendor Opportunity",
+      "organiser": "The Trenton Farmers Market - Contact Us",
+      "source_url": "https://thetrentonfarmersmarket.com/contact.php",
+      "application_url": "https://thetrentonfarmersmarket.com/contact.php",
+      "location": "Trenton",
+      "locality": "Trenton",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "08648",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-31",
+      "event_end": "2026-11-01",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-the-trenton-farmers-market-contact-us-2026-10-31-e0a76409",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_3d5a90e7a41c37110ca8"
     }
   ]
 };
