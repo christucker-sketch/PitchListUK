@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T14:01:40.052Z",
+  "updated_at": "2026-09-03T14:08:11.912Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6791,6 +6791,24 @@
       "event_end": "2027-08-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-arlington-2027-farmers-market: live first-party route attests Arlington, TX, actionable vendor terms, and exact event date range 2027-07-24 to 2027-08-02."
+    },
+    {
+      "id": "tx-vendor-events-in-lubbock-tx-2027-04-18-9ca9a741",
+      "name": "Vendor Events in Lubbock, TX",
+      "organiser": "Vendor Events in Lubbock, TX",
+      "source_url": "https://vendorsmap.com/cities/lubbock",
+      "application_url": "https://vendorsmap.com/cities/lubbock",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Lubbock",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-04-18",
+      "event_end": "2027-04-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-lubbock-2027-farmers-market: live first-party route attests Lubbock, TX, actionable vendor terms, and exact event date range 2027-04-18 to 2027-04-19."
     },
     {
       "id": "tx-western-heritage-weekend-2027-02-05-81f14de4",
