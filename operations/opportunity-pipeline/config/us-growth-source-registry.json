@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:48:44.067Z",
+  "updated_at": "2026-09-03T13:51:25.741Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4251,6 +4251,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-fayetteville-2026-arts-crafts: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
+    },
+    {
+      "id": "nc-asheville-christmas-market-november-2026-2026-11-20-cddd51c7",
+      "name": "Asheville Christmas Market November 2026 Vendor Opportunity",
+      "organiser": "Asheville Christmas Market November 2026",
+      "source_url": "https://events.humanitix.com/asheville-christmas-market",
+      "application_url": "https://events.humanitix.com/asheville-christmas-market",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Asheville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-20",
+      "event_end": "2026-11-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-asheville-2026-holiday-market: live first-party route attests Asheville, NC, actionable vendor terms, and exact event date range 2026-11-20 to 2026-11-22."
     },
     {
       "id": "nc-asheville-city-market-2026-asheville-nc-2026-11-27-81b69722",
