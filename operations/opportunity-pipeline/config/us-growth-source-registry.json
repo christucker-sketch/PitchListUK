@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:33:51.210Z",
+  "updated_at": "2026-09-03T08:39:27.626Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2486,6 +2486,24 @@
       "event_end": "2026-09-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-aurora-2026-farmers-market: live first-party route attests Aurora, IL, actionable vendor terms, and exact event date 2026-09-02."
+    },
+    {
+      "id": "il-calendar-east-peoria-il-civicengage-2027-05-04-e9fbe320",
+      "name": "Calendar • East Peoria, IL • CivicEngage Vendor Opportunity",
+      "organiser": "Calendar • East Peoria, IL • CivicEngage",
+      "source_url": "https://cityofeastpeoria.com/calendar.aspx?view=week&year=2025&month=5&day=5&CID=26",
+      "application_url": "https://cityofeastpeoria.com/calendar.aspx?view=week&year=2025&month=5&day=5&CID=26",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Peoria",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-04",
+      "event_end": "2027-05-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-peoria-2027-farmers-market: live first-party route attests Peoria, IL, actionable vendor terms, and exact event date range 2027-05-04 to 2027-05-10."
     },
     {
       "id": "il-call-for-entry-circ-food-truck-nonprofit-festival-artspartners-2026-09-26-48fa7f80",
