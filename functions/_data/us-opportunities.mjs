@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T08:26:39.901Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:bfe7f97a00f37aed8ff754385e7ef5bd48f3975895e02a670d5f472d911cfbf2",
-  "total": 357,
+  "exported_at": "2026-09-03T08:34:57.014Z",
+  "source": "reviewed-us-california-cloud-promotion:61c38f40e392506460c459a174d06243b31ff115169ca9f3c54551170c1e868e",
+  "total": 358,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13627,6 +13627,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_8f77edc354e6d2ba2e88"
+    },
+    {
+      "stable_id": "opp_us_32d1bd68eb02f8644a3a",
+      "event_name": "Vendor Events in Oakland, CA",
+      "organiser": "Vendor Events in Oakland, CA",
+      "source_url": "https://vendorsmap.com/cities/oakland-ca",
+      "application_url": "https://vendorsmap.com/cities/oakland-ca",
+      "location": "Oakland",
+      "locality": "Oakland",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "94612",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-25",
+      "event_end": "2027-04-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-vendor-events-in-oakland-ca-2027-04-25-93e76786",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_32d1bd68eb02f8644a3a"
     }
   ]
 };
