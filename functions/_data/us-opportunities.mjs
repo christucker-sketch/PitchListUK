@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T11:30:51.531Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:381c36462c2efbd00fad6d5efdb5c2374dcc02e316f60268c430b7a5adea8ae0",
-  "total": 378,
+  "exported_at": "2026-09-03T11:33:19.980Z",
+  "source": "reviewed-us-michigan-cloud-promotion:807f7fae86ebf2534cfc1dab5853409c890ee60e1e268d7c8af7eb5a50ec7013",
+  "total": 379,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14420,6 +14420,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_36de44b1f7383bbec8bb"
+    },
+    {
+      "stable_id": "opp_us_843a6b9410baa3e4938f",
+      "event_name": "Vendor Events in Downtown Troy, AL",
+      "organiser": "Vendor Events in Downtown Troy, AL",
+      "source_url": "https://vendorsmap.com/cities/downtown-troy",
+      "application_url": "https://vendorsmap.com/cities/downtown-troy",
+      "location": "Troy",
+      "locality": "Troy",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-25",
+      "event_end": "2027-04-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-vendor-events-in-downtown-troy-al-2027-04-25-7e5ba16a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_843a6b9410baa3e4938f"
     }
   ]
 };
