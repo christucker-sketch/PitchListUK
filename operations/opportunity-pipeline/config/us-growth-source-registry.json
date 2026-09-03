@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:58:28.474Z",
+  "updated_at": "2026-09-03T13:03:31.895Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6253,6 +6253,24 @@
       "evidence": "Cloudflare discovery tx-austin-2026-food-truck: live first-party route attests Austin, TX, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
     },
     {
+      "id": "tx-56th-annual-fall-festival-2026-09-12-f9fbfdd5",
+      "name": "56th Annual Fall Festival Vendor Opportunity",
+      "organiser": "56th Annual Fall Festival",
+      "source_url": "https://www.mylubbock.us/1131/56th-Annual-Fall-Festival",
+      "application_url": "https://www.mylubbock.us/1131/56th-Annual-Fall-Festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Lubbock",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-lubbock-2026-festival: live first-party route attests Lubbock, TX, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
       "id": "tx-a-guide-to-our-favorite-farmers-markets-in-dfw-plano-magazine-2027-03-01-359e6bb3",
       "name": "A Guide to Our Favorite Farmers Markets in DFW - Plano Magazine Vendor Opportunity",
       "organiser": "A Guide to Our Favorite Farmers Markets in DFW - Plano Magazine",
@@ -6323,6 +6341,24 @@
       "event_end": "2026-09-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-san-antonio-2026-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date 2026-09-01."
+    },
+    {
+      "id": "tx-booth-and-tent-space-available-for-56th-annual-fall-festival-2026-09-12-2685123c",
+      "name": "Booth and tent space available for 56th annual Fall Festival Vendor Opportunity",
+      "organiser": "Booth and tent space available for 56th annual Fall Festival",
+      "source_url": "https://www.kcbd.com/2026/08/20/booth-tent-space-available-56th-annual-fall-festival",
+      "application_url": "https://www.kcbd.com/2026/08/20/booth-tent-space-available-56th-annual-fall-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Lubbock",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-lubbock-2026-festival: live first-party route attests Lubbock, TX, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "tx-contact-michelada-festival-fort-worth-2026-10-11-226e6c9d",
@@ -6431,6 +6467,24 @@
       "event_end": "2027-07-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-houston-2027-festival: live first-party route attests Houston, TX, actionable vendor terms, and exact event date 2027-07-04."
+    },
+    {
+      "id": "tx-lubbock-arts-festival-apr-18-19-2026-in-lubbock-tx-2026-09-04-15c9cd4a",
+      "name": "Lubbock Arts Festival: Apr 18-19, 2026 in Lubbock, TX Vendor Opportunity",
+      "organiser": "Lubbock Arts Festival: Apr 18-19, 2026 in Lubbock, TX",
+      "source_url": "https://www.thecraftmap.com/fair/lubbock-arts-festival-46th-lubbock-tx",
+      "application_url": "https://www.thecraftmap.com/fair/lubbock-arts-festival-46th-lubbock-tx",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Lubbock",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-lubbock-2026-arts-crafts: live first-party route attests Lubbock, TX, actionable vendor terms, and exact event date 2026-09-04."
     },
     {
       "id": "tx-market-rules-2026-10-24-82f8ba9a",
