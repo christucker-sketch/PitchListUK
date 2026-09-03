@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T15:54:42.927Z",
+  "updated_at": "2026-09-03T15:59:09.386Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5353,6 +5353,24 @@
       "evidence": "Cloudflare discovery nj-woodbridge-2026-festival: live first-party route attests Woodbridge, NJ, actionable vendor terms, and exact event date 2026-10-11."
     },
     {
+      "id": "nj-aug-2-crafts-vintage-fair-at-jubilee-park-w-food-trucks-live-music-too-2026-09-05-2e1adbbb",
+      "name": "Aug 2 | Crafts & Vintage Fair at Jubilee Park w/Food Trucks & Live Music Too! Vendor Opportunity",
+      "organiser": "Aug 2 | Crafts & Vintage Fair at Jubilee Park w/Food Trucks & Live Music Too!",
+      "source_url": "https://patch.com/new-jersey/montclair/calendar/event/20260802/2bc2b767-fb3e-42ee-914e-ff37bccee060/crafts-vintage-fair-at-jubilee-park-w-food-trucks-live-music-too",
+      "application_url": "https://patch.com/new-jersey/montclair/calendar/event/20260802/2bc2b767-fb3e-42ee-914e-ff37bccee060/crafts-vintage-fair-at-jubilee-park-w-food-trucks-live-music-too",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Clifton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-clifton-2026-arts-crafts: live first-party route attests Clifton, NJ, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-06."
+    },
+    {
       "id": "nj-christmas-market-nj-guide-festive-finds-holiday-fun-2026-12-06-5e3b91a8",
       "name": "Christmas Market NJ Guide: Festive Finds & Holiday Fun Vendor Opportunity",
       "organiser": "Christmas Market NJ Guide: Festive Finds & Holiday Fun",
@@ -5369,6 +5387,42 @@
       "event_end": "2026-12-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-toms-river-2026-holiday-market: live first-party route attests Toms River, NJ, actionable vendor terms, and exact event date 2026-12-06."
+    },
+    {
+      "id": "nj-clifton-food-music-car-show-september-6-2026-clifton-new-jersey-2026-09-06-94152e7b",
+      "name": "Clifton Food, Music & Car Show | September 6, 2026 | clifton, New Jersey Vendor Opportunity",
+      "organiser": "Clifton Food, Music & Car Show | September 6, 2026 | clifton, New Jersey",
+      "source_url": "https://www.getoutgarage.com/events/car-shows/NJ/clifton/clifton-food-music-car-show-clifton-nj",
+      "application_url": "https://www.getoutgarage.com/events/car-shows/NJ/clifton/clifton-food-music-car-show-clifton-nj",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Clifton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-clifton-2026-festival: live first-party route attests Clifton, NJ, actionable vendor terms, and exact event date 2026-09-06."
+    },
+    {
+      "id": "nj-clifton-heroes-food-truck-vendor-music-festival-returns-the-clifton-ti-2026-09-06-807f204c",
+      "name": "Clifton Heroes Food Truck, Vendor, & Music Festival Returns - The Clifton Times",
+      "organiser": "Clifton Heroes Food Truck, Vendor, & Music Festival Returns - The Clifton Times",
+      "source_url": "https://www.thecliftontimes.com/articles/news/clifton-heroes-food-truck-vendor-music-festival-returns",
+      "application_url": "https://www.thecliftontimes.com/articles/news/clifton-heroes-food-truck-vendor-music-festival-returns",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Clifton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-clifton-2026-festival: live first-party route attests Clifton, NJ, actionable vendor terms, and exact event date 2026-09-06."
     },
     {
       "id": "nj-craft-fairs-shows-in-jersey-city-nj-2026-dates-fees-2026-10-03-f85fd552",
@@ -5513,6 +5567,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-lakewood-2026-food-truck: live first-party route attests Lakewood, NJ, actionable vendor terms, and exact event date 2026-09-13."
+    },
+    {
+      "id": "nj-new-jersey-free-events-august-2026-2026-09-08-45c17342",
+      "name": "New Jersey Free Events August 2026 Vendor Opportunity",
+      "organiser": "New Jersey Free Events August 2026",
+      "source_url": "https://newjerseyisntboring.com/njibs-guide-to-50-new-jersey-free-events-august-2026",
+      "application_url": "https://newjerseyisntboring.com/njibs-guide-to-50-new-jersey-free-events-august-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Clifton",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-08",
+      "event_end": "2026-09-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-clifton-2026-festival: live first-party route attests Clifton, NJ, actionable vendor terms, and exact event date 2026-09-08."
     },
     {
       "id": "nj-search-results-2026-10-18-ae4c6860",
