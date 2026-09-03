@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T13:28:02.241Z",
-  "source": "reviewed-us-virginia-cloud-promotion:cfe159bd4b66d8a814ef1455527c75b7079602a6ffd7a7744a414bd967ec0680",
-  "total": 396,
+  "exported_at": "2026-09-03T13:42:26.312Z",
+  "source": "reviewed-us-florida-cloud-promotion:df8e65a1fadbbd83136dfba565d6f70d59c45bacfe85a64a2384c115da44cc17",
+  "total": 397,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15096,6 +15096,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_2da2c428cbeb56824e5e"
+    },
+    {
+      "stable_id": "opp_us_545fb51f315274ba53bd",
+      "event_name": "Food Vendors Vendor Opportunity",
+      "organiser": "Food Vendors",
+      "source_url": "https://www.naspensacolaairshow.org/partners/food-vendors",
+      "application_url": "https://www.naspensacolaairshow.org/partners/food-vendors",
+      "location": "Pensacola",
+      "locality": "Pensacola",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-food-vendors-2026-11-06-e8de491b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_545fb51f315274ba53bd"
     }
   ]
 };
