@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:09:54.881Z",
+  "updated_at": "2026-09-03T13:14:22.354Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2703,6 +2703,24 @@
       "event_end": "2027-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-athens-2027-food-truck: live first-party route attests Athens, GA, actionable vendor terms, and exact event date 2027-09-26."
+    },
+    {
+      "id": "ga-the-heart-of-albany-festival-2026-11-07-363a2770",
+      "name": "The Heart of Albany Festival Vendor Opportunity",
+      "organiser": "The Heart of Albany Festival",
+      "source_url": "https://www.albanymuseum.com/events/heartfest",
+      "application_url": "https://www.albanymuseum.com/events/heartfest",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Albany",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-albany-2026-festival: live first-party route attests Albany, GA, actionable vendor terms, and exact event date 2026-11-07."
     },
     {
       "id": "ga-the-roswell-farmers-market-guide-roswell-pulse-2026-09-02-7429e3e2",
