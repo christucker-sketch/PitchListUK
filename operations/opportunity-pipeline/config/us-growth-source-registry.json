@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T14:46:34.526Z",
+  "updated_at": "2026-09-03T14:55:10.949Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7711,6 +7711,24 @@
       "evidence": "Cloudflare discovery wa-everett-2027-government-events: live first-party route attests Everett, WA, actionable vendor terms, and exact event date range 2027-06-05 to 2027-06-07."
     },
     {
+      "id": "wa-festival-details-sept-27-28-mdash-bellingham-seafeast-2027-09-26-d1c7bc4e",
+      "name": "Festival Details Sept 27 & 28 &mdash; Bellingham SeaFeast Vendor Opportunity",
+      "organiser": "Festival Details Sept 27 & 28 &mdash; Bellingham SeaFeast",
+      "source_url": "https://www.bellinghamseafeast.org/overview",
+      "application_url": "https://www.bellinghamseafeast.org/overview",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Bellingham",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-26",
+      "event_end": "2027-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-bellingham-2027-festival: live first-party route attests Bellingham, WA, actionable vendor terms, and exact event date range 2027-09-26 to 2027-09-27."
+    },
+    {
       "id": "wa-h-street-summer-market-whatcomtalk-2026-09-03-ba186a94",
       "name": "H Street Summer Market - WhatcomTalk Vendor Opportunity",
       "organiser": "H Street Summer Market - WhatcomTalk",
@@ -7799,6 +7817,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-bellevue-2026-festival: live first-party route attests Bellevue, WA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "wa-orcas-island-artisan-fair-2027-2027-08-08-90609a95",
+      "name": "Orcas Island Artisan Fair 2027 Vendor Opportunity",
+      "organiser": "Orcas Island Artisan Fair 2027",
+      "source_url": "https://vendorsmap.com/events/1908",
+      "application_url": "https://vendorsmap.com/events/1908",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Bellingham",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-08",
+      "event_end": "2027-08-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-bellingham-2027-arts-crafts: live first-party route attests Bellingham, WA, actionable vendor terms, and exact event date range 2027-08-08 to 2027-08-09."
     },
     {
       "id": "wa-red-barn-market-2026-lynden-wa-2026-11-14-52bd8410",
