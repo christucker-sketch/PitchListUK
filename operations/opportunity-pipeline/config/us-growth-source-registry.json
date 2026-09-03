@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T15:39:33.333Z",
+  "updated_at": "2026-09-03T15:44:29.811Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6017,6 +6017,24 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-utica-2027-festival: live first-party route attests Utica, NY, actionable vendor terms, and exact event date 2027-06-06."
+    },
+    {
+      "id": "ny-wphs-holiday-crafts-fair-2026-10-01-a74b2bba",
+      "name": "WPHS Holiday Crafts Fair - Vendor Information",
+      "organiser": "WPHS Holiday Crafts Fair -",
+      "source_url": "https://sites.google.com/site/wphscraftsfair/home/vendor-information",
+      "application_url": "https://sites.google.com/site/wphscraftsfair/home/vendor-information",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "White Plains",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-01",
+      "event_end": "2026-10-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-white-plains-2026-arts-crafts: live first-party route attests White Plains, NY, actionable vendor terms, and exact event date 2026-10-01."
     },
     {
       "id": "oh-2025-2026-festivals-culture-works-2026-09-06-fe5e058a",
