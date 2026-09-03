@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:27:11.652Z",
+  "updated_at": "2026-09-03T12:29:35.914Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1893,6 +1893,24 @@
       "event_end": "2026-12-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2026-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-12-20."
+    },
+    {
+      "id": "fl-palafox-market-2026-pensacola-fl-2026-10-31-ee6b1c6d",
+      "name": "Palafox Market 2026, Pensacola, FL Vendor Opportunity",
+      "organiser": "Palafox Market 2026, Pensacola, FL",
+      "source_url": "https://vendorsmap.com/events/2097",
+      "application_url": "https://vendorsmap.com/events/2097",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Pensacola",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-pensacola-2026-farmers-market: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
       "id": "fl-riverwalk-international-food-festival-riverwalk-fort-lauderdale-2026-11-14-7127513c",
