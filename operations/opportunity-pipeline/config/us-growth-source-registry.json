@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:16:44.321Z",
+  "updated_at": "2026-09-03T11:21:20.432Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5963,6 +5963,24 @@
       "event_end": "2026-11-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-austin-2026-food-truck: live first-party route attests Austin, TX, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
+    },
+    {
+      "id": "tx-a-guide-to-our-favorite-farmers-markets-in-dfw-plano-magazine-2027-03-01-359e6bb3",
+      "name": "A Guide to Our Favorite Farmers Markets in DFW - Plano Magazine Vendor Opportunity",
+      "organiser": "A Guide to Our Favorite Farmers Markets in DFW - Plano Magazine",
+      "source_url": "https://planomagazine.com/guide-to-our-favorite-dfw-farmers-markets",
+      "application_url": "https://planomagazine.com/guide-to-our-favorite-dfw-farmers-markets",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Plano",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-03-01",
+      "event_end": "2027-03-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-plano-2027-farmers-market: live first-party route attests Plano, TX, actionable vendor terms, and exact event date 2027-03-01."
     },
     {
       "id": "tx-arlington-comic-fest-2026-09-05-418024bf",
