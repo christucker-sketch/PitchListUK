@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T13:55:55.378Z",
-  "source": "reviewed-us-michigan-cloud-promotion:26f108be3c06077723af2d2df17980e1e2210908dacc7de3a656b8d380ae2fd9",
-  "total": 399,
+  "exported_at": "2026-09-03T14:09:10.746Z",
+  "source": "reviewed-us-texas-cloud-promotion:df5379950eb009ca5fee2f61c1b1a516b35ab1316b69d6885483767f1b608bdf",
+  "total": 400,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15209,6 +15209,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_09441f126e868bfc34fe"
+    },
+    {
+      "stable_id": "opp_us_236346ae972dce21c487",
+      "event_name": "Vendor Events in Lubbock, TX",
+      "organiser": "Vendor Events in Lubbock, TX",
+      "source_url": "https://vendorsmap.com/cities/lubbock",
+      "application_url": "https://vendorsmap.com/cities/lubbock",
+      "location": "Lubbock",
+      "locality": "Lubbock",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "79401",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-18",
+      "event_end": "2027-04-19",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-vendor-events-in-lubbock-tx-2027-04-18-9ca9a741",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_236346ae972dce21c487"
     }
   ]
 };
