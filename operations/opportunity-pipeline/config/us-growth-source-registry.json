@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:10:09.321Z",
+  "updated_at": "2026-09-03T10:14:00.766Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6305,6 +6305,24 @@
       "event_end": "2026-12-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-alexandria-2026-holiday-market: live first-party route attests Alexandria, VA, actionable vendor terms, and exact event date 2026-12-12."
+    },
+    {
+      "id": "va-portsmouth-olde-towne-farmers-market-2026-2026-12-19-f8ed3418",
+      "name": "Portsmouth Olde Towne Farmers' Market 2026 Vendor Opportunity",
+      "organiser": "Portsmouth Olde Towne Farmers' Market 2026",
+      "source_url": "https://vendorsmap.com/events/6429",
+      "application_url": "https://vendorsmap.com/events/6429",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Portsmouth",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-19",
+      "event_end": "2026-12-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-portsmouth-2026-farmers-market: live first-party route attests Portsmouth, VA, actionable vendor terms, and exact event date 2026-12-19."
     },
     {
       "id": "va-richmond-fall-craft-and-vendor-market-hometown-vendor-market-2026-11-21-f4ad70c8",
