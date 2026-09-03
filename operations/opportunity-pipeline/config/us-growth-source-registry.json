@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:32:17.710Z",
+  "updated_at": "2026-09-03T11:35:46.249Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6701,6 +6701,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-alexandria-2026-festival: live first-party route attests Alexandria, VA, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
+    },
+    {
+      "id": "va-vendor-events-in-durham-nh-2027-06-27-7f84dce3",
+      "name": "Vendor Events in Durham, NH",
+      "organiser": "Vendor Events in Durham, NH",
+      "source_url": "https://vendorsmap.com/cities/durham-nh",
+      "application_url": "https://vendorsmap.com/cities/durham-nh",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Portsmouth",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-27",
+      "event_end": "2027-06-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-portsmouth-2027-farmers-market: live first-party route attests Portsmouth, VA, actionable vendor terms, and exact event date range 2027-06-27 to 2027-06-28."
     },
     {
       "id": "va-virginia-beach-ndash-jackalope-2027-06-04-9cdc4f9b",
