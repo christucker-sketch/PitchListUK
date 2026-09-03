@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T14:24:49.156Z",
-  "source": "reviewed-us-michigan-cloud-promotion:5ff2c76da5651e003f6cbe5832632700972d09ef4c999ad1360bbc7f2a80d263",
-  "total": 402,
+  "exported_at": "2026-09-03T14:32:18.483Z",
+  "source": "reviewed-us-arizona-cloud-promotion:9dc331c28077f538d88bb7213f583424996d96f5690c428bf971626cef266435",
+  "total": 403,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15318,6 +15318,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_28588702dda0599493d4"
+    },
+    {
+      "stable_id": "opp_us_34b321070423daad2188",
+      "event_name": "Vendors - First Friday Surprise Vendor Opportunity",
+      "organiser": "Vendors - First Friday Surprise",
+      "source_url": "https://firstfridaysurprise.com/vendors/",
+      "application_url": "https://firstfridaysurprise.com/vendors",
+      "location": "Surprise",
+      "locality": "Surprise",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-12-04",
+      "event_end": "2027-12-04",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-vendors-first-friday-surprise-2027-12-04-8357f5a3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_34b321070423daad2188"
     }
   ]
 };
