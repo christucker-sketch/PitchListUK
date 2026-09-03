@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T11:22:16.377Z",
-  "source": "reviewed-us-texas-cloud-promotion:0cc36183755a674a94bb76df4f2de21888ee8f3a172439f62b0e90a9b6e839dc",
-  "total": 377,
+  "exported_at": "2026-09-03T11:30:51.531Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:381c36462c2efbd00fad6d5efdb5c2374dcc02e316f60268c430b7a5adea8ae0",
+  "total": 378,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14383,6 +14383,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_adda0ad81bae3da8d863"
+    },
+    {
+      "stable_id": "opp_us_36de44b1f7383bbec8bb",
+      "event_name": "High Point Farmers Market — Farmers Market in High Point, NC Vendor Opportunity",
+      "organiser": "High Point Farmers Market — Farmers Market in High Point, NC",
+      "source_url": "https://www.farmersmarketmaps.com/farmers-markets/north-carolina/high-point/high-point-farmers-market-high-point-nc",
+      "application_url": "https://www.farmersmarketmaps.com/farmers-markets/north-carolina/high-point/high-point-farmers-market-high-point-nc",
+      "location": "High Point",
+      "locality": "High Point",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-10-31",
+      "event_end": "2027-10-31",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-high-point-farmers-market-farmers-market-in-high-point-nc-2027-10-31-de185b8a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_36de44b1f7383bbec8bb"
     }
   ]
 };
