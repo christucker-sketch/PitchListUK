@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T12:37:41.122Z",
+  "updated_at": "2026-09-03T12:42:24.303Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4107,6 +4107,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-fayetteville-2026-arts-crafts: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
+    },
+    {
+      "id": "nc-asheville-city-market-2026-asheville-nc-2026-11-27-81b69722",
+      "name": "Asheville City Market 2026, Asheville, NC Vendor Opportunity",
+      "organiser": "Asheville City Market 2026, Asheville, NC",
+      "source_url": "https://vendorsmap.com/events/1071",
+      "application_url": "https://vendorsmap.com/events/1071",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Asheville",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-27",
+      "event_end": "2026-11-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-asheville-2026-farmers-market: live first-party route attests Asheville, NC, actionable vendor terms, and exact event date range 2026-11-27 to 2026-11-28."
     },
     {
       "id": "nc-ccaf2026-artisan-vendors-2026-10-17-27e94c1f",
