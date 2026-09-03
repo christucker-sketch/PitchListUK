@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:14:53.957Z",
+  "updated_at": "2026-09-03T08:18:38.303Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1982,6 +1982,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-holiday-market: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
+    },
+    {
+      "id": "ga-bourbon-bbq-bluegrass-festival-2026-2026-09-26-5bf566be",
+      "name": "Bourbon, BBQ & Bluegrass Festival 2026 Vendor Opportunity",
+      "organiser": "Bourbon, BBQ & Bluegrass Festival 2026",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=54237&srsltid=AfmBOorMxj4DentIGrnlvg5t0WQvP2r-zR5o7-KdvvBuvL36HKPqS6v_",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=54237&srsltid=AfmBOorMxj4DentIGrnlvg5t0WQvP2r-zR5o7-KdvvBuvL36HKPqS6v_",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Roswell",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-roswell-2026-food-truck: live first-party route attests Roswell, GA, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "ga-chastain-park-arts-festival-2027-05-08-6bd23e00",
