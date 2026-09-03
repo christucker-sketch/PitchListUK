@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T10:28:58.565Z",
-  "source": "reviewed-us-texas-cloud-promotion:23386f8db0f376f64146e03712f2562fb88cd88b12b73169794358af11382e05",
-  "total": 373,
+  "exported_at": "2026-09-03T10:34:18.837Z",
+  "source": "reviewed-us-illinois-cloud-promotion:fa1eb5434c16b5608d9f03641eacedc146a8cf0b457783c48a1c5089411266e0",
+  "total": 374,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14229,6 +14229,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_baa5d852ba5b84752596"
+    },
+    {
+      "stable_id": "opp_us_64c7107ea06505bca0dc",
+      "event_name": "Champaign-Urbana Area Fall Festivals Vendor Opportunity",
+      "organiser": "Champaign-Urbana Area Fall Festivals",
+      "source_url": "https://www.chambanamoms.com/2026/08/13/fall-fairs-festivals-champaign-urbana/",
+      "application_url": "https://www.chambanamoms.com/2026/08/13/fall-fairs-festivals-champaign-urbana",
+      "location": "Champaign",
+      "locality": "Champaign",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-champaign-urbana-area-fall-festivals-2026-10-10-e3811fd1",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_64c7107ea06505bca0dc"
     }
   ]
 };
