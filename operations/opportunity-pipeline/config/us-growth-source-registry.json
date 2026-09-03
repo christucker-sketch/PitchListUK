@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T15:59:09.386Z",
+  "updated_at": "2026-09-03T16:03:35.826Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7655,6 +7655,24 @@
       "event_end": "2026-12-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-alexandria-2026-holiday-market: live first-party route attests Alexandria, VA, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "va-holiday-craft-fair-lyh-2026-09-04-61bbeece",
+      "name": "Holiday Craft Fair - LYH Vendor Opportunity",
+      "organiser": "Holiday Craft Fair - LYH",
+      "source_url": "https://www.lynchburgvirginia.org/event/holiday-craft-fair",
+      "application_url": "https://www.lynchburgvirginia.org/event/holiday-craft-fair",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Lynchburg",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-lynchburg-2026-arts-crafts: live first-party route attests Lynchburg, VA, actionable vendor terms, and exact event date 2026-09-04."
     },
     {
       "id": "va-newport-news-farmers-market-2026-12-14-85e5c34a",
