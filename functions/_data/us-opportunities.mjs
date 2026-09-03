@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T10:34:18.837Z",
-  "source": "reviewed-us-illinois-cloud-promotion:fa1eb5434c16b5608d9f03641eacedc146a8cf0b457783c48a1c5089411266e0",
-  "total": 374,
+  "exported_at": "2026-09-03T11:03:54.601Z",
+  "source": "reviewed-us-georgia-cloud-promotion:a5d2ee878aa041b5a26ba4533900273b73871ac1568070e2461dcded8ba7e876",
+  "total": 375,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14268,6 +14268,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_64c7107ea06505bca0dc"
+    },
+    {
+      "stable_id": "opp_us_70edd07929b86d263716",
+      "event_name": "200+ Best Atlanta Holiday Christmas Events & Things to Do 2025 Vendor Opportunity",
+      "organiser": "200+ Best Atlanta Holiday Christmas Events & Things to Do 2025",
+      "source_url": "https://www.atlantaparent.com/holiday-christmas-events-atlanta/",
+      "application_url": "https://www.atlantaparent.com/holiday-christmas-events-atlanta",
+      "location": "Johns Creek",
+      "locality": "Johns Creek",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-200-best-atlanta-holiday-christmas-events-things-to-do-2025-2026-12-12-7dced49b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_70edd07929b86d263716"
     }
   ]
 };
