@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T07:51:13.301Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:36c26a790bb2ee2f1be7cd6679e45404345ccc9757c75a84f6a9bb82c335926b",
-  "total": 353,
+  "exported_at": "2026-09-03T07:56:07.646Z",
+  "source": "reviewed-us-virginia-cloud-promotion:fc7079cf19a69ddb8569b70a26973c7b1f2071a4f63ef681531edbcbc9f24f4b",
+  "total": 354,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13472,6 +13472,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_be9ff318d6d36d5d7899"
+    },
+    {
+      "stable_id": "opp_us_2ef7d2396ae7904938be",
+      "event_name": "Bent Mountain Fall Festival Vendor Information",
+      "organiser": "Bent Mountain Fall Festival",
+      "source_url": "https://www.roanokecountyparks.com/761/Bent-Mountain-Fall-Festival-Vendor-Infor",
+      "application_url": "https://www.roanokecountyparks.com/761/Bent-Mountain-Fall-Festival-Vendor-Infor",
+      "location": "Roanoke",
+      "locality": "Roanoke",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-bent-mountain-fall-festival-2026-10-03-51422824",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_2ef7d2396ae7904938be"
     }
   ]
 };
