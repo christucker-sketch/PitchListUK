@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T09:41:15.876Z",
-  "source": "reviewed-us-new-york-cloud-promotion:ccb342c0a16318c5825c62aa580a8b23b7954c483f14943eace7f656950c8fda",
-  "total": 368,
+  "exported_at": "2026-09-03T09:47:27.227Z",
+  "source": "reviewed-us-michigan-cloud-promotion:b13b7b9df8cb486a027746a2de3fe39a404fdd7a1c7b9b171d98331cf2a73454",
+  "total": 369,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14043,6 +14043,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_10fbc3ba95232f77e123"
+    },
+    {
+      "stable_id": "opp_us_9947680481f3c5a3ac6e",
+      "event_name": "Calendar • Livonia, MI • CivicEngage Vendor Opportunity",
+      "organiser": "Calendar • Livonia, MI • CivicEngage",
+      "source_url": "https://www.ci.livonia.mi.us/calendar.aspx?view=list&year=2024&month=6&CID=0",
+      "application_url": "https://www.ci.livonia.mi.us/calendar.aspx?view=list&year=2024&month=6&CID=0",
+      "location": "Livonia",
+      "locality": "Livonia",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "48154",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-15",
+      "event_end": "2027-06-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-calendar-livonia-mi-civicengage-2027-06-15-7b29f227",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_9947680481f3c5a3ac6e"
     }
   ]
 };
