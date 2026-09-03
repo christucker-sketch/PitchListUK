@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T07:47:18.931Z",
+  "updated_at": "2026-09-03T07:50:25.051Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3332,6 +3332,24 @@
       "event_end": "2026-12-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-durham-2026-holiday-market: live first-party route attests Durham, NC, actionable vendor terms, and exact event date 2026-12-06."
+    },
+    {
+      "id": "nc-arts-and-crafts-street-fair-wilmington-riverfest-2026-2026-10-03-e9adc71b",
+      "name": "Arts and Crafts Street Fair - Wilmington Riverfest 2026 Vendor Opportunity",
+      "organiser": "Arts and Crafts Street Fair - Wilmington Riverfest 2026",
+      "source_url": "https://wilmingtonriverfest.com/arts-and-crafts-street-fair",
+      "application_url": "https://wilmingtonriverfest.com/arts-and-crafts-street-fair",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-wilmington-2026-arts-crafts: live first-party route attests Wilmington, NC, actionable vendor terms, and exact event date range 2026-10-03 to 2026-10-04."
     },
     {
       "id": "nc-arts-market-2026-09-25-8bb20b9c",
