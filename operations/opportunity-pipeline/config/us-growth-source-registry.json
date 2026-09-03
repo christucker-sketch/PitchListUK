@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T09:23:05.420Z",
+  "updated_at": "2026-09-03T09:26:41.084Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -651,6 +651,24 @@
       "evidence": "Cloudflare discovery ca-los-angeles-2026-festival: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
+      "id": "ca-laws-rules-oakland-recycles-2027-01-01-18b40e42",
+      "name": "Laws/Rules - Oakland Recycles Vendor Opportunity",
+      "organiser": "Laws/Rules - Oakland Recycles",
+      "source_url": "https://www.oaklandrecycles.com/laws",
+      "application_url": "https://www.oaklandrecycles.com/laws",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Oakland",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-oakland-2027-food-truck: live first-party route attests Oakland, CA, actionable vendor terms, and exact event date 2027-01-01."
+    },
+    {
       "id": "ca-make-good-market-2025-ndash-heath-ceramics-2026-12-06-111b7ede",
       "name": "Make Good Market 2025 &ndash; Heath Ceramics Vendor Opportunity",
       "organiser": "Make Good Market 2025 &ndash; Heath Ceramics",
@@ -685,6 +703,24 @@
       "event_end": "2026-12-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-francisco-2026-holiday-market: live first-party route attests San Francisco, CA, actionable vendor terms, and exact event date range 2026-12-06 to 2026-12-07."
+    },
+    {
+      "id": "ca-make-good-market-2025-ndash-heath-ceramics-2027-12-06-44fdb6f5",
+      "name": "Make Good Market 2025 &ndash; Heath Ceramics Vendor Opportunity",
+      "organiser": "Make Good Market 2025 &ndash; Heath Ceramics",
+      "source_url": "https://www.heathceramics.com/blogs/news-events/make-good-market-2025?srsltid=AfmBOor7b28r7pET05T6yZyLLKhfss_kziotoxLfcrTd-cyvoGB1NmU0",
+      "application_url": "https://www.heathceramics.com/blogs/news-events/make-good-market-2025?srsltid=AfmBOor7b28r7pET05T6yZyLLKhfss_kziotoxLfcrTd-cyvoGB1NmU0",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Oakland",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-12-06",
+      "event_end": "2027-12-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-oakland-2027-holiday-market: live first-party route attests Oakland, CA, actionable vendor terms, and exact event date range 2027-12-06 to 2027-12-07."
     },
     {
       "id": "ca-make-good-market-2025-ndash-heath-ceramics-2027-12-06-7505e02e",
