@@ -58,6 +58,25 @@ test('uncertain trigger result is defer-skipped rather than blindly retriggered'
   assert.equal(action.reason, 'uncertain_trigger_result');
 });
 
+test('post-merge snapshot lag is retried but remains bounded', () => {
+  const error = new Error('Merged snapshot is 363; expected 364');
+  const state = {
+    status: 'reviewing_data_pr',
+    current: { state_code: 'VA', data_pr: 636 },
+    resilience_events: []
+  };
+  let action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'wait');
+  assert.equal(action.reason, 'post_merge_snapshot_visibility_lag');
+
+  state.resilience_events = Array.from({ length: 5 }, () => ({
+    reason: 'post_merge_snapshot_visibility_lag',
+    state_code: 'VA'
+  }));
+  action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'stop');
+});
+
 test('unknown active workflow is waited on, while evidence and repository failures still stop', () => {
   const activeId = `cf_${'c'.repeat(64)}`;
   assert.equal(
