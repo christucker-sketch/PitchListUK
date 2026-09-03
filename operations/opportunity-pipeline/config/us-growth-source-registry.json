@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:30:15.122Z",
+  "updated_at": "2026-09-03T08:33:51.210Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -775,6 +775,24 @@
       "event_end": "2027-10-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-10-25."
+    },
+    {
+      "id": "ca-vendor-events-in-oakland-ca-2027-04-25-93e76786",
+      "name": "Vendor Events in Oakland, CA",
+      "organiser": "Vendor Events in Oakland, CA",
+      "source_url": "https://vendorsmap.com/cities/oakland-ca",
+      "application_url": "https://vendorsmap.com/cities/oakland-ca",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Oakland",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-04-25",
+      "event_end": "2027-04-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-oakland-2027-farmers-market: live first-party route attests Oakland, CA, actionable vendor terms, and exact event date range 2027-04-25 to 2027-04-26."
     },
     {
       "id": "ca-vendors-2027-05-29-7593f2d5",
