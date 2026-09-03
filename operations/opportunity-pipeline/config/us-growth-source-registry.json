@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T10:15:55.479Z",
+  "updated_at": "2026-09-03T10:24:05.825Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3243,6 +3243,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-lynn-2026-arts-crafts: live first-party route attests Lynn, MA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "ma-new-bedford-farmers-market-2026-2026-10-31-5045c7f7",
+      "name": "New Bedford Farmers Market 2026 Vendor Opportunity",
+      "organiser": "New Bedford Farmers Market 2026",
+      "source_url": "https://vendorsmap.com/events/473",
+      "application_url": "https://vendorsmap.com/events/473",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "New Bedford",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-new-bedford-2026-farmers-market: live first-party route attests New Bedford, MA, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
       "id": "ma-out-to-lunch-downtown-worcester-2026-09-02-1a006585",
