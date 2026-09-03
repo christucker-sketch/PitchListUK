@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T09:37:26.895Z",
-  "source": "reviewed-us-florida-cloud-promotion:0240b501a4f97edcbe16985c5719225d39f61fe802f70372143d4f73874df74c",
-  "total": 367,
+  "exported_at": "2026-09-03T09:41:15.876Z",
+  "source": "reviewed-us-new-york-cloud-promotion:ccb342c0a16318c5825c62aa580a8b23b7954c483f14943eace7f656950c8fda",
+  "total": 368,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14006,6 +14006,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_d037eb440dc19a25b5f1"
+    },
+    {
+      "stable_id": "opp_us_10fbc3ba95232f77e123",
+      "event_name": "Mount Vernon City Fest Vendor Opportunity",
+      "organiser": "Mount Vernon City Fest",
+      "source_url": "https://www.mountvernoncityfest.com/",
+      "application_url": "https://www.mountvernoncityfest.com",
+      "location": "Mount Vernon",
+      "locality": "Mount Vernon",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "10552",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-27",
+      "event_end": "2027-08-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-mount-vernon-city-fest-2027-08-27-5102c3ec",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_10fbc3ba95232f77e123"
     }
   ]
 };
