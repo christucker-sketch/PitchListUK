@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T10:08:38.756Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:656735f0456280ac3c6afb1e3f8bba30f22f38fa98ebedea2964fe3639386f5a",
-  "total": 371,
+  "exported_at": "2026-09-03T10:11:07.639Z",
+  "source": "reviewed-us-michigan-cloud-promotion:13afc87a5f92aac15a67358588ad0c72769404d342782b625f15d9d50489e7f7",
+  "total": 372,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14155,6 +14155,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_23fd5de08ae8090113ae"
+    },
+    {
+      "stable_id": "opp_us_c9893f8a1b2d1fc475c7",
+      "event_name": "Welcome to City of Troy, Michigan Vendor Opportunity",
+      "organiser": "Welcome to City of Troy, Michigan",
+      "source_url": "https://troymi.gov/news_detail_T19_R107.php",
+      "application_url": "https://troymi.gov/news_detail_T19_R107.php",
+      "location": "Troy",
+      "locality": "Troy",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-29",
+      "event_end": "2026-09-29",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-welcome-to-city-of-troy-michigan-2026-09-29-b2006c16",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_c9893f8a1b2d1fc475c7"
     }
   ]
 };
