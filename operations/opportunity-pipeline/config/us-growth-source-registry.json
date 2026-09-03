@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:31:22.587Z",
+  "updated_at": "2026-09-03T13:41:37.073Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1695,6 +1695,24 @@
       "event_end": "2027-05-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2027-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date range 2027-05-06 to 2027-05-07."
+    },
+    {
+      "id": "fl-food-vendors-2026-11-06-e8de491b",
+      "name": "Food Vendors Vendor Opportunity",
+      "organiser": "Food Vendors",
+      "source_url": "https://www.naspensacolaairshow.org/partners/food-vendors",
+      "application_url": "https://www.naspensacolaairshow.org/partners/food-vendors",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Pensacola",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-pensacola-2026-food-truck: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
     },
     {
       "id": "fl-foodees-fest-jacksonville-fl-2027-01-01-1eea50d9",
