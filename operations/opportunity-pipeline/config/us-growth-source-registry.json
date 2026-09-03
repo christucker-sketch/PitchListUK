@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T09:50:58.409Z",
+  "updated_at": "2026-09-03T09:56:50.498Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -469,6 +469,24 @@
       "event_end": "2026-10-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2026-government-events: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "ca-bakersfield-f-street-farmers-market-2026-2026-12-27-0e2898d8",
+      "name": "Bakersfield F Street Farmers Market 2026 Vendor Opportunity",
+      "organiser": "Bakersfield F Street Farmers Market 2026",
+      "source_url": "https://vendorsmap.com/events/2281",
+      "application_url": "https://vendorsmap.com/events/2281",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Bakersfield",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-27",
+      "event_end": "2026-12-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-bakersfield-2026-farmers-market: live first-party route attests Bakersfield, CA, actionable vendor terms, and exact event date 2026-12-27."
     },
     {
       "id": "ca-craft-retail-vendor-sugar-and-spice-holiday-dessert-festival-eventeny-2026-12-19-b84c892e",
