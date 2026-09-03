@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T10:11:07.639Z",
-  "source": "reviewed-us-michigan-cloud-promotion:13afc87a5f92aac15a67358588ad0c72769404d342782b625f15d9d50489e7f7",
-  "total": 372,
+  "exported_at": "2026-09-03T10:28:58.565Z",
+  "source": "reviewed-us-texas-cloud-promotion:23386f8db0f376f64146e03712f2562fb88cd88b12b73169794358af11382e05",
+  "total": 373,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14192,6 +14192,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_c9893f8a1b2d1fc475c7"
+    },
+    {
+      "stable_id": "opp_us_baa5d852ba5b84752596",
+      "event_name": "Plano Food and Wine Festival &mdash; SBG Hospitality",
+      "organiser": "Plano Food and Wine Festival &mdash; SBG Hospitality",
+      "source_url": "https://www.sbghospitality.com/plano-food-and-wine-festival",
+      "application_url": "https://www.sbghospitality.com/plano-food-and-wine-festival",
+      "location": "Plano",
+      "locality": "Plano",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-plano-food-and-wine-festival-mdash-sbg-hospitality-2026-11-07-11e1249d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_baa5d852ba5b84752596"
     }
   ]
 };
