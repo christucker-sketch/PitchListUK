@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T07:48:21.057Z",
-  "source": "reviewed-us-ohio-cloud-promotion:4065b5dc7a2df4ef7f8d02dbba692ec2585e2c895aa4d6e41bef45cc6b6c5fd8",
-  "total": 352,
+  "exported_at": "2026-09-03T07:51:13.301Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:36c26a790bb2ee2f1be7cd6679e45404345ccc9757c75a84f6a9bb82c335926b",
+  "total": 353,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13435,6 +13435,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_c1636219f6483c9f6049"
+    },
+    {
+      "stable_id": "opp_us_be9ff318d6d36d5d7899",
+      "event_name": "Arts and Crafts Street Fair - Wilmington Riverfest 2026 Vendor Opportunity",
+      "organiser": "Arts and Crafts Street Fair - Wilmington Riverfest 2026",
+      "source_url": "https://wilmingtonriverfest.com/arts-and-crafts-street-fair/",
+      "application_url": "https://wilmingtonriverfest.com/arts-and-crafts-street-fair",
+      "location": "Wilmington",
+      "locality": "Wilmington",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-arts-and-crafts-street-fair-wilmington-riverfest-2026-2026-10-03-e9adc71b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_be9ff318d6d36d5d7899"
     }
   ]
 };
