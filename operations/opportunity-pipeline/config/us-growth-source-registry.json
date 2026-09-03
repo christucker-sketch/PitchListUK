@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T13:19:49.749Z",
+  "updated_at": "2026-09-03T13:23:15.384Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5189,6 +5189,24 @@
       "event_end": "2026-11-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-trenton-2026-farmers-market: live first-party route attests Trenton, NJ, actionable vendor terms, and exact event date range 2026-10-31 to 2026-11-01."
+    },
+    {
+      "id": "nj-trenton-punk-rock-flea-market-evolves-into-new-jersey-punk-rock-flea-m-2026-09-04-d7a5f4ad",
+      "name": "Trenton Punk Rock Flea Market Evolves into New Jersey Punk Rock Flea Market Vendor Opportunity",
+      "organiser": "Trenton Punk Rock Flea Market Evolves into New Jersey Punk Rock Flea Market",
+      "source_url": "https://www.newjerseystage.com/articles2/2025/01/07/trenton-punk-rock-flea-market-evolves-into-new-jersey-punk-rock-flea-market012025",
+      "application_url": "https://www.newjerseystage.com/articles2/2025/01/07/trenton-punk-rock-flea-market-evolves-into-new-jersey-punk-rock-flea-market012025",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Trenton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-trenton-2026-arts-crafts: live first-party route attests Trenton, NJ, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-05."
     },
     {
       "id": "nj-vendor-events-in-hasbrouck-heights-nj-2027-06-07-bced1b7c",
