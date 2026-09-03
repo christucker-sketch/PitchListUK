@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T08:21:53.497Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:0e016e6d6232d14c1ca4b3bc11a380e2c20299f2199bbe6703b8d497fa466e72",
-  "total": 356,
+  "exported_at": "2026-09-03T08:26:39.901Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:bfe7f97a00f37aed8ff754385e7ef5bd48f3975895e02a670d5f472d911cfbf2",
+  "total": 357,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13588,6 +13588,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_8526cd6be5f1fc5554dd"
+    },
+    {
+      "stable_id": "opp_us_8f77edc354e6d2ba2e88",
+      "event_name": "10+ Amazing New Jersey Food Festivals & Food Truck Events This September 2025 - Jersey City Connects",
+      "organiser": "10+ Amazing New Jersey Food Festivals & Food Truck Events This September 2025 - Jersey City Connects",
+      "source_url": "https://jerseycityconnects.com/2025/09/09/new-jersey-food-festivals-september-2025/",
+      "application_url": "https://jerseycityconnects.com/2025/09/09/new-jersey-food-festivals-september-2025",
+      "location": "Toms River",
+      "locality": "Toms River",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-10-amazing-new-jersey-food-festivals-food-truck-events-this-september--2026-09-20-220e6098",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_8f77edc354e6d2ba2e88"
     }
   ]
 };
