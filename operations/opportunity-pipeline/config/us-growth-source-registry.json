@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T09:26:41.084Z",
+  "updated_at": "2026-09-03T09:30:41.958Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1823,6 +1823,24 @@
       "evidence": "Cloudflare discovery fl-gainesville-2027-arts-crafts: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date range 2027-04-11 to 2027-04-12."
     },
     {
+      "id": "fl-spring-garden-festival-2027-03-20-d873da9c",
+      "name": "Spring Garden Festival Vendor Opportunity",
+      "organiser": "Spring Garden Festival",
+      "source_url": "https://kanapaha.org/spring-garden-festival",
+      "application_url": "https://kanapaha.org/spring-garden-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Gainesville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-20",
+      "event_end": "2027-03-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-gainesville-2027-food-truck: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date 2027-03-20."
+    },
+    {
       "id": "fl-tallahassee-foodees-fest-eventeny-2027-01-22-7c1aa46d",
       "name": "Tallahassee Foodees Fest - Eventeny Vendor Opportunity",
       "organiser": "Tallahassee Foodees Fest - Eventeny",
@@ -1947,6 +1965,24 @@
       "event_end": "2027-04-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-tallahassee-2027-farmers-market: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date 2027-04-24."
+    },
+    {
+      "id": "fl-this-month-s-major-events-in-florida-2027-10-16-a9c694c6",
+      "name": "This Month's Major Events in Florida Vendor Opportunity",
+      "organiser": "This Month's Major Events in Florida",
+      "source_url": "https://www.visitflorida.com/things-to-do/events",
+      "application_url": "https://www.visitflorida.com/things-to-do/events",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Gainesville",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-10-16",
+      "event_end": "2027-10-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-gainesville-2027-food-truck: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date range 2027-10-16 to 2027-10-17."
     },
     {
       "id": "fl-vendors-the-north-florida-fair-2026-11-05-a9ca87f3",
