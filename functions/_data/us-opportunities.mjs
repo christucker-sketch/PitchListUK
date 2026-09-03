@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T09:47:27.227Z",
-  "source": "reviewed-us-michigan-cloud-promotion:b13b7b9df8cb486a027746a2de3fe39a404fdd7a1c7b9b171d98331cf2a73454",
-  "total": 369,
+  "exported_at": "2026-09-03T10:01:07.263Z",
+  "source": "reviewed-us-new-york-cloud-promotion:901a5cfcb321706b3fc7e762ec45445a6dada83df9e811e852b390a33dc93794",
+  "total": 370,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14080,6 +14080,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_9947680481f3c5a3ac6e"
+    },
+    {
+      "stable_id": "opp_us_f5f657b38ca35f306422",
+      "event_name": "Farmers Markets Vendor Opportunity",
+      "organiser": "Farmers Markets",
+      "source_url": "https://www.schenectadycountyny.gov/ed-planning/farmersmarket",
+      "application_url": "https://www.schenectadycountyny.gov/ed-planning/farmersmarket",
+      "location": "Schenectady",
+      "locality": "Schenectady",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "12308",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-30",
+      "event_end": "2026-11-30",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-farmers-markets-2026-11-30-ec3add86",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_f5f657b38ca35f306422"
     }
   ]
 };
