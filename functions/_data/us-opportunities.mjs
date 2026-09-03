@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T08:19:34.386Z",
-  "source": "reviewed-us-georgia-cloud-promotion:b70679a989ee6fb650e74c4dffa70ff34dd3e17e553717a3f974d024d61d74b4",
-  "total": 355,
+  "exported_at": "2026-09-03T08:21:53.497Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:0e016e6d6232d14c1ca4b3bc11a380e2c20299f2199bbe6703b8d497fa466e72",
+  "total": 356,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -13549,6 +13549,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_6a4d3d6c01d6324c288a"
+    },
+    {
+      "stable_id": "opp_us_8526cd6be5f1fc5554dd",
+      "event_name": "Wilmington Christmas Extravaganza Vendor Application - Wilmington Christmas Extravaganza - Eventeny",
+      "organiser": "Wilmington Christmas Extravaganza",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49733&srsltid=AfmBOoq72ifrUfiUQ14TGzn6Tkqdi6rX6huxm-CfNTtIelNJDwq7PHdP",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49733&srsltid=AfmBOoq72ifrUfiUQ14TGzn6Tkqdi6rX6huxm-CfNTtIelNJDwq7PHdP",
+      "location": "Wilmington",
+      "locality": "Wilmington",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "28401",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-29",
+      "event_end": "2026-11-29",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-wilmington-christmas-extravaganza-2026-11-29-be051d7c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_8526cd6be5f1fc5554dd"
     }
   ]
 };
