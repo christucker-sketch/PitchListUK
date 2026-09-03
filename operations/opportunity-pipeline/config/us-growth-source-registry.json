@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T15:44:29.811Z",
+  "updated_at": "2026-09-03T15:48:43.866Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6809,6 +6809,42 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-scranton-2026-festival: live first-party route attests Scranton, PA, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-07."
+    },
+    {
+      "id": "pa-winter-craft-market-2026-12-05-f412418b",
+      "name": "Winter Craft Market Vendor Opportunity",
+      "organiser": "Winter Craft Market",
+      "source_url": "https://wintercraftmarket.org",
+      "application_url": "https://wintercraftmarket.org",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "State College",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-state-college-2026-arts-crafts: live first-party route attests State College, PA, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "pa-winter-craft-market-2026-december-state-college-2026-12-05-ac3483ef",
+      "name": "Winter Craft Market 2026 December State College Vendor Opportunity",
+      "organiser": "Winter Craft Market 2026 December State College",
+      "source_url": "https://www.cantonfair.net/event/61007-winter-craft-market",
+      "application_url": "https://www.cantonfair.net/event/61007-winter-craft-market",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "State College",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-state-college-2026-arts-crafts: live first-party route attests State College, PA, actionable vendor terms, and exact event date 2026-12-05."
     },
     {
       "id": "pa-wish-upon-a-food-truck-festival-2026-09-12-0b1a0459",
