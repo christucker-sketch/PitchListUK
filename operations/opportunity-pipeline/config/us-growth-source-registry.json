@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T11:35:46.249Z",
+  "updated_at": "2026-09-03T11:48:15.233Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -523,6 +523,24 @@
       "event_end": "2026-12-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-bakersfield-2026-farmers-market: live first-party route attests Bakersfield, CA, actionable vendor terms, and exact event date 2026-12-27."
+    },
+    {
+      "id": "ca-bakersfield-marathon-health-wellness-expo-finish-line-village-2027-hea-2027-04-03-02a095a3",
+      "name": "Bakersfield Marathon Health & Wellness Expo & Finish Line Village 2027 | Health and Wellness Expo Vendor 10x10 (Saturday, April 3rd, 2027), Health and Wellness ",
+      "organiser": "Bakersfield Marathon Health & Wellness Expo & Finish Line Village 2027 | Health and Wellness Expo Vendor 10x10 (Saturday, April 3rd, 2027), Health and Wellness",
+      "source_url": "https://racediscovery.com/event/bakersfield-marathon-health-wellness-expo-finish-line-village",
+      "application_url": "https://racediscovery.com/event/bakersfield-marathon-health-wellness-expo-finish-line-village",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Bakersfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-03",
+      "event_end": "2027-04-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-bakersfield-2027-festival: live first-party route attests Bakersfield, CA, actionable vendor terms, and exact event date range 2027-04-03 to 2027-04-04."
     },
     {
       "id": "ca-craft-retail-vendor-sugar-and-spice-holiday-dessert-festival-eventeny-2026-12-19-b84c892e",
