@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T08:18:38.303Z",
+  "updated_at": "2026-09-03T08:21:01.173Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4018,6 +4018,42 @@
       "event_end": "2027-04-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-durham-2027-farmers-market: live first-party route attests Durham, NC, actionable vendor terms, and exact event date 2027-04-04."
+    },
+    {
+      "id": "nc-wilmington-christmas-extravaganza-2026-11-29-be051d7c",
+      "name": "Wilmington Christmas Extravaganza Vendor Application - Wilmington Christmas Extravaganza - Eventeny",
+      "organiser": "Wilmington Christmas Extravaganza",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49733&srsltid=AfmBOoq72ifrUfiUQ14TGzn6Tkqdi6rX6huxm-CfNTtIelNJDwq7PHdP",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49733&srsltid=AfmBOoq72ifrUfiUQ14TGzn6Tkqdi6rX6huxm-CfNTtIelNJDwq7PHdP",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-29",
+      "event_end": "2026-11-29",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-wilmington-2026-food-truck: live first-party route attests Wilmington, NC, actionable vendor terms, and exact event date 2026-11-29."
+    },
+    {
+      "id": "nc-wilmington-christmas-extravaganza-2026-11-29-d0f0c637",
+      "name": "Wilmington Christmas Extravaganza Vendor Application - Wilmington Christmas Extravaganza - Eventeny",
+      "organiser": "Wilmington Christmas Extravaganza",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49733&srsltid=AfmBOorU_6lmGkkRRiLf5RmaraSWF3CMu-5bXU3zATqBHTYi9ntQbGvl",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49733&srsltid=AfmBOorU_6lmGkkRRiLf5RmaraSWF3CMu-5bXU3zATqBHTYi9ntQbGvl",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-29",
+      "event_end": "2026-11-29",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-wilmington-2026-holiday-market: live first-party route attests Wilmington, NC, actionable vendor terms, and exact event date 2026-11-29."
     },
     {
       "id": "nj-2026-ymca-tot-trot-and-family-fall-festival-2026-10-11-3ac2c64e",
