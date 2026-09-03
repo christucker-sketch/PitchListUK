@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T11:06:10.655Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:7a9f42f2c38fe737b248f3c09b9f84b29d1dfc4295be6befa612c7dcbfba5431",
-  "total": 376,
+  "exported_at": "2026-09-03T11:22:16.377Z",
+  "source": "reviewed-us-texas-cloud-promotion:0cc36183755a674a94bb76df4f2de21888ee8f3a172439f62b0e90a9b6e839dc",
+  "total": 377,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -14345,6 +14345,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_bc5bc31d101be3935750"
+    },
+    {
+      "stable_id": "opp_us_adda0ad81bae3da8d863",
+      "event_name": "A Guide to Our Favorite Farmers Markets in DFW - Plano Magazine",
+      "organiser": "A Guide to Our Favorite Farmers Markets in DFW - Plano Magazine",
+      "source_url": "https://planomagazine.com/guide-to-our-favorite-dfw-farmers-markets/",
+      "application_url": "https://planomagazine.com/guide-to-our-favorite-dfw-farmers-markets",
+      "location": "Plano",
+      "locality": "Plano",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-03-01",
+      "event_end": "2027-03-01",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-a-guide-to-our-favorite-farmers-markets-in-dfw-plano-magazine-2027-03-01-359e6bb3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_adda0ad81bae3da8d863"
     }
   ]
 };
