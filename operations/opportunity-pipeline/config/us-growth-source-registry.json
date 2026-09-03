@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-03T16:03:35.826Z",
+  "updated_at": "2026-09-03T16:06:00.528Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -8231,6 +8231,24 @@
       "event_end": "2027-05-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-seattle-2027-arts-crafts: live first-party route attests Seattle, WA, actionable vendor terms, and exact event date range 2027-05-30 to 2027-05-31."
+    },
+    {
+      "id": "wa-seenmarkets-com-2026-09-19-dfd239ee",
+      "name": "Apply to be a vendor at our market",
+      "organiser": "seenmarkets.com",
+      "source_url": "https://seenmarkets.com/markets/c32d0b8b-6879-4927-8142-e552c40d09e4/apply",
+      "application_url": "https://seenmarkets.com/markets/c32d0b8b-6879-4927-8142-e552c40d09e4/apply",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Olympia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-olympia-2026-arts-crafts: live first-party route attests Olympia, WA, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "wa-sorticulture-2027-06-11-dfdfb586",
