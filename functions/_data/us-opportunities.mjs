@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T15:37:51.125Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:e0d4f74fd4354c6f118da819bc0c1ed1f4de0ebe290b69b8f377e16b796d604d",
-  "total": 406,
+  "exported_at": "2026-09-03T15:40:45.745Z",
+  "source": "reviewed-us-california-cloud-promotion:cb998c0690df86e67a8e34cb19fef11eb312c47d50bc186746747b4c8c121975",
+  "total": 407,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15475,6 +15475,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_b5cad869ecbb050f52aa"
+    },
+    {
+      "stable_id": "opp_us_f5baf14d079c3301b203",
+      "event_name": "Mid-State Fair Markets Vendor Opportunity",
+      "organiser": "Mid-State Fair Markets",
+      "source_url": "https://www.midstatefair.com/event-center/pages/midstatefairmarket.php",
+      "application_url": "https://www.midstatefair.com/event-center/pages/midstatefairmarket.php",
+      "location": "Riverside",
+      "locality": "Riverside",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-11",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-mid-state-fair-markets-2026-12-11-842450fd",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_f5baf14d079c3301b203"
     }
   ]
 };
