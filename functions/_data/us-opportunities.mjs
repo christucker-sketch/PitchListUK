@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T14:32:18.483Z",
-  "source": "reviewed-us-arizona-cloud-promotion:9dc331c28077f538d88bb7213f583424996d96f5690c428bf971626cef266435",
-  "total": 403,
+  "exported_at": "2026-09-03T14:37:44.670Z",
+  "source": "reviewed-us-florida-cloud-promotion:5e1f511e3156cf934e3cc58c6567a23773e7318ae2598e73ca31055a9cb44390",
+  "total": 404,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15358,6 +15358,47 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_34b321070423daad2188"
+    },
+    {
+      "stable_id": "opp_us_8e97b4426157db3a9517",
+      "event_name": "Pensacola Foodees Fest - Eventeny Vendor Opportunity",
+      "organiser": "Pensacola Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/pensacola-foodees-fest-31713/?srsltid=AfmBOoovgVwplIFxRNO7lJHLunYIip2T4RWAXsCGWDArYA6SmpYlQ0e3",
+      "application_url": "https://www.eventeny.com/events/pensacola-foodees-fest-31713/?srsltid=AfmBOoovgVwplIFxRNO7lJHLunYIip2T4RWAXsCGWDArYA6SmpYlQ0e3",
+      "location": "Pensacola",
+      "locality": "Pensacola",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "32526",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-02-12",
+      "event_end": "2027-02-14",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-pensacola-foodees-fest-eventeny-2027-02-12-16fd1223",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_8e97b4426157db3a9517"
     }
   ]
 };
