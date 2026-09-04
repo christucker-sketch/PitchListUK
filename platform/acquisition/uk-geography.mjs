@@ -63,6 +63,13 @@ const broadReviewTerms = new Set([
   'north east','north west','east midlands','west midlands region','yorkshire','yorkshire and the humber','nationwide','multiple locations'
 ]);
 
+function containsPhrase(haystack, phrase) {
+  const haystackTokens = normalise(haystack).split(' ').filter(Boolean);
+  const phraseTokens = normalise(phrase).split(' ').filter(Boolean);
+  if (!phraseTokens.length || phraseTokens.length > haystackTokens.length) return false;
+  return haystackTokens.some((_, index) => phraseTokens.every((token, offset) => haystackTokens[index + offset] === token));
+}
+
 export function enabledUkAcquisitionAreas() {
   return UK_ACQUISITION_AREAS.filter(item => item.enabled).sort((a,b) => a.schedule_order - b.schedule_order || a.code.localeCompare(b.code));
 }
@@ -74,14 +81,22 @@ export function resolveUkAcquisitionArea(row = {}) {
     if (aliasIndex.has(key)) return { status: 'mapped', area: aliasIndex.get(key), matched_value: candidate };
   }
 
+  const broad = candidates.find(value => broadReviewTerms.has(normalise(value)));
+  if (broad) {
+    return {
+      status: 'review', area: null,
+      reason: 'broad_geography_requires_review',
+      matched_value: broad
+    };
+  }
+
   const combined = normalise(candidates.join(' '));
-  const contained = enabledUkAcquisitionAreas().filter(item => item.aliases.some(alias => combined.includes(normalise(alias))));
+  const contained = enabledUkAcquisitionAreas().filter(item => item.aliases.some(alias => containsPhrase(combined, alias)));
   if (contained.length === 1) return { status: 'mapped', area: contained[0], matched_value: candidates.join(' | '), inferred: true };
 
-  const broad = candidates.find(value => broadReviewTerms.has(normalise(value)));
   return {
     status: 'review', area: null,
-    reason: broad ? 'broad_geography_requires_review' : contained.length > 1 ? 'ambiguous_geography' : 'unmapped_geography',
-    matched_value: broad || candidates.join(' | ') || null
+    reason: contained.length > 1 ? 'ambiguous_geography' : 'unmapped_geography',
+    matched_value: candidates.join(' | ') || null
   };
 }
