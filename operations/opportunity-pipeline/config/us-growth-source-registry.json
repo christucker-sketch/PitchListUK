@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T15:30:53.114Z",
+  "updated_at": "2026-09-04T15:33:14.620Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2793,6 +2793,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-augusta-2026-holiday-market: live first-party route attests Augusta, GA, actionable vendor terms, and exact event date 2026-11-07."
+    },
+    {
+      "id": "ga-jingle-bells-food-vendor-jingle-bells-festival-eventeny-2026-11-20-cecd4273",
+      "name": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "organiser": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOooOFxhQJ8OoB-kL0sq8wDCxs3cj3texHMB4SJyuwsTqlk2D1PuJ",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOooOFxhQJ8OoB-kL0sq8wDCxs3cj3texHMB4SJyuwsTqlk2D1PuJ",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-20",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2026-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date range 2026-11-20 to 2026-11-21."
     },
     {
       "id": "ga-johns-creek-arts-on-the-boardwalk-eventeny-2026-09-10-bd350d4e",
