@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-03T16:04:30.043Z",
-  "source": "reviewed-us-virginia-cloud-promotion:011ba73c9d16325a8d2ecf4604ea779e226f8bc9d59af467b42cb9dc6f53503b",
-  "total": 411,
+  "exported_at": "2026-09-04T14:39:40.766Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:7515ea00e28c6e9f9d1d4f18026aa2c3097d49bc8ffe661758879836613d10e7",
+  "total": 412,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15662,6 +15662,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_e1f69c6b99423b0d35bc"
+    },
+    {
+      "stable_id": "opp_us_cd694ea39a1e9235996f",
+      "event_name": "Special Events Vendor Opportunity",
+      "organiser": "Special Events",
+      "source_url": "https://www.greenvillenc.gov/283/Special-Events",
+      "application_url": "https://www.greenvillenc.gov/283/Special-Events",
+      "location": "Greenville",
+      "locality": "Greenville",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "27858",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-23",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-special-events-2026-10-17-df142f9d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_cd694ea39a1e9235996f"
     }
   ]
 };
