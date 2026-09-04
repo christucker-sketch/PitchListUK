@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T15:22:21.551Z",
+  "updated_at": "2026-09-04T15:24:37.951Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7061,6 +7061,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-scranton-2026-festival: live first-party route attests Scranton, PA, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-07."
+    },
+    {
+      "id": "pa-wilkes-barre-city-farmers-market-opens-thursday-on-the-square-2026-09-04-5c3ccc7f",
+      "name": "Wilkes-Barre City Farmers Market opens Thursday on the square Vendor Opportunity",
+      "organiser": "Wilkes-Barre City Farmers Market opens Thursday on the square",
+      "source_url": "https://www.timesleader.com/news/1745794/wilkes-barre-city-farmers-market-opens-thursday-on-the-square",
+      "application_url": "https://www.timesleader.com/news/1745794/wilkes-barre-city-farmers-market-opens-thursday-on-the-square",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "Wilkes-Barre",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-wilkes-barre-2026-arts-crafts: live first-party route attests Wilkes-Barre, PA, actionable vendor terms, and exact event date 2026-09-04."
     },
     {
       "id": "pa-winter-craft-market-2026-12-05-f412418b",
