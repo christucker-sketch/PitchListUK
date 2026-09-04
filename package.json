@@ -22,6 +22,7 @@
     "sources:manifest": "node operations/opportunity-pipeline/scripts/build-source-promotion-manifest.js",
     "sources:promote": "node operations/opportunity-pipeline/scripts/apply-source-promotion-manifest.js",
     "growth:report": "node operations/cloudflare-texas-acquisition/scripts/nationwide-sweep-report.mjs",
+    "quality:audit:us": "node operations/cloudflare-texas-acquisition/scripts/us-quality-audit.mjs",
     "predeploy:production": "npm run build",
     "deploy:production": "node scripts/deploy-public-site.js",
     "publish:opportunities": "node scripts/publish-reviewed-opportunities.js",
