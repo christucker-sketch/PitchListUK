@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T18:55:52.192Z",
+  "updated_at": "2026-09-04T18:59:07.122Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2885,6 +2885,24 @@
       "evidence": "Cloudflare discovery ga-valdosta-2026-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date range 2026-11-20 to 2026-11-21."
     },
     {
+      "id": "ga-jingle-bells-food-vendor-jingle-bells-festival-eventeny-2027-11-20-a019486a",
+      "name": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "organiser": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOorYW4Qyxn-aRIb2wbtgLxuvNxqI_ZMOAwfVz5WsQvaVRxqXzikb",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOorYW4Qyxn-aRIb2wbtgLxuvNxqI_ZMOAwfVz5WsQvaVRxqXzikb",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-11-20",
+      "event_end": "2027-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2027-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date range 2027-11-20 to 2027-11-21."
+    },
+    {
       "id": "ga-johns-creek-arts-on-the-boardwalk-eventeny-2026-09-10-bd350d4e",
       "name": "Johns Creek Arts on the Boardwalk - Eventeny Vendor Opportunity",
       "organiser": "Johns Creek Arts on the Boardwalk - Eventeny",
@@ -2919,6 +2937,24 @@
       "event_end": "2026-11-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-macon-2026-farmers-market: live first-party route attests Macon, GA, actionable vendor terms, and exact event date 2026-11-06."
+    },
+    {
+      "id": "ga-made-in-lowndes-open-air-market-will-feature-local-products-2027-08-16-aacb0a0b",
+      "name": "Made in Lowndes Open Air Market will feature local products Vendor Opportunity",
+      "organiser": "Made in Lowndes Open Air Market will feature local products",
+      "source_url": "https://valdostatoday.com/news-2/local/2025/08/made-in-lowndes-open-air-market-will-feature-local-products",
+      "application_url": "https://valdostatoday.com/news-2/local/2025/08/made-in-lowndes-open-air-market-will-feature-local-products",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-16",
+      "event_end": "2027-08-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2027-arts-crafts: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date 2027-08-16."
     },
     {
       "id": "ga-merchandise-vendor-2nd-athens-asian-lunar-festival-eventeny-2027-02-13-d363cd80",
