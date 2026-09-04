@@ -353,7 +353,7 @@ export async function resilientMain(argv = process.argv.slice(2)) {
   const command = argv[0] || 'status';
   const stateFile = path.resolve(argumentValue(argv, '--state-file', process.env.PITCHLIST_GROWTH_STATE_FILE || defaultStateFile));
   if (command === 'status') {
-    process.stdout.write(`${JSON.stringify(buildOperationalStatus(readControllerState(stateFile))}\n`);
+    process.stdout.write(`${JSON.stringify(buildOperationalStatus(readControllerState(stateFile)))}\n`);
     return;
   }
   if (command !== 'run') return core.main(argv);
