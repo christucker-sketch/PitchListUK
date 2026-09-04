@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T18:40:47.959Z",
+  "updated_at": "2026-09-04T18:42:19.677Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4631,6 +4631,24 @@
       "evidence": "Cloudflare discovery mi-kalamazoo-2026-food-truck: live first-party route attests Kalamazoo, MI, actionable vendor terms, and exact event date 2026-09-17."
     },
     {
+      "id": "mi-traverse-city-downtown-development-authority-sara-hardy-farmers-market-2027-05-02-d31d62fb",
+      "name": "Traverse City Downtown Development Authority: Sara Hardy Farmers Market Vendor Opportunity",
+      "organiser": "Traverse City Downtown Development Authority: Sara Hardy Farmers Market",
+      "source_url": "https://www.9and10news.com/2026/03/13/traverse-city-downtown-development-authority-sara-hardy-farmers-market",
+      "application_url": "https://www.9and10news.com/2026/03/13/traverse-city-downtown-development-authority-sara-hardy-farmers-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Traverse City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-02",
+      "event_end": "2027-05-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-traverse-city-2027-farmers-market: live first-party route attests Traverse City, MI, actionable vendor terms, and exact event date 2027-05-02."
+    },
+    {
       "id": "mi-vendor-events-in-downtown-troy-al-2027-04-25-7e5ba16a",
       "name": "Vendor Events in Downtown Troy, AL",
       "organiser": "Vendor Events in Downtown Troy, AL",
@@ -4647,6 +4665,24 @@
       "event_end": "2027-04-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-troy-2027-farmers-market: live first-party route attests Troy, MI, actionable vendor terms, and exact event date range 2027-04-25 to 2027-04-26."
+    },
+    {
+      "id": "mi-vendor-events-in-traverse-city-mi-2027-07-04-67071925",
+      "name": "Vendor Events in Traverse City, MI",
+      "organiser": "Vendor Events in Traverse City, MI",
+      "source_url": "https://vendorsmap.com/cities/traverse-city",
+      "application_url": "https://vendorsmap.com/cities/traverse-city",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Traverse City",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-traverse-city-2027-farmers-market: live first-party route attests Traverse City, MI, actionable vendor terms, and exact event date range 2027-07-04 to 2027-07-11."
     },
     {
       "id": "mi-vendor-events-in-warren-ar-2027-06-12-2d5a373a",
