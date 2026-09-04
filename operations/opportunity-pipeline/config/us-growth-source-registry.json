@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T14:52:40.058Z",
+  "updated_at": "2026-09-04T15:22:21.551Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5857,6 +5857,24 @@
       "evidence": "Cloudflare discovery ny-albany-2026-arts-crafts: live first-party route attests Albany, NY, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
     },
     {
+      "id": "ny-apple-harvest-festival-2026-in-downtown-ithaca-2026-09-25-f1c18e3d",
+      "name": "Apple Harvest Festival 2026 in Downtown Ithaca Vendor Opportunity",
+      "organiser": "Apple Harvest Festival 2026 in Downtown Ithaca",
+      "source_url": "https://www.fingerlakes.org/events/the-44th-annual-apple-harvest-festival-in-downtown-ithaca",
+      "application_url": "https://www.fingerlakes.org/events/the-44th-annual-apple-harvest-festival-in-downtown-ithaca",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Ithaca",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-ithaca-2026-festival: live first-party route attests Ithaca, NY, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-27."
+    },
+    {
       "id": "ny-be-a-sponsor-2026-10-19-6aff3309",
       "name": "Be A Sponsor Vendor Opportunity",
       "organiser": "Be A Sponsor",
@@ -5891,6 +5909,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-utica-2026-festival: live first-party route attests Utica, NY, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "ny-calendar-ithaca-fall-vintage-festival-2026-09-13-b15eb1dd",
+      "name": "Calendar • Ithaca Fall Vintage Festival Vendor Opportunity",
+      "organiser": "Calendar • Ithaca Fall Vintage Festival",
+      "source_url": "https://cityofithacany.gov/Calendar.aspx?EID=7029&month=9&year=2026&day=3&calType=0",
+      "application_url": "https://cityofithacany.gov/Calendar.aspx?EID=7029&month=9&year=2026&day=3&calType=0",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Ithaca",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-13",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-ithaca-2026-festival: live first-party route attests Ithaca, NY, actionable vendor terms, and exact event date 2026-09-13."
     },
     {
       "id": "ny-cny-regional-market-2026-syracuse-ny-2026-10-13-f18c8f10",
@@ -6179,6 +6215,24 @@
       "event_end": "2026-10-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-schenectady-2026-farmers-market: live first-party route attests Schenectady, NY, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "ny-vendor-events-in-ithaca-ny-2026-10-26-7e15118b",
+      "name": "Vendor Events in Ithaca, NY",
+      "organiser": "Vendor Events in Ithaca, NY",
+      "source_url": "https://vendorsmap.com/cities/ithaca",
+      "application_url": "https://vendorsmap.com/cities/ithaca",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Ithaca",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-26",
+      "event_end": "2026-10-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-ithaca-2026-festival: live first-party route attests Ithaca, NY, actionable vendor terms, and exact event date 2026-10-26."
     },
     {
       "id": "ny-wildlife-festival-2026-09-14-8c99bb64",
