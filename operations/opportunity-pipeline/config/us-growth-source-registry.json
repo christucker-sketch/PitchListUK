@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T15:59:05.993Z",
+  "updated_at": "2026-09-04T18:29:18.177Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -595,6 +595,24 @@
       "event_end": "2027-04-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-bakersfield-2027-festival: live first-party route attests Bakersfield, CA, actionable vendor terms, and exact event date range 2027-04-03 to 2027-04-04."
+    },
+    {
+      "id": "ca-cosas-newsletter-february-26-2026-city-of-santa-ana-2027-03-01-752e07c7",
+      "name": "COSAS Newsletter: February 26, 2026 - City of Santa Ana Vendor Opportunity",
+      "organiser": "COSAS Newsletter: February 26, 2026 - City of Santa Ana",
+      "source_url": "https://santa-ana.gov/cosas-newsletter-february-26-2026",
+      "application_url": "https://santa-ana.gov/cosas-newsletter-february-26-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Santa Ana",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-03-01",
+      "event_end": "2027-03-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-santa-ana-2027-farmers-market: live first-party route attests Santa Ana, CA, actionable vendor terms, and exact event date 2027-03-01."
     },
     {
       "id": "ca-craft-retail-vendor-sugar-and-spice-holiday-dessert-festival-eventeny-2026-12-19-b84c892e",
