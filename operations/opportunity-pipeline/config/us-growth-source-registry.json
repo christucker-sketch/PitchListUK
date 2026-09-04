@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T14:50:11.579Z",
+  "updated_at": "2026-09-04T14:52:40.058Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -703,6 +703,42 @@
       "event_end": "2027-06-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
+    },
+    {
+      "id": "ca-food-2026-10-10-a7ae7966",
+      "name": "Food Vendor Application - OC Pride 2026 Festival & Parade - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=47221&srsltid=AfmBOoroYTTM4zTUNc64K5SmurAHc7K-ClVR0NdM5zRGW1wN6MVlq_FL",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=47221&srsltid=AfmBOoroYTTM4zTUNc64K5SmurAHc7K-ClVR0NdM5zRGW1wN6MVlq_FL",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Santa Ana",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-santa-ana-2026-arts-crafts: live first-party route attests Santa Ana, CA, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
+      "id": "ca-food-2026-10-10-f480bc4c",
+      "name": "Food Vendor Application - OC Pride 2026 Festival & Parade - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=47221&srsltid=AfmBOoptUuqEWB56J9HIL5vP9Pw-NmA7vjSYa_I235amV3zwtzmcCQBO",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=47221&srsltid=AfmBOoptUuqEWB56J9HIL5vP9Pw-NmA7vjSYa_I235amV3zwtzmcCQBO",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Santa Ana",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-santa-ana-2026-festival: live first-party route attests Santa Ana, CA, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
       "id": "ca-food-2026-12-19-b0594889",
