@@ -3,7 +3,9 @@ import test from 'node:test';
 
 import {
   buildSweepReport,
-  renderMarkdown
+  renderMarkdown,
+  renderTelegramMessages,
+  sendReportToTelegram
 } from '../../cloudflare-texas-acquisition/scripts/nationwide-sweep-report.mjs';
 
 const states = [
@@ -109,4 +111,41 @@ test('resolved deferred units do not remain outstanding', () => {
 
   assert.equal(report.summary.deferred_units, 0);
   assert.equal(report.summary.completion_integrity_passed, true);
+});
+
+test('Telegram report is mobile friendly and sends through the existing notifier transport', () => {
+  const report = buildSweepReport({
+    status: 'running_cloudflare_discovery', snapshot_count: 411, live_api_count: 411,
+    approved_source_count: 828, state_totals: { AZ: 8, MA: 11 },
+    current: { state_code: 'MA' },
+    results: [
+      { mode: 'acquire', state_code: 'AZ', additions: 1, instance_id: 'cf_az' },
+      { mode: 'acquire', state_code: 'MA', additions: 0, instance_id: 'cf_ma' }
+    ],
+    deferred_units: [{ mode: 'discover', state_code: 'AZ', query_offset: 122, reason: 'confirmed_terminal_workflow' }],
+    blockers: [], sweep_complete: false
+  }, { states });
+
+  const messages = renderTelegramMessages(report, { maxLength: 1000 });
+  assert.ok(messages.length >= 1);
+  assert.ok(messages.every(message => message.length <= 1000));
+  assert.match(messages.join('\n'), /🇺🇸 FindPitches US sweep report/);
+  assert.match(messages.join('\n'), /States touched: 2\/2/);
+  assert.match(messages.join('\n'), /AZ: 8 opps \| \+1/);
+  assert.match(messages.join('\n'), /Deferred:/);
+
+  const delivered = [];
+  const result = sendReportToTelegram(report, {
+    env: {
+      FINDPITCHES_NOTIFICATION_ENABLED: '1',
+      FINDPITCHES_CONTROLLER_ID: 'us-growth',
+      FINDPITCHES_MARKET_NAME: 'US',
+      FINDPITCHES_NOTIFICATION_TELEGRAM_TARGET: '12345'
+    },
+    deliver: (config, message) => delivered.push({ config, message }),
+    maxLength: 1000
+  });
+  assert.equal(result.messages_sent, messages.length);
+  assert.equal(delivered.length, messages.length);
+  assert.equal(delivered[0].config.telegram_target, '12345');
 });
