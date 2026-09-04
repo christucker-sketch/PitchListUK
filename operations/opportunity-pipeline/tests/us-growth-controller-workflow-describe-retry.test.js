@@ -10,6 +10,10 @@ test('Cloudflare Workflow internal-server 10001 is classified as transient', () 
   assert.equal(isTransientWorkflowDescribeError(new Error('workflows.api.error.internal_server code: 10001')), true);
 });
 
+test('Cloudflare API authentication error 10000 is classified as transient', () => {
+  assert.equal(isTransientWorkflowDescribeError(new Error('Authentication error code: 10000')), true);
+});
+
 test('common transient network failures are retryable but terminal Workflow states are not', () => {
   assert.equal(isTransientWorkflowDescribeError(new Error('fetch failed: ECONNRESET')), true);
   assert.equal(isTransientWorkflowDescribeError(new Error('socket hang up')), true);

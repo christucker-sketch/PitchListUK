@@ -69,7 +69,7 @@ export function isTransientWorkflowDescribeError(error) {
     error?.stderr,
     error?.stdout
   ].filter(Boolean).join('\n'));
-  return /workflows\.api\.error\.internal_server|code:\s*10001|ECONNRESET|ETIMEDOUT|EAI_AGAIN|fetch failed|socket hang up/i.test(text);
+  return /workflows\.api\.error\.internal_server|code:\s*10001|Authentication error code:\s*10000|ECONNRESET|ETIMEDOUT|EAI_AGAIN|fetch failed|socket hang up/i.test(text);
 }
 
 export function workflowDescribeBackoffMilliseconds(attempt, options = {}) {
@@ -193,6 +193,31 @@ function recentMergeVisibilityRetries(state) {
   return count;
 }
 
+function recentWorkflowDescribeCycles(state) {
+  const events = Array.isArray(state?.resilience_events) ? state.resilience_events : [];
+  const instanceId = state?.active_instance?.id || null;
+  if (!instanceId) return 0;
+  let count = 0;
+  for (let index = events.length - 1; index >= 0; index -= 1) {
+    const event = events[index];
+    if (event?.reason !== 'workflow_describe_retry_exhausted') break;
+    if (event?.instance_id !== instanceId) break;
+    count += 1;
+  }
+  return count;
+}
+
+function activeInstanceIntent(state) {
+  return {
+    mode: state?.active_instance?.mode || state?.current?.mode || '',
+    state_code: state?.active_instance?.state_code || state?.current?.state_code || '',
+    query_offset: state?.current?.query_offset ?? null,
+    query_limit: state?.current?.query_limit ?? null,
+    batch_number: state?.acquisition_batch ?? null,
+    instance_id: state?.active_instance?.id || null
+  };
+}
+
 function isPriorityPlanExhausted(error) {
   return /^Priority discovery plan exhausted before target count was reached$/i.test(String(error?.message || '').trim());
 }
@@ -207,14 +232,7 @@ export function classifyResilienceAction(error, state, triggerFailureIntent = nu
       action: 'skip',
       reason: 'confirmed_terminal_workflow',
       detail: text,
-      intent: {
-        mode: state.active_instance.mode,
-        state_code: state.active_instance.state_code,
-        query_offset: state.current?.query_offset ?? null,
-        query_limit: state.current?.query_limit ?? null,
-        batch_number: state.acquisition_batch ?? null,
-        instance_id: state.active_instance.id
-      }
+      intent: activeInstanceIntent(state)
     };
   }
   if (triggerFailureIntent && isTransientWorkflowDescribeError(error) && /workflows trigger/i.test(text)) {
@@ -226,6 +244,16 @@ export function classifyResilienceAction(error, state, triggerFailureIntent = nu
     };
   }
   if (state?.active_instance && isTransientWorkflowDescribeError(error) && /workflows instances describe/i.test(text)) {
+    const maximumCycles = Math.max(1, Number(process.env.PITCHLIST_GROWTH_WORKFLOW_DESCRIBE_CYCLES || 3));
+    const completedCycles = recentWorkflowDescribeCycles(state);
+    if (completedCycles >= maximumCycles - 1) {
+      return {
+        action: 'skip',
+        reason: 'workflow_describe_retry_exhausted_deferred',
+        detail: text,
+        intent: activeInstanceIntent(state)
+      };
+    }
     return { action: 'wait', reason: 'workflow_describe_retry_exhausted', detail: text };
   }
   if (state?.status === 'reviewing_data_pr' && /^Merged snapshot is \d+; expected \d+$/i.test(String(error?.message || '').trim())) {
