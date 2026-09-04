@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T15:24:37.951Z",
+  "updated_at": "2026-09-04T15:28:19.381Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3279,6 +3279,42 @@
       "event_end": "2026-09-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-elgin-2026-festival: live first-party route attests Elgin, IL, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-05."
+    },
+    {
+      "id": "il-epr-e-news-farmers-market-summer-program-registration-upcoming-events--2026-11-21-b299b6df",
+      "name": "EPR e-News: Farmers' Market , Summer program registration, upcoming events, and more. Vendor Opportunity",
+      "organiser": "EPR e-News: Farmers' Market , Summer program registration, upcoming events, and more.",
+      "source_url": "https://content.govdelivery.com/accounts/ILEVANSTON/bulletins/415f8fb",
+      "application_url": "https://content.govdelivery.com/accounts/ILEVANSTON/bulletins/415f8fb",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Evanston",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-evanston-2026-arts-crafts: live first-party route attests Evanston, IL, actionable vendor terms, and exact event date 2026-11-21."
+    },
+    {
+      "id": "il-epr-e-news-starlight-series-lineup-farmers-market-opening-summer-progr-2026-11-21-9dccc4ca",
+      "name": "EPR e-News: Starlight Series lineup, Farmers' Market opening, Summer program registration, upcoming events, and more. Vendor Opportunity",
+      "organiser": "EPR e-News: Starlight Series lineup, Farmers' Market opening, Summer program registration, upcoming events, and more.",
+      "source_url": "https://content.govdelivery.com/accounts/ILEVANSTON/bulletins/414f811",
+      "application_url": "https://content.govdelivery.com/accounts/ILEVANSTON/bulletins/414f811",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Evanston",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-evanston-2026-festival: live first-party route attests Evanston, IL, actionable vendor terms, and exact event date 2026-11-21."
     },
     {
       "id": "il-hyde-park-farmers-market-south-east-chicago-commission-2026-09-27-f0b3a693",
