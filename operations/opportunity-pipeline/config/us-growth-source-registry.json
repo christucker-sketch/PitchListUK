@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T18:35:30.836Z",
+  "updated_at": "2026-09-04T18:40:47.959Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5477,6 +5477,24 @@
       "event_end": "2027-04-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-fayetteville-2027-farmers-market: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2027-04-24 to 2027-04-26."
+    },
+    {
+      "id": "nc-vendor-events-in-isle-of-palms-sc-2027-06-18-36db11e4",
+      "name": "Vendor Events in Isle Of Palms, SC",
+      "organiser": "Vendor Events in Isle Of Palms, SC",
+      "source_url": "https://vendorsmap.com/cities/isle-of-palms",
+      "application_url": "https://vendorsmap.com/cities/isle-of-palms",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Greenville",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-18",
+      "event_end": "2027-06-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-greenville-2027-farmers-market: live first-party route attests Greenville, NC, actionable vendor terms, and exact event date 2027-06-18."
     },
     {
       "id": "nc-vendor-events-in-west-jefferson-nc-2027-04-11-f805dae5",
