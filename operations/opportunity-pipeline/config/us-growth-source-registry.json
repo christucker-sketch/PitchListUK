@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T15:50:21.017Z",
+  "updated_at": "2026-09-04T15:54:19.895Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4341,6 +4341,42 @@
       "event_end": "2026-10-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-grand-rapids-2026-arts-crafts: live first-party route attests Grand Rapids, MI, actionable vendor terms, and exact event date range 2026-10-24 to 2026-10-25."
+    },
+    {
+      "id": "mi-holiday-artist-market-2026-11-06-f708ae32",
+      "name": "Holiday Artist Market Vendor Opportunity",
+      "organiser": "Holiday Artist Market",
+      "source_url": "https://www.traversecity.com/event-detail/holiday-artist-market/24182",
+      "application_url": "https://www.traversecity.com/event-detail/holiday-artist-market/24182",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Traverse City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-traverse-city-2026-holiday-market: live first-party route attests Traverse City, MI, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
+    },
+    {
+      "id": "mi-home-2026-11-06-dba59a98",
+      "name": "Home Vendor Opportunity",
+      "organiser": "Home",
+      "source_url": "https://2026holidayartistmarket.artcall.org",
+      "application_url": "https://2026holidayartistmarket.artcall.org",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Traverse City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-traverse-city-2026-holiday-market: live first-party route attests Traverse City, MI, actionable vendor terms, and exact event date 2026-11-06."
     },
     {
       "id": "mi-join-the-dodge-park-farmers-market-2025-vendor-spaces-open-2026-09-25-4b0adfda",
