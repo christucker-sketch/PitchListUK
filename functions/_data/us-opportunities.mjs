@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T14:39:40.766Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:7515ea00e28c6e9f9d1d4f18026aa2c3097d49bc8ffe661758879836613d10e7",
-  "total": 412,
+  "exported_at": "2026-09-04T14:43:24.682Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:32fd4954a66b3804108c212d88c361aaa0da9255378895bf160d7916c5fb6b4f",
+  "total": 413,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15700,6 +15700,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_cd694ea39a1e9235996f"
+    },
+    {
+      "stable_id": "opp_us_8dbb56b2612f6269dee8",
+      "event_name": "2026 New Jersey Farmers Market Round Up — Community Collections Vendor Opportunity",
+      "organiser": "2026 New Jersey Farmers Market Round Up — Community Collections",
+      "source_url": "https://www.asburyfresh.com/marketplace/community/2026-new-jersey-farmers-market-round-up",
+      "application_url": "https://www.asburyfresh.com/marketplace/community/2026-new-jersey-farmers-market-round-up",
+      "location": "Camden",
+      "locality": "Camden",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-2026-new-jersey-farmers-market-round-up-community-collections-2026-11-14-533ebc94",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_8dbb56b2612f6269dee8"
     }
   ]
 };
