@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T15:42:40.693Z",
+  "updated_at": "2026-09-04T15:46:17.690Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3333,6 +3333,24 @@
       "event_end": "2026-09-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-elgin-2026-festival: live first-party route attests Elgin, IL, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-05."
+    },
+    {
+      "id": "il-epr-e-news-beaches-open-farmers-market-summer-program-registration-upc-2026-11-21-f80d0586",
+      "name": "EPR e-News: Beaches open, Farmers' Market, Summer program registration, upcoming events, and more. Vendor Opportunity",
+      "organiser": "EPR e-News: Beaches open, Farmers' Market, Summer program registration, upcoming events, and more.",
+      "source_url": "https://content.govdelivery.com/accounts/ILEVANSTON/bulletins/417fb1d",
+      "application_url": "https://content.govdelivery.com/accounts/ILEVANSTON/bulletins/417fb1d",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Evanston",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-evanston-2026-food-truck: live first-party route attests Evanston, IL, actionable vendor terms, and exact event date 2026-11-21."
     },
     {
       "id": "il-epr-e-news-farmers-market-summer-program-registration-upcoming-events--2026-11-21-b299b6df",
