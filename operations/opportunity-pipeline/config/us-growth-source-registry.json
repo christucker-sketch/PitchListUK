@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T14:45:05.181Z",
+  "updated_at": "2026-09-04T14:50:11.579Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3963,6 +3963,24 @@
       "event_end": "2027-06-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-cambridge-2027-arts-crafts: live first-party route attests Cambridge, MA, actionable vendor terms, and exact event date 2027-06-26."
+    },
+    {
+      "id": "ma-swampscott-farmers-market-farmer-s-market-in-swampscott-massachusetts--2026-11-23-5fc6dbcb",
+      "name": "Swampscott Farmers Market | Farmer's Market in Swampscott, Massachusetts. Open June Vendor Opportunity",
+      "organiser": "Swampscott Farmers Market | Farmer's Market in Swampscott, Massachusetts. Open June",
+      "source_url": "https://swampscottfarmersmarket.org",
+      "application_url": "https://swampscottfarmersmarket.org",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-23",
+      "event_end": "2026-11-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2026-government-events: live first-party route attests Salem, MA, actionable vendor terms, and exact event date 2026-11-23."
     },
     {
       "id": "ma-ultimate-guide-to-massachusetts-holiday-markets-2025-2026-12-06-e47d95ea",
