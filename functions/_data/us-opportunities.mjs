@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T15:29:14.421Z",
-  "source": "reviewed-us-illinois-cloud-promotion:fab1468265254f4ce79114664de302d417a9e6e4f77c071ca4bb09a4d64b0238",
-  "total": 417,
+  "exported_at": "2026-09-04T15:31:46.677Z",
+  "source": "reviewed-us-ohio-cloud-promotion:6e776ce00955398bb09e83a6b9d86f4ae192889502264fe4a9a2d83951d3c2b2",
+  "total": 418,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15891,6 +15891,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_76936983271b4e4c07c3"
+    },
+    {
+      "stable_id": "opp_us_0d98216aea4a24187441",
+      "event_name": "The Dublin Market at Bridge Park Vendor Opportunity",
+      "organiser": "The Dublin Market at Bridge Park",
+      "source_url": "https://www.thedublinmarket.com/",
+      "application_url": "https://www.thedublinmarket.com",
+      "location": "Dublin",
+      "locality": "Dublin",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "43017",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-the-dublin-market-at-bridge-park-2026-09-26-2ae83c49",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_0d98216aea4a24187441"
     }
   ]
 };
