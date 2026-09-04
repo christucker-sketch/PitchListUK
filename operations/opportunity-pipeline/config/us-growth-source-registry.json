@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T14:42:20.355Z",
+  "updated_at": "2026-09-04T14:45:05.181Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7583,6 +7583,24 @@
       "event_end": "2026-10-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-newport-news-2026-government-events: live first-party route attests Newport News, VA, actionable vendor terms, and exact event date 2026-10-05."
+    },
+    {
+      "id": "va-charlottesville-farmers-market-at-ix-art-park-2026-2026-09-30-ba1dd2e4",
+      "name": "Charlottesville Farmers Market at IX Art Park 2026 Vendor Opportunity",
+      "organiser": "Charlottesville Farmers Market at IX Art Park 2026",
+      "source_url": "https://vendorsmap.com/events/3242",
+      "application_url": "https://vendorsmap.com/events/3242",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Charlottesville",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-30",
+      "event_end": "2026-10-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-charlottesville-2026-farmers-market: live first-party route attests Charlottesville, VA, actionable vendor terms, and exact event date range 2026-09-30 to 2026-10-09."
     },
     {
       "id": "va-concert-zone-the-patriotic-festival-virginia-beach-memorial-day-weeken-2027-05-28-e07575f7",
