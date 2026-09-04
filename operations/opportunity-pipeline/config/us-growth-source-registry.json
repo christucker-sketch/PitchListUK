@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T15:40:23.825Z",
+  "updated_at": "2026-09-04T15:42:40.693Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1839,6 +1839,24 @@
       "event_end": "2027-05-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2027-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date range 2027-05-06 to 2027-05-07."
+    },
+    {
+      "id": "fl-food-cart-exhibitor-2026-lagoonfest-eventeny-2026-10-31-cded3f51",
+      "name": "Food Cart Exhibitor - 2026 LAGOONFEST - Eventeny",
+      "organiser": "Food Cart Exhibitor - 2026 LAGOONFEST - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=48959&srsltid=AfmBOopS5cOudLLiJAeel_YQ88oQ0wx4uY2PePj2LKxHyzpgbT7aOHur",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=48959&srsltid=AfmBOopS5cOudLLiJAeel_YQ88oQ0wx4uY2PePj2LKxHyzpgbT7aOHur",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "West Palm Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-west-palm-beach-2026-food-truck: live first-party route attests West Palm Beach, FL, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
       "id": "fl-food-vendor-space-call-first-prices-increase-march-of-2027-2027-pensac-2027-05-15-0733a7f6",
