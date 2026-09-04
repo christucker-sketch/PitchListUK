@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T14:38:44.110Z",
+  "updated_at": "2026-09-04T14:42:20.355Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5351,6 +5351,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-hamilton-2026-festival: live first-party route attests Hamilton, NJ, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "nj-2026-new-jersey-farmers-market-round-up-community-collections-2026-11-14-533ebc94",
+      "name": "2026 New Jersey Farmers Market Round Up — Community Collections Vendor Opportunity",
+      "organiser": "2026 New Jersey Farmers Market Round Up — Community Collections",
+      "source_url": "https://www.asburyfresh.com/marketplace/community/2026-new-jersey-farmers-market-round-up",
+      "application_url": "https://www.asburyfresh.com/marketplace/community/2026-new-jersey-farmers-market-round-up",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Camden",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-camden-2026-farmers-market: live first-party route attests Camden, NJ, actionable vendor terms, and exact event date 2026-11-14."
     },
     {
       "id": "nj-2026-ymca-tot-trot-and-family-fall-festival-2026-10-11-3ac2c64e",
