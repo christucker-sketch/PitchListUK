@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T14:51:01.177Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:060984f6d37da79ce27d5178fb404ae694c7b15a61ce532987cc9e1cc8fac603",
-  "total": 414,
+  "exported_at": "2026-09-04T15:23:09.625Z",
+  "source": "reviewed-us-new-york-cloud-promotion:a924c00583ff638733fa4888602848a42249e6e3c28894dea28e8e68f007f2b5",
+  "total": 415,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15775,6 +15775,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_abfe932f335716289f4d"
+    },
+    {
+      "stable_id": "opp_us_281b01702846992c54b2",
+      "event_name": "Vendor Events in Ithaca, NY",
+      "organiser": "Vendor Events in Ithaca, NY",
+      "source_url": "https://vendorsmap.com/cities/ithaca",
+      "application_url": "https://vendorsmap.com/cities/ithaca",
+      "location": "Ithaca",
+      "locality": "Ithaca",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "14850",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-26",
+      "event_end": "2026-10-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-vendor-events-in-ithaca-ny-2026-10-26-7e15118b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_281b01702846992c54b2"
     }
   ]
 };
