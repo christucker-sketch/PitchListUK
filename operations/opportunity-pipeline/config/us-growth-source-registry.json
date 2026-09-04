@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T19:05:58.220Z",
+  "updated_at": "2026-09-04T19:11:58.708Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -8969,6 +8969,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-vancouver-2026-farmers-market: live first-party route attests Vancouver, WA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "wa-vendor-events-in-west-seattle-wa-2027-07-17-c0ec146b",
+      "name": "Vendor Events in West Seattle, WA",
+      "organiser": "Vendor Events in West Seattle, WA",
+      "source_url": "https://vendorsmap.com/cities/west-seattle",
+      "application_url": "https://vendorsmap.com/cities/west-seattle",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Walla Walla",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-07-17",
+      "event_end": "2027-07-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-walla-walla-2027-arts-crafts: live first-party route attests Walla Walla, WA, actionable vendor terms, and exact event date range 2027-07-17 to 2027-07-19."
     },
     {
       "id": "wa-vendor-rules-regulations-2026-10-18-485c00da",
