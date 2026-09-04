@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T15:28:19.381Z",
+  "updated_at": "2026-09-04T15:30:53.114Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6683,6 +6683,24 @@
       "event_end": "2026-09-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-cleveland-2026-government-events: live first-party route attests Cleveland, OH, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-06."
+    },
+    {
+      "id": "oh-the-dublin-market-at-bridge-park-2026-09-26-2ae83c49",
+      "name": "The Dublin Market at Bridge Park Vendor Opportunity",
+      "organiser": "The Dublin Market at Bridge Park",
+      "source_url": "https://www.thedublinmarket.com",
+      "application_url": "https://www.thedublinmarket.com",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Dublin",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-dublin-2026-arts-crafts: live first-party route attests Dublin, OH, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "oh-vendor-resources-2027-01-08-39bd0ba9",
