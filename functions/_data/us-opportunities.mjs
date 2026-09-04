@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T16:00:08.336Z",
-  "source": "reviewed-us-washington-cloud-promotion:821218ca2e0058c8c046868458e5e46782ac469e144eaccbd5995ecc2358975d",
-  "total": 421,
+  "exported_at": "2026-09-04T18:36:23.631Z",
+  "source": "reviewed-us-new-york-cloud-promotion:ad4a772c8492b06a2ecead9f723d7b01f619452db551ed2b30fc029604a84d8b",
+  "total": 422,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16042,6 +16042,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_d6b5057d70c8c01d19e8"
+    },
+    {
+      "stable_id": "opp_us_6d77c42d52b2cd9929b7",
+      "event_name": "Ithaca Farmers Market to Host 50th Anniversary Celebration & Fundraiser - Morning Ag Clips Vendor Opportunity",
+      "organiser": "Ithaca Farmers Market to Host 50th Anniversary Celebration & Fundraiser - Morning Ag Clips",
+      "source_url": "https://www.morningagclips.com/ithaca-farmers-market-to-host-50th-anniversary-celebration-fundraiser/",
+      "application_url": "https://www.morningagclips.com/ithaca-farmers-market-to-host-50th-anniversary-celebration-fundraiser",
+      "location": "Ithaca",
+      "locality": "Ithaca",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-17",
+      "event_end": "2027-08-30",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-ithaca-farmers-market-to-host-50th-anniversary-celebration-fundraiser--2027-08-17-362f2ec5",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_6d77c42d52b2cd9929b7"
     }
   ]
 };
