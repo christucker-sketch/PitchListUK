@@ -207,6 +207,26 @@ function recentWorkflowDescribeCycles(state) {
   return count;
 }
 
+function recentCompactOutputParseCycles(state) {
+  const events = Array.isArray(state?.resilience_events) ? state.resilience_events : [];
+  const instanceId = state?.active_instance?.id || null;
+  if (!instanceId) return 0;
+  let count = 0;
+  for (let index = events.length - 1; index >= 0; index -= 1) {
+    const event = events[index];
+    if (event?.reason !== 'workflow_compact_output_parse_retry') break;
+    if (event?.instance_id !== instanceId) break;
+    count += 1;
+  }
+  return count;
+}
+
+function isCompactWorkflowOutputParseError(error, state) {
+  if (!(error instanceof SyntaxError) || !state?.active_instance) return false;
+  if (!/^running_cloudflare_(?:discovery|acquisition)$/.test(String(state.status || ''))) return false;
+  return /JSON|Unexpected end|Unterminated string|Unexpected token|Expected property name|Expected ','|Expected ':'/i.test(String(error?.message || ''));
+}
+
 function activeInstanceIntent(state) {
   return {
     mode: state?.active_instance?.mode || state?.current?.mode || '',
@@ -255,6 +275,19 @@ export function classifyResilienceAction(error, state, triggerFailureIntent = nu
       };
     }
     return { action: 'wait', reason: 'workflow_describe_retry_exhausted', detail: text };
+  }
+  if (isCompactWorkflowOutputParseError(error, state)) {
+    const maximumCycles = Math.max(1, Number(process.env.PITCHLIST_GROWTH_COMPACT_OUTPUT_PARSE_CYCLES || 3));
+    const completedCycles = recentCompactOutputParseCycles(state);
+    if (completedCycles >= maximumCycles - 1) {
+      return {
+        action: 'skip',
+        reason: 'workflow_compact_output_parse_exhausted_deferred',
+        detail: text,
+        intent: activeInstanceIntent(state)
+      };
+    }
+    return { action: 'wait', reason: 'workflow_compact_output_parse_retry', detail: text };
   }
   if (state?.status === 'reviewing_data_pr' && /^Merged snapshot is \d+; expected \d+$/i.test(String(error?.message || '').trim())) {
     const retries = recentMergeVisibilityRetries(state);

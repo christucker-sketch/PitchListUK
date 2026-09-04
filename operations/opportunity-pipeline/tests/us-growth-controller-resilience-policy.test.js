@@ -123,6 +123,61 @@ test('repeated transient describe failures for one exact Workflow are automatica
   assert.equal(action.intent.query_limit, 2);
 });
 
+test('malformed compact Workflow output is reread then deferred without weakening other JSON safety gates', () => {
+  const instanceId = `cf_${'1'.repeat(64)}`;
+  const state = {
+    status: 'running_cloudflare_discovery',
+    active_instance: { id: instanceId, mode: 'discover', state_code: 'MA' },
+    current: { mode: 'discover', state_code: 'MA', query_offset: 136, query_limit: 2 },
+    acquisition_batch: 1,
+    resilience_events: []
+  };
+  const error = new SyntaxError('Unterminated string in JSON at position 1042 line 1 column 1043');
+
+  let action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'wait');
+  assert.equal(action.reason, 'workflow_compact_output_parse_retry');
+
+  state.resilience_events.push({ reason: 'workflow_compact_output_parse_retry', instance_id: instanceId });
+  action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'wait');
+
+  state.resilience_events.push({ reason: 'workflow_compact_output_parse_retry', instance_id: instanceId });
+  action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'skip');
+  assert.equal(action.reason, 'workflow_compact_output_parse_exhausted_deferred');
+  assert.equal(action.intent.instance_id, instanceId);
+  assert.equal(action.intent.state_code, 'MA');
+  assert.equal(action.intent.query_offset, 136);
+  assert.equal(action.intent.query_limit, 2);
+
+  assert.equal(
+    classifyResilienceAction(error, { status: 'reviewing_data_pr', active_instance: null }).action,
+    'stop'
+  );
+  assert.equal(
+    classifyResilienceAction(new Error(error.message), state).action,
+    'stop'
+  );
+});
+
+test('compact output parse history from another Workflow does not poison the current instance budget', () => {
+  const currentId = `cf_${'2'.repeat(64)}`;
+  const state = {
+    status: 'running_cloudflare_acquisition',
+    active_instance: { id: currentId, mode: 'acquire', state_code: 'MA' },
+    current: { mode: 'discover', state_code: 'MA', query_offset: 136, query_limit: 2 },
+    acquisition_batch: 2,
+    resilience_events: [
+      { reason: 'workflow_compact_output_parse_retry', instance_id: `cf_${'3'.repeat(64)}` },
+      { reason: 'workflow_compact_output_parse_retry', instance_id: `cf_${'3'.repeat(64)}` }
+    ]
+  };
+  const action = classifyResilienceAction(new SyntaxError('Unexpected end of JSON input'), state);
+  assert.equal(action.action, 'wait');
+  assert.equal(action.reason, 'workflow_compact_output_parse_retry');
+});
+
 test('describe failure history from a different Workflow does not poison the current instance budget', () => {
   const currentId = `cf_${'e'.repeat(64)}`;
   const state = {
