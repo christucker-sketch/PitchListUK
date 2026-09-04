@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T15:34:02.892Z",
-  "source": "reviewed-us-georgia-cloud-promotion:7fb281531ad32f45b71bcbec781ad724efd9182c4d3d8216c0e518523b4f4d6e",
-  "total": 419,
+  "exported_at": "2026-09-04T15:43:30.943Z",
+  "source": "reviewed-us-florida-cloud-promotion:8024d356a3b72f274f23c8057423151ccfeff904c0584cf1c87cfc8877256276",
+  "total": 420,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15967,6 +15967,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_63584b2b7af1a49e5d8c"
+    },
+    {
+      "stable_id": "opp_us_873fd3666047d850a9cf",
+      "event_name": "Food Cart Exhibitor - 2026 LAGOONFEST - Eventeny",
+      "organiser": "Food Cart Exhibitor - 2026 LAGOONFEST - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=48959&srsltid=AfmBOopS5cOudLLiJAeel_YQ88oQ0wx4uY2PePj2LKxHyzpgbT7aOHur",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=48959&srsltid=AfmBOopS5cOudLLiJAeel_YQ88oQ0wx4uY2PePj2LKxHyzpgbT7aOHur",
+      "location": "West Palm Beach",
+      "locality": "West Palm Beach",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "33401",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-food-cart-exhibitor-2026-lagoonfest-eventeny-2026-10-31-cded3f51",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_873fd3666047d850a9cf"
     }
   ]
 };
