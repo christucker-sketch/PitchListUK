@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T18:44:28.488Z",
-  "source": "reviewed-us-michigan-cloud-promotion:a3fee98bc9a0d25c55b9af78fb611d1b852dc771abbab00fe6ed75fef0467179",
-  "total": 423,
+  "exported_at": "2026-09-04T19:07:00.615Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:f76fc17885dfa98600776da1b66063151050a97c3dc166c613d4a9a43210dde6",
+  "total": 424,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16116,6 +16116,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_5823a70278a5c0886047"
+    },
+    {
+      "stable_id": "opp_us_57ea504480690cb2a63d",
+      "event_name": "Checking out the vendor market at NC Apple Festival",
+      "organiser": "Checking out the vendor market at NC Apple Festival",
+      "source_url": "https://www.foxcarolina.com/video/2026/09/04/checking-out-vendor-market-nc-apple-festival/",
+      "application_url": "https://www.foxcarolina.com/video/2026/09/04/checking-out-vendor-market-nc-apple-festival",
+      "location": "Greenville",
+      "locality": "Greenville",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-04",
+      "event_end": "2027-09-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-checking-out-the-vendor-market-at-nc-apple-festival-2027-09-04-44cc3adc",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_57ea504480690cb2a63d"
     }
   ]
 };
