@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T18:59:07.122Z",
+  "updated_at": "2026-09-04T19:05:58.220Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4971,6 +4971,24 @@
       "event_end": "2027-09-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-greensboro-2027-food-truck: live first-party route attests Greensboro, NC, actionable vendor terms, and exact event date 2027-09-17."
+    },
+    {
+      "id": "nc-checking-out-the-vendor-market-at-nc-apple-festival-2027-09-04-44cc3adc",
+      "name": "Checking out the vendor market at NC Apple Festival",
+      "organiser": "Checking out the vendor market at NC Apple Festival",
+      "source_url": "https://www.foxcarolina.com/video/2026/09/04/checking-out-vendor-market-nc-apple-festival",
+      "application_url": "https://www.foxcarolina.com/video/2026/09/04/checking-out-vendor-market-nc-apple-festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Greenville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-04",
+      "event_end": "2027-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-greenville-2027-festival: live first-party route attests Greenville, NC, actionable vendor terms, and exact event date range 2027-09-04 to 2027-09-07."
     },
     {
       "id": "nc-christmas-markets-in-raleigh-festive-pop-up-shops-with-holiday-cheer-2026-12-07-a548711f",
