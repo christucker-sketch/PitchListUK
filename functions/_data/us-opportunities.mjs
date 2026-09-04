@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T18:36:23.631Z",
-  "source": "reviewed-us-new-york-cloud-promotion:ad4a772c8492b06a2ecead9f723d7b01f619452db551ed2b30fc029604a84d8b",
-  "total": 422,
+  "exported_at": "2026-09-04T18:44:28.488Z",
+  "source": "reviewed-us-michigan-cloud-promotion:a3fee98bc9a0d25c55b9af78fb611d1b852dc771abbab00fe6ed75fef0467179",
+  "total": 423,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16079,6 +16079,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_6d77c42d52b2cd9929b7"
+    },
+    {
+      "stable_id": "opp_us_5823a70278a5c0886047",
+      "event_name": "Traverse City Downtown Development Authority: Sara Hardy Farmers Market Vendor Opportunity",
+      "organiser": "Traverse City Downtown Development Authority: Sara Hardy Farmers Market",
+      "source_url": "https://www.9and10news.com/2026/03/13/traverse-city-downtown-development-authority-sara-hardy-farmers-market/",
+      "application_url": "https://www.9and10news.com/2026/03/13/traverse-city-downtown-development-authority-sara-hardy-farmers-market",
+      "location": "Traverse City",
+      "locality": "Traverse City",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-02",
+      "event_end": "2027-05-02",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-traverse-city-downtown-development-authority-sara-hardy-farmers-market-2027-05-02-d31d62fb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_5823a70278a5c0886047"
     }
   ]
 };
