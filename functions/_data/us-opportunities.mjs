@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T15:43:30.943Z",
-  "source": "reviewed-us-florida-cloud-promotion:8024d356a3b72f274f23c8057423151ccfeff904c0584cf1c87cfc8877256276",
-  "total": 420,
+  "exported_at": "2026-09-04T16:00:08.336Z",
+  "source": "reviewed-us-washington-cloud-promotion:821218ca2e0058c8c046868458e5e46782ac469e144eaccbd5995ecc2358975d",
+  "total": 421,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16005,6 +16005,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_873fd3666047d850a9cf"
+    },
+    {
+      "stable_id": "opp_us_d6b5057d70c8c01d19e8",
+      "event_name": "Wheelin' Walla Walla Vendor Opportunity",
+      "organiser": "Wheelin' Walla Walla",
+      "source_url": "https://www.motorsportreg.com/events/wheelin-walla-fairgrounds-pca-greater-columbia-613169",
+      "application_url": "https://www.motorsportreg.com/events/wheelin-walla-fairgrounds-pca-greater-columbia-613169",
+      "location": "Walla Walla",
+      "locality": "Walla Walla",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-wheelin-walla-walla-2026-09-11-1218f275",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_d6b5057d70c8c01d19e8"
     }
   ]
 };
