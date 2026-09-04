@@ -22,8 +22,12 @@ import {
 
 const originalExecFileSync = childProcess.execFileSync;
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
+const repositoryRoot = path.resolve(scriptDirectory, '../../..');
 const coreControllerPath = path.join(scriptDirectory, 'growth-controller-core.mjs');
 const defaultStateFile = path.join(os.homedir(), '.local/state/findpitches-us-growth/controller.json');
+const githubRepository = 'christucker-sketch/PitchListUK';
+const growthRegistryPath = 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
+const snapshotPath = 'functions/_data/us-opportunities.mjs';
 let lastTriggerFailureIntent = null;
 
 function stripAnsi(value) {
@@ -242,6 +246,89 @@ function isPriorityPlanExhausted(error) {
   return /^Priority discovery plan exhausted before target count was reached$/i.test(String(error?.message || '').trim());
 }
 
+function unresolvedAcquisitionPrNumber(error) {
+  const match = String(error?.message || '').trim().match(/^Unresolved acquisition PR: #(\d+)$/i);
+  return match ? Number(match[1]) : null;
+}
+
+function stateLineFromPrBody(body) {
+  const match = String(body || '').match(/^- state:\s*(.+?)\s*\(([A-Z]{2})\)\s*$/m);
+  return match ? { name: match[1].trim(), code: match[2] } : null;
+}
+
+function slugifyStateName(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+export function deferredUnitMatchesAcquisitionPr(pr, state) {
+  if (!pr || pr.state !== 'OPEN' || pr.isDraft || pr.baseRefName !== 'main') return false;
+  if (state?.active_instance) return false;
+  if (Number(state?.current?.source_pr) === Number(pr.number) || Number(state?.current?.data_pr) === Number(pr.number)) return false;
+
+  const head = String(pr.headRefName || '');
+  const mode = head.startsWith('sources/cloud-') ? 'discover' : head.startsWith('data/cloud-') ? 'acquire' : '';
+  if (!mode) return false;
+  const stateLine = stateLineFromPrBody(pr.body);
+  if (!stateLine) return false;
+  const stateSlug = slugifyStateName(stateLine.name);
+  if (!stateSlug || !head.toLowerCase().includes(`-${stateSlug}-`)) return false;
+
+  const baseOid = String(pr.baseRefOid || '');
+  if (!/^[a-f0-9]{40}$/i.test(baseOid) || !head.endsWith(`-base-${baseOid.slice(0, 16)}`)) return false;
+  if (!Array.isArray(pr.commits) || pr.commits.length !== 1) return false;
+  const expectedFile = mode === 'discover' ? growthRegistryPath : snapshotPath;
+  if (!Array.isArray(pr.files) || pr.files.length !== 1 || pr.files[0]?.path !== expectedFile) return false;
+
+  const candidates = [
+    ...(Array.isArray(state?.deferred_units) ? state.deferred_units.filter(item => item?.disposition === 'deferred_for_replay') : []),
+    ...(state?.deferred_replay_inflight ? [state.deferred_replay_inflight] : [])
+  ];
+  return candidates.some(unit => unit?.mode === mode && unit?.state_code === stateLine.code);
+}
+
+function reconcileDeferredOrphanPr(error, state) {
+  const prNumber = unresolvedAcquisitionPrNumber(error);
+  if (!prNumber) return null;
+  let pr;
+  try {
+    pr = JSON.parse(originalExecFileSync('gh', [
+      'pr', 'view', String(prNumber), '--repo', githubRepository,
+      '--json', 'number,state,isDraft,baseRefName,baseRefOid,headRefName,body,files,commits'
+    ], { cwd: repositoryRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }));
+  } catch {
+    return null;
+  }
+  if (!deferredUnitMatchesAcquisitionPr(pr, state)) return null;
+
+  const stateLine = stateLineFromPrBody(pr.body);
+  const mode = String(pr.headRefName || '').startsWith('sources/cloud-') ? 'discover' : 'acquire';
+  const matchingUnit = [
+    ...(Array.isArray(state?.deferred_units) ? state.deferred_units.filter(item => item?.disposition === 'deferred_for_replay') : []),
+    ...(state?.deferred_replay_inflight ? [state.deferred_replay_inflight] : [])
+  ].find(unit => unit?.mode === mode && unit?.state_code === stateLine.code);
+
+  const audit = `Automatically closed unmerged by the FindPitches growth controller because this PR belongs to a ${mode} Workflow unit for ${stateLine.name} (${stateLine.code}) that is preserved for exact deferred replay. No publication from this abandoned Workflow result has been accepted. Deferred checkpoint: query_offset=${matchingUnit?.query_offset ?? 'n/a'}, query_limit=${matchingUnit?.query_limit ?? 'n/a'}, batch=${matchingUnit?.batch_number ?? 'n/a'}, workflow=${matchingUnit?.instance_id || 'n/a'}.`;
+  originalExecFileSync('gh', ['pr', 'close', String(prNumber), '--repo', githubRepository, '--comment', audit], {
+    cwd: repositoryRoot,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+
+  state.resilience_events = Array.isArray(state.resilience_events) ? state.resilience_events : [];
+  boundedPush(state.resilience_events, {
+    at: new Date().toISOString(),
+    reason: 'deferred_orphan_pr_closed',
+    disposition: 'closed_unmerged',
+    pr_number: prNumber,
+    mode,
+    state_code: stateLine.code,
+    deferred_instance_id: matchingUnit?.instance_id || null,
+    deferred_query_offset: matchingUnit?.query_offset ?? null,
+    deferred_batch_number: matchingUnit?.batch_number ?? null
+  });
+  return { pr_number: prNumber, mode, state_code: stateLine.code };
+}
+
 export function classifyResilienceAction(error, state, triggerFailureIntent = null) {
   const text = normalizedErrorText(error);
   if (/Another acquisition Workflow is (?:queued|running):\s*cf_[a-f0-9]{64}/i.test(text)) {
@@ -447,6 +534,15 @@ export async function resilientMain(argv = process.argv.slice(2)) {
         writeControllerState(stateFile, state);
         process.stdout.write(`${JSON.stringify(buildOperationalStatus(state))}\n`);
         return;
+      }
+
+      const orphan = reconcileDeferredOrphanPr(error, state);
+      if (orphan) {
+        writeControllerState(stateFile, state);
+        process.stderr.write(`Growth resilience: closed deferred orphan PR #${orphan.pr_number} unmerged for ${orphan.state_code}; continuing\n`);
+        lastTriggerFailureIntent = null;
+        await new Promise(resolve => setTimeout(resolve, skipDelaySeconds * 1000));
+        continue;
       }
 
       const action = classifyResilienceAction(error, state, lastTriggerFailureIntent);
