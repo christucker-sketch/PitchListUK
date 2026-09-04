@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T19:12:57.202Z",
-  "source": "reviewed-us-washington-cloud-promotion:aa6e40e9f09252a19a907ed3ee77725005d50b7bac5ba819d7cce6f15b4a4c1e",
-  "total": 425,
+  "exported_at": "2026-09-04T19:17:11.699Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:4229f50ffbbc9125e0ecb2ae0f2467abfb8d92c53afc7e8d99d8df74629f388b",
+  "total": 426,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16188,6 +16188,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_1db4f8c92fbb56ec011e"
+    },
+    {
+      "stable_id": "opp_us_4ca79c146520bd81c503",
+      "event_name": "Apply to Vend Vendor Opportunity",
+      "organiser": "ghostshipmarket.com",
+      "source_url": "https://ghostshipmarket.com/vendor-rules/",
+      "application_url": "https://ghostshipmarket.com/vendor-rules",
+      "location": "Salem",
+      "locality": "Salem",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-12-19",
+      "event_end": "2027-12-19",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-ghostshipmarket-com-2027-12-19-af589131",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_4ca79c146520bd81c503"
     }
   ]
 };
