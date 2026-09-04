@@ -139,3 +139,79 @@ test('California publication treats srsltid variants of an existing production i
   assert.equal(planned.summary.additions, 0);
   assert.deepEqual(planned.summary.existing_ids, ['opp_us_0264def229f623f73379']);
 });
+
+test('California publication preserves the existing production ID for the same dated canonical route', () => {
+  const source = {
+    id: 'ca-food-2026-10-10-a7ae7966',
+    name: 'OC Pride 2026 Food Vendor Application',
+    organiser: 'OC Pride',
+    source_url: 'https://www.eventeny.com/events/vendor/?id=47221&srsltid=NEWTRACKING',
+    application_url: 'https://www.eventeny.com/events/vendor/?id=47221&srsltid=NEWTRACKING',
+    source_class: 'event-organiser',
+    country_code: 'US',
+    jurisdiction: 'US-CA',
+    region_code: 'CA',
+    locality: 'Santa Ana',
+    status: 'approved-pilot'
+  };
+  const staging = {
+    run_id: 'california-oc-pride-regression',
+    generated_at: '2026-09-04T14:53:44.474Z',
+    country_code: 'US',
+    region_code: 'CA',
+    jurisdiction: 'US-CA',
+    mode: 'addition-only',
+    staging_only: true,
+    automatic_publish: false,
+    production_writes: false,
+    held: [],
+    rows: [{
+      stable_id: 'opp_us_078fede1d6fd6607cc6f',
+      event_name: 'Food Vendor Application - OC Pride 2026 Festival & Parade - Eventeny',
+      organiser: 'Food',
+      source_url: source.source_url,
+      application_url: source.application_url,
+      location: 'Santa Ana',
+      locality: 'Santa Ana',
+      region: 'California',
+      region_code: 'CA',
+      region_name: 'California',
+      country: 'United States',
+      country_code: 'US',
+      jurisdiction: 'US-CA',
+      event_start: '2026-10-10',
+      application_deadline: '2026-09-04',
+      quality_status: 'review',
+      publishable: false
+    }]
+  };
+  const existing = {
+    stable_id: 'opp_us_6210bd76ba5dc4820dd4',
+    id: 'opp_us_6210bd76ba5dc4820dd4',
+    event_name: 'OC Pride 2026 Food Vendor Application',
+    organiser: 'OC Pride',
+    source_url: 'https://www.eventeny.com/events/vendor/?id=47221',
+    application_url: 'https://www.eventeny.com/events/vendor/?id=47221',
+    location: 'Santa Ana',
+    locality: 'Santa Ana',
+    region: 'California',
+    region_code: 'CA',
+    region_name: 'California',
+    country: 'United States',
+    country_code: 'US',
+    jurisdiction: 'US-CA',
+    event_start: '2026-10-10',
+    application_deadline: '2026-09-04',
+    quality_status: 'customer_ready',
+    publishable: true
+  };
+
+  const promotion = buildStatePromotionManifest(california, staging, { sources: [source] });
+  const planned = planStateProductionSnapshot(california, { total: 1, rows: [existing] }, promotion, staging, { sources: [source] });
+
+  assert.equal(planned.summary.before_count, 1);
+  assert.equal(planned.summary.after_count, 1);
+  assert.equal(planned.summary.already_present, 1);
+  assert.equal(planned.summary.additions, 0);
+  assert.deepEqual(planned.summary.existing_ids, ['opp_us_6210bd76ba5dc4820dd4']);
+});
