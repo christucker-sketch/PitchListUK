@@ -7,6 +7,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { enabledStates } from '../src/us-state-registry.js';
+import {
+  deliverWithOpenClaw,
+  notificationConfigFromEnvironment
+} from '../../acquisition-notifications/notifier.mjs';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, '../../..');
@@ -181,6 +185,58 @@ export function renderMarkdown(report) {
   return `${lines.join('\n')}\n`;
 }
 
+export function renderTelegramMessages(report, options = {}) {
+  const maxLength = Math.max(1000, Math.min(3900, Number(options.maxLength || 3600)));
+  const s = report.summary;
+  const c = report.controller;
+  const current = c.active_instance?.state_code || c.current?.state_code || 'none';
+  const header = [
+    '🇺🇸 FindPitches US sweep report',
+    `Status: ${c.status || 'unknown'}`,
+    `Current: ${current}`,
+    `Opportunities: ${c.snapshot_count} (live ${c.live_api_count})`,
+    `Approved sources: ${c.approved_source_count}`,
+    `States touched: ${s.states_touched}/${s.states_total}`,
+    `States with additions: ${s.states_with_additions}`,
+    `Deferred: ${s.deferred_units} | Blockers: ${s.blockers}`,
+    `Completion: ${s.completion_integrity_passed ? 'PASS' : 'NOT COMPLETE'}`
+  ].join('\n');
+
+  const stateLines = report.states.map(row => {
+    const flags = [row.deferred_units.length ? `D${row.deferred_units.length}` : null, row.blockers.length ? `B${row.blockers.length}` : null].filter(Boolean).join('/');
+    return `${row.code}: ${row.opportunity_total} opps | +${row.additions} | src +${row.source_additions} | runs ${row.discovery_runs}/${row.acquisition_runs}${flags ? ` | ${flags}` : ''}`;
+  });
+
+  const tail = [];
+  if (report.deferred_units.length) {
+    tail.push('Deferred:');
+    for (const item of report.deferred_units) tail.push(`${item.state_code || '??'} ${item.mode || '?'} offset ${item.query_offset ?? '-'} batch ${item.batch_number ?? '-'} — ${item.reason || 'unknown'}`);
+  }
+  if (report.blockers.length) {
+    tail.push('Blockers:');
+    for (const item of report.blockers) tail.push(`${blockerStateCode(item) || '??'} — ${item.reason || item.error || item.detail || 'unspecified'}`);
+  }
+
+  const sections = [header, 'States:\n' + stateLines.join('\n')];
+  if (tail.length) sections.push(tail.join('\n'));
+  const messages = [];
+  let currentMessage = '';
+  for (const section of sections) {
+    const lines = section.split('\n');
+    for (const line of lines) {
+      const candidate = currentMessage ? `${currentMessage}\n${line}` : line;
+      if (candidate.length > maxLength && currentMessage) {
+        messages.push(currentMessage);
+        currentMessage = line;
+      } else {
+        currentMessage = candidate;
+      }
+    }
+  }
+  if (currentMessage) messages.push(currentMessage);
+  return messages;
+}
+
 function argumentValue(args, name, fallback = null) {
   const index = args.indexOf(name);
   return index >= 0 ? args[index + 1] : fallback;
@@ -202,6 +258,16 @@ function enrichGithub(report) {
   return github;
 }
 
+export function sendReportToTelegram(report, options = {}) {
+  const env = options.env || process.env;
+  const config = notificationConfigFromEnvironment(env, options.config || {});
+  if (!config) throw new Error('FindPitches notifications are not enabled for this environment');
+  const messages = renderTelegramMessages(report, options);
+  const deliver = options.deliver || deliverWithOpenClaw;
+  for (const message of messages) deliver(config, message);
+  return { messages_sent: messages.length };
+}
+
 export function main(argv = process.argv.slice(2)) {
   const stateFile = path.resolve(argumentValue(argv, '--state-file', process.env.PITCHLIST_GROWTH_STATE_FILE || defaultStateFile));
   const format = String(argumentValue(argv, '--format', 'markdown')).toLowerCase();
@@ -214,6 +280,7 @@ export function main(argv = process.argv.slice(2)) {
   const rendered = format === 'json' ? `${JSON.stringify(report, null, 2)}\n` : renderMarkdown(report);
   if (output) fs.writeFileSync(path.resolve(output), rendered);
   else process.stdout.write(rendered);
+  if (argv.includes('--telegram')) sendReportToTelegram(report);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();
