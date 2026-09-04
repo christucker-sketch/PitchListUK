@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T14:43:24.682Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:32fd4954a66b3804108c212d88c361aaa0da9255378895bf160d7916c5fb6b4f",
-  "total": 413,
+  "exported_at": "2026-09-04T14:51:01.177Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:060984f6d37da79ce27d5178fb404ae694c7b15a61ce532987cc9e1cc8fac603",
+  "total": 414,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -15738,6 +15738,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_8dbb56b2612f6269dee8"
+    },
+    {
+      "stable_id": "opp_us_abfe932f335716289f4d",
+      "event_name": "Swampscott Farmers Market | Farmer's Market in Swampscott, Massachusetts. Open June Vendor Opportunity",
+      "organiser": "Swampscott Farmers Market | Farmer's Market in Swampscott, Massachusetts. Open June",
+      "source_url": "https://swampscottfarmersmarket.org/",
+      "application_url": "https://swampscottfarmersmarket.org",
+      "location": "Salem",
+      "locality": "Salem",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-23",
+      "event_end": "2026-11-23",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-swampscott-farmers-market-farmer-s-market-in-swampscott-massachusetts--2026-11-23-5fc6dbcb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_abfe932f335716289f4d"
     }
   ]
 };
