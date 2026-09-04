@@ -10,6 +10,7 @@ import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acqu
 import { controlledRolloutScheduled } from './controlled-rollout-schedule.js';
 import { assertMainUnchanged, dataBranchName } from './data-branch-name.js';
 import { mergeStagingBatches, stagingSourceBatches } from './staging-batches.js';
+import { receiptsForAddedSources } from './source-evidence-receipts.js';
 import {
   chunkGrowthCandidates,
   finalizeGrowthDiscovery,
@@ -203,6 +204,7 @@ async function openSourcePullRequest(env, state, base, discovery) {
   const branchFile = await githubJson(env, `/contents/${growthRegistryPath}?ref=${encodeURIComponent(branch)}`);
   const branchRegistry = parseGrowthRegistry(decodeBase64Utf8(branchFile.content));
   const expectedIds = merged.added.map(source => source.id).sort();
+  const evidenceReceipts = receiptsForAddedSources(discovery.receipts, merged.added);
   const alreadyWritten = expectedIds.every(id => branchRegistry.sources.some(source => source.id === id));
   if (!alreadyWritten) {
     await githubJson(env, `/contents/${growthRegistryPath}`, {
@@ -236,8 +238,8 @@ async function openSourcePullRequest(env, state, base, discovery) {
         `- direct source pages fetched: ${discovery.metrics.pages_fetched}`,
         `- approved source registry: ${beforeCount} -> ${afterCount}`,
         `- net-new approved sources: ${merged.added.length}`,
-        `- deterministic source evidence receipts: ${discovery.receipts.length}/${merged.added.length} passed`,
-        ...discovery.receipts.map(receipt => `  - ${receipt.source_id}: ${receipt.route}; locality=${receipt.locality}; event_dates=${receipt.live_event_dates.join(',')}`),
+        `- deterministic source evidence receipts: ${evidenceReceipts.length}/${merged.added.length} passed`,
+        ...evidenceReceipts.map(receipt => `  - ${receipt.source_id}: ${receipt.route}; locality=${receipt.locality}; event_dates=${receipt.live_event_dates.join(',')}`),
         '- additions only; no source removals',
         '- no automatic merge or deploy requested', '',
         'This PR was generated from search and live-page evidence fetched inside the production Cloudflare Workflow. GitHub CI remains the publication gate.'
