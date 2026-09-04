@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T19:16:10.348Z",
+  "updated_at": "2026-09-04T19:20:23.838Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2055,6 +2055,24 @@
       "event_end": "2026-09-16",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2026-farmers-market: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-09-16."
+    },
+    {
+      "id": "fl-manateefest-manatee-lagoon-2027-02-06-a97d1e1d",
+      "name": "MANATEEFEST - Manatee Lagoon Vendor Opportunity",
+      "organiser": "MANATEEFEST - Manatee Lagoon",
+      "source_url": "https://visitmanateelagoon.com/manateefest",
+      "application_url": "https://visitmanateelagoon.com/manateefest",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "West Palm Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-06",
+      "event_end": "2027-02-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-west-palm-beach-2027-food-truck: live first-party route attests West Palm Beach, FL, actionable vendor terms, and exact event date 2027-02-06."
     },
     {
       "id": "fl-merchants-and-entertainers-2027-11-07-ee02a800",
