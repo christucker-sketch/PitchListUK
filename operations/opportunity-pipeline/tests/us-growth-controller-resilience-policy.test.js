@@ -94,6 +94,52 @@ test('live API count/identity cache skew waits within the existing consistency d
   assert.equal(action.reason, 'live_api_cache_skew');
 });
 
+test('repeated transient describe failures for one exact Workflow are automatically deferred', () => {
+  const instanceId = `cf_${'d'.repeat(64)}`;
+  const state = {
+    status: 'running_cloudflare_discovery',
+    active_instance: { id: instanceId, mode: 'discover', state_code: 'OH' },
+    current: { mode: 'discover', state_code: 'OH', query_offset: 130, query_limit: 2 },
+    acquisition_batch: 1,
+    resilience_events: []
+  };
+  const error = new Error(`Command failed: npx wrangler workflows instances describe pitchlist-texas-acquisition ${instanceId} workflows.api.error.internal_server code: 10001`);
+
+  let action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'wait');
+  assert.equal(action.reason, 'workflow_describe_retry_exhausted');
+
+  state.resilience_events.push({ reason: 'workflow_describe_retry_exhausted', instance_id: instanceId });
+  action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'wait');
+
+  state.resilience_events.push({ reason: 'workflow_describe_retry_exhausted', instance_id: instanceId });
+  action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'skip');
+  assert.equal(action.reason, 'workflow_describe_retry_exhausted_deferred');
+  assert.equal(action.intent.instance_id, instanceId);
+  assert.equal(action.intent.state_code, 'OH');
+  assert.equal(action.intent.query_offset, 130);
+  assert.equal(action.intent.query_limit, 2);
+});
+
+test('describe failure history from a different Workflow does not poison the current instance budget', () => {
+  const currentId = `cf_${'e'.repeat(64)}`;
+  const state = {
+    status: 'running_cloudflare_discovery',
+    active_instance: { id: currentId, mode: 'discover', state_code: 'GA' },
+    current: { mode: 'discover', state_code: 'GA', query_offset: 40, query_limit: 2 },
+    resilience_events: [
+      { reason: 'workflow_describe_retry_exhausted', instance_id: `cf_${'f'.repeat(64)}` },
+      { reason: 'workflow_describe_retry_exhausted', instance_id: `cf_${'f'.repeat(64)}` }
+    ]
+  };
+  const error = new Error(`Command failed: npx wrangler workflows instances describe pitchlist-texas-acquisition ${currentId} Authentication error code: 10000`);
+  const action = classifyResilienceAction(error, state);
+  assert.equal(action.action, 'wait');
+  assert.equal(action.reason, 'workflow_describe_retry_exhausted');
+});
+
 test('unknown active workflow is waited on, while evidence and repository failures still stop', () => {
   const activeId = `cf_${'c'.repeat(64)}`;
   assert.equal(
