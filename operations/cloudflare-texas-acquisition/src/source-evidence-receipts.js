@@ -15,3 +15,14 @@ export function receiptsForAddedSources(receipts = [], addedSources = []) {
 
   return selected;
 }
+
+export function publicationEvidenceCounts(discovery = {}, publication = {}) {
+  const sourceIds = Array.isArray(publication?.source_ids) ? publication.source_ids : [];
+  const publishedEvidenceCount = Number(publication?.evidence_passed_count || 0);
+  return {
+    validated_source_count: Number(discovery?.sources?.length || 0),
+    validated_evidence_count: Number(discovery?.receipts?.length || 0),
+    generated_source_count: sourceIds.length,
+    evidence_passed_count: publishedEvidenceCount
+  };
+}
