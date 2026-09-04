@@ -11,6 +11,14 @@ import {
   safeNotifyFailureFromEnvironment,
   safeNotifyRecoveryFromEnvironment
 } from '../../acquisition-notifications/notifier.mjs';
+import {
+  buildOperationalStatus,
+  deferredBlockers,
+  pendingDeferredUnits,
+  resolveDeferredReplay,
+  scheduleNextDeferredReplay,
+  upsertDeferredUnit
+} from './growth-controller-integrity.mjs';
 
 const originalExecFileSync = childProcess.execFileSync;
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -185,6 +193,10 @@ function recentMergeVisibilityRetries(state) {
   return count;
 }
 
+function isPriorityPlanExhausted(error) {
+  return /^Priority discovery plan exhausted before target count was reached$/i.test(String(error?.message || '').trim());
+}
+
 export function classifyResilienceAction(error, state, triggerFailureIntent = null) {
   const text = normalizedErrorText(error);
   if (/Another acquisition Workflow is (?:queued|running):\s*cf_[a-f0-9]{64}/i.test(text)) {
@@ -242,14 +254,15 @@ export function applyDeferredSkip(state, action, now = new Date()) {
     query_limit: Number.isFinite(Number(intent.query_limit)) ? Number(intent.query_limit) : null,
     batch_number: Number.isFinite(Number(intent.batch_number)) ? Number(intent.batch_number) : null,
     instance_id: intent.instance_id || state?.active_instance?.id || null,
+    source_ids: mode === 'acquire' ? [...(state.pending_source_ids || [])] : undefined,
     error: action.detail,
     disposition: 'deferred_for_replay'
   };
 
   state.resilience_events = Array.isArray(state.resilience_events) ? state.resilience_events : [];
-  state.deferred_units = Array.isArray(state.deferred_units) ? state.deferred_units : [];
   boundedPush(state.resilience_events, event);
-  boundedPush(state.deferred_units, event);
+  upsertDeferredUnit(state, event);
+  if (state.deferred_replay_inflight) state.deferred_replay_inflight = null;
 
   if (mode === 'acquire') {
     const failedBatch = Number.isFinite(Number(intent.batch_number)) ? Number(intent.batch_number) : Number(state.acquisition_batch || 1);
@@ -294,18 +307,87 @@ function recordWaitEvent(state, action) {
   });
 }
 
+function scheduleDeferredOrBlock(state, stateFile) {
+  const maximumAttempts = Math.max(1, Number(process.env.PITCHLIST_GROWTH_DEFERRED_REPLAY_ATTEMPTS || 3));
+  const replay = scheduleNextDeferredReplay(state, new Date(), { maximumAttempts });
+  writeControllerState(stateFile, state);
+  if (replay.reason === 'replay_attempts_exhausted') {
+    throw new Error(`Deferred ${replay.unit.mode} unit for ${replay.unit.state_code} exhausted replay attempts`);
+  }
+  if (replay.scheduled) {
+    process.stderr.write(`Growth integrity: replaying deferred ${replay.unit.mode} unit for ${replay.unit.state_code}\n`);
+    return true;
+  }
+  return false;
+}
+
 export async function resilientMain(argv = process.argv.slice(2)) {
   const command = argv[0] || 'status';
-  if (command !== 'run') return core.main(argv);
   const stateFile = path.resolve(argumentValue(argv, '--state-file', process.env.PITCHLIST_GROWTH_STATE_FILE || defaultStateFile));
+  if (command === 'status') {
+    process.stdout.write(`${JSON.stringify(buildOperationalStatus(readControllerState(stateFile)))}\n`);
+    return;
+  }
+  if (command !== 'run') return core.main(argv);
   const waitSeconds = Math.max(10, Number(process.env.PITCHLIST_GROWTH_RESILIENCE_WAIT_SECONDS || 60));
   const skipDelaySeconds = Math.max(1, Number(process.env.PITCHLIST_GROWTH_SKIP_DELAY_SECONDS || 15));
 
   for (;;) {
+    let before = readControllerState(stateFile);
+    if ((before.status === 'complete' || Number(before.snapshot_count) >= Number(before.target_count)) && (pendingDeferredUnits(before).length || before.deferred_replay_inflight)) {
+      before.status = 'ready';
+      if (before.deferred_replay_inflight) resolveDeferredReplay(before);
+      if (!scheduleDeferredOrBlock(before, stateFile) && deferredBlockers(before).length) {
+        throw new Error('Deferred units remain as genuine blockers; refusing to declare sweep complete');
+      }
+    }
+
     try {
-      return await core.main(argv);
+      await core.main(argv);
+      const after = readControllerState(stateFile);
+      if (after.deferred_replay_inflight) resolveDeferredReplay(after);
+      if (pendingDeferredUnits(after).length) {
+        after.status = 'ready';
+        if (scheduleDeferredOrBlock(after, stateFile)) continue;
+      }
+      if (deferredBlockers(after).length) {
+        after.status = 'blocked_deferred';
+        writeControllerState(stateFile, after);
+        throw new Error('Deferred units remain as genuine blockers; refusing to declare sweep complete');
+      }
+      writeControllerState(stateFile, after);
+      return;
     } catch (error) {
       const state = readControllerState(stateFile);
+
+      if (isPriorityPlanExhausted(error)) {
+        if (state.deferred_replay_inflight) {
+          const resolved = resolveDeferredReplay(state);
+          state.resilience_events = Array.isArray(state.resilience_events) ? state.resilience_events : [];
+          boundedPush(state.resilience_events, {
+            at: new Date().toISOString(),
+            reason: 'deferred_replay_succeeded',
+            disposition: 'resolved',
+            deferred_key: resolved
+          });
+        }
+        if (pendingDeferredUnits(state).length) {
+          if (scheduleDeferredOrBlock(state, stateFile)) continue;
+        }
+        if (deferredBlockers(state).length) {
+          state.status = 'blocked_deferred';
+          writeControllerState(stateFile, state);
+          throw new Error('Deferred units remain as genuine blockers; refusing to declare sweep complete');
+        }
+        state.status = 'sweep_complete';
+        state.sweep_completed_at = new Date().toISOString();
+        state.current = null;
+        state.active_instance = null;
+        writeControllerState(stateFile, state);
+        process.stdout.write(`${JSON.stringify(buildOperationalStatus(state))}\n`);
+        return;
+      }
+
       const action = classifyResilienceAction(error, state, lastTriggerFailureIntent);
       if (action.action === 'stop') throw error;
 
