@@ -10,7 +10,7 @@ import { createStateAdapter } from '../../opportunity-pipeline/lib/us-state-acqu
 import { controlledRolloutScheduled } from './controlled-rollout-schedule.js';
 import { assertMainUnchanged, dataBranchName } from './data-branch-name.js';
 import { mergeStagingBatches, stagingSourceBatches } from './staging-batches.js';
-import { receiptsForAddedSources } from './source-evidence-receipts.js';
+import { publicationEvidenceCounts, receiptsForAddedSources } from './source-evidence-receipts.js';
 import {
   chunkGrowthCandidates,
   finalizeGrowthDiscovery,
@@ -196,7 +196,7 @@ function sourceBranchName(state, sources, mainSha) {
 
 async function openSourcePullRequest(env, state, base, discovery) {
   const merged = mergeGrowthSources(base.registry, discovery.sources, { stateCode: state.code });
-  if (!merged.added.length) return { created: false, reason: 'no_net_new_sources', source_ids: [] };
+  if (!merged.added.length) return { created: false, reason: 'no_net_new_sources', source_ids: [], evidence_passed_count: 0 };
   const currentMain = await githubJson(env, '/git/ref/heads/main');
   assertMainUnchanged(base.mainSha, currentMain?.object?.sha);
   const branch = sourceBranchName(state, merged.added, base.mainSha);
@@ -221,7 +221,7 @@ async function openSourcePullRequest(env, state, base, discovery) {
   const existingPrs = await githubJson(env, `/pulls?state=open&head=${encodeURIComponent(`${owner}:${branch}`)}&base=main`);
   if (Array.isArray(existingPrs) && existingPrs.length) {
     const pr = existingPrs[0];
-    return { created: false, reused: true, branch, pr_number: pr.number, pr_url: pr.html_url, source_ids: expectedIds };
+    return { created: false, reused: true, branch, pr_number: pr.number, pr_url: pr.html_url, source_ids: expectedIds, evidence_passed_count: evidenceReceipts.length };
   }
   const beforeCount = base.registry.sources.length;
   const afterCount = merged.registry.sources.length;
@@ -246,7 +246,7 @@ async function openSourcePullRequest(env, state, base, discovery) {
       ].join('\n')
     })
   });
-  return { created: true, branch, pr_number: pr.number, pr_url: pr.html_url, source_ids: expectedIds };
+  return { created: true, branch, pr_number: pr.number, pr_url: pr.html_url, source_ids: expectedIds, evidence_passed_count: evidenceReceipts.length };
 }
 
 async function runGrowthDiscoveryWorkflow(env, event, step, state) {
@@ -304,7 +304,7 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
       searchMetrics: normalized.metrics
     })
   ));
-  let publication = { created: false, reason: 'no_net_new_sources', source_ids: [] };
+  let publication = { created: false, reason: 'no_net_new_sources', source_ids: [], evidence_passed_count: 0 };
   if (discovery.sources.length) {
     publication = await step.do(`open GitHub ${state.name} source registry PR`, {
       retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' }, timeout: '5 minutes'
@@ -325,8 +325,7 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
     candidate_count: discovery.metrics.candidates_selected,
     validation_batches: discovery.metrics.validation_batches,
     direct_source_pages_polled: discovery.metrics.pages_fetched,
-    generated_source_count: discovery.sources.length,
-    evidence_passed_count: discovery.receipts.length,
+    ...publicationEvidenceCounts(discovery, publication),
     held_count: discovery.held.length,
     held_reasons: discovery.held_reasons,
     publication: publication.source_ids?.length ? {
@@ -334,7 +333,8 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
       reused: publication.reused === true,
       branch: publication.branch,
       pr_number: publication.pr_number,
-      source_count: publication.source_ids.length
+      source_count: publication.source_ids.length,
+      source_ids: publication.source_ids
     } : publication
   };
   return step.do(`emit compact ${state.name} growth discovery result`, async () => compactResult);
