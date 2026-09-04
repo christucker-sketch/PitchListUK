@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T19:17:11.699Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:4229f50ffbbc9125e0ecb2ae0f2467abfb8d92c53afc7e8d99d8df74629f388b",
-  "total": 426,
+  "exported_at": "2026-09-04T19:24:41.442Z",
+  "source": "reviewed-us-new-york-cloud-promotion:0d8cead94a8dc0207927b0e33a13047e40576531d13a8b676994ffdc123ab4ee",
+  "total": 427,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16225,6 +16225,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_4ca79c146520bd81c503"
+    },
+    {
+      "stable_id": "opp_us_eb0558f19d40487a05d3",
+      "event_name": "Holiday happenings this year in Cortland and Ithaca - 607 News Now Vendor Opportunity",
+      "organiser": "Holiday happenings this year in Cortland and Ithaca - 607 News Now",
+      "source_url": "https://607newsnow.com/news/258852-holiday-happenings-this-year-in-cortland-and-ithaca/",
+      "application_url": "https://607newsnow.com/news/258852-holiday-happenings-this-year-in-cortland-and-ithaca",
+      "location": "Ithaca",
+      "locality": "Ithaca",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-12-05",
+      "event_end": "2027-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-holiday-happenings-this-year-in-cortland-and-ithaca-607-news-now-2027-12-05-351bd03d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_eb0558f19d40487a05d3"
     }
   ]
 };
