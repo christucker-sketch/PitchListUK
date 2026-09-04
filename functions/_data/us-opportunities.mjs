@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T19:07:00.615Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:f76fc17885dfa98600776da1b66063151050a97c3dc166c613d4a9a43210dde6",
-  "total": 424,
+  "exported_at": "2026-09-04T19:12:57.202Z",
+  "source": "reviewed-us-washington-cloud-promotion:aa6e40e9f09252a19a907ed3ee77725005d50b7bac5ba819d7cce6f15b4a4c1e",
+  "total": 425,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16153,6 +16153,41 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_57ea504480690cb2a63d"
+    },
+    {
+      "stable_id": "opp_us_1db4f8c92fbb56ec011e",
+      "event_name": "Vendor Events in West Seattle, WA",
+      "organiser": "Vendor Events in West Seattle, WA",
+      "source_url": "https://vendorsmap.com/cities/west-seattle",
+      "application_url": "https://vendorsmap.com/cities/west-seattle",
+      "location": "Walla Walla",
+      "locality": "Walla Walla",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "98116",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-17",
+      "event_end": "2027-07-19",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-vendor-events-in-west-seattle-wa-2027-07-17-c0ec146b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_1db4f8c92fbb56ec011e"
     }
   ]
 };
