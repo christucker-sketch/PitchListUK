@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T16:59:09.714Z",
-  "source": "reviewed-us-ohio-cloud-promotion:7233b4f8608e0d191fe10d595b8f15e7905a28f1c10c484b4406f090262c516f",
-  "total": 438,
+  "exported_at": "2026-09-05T17:30:31.883Z",
+  "source": "reviewed-us-georgia-cloud-promotion:b758d22bfa18f9cc26e1688eced7d210896e72ecfd0de2041db69aed40302a1a",
+  "total": 439,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16679,6 +16679,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_d0faf44d2442957b5dcf"
+    },
+    {
+      "stable_id": "opp_us_6c325fe1c5709be98e3a",
+      "event_name": "How to Sell at Farmers Markets in Georgia (2026) Vendor Opportunity",
+      "organiser": "How to Sell at Farmers Markets in Georgia (2026)",
+      "source_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-georgia",
+      "application_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-georgia",
+      "location": "Marietta",
+      "locality": "Marietta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-03-31",
+      "event_end": "2027-04-01",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-how-to-sell-at-farmers-markets-in-georgia-2026-2027-03-31-f9287f77",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_6c325fe1c5709be98e3a"
     }
   ]
 };
