@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T00:22:23.182Z",
+  "updated_at": "2026-09-05T00:33:11.127Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4305,6 +4305,24 @@
       "event_end": "2027-06-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-worcester-2027-farmers-market: live first-party route attests Worcester, MA, actionable vendor terms, and exact event date 2027-06-12."
+    },
+    {
+      "id": "ma-vendor-events-in-pittsfield-nh-2027-07-31-fd258ff6",
+      "name": "Vendor Events in Pittsfield, NH",
+      "organiser": "Vendor Events in Pittsfield, NH",
+      "source_url": "https://vendorsmap.com/cities/pittsfield-nh",
+      "application_url": "https://vendorsmap.com/cities/pittsfield-nh",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Pittsfield",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-07-31",
+      "event_end": "2027-07-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-pittsfield-2027-festival: live first-party route attests Pittsfield, MA, actionable vendor terms, and exact event date 2027-07-31."
     },
     {
       "id": "ma-worcester-night-market-open-call-for-vendors-and-sponsors-aug-3-2026-t-2026-09-19-8582a7a4",
