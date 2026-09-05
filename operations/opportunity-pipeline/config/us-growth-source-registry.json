@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T18:11:52.901Z",
+  "updated_at": "2026-09-05T18:16:19.348Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -5925,6 +5925,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-charlotte-2026-festival: live first-party route attests Charlotte, NC, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
+    },
+    {
+      "id": "nc-greenville-state-farmers-market-hosts-small-vendor-saturdays-2026-09-07-e3e46138",
+      "name": "Greenville State Farmers Market hosts Small Vendor Saturdays",
+      "organiser": "Greenville State Farmers Market hosts Small Vendor Saturdays",
+      "source_url": "https://www.foxcarolina.com/video/2026/06/30/greenville-state-farmers-market-hosts-small-vendor-saturdays",
+      "application_url": "https://www.foxcarolina.com/video/2026/06/30/greenville-state-farmers-market-hosts-small-vendor-saturdays",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Greenville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-greenville-2026-farmers-market: live first-party route attests Greenville, NC, actionable vendor terms, and exact event date 2026-09-07."
     },
     {
       "id": "nc-high-point-farmers-market-farmers-market-in-high-point-nc-2027-10-31-de185b8a",
