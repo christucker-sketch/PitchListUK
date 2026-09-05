@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T20:59:43.832Z",
-  "source": "reviewed-us-new-york-cloud-promotion:f68b02ec123ec91653dbe1f9e891f50c4f2b72aca496144bea26c4d35937562c",
-  "total": 446,
+  "exported_at": "2026-09-05T21:17:05.453Z",
+  "source": "reviewed-us-arizona-cloud-promotion:50fa3519ea89aca8203314f8be59f2b9174874949bdaaf1f5cf40357bb80cdb9",
+  "total": 447,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16981,6 +16981,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_dc9615998f7cf6aacac1"
+    },
+    {
+      "stable_id": "opp_us_41ba925686a7ede0290d",
+      "event_name": "Vendors Vendor Opportunity",
+      "organiser": "Vendors",
+      "source_url": "https://flagstaffpride.org/vendors/",
+      "application_url": "https://flagstaffpride.org/vendors",
+      "location": "Flagstaff",
+      "locality": "Flagstaff",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-21",
+      "event_end": "2027-06-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-vendors-2027-06-21-76282f28",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_41ba925686a7ede0290d"
     }
   ]
 };
