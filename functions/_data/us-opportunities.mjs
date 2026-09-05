@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T21:17:05.453Z",
-  "source": "reviewed-us-arizona-cloud-promotion:50fa3519ea89aca8203314f8be59f2b9174874949bdaaf1f5cf40357bb80cdb9",
-  "total": 447,
+  "exported_at": "2026-09-05T23:22:02.772Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:972d3da95ff942559b7a569132f9c6f091b4cea9204cd352f8cee5a7084bc2fd",
+  "total": 448,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17019,6 +17019,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_41ba925686a7ede0290d"
+    },
+    {
+      "stable_id": "opp_us_ef4ef22f47605891b96c",
+      "event_name": "Summer Marketplace at Mohegan Sun Arena Vendor Opportunity",
+      "organiser": "Summer Marketplace at Mohegan Sun Arena",
+      "source_url": "https://www.localharvest.org/summer-marketplace-at-mohegan-sun-arena-M54108",
+      "application_url": "https://www.localharvest.org/summer-marketplace-at-mohegan-sun-arena-M54108",
+      "location": "Wilkes-Barre",
+      "locality": "Wilkes-Barre",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "18702",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-04",
+      "event_end": "2027-09-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-summer-marketplace-at-mohegan-sun-arena-2027-09-04-8236edb0",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_ef4ef22f47605891b96c"
     }
   ]
 };
