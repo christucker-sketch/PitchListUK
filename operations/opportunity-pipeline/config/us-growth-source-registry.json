@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T20:44:41.505Z",
+  "updated_at": "2026-09-05T20:48:11.359Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -777,6 +777,24 @@
       "evidence": "Cloudflare discovery ca-santa-ana-2026-farmers-market: live first-party route attests Santa Ana, CA, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
+      "id": "ca-food-2026-10-10-2ebb39ab",
+      "name": "Food Vendor Application - OC Pride 2026 Festival & Parade - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=47221&srsltid=AfmBOoozdf5tkSOyEiCGzN2U0-mL-YCGGVj839YvuH48WzQDhcgl_-Hz",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=47221&srsltid=AfmBOoozdf5tkSOyEiCGzN2U0-mL-YCGGVj839YvuH48WzQDhcgl_-Hz",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Santa Ana",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-santa-ana-2026-food-truck: live first-party route attests Santa Ana, CA, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
       "id": "ca-food-2026-10-10-3a304cbc",
       "name": "Food Vendor Application - OC Pride 2026 Festival & Parade - Eventeny",
       "organiser": "Food",
@@ -1063,6 +1081,24 @@
       "event_end": "2027-08-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-arts-crafts: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-08-28."
+    },
+    {
+      "id": "ca-noche-de-lucha-2026-09-10-bbc91fa1",
+      "name": "Noche de Lucha Vendor Opportunity",
+      "organiser": "Noche de Lucha",
+      "source_url": "https://www.pbssocal.org/event/noche-de-lucha",
+      "application_url": "https://www.pbssocal.org/event/noche-de-lucha",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Santa Ana",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-10",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-santa-ana-2026-food-truck: live first-party route attests Santa Ana, CA, actionable vendor terms, and exact event date range 2026-09-10 to 2026-09-12."
     },
     {
       "id": "ca-patchwork-show-2026-12-06-669da0ba",
