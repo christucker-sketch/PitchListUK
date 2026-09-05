@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:25:24.411Z",
+  "updated_at": "2026-09-05T16:31:12.581Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2559,6 +2559,24 @@
       "event_end": "2026-11-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-tallahassee-2026-food-truck: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date range 2026-11-05 to 2026-11-15."
+    },
+    {
+      "id": "fl-west-palm-beach-s-greenmarket-announces-major-deadlines-2027-03-31-9c419eaa",
+      "name": "West Palm Beach’s GreenMarket Announces Major Deadlines Vendor Opportunity",
+      "organiser": "West Palm Beach’s GreenMarket Announces Major Deadlines",
+      "source_url": "https://bocamag.com/west-palm-beachs-greenmarket-announces-major-deadlines",
+      "application_url": "https://bocamag.com/west-palm-beachs-greenmarket-announces-major-deadlines",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "West Palm Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-31",
+      "event_end": "2027-04-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-west-palm-beach-2027-farmers-market: live first-party route attests West Palm Beach, FL, actionable vendor terms, and exact event date range 2027-03-31 to 2027-04-14."
     },
     {
       "id": "ga-200-best-atlanta-holiday-christmas-events-things-to-do-2025-2026-12-12-7dced49b",
