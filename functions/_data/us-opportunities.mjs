@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T19:34:27.617Z",
-  "source": "reviewed-us-ohio-cloud-promotion:d24b11c4ac79c4f608a4b97b56da1926ded9cb7e44efdda616c84f6c19d92700",
-  "total": 443,
+  "exported_at": "2026-09-05T20:14:51.202Z",
+  "source": "reviewed-us-georgia-cloud-promotion:9204cf8df131fd8c3257a30f8808e7280bedcd503e4208b92a3aa36dee02d487",
+  "total": 444,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16868,6 +16868,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_c574331a5cb600ae9a66"
+    },
+    {
+      "stable_id": "opp_us_6225e88acc3e031b7ea4",
+      "event_name": "HAPPENING THIS WEEKEND: Events happening around the Big Bend and South Georgia Vendor Opportunity",
+      "organiser": "HAPPENING THIS WEEKEND: Events happening around the Big Bend and South Georgia",
+      "source_url": "https://www.wtxl.com/news/local-news/happening-this-weekend-events-happening-around-the-big-bend-and-south-georgia-september-4th-6th",
+      "application_url": "https://www.wtxl.com/news/local-news/happening-this-weekend-events-happening-around-the-big-bend-and-south-georgia-september-4th-6th",
+      "location": "Valdosta",
+      "locality": "Valdosta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-happening-this-weekend-events-happening-around-the-big-bend-and-south--2026-09-05-bb1577ba",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_6225e88acc3e031b7ea4"
     }
   ]
 };
