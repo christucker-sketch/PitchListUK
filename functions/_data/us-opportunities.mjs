@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T16:53:27.499Z",
-  "source": "reviewed-us-ohio-cloud-promotion:54ab8754fb47f1efea6577a0c1bf7ac6a175db058cb8677ab95f78a3805a7d80",
-  "total": 437,
+  "exported_at": "2026-09-05T16:59:09.714Z",
+  "source": "reviewed-us-ohio-cloud-promotion:7233b4f8608e0d191fe10d595b8f15e7905a28f1c10c484b4406f090262c516f",
+  "total": 438,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16640,6 +16640,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_3d3454343479b36cd55e"
+    },
+    {
+      "stable_id": "opp_us_d0faf44d2442957b5dcf",
+      "event_name": "HHF 2026 Vendor Registration - Dublin Chamber of Commerce",
+      "organiser": "HHF 2026",
+      "source_url": "https://www.dublintxchamber.com/events/hispanic-heritage-festival-2026/hhf-2026-vendor-registration/",
+      "application_url": "https://www.dublintxchamber.com/events/hispanic-heritage-festival-2026/hhf-2026-vendor-registration",
+      "location": "Dublin",
+      "locality": "Dublin",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-hhf-2026-2026-09-19-3235aa8b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_d0faf44d2442957b5dcf"
     }
   ]
 };
