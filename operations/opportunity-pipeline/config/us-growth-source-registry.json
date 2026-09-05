@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T19:23:02.154Z",
+  "updated_at": "2026-09-05T19:30:15.040Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1918,6 +1918,24 @@
       "organiser": "Food Cart Exhibitor - 2026 LAGOONFEST - Eventeny",
       "source_url": "https://www.eventeny.com/events/vendor/?id=48959&srsltid=AfmBOopS5cOudLLiJAeel_YQ88oQ0wx4uY2PePj2LKxHyzpgbT7aOHur",
       "application_url": "https://www.eventeny.com/events/vendor/?id=48959&srsltid=AfmBOopS5cOudLLiJAeel_YQ88oQ0wx4uY2PePj2LKxHyzpgbT7aOHur",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "West Palm Beach",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-west-palm-beach-2026-food-truck: live first-party route attests West Palm Beach, FL, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "fl-food-cart-exhibitor-2026-lagoonfest-eventeny-2026-10-31-e4c0601b",
+      "name": "Food Cart Exhibitor - 2026 LAGOONFEST - Eventeny",
+      "organiser": "Food Cart Exhibitor - 2026 LAGOONFEST - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=48959&srsltid=AfmBOooCvGWeashscpeD8_BdNKRpVd2o0QNcSB7IcqzrRtjGokzCjwxF",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=48959&srsltid=AfmBOooCvGWeashscpeD8_BdNKRpVd2o0QNcSB7IcqzrRtjGokzCjwxF",
       "source_class": "government-organisation",
       "country_code": "US",
       "jurisdiction": "US-FL",
