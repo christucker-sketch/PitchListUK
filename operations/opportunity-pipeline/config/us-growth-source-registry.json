@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T00:35:37.436Z",
+  "updated_at": "2026-09-05T00:38:25.454Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3929,6 +3929,24 @@
       "evidence": "Cloudflare discovery ma-lowell-2027-food-truck: live first-party route attests Lowell, MA, actionable vendor terms, and exact event date range 2027-09-20 to 2027-09-21."
     },
     {
+      "id": "ma-eventeny-com-2026-09-20-86ce0726",
+      "name": "Food Truck Application - 6th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat Sept 20th & Sun Sept 21st! - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=27624&srsltid=AfmBOopXODpxQU61VCzAY1goaPMfWlgRW-P8py9zlYkEakvxwUzSaeqy",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=27624&srsltid=AfmBOopXODpxQU61VCzAY1goaPMfWlgRW-P8py9zlYkEakvxwUzSaeqy",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2026-festival: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2026-09-20 to 2026-09-21."
+    },
+    {
       "id": "ma-eventeny-com-2026-10-23-6af6de38",
       "name": "Food Truck Application - 11th New Bedford Food Truck & Craft Beverage Festival - Eventeny",
       "organiser": "eventeny.com",
@@ -4251,6 +4269,24 @@
       "event_end": "2026-10-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-quincy-2026-farmers-market: live first-party route attests Quincy, MA, actionable vendor terms, and exact event date 2026-10-30."
+    },
+    {
+      "id": "ma-salem-arts-association-2026-holiday-artists-market-registration-2026-11-28-9d7c8195",
+      "name": "Salem Arts Association - 2026 Holiday Artists' Market Registration Vendor Opportunity",
+      "organiser": "Salem Arts Association - 2026 Holiday Artists' Market Registration",
+      "source_url": "https://salemarts.org/event-6755037",
+      "application_url": "https://salemarts.org/event-6755037",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2026-arts-crafts: live first-party route attests Salem, MA, actionable vendor terms, and exact event date 2026-11-28."
     },
     {
       "id": "ma-saratoga-jazz-festival-at-saratoga-performing-arts-center-2027-06-26-9cd03bd9",
