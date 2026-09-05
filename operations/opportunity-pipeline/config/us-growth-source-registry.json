@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:42:56.324Z",
+  "updated_at": "2026-09-05T16:46:41.241Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6917,6 +6917,24 @@
       "event_end": "2027-08-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-ithaca-2027-farmers-market: live first-party route attests Ithaca, NY, actionable vendor terms, and exact event date range 2027-08-17 to 2027-08-30."
+    },
+    {
+      "id": "ny-ithaca-festival-2027-festival2027-2027-06-04-51f88328",
+      "name": "Ithaca Festival 2027 - festival2027 Vendor Opportunity",
+      "organiser": "Ithaca Festival 2027 - festival2027",
+      "source_url": "https://festival2027.com/ithaca-festival-2027",
+      "application_url": "https://festival2027.com/ithaca-festival-2027",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Ithaca",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-04",
+      "event_end": "2027-06-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-ithaca-2027-festival: live first-party route attests Ithaca, NY, actionable vendor terms, and exact event date range 2027-06-04 to 2027-06-06."
     },
     {
       "id": "ny-ithaca-reggae-fest-2027-lineup-schedule-map-friends-2027-06-25-91fa63c3",
