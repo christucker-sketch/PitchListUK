@@ -34,17 +34,32 @@ export function scheduleNextDeferredReplay(state, now = new Date(), options = {}
   if (state.deferred_replay_inflight) return { scheduled: false, reason: 'replay_already_inflight', unit: state.deferred_replay_inflight };
   const maximumAttempts = Math.max(1, Number(options.maximumAttempts ?? 3));
   state.deferred_units = Array.isArray(state.deferred_units) ? state.deferred_units : [];
-  const unit = state.deferred_units.find(item => item.disposition === 'deferred_for_replay');
-  if (!unit) return { scheduled: false, reason: 'no_deferred_units' };
-  const attempts = Number(unit.replay_attempts || 0);
-  if (attempts >= maximumAttempts) {
-    unit.disposition = 'genuine_blocker';
-    unit.blocked_at = now.toISOString();
-    unit.blocker_reason = `Deferred unit failed ${attempts} replay attempt(s)`;
-    state.status = 'blocked_deferred';
-    return { scheduled: false, reason: 'replay_attempts_exhausted', unit };
+
+  let unit = null;
+  let exhaustedUnit = null;
+  for (const candidate of state.deferred_units) {
+    if (candidate.disposition !== 'deferred_for_replay') continue;
+    const attempts = Number(candidate.replay_attempts || 0);
+    if (attempts >= maximumAttempts) {
+      candidate.disposition = 'genuine_blocker';
+      candidate.blocked_at = now.toISOString();
+      candidate.blocker_reason = `Deferred unit failed ${attempts} replay attempt(s)`;
+      exhaustedUnit ||= candidate;
+      continue;
+    }
+    unit = candidate;
+    break;
   }
 
+  if (!unit) {
+    if (exhaustedUnit) {
+      state.status = 'blocked_deferred';
+      return { scheduled: false, reason: 'replay_attempts_exhausted', unit: exhaustedUnit };
+    }
+    return { scheduled: false, reason: 'no_deferred_units' };
+  }
+
+  const attempts = Number(unit.replay_attempts || 0);
   unit.replay_attempts = attempts + 1;
   unit.last_replay_at = now.toISOString();
   const key = deferredUnitKey(unit);
