@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T18:12:50.736Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:1b023f333b2fd3dc3bd8798ddc413f163c1ab6df3a997c5bf39e8aa721c43403",
-  "total": 440,
+  "exported_at": "2026-09-05T18:17:10.250Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:84c7ec53a46e5aad85324dba76eb3039865a1a49d119789230ee4cdfa53dccf5",
+  "total": 441,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16756,6 +16756,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_bcec8a5c79238f8fafc4"
+    },
+    {
+      "stable_id": "opp_us_2b63a1552b5870451b89",
+      "event_name": "Greenville State Farmers Market hosts Small Vendor Saturdays",
+      "organiser": "Greenville State Farmers Market hosts Small Vendor Saturdays",
+      "source_url": "https://www.foxcarolina.com/video/2026/06/30/greenville-state-farmers-market-hosts-small-vendor-saturdays/",
+      "application_url": "https://www.foxcarolina.com/video/2026/06/30/greenville-state-farmers-market-hosts-small-vendor-saturdays",
+      "location": "Greenville",
+      "locality": "Greenville",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-greenville-state-farmers-market-hosts-small-vendor-saturdays-2026-09-07-e3e46138",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_2b63a1552b5870451b89"
     }
   ]
 };
