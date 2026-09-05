@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:07:35.683Z",
+  "updated_at": "2026-09-05T16:22:50.914Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2001,6 +2001,24 @@
       "event_end": "2027-01-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-tallahassee-2027-food-truck: live first-party route attests Tallahassee, FL, actionable vendor terms, and exact event date range 2027-01-22 to 2027-01-24."
+    },
+    {
+      "id": "fl-founders-day-parade-festivities-town-of-marana-az-2027-03-19-ada3512e",
+      "name": "Founders' Day Parade & Festivities - Town of Marana, AZ Vendor Opportunity",
+      "organiser": "Founders' Day Parade & Festivities - Town of Marana, AZ",
+      "source_url": "https://www.maranaaz.gov/Departments/Parks-Recreation/Signature-Community-Events/Founders-Day-Parade-Festivities",
+      "application_url": "https://www.maranaaz.gov/Departments/Parks-Recreation/Signature-Community-Events/Founders-Day-Parade-Festivities",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Naples",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-19",
+      "event_end": "2027-03-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-naples-2027-government-events: live first-party route attests Naples, FL, actionable vendor terms, and exact event date 2027-03-19."
     },
     {
       "id": "fl-holiday-markets-winter-festivals-in-broward-2025-2026-11-22-782881fb",
