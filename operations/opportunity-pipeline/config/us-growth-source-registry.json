@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:34:16.158Z",
+  "updated_at": "2026-09-05T16:40:33.679Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -6935,6 +6935,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-albany-2026-food-truck: live first-party route attests Albany, NY, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "ny-lgbtq-westchester-pride-festival-white-plains-ny-gay-pink-spots-white--2027-06-06-aaf0a865",
+      "name": "LGBTQ Westchester Pride Festival - White Plains, NY | Gay Pink Spots, White Plains, New York, United States Vendor Opportunity",
+      "organiser": "LGBTQ Westchester Pride Festival - White Plains, NY | Gay Pink Spots, White Plains, New York, United States",
+      "source_url": "https://www.gaypinkspots.com/event/westchester-pride-white-plains-ny.html",
+      "application_url": "https://www.gaypinkspots.com/event/westchester-pride-white-plains-ny.html",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "White Plains",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-06",
+      "event_end": "2027-06-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-white-plains-2027-festival: live first-party route attests White Plains, NY, actionable vendor terms, and exact event date 2027-06-06."
     },
     {
       "id": "ny-midday-bash-2026-09-09-7393f319",
