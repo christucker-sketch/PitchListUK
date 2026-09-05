@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-04T19:23:47.942Z",
+  "updated_at": "2026-09-05T00:03:17.337Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -361,6 +361,24 @@
       "event_end": "2027-09-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-mesa-2027-farmers-market: live first-party route attests Mesa, AZ, actionable vendor terms, and exact event date 2027-09-15."
+    },
+    {
+      "id": "az-participate-in-flagstaff-art-in-the-park-2026-09-05-626cd0a0",
+      "name": "Participate in Flagstaff Art in the Park Vendor Opportunity",
+      "organiser": "Participate in Flagstaff Art in the Park",
+      "source_url": "https://flagstaffartinthepark.com/information-to-apply",
+      "application_url": "https://flagstaffartinthepark.com/information-to-apply",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Flagstaff",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-flagstaff-2026-festival: live first-party route attests Flagstaff, AZ, actionable vendor terms, and exact event date range 2026-09-05 to 2026-09-07."
     },
     {
       "id": "az-phoestivus-2026-12-12-dd6414ca",
