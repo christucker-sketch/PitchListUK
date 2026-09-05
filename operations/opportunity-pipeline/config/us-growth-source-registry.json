@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T20:23:23.392Z",
+  "updated_at": "2026-09-05T20:40:28.575Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -757,6 +757,24 @@
       "event_end": "2027-06-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-06-26."
+    },
+    {
+      "id": "ca-food-2026-10-10-02b5973b",
+      "name": "Food Vendor Application - OC Pride 2026 Festival & Parade - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=47221&srsltid=AfmBOoqTsCPZyyRx8QrrkxymOfp2rLYerCN8q_J0zsFTritsDAlWXE6i",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=47221&srsltid=AfmBOoqTsCPZyyRx8QrrkxymOfp2rLYerCN8q_J0zsFTritsDAlWXE6i",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Santa Ana",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-santa-ana-2026-farmers-market: live first-party route attests Santa Ana, CA, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
       "id": "ca-food-2026-10-10-3a304cbc",
