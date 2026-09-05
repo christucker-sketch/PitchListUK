@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T20:04:08.783Z",
+  "updated_at": "2026-09-05T20:14:00.653Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3189,6 +3189,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-columbus-2026-food-truck: live first-party route attests Columbus, GA, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
+    },
+    {
+      "id": "ga-happening-this-weekend-events-happening-around-the-big-bend-and-south--2026-09-05-bb1577ba",
+      "name": "HAPPENING THIS WEEKEND: Events happening around the Big Bend and South Georgia Vendor Opportunity",
+      "organiser": "HAPPENING THIS WEEKEND: Events happening around the Big Bend and South Georgia",
+      "source_url": "https://www.wtxl.com/news/local-news/happening-this-weekend-events-happening-around-the-big-bend-and-south-georgia-september-4th-6th",
+      "application_url": "https://www.wtxl.com/news/local-news/happening-this-weekend-events-happening-around-the-big-bend-and-south-georgia-september-4th-6th",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2026-farmers-market: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date 2026-09-05."
     },
     {
       "id": "ga-holiday-craft-fair-2026-11-07-67f62500",
