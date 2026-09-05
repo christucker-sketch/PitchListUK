@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:46:41.241Z",
+  "updated_at": "2026-09-05T16:49:38.353Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7403,6 +7403,24 @@
       "event_end": "2026-09-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-food-truck: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date range 2026-08-31 to 2026-09-01."
+    },
+    {
+      "id": "oh-hamilton-christkindlmarkt-2026-12-04-8c15ae8e",
+      "name": "Hamilton Christkindlmarkt Vendor Opportunity",
+      "organiser": "Hamilton Christkindlmarkt",
+      "source_url": "https://www.travelbutlercounty.com/events/hamilton-christkindlmarkt",
+      "application_url": "https://www.travelbutlercounty.com/events/hamilton-christkindlmarkt",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Hamilton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-04",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-hamilton-2026-holiday-market: live first-party route attests Hamilton, OH, actionable vendor terms, and exact event date range 2026-12-04 to 2026-12-05."
     },
     {
       "id": "oh-handmade-toledo-2026-11-14-e057483a",
