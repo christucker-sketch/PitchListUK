@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:52:39.844Z",
+  "updated_at": "2026-09-05T16:58:16.426Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7457,6 +7457,24 @@
       "event_end": "2026-11-14",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-toledo-2026-holiday-market: live first-party route attests Toledo, OH, actionable vendor terms, and exact event date 2026-11-14."
+    },
+    {
+      "id": "oh-hhf-2026-2026-09-19-3235aa8b",
+      "name": "HHF 2026 Vendor Registration - Dublin Chamber of Commerce",
+      "organiser": "HHF 2026",
+      "source_url": "https://www.dublintxchamber.com/events/hispanic-heritage-festival-2026/hhf-2026-vendor-registration",
+      "application_url": "https://www.dublintxchamber.com/events/hispanic-heritage-festival-2026/hhf-2026-vendor-registration",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Dublin",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-dublin-2026-food-truck: live first-party route attests Dublin, OH, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "oh-holiday-shopping-in-dayton-2026-12-05-432b221f",
