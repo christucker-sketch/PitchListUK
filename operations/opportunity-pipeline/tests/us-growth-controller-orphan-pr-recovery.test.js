@@ -10,7 +10,8 @@ function sourcePr(overrides = {}) {
     state: 'OPEN',
     isDraft: false,
     baseRefName: 'main',
-    baseRefOid: base,
+    headRefOid: 'b'.repeat(40),
+    headParentOid: base,
     headRefName: `sources/cloud-us-massachusetts-growth-deadbeef-base-${base.slice(0, 16)}`,
     body: '- state: Massachusetts (MA)\n- additions only; no source removals\n',
     files: [{ path: 'operations/opportunity-pipeline/config/us-growth-source-registry.json' }],
@@ -69,7 +70,7 @@ test('exact data PR for deferred acquisition can be recovered but wrong file can
   const base = 'd'.repeat(40);
   const pr = sourcePr({
     number: 900,
-    baseRefOid: base,
+    headParentOid: base,
     headRefName: `data/cloud-massachusetts-growth-deadbeef-base-${base.slice(0, 16)}`,
     files: [{ path: 'functions/_data/us-opportunities.mjs' }]
   });
