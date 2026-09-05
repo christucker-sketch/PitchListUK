@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T13:52:35.150Z",
+  "updated_at": "2026-09-05T14:03:15.057Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3911,6 +3911,24 @@
       "evidence": "Cloudflare discovery ma-brockton-2026-festival: live first-party route attests Brockton, MA, actionable vendor terms, and exact event date 2026-11-28."
     },
     {
+      "id": "ma-downtown-pittsfield-inc-announces-local-love-arts-festival-downtown-pi-2026-09-27-6e5d715b",
+      "name": "Downtown Pittsfield, Inc. announces Local Love Arts Festival - Downtown Pittsfield Western Massachusetts The Berkshires Vendor Opportunity",
+      "organiser": "Downtown Pittsfield, Inc. announces Local Love Arts Festival - Downtown Pittsfield Western Massachusetts The Berkshires",
+      "source_url": "https://downtownpittsfield.com/event/downtown-pittsfield-inc-announces-local-love-arts-festival",
+      "application_url": "https://downtownpittsfield.com/event/downtown-pittsfield-inc-announces-local-love-arts-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Pittsfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-pittsfield-2026-festival: live first-party route attests Pittsfield, MA, actionable vendor terms, and exact event date 2026-09-27."
+    },
+    {
       "id": "ma-eggroll-cafe-food-truck-lowell-massachusetts-united-states-meng-kit-ev-2027-09-20-9faf6288",
       "name": "Eggroll Cafe Food Truck - Lowell - Massachusetts - United States - Meng Kit - Eventeny",
       "organiser": "Eggroll Cafe Food Truck - Lowell - Massachusetts - United States - Meng Kit - Eventeny",
@@ -4161,6 +4179,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-brockton-2026-food-truck: live first-party route attests Brockton, MA, actionable vendor terms, and exact event date range 2026-09-03 to 2026-09-13."
+    },
+    {
+      "id": "ma-local-love-arts-festival-love-pittsfield-ma-2026-09-27-fa44c759",
+      "name": "Local Love Arts Festival - Love Pittsfield MA Vendor Opportunity",
+      "organiser": "Local Love Arts Festival - Love Pittsfield MA",
+      "source_url": "https://lovepittsfield.com/event/local-love-arts-festival",
+      "application_url": "https://lovepittsfield.com/event/local-love-arts-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Pittsfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-pittsfield-2026-festival: live first-party route attests Pittsfield, MA, actionable vendor terms, and exact event date 2026-09-27."
     },
     {
       "id": "ma-lynn-brews-views-bites-beats-festival-eventeny-2026-09-26-a96c865c",
