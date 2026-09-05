@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:58:16.426Z",
+  "updated_at": "2026-09-05T17:01:43.862Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7349,6 +7349,24 @@
       "event_end": "2026-09-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-akron-2026-government-events: live first-party route attests Akron, OH, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-06."
+    },
+    {
+      "id": "oh-events-city-of-dublin-ohio-usa-2027-09-08-7461c8e3",
+      "name": "Events - City of Dublin, Ohio, USA Vendor Opportunity",
+      "organiser": "Events - City of Dublin, Ohio, USA",
+      "source_url": "https://dublinohiousa.gov/calendar-events",
+      "application_url": "https://dublinohiousa.gov/calendar-events",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Dublin",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-09-08",
+      "event_end": "2027-09-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-dublin-2027-government-events: live first-party route attests Dublin, OH, actionable vendor terms, and exact event date 2027-09-08."
     },
     {
       "id": "oh-find-art-shows-craft-shows-and-festivals-near-you-2026-10-31-184d0e33",
