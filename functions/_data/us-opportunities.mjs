@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T17:30:31.883Z",
-  "source": "reviewed-us-georgia-cloud-promotion:b758d22bfa18f9cc26e1688eced7d210896e72ecfd0de2041db69aed40302a1a",
-  "total": 439,
+  "exported_at": "2026-09-05T18:12:50.736Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:1b023f333b2fd3dc3bd8798ddc413f163c1ab6df3a997c5bf39e8aa721c43403",
+  "total": 440,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16718,6 +16718,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_6c325fe1c5709be98e3a"
+    },
+    {
+      "stable_id": "opp_us_bcec8a5c79238f8fafc4",
+      "event_name": "5th Annual Christmas Extravaganza Application - 5th Annual Christmas Extravaganza - Eventeny Vendor Opportunity",
+      "organiser": "5th Annual Christmas Extravaganza",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=43748&srsltid=AfmBOorPRYcY8sGHspnRsC9svJxS85xgOmPBgvVs8pO7z_JYZOPdV-Y9",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=43748&srsltid=AfmBOorPRYcY8sGHspnRsC9svJxS85xgOmPBgvVs8pO7z_JYZOPdV-Y9",
+      "location": "Concord",
+      "locality": "Concord",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-29",
+      "event_end": "2026-11-29",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-5th-annual-christmas-extravaganza-2026-11-29-a7aeda5c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_bcec8a5c79238f8fafc4"
     }
   ]
 };
