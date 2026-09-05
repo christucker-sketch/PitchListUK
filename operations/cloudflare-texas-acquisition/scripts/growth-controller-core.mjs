@@ -159,8 +159,9 @@ function triggerWorkflow(envFile, params) {
 
 function waitForWorkflow(envFile, active) {
   const pollSeconds = Math.max(3, Number(process.env.PITCHLIST_GROWTH_WORKFLOW_POLL_SECONDS || 10));
+  const outputLimit = Math.max(5000, Number(process.env.PITCHLIST_GROWTH_WORKFLOW_OUTPUT_LIMIT || 65536));
   for (;;) {
-    const output = run('npx', wranglerArgs(envFile, ['workflows', 'instances', 'describe', workflowName, active.id]));
+    const output = run('npx', wranglerArgs(envFile, ['workflows', 'instances', 'describe', workflowName, active.id, '--truncate-output-limit', String(outputLimit)]));
     const status = parseWorkflowStatus(output);
     if (status === 'complete') return parseCompactWorkflowOutput(output, active.state_name, active.mode);
     if (['errored', 'terminated', 'paused'].includes(status)) throw new Error(`Workflow ${active.id} is ${status}`);
