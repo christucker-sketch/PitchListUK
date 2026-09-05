@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T17:07:30.376Z",
+  "updated_at": "2026-09-05T17:15:10.163Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2883,6 +2883,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-marietta-2026-food-truck: live first-party route attests Marietta, GA, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
+      "id": "ga-expo-latino-food-truck-expo-latino-eventeny-2026-09-19-0e95e7fd",
+      "name": "Expo Latino Food Truck - Expo Latino - Eventeny",
+      "organiser": "Expo Latino Food Truck - Expo Latino - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=48478&srsltid=AfmBOorBtEBrFww4V2T-svbb5zuqStPHRD4ssJhtgDC9Tk40I1tZbyjO",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=48478&srsltid=AfmBOorBtEBrFww4V2T-svbb5zuqStPHRD4ssJhtgDC9Tk40I1tZbyjO",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2026-food-truck: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "ga-expo-latino-food-truck-expo-latino-eventeny-2026-09-19-dd26125b",
