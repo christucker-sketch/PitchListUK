@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T20:14:51.202Z",
-  "source": "reviewed-us-georgia-cloud-promotion:9204cf8df131fd8c3257a30f8808e7280bedcd503e4208b92a3aa36dee02d487",
-  "total": 444,
+  "exported_at": "2026-09-05T20:56:41.982Z",
+  "source": "reviewed-us-new-york-cloud-promotion:8b2a582e466f824e1562f46e861267ec283a7d659fe257185c175889b8bd12d0",
+  "total": 445,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16906,6 +16906,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_6225e88acc3e031b7ea4"
+    },
+    {
+      "stable_id": "opp_us_6402b31b3e49b5d22215",
+      "event_name": "Vendor Events & Festivals near Ithaca, New York 2026",
+      "organiser": "Vendor Events & Festivals near Ithaca, New York 2026",
+      "source_url": "https://www.epicbooth.com/events/ny/ithaca",
+      "application_url": "https://www.epicbooth.com/events/ny/ithaca",
+      "location": "Ithaca",
+      "locality": "Ithaca",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-vendor-events-festivals-near-ithaca-new-york-2026-2026-09-25-0ec9f782",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_6402b31b3e49b5d22215"
     }
   ]
 };
