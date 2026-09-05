@@ -115,6 +115,38 @@ test('deferred replay becomes a genuine blocker after the bounded retry limit', 
   assert.equal(state.deferred_units[0].disposition, 'genuine_blocker');
 });
 
+test('exhausted deferred unit is quarantined while a later replayable unit continues', () => {
+  const state = baseState();
+  upsertDeferredUnit(state, {
+    at: '2026-09-04T08:00:00.000Z',
+    reason: 'confirmed_terminal_workflow',
+    mode: 'discover',
+    state_code: 'AZ',
+    query_offset: 122,
+    query_limit: 2,
+    disposition: 'deferred_for_replay'
+  });
+  upsertDeferredUnit(state, {
+    at: '2026-09-04T08:05:00.000Z',
+    reason: 'confirmed_terminal_workflow',
+    mode: 'discover',
+    state_code: 'MA',
+    query_offset: 124,
+    query_limit: 2,
+    disposition: 'deferred_for_replay'
+  });
+  state.deferred_units[0].replay_attempts = 3;
+
+  const replay = scheduleNextDeferredReplay(state, new Date('2026-09-04T10:00:00.000Z'), { maximumAttempts: 3 });
+
+  assert.equal(replay.scheduled, true);
+  assert.equal(state.deferred_units[0].disposition, 'genuine_blocker');
+  assert.equal(state.deferred_units[0].blocker_reason, 'Deferred unit failed 3 replay attempt(s)');
+  assert.equal(state.deferred_replay_inflight.key, 'discover:MA:124:2');
+  assert.equal(state.deferred_units[1].replay_attempts, 1);
+  assert.equal(state.status, 'ready');
+});
+
 test('operational status exposes sweep progress, current workflow and deferred queue', () => {
   const state = baseState();
   state.status = 'running_cloudflare_discovery';
