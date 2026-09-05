@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T18:55:05.718Z",
+  "updated_at": "2026-09-05T19:03:55.445Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4395,6 +4395,24 @@
       "event_end": "2027-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-salem-2027-food-truck: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2027-09-19 to 2027-09-20."
+    },
+    {
+      "id": "ma-dj-or-band-7th-annual-salem-food-truck-craft-beverage-festival-2-days--2027-09-19-f9254fce",
+      "name": "DJ or Band - 7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "organiser": "DJ or Band - 7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "source_url": "https://www.eventeny.com/events/applications/application/?id=6870&srsltid=AfmBOor_uPfi1n3YImM6IHpw0YznMw-BkH0brmnqycANTUniw8oe9hMh",
+      "application_url": "https://www.eventeny.com/events/applications/application/?id=6870&srsltid=AfmBOor_uPfi1n3YImM6IHpw0YznMw-BkH0brmnqycANTUniw8oe9hMh",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-19",
+      "event_end": "2027-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2027-festival: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2027-09-19 to 2027-09-20."
     },
     {
       "id": "ma-downtown-pittsfield-inc-announces-local-love-arts-festival-downtown-pi-2026-09-27-6e5d715b",
