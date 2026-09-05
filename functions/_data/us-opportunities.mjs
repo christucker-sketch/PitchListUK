@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-04T19:24:41.442Z",
-  "source": "reviewed-us-new-york-cloud-promotion:0d8cead94a8dc0207927b0e33a13047e40576531d13a8b676994ffdc123ab4ee",
-  "total": 427,
+  "exported_at": "2026-09-05T00:34:08.007Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:523569af5cfe23cbaa5394992a68fc09340788524885c3b132247bebca02512e",
+  "total": 428,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16263,6 +16263,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_eb0558f19d40487a05d3"
+    },
+    {
+      "stable_id": "opp_us_4ca3d78cbea519cb47df",
+      "event_name": "Vendor Events in Pittsfield, NH",
+      "organiser": "Vendor Events in Pittsfield, NH",
+      "source_url": "https://vendorsmap.com/cities/pittsfield-nh",
+      "application_url": "https://vendorsmap.com/cities/pittsfield-nh",
+      "location": "Pittsfield",
+      "locality": "Pittsfield",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-31",
+      "event_end": "2027-07-31",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-vendor-events-in-pittsfield-nh-2027-07-31-fd258ff6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_4ca3d78cbea519cb47df"
     }
   ]
 };
