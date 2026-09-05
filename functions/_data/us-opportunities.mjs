@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T19:08:23.431Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:230a210746eb068d26beed6de41b9e895c5a156f4dfa566c072ed65d94e4d868",
-  "total": 442,
+  "exported_at": "2026-09-05T19:34:27.617Z",
+  "source": "reviewed-us-ohio-cloud-promotion:d24b11c4ac79c4f608a4b97b56da1926ded9cb7e44efdda616c84f6c19d92700",
+  "total": 443,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16830,6 +16830,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_bd5025b1a445c206bb14"
+    },
+    {
+      "stable_id": "opp_us_c574331a5cb600ae9a66",
+      "event_name": "Commercial Kitchen - The Market @ Taqueria Los Cabrones - Sept 13 - Eventeny Vendor Opportunity",
+      "organiser": "Commercial Kitchen - The Market @ Taqueria Los Cabrones - Sept 13 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=35357&srsltid=AfmBOoqJ6YVQ3dPfUiVuRKBB0M8jVIRYz08UN_YWYTGf4b803RuNRYfK",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=35357&srsltid=AfmBOoqJ6YVQ3dPfUiVuRKBB0M8jVIRYz08UN_YWYTGf4b803RuNRYfK",
+      "location": "Hamilton",
+      "locality": "Hamilton",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "32064",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-13",
+      "event_end": "2027-09-13",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-commercial-kitchen-the-market-taqueria-los-cabrones-sept-13-eventeny-2027-09-13-cb0eea11",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_c574331a5cb600ae9a66"
     }
   ]
 };
