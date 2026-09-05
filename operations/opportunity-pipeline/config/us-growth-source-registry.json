@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T17:37:38.722Z",
+  "updated_at": "2026-09-05T17:41:28.442Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2759,6 +2759,24 @@
       "evidence": "Cloudflare discovery ga-atlanta-2026-holiday-market: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
     },
     {
+      "id": "ga-azalea-festival-seeks-vendors-and-sponsors-2027-03-14-c9e02214",
+      "name": "Azalea Festival seeks vendors and sponsors Vendor Opportunity",
+      "organiser": "Azalea Festival seeks vendors and sponsors",
+      "source_url": "https://valdostadailytimes.com/2025/12/12/azalea-festival-seeks-vendors-and-sponsors",
+      "application_url": "https://valdostadailytimes.com/2025/12/12/azalea-festival-seeks-vendors-and-sponsors",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-14",
+      "event_end": "2027-03-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2027-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date 2027-03-14."
+    },
+    {
       "id": "ga-bourbon-bbq-bluegrass-festival-2026-2026-09-26-5bf566be",
       "name": "Bourbon, BBQ & Bluegrass Festival 2026 Vendor Opportunity",
       "organiser": "Bourbon, BBQ & Bluegrass Festival 2026",
@@ -3153,6 +3171,24 @@
       "event_end": "2026-11-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-valdosta-2026-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date range 2026-11-20 to 2026-11-21."
+    },
+    {
+      "id": "ga-jingle-bells-food-vendor-jingle-bells-festival-eventeny-2027-11-20-6ff436e2",
+      "name": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "organiser": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOop7UOcgKfSY5XBpFQdBhUQJEYdppKp-GrdDIAEiaZPxG_VRaYFK",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOop7UOcgKfSY5XBpFQdBhUQJEYdppKp-GrdDIAEiaZPxG_VRaYFK",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-11-20",
+      "event_end": "2027-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2027-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date range 2027-11-20 to 2027-11-21."
     },
     {
       "id": "ga-jingle-bells-food-vendor-jingle-bells-festival-eventeny-2027-11-20-a019486a",
