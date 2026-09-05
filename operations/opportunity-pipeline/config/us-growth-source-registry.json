@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T20:58:44.729Z",
+  "updated_at": "2026-09-05T21:01:45.475Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -8087,6 +8087,24 @@
       "event_end": "2026-10-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-cleveland-2026-arts-crafts: live first-party route attests Cleveland, OH, actionable vendor terms, and exact event date range 2026-10-24 to 2026-10-25."
+    },
+    {
+      "id": "oh-commercial-kitchen-the-market-taqueria-los-cabrones-sept-13-eventeny-2027-09-13-5c5f496a",
+      "name": "Commercial Kitchen - The Market @ Taqueria Los Cabrones - Sept 13 - Eventeny Vendor Opportunity",
+      "organiser": "Commercial Kitchen - The Market @ Taqueria Los Cabrones - Sept 13 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=35357&srsltid=AfmBOor3asDrQ6CUMGLolp7Tw_gCbPMTBn1i7gnVsYgRDZ1HwYLh8hx7",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=35357&srsltid=AfmBOor3asDrQ6CUMGLolp7Tw_gCbPMTBn1i7gnVsYgRDZ1HwYLh8hx7",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Hamilton",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-09-13",
+      "event_end": "2027-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-hamilton-2027-arts-crafts: live first-party route attests Hamilton, OH, actionable vendor terms, and exact event date 2027-09-13."
     },
     {
       "id": "oh-commercial-kitchen-the-market-taqueria-los-cabrones-sept-13-eventeny-2027-09-13-cb0eea11",
