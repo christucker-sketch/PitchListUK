@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T20:56:41.982Z",
-  "source": "reviewed-us-new-york-cloud-promotion:8b2a582e466f824e1562f46e861267ec283a7d659fe257185c175889b8bd12d0",
-  "total": 445,
+  "exported_at": "2026-09-05T20:59:43.832Z",
+  "source": "reviewed-us-new-york-cloud-promotion:f68b02ec123ec91653dbe1f9e891f50c4f2b72aca496144bea26c4d35937562c",
+  "total": 446,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16944,6 +16944,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_6402b31b3e49b5d22215"
+    },
+    {
+      "stable_id": "opp_us_dc9615998f7cf6aacac1",
+      "event_name": "Calendar • Ithaca Festival Vendor Opportunity",
+      "organiser": "Calendar • Ithaca Festival",
+      "source_url": "https://cityofithacany.gov/Calendar.aspx?EID=6864",
+      "application_url": "https://cityofithacany.gov/Calendar.aspx?EID=6864",
+      "location": "Ithaca",
+      "locality": "Ithaca",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "14850",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-29",
+      "event_end": "2027-05-31",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-calendar-ithaca-festival-2027-05-29-59ab183a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_dc9615998f7cf6aacac1"
     }
   ]
 };
