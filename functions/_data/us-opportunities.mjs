@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T16:32:00.599Z",
-  "source": "reviewed-us-florida-cloud-promotion:41e518b09cab268e907e5eda16291004f4c8a544ed7c76e08b425a205049b030",
-  "total": 435,
+  "exported_at": "2026-09-05T16:47:37.240Z",
+  "source": "reviewed-us-new-york-cloud-promotion:3cfbb2b3894c4b1e90506075e9c3dc574ae50aa776b2a09c6b629b00955c26f6",
+  "total": 436,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16564,6 +16564,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-florida",
       "id": "opp_us_a6c37014045c74642c81"
+    },
+    {
+      "stable_id": "opp_us_aec0e290aeee85150877",
+      "event_name": "Ithaca Festival 2027 - festival2027 Vendor Opportunity",
+      "organiser": "Ithaca Festival 2027 - festival2027",
+      "source_url": "https://festival2027.com/ithaca-festival-2027/",
+      "application_url": "https://festival2027.com/ithaca-festival-2027",
+      "location": "Ithaca",
+      "locality": "Ithaca",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-04",
+      "event_end": "2027-06-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-ithaca-festival-2027-festival2027-2027-06-04-51f88328",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_aec0e290aeee85150877"
     }
   ]
 };
