@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T16:47:37.240Z",
-  "source": "reviewed-us-new-york-cloud-promotion:3cfbb2b3894c4b1e90506075e9c3dc574ae50aa776b2a09c6b629b00955c26f6",
-  "total": 436,
+  "exported_at": "2026-09-05T16:53:27.499Z",
+  "source": "reviewed-us-ohio-cloud-promotion:54ab8754fb47f1efea6577a0c1bf7ac6a175db058cb8677ab95f78a3805a7d80",
+  "total": 437,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16601,6 +16601,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_aec0e290aeee85150877"
+    },
+    {
+      "stable_id": "opp_us_3d3454343479b36cd55e",
+      "event_name": "Vendor Application | Hamilton County Fair",
+      "organiser": "hamiltoncountyfair.com",
+      "source_url": "https://www.hamiltoncountyfair.com/vendors",
+      "application_url": "https://www.hamiltoncountyfair.com/vendors",
+      "location": "Hamilton",
+      "locality": "Hamilton",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "45216",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-25",
+      "event_end": "2027-06-28",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-hamiltoncountyfair-com-2027-06-25-27d788e2",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_3d3454343479b36cd55e"
     }
   ]
 };
