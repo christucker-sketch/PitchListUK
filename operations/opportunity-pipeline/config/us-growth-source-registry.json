@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:31:12.581Z",
+  "updated_at": "2026-09-05T16:34:16.158Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -7007,6 +7007,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-utica-2026-arts-crafts: live first-party route attests Utica, NY, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "ny-nyc-street-food-truck-festival-2026-09-11-14747c0d",
+      "name": "NYC Street Food Truck Festival",
+      "organiser": "NYC Street Food Truck Festival",
+      "source_url": "https://www.cambriahotelwhiteplains.com/events/new-york/nyc-street-food-truck-festival-12332743",
+      "application_url": "https://www.cambriahotelwhiteplains.com/events/new-york/nyc-street-food-truck-festival-12332743",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "White Plains",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-white-plains-2026-food-truck: live first-party route attests White Plains, NY, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
     },
     {
       "id": "ny-schenectady-county-farmers-market-2026-2026-10-31-dc6e3196",
