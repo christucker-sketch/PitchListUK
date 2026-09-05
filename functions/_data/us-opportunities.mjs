@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T00:34:08.007Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:523569af5cfe23cbaa5394992a68fc09340788524885c3b132247bebca02512e",
-  "total": 428,
+  "exported_at": "2026-09-05T00:36:35.066Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:6805d0522feee20b9aedb2e50a1f88ede9e4923727282cffa41c39431f6159c2",
+  "total": 429,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16301,6 +16301,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_4ca3d78cbea519cb47df"
+    },
+    {
+      "stable_id": "opp_us_e2a617e73c598e794b55",
+      "event_name": "June First Fridays at Five - Downtown Pittsfield Western Massachusetts The Berkshires Vendor Opportunity",
+      "organiser": "June First Fridays at Five - Downtown Pittsfield Western Massachusetts The Berkshires",
+      "source_url": "https://downtownpittsfield.com/event/june-first-fridays-at-five/",
+      "application_url": "https://downtownpittsfield.com/event/june-first-fridays-at-five",
+      "location": "Pittsfield",
+      "locality": "Pittsfield",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "01201",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-05",
+      "event_end": "2027-06-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-june-first-fridays-at-five-downtown-pittsfield-western-massachusetts-t-2027-06-05-60f7e088",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_e2a617e73c598e794b55"
     }
   ]
 };
