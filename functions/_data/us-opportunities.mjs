@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T15:18:24.465Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:dbcb0e996b2166d637b378dc46ecbd19c86b1ca2210969f072557e00fb57443b",
-  "total": 433,
+  "exported_at": "2026-09-05T16:08:27.499Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:347a8bd8e842bee0e636a95d2fd539a43e0363e18e76de60debd38a57f3a997b",
+  "total": 434,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16489,6 +16489,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_7d60a1a21e373ea2cd06"
+    },
+    {
+      "stable_id": "opp_us_dce4c871899c42ca0bbc",
+      "event_name": "Artistan/Crafter Application - 6th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat Sept 20th & Sun Sept 21st! - Eventeny",
+      "organiser": "Artistan/Crafter",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=27625&srsltid=AfmBOoqhIUmwouBmAiC-yqTJZhx0LHbSUbfNAGsnSR5vIuxP9yXcDoDh",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=27625&srsltid=AfmBOoqhIUmwouBmAiC-yqTJZhx0LHbSUbfNAGsnSR5vIuxP9yXcDoDh",
+      "location": "Salem",
+      "locality": "Salem",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-20",
+      "event_end": "2027-09-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-artistan-crafter-2027-09-20-c510acc2",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_dce4c871899c42ca0bbc"
     }
   ]
 };
