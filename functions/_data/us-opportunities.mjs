@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T14:04:03.279Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:2f5241d1980ae0cd142f867051bd4004222368f0481c8743d4caf33353344f19",
-  "total": 432,
+  "exported_at": "2026-09-05T15:18:24.465Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:dbcb0e996b2166d637b378dc46ecbd19c86b1ca2210969f072557e00fb57443b",
+  "total": 433,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16451,6 +16451,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_cf7e4978e29403f2dc80"
+    },
+    {
+      "stable_id": "opp_us_7d60a1a21e373ea2cd06",
+      "event_name": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "organiser": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "source_url": "https://www.eventeny.com/events/salem2026-24479/?srsltid=AfmBOorq_8_dXO2c7F_9dLhOp5cjrmOZUG8yYJ7kCj9wqSJaUG2qJy4G",
+      "application_url": "https://www.eventeny.com/events/salem2026-24479/?srsltid=AfmBOorq_8_dXO2c7F_9dLhOp5cjrmOZUG8yYJ7kCj9wqSJaUG2qJy4G",
+      "location": "Salem",
+      "locality": "Salem",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "01970",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-20",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-7th-annual-salem-food-truck-craft-beverage-festival-2-days-sat-septemb-2026-09-19-fcf50838",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_7d60a1a21e373ea2cd06"
     }
   ]
 };
