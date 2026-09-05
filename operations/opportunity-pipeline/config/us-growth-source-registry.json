@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T16:22:50.914Z",
+  "updated_at": "2026-09-05T16:25:24.411Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -1841,6 +1841,24 @@
       "evidence": "Cloudflare discovery fl-gainesville-2027-arts-crafts: live first-party route attests Gainesville, FL, actionable vendor terms, and exact event date 2027-11-14."
     },
     {
+      "id": "fl-earth-day-2027-04-18-bed1e527",
+      "name": "Earth Day Vendor Opportunity",
+      "organiser": "Earth Day",
+      "source_url": "https://conservancy.org/events/earth-day",
+      "application_url": "https://conservancy.org/events/earth-day",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Naples",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-18",
+      "event_end": "2027-04-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-naples-2027-food-truck: live first-party route attests Naples, FL, actionable vendor terms, and exact event date 2027-04-18."
+    },
+    {
       "id": "fl-eventeny-com-2027-05-23-33885eb3",
       "name": "Food Truck Application - May 23rd Food Truck Rally - May Food Truck Night - Eventeny",
       "organiser": "eventeny.com",
@@ -2217,6 +2235,24 @@
       "event_end": "2026-12-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2026-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date 2026-12-20."
+    },
+    {
+      "id": "fl-naples-festival-of-trees-christmas-market-2027-11-13-769dfe6d",
+      "name": "Naples Festival of Trees & Christmas Market Vendor Opportunity",
+      "organiser": "Naples Festival of Trees & Christmas Market",
+      "source_url": "https://www.naplesfestivaloftrees.com",
+      "application_url": "https://www.naplesfestivaloftrees.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Naples",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-11-13",
+      "event_end": "2027-11-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-naples-2027-holiday-market: live first-party route attests Naples, FL, actionable vendor terms, and exact event date 2027-11-13."
     },
     {
       "id": "fl-palafox-market-2026-pensacola-fl-2026-10-31-ee6b1c6d",
