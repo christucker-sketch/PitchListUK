@@ -273,8 +273,8 @@ export function deferredUnitMatchesAcquisitionPr(pr, state) {
   const stateSlug = slugifyStateName(stateLine.name);
   if (!stateSlug || !head.toLowerCase().includes(`-${stateSlug}-`)) return false;
 
-  const baseOid = String(pr.baseRefOid || '');
-  if (!/^[a-f0-9]{40}$/i.test(baseOid) || !head.endsWith(`-base-${baseOid.slice(0, 16)}`)) return false;
+  const parentOid = String(pr.headParentOid || '');
+  if (!/^[a-f0-9]{40}$/i.test(parentOid) || !head.endsWith(`-base-${parentOid.slice(0, 16)}`)) return false;
   if (!Array.isArray(pr.commits) || pr.commits.length !== 1) return false;
   const expectedFile = mode === 'discover' ? growthRegistryPath : snapshotPath;
   if (!Array.isArray(pr.files) || pr.files.length !== 1 || pr.files[0]?.path !== expectedFile) return false;
@@ -293,8 +293,12 @@ function reconcileDeferredOrphanPr(error, state) {
   try {
     pr = JSON.parse(originalExecFileSync('gh', [
       'pr', 'view', String(prNumber), '--repo', githubRepository,
-      '--json', 'number,state,isDraft,baseRefName,baseRefOid,headRefName,body,files,commits'
+      '--json', 'number,state,isDraft,baseRefName,headRefName,headRefOid,body,files,commits'
     ], { cwd: repositoryRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }));
+    pr.headParentOid = String(originalExecFileSync('gh', [
+      'api', `repos/${githubRepository}/commits/${pr.headRefOid}`,
+      '--jq', '.parents[0].sha'
+    ], { cwd: repositoryRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })).trim();
   } catch {
     return null;
   }
