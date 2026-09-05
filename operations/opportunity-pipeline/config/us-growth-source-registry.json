@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T22:10:45.094Z",
+  "updated_at": "2026-09-05T22:39:22.800Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4451,6 +4451,24 @@
       "evidence": "Cloudflare discovery ma-springfield-2027-government-events: live first-party route attests Springfield, MA, actionable vendor terms, and exact event date 2027-07-04."
     },
     {
+      "id": "ma-7th-annual-salem-food-truck-craft-beverage-festival-2-days-sat-septemb-2026-09-19-47823202",
+      "name": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "organiser": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "source_url": "https://www.eventeny.com/events/salem2026-24479/?srsltid=AfmBOopINvRKU0GzY-7CgTz6eT7fYq8bkHc_h1urYimm4f5T12qdNW53",
+      "application_url": "https://www.eventeny.com/events/salem2026-24479/?srsltid=AfmBOopINvRKU0GzY-7CgTz6eT7fYq8bkHc_h1urYimm4f5T12qdNW53",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2026-arts-crafts: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-20."
+    },
+    {
       "id": "ma-7th-annual-salem-food-truck-craft-beverage-festival-2-days-sat-septemb-2026-09-19-58cc6e52",
       "name": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
       "organiser": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
@@ -4546,6 +4564,24 @@
       "organiser": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
       "source_url": "https://www.eventeny.com/events/salem2026-24479/?srsltid=AfmBOorhrjVHj5ZBxb2UrFqPPJmfG2Nes_XX7q89WdWhQYSt89l--D24",
       "application_url": "https://www.eventeny.com/events/salem2026-24479/?srsltid=AfmBOorhrjVHj5ZBxb2UrFqPPJmfG2Nes_XX7q89WdWhQYSt89l--D24",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2026-festival: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-20."
+    },
+    {
+      "id": "ma-7th-annual-salem-food-truck-craft-beverage-festival-2-days-sat-septemb-2026-09-19-bfe1b8c9",
+      "name": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "organiser": "7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "source_url": "https://www.eventeny.com/events/salem2026-24479/?srsltid=AfmBOooHJEKpIcMjleVZPUJLK0IfPjCgwLbuLKwGgamDFsU-j3D8VVEP",
+      "application_url": "https://www.eventeny.com/events/salem2026-24479/?srsltid=AfmBOooHJEKpIcMjleVZPUJLK0IfPjCgwLbuLKwGgamDFsU-j3D8VVEP",
       "source_class": "festival-organisation",
       "country_code": "US",
       "jurisdiction": "US-MA",
