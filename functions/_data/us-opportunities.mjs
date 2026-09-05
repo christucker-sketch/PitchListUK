@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T00:36:35.066Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:6805d0522feee20b9aedb2e50a1f88ede9e4923727282cffa41c39431f6159c2",
-  "total": 429,
+  "exported_at": "2026-09-05T00:39:17.438Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:fea4be6c19f6b9d5758cb3f787b3ab0e2848e18c3472b12b7e9ea4af80b07ce6",
+  "total": 430,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16339,6 +16339,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_e2a617e73c598e794b55"
+    },
+    {
+      "stable_id": "opp_us_9c212eb2a5d3df3e52d9",
+      "event_name": "Food Truck Application - 6th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat Sept 20th & Sun Sept 21st! - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=27624&srsltid=AfmBOopXODpxQU61VCzAY1goaPMfWlgRW-P8py9zlYkEakvxwUzSaeqy",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=27624&srsltid=AfmBOopXODpxQU61VCzAY1goaPMfWlgRW-P8py9zlYkEakvxwUzSaeqy",
+      "location": "Salem",
+      "locality": "Salem",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-eventeny-com-2026-09-20-86ce0726",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_9c212eb2a5d3df3e52d9"
     }
   ]
 };
