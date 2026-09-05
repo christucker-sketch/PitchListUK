@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T17:01:43.862Z",
+  "updated_at": "2026-09-05T17:07:30.376Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2813,6 +2813,24 @@
       "evidence": "Cloudflare discovery ga-atlanta-2027-festival: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2027-05-08 to 2027-05-09."
     },
     {
+      "id": "ga-cobb-county-events-2026-09-05-3569453f",
+      "name": "Cobb County Events Vendor Opportunity",
+      "organiser": "Cobb County Events",
+      "source_url": "https://www.cobbcountyevents.com",
+      "application_url": "https://www.cobbcountyevents.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Marietta",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-05",
+      "event_end": "2026-09-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-marietta-2026-holiday-market: live first-party route attests Marietta, GA, actionable vendor terms, and exact event date 2026-09-05."
+    },
+    {
       "id": "ga-columbus-fall-craft-and-vendor-market-hometown-vendor-market-2026-11-14-fee596de",
       "name": "Columbus Fall Craft and Vendor Market - Hometown Vendor Market",
       "organiser": "Columbus Fall Craft and Vendor Market - Hometown Vendor Market",
@@ -2847,6 +2865,24 @@
       "event_end": "2027-02-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2027-food-truck: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2027-02-27."
+    },
+    {
+      "id": "ga-eventeny-com-2026-10-10-34d5c86f",
+      "name": "Food Truck Application - Chalktoberfest 2026 - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=44340&srsltid=AfmBOoqT5_g06VFyau_y-9zzyjIUH1eyK9uWVpGRiNyXzhtEqhy4kcS1",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=44340&srsltid=AfmBOoqT5_g06VFyau_y-9zzyjIUH1eyK9uWVpGRiNyXzhtEqhy4kcS1",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Marietta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-marietta-2026-food-truck: live first-party route attests Marietta, GA, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
     },
     {
       "id": "ga-expo-latino-food-truck-expo-latino-eventeny-2026-09-19-dd26125b",
