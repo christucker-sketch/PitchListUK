@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T18:17:10.250Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:84c7ec53a46e5aad85324dba76eb3039865a1a49d119789230ee4cdfa53dccf5",
-  "total": 441,
+  "exported_at": "2026-09-05T19:08:23.431Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:230a210746eb068d26beed6de41b9e895c5a156f4dfa566c072ed65d94e4d868",
+  "total": 442,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16793,6 +16793,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_2b63a1552b5870451b89"
+    },
+    {
+      "stable_id": "opp_us_bd5025b1a445c206bb14",
+      "event_name": "Midnight Moon Market in Salem, Massachusetts Vendor Opportunity",
+      "organiser": "Midnight Moon Market in Salem, Massachusetts",
+      "source_url": "https://midnightmoonmarket.com/",
+      "application_url": "https://midnightmoonmarket.com",
+      "location": "Salem",
+      "locality": "Salem",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-12-06",
+      "event_end": "2027-12-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-midnight-moon-market-in-salem-massachusetts-2027-12-06-c5295c24",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_bd5025b1a445c206bb14"
     }
   ]
 };
