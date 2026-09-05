@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T19:03:55.445Z",
+  "updated_at": "2026-09-05T19:07:15.133Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4397,6 +4397,24 @@
       "evidence": "Cloudflare discovery ma-salem-2027-food-truck: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2027-09-19 to 2027-09-20."
     },
     {
+      "id": "ma-dj-or-band-7th-annual-salem-food-truck-craft-beverage-festival-2-days--2027-09-19-a2bc5b79",
+      "name": "DJ or Band - 7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "organiser": "DJ or Band - 7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
+      "source_url": "https://www.eventeny.com/events/applications/application/?id=6870&srsltid=AfmBOoqhPBdLLDAA7uBaATCKl43TH7-cY0ZAMj8cDLXj_pLbL2Fl4JO0",
+      "application_url": "https://www.eventeny.com/events/applications/application/?id=6870&srsltid=AfmBOoqhPBdLLDAA7uBaATCKl43TH7-cY0ZAMj8cDLXj_pLbL2Fl4JO0",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-19",
+      "event_end": "2027-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2027-food-truck: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2027-09-19 to 2027-09-20."
+    },
+    {
       "id": "ma-dj-or-band-7th-annual-salem-food-truck-craft-beverage-festival-2-days--2027-09-19-f9254fce",
       "name": "DJ or Band - 7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
       "organiser": "DJ or Band - 7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
@@ -4881,6 +4899,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-lynn-2026-arts-crafts: live first-party route attests Lynn, MA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "ma-midnight-moon-market-in-salem-massachusetts-2027-12-06-c5295c24",
+      "name": "Midnight Moon Market in Salem, Massachusetts Vendor Opportunity",
+      "organiser": "Midnight Moon Market in Salem, Massachusetts",
+      "source_url": "https://midnightmoonmarket.com",
+      "application_url": "https://midnightmoonmarket.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-12-06",
+      "event_end": "2027-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2027-holiday-market: live first-party route attests Salem, MA, actionable vendor terms, and exact event date 2027-12-06."
     },
     {
       "id": "ma-new-bedford-farmers-market-2026-2026-10-31-5045c7f7",
