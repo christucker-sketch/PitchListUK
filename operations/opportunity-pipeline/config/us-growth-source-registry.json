@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T17:48:33.029Z",
+  "updated_at": "2026-09-05T17:57:01.100Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3160,6 +3160,24 @@
       "organiser": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
       "source_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOooOFxhQJ8OoB-kL0sq8wDCxs3cj3texHMB4SJyuwsTqlk2D1PuJ",
       "application_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOooOFxhQJ8OoB-kL0sq8wDCxs3cj3texHMB4SJyuwsTqlk2D1PuJ",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-20",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2026-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date range 2026-11-20 to 2026-11-21."
+    },
+    {
+      "id": "ga-jingle-bells-food-vendor-jingle-bells-festival-eventeny-2026-11-20-d063cb31",
+      "name": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "organiser": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOorrS-0-axL_qvSYZMbnHT2Mg1taRj_J0sb8qMc2wwXrNKIAaI2m",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOorrS-0-axL_qvSYZMbnHT2Mg1taRj_J0sb8qMc2wwXrNKIAaI2m",
       "source_class": "government-organisation",
       "country_code": "US",
       "jurisdiction": "US-GA",
