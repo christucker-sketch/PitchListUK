@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T17:19:22.717Z",
+  "updated_at": "2026-09-05T17:27:06.461Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2865,6 +2865,24 @@
       "event_end": "2027-02-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2027-food-truck: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date 2027-02-27."
+    },
+    {
+      "id": "ga-eventeny-com-2026-10-10-2761f1cf",
+      "name": "Food Truck Application - Chalktoberfest 2026 - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=44340&srsltid=AfmBOopwSV7aLykRxht5ZCVz34EnFBitb054-SpxMJr8_M4BUWhxJ0yG",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=44340&srsltid=AfmBOopwSV7aLykRxht5ZCVz34EnFBitb054-SpxMJr8_M4BUWhxJ0yG",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Marietta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-marietta-2026-food-truck: live first-party route attests Marietta, GA, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
     },
     {
       "id": "ga-eventeny-com-2026-10-10-34d5c86f",
