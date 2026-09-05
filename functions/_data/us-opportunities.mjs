@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T16:08:27.499Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:347a8bd8e842bee0e636a95d2fd539a43e0363e18e76de60debd38a57f3a997b",
-  "total": 434,
+  "exported_at": "2026-09-05T16:32:00.599Z",
+  "source": "reviewed-us-florida-cloud-promotion:41e518b09cab268e907e5eda16291004f4c8a544ed7c76e08b425a205049b030",
+  "total": 435,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -16527,6 +16527,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_dce4c871899c42ca0bbc"
+    },
+    {
+      "stable_id": "opp_us_a6c37014045c74642c81",
+      "event_name": "West Palm Beach’s GreenMarket Announces Major Deadlines Vendor Opportunity",
+      "organiser": "West Palm Beach’s GreenMarket Announces Major Deadlines",
+      "source_url": "https://bocamag.com/west-palm-beachs-greenmarket-announces-major-deadlines/",
+      "application_url": "https://bocamag.com/west-palm-beachs-greenmarket-announces-major-deadlines",
+      "location": "West Palm Beach",
+      "locality": "West Palm Beach",
+      "region": "Florida",
+      "region_code": "FL",
+      "region_name": "Florida",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-03-31",
+      "event_end": "2027-04-14",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "fl-west-palm-beach-s-greenmarket-announces-major-deadlines-2027-03-31-9c419eaa",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-florida",
+      "id": "opp_us_a6c37014045c74642c81"
     }
   ]
 };
