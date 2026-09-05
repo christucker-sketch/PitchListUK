@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T17:57:01.100Z",
+  "updated_at": "2026-09-05T17:59:57.792Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2962,6 +2962,24 @@
       "organiser": "Expo Latino Food Truck - Expo Latino - Eventeny",
       "source_url": "https://www.eventeny.com/events/vendor/?id=48478&srsltid=AfmBOorBtEBrFww4V2T-svbb5zuqStPHRD4ssJhtgDC9Tk40I1tZbyjO",
       "application_url": "https://www.eventeny.com/events/vendor/?id=48478&srsltid=AfmBOorBtEBrFww4V2T-svbb5zuqStPHRD4ssJhtgDC9Tk40I1tZbyjO",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2026-food-truck: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ga-expo-latino-food-truck-expo-latino-eventeny-2026-09-19-8e9b31cf",
+      "name": "Expo Latino Food Truck - Expo Latino - Eventeny",
+      "organiser": "Expo Latino Food Truck - Expo Latino - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=48478&srsltid=AfmBOoo9tZMGz3LWu3Mt1JVur2SPiCzXi8PmT-z2bvK_DITlO11jC-Ua",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=48478&srsltid=AfmBOoo9tZMGz3LWu3Mt1JVur2SPiCzXi8PmT-z2bvK_DITlO11jC-Ua",
       "source_class": "government-organisation",
       "country_code": "US",
       "jurisdiction": "US-GA",
