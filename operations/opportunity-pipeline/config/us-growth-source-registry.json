@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T00:03:17.337Z",
+  "updated_at": "2026-09-05T00:22:23.182Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -289,6 +289,24 @@
       "event_end": "2027-02-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-tempe-2027-festival: live first-party route attests Tempe, AZ, actionable vendor terms, and exact event date range 2027-02-26 to 2027-02-28."
+    },
+    {
+      "id": "az-meet-up-events-2027-05-14-e937728a",
+      "name": "Meet-Up & Events Vendor Opportunity",
+      "organiser": "Meet-Up & Events",
+      "source_url": "https://www.brinkleyrv.com/meet-up-and-events",
+      "application_url": "https://www.brinkleyrv.com/meet-up-and-events",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Flagstaff",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-14",
+      "event_end": "2027-05-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-flagstaff-2027-food-truck: live first-party route attests Flagstaff, AZ, actionable vendor terms, and exact event date 2027-05-14."
     },
     {
       "id": "az-merchantile-market-2026-10-10-038f4ddd",
