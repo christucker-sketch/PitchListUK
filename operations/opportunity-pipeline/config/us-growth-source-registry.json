@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T17:27:06.461Z",
+  "updated_at": "2026-09-05T17:28:17.508Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -2651,6 +2651,24 @@
       "evidence": "Cloudflare discovery ga-macon-2026-holiday-market: live first-party route attests Macon, GA, actionable vendor terms, and exact event date range 2026-12-04 to 2026-12-13."
     },
     {
+      "id": "ga-about-2027-07-04-68e1eb4a",
+      "name": "ABOUT Vendor Opportunity",
+      "organiser": "ABOUT",
+      "source_url": "https://www.mariettasquarefarmersmarket.com",
+      "application_url": "https://www.mariettasquarefarmersmarket.com",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Marietta",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-marietta-2027-farmers-market: live first-party route attests Marietta, GA, actionable vendor terms, and exact event date range 2027-07-04 to 2027-07-11."
+    },
+    {
       "id": "ga-all-hands-art-festival-2027-09-26-534318e6",
       "name": "All Hands Art Festival Application &mdash; The 567 Center Vendor Opportunity",
       "organiser": "All Hands Art Festival",
@@ -3063,6 +3081,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-augusta-2026-holiday-market: live first-party route attests Augusta, GA, actionable vendor terms, and exact event date 2026-11-07."
+    },
+    {
+      "id": "ga-how-to-sell-at-farmers-markets-in-georgia-2026-2027-03-31-f9287f77",
+      "name": "How to Sell at Farmers Markets in Georgia (2026) Vendor Opportunity",
+      "organiser": "How to Sell at Farmers Markets in Georgia (2026)",
+      "source_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-georgia",
+      "application_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-georgia",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Marietta",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-03-31",
+      "event_end": "2027-04-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-marietta-2027-farmers-market: live first-party route attests Marietta, GA, actionable vendor terms, and exact event date range 2027-03-31 to 2027-04-01."
     },
     {
       "id": "ga-jingle-bells-food-vendor-jingle-bells-festival-eventeny-2026-11-20-cecd4273",
