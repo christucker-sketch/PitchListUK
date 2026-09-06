@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:42:19.590Z",
+  "updated_at": "2026-09-06T19:47:37.481Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -1946,6 +1946,25 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-norwalk-2026-festival: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "ct-sono-artist-2027-08-01-8df6cbb4",
+      "name": "SoNo Artist Application 2018 &mdash; GORDON FINE ARTS Vendor Opportunity",
+      "organiser": "SoNo Artist",
+      "source_url": "https://www.gordonfinearts.org/sono-food-vending-application-copy",
+      "application_url": "https://www.gordonfinearts.org/sono-food-vending-application-copy",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Norwalk",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-08-01",
+      "event_end": "2027-08-06",
+      "application_deadline": "2027-08-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-norwalk-2027-arts-crafts: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date range 2027-08-01 to 2027-08-06."
     },
     {
       "id": "de-buy-local-delaware-farmers-markets-guide-delaware-department-of-agricu-2027-05-02-a0fb20ab",
