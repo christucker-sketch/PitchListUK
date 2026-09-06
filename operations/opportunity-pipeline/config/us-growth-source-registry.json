@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:07:00.609Z",
+  "updated_at": "2026-09-06T18:14:14.466Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -8015,6 +8015,42 @@
       "event_end": "2026-09-22",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nd-carrington-2026-farmers-market: live first-party route attests Carrington, ND, actionable vendor terms, and exact event date 2026-09-22."
+    },
+    {
+      "id": "ne-holiday-market-mdash-love-the-locals-2026-12-05-9308b5cd",
+      "name": "Holiday Market &mdash; Love, The Locals Vendor Opportunity",
+      "organiser": "Holiday Market &mdash; Love, The Locals",
+      "source_url": "https://www.lovethelocalsnebraska.com/holidaymarket",
+      "application_url": "https://www.lovethelocalsnebraska.com/holidaymarket",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "region_code": "NE",
+      "locality": "Lincoln",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ne-lincoln-2026-holiday-market: live first-party route attests Lincoln, NE, actionable vendor terms, and exact event date range 2026-12-05 to 2026-12-06."
+    },
+    {
+      "id": "ne-vendors-ndash-wax-buffalo-2026-11-28-12baf927",
+      "name": "Vendors &ndash; Wax Buffalo Vendor Opportunity",
+      "organiser": "Vendors &ndash; Wax Buffalo",
+      "source_url": "https://waxbuffalo.com/pages/vendors",
+      "application_url": "https://waxbuffalo.com/pages/vendors",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "region_code": "NE",
+      "locality": "Lincoln",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ne-lincoln-2026-holiday-market: live first-party route attests Lincoln, NE, actionable vendor terms, and exact event date 2026-11-28."
     },
     {
       "id": "nh-2026-waveny-arts-fest-2026-10-11-5e48dfb6",
