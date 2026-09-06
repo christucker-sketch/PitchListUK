@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05T23:56:45.421Z",
+  "updated_at": "2026-09-06T00:03:31.054Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4721,6 +4721,24 @@
       "evidence": "Cloudflare discovery ma-brockton-2026-festival: live first-party route attests Brockton, MA, actionable vendor terms, and exact event date 2026-11-28."
     },
     {
+      "id": "ma-city-of-salem-announces-the-6th-annual-salem-food-truck-craft-beverage-2027-09-20-aff77514",
+      "name": "City of Salem announces the 6th Annual Salem Food Truck & Craft Beverage Festival • Salem, MA",
+      "organiser": "City of Salem announces the 6th Annual Salem Food Truck & Craft Beverage Festival • Salem, MA",
+      "source_url": "https://www.salemma.gov/m/newsflash/Home/Detail/170",
+      "application_url": "https://www.salemma.gov/m/newsflash/Home/Detail/170",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-20",
+      "event_end": "2027-09-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2027-food-truck: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2027-09-20 to 2027-09-21."
+    },
+    {
       "id": "ma-dj-or-band-7th-annual-salem-food-truck-craft-beverage-festival-2-days--2027-09-19-0389fc4e",
       "name": "DJ or Band - 7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
       "organiser": "DJ or Band - 7th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat September 19th & Sun September 20th - Eventeny",
@@ -5169,6 +5187,24 @@
       "event_end": "2027-09-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-salem-2027-festival: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2027-09-20 to 2027-09-21."
+    },
+    {
+      "id": "ma-eventeny-com-2027-09-20-21d2364e",
+      "name": "Food Truck Application - 6th Annual Salem Food Truck & Craft Beverage Festival - 2 DAYS Sat Sept 20th & Sun Sept 21st! - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=27624&srsltid=AfmBOoooXekqnzxRXWBGPKHQ3uhdC0d5r2FqswX2tp84mpwf1GIqO9G1",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=27624&srsltid=AfmBOoooXekqnzxRXWBGPKHQ3uhdC0d5r2FqswX2tp84mpwf1GIqO9G1",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-20",
+      "event_end": "2027-09-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-salem-2027-food-truck: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2027-09-20 to 2027-09-21."
     },
     {
       "id": "ma-eventeny-com-2027-09-20-5cd4bc52",
