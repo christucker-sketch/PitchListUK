@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T22:50:16.974Z",
-  "source": "reviewed-us-louisiana-cloud-promotion:41260644fc9e54ff85374af4e3658feec7fd79233aa794abe00020aa91d5f3d3",
-  "total": 509,
+  "exported_at": "2026-09-06T22:55:28.614Z",
+  "source": "reviewed-us-kansas-cloud-promotion:e5955870adee267d0b62f7932d7b460a8429d39796f163e99c9a97250130eeec",
+  "total": 510,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19366,6 +19366,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-louisiana",
       "id": "opp_us_f0814f52b8dc88c98485"
+    },
+    {
+      "stable_id": "opp_us_3f5ff1ad151b261ea275",
+      "event_name": "Hutchinson Kansas State Fair 2026 Vendor Opportunity",
+      "organiser": "Hutchinson Kansas State Fair 2026",
+      "source_url": "https://vendorsmap.com/events/4150",
+      "application_url": "https://vendorsmap.com/events/4150",
+      "location": "Hutchinson",
+      "locality": "Hutchinson",
+      "region": "Kansas",
+      "region_code": "KS",
+      "region_name": "Kansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "currency": "USD",
+      "postal_code": "67502",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-20",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ks-hutchinson-kansas-state-fair-2026-2026-09-11-76f1d449",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kansas",
+      "id": "opp_us_3f5ff1ad151b261ea275"
     }
   ]
 };
