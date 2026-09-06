@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T18:21:03.219Z",
-  "source": "reviewed-us-maine-cloud-promotion:774097a6223965948c31de8ecb311ad7f9be17d1724cf439e0b3a89d504826a9",
-  "total": 479,
+  "exported_at": "2026-09-06T18:33:55.581Z",
+  "source": "reviewed-us-vermont-cloud-promotion:c655001d19181ee79486e88ac5d9afc9f9329c815049e208550bcb24d73ad2ce",
+  "total": 480,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18231,6 +18231,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-maine",
       "id": "opp_us_4774f06f50bd95fb710d"
+    },
+    {
+      "stable_id": "opp_us_71310d95aa737b570641",
+      "event_name": "Middlebury Car Show & Fall Festival : Sun, Oct 11, 2026 Vendor Opportunity",
+      "organiser": "Middlebury Car Show & Fall Festival : Sun, Oct 11, 2026",
+      "source_url": "https://events.eventgroove.com/event/Middlebury-Car-Show-Fall-Festival-127553",
+      "application_url": "https://events.eventgroove.com/event/Middlebury-Car-Show-Fall-Festival-127553",
+      "location": "Middlebury",
+      "locality": "Middlebury",
+      "region": "Vermont",
+      "region_code": "VT",
+      "region_name": "Vermont",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VT",
+      "currency": "USD",
+      "postal_code": "05753",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "vt-middlebury-car-show-fall-festival-sun-oct-11-2026-2026-10-11-c8c945c3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-vermont",
+      "id": "opp_us_71310d95aa737b570641"
     }
   ]
 };
