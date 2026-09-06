@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:47:09.640Z",
+  "updated_at": "2026-09-06T18:55:53.277Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -9779,6 +9779,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "ok-april-2025-community-calendar-of-events-entertainments-2027-04-03-112270cd",
+      "name": "April 2025 Community Calendar of Events - Entertainments Vendor Opportunity",
+      "organiser": "April 2025 Community Calendar of Events - Entertainments",
+      "source_url": "https://www.valuenews.com/april-2025-entertainment-calendar-events",
+      "application_url": "https://www.valuenews.com/april-2025-entertainment-calendar-events",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Broken Arrow",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-04-03",
+      "event_end": "2027-04-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-broken-arrow-2027-farmers-market: live first-party route attests Broken Arrow, OK, actionable vendor terms, and exact event date range 2027-04-03 to 2027-04-05."
     },
     {
       "id": "ok-broken-arrow-farmers-market-2026-2026-10-31-15bc1ae9",
