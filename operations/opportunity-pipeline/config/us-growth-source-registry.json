@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T21:18:48.403Z",
+  "updated_at": "2026-09-06T21:21:33.255Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7421,6 +7421,42 @@
       "event_end": "2027-07-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2027-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date range 2027-07-08 to 2027-07-11."
+    },
+    {
+      "id": "mn-falcon-heights-farmers-market-hours-directions-2026-09-25-476829be",
+      "name": "Falcon Heights Farmers Market | Hours & Directions Vendor Opportunity",
+      "organiser": "Falcon Heights Farmers Market | Hours & Directions",
+      "source_url": "https://www.cropcartmarkets.com/market/falcon-heights-farmers-market-VM2026-00798",
+      "application_url": "https://www.cropcartmarkets.com/market/falcon-heights-farmers-market-VM2026-00798",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "region_code": "MN",
+      "locality": "Falcon Heights",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mn-falcon-heights-2026-farmers-market: live first-party route attests Falcon Heights, MN, actionable vendor terms, and exact event date 2026-09-25."
+    },
+    {
+      "id": "mn-minnesota-state-fair-announces-new-2026-foods-vendors-2026-09-07-928c72e0",
+      "name": "Minnesota State Fair announces new 2026 foods, vendors Vendor Opportunity",
+      "organiser": "Minnesota State Fair announces new 2026 foods, vendors",
+      "source_url": "https://www.kttc.com/2026/07/09/minnesota-state-fair-announces-new-2026-foods-vendors",
+      "application_url": "https://www.kttc.com/2026/07/09/minnesota-state-fair-announces-new-2026-foods-vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "region_code": "MN",
+      "locality": "Falcon Heights",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mn-falcon-heights-2026-farmers-market: live first-party route attests Falcon Heights, MN, actionable vendor terms, and exact event date 2026-09-07."
     },
     {
       "id": "mn-the-american-dream-machine-farmington-minnesota-united-states-eventeny-2026-10-10-c9733e33",
