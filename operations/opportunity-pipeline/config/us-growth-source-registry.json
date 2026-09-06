@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T21:36:36.680Z",
+  "updated_at": "2026-09-06T21:48:03.239Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -4325,6 +4325,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-festival: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-09-10 to 2026-09-13."
+    },
+    {
+      "id": "hi-hawaii-kai-park-n-ride-people-s-open-market-2026-2026-12-31-072974f8",
+      "name": "Hawaii Kai Park n Ride (People's Open Market) 2026 Vendor Opportunity",
+      "organiser": "Hawaii Kai Park n Ride (People's Open Market) 2026",
+      "source_url": "https://vendorsmap.com/events/11276",
+      "application_url": "https://vendorsmap.com/events/11276",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-HI",
+      "region_code": "HI",
+      "locality": "Honolulu",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-31",
+      "event_end": "2026-12-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery hi-honolulu-2026-farmers-market: live first-party route attests Honolulu, HI, actionable vendor terms, and exact event date 2026-12-31."
     },
     {
       "id": "hi-kailua-village-farmers-market-2027-2027-04-15-ac2dc1d0",
