@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:21:12.893Z",
+  "updated_at": "2026-09-06T19:26:26.285Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -10373,6 +10373,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-food-truck: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "ri-hey-rhody-market-2027-05-19-80b396d0",
+      "name": "Hey Rhody Market Vendor Opportunity",
+      "organiser": "Hey Rhody Market",
+      "source_url": "https://heyrhodymediaco.com/hey-rhody-market",
+      "application_url": "https://heyrhodymediaco.com/hey-rhody-market",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-RI",
+      "region_code": "RI",
+      "locality": "Cranston",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-19",
+      "event_end": "2027-05-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ri-cranston-2027-farmers-market: live first-party route attests Cranston, RI, actionable vendor terms, and exact event date 2027-05-19."
     },
     {
       "id": "ri-ri-night-market-2026-cranston-ri-2026-10-16-2b6a8814",
