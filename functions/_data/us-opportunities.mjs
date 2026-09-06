@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T23:33:43.565Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:bf5b16b8b2f65360f552db79516e404db5e93e5ba39b240f0f5066c1bdcec31e",
-  "total": 516,
+  "exported_at": "2026-09-06T23:43:19.806Z",
+  "source": "reviewed-us-new-hampshire-cloud-promotion:2bdf403a0dcc6409e7e66a732dc5e128ce0d74354b46baa5751d9dad98b8f202",
+  "total": 517,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19632,6 +19632,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_6f4505397b84aa84f377"
+    },
+    {
+      "stable_id": "opp_us_49ab45d44b1b229f2b50",
+      "event_name": "Dover Farmers Market Moves To Lower Henry Law Park For Summer Vendor Opportunity",
+      "organiser": "Dover Farmers Market Moves To Lower Henry Law Park For Summer",
+      "source_url": "https://wokq.com/dover-farmers-market-new-location/",
+      "application_url": "https://wokq.com/dover-farmers-market-new-location",
+      "location": "Dover",
+      "locality": "Dover",
+      "region": "New Hampshire",
+      "region_code": "NH",
+      "region_name": "New Hampshire",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-03",
+      "event_end": "2027-06-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nh-dover-farmers-market-moves-to-lower-henry-law-park-for-summer-2027-06-03-6b2f2597",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-hampshire",
+      "id": "opp_us_49ab45d44b1b229f2b50"
     }
   ]
 };
