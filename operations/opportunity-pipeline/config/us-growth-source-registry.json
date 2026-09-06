@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:20:11.358Z",
+  "updated_at": "2026-09-06T18:29:04.443Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -10283,6 +10283,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-food-truck: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "ri-ri-night-market-2026-cranston-ri-2026-10-16-2b6a8814",
+      "name": "RI Night Market 2026, Cranston, RI Vendor Opportunity",
+      "organiser": "RI Night Market 2026, Cranston, RI",
+      "source_url": "https://vendorsmap.com/events/106",
+      "application_url": "https://vendorsmap.com/events/106",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-RI",
+      "region_code": "RI",
+      "locality": "Cranston",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-16",
+      "event_end": "2026-10-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ri-cranston-2026-holiday-market: live first-party route attests Cranston, RI, actionable vendor terms, and exact event date range 2026-10-16 to 2026-10-18."
     },
     {
       "id": "sd-63rd-annual-sidewalk-arts-festival-tourism-events-southeast-south-dako-2026-09-12-913bdd9c",
