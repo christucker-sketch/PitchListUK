@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T09:30:29.510Z",
+  "updated_at": "2026-09-06T09:39:17.982Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3837,6 +3837,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-columbus-2026-festival: live first-party route attests Columbus, GA, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-26."
+    },
+    {
+      "id": "ga-valdosta-lowndes-azalea-festival-2027-03-13-e01986ba",
+      "name": "Valdosta-Lowndes Azalea Festival Vendor Opportunity",
+      "organiser": "Valdosta-Lowndes Azalea Festival",
+      "source_url": "https://www.azaleafestival.com",
+      "application_url": "https://www.azaleafestival.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-13",
+      "event_end": "2027-03-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2027-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date 2027-03-13."
     },
     {
       "id": "ga-welcome-to-the-gordonston-art-fair-website-2027-03-06-d9018253",
