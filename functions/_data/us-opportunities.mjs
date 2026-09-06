@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T15:59:56.553Z",
-  "source": "reviewed-us-alabama-cloud-promotion:c47d0bc850d6f727a63961a9a734274bfcdbe9e3e19fa92fce9d44be8f07c2e4",
-  "total": 459,
+  "exported_at": "2026-09-06T16:10:02.446Z",
+  "source": "reviewed-us-kansas-cloud-promotion:6f2da762da5a27f13cbabce674aa11c0ad89e1b66b23229e91399afda40dc462",
+  "total": 460,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17474,6 +17474,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-alabama",
       "id": "opp_us_d2f474727eb2e97722c9"
+    },
+    {
+      "stable_id": "opp_us_292b85eec32a9faa0ae3",
+      "event_name": "From the Land of Kansas Vendor Opportunity",
+      "organiser": "From the Land of Kansas",
+      "source_url": "https://www.fromthelandofkansas.com/member/el-dorado-farmers-art-market",
+      "application_url": "https://www.fromthelandofkansas.com/member/el-dorado-farmers-art-market",
+      "location": "El Dorado",
+      "locality": "El Dorado",
+      "region": "Kansas",
+      "region_code": "KS",
+      "region_name": "Kansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "currency": "USD",
+      "postal_code": "67042",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ks-from-the-land-of-kansas-2026-09-06-1ec3378f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kansas",
+      "id": "opp_us_292b85eec32a9faa0ae3"
     }
   ]
 };
