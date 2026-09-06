@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T15:50:18.550Z",
-  "source": "reviewed-us-indiana-cloud-promotion:54f6f62a863e6f275cdd75d8af35b833e04b1528afce592198917f95372f35e0",
-  "total": 458,
+  "exported_at": "2026-09-06T15:59:56.553Z",
+  "source": "reviewed-us-alabama-cloud-promotion:c47d0bc850d6f727a63961a9a734274bfcdbe9e3e19fa92fce9d44be8f07c2e4",
+  "total": 459,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17436,6 +17436,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-indiana",
       "id": "opp_us_dafba58dc948b29c9633"
+    },
+    {
+      "stable_id": "opp_us_d2f474727eb2e97722c9",
+      "event_name": "Taste of Hoover Vendor Opportunity",
+      "organiser": "Taste of Hoover",
+      "source_url": "https://aldridgegardens.com/education/events/annual_events/taste-of-hoover.html",
+      "application_url": "https://aldridgegardens.com/education/events/annual_events/taste-of-hoover.html",
+      "location": "Hoover",
+      "locality": "Hoover",
+      "region": "Alabama",
+      "region_code": "AL",
+      "region_name": "Alabama",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-15",
+      "event_end": "2026-10-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "al-taste-of-hoover-2026-10-15-99df75a7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-alabama",
+      "id": "opp_us_d2f474727eb2e97722c9"
     }
   ]
 };
