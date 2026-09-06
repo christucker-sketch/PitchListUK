@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:35:25.690Z",
+  "updated_at": "2026-09-06T18:37:53.949Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -10410,6 +10410,24 @@
       "event_end": "2026-10-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tn-nashville-2026-festival: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "tn-mardi-growl-young-williams-animal-center-2027-03-06-a3ef9ead",
+      "name": "Mardi Growl - Young-Williams Animal Center Vendor Opportunity",
+      "organiser": "Mardi Growl - Young-Williams Animal Center",
+      "source_url": "https://www.young-williams.org/mardigrowl",
+      "application_url": "https://www.young-williams.org/mardigrowl",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Nashville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-06",
+      "event_end": "2027-03-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-nashville-2027-government-events: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2027-03-06."
     },
     {
       "id": "tn-nashville-autumn-craft-vendor-market-hometown-vendor-market-2026-09-06-a117642f",
