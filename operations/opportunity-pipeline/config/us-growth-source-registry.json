@@ -1,7 +1,25 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:07:50.211Z",
+  "updated_at": "2026-09-06T17:15:09.679Z",
   "sources": [
+    {
+      "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
+      "name": "2026 Birmingham Summer Sizzle Craft and Vendor Market Hoover, AL",
+      "organiser": "2026 Birmingham Summer Sizzle Craft and Vendor Market Hoover, AL",
+      "source_url": "https://www.blazersgrill.com/events/hoover/2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-11916123",
+      "application_url": "https://www.blazersgrill.com/events/hoover/2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-11916123",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Hoover",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-hoover-2026-arts-crafts: live first-party route attests Hoover, AL, actionable vendor terms, and exact event date range 2026-09-06 to 2026-09-07."
+    },
     {
       "id": "al-taste-of-hoover-2026-10-15-99df75a7",
       "name": "Taste of Hoover Vendor Opportunity",
