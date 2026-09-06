@@ -1,7 +1,25 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T15:56:51.452Z",
+  "updated_at": "2026-09-06T15:58:54.368Z",
   "sources": [
+    {
+      "id": "al-taste-of-hoover-2026-10-15-99df75a7",
+      "name": "Taste of Hoover Vendor Opportunity",
+      "organiser": "Taste of Hoover",
+      "source_url": "https://aldridgegardens.com/education/events/annual_events/taste-of-hoover.html",
+      "application_url": "https://aldridgegardens.com/education/events/annual_events/taste-of-hoover.html",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Hoover",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-15",
+      "event_end": "2026-10-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-hoover-2026-government-events: live first-party route attests Hoover, AL, actionable vendor terms, and exact event date 2026-10-15."
+    },
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
       "name": "Vendor Application",
