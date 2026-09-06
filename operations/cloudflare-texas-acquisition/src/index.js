@@ -333,8 +333,7 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
       reused: publication.reused === true,
       branch: publication.branch,
       pr_number: publication.pr_number,
-      source_count: publication.source_ids.length,
-      source_ids: publication.source_ids
+      source_count: publication.source_ids.length
     } : publication
   };
   return step.do(`emit compact ${state.name} growth discovery result`, async () => compactResult);

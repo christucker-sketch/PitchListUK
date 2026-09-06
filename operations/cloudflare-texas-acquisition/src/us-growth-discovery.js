@@ -10,7 +10,11 @@ function canonicalUrl(value) {
     const url = new URL(String(value || ''));
     if (!['http:', 'https:'].includes(url.protocol)) return '';
     url.hash = '';
-    for (const key of [...url.searchParams.keys()]) if (/^utm_/i.test(key)) url.searchParams.delete(key);
+    for (const key of [...url.searchParams.keys()]) {
+      if (/^utm_/i.test(key) || /^(?:srsltid|gclid|fbclid|dclid|msclkid|mc_cid|mc_eid)$/i.test(key)) {
+        url.searchParams.delete(key);
+      }
+    }
     return url.toString().replace(/[/?]$/, '');
   } catch {
     return '';
