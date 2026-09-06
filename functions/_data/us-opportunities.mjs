@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T22:38:40.955Z",
-  "source": "reviewed-us-indiana-cloud-promotion:8c21a7932c2f51c457ff4ac7b0be18bed8042b52240293ccc59ef952f36ce228",
-  "total": 507,
+  "exported_at": "2026-09-06T22:47:59.360Z",
+  "source": "reviewed-us-kentucky-cloud-promotion:3e14a4925e0d7860f465ae3be45bc484a481f143bbc877538d17686d3c76b4fc",
+  "total": 508,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19292,6 +19292,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-indiana",
       "id": "opp_us_b74bc52b8e4e08b2b370"
+    },
+    {
+      "stable_id": "opp_us_c9fcd4eec469f4e4e6e9",
+      "event_name": "Louisville Christmas Craft Market Vendor Opportunity",
+      "organiser": "Louisville Christmas Craft Market",
+      "source_url": "https://www.gosoin.com/event/louisville-christmas-craft-market/17368/",
+      "application_url": "https://www.gosoin.com/event/louisville-christmas-craft-market/17368",
+      "location": "Louisville",
+      "locality": "Louisville",
+      "region": "Kentucky",
+      "region_code": "KY",
+      "region_name": "Kentucky",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "currency": "USD",
+      "postal_code": "40299",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-22",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ky-louisville-christmas-craft-market-2026-11-21-72de7d70",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kentucky",
+      "id": "opp_us_c9fcd4eec469f4e4e6e9"
     }
   ]
 };
