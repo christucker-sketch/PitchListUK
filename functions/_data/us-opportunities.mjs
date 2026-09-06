@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T20:12:55.041Z",
-  "source": "reviewed-us-delaware-cloud-promotion:ebda6279fd0bb78f41d9a54c2ddae03f01ebd3e86c506d4621fdfbb5bf502aaa",
-  "total": 490,
+  "exported_at": "2026-09-06T20:30:45.589Z",
+  "source": "reviewed-us-south-dakota-cloud-promotion:2d1dd9c03db39609248cd2962354225053dfee9abf6c7c1d1c468103083011c6",
+  "total": 491,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18647,6 +18647,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-delaware",
       "id": "opp_us_6075df262d3917753f0c"
+    },
+    {
+      "stable_id": "opp_us_84d77eb25ab8382ba1a5",
+      "event_name": "Lallycooler Music Festival Vendor Opportunity",
+      "organiser": "Lallycooler Music Festival",
+      "source_url": "https://lallycooler.com/",
+      "application_url": "https://lallycooler.com",
+      "location": "Sioux Falls",
+      "locality": "Sioux Falls",
+      "region": "South Dakota",
+      "region_code": "SD",
+      "region_name": "South Dakota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-SD",
+      "currency": "USD",
+      "postal_code": "57104",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-09",
+      "event_end": "2027-07-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "sd-lallycooler-music-festival-2027-07-09-54771b7d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-south-dakota",
+      "id": "opp_us_84d77eb25ab8382ba1a5"
     }
   ]
 };
