@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:49:28.579Z",
+  "updated_at": "2026-09-06T22:52:13.817Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2057,6 +2057,24 @@
       "evidence": "Cloudflare discovery ct-fairfield-2026-festival: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date range 2026-10-17 to 2026-10-24."
     },
     {
+      "id": "ct-holiday-market-2026-11-28-1ed06a8a",
+      "name": "Holiday Market Vendor Opportunity",
+      "organiser": "Holiday Market",
+      "source_url": "https://www.bethelwoodscenter.org/events/detail/holiday-market",
+      "application_url": "https://www.bethelwoodscenter.org/events/detail/holiday-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Fairfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-fairfield-2026-holiday-market: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date range 2026-11-28 to 2026-11-30."
+    },
+    {
       "id": "ct-home-norwalk-nice-2026-norwalk-nice-festival-2026-10-03-7e5c3a79",
       "name": "Home Norwalk Nice 2026 - Norwalk NICE Festival Vendor Opportunity",
       "organiser": "Home Norwalk Nice 2026 - Norwalk NICE Festival",
@@ -2073,6 +2091,24 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-norwalk-2026-festival: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "ct-sep-14-fairfield-food-truck-festival-2026-09-06-87cc6709",
+      "name": "Sep 14 | Fairfield Food Truck Festival",
+      "organiser": "Sep 14 | Fairfield Food Truck Festival",
+      "source_url": "https://patch.com/connecticut/fairfield/calendar/event/20250914/d78912a3-0ee7-4dca-90cc-9507cb6db1c0/fairfield-food-truck-festival",
+      "application_url": "https://patch.com/connecticut/fairfield/calendar/event/20250914/d78912a3-0ee7-4dca-90cc-9507cb6db1c0/fairfield-food-truck-festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Fairfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-fairfield-2026-food-truck: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date range 2026-09-06 to 2026-09-14."
     },
     {
       "id": "ct-sono-artist-2027-08-01-8df6cbb4",
