@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T17:26:18.398Z",
-  "source": "reviewed-us-utah-cloud-promotion:970b889d74301cb901699ed6f522fac9d870d28b881924754f43c561fab6cdca",
-  "total": 467,
+  "exported_at": "2026-09-06T17:29:22.341Z",
+  "source": "reviewed-us-new-mexico-cloud-promotion:49ba1d4063a4a1770d34bc26e5e36ad06d115e95937b43f39a880a301e0614ea",
+  "total": 468,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17776,6 +17776,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-utah",
       "id": "opp_us_2337c97bcce31b15108f"
+    },
+    {
+      "stable_id": "opp_us_26e7bdd8c98a8cb8e0f2",
+      "event_name": "2026 Wine Festival - Las Cruces Vendor Application",
+      "organiser": "2026 Wine Festival - Las Cruces",
+      "source_url": "https://form.jotform.com/261185158337158",
+      "application_url": "https://form.jotform.com/261185158337158",
+      "location": "Las Cruces",
+      "locality": "Las Cruces",
+      "region": "New Mexico",
+      "region_code": "NM",
+      "region_name": "New Mexico",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NM",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nm-2026-wine-festival-las-cruces-2026-09-07-fa37680f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-mexico",
+      "id": "opp_us_26e7bdd8c98a8cb8e0f2"
     }
   ]
 };
