@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T19:50:30.895Z",
-  "source": "reviewed-us-iowa-cloud-promotion:884e397112b50a1f9d15e4b9f5c8359ad5be168a0c62755369053767c96f0aa9",
-  "total": 486,
+  "exported_at": "2026-09-06T19:52:33.756Z",
+  "source": "reviewed-us-kansas-cloud-promotion:6afa9262f491d302a093a14e145ffc5a206968882ad5d09c99c6692489b0fd8d",
+  "total": 487,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18493,6 +18493,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-iowa",
       "id": "opp_us_067a4a991fb8afe83144"
+    },
+    {
+      "stable_id": "opp_us_1f1a0e25f9608b21204c",
+      "event_name": "Vendor Information",
+      "organiser": "experienceeldo.com",
+      "source_url": "https://www.experienceeldo.com/vendor-information",
+      "application_url": "https://www.experienceeldo.com/vendor-information",
+      "location": "El Dorado",
+      "locality": "El Dorado",
+      "region": "Kansas",
+      "region_code": "KS",
+      "region_name": "Kansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-26",
+      "event_end": "2027-07-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ks-experienceeldo-com-2027-07-26-9f4455ea",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kansas",
+      "id": "opp_us_1f1a0e25f9608b21204c"
     }
   ]
 };
