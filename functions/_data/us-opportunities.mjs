@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T18:36:22.834Z",
-  "source": "reviewed-us-west-virginia-cloud-promotion:e8c74c1226e699e0f324fa7d48e04f9622ea6ef3c7a4794c544d0eb3901c066b",
-  "total": 482,
+  "exported_at": "2026-09-06T19:16:38.371Z",
+  "source": "reviewed-us-mississippi-cloud-promotion:d88fe42d506a2439b11e074d55632022eb15dc3ecc02040b1d72e0a2479e83a0",
+  "total": 483,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18345,6 +18345,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-west-virginia",
       "id": "opp_us_e4dfcae0d423e3198893"
+    },
+    {
+      "stable_id": "opp_us_a178a274b998fc8697a9",
+      "event_name": "Market Wars - Mississippi Free Press Vendor Opportunity",
+      "organiser": "Market Wars - Mississippi Free Press",
+      "source_url": "https://www.mississippifreepress.org/market-wars/",
+      "application_url": "https://www.mississippifreepress.org/market-wars",
+      "location": "Madison",
+      "locality": "Madison",
+      "region": "Mississippi",
+      "region_code": "MS",
+      "region_name": "Mississippi",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MS",
+      "currency": "USD",
+      "postal_code": "66514",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-03",
+      "event_end": "2027-06-03",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ms-market-wars-mississippi-free-press-2027-06-03-8ebe911a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-mississippi",
+      "id": "opp_us_a178a274b998fc8697a9"
     }
   ]
 };
