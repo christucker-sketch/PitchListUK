@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T10:05:02.093Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:879ddf2beeaa39e9a980b70cb537ec77c6a186f674296f54eafbff104579ac1a",
-  "total": 454,
+  "exported_at": "2026-09-06T10:10:57.841Z",
+  "source": "reviewed-us-georgia-cloud-promotion:2c219e5bab53f3b4cb5f2a153e931b096c66a71f0dd8fa14c848c9f7c3fa8236",
+  "total": 455,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17282,6 +17282,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_ecfaaffbfe9463b6d3dd"
+    },
+    {
+      "stable_id": "opp_us_f803431ce3a3a340fb59",
+      "event_name": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "organiser": "Jingle Bells Food Vendor - Jingle Bells Festival - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOoqyK9Gfy9A-ha-twP_ttOAgzDK0O3vPEy7_AylpNbL2AsoKNQGB",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49586&srsltid=AfmBOoqyK9Gfy9A-ha-twP_ttOAgzDK0O3vPEy7_AylpNbL2AsoKNQGB",
+      "location": "Valdosta",
+      "locality": "Valdosta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-11-20",
+      "event_end": "2027-11-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-jingle-bells-food-vendor-jingle-bells-festival-eventeny-2027-11-20-e80d712e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_f803431ce3a3a340fb59"
     }
   ]
 };
