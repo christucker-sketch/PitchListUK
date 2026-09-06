@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:20:15.051Z",
+  "updated_at": "2026-09-06T17:21:57.743Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -4017,6 +4017,42 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-festival: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-09-10 to 2026-09-13."
+    },
+    {
+      "id": "ia-asianfest-vendors-mdash-iowa-asian-alliance-2026-09-26-e915723a",
+      "name": "AsianFest Vendors &mdash; Iowa Asian Alliance Vendor Opportunity",
+      "organiser": "AsianFest Vendors &mdash; Iowa Asian Alliance",
+      "source_url": "https://www.iowaasianalliance.com/asianfest-vendors",
+      "application_url": "https://www.iowaasianalliance.com/asianfest-vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Cedar Rapids",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-cedar-rapids-2026-festival: live first-party route attests Cedar Rapids, IA, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "ia-cedar-rapids-downtown-farmers-market-2026-09-19-f356ae02",
+      "name": "Cedar Rapids Downtown Farmers Market Vendor Opportunity",
+      "organiser": "Cedar Rapids Downtown Farmers Market",
+      "source_url": "https://www.cedarrapids.org/economic-alliance-events/downtown-farmers-market",
+      "application_url": "https://www.cedarrapids.org/economic-alliance-events/downtown-farmers-market",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Cedar Rapids",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-cedar-rapids-2026-festival: live first-party route attests Cedar Rapids, IA, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "ia-cedar-rapids-downtown-farmers-market-2026-2026-09-19-06df459c",
