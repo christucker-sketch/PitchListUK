@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T22:55:28.614Z",
-  "source": "reviewed-us-kansas-cloud-promotion:e5955870adee267d0b62f7932d7b460a8429d39796f163e99c9a97250130eeec",
-  "total": 510,
+  "exported_at": "2026-09-06T22:57:47.423Z",
+  "source": "reviewed-us-nevada-cloud-promotion:5dc70ef17edaf996cee0ec1d4fb785729c8d3a5274ea16ee989e582c63995522",
+  "total": 511,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19404,6 +19404,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kansas",
       "id": "opp_us_3f5ff1ad151b261ea275"
+    },
+    {
+      "stable_id": "opp_us_526058227294177f1ff1",
+      "event_name": "Food/Drink Vendor - C4 - Carson City Card Con - Eventeny",
+      "organiser": "Food/Drink Vendor - C4 - Carson City Card Con - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=51878",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=51878",
+      "location": "Carson City",
+      "locality": "Carson City",
+      "region": "Nevada",
+      "region_code": "NV",
+      "region_name": "Nevada",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nv-food-drink-vendor-c4-carson-city-card-con-eventeny-2026-11-07-f2653314",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nevada",
+      "id": "opp_us_526058227294177f1ff1"
     }
   ]
 };
