@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T09:39:17.982Z",
+  "updated_at": "2026-09-06T09:54:24.641Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -3855,6 +3855,24 @@
       "event_end": "2027-03-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-valdosta-2027-festival: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date 2027-03-13."
+    },
+    {
+      "id": "ga-valdosta-s-2026-holiday-lineup-includes-free-taylor-hicks-concert-news-2026-11-20-70044738",
+      "name": "📅 Valdosta’s 2026 Holiday Lineup Includes Free Taylor Hicks Concert - NewsBreak Vendor Opportunity",
+      "organiser": "📅 Valdosta’s 2026 Holiday Lineup Includes Free Taylor Hicks Concert - NewsBreak",
+      "source_url": "https://www.newsbreak.com/valdosta-ga-daily-brief-373183035/4673435446312-valdosta-s-2026-holiday-lineup-includes-free-taylor-hicks-concert",
+      "application_url": "https://www.newsbreak.com/valdosta-ga-daily-brief-373183035/4673435446312-valdosta-s-2026-holiday-lineup-includes-free-taylor-hicks-concert",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Valdosta",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-20",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-valdosta-2026-holiday-market: live first-party route attests Valdosta, GA, actionable vendor terms, and exact event date range 2026-11-20 to 2026-11-21."
     },
     {
       "id": "ga-welcome-to-the-gordonston-art-fair-website-2027-03-06-d9018253",
