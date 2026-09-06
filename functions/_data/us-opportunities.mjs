@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T18:15:08.149Z",
-  "source": "reviewed-us-nebraska-cloud-promotion:efc9ec13b968f0057d0d3455876939f29a924f296a7fb7248c5c7a717eb4c073",
-  "total": 477,
+  "exported_at": "2026-09-06T18:17:29.681Z",
+  "source": "reviewed-us-new-mexico-cloud-promotion:368ebfde54f1ea8c6a1b71991a8e3aaa79d22a485764e96d681233627e63feb9",
+  "total": 478,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18156,6 +18156,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nebraska",
       "id": "opp_us_3c964d43ceeb94d4b2b5"
+    },
+    {
+      "stable_id": "opp_us_8b96af9e02095ea5e5af",
+      "event_name": "Las Cruces Holiday Market at 302 S Main St, Las Cruces, NM 88001-1204, United States on 19th December, 2025 Vendor Opportunity",
+      "organiser": "Las Cruces Holiday Market at 302 S Main St, Las Cruces, NM 88001-1204, United States on 19th December, 2025",
+      "source_url": "https://happeningnext.com/event/las-cruces-holiday-market-eid3a0d89qs20",
+      "application_url": "https://happeningnext.com/event/las-cruces-holiday-market-eid3a0d89qs20",
+      "location": "Las Cruces",
+      "locality": "Las Cruces",
+      "region": "New Mexico",
+      "region_code": "NM",
+      "region_name": "New Mexico",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NM",
+      "currency": "USD",
+      "postal_code": "88001",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-18",
+      "event_end": "2026-12-18",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nm-las-cruces-holiday-market-at-302-s-main-st-las-cruces-nm-88001-1204-un-2026-12-18-543a5c10",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-mexico",
+      "id": "opp_us_8b96af9e02095ea5e5af"
     }
   ]
 };
