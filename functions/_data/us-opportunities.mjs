@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T18:17:29.681Z",
-  "source": "reviewed-us-new-mexico-cloud-promotion:368ebfde54f1ea8c6a1b71991a8e3aaa79d22a485764e96d681233627e63feb9",
-  "total": 478,
+  "exported_at": "2026-09-06T18:21:03.219Z",
+  "source": "reviewed-us-maine-cloud-promotion:774097a6223965948c31de8ecb311ad7f9be17d1724cf439e0b3a89d504826a9",
+  "total": 479,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18193,6 +18193,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-mexico",
       "id": "opp_us_8b96af9e02095ea5e5af"
+    },
+    {
+      "stable_id": "opp_us_4774f06f50bd95fb710d",
+      "event_name": "Maine’s best food festivals & events 2026 Vendor Opportunity",
+      "organiser": "Maine’s best food festivals & events 2026",
+      "source_url": "https://www.mainetravelmaven.com/maines-best-food-festivals/",
+      "application_url": "https://www.mainetravelmaven.com/maines-best-food-festivals",
+      "location": "Eastport",
+      "locality": "Eastport",
+      "region": "Maine",
+      "region_code": "ME",
+      "region_name": "Maine",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-ME",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "me-maine-s-best-food-festivals-events-2026-2026-09-25-053d99fb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-maine",
+      "id": "opp_us_4774f06f50bd95fb710d"
     }
   ]
 };
