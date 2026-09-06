@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:59:28.904Z",
+  "updated_at": "2026-09-06T23:01:42.457Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -9011,6 +9011,24 @@
       "evidence": "Cloudflare discovery nd-carrington-2026-farmers-market: live first-party route attests Carrington, ND, actionable vendor terms, and exact event date 2026-09-22."
     },
     {
+      "id": "ne-holiday-market-2026-12-05-0748e45d",
+      "name": "Holiday Market Vendor Opportunity",
+      "organiser": "Holiday Market",
+      "source_url": "https://omahafarmersmarket.com/holiday-market",
+      "application_url": "https://omahafarmersmarket.com/holiday-market",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "region_code": "NE",
+      "locality": "Omaha",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ne-omaha-2026-holiday-market: live first-party route attests Omaha, NE, actionable vendor terms, and exact event date range 2026-12-05 to 2026-12-06."
+    },
+    {
       "id": "ne-holiday-market-mdash-love-the-locals-2026-12-05-9308b5cd",
       "name": "Holiday Market &mdash; Love, The Locals Vendor Opportunity",
       "organiser": "Holiday Market &mdash; Love, The Locals",
@@ -9045,6 +9063,25 @@
       "event_end": "2026-10-10",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ne-omaha-2026-festival: live first-party route attests Omaha, NE, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
+      "id": "ne-vendor-kit-2026-11-13-9439d87c",
+      "name": "Vendor Kit",
+      "organiser": "Vendor Kit",
+      "source_url": "https://www.omahaholidayboutique.com/vendor-info/vendor-kit",
+      "application_url": "https://www.omahaholidayboutique.com/vendor-info/vendor-kit",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "region_code": "NE",
+      "locality": "Omaha",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-13",
+      "event_end": "2026-11-15",
+      "application_deadline": "2026-10-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ne-omaha-2026-holiday-market: live first-party route attests Omaha, NE, actionable vendor terms, and exact event date range 2026-11-13 to 2026-11-15."
     },
     {
       "id": "ne-vendors-ndash-wax-buffalo-2026-11-28-12baf927",
