@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T20:58:16.915Z",
+  "updated_at": "2026-09-06T21:03:00.815Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7459,6 +7459,24 @@
       "evidence": "Cloudflare discovery ms-madison-2026-arts-crafts: live first-party route attests Madison, MS, actionable vendor terms, and exact event date 2026-09-30."
     },
     {
+      "id": "mt-6th-annual-food-truck-battle-on-the-yellowstone-mdash-veterans-navigat-2027-08-24-7907122f",
+      "name": "6th Annual Food Truck Battle on the Yellowstone &mdash; Veterans Navigation Network",
+      "organiser": "6th Annual Food Truck Battle on the Yellowstone &mdash; Veterans Navigation Network",
+      "source_url": "https://www.veteransnavigation.org/communityevents/6th-annual-food-truck-battle-on-the-yellowstone",
+      "application_url": "https://www.veteransnavigation.org/communityevents/6th-annual-food-truck-battle-on-the-yellowstone",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MT",
+      "region_code": "MT",
+      "locality": "Billings",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-24",
+      "event_end": "2027-08-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mt-billings-2027-food-truck: live first-party route attests Billings, MT, actionable vendor terms, and exact event date range 2027-08-24 to 2027-08-26."
+    },
+    {
       "id": "mt-billingsfiesta-com-2027-07-16-8a14f58f",
       "name": "Vendor Registration & Information",
       "organiser": "billingsfiesta.com",
@@ -7475,6 +7493,24 @@
       "event_end": "2027-07-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mt-billings-2027-festival: live first-party route attests Billings, MT, actionable vendor terms, and exact event date range 2027-07-16 to 2027-07-17."
+    },
+    {
+      "id": "mt-christmas-sip-and-shop-craft-market-treasure-chest-events-2027-11-04-86f5097d",
+      "name": "Christmas Sip and Shop Craft Market - Treasure Chest Events Vendor Opportunity",
+      "organiser": "Christmas Sip and Shop Craft Market - Treasure Chest Events",
+      "source_url": "https://www.treasurechestevents.com/christmas-sip-and-shop-craft-market-2",
+      "application_url": "https://www.treasurechestevents.com/christmas-sip-and-shop-craft-market-2",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MT",
+      "region_code": "MT",
+      "locality": "Billings",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-11-04",
+      "event_end": "2027-11-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mt-billings-2027-holiday-market: live first-party route attests Billings, MT, actionable vendor terms, and exact event date range 2027-11-04 to 2027-11-05."
     },
     {
       "id": "nc-2026-2027-11-05-4add887b",
