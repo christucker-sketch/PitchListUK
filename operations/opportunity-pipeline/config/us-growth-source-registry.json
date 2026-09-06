@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:47:37.481Z",
+  "updated_at": "2026-09-06T19:49:41.011Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -4198,6 +4198,60 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ia-cedar-rapids-2026-farmers-market: live first-party route attests Cedar Rapids, IA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ia-houby-days-mdash-czech-village-association-2027-05-15-0f268c96",
+      "name": "Houby Days &mdash; Czech Village Association Vendor Opportunity",
+      "organiser": "Houby Days &mdash; Czech Village Association",
+      "source_url": "https://www.czechvillagecedarrapids.com/houbydays",
+      "application_url": "https://www.czechvillagecedarrapids.com/houbydays",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Cedar Rapids",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-15",
+      "event_end": "2027-05-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-cedar-rapids-2027-festival: live first-party route attests Cedar Rapids, IA, actionable vendor terms, and exact event date 2027-05-15."
+    },
+    {
+      "id": "ia-made-in-iowa-spring-market-2027-2027-04-18-b6194f6a",
+      "name": "Made in Iowa Spring Market 2027 Vendor Opportunity",
+      "organiser": "Made in Iowa Spring Market 2027",
+      "source_url": "https://vendorsmap.com/events/3266",
+      "application_url": "https://vendorsmap.com/events/3266",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Cedar Rapids",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-18",
+      "event_end": "2027-04-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-cedar-rapids-2027-festival: live first-party route attests Cedar Rapids, IA, actionable vendor terms, and exact event date range 2027-04-18 to 2027-04-19."
+    },
+    {
+      "id": "ia-madeiniowa-org-2027-01-30-13ea1bbb",
+      "name": "Vendor Registration – 2027 Winter Market",
+      "organiser": "madeiniowa.org",
+      "source_url": "https://madeiniowa.org/winter2027/janreg",
+      "application_url": "https://madeiniowa.org/winter2027/janreg",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Cedar Rapids",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-30",
+      "event_end": "2027-01-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-cedar-rapids-2027-festival: live first-party route attests Cedar Rapids, IA, actionable vendor terms, and exact event date range 2027-01-30 to 2027-01-31."
     },
     {
       "id": "id-meridian-main-street-market-farmers-market-2026-10-17-dcb2f42c",
