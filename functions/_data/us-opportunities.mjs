@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T09:40:13.528Z",
-  "source": "reviewed-us-georgia-cloud-promotion:565ad23442d10735aeaa61627b779b7a9a654eb5bcf3ba287e54286e7eeab655",
-  "total": 449,
+  "exported_at": "2026-09-06T09:55:14.720Z",
+  "source": "reviewed-us-georgia-cloud-promotion:8a9e5f53f756252c7927eacb785068d8b9887eb750816da8018cc22bd7feaacb",
+  "total": 450,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17091,6 +17091,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_4206488ca01de2494abd"
+    },
+    {
+      "stable_id": "opp_us_10c12b64368cfbc8fdd2",
+      "event_name": "📅 Valdosta’s 2026 Holiday Lineup Includes Free Taylor Hicks Concert - NewsBreak Vendor Opportunity",
+      "organiser": "📅 Valdosta’s 2026 Holiday Lineup Includes Free Taylor Hicks Concert - NewsBreak",
+      "source_url": "https://www.newsbreak.com/valdosta-ga-daily-brief-373183035/4673435446312-valdosta-s-2026-holiday-lineup-includes-free-taylor-hicks-concert",
+      "application_url": "https://www.newsbreak.com/valdosta-ga-daily-brief-373183035/4673435446312-valdosta-s-2026-holiday-lineup-includes-free-taylor-hicks-concert",
+      "location": "Valdosta",
+      "locality": "Valdosta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "49588",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-20",
+      "event_end": "2026-11-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-valdosta-s-2026-holiday-lineup-includes-free-taylor-hicks-concert-news-2026-11-20-70044738",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_10c12b64368cfbc8fdd2"
     }
   ]
 };
