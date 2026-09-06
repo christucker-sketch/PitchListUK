@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T10:12:07.164Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:cec75db37085d62b00078fd0eb528edca6b1dc99ec5c4c209cea2cf7dea28c4a",
-  "total": 456,
+  "exported_at": "2026-09-06T15:48:07.132Z",
+  "source": "reviewed-us-tennessee-cloud-promotion:2272a3c466100c3bac5bc5183d68b59147e1dbcbe59d145ee06ce1b55e12fcfe",
+  "total": 457,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17359,6 +17359,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_1b8fa31c249c8c2ffe40"
+    },
+    {
+      "stable_id": "opp_us_6ac3fb3d6e0003ad219a",
+      "event_name": "La Vergne Fall Festival Vendor Opportunity",
+      "organiser": "La Vergne Fall Festival",
+      "source_url": "https://www.lavergnetn.gov/632/La-Vergne-Fall-Festival",
+      "application_url": "https://www.lavergnetn.gov/632/La-Vergne-Fall-Festival",
+      "location": "Nashville",
+      "locality": "Nashville",
+      "region": "Tennessee",
+      "region_code": "TN",
+      "region_name": "Tennessee",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "2026-09-08",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tn-la-vergne-fall-festival-2026-09-12-ac46f26a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-tennessee",
+      "id": "opp_us_6ac3fb3d6e0003ad219a"
     }
   ]
 };
