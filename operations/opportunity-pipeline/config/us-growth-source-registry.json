@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:14:14.466Z",
+  "updated_at": "2026-09-06T18:16:37.103Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -8555,6 +8555,24 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nm-las-cruces-2026-festival: live first-party route attests Las Cruces, NM, actionable vendor terms, and exact event date 2026-09-07."
+    },
+    {
+      "id": "nm-las-cruces-holiday-market-at-302-s-main-st-las-cruces-nm-88001-1204-un-2026-12-18-543a5c10",
+      "name": "Las Cruces Holiday Market at 302 S Main St, Las Cruces, NM 88001-1204, United States on 19th December, 2025 Vendor Opportunity",
+      "organiser": "Las Cruces Holiday Market at 302 S Main St, Las Cruces, NM 88001-1204, United States on 19th December, 2025",
+      "source_url": "https://happeningnext.com/event/las-cruces-holiday-market-eid3a0d89qs20",
+      "application_url": "https://happeningnext.com/event/las-cruces-holiday-market-eid3a0d89qs20",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NM",
+      "region_code": "NM",
+      "locality": "Las Cruces",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-18",
+      "event_end": "2026-12-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nm-las-cruces-2026-holiday-market: live first-party route attests Las Cruces, NM, actionable vendor terms, and exact event date 2026-12-18."
     },
     {
       "id": "nm-vendors-southern-new-mexico-state-fair-2026-09-30-c0fb743a",
