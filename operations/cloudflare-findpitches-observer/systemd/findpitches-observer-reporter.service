@@ -1,0 +1,14 @@
+[Unit]
+Description=FindPitches observer reporter
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/findpitches-observer/reporter.env
+WorkingDirectory=%h/.openclaw/workspace/external/PitchListUK-production
+ExecStart=/usr/bin/env node %h/.openclaw/workspace/external/PitchListUK-production/operations/cloudflare-findpitches-observer/scripts/publish-controller-status.mjs
+Nice=10
+
+[Install]
+WantedBy=default.target
