@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T23:26:47.352Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:ac8ff20a5ac3200a95add8b5e04ddf638b43d7f2d1bef6b7bdf7dab385b2ffcf",
-  "total": 515,
+  "exported_at": "2026-09-06T23:33:43.565Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:bf5b16b8b2f65360f552db79516e404db5e93e5ba39b240f0f5066c1bdcec31e",
+  "total": 516,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19595,6 +19595,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_947f87df09e9c9be86b8"
+    },
+    {
+      "stable_id": "opp_us_6f4505397b84aa84f377",
+      "event_name": "Little Rock Farmers Market Returns for 2026 Season Vendor Opportunity",
+      "organiser": "Little Rock Farmers Market Returns for 2026 Season",
+      "source_url": "https://www.littlerock.com/media/press-releases/little-rock-farmers-market-returns-for-2026-season/",
+      "application_url": "https://www.littlerock.com/media/press-releases/little-rock-farmers-market-returns-for-2026-season",
+      "location": "Clinton",
+      "locality": "Clinton",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-16",
+      "event_end": "2027-05-16",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-little-rock-farmers-market-returns-for-2026-season-2027-05-16-e8ecd9fd",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_6f4505397b84aa84f377"
     }
   ]
 };
