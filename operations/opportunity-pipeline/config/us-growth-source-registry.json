@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:34:33.292Z",
+  "updated_at": "2026-09-06T22:37:53.379Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5225,6 +5225,25 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery in-merom-2026-food-truck: live first-party route attests Merom, IN, actionable vendor terms, and exact event date range 2026-09-12 to 2026-09-13."
+    },
+    {
+      "id": "in-sugarplum-holiday-fair-lutheran-high-school-of-indianapolis-2026-10-23-2499bace",
+      "name": "SugarPlum Holiday Fair - Lutheran High School of Indianapolis Vendor Opportunity",
+      "organiser": "SugarPlum Holiday Fair - Lutheran High School of Indianapolis",
+      "source_url": "https://www.lhsi.org/fine-arts/sugarplum.cfm",
+      "application_url": "https://www.lhsi.org/fine-arts/sugarplum.cfm",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "region_code": "IN",
+      "locality": "Indianapolis",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-24",
+      "application_deadline": "2026-10-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery in-indianapolis-2026-holiday-market: live first-party route attests Indianapolis, IN, actionable vendor terms, and exact event date range 2026-10-23 to 2026-10-24."
     },
     {
       "id": "in-upcoming-northern-festival-weekend-june-4-7-2026-festival-guides-and-r-2027-05-06-6e0e0613",
