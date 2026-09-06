@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:15:09.679Z",
+  "updated_at": "2026-09-06T17:20:15.051Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -1892,6 +1892,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-westminster-2026-farmers-market: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
+    },
+    {
+      "id": "ct-home-norwalk-nice-2026-norwalk-nice-festival-2026-10-03-7e5c3a79",
+      "name": "Home Norwalk Nice 2026 - Norwalk NICE Festival Vendor Opportunity",
+      "organiser": "Home Norwalk Nice 2026 - Norwalk NICE Festival",
+      "source_url": "https://norwalknice.org",
+      "application_url": "https://norwalknice.org",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Norwalk",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-norwalk-2026-festival: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "de-west-side-farmers-market-mdash-west-side-grows-together-2026-10-28-6c0c0f8c",
