@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T20:08:25.997Z",
+  "updated_at": "2026-09-06T20:11:59.925Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2040,6 +2040,24 @@
       "evidence": "Cloudflare discovery de-wilmington-2026-festival: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
+      "id": "de-hagley-craft-fair-2027-10-18-c8b869d9",
+      "name": "Hagley Craft Fair Vendor Information/Application",
+      "organiser": "Hagley Craft Fair",
+      "source_url": "https://www.hagley.org/hagley-craft-fair-vendor-app",
+      "application_url": "https://www.hagley.org/hagley-craft-fair-vendor-app",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "region_code": "DE",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-18",
+      "event_end": "2027-10-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery de-wilmington-2027-arts-crafts: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2027-10-18."
+    },
+    {
       "id": "de-hagley-craft-fair-oct-17-18-2026-10-17-887c9cdb",
       "name": "Hagley Craft Fair - OCT 17 & 18 Vendor Opportunity",
       "organiser": "Hagley Craft Fair - OCT 17 & 18",
@@ -2058,6 +2076,24 @@
       "evidence": "Cloudflare discovery de-wilmington-2026-arts-crafts: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2026-10-17."
     },
     {
+      "id": "de-separation-day-festival-in-historic-new-castle-delaware-2027-06-12-cfa44314",
+      "name": "Separation Day Festival - In Historic New Castle Delaware Vendor Opportunity",
+      "organiser": "Separation Day Festival - In Historic New Castle Delaware",
+      "source_url": "https://www.separationdayde.com/participate.php",
+      "application_url": "https://www.separationdayde.com/participate.php",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "region_code": "DE",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-12",
+      "event_end": "2027-06-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery de-wilmington-2027-festival: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2027-06-12."
+    },
+    {
       "id": "de-west-side-farmers-market-mdash-west-side-grows-together-2026-10-28-6c0c0f8c",
       "name": "West Side Farmers Market &mdash; West Side Grows Together Vendor Opportunity",
       "organiser": "West Side Farmers Market &mdash; West Side Grows Together",
@@ -2074,6 +2110,24 @@
       "event_end": "2026-10-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery de-wilmington-2026-farmers-market: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2026-10-28."
+    },
+    {
+      "id": "de-wilmington-street-food-festival-wilmington-delaware-2026-2027-05-16-61f3f698",
+      "name": "Wilmington Street Food Festival | Wilmington, Delaware | 2026 Vendor Opportunity",
+      "organiser": "Wilmington Street Food Festival | Wilmington, Delaware | 2026",
+      "source_url": "https://www.streetfoodfests.com/event/wilmington",
+      "application_url": "https://www.streetfoodfests.com/event/wilmington",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "region_code": "DE",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-16",
+      "event_end": "2027-05-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery de-wilmington-2027-festival: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2027-05-16."
     },
     {
       "id": "fl-2027-beaux-arts-festival-of-art-2027-01-16-b29422c6",
