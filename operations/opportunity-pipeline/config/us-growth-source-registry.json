@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T15:47:12.496Z",
+  "updated_at": "2026-09-06T15:49:26.918Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -4449,6 +4449,24 @@
       "event_end": "2027-05-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-rockford-2027-farmers-market: live first-party route attests Rockford, IL, actionable vendor terms, and exact event date 2027-05-01."
+    },
+    {
+      "id": "in-indiana-pawpaw-festival-festivals-in-indiana-2026-09-12-3b196eec",
+      "name": "Indiana Pawpaw Festival | Festivals in Indiana Vendor Opportunity",
+      "organiser": "Indiana Pawpaw Festival | Festivals in Indiana",
+      "source_url": "https://festivalsinindiana.com/festivals/indiana-pawpaw-festival",
+      "application_url": "https://festivalsinindiana.com/festivals/indiana-pawpaw-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "region_code": "IN",
+      "locality": "Merom",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery in-merom-2026-farmers-market: live first-party route attests Merom, IN, actionable vendor terms, and exact event date range 2026-09-12 to 2026-09-13."
     },
     {
       "id": "ma-11th-new-bedford-food-truck-craft-beverage-festival-2026-10-31-be7b7400",
