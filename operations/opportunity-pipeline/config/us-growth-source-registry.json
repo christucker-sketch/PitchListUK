@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:16:37.103Z",
+  "updated_at": "2026-09-06T18:20:11.358Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -6501,6 +6501,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-worcester-2026-arts-crafts: live first-party route attests Worcester, MA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "me-maine-s-best-food-festivals-events-2026-2026-09-25-053d99fb",
+      "name": "Maine’s best food festivals & events 2026 Vendor Opportunity",
+      "organiser": "Maine’s best food festivals & events 2026",
+      "source_url": "https://www.mainetravelmaven.com/maines-best-food-festivals",
+      "application_url": "https://www.mainetravelmaven.com/maines-best-food-festivals",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ME",
+      "region_code": "ME",
+      "locality": "Eastport",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery me-eastport-2026-food-truck: live first-party route attests Eastport, ME, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-27."
     },
     {
       "id": "me-vendor-events-in-eastport-me-2026-09-11-48634f67",
