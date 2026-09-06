@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:30:42.973Z",
+  "updated_at": "2026-09-06T17:34:11.120Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -6933,6 +6933,42 @@
       "event_end": "2027-07-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2027-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date range 2027-07-08 to 2027-07-11."
+    },
+    {
+      "id": "ms-canton-flea-market-arts-crafts-show-mdash-canton-tourism-2026-10-08-a376a64d",
+      "name": "Canton Flea Market Arts & Crafts Show &mdash; Canton Tourism Vendor Opportunity",
+      "organiser": "Canton Flea Market Arts & Crafts Show &mdash; Canton Tourism",
+      "source_url": "https://visitcantonms.org/events-2/2017/2/22/canton-flea-market-arts-and-crafts-show",
+      "application_url": "https://visitcantonms.org/events-2/2017/2/22/canton-flea-market-arts-and-crafts-show",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MS",
+      "region_code": "MS",
+      "locality": "Madison",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-08",
+      "event_end": "2026-10-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ms-madison-2026-arts-crafts: live first-party route attests Madison, MS, actionable vendor terms, and exact event date 2026-10-08."
+    },
+    {
+      "id": "ms-vendor-events-in-madison-ms-2026-09-30-0f91303f",
+      "name": "Vendor Events in Madison, MS",
+      "organiser": "Vendor Events in Madison, MS",
+      "source_url": "https://vendorsmap.com/cities/madison-ms",
+      "application_url": "https://vendorsmap.com/cities/madison-ms",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MS",
+      "region_code": "MS",
+      "locality": "Madison",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-30",
+      "event_end": "2026-09-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ms-madison-2026-arts-crafts: live first-party route attests Madison, MS, actionable vendor terms, and exact event date 2026-09-30."
     },
     {
       "id": "nc-2026-2027-11-05-4add887b",
