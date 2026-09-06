@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T21:31:18.572Z",
+  "updated_at": "2026-09-06T21:36:36.680Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2003,6 +2003,24 @@
       "evidence": "Cloudflare discovery co-westminster-2026-farmers-market: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
     },
     {
+      "id": "ct-best-farmers-markets-in-fairfield-county-ct-2026-guide-to-ridgefield-r-2026-10-31-0daa1038",
+      "name": "Best Farmers Markets in Fairfield County, CT (2026 Guide to Ridgefield, Redding, Weston, Wilton & Bethel) Vendor Opportunity",
+      "organiser": "Best Farmers Markets in Fairfield County, CT (2026 Guide to Ridgefield, Redding, Weston, Wilton & Bethel)",
+      "source_url": "https://briannacarvalho.com/blog/best-farmers-markets-in-northern-fairfield-county-ct",
+      "application_url": "https://briannacarvalho.com/blog/best-farmers-markets-in-northern-fairfield-county-ct",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Fairfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-fairfield-2026-farmers-market: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
       "id": "ct-home-norwalk-nice-2026-norwalk-nice-festival-2026-10-03-7e5c3a79",
       "name": "Home Norwalk Nice 2026 - Norwalk NICE Festival Vendor Opportunity",
       "organiser": "Home Norwalk Nice 2026 - Norwalk NICE Festival",
@@ -2038,6 +2056,24 @@
       "application_deadline": "2027-08-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-norwalk-2027-arts-crafts: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date range 2027-08-01 to 2027-08-06."
+    },
+    {
+      "id": "ct-westport-farmers-market-ndash-westport-farmers-market-2026-11-05-cc94d6bc",
+      "name": "Westport Farmers' Market &ndash; Westport Farmers' Market Vendor Opportunity",
+      "organiser": "Westport Farmers' Market &ndash; Westport Farmers' Market",
+      "source_url": "https://www.westportfarmersmarket.com",
+      "application_url": "https://www.westportfarmersmarket.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Fairfield",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-11-05",
+      "event_end": "2026-11-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-fairfield-2026-farmers-market: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date 2026-11-05."
     },
     {
       "id": "ct-wilton-historical-society-food-truck-festival-2026-good-morning-wilton-2027-05-31-9802a541",
