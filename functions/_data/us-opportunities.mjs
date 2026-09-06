@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T16:10:02.446Z",
-  "source": "reviewed-us-kansas-cloud-promotion:6f2da762da5a27f13cbabce674aa11c0ad89e1b66b23229e91399afda40dc462",
-  "total": 460,
+  "exported_at": "2026-09-06T16:29:38.365Z",
+  "source": "reviewed-us-maine-cloud-promotion:e6530343c030a9230e8d17d085582d70ead30b3504cb796ed666d25ff71d61c8",
+  "total": 461,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17511,6 +17511,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kansas",
       "id": "opp_us_292b85eec32a9faa0ae3"
+    },
+    {
+      "stable_id": "opp_us_8f53d37664d2300de8cf",
+      "event_name": "Vendor Events in Eastport, ME",
+      "organiser": "Vendor Events in Eastport, ME",
+      "source_url": "https://vendorsmap.com/cities/eastport",
+      "application_url": "https://vendorsmap.com/cities/eastport",
+      "location": "Eastport",
+      "locality": "Eastport",
+      "region": "Maine",
+      "region_code": "ME",
+      "region_name": "Maine",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-ME",
+      "currency": "USD",
+      "postal_code": "04631",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "me-vendor-events-in-eastport-me-2026-09-11-48634f67",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-maine",
+      "id": "opp_us_8f53d37664d2300de8cf"
     }
   ]
 };
