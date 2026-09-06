@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T17:41:58.592Z",
-  "source": "reviewed-us-new-hampshire-cloud-promotion:fd9084ae79bbf9d4bed314cbe6449c6a0701a0a2852e7d508cd2674116abe073",
-  "total": 471,
+  "exported_at": "2026-09-06T17:45:23.693Z",
+  "source": "reviewed-us-south-dakota-cloud-promotion:4cd7e1828534c501d3f18e4f9c3bf86a37db2dcd86392d7ba62c633fbb5a95da",
+  "total": 472,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17930,6 +17930,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-hampshire",
       "id": "opp_us_8d3747beae835c2c0792"
+    },
+    {
+      "stable_id": "opp_us_f04e7edd7b09354bb8be",
+      "event_name": "63rd Annual Sidewalk Arts Festival - Tourism Events - Southeast South Dakota Tourism Vendor Opportunity",
+      "organiser": "63rd Annual Sidewalk Arts Festival - Tourism Events - Southeast South Dakota Tourism",
+      "source_url": "https://www.southeastsouthdakota.com/events/63rd-annual-sidewalk-arts-festival",
+      "application_url": "https://www.southeastsouthdakota.com/events/63rd-annual-sidewalk-arts-festival",
+      "location": "Sioux Falls",
+      "locality": "Sioux Falls",
+      "region": "South Dakota",
+      "region_code": "SD",
+      "region_name": "South Dakota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-SD",
+      "currency": "USD",
+      "postal_code": "57104",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "sd-63rd-annual-sidewalk-arts-festival-tourism-events-southeast-south-dako-2026-09-12-913bdd9c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-south-dakota",
+      "id": "opp_us_f04e7edd7b09354bb8be"
     }
   ]
 };
