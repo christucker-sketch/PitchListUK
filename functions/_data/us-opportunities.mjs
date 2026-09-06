@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T21:22:32.599Z",
-  "source": "reviewed-us-minnesota-cloud-promotion:83e8e362abf0b3caffb133712886de53d30198d298b0db68c4e185717c82928c",
-  "total": 497,
+  "exported_at": "2026-09-06T21:55:59.919Z",
+  "source": "reviewed-us-tennessee-cloud-promotion:c57a22e76ba0dac9403c2977bc364918d1f86fb6bc5bf93069c934d12e1f410b",
+  "total": 498,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18911,6 +18911,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-minnesota",
       "id": "opp_us_9a9faa415c325703b518"
+    },
+    {
+      "stable_id": "opp_us_d6baf0d5df15d405338a",
+      "event_name": "Festival Participant Information Vendor Opportunity",
+      "organiser": "Festival Participant Information",
+      "source_url": "https://williamsonheritage.org/events/festival-participant-information/",
+      "application_url": "https://williamsonheritage.org/events/festival-participant-information",
+      "location": "Franklin",
+      "locality": "Franklin",
+      "region": "Tennessee",
+      "region_code": "TN",
+      "region_name": "Tennessee",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tn-festival-participant-information-2026-10-24-ee536576",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-tennessee",
+      "id": "opp_us_d6baf0d5df15d405338a"
     }
   ]
 };
