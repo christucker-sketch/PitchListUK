@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:49:41.011Z",
+  "updated_at": "2026-09-06T19:51:46.773Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -4918,6 +4918,24 @@
       "event_end": "2027-05-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery in-merom-2027-arts-crafts: live first-party route attests Merom, IN, actionable vendor terms, and exact event date 2027-05-06."
+    },
+    {
+      "id": "ks-experienceeldo-com-2027-07-26-9f4455ea",
+      "name": "Vendor Information",
+      "organiser": "experienceeldo.com",
+      "source_url": "https://www.experienceeldo.com/vendor-information",
+      "application_url": "https://www.experienceeldo.com/vendor-information",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "El Dorado",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-26",
+      "event_end": "2027-07-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-el-dorado-2027-festival: live first-party route attests El Dorado, KS, actionable vendor terms, and exact event date 2027-07-26."
     },
     {
       "id": "ks-from-the-land-of-kansas-2026-09-06-1ec3378f",
