@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T23:02:30.347Z",
-  "source": "reviewed-us-nebraska-cloud-promotion:3a8cec1c03fe021f607f9f86cb8ee68d6a0aaaf3dcad14027d242e69d1aa7aab",
-  "total": 513,
+  "exported_at": "2026-09-06T23:08:01.260Z",
+  "source": "reviewed-us-delaware-cloud-promotion:3373ee539a60135f892f92f5e6688bb1ebadfba8382ef0a4750f76df91555843",
+  "total": 514,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19519,6 +19519,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nebraska",
       "id": "opp_us_60f45faaa6f784e69db3"
+    },
+    {
+      "stable_id": "opp_us_293960b60562ef6afe76",
+      "event_name": "Food Vendor Application",
+      "organiser": "Food",
+      "source_url": "https://omniverseevents.com/home/events/bluehencomiccon/info/applications/food-vendor-application/",
+      "application_url": "https://omniverseevents.com/home/events/bluehencomiccon/info/applications/food-vendor-application",
+      "location": "Harrington",
+      "locality": "Harrington",
+      "region": "Delaware",
+      "region_code": "DE",
+      "region_name": "Delaware",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "de-food-2026-10-24-470f3953",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-delaware",
+      "id": "opp_us_293960b60562ef6afe76"
     }
   ]
 };
