@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T17:39:07.589Z",
-  "source": "reviewed-us-delaware-cloud-promotion:41ff4aefbc9137e6cc8acc372a890adb6bb5dae491eeec513166be4807423740",
-  "total": 470,
+  "exported_at": "2026-09-06T17:41:58.592Z",
+  "source": "reviewed-us-new-hampshire-cloud-promotion:fd9084ae79bbf9d4bed314cbe6449c6a0701a0a2852e7d508cd2674116abe073",
+  "total": 471,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17891,6 +17891,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-delaware",
       "id": "opp_us_65818b40f84aebdf6018"
+    },
+    {
+      "stable_id": "opp_us_8d3747beae835c2c0792",
+      "event_name": "2026 Waveny Arts Fest Application - Carriage Barn Arts Center Vendor Opportunity",
+      "organiser": "2026 Waveny Arts Fest",
+      "source_url": "https://carriagebarn.org/2026-waveny-arts-fest-application/",
+      "application_url": "https://carriagebarn.org/2026-waveny-arts-fest-application",
+      "location": "Canaan",
+      "locality": "Canaan",
+      "region": "New Hampshire",
+      "region_code": "NH",
+      "region_name": "New Hampshire",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "currency": "USD",
+      "postal_code": "06840",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nh-2026-waveny-arts-fest-2026-10-11-5e48dfb6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-hampshire",
+      "id": "opp_us_8d3747beae835c2c0792"
     }
   ]
 };
