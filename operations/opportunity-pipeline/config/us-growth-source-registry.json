@@ -1,7 +1,25 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T20:01:07.097Z",
+  "updated_at": "2026-09-06T20:03:15.787Z",
   "sources": [
+    {
+      "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
+      "name": "Kenai Peninsula Sport Rec & Trade show Vendor Opportunity",
+      "organiser": "Kenai Peninsula Sport Rec & Trade show",
+      "source_url": "https://www.kenaisportshow.com",
+      "application_url": "https://www.kenaisportshow.com",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AK",
+      "region_code": "AK",
+      "locality": "Soldotna",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-30",
+      "event_end": "2027-05-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ak-soldotna-2027-arts-crafts: live first-party route attests Soldotna, AK, actionable vendor terms, and exact event date range 2027-04-30 to 2027-05-01."
+    },
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
       "name": "2026 Birmingham Summer Sizzle Craft and Vendor Market Hoover, AL",
