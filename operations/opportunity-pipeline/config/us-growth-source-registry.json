@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:37:53.949Z",
+  "updated_at": "2026-09-06T18:47:09.640Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -12104,6 +12104,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-walla-walla-2026-food-truck: live first-party route attests Walla Walla, WA, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-12."
+    },
+    {
+      "id": "wi-report-2027-09-16-14306f92",
+      "name": "Report Vendor Opportunity",
+      "organiser": "Report",
+      "source_url": "https://publicmarkets.pps.org/12/report",
+      "application_url": "https://publicmarkets.pps.org/12/report",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WI",
+      "region_code": "WI",
+      "locality": "West Allis",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-16",
+      "event_end": "2027-09-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wi-west-allis-2027-farmers-market: live first-party route attests West Allis, WI, actionable vendor terms, and exact event date 2027-09-16."
     },
     {
       "id": "wv-city-park-2026-09-26-e4239788",
