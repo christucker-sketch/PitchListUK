@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:44:30.970Z",
+  "updated_at": "2026-09-06T17:47:50.118Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -11870,6 +11870,42 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-walla-walla-2026-food-truck: live first-party route attests Walla Walla, WA, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-12."
+    },
+    {
+      "id": "wv-off-site-walking-2026-09-26-db944bbc",
+      "name": "Off-Site/Walking Vendor Application | Elkins, WV",
+      "organiser": "Off-Site/Walking",
+      "source_url": "https://www.forestfestival.com/off-sitewalking-vendor-application",
+      "application_url": "https://www.forestfestival.com/off-sitewalking-vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WV",
+      "region_code": "WV",
+      "locality": "West Virginia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wv-west-virginia-2026-festival: live first-party route attests West Virginia, WV, actionable vendor terms, and exact event date range 2026-09-26 to 2026-10-04."
+    },
+    {
+      "id": "wv-other-2026-10-08-ac24718a",
+      "name": "Other Vendor Applications &mdash; West Virginia Black Walnut Festival",
+      "organiser": "Other",
+      "source_url": "https://www.wvblackwalnutfestival.org/other-vendor-applications",
+      "application_url": "https://www.wvblackwalnutfestival.org/other-vendor-applications",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WV",
+      "region_code": "WV",
+      "locality": "West Virginia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-08",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wv-west-virginia-2026-festival: live first-party route attests West Virginia, WV, actionable vendor terms, and exact event date range 2026-10-08 to 2026-10-11."
     },
     {
       "id": "wv-the-farmers-market-of-lewisburg-2026-season-a-community-driven-vendor--2026-09-11-50d36a3a",
