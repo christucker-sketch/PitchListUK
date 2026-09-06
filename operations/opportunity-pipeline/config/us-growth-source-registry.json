@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:38:02.785Z",
+  "updated_at": "2026-09-06T17:40:30.473Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -7943,6 +7943,24 @@
       "event_end": "2026-09-22",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nd-carrington-2026-farmers-market: live first-party route attests Carrington, ND, actionable vendor terms, and exact event date 2026-09-22."
+    },
+    {
+      "id": "nh-2026-waveny-arts-fest-2026-10-11-5e48dfb6",
+      "name": "2026 Waveny Arts Fest Application - Carriage Barn Arts Center Vendor Opportunity",
+      "organiser": "2026 Waveny Arts Fest",
+      "source_url": "https://carriagebarn.org/2026-waveny-arts-fest-application",
+      "application_url": "https://carriagebarn.org/2026-waveny-arts-fest-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "region_code": "NH",
+      "locality": "Canaan",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nh-canaan-2026-arts-crafts: live first-party route attests Canaan, NH, actionable vendor terms, and exact event date 2026-10-11."
     },
     {
       "id": "nh-canaan-farmers-artisans-market-2026-2026-09-25-1e3f5720",
