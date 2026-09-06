@@ -4,11 +4,18 @@
   "main": "src/index.js",
   "compatibility_date": "2026-09-01",
   "workers_dev": true,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "observer.findpitches.com",
+      "custom_domain": true
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "findpitches-observer",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+      "database_id": "f2838d64-84e2-4eb6-b62a-5b36f52aed7d"
     }
   ]
 }
