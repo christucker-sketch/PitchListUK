@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T22:47:59.360Z",
-  "source": "reviewed-us-kentucky-cloud-promotion:3e14a4925e0d7860f465ae3be45bc484a481f143bbc877538d17686d3c76b4fc",
-  "total": 508,
+  "exported_at": "2026-09-06T22:50:16.974Z",
+  "source": "reviewed-us-louisiana-cloud-promotion:41260644fc9e54ff85374af4e3658feec7fd79233aa794abe00020aa91d5f3d3",
+  "total": 509,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19329,6 +19329,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kentucky",
       "id": "opp_us_c9fcd4eec469f4e4e6e9"
+    },
+    {
+      "stable_id": "opp_us_f0814f52b8dc88c98485",
+      "event_name": "Baton Rouge Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Baton Rouge Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/batonrougewinterwonderland/",
+      "application_url": "https://hometownvendormarket.com/batonrougewinterwonderland",
+      "location": "Gonzales",
+      "locality": "Gonzales",
+      "region": "Louisiana",
+      "region_code": "LA",
+      "region_name": "Louisiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-LA",
+      "currency": "USD",
+      "postal_code": "70737",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "la-baton-rouge-winter-wonderland-craft-vendor-market-hometown-vendor-mark-2026-12-12-a22b6952",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-louisiana",
+      "id": "opp_us_f0814f52b8dc88c98485"
     }
   ]
 };
