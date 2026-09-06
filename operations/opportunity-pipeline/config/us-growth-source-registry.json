@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:15:42.356Z",
+  "updated_at": "2026-09-06T19:21:12.893Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -1946,6 +1946,24 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-norwalk-2026-festival: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "de-buy-local-delaware-farmers-markets-guide-delaware-department-of-agricu-2027-05-02-a0fb20ab",
+      "name": "Buy Local Delaware: Farmers Markets Guide - Delaware Department of Agriculture - State of Delaware Vendor Opportunity",
+      "organiser": "Buy Local Delaware: Farmers Markets Guide - Delaware Department of Agriculture - State of Delaware",
+      "source_url": "https://agriculture.delaware.gov/communications-marketing/farmers-markets-guide",
+      "application_url": "https://agriculture.delaware.gov/communications-marketing/farmers-markets-guide",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "region_code": "DE",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-02",
+      "event_end": "2027-05-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery de-wilmington-2027-farmers-market: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2027-05-02."
     },
     {
       "id": "de-delaware-taco-festival-wilmington-delaware-2026-2026-09-26-0f460738",
