@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T23:08:01.260Z",
-  "source": "reviewed-us-delaware-cloud-promotion:3373ee539a60135f892f92f5e6688bb1ebadfba8382ef0a4750f76df91555843",
-  "total": 514,
+  "exported_at": "2026-09-06T23:26:47.352Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:ac8ff20a5ac3200a95add8b5e04ddf638b43d7f2d1bef6b7bdf7dab385b2ffcf",
+  "total": 515,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19558,6 +19558,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-delaware",
       "id": "opp_us_293960b60562ef6afe76"
+    },
+    {
+      "stable_id": "opp_us_947f87df09e9c9be86b8",
+      "event_name": "Date Set For Return Of Fairfield Farmers Market On Sherman Green Vendor Opportunity",
+      "organiser": "Date Set For Return Of Fairfield Farmers Market On Sherman Green",
+      "source_url": "https://patch.com/connecticut/fairfield/date-set-return-fairfield-farmers-market-sherman-green",
+      "application_url": "https://patch.com/connecticut/fairfield/date-set-return-fairfield-farmers-market-sherman-green",
+      "location": "Fairfield",
+      "locality": "Fairfield",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-07",
+      "event_end": "2027-06-07",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-date-set-for-return-of-fairfield-farmers-market-on-sherman-green-2027-06-07-305999f3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_947f87df09e9c9be86b8"
     }
   ]
 };
