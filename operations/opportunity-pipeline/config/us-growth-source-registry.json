@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T23:25:57.063Z",
+  "updated_at": "2026-09-06T23:32:49.823Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -200,6 +200,42 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-lincoln-2026-farmers-market: live first-party route attests Lincoln, AR, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ar-list-fourth-of-july-festivities-across-central-arkansas-2027-07-04-1a9bcac0",
+      "name": "LIST | Fourth of July festivities across central Arkansas Vendor Opportunity",
+      "organiser": "LIST | Fourth of July festivities across central Arkansas",
+      "source_url": "https://hill.house.gov/news/documentsingle.aspx?DocumentID=1983",
+      "application_url": "https://hill.house.gov/news/documentsingle.aspx?DocumentID=1983",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Clinton",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-clinton-2027-government-events: live first-party route attests Clinton, AR, actionable vendor terms, and exact event date range 2027-07-04 to 2027-07-08."
+    },
+    {
+      "id": "ar-little-rock-farmers-market-returns-for-2026-season-2027-05-16-e8ecd9fd",
+      "name": "Little Rock Farmers Market Returns for 2026 Season Vendor Opportunity",
+      "organiser": "Little Rock Farmers Market Returns for 2026 Season",
+      "source_url": "https://www.littlerock.com/media/press-releases/little-rock-farmers-market-returns-for-2026-season",
+      "application_url": "https://www.littlerock.com/media/press-releases/little-rock-farmers-market-returns-for-2026-season",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Clinton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-16",
+      "event_end": "2027-05-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-clinton-2027-farmers-market: live first-party route attests Clinton, AR, actionable vendor terms, and exact event date 2027-05-16."
     },
     {
       "id": "ar-official-home-of-the-ozark-moonshine-music-festival-2026-10-03-fc5a00bd",
