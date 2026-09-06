@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T21:59:16.259Z",
+  "updated_at": "2026-09-06T22:03:47.280Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7566,6 +7566,24 @@
       "event_end": "2027-07-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2027-government-events: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date range 2027-07-08 to 2027-07-11."
+    },
+    {
+      "id": "mn-book-fair-for-grown-ups-2026-10-24-24f021e5",
+      "name": "Book Fair for Grown Ups Vendor Opportunity",
+      "organiser": "Book Fair for Grown Ups",
+      "source_url": "https://events.humanitix.com/book-fair-for-grown-ups",
+      "application_url": "https://events.humanitix.com/book-fair-for-grown-ups",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "region_code": "MN",
+      "locality": "Falcon Heights",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mn-falcon-heights-2026-arts-crafts: live first-party route attests Falcon Heights, MN, actionable vendor terms, and exact event date 2026-10-24."
     },
     {
       "id": "mn-falcon-heights-farmers-market-hours-directions-2026-09-25-476829be",
