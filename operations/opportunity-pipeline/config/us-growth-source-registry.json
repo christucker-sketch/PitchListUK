@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:29:04.443Z",
+  "updated_at": "2026-09-06T18:33:07.612Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -11438,6 +11438,24 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-virginia-beach-2027-festival: live first-party route attests Virginia Beach, VA, actionable vendor terms, and exact event date range 2027-06-04 to 2027-06-06."
+    },
+    {
+      "id": "vt-middlebury-car-show-fall-festival-sun-oct-11-2026-2026-10-11-c8c945c3",
+      "name": "Middlebury Car Show & Fall Festival : Sun, Oct 11, 2026 Vendor Opportunity",
+      "organiser": "Middlebury Car Show & Fall Festival : Sun, Oct 11, 2026",
+      "source_url": "https://events.eventgroove.com/event/Middlebury-Car-Show-Fall-Festival-127553",
+      "application_url": "https://events.eventgroove.com/event/Middlebury-Car-Show-Fall-Festival-127553",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VT",
+      "region_code": "VT",
+      "locality": "Middlebury",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery vt-middlebury-2026-food-truck: live first-party route attests Middlebury, VT, actionable vendor terms, and exact event date 2026-10-11."
     },
     {
       "id": "wa-2026-spokane-renaissance-faire-2026-10-03-0d59d55e",
