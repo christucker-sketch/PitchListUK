@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T10:03:59.881Z",
+  "updated_at": "2026-09-06T15:47:12.496Z",
   "sources": [
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
@@ -9653,6 +9653,25 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-philadelphia-2026-food-truck: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "tn-la-vergne-fall-festival-2026-09-12-ac46f26a",
+      "name": "La Vergne Fall Festival Vendor Opportunity",
+      "organiser": "La Vergne Fall Festival",
+      "source_url": "https://www.lavergnetn.gov/632/La-Vergne-Fall-Festival",
+      "application_url": "https://www.lavergnetn.gov/632/La-Vergne-Fall-Festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Nashville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "2026-09-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-nashville-2026-government-events: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "tx-2026-exhibitors-food-trucks-2026-11-14-cd242096",
