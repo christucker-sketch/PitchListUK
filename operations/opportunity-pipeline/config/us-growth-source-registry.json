@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:35:49.799Z",
+  "updated_at": "2026-09-06T19:42:19.590Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -10445,6 +10445,24 @@
       "event_end": "2026-10-18",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ri-cranston-2026-holiday-market: live first-party route attests Cranston, RI, actionable vendor terms, and exact event date range 2026-10-16 to 2026-10-18."
+    },
+    {
+      "id": "sc-become-a-vendor-2027-06-27-16e225e7",
+      "name": "Become a Vendor",
+      "organiser": "Become a Vendor",
+      "source_url": "https://upstatepridesc.org/become-a-vendor",
+      "application_url": "https://upstatepridesc.org/become-a-vendor",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-SC",
+      "region_code": "SC",
+      "locality": "Greenville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-27",
+      "event_end": "2027-06-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery sc-greenville-2027-festival: live first-party route attests Greenville, SC, actionable vendor terms, and exact event date 2027-06-27."
     },
     {
       "id": "sd-63rd-annual-sidewalk-arts-festival-tourism-events-southeast-south-dako-2026-09-12-913bdd9c",
