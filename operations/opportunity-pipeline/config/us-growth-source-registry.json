@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:06:21.800Z",
+  "updated_at": "2026-09-06T19:11:16.660Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -4089,6 +4089,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-atlanta-2026-festival: live first-party route attests Atlanta, GA, actionable vendor terms, and exact event date range 2026-09-10 to 2026-09-13."
+    },
+    {
+      "id": "hi-kailua-village-farmers-market-2027-2027-04-15-ac2dc1d0",
+      "name": "Kailua Village Farmers Market 2027 Vendor Opportunity",
+      "organiser": "Kailua Village Farmers Market 2027",
+      "source_url": "https://vendorsmap.com/events/24672",
+      "application_url": "https://vendorsmap.com/events/24672",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-HI",
+      "region_code": "HI",
+      "locality": "Kailua-Kona",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-04-15",
+      "event_end": "2027-04-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery hi-kailua-kona-2027-farmers-market: live first-party route attests Kailua-Kona, HI, actionable vendor terms, and exact event date 2027-04-15."
     },
     {
       "id": "ia-asianfest-vendors-mdash-iowa-asian-alliance-2026-09-26-e915723a",
