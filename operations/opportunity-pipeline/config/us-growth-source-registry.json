@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:40:30.473Z",
+  "updated_at": "2026-09-06T17:44:30.970Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -10105,6 +10105,24 @@
       "evidence": "Cloudflare discovery pa-philadelphia-2026-food-truck: live first-party route attests Philadelphia, PA, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
+      "id": "sd-63rd-annual-sidewalk-arts-festival-tourism-events-southeast-south-dako-2026-09-12-913bdd9c",
+      "name": "63rd Annual Sidewalk Arts Festival - Tourism Events - Southeast South Dakota Tourism Vendor Opportunity",
+      "organiser": "63rd Annual Sidewalk Arts Festival - Tourism Events - Southeast South Dakota Tourism",
+      "source_url": "https://www.southeastsouthdakota.com/events/63rd-annual-sidewalk-arts-festival",
+      "application_url": "https://www.southeastsouthdakota.com/events/63rd-annual-sidewalk-arts-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-SD",
+      "region_code": "SD",
+      "locality": "Sioux Falls",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery sd-sioux-falls-2026-festival: live first-party route attests Sioux Falls, SD, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
       "id": "sd-about-mdash-lake-lorraine-2026-10-04-78d2d178",
       "name": "About &mdash; Lake Lorraine Vendor Opportunity",
       "organiser": "About &mdash; Lake Lorraine",
@@ -10121,6 +10139,42 @@
       "event_end": "2026-10-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery sd-sioux-falls-2026-farmers-market: live first-party route attests Sioux Falls, SD, actionable vendor terms, and exact event date range 2026-10-04 to 2026-10-07."
+    },
+    {
+      "id": "sd-keloland-living-arts-crafts-festival-2026-10-15-5f6ed8f4",
+      "name": "Keloland Living Arts & Crafts Festival Vendor Opportunity",
+      "organiser": "Keloland Living Arts & Crafts Festival",
+      "source_url": "https://artssouthdakota.org/opportunity/keloland-living-arts-crafts-festival-vendor-application",
+      "application_url": "https://artssouthdakota.org/opportunity/keloland-living-arts-crafts-festival-vendor-application",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-SD",
+      "region_code": "SD",
+      "locality": "Sioux Falls",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-15",
+      "event_end": "2026-10-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery sd-sioux-falls-2026-festival: live first-party route attests Sioux Falls, SD, actionable vendor terms, and exact event date 2026-10-15."
+    },
+    {
+      "id": "sd-vendor-resources-mdash-lake-lorraine-2026-10-04-0741f15e",
+      "name": "Vendor Resources &mdash; Lake Lorraine",
+      "organiser": "Vendor Resources &mdash; Lake Lorraine",
+      "source_url": "https://lakelorrainesiouxfalls.com/vendorresources",
+      "application_url": "https://lakelorrainesiouxfalls.com/vendorresources",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-SD",
+      "region_code": "SD",
+      "locality": "Sioux Falls",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-04",
+      "event_end": "2026-10-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery sd-sioux-falls-2026-arts-crafts: live first-party route attests Sioux Falls, SD, actionable vendor terms, and exact event date range 2026-10-04 to 2026-10-07."
     },
     {
       "id": "tn-la-vergne-fall-festival-2026-09-12-ac46f26a",
