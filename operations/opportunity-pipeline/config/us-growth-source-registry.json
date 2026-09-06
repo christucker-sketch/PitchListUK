@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:32:49.270Z",
+  "updated_at": "2026-09-06T19:35:49.799Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -7131,6 +7131,24 @@
       "event_end": "2026-10-10",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mn-farmington-2026-food-truck: live first-party route attests Farmington, MN, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
+      "id": "mo-calendar-moberly-mo-civicengage-2027-09-27-ecf4994d",
+      "name": "Calendar • Moberly, MO • CivicEngage Vendor Opportunity",
+      "organiser": "Calendar • Moberly, MO • CivicEngage",
+      "source_url": "https://www.moberlymo.org/calendar.aspx?view=week&year=2020&month=9&day=28&CID=0",
+      "application_url": "https://www.moberlymo.org/calendar.aspx?view=week&year=2020&month=9&day=28&CID=0",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MO",
+      "region_code": "MO",
+      "locality": "Moberly",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-27",
+      "event_end": "2027-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mo-moberly-2027-festival: live first-party route attests Moberly, MO, actionable vendor terms, and exact event date range 2027-09-27 to 2027-10-03."
     },
     {
       "id": "ms-canton-flea-market-arts-crafts-show-mdash-canton-tourism-2026-10-08-a376a64d",
