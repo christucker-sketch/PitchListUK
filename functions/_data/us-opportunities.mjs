@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T23:46:51.740Z",
-  "source": "reviewed-us-tennessee-cloud-promotion:e6ba023da075a94f3c8300a0d7ade6b2960b338258ec68f293c8ce36f80143a9",
-  "total": 518,
+  "exported_at": "2026-09-06T23:59:06.049Z",
+  "source": "reviewed-us-louisiana-cloud-promotion:b22befd6b25f04d0a6dadd4b6366dde4fa91b9737b7d37725911fff2b94217b5",
+  "total": 519,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19706,6 +19706,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-tennessee",
       "id": "opp_us_273b711d752720457791"
+    },
+    {
+      "stable_id": "opp_us_ed5130a3018724601b2a",
+      "event_name": "Gonzales Magnolia Market Vendor Opportunity",
+      "organiser": "Gonzales Magnolia Market",
+      "source_url": "https://www.attexpomarket.com/gonzales-magnolia-market",
+      "application_url": "https://www.attexpomarket.com/gonzales-magnolia-market",
+      "location": "Gonzales",
+      "locality": "Gonzales",
+      "region": "Louisiana",
+      "region_code": "LA",
+      "region_name": "Louisiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-LA",
+      "currency": "USD",
+      "postal_code": "70737",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-16",
+      "event_end": "2027-04-18",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "la-gonzales-magnolia-market-2027-04-16-58849ba7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-louisiana",
+      "id": "opp_us_ed5130a3018724601b2a"
     }
   ]
 };
