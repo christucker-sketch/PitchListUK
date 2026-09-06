@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:47:02.469Z",
+  "updated_at": "2026-09-06T22:49:28.579Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5479,6 +5479,24 @@
       "event_end": "2027-07-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ky-simpsonville-2027-food-truck: live first-party route attests Simpsonville, KY, actionable vendor terms, and exact event date range 2027-07-04 to 2027-07-05."
+    },
+    {
+      "id": "la-baton-rouge-winter-wonderland-craft-vendor-market-hometown-vendor-mark-2026-12-12-a22b6952",
+      "name": "Baton Rouge Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Baton Rouge Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/batonrougewinterwonderland",
+      "application_url": "https://hometownvendormarket.com/batonrougewinterwonderland",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-LA",
+      "region_code": "LA",
+      "locality": "Gonzales",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery la-gonzales-2026-holiday-market: live first-party route attests Gonzales, LA, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
     },
     {
       "id": "ma-11th-new-bedford-food-truck-craft-beverage-festival-2026-10-31-be7b7400",
