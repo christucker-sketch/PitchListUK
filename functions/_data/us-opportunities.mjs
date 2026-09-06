@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T19:16:38.371Z",
-  "source": "reviewed-us-mississippi-cloud-promotion:d88fe42d506a2439b11e074d55632022eb15dc3ecc02040b1d72e0a2479e83a0",
-  "total": 483,
+  "exported_at": "2026-09-06T19:43:12.764Z",
+  "source": "reviewed-us-south-carolina-cloud-promotion:5a54f1a67c07bd1616c952989a8995ab66886f3e08cb13a7654083ffab51cef9",
+  "total": 484,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18382,6 +18382,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-mississippi",
       "id": "opp_us_a178a274b998fc8697a9"
+    },
+    {
+      "stable_id": "opp_us_f241062cb695076b8c19",
+      "event_name": "Become a Vendor",
+      "organiser": "Become a Vendor",
+      "source_url": "https://upstatepridesc.org/become-a-vendor",
+      "application_url": "https://upstatepridesc.org/become-a-vendor",
+      "location": "Greenville",
+      "locality": "Greenville",
+      "region": "South Carolina",
+      "region_code": "SC",
+      "region_name": "South Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-SC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-27",
+      "event_end": "2027-06-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "sc-become-a-vendor-2027-06-27-16e225e7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-south-carolina",
+      "id": "opp_us_f241062cb695076b8c19"
     }
   ]
 };
