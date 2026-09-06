@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:25:15.293Z",
+  "updated_at": "2026-09-06T17:28:37.796Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -8303,6 +8303,24 @@
       "event_end": "2026-12-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-jersey-city-2026-farmers-market: live first-party route attests Jersey City, NJ, actionable vendor terms, and exact event date range 2026-11-22 to 2026-12-05."
+    },
+    {
+      "id": "nm-2026-wine-festival-las-cruces-2026-09-07-fa37680f",
+      "name": "2026 Wine Festival - Las Cruces Vendor Application",
+      "organiser": "2026 Wine Festival - Las Cruces",
+      "source_url": "https://form.jotform.com/261185158337158",
+      "application_url": "https://form.jotform.com/261185158337158",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NM",
+      "region_code": "NM",
+      "locality": "Las Cruces",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nm-las-cruces-2026-festival: live first-party route attests Las Cruces, NM, actionable vendor terms, and exact event date 2026-09-07."
     },
     {
       "id": "nm-vendors-southern-new-mexico-state-fair-2026-09-30-c0fb743a",
