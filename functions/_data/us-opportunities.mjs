@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T21:58:10.840Z",
-  "source": "reviewed-us-indiana-cloud-promotion:a0ab59e06935cd30694435c17455c1b1b13bc4ca452c7ca9906b66fdb96ec143",
-  "total": 500,
+  "exported_at": "2026-09-06T22:08:01.907Z",
+  "source": "reviewed-us-wisconsin-cloud-promotion:73154b2771ea893fa5dc3bf3bd5faacb4d82ece7c69db7a896e69978f0faddfd",
+  "total": 501,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19029,6 +19029,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-indiana",
       "id": "opp_us_4f12c7e654f9e23956bf"
+    },
+    {
+      "stable_id": "opp_us_be6e3860f03a94839e5e",
+      "event_name": "Native Art Market 2026 | Arts + Literature Laboratory Vendor Opportunity",
+      "organiser": "Native Art Market 2026 | Arts + Literature Laboratory",
+      "source_url": "https://artlitlab.org/events/native-art-market-2026",
+      "application_url": "https://artlitlab.org/events/native-art-market-2026",
+      "location": "Madison",
+      "locality": "Madison",
+      "region": "Wisconsin",
+      "region_code": "WI",
+      "region_name": "Wisconsin",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WI",
+      "currency": "USD",
+      "postal_code": "53703",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wi-native-art-market-2026-arts-literature-laboratory-2026-11-14-4658df61",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-wisconsin",
+      "id": "opp_us_be6e3860f03a94839e5e"
     }
   ]
 };
