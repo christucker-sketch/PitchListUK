@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T22:24:52.193Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:a4b60943bf5e2b4d485fdcf95eb1bff11ea31fc1a01be54940e82b5db0c3b27f",
-  "total": 505,
+  "exported_at": "2026-09-06T22:27:31.623Z",
+  "source": "reviewed-us-nebraska-cloud-promotion:918931f383a627b9c869fbb71804a09b8eceff9615a9a6cb3c328a256a829590",
+  "total": 506,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19216,6 +19216,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_14d92325e5ef282c8848"
+    },
+    {
+      "stable_id": "opp_us_fa096b2a0e7ec0163d5b",
+      "event_name": "Midwest Chingona Fest 2026 Vendor Opportunity",
+      "organiser": "Midwest Chingona Fest 2026",
+      "source_url": "https://form.jotform.com/260645287564062",
+      "application_url": "https://form.jotform.com/260645287564062",
+      "location": "Omaha",
+      "locality": "Omaha",
+      "region": "Nebraska",
+      "region_code": "NE",
+      "region_name": "Nebraska",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ne-midwest-chingona-fest-2026-2026-10-10-ec68bb52",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nebraska",
+      "id": "opp_us_fa096b2a0e7ec0163d5b"
     }
   ]
 };
