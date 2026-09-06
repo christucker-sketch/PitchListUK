@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T20:47:07.280Z",
+  "updated_at": "2026-09-06T20:50:13.384Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2002,6 +2002,24 @@
       "application_deadline": "2027-08-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-norwalk-2027-arts-crafts: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date range 2027-08-01 to 2027-08-06."
+    },
+    {
+      "id": "ct-wilton-historical-society-food-truck-festival-2026-good-morning-wilton-2027-05-31-9802a541",
+      "name": "Wilton Historical Society Food Truck Festival 2026 - Good Morning Wilton",
+      "organiser": "Wilton Historical Society Food Truck Festival 2026 - Good Morning Wilton",
+      "source_url": "https://goodmorningwilton.com/event/wilton-historical-society-food-truck-festival-2026",
+      "application_url": "https://goodmorningwilton.com/event/wilton-historical-society-food-truck-festival-2026",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Norwalk",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-31",
+      "event_end": "2027-05-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-norwalk-2027-food-truck: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date 2027-05-31."
     },
     {
       "id": "de-buy-local-delaware-farmers-markets-guide-delaware-department-of-agricu-2027-05-02-a0fb20ab",
