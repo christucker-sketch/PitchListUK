@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T20:50:13.384Z",
+  "updated_at": "2026-09-06T20:58:16.915Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -19,6 +19,24 @@
       "event_end": "2027-05-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ak-soldotna-2027-arts-crafts: live first-party route attests Soldotna, AK, actionable vendor terms, and exact event date range 2027-04-30 to 2027-05-01."
+    },
+    {
+      "id": "ak-peninsula-clarion-2027-10-01-e39127c9",
+      "name": "Peninsula Clarion Vendor Opportunity",
+      "organiser": "Peninsula Clarion",
+      "source_url": "https://www.peninsulaclarion.com",
+      "application_url": "https://www.peninsulaclarion.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AK",
+      "region_code": "AK",
+      "locality": "Soldotna",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-01",
+      "event_end": "2027-10-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ak-soldotna-2027-food-truck: live first-party route attests Soldotna, AK, actionable vendor terms, and exact event date 2027-10-01."
     },
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
