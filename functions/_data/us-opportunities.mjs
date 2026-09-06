@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-05T23:22:02.772Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:972d3da95ff942559b7a569132f9c6f091b4cea9204cd352f8cee5a7084bc2fd",
-  "total": 448,
+  "exported_at": "2026-09-06T09:40:13.528Z",
+  "source": "reviewed-us-georgia-cloud-promotion:565ad23442d10735aeaa61627b779b7a9a654eb5bcf3ba287e54286e7eeab655",
+  "total": 449,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17056,6 +17056,41 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_ef4ef22f47605891b96c"
+    },
+    {
+      "stable_id": "opp_us_4206488ca01de2494abd",
+      "event_name": "Valdosta-Lowndes Azalea Festival Vendor Opportunity",
+      "organiser": "Valdosta-Lowndes Azalea Festival",
+      "source_url": "https://www.azaleafestival.com/",
+      "application_url": "https://www.azaleafestival.com",
+      "location": "Valdosta",
+      "locality": "Valdosta",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-03-13",
+      "event_end": "2027-03-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-valdosta-lowndes-azalea-festival-2027-03-13-e01986ba",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_4206488ca01de2494abd"
     }
   ]
 };
