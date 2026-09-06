@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T16:14:01.200Z",
+  "updated_at": "2026-09-06T16:18:32.784Z",
   "sources": [
     {
       "id": "al-taste-of-hoover-2026-10-15-99df75a7",
@@ -8141,6 +8141,24 @@
       "event_end": "2026-12-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-jersey-city-2026-farmers-market: live first-party route attests Jersey City, NJ, actionable vendor terms, and exact event date range 2026-11-22 to 2026-12-05."
+    },
+    {
+      "id": "nm-vendors-southern-new-mexico-state-fair-2026-09-30-c0fb743a",
+      "name": "Vendors » Southern New Mexico State Fair Vendor Opportunity",
+      "organiser": "Vendors » Southern New Mexico State Fair",
+      "source_url": "https://snmstatefairgrounds.net/commercial-space/vendors",
+      "application_url": "https://snmstatefairgrounds.net/commercial-space/vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NM",
+      "region_code": "NM",
+      "locality": "Las Cruces",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-30",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nm-las-cruces-2026-farmers-market: live first-party route attests Las Cruces, NM, actionable vendor terms, and exact event date range 2026-09-30 to 2026-10-04."
     },
     {
       "id": "ny-2027-cny-women-s-market-2027-03-06-97812f8e",
