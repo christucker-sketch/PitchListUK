@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T22:15:06.618Z",
-  "source": "reviewed-us-kentucky-cloud-promotion:3424bd035da70d032f920c07725189cac2e8d252f8c3ddf6a0a0a49a260a661e",
-  "total": 503,
+  "exported_at": "2026-09-06T22:21:43.802Z",
+  "source": "reviewed-us-nevada-cloud-promotion:7a4be8a8fc9ca8248d56840878e4cd21a7e6f07500b9e8ecf81010c0f2c9b1f5",
+  "total": 504,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19141,6 +19141,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kentucky",
       "id": "opp_us_8c57385c77765f38b5a8"
+    },
+    {
+      "stable_id": "opp_us_b604ad86e3047df791f9",
+      "event_name": "2026 Art Festival Vendor Opportunity",
+      "organiser": "2026 Art Festival",
+      "source_url": "https://www.nevadagourdsociety.org/2026-art-festival",
+      "application_url": "https://www.nevadagourdsociety.org/2026-art-festival",
+      "location": "Carson City",
+      "locality": "Carson City",
+      "region": "Nevada",
+      "region_code": "NV",
+      "region_name": "Nevada",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nv-2026-art-festival-2026-09-11-e5faf79b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nevada",
+      "id": "opp_us_b604ad86e3047df791f9"
     }
   ]
 };
