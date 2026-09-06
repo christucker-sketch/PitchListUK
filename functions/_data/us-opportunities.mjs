@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T21:03:51.102Z",
-  "source": "reviewed-us-montana-cloud-promotion:4966fdc30af8172bdae5c432424e41ca2eaadd8079580e21adb0b8b0202a4d7f",
-  "total": 493,
+  "exported_at": "2026-09-06T21:06:07.507Z",
+  "source": "reviewed-us-delaware-cloud-promotion:eccabcd8f0e78f2c65d9b2e7885ffbc68da3a7dc9b2fcfef5f6c26b3ebe106c2",
+  "total": 494,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18761,6 +18761,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-montana",
       "id": "opp_us_9d822f639eef58340be9"
+    },
+    {
+      "stable_id": "opp_us_8d944824c1438cb82400",
+      "event_name": "Wilmington Street Food Festival - Tickets and Event Information Vendor Opportunity",
+      "organiser": "Wilmington Street Food Festival - Tickets and Event Information",
+      "source_url": "https://www.localwineevents.com/view/event/wilmington-street-food-festival/998092",
+      "application_url": "https://www.localwineevents.com/view/event/wilmington-street-food-festival/998092",
+      "location": "Wilmington",
+      "locality": "Wilmington",
+      "region": "Delaware",
+      "region_code": "DE",
+      "region_name": "Delaware",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "currency": "USD",
+      "postal_code": "19801",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-16",
+      "event_end": "2027-05-16",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "de-wilmington-street-food-festival-tickets-and-event-information-2027-05-16-878e7c33",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-delaware",
+      "id": "opp_us_8d944824c1438cb82400"
     }
   ]
 };
