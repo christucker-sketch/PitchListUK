@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:31:32.812Z",
+  "updated_at": "2026-09-06T19:32:49.270Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -4827,6 +4827,24 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery in-merom-2026-food-truck: live first-party route attests Merom, IN, actionable vendor terms, and exact event date range 2026-09-12 to 2026-09-13."
+    },
+    {
+      "id": "in-upcoming-northern-festival-weekend-june-4-7-2026-festival-guides-and-r-2027-05-06-6e0e0613",
+      "name": "Upcoming Northern Festival Weekend: June 4-7, 2026 - Festival Guides and Reviews Vendor Opportunity",
+      "organiser": "Upcoming Northern Festival Weekend: June 4-7, 2026 - Festival Guides and Reviews",
+      "source_url": "https://festivalguidesandreviews.com/north-festival-weekend-060726",
+      "application_url": "https://festivalguidesandreviews.com/north-festival-weekend-060726",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "region_code": "IN",
+      "locality": "Merom",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-06",
+      "event_end": "2027-05-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery in-merom-2027-arts-crafts: live first-party route attests Merom, IN, actionable vendor terms, and exact event date 2027-05-06."
     },
     {
       "id": "ks-from-the-land-of-kansas-2026-09-06-1ec3378f",
