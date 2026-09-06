@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:28:37.796Z",
+  "updated_at": "2026-09-06T17:30:42.973Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -4089,6 +4089,42 @@
       "event_end": "2026-10-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery id-meridian-2026-farmers-market: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "id-oktoberfest-vendor-sign-up-form-meridian-chamber-of-commerce-2026-10-03-7236952a",
+      "name": "Oktoberfest Vendor Sign Up Form - Meridian Chamber of Commerce",
+      "organiser": "Oktoberfest Vendor Sign Up Form - Meridian Chamber of Commerce",
+      "source_url": "https://meridianchamber.org/oktoberfest-vendor-sign-up-form",
+      "application_url": "https://meridianchamber.org/oktoberfest-vendor-sign-up-form",
+      "source_class": "civic-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Meridian",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-meridian-2026-festival: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "id-village-at-meridian-september-12th-2026-eventeny-2026-09-12-af7b7d82",
+      "name": "Village at Meridian - September 12th, 2026 - Eventeny Vendor Opportunity",
+      "organiser": "Village at Meridian - September 12th, 2026 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/village-at-meridian-september-12th-2026-28416",
+      "application_url": "https://www.eventeny.com/events/village-at-meridian-september-12th-2026-28416",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Meridian",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-meridian-2026-arts-crafts: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "il-2026-guide-to-summer-festivals-in-chicagoland-s-fox-river-valley-2026-09-04-0f5e38d9",
