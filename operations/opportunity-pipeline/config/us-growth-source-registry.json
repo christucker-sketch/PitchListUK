@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:41:04.534Z",
+  "updated_at": "2026-09-06T22:47:02.469Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5373,6 +5373,42 @@
       "evidence": "Cloudflare discovery ky-louisville-2026-festival: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date 2026-09-08."
     },
     {
+      "id": "ky-louisville-christmas-craft-market-2026-11-21-72de7d70",
+      "name": "Louisville Christmas Craft Market Vendor Opportunity",
+      "organiser": "Louisville Christmas Craft Market",
+      "source_url": "https://www.gosoin.com/event/louisville-christmas-craft-market/17368",
+      "application_url": "https://www.gosoin.com/event/louisville-christmas-craft-market/17368",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Louisville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-louisville-2026-holiday-market: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date range 2026-11-21 to 2026-11-22."
+    },
+    {
+      "id": "ky-louisville-christmas-craft-market-mdash-louisville-ky-mdash-show-my-cr-2026-11-21-dcf43872",
+      "name": "Louisville Christmas Craft Market &mdash; Louisville, KY &mdash; Show My Crafts Vendor Opportunity",
+      "organiser": "Louisville Christmas Craft Market &mdash; Louisville, KY &mdash; Show My Crafts",
+      "source_url": "https://www.showmycrafts.net/louisville-christmas-craft-market",
+      "application_url": "https://www.showmycrafts.net/louisville-christmas-craft-market",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Louisville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-louisville-2026-holiday-market: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date range 2026-11-21 to 2026-11-22."
+    },
+    {
       "id": "ky-louisville-fall-craft-vendor-market-hometown-vendor-market-2026-11-14-95c54310",
       "name": "Louisville Fall Craft & Vendor Market - Hometown Vendor Market",
       "organiser": "Louisville Fall Craft & Vendor Market - Hometown Vendor Market",
@@ -5407,6 +5443,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ky-louisville-2026-farmers-market: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "ky-thunder-on-the-ground-2026-09-08-5ed639e8",
+      "name": "Thunder on the Ground Vendor Opportunity",
+      "organiser": "Thunder on the Ground",
+      "source_url": "https://thunderoverlouisville.org/thunder-on-the-ground-2",
+      "application_url": "https://thunderoverlouisville.org/thunder-on-the-ground-2",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Louisville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-08",
+      "event_end": "2026-09-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-louisville-2026-food-truck: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date 2026-09-08."
     },
     {
       "id": "ky-where-to-celebrate-july-4th-around-louisville-2026-2027-07-04-3dc81744",
