@@ -1,5 +1,9 @@
 export const PRIORITY_STATE_CODES = Object.freeze([
-  'CA', 'TX', 'FL', 'NY', 'PA', 'IL', 'OH', 'GA', 'NC', 'MI', 'NJ', 'VA', 'WA', 'AZ', 'MA', 'CO'
+  'TX', 'FL', 'CA', 'NY', 'PA', 'IL', 'OH', 'GA', 'NC', 'MI',
+  'VA', 'WA', 'MA', 'CO', 'AZ', 'NJ', 'TN', 'IN', 'MO', 'MD',
+  'MN', 'WI', 'OR', 'SC', 'AL', 'KY', 'LA', 'OK', 'CT', 'IA',
+  'KS', 'NV', 'UT', 'AR', 'NE', 'NM', 'ID', 'ME', 'AK', 'HI',
+  'MS', 'MT', 'DE', 'NH', 'ND', 'RI', 'SD', 'VT', 'WV', 'WY'
 ]);
 
 const STATE_LOCALITIES = Object.freeze({
@@ -32,9 +36,15 @@ const QUERY_TEMPLATES = Object.freeze([
 
 const EXCLUSIONS = '-site:facebook.com -site:instagram.com -site:youtube.com -site:eventbrite.com -site:linkedin.com -site:reddit.com -site:yelp.com';
 
+function sourceLocalities(state) {
+  return [...new Set((Array.isArray(state?.sources) ? state.sources : [])
+    .map(source => String(source?.locality || '').trim())
+    .filter(Boolean))].slice(0, 12);
+}
+
 export function growthQueryPlan(state, options = {}) {
   const code = String(state?.code || '').toUpperCase();
-  const localities = STATE_LOCALITIES[code] || [];
+  const localities = STATE_LOCALITIES[code] || sourceLocalities(state);
   if (!localities.length) throw new Error(`No growth discovery localities configured for ${code}`);
   const years = options.years?.length ? options.years : [new Date().getUTCFullYear(), new Date().getUTCFullYear() + 1];
   return localities.flatMap(locality => years.flatMap(year => QUERY_TEMPLATES.map(template => ({
