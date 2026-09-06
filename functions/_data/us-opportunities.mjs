@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T21:15:47.456Z",
-  "source": "reviewed-us-indiana-cloud-promotion:94233fa00de1bac42fcc24f30283365727f3a4debe292c665eaed9ba32b7621f",
-  "total": 495,
+  "exported_at": "2026-09-06T21:19:41.297Z",
+  "source": "reviewed-us-maryland-cloud-promotion:4fb6c0199ed1914ad9564389af9cef186a713584a621e19c993869fa69466fdf",
+  "total": 496,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18837,6 +18837,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-indiana",
       "id": "opp_us_f4ba5655a7b71894fbd3"
+    },
+    {
+      "stable_id": "opp_us_54c465192a953617ada7",
+      "event_name": "Be a Vendor - ABC & Peake Events, Inc.",
+      "organiser": "Be a Vendor - ABC & Peake Events, Inc.",
+      "source_url": "https://abceventsinc.com/be-a-vendor/",
+      "application_url": "https://abceventsinc.com/be-a-vendor",
+      "location": "Annapolis",
+      "locality": "Annapolis",
+      "region": "Maryland",
+      "region_code": "MD",
+      "region_name": "Maryland",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MD",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "md-be-a-vendor-abc-peake-events-inc-2026-09-12-abd70c55",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-maryland",
+      "id": "opp_us_54c465192a953617ada7"
     }
   ]
 };
