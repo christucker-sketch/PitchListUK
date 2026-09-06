@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T19:52:33.756Z",
-  "source": "reviewed-us-kansas-cloud-promotion:6afa9262f491d302a093a14e145ffc5a206968882ad5d09c99c6692489b0fd8d",
-  "total": 487,
+  "exported_at": "2026-09-06T19:58:37.086Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:41b13ee0e06cb17f7d28b3c0950c668991f6c03475471110eb05e7a112471377",
+  "total": 488,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18533,6 +18533,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kansas",
       "id": "opp_us_1f1a0e25f9608b21204c"
+    },
+    {
+      "stable_id": "opp_us_1643db28e1842e18beeb",
+      "event_name": "Vendor Application - Corn Fest",
+      "organiser": "cornfest.com",
+      "source_url": "https://www.cornfest.com/vendor-application/",
+      "application_url": "https://www.cornfest.com/vendor-application",
+      "location": "Lincoln",
+      "locality": "Lincoln",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "60115",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-27",
+      "event_end": "2027-08-29",
+      "application_deadline": "2027-08-27",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-cornfest-com-2027-08-27-0111550a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_1643db28e1842e18beeb"
     }
   ]
 };
