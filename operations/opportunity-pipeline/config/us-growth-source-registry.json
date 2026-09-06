@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:02:23.278Z",
+  "updated_at": "2026-09-06T18:07:00.609Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -9707,6 +9707,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "ok-broken-arrow-farmers-market-2026-2026-10-31-15bc1ae9",
+      "name": "Broken Arrow Farmers Market 2026 Vendor Opportunity",
+      "organiser": "Broken Arrow Farmers Market 2026",
+      "source_url": "https://vendorsmap.com/events/3366",
+      "application_url": "https://vendorsmap.com/events/3366",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Broken Arrow",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-broken-arrow-2026-holiday-market: live first-party route attests Broken Arrow, OK, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
       "id": "or-holiday-markets-2026-11-28-4f746040",
