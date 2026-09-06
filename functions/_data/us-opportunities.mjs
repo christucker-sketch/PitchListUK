@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T18:03:14.051Z",
-  "source": "reviewed-us-alabama-cloud-promotion:5634158b5db9002f2cd66308484053dbd8d5c36fc11d36408fa04545d318c0d7",
-  "total": 476,
+  "exported_at": "2026-09-06T18:15:08.149Z",
+  "source": "reviewed-us-nebraska-cloud-promotion:efc9ec13b968f0057d0d3455876939f29a924f296a7fb7248c5c7a717eb4c073",
+  "total": 477,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18118,6 +18118,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-alabama",
       "id": "opp_us_862fe14edf05185440e0"
+    },
+    {
+      "stable_id": "opp_us_3c964d43ceeb94d4b2b5",
+      "event_name": "Vendors &ndash; Wax Buffalo Vendor Opportunity",
+      "organiser": "Vendors &ndash; Wax Buffalo",
+      "source_url": "https://waxbuffalo.com/pages/vendors",
+      "application_url": "https://waxbuffalo.com/pages/vendors",
+      "location": "Lincoln",
+      "locality": "Lincoln",
+      "region": "Nebraska",
+      "region_code": "NE",
+      "region_name": "Nebraska",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ne-vendors-ndash-wax-buffalo-2026-11-28-12baf927",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nebraska",
+      "id": "opp_us_3c964d43ceeb94d4b2b5"
     }
   ]
 };
