@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:53:41.998Z",
+  "updated_at": "2026-09-06T19:57:43.003Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -73,6 +73,25 @@
       "event_end": "2026-10-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-hoover-2026-government-events: live first-party route attests Hoover, AL, actionable vendor terms, and exact event date 2026-10-15."
+    },
+    {
+      "id": "ar-cornfest-com-2027-08-27-0111550a",
+      "name": "Vendor Application - Corn Fest",
+      "organiser": "cornfest.com",
+      "source_url": "https://www.cornfest.com/vendor-application",
+      "application_url": "https://www.cornfest.com/vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Lincoln",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-27",
+      "event_end": "2027-08-29",
+      "application_deadline": "2027-08-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-lincoln-2027-festival: live first-party route attests Lincoln, AR, actionable vendor terms, and exact event date range 2027-08-27 to 2027-08-29."
     },
     {
       "id": "ar-festival-historic-cane-hill-arkansas-2026-09-19-a6ad9e3b",
