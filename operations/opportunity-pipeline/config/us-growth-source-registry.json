@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:14:05.946Z",
+  "updated_at": "2026-09-06T22:17:40.717Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2019,6 +2019,24 @@
       "event_end": "2026-10-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-fairfield-2026-farmers-market: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "ct-fairfield-harvest-market-fall-2026-oct-17-2026-2026-10-17-37d9a055",
+      "name": "Fairfield Harvest Market -Fall 2026 - Oct 17, 2026 Vendor Opportunity",
+      "organiser": "Fairfield Harvest Market -Fall 2026 - Oct 17, 2026",
+      "source_url": "https://commerce.fairfieldctchamber.com/events/details/fairfield-harvest-market-fall-2026-6641",
+      "application_url": "https://commerce.fairfieldctchamber.com/events/details/fairfield-harvest-market-fall-2026-6641",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Fairfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-fairfield-2026-festival: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date range 2026-10-17 to 2026-10-24."
     },
     {
       "id": "ct-home-norwalk-nice-2026-norwalk-nice-festival-2026-10-03-7e5c3a79",
