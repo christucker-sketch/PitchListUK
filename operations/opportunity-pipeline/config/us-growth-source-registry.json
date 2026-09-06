@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T21:48:03.239Z",
+  "updated_at": "2026-09-06T21:55:01.347Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11097,6 +11097,24 @@
       "evidence": "Cloudflare discovery sd-sioux-falls-2026-arts-crafts: live first-party route attests Sioux Falls, SD, actionable vendor terms, and exact event date range 2026-10-04 to 2026-10-07."
     },
     {
+      "id": "tn-arts-and-craft-2026-10-24-ef88cfd5",
+      "name": "Arts and Craft Vendor Application - PumpkinFest (2026) - Eventeny",
+      "organiser": "Arts and Craft",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=41555",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=41555",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Franklin",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-franklin-2026-festival: live first-party route attests Franklin, TN, actionable vendor terms, and exact event date range 2026-10-24 to 2026-10-25."
+    },
+    {
       "id": "tn-arts-crafts-2027-09-20-4848412b",
       "name": "ARTS & CRAFTS VENDOR APPLICATION - 3rd Annual Nashville Fall Festival - Eventeny",
       "organiser": "ARTS & CRAFTS",
@@ -11113,6 +11131,24 @@
       "event_end": "2027-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tn-nashville-2027-festival: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2027-09-20."
+    },
+    {
+      "id": "tn-festival-participant-information-2026-10-24-ee536576",
+      "name": "Festival Participant Information Vendor Opportunity",
+      "organiser": "Festival Participant Information",
+      "source_url": "https://williamsonheritage.org/events/festival-participant-information",
+      "application_url": "https://williamsonheritage.org/events/festival-participant-information",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Franklin",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-franklin-2026-festival: live first-party route attests Franklin, TN, actionable vendor terms, and exact event date range 2026-10-24 to 2026-10-25."
     },
     {
       "id": "tn-la-vergne-fall-festival-2026-09-12-ac46f26a",
