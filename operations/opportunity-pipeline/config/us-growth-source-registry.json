@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T21:55:01.347Z",
+  "updated_at": "2026-09-06T21:57:20.673Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5119,6 +5119,42 @@
       "evidence": "Cloudflare discovery in-indianapolis-2026-farmers-market: live first-party route attests Indianapolis, IN, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
+      "id": "in-eventeny-com-2026-12-04-080c5ce5",
+      "name": "Vendor Application: 2026 Winter Artisan Market - 2026 Winter Artisan Market - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=54250",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=54250",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "region_code": "IN",
+      "locality": "Indianapolis",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-04",
+      "event_end": "2026-12-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery in-indianapolis-2026-arts-crafts: live first-party route attests Indianapolis, IN, actionable vendor terms, and exact event date 2026-12-04."
+    },
+    {
+      "id": "in-foodeesfest-vendor-agreement-ndash-castleton-square-indianapolis-in-in-2026-09-18-46dc4503",
+      "name": "FoodeesFest Vendor Agreement &ndash;(Castleton Square, Indianapolis, IN.) - Indianapolis Foodees Fest - Eventeny",
+      "organiser": "FoodeesFest Vendor Agreement &ndash;(Castleton Square, Indianapolis, IN.) - Indianapolis Foodees Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=40910",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=40910",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "region_code": "IN",
+      "locality": "Indianapolis",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery in-indianapolis-2026-festival: live first-party route attests Indianapolis, IN, actionable vendor terms, and exact event date range 2026-09-18 to 2026-09-20."
+    },
+    {
       "id": "in-indiana-pawpaw-festival-festivals-in-indiana-2026-09-12-3b196eec",
       "name": "Indiana Pawpaw Festival | Festivals in Indiana Vendor Opportunity",
       "organiser": "Indiana Pawpaw Festival | Festivals in Indiana",
@@ -5171,6 +5207,25 @@
       "event_end": "2027-05-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery in-merom-2027-arts-crafts: live first-party route attests Merom, IN, actionable vendor terms, and exact event date 2027-05-06."
+    },
+    {
+      "id": "in-vendors-the-circle-city-classic-2026-09-25-8a21d998",
+      "name": "Vendors - The Circle City Classic Vendor Opportunity",
+      "organiser": "Vendors - The Circle City Classic",
+      "source_url": "https://circlecityclassic.com/vendors",
+      "application_url": "https://circlecityclassic.com/vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "region_code": "IN",
+      "locality": "Indianapolis",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-26",
+      "application_deadline": "2026-09-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery in-indianapolis-2026-festival: live first-party route attests Indianapolis, IN, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
     },
     {
       "id": "ks-experienceeldo-com-2027-07-26-9f4455ea",
