@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:57:42.566Z",
+  "updated_at": "2026-09-06T18:02:23.278Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -19,6 +19,42 @@
       "event_end": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-hoover-2026-arts-crafts: live first-party route attests Hoover, AL, actionable vendor terms, and exact event date range 2026-09-06 to 2026-09-07."
+    },
+    {
+      "id": "al-birmingham-winter-wonderland-craft-vendor-market-hometown-vendor-marke-2026-12-12-2b239792",
+      "name": "Birmingham Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Birmingham Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/birminghamwinterwonderland2026",
+      "application_url": "https://hometownvendormarket.com/birminghamwinterwonderland2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Hoover",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-hoover-2026-holiday-market: live first-party route attests Hoover, AL, actionable vendor terms, and exact event date range 2026-12-12 to 2026-12-13."
+    },
+    {
+      "id": "al-holiday-events-guide-2025-parades-tree-lightings-across-central-alabam-2026-12-07-18b0300f",
+      "name": "Holiday Events Guide 2025: Parades & Tree Lightings Across Central Alabama Vendor Opportunity",
+      "organiser": "Holiday Events Guide 2025: Parades & Tree Lightings Across Central Alabama",
+      "source_url": "https://abc3340.com/news/local/holiday-events-guide-2025-parades-tree-lightings-across-central-alabama",
+      "application_url": "https://abc3340.com/news/local/holiday-events-guide-2025-parades-tree-lightings-across-central-alabama",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Hoover",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-07",
+      "event_end": "2026-12-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-hoover-2026-holiday-market: live first-party route attests Hoover, AL, actionable vendor terms, and exact event date 2026-12-07."
     },
     {
       "id": "al-taste-of-hoover-2026-10-15-99df75a7",
