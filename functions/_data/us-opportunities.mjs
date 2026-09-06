@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T20:43:24.485Z",
-  "source": "reviewed-us-south-carolina-cloud-promotion:0b509c077ed64d025e2f6f8c3c570ad957830f5043190dea0b19a49abf8e3546",
-  "total": 492,
+  "exported_at": "2026-09-06T21:03:51.102Z",
+  "source": "reviewed-us-montana-cloud-promotion:4966fdc30af8172bdae5c432424e41ca2eaadd8079580e21adb0b8b0202a4d7f",
+  "total": 493,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18724,6 +18724,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-south-carolina",
       "id": "opp_us_6bfdd66e584070bda286"
+    },
+    {
+      "stable_id": "opp_us_9d822f639eef58340be9",
+      "event_name": "6th Annual Food Truck Battle on the Yellowstone &mdash; Veterans Navigation Network",
+      "organiser": "6th Annual Food Truck Battle on the Yellowstone &mdash; Veterans Navigation Network",
+      "source_url": "https://www.veteransnavigation.org/communityevents/6th-annual-food-truck-battle-on-the-yellowstone",
+      "application_url": "https://www.veteransnavigation.org/communityevents/6th-annual-food-truck-battle-on-the-yellowstone",
+      "location": "Billings",
+      "locality": "Billings",
+      "region": "Montana",
+      "region_code": "MT",
+      "region_name": "Montana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MT",
+      "currency": "USD",
+      "postal_code": "59102",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-24",
+      "event_end": "2027-08-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mt-6th-annual-food-truck-battle-on-the-yellowstone-mdash-veterans-navigat-2027-08-24-7907122f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-montana",
+      "id": "opp_us_9d822f639eef58340be9"
     }
   ]
 };
