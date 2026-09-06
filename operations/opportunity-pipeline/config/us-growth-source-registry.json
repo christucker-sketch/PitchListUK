@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T16:38:06.357Z",
+  "updated_at": "2026-09-06T16:39:15.076Z",
   "sources": [
     {
       "id": "al-taste-of-hoover-2026-10-15-99df75a7",
@@ -7745,6 +7745,24 @@
       "event_end": "2026-11-29",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-wilmington-2026-holiday-market: live first-party route attests Wilmington, NC, actionable vendor terms, and exact event date 2026-11-29."
+    },
+    {
+      "id": "nd-the-market-2026-carrington-nd-2026-09-22-16913b6b",
+      "name": "The Market 2026, Carrington, ND Vendor Opportunity",
+      "organiser": "The Market 2026, Carrington, ND",
+      "source_url": "https://vendorsmap.com/events/29371",
+      "application_url": "https://vendorsmap.com/events/29371",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ND",
+      "region_code": "ND",
+      "locality": "Carrington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-22",
+      "event_end": "2026-09-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nd-carrington-2026-farmers-market: live first-party route attests Carrington, ND, actionable vendor terms, and exact event date 2026-09-22."
     },
     {
       "id": "nh-canaan-farmers-artisans-market-2026-2026-09-25-1e3f5720",
