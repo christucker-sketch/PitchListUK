@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T15:48:07.132Z",
-  "source": "reviewed-us-tennessee-cloud-promotion:2272a3c466100c3bac5bc5183d68b59147e1dbcbe59d145ee06ce1b55e12fcfe",
-  "total": 457,
+  "exported_at": "2026-09-06T15:50:18.550Z",
+  "source": "reviewed-us-indiana-cloud-promotion:54f6f62a863e6f275cdd75d8af35b833e04b1528afce592198917f95372f35e0",
+  "total": 458,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17398,6 +17398,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-tennessee",
       "id": "opp_us_6ac3fb3d6e0003ad219a"
+    },
+    {
+      "stable_id": "opp_us_dafba58dc948b29c9633",
+      "event_name": "Indiana Pawpaw Festival | Festivals in Indiana Vendor Opportunity",
+      "organiser": "Indiana Pawpaw Festival | Festivals in Indiana",
+      "source_url": "https://festivalsinindiana.com/festivals/indiana-pawpaw-festival/",
+      "application_url": "https://festivalsinindiana.com/festivals/indiana-pawpaw-festival",
+      "location": "Merom",
+      "locality": "Merom",
+      "region": "Indiana",
+      "region_code": "IN",
+      "region_name": "Indiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "in-indiana-pawpaw-festival-festivals-in-indiana-2026-09-12-3b196eec",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-indiana",
+      "id": "opp_us_dafba58dc948b29c9633"
     }
   ]
 };
