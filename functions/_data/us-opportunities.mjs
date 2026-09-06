@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T22:27:31.623Z",
-  "source": "reviewed-us-nebraska-cloud-promotion:918931f383a627b9c869fbb71804a09b8eceff9615a9a6cb3c328a256a829590",
-  "total": 506,
+  "exported_at": "2026-09-06T22:38:40.955Z",
+  "source": "reviewed-us-indiana-cloud-promotion:8c21a7932c2f51c457ff4ac7b0be18bed8042b52240293ccc59ef952f36ce228",
+  "total": 507,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19255,6 +19255,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nebraska",
       "id": "opp_us_fa096b2a0e7ec0163d5b"
+    },
+    {
+      "stable_id": "opp_us_b74bc52b8e4e08b2b370",
+      "event_name": "SugarPlum Holiday Fair - Lutheran High School of Indianapolis Vendor Opportunity",
+      "organiser": "SugarPlum Holiday Fair - Lutheran High School of Indianapolis",
+      "source_url": "https://www.lhsi.org/fine-arts/sugarplum.cfm",
+      "application_url": "https://www.lhsi.org/fine-arts/sugarplum.cfm",
+      "location": "Indianapolis",
+      "locality": "Indianapolis",
+      "region": "Indiana",
+      "region_code": "IN",
+      "region_name": "Indiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-24",
+      "application_deadline": "2026-10-18",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "in-sugarplum-holiday-fair-lutheran-high-school-of-indianapolis-2026-10-23-2499bace",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-indiana",
+      "id": "opp_us_b74bc52b8e4e08b2b370"
     }
   ]
 };
