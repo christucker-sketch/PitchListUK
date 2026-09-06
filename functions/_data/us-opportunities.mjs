@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T22:21:43.802Z",
-  "source": "reviewed-us-nevada-cloud-promotion:7a4be8a8fc9ca8248d56840878e4cd21a7e6f07500b9e8ecf81010c0f2c9b1f5",
-  "total": 504,
+  "exported_at": "2026-09-06T22:24:52.193Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:a4b60943bf5e2b4d485fdcf95eb1bff11ea31fc1a01be54940e82b5db0c3b27f",
+  "total": 505,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19178,6 +19178,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nevada",
       "id": "opp_us_b604ad86e3047df791f9"
+    },
+    {
+      "stable_id": "opp_us_14d92325e5ef282c8848",
+      "event_name": "Official Home of the Ozark Moonshine & Music Festival Vendor Opportunity",
+      "organiser": "Official Home of the Ozark Moonshine & Music Festival",
+      "source_url": "https://ozarkmoonshinefest.org/",
+      "application_url": "https://ozarkmoonshinefest.org",
+      "location": "Clinton",
+      "locality": "Clinton",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-official-home-of-the-ozark-moonshine-music-festival-2026-10-03-fc5a00bd",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_14d92325e5ef282c8848"
     }
   ]
 };
