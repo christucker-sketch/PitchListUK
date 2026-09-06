@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T16:07:53.364Z",
+  "updated_at": "2026-09-06T16:14:01.200Z",
   "sources": [
     {
       "id": "al-taste-of-hoover-2026-10-15-99df75a7",
@@ -19,6 +19,42 @@
       "event_end": "2026-10-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-hoover-2026-government-events: live first-party route attests Hoover, AL, actionable vendor terms, and exact event date 2026-10-15."
+    },
+    {
+      "id": "ar-festival-historic-cane-hill-arkansas-2026-09-19-a6ad9e3b",
+      "name": "Festival - Historic Cane Hill Arkansas Vendor Opportunity",
+      "organiser": "Festival - Historic Cane Hill Arkansas",
+      "source_url": "https://historiccanehillar.org/festival",
+      "application_url": "https://historiccanehillar.org/festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Lincoln",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-lincoln-2026-farmers-market: live first-party route attests Lincoln, AR, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ar-vendor-events-in-lincoln-ar-2026-09-30-abb79ce4",
+      "name": "Vendor Events in Lincoln, AR",
+      "organiser": "Vendor Events in Lincoln, AR",
+      "source_url": "https://vendorsmap.com/cities/lincoln-ar",
+      "application_url": "https://vendorsmap.com/cities/lincoln-ar",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Lincoln",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-30",
+      "event_end": "2026-10-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-lincoln-2026-farmers-market: live first-party route attests Lincoln, AR, actionable vendor terms, and exact event date range 2026-09-30 to 2026-10-02."
     },
     {
       "id": "az-azmea-org-2027-01-29-91e8f77a",
