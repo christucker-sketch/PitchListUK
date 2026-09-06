@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:11:16.660Z",
+  "updated_at": "2026-09-06T19:15:42.356Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -7113,6 +7113,24 @@
       "event_end": "2026-10-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ms-madison-2026-arts-crafts: live first-party route attests Madison, MS, actionable vendor terms, and exact event date 2026-10-08."
+    },
+    {
+      "id": "ms-market-wars-mississippi-free-press-2027-06-03-8ebe911a",
+      "name": "Market Wars - Mississippi Free Press Vendor Opportunity",
+      "organiser": "Market Wars - Mississippi Free Press",
+      "source_url": "https://www.mississippifreepress.org/market-wars",
+      "application_url": "https://www.mississippifreepress.org/market-wars",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MS",
+      "region_code": "MS",
+      "locality": "Madison",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-03",
+      "event_end": "2027-06-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ms-madison-2027-farmers-market: live first-party route attests Madison, MS, actionable vendor terms, and exact event date 2027-06-03."
     },
     {
       "id": "ms-vendor-events-in-madison-ms-2026-09-30-0f91303f",
