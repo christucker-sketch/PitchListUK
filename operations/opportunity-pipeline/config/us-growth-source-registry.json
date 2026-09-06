@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T21:03:00.815Z",
+  "updated_at": "2026-09-06T21:05:09.490Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2146,6 +2146,24 @@
       "event_end": "2026-10-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery de-wilmington-2026-farmers-market: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2026-10-28."
+    },
+    {
+      "id": "de-wilmington-street-food-festival-tickets-and-event-information-2027-05-16-878e7c33",
+      "name": "Wilmington Street Food Festival - Tickets and Event Information Vendor Opportunity",
+      "organiser": "Wilmington Street Food Festival - Tickets and Event Information",
+      "source_url": "https://www.localwineevents.com/view/event/wilmington-street-food-festival/998092",
+      "application_url": "https://www.localwineevents.com/view/event/wilmington-street-food-festival/998092",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "region_code": "DE",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-16",
+      "event_end": "2027-05-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery de-wilmington-2027-food-truck: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2027-05-16."
     },
     {
       "id": "de-wilmington-street-food-festival-wilmington-delaware-2026-2027-05-16-61f3f698",
