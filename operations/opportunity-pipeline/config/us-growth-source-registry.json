@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T20:03:15.787Z",
+  "updated_at": "2026-09-06T20:08:25.997Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7349,6 +7349,24 @@
       "event_end": "2026-09-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ms-madison-2026-arts-crafts: live first-party route attests Madison, MS, actionable vendor terms, and exact event date 2026-09-30."
+    },
+    {
+      "id": "mt-billingsfiesta-com-2027-07-16-8a14f58f",
+      "name": "Vendor Registration & Information",
+      "organiser": "billingsfiesta.com",
+      "source_url": "https://billingsfiesta.com/vendors",
+      "application_url": "https://billingsfiesta.com/vendors",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MT",
+      "region_code": "MT",
+      "locality": "Billings",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-16",
+      "event_end": "2027-07-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mt-billings-2027-festival: live first-party route attests Billings, MT, actionable vendor terms, and exact event date range 2027-07-16 to 2027-07-17."
     },
     {
       "id": "nc-2026-2027-11-05-4add887b",
