@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:33:07.612Z",
+  "updated_at": "2026-09-06T18:35:25.690Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -12088,6 +12088,42 @@
       "evidence": "Cloudflare discovery wa-walla-walla-2026-food-truck: live first-party route attests Walla Walla, WA, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-12."
     },
     {
+      "id": "wv-city-park-2026-09-26-e4239788",
+      "name": "City Park Vendor Application | Elkins, WV",
+      "organiser": "City Park",
+      "source_url": "https://www.forestfestival.com/city-park-vendor-application",
+      "application_url": "https://www.forestfestival.com/city-park-vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WV",
+      "region_code": "WV",
+      "locality": "West Virginia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-10-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wv-west-virginia-2026-food-truck: live first-party route attests West Virginia, WV, actionable vendor terms, and exact event date range 2026-09-26 to 2026-10-04."
+    },
+    {
+      "id": "wv-food-truck-festival-at-oglebay-west-virginia-events-in-september-2026-09-19-08f7b8b5",
+      "name": "Food Truck Festival at Oglebay - West Virginia Events in September",
+      "organiser": "Food Truck Festival at Oglebay - West Virginia Events in September",
+      "source_url": "https://oglebay.com/calendar/event-calendar/food-truck-festival",
+      "application_url": "https://oglebay.com/calendar/event-calendar/food-truck-festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WV",
+      "region_code": "WV",
+      "locality": "West Virginia",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wv-west-virginia-2026-food-truck: live first-party route attests West Virginia, WV, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
       "id": "wv-off-site-walking-2026-09-26-db944bbc",
       "name": "Off-Site/Walking Vendor Application | Elkins, WV",
       "organiser": "Off-Site/Walking",
@@ -12122,6 +12158,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wv-west-virginia-2026-festival: live first-party route attests West Virginia, WV, actionable vendor terms, and exact event date range 2026-10-08 to 2026-10-11."
+    },
+    {
+      "id": "wv-state-fair-event-center-features-shopping-this-winter-2026-12-06-1bf0edd6",
+      "name": "State Fair Event Center Features Shopping this Winter! Vendor Opportunity",
+      "organiser": "State Fair Event Center Features Shopping this Winter!",
+      "source_url": "https://statefairofwv.com/state-fair-event-center-features-shopping-this-winter",
+      "application_url": "https://statefairofwv.com/state-fair-event-center-features-shopping-this-winter",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WV",
+      "region_code": "WV",
+      "locality": "West Virginia",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wv-west-virginia-2026-holiday-market: live first-party route attests West Virginia, WV, actionable vendor terms, and exact event date 2026-12-06."
     },
     {
       "id": "wv-the-farmers-market-of-lewisburg-2026-season-a-community-driven-vendor--2026-09-11-50d36a3a",
