@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T20:30:45.589Z",
-  "source": "reviewed-us-south-dakota-cloud-promotion:2d1dd9c03db39609248cd2962354225053dfee9abf6c7c1d1c468103083011c6",
-  "total": 491,
+  "exported_at": "2026-09-06T20:43:24.485Z",
+  "source": "reviewed-us-south-carolina-cloud-promotion:0b509c077ed64d025e2f6f8c3c570ad957830f5043190dea0b19a49abf8e3546",
+  "total": 492,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18684,6 +18684,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-south-dakota",
       "id": "opp_us_84d77eb25ab8382ba1a5"
+    },
+    {
+      "stable_id": "opp_us_6bfdd66e584070bda286",
+      "event_name": "Food Truck - GVL Fit Fest - Eventeny",
+      "organiser": "Food Truck - GVL Fit Fest - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=33782",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=33782",
+      "location": "Greenville",
+      "locality": "Greenville",
+      "region": "South Carolina",
+      "region_code": "SC",
+      "region_name": "South Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-SC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-13",
+      "event_end": "2027-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "sc-food-truck-gvl-fit-fest-eventeny-2027-09-13-ec6fb304",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-south-carolina",
+      "id": "opp_us_6bfdd66e584070bda286"
     }
   ]
 };
