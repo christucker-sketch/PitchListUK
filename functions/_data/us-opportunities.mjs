@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T23:00:15.229Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:65c584393e25dcbf244b911366dda9ec2fdf49af343f3b0dd9c6f88f0cbdfe50",
-  "total": 512,
+  "exported_at": "2026-09-06T23:02:30.347Z",
+  "source": "reviewed-us-nebraska-cloud-promotion:3a8cec1c03fe021f607f9f86cb8ee68d6a0aaaf3dcad14027d242e69d1aa7aab",
+  "total": 513,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19480,6 +19480,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_57afcd5cd97254754184"
+    },
+    {
+      "stable_id": "opp_us_60f45faaa6f784e69db3",
+      "event_name": "Vendor Kit",
+      "organiser": "Vendor Kit",
+      "source_url": "https://www.omahaholidayboutique.com/vendor-info/vendor-kit",
+      "application_url": "https://www.omahaholidayboutique.com/vendor-info/vendor-kit",
+      "location": "Omaha",
+      "locality": "Omaha",
+      "region": "Nebraska",
+      "region_code": "NE",
+      "region_name": "Nebraska",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "currency": "USD",
+      "postal_code": "64063",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-13",
+      "event_end": "2026-11-15",
+      "application_deadline": "2026-10-23",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ne-vendor-kit-2026-11-13-9439d87c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nebraska",
+      "id": "opp_us_60f45faaa6f784e69db3"
     }
   ]
 };
