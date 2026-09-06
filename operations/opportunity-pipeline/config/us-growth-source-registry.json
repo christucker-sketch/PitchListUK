@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:55:20.450Z",
+  "updated_at": "2026-09-06T17:57:42.566Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -9671,6 +9671,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
+      "id": "or-holiday-markets-2026-11-28-4f746040",
+      "name": "Holiday Markets Vendor Opportunity",
+      "organiser": "Holiday Markets",
+      "source_url": "https://www.mthoodterritory.com/articles/holiday-markets",
+      "application_url": "https://www.mthoodterritory.com/articles/holiday-markets",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "region_code": "OR",
+      "locality": "Oregon City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery or-oregon-city-2026-holiday-market: live first-party route attests Oregon City, OR, actionable vendor terms, and exact event date 2026-11-28."
     },
     {
       "id": "or-north-portland-sunday-parkways-august-2-2026-2026-09-13-7618a5b9",
