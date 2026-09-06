@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:10:02.004Z",
+  "updated_at": "2026-09-06T22:14:05.946Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5262,6 +5262,60 @@
       "event_end": "2026-09-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ks-el-dorado-2026-farmers-market: live first-party route attests El Dorado, KS, actionable vendor terms, and exact event date 2026-09-06."
+    },
+    {
+      "id": "ky-festival-info-bourbon-beyond-2026-september-24-27-2026-09-24-bf8446aa",
+      "name": "Festival Info - Bourbon & Beyond 2026 | September 24-27 Vendor Opportunity",
+      "organiser": "Festival Info - Bourbon & Beyond 2026 | September 24-27",
+      "source_url": "https://bourbonandbeyond.com/festival-info",
+      "application_url": "https://bourbonandbeyond.com/festival-info",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Louisville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-24",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-louisville-2026-festival: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date range 2026-09-24 to 2026-09-27."
+    },
+    {
+      "id": "ky-kentucky-derby-festival-business-or-2026-09-08-467286d0",
+      "name": "Kentucky Derby Festival Business or Vendor Application",
+      "organiser": "Kentucky Derby Festival Business or",
+      "source_url": "https://discover.kdf.org/kentucky-derby-festival-business-or-vendor-application",
+      "application_url": "https://discover.kdf.org/kentucky-derby-festival-business-or-vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Louisville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-08",
+      "event_end": "2026-09-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-louisville-2026-festival: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date 2026-09-08."
+    },
+    {
+      "id": "ky-louisville-fall-craft-vendor-market-hometown-vendor-market-2026-11-14-95c54310",
+      "name": "Louisville Fall Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Louisville Fall Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/louisvillefall",
+      "application_url": "https://hometownvendormarket.com/louisvillefall",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Louisville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-15",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-louisville-2026-arts-crafts: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-15."
     },
     {
       "id": "ky-rules-regulations-for-farms-vendors-st-matthews-farmers-market-2026-09-26-fe90251b",
