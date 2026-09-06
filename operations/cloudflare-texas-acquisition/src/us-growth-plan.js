@@ -1,6 +1,6 @@
 export const PRIORITY_STATE_CODES = Object.freeze([
-  'TX', 'FL', 'CA', 'NY', 'PA', 'IL', 'OH', 'GA', 'NC', 'MI',
-  'VA', 'WA', 'MA', 'CO', 'AZ', 'NJ', 'TN', 'IN', 'MO', 'MD',
+  'CA', 'TX', 'FL', 'NY', 'PA', 'IL', 'OH', 'GA', 'NC', 'MI',
+  'NJ', 'VA', 'WA', 'AZ', 'MA', 'CO', 'TN', 'IN', 'MO', 'MD',
   'MN', 'WI', 'OR', 'SC', 'AL', 'KY', 'LA', 'OK', 'CT', 'IA',
   'KS', 'NV', 'UT', 'AR', 'NE', 'NM', 'ID', 'ME', 'AK', 'HI',
   'MS', 'MT', 'DE', 'NH', 'ND', 'RI', 'SD', 'VT', 'WV', 'WY'
