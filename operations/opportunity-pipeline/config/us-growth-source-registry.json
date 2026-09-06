@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:54:33.149Z",
+  "updated_at": "2026-09-06T22:57:00.081Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -9605,6 +9605,24 @@
       "evidence": "Cloudflare discovery nv-carson-city-2026-festival: live first-party route attests Carson City, NV, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
     },
     {
+      "id": "nv-events-from-september-11-food-wine-food-truck-2026-09-11-a86bdab3",
+      "name": "Events from September 11 › Food & Wine › Food Truck ›",
+      "organiser": "Events from September 11 › Food & Wine › Food Truck ›",
+      "source_url": "https://www.carsonnow.org/events-calendar/category/food-wine/food-truck",
+      "application_url": "https://www.carsonnow.org/events-calendar/category/food-wine/food-truck",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "region_code": "NV",
+      "locality": "Carson City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nv-carson-city-2026-food-truck: live first-party route attests Carson City, NV, actionable vendor terms, and exact event date 2026-09-11."
+    },
+    {
       "id": "nv-fallon-chalk-art-festival-2027-05-29-6f031848",
       "name": "Fallon Chalk Art Festival Vendor Opportunity",
       "organiser": "Fallon Chalk Art Festival",
@@ -9621,6 +9639,24 @@
       "event_end": "2027-05-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nv-fallon-2027-arts-crafts: live first-party route attests Fallon, NV, actionable vendor terms, and exact event date range 2027-05-29 to 2027-05-30."
+    },
+    {
+      "id": "nv-food-drink-vendor-c4-carson-city-card-con-eventeny-2026-11-07-f2653314",
+      "name": "Food/Drink Vendor - C4 - Carson City Card Con - Eventeny",
+      "organiser": "Food/Drink Vendor - C4 - Carson City Card Con - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=51878",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=51878",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "region_code": "NV",
+      "locality": "Carson City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nv-carson-city-2026-food-truck: live first-party route attests Carson City, NV, actionable vendor terms, and exact event date range 2026-11-07 to 2026-11-08."
     },
     {
       "id": "ny-2027-cny-women-s-market-2027-03-06-97812f8e",
