@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T22:57:00.081Z",
+  "updated_at": "2026-09-06T22:59:28.904Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -146,6 +146,24 @@
       "application_deadline": "2027-08-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-lincoln-2027-festival: live first-party route attests Lincoln, AR, actionable vendor terms, and exact event date range 2027-08-27 to 2027-08-29."
+    },
+    {
+      "id": "ar-downtown-food-truck-festival-2026-09-20-529707ee",
+      "name": "Downtown Food Truck Festival",
+      "organiser": "Downtown Food Truck Festival",
+      "source_url": "https://www.littlerock.com/events/downtown-food-truck-festival1-2",
+      "application_url": "https://www.littlerock.com/events/downtown-food-truck-festival1-2",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Clinton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-clinton-2026-food-truck: live first-party route attests Clinton, AR, actionable vendor terms, and exact event date 2026-09-20."
     },
     {
       "id": "ar-festival-historic-cane-hill-arkansas-2026-09-19-a6ad9e3b",
