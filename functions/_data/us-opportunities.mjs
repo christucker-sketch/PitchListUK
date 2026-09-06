@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T17:08:41.306Z",
-  "source": "reviewed-us-tennessee-cloud-promotion:6bb2399dac97bba4b0563424b8f6c6486f27de295e93b03406442a5d21197e2d",
-  "total": 463,
+  "exported_at": "2026-09-06T17:22:55.815Z",
+  "source": "reviewed-us-iowa-cloud-promotion:8cdfec2c3cbff1fe14703a0bcca9bc0cbb38a976248b345b34dbc981af7ac257",
+  "total": 464,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -17625,6 +17625,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-tennessee",
       "id": "opp_us_b48e002f609bc1854f78"
+    },
+    {
+      "stable_id": "opp_us_6b14ccbe9f6f84185883",
+      "event_name": "AsianFest Vendors &mdash; Iowa Asian Alliance Vendor Opportunity",
+      "organiser": "AsianFest Vendors &mdash; Iowa Asian Alliance",
+      "source_url": "https://www.iowaasianalliance.com/asianfest-vendors",
+      "application_url": "https://www.iowaasianalliance.com/asianfest-vendors",
+      "location": "Cedar Rapids",
+      "locality": "Cedar Rapids",
+      "region": "Iowa",
+      "region_code": "IA",
+      "region_name": "Iowa",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ia-asianfest-vendors-mdash-iowa-asian-alliance-2026-09-26-e915723a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-iowa",
+      "id": "opp_us_6b14ccbe9f6f84185883"
     }
   ]
 };
