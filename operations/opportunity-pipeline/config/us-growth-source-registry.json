@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:34:11.120Z",
+  "updated_at": "2026-09-06T17:38:02.785Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -1910,6 +1910,42 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-norwalk-2026-festival: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "de-delaware-taco-festival-wilmington-delaware-2026-2026-09-26-0f460738",
+      "name": "Delaware Taco Festival | Wilmington, Delaware | 2026 Vendor Opportunity",
+      "organiser": "Delaware Taco Festival | Wilmington, Delaware | 2026",
+      "source_url": "https://www.tacofestival.com/event/delaware",
+      "application_url": "https://www.tacofestival.com/event/delaware",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "region_code": "DE",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery de-wilmington-2026-festival: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "de-hagley-craft-fair-oct-17-18-2026-10-17-887c9cdb",
+      "name": "Hagley Craft Fair - OCT 17 & 18 Vendor Opportunity",
+      "organiser": "Hagley Craft Fair - OCT 17 & 18",
+      "source_url": "https://www.hagley.org/calendar/hagley-craft-fair-oct-17-18",
+      "application_url": "https://www.hagley.org/calendar/hagley-craft-fair-oct-17-18",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "region_code": "DE",
+      "locality": "Wilmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery de-wilmington-2026-arts-crafts: live first-party route attests Wilmington, DE, actionable vendor terms, and exact event date 2026-10-17."
     },
     {
       "id": "de-west-side-farmers-market-mdash-west-side-grows-together-2026-10-28-6c0c0f8c",
