@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T23:43:19.806Z",
-  "source": "reviewed-us-new-hampshire-cloud-promotion:2bdf403a0dcc6409e7e66a732dc5e128ce0d74354b46baa5751d9dad98b8f202",
-  "total": 517,
+  "exported_at": "2026-09-06T23:46:51.740Z",
+  "source": "reviewed-us-tennessee-cloud-promotion:e6ba023da075a94f3c8300a0d7ade6b2960b338258ec68f293c8ce36f80143a9",
+  "total": 518,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19669,6 +19669,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-hampshire",
       "id": "opp_us_49ab45d44b1b229f2b50"
+    },
+    {
+      "stable_id": "opp_us_273b711d752720457791",
+      "event_name": "Become a Vendor at the 2026 Williamson County Fair",
+      "organiser": "Become a Vendor at the 2026 Williamson County Fair",
+      "source_url": "https://www.williamsoncountyfair.org/p/join-the-fun1/vendors",
+      "application_url": "https://www.williamsoncountyfair.org/p/join-the-fun1/vendors",
+      "location": "Franklin",
+      "locality": "Franklin",
+      "region": "Tennessee",
+      "region_code": "TN",
+      "region_name": "Tennessee",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-06",
+      "event_end": "2027-08-14",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tn-become-a-vendor-at-the-2026-williamson-county-fair-2027-08-06-853c55cf",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-tennessee",
+      "id": "opp_us_273b711d752720457791"
     }
   ]
 };
