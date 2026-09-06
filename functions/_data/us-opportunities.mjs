@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T21:19:41.297Z",
-  "source": "reviewed-us-maryland-cloud-promotion:4fb6c0199ed1914ad9564389af9cef186a713584a621e19c993869fa69466fdf",
-  "total": 496,
+  "exported_at": "2026-09-06T21:22:32.599Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:83e8e362abf0b3caffb133712886de53d30198d298b0db68c4e185717c82928c",
+  "total": 497,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18874,6 +18874,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-maryland",
       "id": "opp_us_54c465192a953617ada7"
+    },
+    {
+      "stable_id": "opp_us_9a9faa415c325703b518",
+      "event_name": "Minnesota State Fair announces new 2026 foods, vendors Vendor Opportunity",
+      "organiser": "Minnesota State Fair announces new 2026 foods, vendors",
+      "source_url": "https://www.kttc.com/2026/07/09/minnesota-state-fair-announces-new-2026-foods-vendors/",
+      "application_url": "https://www.kttc.com/2026/07/09/minnesota-state-fair-announces-new-2026-foods-vendors",
+      "location": "Falcon Heights",
+      "locality": "Falcon Heights",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-minnesota-state-fair-announces-new-2026-foods-vendors-2026-09-07-928c72e0",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_9a9faa415c325703b518"
     }
   ]
 };
