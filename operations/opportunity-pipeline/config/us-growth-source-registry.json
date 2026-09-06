@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T17:02:43.148Z",
+  "updated_at": "2026-09-06T17:07:50.211Z",
   "sources": [
     {
       "id": "al-taste-of-hoover-2026-10-15-99df75a7",
@@ -9924,6 +9924,60 @@
       "application_deadline": "2026-09-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tn-nashville-2026-government-events: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "tn-light-the-nations-food-2026-10-17-e3b6c338",
+      "name": "Light the Nations Food Vendor Application - Light the Nations - Eventeny",
+      "organiser": "Light the Nations Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45769",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45769",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Nashville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-nashville-2026-festival: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "tn-nashville-autumn-craft-vendor-market-hometown-vendor-market-2026-09-06-a117642f",
+      "name": "Nashville Autumn Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Nashville Autumn Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/nashvilleautumn",
+      "application_url": "https://hometownvendormarket.com/nashvilleautumn",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Nashville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-06",
+      "event_end": "2026-09-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-nashville-2026-arts-crafts: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2026-09-06."
+    },
+    {
+      "id": "tn-tennessee-craft-raquo-fairs-2026-10-09-32045872",
+      "name": "Tennessee Craft &raquo; Fairs Vendor Opportunity",
+      "organiser": "Tennessee Craft &raquo; Fairs",
+      "source_url": "https://tennesseecraft.org/fairs",
+      "application_url": "https://tennesseecraft.org/fairs",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Nashville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-09",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-nashville-2026-arts-crafts: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date range 2026-10-09 to 2026-10-11."
     },
     {
       "id": "tx-2026-exhibitors-food-trucks-2026-11-14-cd242096",
