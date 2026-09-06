@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-06T21:06:07.507Z",
-  "source": "reviewed-us-delaware-cloud-promotion:eccabcd8f0e78f2c65d9b2e7885ffbc68da3a7dc9b2fcfef5f6c26b3ebe106c2",
-  "total": 494,
+  "exported_at": "2026-09-06T21:15:47.456Z",
+  "source": "reviewed-us-indiana-cloud-promotion:94233fa00de1bac42fcc24f30283365727f3a4debe292c665eaed9ba32b7621f",
+  "total": 495,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -18798,6 +18798,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-delaware",
       "id": "opp_us_8d944824c1438cb82400"
+    },
+    {
+      "stable_id": "opp_us_f4ba5655a7b71894fbd3",
+      "event_name": "20 Best Farmers Markets Near Indianapolis (2026 Guide) Vendor Opportunity",
+      "organiser": "20 Best Farmers Markets Near Indianapolis (2026 Guide)",
+      "source_url": "https://indyschild.com/indianapolis-farmers-market-guide/",
+      "application_url": "https://indyschild.com/indianapolis-farmers-market-guide",
+      "location": "Indianapolis",
+      "locality": "Indianapolis",
+      "region": "Indiana",
+      "region_code": "IN",
+      "region_name": "Indiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "currency": "USD",
+      "postal_code": "46220",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "in-20-best-farmers-markets-near-indianapolis-2026-guide-2026-09-26-e157fed9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-indiana",
+      "id": "opp_us_f4ba5655a7b71894fbd3"
     }
   ]
 };
