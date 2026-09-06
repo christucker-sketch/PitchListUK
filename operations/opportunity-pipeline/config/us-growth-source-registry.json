@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:26:26.285Z",
+  "updated_at": "2026-09-06T19:31:32.812Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -10481,6 +10481,24 @@
       "event_end": "2026-10-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery sd-sioux-falls-2026-arts-crafts: live first-party route attests Sioux Falls, SD, actionable vendor terms, and exact event date range 2026-10-04 to 2026-10-07."
+    },
+    {
+      "id": "tn-arts-crafts-2027-09-20-4848412b",
+      "name": "ARTS & CRAFTS VENDOR APPLICATION - 3rd Annual Nashville Fall Festival - Eventeny",
+      "organiser": "ARTS & CRAFTS",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=20273",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=20273",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Nashville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-20",
+      "event_end": "2027-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-nashville-2027-festival: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2027-09-20."
     },
     {
       "id": "tn-la-vergne-fall-festival-2026-09-12-ac46f26a",
