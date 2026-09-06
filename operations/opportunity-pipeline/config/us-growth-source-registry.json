@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T18:55:53.277Z",
+  "updated_at": "2026-09-06T19:06:21.800Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -4161,6 +4161,24 @@
       "event_end": "2026-10-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery id-meridian-2026-farmers-market: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "id-meridian-monday-night-farmers-market-2027-2027-06-01-f74b79cc",
+      "name": "Meridian Monday Night Farmers Market 2027 Vendor Opportunity",
+      "organiser": "Meridian Monday Night Farmers Market 2027",
+      "source_url": "https://vendorsmap.com/events/25019",
+      "application_url": "https://vendorsmap.com/events/25019",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Meridian",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-01",
+      "event_end": "2027-06-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-meridian-2027-farmers-market: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2027-06-01."
     },
     {
       "id": "id-oktoberfest-vendor-sign-up-form-meridian-chamber-of-commerce-2026-10-03-7236952a",
