@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T19:57:43.003Z",
+  "updated_at": "2026-09-06T20:01:07.097Z",
   "sources": [
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -4271,6 +4271,24 @@
       "event_end": "2027-01-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ia-cedar-rapids-2027-festival: live first-party route attests Cedar Rapids, IA, actionable vendor terms, and exact event date range 2027-01-30 to 2027-01-31."
+    },
+    {
+      "id": "id-artist-information-meridian-fine-art-festival-2027-06-28-9bcecd95",
+      "name": "Artist Information - Meridian Fine Art Festival Vendor Opportunity",
+      "organiser": "Artist Information - Meridian Fine Art Festival",
+      "source_url": "https://www.meridianfineartfestival.com/artist-information",
+      "application_url": "https://www.meridianfineartfestival.com/artist-information",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Meridian",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-28",
+      "event_end": "2027-06-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-meridian-2027-festival: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2027-06-28."
     },
     {
       "id": "id-meridian-main-street-market-farmers-market-2026-10-17-dcb2f42c",
