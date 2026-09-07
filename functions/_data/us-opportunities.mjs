@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:33:44.128Z",
-  "source": "reviewed-us-indiana-cloud-promotion:028a118971df562a07c85e0f0039fc1fa43d82e682d7bb99b462da3d6987dbf1",
-  "total": 557,
+  "exported_at": "2026-09-07T11:37:18.347Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:40da9da73178ac3eff4b8127e677242f3f556f3c62bf3b9b1345ebc2b6af4acf",
+  "total": 558,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21180,6 +21180,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-indiana",
       "id": "opp_us_76165a90446e0ced216e"
+    },
+    {
+      "stable_id": "opp_us_95ffe07b2a76df4f2194",
+      "event_name": "MINNEAPOLIMEDIA PRESENTS | This Weekend in the Twin Cities: Entertainment Guide: July 25 to July 26, 2026 Edition Vendor Opportunity",
+      "organiser": "MINNEAPOLIMEDIA PRESENTS | This Weekend in the Twin Cities: Entertainment Guide: July 25 to July 26, 2026 Edition",
+      "source_url": "https://minneapolimedia.town.news/g/coon-rapids-mn/n/382645/minneapolimedia-presents-weekend-twin-cities-entertainment-guide-july-25",
+      "application_url": "https://minneapolimedia.town.news/g/coon-rapids-mn/n/382645/minneapolimedia-presents-weekend-twin-cities-entertainment-guide-july-25",
+      "location": "Shoreview",
+      "locality": "Shoreview",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "11444",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-minneapolimedia-presents-this-weekend-in-the-twin-cities-entertainment-2026-09-07-7a8b5a1b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_95ffe07b2a76df4f2194"
     }
   ]
 };
