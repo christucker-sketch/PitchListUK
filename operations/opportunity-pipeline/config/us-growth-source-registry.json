@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T16:23:24.647Z",
+  "updated_at": "2026-09-07T16:26:21.858Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6740,6 +6740,24 @@
       "event_end": "2026-12-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ks-leawood-2026-holiday-market: live first-party route attests Leawood, KS, actionable vendor terms, and exact event date range 2026-12-02 to 2026-12-03."
+    },
+    {
+      "id": "ks-hot-cold-big-rig-truck-show-the-truck-show-list-2026-10-03-ec639426",
+      "name": "Hot & Cold Big Rig Truck Show - The Truck Show List Vendor Opportunity",
+      "organiser": "Hot & Cold Big Rig Truck Show - The Truck Show List",
+      "source_url": "https://thetruckshowlist.com/event/hot-cold-big-rig-truck-show",
+      "application_url": "https://thetruckshowlist.com/event/hot-cold-big-rig-truck-show",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "Pratt",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-pratt-2026-food-truck: live first-party route attests Pratt, KS, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "ks-hutchinson-art-fair-2027-hutchinson-ks-2027-05-09-bb2aa06a",
