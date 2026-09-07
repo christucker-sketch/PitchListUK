@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:04:36.323Z",
+  "updated_at": "2026-09-07T09:08:19.819Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5839,6 +5839,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ky-louisville-2026-festival: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date range 2026-09-24 to 2026-09-27."
+    },
+    {
+      "id": "ky-food-truck-info-2026-09-12-c50aebcf",
+      "name": "Food Truck Info",
+      "organiser": "Food Truck Info",
+      "source_url": "https://kentuckyfoodtruckchampionship.com/food-truck-info",
+      "application_url": "https://kentuckyfoodtruckchampionship.com/food-truck-info",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Cumberland",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-cumberland-2026-festival: live first-party route attests Cumberland, KY, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
       "id": "ky-kentucky-derby-festival-business-or-2026-09-08-467286d0",
