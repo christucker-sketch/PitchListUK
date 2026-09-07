@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T16:26:21.858Z",
+  "updated_at": "2026-09-07T16:29:54.284Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14919,6 +14919,25 @@
       "event_end": "2027-02-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-san-antonio-2027-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date range 2027-02-05 to 2027-02-07."
+    },
+    {
+      "id": "ut-2026-light-up-main-street-2026-12-12-92f40c12",
+      "name": "2026 Light Up Main Street Vendor Opportunity",
+      "organiser": "2026 Light Up Main Street",
+      "source_url": "https://engagemidvale.com/2026-light-up-main",
+      "application_url": "https://engagemidvale.com/2026-light-up-main",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "region_code": "UT",
+      "locality": "Midvale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "application_deadline": "2026-11-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ut-midvale-2026-food-truck: live first-party route attests Midvale, UT, actionable vendor terms, and exact event date 2026-12-12."
     },
     {
       "id": "ut-2026-street-fair-2026-10-10-28cfb1ac",
