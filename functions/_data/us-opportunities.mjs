@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T13:45:16.424Z",
-  "source": "reviewed-us-maryland-cloud-promotion:c452d217bdfcd09b936da6003d2bdc934842bfbbbe09f8b311fa93ff1bc3ff3e",
-  "total": 576,
+  "exported_at": "2026-09-07T13:57:36.461Z",
+  "source": "reviewed-us-kentucky-cloud-promotion:a83bd83dfad81ed18526751883871f247255383babaae6ab18e0f1cc4d77097c",
+  "total": 577,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21897,6 +21897,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-maryland",
       "id": "opp_us_e4e90a5fdfae697e31b4"
+    },
+    {
+      "stable_id": "opp_us_d1715c0cfb5792f561d6",
+      "event_name": "Home Vendor Opportunity",
+      "organiser": "Home",
+      "source_url": "https://fcmarket.localfoodmarketplace.com/",
+      "application_url": "https://fcmarket.localfoodmarketplace.com",
+      "location": "Frankfort",
+      "locality": "Frankfort",
+      "region": "Kentucky",
+      "region_code": "KY",
+      "region_name": "Kentucky",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "currency": "USD",
+      "postal_code": "40601",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ky-home-2026-12-12-4f81d21c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kentucky",
+      "id": "opp_us_d1715c0cfb5792f561d6"
     }
   ]
 };
