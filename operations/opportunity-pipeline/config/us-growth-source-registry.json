@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:08:19.819Z",
+  "updated_at": "2026-09-07T09:13:29.348Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2163,6 +2163,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-westminster-2026-farmers-market: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
+    },
+    {
+      "id": "ct-arts-crafts-festival-2026-09-19-e9a7616a",
+      "name": "Arts & Crafts Festival Vendor Opportunity",
+      "organiser": "Arts & Crafts Festival",
+      "source_url": "https://www.simsburyjuniors.org/artsandcraftsfestival",
+      "application_url": "https://www.simsburyjuniors.org/artsandcraftsfestival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Farmington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-farmington-2026-arts-crafts: live first-party route attests Farmington, CT, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "ct-best-farmers-markets-in-fairfield-county-ct-2026-guide-to-ridgefield-r-2026-10-31-0daa1038",
