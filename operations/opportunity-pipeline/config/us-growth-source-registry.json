@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T17:03:34.007Z",
+  "updated_at": "2026-09-07T17:14:29.856Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6956,6 +6956,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ks-mound-city-2026-arts-crafts: live first-party route attests Mound City, KS, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
+      "id": "ks-vendor-kit-2026-11-18-1f8b68b4",
+      "name": "Vendor Kit",
+      "organiser": "Vendor Kit",
+      "source_url": "https://www.kcholidayboutique.com/vendor-info/vendor-kit",
+      "application_url": "https://www.kcholidayboutique.com/vendor-info/vendor-kit",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "Overland Park",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-18",
+      "event_end": "2026-11-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-overland-park-2026-festival: live first-party route attests Overland Park, KS, actionable vendor terms, and exact event date range 2026-11-18 to 2026-11-22."
     },
     {
       "id": "ky-berea-chamber-powered-by-amo-2026-09-18-cb4e852f",
