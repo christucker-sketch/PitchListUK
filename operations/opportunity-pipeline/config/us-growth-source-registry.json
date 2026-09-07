@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T11:50:33.379Z",
+  "updated_at": "2026-09-07T11:52:51.675Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2291,6 +2291,24 @@
       "evidence": "Cloudflare discovery ct-fairfield-2026-farmers-market: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
+      "id": "ct-bethlehem-fair-2026-fun-for-all-ages-2026-09-11-7ff3145d",
+      "name": "Bethlehem Fair 2026: Fun for All Ages Vendor Opportunity",
+      "organiser": "Bethlehem Fair 2026: Fun for All Ages",
+      "source_url": "https://www.lake.com/events/bethlehem-fair",
+      "application_url": "https://www.lake.com/events/bethlehem-fair",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Bethlehem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-bethlehem-2026-festival: live first-party route attests Bethlehem, CT, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
+    },
+    {
       "id": "ct-connecticut-garlic-and-harvest-festival-2026-2026-10-10-f4fd67b9",
       "name": "Connecticut Garlic and Harvest Festival 2026 Vendor Opportunity",
       "organiser": "Connecticut Garlic and Harvest Festival 2026",
@@ -2307,6 +2325,42 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-bethlehem-2026-farmers-market: live first-party route attests Bethlehem, CT, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
+      "id": "ct-connecticut-garlic-harvest-festival-2026-2026-10-11-2fd86d50",
+      "name": "Connecticut Garlic & Harvest Festival 2026 Vendor Opportunity",
+      "organiser": "Connecticut Garlic & Harvest Festival 2026",
+      "source_url": "https://vendorsmap.com/events/267",
+      "application_url": "https://vendorsmap.com/events/267",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Bethlehem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-11",
+      "event_end": "2026-10-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-bethlehem-2026-arts-crafts: live first-party route attests Bethlehem, CT, actionable vendor terms, and exact event date range 2026-10-11 to 2026-10-12."
+    },
+    {
+      "id": "ct-connecticut-garlic-harvest-festival-connecticut-garlic-harvest-festiva-2026-10-10-fb7fc462",
+      "name": "Connecticut Garlic & Harvest Festival - Connecticut Garlic & Harvest Festival Vendor Opportunity",
+      "organiser": "Connecticut Garlic & Harvest Festival - Connecticut Garlic & Harvest Festival",
+      "source_url": "https://garlicfestct.com",
+      "application_url": "https://garlicfestct.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Bethlehem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-bethlehem-2026-festival: live first-party route attests Bethlehem, CT, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
     },
     {
       "id": "ct-date-set-for-return-of-fairfield-farmers-market-on-sherman-green-2027-06-07-305999f3",
