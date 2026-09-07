@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T17:49:21.843Z",
+  "updated_at": "2026-09-07T17:51:00.825Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -795,6 +795,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-fort-smith-2026-farmers-market: live first-party route attests Fort Smith, AR, actionable vendor terms, and exact event date 2026-11-07."
+    },
+    {
+      "id": "ar-vendor-events-in-hackett-ar-2027-04-18-dc031ae7",
+      "name": "Vendor Events in Hackett, AR",
+      "organiser": "Vendor Events in Hackett, AR",
+      "source_url": "https://vendorsmap.com/cities/hackett",
+      "application_url": "https://vendorsmap.com/cities/hackett",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Mount Vernon",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-04-18",
+      "event_end": "2027-04-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-mount-vernon-2027-farmers-market: live first-party route attests Mount Vernon, AR, actionable vendor terms, and exact event date 2027-04-18."
     },
     {
       "id": "ar-vendor-events-in-lincoln-ar-2026-09-30-abb79ce4",
