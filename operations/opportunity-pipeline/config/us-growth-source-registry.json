@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T13:40:07.854Z",
+  "updated_at": "2026-09-07T13:44:16.908Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -8577,6 +8577,24 @@
       "evidence": "Cloudflare discovery md-annapolis-2026-farmers-market: live first-party route attests Annapolis, MD, actionable vendor terms, and exact event date range 2026-09-12 to 2026-09-13."
     },
     {
+      "id": "md-form-center-community-2026-10-03-0235d3d4",
+      "name": "Form Center • Community Exhibitor Application CPD 2026",
+      "organiser": "Form Center • Community",
+      "source_url": "https://www.collegeparkmd.gov/FormCenter/College-Park-Day-14/Community-Exhibitor-Application-CPD-2026-193",
+      "application_url": "https://www.collegeparkmd.gov/FormCenter/College-Park-Day-14/Community-Exhibitor-Application-CPD-2026-193",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MD",
+      "region_code": "MD",
+      "locality": "College Park",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery md-college-park-2026-government-events: live first-party route attests College Park, MD, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
       "id": "md-md-chicken-wing-festival-best-wings-in-maryland-2027-04-17-f3309796",
       "name": "MD Chicken Wing Festival : Best Wings in Maryland Vendor Opportunity",
       "organiser": "MD Chicken Wing Festival : Best Wings in Maryland",
@@ -8629,6 +8647,24 @@
       "event_end": "2027-05-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery md-mount-airy-2027-holiday-market: live first-party route attests Mount Airy, MD, actionable vendor terms, and exact event date 2027-05-06."
+    },
+    {
+      "id": "md-the-best-farmers-markets-in-college-park-maryland-2026-11-16-2d4cead5",
+      "name": "The Best Farmers Markets in College Park, Maryland Vendor Opportunity",
+      "organiser": "The Best Farmers Markets in College Park, Maryland",
+      "source_url": "https://www.cropcartmarkets.com/best-farmers-markets/maryland/college-park",
+      "application_url": "https://www.cropcartmarkets.com/best-farmers-markets/maryland/college-park",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MD",
+      "region_code": "MD",
+      "locality": "College Park",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-16",
+      "event_end": "2026-11-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery md-college-park-2026-farmers-market: live first-party route attests College Park, MD, actionable vendor terms, and exact event date 2026-11-16."
     },
     {
       "id": "me-maine-s-best-food-festivals-events-2026-2026-09-25-053d99fb",
