@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:51:22.510Z",
-  "source": "reviewed-us-oklahoma-cloud-promotion:711b3e6946bccaae307c55cd09fecb91e8b1b0f40b28ee632628bd191ca474dd",
-  "total": 560,
+  "exported_at": "2026-09-07T11:53:46.324Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:b94e7a17678c26268269e92cff5cadcaeb6d60f6dac72df5ec7b3894df94550e",
+  "total": 561,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21292,6 +21292,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oklahoma",
       "id": "opp_us_f00fcb23c20d47e028c3"
+    },
+    {
+      "stable_id": "opp_us_eaaaec38dca7657e5424",
+      "event_name": "Bethlehem Fair 2026: Fun for All Ages Vendor Opportunity",
+      "organiser": "Bethlehem Fair 2026: Fun for All Ages",
+      "source_url": "https://www.lake.com/events/bethlehem-fair/",
+      "application_url": "https://www.lake.com/events/bethlehem-fair",
+      "location": "Bethlehem",
+      "locality": "Bethlehem",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "06751",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-bethlehem-fair-2026-fun-for-all-ages-2026-09-11-7ff3145d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_eaaaec38dca7657e5424"
     }
   ]
 };
