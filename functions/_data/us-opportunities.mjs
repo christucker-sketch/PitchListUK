@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T13:57:36.461Z",
-  "source": "reviewed-us-kentucky-cloud-promotion:a83bd83dfad81ed18526751883871f247255383babaae6ab18e0f1cc4d77097c",
-  "total": 577,
+  "exported_at": "2026-09-07T14:01:35.550Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:bfccc7eafcf0c0ae8ec80043b8c120d8888d3a96697c9d76f6e3cd11c9aef0ea",
+  "total": 578,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21934,6 +21934,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kentucky",
       "id": "opp_us_d1715c0cfb5792f561d6"
+    },
+    {
+      "stable_id": "opp_us_415123d7d5e5bdb3bf3d",
+      "event_name": "Farmers Market Vendor Opportunity",
+      "organiser": "Farmers Market",
+      "source_url": "https://wp.cga.ct.gov/osh/events-page/farmers-market/",
+      "application_url": "https://wp.cga.ct.gov/osh/events-page/farmers-market",
+      "location": "Hartford",
+      "locality": "Hartford",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "06103",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-30",
+      "event_end": "2026-10-30",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-farmers-market-2026-10-30-d0915386",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_415123d7d5e5bdb3bf3d"
     }
   ]
 };
