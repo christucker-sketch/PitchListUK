@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:11:04.600Z",
-  "source": "reviewed-us-alabama-cloud-promotion:48cbeabeae3b3cdce3dee90282ef95afbaab49c02376127e7478487b676d7eed",
-  "total": 553,
+  "exported_at": "2026-09-07T11:19:43.649Z",
+  "source": "reviewed-us-oklahoma-cloud-promotion:9008d79ab933517f8e7456b726df2a84ad9bd5051b2bceaaf004cede6adfd2f0",
+  "total": 554,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21027,6 +21027,47 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-alabama",
       "id": "opp_us_dd746545eeb54c1b1d6e"
+    },
+    {
+      "stable_id": "opp_us_0330892ece0fa53ab6d6",
+      "event_name": "Farmers Market Application &mdash; Durant Main Street Vendor Opportunity",
+      "organiser": "Farmers Market",
+      "source_url": "https://durantmainstreet.org/magnolia-farmers-market-2",
+      "application_url": "https://durantmainstreet.org/magnolia-farmers-market-2",
+      "location": "Oklahoma",
+      "locality": "Oklahoma",
+      "region": "Oklahoma",
+      "region_code": "OK",
+      "region_name": "Oklahoma",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-28",
+      "event_end": "2026-10-31",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ok-farmers-market-2026-10-28-4ebc967e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oklahoma",
+      "id": "opp_us_0330892ece0fa53ab6d6"
     }
   ]
 };
