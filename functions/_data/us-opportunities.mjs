@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T15:27:37.354Z",
-  "source": "reviewed-us-minnesota-cloud-promotion:692c9765dcd345af15b0d08bc7a452b9519d98c3f40c09b12801d56bbd966a6b",
-  "total": 594,
+  "exported_at": "2026-09-07T15:33:07.482Z",
+  "source": "reviewed-us-oklahoma-cloud-promotion:557a60c92bbfa3b9f54e3aae32aadf055051c3d18226f69d3a406f641bf32343",
+  "total": 595,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22571,6 +22571,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-minnesota",
       "id": "opp_us_b245f6458de76a26f44b"
+    },
+    {
+      "stable_id": "opp_us_d3fc93106de6234164bf",
+      "event_name": "Tulsa International Mayfest Vendor Opportunity",
+      "organiser": "Tulsa International Mayfest",
+      "source_url": "https://www.tulsamayfest.org/",
+      "application_url": "https://www.tulsamayfest.org",
+      "location": "Tulsa",
+      "locality": "Tulsa",
+      "region": "Oklahoma",
+      "region_code": "OK",
+      "region_name": "Oklahoma",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-15",
+      "event_end": "2027-05-17",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ok-tulsa-international-mayfest-2027-05-15-090d78e9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oklahoma",
+      "id": "opp_us_d3fc93106de6234164bf"
     }
   ]
 };
