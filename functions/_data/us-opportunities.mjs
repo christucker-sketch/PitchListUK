@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T13:26:31.672Z",
-  "source": "reviewed-us-wisconsin-cloud-promotion:ad8c3ab6aca661ed3c2284526be94662f500e715c37ca285a354113341a42c75",
-  "total": 575,
+  "exported_at": "2026-09-07T13:45:16.424Z",
+  "source": "reviewed-us-maryland-cloud-promotion:c452d217bdfcd09b936da6003d2bdc934842bfbbbe09f8b311fa93ff1bc3ff3e",
+  "total": 576,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21859,6 +21859,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-wisconsin",
       "id": "opp_us_60ad4ce1aef991768f86"
+    },
+    {
+      "stable_id": "opp_us_e4e90a5fdfae697e31b4",
+      "event_name": "Form Center • Community Exhibitor Application CPD 2026",
+      "organiser": "Form Center • Community",
+      "source_url": "https://www.collegeparkmd.gov/FormCenter/College-Park-Day-14/Community-Exhibitor-Application-CPD-2026-193",
+      "application_url": "https://www.collegeparkmd.gov/FormCenter/College-Park-Day-14/Community-Exhibitor-Application-CPD-2026-193",
+      "location": "College Park",
+      "locality": "College Park",
+      "region": "Maryland",
+      "region_code": "MD",
+      "region_name": "Maryland",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MD",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "md-form-center-community-2026-10-03-0235d3d4",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-maryland",
+      "id": "opp_us_e4e90a5fdfae697e31b4"
     }
   ]
 };
