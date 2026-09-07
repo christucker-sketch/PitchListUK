@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T11:23:58.923Z",
+  "updated_at": "2026-09-07T11:30:14.096Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5045,6 +5045,24 @@
       "event_end": "2027-06-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery id-meridian-2027-festival: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2027-06-28."
+    },
+    {
+      "id": "id-farmers-market-destination-caldwell-2026-09-29-a012e39c",
+      "name": "Farmers Market - Destination Caldwell Vendor Opportunity",
+      "organiser": "Farmers Market - Destination Caldwell",
+      "source_url": "https://www.destinationcaldwell.com/farm-to-fork",
+      "application_url": "https://www.destinationcaldwell.com/farm-to-fork",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Caldwell",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-29",
+      "event_end": "2026-09-29",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-caldwell-2026-farmers-market: live first-party route attests Caldwell, ID, actionable vendor terms, and exact event date 2026-09-29."
     },
     {
       "id": "id-meridian-main-street-market-farmers-market-2026-10-17-dcb2f42c",
