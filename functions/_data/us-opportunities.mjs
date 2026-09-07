@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T17:28:56.888Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:0e3bc15af89a4861627be887395529ee70b73e6213f5931592abd31cf2c7118a",
-  "total": 607,
+  "exported_at": "2026-09-07T17:37:41.224Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:8fb2e7853e5e82bbc6b866305f797b0304c6859800359758bdc0972150d4e498",
+  "total": 608,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23067,6 +23067,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_b9fb50310acc8004cee3"
+    },
+    {
+      "stable_id": "opp_us_4ace6e69d14868955749",
+      "event_name": "El Dorado, Arkansas to host food truck festival",
+      "organiser": "El Dorado, Arkansas to host food truck festival",
+      "source_url": "https://www.foodtruckoperator.com/news/el-dorado-arkansas-to-host-food-truck-festival/",
+      "application_url": "https://www.foodtruckoperator.com/news/el-dorado-arkansas-to-host-food-truck-festival",
+      "location": "El Dorado",
+      "locality": "El Dorado",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-04",
+      "event_end": "2027-04-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-el-dorado-arkansas-to-host-food-truck-festival-2027-04-04-65d47a0b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_4ace6e69d14868955749"
     }
   ]
 };
