@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:31:49.898Z",
-  "source": "reviewed-us-tennessee-cloud-promotion:cc590ded15aa04286f1c02d9c33cf626f166eb2647228e1f1e647a0c1f4037d8",
-  "total": 539,
+  "exported_at": "2026-09-07T09:35:27.210Z",
+  "source": "reviewed-us-missouri-cloud-promotion:5d3f1707c847ad8f4cecb440dfa5ce5e4845eb951dbfc7feefc350c099db51cb",
+  "total": 540,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20504,6 +20504,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-tennessee",
       "id": "opp_us_bad0102804f9eff01f33"
+    },
+    {
+      "stable_id": "opp_us_dd8371a1b6997e525c2e",
+      "event_name": "Marty Brooks @ Warrenton Fall Festival Vendor Opportunity",
+      "organiser": "Marty Brooks @ Warrenton Fall Festival",
+      "source_url": "https://923wil.com/event/marty-brooks-warrenton-fall-festival",
+      "application_url": "https://923wil.com/event/marty-brooks-warrenton-fall-festival",
+      "location": "Warrenton",
+      "locality": "Warrenton",
+      "region": "Missouri",
+      "region_code": "MO",
+      "region_name": "Missouri",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MO",
+      "currency": "USD",
+      "postal_code": "63383",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-20",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mo-marty-brooks-warrenton-fall-festival-2026-09-20-5d79c295",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-missouri",
+      "id": "opp_us_dd8371a1b6997e525c2e"
     }
   ]
 };
