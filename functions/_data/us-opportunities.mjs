@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T07:35:07.185Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:6c5963cd28b1fed497a3c7215817a18cb861efa7f987cf8b726d89d5f20d57cc",
-  "total": 523,
+  "exported_at": "2026-09-07T07:40:53.493Z",
+  "source": "reviewed-us-hawaii-cloud-promotion:d9bdcea93490a04cad3a1a5bd98817b9de239ccd978c8c6fa7201451f033664e",
+  "total": 524,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19892,6 +19892,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_ee3eb36c82ff81bcae75"
+    },
+    {
+      "stable_id": "opp_us_22f77a6a9800b37b9217",
+      "event_name": "Participate Vendor Opportunity",
+      "organiser": "Participate",
+      "source_url": "https://www.panpacificfestival.org/participate/",
+      "application_url": "https://www.panpacificfestival.org/participate",
+      "location": "Honolulu",
+      "locality": "Honolulu",
+      "region": "Hawaii",
+      "region_code": "HI",
+      "region_name": "Hawaii",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-HI",
+      "currency": "USD",
+      "postal_code": "96815",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-11",
+      "event_end": "2027-06-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "hi-participate-2027-06-11-5639a088",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-hawaii",
+      "id": "opp_us_22f77a6a9800b37b9217"
     }
   ]
 };
