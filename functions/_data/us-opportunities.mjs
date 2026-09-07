@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:38:37.723Z",
-  "source": "reviewed-us-minnesota-cloud-promotion:5034b84577c50be8e50b4753703f221f38ac9520aa2bebc4c184a4be6775eaec",
-  "total": 541,
+  "exported_at": "2026-09-07T09:43:12.650Z",
+  "source": "reviewed-us-alabama-cloud-promotion:4ff55dda2bb653671d3a8cd2cb71f1768906cebc29d49b82ef883c81944d3055",
+  "total": 542,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20578,6 +20578,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-minnesota",
       "id": "opp_us_26a7f91f7229b20f4425"
+    },
+    {
+      "stable_id": "opp_us_a05d2dd187b4a463bad5",
+      "event_name": "Wintergreen Holiday Market Vendor Application",
+      "organiser": "Wintergreen Holiday Market",
+      "source_url": "https://hsvbg.org/wintergreen-market-vendor-application/",
+      "application_url": "https://hsvbg.org/wintergreen-market-vendor-application",
+      "location": "Huntsville",
+      "locality": "Huntsville",
+      "region": "Alabama",
+      "region_code": "AL",
+      "region_name": "Alabama",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-01",
+      "event_end": "2026-11-01",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "al-wintergreen-holiday-market-2026-11-01-ebb36ba4",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-alabama",
+      "id": "opp_us_a05d2dd187b4a463bad5"
     }
   ]
 };
