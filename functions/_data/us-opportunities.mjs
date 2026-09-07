@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T15:55:49.194Z",
-  "source": "reviewed-us-missouri-cloud-promotion:20fbf7dee4d7fdb0ba4f113ed25d975b0108bb2ef0cbb3fe93dbe22cc5505a74",
-  "total": 596,
+  "exported_at": "2026-09-07T16:00:26.911Z",
+  "source": "reviewed-us-oregon-cloud-promotion:2875bec7a7d0a9b1bc80e6794f2deef55099a3ab1339942a6cf1d8aeafa9e19f",
+  "total": 597,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22647,6 +22647,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-missouri",
       "id": "opp_us_06ff6d3bba6841c2d2bc"
+    },
+    {
+      "stable_id": "opp_us_317651c552ea8995f500",
+      "event_name": "Klamath Falls Farmers' Market - Marketspread Vendor Opportunity",
+      "organiser": "Klamath Falls Farmers' Market - Marketspread",
+      "source_url": "https://marketspread.com/market/25529/klamath-falls-farmers-market/",
+      "application_url": "https://marketspread.com/market/25529/klamath-falls-farmers-market",
+      "location": "Klamath Falls",
+      "locality": "Klamath Falls",
+      "region": "Oregon",
+      "region_code": "OR",
+      "region_name": "Oregon",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "currency": "USD",
+      "postal_code": "97601",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-26",
+      "event_end": "2026-10-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "or-klamath-falls-farmers-market-marketspread-2026-10-26-20c5e653",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oregon",
+      "id": "opp_us_317651c552ea8995f500"
     }
   ]
 };
