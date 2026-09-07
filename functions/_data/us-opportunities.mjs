@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:53:46.324Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:b94e7a17678c26268269e92cff5cadcaeb6d60f6dac72df5ec7b3894df94550e",
-  "total": 561,
+  "exported_at": "2026-09-07T11:55:20.596Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:d81a3f4d0c4e05fc101b9b253582b093278a96c2264bca25fbe429ff9f9acde4",
+  "total": 562,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21329,6 +21329,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_eaaaec38dca7657e5424"
+    },
+    {
+      "stable_id": "opp_us_849cc44f268efdca480d",
+      "event_name": "Connecticut Garlic & Harvest Festival - Connecticut Garlic & Harvest Festival Vendor Opportunity",
+      "organiser": "Connecticut Garlic & Harvest Festival - Connecticut Garlic & Harvest Festival",
+      "source_url": "https://garlicfestct.com/",
+      "application_url": "https://garlicfestct.com",
+      "location": "Bethlehem",
+      "locality": "Bethlehem",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-connecticut-garlic-harvest-festival-connecticut-garlic-harvest-festiva-2026-10-10-fb7fc462",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_849cc44f268efdca480d"
     }
   ]
 };
