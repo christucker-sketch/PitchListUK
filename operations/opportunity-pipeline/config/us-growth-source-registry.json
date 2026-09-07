@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T11:18:47.024Z",
+  "updated_at": "2026-09-07T11:21:28.454Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2273,6 +2273,24 @@
       "evidence": "Cloudflare discovery ct-fairfield-2026-farmers-market: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
+      "id": "ct-connecticut-garlic-and-harvest-festival-2026-2026-10-10-f4fd67b9",
+      "name": "Connecticut Garlic and Harvest Festival 2026 Vendor Opportunity",
+      "organiser": "Connecticut Garlic and Harvest Festival 2026",
+      "source_url": "https://vendorsmap.com/events/23748",
+      "application_url": "https://vendorsmap.com/events/23748",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Bethlehem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-bethlehem-2026-farmers-market: live first-party route attests Bethlehem, CT, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
       "id": "ct-date-set-for-return-of-fairfield-farmers-market-on-sherman-green-2027-06-07-305999f3",
       "name": "Date Set For Return Of Fairfield Farmers Market On Sherman Green Vendor Opportunity",
       "organiser": "Date Set For Return Of Fairfield Farmers Market On Sherman Green",
@@ -2361,6 +2379,24 @@
       "event_end": "2027-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-fairfield-2027-holiday-market: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date range 2027-09-10 to 2027-09-13."
+    },
+    {
+      "id": "ct-marketplaces-ct-vendors-association-2026-10-29-610d1d95",
+      "name": "Marketplaces - CT Vendors Association Vendor Opportunity",
+      "organiser": "Marketplaces - CT Vendors Association",
+      "source_url": "https://ctvendors.weebly.com/marketplaces.html",
+      "application_url": "https://ctvendors.weebly.com/marketplaces.html",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Bethlehem",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-29",
+      "event_end": "2026-10-29",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-bethlehem-2026-farmers-market: live first-party route attests Bethlehem, CT, actionable vendor terms, and exact event date 2026-10-29."
     },
     {
       "id": "ct-second-annual-international-food-festival-in-fairfield-features-global-2027-08-08-e4b2e160",
