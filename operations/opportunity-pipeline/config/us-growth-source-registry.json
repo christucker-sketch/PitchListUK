@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T08:59:28.008Z",
+  "updated_at": "2026-09-07T09:04:36.323Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11620,6 +11620,25 @@
       "event_end": "2026-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery or-oregon-city-2026-government-events: live first-party route attests Oregon City, OR, actionable vendor terms, and exact event date 2026-09-13."
+    },
+    {
+      "id": "or-visitguam-com-2026-10-23-1ed9383b",
+      "name": "Vendor Application",
+      "organiser": "visitguam.com",
+      "source_url": "https://www.visitguam.com/gmif/vendor-application",
+      "application_url": "https://www.visitguam.com/gmif/vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "region_code": "OR",
+      "locality": "Joseph",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-23",
+      "application_deadline": "2026-09-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery or-joseph-2026-arts-crafts: live first-party route attests Joseph, OR, actionable vendor terms, and exact event date 2026-10-23."
     },
     {
       "id": "or-wallowa-county-farmers-market-vendor-guidelines-2026-10-10-82426ec2",
