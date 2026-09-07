@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T16:40:33.417Z",
+  "updated_at": "2026-09-07T16:43:14.435Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -633,6 +633,24 @@
       "event_end": "2027-08-29",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-clinton-2027-festival: live first-party route attests Clinton, AR, actionable vendor terms, and exact event date 2027-08-29."
+    },
+    {
+      "id": "ar-vendor-events-in-downtown-conway-ar-2027-05-01-5a5422db",
+      "name": "Vendor Events in Downtown Conway, AR",
+      "organiser": "Vendor Events in Downtown Conway, AR",
+      "source_url": "https://vendorsmap.com/cities/downtown-conway",
+      "application_url": "https://vendorsmap.com/cities/downtown-conway",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Conway",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-05-01",
+      "event_end": "2027-05-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-conway-2027-farmers-market: live first-party route attests Conway, AR, actionable vendor terms, and exact event date range 2027-05-01 to 2027-05-03."
     },
     {
       "id": "ar-vendor-events-in-fort-smith-ar-2026-11-07-9351ac36",
