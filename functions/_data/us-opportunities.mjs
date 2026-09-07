@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T12:34:11.720Z",
-  "source": "reviewed-us-idaho-cloud-promotion:c7f88718863749c9339690c76e0c7a7d0a5a0ffd3b90daee7124286d03e73056",
-  "total": 572,
+  "exported_at": "2026-09-07T13:12:33.923Z",
+  "source": "reviewed-us-oklahoma-cloud-promotion:d5e5e20c90dfa12fff0d34bc26fd713d12b614697aee69939dc9d56ea628872d",
+  "total": 573,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21745,6 +21745,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-idaho",
       "id": "opp_us_3ae270b260976772a299"
+    },
+    {
+      "stable_id": "opp_us_bd818353f1ac7dc6cfd4",
+      "event_name": "2027 Around The World Festival Non-Food Vendor Registration",
+      "organiser": "2027 Around The World Festival Non-Food",
+      "source_url": "https://chiceventsdc.com/around-the-world-festival-non-food-vendor-registration/",
+      "application_url": "https://chiceventsdc.com/around-the-world-festival-non-food-vendor-registration",
+      "location": "Oklahoma",
+      "locality": "Oklahoma",
+      "region": "Oklahoma",
+      "region_code": "OK",
+      "region_name": "Oklahoma",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-28",
+      "event_end": "2027-08-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ok-2027-around-the-world-festival-non-food-2027-08-28-762536a4",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oklahoma",
+      "id": "opp_us_bd818353f1ac7dc6cfd4"
     }
   ]
 };
