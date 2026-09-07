@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T12:22:24.022Z",
-  "source": "reviewed-us-oklahoma-cloud-promotion:0c9612e69803afed8179cdb4af8b4a31c5c884a198d7109639815d183a856d2f",
-  "total": 568,
+  "exported_at": "2026-09-07T12:25:34.001Z",
+  "source": "reviewed-us-iowa-cloud-promotion:f2b9e8de16c592472db590de0c75710278ef35930b40fce73b29ff6a8ec7acaa",
+  "total": 569,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21595,6 +21595,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oklahoma",
       "id": "opp_us_1e5722535907c780ab45"
+    },
+    {
+      "stable_id": "opp_us_3d27a1c01b6510f93706",
+      "event_name": "Fall at the Farm in Burlington, IA - Beckman Heritage Farms Vendor Opportunity",
+      "organiser": "Fall at the Farm in Burlington, IA - Beckman Heritage Farms",
+      "source_url": "https://beckmanfarm.com/fall/",
+      "application_url": "https://beckmanfarm.com/fall",
+      "location": "Burlington",
+      "locality": "Burlington",
+      "region": "Iowa",
+      "region_code": "IA",
+      "region_name": "Iowa",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ia-fall-at-the-farm-in-burlington-ia-beckman-heritage-farms-2026-09-26-51929f28",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-iowa",
+      "id": "opp_us_3d27a1c01b6510f93706"
     }
   ]
 };
