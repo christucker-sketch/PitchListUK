@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T12:25:34.001Z",
-  "source": "reviewed-us-iowa-cloud-promotion:f2b9e8de16c592472db590de0c75710278ef35930b40fce73b29ff6a8ec7acaa",
-  "total": 569,
+  "exported_at": "2026-09-07T12:27:59.400Z",
+  "source": "reviewed-us-kansas-cloud-promotion:3bd925ba6716b571d58014b11366336d2f0fef089f3dd1ff584cd810e86e39cf",
+  "total": 570,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21634,6 +21634,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-iowa",
       "id": "opp_us_3d27a1c01b6510f93706"
+    },
+    {
+      "stable_id": "opp_us_7e7bdabf827b31cfa332",
+      "event_name": "Holiday Markets in Kansas City - Kansas City Mom Collective Vendor Opportunity",
+      "organiser": "Holiday Markets in Kansas City - Kansas City Mom Collective",
+      "source_url": "https://kansascitymomcollective.com/holiday-markets-in-kansas-city/",
+      "application_url": "https://kansascitymomcollective.com/holiday-markets-in-kansas-city",
+      "location": "Leawood",
+      "locality": "Leawood",
+      "region": "Kansas",
+      "region_code": "KS",
+      "region_name": "Kansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "currency": "USD",
+      "postal_code": "66206",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-02",
+      "event_end": "2026-12-03",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ks-holiday-markets-in-kansas-city-kansas-city-mom-collective-2026-12-02-a25cc717",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kansas",
+      "id": "opp_us_7e7bdabf827b31cfa332"
     }
   ]
 };
