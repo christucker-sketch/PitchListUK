@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:19:51.049Z",
-  "source": "reviewed-us-louisiana-cloud-promotion:bb2131505db73dac6cf441c503e7e80d6e6793a0dcd4e693378585a86077a0e4",
-  "total": 582,
+  "exported_at": "2026-09-07T14:27:24.525Z",
+  "source": "reviewed-us-kansas-cloud-promotion:ecb8f178f3790f98c790b7183ef5e9e73f96296cead8b91a772adcf9b41343ea",
+  "total": 583,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22118,6 +22118,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-louisiana",
       "id": "opp_us_3380081a8988b0f1a268"
+    },
+    {
+      "stable_id": "opp_us_19a3b8342e4782a1a8e8",
+      "event_name": "Vendor Events in Mound City, KS",
+      "organiser": "Vendor Events in Mound City, KS",
+      "source_url": "https://vendorsmap.com/cities/mound-city-ks",
+      "application_url": "https://vendorsmap.com/cities/mound-city-ks",
+      "location": "Mound City",
+      "locality": "Mound City",
+      "region": "Kansas",
+      "region_code": "KS",
+      "region_name": "Kansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "currency": "USD",
+      "postal_code": "66056",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ks-vendor-events-in-mound-city-ks-2026-10-10-3db78233",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kansas",
+      "id": "opp_us_19a3b8342e4782a1a8e8"
     }
   ]
 };
