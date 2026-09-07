@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T14:47:19.262Z",
+  "updated_at": "2026-09-07T14:56:06.730Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14724,6 +14724,24 @@
       "application_deadline": "2026-09-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ut-utah-county-2026-arts-crafts: live first-party route attests Utah County, UT, actionable vendor terms, and exact event date 2026-09-30."
+    },
+    {
+      "id": "ut-nine-utah-holiday-markets-to-visit-this-season-lehi-free-press-2026-12-02-ad39eabf",
+      "name": "Nine Utah holiday markets to visit this season - Lehi Free Press Vendor Opportunity",
+      "organiser": "Nine Utah holiday markets to visit this season - Lehi Free Press",
+      "source_url": "https://lehifreepress.com/2022/11/28/nine-utah-holiday-markets-to-visit-this-season",
+      "application_url": "https://lehifreepress.com/2022/11/28/nine-utah-holiday-markets-to-visit-this-season",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "region_code": "UT",
+      "locality": "Lehi",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-02",
+      "event_end": "2026-12-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ut-lehi-2026-holiday-market: live first-party route attests Lehi, UT, actionable vendor terms, and exact event date range 2026-12-02 to 2026-12-03."
     },
     {
       "id": "ut-party-at-the-point-2027-07-04-16041966",
