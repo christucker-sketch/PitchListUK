@@ -4,6 +4,8 @@ Small Cloudflare Worker + D1 service that receives a safe, append-only operation
 
 It is deliberately separate from the acquisition controller. If the observer fails, acquisition continues unchanged. The reporter reads the existing controller checkpoint and controller log once per minute and pushes a whitelisted status summary plus only new log lines.
 
+The reporter can also mirror the same sanitized status object into a 3Min API endpoint. That mirror exists specifically to give ChatGPT a reliable connected read path without exposing the raw controller checkpoint or any credentials.
+
 ## Endpoints
 
 - `GET /health` - observer health and most recent heartbeat timestamp.
@@ -62,6 +64,22 @@ FINDPITCHES_OBSERVER_SOURCE=hal-us-growth
 EOF
 chmod 600 ~/.config/findpitches-observer/reporter.env
 ```
+
+### Optional ChatGPT mirror
+
+The production reporter can additionally POST the sanitized status summary to the dedicated 3Min API endpoint. Configure both values together:
+
+```bash
+cat >> ~/.config/findpitches-observer/reporter.env <<'EOF'
+FINDPITCHES_3MIN_API_URL=https://api.3minapi.com/api/v1/data/<endpoint-slug>
+FINDPITCHES_3MIN_API_KEY=<production create-only key>
+EOF
+chmod 600 ~/.config/findpitches-observer/reporter.env
+```
+
+The 3Min API key should be a dedicated production collaboration key with only the `create` permission. Never commit or paste the raw key into the repository. The mirror carries only `source`, `observed_at`, and the already-sanitized `status` object; controller log event text remains in the primary D1 observer only.
+
+A 3Min API mirror failure is deliberately non-blocking: the primary observer ingest still succeeds, the reporter cursor advances, and the next minute publishes a fresh status snapshot. This mirror can never stop acquisition.
 
 Install the user service and timer:
 
