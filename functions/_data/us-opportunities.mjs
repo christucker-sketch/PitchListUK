@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:43:12.650Z",
-  "source": "reviewed-us-alabama-cloud-promotion:4ff55dda2bb653671d3a8cd2cb71f1768906cebc29d49b82ef883c81944d3055",
-  "total": 542,
+  "exported_at": "2026-09-07T09:59:28.183Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:21b12bc62373102981863e96288aab208ce7ffcea3986bd349649bf8af5a48b9",
+  "total": 543,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20617,6 +20617,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-alabama",
       "id": "opp_us_a05d2dd187b4a463bad5"
+    },
+    {
+      "stable_id": "opp_us_5d3df3d9c5bf7c1f8f32",
+      "event_name": "Minnesota Celebrates Farmers’ Market Week - Morning Ag Clips Vendor Opportunity",
+      "organiser": "Minnesota Celebrates Farmers’ Market Week - Morning Ag Clips",
+      "source_url": "https://www.morningagclips.com/minnesota-celebrates-farmers-market-week/",
+      "application_url": "https://www.morningagclips.com/minnesota-celebrates-farmers-market-week",
+      "location": "Saint Paul",
+      "locality": "Saint Paul",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-03-04",
+      "event_end": "2027-03-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-minnesota-celebrates-farmers-market-week-morning-ag-clips-2027-03-04-01e2f108",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_5d3df3d9c5bf7c1f8f32"
     }
   ]
 };
