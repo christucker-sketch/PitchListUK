@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T08:19:05.594Z",
-  "source": "reviewed-us-indiana-cloud-promotion:3063f9d8c9eb252b03b90964bc3369454ef9fb5b56cb2e67aa2facdd2fb3fb66",
-  "total": 529,
+  "exported_at": "2026-09-07T08:48:05.533Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:2a963eaaecb0393ff520b3fd9a58bca27b1da193c54e39ddadc2cd2244995418",
+  "total": 530,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20120,6 +20120,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-indiana",
       "id": "opp_us_7515b9c54b02dfa978b7"
+    },
+    {
+      "stable_id": "opp_us_7fd3815337f52f37a391",
+      "event_name": "Clone of 2025 Siloam Springs Farmers Market Application Vendor Opportunity",
+      "organiser": "Clone of 2025 Siloam Springs Farmers Market",
+      "source_url": "https://form.jotform.com/260416772591158",
+      "application_url": "https://form.jotform.com/260416772591158",
+      "location": "Siloam Springs",
+      "locality": "Siloam Springs",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "72761",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-clone-of-2025-siloam-springs-farmers-market-2026-10-31-a76236f9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_7fd3815337f52f37a391"
     }
   ]
 };
