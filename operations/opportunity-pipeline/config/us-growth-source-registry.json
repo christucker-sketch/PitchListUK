@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T07:25:53.704Z",
+  "updated_at": "2026-09-07T07:30:36.328Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12451,6 +12451,25 @@
       "application_deadline": "2026-09-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ut-salt-lake-city-2026-arts-crafts: live first-party route attests Salt Lake City, UT, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "ut-party-at-the-point-2027-07-04-16041966",
+      "name": "Party at The Point Vendor Opportunity",
+      "organiser": "Party at The Point",
+      "source_url": "https://www.westpointutah.gov/182/Party-at-The-Point",
+      "application_url": "https://www.westpointutah.gov/182/Party-at-The-Point",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "region_code": "UT",
+      "locality": "West Point",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-04",
+      "application_deadline": "2027-06-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ut-west-point-2027-festival: live first-party route attests West Point, UT, actionable vendor terms, and exact event date 2027-07-04."
     },
     {
       "id": "ut-redwest-fest-2026-october-16-2026-10-16-0132dd65",
