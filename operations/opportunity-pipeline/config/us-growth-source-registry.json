@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:34:28.142Z",
+  "updated_at": "2026-09-07T09:37:49.348Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -8449,6 +8449,24 @@
       "event_end": "2026-09-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mn-falcon-heights-2026-farmers-market: live first-party route attests Falcon Heights, MN, actionable vendor terms, and exact event date 2026-09-25."
+    },
+    {
+      "id": "mn-food-trucks-events-in-st-paul-today-and-upcoming-food-trucks-events-in-2026-09-11-8e015b3e",
+      "name": "Food Trucks events in St Paul, Today and Upcoming Food Trucks events in St Paul Vendor Opportunity",
+      "organiser": "Food Trucks events in St Paul, Today and Upcoming Food Trucks events in St Paul",
+      "source_url": "https://allevents.in/st-paul/food-trucks",
+      "application_url": "https://allevents.in/st-paul/food-trucks",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "region_code": "MN",
+      "locality": "Saint Paul",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mn-saint-paul-2026-food-truck: live first-party route attests Saint Paul, MN, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
     },
     {
       "id": "mn-minnesota-state-fair-announces-new-2026-foods-vendors-2026-09-07-928c72e0",
