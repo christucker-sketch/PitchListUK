@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T14:28:58.552Z",
+  "updated_at": "2026-09-07T14:31:32.362Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -400,6 +400,25 @@
       "evidence": "Cloudflare discovery ar-clinton-2026-food-truck: live first-party route attests Clinton, AR, actionable vendor terms, and exact event date 2026-09-20."
     },
     {
+      "id": "ar-fall-festival-2026-10-24-3d438383",
+      "name": "Fall Festival Food Truck Application - Fort Smith Downtown Business Association",
+      "organiser": "Fall Festival",
+      "source_url": "https://www.godowntownfs.org/vendor-application/fall-festival-food-truck-application",
+      "application_url": "https://www.godowntownfs.org/vendor-application/fall-festival-food-truck-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Fort Smith",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "application_deadline": "2026-09-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-fort-smith-2026-festival: live first-party route attests Fort Smith, AR, actionable vendor terms, and exact event date 2026-10-24."
+    },
+    {
       "id": "ar-festival-historic-cane-hill-arkansas-2026-09-19-a6ad9e3b",
       "name": "Festival - Historic Cane Hill Arkansas Vendor Opportunity",
       "organiser": "Festival - Historic Cane Hill Arkansas",
@@ -416,6 +435,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-lincoln-2026-farmers-market: live first-party route attests Lincoln, AR, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ar-fort-smith-fall-festival-2026-10-24-5f7500ae",
+      "name": "Fort Smith Fall Festival Vendor Opportunity",
+      "organiser": "Fort Smith Fall Festival",
+      "source_url": "https://fortsmithfallfest.com",
+      "application_url": "https://fortsmithfallfest.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Fort Smith",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-fort-smith-2026-festival: live first-party route attests Fort Smith, AR, actionable vendor terms, and exact event date 2026-10-24."
     },
     {
       "id": "ar-girlfriends-guide-to-arkansas-holiday-markets-only-in-arkansas-2026-11-14-d6d94b2b",
@@ -452,6 +489,24 @@
       "event_end": "2026-09-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-siloam-springs-2026-government-events: live first-party route attests Siloam Springs, AR, actionable vendor terms, and exact event date range 2026-09-07 to 2026-09-08."
+    },
+    {
+      "id": "ar-hometown-market-days-ft-smith-ar-eventeny-2026-11-06-2f6a3eb0",
+      "name": "Hometown Market Days--Ft Smith, AR - Eventeny Vendor Opportunity",
+      "organiser": "Hometown Market Days--Ft Smith, AR - Eventeny",
+      "source_url": "https://www.eventeny.com/events/hometown-market-daysft-smith-ar-26152",
+      "application_url": "https://www.eventeny.com/events/hometown-market-daysft-smith-ar-26152",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Fort Smith",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-fort-smith-2026-arts-crafts: live first-party route attests Fort Smith, AR, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
     },
     {
       "id": "ar-list-fourth-of-july-festivities-across-central-arkansas-2027-07-04-1a9bcac0",
