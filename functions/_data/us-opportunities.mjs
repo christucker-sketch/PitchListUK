@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T15:24:36.127Z",
-  "source": "reviewed-us-maryland-cloud-promotion:62d0cd110624dbcf07840193bb6de30e5d8807309236583958cf12bde95420ac",
-  "total": 593,
+  "exported_at": "2026-09-07T15:27:37.354Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:692c9765dcd345af15b0d08bc7a452b9519d98c3f40c09b12801d56bbd966a6b",
+  "total": 594,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22533,6 +22533,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-maryland",
       "id": "opp_us_0b60361f5fcf694b0ad3"
+    },
+    {
+      "stable_id": "opp_us_b245f6458de76a26f44b",
+      "event_name": "Anoka Food Truck Festival 2026: 50+ Trucks, Aug 15 Guide",
+      "organiser": "Anoka Food Truck Festival 2026: 50+ Trucks, Aug 15 Guide",
+      "source_url": "https://thetruckchef.com/anoka-food-truck-festival/",
+      "application_url": "https://thetruckchef.com/anoka-food-truck-festival",
+      "location": "Anoka",
+      "locality": "Anoka",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-15",
+      "event_end": "2027-08-15",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-anoka-food-truck-festival-2026-50-trucks-aug-15-guide-2027-08-15-41acbd6c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_b245f6458de76a26f44b"
     }
   ]
 };
