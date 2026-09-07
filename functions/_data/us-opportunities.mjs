@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T08:56:03.502Z",
-  "source": "reviewed-us-tennessee-cloud-promotion:2ca1c3e1fb1a73d1f9b54a94510584ba4e90790eb354f2795bd033b06e2361ab",
-  "total": 532,
+  "exported_at": "2026-09-07T08:58:07.932Z",
+  "source": "reviewed-us-indiana-cloud-promotion:8c8bf566df3b16d97aa5d4f534d658af5fbb24fe64ba308c98d47bceb848a905",
+  "total": 533,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20236,6 +20236,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-tennessee",
       "id": "opp_us_6a3464d8d1413d711f24"
+    },
+    {
+      "stable_id": "opp_us_97d0ca8287d78c635a59",
+      "event_name": "Franklin Fall Festival | Festivals in Indiana Vendor Opportunity",
+      "organiser": "Franklin Fall Festival | Festivals in Indiana",
+      "source_url": "https://festivalsinindiana.com/festivals/franklin-fall-festival/",
+      "application_url": "https://festivalsinindiana.com/festivals/franklin-fall-festival",
+      "location": "Franklin",
+      "locality": "Franklin",
+      "region": "Indiana",
+      "region_code": "IN",
+      "region_name": "Indiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "currency": "USD",
+      "postal_code": "46131",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "in-franklin-fall-festival-festivals-in-indiana-2026-09-26-75da108e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-indiana",
+      "id": "opp_us_97d0ca8287d78c635a59"
     }
   ]
 };
