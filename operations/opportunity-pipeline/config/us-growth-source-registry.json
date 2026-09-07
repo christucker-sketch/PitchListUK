@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T00:00:36.039Z",
+  "updated_at": "2026-09-07T00:03:08.113Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2181,6 +2181,24 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-norwalk-2026-festival: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "ct-second-annual-international-food-festival-in-fairfield-features-global-2027-08-08-e4b2e160",
+      "name": "Second annual international food festival in Fairfield features global vendors and live entertainment Vendor Opportunity",
+      "organiser": "Second annual international food festival in Fairfield features global vendors and live entertainment",
+      "source_url": "https://findingconnecticut.com/second-annual-international-food-festival-in-fairfield-features-global-vendors-and-live-entertainment",
+      "application_url": "https://findingconnecticut.com/second-annual-international-food-festival-in-fairfield-features-global-vendors-and-live-entertainment",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Fairfield",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-08-08",
+      "event_end": "2027-08-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-fairfield-2027-festival: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date range 2027-08-08 to 2027-08-09."
     },
     {
       "id": "ct-sep-14-fairfield-food-truck-festival-2026-09-06-87cc6709",
