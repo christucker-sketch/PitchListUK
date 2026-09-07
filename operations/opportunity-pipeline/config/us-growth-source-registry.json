@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:58:26.012Z",
+  "updated_at": "2026-09-07T10:06:08.112Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11712,6 +11712,24 @@
       "evidence": "Cloudflare discovery ok-oklahoma-city-2027-festival: live first-party route attests Oklahoma City, OK, actionable vendor terms, and exact event date range 2027-05-28 to 2027-05-30."
     },
     {
+      "id": "ok-okie-homesteading-ndash-okie-homesteading-2027-03-20-5197eab0",
+      "name": "Okie Homesteading &ndash; Okie Homesteading Vendor Opportunity",
+      "organiser": "Okie Homesteading &ndash; Okie Homesteading",
+      "source_url": "https://www.okiehomesteading.com",
+      "application_url": "https://www.okiehomesteading.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Pryor",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-20",
+      "event_end": "2027-03-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-pryor-2027-farmers-market: live first-party route attests Pryor, OK, actionable vendor terms, and exact event date 2027-03-20."
+    },
+    {
       "id": "ok-paseo-arts-festival-2027-paseo-arts-district-2027-05-29-836408f3",
       "name": "Paseo Arts Festival 2027 | Paseo Arts District Vendor Opportunity",
       "organiser": "Paseo Arts Festival 2027 | Paseo Arts District",
@@ -11746,6 +11764,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ok-pryor-2026-farmers-market: live first-party route attests Pryor, OK, actionable vendor terms, and exact event date 2026-09-26."
+    },
+    {
+      "id": "ok-vendor-events-in-pryor-ok-2027-03-20-10974d97",
+      "name": "Vendor Events in Pryor, OK",
+      "organiser": "Vendor Events in Pryor, OK",
+      "source_url": "https://vendorsmap.com/cities/pryor",
+      "application_url": "https://vendorsmap.com/cities/pryor",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Pryor",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-03-20",
+      "event_end": "2027-03-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-pryor-2027-farmers-market: live first-party route attests Pryor, OK, actionable vendor terms, and exact event date range 2027-03-20 to 2027-03-21."
     },
     {
       "id": "or-bend-handmade-market-2027-06-06-33def208",
