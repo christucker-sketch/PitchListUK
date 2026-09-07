@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:05:30.046Z",
-  "source": "reviewed-us-oregon-cloud-promotion:2f0d6cc7489b8f983aa564f4e02f2ec04d1ef8bfd4fd5a427e1fd1aaaf77e084",
-  "total": 535,
+  "exported_at": "2026-09-07T09:15:58.394Z",
+  "source": "reviewed-us-iowa-cloud-promotion:d6f6cf23cd1f850d0defc3d87d0875ae465c8145527659107f5738af570dfc80",
+  "total": 536,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20351,6 +20351,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oregon",
       "id": "opp_us_434878210760d3712df9"
+    },
+    {
+      "stable_id": "opp_us_760dfad145d1223b1b1d",
+      "event_name": "2026 Prepared Food/Food Truck Application - 2026 Uptown Ankeny Farmers Market - Eventeny",
+      "organiser": "2026 Prepared Food/",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=42624",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=42624",
+      "location": "Ankeny",
+      "locality": "Ankeny",
+      "region": "Iowa",
+      "region_code": "IA",
+      "region_name": "Iowa",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ia-2026-prepared-food-2026-09-26-33d9af37",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-iowa",
+      "id": "opp_us_760dfad145d1223b1b1d"
     }
   ]
 };
