@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T16:56:00.636Z",
+  "updated_at": "2026-09-07T17:03:34.007Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2939,6 +2939,24 @@
       "application_deadline": "2027-08-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-norwalk-2027-arts-crafts: live first-party route attests Norwalk, CT, actionable vendor terms, and exact event date range 2027-08-01 to 2027-08-06."
+    },
+    {
+      "id": "ct-things-to-do-in-connecticut-in-may-ct-food-truck-battles-festival-2027-05-15-0c859074",
+      "name": "Things to Do in Connecticut in May - CT Food Truck Battles Festival",
+      "organiser": "Things to Do in Connecticut in May - CT Food Truck Battles Festival",
+      "source_url": "https://ctfoodtruckbattles.com",
+      "application_url": "https://ctfoodtruckbattles.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Connecticut",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-15",
+      "event_end": "2027-05-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-connecticut-2027-food-truck: live first-party route attests Connecticut, CT, actionable vendor terms, and exact event date range 2027-05-15 to 2027-05-21."
     },
     {
       "id": "ct-westport-farmers-market-ndash-westport-farmers-market-2026-11-05-cc94d6bc",
