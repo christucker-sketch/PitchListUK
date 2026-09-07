@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T14:22:04.979Z",
+  "updated_at": "2026-09-07T14:26:24.462Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6489,6 +6489,24 @@
       "evidence": "Cloudflare discovery ks-leawood-2026-food-truck: live first-party route attests Leawood, KS, actionable vendor terms, and exact event date 2026-09-17."
     },
     {
+      "id": "ks-craft-fairs-shows-in-mound-city-ks-2026-dates-fees-2026-10-10-b7a8aa7b",
+      "name": "Craft Fairs & Shows in Mound City, KS 2026: Dates & Fees Vendor Opportunity",
+      "organiser": "Craft Fairs & Shows in Mound City, KS 2026: Dates & Fees",
+      "source_url": "https://www.thecraftmap.com/fairs/kansas/mound-city",
+      "application_url": "https://www.thecraftmap.com/fairs/kansas/mound-city",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "Mound City",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-mound-city-2026-festival: live first-party route attests Mound City, KS, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
       "id": "ks-experienceeldo-com-2027-07-26-9f4455ea",
       "name": "Vendor Information",
       "organiser": "experienceeldo.com",
@@ -6631,6 +6649,42 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ks-wichita-2026-festival: live first-party route attests Wichita, KS, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
+    },
+    {
+      "id": "ks-sugar-mound-arts-crafts-festival-2026-2026-10-10-edd963df",
+      "name": "Sugar Mound Arts & Crafts Festival 2026 Vendor Opportunity",
+      "organiser": "Sugar Mound Arts & Crafts Festival 2026",
+      "source_url": "https://vendorsmap.com/events/3517",
+      "application_url": "https://vendorsmap.com/events/3517",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "Mound City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-mound-city-2026-festival: live first-party route attests Mound City, KS, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
+      "id": "ks-vendor-events-in-mound-city-ks-2026-10-10-3db78233",
+      "name": "Vendor Events in Mound City, KS",
+      "organiser": "Vendor Events in Mound City, KS",
+      "source_url": "https://vendorsmap.com/cities/mound-city-ks",
+      "application_url": "https://vendorsmap.com/cities/mound-city-ks",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "Mound City",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-mound-city-2026-arts-crafts: live first-party route attests Mound City, KS, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
     },
     {
       "id": "ky-berea-chamber-powered-by-amo-2026-09-18-cb4e852f",
