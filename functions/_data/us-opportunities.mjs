@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:00:24.991Z",
-  "source": "reviewed-us-missouri-cloud-promotion:41390d5cc2b9b42c9ac1db8d33f155bb69050ac8e32558c4437d238572e567b2",
-  "total": 534,
+  "exported_at": "2026-09-07T09:05:30.046Z",
+  "source": "reviewed-us-oregon-cloud-promotion:2f0d6cc7489b8f983aa564f4e02f2ec04d1ef8bfd4fd5a427e1fd1aaaf77e084",
+  "total": 535,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20313,6 +20313,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-missouri",
       "id": "opp_us_798c97eb06962e70765a"
+    },
+    {
+      "stable_id": "opp_us_434878210760d3712df9",
+      "event_name": "Vendor Application",
+      "organiser": "visitguam.com",
+      "source_url": "https://www.visitguam.com/gmif/vendor-application/",
+      "application_url": "https://www.visitguam.com/gmif/vendor-application",
+      "location": "Joseph",
+      "locality": "Joseph",
+      "region": "Oregon",
+      "region_code": "OR",
+      "region_name": "Oregon",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "currency": "USD",
+      "postal_code": "96913",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-23",
+      "application_deadline": "2026-09-23",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "or-visitguam-com-2026-10-23-1ed9383b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oregon",
+      "id": "opp_us_434878210760d3712df9"
     }
   ]
 };
