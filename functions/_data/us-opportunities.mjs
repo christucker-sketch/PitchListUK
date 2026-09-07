@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T15:10:02.480Z",
-  "source": "reviewed-us-minnesota-cloud-promotion:a29a0b41191454aa4d91b0d242b9843efcb2a66daa40b97a4781ae74c08e2dcb",
-  "total": 591,
+  "exported_at": "2026-09-07T15:19:42.345Z",
+  "source": "reviewed-us-utah-cloud-promotion:32ab5a1c606a1477725d4ffc9e60b069e9e58af5845c6246a36787b093b524ea",
+  "total": 592,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22457,6 +22457,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-minnesota",
       "id": "opp_us_6331bb84e73d7d9a7a35"
+    },
+    {
+      "stable_id": "opp_us_9eca24cbf1f6f7da84b5",
+      "event_name": "Vendor Events in Lehi, UT",
+      "organiser": "Vendor Events in Lehi, UT",
+      "source_url": "https://vendorsmap.com/cities/lehi",
+      "application_url": "https://vendorsmap.com/cities/lehi",
+      "location": "Lehi",
+      "locality": "Lehi",
+      "region": "Utah",
+      "region_code": "UT",
+      "region_name": "Utah",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "currency": "USD",
+      "postal_code": "84043",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-21",
+      "event_end": "2027-06-27",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ut-vendor-events-in-lehi-ut-2027-06-21-6663148d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-utah",
+      "id": "opp_us_9eca24cbf1f6f7da84b5"
     }
   ]
 };
