@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T17:20:48.360Z",
+  "updated_at": "2026-09-07T17:27:42.618Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -579,6 +579,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-fort-smith-2026-arts-crafts: live first-party route attests Fort Smith, AR, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
+    },
+    {
+      "id": "ar-how-to-sell-at-farmers-markets-in-arkansas-food-freedom-act-adh-rules--2026-10-07-e1ce2191",
+      "name": "How to Sell at Farmers Markets in Arkansas: Food Freedom Act, ADH Rules & Top Markets (2026) Vendor Opportunity",
+      "organiser": "How to Sell at Farmers Markets in Arkansas: Food Freedom Act, ADH Rules & Top Markets (2026)",
+      "source_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-arkansas",
+      "application_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-arkansas",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "El Dorado",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-07",
+      "event_end": "2026-10-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-el-dorado-2026-farmers-market: live first-party route attests El Dorado, AR, actionable vendor terms, and exact event date 2026-10-07."
     },
     {
       "id": "ar-list-fourth-of-july-festivities-across-central-arkansas-2027-07-04-1a9bcac0",
