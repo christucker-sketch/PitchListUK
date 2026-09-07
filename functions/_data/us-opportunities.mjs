@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T16:41:30.478Z",
-  "source": "reviewed-us-utah-cloud-promotion:2090d4b850c915183dce036e6163bc1f9294fad14e51578393c1e2ea9c70e6e3",
-  "total": 601,
+  "exported_at": "2026-09-07T16:44:04.393Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:cb0e8fda74a6bb27e923deaa756f0a1b0d37bce75e4ccddfc84bb9198d51f07a",
+  "total": 602,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22834,6 +22834,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-utah",
       "id": "opp_us_fc97d29d6e342acc19c8"
+    },
+    {
+      "stable_id": "opp_us_538ebc831173602c7210",
+      "event_name": "Vendor Events in Downtown Conway, AR",
+      "organiser": "Vendor Events in Downtown Conway, AR",
+      "source_url": "https://vendorsmap.com/cities/downtown-conway",
+      "application_url": "https://vendorsmap.com/cities/downtown-conway",
+      "location": "Conway",
+      "locality": "Conway",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "72032",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-01",
+      "event_end": "2027-05-03",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-vendor-events-in-downtown-conway-ar-2027-05-01-5a5422db",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_538ebc831173602c7210"
     }
   ]
 };
