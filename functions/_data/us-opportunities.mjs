@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:37:18.347Z",
-  "source": "reviewed-us-minnesota-cloud-promotion:40da9da73178ac3eff4b8127e677242f3f556f3c62bf3b9b1345ebc2b6af4acf",
-  "total": 558,
+  "exported_at": "2026-09-07T11:40:55.995Z",
+  "source": "reviewed-us-wisconsin-cloud-promotion:72c164bab32d66d54cfe5a008f0220e06198c1296652d01dbf02dbca64a4a07e",
+  "total": 559,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21217,6 +21217,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-minnesota",
       "id": "opp_us_95ffe07b2a76df4f2194"
+    },
+    {
+      "stable_id": "opp_us_f4ecb3948de3985ffa20",
+      "event_name": "Milwaukee Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Milwaukee Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/milwaukeewinterwonderland/",
+      "application_url": "https://hometownvendormarket.com/milwaukeewinterwonderland",
+      "location": "Brookfield",
+      "locality": "Brookfield",
+      "region": "Wisconsin",
+      "region_code": "WI",
+      "region_name": "Wisconsin",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WI",
+      "currency": "USD",
+      "postal_code": "53005",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wi-milwaukee-winter-wonderland-craft-vendor-market-hometown-vendor-market-2026-12-12-1a72c2a4",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-wisconsin",
+      "id": "opp_us_f4ecb3948de3985ffa20"
     }
   ]
 };
