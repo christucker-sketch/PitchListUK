@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:37:49.348Z",
+  "updated_at": "2026-09-07T09:42:21.480Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -145,6 +145,24 @@
       "event_end": "2026-10-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-florence-2026-farmers-market: live first-party route attests Florence, AL, actionable vendor terms, and exact event date 2026-10-24."
+    },
+    {
+      "id": "al-wintergreen-holiday-market-2026-11-01-ebb36ba4",
+      "name": "Wintergreen Holiday Market Vendor Application",
+      "organiser": "Wintergreen Holiday Market",
+      "source_url": "https://hsvbg.org/wintergreen-market-vendor-application",
+      "application_url": "https://hsvbg.org/wintergreen-market-vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Huntsville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-01",
+      "event_end": "2026-11-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-huntsville-2026-holiday-market: live first-party route attests Huntsville, AL, actionable vendor terms, and exact event date 2026-11-01."
     },
     {
       "id": "ar-arkansas-r-b-festival-2027-04-10-b0349e4d",
