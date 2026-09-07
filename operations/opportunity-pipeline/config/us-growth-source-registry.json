@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:17:22.544Z",
+  "updated_at": "2026-09-07T09:22:15.058Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12992,6 +12992,25 @@
       "application_deadline": "2026-09-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ut-salt-lake-city-2026-arts-crafts: live first-party route attests Salt Lake City, UT, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "ut-farmer-s-market-millard-county-tourism-2026-09-30-1f72a5eb",
+      "name": "Farmer's Market - Millard County Tourism Vendor Opportunity",
+      "organiser": "Farmer's Market - Millard County Tourism",
+      "source_url": "https://visitmillardcounty.com/events/farmers-market",
+      "application_url": "https://visitmillardcounty.com/events/farmers-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "region_code": "UT",
+      "locality": "Utah County",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-30",
+      "event_end": "2026-09-30",
+      "application_deadline": "2026-09-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ut-utah-county-2026-arts-crafts: live first-party route attests Utah County, UT, actionable vendor terms, and exact event date 2026-09-30."
     },
     {
       "id": "ut-party-at-the-point-2027-07-04-16041966",
