@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T14:05:49.430Z",
+  "updated_at": "2026-09-07T14:07:44.423Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -9475,6 +9475,24 @@
       "event_end": "2027-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mo-moberly-2027-festival: live first-party route attests Moberly, MO, actionable vendor terms, and exact event date range 2027-09-27 to 2027-10-03."
+    },
+    {
+      "id": "mo-fall-festival-vendor-event-city-of-monroe-city-mo-3-october-2026-2026-10-03-7f988be8",
+      "name": "fall festival vendor event, City of Monroe City, MO, 3 October 2026",
+      "organiser": "fall festival vendor event, City of Monroe City, MO, 3 October 2026",
+      "source_url": "https://allevents.in/monroe-city/fall-festival-vendor-event/200030360927431",
+      "application_url": "https://allevents.in/monroe-city/fall-festival-vendor-event/200030360927431",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MO",
+      "region_code": "MO",
+      "locality": "Monroe City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mo-monroe-city-2026-festival: live first-party route attests Monroe City, MO, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "mo-marty-brooks-warrenton-fall-festival-2026-09-20-5d79c295",
