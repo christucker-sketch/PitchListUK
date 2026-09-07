@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T08:52:38.636Z",
-  "source": "reviewed-us-new-hampshire-cloud-promotion:0dabfd8b70712bdfb191a7b5d447be1073e1663da54b9ef91f1ab432e0700cba",
-  "total": 531,
+  "exported_at": "2026-09-07T08:56:03.502Z",
+  "source": "reviewed-us-tennessee-cloud-promotion:2ca1c3e1fb1a73d1f9b54a94510584ba4e90790eb354f2795bd033b06e2361ab",
+  "total": 532,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20196,6 +20196,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-hampshire",
       "id": "opp_us_0e90c0127d11f396a736"
+    },
+    {
+      "stable_id": "opp_us_6a3464d8d1413d711f24",
+      "event_name": "Food Vendor Application - Greenway Art Festival 2026 - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=54017",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=54017",
+      "location": "Murfreesboro",
+      "locality": "Murfreesboro",
+      "region": "Tennessee",
+      "region_code": "TN",
+      "region_name": "Tennessee",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tn-food-2026-09-19-6a313ade",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-tennessee",
+      "id": "opp_us_6a3464d8d1413d711f24"
     }
   ]
 };
