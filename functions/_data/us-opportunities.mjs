@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:08:39.712Z",
-  "source": "reviewed-us-missouri-cloud-promotion:c449876b11fa576601d8613107920003543cb9626bc472a2ba55f965288ae942",
-  "total": 579,
+  "exported_at": "2026-09-07T14:13:27.392Z",
+  "source": "reviewed-us-alabama-cloud-promotion:065034bda874bb8f97c268d2ab3dc06573272b8cc9844673fbcae7ebdb120720",
+  "total": 580,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22006,6 +22006,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-missouri",
       "id": "opp_us_2f403a3cede091d848c4"
+    },
+    {
+      "stable_id": "opp_us_73794dbbf13a2a18035d",
+      "event_name": "Magnolia Springs Firefighter Festival Vendor Opportunity",
+      "organiser": "Magnolia Springs Firefighter Festival",
+      "source_url": "https://www.festivalsinamerica.com/festival/magnolia-springs-firefighter-festival-magnolia-springs",
+      "application_url": "https://www.festivalsinamerica.com/festival/magnolia-springs-firefighter-festival-magnolia-springs",
+      "location": "Magnolia Springs",
+      "locality": "Magnolia Springs",
+      "region": "Alabama",
+      "region_code": "AL",
+      "region_name": "Alabama",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "currency": "USD",
+      "postal_code": "14809",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "al-magnolia-springs-firefighter-festival-2026-10-17-253a61a0",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-alabama",
+      "id": "opp_us_73794dbbf13a2a18035d"
     }
   ]
 };
