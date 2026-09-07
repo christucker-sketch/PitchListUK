@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T16:53:18.221Z",
+  "updated_at": "2026-09-07T16:56:00.636Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -379,6 +379,24 @@
       "event_end": "2026-10-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-siloam-springs-2026-farmers-market: live first-party route attests Siloam Springs, AR, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "ar-conway-art-walk-mdash-create-conway-2027-09-04-baf99d09",
+      "name": "Conway Art Walk &mdash; Create Conway Vendor Opportunity",
+      "organiser": "Conway Art Walk &mdash; Create Conway",
+      "source_url": "https://www.createconway.com/conway-art-walk",
+      "application_url": "https://www.createconway.com/conway-art-walk",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Conway",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-09-04",
+      "event_end": "2027-09-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-conway-2027-arts-crafts: live first-party route attests Conway, AR, actionable vendor terms, and exact event date 2027-09-04."
     },
     {
       "id": "ar-cornfest-com-2027-08-27-0111550a",
