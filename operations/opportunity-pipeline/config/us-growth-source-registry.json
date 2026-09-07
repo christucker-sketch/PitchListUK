@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T15:32:15.813Z",
+  "updated_at": "2026-09-07T15:43:27.098Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7064,6 +7064,24 @@
       "event_end": "2026-09-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ky-louisville-2026-food-truck: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date 2026-09-08."
+    },
+    {
+      "id": "ky-vendor-events-in-frankfort-in-2027-07-24-15d53512",
+      "name": "Vendor Events in Frankfort, IN",
+      "organiser": "Vendor Events in Frankfort, IN",
+      "source_url": "https://vendorsmap.com/cities/frankfort-in",
+      "application_url": "https://vendorsmap.com/cities/frankfort-in",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Frankfort",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-07-24",
+      "event_end": "2027-07-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-frankfort-2027-food-truck: live first-party route attests Frankfort, KY, actionable vendor terms, and exact event date 2027-07-24."
     },
     {
       "id": "ky-vendors-2026-10-10-1544a723",
