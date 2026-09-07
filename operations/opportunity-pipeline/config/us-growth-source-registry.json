@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-06T23:58:15.194Z",
+  "updated_at": "2026-09-07T00:00:36.039Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11098,6 +11098,42 @@
       "event_end": "2026-10-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ok-broken-arrow-2026-holiday-market: live first-party route attests Broken Arrow, OK, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "ok-galaxycon-oklahoma-city-2027-eventeny-2027-05-28-43ac23ee",
+      "name": "GalaxyCon Oklahoma City 2027 - Eventeny Vendor Opportunity",
+      "organiser": "GalaxyCon Oklahoma City 2027 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/m-galaxycon-oklahoma-city-20276-29947",
+      "application_url": "https://www.eventeny.com/events/m-galaxycon-oklahoma-city-20276-29947",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Oklahoma City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-28",
+      "event_end": "2027-05-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-oklahoma-city-2027-festival: live first-party route attests Oklahoma City, OK, actionable vendor terms, and exact event date range 2027-05-28 to 2027-05-30."
+    },
+    {
+      "id": "ok-paseo-arts-festival-2027-paseo-arts-district-2027-05-29-836408f3",
+      "name": "Paseo Arts Festival 2027 | Paseo Arts District Vendor Opportunity",
+      "organiser": "Paseo Arts Festival 2027 | Paseo Arts District",
+      "source_url": "https://www.visitokc.com/events/annual-events/paseo-arts-festival",
+      "application_url": "https://www.visitokc.com/events/annual-events/paseo-arts-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Oklahoma City",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-29",
+      "event_end": "2027-05-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-oklahoma-city-2027-festival: live first-party route attests Oklahoma City, OK, actionable vendor terms, and exact event date range 2027-05-29 to 2027-05-31."
     },
     {
       "id": "or-bend-handmade-market-2027-06-06-33def208",
