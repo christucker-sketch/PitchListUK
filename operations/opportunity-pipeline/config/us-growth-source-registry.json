@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T16:03:47.964Z",
+  "updated_at": "2026-09-07T16:08:45.922Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -398,6 +398,24 @@
       "application_deadline": "2027-08-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-lincoln-2027-festival: live first-party route attests Lincoln, AR, actionable vendor terms, and exact event date range 2027-08-27 to 2027-08-29."
+    },
+    {
+      "id": "ar-downtown-conway-farmers-craft-market-arkansas-grown-2026-09-07-4aae1c52",
+      "name": "Downtown Conway Farmers & Craft Market - Arkansas Grown Vendor Opportunity",
+      "organiser": "Downtown Conway Farmers & Craft Market - Arkansas Grown",
+      "source_url": "https://arkansasgrown.org/listing/downtown-conway-farmers-craft-market",
+      "application_url": "https://arkansasgrown.org/listing/downtown-conway-farmers-craft-market",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Conway",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-conway-2026-farmers-market: live first-party route attests Conway, AR, actionable vendor terms, and exact event date 2026-09-07."
     },
     {
       "id": "ar-downtown-food-truck-festival-2026-09-20-529707ee",
