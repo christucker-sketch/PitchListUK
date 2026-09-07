@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:01:35.550Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:bfccc7eafcf0c0ae8ec80043b8c120d8888d3a96697c9d76f6e3cd11c9aef0ea",
-  "total": 578,
+  "exported_at": "2026-09-07T14:08:39.712Z",
+  "source": "reviewed-us-missouri-cloud-promotion:c449876b11fa576601d8613107920003543cb9626bc472a2ba55f965288ae942",
+  "total": 579,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21971,6 +21971,41 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_415123d7d5e5bdb3bf3d"
+    },
+    {
+      "stable_id": "opp_us_2f403a3cede091d848c4",
+      "event_name": "fall festival vendor event, City of Monroe City, MO, 3 October 2026",
+      "organiser": "fall festival vendor event, City of Monroe City, MO, 3 October 2026",
+      "source_url": "https://allevents.in/monroe-city/fall-festival-vendor-event/200030360927431",
+      "application_url": "https://allevents.in/monroe-city/fall-festival-vendor-event/200030360927431",
+      "location": "Monroe City",
+      "locality": "Monroe City",
+      "region": "Missouri",
+      "region_code": "MO",
+      "region_name": "Missouri",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mo-fall-festival-vendor-event-city-of-monroe-city-mo-3-october-2026-2026-10-03-7f988be8",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-missouri",
+      "id": "opp_us_2f403a3cede091d848c4"
     }
   ]
 };
