@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T16:54:19.228Z",
-  "source": "reviewed-us-utah-cloud-promotion:d5f82e8afcd696e43c93a334acb1d391bb9d15b3dd98ef17c485d6bf171b2ea8",
-  "total": 605,
+  "exported_at": "2026-09-07T17:15:24.056Z",
+  "source": "reviewed-us-kansas-cloud-promotion:8e721f91c066ac53fba0e31c87601e11c05347575c61803c534316b9d19cdfe1",
+  "total": 606,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22987,6 +22987,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-utah",
       "id": "opp_us_bf7fea949f692b2951bf"
+    },
+    {
+      "stable_id": "opp_us_997920b227a67c9aa7bb",
+      "event_name": "Vendor Kit",
+      "organiser": "Vendor Kit",
+      "source_url": "https://www.kcholidayboutique.com/vendor-info/vendor-kit",
+      "application_url": "https://www.kcholidayboutique.com/vendor-info/vendor-kit",
+      "location": "Overland Park",
+      "locality": "Overland Park",
+      "region": "Kansas",
+      "region_code": "KS",
+      "region_name": "Kansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "currency": "USD",
+      "postal_code": "44122",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-18",
+      "event_end": "2026-11-22",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ks-vendor-kit-2026-11-18-1f8b68b4",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kansas",
+      "id": "opp_us_997920b227a67c9aa7bb"
     }
   ]
 };
