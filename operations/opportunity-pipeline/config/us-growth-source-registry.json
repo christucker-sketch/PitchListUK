@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T10:17:53.906Z",
+  "updated_at": "2026-09-07T10:24:44.023Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -109,6 +109,42 @@
       "event_end": "2026-12-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-hoover-2026-holiday-market: live first-party route attests Hoover, AL, actionable vendor terms, and exact event date 2026-12-07."
+    },
+    {
+      "id": "al-panoply-arts-festival-arts-huntsville-2027-04-23-4706be1e",
+      "name": "Panoply Arts Festival - Arts Huntsville Vendor Opportunity",
+      "organiser": "Panoply Arts Festival - Arts Huntsville",
+      "source_url": "https://www.artshuntsville.org/event/panoply",
+      "application_url": "https://www.artshuntsville.org/event/panoply",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Huntsville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-23",
+      "event_end": "2027-04-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-huntsville-2027-festival: live first-party route attests Huntsville, AL, actionable vendor terms, and exact event date range 2027-04-23 to 2027-04-25."
+    },
+    {
+      "id": "al-panoply-faq-arts-huntsville-2027-04-23-45386b20",
+      "name": "Panoply FAQ - Arts Huntsville Vendor Opportunity",
+      "organiser": "Panoply FAQ - Arts Huntsville",
+      "source_url": "https://www.artshuntsville.org/panoply-faq",
+      "application_url": "https://www.artshuntsville.org/panoply-faq",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Huntsville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-23",
+      "event_end": "2027-04-25",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-huntsville-2027-arts-crafts: live first-party route attests Huntsville, AL, actionable vendor terms, and exact event date range 2027-04-23 to 2027-04-25."
     },
     {
       "id": "al-taste-of-hoover-2026-10-15-99df75a7",
