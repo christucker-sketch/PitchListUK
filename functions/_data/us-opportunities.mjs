@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T08:58:07.932Z",
-  "source": "reviewed-us-indiana-cloud-promotion:8c8bf566df3b16d97aa5d4f534d658af5fbb24fe64ba308c98d47bceb848a905",
-  "total": 533,
+  "exported_at": "2026-09-07T09:00:24.991Z",
+  "source": "reviewed-us-missouri-cloud-promotion:41390d5cc2b9b42c9ac1db8d33f155bb69050ac8e32558c4437d238572e567b2",
+  "total": 534,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20274,6 +20274,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-indiana",
       "id": "opp_us_97d0ca8287d78c635a59"
+    },
+    {
+      "stable_id": "opp_us_798c97eb06962e70765a",
+      "event_name": "Old Town Warrenton Fall Festival Vendor Interest Form",
+      "organiser": "Old Town Warrenton Fall Festival Vendor Interest Form",
+      "source_url": "https://business.fauquierchamber.org/form/view/29171",
+      "application_url": "https://business.fauquierchamber.org/form/view/29171",
+      "location": "Warrenton",
+      "locality": "Warrenton",
+      "region": "Missouri",
+      "region_code": "MO",
+      "region_name": "Missouri",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mo-old-town-warrenton-fall-festival-vendor-interest-form-2026-10-03-3888a024",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-missouri",
+      "id": "opp_us_798c97eb06962e70765a"
     }
   ]
 };
