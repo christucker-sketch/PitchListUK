@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T16:17:12.983Z",
-  "source": "reviewed-us-utah-cloud-promotion:0cc1fd5ff91580a21512caed0b44b894e846f58e675fda0f32afaf18cfeaeaa4",
-  "total": 599,
+  "exported_at": "2026-09-07T16:24:15.736Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:952d4f2aa7bc0bb5e0b7b3965273837610b4a93da76cfa3727fa793d20d83e59",
+  "total": 600,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22760,6 +22760,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-utah",
       "id": "opp_us_ddca550b65cbdc3eb61c"
+    },
+    {
+      "stable_id": "opp_us_1b60d9960934d0ae453e",
+      "event_name": "FOR EXHIBITORS &mdash; New England Christmas Festival Vendor Opportunity",
+      "organiser": "FOR EXHIBITORS &mdash; New England Christmas Festival",
+      "source_url": "https://nechristmasfestival.com/for-exhibitors",
+      "application_url": "https://nechristmasfestival.com/for-exhibitors",
+      "location": "Connecticut",
+      "locality": "Connecticut",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-for-exhibitors-mdash-new-england-christmas-festival-2026-11-06-6d932034",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_1b60d9960934d0ae453e"
     }
   ]
 };
