@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T08:48:05.533Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:2a963eaaecb0393ff520b3fd9a58bca27b1da193c54e39ddadc2cd2244995418",
-  "total": 530,
+  "exported_at": "2026-09-07T08:52:38.636Z",
+  "source": "reviewed-us-new-hampshire-cloud-promotion:0dabfd8b70712bdfb191a7b5d447be1073e1663da54b9ef91f1ab432e0700cba",
+  "total": 531,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20158,6 +20158,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_7fd3815337f52f37a391"
+    },
+    {
+      "stable_id": "opp_us_0e90c0127d11f396a736",
+      "event_name": "Wolfeboro Farmers Market Vendor Opportunity",
+      "organiser": "Wolfeboro Farmers Market",
+      "source_url": "https://www.wolfeborofarmersmarket.com/vendor-application",
+      "application_url": "https://www.wolfeborofarmersmarket.com/vendor-application",
+      "location": "New Hampshire",
+      "locality": "New Hampshire",
+      "region": "New Hampshire",
+      "region_code": "NH",
+      "region_name": "New Hampshire",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-08",
+      "event_end": "2026-10-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nh-wolfeboro-farmers-market-2026-10-08-3e35c805",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-hampshire",
+      "id": "opp_us_0e90c0127d11f396a736"
     }
   ]
 };
