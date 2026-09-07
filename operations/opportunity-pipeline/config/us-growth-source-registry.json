@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T12:14:42.789Z",
+  "updated_at": "2026-09-07T12:18:17.147Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6325,6 +6325,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ks-wichita-2026-festival: live first-party route attests Wichita, KS, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
+    },
+    {
+      "id": "ky-berea-chamber-powered-by-amo-2026-09-18-cb4e852f",
+      "name": "Berea Chamber - Powered by AMO Vendor Opportunity",
+      "organiser": "Berea Chamber - Powered by AMO",
+      "source_url": "https://www.bereakychamber.org/site_event_detail.cfm?pk_association_event=36319",
+      "application_url": "https://www.bereakychamber.org/site_event_detail.cfm?pk_association_event=36319",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Berea",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-berea-2026-food-truck: live first-party route attests Berea, KY, actionable vendor terms, and exact event date range 2026-09-18 to 2026-09-20."
     },
     {
       "id": "ky-cumberland-mountain-fall-festival-middlesboro-ky-2027-10-02-8a757593",
