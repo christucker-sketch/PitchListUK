@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T08:51:41.699Z",
+  "updated_at": "2026-09-07T08:55:08.926Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12306,6 +12306,24 @@
       "evidence": "Cloudflare discovery tn-franklin-2026-festival: live first-party route attests Franklin, TN, actionable vendor terms, and exact event date range 2026-10-24 to 2026-10-25."
     },
     {
+      "id": "tn-food-2026-09-19-6a313ade",
+      "name": "Food Vendor Application - Greenway Art Festival 2026 - Eventeny",
+      "organiser": "Food",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=54017",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=54017",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Murfreesboro",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-murfreesboro-2026-festival: live first-party route attests Murfreesboro, TN, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
       "id": "tn-la-vergne-fall-festival-2026-09-12-ac46f26a",
       "name": "La Vergne Fall Festival Vendor Opportunity",
       "organiser": "La Vergne Fall Festival",
@@ -12377,6 +12395,24 @@
       "event_end": "2026-09-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tn-nashville-2026-arts-crafts: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2026-09-06."
+    },
+    {
+      "id": "tn-seafood-festival-the-tennessee-magazine-2026-09-07-3a807e5d",
+      "name": "Seafood Festival - The Tennessee Magazine Vendor Opportunity",
+      "organiser": "Seafood Festival - The Tennessee Magazine",
+      "source_url": "https://www.tnmagazine.org/event/seafood-festival",
+      "application_url": "https://www.tnmagazine.org/event/seafood-festival",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Murfreesboro",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-murfreesboro-2026-festival: live first-party route attests Murfreesboro, TN, actionable vendor terms, and exact event date 2026-09-07."
     },
     {
       "id": "tn-tennessee-craft-raquo-fairs-2026-10-09-32045872",
