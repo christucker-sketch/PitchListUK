@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:18:49.290Z",
-  "source": "reviewed-us-kansas-cloud-promotion:c321c64743a9baadceb551193e1394668d061f392c9047d18c5b64d1f28c725d",
-  "total": 537,
+  "exported_at": "2026-09-07T09:28:37.048Z",
+  "source": "reviewed-us-new-hampshire-cloud-promotion:deabb5482f2eb2be4c7742129f47cccb9d804185d3aa16ce8a762cfb8af5ccab",
+  "total": 538,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20427,6 +20427,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kansas",
       "id": "opp_us_19b35b954cbd163abe01"
+    },
+    {
+      "stable_id": "opp_us_6f75cad31f167e371305",
+      "event_name": "Vendor information for the New Hampshire Book Festival. Live author panels, book signings + more October 2-3 2026 in Concord, NH. &mdash; New Hampshire Book Fes",
+      "organiser": "nhbookfestival.org",
+      "source_url": "https://www.nhbookfestival.org/vendors",
+      "application_url": "https://www.nhbookfestival.org/vendors",
+      "location": "New Hampshire",
+      "locality": "New Hampshire",
+      "region": "New Hampshire",
+      "region_code": "NH",
+      "region_name": "New Hampshire",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-02",
+      "event_end": "2026-10-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nh-nhbookfestival-org-2026-10-02-1268393a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-hampshire",
+      "id": "opp_us_6f75cad31f167e371305"
     }
   ]
 };
