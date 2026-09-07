@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:57:54.235Z",
-  "source": "reviewed-us-iowa-cloud-promotion:69355e0de82df10e6e4d92ecbf955c954590ec72c63ba93de692f70d63a05b4c",
-  "total": 563,
+  "exported_at": "2026-09-07T12:04:42.080Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:507aa92d33e5e570760f06250742b81e30cb0a8d7e402f318a44e7b836d01905",
+  "total": 564,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21404,6 +21404,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-iowa",
       "id": "opp_us_3aa7bd7a6503c4ec0b3f"
+    },
+    {
+      "stable_id": "opp_us_fde5fedb6c1c213713e2",
+      "event_name": "Girlfriends' Guide to Arkansas Holiday Markets - Only In Arkansas Vendor Opportunity",
+      "organiser": "Girlfriends' Guide to Arkansas Holiday Markets - Only In Arkansas",
+      "source_url": "https://onlyinark.com/places-and-travel/girlfriends-guide-to-arkansas-holiday-markets/",
+      "application_url": "https://onlyinark.com/places-and-travel/girlfriends-guide-to-arkansas-holiday-markets",
+      "location": "Alma",
+      "locality": "Alma",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "72143",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-girlfriends-guide-to-arkansas-holiday-markets-only-in-arkansas-2026-11-14-d6d94b2b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_fde5fedb6c1c213713e2"
     }
   ]
 };
