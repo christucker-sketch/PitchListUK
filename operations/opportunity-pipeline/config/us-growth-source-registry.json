@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:42:21.480Z",
+  "updated_at": "2026-09-07T09:49:37.503Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -13117,6 +13117,24 @@
       "application_deadline": "2026-09-15",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ut-salt-lake-city-2026-arts-crafts: live first-party route attests Salt Lake City, UT, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
+      "id": "ut-8-christmas-markets-in-provo-utah-county-you-ll-want-on-your-holiday-c-2026-11-22-86ff6ffe",
+      "name": "8 Christmas Markets in Provo & Utah County You’ll Want on Your Holiday Calendar Vendor Opportunity",
+      "organiser": "8 Christmas Markets in Provo & Utah County You’ll Want on Your Holiday Calendar",
+      "source_url": "https://www.utahvalley.com/blog/post/christmas-markets",
+      "application_url": "https://www.utahvalley.com/blog/post/christmas-markets",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "region_code": "UT",
+      "locality": "Utah County",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-22",
+      "event_end": "2026-11-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ut-utah-county-2026-holiday-market: live first-party route attests Utah County, UT, actionable vendor terms, and exact event date 2026-11-22."
     },
     {
       "id": "ut-craft-lake-city-2026-12-05-6a585a4f",
