@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T11:39:56.684Z",
+  "updated_at": "2026-09-07T11:43:49.137Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -145,6 +145,24 @@
       "event_end": "2027-04-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-huntsville-2027-arts-crafts: live first-party route attests Huntsville, AL, actionable vendor terms, and exact event date range 2027-04-23 to 2027-04-25."
+    },
+    {
+      "id": "al-pike-road-arts-and-crafts-fair-2026-2026-10-10-151e4b7a",
+      "name": "Pike Road Arts and Crafts Fair 2026 Vendor Opportunity",
+      "organiser": "Pike Road Arts and Crafts Fair 2026",
+      "source_url": "https://vendorsmap.com/events/33667",
+      "application_url": "https://vendorsmap.com/events/33667",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Pike Road",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-pike-road-2026-festival: live first-party route attests Pike Road, AL, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
       "id": "al-specializes-in-signature-sandwiches-soups-and-homemade-ice-cream-sweet-2026-10-17-46955966",
