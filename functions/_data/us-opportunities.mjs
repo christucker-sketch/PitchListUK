@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T10:39:57.137Z",
-  "source": "reviewed-us-hawaii-cloud-promotion:712f6ba1d3c9a62a2035a25c40ae0030783abe986a81a95f7e293fd5c9736e4e",
-  "total": 549,
+  "exported_at": "2026-09-07T10:55:47.185Z",
+  "source": "reviewed-us-iowa-cloud-promotion:112413c28de3e633bb15fbb974c3c0b3fb76743450c028d49d199c68ed1a868f",
+  "total": 550,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20877,6 +20877,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-hawaii",
       "id": "opp_us_8b21fe9f6d41e3b0ebd9"
+    },
+    {
+      "stable_id": "opp_us_5500330707f6e09dad86",
+      "event_name": "Vendor Events in Dubuque, IA",
+      "organiser": "Vendor Events in Dubuque, IA",
+      "source_url": "https://vendorsmap.com/cities/dubuque",
+      "application_url": "https://vendorsmap.com/cities/dubuque",
+      "location": "Ankeny",
+      "locality": "Ankeny",
+      "region": "Iowa",
+      "region_code": "IA",
+      "region_name": "Iowa",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "currency": "USD",
+      "postal_code": "52001",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-08",
+      "event_end": "2027-08-09",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ia-vendor-events-in-dubuque-ia-2027-08-08-d843ddc8",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-iowa",
+      "id": "opp_us_5500330707f6e09dad86"
     }
   ]
 };
