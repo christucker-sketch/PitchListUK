@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T12:06:12.706Z",
+  "updated_at": "2026-09-07T12:14:42.789Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -55,6 +55,24 @@
       "event_end": "2027-06-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-florence-2027-farmers-market: live first-party route attests Florence, AL, actionable vendor terms, and exact event date 2027-06-04."
+    },
+    {
+      "id": "al-2026-2026-11-07-82dd4094",
+      "name": "2026 Vendor Application & Registration &ndash; Pike Road Arts & Crafts Fair",
+      "organiser": "2026",
+      "source_url": "https://pikeroadcraftfair.com/products/vendor-booth-fee-registration",
+      "application_url": "https://pikeroadcraftfair.com/products/vendor-booth-fee-registration",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Pike Road",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-pike-road-2026-food-truck: live first-party route attests Pike Road, AL, actionable vendor terms, and exact event date 2026-11-07."
     },
     {
       "id": "al-2026-birmingham-summer-sizzle-craft-and-vendor-market-hoover-al-2026-09-06-6afb957b",
@@ -163,6 +181,24 @@
       "event_end": "2026-10-10",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-pike-road-2026-festival: live first-party route attests Pike Road, AL, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
+      "id": "al-pike-road-arts-crafts-fair-ndash-pike-road-arts-crafts-fair-2026-11-07-3bc36efe",
+      "name": "Pike Road Arts & Crafts Fair &ndash; Pike Road Arts & Crafts Fair Vendor Opportunity",
+      "organiser": "Pike Road Arts & Crafts Fair &ndash; Pike Road Arts & Crafts Fair",
+      "source_url": "https://pikeroadcraftfair.com",
+      "application_url": "https://pikeroadcraftfair.com",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Pike Road",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-pike-road-2026-food-truck: live first-party route attests Pike Road, AL, actionable vendor terms, and exact event date 2026-11-07."
     },
     {
       "id": "al-specializes-in-signature-sandwiches-soups-and-homemade-ice-cream-sweet-2026-10-17-46955966",
