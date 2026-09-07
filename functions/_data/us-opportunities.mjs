@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:55:20.596Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:d81a3f4d0c4e05fc101b9b253582b093278a96c2264bca25fbe429ff9f9acde4",
-  "total": 562,
+  "exported_at": "2026-09-07T11:57:54.235Z",
+  "source": "reviewed-us-iowa-cloud-promotion:69355e0de82df10e6e4d92ecbf955c954590ec72c63ba93de692f70d63a05b4c",
+  "total": 563,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21367,6 +21367,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_849cc44f268efdca480d"
+    },
+    {
+      "stable_id": "opp_us_3aa7bd7a6503c4ec0b3f",
+      "event_name": "Burlington Fall Market 2026, Burlington, IA Vendor Opportunity",
+      "organiser": "Burlington Fall Market 2026, Burlington, IA",
+      "source_url": "https://vendorsmap.com/events/23474",
+      "application_url": "https://vendorsmap.com/events/23474",
+      "location": "Burlington",
+      "locality": "Burlington",
+      "region": "Iowa",
+      "region_code": "IA",
+      "region_name": "Iowa",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "currency": "USD",
+      "postal_code": "14572",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ia-burlington-fall-market-2026-burlington-ia-2026-09-26-3601e797",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-iowa",
+      "id": "opp_us_3aa7bd7a6503c4ec0b3f"
     }
   ]
 };
