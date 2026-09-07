@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T00:01:28.372Z",
-  "source": "reviewed-us-oklahoma-cloud-promotion:aaf8981e6e7a16f4ec62b8039be9fce5e01f9886ec09b76a46589cd69f536d5e",
-  "total": 521,
+  "exported_at": "2026-09-07T00:04:08.258Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:1e341c5fe150eecfcb08df0ae440b1e5980f0eefdf4e68790252a55275623379",
+  "total": 522,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19818,6 +19818,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oklahoma",
       "id": "opp_us_aa447edf88330d6b6e6f"
+    },
+    {
+      "stable_id": "opp_us_99cab9a9dc513494bcbb",
+      "event_name": "Second annual international food festival in Fairfield features global vendors and live entertainment Vendor Opportunity",
+      "organiser": "Second annual international food festival in Fairfield features global vendors and live entertainment",
+      "source_url": "https://findingconnecticut.com/second-annual-international-food-festival-in-fairfield-features-global-vendors-and-live-entertainment/",
+      "application_url": "https://findingconnecticut.com/second-annual-international-food-festival-in-fairfield-features-global-vendors-and-live-entertainment",
+      "location": "Fairfield",
+      "locality": "Fairfield",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-08",
+      "event_end": "2027-08-09",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-second-annual-international-food-festival-in-fairfield-features-global-2027-08-08-e4b2e160",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_99cab9a9dc513494bcbb"
     }
   ]
 };
