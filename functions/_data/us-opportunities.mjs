@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T12:27:59.400Z",
-  "source": "reviewed-us-kansas-cloud-promotion:3bd925ba6716b571d58014b11366336d2f0fef089f3dd1ff584cd810e86e39cf",
-  "total": 570,
+  "exported_at": "2026-09-07T12:30:23.378Z",
+  "source": "reviewed-us-nevada-cloud-promotion:3ca64c57f43fb03a544ca8a5ef3d765f69f9e92478d7daaf18a012fcdfeac1b9",
+  "total": 571,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21671,6 +21671,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kansas",
       "id": "opp_us_7e7bdabf827b31cfa332"
+    },
+    {
+      "stable_id": "opp_us_71a1447852c96e05453a",
+      "event_name": "Vendor Application",
+      "organiser": "downtownchristmasexpo.com",
+      "source_url": "https://downtownchristmasexpo.com/vendor-application/",
+      "application_url": "https://downtownchristmasexpo.com/vendor-application",
+      "location": "Las Vegas",
+      "locality": "Las Vegas",
+      "region": "Nevada",
+      "region_code": "NV",
+      "region_name": "Nevada",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "currency": "USD",
+      "postal_code": "89101",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-03",
+      "event_end": "2026-12-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nv-downtownchristmasexpo-com-2026-12-03-7aceb8af",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nevada",
+      "id": "opp_us_71a1447852c96e05453a"
     }
   ]
 };
