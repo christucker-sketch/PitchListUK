@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T17:32:08.042Z",
+  "updated_at": "2026-09-07T17:36:48.043Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -470,6 +470,24 @@
       "event_end": "2026-09-10",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-el-dorado-2026-food-truck: live first-party route attests El Dorado, AR, actionable vendor terms, and exact event date range 2026-09-09 to 2026-09-10."
+    },
+    {
+      "id": "ar-el-dorado-arkansas-to-host-food-truck-festival-2027-04-04-65d47a0b",
+      "name": "El Dorado, Arkansas to host food truck festival",
+      "organiser": "El Dorado, Arkansas to host food truck festival",
+      "source_url": "https://www.foodtruckoperator.com/news/el-dorado-arkansas-to-host-food-truck-festival",
+      "application_url": "https://www.foodtruckoperator.com/news/el-dorado-arkansas-to-host-food-truck-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "El Dorado",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-04",
+      "event_end": "2027-04-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-el-dorado-2027-food-truck: live first-party route attests El Dorado, AR, actionable vendor terms, and exact event date 2027-04-04."
     },
     {
       "id": "ar-fall-festival-2026-10-24-3d438383",
