@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T07:44:19.318Z",
-  "source": "reviewed-us-new-hampshire-cloud-promotion:51b8a30ad6ec5c6a4ea08052a6039d81843df0843d3d96656e330797f4dfa006",
-  "total": 525,
+  "exported_at": "2026-09-07T07:59:01.514Z",
+  "source": "reviewed-us-kentucky-cloud-promotion:e72286f67c561053f9fe44743ae8d82bc20dbeb04caa55b1e3122ba41e38a949",
+  "total": 526,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19967,6 +19967,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-hampshire",
       "id": "opp_us_c0329247613d2d8aafa6"
+    },
+    {
+      "stable_id": "opp_us_0de75536a6023b6bba1f",
+      "event_name": "Louisville Street Food Festival | Lousville, Kentucky | 2026 Vendor Opportunity",
+      "organiser": "Louisville Street Food Festival | Lousville, Kentucky | 2026",
+      "source_url": "https://www.streetfoodfests.com/event/louisville/",
+      "application_url": "https://www.streetfoodfests.com/event/louisville",
+      "location": "Louisville",
+      "locality": "Louisville",
+      "region": "Kentucky",
+      "region_code": "KY",
+      "region_name": "Kentucky",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "currency": "USD",
+      "postal_code": "40202",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-25",
+      "event_end": "2027-07-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ky-louisville-street-food-festival-lousville-kentucky-2026-2027-07-25-0a5d286e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kentucky",
+      "id": "opp_us_0de75536a6023b6bba1f"
     }
   ]
 };
