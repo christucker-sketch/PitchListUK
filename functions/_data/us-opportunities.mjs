@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:08:37.095Z",
-  "source": "reviewed-us-south-carolina-cloud-promotion:3f570e00265b51b4178375bd2c2984a2ccb254577567077f9d73256b4edb732c",
-  "total": 552,
+  "exported_at": "2026-09-07T11:11:04.600Z",
+  "source": "reviewed-us-alabama-cloud-promotion:48cbeabeae3b3cdce3dee90282ef95afbaab49c02376127e7478487b676d7eed",
+  "total": 553,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20990,6 +20990,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-south-carolina",
       "id": "opp_us_2887abb77dabdc6f992e"
+    },
+    {
+      "stable_id": "opp_us_dd746545eeb54c1b1d6e",
+      "event_name": "Specializes In Signature sandwiches, Soups and Homemade Ice Cream - SweetCreek Farm Market Vendor Opportunity",
+      "organiser": "Specializes In Signature sandwiches, Soups and Homemade Ice Cream - SweetCreek Farm Market",
+      "source_url": "https://www.sweetcreekfarmmarket.com/",
+      "application_url": "https://www.sweetcreekfarmmarket.com",
+      "location": "Pike Road",
+      "locality": "Pike Road",
+      "region": "Alabama",
+      "region_code": "AL",
+      "region_name": "Alabama",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "currency": "USD",
+      "postal_code": "36064",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "al-specializes-in-signature-sandwiches-soups-and-homemade-ice-cream-sweet-2026-10-17-46955966",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-alabama",
+      "id": "opp_us_dd746545eeb54c1b1d6e"
     }
   ]
 };
