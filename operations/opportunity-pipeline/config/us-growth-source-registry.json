@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T14:39:02.622Z",
+  "updated_at": "2026-09-07T14:42:06.053Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -13207,6 +13207,24 @@
       "event_end": "2027-01-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery or-prineville-2027-food-truck: live first-party route attests Prineville, OR, actionable vendor terms, and exact event date 2027-01-30."
+    },
+    {
+      "id": "or-scandinavian-christmas-goat-market-2026-11-28-0d76a809",
+      "name": "Scandinavian Christmas Goat Market Vendor Opportunity",
+      "organiser": "Scandinavian Christmas Goat Market",
+      "source_url": "https://www.newsweden.org/goatmarket",
+      "application_url": "https://www.newsweden.org/goatmarket",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "region_code": "OR",
+      "locality": "Portland",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery or-portland-2026-holiday-market: live first-party route attests Portland, OR, actionable vendor terms, and exact event date 2026-11-28."
     },
     {
       "id": "or-visitguam-com-2026-10-23-1ed9383b",
