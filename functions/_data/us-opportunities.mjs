@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T08:12:50.525Z",
-  "source": "reviewed-us-delaware-cloud-promotion:7fc82d256eae431e6fc0e58b1dc04d9a032d9052ca6121d7eae78de72a799676",
-  "total": 528,
+  "exported_at": "2026-09-07T08:19:05.594Z",
+  "source": "reviewed-us-indiana-cloud-promotion:3063f9d8c9eb252b03b90964bc3369454ef9fb5b56cb2e67aa2facdd2fb3fb66",
+  "total": 529,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20082,6 +20082,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-delaware",
       "id": "opp_us_d1bbea0395857354af2b"
+    },
+    {
+      "stable_id": "opp_us_7515b9c54b02dfa978b7",
+      "event_name": "Farmers Market l Discover Downtown Franklin Indiana Vendor Opportunity",
+      "organiser": "Farmers Market l Discover Downtown Franklin Indiana",
+      "source_url": "https://discoverdowntownfranklin.com/farmers-market",
+      "application_url": "https://discoverdowntownfranklin.com/farmers-market",
+      "location": "Franklin",
+      "locality": "Franklin",
+      "region": "Indiana",
+      "region_code": "IN",
+      "region_name": "Indiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "in-farmers-market-l-discover-downtown-franklin-indiana-2026-09-12-92ca99f5",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-indiana",
+      "id": "opp_us_7515b9c54b02dfa978b7"
     }
   ]
 };
