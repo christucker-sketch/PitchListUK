@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:40:55.995Z",
-  "source": "reviewed-us-wisconsin-cloud-promotion:72c164bab32d66d54cfe5a008f0220e06198c1296652d01dbf02dbca64a4a07e",
-  "total": 559,
+  "exported_at": "2026-09-07T11:51:22.510Z",
+  "source": "reviewed-us-oklahoma-cloud-promotion:711b3e6946bccaae307c55cd09fecb91e8b1b0f40b28ee632628bd191ca474dd",
+  "total": 560,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21254,6 +21254,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-wisconsin",
       "id": "opp_us_f4ecb3948de3985ffa20"
+    },
+    {
+      "stable_id": "opp_us_f00fcb23c20d47e028c3",
+      "event_name": "Official Website | Stadium Theatre Vendor Opportunity",
+      "organiser": "Official Website | Stadium Theatre",
+      "source_url": "https://www.stadiumtheatre.com/forms/makers-market-vendor-application",
+      "application_url": "https://www.stadiumtheatre.com/forms/makers-market-vendor-application",
+      "location": "Oklahoma",
+      "locality": "Oklahoma",
+      "region": "Oklahoma",
+      "region_code": "OK",
+      "region_name": "Oklahoma",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "currency": "USD",
+      "postal_code": "02895",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-14",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ok-official-website-stadium-theatre-2026-11-14-662420cb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oklahoma",
+      "id": "opp_us_f00fcb23c20d47e028c3"
     }
   ]
 };
