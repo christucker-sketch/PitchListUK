@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T13:14:35.675Z",
+  "updated_at": "2026-09-07T13:21:09.515Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -8557,6 +8557,42 @@
       "event_end": "2027-04-18",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery md-annapolis-2027-food-truck: live first-party route attests Annapolis, MD, actionable vendor terms, and exact event date range 2027-04-17 to 2027-04-18."
+    },
+    {
+      "id": "md-mount-airy-md-2027-05-06-334b5696",
+      "name": "Mount Airy, MD Vendor Opportunity",
+      "organiser": "Mount Airy, MD",
+      "source_url": "https://mountairymd.gov/?nid=1",
+      "application_url": "https://mountairymd.gov/?nid=1",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MD",
+      "region_code": "MD",
+      "locality": "Mount Airy",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-05-06",
+      "event_end": "2027-05-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery md-mount-airy-2027-holiday-market: live first-party route attests Mount Airy, MD, actionable vendor terms, and exact event date 2027-05-06."
+    },
+    {
+      "id": "md-mount-airy-md-2027-05-06-cbc7bc3e",
+      "name": "Mount Airy, MD Vendor Opportunity",
+      "organiser": "Mount Airy, MD",
+      "source_url": "https://www.mountairymd.gov",
+      "application_url": "https://www.mountairymd.gov",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MD",
+      "region_code": "MD",
+      "locality": "Mount Airy",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-05-06",
+      "event_end": "2027-05-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery md-mount-airy-2027-holiday-market: live first-party route attests Mount Airy, MD, actionable vendor terms, and exact event date 2027-05-06."
     },
     {
       "id": "me-maine-s-best-food-festivals-events-2026-2026-09-25-053d99fb",
