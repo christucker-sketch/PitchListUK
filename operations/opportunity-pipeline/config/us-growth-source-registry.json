@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:15:06.396Z",
+  "updated_at": "2026-09-07T09:17:22.544Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5839,6 +5839,24 @@
       "event_end": "2026-09-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ks-wichita-2026-government-events: live first-party route attests Wichita, KS, actionable vendor terms, and exact event date range 2026-09-20 to 2026-09-28."
+    },
+    {
+      "id": "ks-somewhere-fest-2026-food-court-mdash-farmshop-llc-2026-09-25-d92488e3",
+      "name": "Somewhere Fest 2026 Food Court &mdash; FarmShop, LLC Vendor Opportunity",
+      "organiser": "Somewhere Fest 2026 Food Court &mdash; FarmShop, LLC",
+      "source_url": "https://farmshopllc.com/somewhere-fest-2026-food-court",
+      "application_url": "https://farmshopllc.com/somewhere-fest-2026-food-court",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "Wichita",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-wichita-2026-festival: live first-party route attests Wichita, KS, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
     },
     {
       "id": "ky-discover-the-vibrant-community-at-lake-cumberland-farmers-market-locat-2026-10-10-2e6f223e",
