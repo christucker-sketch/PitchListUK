@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:15:58.394Z",
-  "source": "reviewed-us-iowa-cloud-promotion:d6f6cf23cd1f850d0defc3d87d0875ae465c8145527659107f5738af570dfc80",
-  "total": 536,
+  "exported_at": "2026-09-07T09:18:49.290Z",
+  "source": "reviewed-us-kansas-cloud-promotion:c321c64743a9baadceb551193e1394668d061f392c9047d18c5b64d1f28c725d",
+  "total": 537,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20389,6 +20389,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-iowa",
       "id": "opp_us_760dfad145d1223b1b1d"
+    },
+    {
+      "stable_id": "opp_us_19b35b954cbd163abe01",
+      "event_name": "Somewhere Fest 2026 Food Court &mdash; FarmShop, LLC Vendor Opportunity",
+      "organiser": "Somewhere Fest 2026 Food Court &mdash; FarmShop, LLC",
+      "source_url": "https://farmshopllc.com/somewhere-fest-2026-food-court",
+      "application_url": "https://farmshopllc.com/somewhere-fest-2026-food-court",
+      "location": "Wichita",
+      "locality": "Wichita",
+      "region": "Kansas",
+      "region_code": "KS",
+      "region_name": "Kansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "currency": "USD",
+      "postal_code": "67202",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-25",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ks-somewhere-fest-2026-food-court-mdash-farmshop-llc-2026-09-25-d92488e3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kansas",
+      "id": "opp_us_19b35b954cbd163abe01"
     }
   ]
 };
