@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T17:47:34.178Z",
+  "updated_at": "2026-09-07T17:49:21.843Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -723,6 +723,24 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ar-clinton-2026-festival: live first-party route attests Clinton, AR, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "ar-this-weekend-in-arkansas-9-2-26-mdash-live-love-arkansas-2026-09-07-fa575012",
+      "name": "This Weekend in Arkansas 9/2/26 &mdash; Live Love Arkansas Vendor Opportunity",
+      "organiser": "This Weekend in Arkansas 9/2/26 &mdash; Live Love Arkansas",
+      "source_url": "https://www.livelovearkansas.homes/blog/this-weekend-in-arkansas-26-09-02",
+      "application_url": "https://www.livelovearkansas.homes/blog/this-weekend-in-arkansas-26-09-02",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Mount Vernon",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-mount-vernon-2026-food-truck: live first-party route attests Mount Vernon, AR, actionable vendor terms, and exact event date 2026-09-07."
     },
     {
       "id": "ar-vendor-events-in-clinton-ar-2027-08-29-3ce681ae",
