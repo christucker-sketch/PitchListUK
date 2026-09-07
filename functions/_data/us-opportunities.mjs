@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T12:19:07.059Z",
-  "source": "reviewed-us-kentucky-cloud-promotion:2e17779a4d996899825aa0cb2d58312bd58a122a8f2835253f1326901f796c27",
-  "total": 567,
+  "exported_at": "2026-09-07T12:22:24.022Z",
+  "source": "reviewed-us-oklahoma-cloud-promotion:0c9612e69803afed8179cdb4af8b4a31c5c884a198d7109639815d183a856d2f",
+  "total": 568,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21557,6 +21557,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kentucky",
       "id": "opp_us_c83fdf9da0b6e6536d17"
+    },
+    {
+      "stable_id": "opp_us_1e5722535907c780ab45",
+      "event_name": "BECOME A FOOD VENDOR",
+      "organiser": "BECOME A FOOD VENDOR",
+      "source_url": "https://www.sorghumfestivalok.org/foodvendor",
+      "application_url": "https://www.sorghumfestivalok.org/foodvendor",
+      "location": "Oklahoma",
+      "locality": "Oklahoma",
+      "region": "Oklahoma",
+      "region_code": "OK",
+      "region_name": "Oklahoma",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "currency": "USD",
+      "postal_code": "74884",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-24",
+      "application_deadline": "2026-10-12",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ok-become-a-food-vendor-2026-10-23-34792373",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oklahoma",
+      "id": "opp_us_1e5722535907c780ab45"
     }
   ]
 };
