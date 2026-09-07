@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T15:19:42.345Z",
-  "source": "reviewed-us-utah-cloud-promotion:32ab5a1c606a1477725d4ffc9e60b069e9e58af5845c6246a36787b093b524ea",
-  "total": 592,
+  "exported_at": "2026-09-07T15:24:36.127Z",
+  "source": "reviewed-us-maryland-cloud-promotion:62d0cd110624dbcf07840193bb6de30e5d8807309236583958cf12bde95420ac",
+  "total": 593,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22494,6 +22494,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-utah",
       "id": "opp_us_9eca24cbf1f6f7da84b5"
+    },
+    {
+      "stable_id": "opp_us_0b60361f5fcf694b0ad3",
+      "event_name": "Spring Street Fair Vendor Opportunity",
+      "organiser": "Spring Street Fair",
+      "source_url": "https://www.collegeparkmd.gov/415/Spring-Street-Fair",
+      "application_url": "https://www.collegeparkmd.gov/415/Spring-Street-Fair",
+      "location": "College Park",
+      "locality": "College Park",
+      "region": "Maryland",
+      "region_code": "MD",
+      "region_name": "Maryland",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MD",
+      "currency": "USD",
+      "postal_code": "20740",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-17",
+      "event_end": "2027-05-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "md-spring-street-fair-2027-05-17-90864a25",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-maryland",
+      "id": "opp_us_0b60361f5fcf694b0ad3"
     }
   ]
 };
