@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:56:56.036Z",
-  "source": "reviewed-us-utah-cloud-promotion:2a96b5306938c7407499ad50d5cf9b61b52938c09da5732923803494ee81e37d",
-  "total": 590,
+  "exported_at": "2026-09-07T15:10:02.480Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:a29a0b41191454aa4d91b0d242b9843efcb2a66daa40b97a4781ae74c08e2dcb",
+  "total": 591,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22420,6 +22420,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-utah",
       "id": "opp_us_6b9c1d5fecbba5d7d9d7"
+    },
+    {
+      "stable_id": "opp_us_6331bb84e73d7d9a7a35",
+      "event_name": "Calendar • Anoka Food Truck Festival",
+      "organiser": "Calendar • Anoka Food Truck Festival",
+      "source_url": "https://www.anokamn.gov/Calendar.aspx?EID=1481",
+      "application_url": "https://www.anokamn.gov/Calendar.aspx?EID=1481",
+      "location": "Anoka",
+      "locality": "Anoka",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "55303",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-17",
+      "event_end": "2027-08-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-calendar-anoka-food-truck-festival-2027-08-17-8b4dd991",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_6331bb84e73d7d9a7a35"
     }
   ]
 };
