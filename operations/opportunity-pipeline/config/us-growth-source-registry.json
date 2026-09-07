@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T12:29:31.073Z",
+  "updated_at": "2026-09-07T12:33:16.295Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5207,6 +5207,24 @@
       "event_end": "2027-06-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery id-meridian-2027-festival: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2027-06-28."
+    },
+    {
+      "id": "id-caldwell-christmas-mdash-poky-christmas-2026-12-05-1825eb12",
+      "name": "CALDWELL CHRISTMAS &mdash; Poky Christmas Vendor Opportunity",
+      "organiser": "CALDWELL CHRISTMAS &mdash; Poky Christmas",
+      "source_url": "https://pokychristmas.com/caldwell-christmas",
+      "application_url": "https://pokychristmas.com/caldwell-christmas",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Caldwell",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-caldwell-2026-holiday-market: live first-party route attests Caldwell, ID, actionable vendor terms, and exact event date 2026-12-05."
     },
     {
       "id": "id-celebrate-caldwell-with-us-at-the-indian-creek-festival-mdash-indian-c-2026-09-18-55c32b25",
