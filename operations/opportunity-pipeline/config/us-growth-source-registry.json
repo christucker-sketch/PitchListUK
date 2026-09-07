@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T16:29:54.284Z",
+  "updated_at": "2026-09-07T16:40:33.417Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -15049,6 +15049,24 @@
       "application_deadline": "2026-09-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ut-utah-county-2026-arts-crafts: live first-party route attests Utah County, UT, actionable vendor terms, and exact event date 2026-09-30."
+    },
+    {
+      "id": "ut-los-muros-on-main-marks-five-years-of-an-ever-changing-arts-culture-di-2027-06-08-81bd2459",
+      "name": "Los Muros on Main Marks Five Years of an Ever-Changing Arts & Culture District Vendor Opportunity",
+      "organiser": "Los Muros on Main Marks Five Years of an Ever-Changing Arts & Culture District",
+      "source_url": "https://www.midvale.utah.gov/news_detail_T2_R190.php",
+      "application_url": "https://www.midvale.utah.gov/news_detail_T2_R190.php",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "region_code": "UT",
+      "locality": "Midvale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-08",
+      "event_end": "2027-06-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ut-midvale-2027-government-events: live first-party route attests Midvale, UT, actionable vendor terms, and exact event date range 2027-06-08 to 2027-06-13."
     },
     {
       "id": "ut-nine-utah-holiday-markets-to-visit-this-season-lehi-free-press-2026-12-02-ad39eabf",
