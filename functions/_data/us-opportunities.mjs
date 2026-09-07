@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:43:09.390Z",
-  "source": "reviewed-us-oregon-cloud-promotion:71c399cd0d756c080058f8ea363e8a9eeb94d0c70393083175742b233ea666f0",
-  "total": 588,
+  "exported_at": "2026-09-07T14:48:40.710Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:2d8244e1c547eedf23e9299906869f1ff9a86dab097e311df746c6f2d7d27d99",
+  "total": 589,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22345,6 +22345,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oregon",
       "id": "opp_us_5c611109af8f5aa53f00"
+    },
+    {
+      "stable_id": "opp_us_7d1b8bf0a61ee9b15eaa",
+      "event_name": "Holiday Market 2026 Vendor Opportunity",
+      "organiser": "Holiday Market 2026",
+      "source_url": "https://noahwebsterhouse.org/holiday-market/",
+      "application_url": "https://noahwebsterhouse.org/holiday-market",
+      "location": "Hartford",
+      "locality": "Hartford",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "06107",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-holiday-market-2026-2026-11-21-573cd384",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_7d1b8bf0a61ee9b15eaa"
     }
   ]
 };
