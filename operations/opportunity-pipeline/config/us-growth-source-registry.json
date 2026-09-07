@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T11:07:49.424Z",
+  "updated_at": "2026-09-07T11:10:11.446Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -145,6 +145,24 @@
       "event_end": "2027-04-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-huntsville-2027-arts-crafts: live first-party route attests Huntsville, AL, actionable vendor terms, and exact event date range 2027-04-23 to 2027-04-25."
+    },
+    {
+      "id": "al-specializes-in-signature-sandwiches-soups-and-homemade-ice-cream-sweet-2026-10-17-46955966",
+      "name": "Specializes In Signature sandwiches, Soups and Homemade Ice Cream - SweetCreek Farm Market Vendor Opportunity",
+      "organiser": "Specializes In Signature sandwiches, Soups and Homemade Ice Cream - SweetCreek Farm Market",
+      "source_url": "https://www.sweetcreekfarmmarket.com",
+      "application_url": "https://www.sweetcreekfarmmarket.com",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Pike Road",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-pike-road-2026-farmers-market: live first-party route attests Pike Road, AL, actionable vendor terms, and exact event date 2026-10-17."
     },
     {
       "id": "al-taste-of-hoover-2026-10-15-99df75a7",
