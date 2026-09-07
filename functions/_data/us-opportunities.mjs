@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T17:15:24.056Z",
-  "source": "reviewed-us-kansas-cloud-promotion:8e721f91c066ac53fba0e31c87601e11c05347575c61803c534316b9d19cdfe1",
-  "total": 606,
+  "exported_at": "2026-09-07T17:28:56.888Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:0e3bc15af89a4861627be887395529ee70b73e6213f5931592abd31cf2c7118a",
+  "total": 607,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23027,6 +23027,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kansas",
       "id": "opp_us_997920b227a67c9aa7bb"
+    },
+    {
+      "stable_id": "opp_us_b9fb50310acc8004cee3",
+      "event_name": "How to Sell at Farmers Markets in Arkansas: Food Freedom Act, ADH Rules & Top Markets (2026) Vendor Opportunity",
+      "organiser": "How to Sell at Farmers Markets in Arkansas: Food Freedom Act, ADH Rules & Top Markets (2026)",
+      "source_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-arkansas",
+      "application_url": "https://getvendorloop.com/guides/how-to-sell-at-farmers-markets-in-arkansas",
+      "location": "El Dorado",
+      "locality": "El Dorado",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-07",
+      "event_end": "2026-10-07",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-how-to-sell-at-farmers-markets-in-arkansas-food-freedom-act-adh-rules--2026-10-07-e1ce2191",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_b9fb50310acc8004cee3"
     }
   ]
 };
