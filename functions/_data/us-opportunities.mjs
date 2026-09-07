@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:35:27.210Z",
-  "source": "reviewed-us-missouri-cloud-promotion:5d3f1707c847ad8f4cecb440dfa5ce5e4845eb951dbfc7feefc350c099db51cb",
-  "total": 540,
+  "exported_at": "2026-09-07T09:38:37.723Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:5034b84577c50be8e50b4753703f221f38ac9520aa2bebc4c184a4be6775eaec",
+  "total": 541,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20541,6 +20541,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-missouri",
       "id": "opp_us_dd8371a1b6997e525c2e"
+    },
+    {
+      "stable_id": "opp_us_26a7f91f7229b20f4425",
+      "event_name": "Food Trucks events in St Paul, Today and Upcoming Food Trucks events in St Paul Vendor Opportunity",
+      "organiser": "Food Trucks events in St Paul, Today and Upcoming Food Trucks events in St Paul",
+      "source_url": "https://allevents.in/st-paul/food-trucks",
+      "application_url": "https://allevents.in/st-paul/food-trucks",
+      "location": "Saint Paul",
+      "locality": "Saint Paul",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "55155",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-food-trucks-events-in-st-paul-today-and-upcoming-food-trucks-events-in-2026-09-11-8e015b3e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_26a7f91f7229b20f4425"
     }
   ]
 };
