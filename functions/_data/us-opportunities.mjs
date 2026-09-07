@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:27:24.525Z",
-  "source": "reviewed-us-kansas-cloud-promotion:ecb8f178f3790f98c790b7183ef5e9e73f96296cead8b91a772adcf9b41343ea",
-  "total": 583,
+  "exported_at": "2026-09-07T14:30:01.845Z",
+  "source": "reviewed-us-utah-cloud-promotion:3e08167f7db8906b7bc002d2a6b5158495ecaf494fdc2b359b618ad1468c5723",
+  "total": 584,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22155,6 +22155,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kansas",
       "id": "opp_us_19a3b8342e4782a1a8e8"
+    },
+    {
+      "stable_id": "opp_us_266986ecc4abe4cc2ad5",
+      "event_name": "Creator’s Collective x The Loft \"Fall Finds Market\" in Lehi, Utah on Sep 26, 2026 Vendor Opportunity",
+      "organiser": "Creator’s Collective x The Loft \"Fall Finds Market\" in Lehi, Utah on Sep 26, 2026",
+      "source_url": "https://seenmarkets.com/market/tv8nsuMrGLpRLVbMTS3coF/creators-collective-x-the-loft-fall-finds-market-in-lehi-utah-on-sep-26-2026",
+      "application_url": "https://seenmarkets.com/market/tv8nsuMrGLpRLVbMTS3coF/creators-collective-x-the-loft-fall-finds-market-in-lehi-utah-on-sep-26-2026",
+      "location": "Lehi",
+      "locality": "Lehi",
+      "region": "Utah",
+      "region_code": "UT",
+      "region_name": "Utah",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "currency": "USD",
+      "postal_code": "84043",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ut-creator-s-collective-x-the-loft-fall-finds-market-in-lehi-utah-on-sep--2026-09-26-932bbb03",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-utah",
+      "id": "opp_us_266986ecc4abe4cc2ad5"
     }
   ]
 };
