@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T16:00:26.911Z",
-  "source": "reviewed-us-oregon-cloud-promotion:2875bec7a7d0a9b1bc80e6794f2deef55099a3ab1339942a6cf1d8aeafa9e19f",
-  "total": 597,
+  "exported_at": "2026-09-07T16:04:38.940Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:43608675c997dce2bb320e42e2281b69684e9faa42822c90951e248a542db4fb",
+  "total": 598,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22684,6 +22684,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oregon",
       "id": "opp_us_317651c552ea8995f500"
+    },
+    {
+      "stable_id": "opp_us_c26dd6a3d61a4472ccb9",
+      "event_name": "2026 Vendor Application - Wethersfield Farmers Market - Wethersfield, CT",
+      "organiser": "2026",
+      "source_url": "https://wfmarket.org/2026-vendor-application/",
+      "application_url": "https://wfmarket.org/2026-vendor-application",
+      "location": "Connecticut",
+      "locality": "Connecticut",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-08",
+      "event_end": "2026-10-08",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-2026-2026-10-08-ff904114",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_c26dd6a3d61a4472ccb9"
     }
   ]
 };
