@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T08:03:07.369Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:5d4a866812cd69991abb0de0d0d2b8722c186bdafa47cb019f11ee07d79706dd",
-  "total": 527,
+  "exported_at": "2026-09-07T08:12:50.525Z",
+  "source": "reviewed-us-delaware-cloud-promotion:7fc82d256eae431e6fc0e58b1dc04d9a032d9052ca6121d7eae78de72a799676",
+  "total": 528,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20044,6 +20044,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_cea26630b3bca2c25b7a"
+    },
+    {
+      "stable_id": "opp_us_d1bbea0395857354af2b",
+      "event_name": "Delaware State Fair 2027: Dates, Tickets, Food & Parking Vendor Opportunity",
+      "organiser": "Delaware State Fair 2027: Dates, Tickets, Food & Parking",
+      "source_url": "https://statefairscout.com/fairs/delaware-state-fair/",
+      "application_url": "https://statefairscout.com/fairs/delaware-state-fair",
+      "location": "Harrington",
+      "locality": "Harrington",
+      "region": "Delaware",
+      "region_code": "DE",
+      "region_name": "Delaware",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "currency": "USD",
+      "postal_code": "18500",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-22",
+      "event_end": "2027-07-31",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "de-delaware-state-fair-2027-dates-tickets-food-parking-2027-07-22-496410b7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-delaware",
+      "id": "opp_us_d1bbea0395857354af2b"
     }
   ]
 };
