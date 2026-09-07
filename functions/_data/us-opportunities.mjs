@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T12:07:04.554Z",
-  "source": "reviewed-us-idaho-cloud-promotion:3f29c612f77d9d3f18289212e2aada7b2f239824188c9b9fd3e2c831d17848d5",
-  "total": 566,
+  "exported_at": "2026-09-07T12:19:07.059Z",
+  "source": "reviewed-us-kentucky-cloud-promotion:2e17779a4d996899825aa0cb2d58312bd58a122a8f2835253f1326901f796c27",
+  "total": 567,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21519,6 +21519,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-idaho",
       "id": "opp_us_dfae225f58c9b6e87b04"
+    },
+    {
+      "stable_id": "opp_us_c83fdf9da0b6e6536d17",
+      "event_name": "Berea Chamber - Powered by AMO Vendor Opportunity",
+      "organiser": "Berea Chamber - Powered by AMO",
+      "source_url": "https://www.bereakychamber.org/site_event_detail.cfm?pk_association_event=36319",
+      "application_url": "https://www.bereakychamber.org/site_event_detail.cfm?pk_association_event=36319",
+      "location": "Berea",
+      "locality": "Berea",
+      "region": "Kentucky",
+      "region_code": "KY",
+      "region_name": "Kentucky",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-20",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ky-berea-chamber-powered-by-amo-2026-09-18-cb4e852f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kentucky",
+      "id": "opp_us_c83fdf9da0b6e6536d17"
     }
   ]
 };
