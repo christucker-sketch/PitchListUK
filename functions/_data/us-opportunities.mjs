@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T07:59:01.514Z",
-  "source": "reviewed-us-kentucky-cloud-promotion:e72286f67c561053f9fe44743ae8d82bc20dbeb04caa55b1e3122ba41e38a949",
-  "total": 526,
+  "exported_at": "2026-09-07T08:03:07.369Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:5d4a866812cd69991abb0de0d0d2b8722c186bdafa47cb019f11ee07d79706dd",
+  "total": 527,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20006,6 +20006,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kentucky",
       "id": "opp_us_0de75536a6023b6bba1f"
+    },
+    {
+      "stable_id": "opp_us_cea26630b3bca2c25b7a",
+      "event_name": "Kids Activities in the Fairfield County Connecticut Area Vendor Opportunity",
+      "organiser": "Kids Activities in the Fairfield County Connecticut Area",
+      "source_url": "https://fairfieldcounty.kidsoutandabout.com/",
+      "application_url": "https://fairfieldcounty.kidsoutandabout.com",
+      "location": "Fairfield",
+      "locality": "Fairfield",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "06426",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-10",
+      "event_end": "2027-09-13",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-kids-activities-in-the-fairfield-county-connecticut-area-2027-09-10-4df09c26",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_cea26630b3bca2c25b7a"
     }
   ]
 };
