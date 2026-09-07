@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T09:13:29.348Z",
+  "updated_at": "2026-09-07T09:15:06.396Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -4703,6 +4703,24 @@
       "event_end": "2027-06-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery hi-honolulu-2027-festival: live first-party route attests Honolulu, HI, actionable vendor terms, and exact event date 2027-06-11."
+    },
+    {
+      "id": "ia-2026-prepared-food-2026-09-26-33d9af37",
+      "name": "2026 Prepared Food/Food Truck Application - 2026 Uptown Ankeny Farmers Market - Eventeny",
+      "organiser": "2026 Prepared Food/",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=42624",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=42624",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Ankeny",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-ankeny-2026-arts-crafts: live first-party route attests Ankeny, IA, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "ia-asianfest-vendors-mdash-iowa-asian-alliance-2026-09-26-e915723a",
