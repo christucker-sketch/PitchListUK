@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T13:15:31.715Z",
-  "source": "reviewed-us-iowa-cloud-promotion:2ee704812bd61fafdafc04c7079e9503a4c68659b786b00186b8141d8105d8f1",
-  "total": 574,
+  "exported_at": "2026-09-07T13:26:31.672Z",
+  "source": "reviewed-us-wisconsin-cloud-promotion:ad8c3ab6aca661ed3c2284526be94662f500e715c37ca285a354113341a42c75",
+  "total": 575,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21821,6 +21821,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-iowa",
       "id": "opp_us_977bc6f1ea6e9455a983"
+    },
+    {
+      "stable_id": "opp_us_60ad4ce1aef991768f86",
+      "event_name": "Food truck festival series returns to Brookfield",
+      "organiser": "Food truck festival series returns to Brookfield",
+      "source_url": "https://minuteman.com/us/locations/wi/brookfield/news/food-truck-festival-series-returns-to-brookfield-278222",
+      "application_url": "https://minuteman.com/us/locations/wi/brookfield/news/food-truck-festival-series-returns-to-brookfield-278222",
+      "location": "Brookfield",
+      "locality": "Brookfield",
+      "region": "Wisconsin",
+      "region_code": "WI",
+      "region_name": "Wisconsin",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WI",
+      "currency": "USD",
+      "postal_code": "53005",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-21",
+      "event_end": "2027-05-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wi-food-truck-festival-series-returns-to-brookfield-2027-05-21-d96bfca8",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-wisconsin",
+      "id": "opp_us_60ad4ce1aef991768f86"
     }
   ]
 };
