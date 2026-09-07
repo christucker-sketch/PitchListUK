@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T16:04:38.940Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:43608675c997dce2bb320e42e2281b69684e9faa42822c90951e248a542db4fb",
-  "total": 598,
+  "exported_at": "2026-09-07T16:17:12.983Z",
+  "source": "reviewed-us-utah-cloud-promotion:0cc1fd5ff91580a21512caed0b44b894e846f58e675fda0f32afaf18cfeaeaa4",
+  "total": 599,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22723,6 +22723,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_c26dd6a3d61a4472ccb9"
+    },
+    {
+      "stable_id": "opp_us_ddca550b65cbdc3eb61c",
+      "event_name": "Events for September 2026 Vendor Opportunity",
+      "organiser": "Events for September 2026",
+      "source_url": "https://thepearlonmain.com/event/grillfest-2026/",
+      "application_url": "https://thepearlonmain.com/event/grillfest-2026",
+      "location": "Midvale",
+      "locality": "Midvale",
+      "region": "Utah",
+      "region_code": "UT",
+      "region_name": "Utah",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "currency": "USD",
+      "postal_code": "84047",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ut-events-for-september-2026-2026-09-12-ae6a3887",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-utah",
+      "id": "opp_us_ddca550b65cbdc3eb61c"
     }
   ]
 };
