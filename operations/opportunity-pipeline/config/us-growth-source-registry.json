@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T12:03:44.613Z",
+  "updated_at": "2026-09-07T12:06:12.706Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5155,6 +5155,24 @@
       "evidence": "Cloudflare discovery id-meridian-2027-festival: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2027-06-28."
     },
     {
+      "id": "id-celebrate-caldwell-with-us-at-the-indian-creek-festival-mdash-indian-c-2026-09-18-55c32b25",
+      "name": "Celebrate Caldwell with Us at the Indian Creek Festival! &mdash; Indian Creek Plaza Vendor Opportunity",
+      "organiser": "Celebrate Caldwell with Us at the Indian Creek Festival! &mdash; Indian Creek Plaza",
+      "source_url": "https://www.indiancreekplaza.com/indian-creek-festival",
+      "application_url": "https://www.indiancreekplaza.com/indian-creek-festival",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Caldwell",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-caldwell-2026-festival: live first-party route attests Caldwell, ID, actionable vendor terms, and exact event date range 2026-09-18 to 2026-09-19."
+    },
+    {
       "id": "id-farmers-market-destination-caldwell-2026-09-29-a012e39c",
       "name": "Farmers Market - Destination Caldwell Vendor Opportunity",
       "organiser": "Farmers Market - Destination Caldwell",
@@ -5171,6 +5189,42 @@
       "event_end": "2026-09-29",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery id-caldwell-2026-farmers-market: live first-party route attests Caldwell, ID, actionable vendor terms, and exact event date 2026-09-29."
+    },
+    {
+      "id": "id-idaho-fall-expo-mdash-poky-christmas-2026-10-17-256a3b81",
+      "name": "IDAHO FALL EXPO &mdash; Poky Christmas Vendor Opportunity",
+      "organiser": "IDAHO FALL EXPO &mdash; Poky Christmas",
+      "source_url": "https://pokychristmas.com/idaho-fall-expo",
+      "application_url": "https://pokychristmas.com/idaho-fall-expo",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Caldwell",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-caldwell-2026-arts-crafts: live first-party route attests Caldwell, ID, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "id-indian-creek-festival-2026-2026-09-18-34752a46",
+      "name": "Indian Creek Festival 2026 Vendor Opportunity",
+      "organiser": "Indian Creek Festival 2026",
+      "source_url": "https://www.festivalsinamerica.com/festival/indian-creek-festival-caldwell",
+      "application_url": "https://www.festivalsinamerica.com/festival/indian-creek-festival-caldwell",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Caldwell",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-caldwell-2026-festival: live first-party route attests Caldwell, ID, actionable vendor terms, and exact event date range 2026-09-18 to 2026-09-19."
     },
     {
       "id": "id-meridian-main-street-market-farmers-market-2026-10-17-dcb2f42c",
