@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T13:01:05.498Z",
+  "updated_at": "2026-09-07T13:11:37.651Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12394,6 +12394,24 @@
       "event_end": "2026-12-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ok-oklahoma-2026-holiday-market: live first-party route attests Oklahoma, OK, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "ok-2027-around-the-world-festival-non-food-2027-08-28-762536a4",
+      "name": "2027 Around The World Festival Non-Food Vendor Registration",
+      "organiser": "2027 Around The World Festival Non-Food",
+      "source_url": "https://chiceventsdc.com/around-the-world-festival-non-food-vendor-registration",
+      "application_url": "https://chiceventsdc.com/around-the-world-festival-non-food-vendor-registration",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Oklahoma",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-28",
+      "event_end": "2027-08-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-oklahoma-2027-arts-crafts: live first-party route attests Oklahoma, OK, actionable vendor terms, and exact event date 2027-08-28."
     },
     {
       "id": "ok-april-2025-community-calendar-of-events-entertainments-2027-04-03-112270cd",
