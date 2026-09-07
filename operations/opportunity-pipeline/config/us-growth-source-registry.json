@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T14:12:33.760Z",
+  "updated_at": "2026-09-07T14:15:09.050Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6865,6 +6865,25 @@
       "event_end": "2026-09-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ky-louisville-2026-food-truck: live first-party route attests Louisville, KY, actionable vendor terms, and exact event date 2026-09-08."
+    },
+    {
+      "id": "ky-vendors-2026-10-10-1544a723",
+      "name": "VENDORS Vendor Opportunity",
+      "organiser": "VENDORS",
+      "source_url": "https://www.capitalprideky.org/vendors",
+      "application_url": "https://www.capitalprideky.org/vendors",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Frankfort",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "application_deadline": "2026-10-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-frankfort-2026-festival: live first-party route attests Frankfort, KY, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
       "id": "ky-where-to-celebrate-july-4th-around-louisville-2026-2027-07-04-3dc81744",
