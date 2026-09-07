@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T13:56:38.668Z",
+  "updated_at": "2026-09-07T14:00:42.994Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2487,6 +2487,24 @@
       "event_end": "2026-10-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-fairfield-2026-festival: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date range 2026-10-17 to 2026-10-24."
+    },
+    {
+      "id": "ct-farmers-market-2026-10-30-d0915386",
+      "name": "Farmers Market Vendor Opportunity",
+      "organiser": "Farmers Market",
+      "source_url": "https://wp.cga.ct.gov/osh/events-page/farmers-market",
+      "application_url": "https://wp.cga.ct.gov/osh/events-page/farmers-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Hartford",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-30",
+      "event_end": "2026-10-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-hartford-2026-farmers-market: live first-party route attests Hartford, CT, actionable vendor terms, and exact event date 2026-10-30."
     },
     {
       "id": "ct-holiday-market-2026-11-28-1ed06a8a",
