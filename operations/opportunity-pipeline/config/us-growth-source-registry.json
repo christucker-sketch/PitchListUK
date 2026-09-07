@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T15:09:08.077Z",
+  "updated_at": "2026-09-07T15:18:46.818Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14833,6 +14833,24 @@
       "event_end": "2026-10-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ut-salt-lake-city-2026-festival: live first-party route attests Salt Lake City, UT, actionable vendor terms, and exact event date range 2026-10-16 to 2026-10-17."
+    },
+    {
+      "id": "ut-vendor-events-in-lehi-ut-2027-06-21-6663148d",
+      "name": "Vendor Events in Lehi, UT",
+      "organiser": "Vendor Events in Lehi, UT",
+      "source_url": "https://vendorsmap.com/cities/lehi",
+      "application_url": "https://vendorsmap.com/cities/lehi",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "region_code": "UT",
+      "locality": "Lehi",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-06-21",
+      "event_end": "2027-06-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ut-lehi-2027-farmers-market: live first-party route attests Lehi, UT, actionable vendor terms, and exact event date range 2027-06-21 to 2027-06-27."
     },
     {
       "id": "va-18th-annual-mutt-strut-festival-suffolk-humane-society-2026-10-25-58c0cf4c",
