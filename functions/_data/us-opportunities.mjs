@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T13:12:33.923Z",
-  "source": "reviewed-us-oklahoma-cloud-promotion:d5e5e20c90dfa12fff0d34bc26fd713d12b614697aee69939dc9d56ea628872d",
-  "total": 573,
+  "exported_at": "2026-09-07T13:15:31.715Z",
+  "source": "reviewed-us-iowa-cloud-promotion:2ee704812bd61fafdafc04c7079e9503a4c68659b786b00186b8141d8105d8f1",
+  "total": 574,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21784,6 +21784,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oklahoma",
       "id": "opp_us_bd818353f1ac7dc6cfd4"
+    },
+    {
+      "stable_id": "opp_us_977bc6f1ea6e9455a983",
+      "event_name": "Burlington River Days 2026 | June 11–13 Vendor Opportunity",
+      "organiser": "Burlington River Days 2026 | June 11–13",
+      "source_url": "https://burlingtonriverdays.com/",
+      "application_url": "https://burlingtonriverdays.com",
+      "location": "Burlington",
+      "locality": "Burlington",
+      "region": "Iowa",
+      "region_code": "IA",
+      "region_name": "Iowa",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-10",
+      "event_end": "2027-06-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ia-burlington-river-days-2026-june-11-13-2027-06-10-9efa35f6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-iowa",
+      "id": "opp_us_977bc6f1ea6e9455a983"
     }
   ]
 };
