@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T07:40:53.493Z",
-  "source": "reviewed-us-hawaii-cloud-promotion:d9bdcea93490a04cad3a1a5bd98817b9de239ccd978c8c6fa7201451f033664e",
-  "total": 524,
+  "exported_at": "2026-09-07T07:44:19.318Z",
+  "source": "reviewed-us-new-hampshire-cloud-promotion:51b8a30ad6ec5c6a4ea08052a6039d81843df0843d3d96656e330797f4dfa006",
+  "total": 525,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19929,6 +19929,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-hawaii",
       "id": "opp_us_22f77a6a9800b37b9217"
+    },
+    {
+      "stable_id": "opp_us_c0329247613d2d8aafa6",
+      "event_name": "News - New Hampshire Sheep and Wool Growers Association Vendor Opportunity",
+      "organiser": "News - New Hampshire Sheep and Wool Growers Association",
+      "source_url": "https://nhswga.org/news/",
+      "application_url": "https://nhswga.org/news",
+      "location": "Dover",
+      "locality": "Dover",
+      "region": "New Hampshire",
+      "region_code": "NH",
+      "region_name": "New Hampshire",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "currency": "USD",
+      "postal_code": "31742",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-10",
+      "event_end": "2027-05-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nh-news-new-hampshire-sheep-and-wool-growers-association-2027-05-10-0edd2a1c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-hampshire",
+      "id": "opp_us_c0329247613d2d8aafa6"
     }
   ]
 };
