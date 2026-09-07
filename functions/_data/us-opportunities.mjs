@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T00:04:08.258Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:1e341c5fe150eecfcb08df0ae440b1e5980f0eefdf4e68790252a55275623379",
-  "total": 522,
+  "exported_at": "2026-09-07T07:35:07.185Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:6c5963cd28b1fed497a3c7215817a18cb861efa7f987cf8b726d89d5f20d57cc",
+  "total": 523,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -19855,6 +19855,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_99cab9a9dc513494bcbb"
+    },
+    {
+      "stable_id": "opp_us_ee3eb36c82ff81bcae75",
+      "event_name": "Arkansas R&B Festival Vendor Opportunity",
+      "organiser": "Arkansas R&B Festival",
+      "source_url": "https://www.littlerock.com/events/arkansas-r-b-festival/",
+      "application_url": "https://www.littlerock.com/events/arkansas-r-b-festival",
+      "location": "Clinton",
+      "locality": "Clinton",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "72201",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-10",
+      "event_end": "2027-04-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-arkansas-r-b-festival-2027-04-10-b0349e4d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_ee3eb36c82ff81bcae75"
     }
   ]
 };
