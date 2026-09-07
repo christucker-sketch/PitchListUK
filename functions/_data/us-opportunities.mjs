@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T12:30:23.378Z",
-  "source": "reviewed-us-nevada-cloud-promotion:3ca64c57f43fb03a544ca8a5ef3d765f69f9e92478d7daaf18a012fcdfeac1b9",
-  "total": 571,
+  "exported_at": "2026-09-07T12:34:11.720Z",
+  "source": "reviewed-us-idaho-cloud-promotion:c7f88718863749c9339690c76e0c7a7d0a5a0ffd3b90daee7124286d03e73056",
+  "total": 572,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21708,6 +21708,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nevada",
       "id": "opp_us_71a1447852c96e05453a"
+    },
+    {
+      "stable_id": "opp_us_3ae270b260976772a299",
+      "event_name": "CALDWELL CHRISTMAS &mdash; Poky Christmas Vendor Opportunity",
+      "organiser": "CALDWELL CHRISTMAS &mdash; Poky Christmas",
+      "source_url": "https://pokychristmas.com/caldwell-christmas",
+      "application_url": "https://pokychristmas.com/caldwell-christmas",
+      "location": "Caldwell",
+      "locality": "Caldwell",
+      "region": "Idaho",
+      "region_code": "ID",
+      "region_name": "Idaho",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "id-caldwell-christmas-mdash-poky-christmas-2026-12-05-1825eb12",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-idaho",
+      "id": "opp_us_3ae270b260976772a299"
     }
   ]
 };
