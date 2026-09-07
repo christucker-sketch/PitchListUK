@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T14:42:06.053Z",
+  "updated_at": "2026-09-07T14:47:19.262Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2436,6 +2436,24 @@
       "evidence": "Cloudflare discovery co-westminster-2026-farmers-market: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
     },
     {
+      "id": "ct-2nd-annual-hartford-food-truck-festival-2026-09-20-53140629",
+      "name": "2nd Annual Hartford Food Truck Festival",
+      "organiser": "2nd Annual Hartford Food Truck Festival",
+      "source_url": "https://thewebsterct.com/event/2nd-annual-hartford-food-truck-festival/the-webster",
+      "application_url": "https://thewebsterct.com/event/2nd-annual-hartford-food-truck-festival/the-webster",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Hartford",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-20",
+      "event_end": "2026-09-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-hartford-2026-food-truck: live first-party route attests Hartford, CT, actionable vendor terms, and exact event date 2026-09-20."
+    },
+    {
       "id": "ct-arts-crafts-festival-2026-09-19-e9a7616a",
       "name": "Arts & Crafts Festival Vendor Opportunity",
       "organiser": "Arts & Crafts Festival",
@@ -2632,6 +2650,24 @@
       "event_end": "2026-11-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ct-fairfield-2026-holiday-market: live first-party route attests Fairfield, CT, actionable vendor terms, and exact event date range 2026-11-28 to 2026-11-30."
+    },
+    {
+      "id": "ct-holiday-market-2026-2026-11-21-573cd384",
+      "name": "Holiday Market 2026 Vendor Opportunity",
+      "organiser": "Holiday Market 2026",
+      "source_url": "https://noahwebsterhouse.org/holiday-market",
+      "application_url": "https://noahwebsterhouse.org/holiday-market",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "region_code": "CT",
+      "locality": "Hartford",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ct-hartford-2026-holiday-market: live first-party route attests Hartford, CT, actionable vendor terms, and exact event date 2026-11-21."
     },
     {
       "id": "ct-home-norwalk-nice-2026-norwalk-nice-festival-2026-10-03-7e5c3a79",
