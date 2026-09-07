@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T12:18:17.147Z",
+  "updated_at": "2026-09-07T12:21:27.646Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12216,6 +12216,24 @@
       "evidence": "Cloudflare discovery oh-columbus-2026-farmers-market: live first-party route attests Columbus, OH, actionable vendor terms, and exact event date 2026-09-20."
     },
     {
+      "id": "ok-2026-christmas-in-the-park-ndash-merchandise-vendors-christmas-in-the--2026-12-05-05af111e",
+      "name": "2026 Christmas in the Park &ndash; Merchandise Vendors - Christmas in the Park - Eventeny Vendor Opportunity",
+      "organiser": "2026 Christmas in the Park &ndash; Merchandise Vendors - Christmas in the Park - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=41419",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=41419",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Oklahoma",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-oklahoma-2026-holiday-market: live first-party route attests Oklahoma, OK, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
       "id": "ok-april-2025-community-calendar-of-events-entertainments-2027-04-03-112270cd",
       "name": "April 2025 Community Calendar of Events - Entertainments Vendor Opportunity",
       "organiser": "April 2025 Community Calendar of Events - Entertainments",
@@ -12232,6 +12250,25 @@
       "event_end": "2027-04-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ok-broken-arrow-2027-farmers-market: live first-party route attests Broken Arrow, OK, actionable vendor terms, and exact event date range 2027-04-03 to 2027-04-05."
+    },
+    {
+      "id": "ok-become-a-food-vendor-2026-10-23-34792373",
+      "name": "BECOME A FOOD VENDOR",
+      "organiser": "BECOME A FOOD VENDOR",
+      "source_url": "https://www.sorghumfestivalok.org/foodvendor",
+      "application_url": "https://www.sorghumfestivalok.org/foodvendor",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OK",
+      "region_code": "OK",
+      "locality": "Oklahoma",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-24",
+      "application_deadline": "2026-10-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ok-oklahoma-2026-food-truck: live first-party route attests Oklahoma, OK, actionable vendor terms, and exact event date range 2026-10-23 to 2026-10-24."
     },
     {
       "id": "ok-broken-arrow-farmers-market-2026-2026-10-31-15bc1ae9",
