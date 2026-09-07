@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:32:23.755Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:e7aece4bfa2314d2188f091b80438d8ae4088e9540521b262284b9b2152df86a",
-  "total": 586,
+  "exported_at": "2026-09-07T14:40:05.032Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:f113076850e171409cb6a6b1106e8566632367f29ad7e5fb4f4625e7dc302f4e",
+  "total": 587,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22270,6 +22270,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_cda7a0f212a9c9254081"
+    },
+    {
+      "stable_id": "opp_us_ebef94785ea97d714307",
+      "event_name": "MINNEAPOLIMEDIA NEWS | More Than 50 Food Trucks Rolling Into Downtown Anoka for Saturday Festival Vendor Opportunity",
+      "organiser": "MINNEAPOLIMEDIA NEWS | More Than 50 Food Trucks Rolling Into Downtown Anoka for Saturday Festival",
+      "source_url": "https://minneapolimedia.town.news/g/coon-rapids-mn/n/384531/minneapolimedia-news-more-50-food-trucks-rolling-downtown-anoka-saturday",
+      "application_url": "https://minneapolimedia.town.news/g/coon-rapids-mn/n/384531/minneapolimedia-news-more-50-food-trucks-rolling-downtown-anoka-saturday",
+      "location": "Anoka",
+      "locality": "Anoka",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-07",
+      "event_end": "2026-09-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-minneapolimedia-news-more-than-50-food-trucks-rolling-into-downtown-an-2026-09-07-f48e5a8c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_ebef94785ea97d714307"
     }
   ]
 };
