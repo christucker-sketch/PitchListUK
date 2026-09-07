@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:48:40.710Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:2d8244e1c547eedf23e9299906869f1ff9a86dab097e311df746c6f2d7d27d99",
-  "total": 589,
+  "exported_at": "2026-09-07T14:56:56.036Z",
+  "source": "reviewed-us-utah-cloud-promotion:2a96b5306938c7407499ad50d5cf9b61b52938c09da5732923803494ee81e37d",
+  "total": 590,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22382,6 +22382,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_7d1b8bf0a61ee9b15eaa"
+    },
+    {
+      "stable_id": "opp_us_6b9c1d5fecbba5d7d9d7",
+      "event_name": "Nine Utah holiday markets to visit this season - Lehi Free Press Vendor Opportunity",
+      "organiser": "Nine Utah holiday markets to visit this season - Lehi Free Press",
+      "source_url": "https://lehifreepress.com/2022/11/28/nine-utah-holiday-markets-to-visit-this-season/",
+      "application_url": "https://lehifreepress.com/2022/11/28/nine-utah-holiday-markets-to-visit-this-season",
+      "location": "Lehi",
+      "locality": "Lehi",
+      "region": "Utah",
+      "region_code": "UT",
+      "region_name": "Utah",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-02",
+      "event_end": "2026-12-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ut-nine-utah-holiday-markets-to-visit-this-season-lehi-free-press-2026-12-02-ad39eabf",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-utah",
+      "id": "opp_us_6b9c1d5fecbba5d7d9d7"
     }
   ]
 };
