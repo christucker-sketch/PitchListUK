@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T16:24:15.736Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:952d4f2aa7bc0bb5e0b7b3965273837610b4a93da76cfa3727fa793d20d83e59",
-  "total": 600,
+  "exported_at": "2026-09-07T16:41:30.478Z",
+  "source": "reviewed-us-utah-cloud-promotion:2090d4b850c915183dce036e6163bc1f9294fad14e51578393c1e2ea9c70e6e3",
+  "total": 601,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22797,6 +22797,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_1b60d9960934d0ae453e"
+    },
+    {
+      "stable_id": "opp_us_fc97d29d6e342acc19c8",
+      "event_name": "Los Muros on Main Marks Five Years of an Ever-Changing Arts & Culture District Vendor Opportunity",
+      "organiser": "Los Muros on Main Marks Five Years of an Ever-Changing Arts & Culture District",
+      "source_url": "https://www.midvale.utah.gov/news_detail_T2_R190.php",
+      "application_url": "https://www.midvale.utah.gov/news_detail_T2_R190.php",
+      "location": "Midvale",
+      "locality": "Midvale",
+      "region": "Utah",
+      "region_code": "UT",
+      "region_name": "Utah",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-08",
+      "event_end": "2027-06-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ut-los-muros-on-main-marks-five-years-of-an-ever-changing-arts-culture-di-2027-06-08-81bd2459",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-utah",
+      "id": "opp_us_fc97d29d6e342acc19c8"
     }
   ]
 };
