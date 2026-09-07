@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T14:40:05.032Z",
-  "source": "reviewed-us-minnesota-cloud-promotion:f113076850e171409cb6a6b1106e8566632367f29ad7e5fb4f4625e7dc302f4e",
-  "total": 587,
+  "exported_at": "2026-09-07T14:43:09.390Z",
+  "source": "reviewed-us-oregon-cloud-promotion:71c399cd0d756c080058f8ea363e8a9eeb94d0c70393083175742b233ea666f0",
+  "total": 588,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22308,6 +22308,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-minnesota",
       "id": "opp_us_ebef94785ea97d714307"
+    },
+    {
+      "stable_id": "opp_us_5c611109af8f5aa53f00",
+      "event_name": "Scandinavian Christmas Goat Market Vendor Opportunity",
+      "organiser": "Scandinavian Christmas Goat Market",
+      "source_url": "https://www.newsweden.org/goatmarket/",
+      "application_url": "https://www.newsweden.org/goatmarket",
+      "location": "Portland",
+      "locality": "Portland",
+      "region": "Oregon",
+      "region_code": "OR",
+      "region_name": "Oregon",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "currency": "USD",
+      "postal_code": "97232",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "or-scandinavian-christmas-goat-market-2026-11-28-0d76a809",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oregon",
+      "id": "opp_us_5c611109af8f5aa53f00"
     }
   ]
 };
