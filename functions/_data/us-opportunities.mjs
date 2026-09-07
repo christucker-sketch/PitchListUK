@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T16:51:02.380Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:83be052aa3be9e6950fbca1bf279c872687ab889134d6c80cd9bc3d911de2248",
-  "total": 604,
+  "exported_at": "2026-09-07T16:54:19.228Z",
+  "source": "reviewed-us-utah-cloud-promotion:d5f82e8afcd696e43c93a334acb1d391bb9d15b3dd98ef17c485d6bf171b2ea8",
+  "total": 605,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22949,6 +22949,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_1167a5952f9f8986401d"
+    },
+    {
+      "stable_id": "opp_us_bf7fea949f692b2951bf",
+      "event_name": "Volunteer Vendor Opportunity",
+      "organiser": "Volunteer",
+      "source_url": "https://craftlakecity.com/volunteer/",
+      "application_url": "https://craftlakecity.com/volunteer",
+      "location": "Midvale",
+      "locality": "Midvale",
+      "region": "Utah",
+      "region_code": "UT",
+      "region_name": "Utah",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "currency": "USD",
+      "postal_code": "84401",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-12-05",
+      "event_end": "2027-12-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ut-volunteer-2027-12-05-c0529592",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-utah",
+      "id": "opp_us_bf7fea949f692b2951bf"
     }
   ]
 };
