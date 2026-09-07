@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T11:19:43.649Z",
-  "source": "reviewed-us-oklahoma-cloud-promotion:9008d79ab933517f8e7456b726df2a84ad9bd5051b2bceaaf004cede6adfd2f0",
-  "total": 554,
+  "exported_at": "2026-09-07T11:31:06.516Z",
+  "source": "reviewed-us-idaho-cloud-promotion:5248cd07e759c08f06688eaca6d2779af519856738d06385ae22c42191ac6582",
+  "total": 555,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -21068,6 +21068,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oklahoma",
       "id": "opp_us_0330892ece0fa53ab6d6"
+    },
+    {
+      "stable_id": "opp_us_02b6828d496479ea3dc4",
+      "event_name": "Farmers Market - Destination Caldwell Vendor Opportunity",
+      "organiser": "Farmers Market - Destination Caldwell",
+      "source_url": "https://www.destinationcaldwell.com/farm-to-fork/",
+      "application_url": "https://www.destinationcaldwell.com/farm-to-fork",
+      "location": "Caldwell",
+      "locality": "Caldwell",
+      "region": "Idaho",
+      "region_code": "ID",
+      "region_name": "Idaho",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "currency": "USD",
+      "postal_code": "83605",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-29",
+      "event_end": "2026-09-29",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "id-farmers-market-destination-caldwell-2026-09-29-a012e39c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-idaho",
+      "id": "opp_us_02b6828d496479ea3dc4"
     }
   ]
 };
