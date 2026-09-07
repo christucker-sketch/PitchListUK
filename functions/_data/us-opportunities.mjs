@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T15:33:07.482Z",
-  "source": "reviewed-us-oklahoma-cloud-promotion:557a60c92bbfa3b9f54e3aae32aadf055051c3d18226f69d3a406f641bf32343",
-  "total": 595,
+  "exported_at": "2026-09-07T15:55:49.194Z",
+  "source": "reviewed-us-missouri-cloud-promotion:20fbf7dee4d7fdb0ba4f113ed25d975b0108bb2ef0cbb3fe93dbe22cc5505a74",
+  "total": 596,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22608,6 +22608,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oklahoma",
       "id": "opp_us_d3fc93106de6234164bf"
+    },
+    {
+      "stable_id": "opp_us_06ff6d3bba6841c2d2bc",
+      "event_name": "Market Rules and Guides Vendor Opportunity",
+      "organiser": "Market Rules and Guides",
+      "source_url": "https://stcfarmersmarket.org/market-rules-and-guides",
+      "application_url": "https://stcfarmersmarket.org/market-rules-and-guides",
+      "location": "St. Charles",
+      "locality": "St. Charles",
+      "region": "Missouri",
+      "region_code": "MO",
+      "region_name": "Missouri",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MO",
+      "currency": "USD",
+      "postal_code": "63376",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor",
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mo-market-rules-and-guides-2026-10-31-f376c54d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-missouri",
+      "id": "opp_us_06ff6d3bba6841c2d2bc"
     }
   ]
 };
