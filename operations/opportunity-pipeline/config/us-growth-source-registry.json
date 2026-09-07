@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T10:24:44.023Z",
+  "updated_at": "2026-09-07T10:27:10.737Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5929,6 +5929,24 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ks-wichita-2026-festival: live first-party route attests Wichita, KS, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
+    },
+    {
+      "id": "ky-cumberland-mountain-fall-festival-middlesboro-ky-2027-10-02-8a757593",
+      "name": "Cumberland Mountain Fall Festival - Middlesboro, KY Vendor Opportunity",
+      "organiser": "Cumberland Mountain Fall Festival - Middlesboro, KY",
+      "source_url": "https://www.cumberlandmountainfallfestival.net",
+      "application_url": "https://www.cumberlandmountainfallfestival.net",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Cumberland",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-02",
+      "event_end": "2027-10-02",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-cumberland-2027-festival: live first-party route attests Cumberland, KY, actionable vendor terms, and exact event date 2027-10-02."
     },
     {
       "id": "ky-discover-the-vibrant-community-at-lake-cumberland-farmers-market-locat-2026-10-10-2e6f223e",
