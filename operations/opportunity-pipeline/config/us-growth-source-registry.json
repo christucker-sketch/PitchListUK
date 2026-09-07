@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T12:27:04.873Z",
+  "updated_at": "2026-09-07T12:29:31.073Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11044,6 +11044,24 @@
       "event_end": "2026-12-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nv-las-vegas-2026-arts-crafts: live first-party route attests Las Vegas, NV, actionable vendor terms, and exact event date 2026-12-20."
+    },
+    {
+      "id": "nv-downtownchristmasexpo-com-2026-12-03-7aceb8af",
+      "name": "Vendor Application",
+      "organiser": "downtownchristmasexpo.com",
+      "source_url": "https://downtownchristmasexpo.com/vendor-application",
+      "application_url": "https://downtownchristmasexpo.com/vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "region_code": "NV",
+      "locality": "Las Vegas",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-03",
+      "event_end": "2026-12-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nv-las-vegas-2026-holiday-market: live first-party route attests Las Vegas, NV, actionable vendor terms, and exact event date range 2026-12-03 to 2026-12-12."
     },
     {
       "id": "nv-events-from-september-11-food-wine-food-truck-2026-09-11-a86bdab3",
