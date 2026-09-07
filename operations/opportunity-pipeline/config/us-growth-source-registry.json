@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T14:26:24.462Z",
+  "updated_at": "2026-09-07T14:28:58.552Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14524,6 +14524,24 @@
       "application_deadline": "2026-09-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ut-salt-lake-city-2026-arts-crafts: live first-party route attests Salt Lake City, UT, actionable vendor terms, and exact event date 2026-12-05."
+    },
+    {
+      "id": "ut-creator-s-collective-x-the-loft-fall-finds-market-in-lehi-utah-on-sep--2026-09-26-932bbb03",
+      "name": "Creator’s Collective x The Loft \"Fall Finds Market\" in Lehi, Utah on Sep 26, 2026 Vendor Opportunity",
+      "organiser": "Creator’s Collective x The Loft \"Fall Finds Market\" in Lehi, Utah on Sep 26, 2026",
+      "source_url": "https://seenmarkets.com/market/tv8nsuMrGLpRLVbMTS3coF/creators-collective-x-the-loft-fall-finds-market-in-lehi-utah-on-sep-26-2026",
+      "application_url": "https://seenmarkets.com/market/tv8nsuMrGLpRLVbMTS3coF/creators-collective-x-the-loft-fall-finds-market-in-lehi-utah-on-sep-26-2026",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "region_code": "UT",
+      "locality": "Lehi",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ut-lehi-2026-arts-crafts: live first-party route attests Lehi, UT, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "ut-farmer-s-market-millard-county-tourism-2026-09-30-1f72a5eb",
