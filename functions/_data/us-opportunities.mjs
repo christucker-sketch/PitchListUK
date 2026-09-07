@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T16:48:13.997Z",
-  "source": "reviewed-us-oregon-cloud-promotion:f7765e3f27fdd76ff587820e0d4e45a3505b91736a942a02fae83379c586c64a",
-  "total": 603,
+  "exported_at": "2026-09-07T16:51:02.380Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:83be052aa3be9e6950fbca1bf279c872687ab889134d6c80cd9bc3d911de2248",
+  "total": 604,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -22910,6 +22910,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oregon",
       "id": "opp_us_a4a943cd73ca885d5cc6"
+    },
+    {
+      "stable_id": "opp_us_1167a5952f9f8986401d",
+      "event_name": "Vendor Application",
+      "organiser": "nysbluesfest.com",
+      "source_url": "https://www.nysbluesfest.com/vendors/application/",
+      "application_url": "https://www.nysbluesfest.com/vendors/application",
+      "location": "Connecticut",
+      "locality": "Connecticut",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-10",
+      "event_end": "2027-06-11",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-nysbluesfest-com-2027-06-10-44a98c1a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_1167a5952f9f8986401d"
     }
   ]
 };
