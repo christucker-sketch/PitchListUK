@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T13:36:09.241Z",
+  "updated_at": "2026-09-07T13:40:07.854Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5279,6 +5279,24 @@
       "event_end": "2027-06-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery id-meridian-2027-festival: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2027-06-28."
+    },
+    {
+      "id": "id-boisedev-am-4th-of-july-celebrations-operation-military-blessings-good-2027-07-04-e0bc3e91",
+      "name": "BoiseDev AM: 4th of July celebrations + Operation Military Blessings + Good Food Awards Vendor Opportunity",
+      "organiser": "BoiseDev AM: 4th of July celebrations + Operation Military Blessings + Good Food Awards",
+      "source_url": "https://boisedev.com/newsletter/june-30-2026-2-2-2-2-2",
+      "application_url": "https://boisedev.com/newsletter/june-30-2026-2-2-2-2-2",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Caldwell",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-caldwell-2027-food-truck: live first-party route attests Caldwell, ID, actionable vendor terms, and exact event date 2027-07-04."
     },
     {
       "id": "id-caldwell-christmas-mdash-poky-christmas-2026-12-05-1825eb12",
