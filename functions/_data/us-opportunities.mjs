@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T09:28:37.048Z",
-  "source": "reviewed-us-new-hampshire-cloud-promotion:deabb5482f2eb2be4c7742129f47cccb9d804185d3aa16ce8a762cfb8af5ccab",
-  "total": 538,
+  "exported_at": "2026-09-07T09:31:49.898Z",
+  "source": "reviewed-us-tennessee-cloud-promotion:cc590ded15aa04286f1c02d9c33cf626f166eb2647228e1f1e647a0c1f4037d8",
+  "total": 539,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -20465,6 +20465,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-hampshire",
       "id": "opp_us_6f75cad31f167e371305"
+    },
+    {
+      "stable_id": "opp_us_bad0102804f9eff01f33",
+      "event_name": "Murfreesboro Autumn Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Murfreesboro Autumn Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/murfreesboroautumn/",
+      "application_url": "https://hometownvendormarket.com/murfreesboroautumn",
+      "location": "Murfreesboro",
+      "locality": "Murfreesboro",
+      "region": "Tennessee",
+      "region_code": "TN",
+      "region_name": "Tennessee",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "currency": "USD",
+      "postal_code": "37129",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-20",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tn-murfreesboro-autumn-craft-vendor-market-hometown-vendor-market-2026-09-19-997f4290",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-tennessee",
+      "id": "opp_us_bad0102804f9eff01f33"
     }
   ]
 };
