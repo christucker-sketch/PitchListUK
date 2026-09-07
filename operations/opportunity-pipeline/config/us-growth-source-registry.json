@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T13:52:05.035Z",
+  "updated_at": "2026-09-07T13:56:38.668Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6631,6 +6631,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ky-cumberland-2026-festival: live first-party route attests Cumberland, KY, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "ky-home-2026-12-12-4f81d21c",
+      "name": "Home Vendor Opportunity",
+      "organiser": "Home",
+      "source_url": "https://fcmarket.localfoodmarketplace.com",
+      "application_url": "https://fcmarket.localfoodmarketplace.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "region_code": "KY",
+      "locality": "Frankfort",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ky-frankfort-2026-farmers-market: live first-party route attests Frankfort, KY, actionable vendor terms, and exact event date 2026-12-12."
     },
     {
       "id": "ky-kentucky-derby-festival-business-or-2026-09-08-467286d0",
