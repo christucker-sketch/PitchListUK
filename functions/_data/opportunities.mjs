@@ -1,7 +1,7 @@
 export const opportunitySnapshot = {
-  "exported_at": "2026-08-27T09:23:13.154Z",
-  "source": "reviewed-manifest:automatic-approved-additions-1787822588766.json",
-  "total": 289,
+  "exported_at": "2026-09-08T21:16:43.000Z",
+  "source": "global-uk-approved-additions:64e562accda885e8899046b1999b2aa914ebae6ca367087563cb204ebc782e8f",
+  "total": 290,
   "rows": [
     {
       "id": "OPP-00495",
@@ -10109,6 +10109,37 @@ export const opportunitySnapshot = {
       "coordinate_source": "place-centroid",
       "coordinate_precision": "place",
       "coordinate_label": "Leicester"
+    },
+    {
+      "id": "opp_6eaaf4cd0365151e81f3",
+      "event_name": "Apply to trade at a local market",
+      "organiser": "Apply to trade at a local market",
+      "location": "UK trusted-source graph",
+      "county": "UK trusted-source graph",
+      "region": "UK trusted-source graph",
+      "event_start": "",
+      "event_end": "",
+      "application_deadline": "",
+      "stall_fee": "",
+      "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
+      "last_checked": "2026-09-08",
+      "freshness_status": "fresh",
+      "freshness_age_days": 0,
+      "confidence": "medium",
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "area_confidence": "region",
+      "route_type": "recurring_market",
+      "organiser_type": "local_council",
+      "country": "United Kingdom",
+      "jurisdiction": "GB",
+      "currency": "GBP",
+      "market_domain": "pitchlist.uk",
+      "tax_region": "UK",
+      "buyer_fit_tags": "food traders;stallholders;exhibitors;event concessions",
+      "notes": "Automatically staged from a directly fetched, approved first-party source on 2026-09-08.",
+      "application_url": "https://my.barnsley.gov.uk/form/Apply-to-trade-at-a-local-market/page-1",
+      "source_url": "https://my.barnsley.gov.uk/form/Apply-to-trade-at-a-local-market/page-1"
     }
   ]
 };
