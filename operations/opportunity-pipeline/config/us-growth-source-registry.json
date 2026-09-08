@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T15:27:19.594Z",
+  "updated_at": "2026-09-08T15:31:36.617Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6180,6 +6180,24 @@
       "event_end": "2026-09-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-elgin-2026-arts-crafts: live first-party route attests Elgin, IL, actionable vendor terms, and exact event date range 2026-09-04 to 2026-09-05."
+    },
+    {
+      "id": "il-aurora-farmers-market-2026-10-03-742d58d2",
+      "name": "Aurora Farmers Market Vendor Opportunity",
+      "organiser": "Aurora Farmers Market",
+      "source_url": "https://www.aurora.il.us/Recreation-and-Amenities/Aurora-Farmers-Market",
+      "application_url": "https://www.aurora.il.us/Recreation-and-Amenities/Aurora-Farmers-Market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Aurora",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-aurora-2026-farmers-market: live first-party route attests Aurora, IL, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "il-aurora-farmers-market-west-side-aurora-2026-09-02-41bc9f1b",
