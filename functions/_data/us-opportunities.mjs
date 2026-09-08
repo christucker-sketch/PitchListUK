@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T12:39:59.259Z",
-  "source": "reviewed-us-tennessee-cloud-promotion:e1032bbb4794d533e32cb5cd33919c5a0c32cf8ff065dd56defd41e6e2df558e",
-  "total": 615,
+  "exported_at": "2026-09-08T14:12:18.410Z",
+  "source": "reviewed-us-california-cloud-promotion:e9d91beda30a3e15f0ad7a6dd458f119a868d022ea8ae3f1fc4a5c3cb2d4ef12",
+  "total": 616,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23370,6 +23370,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-tennessee",
       "id": "opp_us_718981bf3439e214ba76"
+    },
+    {
+      "stable_id": "opp_us_05602df25ee5f19a4909",
+      "event_name": "Information for Artists Vendor Opportunity",
+      "organiser": "Information for Artists",
+      "source_url": "https://theautry.org/artistinfo",
+      "application_url": "https://theautry.org/artistinfo",
+      "location": "Los Angeles",
+      "locality": "Los Angeles",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "91502",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-05",
+      "event_end": "2027-06-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-information-for-artists-2027-06-05-149c55e2",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_05602df25ee5f19a4909"
     }
   ]
 };
