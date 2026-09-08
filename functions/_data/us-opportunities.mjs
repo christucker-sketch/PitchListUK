@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T18:03:18.370Z",
-  "source": "reviewed-us-delaware-cloud-promotion:358869cb244f3f6de7a2ac52a033926e1a3a5df69ba0be8fae1c557d3c6a03bc",
-  "total": 632,
+  "exported_at": "2026-09-08T18:10:49.085Z",
+  "source": "reviewed-us-texas-cloud-promotion:3678207cb6b1167a62a7962a93f9fe3e5ad19512165662cc91f0e6488d030740",
+  "total": 633,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24008,6 +24008,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-delaware",
       "id": "opp_us_38a52b8b4634dbe40a7f"
+    },
+    {
+      "stable_id": "opp_us_eea0b4a03f6218d09b9c",
+      "event_name": "Dallas Farmers Market | Fresh Produce, Local Vendors & Events",
+      "organiser": "Dallas Farmers Market",
+      "source_url": "https://dallasfarmersmarket.org/",
+      "application_url": "https://dallasfarmersmarket.org",
+      "location": "Dallas",
+      "locality": "Dallas",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "75201",
+      "latitude": 32.7876,
+      "longitude": -96.7994,
+      "coordinate_source": "offline-zip-index",
+      "coordinate_precision": "postal",
+      "coordinate_label": "75201 Dallas",
+      "event_start": "2026-09-08",
+      "event_end": "2026-09-08",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-dallas-farmers-market-2026-09-08-c2e0eb97",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_eea0b4a03f6218d09b9c"
     }
   ]
 };
