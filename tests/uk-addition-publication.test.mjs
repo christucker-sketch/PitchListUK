@@ -16,6 +16,12 @@ function approvedSource() {
   return source;
 }
 
+function approvedSources(count = 2) {
+  const sources = APPROVED_SOURCES.filter(item => item.approved === true && item.official_application_route && termsReviewed(item));
+  assert.ok(sources.length >= count, `expected at least ${count} approved direct UK sources`);
+  return sources.slice(0, count);
+}
+
 function stagedRow(source, overrides = {}) {
   return {
     stable_id: '',
@@ -84,6 +90,32 @@ test('existing UK source route is held rather than rewritten', () => {
   assert.equal(manifest.changes.additions.length, 0);
   assert.equal(manifest.automation.held_existing_routes.length, 1);
   assert.equal(manifest.automation.held_existing_routes[0].reason, 'existing_route_update_forbidden_by_addition_only_policy');
+});
+
+test('duplicate-only eligible UK rows become a safe zero-addition manifest', () => {
+  const [existingSource, candidateSource] = approvedSources(2);
+  const duplicateIdentity = {
+    event_name: 'Shared Market Identity',
+    organiser: 'Shared Market Organiser',
+    location: 'Kent',
+    region: 'Kent',
+    event_start: ''
+  };
+  const existing = stagedRow(existingSource, { id: 'existing', ...duplicateIdentity });
+  const candidate = stagedRow(candidateSource, duplicateIdentity);
+  const snapshot = { exported_at: '2026-09-01T00:00:00.000Z', source: 'baseline', total: 1, rows: [existing] };
+  const manifest = buildAutomaticAdditionManifest({
+    snapshot,
+    rows: [candidate],
+    directReport: directReport(candidateSource),
+    reviewedCommit: 'd'.repeat(40),
+    today: '2026-09-08',
+    maxDuplicateRate: 60
+  });
+  assert.equal(manifest.changes.additions.length, 0);
+  assert.equal(manifest.automation.observed_duplicate_rate, 100);
+  assert.equal(manifest.automation.held_existing_routes.length, 1);
+  assert.equal(manifest.automation.held_existing_routes[0].reason, 'duplicate_identity_already_in_production');
 });
 
 test('UK automatic publication requires direct zero-Serper attestation', () => {
