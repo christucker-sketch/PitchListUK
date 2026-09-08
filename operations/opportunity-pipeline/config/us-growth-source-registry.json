@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-07T17:51:00.825Z",
+  "updated_at": "2026-09-08T10:54:14.600Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2037,6 +2037,24 @@
       "event_end": "2027-10-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-farmers-market: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-10-25."
+    },
+    {
+      "id": "ca-the-guide-to-los-angeles-farmers-markets-2026-09-11-006415aa",
+      "name": "The Guide to Los Angeles Farmers Markets Vendor Opportunity",
+      "organiser": "The Guide to Los Angeles Farmers Markets",
+      "source_url": "https://www.discoverlosangeles.com/things-to-do/los-angeles-farmers-markets",
+      "application_url": "https://www.discoverlosangeles.com/things-to-do/los-angeles-farmers-markets",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Los Angeles",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-los-angeles-2026-farmers-market: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date range 2026-09-11 to 2026-09-13."
     },
     {
       "id": "ca-vendor-events-in-anaheim-ca-2026-10-24-f09eaa30",
