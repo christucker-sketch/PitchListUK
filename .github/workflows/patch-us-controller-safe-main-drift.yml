@@ -21,6 +21,7 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
           p = Path('operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs')
           s = p.read_text()
           marker = "} from '../../acquisition-notifications/notifier.mjs';\n"
@@ -62,20 +63,16 @@ jobs:
           if 'function resolveAutoMergeBranchBase(' not in s:
               if helper_marker not in s: raise SystemExit('validator marker missing')
               s = s.replace(helper_marker, helper, 1)
-          old = """  if (pr?.baseRefOid !== baseSha || !expectedBranch.endsWith(`-base-${String(baseSha).slice(0, 16)}`)) {
-            throw new Error('Auto-merge PR is not based on the exact current main SHA');
-          }
-          """
-          new = """  if (pr?.baseRefOid !== baseSha) throw new Error('Auto-merge PR base is not the exact current main SHA');
+          pattern = re.compile(r"  if \(pr\?\.baseRefOid !== baseSha \|\| !expectedBranch\.endsWith\(`-base-\$\{String\(baseSha\)\.slice\(0, 16\)\}`\)\) \{\n\s*throw new Error\('Auto-merge PR is not based on the exact current main SHA'\);\n\s*\}\n")
+          replacement = """  if (pr?.baseRefOid !== baseSha) throw new Error('Auto-merge PR base is not the exact current main SHA');
           const branchBaseSha = resolveAutoMergeBranchBase(expectedBranch, baseSha, snapshotPath);
           if (!expectedBranch.endsWith(`-base-${String(branchBaseSha).slice(0, 16)}`)) {
             throw new Error('Auto-merge PR branch provenance does not match its original base');
           }
           """
-          if old in s:
-              s = s.replace(old, new, 1)
-          elif "const branchBaseSha = resolveAutoMergeBranchBase" not in s:
-              raise SystemExit('exact-base validation block missing')
+          if 'const branchBaseSha = resolveAutoMergeBranchBase' not in s:
+              s, count = pattern.subn(replacement, s, count=1)
+              if count != 1: raise SystemExit(f'exact-base validation replacement count={count}')
           p.write_text(s)
           PY
           rm .github/workflows/patch-us-controller-safe-main-drift.yml
