@@ -12,6 +12,10 @@ import {
   safeNotifyFailureFromEnvironment,
   safeNotifyRecoveryFromEnvironment
 } from '../../acquisition-notifications/notifier.mjs';
+import {
+  branchBasePrefix,
+  validateSnapshotEquivalentMainDrift
+} from './auto-merge-base.mjs';
 
 export const ROLLOUT_ORDER = Object.freeze([
   'CA', 'TX', 'FL', 'NY', 'PA', 'IL', 'OH', 'GA', 'NC', 'MI', 'VA', 'WA', 'MA', 'CO', 'AZ',
@@ -76,6 +80,35 @@ export function ciRollupState(checks = []) {
   return verifyPassed ? 'passed' : 'failed';
 }
 
+function resolveAutoMergeBranchBase(expectedBranch, baseSha, snapshotPath) {
+  const prefix = branchBasePrefix(expectedBranch);
+  if (!prefix) throw new Error('Auto-merge PR branch lacks original base provenance');
+  let branchBaseSha;
+  try {
+    branchBaseSha = run('git', ['rev-parse', `${prefix}^{commit}`]).trim();
+  } catch {
+    throw new Error('Auto-merge original base cannot be resolved from Git history');
+  }
+  let branchBaseIsAncestor = true;
+  if (branchBaseSha !== baseSha) {
+    try {
+      run('git', ['merge-base', '--is-ancestor', branchBaseSha, baseSha]);
+    } catch {
+      branchBaseIsAncestor = false;
+    }
+  }
+  const snapshotBlobAtBranchBase = run('git', ['rev-parse', `${branchBaseSha}:${snapshotPath}`]).trim();
+  const snapshotBlobAtCurrentMain = run('git', ['rev-parse', `${baseSha}:${snapshotPath}`]).trim();
+  return validateSnapshotEquivalentMainDrift({
+    currentMainSha: baseSha,
+    prBaseSha: baseSha,
+    branchBaseSha,
+    branchBaseIsAncestor,
+    snapshotBlobAtBranchBase,
+    snapshotBlobAtCurrentMain
+  }).branchBaseSha;
+}
+
 export function validateAutoMergeCandidate(pr, result, { baseSha, snapshotPath }) {
   const additions = Number(result?.additions);
   const staged = Number(result?.staged_count);
@@ -94,9 +127,11 @@ export function validateAutoMergeCandidate(pr, result, { baseSha, snapshotPath }
   if (Number(pr?.number) !== expectedPr || pr?.headRefName !== expectedBranch || !expectedBranch.startsWith('data/cloud-')) {
     throw new Error('Auto-merge PR identity does not match the Workflow result');
   }
-  if (pr?.baseRefOid !== baseSha || !expectedBranch.endsWith(`-base-${String(baseSha).slice(0, 16)}`)) {
-    throw new Error('Auto-merge PR is not based on the exact current main SHA');
-  }
+  if (pr?.baseRefOid !== baseSha) throw new Error('Auto-merge PR base is not the exact current main SHA');
+const branchBaseSha = resolveAutoMergeBranchBase(expectedBranch, baseSha, snapshotPath);
+if (!expectedBranch.endsWith(`-base-${String(branchBaseSha).slice(0, 16)}`)) {
+  throw new Error('Auto-merge PR branch provenance does not match its original base');
+}
   if (!/^[a-f0-9]{40}$/i.test(String(pr?.headRefOid || '')) || pr?.commits?.length !== 1 || pr.commits[0]?.oid !== pr.headRefOid) {
     throw new Error('Auto-merge PR does not have one exact reviewed head commit');
   }
