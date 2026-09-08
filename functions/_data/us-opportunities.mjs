@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T18:10:49.085Z",
-  "source": "reviewed-us-texas-cloud-promotion:3678207cb6b1167a62a7962a93f9fe3e5ad19512165662cc91f0e6488d030740",
-  "total": 633,
+  "exported_at": "2026-09-08T18:27:55.445Z",
+  "source": "reviewed-us-virginia-cloud-promotion:323acc73fbbd51562442ce7a94e64f1672096254c1cc3168d27f76f86b3615c6",
+  "total": 634,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24045,6 +24045,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_eea0b4a03f6218d09b9c"
+    },
+    {
+      "stable_id": "opp_us_f63184e4b12928bf5fe3",
+      "event_name": "Norfolk Food Truck Events, VA",
+      "organiser": "Norfolk Food Truck Events, VA",
+      "source_url": "https://streetlegal.io/events/virginia/norfolk-va",
+      "application_url": "https://streetlegal.io/events/virginia/norfolk-va",
+      "location": "Norfolk",
+      "locality": "Norfolk",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-norfolk-food-truck-events-va-2026-11-21-2b429522",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_f63184e4b12928bf5fe3"
     }
   ]
 };
