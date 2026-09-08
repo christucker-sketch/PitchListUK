@@ -1,21 +1,19 @@
 name: Finalize US safe-main-drift controller patch
 
 on:
-  pull_request:
-    types: [synchronize]
-    branches: [main]
+  push:
+    branches: [fix/us-controller-safe-main-drift]
 
 permissions:
   contents: write
 
 jobs:
   finalize:
-    if: github.head_ref == 'fix/us-controller-safe-main-drift'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: fix/us-controller-safe-main-drift
           fetch-depth: 0
       - name: Finalize exact controller patch
         run: |
@@ -52,4 +50,4 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs .github/workflows/finalize-us-controller-safe-main-drift.yml
           git commit -m "Finalize snapshot-aware US auto-merge reconciliation"
-          git push origin HEAD:${{ github.head_ref }}
+          git push origin HEAD:fix/us-controller-safe-main-drift
