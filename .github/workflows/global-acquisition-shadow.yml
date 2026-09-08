@@ -71,14 +71,36 @@ jobs:
       - name: Verify global Workflow is describable
         run: npx --yes wrangler@4.127.1 workflows describe "$WORKFLOW_NAME" --config "$CONFIG"
 
-      - name: Verify deployed health and read-only lock
+      - name: Prove mutating US mode is blocked by read-only policy
         shell: bash
         run: |
           set -euo pipefail
-          body="$(curl --silent --show-error --fail-with-body https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health)"
-          jq -e '.ok == true and .execution_enabled == true and .execution_level == "read_only"' <<<"$body" >/dev/null
-          jq -e '[.markets[] | select(.enabled == true) | .country] | sort == ["UK","US"]' <<<"$body" >/dev/null
-          printf '%s\n' "$body" > global-health.json
+          instance_id="global-blocked-us-acquire-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          params='{"country":"US","state_code":"NY","mode":"acquire"}'
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}?simple=true"
+          proved=false
+          for attempt in $(seq 1 45); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "errored" ]]; then
+              message="$(jq -r '.result.error.message // empty' <<<"$body")"
+              if [[ "$message" != *"Global acquisition controller is read-only"* ]]; then
+                echo "Unexpected blocked-mode error: $message" >&2
+                exit 1
+              fi
+              printf '%s\n' "$body" > global-readonly-blocked-mutation-result.json
+              echo 'Global read-only execution policy rejected US acquire before production acquisition.' >> "$GITHUB_STEP_SUMMARY"
+              proved=true
+              break
+            fi
+            if [[ "$status" == "complete" || "$status" == "terminated" ]]; then
+              echo "Mutating probe reached unexpected terminal status: $status" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          [[ "$proved" == "true" ]] || { echo 'Mutating US acquire probe did not reach the expected fail-closed state.' >&2; exit 1; }
 
       - name: Run bounded US read-only parity poll
         shell: bash
@@ -110,19 +132,6 @@ jobs:
             sleep 5
           done
           [[ "$completed" == "true" ]] || { echo 'US global read-only poll timed out.' >&2; exit 1; }
-
-      - name: Prove mutating US mode is blocked
-        shell: bash
-        run: |
-          set -euo pipefail
-          response="$(curl --silent --show-error --write-out '\n%{http_code}' \
-            -X POST https://findpitches-global-acquisition-shadow.ctucker.workers.dev/run \
-            -H 'content-type: application/json' \
-            --data '{"country":"US","state_code":"NY","mode":"acquire"}')"
-          body="$(sed '$d' <<<"$response")"
-          status="$(tail -n1 <<<"$response")"
-          [[ "$status" == "400" ]] || { echo "Expected HTTP 400, got $status" >&2; exit 1; }
-          jq -e '.ok == false and (.error | contains("read-only"))' <<<"$body" >/dev/null
 
       - name: Run full UK read-only parity poll
         shell: bash
@@ -161,7 +170,7 @@ jobs:
         with:
           name: global-acquisition-shadow-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            global-health.json
+            global-readonly-blocked-mutation-result.json
             global-us-readonly-result.json
             global-uk-readonly-result.json
           if-no-files-found: ignore
