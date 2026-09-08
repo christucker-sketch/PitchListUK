@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T23:20:22.785Z",
+  "updated_at": "2026-09-08T23:25:05.673Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -13514,6 +13514,24 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-white-plains-2027-festival: live first-party route attests White Plains, NY, actionable vendor terms, and exact event date 2027-06-06."
+    },
+    {
+      "id": "ny-m-t-bank-clothesline-art-fine-craft-festival-artist-2027-08-29-0f9d462e",
+      "name": "M&T Bank Clothesline Art & Fine Craft Festival Artist Applications Vendor Opportunity",
+      "organiser": "M&T Bank Clothesline Art & Fine Craft Festival Artist",
+      "source_url": "https://mag.rochester.edu/clothesline/clothesline-artist-applications",
+      "application_url": "https://mag.rochester.edu/clothesline/clothesline-artist-applications",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Rochester",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-29",
+      "event_end": "2027-08-29",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-rochester-2027-arts-crafts: live first-party route attests Rochester, NY, actionable vendor terms, and exact event date 2027-08-29."
     },
     {
       "id": "ny-midday-bash-2026-09-09-7393f319",
