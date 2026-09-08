@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T12:34:05.112Z",
+  "updated_at": "2026-09-08T12:39:01.645Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14885,6 +14885,24 @@
       "evidence": "Cloudflare discovery tn-nashville-2026-arts-crafts: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date 2026-09-06."
     },
     {
+      "id": "tn-nashville-winter-wonderland-craft-vendor-market-hometown-vendor-market-2026-12-05-16dbdc3c",
+      "name": "Nashville Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Nashville Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/nashvillewinterwonderland2026",
+      "application_url": "https://hometownvendormarket.com/nashvillewinterwonderland2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Nashville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-nashville-2026-holiday-market: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date range 2026-12-05 to 2026-12-06."
+    },
+    {
       "id": "tn-oaklands-mansion-oaklands-mansion-calendar-of-events-oaklands-mansion-2027-04-02-4b56bfdc",
       "name": "Oaklands Mansion Oaklands Mansion Calendar of Events - Oaklands Mansion Vendor Opportunity",
       "organiser": "Oaklands Mansion Oaklands Mansion Calendar of Events - Oaklands Mansion",
@@ -14955,6 +14973,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tn-nashville-2026-arts-crafts: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date range 2026-10-09 to 2026-10-11."
+    },
+    {
+      "id": "tn-the-best-holiday-markets-pop-ups-in-nashville-city-cast-nashville-2026-11-14-8911c050",
+      "name": "The Best Holiday Markets & Pop-Ups in Nashville - City Cast Nashville Vendor Opportunity",
+      "organiser": "The Best Holiday Markets & Pop-Ups in Nashville - City Cast Nashville",
+      "source_url": "https://nashville.citycast.fm/best/holiday-markets-nashville",
+      "application_url": "https://nashville.citycast.fm/best/holiday-markets-nashville",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "region_code": "TN",
+      "locality": "Nashville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-14",
+      "event_end": "2026-11-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tn-nashville-2026-holiday-market: live first-party route attests Nashville, TN, actionable vendor terms, and exact event date range 2026-11-14 to 2026-11-16."
     },
     {
       "id": "tn-the-black-barn-holiday-market-2026-2026-11-14-4529a4b3",
