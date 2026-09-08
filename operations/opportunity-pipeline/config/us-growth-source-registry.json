@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T11:34:25.118Z",
+  "updated_at": "2026-09-08T11:38:01.158Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12270,6 +12270,24 @@
       "event_end": "2027-05-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nv-fallon-2027-arts-crafts: live first-party route attests Fallon, NV, actionable vendor terms, and exact event date range 2027-05-29 to 2027-05-30."
+    },
+    {
+      "id": "nv-fallon-farmers-market-2026-hours-location-vendors-2026-09-26-9d2353f3",
+      "name": "Fallon Farmers Market (2026 Hours, Location & Vendors) Vendor Opportunity",
+      "organiser": "Fallon Farmers Market (2026 Hours, Location & Vendors)",
+      "source_url": "https://www.cropcartmarkets.com/market/fallon-farmers-market-VM2026-02540",
+      "application_url": "https://www.cropcartmarkets.com/market/fallon-farmers-market-VM2026-02540",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "region_code": "NV",
+      "locality": "Fallon",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nv-fallon-2026-farmers-market: live first-party route attests Fallon, NV, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "nv-food-drink-vendor-c4-carson-city-card-con-eventeny-2026-11-07-f2653314",
