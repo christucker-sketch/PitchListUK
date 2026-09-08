@@ -144,6 +144,38 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
+    "host": "my.barnsley.gov.uk",
+    "organisation": "Apply to trade at a local market",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "UK trusted-source graph",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://my.barnsley.gov.uk/form/Apply-to-trade-at-a-local-market/page-1",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Apply to trade at a local market",
+    "source_path_prefix": "/form/Apply-to-trade-at-a-local-market/page-1",
+    "approval_evidence_hash": "f55ce995cc1ecaafddec74a5a6485639e5e64cb61737d83c50ed7b73d7fc7c73",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "5cb316375e435fe0f9d22a98139b68c90bbce9ba299a6626bd758584e34d7f5d"
+  },
+  {
+    "host": "my.barnsley.gov.uk",
+    "organisation": "Upload supporting documents",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "UK trusted-source graph",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://my.barnsley.gov.uk/form/Upload-supporting-documents-to-trade-at-a-local-market/page-1",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Upload supporting documents",
+    "source_path_prefix": "/form/Upload-supporting-documents-to-trade-at-a-local-market/page-1",
+    "approval_evidence_hash": "c53302a7af0d880b307855781840779b1c5d466cc04771ec9ab64d30613fb67e",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "5cb316375e435fe0f9d22a98139b68c90bbce9ba299a6626bd758584e34d7f5d"
+  },
+  {
     "host": "portsmouth.gov.uk",
     "organisation": "Portsmouth City Council",
     "type": "local-authority",
