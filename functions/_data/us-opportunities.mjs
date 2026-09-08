@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T22:33:46.183Z",
-  "source": "reviewed-us-utah-cloud-promotion:81cd5d3de03db0f694568555ffc49a1e40ed1b4629f95d7da3bc11bbd6b7568f",
-  "total": 635,
+  "exported_at": "2026-09-08T22:41:21.348Z",
+  "source": "reviewed-us-texas-cloud-promotion:37bf5db64b673f172a22062803abe6b734ee5c7403880c8bee781e42e7de4bcb",
+  "total": 636,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24120,6 +24120,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-utah",
       "id": "opp_us_387bdb6d690e3ab87dfb"
+    },
+    {
+      "stable_id": "opp_us_90463e7fa9287ab5f671",
+      "event_name": "Food Truck Permits in Dallas (2026): Statewide DSHS License + Deep Ellum Sites",
+      "organiser": "Food Truck Permits in Dallas (2026): Statewide DSHS License + Deep Ellum Sites",
+      "source_url": "https://runpitstop.com/blog/food-truck-permits-dallas",
+      "application_url": "https://runpitstop.com/blog/food-truck-permits-dallas",
+      "location": "Dallas",
+      "locality": "Dallas",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-08",
+      "event_end": "2026-09-08",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-food-truck-permits-in-dallas-2026-statewide-dshs-license-deep-ellum-si-2026-09-08-23285b5a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_90463e7fa9287ab5f671"
     }
   ]
 };
