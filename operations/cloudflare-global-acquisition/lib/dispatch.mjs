@@ -2,9 +2,11 @@ import { assertAcquisitionCountryEnabled, normalizeAcquisitionCountry } from '..
 
 const READ_ONLY_MODE = 'approved_source_cloudflare_read_only_poll';
 const UK_ADDITIONS_MODE = 'uk_additions_only_pr';
+const UK_SOURCE_DISCOVERY_MODE = 'uk_source_discovery_pr';
+const UK_PR_ONLY_MODES = Object.freeze(new Set([UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE]));
 const MODES = Object.freeze({
   US: Object.freeze(new Set(['acquire', 'discover', READ_ONLY_MODE])),
-  UK: Object.freeze(new Set([READ_ONLY_MODE, UK_ADDITIONS_MODE]))
+  UK: Object.freeze(new Set([READ_ONLY_MODE, UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE]))
 });
 
 export function resolveGlobalAcquisitionDispatch(payload = {}) {
@@ -19,7 +21,9 @@ export function resolveGlobalAcquisitionDispatch(payload = {}) {
   const handler = country === 'UK'
     ? mode === UK_ADDITIONS_MODE
       ? 'uk_additions_only_pr'
-      : 'uk_approved_source_poll'
+      : mode === UK_SOURCE_DISCOVERY_MODE
+        ? 'uk_source_discovery_pr'
+        : 'uk_approved_source_poll'
     : readOnly
       ? 'us_approved_source_poll'
       : 'us_production_workflow';
@@ -51,10 +55,10 @@ export function assertGlobalControllerDispatchAllowed(env, dispatch) {
   if (level === 'read_only' && dispatch?.mutation_capable) {
     throw new Error(`Global acquisition controller is read-only; ${dispatch.country} ${dispatch.mode} is not permitted`);
   }
-  if (level === 'pr_only' && dispatch?.mutation_capable && !(dispatch?.country === 'UK' && dispatch?.mode === UK_ADDITIONS_MODE)) {
+  if (level === 'pr_only' && dispatch?.mutation_capable && !(dispatch?.country === 'UK' && UK_PR_ONLY_MODES.has(dispatch?.mode))) {
     throw new Error(`Global acquisition controller is PR-only; ${dispatch.country} ${dispatch.mode} is not permitted`);
   }
   return true;
 }
 
-export { READ_ONLY_MODE, UK_ADDITIONS_MODE };
+export { READ_ONLY_MODE, UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE };

@@ -29,14 +29,17 @@ test('US dispatch supports production modes plus the shared read-only poll mode'
   assert.equal(readOnly.mutation_capable, false);
 });
 
-test('UK dispatch exposes read-only polling plus additions-only PR planning', () => {
+test('UK dispatch exposes polling, additions-only PRs and source-registry PR discovery', () => {
   const poll = resolveGlobalAcquisitionDispatch({ country: 'GB' });
   const additions = resolveGlobalAcquisitionDispatch({ country: 'UK', mode: 'uk_additions_only_pr' });
+  const sourceDiscovery = resolveGlobalAcquisitionDispatch({ country: 'UK', mode: 'uk_source_discovery_pr' });
   assert.equal(poll.country, 'UK');
   assert.equal(poll.handler, 'uk_approved_source_poll');
   assert.equal(poll.mutation_capable, false);
   assert.equal(additions.handler, 'uk_additions_only_pr');
   assert.equal(additions.mutation_capable, true);
+  assert.equal(sourceDiscovery.handler, 'uk_source_discovery_pr');
+  assert.equal(sourceDiscovery.mutation_capable, true);
   assert.throws(
     () => resolveGlobalAcquisitionDispatch({ country: 'UK', mode: 'discover' }),
     /Unsupported UK global acquisition mode/
@@ -48,23 +51,27 @@ test('read-only execution level permits evidence polling and blocks every mutati
   const usPoll = resolveGlobalAcquisitionDispatch({ country: 'US', state_code: 'NY' });
   const ukPoll = resolveGlobalAcquisitionDispatch({ country: 'UK' });
   const ukAdditions = resolveGlobalAcquisitionDispatch({ country: 'UK', mode: 'uk_additions_only_pr' });
+  const ukSourceDiscovery = resolveGlobalAcquisitionDispatch({ country: 'UK', mode: 'uk_source_discovery_pr' });
   const acquire = resolveGlobalAcquisitionDispatch({ country: 'US', state_code: 'NY', mode: 'acquire' });
   const discover = resolveGlobalAcquisitionDispatch({ country: 'US', state_code: 'NY', mode: 'discover' });
   assert.equal(assertGlobalControllerDispatchAllowed(env, usPoll), true);
   assert.equal(assertGlobalControllerDispatchAllowed(env, ukPoll), true);
   assert.throws(() => assertGlobalControllerDispatchAllowed(env, ukAdditions), /read-only/);
+  assert.throws(() => assertGlobalControllerDispatchAllowed(env, ukSourceDiscovery), /read-only/);
   assert.throws(() => assertGlobalControllerDispatchAllowed(env, acquire), /read-only/);
   assert.throws(() => assertGlobalControllerDispatchAllowed(env, discover), /read-only/);
 });
 
-test('PR-only execution level permits UK additions PRs but still blocks US production modes', () => {
+test('PR-only execution level permits only UK PR mutations and still blocks US production modes', () => {
   const env = { GLOBAL_ACQUISITION_EXECUTION_ENABLED: 'true', GLOBAL_ACQUISITION_EXECUTION_LEVEL: 'pr_only' };
   const ukAdditions = resolveGlobalAcquisitionDispatch({ country: 'UK', mode: 'uk_additions_only_pr' });
+  const ukSourceDiscovery = resolveGlobalAcquisitionDispatch({ country: 'UK', mode: 'uk_source_discovery_pr' });
   const ukPoll = resolveGlobalAcquisitionDispatch({ country: 'UK' });
   const usPoll = resolveGlobalAcquisitionDispatch({ country: 'US', state_code: 'NY' });
   const acquire = resolveGlobalAcquisitionDispatch({ country: 'US', state_code: 'NY', mode: 'acquire' });
   const discover = resolveGlobalAcquisitionDispatch({ country: 'US', state_code: 'NY', mode: 'discover' });
   assert.equal(assertGlobalControllerDispatchAllowed(env, ukAdditions), true);
+  assert.equal(assertGlobalControllerDispatchAllowed(env, ukSourceDiscovery), true);
   assert.equal(assertGlobalControllerDispatchAllowed(env, ukPoll), true);
   assert.equal(assertGlobalControllerDispatchAllowed(env, usPoll), true);
   assert.throws(() => assertGlobalControllerDispatchAllowed(env, acquire), /PR-only/);
