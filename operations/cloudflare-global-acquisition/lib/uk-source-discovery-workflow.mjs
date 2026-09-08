@@ -1,4 +1,5 @@
 import { runUkSourceDiscovery } from './uk-source-discovery.mjs';
+import { searchViaSerperBroker } from './service-serper-search.mjs';
 import {
   openUkSourcePullRequest,
   planUkSourceRegistry,
@@ -29,6 +30,8 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     candidate_limit: boundedNumber(payload.candidate_limit, 30, 50),
     concurrency: boundedNumber(payload.concurrency, 2, 3),
     timeout_ms: boundedNumber(payload.timeout_ms, 12000, 20000, 5000)
+  }, {
+    search: searchViaSerperBroker
   }));
 
   const plan = await step.do('build additions-only UK source promotion plan', async () => (

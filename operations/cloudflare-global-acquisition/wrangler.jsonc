@@ -17,6 +17,12 @@
       "class_name": "GlobalAcquisitionWorkflow"
     }
   ],
+  "services": [
+    {
+      "binding": "SERPER_BROKER",
+      "service": "pitchlist-texas-acquisition"
+    }
+  ],
   "vars": {
     "GITHUB_REPO": "christucker-sketch/PitchListUK",
     "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "true",
