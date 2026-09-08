@@ -4,6 +4,7 @@ import { TexasAcquisitionWorkflow } from '../../cloudflare-texas-acquisition/src
 import { UkApprovedSourcePollWorkflow } from '../../cloudflare-uk-canary/src/index.js';
 import { globalAcquisitionMarkets } from '../../../platform/acquisition/global-engine.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
+import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
 import {
   assertGlobalControllerDispatchAllowed,
   globalControllerExecutionEnabled,
@@ -24,6 +25,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
 
     if (dispatch.handler === 'us_production_workflow') {
       return TexasAcquisitionWorkflow.prototype.run.call({ env: this.env }, {
+        ...event,
+        payload: dispatch.payload
+      }, step);
+    }
+
+    if (dispatch.handler === 'uk_additions_only_pr') {
+      return runUkAdditionsOnlyWorkflow(this.env, {
         ...event,
         payload: dispatch.payload
       }, step);
