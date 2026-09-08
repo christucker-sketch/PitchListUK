@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T12:13:40.682Z",
-  "source": "reviewed-us-texas-cloud-promotion:2b3392b0e86ab12f1341d8d599c210d2fb02c27bc15883e2ece484a7fe109cd6",
-  "total": 611,
+  "exported_at": "2026-09-08T12:25:10.883Z",
+  "source": "reviewed-us-michigan-cloud-promotion:bbf93048cd20595c9bf27f92eec0435104b7441f2fe28165586672cf448d184f",
+  "total": 612,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23218,6 +23218,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_3e4916d1986de19ab7c5"
+    },
+    {
+      "stable_id": "opp_us_6ddd37d489bb3cede9ce",
+      "event_name": "All Things Detroit Holiday Shopping Experience 2026 Vendor Opportunity",
+      "organiser": "All Things Detroit Holiday Shopping Experience 2026",
+      "source_url": "https://form.jotform.com/261168824936063",
+      "application_url": "https://form.jotform.com/261168824936063",
+      "location": "Detroit",
+      "locality": "Detroit",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-08",
+      "event_end": "2026-11-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-all-things-detroit-holiday-shopping-experience-2026-2026-11-08-b7dcd09a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_6ddd37d489bb3cede9ce"
     }
   ]
 };
