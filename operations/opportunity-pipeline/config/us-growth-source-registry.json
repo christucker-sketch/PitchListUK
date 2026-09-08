@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T23:06:37.183Z",
+  "updated_at": "2026-09-08T23:14:06.806Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6002,6 +6002,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ia-burlington-2026-farmers-market: live first-party route attests Burlington, IA, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
+    },
+    {
+      "id": "ia-food-trucks-des-moines-iowa-ankeny-uptown-farmers-market-2026-09-27-00a84847",
+      "name": "Food Trucks Des Moines Iowa: Ankeny Uptown Farmers Market Vendor Opportunity",
+      "organiser": "Food Trucks Des Moines Iowa: Ankeny Uptown Farmers Market",
+      "source_url": "https://www.foodtrucksdsm.com/theuptownankeny",
+      "application_url": "https://www.foodtrucksdsm.com/theuptownankeny",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Ankeny",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-ankeny-2026-food-truck: live first-party route attests Ankeny, IA, actionable vendor terms, and exact event date 2026-09-27."
     },
     {
       "id": "ia-home-ankeny-chamber-summerfest-2027-07-09-b770fe80",
