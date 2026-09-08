@@ -7,6 +7,7 @@ import {
   serializeAcquisitionSnapshotModule
 } from '../../../platform/acquisition/global-engine.mjs';
 import { assertMainUnchanged } from '../../cloudflare-texas-acquisition/src/data-branch-name.js';
+import { openPullRequestViaBroker } from './github-pr-broker.mjs';
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -36,6 +37,12 @@ async function githubRequest(env, path, options = {}) {
 }
 
 export async function githubJson(env, path, options = {}) {
+  if (path === '/pulls' && String(options.method || 'GET').toUpperCase() === 'POST') {
+    let payload = {};
+    try { payload = JSON.parse(String(options.body || '{}')); } catch { throw new Error('GitHub PR payload is invalid JSON'); }
+    const result = await openPullRequestViaBroker(env, payload);
+    return { number: result.pr_number, html_url: result.pr_url };
+  }
   const { response, body } = await githubRequest(env, path, options);
   if (!response.ok) throw new Error(`GitHub ${response.status}: ${body?.message || response.statusText}`);
   return body;
@@ -135,14 +142,7 @@ export async function openUkAdditionPullRequest(env, options = {}) {
   const existingPrs = await githubJson(env, `/pulls?state=open&head=${encodeURIComponent(`${owner}:${branch}`)}&base=main`);
   if (Array.isArray(existingPrs) && existingPrs.length) {
     const pr = existingPrs[0];
-    return Object.freeze({
-      created: false,
-      reused: true,
-      branch,
-      pr_number: pr.number,
-      pr_url: pr.html_url,
-      additions
-    });
+    return Object.freeze({ created: false, reused: true, branch, pr_number: pr.number, pr_url: pr.html_url, additions });
   }
 
   const heldExisting = manifest?.automation?.held_existing_routes || [];
@@ -169,11 +169,5 @@ export async function openUkAdditionPullRequest(env, options = {}) {
     })
   });
 
-  return Object.freeze({
-    created: true,
-    branch,
-    pr_number: pr.number,
-    pr_url: pr.html_url,
-    additions
-  });
+  return Object.freeze({ created: true, branch, pr_number: pr.number, pr_url: pr.html_url, additions });
 }

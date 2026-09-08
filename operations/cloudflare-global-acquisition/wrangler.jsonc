@@ -21,6 +21,10 @@
     {
       "binding": "SERPER_BROKER",
       "service": "pitchlist-texas-acquisition"
+    },
+    {
+      "binding": "GITHUB_PR_BROKER",
+      "service": "pitchlist-texas-acquisition"
     }
   ],
   "vars": {
