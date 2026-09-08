@@ -88,6 +88,7 @@ function buildAutomaticAdditionManifest({
     const keys = [...duplicateKeys(row)];
     if (keys.some(key => existingKeys.has(key))) {
       duplicateRows += 1;
+      held.push({ source_url: staged.source_url, reason: 'duplicate_identity_already_in_production' });
       continue;
     }
 
@@ -112,7 +113,9 @@ function buildAutomaticAdditionManifest({
   const growthPercent = snapshot.rows.length ? additions.length / snapshot.rows.length * 100 : 0;
   if (growthPercent > maxGrowthPercent) throw new Error(`automatic_manifest_growth_percent_exceeded:${growthPercent.toFixed(2)}`);
   const duplicateRate = eligibleNewRows ? duplicateRows / eligibleNewRows * 100 : 0;
-  if (duplicateRate > maxDuplicateRate) throw new Error(`automatic_manifest_duplicate_rate_exceeded:${duplicateRate.toFixed(2)}`);
+  if (additions.length > 0 && duplicateRate > maxDuplicateRate) {
+    throw new Error(`automatic_manifest_duplicate_rate_exceeded:${duplicateRate.toFixed(2)}`);
+  }
 
   return {
     manifest_version: 1,
