@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T17:08:03.792Z",
+  "updated_at": "2026-09-08T17:11:46.397Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -3625,6 +3625,25 @@
       "event_end": "2027-05-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-orlando-2027-festival: live first-party route attests Orlando, FL, actionable vendor terms, and exact event date range 2027-05-06 to 2027-05-07."
+    },
+    {
+      "id": "fl-food-2027-02-27-06b47ddc",
+      "name": "Food Vendor Application",
+      "organiser": "Food",
+      "source_url": "https://www.emeraldsocietysfl.com/food-vendor-application",
+      "application_url": "https://www.emeraldsocietysfl.com/food-vendor-application",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Miami",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-27",
+      "event_end": "2027-02-27",
+      "application_deadline": "2027-02-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-miami-2027-festival: live first-party route attests Miami, FL, actionable vendor terms, and exact event date 2027-02-27."
     },
     {
       "id": "fl-food-cart-exhibitor-2026-lagoonfest-eventeny-2026-10-31-cded3f51",
