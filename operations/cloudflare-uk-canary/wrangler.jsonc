@@ -15,6 +15,11 @@
       "name": "findpitches-uk-acquisition-canary",
       "binding": "UK_ACQUISITION_CANARY",
       "class_name": "UkCloudflareCanaryWorkflow"
+    },
+    {
+      "name": "findpitches-uk-approved-source-poll",
+      "binding": "UK_APPROVED_SOURCE_POLL",
+      "class_name": "UkApprovedSourcePollWorkflow"
     }
   ]
 }
