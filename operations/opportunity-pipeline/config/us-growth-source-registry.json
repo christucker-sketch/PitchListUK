@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T22:50:25.951Z",
+  "updated_at": "2026-09-08T22:57:46.353Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2633,6 +2633,24 @@
       "event_end": "2027-06-06",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-durango-2027-festival: live first-party route attests Durango, CO, actionable vendor terms, and exact event date range 2027-06-04 to 2027-06-06."
+    },
+    {
+      "id": "co-small-business-craft-vendors-holiday-tree-lighting-and-merry-makers-ma-2026-12-08-28ad573c",
+      "name": "Small Business/Craft Vendors - Holiday Tree Lighting and Merry Makers Market 2026 - Eventeny Vendor Opportunity",
+      "organiser": "Small Business/Craft Vendors - Holiday Tree Lighting and Merry Makers Market 2026 - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=47947",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=47947",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Aurora",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-08",
+      "event_end": "2026-12-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-aurora-2026-holiday-market: live first-party route attests Aurora, CO, actionable vendor terms, and exact event date 2026-12-08."
     },
     {
       "id": "co-summer-market-2026-09-16-02ee3f77",
