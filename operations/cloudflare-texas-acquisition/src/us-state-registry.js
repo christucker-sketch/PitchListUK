@@ -1,3 +1,4 @@
+import { buildGlobalAcquisitionUnit } from '../../../platform/acquisition/global-engine.mjs';
 import { TEXAS_SOURCES } from '../../opportunity-pipeline/config/texas-source-registry.js';
 import { FLORIDA_SOURCES } from '../../opportunity-pipeline/config/florida-sources.js';
 import { CALIFORNIA_SOURCES } from '../../opportunity-pipeline/config/california-source-registry.js';
@@ -49,7 +50,16 @@ import { VERMONT_SOURCES } from '../../opportunity-pipeline/config/vermont-sourc
 import { WEST_VIRGINIA_SOURCES } from '../../opportunity-pipeline/config/west-virginia-source-registry.js';
 import { WYOMING_SOURCES } from '../../opportunity-pipeline/config/wyoming-source-registry.js';
 
-const entry = (code, name, slug, order, sources, options = {}) => Object.freeze({ code, name, slug, jurisdiction: `US-${code}`, enabled: true, schedule_order: order, sources, snapshot_path: 'functions/_data/us-opportunities.mjs', ...options });
+const entry = (code, name, slug, order, sources, options = {}) => buildGlobalAcquisitionUnit('US', {
+  code,
+  name,
+  slug,
+  jurisdiction: `US-${code}`,
+  enabled: true,
+  schedule_order: order,
+  sources,
+  ...options
+});
 
 export const US_STATE_ACQUISITION = Object.freeze({
   TX: entry('TX','Texas','texas',10,TEXAS_SOURCES), FL: entry('FL','Florida','florida',20,FLORIDA_SOURCES), CA: entry('CA','California','california',30,CALIFORNIA_SOURCES), NY: entry('NY','New York','new-york',40,NEW_YORK_SOURCES),
