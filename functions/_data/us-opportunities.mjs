@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T16:55:48.725Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:68820130b7711cf83d65d18f1d1989206c1623c835cdcd07079031c3d884dcfa",
-  "total": 625,
+  "exported_at": "2026-09-08T16:58:45.231Z",
+  "source": "reviewed-us-nebraska-cloud-promotion:26eef3cd357da35378c8759fa1345e650d0511f08565d4da2127ae0233157ff0",
+  "total": 626,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23747,6 +23747,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_e2e93181ace422e3d5e7"
+    },
+    {
+      "stable_id": "opp_us_da19f8d980fa4f93ae3a",
+      "event_name": "News & Updates Vendor Opportunity",
+      "organiser": "News & Updates",
+      "source_url": "https://omahafarmersmarket.com/news-updates/",
+      "application_url": "https://omahafarmersmarket.com/news-updates",
+      "location": "Omaha",
+      "locality": "Omaha",
+      "region": "Nebraska",
+      "region_code": "NE",
+      "region_name": "Nebraska",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-06",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ne-news-updates-2026-12-05-9ef9cd5e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nebraska",
+      "id": "opp_us_da19f8d980fa4f93ae3a"
     }
   ]
 };
