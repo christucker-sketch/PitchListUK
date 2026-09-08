@@ -13,12 +13,48 @@ test('healthy production reports growth, clean geography, coverage, headers and 
   const result = evaluateOpportunityHealth({ now: '2026-08-21T16:00:00Z', snapshot: { exported_at: '2026-08-21T15:00:00Z', rows }, receipts: [{ generated_at: '2026-08-21T15:30:00Z', before_count: 279, after_count: 282 }], headers, cloudflareSha: 'abc', expectedSha: 'abc' });
   assert.equal(result.healthy, true);
   assert.equal(result.metrics.foreign_records, 0);
+  assert.equal(result.metrics.production_snapshot_matches_expected, true);
 });
 
 test('alerts cover stale or shrinking quality, failed growth, contamination, headers, SHA and low credits', () => {
   const result = evaluateOpportunityHealth({ now: '2026-08-21T16:00:00Z', snapshot: { exported_at: '2026-07-01T00:00:00Z', rows: [row({ country: 'United States', jurisdiction: 'US', event_end: '2026-01-01' })] }, receipts: [], headers: '', cloudflareSha: 'old', expectedSha: 'new', serperRemaining: 10, serperReserve: 100 });
   const codes = result.alerts.map(item => item.code);
   for (const code of ['production_dataset_stale', 'zero_valid_growth_7_days', 'foreign_contamination', 'expired_production_records', 'north_east_coverage_regression', 'south_yorkshire_coverage_regression', 'required_security_header_missing', 'production_sha_mismatch', 'serper_credits_low']) assert.ok(codes.includes(code));
+});
+
+test('US-only commits do not create a UK production SHA mismatch when the UK snapshot blob is unchanged', () => {
+  const result = evaluateOpportunityHealth({
+    now: '2026-09-08T15:30:00Z',
+    snapshot: { exported_at: '2026-09-08T15:00:00Z', rows: [] },
+    receipts: [{ generated_at: '2026-09-08T15:10:00Z', before_count: 1, after_count: 2 }],
+    headers,
+    cloudflareSha: '802cb5b6',
+    expectedSha: 'd076beaf',
+    cloudflareSnapshotSha: 'same-uk-blob',
+    expectedSnapshotSha: 'same-uk-blob',
+    minNorthEast: 0,
+    minSouthYorkshire: 0
+  });
+  assert.equal(result.alerts.some(item => item.code === 'production_sha_mismatch'), false);
+  assert.equal(result.metrics.production_sha_matches_exactly, false);
+  assert.equal(result.metrics.production_snapshot_matches_expected, true);
+});
+
+test('a genuinely changed UK snapshot still creates a production SHA mismatch', () => {
+  const result = evaluateOpportunityHealth({
+    now: '2026-09-08T15:30:00Z',
+    snapshot: { exported_at: '2026-09-08T15:00:00Z', rows: [] },
+    receipts: [{ generated_at: '2026-09-08T15:10:00Z', before_count: 1, after_count: 2 }],
+    headers,
+    cloudflareSha: 'old',
+    expectedSha: 'new',
+    cloudflareSnapshotSha: 'old-uk-blob',
+    expectedSnapshotSha: 'new-uk-blob',
+    minNorthEast: 0,
+    minSouthYorkshire: 0
+  });
+  assert.equal(result.alerts.some(item => item.code === 'production_sha_mismatch'), true);
+  assert.equal(result.metrics.production_snapshot_matches_expected, false);
 });
 
 test('default dataset-age threshold covers the longest approved-source polling interval', () => {

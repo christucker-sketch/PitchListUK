@@ -6,6 +6,7 @@ const path = require('path');
 const { parseSnapshot, REQUIRED_HEADERS } = require('./lib/reviewed-opportunity-publisher');
 
 const DEFAULT_MAX_DATASET_AGE_HOURS = 31 * 24;
+const UK_SNAPSHOT_PATH = 'functions/_data/opportunities.mjs';
 
 function alertNotification(report) {
   const alerts = Array.isArray(report?.alerts) ? report.alerts : [];
@@ -41,6 +42,12 @@ function evaluateOpportunityHealth(input) {
   const awaitingReview = candidates.filter(item => item.approval_status === 'pending' && item.classification === 'manual-review-required').length;
   const zeroYieldSources = sources.filter(item => Number(item.observed_yield?.customer_ready || item.observed_candidate_yield || 0) === 0).length;
   const headers = String(input.headers || '').toLowerCase();
+  const exactDeploymentSha = Boolean(input.cloudflareSha && input.expectedSha && input.cloudflareSha === input.expectedSha);
+  const equivalentUkSnapshot = Boolean(
+    input.cloudflareSha && input.expectedSha && input.cloudflareSha !== input.expectedSha
+    && input.cloudflareSnapshotSha && input.expectedSnapshotSha
+    && input.cloudflareSnapshotSha === input.expectedSnapshotSha
+  );
 
   if (!Number.isFinite(ageHours) || ageHours > Number(input.maxDatasetAgeHours ?? DEFAULT_MAX_DATASET_AGE_HOURS)) add('production_dataset_stale', Math.round(ageHours));
   if (!recentGrowth.length) add('zero_valid_growth_7_days', 0);
@@ -52,7 +59,7 @@ function evaluateOpportunityHealth(input) {
   if (northEast < Number(input.minNorthEast || 12)) add('north_east_coverage_regression', northEast);
   if (southYorkshire < Number(input.minSouthYorkshire || 4)) add('south_yorkshire_coverage_regression', southYorkshire);
   for (const required of REQUIRED_HEADERS) if (!headers.includes(required.toLowerCase())) add('required_security_header_missing', required.split(':')[0]);
-  if (!input.cloudflareSha || input.cloudflareSha !== input.expectedSha) add('production_sha_mismatch', `${input.cloudflareSha || 'missing'} != ${input.expectedSha || 'missing'}`);
+  if (!exactDeploymentSha && !equivalentUkSnapshot) add('production_sha_mismatch', `${input.cloudflareSha || 'missing'} != ${input.expectedSha || 'missing'}`);
   if (Number.isFinite(input.serperRemaining) && input.serperRemaining < Number(input.serperReserve || 100)) add('serper_credits_low', input.serperRemaining);
 
   return {
@@ -72,6 +79,8 @@ function evaluateOpportunityHealth(input) {
       expired_records: expired.length,
       north_east_records: northEast,
       south_yorkshire_records: southYorkshire,
+      production_sha_matches_exactly: exactDeploymentSha,
+      production_snapshot_matches_expected: exactDeploymentSha || equivalentUkSnapshot,
       serper_balance_monitored: Number.isFinite(input.serperRemaining)
     }
   };
@@ -84,6 +93,27 @@ function readReceipts(directory) {
   });
 }
 
+async function fetchGitHubBlobSha(repo, filePath, ref, token = '') {
+  if (!repo || !filePath || !ref) return '';
+  try {
+    const headers = {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'PitchListUK-opportunity-health/1.0',
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const response = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}?ref=${encodeURIComponent(ref)}`, {
+      headers,
+      signal: AbortSignal.timeout(15000)
+    });
+    if (!response.ok) return '';
+    const body = await response.json();
+    return String(body?.sha || '');
+  } catch {
+    return '';
+  }
+}
+
 async function main() {
   const runtime = process.env.PITCHLIST_PIPELINE_RUNTIME_DIR;
   const expectedSha = process.env.PITCHLIST_EXPECTED_SHA;
@@ -91,7 +121,7 @@ async function main() {
   const account = process.env.CLOUDFLARE_ACCOUNT_ID;
   if (!runtime || !path.isAbsolute(runtime) || !expectedSha || !token || !account) throw new Error('opportunity_health_configuration_missing');
   const root = path.resolve(__dirname, '..');
-  const snapshot = parseSnapshot(fs.readFileSync(path.join(root, 'functions/_data/opportunities.mjs'), 'utf8'));
+  const snapshot = parseSnapshot(fs.readFileSync(path.join(root, UK_SNAPSHOT_PATH), 'utf8'));
   const { APPROVED_SOURCES } = require('../operations/opportunity-pipeline/config/sources');
   const candidatePath = path.join(runtime, 'data', 'source-candidates', 'registry.json');
   const sourceCandidates = fs.existsSync(candidatePath) ? JSON.parse(fs.readFileSync(candidatePath, 'utf8')).records || [] : [];
@@ -102,14 +132,27 @@ async function main() {
   if (!live.ok || !deployments.ok) throw new Error('opportunity_health_live_probe_failed');
   const deploymentBody = await deployments.json();
   const production = deploymentBody.result?.find(item => item.environment === 'production');
+  const cloudflareSha = production?.deployment_trigger?.metadata?.commit_hash || '';
+  let cloudflareSnapshotSha = '';
+  let expectedSnapshotSha = '';
+  if (cloudflareSha && expectedSha && cloudflareSha !== expectedSha) {
+    const githubRepo = process.env.PITCHLIST_GITHUB_REPO || 'christucker-sketch/PitchListUK';
+    const githubToken = process.env.GITHUB_TOKEN || '';
+    [cloudflareSnapshotSha, expectedSnapshotSha] = await Promise.all([
+      fetchGitHubBlobSha(githubRepo, UK_SNAPSHOT_PATH, cloudflareSha, githubToken),
+      fetchGitHubBlobSha(githubRepo, UK_SNAPSHOT_PATH, expectedSha, githubToken)
+    ]);
+  }
   const result = evaluateOpportunityHealth({
     snapshot,
     sources: APPROVED_SOURCES,
     sourceCandidates,
     receipts: readReceipts(path.join(runtime, 'data', 'publish-receipts')),
     headers: [...live.headers].map(([key, value]) => `${key}: ${value}`).join('\n'),
-    cloudflareSha: production?.deployment_trigger?.metadata?.commit_hash || '',
+    cloudflareSha,
     expectedSha,
+    cloudflareSnapshotSha,
+    expectedSnapshotSha,
     serperRemaining: process.env.SERPER_CREDITS_REMAINING === undefined ? NaN : Number(process.env.SERPER_CREDITS_REMAINING),
     serperReserve: Number(process.env.PITCHLIST_SERPER_CREDIT_RESERVE || 100),
     minNorthEast: Number(process.env.PITCHLIST_MIN_NORTH_EAST_RECORDS || 12),
@@ -126,4 +169,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => { console.error(String(error.message || error).replace(/[^a-z0-9_.,:/ -]+/gi, '')); process.exit(1); });
-module.exports = { DEFAULT_MAX_DATASET_AGE_HOURS, alertNotification, evaluateOpportunityHealth, readReceipts };
+module.exports = { DEFAULT_MAX_DATASET_AGE_HOURS, UK_SNAPSHOT_PATH, alertNotification, evaluateOpportunityHealth, fetchGitHubBlobSha, readReceipts };
