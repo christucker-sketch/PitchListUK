@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T23:07:39.602Z",
-  "source": "reviewed-us-oregon-cloud-promotion:7052b584199c4ae7b10a9b412d08d0249a288c3eb5e3b869d556604765f4378d",
-  "total": 640,
+  "exported_at": "2026-09-08T23:15:11.483Z",
+  "source": "reviewed-us-iowa-cloud-promotion:8f4608f0be7ac5acb327f7f2a7dc156c296942331bfdcc40404d0d81fa3d0f12",
+  "total": 641,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24313,6 +24313,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oregon",
       "id": "opp_us_285a09fe6e140556d170"
+    },
+    {
+      "stable_id": "opp_us_bd1df450714a2db82c3c",
+      "event_name": "Food Trucks Des Moines Iowa: Ankeny Uptown Farmers Market Vendor Opportunity",
+      "organiser": "Food Trucks Des Moines Iowa: Ankeny Uptown Farmers Market",
+      "source_url": "https://www.foodtrucksdsm.com/theuptownankeny/",
+      "application_url": "https://www.foodtrucksdsm.com/theuptownankeny",
+      "location": "Ankeny",
+      "locality": "Ankeny",
+      "region": "Iowa",
+      "region_code": "IA",
+      "region_name": "Iowa",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-27",
+      "event_end": "2026-09-27",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ia-food-trucks-des-moines-iowa-ankeny-uptown-farmers-market-2026-09-27-00a84847",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-iowa",
+      "id": "opp_us_bd1df450714a2db82c3c"
     }
   ]
 };
