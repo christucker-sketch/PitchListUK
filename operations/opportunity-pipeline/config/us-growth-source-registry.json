@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T23:30:01.244Z",
+  "updated_at": "2026-09-08T23:37:23.583Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -17411,6 +17411,24 @@
       "event_end": "2027-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wa-bellingham-2027-festival: live first-party route attests Bellingham, WA, actionable vendor terms, and exact event date range 2027-09-26 to 2027-09-27."
+    },
+    {
+      "id": "wa-food-safety-program-chelan-douglas-health-2027-01-01-aa6f5579",
+      "name": "Food Safety Program - Chelan Douglas Health Vendor Opportunity",
+      "organiser": "Food Safety Program - Chelan Douglas Health",
+      "source_url": "https://www.cdhd.wa.gov/food-safety-program",
+      "application_url": "https://www.cdhd.wa.gov/food-safety-program",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "region_code": "WA",
+      "locality": "Tacoma",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wa-tacoma-2027-food-truck: live first-party route attests Tacoma, WA, actionable vendor terms, and exact event date 2027-01-01."
     },
     {
       "id": "wa-growers-markets-and-farm-stores-2026-09-30-eb9de2f2",
