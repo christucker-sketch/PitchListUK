@@ -61,7 +61,7 @@ function reasonCounts(results = []) {
   return counts;
 }
 
-function compactReviewedRow(source, finalUrl, row) {
+function compactReviewedRow(source, finalUrl, row, options = {}) {
   const status = row.quality_status === 'customer_ready'
     ? 'passed'
     : row.quality_status === 'rejected'
@@ -85,7 +85,8 @@ function compactReviewedRow(source, finalUrl, row) {
     event_end: row.event_end || '',
     application_deadline: row.application_deadline || '',
     application_url: row.application_url || '',
-    publishable: row.publishable === true
+    publishable: row.publishable === true,
+    ...(options.include_reviewed_row === true ? { reviewed_row: Object.freeze({ ...row }) } : {})
   });
 }
 
@@ -157,7 +158,7 @@ async function pollOneSource(source, options = {}) {
   }, html, today);
   const reviewed = evaluateOpportunity(extracted, { now });
   return Object.freeze({
-    ...compactReviewedRow(source, finalUrl, reviewed),
+    ...compactReviewedRow(source, finalUrl, reviewed, options),
     attempts: Number(result.attempts || 1),
     http_status: Number(result.response?.status || 200),
     bytes_examined: new TextEncoder().encode(html).length
