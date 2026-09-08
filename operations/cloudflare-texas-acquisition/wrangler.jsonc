@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "pitchlist-texas-acquisition",
-  "main": "src/index.js",
+  "main": "src/entrypoint.js",
   "compatibility_date": "2026-08-28",
   "compatibility_flags": ["nodejs_compat"],
   "limits": {
