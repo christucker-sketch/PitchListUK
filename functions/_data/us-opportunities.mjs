@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T11:32:57.500Z",
-  "source": "reviewed-us-connecticut-cloud-promotion:74332686209644180aaf453477523e7faf60d3e20f4d975334f4a0660714b51f",
-  "total": 610,
+  "exported_at": "2026-09-08T12:13:40.682Z",
+  "source": "reviewed-us-texas-cloud-promotion:2b3392b0e86ab12f1341d8d599c210d2fb02c27bc15883e2ece484a7fe109cd6",
+  "total": 611,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23179,6 +23179,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-connecticut",
       "id": "opp_us_65df621490dba0edcf45"
+    },
+    {
+      "stable_id": "opp_us_3e4916d1986de19ab7c5",
+      "event_name": "Nutcracker in the Park | The League City Official Website!",
+      "organiser": "Nutcracker in the Park",
+      "source_url": "https://www.leaguecitytx.gov/4101/Nutcracker-in-the-Park",
+      "application_url": "https://www.leaguecitytx.gov/4101/Nutcracker-in-the-Park",
+      "location": "Houston",
+      "locality": "Houston",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "77573",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "market_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-nutcracker-in-the-park-2026-11-28-75f38dde",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_3e4916d1986de19ab7c5"
     }
   ]
 };
