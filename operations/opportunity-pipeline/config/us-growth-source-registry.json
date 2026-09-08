@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T17:17:19.114Z",
+  "updated_at": "2026-09-08T17:28:45.035Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2419,6 +2419,24 @@
       "evidence": "Cloudflare discovery co-colorado-springs-2026-holiday-market: live first-party route attests Colorado Springs, CO, actionable vendor terms, and exact event date range 2026-11-13 to 2026-11-15."
     },
     {
+      "id": "co-colorado-spring-s-maker-s-market-2027-2027-07-26-e1e198b4",
+      "name": "Colorado Spring's Maker's Market 2027 Vendor Opportunity",
+      "organiser": "Colorado Spring's Maker's Market 2027",
+      "source_url": "https://vendorsmap.com/events/35238",
+      "application_url": "https://vendorsmap.com/events/35238",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Colorado Springs",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-26",
+      "event_end": "2027-07-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-colorado-springs-2027-arts-crafts: live first-party route attests Colorado Springs, CO, actionable vendor terms, and exact event date 2027-07-26."
+    },
+    {
       "id": "co-farmers-markets-in-colorado-springs-your-guide-to-fresh-local-finds-2026-09-06-c018f9aa",
       "name": "Farmers' Markets in Colorado Springs: Your Guide to Fresh, Local Finds Vendor Opportunity",
       "organiser": "Farmers' Markets in Colorado Springs: Your Guide to Fresh, Local Finds",
@@ -2489,6 +2507,24 @@
       "event_end": "2026-10-04",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-denver-2026-farmers-market: live first-party route attests Denver, CO, actionable vendor terms, and exact event date 2026-10-04."
+    },
+    {
+      "id": "co-huntandgathercos-com-2027-05-10-2fec066e",
+      "name": "Vendor Application &ndash; Hunt + Gather",
+      "organiser": "huntandgathercos.com",
+      "source_url": "https://huntandgathercos.com/pages/vendor-application",
+      "application_url": "https://huntandgathercos.com/pages/vendor-application",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Colorado Springs",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-10",
+      "event_end": "2027-05-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-colorado-springs-2027-arts-crafts: live first-party route attests Colorado Springs, CO, actionable vendor terms, and exact event date 2027-05-10."
     },
     {
       "id": "co-independence-day-community-celebration-city-of-fort-collins-2027-07-04-fecd9874",
