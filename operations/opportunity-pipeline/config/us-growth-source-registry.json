@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T12:30:03.646Z",
+  "updated_at": "2026-09-08T12:34:05.112Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -8559,6 +8559,24 @@
       "event_end": "2026-09-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-salem-2026-festival: live first-party route attests Salem, MA, actionable vendor terms, and exact event date range 2026-09-20 to 2026-09-21."
+    },
+    {
+      "id": "ma-eventeny-com-2026-10-23-2992120a",
+      "name": "Food Truck Application- SAVORY ONLY - 2nd Annual Harvard Athletics Fall Fest - Eventeny",
+      "organiser": "eventeny.com",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=43453",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=43453",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Boston",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-boston-2026-food-truck: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2026-10-23."
     },
     {
       "id": "ma-eventeny-com-2026-10-23-6af6de38",
