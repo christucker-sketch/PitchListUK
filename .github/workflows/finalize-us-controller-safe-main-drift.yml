@@ -21,30 +21,25 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
           p = Path('operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs')
           s = p.read_text()
-          old = """  const prefix = branchBasePrefix(expectedBranch);
-          if (!prefix) throw new Error('Auto-merge PR branch lacks original base provenance');
-          let branchBaseSha;
-          """
-          new = """  const prefix = branchBasePrefix(expectedBranch);
-          if (!prefix) throw new Error('Auto-merge PR branch lacks original base provenance');
-          if (prefix === String(baseSha).slice(0, 16).toLowerCase()) return baseSha;
-          let branchBaseSha;
-          """
-          if old not in s: raise SystemExit('base helper marker missing')
-          s = s.replace(old, new, 1)
-          old2 = """  if (pr?.baseRefOid !== baseSha) throw new Error('Auto-merge PR base is not the exact current main SHA');
-          const branchBaseSha = resolveAutoMergeBranchBase(expectedBranch, baseSha, snapshotPath);
-          if (!expectedBranch.endsWith(`-base-${String(branchBaseSha).slice(0, 16)}`)) {
-            throw new Error('Auto-merge PR branch provenance does not match its original base');
-          }
-          """
-          # Normalize in case the first patch lost indentation.
-          import re
-          pattern = re.compile(r"  if \(pr\?\.baseRefOid !== baseSha\) throw new Error\('Auto-merge PR base is not the exact current main SHA'\);\n\s*const branchBaseSha = resolveAutoMergeBranchBase\(expectedBranch, baseSha, snapshotPath\);\n\s*if \(!expectedBranch\.endsWith\(`-base-\$\{String\(branchBaseSha\)\.slice\(0, 16\)\}`\)\) \{\n\s*throw new Error\('Auto-merge PR branch provenance does not match its original base'\);\n\s*\}\n")
-          s, count = pattern.subn(old2, s, count=1)
-          if count != 1: raise SystemExit(f'validation formatting replacement count={count}')
+
+          if 'if (prefix === String(baseSha).slice(0, 16).toLowerCase()) return baseSha;' not in s:
+              pattern = re.compile(r"(const prefix = branchBasePrefix\(expectedBranch\);\s*if \(!prefix\) throw new Error\('Auto-merge PR branch lacks original base provenance'\);\s*)(let branchBaseSha;)")
+              s, count = pattern.subn(r"\1if (prefix === String(baseSha).slice(0, 16).toLowerCase()) return baseSha;\n  \2", s, count=1)
+              if count != 1: raise SystemExit(f'base helper replacement count={count}')
+
+          validation = """  if (pr?.baseRefOid !== baseSha) throw new Error('Auto-merge PR base is not the exact current main SHA');
+  const branchBaseSha = resolveAutoMergeBranchBase(expectedBranch, baseSha, snapshotPath);
+  if (!expectedBranch.endsWith(`-base-${String(branchBaseSha).slice(0, 16)}`)) {
+    throw new Error('Auto-merge PR branch provenance does not match its original base');
+  }
+"""
+          pattern = re.compile(r"\s*if \(pr\?\.baseRefOid !== baseSha\) throw new Error\('Auto-merge PR base is not the exact current main SHA'\);\s*const branchBaseSha = resolveAutoMergeBranchBase\(expectedBranch, baseSha, snapshotPath\);\s*if \(!expectedBranch\.endsWith\(`-base-\$\{String\(branchBaseSha\)\.slice\(0, 16\)\}`\)\) \{\s*throw new Error\('Auto-merge PR branch provenance does not match its original base'\);\s*\}")
+          s, count = pattern.subn('\n' + validation.rstrip(), s, count=1)
+          if count != 1: raise SystemExit(f'validation replacement count={count}')
+
           p.write_text(s)
           PY
           rm .github/workflows/finalize-us-controller-safe-main-drift.yml
