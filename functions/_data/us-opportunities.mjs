@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T16:38:00.382Z",
-  "source": "reviewed-us-tennessee-cloud-promotion:c73f6ac0076738e9192b58ca4a7d54f6eebb674dbf3e3f72684cd5ace38a9484",
-  "total": 624,
+  "exported_at": "2026-09-08T16:55:48.725Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:68820130b7711cf83d65d18f1d1989206c1623c835cdcd07079031c3d884dcfa",
+  "total": 625,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23709,6 +23709,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-tennessee",
       "id": "opp_us_dbe417f808e9c8e3d197"
+    },
+    {
+      "stable_id": "opp_us_e2e93181ace422e3d5e7",
+      "event_name": "PSA Worlds 2026 - PSAK9-AS Vendor Opportunity",
+      "organiser": "PSA Worlds 2026 - PSAK9-AS",
+      "source_url": "https://psak9-as.org/psa-worlds-2026/",
+      "application_url": "https://psak9-as.org/psa-worlds-2026",
+      "location": "Clinton",
+      "locality": "Clinton",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "11301",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-16",
+      "event_end": "2026-11-18",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-psa-worlds-2026-psak9-as-2026-11-16-324016a5",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_e2e93181ace422e3d5e7"
     }
   ]
 };
