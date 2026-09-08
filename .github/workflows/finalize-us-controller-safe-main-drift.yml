@@ -1,0 +1,59 @@
+name: Finalize US safe-main-drift controller patch
+
+on:
+  pull_request:
+    types: [synchronize]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.head_ref == 'fix/us-controller-safe-main-drift'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Finalize exact controller patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs')
+          s = p.read_text()
+          old = """  const prefix = branchBasePrefix(expectedBranch);
+          if (!prefix) throw new Error('Auto-merge PR branch lacks original base provenance');
+          let branchBaseSha;
+          """
+          new = """  const prefix = branchBasePrefix(expectedBranch);
+          if (!prefix) throw new Error('Auto-merge PR branch lacks original base provenance');
+          if (prefix === String(baseSha).slice(0, 16).toLowerCase()) return baseSha;
+          let branchBaseSha;
+          """
+          if old not in s: raise SystemExit('base helper marker missing')
+          s = s.replace(old, new, 1)
+          old2 = """  if (pr?.baseRefOid !== baseSha) throw new Error('Auto-merge PR base is not the exact current main SHA');
+          const branchBaseSha = resolveAutoMergeBranchBase(expectedBranch, baseSha, snapshotPath);
+          if (!expectedBranch.endsWith(`-base-${String(branchBaseSha).slice(0, 16)}`)) {
+            throw new Error('Auto-merge PR branch provenance does not match its original base');
+          }
+          """
+          # Normalize in case the first patch lost indentation.
+          import re
+          pattern = re.compile(r"  if \(pr\?\.baseRefOid !== baseSha\) throw new Error\('Auto-merge PR base is not the exact current main SHA'\);\n\s*const branchBaseSha = resolveAutoMergeBranchBase\(expectedBranch, baseSha, snapshotPath\);\n\s*if \(!expectedBranch\.endsWith\(`-base-\$\{String\(branchBaseSha\)\.slice\(0, 16\)\}`\)\) \{\n\s*throw new Error\('Auto-merge PR branch provenance does not match its original base'\);\n\s*\}\n")
+          s, count = pattern.subn(old2, s, count=1)
+          if count != 1: raise SystemExit(f'validation formatting replacement count={count}')
+          p.write_text(s)
+          PY
+          rm .github/workflows/finalize-us-controller-safe-main-drift.yml
+          git diff --check
+          node --test operations/opportunity-pipeline/tests/us-auto-merge-base-drift.test.js operations/opportunity-pipeline/tests/us-rollout-controller.test.js
+      - name: Commit final patch and remove workflow
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs .github/workflows/finalize-us-controller-safe-main-drift.yml
+          git commit -m "Finalize snapshot-aware US auto-merge reconciliation"
+          git push origin HEAD:${{ github.head_ref }}
