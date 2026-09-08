@@ -4,19 +4,29 @@ on:
   pull_request:
     paths:
       - 'operations/cloudflare-global-acquisition/**'
+      - 'operations/cloudflare-uk-canary/lib/uk-approved-source-poll.mjs'
+      - 'operations/opportunity-pipeline/lib/uk-addition-publication.js'
       - 'platform/acquisition/**'
       - 'platform/countries.mjs'
+      - 'scripts/build-automatic-addition-manifest.js'
       - 'tests/global-cloudflare-acquisition-controller.test.mjs'
       - 'tests/global-acquisition-engine.test.mjs'
+      - 'tests/uk-addition-publication.test.mjs'
+      - 'tests/uk-approved-source-poll-publication.test.mjs'
       - '.github/workflows/global-acquisition-shadow.yml'
   push:
     branches: [main]
     paths:
       - 'operations/cloudflare-global-acquisition/**'
+      - 'operations/cloudflare-uk-canary/lib/uk-approved-source-poll.mjs'
+      - 'operations/opportunity-pipeline/lib/uk-addition-publication.js'
       - 'platform/acquisition/**'
       - 'platform/countries.mjs'
+      - 'scripts/build-automatic-addition-manifest.js'
       - 'tests/global-cloudflare-acquisition-controller.test.mjs'
       - 'tests/global-acquisition-engine.test.mjs'
+      - 'tests/uk-addition-publication.test.mjs'
+      - 'tests/uk-approved-source-poll-publication.test.mjs'
       - '.github/workflows/global-acquisition-shadow.yml'
   workflow_dispatch:
 
@@ -40,7 +50,7 @@ jobs:
           node-version: '22'
 
       - name: Run global acquisition controller tests
-        run: node --test tests/global-acquisition-engine.test.mjs tests/global-cloudflare-acquisition-controller.test.mjs tests/country-acquisition-contract.test.mjs
+        run: node --test tests/global-acquisition-engine.test.mjs tests/global-cloudflare-acquisition-controller.test.mjs tests/country-acquisition-contract.test.mjs tests/uk-addition-publication.test.mjs tests/uk-approved-source-poll-publication.test.mjs
 
       - name: Compile global Cloudflare acquisition shadow
         run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/cloudflare-global-acquisition/wrangler.jsonc
@@ -48,14 +58,18 @@ jobs:
   deploy_and_prove:
     if: github.event_name != 'pull_request'
     needs: compile
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 45
     environment: findpitches-production
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
       WORKFLOW_NAME: findpitches-global-acquisition-shadow
+      EPHEMERAL_GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: Check out verified main
         uses: actions/checkout@v4
@@ -90,7 +104,6 @@ jobs:
                 exit 1
               fi
               printf '%s\n' "$body" > global-readonly-blocked-mutation-result.json
-              echo 'Global read-only execution policy rejected US acquire before production acquisition.' >> "$GITHUB_STEP_SUMMARY"
               proved=true
               break
             fi
@@ -118,10 +131,6 @@ jobs:
             if [[ "$status" == "complete" ]]; then
               printf '%s\n' "$body" > global-us-readonly-result.json
               jq -e '.result.output.country == "US" and .result.output.mode == "approved_source_cloudflare_read_only_poll" and .result.output.publication_attempted == false and .result.output.mutation_attempted == false' <<<"$body" >/dev/null
-              echo '### Global controller — US read-only parity' >> "$GITHUB_STEP_SUMMARY"
-              echo '```json' >> "$GITHUB_STEP_SUMMARY"
-              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
-              echo '```' >> "$GITHUB_STEP_SUMMARY"
               completed=true
               break
             fi
@@ -149,10 +158,6 @@ jobs:
             if [[ "$status" == "complete" ]]; then
               printf '%s\n' "$body" > global-uk-readonly-result.json
               jq -e '.result.output.country == "UK" and .result.output.mode == "approved_source_cloudflare_read_only_poll" and .result.output.publication_attempted == false and .result.output.mutation_attempted == false' <<<"$body" >/dev/null
-              echo '### Global controller — UK read-only parity' >> "$GITHUB_STEP_SUMMARY"
-              echo '```json' >> "$GITHUB_STEP_SUMMARY"
-              jq '.result.output | del(.results)' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
-              echo '```' >> "$GITHUB_STEP_SUMMARY"
               completed=true
               break
             fi
@@ -164,7 +169,93 @@ jobs:
           done
           [[ "$completed" == "true" ]] || { echo 'UK global read-only poll timed out.' >&2; exit 1; }
 
-      - name: Publish global parity evidence
+      - name: Provision temporary GitHub write token on shadow Worker
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s' "$EPHEMERAL_GITHUB_TOKEN" | npx --yes wrangler@4.127.1 secret put GITHUB_TOKEN --config "$CONFIG"
+
+      - name: Deploy PR-only global acquisition shadow
+        run: >-
+          npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
+          --var GLOBAL_ACQUISITION_EXECUTION_ENABLED:true
+          --var GLOBAL_ACQUISITION_EXECUTION_LEVEL:pr_only
+          --var GITHUB_REPO:christucker-sketch/PitchListUK
+
+      - name: Prove PR-only policy still blocks US production acquisition
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="global-pr-only-blocked-us-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          params='{"country":"US","state_code":"NY","mode":"acquire"}'
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}?simple=true"
+          proved=false
+          for attempt in $(seq 1 45); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "errored" ]]; then
+              message="$(jq -r '.result.error.message // empty' <<<"$body")"
+              if [[ "$message" != *"Global acquisition controller is PR-only"* ]]; then
+                echo "Unexpected PR-only policy error: $message" >&2
+                exit 1
+              fi
+              printf '%s\n' "$body" > global-pr-only-blocked-us-result.json
+              proved=true
+              break
+            fi
+            if [[ "$status" == "complete" || "$status" == "terminated" ]]; then
+              echo "US production probe reached unexpected terminal status: $status" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          [[ "$proved" == "true" ]] || { echo 'PR-only US production probe did not fail closed.' >&2; exit 1; }
+
+      - name: Run UK additions-only PR proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="global-uk-additions-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          as_of="$(date -u +'%Y-%m-%dT%H:%M:%S.000Z')"
+          params="$(jq -cn --arg as_of "$as_of" '{country:"UK",mode:"uk_additions_only_pr",as_of:$as_of,batch_size:8,concurrency:3,timeout_ms:12000,max_attempts:1,max_additions:50,max_growth_percent:25,max_per_source:1,max_duplicate_rate:60}')"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 360); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "complete" ]]; then
+              printf '%s\n' "$body" > global-uk-additions-result.json
+              jq -e '.result.output.country == "UK" and .result.output.mode == "uk_additions_only_pr" and .result.output.source_pr_attempted == false and .result.output.publication_attempted == false and .result.output.production_mutation_attempted == false and .result.output.automatic_merge_attempted == false' <<<"$body" >/dev/null
+              echo '### Global controller — UK additions-only PR proof' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == "errored" || "$status" == "terminated" ]]; then
+              printf '%s\n' "$body" > global-uk-additions-result.json
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          [[ "$completed" == "true" ]] || { echo 'UK global additions-only PR proof timed out.' >&2; exit 1; }
+
+      - name: Restore read-only global shadow
+        if: always()
+        run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
+
+      - name: Remove temporary GitHub write token
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s' '{"GITHUB_TOKEN":null}' | npx --yes wrangler@4.127.1 secret bulk --config "$CONFIG"
+
+      - name: Publish global parity and UK PR evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -173,5 +264,7 @@ jobs:
             global-readonly-blocked-mutation-result.json
             global-us-readonly-result.json
             global-uk-readonly-result.json
+            global-pr-only-blocked-us-result.json
+            global-uk-additions-result.json
           if-no-files-found: ignore
           retention-days: 14
