@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T14:07:42.518Z",
+  "updated_at": "2026-09-08T14:11:24.675Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -1767,6 +1767,24 @@
       "event_end": "2027-03-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-san-diego-2027-festival: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-03-13."
+    },
+    {
+      "id": "ca-information-for-artists-2027-06-05-149c55e2",
+      "name": "Information for Artists Vendor Opportunity",
+      "organiser": "Information for Artists",
+      "source_url": "https://theautry.org/artistinfo",
+      "application_url": "https://theautry.org/artistinfo",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "Los Angeles",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-05",
+      "event_end": "2027-06-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-los-angeles-2027-arts-crafts: live first-party route attests Los Angeles, CA, actionable vendor terms, and exact event date range 2027-06-05 to 2027-06-06."
     },
     {
       "id": "ca-international-street-fair-and-diversity-festival-saturday-october-3-20-2026-10-03-b7e28b03",
