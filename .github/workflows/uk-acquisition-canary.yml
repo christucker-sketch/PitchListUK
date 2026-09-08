@@ -1,4 +1,4 @@
-name: UK acquisition Cloudflare canary
+name: UK acquisition Cloudflare proof
 
 on:
   push:
@@ -13,19 +13,20 @@ permissions:
   contents: read
 
 concurrency:
-  group: pitchlist-uk-acquisition-canary
+  group: pitchlist-uk-acquisition-cloudflare-proof
   cancel-in-progress: false
 
 jobs:
   deploy_and_prove:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     environment: findpitches-production
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       CONFIG: operations/cloudflare-uk-canary/wrangler.jsonc
       WORKFLOW_NAME: findpitches-uk-acquisition-canary
+      POLL_WORKFLOW_NAME: findpitches-uk-approved-source-poll
     steps:
       - name: Check out verified main
         uses: actions/checkout@v4
@@ -35,17 +36,19 @@ jobs:
         with:
           node-version: 22
 
-      - name: Run focused UK canary regression tests
-        run: node --test tests/uk-cloudflare-canary.test.mjs tests/uk-cloudflare-canary-execution.test.mjs
+      - name: Run focused UK Cloudflare regression tests
+        run: node --test tests/uk-cloudflare-canary.test.mjs tests/uk-cloudflare-canary-execution.test.mjs tests/uk-approved-source-poll.test.mjs
 
-      - name: Compile UK acquisition canary
+      - name: Compile UK acquisition Worker
         run: npx --yes wrangler@4.127.1 deploy --dry-run --config "$CONFIG"
 
-      - name: Deploy isolated UK acquisition canary
+      - name: Deploy isolated UK acquisition Worker
         run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
 
-      - name: Verify Workflow resource is describable
-        run: npx --yes wrangler@4.127.1 workflows describe "$WORKFLOW_NAME" --config "$CONFIG"
+      - name: Verify UK Workflow resources are describable
+        run: |
+          npx --yes wrangler@4.127.1 workflows describe "$WORKFLOW_NAME" --config "$CONFIG"
+          npx --yes wrangler@4.127.1 workflows describe "$POLL_WORKFLOW_NAME" --config "$CONFIG"
 
       - name: Prove trigger and instance describe control plane without fetching sources
         id: control_plane
@@ -126,11 +129,52 @@ jobs:
             exit 1
           fi
 
-      - name: Publish canary evidence
+      - name: Run full approved-source read-only UK poll
+        shell: bash
+        run: |
+          set -euo pipefail
+          poll_id="uk-approved-poll-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          as_of="$(date -u +'%Y-%m-%dT%H:%M:%S.000Z')"
+          params="$(jq -cn \
+            --arg as_of "$as_of" \
+            '{mode:"approved_source_cloudflare_read_only_poll",as_of:$as_of,batch_size:8,concurrency:3,timeout_ms:12000,max_attempts:1}')"
+
+          npx --yes wrangler@4.127.1 workflows trigger "$POLL_WORKFLOW_NAME" "$params" --id "$poll_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${POLL_WORKFLOW_NAME}/instances/${poll_id}"
+
+          completed=false
+          for attempt in $(seq 1 300); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "complete" ]]; then
+              printf '%s\n' "$body" > uk-approved-source-poll-result.json
+              echo '### UK approved-source Cloudflare poll' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output | del(.results)' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == "errored" || "$status" == "terminated" ]]; then
+              message="$(jq -r '.result.error.message // "unknown workflow error"' <<<"$body")"
+              echo "UK approved-source poll failed: $message" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+
+          if [[ "$completed" != "true" ]]; then
+            echo 'UK approved-source poll did not complete inside the bounded observation window.' >&2
+            exit 1
+          fi
+
+      - name: Publish UK acquisition evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: uk-cloudflare-canary-${{ github.run_id }}-${{ github.run_attempt }}
-          path: uk-canary-result.json
+          name: uk-cloudflare-acquisition-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            uk-canary-result.json
+            uk-approved-source-poll-result.json
           if-no-files-found: ignore
           retention-days: 14
