@@ -1,0 +1,90 @@
+name: Apply US safe-main-drift controller patch
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'fix/us-controller-safe-main-drift'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Apply exact controller patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs')
+          s = p.read_text()
+          marker = "} from '../../acquisition-notifications/notifier.mjs';\n"
+          addition = marker + "import {\n  branchBasePrefix,\n  validateSnapshotEquivalentMainDrift\n} from './auto-merge-base.mjs';\n"
+          if "from './auto-merge-base.mjs'" not in s:
+              if marker not in s: raise SystemExit('import marker missing')
+              s = s.replace(marker, addition, 1)
+          helper_marker = 'export function validateAutoMergeCandidate(pr, result, { baseSha, snapshotPath }) {'
+          helper = """function resolveAutoMergeBranchBase(expectedBranch, baseSha, snapshotPath) {
+            const prefix = branchBasePrefix(expectedBranch);
+            if (!prefix) throw new Error('Auto-merge PR branch lacks original base provenance');
+            let branchBaseSha;
+            try {
+              branchBaseSha = run('git', ['rev-parse', `${prefix}^{commit}`]).trim();
+            } catch {
+              throw new Error('Auto-merge original base cannot be resolved from Git history');
+            }
+            let branchBaseIsAncestor = true;
+            if (branchBaseSha !== baseSha) {
+              try {
+                run('git', ['merge-base', '--is-ancestor', branchBaseSha, baseSha]);
+              } catch {
+                branchBaseIsAncestor = false;
+              }
+            }
+            const snapshotBlobAtBranchBase = run('git', ['rev-parse', `${branchBaseSha}:${snapshotPath}`]).trim();
+            const snapshotBlobAtCurrentMain = run('git', ['rev-parse', `${baseSha}:${snapshotPath}`]).trim();
+            return validateSnapshotEquivalentMainDrift({
+              currentMainSha: baseSha,
+              prBaseSha: baseSha,
+              branchBaseSha,
+              branchBaseIsAncestor,
+              snapshotBlobAtBranchBase,
+              snapshotBlobAtCurrentMain
+            }).branchBaseSha;
+          }
+
+          export function validateAutoMergeCandidate(pr, result, { baseSha, snapshotPath }) {"""
+          if 'function resolveAutoMergeBranchBase(' not in s:
+              if helper_marker not in s: raise SystemExit('validator marker missing')
+              s = s.replace(helper_marker, helper, 1)
+          old = """  if (pr?.baseRefOid !== baseSha || !expectedBranch.endsWith(`-base-${String(baseSha).slice(0, 16)}`)) {
+            throw new Error('Auto-merge PR is not based on the exact current main SHA');
+          }
+          """
+          new = """  if (pr?.baseRefOid !== baseSha) throw new Error('Auto-merge PR base is not the exact current main SHA');
+          const branchBaseSha = resolveAutoMergeBranchBase(expectedBranch, baseSha, snapshotPath);
+          if (!expectedBranch.endsWith(`-base-${String(branchBaseSha).slice(0, 16)}`)) {
+            throw new Error('Auto-merge PR branch provenance does not match its original base');
+          }
+          """
+          if old in s:
+              s = s.replace(old, new, 1)
+          elif "const branchBaseSha = resolveAutoMergeBranchBase" not in s:
+              raise SystemExit('exact-base validation block missing')
+          p.write_text(s)
+          PY
+          rm .github/workflows/patch-us-controller-safe-main-drift.yml
+          git diff --check
+          git diff -- operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs
+      - name: Commit patch and remove one-shot workflow
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add operations/cloudflare-texas-acquisition/scripts/rollout-controller.mjs .github/workflows/patch-us-controller-safe-main-drift.yml
+          git commit -m "Reconcile harmless main drift in US auto-merge"
+          git push origin HEAD:${{ github.head_ref }}
