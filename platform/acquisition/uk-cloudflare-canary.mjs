@@ -1,4 +1,4 @@
-import { buildAcquisitionContext } from './country-contract.mjs';
+import { buildGlobalAcquisitionUnit } from './global-engine.mjs';
 import { enabledUkAcquisitionAreas } from './uk-geography.mjs';
 
 const source = (id, organisation, applicationUrl, areaCode, approvalEvidenceHash) => Object.freeze({
@@ -69,7 +69,7 @@ export function buildUkCloudflareCanaryPlan(config = UK_CLOUDFLARE_CANARY) {
     seenUrls.add(url.href);
 
     return Object.freeze({
-      context: buildAcquisitionContext('UK', { ...area, jurisdiction: area.code }),
+      context: buildGlobalAcquisitionUnit('UK', { ...area, jurisdiction: area.code }),
       source: item,
       execution: Object.freeze({
         fetch_live_page: true,
