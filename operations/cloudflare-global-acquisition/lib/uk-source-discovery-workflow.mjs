@@ -19,15 +19,22 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     timeout: '5 minutes'
   }, async () => readMainUkSourceRegistry(env));
 
+  const registrySeeds = base.registry
+    .map(item => String(item?.official_application_route || '').trim())
+    .filter(route => route.startsWith('https://'));
+
   const discovery = await step.do(`discover UK source candidates offset ${Math.max(0, Number(payload.query_offset || 0))}`, {
     retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' },
     timeout: '15 minutes'
   }, async () => runUkSourceDiscovery(env, {
     ...payload,
+    seed_routes: Array.isArray(payload.seed_routes) && payload.seed_routes.length ? payload.seed_routes : registrySeeds,
+    serper_fallback: payload.serper_fallback !== false,
     as_of: generatedAt,
     query_limit: boundedNumber(payload.query_limit, 8, 12),
     results_per_query: boundedNumber(payload.results_per_query, 5, 8),
     candidate_limit: boundedNumber(payload.candidate_limit, 30, 50),
+    direct_seed_limit: boundedNumber(payload.direct_seed_limit, 24, 50),
     concurrency: boundedNumber(payload.concurrency, 2, 3),
     timeout_ms: boundedNumber(payload.timeout_ms, 12000, 20000, 5000)
   }, {
@@ -59,6 +66,10 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     country: 'UK',
     mode: 'uk_source_discovery_pr',
     generated_at: generatedAt,
+    discovery_network: discovery.discovery_network,
+    direct_seed_count: discovery.direct_seed_count,
+    direct_candidates_found: discovery.direct_candidates_found,
+    serper_fallback_used: discovery.serper_fallback_used,
     query_offset: discovery.query_offset,
     query_count: discovery.query_count,
     serper_credits_used: discovery.serper_credits_used,
