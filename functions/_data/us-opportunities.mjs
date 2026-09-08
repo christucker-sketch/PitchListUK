@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T15:04:20.829Z",
-  "source": "reviewed-us-idaho-cloud-promotion:b58105ad9e2f3cce08f2e2ad1bf91d7ceab91cb23bd9da3a15e0fa8bbce145af",
-  "total": 620,
+  "exported_at": "2026-09-08T15:28:16.731Z",
+  "source": "reviewed-us-new-york-cloud-promotion:a9c13bb670cba62be4f65c4bc4f7c5f0fbceb988684e06872672249fc5616f46",
+  "total": 621,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23557,6 +23557,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-idaho",
       "id": "opp_us_9a492b83aa5011996a3f"
+    },
+    {
+      "stable_id": "opp_us_51ba62ba3e076989d8fb",
+      "event_name": "Hamburg Farmers Market Vendor Opportunity",
+      "organiser": "Hamburg Farmers Market",
+      "source_url": "https://southtownsregionalchamber.org/hamburg-farmers-market/",
+      "application_url": "https://southtownsregionalchamber.org/hamburg-farmers-market",
+      "location": "Buffalo",
+      "locality": "Buffalo",
+      "region": "New York",
+      "region_code": "NY",
+      "region_name": "New York",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "currency": "USD",
+      "postal_code": "14075",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ny-hamburg-farmers-market-2026-10-31-6a0e7412",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-york",
+      "id": "opp_us_51ba62ba3e076989d8fb"
     }
   ]
 };
