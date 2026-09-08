@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T23:15:11.483Z",
-  "source": "reviewed-us-iowa-cloud-promotion:8f4608f0be7ac5acb327f7f2a7dc156c296942331bfdcc40404d0d81fa3d0f12",
-  "total": 641,
+  "exported_at": "2026-09-08T23:21:11.168Z",
+  "source": "reviewed-us-new-hampshire-cloud-promotion:bfbdae313e920bf1292f9fc036f8a1d91924732a1df4c0e84906f85b53a2945a",
+  "total": 642,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24351,6 +24351,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-iowa",
       "id": "opp_us_bd1df450714a2db82c3c"
+    },
+    {
+      "stable_id": "opp_us_3009750c310ba2b6a112",
+      "event_name": "Media Vendor Opportunity",
+      "organiser": "Media",
+      "source_url": "https://www.nhworldchristmasmarket.com/media",
+      "application_url": "https://www.nhworldchristmasmarket.com/media",
+      "location": "New Hampshire",
+      "locality": "New Hampshire",
+      "region": "New Hampshire",
+      "region_code": "NH",
+      "region_name": "New Hampshire",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-13",
+      "event_end": "2026-12-14",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nh-media-2026-12-13-1fbb5cef",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-hampshire",
+      "id": "opp_us_3009750c310ba2b6a112"
     }
   ]
 };
