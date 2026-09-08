@@ -51,6 +51,7 @@ test('UK discovery is bounded and auto-approves only deterministic public-servic
 
   assert.equal(discovery.query_count, 1);
   assert.equal(discovery.serper_credits_used, 1);
+  assert.equal(discovery.serper_fallback_used, true);
   assert.equal(discovery.candidates_classified, 2);
   assert.equal(discovery.auto_approved_count, 1);
   assert.equal(discovery.manual_review_count, 1);
@@ -62,6 +63,38 @@ test('UK discovery is bounded and auto-approves only deterministic public-servic
   assert.equal(discovery.source_registry_write_attempted, false);
   assert.equal(UK_SOURCE_DISCOVERY_LIMITS.maximum_query_limit, 12);
   assert.equal(UK_SOURCE_DISCOVERY_LIMITS.maximum_candidate_limit, 50);
+});
+
+test('UK discovery uses Cloudflare direct graph first and spends zero Serper credits when it finds candidates', async () => {
+  let searchCalled = false;
+  const discovery = await runUkSourceDiscovery({}, {
+    seed_routes: ['https://known-council.gov.uk/markets'],
+    query_limit: 4,
+    candidate_limit: 5,
+    as_of: NOW
+  }, {
+    directDiscovery: async () => ({
+      seed_count: 1,
+      candidates: [{
+        query: 'cloudflare-first-party-graph',
+        rank: 1,
+        title: 'Apply for a market stall',
+        url: 'https://known-council.gov.uk/markets/apply',
+        snippet: 'Cloudflare direct link discovery'
+      }]
+    }),
+    search: async () => { searchCalled = true; throw new Error('Serper should not be called'); },
+    fetchCandidate: fetchFixture
+  });
+
+  assert.equal(searchCalled, false);
+  assert.equal(discovery.discovery_network, 'cloudflare_direct_fetch');
+  assert.equal(discovery.direct_seed_count, 1);
+  assert.equal(discovery.direct_candidates_found, 1);
+  assert.equal(discovery.serper_fallback_used, false);
+  assert.equal(discovery.serper_credits_used, 0);
+  assert.equal(discovery.query_count, 0);
+  assert.equal(discovery.auto_approved_count, 1);
 });
 
 test('UK source promotion plan is additions-only and deterministic', async () => {
