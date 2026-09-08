@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T17:50:27.499Z",
-  "source": "reviewed-us-nevada-cloud-promotion:34c584d535563df928a5e8dce1b4d0814be13be1da2ba8d55e4c8a93348dbe56",
-  "total": 631,
+  "exported_at": "2026-09-08T18:03:18.370Z",
+  "source": "reviewed-us-delaware-cloud-promotion:358869cb244f3f6de7a2ac52a033926e1a3a5df69ba0be8fae1c557d3c6a03bc",
+  "total": 632,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23968,6 +23968,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nevada",
       "id": "opp_us_7f158548c355b4d9c841"
+    },
+    {
+      "stable_id": "opp_us_38a52b8b4634dbe40a7f",
+      "event_name": "Delaware food festival guide for summer 2026 Vendor Opportunity",
+      "organiser": "Delaware food festival guide for summer 2026",
+      "source_url": "https://eu.delawareonline.com/story/life/food/2026/06/27/delaware-food-festival-guide-for-summer-2026/90610957007/",
+      "application_url": "https://eu.delawareonline.com/story/life/food/2026/06/27/delaware-food-festival-guide-for-summer-2026/90610957007",
+      "location": "Harrington",
+      "locality": "Harrington",
+      "region": "Delaware",
+      "region_code": "DE",
+      "region_name": "Delaware",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-DE",
+      "currency": "USD",
+      "postal_code": "42148",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-28",
+      "event_end": "2027-06-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "de-delaware-food-festival-guide-for-summer-2026-2027-06-28-55b62a0c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-delaware",
+      "id": "opp_us_38a52b8b4634dbe40a7f"
     }
   ]
 };
