@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T23:41:49.023Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:26fc735605a9ee3725ae622b0c53ce2f619bc62a21a2d8d93e9b49711483ed64",
-  "total": 644,
+  "exported_at": "2026-09-08T23:49:09.641Z",
+  "source": "reviewed-us-minnesota-cloud-promotion:dadeea3e49918a5e00ea213ef65debb40bd497a8e57460ce22902c75a603e559",
+  "total": 645,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24465,6 +24465,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_1fe24ab4822a4d64721b"
+    },
+    {
+      "stable_id": "opp_us_71e97ea8c5d9d679a3bf",
+      "event_name": "St.Paul Food Truck Festival - MN Food Truck Association",
+      "organiser": "St.Paul Food Truck Festival - MN Food Truck Association",
+      "source_url": "https://mnfoodtruckassociation.org/event-details/st-paul-food-truck-festival-2/",
+      "application_url": "https://mnfoodtruckassociation.org/event-details/st-paul-food-truck-festival-2",
+      "location": "Saint Paul",
+      "locality": "Saint Paul",
+      "region": "Minnesota",
+      "region_code": "MN",
+      "region_name": "Minnesota",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "currency": "USD",
+      "postal_code": "55101",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-18",
+      "event_end": "2027-08-18",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mn-st-paul-food-truck-festival-mn-food-truck-association-2027-08-18-3075db3f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-minnesota",
+      "id": "opp_us_71e97ea8c5d9d679a3bf"
     }
   ]
 };
