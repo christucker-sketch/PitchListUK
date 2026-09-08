@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T17:09:08.941Z",
-  "source": "reviewed-us-california-cloud-promotion:513462f3a77fc69d0f13fa812f49bb91550aa6fedae224412b659604686e9053",
-  "total": 628,
+  "exported_at": "2026-09-08T17:29:46.794Z",
+  "source": "reviewed-us-colorado-cloud-promotion:4a0d44c3c8dc364a98978b194d78174c6e2df434924dc38537afca9f015607d8",
+  "total": 629,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23857,6 +23857,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_c417789ee1694a0f8ac3"
+    },
+    {
+      "stable_id": "opp_us_a47d98e0f04e6985f031",
+      "event_name": "Vendor Application &ndash; Hunt + Gather",
+      "organiser": "huntandgathercos.com",
+      "source_url": "https://huntandgathercos.com/pages/vendor-application",
+      "application_url": "https://huntandgathercos.com/pages/vendor-application",
+      "location": "Colorado Springs",
+      "locality": "Colorado Springs",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-10",
+      "event_end": "2027-05-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-huntandgathercos-com-2027-05-10-2fec066e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_a47d98e0f04e6985f031"
     }
   ]
 };
