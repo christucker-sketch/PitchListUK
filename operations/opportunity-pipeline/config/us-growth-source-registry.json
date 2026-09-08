@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T17:49:29.812Z",
+  "updated_at": "2026-09-08T17:53:56.729Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11857,6 +11857,24 @@
       "event_end": "2026-09-22",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nd-carrington-2026-farmers-market: live first-party route attests Carrington, ND, actionable vendor terms, and exact event date 2026-09-22."
+    },
+    {
+      "id": "ne-future-of-rock-festival-vendor-sign-up-2027-06-14-495a33cb",
+      "name": "Future of Rock Festival Vendor Sign-Up",
+      "organiser": "Future of Rock Festival Vendor Sign-Up",
+      "source_url": "https://www.zeffy.com/en-US/ticketing/future-of-rock-festival-vendor-sign-up-2",
+      "application_url": "https://www.zeffy.com/en-US/ticketing/future-of-rock-festival-vendor-sign-up-2",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NE",
+      "region_code": "NE",
+      "locality": "Omaha",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-14",
+      "event_end": "2027-06-14",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ne-omaha-2027-festival: live first-party route attests Omaha, NE, actionable vendor terms, and exact event date 2027-06-14."
     },
     {
       "id": "ne-holiday-market-2026-12-05-0748e45d",
