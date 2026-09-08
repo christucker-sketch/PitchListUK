@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T16:57:56.235Z",
+  "updated_at": "2026-09-08T17:08:03.792Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -1985,6 +1985,24 @@
       "evidence": "Cloudflare discovery ca-san-diego-2027-arts-crafts: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-08-28."
     },
     {
+      "id": "ca-national-city-community-market-feb-27-2027-national-city-chamber-of-co-2027-02-27-c8dc2a0b",
+      "name": "National City Community Market - Feb 27, 2027 - National City Chamber of Commerce, CA Vendor Opportunity",
+      "organiser": "National City Community Market - Feb 27, 2027 - National City Chamber of Commerce, CA",
+      "source_url": "https://www.nationalcitychamber.org/events/details/national-city-community-market-02-27-2027-6455",
+      "application_url": "https://www.nationalcitychamber.org/events/details/national-city-community-market-02-27-2027-6455",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-27",
+      "event_end": "2027-02-27",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-arts-crafts: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-02-27."
+    },
+    {
       "id": "ca-noche-de-lucha-2026-09-10-bbc91fa1",
       "name": "Noche de Lucha Vendor Opportunity",
       "organiser": "Noche de Lucha",
@@ -2145,6 +2163,25 @@
       "event_end": "2027-04-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ca-oakland-2027-farmers-market: live first-party route attests Oakland, CA, actionable vendor terms, and exact event date range 2027-04-25 to 2027-04-26."
+    },
+    {
+      "id": "ca-vendor-info-st-patrick-s-day-parade-festival-2027-03-13-576ff592",
+      "name": "Vendor Info - St. Patrick's Day Parade & Festival",
+      "organiser": "Vendor Info - St. Patrick's Day Parade & Festival",
+      "source_url": "https://stpatsparade.org/participation/vendor-info",
+      "application_url": "https://stpatsparade.org/participation/vendor-info",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "region_code": "CA",
+      "locality": "San Diego",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-13",
+      "event_end": "2027-03-13",
+      "application_deadline": "2027-02-11",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ca-san-diego-2027-festival: live first-party route attests San Diego, CA, actionable vendor terms, and exact event date 2027-03-13."
     },
     {
       "id": "ca-vendors-2027-05-29-7593f2d5",
