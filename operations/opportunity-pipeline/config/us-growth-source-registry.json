@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T11:31:54.438Z",
+  "updated_at": "2026-09-08T11:34:25.118Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5635,6 +5635,24 @@
       "region_code": "IA",
       "locality": "Cedar Rapids",
       "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-cedar-rapids-2026-farmers-market: live first-party route attests Cedar Rapids, IA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ia-cedar-rapids-downtown-farmers-market-marketspread-2026-09-19-689da97b",
+      "name": "Cedar Rapids Downtown Farmers Market - Marketspread Vendor Opportunity",
+      "organiser": "Cedar Rapids Downtown Farmers Market - Marketspread",
+      "source_url": "https://marketspread.com/market/13792/cedar-rapids-downtown-farmers-market",
+      "application_url": "https://marketspread.com/market/13792/cedar-rapids-downtown-farmers-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Cedar Rapids",
+      "recurring": false,
       "multi_event": false,
       "event_start": "2026-09-19",
       "event_end": "2026-09-19",
