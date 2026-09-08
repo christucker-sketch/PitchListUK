@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T12:25:10.883Z",
-  "source": "reviewed-us-michigan-cloud-promotion:bbf93048cd20595c9bf27f92eec0435104b7441f2fe28165586672cf448d184f",
-  "total": 612,
+  "exported_at": "2026-09-08T12:28:17.652Z",
+  "source": "reviewed-us-virginia-cloud-promotion:404c2884a8ca714efb3e4c000ed4dd1d6d90146d904b63d6a6f91d4b88337519",
+  "total": 613,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23256,6 +23256,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_6ddd37d489bb3cede9ce"
+    },
+    {
+      "stable_id": "opp_us_5fcc668b96b6aed3b75f",
+      "event_name": "2026 Virginia Beach Christmas Market - Virginia Beach, VA Vendor Opportunity",
+      "organiser": "2026 Virginia Beach Christmas Market - Virginia Beach, VA",
+      "source_url": "https://www.fairsandfestivals.net/events/details/2026-virginia-beach-christmas-market",
+      "application_url": "https://www.fairsandfestivals.net/events/details/2026-virginia-beach-christmas-market",
+      "location": "Virginia Beach",
+      "locality": "Virginia Beach",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "23451",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-27",
+      "event_end": "2026-11-29",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-2026-virginia-beach-christmas-market-virginia-beach-va-2026-11-27-5c4aef49",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_5fcc668b96b6aed3b75f"
     }
   ]
 };
