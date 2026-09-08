@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T22:40:24.758Z",
+  "updated_at": "2026-09-08T22:42:47.381Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -3536,6 +3536,24 @@
       "evidence": "Cloudflare discovery fl-miami-2027-festival: live first-party route attests Miami, FL, actionable vendor terms, and exact event date range 2027-01-16 to 2027-01-17."
     },
     {
+      "id": "fl-a-merry-midtown-market-marketspread-2026-12-19-b8b4b0fc",
+      "name": "A Merry Midtown Market - Marketspread Vendor Opportunity",
+      "organiser": "A Merry Midtown Market - Marketspread",
+      "source_url": "https://marketspread.com/market/24615/a-merry-midtown-market",
+      "application_url": "https://marketspread.com/market/24615/a-merry-midtown-market",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tampa",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-19",
+      "event_end": "2026-12-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tampa-2026-holiday-market: live first-party route attests Tampa, FL, actionable vendor terms, and exact event date 2026-12-19."
+    },
+    {
       "id": "fl-battlebrosevents-com-2026-10-10-5a3b7114",
       "name": "Vendor Applications | Orlando Fl",
       "organiser": "battlebrosevents.com",
@@ -3770,6 +3788,24 @@
       "event_end": "2026-10-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-west-palm-beach-2026-food-truck: live first-party route attests West Palm Beach, FL, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "fl-food-truck-permits-in-tampa-2026-one-dbpr-license-hillsborough-zoning-2026-09-08-bb1cb3ae",
+      "name": "Food Truck Permits in Tampa (2026): One DBPR License + Hillsborough Zoning",
+      "organiser": "Food Truck Permits in Tampa (2026): One DBPR License + Hillsborough Zoning",
+      "source_url": "https://runpitstop.com/blog/food-truck-permits-tampa",
+      "application_url": "https://runpitstop.com/blog/food-truck-permits-tampa",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Tampa",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-08",
+      "event_end": "2026-09-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-tampa-2026-food-truck: live first-party route attests Tampa, FL, actionable vendor terms, and exact event date 2026-09-08."
     },
     {
       "id": "fl-food-vendor-space-call-first-prices-increase-march-of-2027-2027-pensac-2027-05-15-0733a7f6",
