@@ -1,0 +1,24 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "findpitches-global-acquisition-shadow",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-28",
+  "compatibility_flags": ["nodejs_compat"],
+  "limits": {
+    "cpu_ms": 300000
+  },
+  "observability": {
+    "enabled": true
+  },
+  "workflows": [
+    {
+      "name": "findpitches-global-acquisition-shadow",
+      "binding": "GLOBAL_ACQUISITION",
+      "class_name": "GlobalAcquisitionWorkflow"
+    }
+  ],
+  "vars": {
+    "GITHUB_REPO": "christucker-sketch/PitchListUK",
+    "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "false"
+  }
+}
