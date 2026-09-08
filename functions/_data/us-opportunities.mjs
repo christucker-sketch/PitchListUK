@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T16:19:51.384Z",
-  "source": "reviewed-us-texas-cloud-promotion:d58d7695e929a1e96896f4419511b3d88acbfed7944b9440ab0f460ccf6f464f",
-  "total": 622,
+  "exported_at": "2026-09-08T16:29:44.744Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:6e0b3b4de23d0f87eb7f1b988f9514b5719bd2e33474b0b2f469f6ee652c67b0",
+  "total": 623,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23632,6 +23632,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_c17f0031c27f8f1ffce9"
+    },
+    {
+      "stable_id": "opp_us_f0d7c34e9aaf98ed884f",
+      "event_name": "Events - Riverview Farmers Market Vendor Opportunity",
+      "organiser": "Events - Riverview Farmers Market",
+      "source_url": "https://riverviewfarmersmarket.org/category/events/",
+      "application_url": "https://riverviewfarmersmarket.org/category/events",
+      "location": "Jersey City",
+      "locality": "Jersey City",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-07",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-events-riverview-farmers-market-2026-12-05-387a35b0",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_f0d7c34e9aaf98ed884f"
     }
   ]
 };
