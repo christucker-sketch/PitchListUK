@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T14:54:35.259Z",
+  "updated_at": "2026-09-08T14:57:48.374Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -325,6 +325,24 @@
       "event_end": "2026-11-01",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-huntsville-2026-holiday-market: live first-party route attests Huntsville, AL, actionable vendor terms, and exact event date 2026-11-01."
+    },
+    {
+      "id": "ar-a-cornucopia-of-cars-competitions-carnivals-in-arkansas-this-weekend-e-2027-06-13-1fd2a3a3",
+      "name": "A Cornucopia of Cars, Competitions, & Carnivals in Arkansas This Weekend! Events Aug. 27-30 - AY Magazine Vendor Opportunity",
+      "organiser": "A Cornucopia of Cars, Competitions, & Carnivals in Arkansas This Weekend! Events Aug. 27-30 - AY Magazine",
+      "source_url": "https://aymag.com/weekend-events-aug-27-2026",
+      "application_url": "https://aymag.com/weekend-events-aug-27-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "region_code": "AR",
+      "locality": "Lincoln",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-13",
+      "event_end": "2027-06-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ar-lincoln-2027-food-truck: live first-party route attests Lincoln, AR, actionable vendor terms, and exact event date 2027-06-13."
     },
     {
       "id": "ar-arkansas-r-b-festival-2027-04-10-b0349e4d",
