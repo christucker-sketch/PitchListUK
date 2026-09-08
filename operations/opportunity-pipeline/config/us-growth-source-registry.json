@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T15:18:55.517Z",
+  "updated_at": "2026-09-08T15:27:19.594Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12882,6 +12882,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-albany-2026-food-truck: live first-party route attests Albany, NY, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "ny-hamburg-farmers-market-2026-10-31-6a0e7412",
+      "name": "Hamburg Farmers Market Vendor Opportunity",
+      "organiser": "Hamburg Farmers Market",
+      "source_url": "https://southtownsregionalchamber.org/hamburg-farmers-market",
+      "application_url": "https://southtownsregionalchamber.org/hamburg-farmers-market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Buffalo",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-buffalo-2026-farmers-market: live first-party route attests Buffalo, NY, actionable vendor terms, and exact event date 2026-10-31."
     },
     {
       "id": "ny-holiday-happenings-this-year-in-cortland-and-ithaca-607-news-now-2027-12-05-351bd03d",
