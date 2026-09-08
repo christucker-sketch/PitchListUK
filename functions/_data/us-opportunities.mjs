@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T14:39:55.084Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:1e43269255037cdd776123796da45c93f03dbcd336ee392a46e9b5f2b4e331f7",
-  "total": 619,
+  "exported_at": "2026-09-08T15:04:20.829Z",
+  "source": "reviewed-us-idaho-cloud-promotion:b58105ad9e2f3cce08f2e2ad1bf91d7ceab91cb23bd9da3a15e0fa8bbce145af",
+  "total": 620,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23520,6 +23520,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_92058bd33f2995d6b18a"
+    },
+    {
+      "stable_id": "opp_us_9a492b83aa5011996a3f",
+      "event_name": "Meridian Fine Art Festival Vendor Opportunity",
+      "organiser": "Meridian Fine Art Festival",
+      "source_url": "https://www.meridianfineartfestival.com/",
+      "application_url": "https://www.meridianfineartfestival.com",
+      "location": "Meridian",
+      "locality": "Meridian",
+      "region": "Idaho",
+      "region_code": "ID",
+      "region_name": "Idaho",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "currency": "USD",
+      "postal_code": "83642",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-06-27",
+      "event_end": "2027-06-27",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "id-meridian-fine-art-festival-2027-06-27-a1e9a704",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-idaho",
+      "id": "opp_us_9a492b83aa5011996a3f"
     }
   ]
 };
