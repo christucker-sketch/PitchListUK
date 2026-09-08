@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T14:15:14.007Z",
-  "source": "reviewed-us-texas-cloud-promotion:a4eb4d9ad3e4e4ed0d759fb44b046335dc96d005f992dc555e0c0bd0a71e0610",
-  "total": 617,
+  "exported_at": "2026-09-08T14:34:09.094Z",
+  "source": "reviewed-us-virginia-cloud-promotion:077a871fb3b03b250ba9a6b84d96f8a77ec23a489814e0bca3e522c84dff0dd7",
+  "total": 618,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23444,6 +23444,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_201828856fe0ee2a1567"
+    },
+    {
+      "stable_id": "opp_us_3f2558e7cb684d0ff59e",
+      "event_name": "Virginia Beach Street Food Festival | Virginia Beach, Virginia | 2026 Vendor Opportunity",
+      "organiser": "Virginia Beach Street Food Festival | Virginia Beach, Virginia | 2026",
+      "source_url": "https://www.streetfoodfests.com/event/virginiabeach/",
+      "application_url": "https://www.streetfoodfests.com/event/virginiabeach",
+      "location": "Virginia Beach",
+      "locality": "Virginia Beach",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-08",
+      "event_end": "2027-08-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-virginia-beach-street-food-festival-virginia-beach-virginia-2026-2027-08-08-226f3afc",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_3f2558e7cb684d0ff59e"
     }
   ]
 };
