@@ -19,6 +19,7 @@
   ],
   "vars": {
     "GITHUB_REPO": "christucker-sketch/PitchListUK",
-    "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "false"
+    "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "true",
+    "GLOBAL_ACQUISITION_EXECUTION_LEVEL": "read_only"
   }
 }

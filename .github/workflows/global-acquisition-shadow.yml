@@ -1,4 +1,4 @@
-name: Global acquisition shadow compile
+name: Global acquisition shadow proof
 
 on:
   pull_request:
@@ -18,9 +18,14 @@ on:
       - 'tests/global-cloudflare-acquisition-controller.test.mjs'
       - 'tests/global-acquisition-engine.test.mjs'
       - '.github/workflows/global-acquisition-shadow.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: findpitches-global-acquisition-shadow-proof
+  cancel-in-progress: false
 
 jobs:
   compile:
@@ -39,3 +44,125 @@ jobs:
 
       - name: Compile global Cloudflare acquisition shadow
         run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/cloudflare-global-acquisition/wrangler.jsonc
+
+  deploy_and_prove:
+    if: github.event_name != 'pull_request'
+    needs: compile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
+      WORKFLOW_NAME: findpitches-global-acquisition-shadow
+    steps:
+      - name: Check out verified main
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Deploy read-only global acquisition shadow
+        run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
+
+      - name: Verify global Workflow is describable
+        run: npx --yes wrangler@4.127.1 workflows describe "$WORKFLOW_NAME" --config "$CONFIG"
+
+      - name: Verify deployed health and read-only lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health)"
+          jq -e '.ok == true and .execution_enabled == true and .execution_level == "read_only"' <<<"$body" >/dev/null
+          jq -e '[.markets[] | select(.enabled == true) | .country] | sort == ["UK","US"]' <<<"$body" >/dev/null
+          printf '%s\n' "$body" > global-health.json
+
+      - name: Run bounded US read-only parity poll
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="global-us-readonly-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          as_of="$(date -u +'%Y-%m-%dT%H:%M:%S.000Z')"
+          params="$(jq -cn --arg as_of "$as_of" '{country:"US",mode:"approved_source_cloudflare_read_only_poll",state_code:"NY",source_limit:2,timeout_ms:12000,as_of:$as_of}')"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 120); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "complete" ]]; then
+              printf '%s\n' "$body" > global-us-readonly-result.json
+              jq -e '.result.output.country == "US" and .result.output.mode == "approved_source_cloudflare_read_only_poll" and .result.output.publication_attempted == false and .result.output.mutation_attempted == false' <<<"$body" >/dev/null
+              echo '### Global controller — US read-only parity' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == "errored" || "$status" == "terminated" ]]; then
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          [[ "$completed" == "true" ]] || { echo 'US global read-only poll timed out.' >&2; exit 1; }
+
+      - name: Prove mutating US mode is blocked
+        shell: bash
+        run: |
+          set -euo pipefail
+          response="$(curl --silent --show-error --write-out '\n%{http_code}' \
+            -X POST https://findpitches-global-acquisition-shadow.ctucker.workers.dev/run \
+            -H 'content-type: application/json' \
+            --data '{"country":"US","state_code":"NY","mode":"acquire"}')"
+          body="$(sed '$d' <<<"$response")"
+          status="$(tail -n1 <<<"$response")"
+          [[ "$status" == "400" ]] || { echo "Expected HTTP 400, got $status" >&2; exit 1; }
+          jq -e '.ok == false and (.error | contains("read-only"))' <<<"$body" >/dev/null
+
+      - name: Run full UK read-only parity poll
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="global-uk-readonly-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          as_of="$(date -u +'%Y-%m-%dT%H:%M:%S.000Z')"
+          params="$(jq -cn --arg as_of "$as_of" '{country:"UK",mode:"approved_source_cloudflare_read_only_poll",as_of:$as_of,batch_size:8,concurrency:3,timeout_ms:12000,max_attempts:1}')"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 300); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "complete" ]]; then
+              printf '%s\n' "$body" > global-uk-readonly-result.json
+              jq -e '.result.output.country == "UK" and .result.output.mode == "approved_source_cloudflare_read_only_poll" and .result.output.publication_attempted == false and .result.output.mutation_attempted == false' <<<"$body" >/dev/null
+              echo '### Global controller — UK read-only parity' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output | del(.results)' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == "errored" || "$status" == "terminated" ]]; then
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          [[ "$completed" == "true" ]] || { echo 'UK global read-only poll timed out.' >&2; exit 1; }
+
+      - name: Publish global parity evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-acquisition-shadow-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            global-health.json
+            global-us-readonly-result.json
+            global-uk-readonly-result.json
+          if-no-files-found: ignore
+          retention-days: 14
