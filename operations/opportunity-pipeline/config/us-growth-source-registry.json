@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T18:02:17.892Z",
+  "updated_at": "2026-09-08T18:09:43.634Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -15731,6 +15731,24 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-fort-worth-2026-festival: live first-party route attests Fort Worth, TX, actionable vendor terms, and exact event date 2026-10-11."
+    },
+    {
+      "id": "tx-dallas-farmers-market-2026-09-08-c2e0eb97",
+      "name": "Dallas Farmers Market Vendor Opportunity",
+      "organiser": "Dallas Farmers Market",
+      "source_url": "https://dallasfarmersmarket.org",
+      "application_url": "https://dallasfarmersmarket.org",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Dallas",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-08",
+      "event_end": "2026-09-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-dallas-2026-farmers-market: live first-party route attests Dallas, TX, actionable vendor terms, and exact event date 2026-09-08."
     },
     {
       "id": "tx-diadelosmuertoscc-com-2026-10-24-d9093e06",
