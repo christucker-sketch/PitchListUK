@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T15:49:31.198Z",
+  "updated_at": "2026-09-08T16:18:54.410Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -15513,6 +15513,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-san-antonio-2026-farmers-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "tx-holiday-markets-and-events-offer-festive-experiences-and-gift-giving-i-2026-12-07-b23484cd",
+      "name": "Holiday markets and events offer festive experiences and gift-giving ideas that are 'puro San Antonio' Vendor Opportunity",
+      "organiser": "Holiday markets and events offer festive experiences and gift-giving ideas that are 'puro San Antonio'",
+      "source_url": "https://www.tpr.org/news/2024-11-21/holiday-markets-and-events-offer-festive-experiences-and-gift-giving-ideas-that-are-puro-san-antonio",
+      "application_url": "https://www.tpr.org/news/2024-11-21/holiday-markets-and-events-offer-festive-experiences-and-gift-giving-ideas-that-are-puro-san-antonio",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "San Antonio",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-07",
+      "event_end": "2026-12-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-san-antonio-2026-holiday-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date 2026-12-07."
     },
     {
       "id": "tx-houston-day-trip-annual-events-2027-07-04-041444e2",
