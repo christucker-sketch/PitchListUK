@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T23:21:11.168Z",
-  "source": "reviewed-us-new-hampshire-cloud-promotion:bfbdae313e920bf1292f9fc036f8a1d91924732a1df4c0e84906f85b53a2945a",
-  "total": 642,
+  "exported_at": "2026-09-08T23:38:46.828Z",
+  "source": "reviewed-us-washington-cloud-promotion:507ffa73e3fcc917cc7a70ffdb6f19e3d1f60e3f1b7df32782126f6513bf4f32",
+  "total": 643,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24390,6 +24390,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-hampshire",
       "id": "opp_us_3009750c310ba2b6a112"
+    },
+    {
+      "stable_id": "opp_us_ce2a73c08e45af5225ee",
+      "event_name": "Food Safety Program - Chelan Douglas Health Vendor Opportunity",
+      "organiser": "Food Safety Program - Chelan Douglas Health",
+      "source_url": "https://www.cdhd.wa.gov/food-safety-program",
+      "application_url": "https://www.cdhd.wa.gov/food-safety-program",
+      "location": "Tacoma",
+      "locality": "Tacoma",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-01",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-food-safety-program-chelan-douglas-health-2027-01-01-aa6f5579",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_ce2a73c08e45af5225ee"
     }
   ]
 };
