@@ -34,9 +34,6 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install dependencies
-        run: npm ci
-
       - name: Run global acquisition controller tests
         run: node --test tests/global-acquisition-engine.test.mjs tests/global-cloudflare-acquisition-controller.test.mjs tests/country-acquisition-contract.test.mjs
 
