@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T22:41:21.348Z",
-  "source": "reviewed-us-texas-cloud-promotion:37bf5db64b673f172a22062803abe6b734ee5c7403880c8bee781e42e7de4bcb",
-  "total": 636,
+  "exported_at": "2026-09-08T22:51:17.627Z",
+  "source": "reviewed-us-georgia-cloud-promotion:ebd16abe1fd1eb8ec662acae678e2ab8876c13da9356f76b359c8f0e5d6e2820",
+  "total": 637,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24159,6 +24159,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_90463e7fa9287ab5f671"
+    },
+    {
+      "stable_id": "opp_us_39b02bad075a0f996877",
+      "event_name": "Holly Jolly Market &mdash; Uptown Columbus Vendor Opportunity",
+      "organiser": "Holly Jolly Market &mdash; Uptown Columbus",
+      "source_url": "https://www.alwaysuptown.com/holly-jolly-market-vendor-application",
+      "application_url": "https://www.alwaysuptown.com/holly-jolly-market-vendor-application",
+      "location": "Columbus",
+      "locality": "Columbus",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-holly-jolly-market-mdash-uptown-columbus-2026-11-28-a041329d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_39b02bad075a0f996877"
     }
   ]
 };
