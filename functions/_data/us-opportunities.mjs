@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T12:30:59.352Z",
-  "source": "reviewed-us-washington-cloud-promotion:f388afdffbbc90f9398d7000f6249e36b6cbb0d8bf57b00e31014fd2a00c7414",
-  "total": 614,
+  "exported_at": "2026-09-08T12:39:59.259Z",
+  "source": "reviewed-us-tennessee-cloud-promotion:e1032bbb4794d533e32cb5cd33919c5a0c32cf8ff065dd56defd41e6e2df558e",
+  "total": 615,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23332,6 +23332,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_8cdc928eace2bab92074"
+    },
+    {
+      "stable_id": "opp_us_718981bf3439e214ba76",
+      "event_name": "Nashville Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Nashville Winter Wonderland Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/nashvillewinterwonderland2026/",
+      "application_url": "https://hometownvendormarket.com/nashvillewinterwonderland2026",
+      "location": "Nashville",
+      "locality": "Nashville",
+      "region": "Tennessee",
+      "region_code": "TN",
+      "region_name": "Tennessee",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "currency": "USD",
+      "postal_code": "37067",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tn-nashville-winter-wonderland-craft-vendor-market-hometown-vendor-market-2026-12-05-16dbdc3c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-tennessee",
+      "id": "opp_us_718981bf3439e214ba76"
     }
   ]
 };
