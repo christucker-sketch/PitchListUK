@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T17:44:16.407Z",
-  "source": "reviewed-us-louisiana-cloud-promotion:d78bd520b08036980fae84a44a229e84c7075415e8806a39dde857e7a36b33ce",
-  "total": 630,
+  "exported_at": "2026-09-08T17:50:27.499Z",
+  "source": "reviewed-us-nevada-cloud-promotion:34c584d535563df928a5e8dce1b4d0814be13be1da2ba8d55e4c8a93348dbe56",
+  "total": 631,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23931,6 +23931,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-louisiana",
       "id": "opp_us_59419dc365058baeca7f"
+    },
+    {
+      "stable_id": "opp_us_7f158548c355b4d9c841",
+      "event_name": "Past Events from December 8, 2024 – November 7 › Craft Faires › Vendor Opportunity",
+      "organiser": "Past Events from December 8, 2024 – November 7 › Craft Faires ›",
+      "source_url": "https://www.carsonnow.org/events-calendar/category/craft-faires/list?hide_subsequent_recurrences=1&tribe-bar-date=2027-06-01&eventDisplay=past",
+      "application_url": "https://www.carsonnow.org/events-calendar/category/craft-faires/list?hide_subsequent_recurrences=1&tribe-bar-date=2027-06-01&eventDisplay=past",
+      "location": "Carson City",
+      "locality": "Carson City",
+      "region": "Nevada",
+      "region_code": "NV",
+      "region_name": "Nevada",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "currency": "USD",
+      "postal_code": "89502",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-10-03",
+      "event_end": "2027-10-04",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nv-past-events-from-december-8-2024-november-7-craft-faires-2027-10-03-900e9bc2",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nevada",
+      "id": "opp_us_7f158548c355b4d9c841"
     }
   ]
 };
