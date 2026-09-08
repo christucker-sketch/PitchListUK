@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T15:28:16.731Z",
-  "source": "reviewed-us-new-york-cloud-promotion:a9c13bb670cba62be4f65c4bc4f7c5f0fbceb988684e06872672249fc5616f46",
-  "total": 621,
+  "exported_at": "2026-09-08T16:19:51.384Z",
+  "source": "reviewed-us-texas-cloud-promotion:d58d7695e929a1e96896f4419511b3d88acbfed7944b9440ab0f460ccf6f464f",
+  "total": 622,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23594,6 +23594,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_51ba62ba3e076989d8fb"
+    },
+    {
+      "stable_id": "opp_us_c17f0031c27f8f1ffce9",
+      "event_name": "Holiday markets and events offer festive experiences and gift-giving ideas that are 'puro San Antonio' | TPR",
+      "organiser": "Holiday markets and events offer festive experiences and gift-giving ideas that are 'puro San Antonio'",
+      "source_url": "https://www.tpr.org/news/2024-11-21/holiday-markets-and-events-offer-festive-experiences-and-gift-giving-ideas-that-are-puro-san-antonio",
+      "application_url": "https://www.tpr.org/news/2024-11-21/holiday-markets-and-events-offer-festive-experiences-and-gift-giving-ideas-that-are-puro-san-antonio",
+      "location": "San Antonio",
+      "locality": "San Antonio",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-07",
+      "event_end": "2026-12-07",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-holiday-markets-and-events-offer-festive-experiences-and-gift-giving-i-2026-12-07-b23484cd",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_c17f0031c27f8f1ffce9"
     }
   ]
 };
