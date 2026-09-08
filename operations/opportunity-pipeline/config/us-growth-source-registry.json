@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T11:38:01.158Z",
+  "updated_at": "2026-09-08T11:47:20.228Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5964,6 +5964,24 @@
       "event_end": "2026-10-17",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery id-meridian-2026-farmers-market: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date 2026-10-17."
+    },
+    {
+      "id": "id-meridian-monday-night-farmers-market-2026-09-28-9c8d64a5",
+      "name": "Meridian Monday Night Farmers Market Vendor Opportunity",
+      "organiser": "Meridian Monday Night Farmers Market",
+      "source_url": "https://www.basicallybrilliantevents.com/mondaymarket",
+      "application_url": "https://www.basicallybrilliantevents.com/mondaymarket",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-ID",
+      "region_code": "ID",
+      "locality": "Meridian",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-28",
+      "event_end": "2026-10-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery id-meridian-2026-farmers-market: live first-party route attests Meridian, ID, actionable vendor terms, and exact event date range 2026-09-28 to 2026-10-05."
     },
     {
       "id": "id-meridian-monday-night-farmers-market-2027-2027-06-01-f74b79cc",
