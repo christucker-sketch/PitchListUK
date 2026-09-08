@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T11:14:52.339Z",
-  "source": "reviewed-us-washington-cloud-promotion:b544d3ce87c123a526233dfc6db59fc95a3adfa44c205492b4e6579a378ca36e",
-  "total": 609,
+  "exported_at": "2026-09-08T11:32:57.500Z",
+  "source": "reviewed-us-connecticut-cloud-promotion:74332686209644180aaf453477523e7faf60d3e20f4d975334f4a0660714b51f",
+  "total": 610,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23141,6 +23141,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-washington",
       "id": "opp_us_f83db223e7d09876a261"
+    },
+    {
+      "stable_id": "opp_us_65df621490dba0edcf45",
+      "event_name": "Updates from State Rep. Travis Simms for March 20, 2026 Vendor Opportunity",
+      "organiser": "Updates from State Rep. Travis Simms for March 20, 2026",
+      "source_url": "https://www.housedems.ct.gov/simms/updates-state-rep-travis-simms-march-20-2026",
+      "application_url": "https://www.housedems.ct.gov/simms/updates-state-rep-travis-simms-march-20-2026",
+      "location": "Norwalk",
+      "locality": "Norwalk",
+      "region": "Connecticut",
+      "region_code": "CT",
+      "region_name": "Connecticut",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CT",
+      "currency": "USD",
+      "postal_code": "06016",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ct-updates-from-state-rep-travis-simms-for-march-20-2026-2026-09-11-c1170f4c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-connecticut",
+      "id": "opp_us_65df621490dba0edcf45"
     }
   ]
 };
