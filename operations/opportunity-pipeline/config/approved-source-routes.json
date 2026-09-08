@@ -97,6 +97,22 @@
   },
   {
     "host": "lambeth.gov.uk",
+    "organisation": "Apply to be a food market trader - Lambeth Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "London",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://lambeth.gov.uk/Business-rates-services-and-licensing/licensing-and-permits/Apply-change-or-pay-for-a-licence/Apply-to-be-a-food-market-trader/how-apply",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Apply to be a food market trader - Lambeth Council",
+    "source_path_prefix": "/Business-rates-services-and-licensing/licensing-and-permits/Apply-change-or-pay-for-a-licence/Apply-to-be-a-food-market-trader/how-apply",
+    "approval_evidence_hash": "a5c7da470a3f19c22e3dab47cb6d2e49decd796ab6b9197298ae7e193076b5a6",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "1f30283b4d1e91099d5d4b604fab19d50ba412365229d9e51941aaf798da8cb3"
+  },
+  {
+    "host": "lambeth.gov.uk",
     "organisation": "Lambeth Council",
     "type": "local-authority",
     "terms_policy": "public-service",
