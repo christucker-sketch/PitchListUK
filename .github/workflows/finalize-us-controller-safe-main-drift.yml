@@ -19,6 +19,7 @@ jobs:
           fetch-depth: 0
       - name: Finalize exact controller patch
         run: |
+          # This workflow is intentionally one-shot and deletes itself after the patch.
           python - <<'PY'
           from pathlib import Path
           import re
