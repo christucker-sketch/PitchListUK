@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-07T17:37:41.224Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:8fb2e7853e5e82bbc6b866305f797b0304c6859800359758bdc0972150d4e498",
-  "total": 608,
+  "exported_at": "2026-09-08T11:14:52.339Z",
+  "source": "reviewed-us-washington-cloud-promotion:b544d3ce87c123a526233dfc6db59fc95a3adfa44c205492b4e6579a378ca36e",
+  "total": 609,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23104,6 +23104,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_4ace6e69d14868955749"
+    },
+    {
+      "stable_id": "opp_us_f83db223e7d09876a261",
+      "event_name": "Sustainamania 2026 Vendor Opportunity",
+      "organiser": "Sustainamania 2026",
+      "source_url": "https://bothellwa.gov/227/Sustainamania",
+      "application_url": "https://bothellwa.gov/227/Sustainamania",
+      "location": "Seattle",
+      "locality": "Seattle",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "18415",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-sustainamania-2026-2026-09-26-8e3c2361",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_f83db223e7d09876a261"
     }
   ]
 };
