@@ -1,6 +1,14 @@
 const ACTIVE = 'active';
 const PLANNED = 'planned';
 
+const acquisition = ({ enabled, snapshotPath, snapshotExport, geographyKind, jurisdictionPrefix }) => Object.freeze({
+  enabled: Boolean(enabled),
+  snapshotPath,
+  snapshotExport,
+  geographyKind,
+  jurisdictionPrefix
+});
+
 export const countryRegistry = Object.freeze({
   us: Object.freeze({
     code: 'us',
@@ -13,7 +21,14 @@ export const countryRegistry = Object.freeze({
     postal: Object.freeze({ label: 'ZIP Code', kind: 'zip' }),
     region: Object.freeze({ singular: 'state', plural: 'states' }),
     acquisitionTerms: Object.freeze(['vendor', 'concession', 'food truck', 'booth', 'exhibitor', 'market vendor']),
-    searchTerms: Object.freeze(['vendor opportunities', 'fairs', 'festivals', 'markets', 'food trucks', 'pop-ups', 'concessions'])
+    searchTerms: Object.freeze(['vendor opportunities', 'fairs', 'festivals', 'markets', 'food trucks', 'pop-ups', 'concessions']),
+    acquisition: acquisition({
+      enabled: true,
+      snapshotPath: 'functions/_data/us-opportunities.mjs',
+      snapshotExport: 'usOpportunitySnapshot',
+      geographyKind: 'state',
+      jurisdictionPrefix: 'US'
+    })
   }),
   uk: Object.freeze({
     code: 'uk',
@@ -26,7 +41,14 @@ export const countryRegistry = Object.freeze({
     postal: Object.freeze({ label: 'Postcode', kind: 'postcode' }),
     region: Object.freeze({ singular: 'region', plural: 'regions' }),
     acquisitionTerms: Object.freeze(['trader', 'stallholder', 'pitch', 'market stall', 'exhibitor', 'food trader']),
-    searchTerms: Object.freeze(['trading pitches', 'markets', 'fairs', 'festivals', 'shows', 'street food'])
+    searchTerms: Object.freeze(['trading pitches', 'markets', 'fairs', 'festivals', 'shows', 'street food']),
+    acquisition: acquisition({
+      enabled: true,
+      snapshotPath: 'functions/_data/opportunities.mjs',
+      snapshotExport: 'opportunitySnapshot',
+      geographyKind: 'acquisition_area',
+      jurisdictionPrefix: 'GB'
+    })
   }),
   ca: Object.freeze({
     code: 'ca',
@@ -39,7 +61,14 @@ export const countryRegistry = Object.freeze({
     postal: Object.freeze({ label: 'Postal Code', kind: 'postal-code' }),
     region: Object.freeze({ singular: 'province or territory', plural: 'provinces and territories' }),
     acquisitionTerms: Object.freeze(['vendor', 'market vendor', 'exhibitor', 'food vendor', 'booth']),
-    searchTerms: Object.freeze(['vendor opportunities', 'markets', 'fairs', 'festivals', 'food vendors'])
+    searchTerms: Object.freeze(['vendor opportunities', 'markets', 'fairs', 'festivals', 'food vendors']),
+    acquisition: acquisition({
+      enabled: false,
+      snapshotPath: 'functions/_data/ca-opportunities.mjs',
+      snapshotExport: 'caOpportunitySnapshot',
+      geographyKind: 'province_or_territory',
+      jurisdictionPrefix: 'CA'
+    })
   }),
   au: Object.freeze({
     code: 'au',
@@ -52,7 +81,14 @@ export const countryRegistry = Object.freeze({
     postal: Object.freeze({ label: 'Postcode', kind: 'postcode' }),
     region: Object.freeze({ singular: 'state or territory', plural: 'states and territories' }),
     acquisitionTerms: Object.freeze(['stallholder', 'vendor', 'market stall', 'food vendor', 'exhibitor']),
-    searchTerms: Object.freeze(['market stalls', 'vendor opportunities', 'markets', 'fairs', 'festivals'])
+    searchTerms: Object.freeze(['market stalls', 'vendor opportunities', 'markets', 'fairs', 'festivals']),
+    acquisition: acquisition({
+      enabled: false,
+      snapshotPath: 'functions/_data/au-opportunities.mjs',
+      snapshotExport: 'auOpportunitySnapshot',
+      geographyKind: 'state_or_territory',
+      jurisdictionPrefix: 'AU'
+    })
   }),
   nz: Object.freeze({
     code: 'nz',
@@ -65,7 +101,14 @@ export const countryRegistry = Object.freeze({
     postal: Object.freeze({ label: 'Postcode', kind: 'postcode' }),
     region: Object.freeze({ singular: 'region', plural: 'regions' }),
     acquisitionTerms: Object.freeze(['stallholder', 'vendor', 'market stall', 'food vendor', 'exhibitor']),
-    searchTerms: Object.freeze(['market stalls', 'vendor opportunities', 'markets', 'fairs', 'festivals'])
+    searchTerms: Object.freeze(['market stalls', 'vendor opportunities', 'markets', 'fairs', 'festivals']),
+    acquisition: acquisition({
+      enabled: false,
+      snapshotPath: 'functions/_data/nz-opportunities.mjs',
+      snapshotExport: 'nzOpportunitySnapshot',
+      geographyKind: 'region',
+      jurisdictionPrefix: 'NZ'
+    })
   }),
   ie: Object.freeze({
     code: 'ie',
@@ -78,7 +121,14 @@ export const countryRegistry = Object.freeze({
     postal: Object.freeze({ label: 'Eircode', kind: 'eircode' }),
     region: Object.freeze({ singular: 'county', plural: 'counties' }),
     acquisitionTerms: Object.freeze(['trader', 'stallholder', 'vendor', 'market stall', 'exhibitor']),
-    searchTerms: Object.freeze(['trading pitches', 'markets', 'fairs', 'festivals', 'food vendors'])
+    searchTerms: Object.freeze(['trading pitches', 'markets', 'fairs', 'festivals', 'food vendors']),
+    acquisition: acquisition({
+      enabled: false,
+      snapshotPath: 'functions/_data/ie-opportunities.mjs',
+      snapshotExport: 'ieOpportunitySnapshot',
+      geographyKind: 'county',
+      jurisdictionPrefix: 'IE'
+    })
   })
 });
 
