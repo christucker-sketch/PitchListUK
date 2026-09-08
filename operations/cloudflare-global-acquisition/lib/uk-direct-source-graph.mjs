@@ -1,6 +1,7 @@
 const DEFAULT_MAX_SEEDS = 24;
 const DEFAULT_MAX_LINKS = 40;
 const RELEVANT = /(?:apply|application|trade|trader|stall|stallholder|pitch|market|vendor|concession|festival|exhibitor|street[-\s]?trading|food[-\s]?trader|county[-\s]?show|artisan)/i;
+const FOLLOW_ON_ONLY = /(?:upload|attach|provide|submit)[-\s_/]*(?:supporting[-\s_]*)?(?:documents?|evidence|files?)/i;
 
 function canonical(value) {
   try {
@@ -28,6 +29,11 @@ async function timedFetch(fetchImpl, url, timeoutMs) {
   } finally { clearTimeout(timer); }
 }
 
+function eligibleCandidate(url, text = '') {
+  const evidence = `${url.pathname} ${text}`;
+  return RELEVANT.test(evidence) && !FOLLOW_ON_ONLY.test(evidence);
+}
+
 function htmlLinks(html, base) {
   const out = [];
   const re = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
@@ -37,7 +43,7 @@ function htmlLinks(html, base) {
     try { url = new URL(match[1], base); } catch { continue; }
     const text = String(match[2] || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     const route = canonical(url.toString());
-    if (!route || !RELEVANT.test(`${url.pathname} ${text}`)) continue;
+    if (!route || !eligibleCandidate(url, text)) continue;
     out.push({ url: route, title: text || url.pathname, snippet: `Cloudflare direct link discovery from ${base}` });
   }
   return out;
@@ -51,7 +57,7 @@ function sitemapLinks(xml, origin) {
     const route = canonical(match[1]);
     if (!route) continue;
     const url = new URL(route);
-    if (url.origin !== origin || !RELEVANT.test(url.pathname)) continue;
+    if (url.origin !== origin || !eligibleCandidate(url)) continue;
     out.push({ url: route, title: url.pathname, snippet: `Cloudflare sitemap discovery from ${origin}` });
   }
   return out;
@@ -71,6 +77,8 @@ export async function discoverUkDirectSourceGraph(seedRoutes = [], options = {})
   const add = item => {
     const route = canonical(item?.url);
     if (!route || seedSet.has(route) || seen.has(route) || found.length >= maxLinks) return;
+    const url = new URL(route);
+    if (!eligibleCandidate(url, item?.title || '')) return;
     seen.add(route);
     found.push({ query: 'cloudflare-first-party-graph', rank: found.length + 1, title: item.title || '', url: route, snippet: item.snippet || '' });
   };
