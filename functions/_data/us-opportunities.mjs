@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T14:34:09.094Z",
-  "source": "reviewed-us-virginia-cloud-promotion:077a871fb3b03b250ba9a6b84d96f8a77ec23a489814e0bca3e522c84dff0dd7",
-  "total": 618,
+  "exported_at": "2026-09-08T14:39:55.084Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:1e43269255037cdd776123796da45c93f03dbcd336ee392a46e9b5f2b4e331f7",
+  "total": 619,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23483,6 +23483,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_3f2558e7cb684d0ff59e"
+    },
+    {
+      "stable_id": "opp_us_92058bd33f2995d6b18a",
+      "event_name": "2026 Art/Crafts Vendor Application",
+      "organiser": "2026 Art/Crafts",
+      "source_url": "https://www.danceforworldcommunity.org/arts-and-crafts-vendor-application",
+      "application_url": "https://www.danceforworldcommunity.org/arts-and-crafts-vendor-application",
+      "location": "Boston",
+      "locality": "Boston",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-05",
+      "event_end": "2027-01-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-2026-art-crafts-2027-01-05-376f2f5b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_92058bd33f2995d6b18a"
     }
   ]
 };
