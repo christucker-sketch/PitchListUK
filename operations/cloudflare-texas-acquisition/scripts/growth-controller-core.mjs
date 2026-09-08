@@ -30,6 +30,7 @@ const workflowName = 'pitchlist-texas-acquisition';
 const githubRepository = 'christucker-sketch/PitchListUK';
 const defaultStateFile = path.join(os.homedir(), '.local/state/findpitches-us-growth/controller.json');
 const milestones = Object.freeze([350, 600, 850, 1100]);
+const discoveryQueryLimit = Math.max(1, Number(process.env.PITCHLIST_GROWTH_DISCOVERY_QUERY_LIMIT || 4));
 
 function stripAnsi(value) {
   return String(value || '').replace(/\u001b\[[0-9;]*m/g, '');
@@ -672,10 +673,10 @@ async function cycle(state, envFile, stateFile) {
   if (!selected) throw new Error('Priority discovery plan exhausted before target count was reached');
   state.current = {
     mode: 'discover', state_code: selected.code, query_offset: selected.offset,
-    query_limit: 2, plan_size: selected.size, next_priority_cursor: selected.nextCursor
+    query_limit: discoveryQueryLimit, plan_size: selected.size, next_priority_cursor: selected.nextCursor
   };
   state.active_instance = {
-    id: triggerWorkflow(envFile, { mode: 'discover', state_code: selected.code, query_offset: selected.offset, query_limit: 2, trigger: 'growth-controller' }),
+    id: triggerWorkflow(envFile, { mode: 'discover', state_code: selected.code, query_offset: selected.offset, query_limit: discoveryQueryLimit, trigger: 'growth-controller' }),
     mode: 'discover', state_code: selected.code, state_name: selected.state.name,
     worker_version: state.worker_version, worker_sha: state.worker_sha, started_at: new Date().toISOString()
   };
