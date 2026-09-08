@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T23:01:35.522Z",
+  "updated_at": "2026-09-08T23:06:37.183Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14489,6 +14489,24 @@
       "evidence": "Cloudflare discovery ok-pryor-2027-farmers-market: live first-party route attests Pryor, OK, actionable vendor terms, and exact event date range 2027-03-20 to 2027-03-21."
     },
     {
+      "id": "or-alpenfair-artisan-market-2026-joseph-or-2026-09-29-cf9f5672",
+      "name": "Alpenfair Artisan Market 2026, Joseph, OR Vendor Opportunity",
+      "organiser": "Alpenfair Artisan Market 2026, Joseph, OR",
+      "source_url": "https://vendorsmap.com/events/30954",
+      "application_url": "https://vendorsmap.com/events/30954",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "region_code": "OR",
+      "locality": "Joseph",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-29",
+      "event_end": "2026-10-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery or-joseph-2026-food-truck: live first-party route attests Joseph, OR, actionable vendor terms, and exact event date range 2026-09-29 to 2026-10-01."
+    },
+    {
       "id": "or-become-a-vendor-mdash-hollywood-farmers-market-2026-12-19-a3e4aa61",
       "name": "Become a Vendor &mdash; Hollywood Farmers Market",
       "organiser": "Become a Vendor &mdash; Hollywood Farmers Market",
@@ -14577,6 +14595,25 @@
       "event_end": "2027-07-25",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery or-klamath-falls-2027-festival: live first-party route attests Klamath Falls, OR, actionable vendor terms, and exact event date range 2027-07-24 to 2027-07-25."
+    },
+    {
+      "id": "or-las-posadas-food-vendors-2026-12-05-ee27d99a",
+      "name": "Las Posadas Food Vendors Vendor Opportunity",
+      "organiser": "Las Posadas Food Vendors",
+      "source_url": "https://pwlhc.org/las-posadas-2",
+      "application_url": "https://pwlhc.org/las-posadas-2",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "region_code": "OR",
+      "locality": "Joseph",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "application_deadline": "2026-11-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery or-joseph-2026-food-truck: live first-party route attests Joseph, OR, actionable vendor terms, and exact event date 2026-12-05."
     },
     {
       "id": "or-north-portland-sunday-parkways-august-2-2026-2026-09-13-7618a5b9",
@@ -14686,6 +14723,24 @@
       "event_end": "2026-10-10",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery or-joseph-2026-farmers-market: live first-party route attests Joseph, OR, actionable vendor terms, and exact event date 2026-10-10."
+    },
+    {
+      "id": "or-wallowa-lake-tourism-guide-what-s-happening-2026-10-10-e28331e9",
+      "name": "Wallowa Lake Tourism Guide - What's Happening Vendor Opportunity",
+      "organiser": "Wallowa Lake Tourism Guide - What's Happening",
+      "source_url": "https://wallowalake.net/~wallowa1/index.php/weddings-events/events",
+      "application_url": "https://wallowalake.net/~wallowa1/index.php/weddings-events/events",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "region_code": "OR",
+      "locality": "Joseph",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery or-joseph-2026-food-truck: live first-party route attests Joseph, OR, actionable vendor terms, and exact event date 2026-10-10."
     },
     {
       "id": "pa-10th-annual-wish-upon-a-food-truck-festival-visit-lebanon-valley-penns-2026-09-12-1868a1c3",
