@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T17:29:46.794Z",
-  "source": "reviewed-us-colorado-cloud-promotion:4a0d44c3c8dc364a98978b194d78174c6e2df434924dc38537afca9f015607d8",
-  "total": 629,
+  "exported_at": "2026-09-08T17:44:16.407Z",
+  "source": "reviewed-us-louisiana-cloud-promotion:d78bd520b08036980fae84a44a229e84c7075415e8806a39dde857e7a36b33ce",
+  "total": 630,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23894,6 +23894,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_a47d98e0f04e6985f031"
+    },
+    {
+      "stable_id": "opp_us_59419dc365058baeca7f",
+      "event_name": "Introducing the Boots on the Bayou Festival in Gonzales, Louisiana Vendor Opportunity",
+      "organiser": "Introducing the Boots on the Bayou Festival in Gonzales, Louisiana",
+      "source_url": "https://www.whereyat.com/boots-on-the-bayou-festival",
+      "application_url": "https://www.whereyat.com/boots-on-the-bayou-festival",
+      "location": "Gonzales",
+      "locality": "Gonzales",
+      "region": "Louisiana",
+      "region_code": "LA",
+      "region_name": "Louisiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-LA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-10-31",
+      "event_end": "2027-11-01",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "la-introducing-the-boots-on-the-bayou-festival-in-gonzales-louisiana-2027-10-31-991eafe3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-louisiana",
+      "id": "opp_us_59419dc365058baeca7f"
     }
   ]
 };
