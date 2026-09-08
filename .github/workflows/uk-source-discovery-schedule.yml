@@ -97,9 +97,9 @@ jobs:
           fi
           offset=$(( (offset / 4) * 4 ))
           echo "value=$offset" >> "$GITHUB_OUTPUT"
-          echo "Using UK discovery query offset $offset (4-query batch, maximum 4 Serper credits)." >> "$GITHUB_STEP_SUMMARY"
+          echo "Using Cloudflare-first UK discovery; Serper fallback offset $offset is used only if direct crawling finds no candidate routes." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Run bounded rotating UK source discovery
+      - name: Run Cloudflare-first rotating UK source discovery
         shell: bash
         env:
           QUERY_OFFSET: ${{ steps.offset.outputs.value }}
@@ -107,7 +107,8 @@ jobs:
           set -euo pipefail
           instance_id="uk-source-discovery-scheduled-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           as_of="$(date -u +'%Y-%m-%dT%H:%M:%S.000Z')"
-          params="$(jq -cn --arg as_of "$as_of" --argjson offset "$QUERY_OFFSET" '{country:"UK",mode:"uk_source_discovery_pr",as_of:$as_of,query_offset:$offset,query_limit:4,results_per_query:5,candidate_limit:20,concurrency:2,timeout_ms:12000}')"
+          seed_routes="$(jq -c '[.[].official_application_route] | map(select(type == "string" and startswith("https://"))) | unique' operations/opportunity-pipeline/config/approved-source-routes.json)"
+          params="$(jq -cn --arg as_of "$as_of" --argjson offset "$QUERY_OFFSET" --argjson seeds "$seed_routes" '{country:"UK",mode:"uk_source_discovery_pr",as_of:$as_of,seed_routes:$seeds,direct_seed_limit:24,serper_fallback:true,query_offset:$offset,query_limit:4,results_per_query:5,candidate_limit:40,concurrency:3,timeout_ms:12000}')"
           npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
           endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
           for attempt in $(seq 1 300); do
