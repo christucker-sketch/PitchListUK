@@ -1,9 +1,10 @@
 import { assertAcquisitionCountryEnabled, normalizeAcquisitionCountry } from '../../../platform/acquisition/country-contract.mjs';
 
 const READ_ONLY_MODE = 'approved_source_cloudflare_read_only_poll';
+const UK_ADDITIONS_MODE = 'uk_additions_only_pr';
 const MODES = Object.freeze({
   US: Object.freeze(new Set(['acquire', 'discover', READ_ONLY_MODE])),
-  UK: Object.freeze(new Set([READ_ONLY_MODE]))
+  UK: Object.freeze(new Set([READ_ONLY_MODE, UK_ADDITIONS_MODE]))
 });
 
 export function resolveGlobalAcquisitionDispatch(payload = {}) {
@@ -16,7 +17,9 @@ export function resolveGlobalAcquisitionDispatch(payload = {}) {
 
   const readOnly = mode === READ_ONLY_MODE;
   const handler = country === 'UK'
-    ? 'uk_approved_source_poll'
+    ? mode === UK_ADDITIONS_MODE
+      ? 'uk_additions_only_pr'
+      : 'uk_approved_source_poll'
     : readOnly
       ? 'us_approved_source_poll'
       : 'us_production_workflow';
@@ -37,7 +40,7 @@ export function globalControllerExecutionEnabled(env = {}) {
 export function globalControllerExecutionLevel(env = {}) {
   if (!globalControllerExecutionEnabled(env)) return 'disabled';
   const level = String(env.GLOBAL_ACQUISITION_EXECUTION_LEVEL || '').trim().toLowerCase();
-  if (level === 'read_only' || level === 'production') return level;
+  if (level === 'read_only' || level === 'pr_only' || level === 'production') return level;
   return 'invalid';
 }
 
@@ -48,7 +51,10 @@ export function assertGlobalControllerDispatchAllowed(env, dispatch) {
   if (level === 'read_only' && dispatch?.mutation_capable) {
     throw new Error(`Global acquisition controller is read-only; ${dispatch.country} ${dispatch.mode} is not permitted`);
   }
+  if (level === 'pr_only' && dispatch?.mutation_capable && !(dispatch?.country === 'UK' && dispatch?.mode === UK_ADDITIONS_MODE)) {
+    throw new Error(`Global acquisition controller is PR-only; ${dispatch.country} ${dispatch.mode} is not permitted`);
+  }
   return true;
 }
 
-export { READ_ONLY_MODE };
+export { READ_ONLY_MODE, UK_ADDITIONS_MODE };
