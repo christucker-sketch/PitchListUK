@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T15:31:36.617Z",
+  "updated_at": "2026-09-08T15:43:37.571Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -8199,6 +8199,24 @@
       "event_end": "2027-06-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ma-boston-2027-farmers-market: live first-party route attests Boston, MA, actionable vendor terms, and exact event date 2027-06-30."
+    },
+    {
+      "id": "ma-calendar-community-events-2026-09-19-64c357f5",
+      "name": "Calendar • Community Events Vendor Opportunity",
+      "organiser": "Calendar • Community Events",
+      "source_url": "https://www.gardner-ma.gov/calendar.aspx?CID=23",
+      "application_url": "https://www.gardner-ma.gov/calendar.aspx?CID=23",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "region_code": "MA",
+      "locality": "Worcester",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ma-worcester-2026-government-events: live first-party route attests Worcester, MA, actionable vendor terms, and exact event date range 2026-09-19 to 2026-09-26."
     },
     {
       "id": "ma-cambridge-carnival-2026-09-12-3bdc1e0f",
