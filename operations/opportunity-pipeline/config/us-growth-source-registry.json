@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T18:09:43.634Z",
+  "updated_at": "2026-09-08T18:16:46.433Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6470,6 +6470,24 @@
       "event_end": "2027-09-13",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-waukegan-2027-government-events: live first-party route attests Waukegan, IL, actionable vendor terms, and exact event date 2027-09-13."
+    },
+    {
+      "id": "il-cruisin-nights-thursdays-night-in-downtown-westmont-westmont-il-2026-09-18-b5e6ab3b",
+      "name": "Cruisin’ Nights Thursdays Night In Downtown Westmont • Westmont, IL Vendor Opportunity",
+      "organiser": "Cruisin’ Nights Thursdays Night In Downtown Westmont • Westmont, IL",
+      "source_url": "https://westmont.illinois.gov/m/newsflash/Home/Detail/2345",
+      "application_url": "https://westmont.illinois.gov/m/newsflash/Home/Detail/2345",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Naperville",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-naperville-2026-government-events: live first-party route attests Naperville, IL, actionable vendor terms, and exact event date 2026-09-18."
     },
     {
       "id": "il-elgin-micheleros-festival-2026-09-04-a13c074d",
