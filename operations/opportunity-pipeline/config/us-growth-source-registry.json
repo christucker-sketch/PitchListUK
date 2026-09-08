@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T14:38:43.694Z",
+  "updated_at": "2026-09-08T14:54:35.259Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7010,6 +7010,42 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ks-mound-city-2026-festival: live first-party route attests Mound City, KS, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
+      "id": "ks-dallas-winter-memorial-2nd-annual-bike-show-in-el-dorado-support-biker-2027-02-06-2e5f7d9a",
+      "name": "Dallas Winter Memorial 2nd Annual Bike Show in El Dorado - Support Bikers Vendor Opportunity",
+      "organiser": "Dallas Winter Memorial 2nd Annual Bike Show in El Dorado - Support Bikers",
+      "source_url": "https://supportbikers.com/events-calendar/united-states/kansas/el-dorado-1/all-events/dallas-winter-memorial-2nd-annual-bike-show",
+      "application_url": "https://supportbikers.com/events-calendar/united-states/kansas/el-dorado-1/all-events/dallas-winter-memorial-2nd-annual-bike-show",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "El Dorado",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-06",
+      "event_end": "2027-02-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-el-dorado-2027-food-truck: live first-party route attests El Dorado, KS, actionable vendor terms, and exact event date range 2027-02-06 to 2027-02-07."
+    },
+    {
+      "id": "ks-el-dorado-farmers-and-art-market-begins-june-28-el-dorado-ks-2027-06-28-f8ca00cb",
+      "name": "El Dorado Farmers and Art Market begins June 28 • El Dorado, KS Vendor Opportunity",
+      "organiser": "El Dorado Farmers and Art Market begins June 28 • El Dorado, KS",
+      "source_url": "http://www.eldoks.gov/m/newsflash/Home/Detail/631",
+      "application_url": "http://www.eldoks.gov/m/newsflash/Home/Detail/631",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "El Dorado",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-06-28",
+      "event_end": "2027-06-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-el-dorado-2027-arts-crafts: live first-party route attests El Dorado, KS, actionable vendor terms, and exact event date 2027-06-28."
     },
     {
       "id": "ks-experienceeldo-com-2027-07-26-9f4455ea",
