@@ -26,9 +26,9 @@ export function selectUsReadOnlySources(state, options = {}) {
     ? state.sources.filter(source => requestedIds.includes(source.id))
     : state.sources.slice(0, limit);
 
+  if (requestedIds.length && selected.length !== requestedIds.length) throw new Error(`${state.name} read-only poll contains an unknown source id`);
   if (!selected.length) throw new Error(`${state.name} read-only poll selected no approved sources`);
   if (selected.length > MAX_SOURCE_LIMIT) throw new Error(`US read-only poll exceeds maximum of ${MAX_SOURCE_LIMIT} sources`);
-  if (requestedIds.length && selected.length !== requestedIds.length) throw new Error(`${state.name} read-only poll contains an unknown source id`);
   return Object.freeze([...selected]);
 }
 
