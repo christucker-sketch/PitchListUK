@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T14:12:18.410Z",
-  "source": "reviewed-us-california-cloud-promotion:e9d91beda30a3e15f0ad7a6dd458f119a868d022ea8ae3f1fc4a5c3cb2d4ef12",
-  "total": 616,
+  "exported_at": "2026-09-08T14:15:14.007Z",
+  "source": "reviewed-us-texas-cloud-promotion:a4eb4d9ad3e4e4ed0d759fb44b046335dc96d005f992dc555e0c0bd0a71e0610",
+  "total": 617,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23407,6 +23407,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_05602df25ee5f19a4909"
+    },
+    {
+      "stable_id": "opp_us_201828856fe0ee2a1567",
+      "event_name": "Bluebonnet Festival – Chappell Hill Historical Society",
+      "organiser": "Bluebonnet Festival",
+      "source_url": "https://chappellhillhistoricalsociety.com/bluebonnet-festival/",
+      "application_url": "https://chappellhillhistoricalsociety.com/bluebonnet-festival",
+      "location": "Houston",
+      "locality": "Houston",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-10",
+      "event_end": "2027-04-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-bluebonnet-festival-2027-04-10-a8091553",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_201828856fe0ee2a1567"
     }
   ]
 };
