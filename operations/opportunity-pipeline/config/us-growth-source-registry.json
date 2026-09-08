@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T11:57:52.053Z",
+  "updated_at": "2026-09-08T12:12:08.359Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -15189,6 +15189,24 @@
       "event_end": "2026-10-24",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-lubbock-2026-farmers-market: live first-party route attests Lubbock, TX, actionable vendor terms, and exact event date 2026-10-24."
+    },
+    {
+      "id": "tx-nutcracker-in-the-park-2026-11-28-75f38dde",
+      "name": "Nutcracker in the Park Vendor Opportunity",
+      "organiser": "Nutcracker in the Park",
+      "source_url": "https://www.leaguecitytx.gov/4101/Nutcracker-in-the-Park",
+      "application_url": "https://www.leaguecitytx.gov/4101/Nutcracker-in-the-Park",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Houston",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-houston-2026-holiday-market: live first-party route attests Houston, TX, actionable vendor terms, and exact event date 2026-11-28."
     },
     {
       "id": "tx-plano-food-and-wine-festival-mdash-sbg-hospitality-2026-11-07-11e1249d",
