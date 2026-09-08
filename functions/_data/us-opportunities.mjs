@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T16:29:44.744Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:6e0b3b4de23d0f87eb7f1b988f9514b5719bd2e33474b0b2f469f6ee652c67b0",
-  "total": 623,
+  "exported_at": "2026-09-08T16:38:00.382Z",
+  "source": "reviewed-us-tennessee-cloud-promotion:c73f6ac0076738e9192b58ca4a7d54f6eebb674dbf3e3f72684cd5ace38a9484",
+  "total": 624,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23669,6 +23669,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_f0d7c34e9aaf98ed884f"
+    },
+    {
+      "stable_id": "opp_us_dbe417f808e9c8e3d197",
+      "event_name": "Food Vendors - PumpkinFest (2026) - Eventeny Vendor Opportunity",
+      "organiser": "Food Vendors - PumpkinFest (2026) - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=41552",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=41552",
+      "location": "Franklin",
+      "locality": "Franklin",
+      "region": "Tennessee",
+      "region_code": "TN",
+      "region_name": "Tennessee",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TN",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-24",
+      "event_end": "2026-10-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tn-food-vendors-pumpkinfest-2026-eventeny-2026-10-24-e888c4d0",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-tennessee",
+      "id": "opp_us_dbe417f808e9c8e3d197"
     }
   ]
 };
