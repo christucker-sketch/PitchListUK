@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 
 import {
   advanceAfterResult,
@@ -107,7 +108,7 @@ test('terminated or errored Workflow can be checkpointed and safely rerun at the
 });
 
 test('auto-merge accepts only an exact-head snapshot PR with successful verify CI and complete evidence', () => {
-  const baseSha = 'a'.repeat(40);
+  const baseSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   const headOid = 'b'.repeat(40);
   const result = {
     state_code: 'IL', state_name: 'Illinois', before: 105, after: 112, additions: 7,
