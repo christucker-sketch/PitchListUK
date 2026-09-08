@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T18:27:55.445Z",
-  "source": "reviewed-us-virginia-cloud-promotion:323acc73fbbd51562442ce7a94e64f1672096254c1cc3168d27f76f86b3615c6",
-  "total": 634,
+  "exported_at": "2026-09-08T22:33:46.183Z",
+  "source": "reviewed-us-utah-cloud-promotion:81cd5d3de03db0f694568555ffc49a1e40ed1b4629f95d7da3bc11bbd6b7568f",
+  "total": 635,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24083,6 +24083,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_f63184e4b12928bf5fe3"
+    },
+    {
+      "stable_id": "opp_us_387bdb6d690e3ab87dfb",
+      "event_name": "Events from September 8 – December 5 – Page 4 Vendor Opportunity",
+      "organiser": "Events from September 8 – December 5 – Page 4",
+      "source_url": "https://www.carbon.utah.gov/events/list/page/4/?hide_subsequent_recurrences=1&posts_per_page=122&tribe-bar-date=2024-05-14",
+      "application_url": "https://www.carbon.utah.gov/events/list/page/4/?hide_subsequent_recurrences=1&posts_per_page=122&tribe-bar-date=2024-05-14",
+      "location": "Utah County",
+      "locality": "Utah County",
+      "region": "Utah",
+      "region_code": "UT",
+      "region_name": "Utah",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-UT",
+      "currency": "USD",
+      "postal_code": "84501",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-01",
+      "event_end": "2026-10-04",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ut-events-from-september-8-december-5-page-4-2026-10-01-518809c3",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-utah",
+      "id": "opp_us_387bdb6d690e3ab87dfb"
     }
   ]
 };
