@@ -1,0 +1,136 @@
+name: UK acquisition Cloudflare canary
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/uk-acquisition-canary.yml'
+      - 'operations/cloudflare-uk-canary/**'
+      - 'platform/acquisition/uk-cloudflare-canary.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pitchlist-uk-acquisition-canary
+  cancel-in-progress: false
+
+jobs:
+  deploy_and_prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-uk-canary/wrangler.jsonc
+      WORKFLOW_NAME: findpitches-uk-acquisition-canary
+    steps:
+      - name: Check out verified main
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run focused UK canary regression tests
+        run: node --test tests/uk-cloudflare-canary.test.mjs tests/uk-cloudflare-canary-execution.test.mjs
+
+      - name: Compile UK acquisition canary
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config "$CONFIG"
+
+      - name: Deploy isolated UK acquisition canary
+        run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
+
+      - name: Verify Workflow resource is describable
+        run: npx --yes wrangler@4.127.1 workflows describe "$WORKFLOW_NAME" --config "$CONFIG"
+
+      - name: Prove trigger and instance describe control plane without fetching sources
+        id: control_plane
+        shell: bash
+        run: |
+          set -euo pipefail
+          probe_id="ukcf-probe-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" '{}' --id "$probe_id" --config "$CONFIG"
+
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${probe_id}?simple=true"
+          proved=false
+          for attempt in $(seq 1 45); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "errored" ]]; then
+              message="$(jq -r '.result.error.message // empty' <<<"$body")"
+              if [[ "$message" != *"control-plane health gate has not passed"* ]]; then
+                echo "Unexpected probe error: $message" >&2
+                exit 1
+              fi
+              proved=true
+              break
+            fi
+            if [[ "$status" == "complete" || "$status" == "terminated" ]]; then
+              echo "Control-plane probe reached unexpected terminal status: $status" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+
+          if [[ "$proved" != "true" ]]; then
+            echo 'Control-plane probe did not reach the expected fail-closed state.' >&2
+            exit 1
+          fi
+
+          checked_at="$(date -u +'%Y-%m-%dT%H:%M:%S.000Z')"
+          echo "checked_at=$checked_at" >> "$GITHUB_OUTPUT"
+          echo "Control-plane trigger+describe proof passed at $checked_at" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run three-source read-only UK canary
+        shell: bash
+        run: |
+          set -euo pipefail
+          checked_at='${{ steps.control_plane.outputs.checked_at }}'
+          canary_id="ukcf-live-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          verifier="github-actions:${GITHUB_RUN_ID}/${GITHUB_RUN_ATTEMPT}"
+          params="$(jq -cn \
+            --arg checked_at "$checked_at" \
+            --arg verifier "$verifier" \
+            '{canary_id:"ukcf-003-approved-direct-v1",as_of:$checked_at,health_gate:{status:"passed",control_plane_healthy:true,trigger_probe_passed:true,describe_probe_passed:true,checked_at:$checked_at,verifier:$verifier}}')"
+
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$canary_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${canary_id}"
+
+          completed=false
+          for attempt in $(seq 1 75); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "complete" ]]; then
+              printf '%s\n' "$body" > uk-canary-result.json
+              echo '### UK Cloudflare canary result' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == "errored" || "$status" == "terminated" ]]; then
+              message="$(jq -r '.result.error.message // "unknown workflow error"' <<<"$body")"
+              echo "UK canary failed: $message" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+
+          if [[ "$completed" != "true" ]]; then
+            echo 'UK canary did not complete inside the bounded observation window.' >&2
+            exit 1
+          fi
+
+      - name: Publish canary evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uk-cloudflare-canary-${{ github.run_id }}-${{ github.run_attempt }}
+          path: uk-canary-result.json
+          if-no-files-found: ignore
+          retention-days: 14

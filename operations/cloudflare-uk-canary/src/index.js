@@ -1,7 +1,7 @@
 import { WorkflowEntrypoint } from 'cloudflare:workers';
 
 import { buildUkCloudflareCanaryPlan } from '../../../platform/acquisition/uk-cloudflare-canary.mjs';
-import { executeUkCloudflareCanary } from '../lib/uk-cloudflare-canary-execution.mjs';
+import { assertUkCanaryHealthGate, executeUkCloudflareCanary } from '../lib/uk-cloudflare-canary-execution.mjs';
 
 export class UkCloudflareCanaryWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
@@ -12,6 +12,10 @@ export class UkCloudflareCanaryWorkflow extends WorkflowEntrypoint {
     const healthGate = payload.health_gate;
     const asOf = payload.as_of || new Date().toISOString();
     const plan = buildUkCloudflareCanaryPlan();
+
+    // Fail before entering a retryable step when the control-plane receipt is missing/invalid.
+    // This gives operations a safe trigger+describe probe that can never reach source fetching.
+    assertUkCanaryHealthGate(healthGate, { now: asOf });
 
     return step.do('run UK approved direct-source read-only canary', {
       retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' },
