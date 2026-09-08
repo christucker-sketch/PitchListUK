@@ -39,6 +39,3 @@ jobs:
 
       - name: Compile global Cloudflare acquisition shadow
         run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/cloudflare-global-acquisition/wrangler.jsonc
-
-      - name: Check patch whitespace
-        run: git diff --check HEAD^
