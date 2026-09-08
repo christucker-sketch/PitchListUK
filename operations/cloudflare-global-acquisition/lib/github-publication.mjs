@@ -69,6 +69,14 @@ function encodeBase64Utf8(value) {
   return btoa(binary);
 }
 
+function stampHomepageCount(html, total) {
+  const value = String(Number(total));
+  if (!/^\d+$/.test(value)) throw new Error('UK generated homepage requires a numeric opportunity total');
+  const marker = /(<strong id="liveDatabaseCount">)[^<]+(<\/strong>)/;
+  if (!marker.test(String(html || ''))) throw new Error('UK generated homepage is missing liveDatabaseCount');
+  return String(html).replace(marker, `$1${value}$2`);
+}
+
 export async function readMainMarketSnapshot(env, country) {
   const market = getGlobalAcquisitionMarket(country);
   const ref = await githubJson(env, '/git/ref/heads/main');
@@ -130,6 +138,22 @@ export async function openUkAdditionPullRequest(env, options = {}) {
         message: `Publish ${additions} reviewed UK opportunities`,
         content: encodeBase64Utf8(serializeAcquisitionSnapshotModule(nextSnapshot, 'UK')),
         sha: branchFile.sha,
+        branch
+      })
+    });
+  }
+
+  const homepagePath = 'public/index.html';
+  const homepageFile = await githubJson(env, `/contents/${homepagePath}?ref=${encodeURIComponent(branch)}`);
+  const homepage = decodeBase64Utf8(homepageFile.content);
+  const stampedHomepage = stampHomepageCount(homepage, nextSnapshot.total);
+  if (stampedHomepage !== homepage) {
+    await githubJson(env, `/contents/${homepagePath}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        message: `Sync generated UK homepage count to ${nextSnapshot.total}`,
+        content: encodeBase64Utf8(stampedHomepage),
+        sha: homepageFile.sha,
         branch
       })
     });
