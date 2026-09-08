@@ -1,0 +1,47 @@
+name: Global acquisition shadow compile
+
+on:
+  pull_request:
+    paths:
+      - 'operations/cloudflare-global-acquisition/**'
+      - 'platform/acquisition/**'
+      - 'platform/countries.mjs'
+      - 'tests/global-cloudflare-acquisition-controller.test.mjs'
+      - 'tests/global-acquisition-engine.test.mjs'
+      - '.github/workflows/global-acquisition-shadow.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'operations/cloudflare-global-acquisition/**'
+      - 'platform/acquisition/**'
+      - 'platform/countries.mjs'
+      - 'tests/global-cloudflare-acquisition-controller.test.mjs'
+      - 'tests/global-acquisition-engine.test.mjs'
+      - '.github/workflows/global-acquisition-shadow.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run global acquisition controller tests
+        run: node --test tests/global-acquisition-engine.test.mjs tests/global-cloudflare-acquisition-controller.test.mjs tests/country-acquisition-contract.test.mjs
+
+      - name: Compile global Cloudflare acquisition shadow
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/cloudflare-global-acquisition/wrangler.jsonc
+
+      - name: Check patch whitespace
+        run: git diff --check HEAD^
