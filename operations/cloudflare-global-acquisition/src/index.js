@@ -5,6 +5,7 @@ import { UkApprovedSourcePollWorkflow } from '../../cloudflare-uk-canary/src/ind
 import { globalAcquisitionMarkets } from '../../../platform/acquisition/global-engine.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
+import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflow.mjs';
 import {
   assertGlobalControllerDispatchAllowed,
   globalControllerExecutionEnabled,
@@ -32,6 +33,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
 
     if (dispatch.handler === 'uk_additions_only_pr') {
       return runUkAdditionsOnlyWorkflow(this.env, {
+        ...event,
+        payload: dispatch.payload
+      }, step);
+    }
+
+    if (dispatch.handler === 'uk_source_discovery_pr') {
+      return runUkSourceDiscoveryWorkflow(this.env, {
         ...event,
         payload: dispatch.payload
       }, step);
