@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T18:16:46.433Z",
+  "updated_at": "2026-09-08T18:23:13.462Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12560,6 +12560,24 @@
       "event_end": "2026-09-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nj-clifton-2026-festival: live first-party route attests Clifton, NJ, actionable vendor terms, and exact event date 2026-09-08."
+    },
+    {
+      "id": "nj-paterson-farmers-market-2026-paterson-nj-2026-12-31-3018f8f7",
+      "name": "Paterson Farmers Market 2026, Paterson, NJ Vendor Opportunity",
+      "organiser": "Paterson Farmers Market 2026, Paterson, NJ",
+      "source_url": "https://vendorsmap.com/events/815",
+      "application_url": "https://vendorsmap.com/events/815",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "region_code": "NJ",
+      "locality": "Paterson",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-31",
+      "event_end": "2026-12-31",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nj-paterson-2026-farmers-market: live first-party route attests Paterson, NJ, actionable vendor terms, and exact event date 2026-12-31."
     },
     {
       "id": "nj-search-results-2026-10-18-ae4c6860",
