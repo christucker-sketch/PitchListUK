@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T12:28:17.652Z",
-  "source": "reviewed-us-virginia-cloud-promotion:404c2884a8ca714efb3e4c000ed4dd1d6d90146d904b63d6a6f91d4b88337519",
-  "total": 613,
+  "exported_at": "2026-09-08T12:30:59.352Z",
+  "source": "reviewed-us-washington-cloud-promotion:f388afdffbbc90f9398d7000f6249e36b6cbb0d8bf57b00e31014fd2a00c7414",
+  "total": 614,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -23294,6 +23294,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_5fcc668b96b6aed3b75f"
+    },
+    {
+      "stable_id": "opp_us_8cdc928eace2bab92074",
+      "event_name": "Washington State Food Truck Association",
+      "organiser": "Washington State Food Truck Association",
+      "source_url": "https://wafoodtrucks.org/pacific",
+      "application_url": "https://wafoodtrucks.org/pacific",
+      "location": "Seattle",
+      "locality": "Seattle",
+      "region": "Washington",
+      "region_code": "WA",
+      "region_name": "Washington",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-WA",
+      "currency": "USD",
+      "postal_code": "98047",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-31",
+      "event_end": "2026-10-31",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "wa-washington-state-food-truck-association-2026-10-31-2ffc8846",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-washington",
+      "id": "opp_us_8cdc928eace2bab92074"
     }
   ]
 };
