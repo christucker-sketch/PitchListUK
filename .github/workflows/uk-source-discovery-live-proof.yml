@@ -3,16 +3,21 @@ name: UK source discovery live proof
 on:
   pull_request:
     paths:
-      - 'operations/cloudflare-global-acquisition/lib/uk-source-discovery.mjs'
-      - 'operations/cloudflare-global-acquisition/lib/uk-source-discovery-workflow.mjs'
-      - 'operations/cloudflare-global-acquisition/lib/uk-source-publication.mjs'
-      - 'operations/cloudflare-global-acquisition/lib/dispatch.mjs'
-      - 'operations/cloudflare-global-acquisition/src/index.js'
+      - 'operations/cloudflare-global-acquisition/**'
+      - 'operations/cloudflare-texas-acquisition/src/entrypoint.js'
+      - 'operations/cloudflare-texas-acquisition/src/internal-serper-broker.js'
+      - 'operations/cloudflare-texas-acquisition/wrangler.jsonc'
       - 'tests/uk-cloudflare-source-discovery.test.mjs'
+      - 'tests/internal-serper-service-binding.test.mjs'
       - '.github/workflows/uk-source-discovery-live-proof.yml'
   push:
     branches: [main]
     paths:
+      - 'operations/cloudflare-global-acquisition/**'
+      - 'operations/cloudflare-texas-acquisition/src/entrypoint.js'
+      - 'operations/cloudflare-texas-acquisition/src/internal-serper-broker.js'
+      - 'operations/cloudflare-texas-acquisition/wrangler.jsonc'
+      - 'tests/internal-serper-service-binding.test.mjs'
       - '.github/workflows/uk-source-discovery-live-proof.yml'
   workflow_dispatch:
 
@@ -36,8 +41,11 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Run UK source discovery regression tests
-        run: node --test tests/uk-cloudflare-source-discovery.test.mjs tests/global-cloudflare-acquisition-controller.test.mjs
+      - name: Run UK discovery and internal-service regression tests
+        run: node --test tests/uk-cloudflare-source-discovery.test.mjs tests/internal-serper-service-binding.test.mjs tests/global-cloudflare-acquisition-controller.test.mjs
+
+      - name: Compile US acquisition Worker wrapper
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/cloudflare-texas-acquisition/wrangler.jsonc
 
       - name: Compile global Cloudflare acquisition Worker
         run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/cloudflare-global-acquisition/wrangler.jsonc
@@ -46,7 +54,7 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: compile
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 35
     environment: findpitches-production
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -54,7 +62,6 @@ jobs:
       CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
       WORKFLOW_NAME: findpitches-global-acquisition-shadow
       EPHEMERAL_GITHUB_TOKEN: ${{ github.token }}
-      EPHEMERAL_SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
     steps:
       - name: Check out verified main
         uses: actions/checkout@v4
@@ -64,29 +71,16 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Check discovery credential availability
-        id: credential
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ -n "${EPHEMERAL_SERPER_API_KEY:-}" ]]; then
-            echo 'available=true' >> "$GITHUB_OUTPUT"
-            echo 'Serper credential is available for the isolated UK discovery proof.' >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo 'available=false' >> "$GITHUB_OUTPUT"
-            echo 'UK source discovery proof skipped: SERPER_API_KEY is not present in the findpitches-production GitHub environment.' >> "$GITHUB_STEP_SUMMARY"
-          fi
+      - name: Deploy US acquisition Worker with internal search wrapper
+        run: npx --yes wrangler@4.127.1 deploy --config operations/cloudflare-texas-acquisition/wrangler.jsonc
 
-      - name: Provision temporary GitHub and Serper tokens on shadow Worker
-        if: steps.credential.outputs.available == 'true'
+      - name: Provision temporary GitHub write token on global shadow
         shell: bash
         run: |
           set -euo pipefail
           printf '%s' "$EPHEMERAL_GITHUB_TOKEN" | npx --yes wrangler@4.127.1 secret put GITHUB_TOKEN --config "$CONFIG"
-          printf '%s' "$EPHEMERAL_SERPER_API_KEY" | npx --yes wrangler@4.127.1 secret put SERPER_API_KEY --config "$CONFIG"
 
-      - name: Deploy PR-only global acquisition shadow
-        if: steps.credential.outputs.available == 'true'
+      - name: Deploy PR-only global acquisition shadow with US search binding
         run: >-
           npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
           --var GLOBAL_ACQUISITION_EXECUTION_ENABLED:true
@@ -94,7 +88,6 @@ jobs:
           --var GITHUB_REPO:christucker-sketch/PitchListUK
 
       - name: Prove PR-only still blocks US production acquisition
-        if: steps.credential.outputs.available == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -119,7 +112,6 @@ jobs:
           [[ "$proved" == 'true' ]] || { echo 'US production probe did not fail closed.' >&2; exit 1; }
 
       - name: Run bounded UK source discovery PR proof
-        if: steps.credential.outputs.available == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -152,15 +144,15 @@ jobs:
           [[ "$completed" == 'true' ]] || { echo 'UK source discovery proof timed out.' >&2; exit 1; }
 
       - name: Restore read-only global shadow
-        if: always() && steps.credential.outputs.available == 'true'
+        if: always()
         run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
 
-      - name: Remove temporary GitHub and Serper tokens
-        if: always() && steps.credential.outputs.available == 'true'
+      - name: Remove temporary GitHub write token
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
-          printf '%s' '{"GITHUB_TOKEN":null,"SERPER_API_KEY":null}' | npx --yes wrangler@4.127.1 secret bulk --config "$CONFIG"
+          printf '%s' '{"GITHUB_TOKEN":null}' | npx --yes wrangler@4.127.1 secret bulk --config "$CONFIG"
 
       - name: Publish UK source discovery evidence
         if: always()
