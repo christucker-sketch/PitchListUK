@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-08T23:48:05.909Z",
+  "updated_at": "2026-09-09T00:03:08.043Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12326,6 +12326,24 @@
       "event_end": "2026-12-14",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nh-new-hampshire-2026-holiday-market: live first-party route attests New Hampshire, NH, actionable vendor terms, and exact event date range 2026-12-13 to 2026-12-14."
+    },
+    {
+      "id": "nh-new-hampshire-sheep-and-wool-festival-2027-2027-05-09-8035aa52",
+      "name": "New Hampshire Sheep and Wool Festival 2027 Vendor Opportunity",
+      "organiser": "New Hampshire Sheep and Wool Festival 2027",
+      "source_url": "https://vendorsmap.com/events/23617",
+      "application_url": "https://vendorsmap.com/events/23617",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "region_code": "NH",
+      "locality": "New Hampshire",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-05-09",
+      "event_end": "2027-05-10",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nh-new-hampshire-2027-festival: live first-party route attests New Hampshire, NH, actionable vendor terms, and exact event date range 2027-05-09 to 2027-05-10."
     },
     {
       "id": "nh-news-new-hampshire-sheep-and-wool-growers-association-2027-05-10-0edd2a1c",
