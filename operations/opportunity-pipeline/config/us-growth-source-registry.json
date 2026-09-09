@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T02:11:15.927Z",
+  "updated_at": "2026-09-09T02:17:22.898Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -127,6 +127,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery al-magnolia-springs-2026-government-events: live first-party route attests Magnolia Springs, AL, actionable vendor terms, and exact event date range 2026-09-09 to 2026-09-19."
+    },
+    {
+      "id": "al-food-truck-avenue-catering-in-montgomery-county-al-county-wide-setup-q-2027-01-01-512484f9",
+      "name": "Food Truck Avenue Catering in Montgomery County, AL: County-Wide Setup & Quote Planning",
+      "organiser": "Food Truck Avenue Catering in Montgomery County, AL: County-Wide Setup & Quote Planning",
+      "source_url": "https://foodtruckavenue.com/montgomery-county-alabama",
+      "application_url": "https://foodtruckavenue.com/montgomery-county-alabama",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AL",
+      "region_code": "AL",
+      "locality": "Pike Road",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery al-pike-road-2027-food-truck: live first-party route attests Pike Road, AL, actionable vendor terms, and exact event date 2027-01-01."
     },
     {
       "id": "al-holiday-events-guide-2025-parades-tree-lightings-across-central-alabam-2026-12-07-18b0300f",
