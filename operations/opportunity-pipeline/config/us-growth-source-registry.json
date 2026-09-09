@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T10:38:19.576Z",
+  "updated_at": "2026-09-09T10:43:22.552Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -16290,6 +16290,42 @@
       "event_end": "2026-09-26",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery pa-lancaster-2026-food-truck: live first-party route attests Lancaster, PA, actionable vendor terms, and exact event date range 2026-09-12 to 2026-09-26."
+    },
+    {
+      "id": "pa-2026-york-holiday-market-york-pa-2026-11-07-f9844617",
+      "name": "2026 York Holiday Market - York, PA Vendor Opportunity",
+      "organiser": "2026 York Holiday Market - York, PA",
+      "source_url": "https://www.fairsandfestivals.net/events/details/2026-york-holiday-market",
+      "application_url": "https://www.fairsandfestivals.net/events/details/2026-york-holiday-market",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "York",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-07",
+      "event_end": "2026-11-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-york-2026-holiday-market: live first-party route attests York, PA, actionable vendor terms, and exact event date range 2026-11-07 to 2026-11-08."
+    },
+    {
+      "id": "pa-2026-york-holiday-market-york-pa-2026-12-05-ae4f3e4b",
+      "name": "2026 York Holiday Market - York, PA Vendor Opportunity",
+      "organiser": "2026 York Holiday Market - York, PA",
+      "source_url": "https://www.fairsandfestivals.net/events/details/2026-york-holiday-market_1",
+      "application_url": "https://www.fairsandfestivals.net/events/details/2026-york-holiday-market_1",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "region_code": "PA",
+      "locality": "York",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery pa-york-2026-holiday-market: live first-party route attests York, PA, actionable vendor terms, and exact event date 2026-12-05."
     },
     {
       "id": "pa-3rd-annual-romanian-festival-romanian-community-center-2027-08-22-f462d5d4",
