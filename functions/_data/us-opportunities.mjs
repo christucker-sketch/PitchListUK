@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T00:04:05.544Z",
-  "source": "reviewed-us-new-hampshire-cloud-promotion:4f29a8a0c7441c2910f1359da9afff791f13074bf63d8787fef92522ee826f52",
-  "total": 646,
+  "exported_at": "2026-09-09T00:27:37.828Z",
+  "source": "reviewed-us-oregon-cloud-promotion:735523521540d8eb618d300f51b2e682e0df11d85222ba72774014f5412e2258",
+  "total": 647,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24539,6 +24539,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-hampshire",
       "id": "opp_us_e711078ed66650ebb576"
+    },
+    {
+      "stable_id": "opp_us_006bdd285d4b013d43a4",
+      "event_name": "Prineville Holiday Market - Dec 12, 2026 Vendor Opportunity",
+      "organiser": "Prineville Holiday Market - Dec 12, 2026",
+      "source_url": "https://business.oregonfestivals.org/events/details/prineville-holiday-market-12-12-2026-22005",
+      "application_url": "https://business.oregonfestivals.org/events/details/prineville-holiday-market-12-12-2026-22005",
+      "location": "Prineville",
+      "locality": "Prineville",
+      "region": "Oregon",
+      "region_code": "OR",
+      "region_name": "Oregon",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OR",
+      "currency": "USD",
+      "postal_code": "97754",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-12",
+      "event_end": "2026-12-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "or-prineville-holiday-market-dec-12-2026-2026-12-12-2bdf6376",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-oregon",
+      "id": "opp_us_006bdd285d4b013d43a4"
     }
   ]
 };
