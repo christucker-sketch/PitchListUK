@@ -1,22 +1,57 @@
 #!/usr/bin/env node
 
 import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
 
 const repo = process.env.FINDPITCHES_GITHUB_REPO || 'christucker-sketch/PitchListUK';
-const ghBin = process.env.FINDPITCHES_GH_BIN || 'gh';
 const discoveryWorkflow = 'uk-source-discovery-schedule.yml';
 const acquisitionWorkflow = 'uk-source-registry-acquisition.yml';
+
+function resolveGhBin() {
+  const override = String(process.env.FINDPITCHES_GH_BIN || '').trim();
+  if (override) return override;
+
+  for (const candidate of [
+    '/home/ct_admin/.local/bin/gh',
+    '/usr/local/bin/gh',
+    '/usr/bin/gh',
+    '/snap/bin/gh'
+  ]) {
+    if (fs.existsSync(candidate)) return candidate;
+  }
+
+  try {
+    const shell = process.env.SHELL || '/bin/bash';
+    const resolved = execFileSync(shell, ['-lc', 'command -v gh'], {
+      encoding: 'utf8',
+      timeout: 10_000,
+      stdio: ['ignore', 'pipe', 'pipe']
+    }).trim();
+    if (resolved) return resolved;
+  } catch {
+    // Fall through to the explicit diagnostic below.
+  }
+
+  throw new Error(`Unable to resolve GitHub CLI for UK observer (PATH=${process.env.PATH || ''})`);
+}
+
+const ghBin = resolveGhBin();
 
 function ghApi(path, { raw = false } = {}) {
   const args = ['api', path];
   if (raw) args.push('-H', 'Accept: application/vnd.github.raw+json');
-  const output = execFileSync(ghBin, args, {
-    encoding: 'utf8',
-    timeout: 20_000,
-    maxBuffer: 4 * 1024 * 1024,
-    stdio: ['ignore', 'pipe', 'pipe']
-  });
-  return raw ? output : JSON.parse(output);
+  try {
+    const output = execFileSync(ghBin, args, {
+      encoding: 'utf8',
+      timeout: 20_000,
+      maxBuffer: 4 * 1024 * 1024,
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
+    return raw ? output : JSON.parse(output);
+  } catch (error) {
+    const stderr = String(error?.stderr || '').trim().slice(0, 1200);
+    throw new Error(`GitHub API read failed via ${ghBin}: ${stderr || error?.message || error}`);
+  }
 }
 
 function parseSnapshotTotal(source) {
