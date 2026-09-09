@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T10:10:47.352Z",
-  "source": "reviewed-us-colorado-cloud-promotion:b7798f2b7b1b0fcfd54c22a3e94231669865055f95e3a13be84f969d72e4df6e",
-  "total": 695,
+  "exported_at": "2026-09-09T10:20:17.266Z",
+  "source": "reviewed-us-illinois-cloud-promotion:f558efaa3c9dd039c3df365163293482abc8d01f25f0f56379c99fe8a17a0141",
+  "total": 696,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26381,6 +26381,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-colorado",
       "id": "opp_us_f0d5e518dbd2ed30a4e6"
+    },
+    {
+      "stable_id": "opp_us_5d34eab1bce750f321fb",
+      "event_name": "Waukegan Park District Vendor Opportunity",
+      "organiser": "Waukegan Park District",
+      "source_url": "https://www.waukeganparks.org/venue/bowen-park/?posts_per_page=14&ref=travel-lens",
+      "application_url": "https://www.waukeganparks.org/venue/bowen-park/?posts_per_page=14&ref=travel-lens",
+      "location": "Waukegan",
+      "locality": "Waukegan",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "60087",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-01",
+      "event_end": "2026-11-01",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-waukegan-park-district-2026-11-01-173e8292",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_5d34eab1bce750f321fb"
     }
   ]
 };
