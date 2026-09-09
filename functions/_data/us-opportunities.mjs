@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T00:50:39.823Z",
-  "source": "reviewed-us-illinois-cloud-promotion:c14c89c0750668bb69bd95f429450b153ccaaeafdfdaa966b49fe3ced63da653",
-  "total": 650,
+  "exported_at": "2026-09-09T01:02:00.998Z",
+  "source": "reviewed-us-virginia-cloud-promotion:42881536b1d4b79f527be89f5e58eb117875634282f33788d1ebea963ec0b426",
+  "total": 651,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24689,6 +24689,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_ca2a5bfef5631cc83999"
+    },
+    {
+      "stable_id": "opp_us_4ef7ff5731c74bd88781",
+      "event_name": "Vendors - Dominion Energy Christmas Parade Vendor Opportunity",
+      "organiser": "Vendors - Dominion Energy Christmas Parade",
+      "source_url": "https://www.richmondparade.org/participate/vendors",
+      "application_url": "https://www.richmondparade.org/participate/vendors",
+      "location": "Richmond",
+      "locality": "Richmond",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "23058",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-05",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-vendors-dominion-energy-christmas-parade-2026-12-05-39c4523b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_4ef7ff5731c74bd88781"
     }
   ]
 };
