@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:45:26.646Z",
-  "source": "reviewed-us-texas-cloud-promotion:45b12907e6fe35ab05351988548005c52dccac50961c5c298569fd168f8658c9",
-  "total": 689,
+  "exported_at": "2026-09-09T08:51:56.736Z",
+  "source": "reviewed-us-illinois-cloud-promotion:a12074103fa2c99b52ef305d9f30ecddbdfbdc73d45f500f7b2db9a7d2f70e27",
+  "total": 690,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26154,6 +26154,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_7e107ec75ea06eb4c374"
+    },
+    {
+      "stable_id": "opp_us_45a28e88f7946301ebcd",
+      "event_name": "Calls for Entry | ArtsPartners Vendor Opportunity",
+      "organiser": "Calls for Entry | ArtsPartners",
+      "source_url": "https://artspartners.net/category/calls-for-entry/",
+      "application_url": "https://artspartners.net/category/calls-for-entry",
+      "location": "Peoria",
+      "locality": "Peoria",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-10-24",
+      "event_end": "2027-10-24",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-calls-for-entry-artspartners-2027-10-24-e6b19156",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_45a28e88f7946301ebcd"
     }
   ]
 };
