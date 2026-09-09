@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T11:15:09.588Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:dfbcf59231aa99b5088c0bf3874e08315dc247ce50eef28e353aafa1900b422b",
-  "total": 703,
+  "exported_at": "2026-09-09T11:20:15.265Z",
+  "source": "reviewed-us-arizona-cloud-promotion:d4f512c87458dd288b16f4d663e342908b8f83b0cb01081e04b1da3b92e50126",
+  "total": 704,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26681,6 +26681,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_00c927f158f6b65aa954"
+    },
+    {
+      "stable_id": "opp_us_5e5146d7e37c8de646a3",
+      "event_name": "Vendor - Spark Surprise Grand Opening - Eventeny",
+      "organiser": "Vendor - Spark Surprise Grand Opening - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=54341",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=54341",
+      "location": "Surprise",
+      "locality": "Surprise",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-10-01",
+      "event_end": "2027-10-01",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-vendor-spark-surprise-grand-opening-eventeny-2027-10-01-7fa17974",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_5e5146d7e37c8de646a3"
     }
   ]
 };
