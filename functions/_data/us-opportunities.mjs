@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T02:26:39.728Z",
-  "source": "reviewed-us-nevada-cloud-promotion:f0ee1e29ef5f031be31ee70ea02079cce6d7e46eba9226bad613656797310b03",
-  "total": 656,
+  "exported_at": "2026-09-09T02:41:03.160Z",
+  "source": "reviewed-us-ohio-cloud-promotion:0c5e8c8012e4e9a7c71f6896acc2d70495db31bf7d77756685f0b4a91d7e4345",
+  "total": 657,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24917,6 +24917,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-nevada",
       "id": "opp_us_31ecc40dc93a3128fc27"
+    },
+    {
+      "stable_id": "opp_us_6f32a3f78538fc3e2f2b",
+      "event_name": "Farmers' markets in Greater Akron in summer 2026 Vendor Opportunity",
+      "organiser": "Farmers' markets in Greater Akron in summer 2026",
+      "source_url": "https://eu.beaconjournal.com/story/lifestyle/2026/05/30/farmers-markets-in-greater-akron-summer-2026/90033028007/",
+      "application_url": "https://eu.beaconjournal.com/story/lifestyle/2026/05/30/farmers-markets-in-greater-akron-summer-2026/90033028007",
+      "location": "Akron",
+      "locality": "Akron",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-farmers-markets-in-greater-akron-in-summer-2026-2026-10-10-b6fcd2cf",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_6f32a3f78538fc3e2f2b"
     }
   ]
 };
