@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:27:08.416Z",
-  "source": "reviewed-us-michigan-cloud-promotion:d93bd218a5704fdc200e1e5fcdd1c46461b8d3f200cfb322d9fcfb5c9b232cb4",
-  "total": 686,
+  "exported_at": "2026-09-09T08:31:10.289Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:70a8aed1b615add83e890d421232fa61eb8193b12bb6ea9d635d2c9a9ef84478",
+  "total": 687,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26041,6 +26041,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_e8e33843b516e72ab987"
+    },
+    {
+      "stable_id": "opp_us_389aa8e8da10006e5d22",
+      "event_name": "Toms River Food Fest is Back with a Twist - New Jersey Isn't Boring Vendor Opportunity",
+      "organiser": "Toms River Food Fest is Back with a Twist - New Jersey Isn't Boring",
+      "source_url": "https://newjerseyisntboring.com/toms-river-food-fest-back-twist/",
+      "application_url": "https://newjerseyisntboring.com/toms-river-food-fest-back-twist",
+      "location": "Toms River",
+      "locality": "Toms River",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-toms-river-food-fest-is-back-with-a-twist-new-jersey-isn-t-boring-2026-09-11-16595267",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_389aa8e8da10006e5d22"
     }
   ]
 };
