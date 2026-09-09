@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T09:21:08.088Z",
+  "updated_at": "2026-09-09T09:38:56.353Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5301,6 +5301,42 @@
       "event_end": "2026-10-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ga-marietta-2026-food-truck: live first-party route attests Marietta, GA, actionable vendor terms, and exact event date range 2026-10-10 to 2026-10-11."
+    },
+    {
+      "id": "ga-events-calendar-johns-creek-cvb-2026-10-07-b12d97a1",
+      "name": "Events Calendar - Johns Creek CVB Vendor Opportunity",
+      "organiser": "Events Calendar - Johns Creek CVB",
+      "source_url": "https://visitjohnscreek.com/events-calendar",
+      "application_url": "https://visitjohnscreek.com/events-calendar",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Johns Creek",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-07",
+      "event_end": "2026-10-07",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-johns-creek-2026-holiday-market: live first-party route attests Johns Creek, GA, actionable vendor terms, and exact event date 2026-10-07."
+    },
+    {
+      "id": "ga-events-festivals-concerts-more-in-johns-creek-georgia-2026-09-12-938b7223",
+      "name": "Events, Festivals, Concerts & More in Johns Creek, Georgia Vendor Opportunity",
+      "organiser": "Events, Festivals, Concerts & More in Johns Creek, Georgia",
+      "source_url": "https://www.eventeny.com/events/johns-creek-ga",
+      "application_url": "https://www.eventeny.com/events/johns-creek-ga",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Johns Creek",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-13",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-johns-creek-2026-food-truck: live first-party route attests Johns Creek, GA, actionable vendor terms, and exact event date range 2026-09-12 to 2026-09-13."
     },
     {
       "id": "ga-expo-latino-food-truck-expo-latino-eventeny-2026-09-19-0e95e7fd",
