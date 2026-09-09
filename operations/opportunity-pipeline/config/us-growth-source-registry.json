@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T04:10:11.925Z",
+  "updated_at": "2026-09-09T04:16:06.446Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -959,6 +959,24 @@
       "evidence": "Cloudflare discovery az-mesa-2027-festival: live first-party route attests Mesa, AZ, actionable vendor terms, and exact event date range 2027-01-29 to 2027-01-30."
     },
     {
+      "id": "az-commercial-2027-02-11-a64fb5c8",
+      "name": "Commercial Exhibitor Information",
+      "organiser": "Commercial",
+      "source_url": "https://www.scottsdaleshow.com/commercial-exhibitor-information",
+      "application_url": "https://www.scottsdaleshow.com/commercial-exhibitor-information",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Scottsdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-02-11",
+      "event_end": "2027-02-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-scottsdale-2027-festival: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date range 2027-02-11 to 2027-02-21."
+    },
+    {
       "id": "az-detail-page-2026-11-06-91efb8ae",
       "name": "Detail Page Vendor Opportunity",
       "organiser": "Detail Page",
@@ -1247,6 +1265,24 @@
       "evidence": "Cloudflare discovery az-tempe-2027-festival: live first-party route attests Tempe, AZ, actionable vendor terms, and exact event date range 2027-02-26 to 2027-02-28."
     },
     {
+      "id": "az-market-2027-10-17-098a6c92",
+      "name": "MARKET VENDOR APPLICATION - AZ Taco Fest at Salt River Fields - Eventeny",
+      "organiser": "MARKET",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45514",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45514",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Scottsdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-17",
+      "event_end": "2027-10-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-scottsdale-2027-festival: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date range 2027-10-17 to 2027-10-18."
+    },
+    {
       "id": "az-meet-up-events-2027-05-14-e937728a",
       "name": "Meet-Up & Events Vendor Opportunity",
       "organiser": "Meet-Up & Events",
@@ -1443,6 +1479,24 @@
       "event_end": "2027-01-30",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery az-scottsdale-2027-food-truck: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date 2027-01-30."
+    },
+    {
+      "id": "az-scottsdalebookfestival-com-2027-01-30-dfbc4ac4",
+      "name": "Apply to the Scottsdale Book Festival Vendor Opportunity",
+      "organiser": "scottsdalebookfestival.com",
+      "source_url": "https://www.scottsdalebookfestival.com/apply",
+      "application_url": "https://www.scottsdalebookfestival.com/apply",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "region_code": "AZ",
+      "locality": "Scottsdale",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-30",
+      "event_end": "2027-01-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery az-scottsdale-2027-festival: live first-party route attests Scottsdale, AZ, actionable vendor terms, and exact event date 2027-01-30."
     },
     {
       "id": "az-sip-savor-shop-festival-by-a-taste-of-az-in-scottsdale-arizona-2026-10-31-a84ac664",
