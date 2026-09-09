@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T03:28:36.787Z",
+  "updated_at": "2026-09-09T03:30:02.640Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -10379,6 +10379,24 @@
       "event_end": "2026-11-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-detroit-2026-holiday-market: live first-party route attests Detroit, MI, actionable vendor terms, and exact event date 2026-11-08."
+    },
+    {
+      "id": "mi-ann-arbor-kindlefest-2026-ann-arbor-mi-2026-11-06-fffa27ba",
+      "name": "Ann Arbor KindleFest 2026, Ann Arbor, MI Vendor Opportunity",
+      "organiser": "Ann Arbor KindleFest 2026, Ann Arbor, MI",
+      "source_url": "https://vendorsmap.com/events/1615",
+      "application_url": "https://vendorsmap.com/events/1615",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Ann Arbor",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-ann-arbor-2026-holiday-market: live first-party route attests Ann Arbor, MI, actionable vendor terms, and exact event date 2026-11-06."
     },
     {
       "id": "mi-art-apples-festival-2027-09-11-c2f0e112",
