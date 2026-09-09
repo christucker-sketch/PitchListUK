@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T01:58:38.751Z",
+  "updated_at": "2026-09-09T02:08:26.955Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7172,6 +7172,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery in-franklin-2026-farmers-market: live first-party route attests Franklin, IN, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "in-food-truck-avenue-catering-in-lake-county-in-county-wide-setup-quote-p-2027-01-01-2c8f7e1c",
+      "name": "Food Truck Avenue Catering in Lake County, IN: County-Wide Setup & Quote Planning",
+      "organiser": "Food Truck Avenue Catering in Lake County, IN: County-Wide Setup & Quote Planning",
+      "source_url": "https://foodtruckavenue.com/lake-county-indiana",
+      "application_url": "https://foodtruckavenue.com/lake-county-indiana",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IN",
+      "region_code": "IN",
+      "locality": "Merrillville",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-01",
+      "event_end": "2027-01-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery in-merrillville-2027-food-truck: live first-party route attests Merrillville, IN, actionable vendor terms, and exact event date 2027-01-01."
     },
     {
       "id": "in-foodeesfest-vendor-agreement-ndash-castleton-square-indianapolis-in-in-2026-09-18-46dc4503",
