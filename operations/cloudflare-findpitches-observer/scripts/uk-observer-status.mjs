@@ -78,13 +78,18 @@ function workflowSummary(workflowFile) {
   };
 }
 
+function isUkAcquisitionPublicationPr(pr) {
+  const title = String(pr?.title || '');
+  const head = String(pr?.head?.ref || '');
+  return /^Publish \d+ cloud-reviewed UK opportunit(?:y|ies)$/i.test(title)
+    || /^Add \d+ cloud-discovered UK source(?:s)?$/i.test(title)
+    || /^data\/cloud-uk-/i.test(head)
+    || /^sources\/cloud-uk-/i.test(head);
+}
+
 function latestUkPublication() {
   const pulls = ghApi(`repos/${repo}/pulls?state=all&sort=updated&direction=desc&per_page=100`);
-  const ukPull = (Array.isArray(pulls) ? pulls : []).find((pr) => {
-    const title = String(pr?.title || '');
-    const head = String(pr?.head?.ref || '');
-    return /\bUK\b/i.test(title) || /cloud-uk|uk-source/i.test(head);
-  });
+  const ukPull = (Array.isArray(pulls) ? pulls : []).find(isUkAcquisitionPublicationPr);
   if (!ukPull) return null;
   return {
     number: ukPull.number,
@@ -101,11 +106,7 @@ function latestUkPublication() {
 
 function openUkPublicationCount() {
   const pulls = ghApi(`repos/${repo}/pulls?state=open&per_page=100`);
-  return (Array.isArray(pulls) ? pulls : []).filter((pr) => {
-    const title = String(pr?.title || '');
-    const head = String(pr?.head?.ref || '');
-    return /\bUK\b/i.test(title) || /cloud-uk|uk-source/i.test(head);
-  }).length;
+  return (Array.isArray(pulls) ? pulls : []).filter(isUkAcquisitionPublicationPr).length;
 }
 
 function nextDailyRun(now = new Date()) {
