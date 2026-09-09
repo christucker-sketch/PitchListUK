@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T11:11:24.985Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:afb141590dddb4f26ad97931807e2e8a5a1601ec370dbe688e04bf22e4d5dcfc",
-  "total": 702,
+  "exported_at": "2026-09-09T11:15:09.588Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:dfbcf59231aa99b5088c0bf3874e08315dc247ce50eef28e353aafa1900b422b",
+  "total": 703,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26644,6 +26644,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_06884f430d7689fec20a"
+    },
+    {
+      "stable_id": "opp_us_00c927f158f6b65aa954",
+      "event_name": "Trenton’s Art All Night canceled, again - WHYY Vendor Opportunity",
+      "organiser": "Trenton’s Art All Night canceled, again - WHYY",
+      "source_url": "https://whyy.org/articles/art-all-night-trenton-cancelled-2023/",
+      "application_url": "https://whyy.org/articles/art-all-night-trenton-cancelled-2023",
+      "location": "Trenton",
+      "locality": "Trenton",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-09-16",
+      "event_end": "2027-09-16",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-trenton-s-art-all-night-canceled-again-whyy-2027-09-16-96ed8a29",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_00c927f158f6b65aa954"
     }
   ]
 };
