@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T05:25:10.466Z",
-  "source": "reviewed-us-new-jersey-cloud-promotion:0114d9284ec6f02ab8ea18f793cde63f96b131ea84b18c22e930d2df40426f15",
-  "total": 670,
+  "exported_at": "2026-09-09T05:28:05.450Z",
+  "source": "reviewed-us-virginia-cloud-promotion:6d7e90e759c5b3379249916464610d57d587caad2ab430c410c20647c4d5b33e",
+  "total": 671,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25442,6 +25442,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-jersey",
       "id": "opp_us_2f624968114bf269194e"
+    },
+    {
+      "stable_id": "opp_us_52b81bc121f267140809",
+      "event_name": "Holiday Makers Market &mdash; Four Mile Run Farmers & Artisans Market Vendor Opportunity",
+      "organiser": "Holiday Makers Market &mdash; Four Mile Run Farmers & Artisans Market",
+      "source_url": "https://4mrmarket.org/holidaymarket",
+      "application_url": "https://4mrmarket.org/holidaymarket",
+      "location": "Alexandria",
+      "locality": "Alexandria",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-holiday-makers-market-mdash-four-mile-run-farmers-artisans-market-2026-12-06-95fbfca2",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_52b81bc121f267140809"
     }
   ]
 };
