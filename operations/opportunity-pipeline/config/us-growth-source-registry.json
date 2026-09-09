@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T10:09:46.860Z",
+  "updated_at": "2026-09-09T10:19:16.181Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7641,6 +7641,24 @@
       "event_end": "2026-09-12",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-chicago-2026-government-events: live first-party route attests Chicago, IL, actionable vendor terms, and exact event date 2026-09-12."
+    },
+    {
+      "id": "il-waukegan-park-district-2026-11-01-173e8292",
+      "name": "Waukegan Park District Vendor Opportunity",
+      "organiser": "Waukegan Park District",
+      "source_url": "https://www.waukeganparks.org/venue/bowen-park/?posts_per_page=14&ref=travel-lens",
+      "application_url": "https://www.waukeganparks.org/venue/bowen-park/?posts_per_page=14&ref=travel-lens",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Waukegan",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-01",
+      "event_end": "2026-11-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-waukegan-2026-festival: live first-party route attests Waukegan, IL, actionable vendor terms, and exact event date 2026-11-01."
     },
     {
       "id": "il-winnebago-farmers-market-2027-2027-05-01-d57cb11a",
