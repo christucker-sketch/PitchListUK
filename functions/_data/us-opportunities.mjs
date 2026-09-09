@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T00:47:58.217Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:5a4cfe3f42967b2a59eeba42941c517920a127c4530d1eec0d5ae5bb3ea0b14c",
-  "total": 649,
+  "exported_at": "2026-09-09T00:50:39.823Z",
+  "source": "reviewed-us-illinois-cloud-promotion:c14c89c0750668bb69bd95f429450b153ccaaeafdfdaa966b49fe3ced63da653",
+  "total": 650,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24652,6 +24652,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_fb53685fcce0543452e1"
+    },
+    {
+      "stable_id": "opp_us_ca2a5bfef5631cc83999",
+      "event_name": "Jun 5 | Food Truck Friday-Free Event",
+      "organiser": "Jun 5 | Food Truck Friday-Free Event",
+      "source_url": "https://patch.com/illinois/joliet/calendar/event/20260605/23f6ec7f-1f7f-471d-a701-06e27d7ffe73/food-truck-friday-free-event",
+      "application_url": "https://patch.com/illinois/joliet/calendar/event/20260605/23f6ec7f-1f7f-471d-a701-06e27d7ffe73/food-truck-friday-free-event",
+      "location": "Joliet",
+      "locality": "Joliet",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "60435",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-jun-5-food-truck-friday-free-event-2026-09-12-7618eb52",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_ca2a5bfef5631cc83999"
     }
   ]
 };
