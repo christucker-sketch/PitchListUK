@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T10:19:16.181Z",
+  "updated_at": "2026-09-09T10:25:44.206Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -18906,6 +18906,25 @@
       "event_end": "2027-06-28",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-portsmouth-2027-farmers-market: live first-party route attests Portsmouth, VA, actionable vendor terms, and exact event date range 2027-06-27 to 2027-06-28."
+    },
+    {
+      "id": "va-vendor-events-in-suffolk-va-2026-10-08-85ee7e8f",
+      "name": "Vendor Events in Suffolk, VA",
+      "organiser": "Vendor Events in Suffolk, VA",
+      "source_url": "https://vendorsmap.com/cities/suffolk",
+      "application_url": "https://vendorsmap.com/cities/suffolk",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Suffolk",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-10-08",
+      "event_end": "2026-10-08",
+      "application_deadline": "2026-10-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-suffolk-2026-farmers-market: live first-party route attests Suffolk, VA, actionable vendor terms, and exact event date 2026-10-08."
     },
     {
       "id": "va-vendors-dominion-energy-christmas-parade-2026-12-05-39c4523b",
