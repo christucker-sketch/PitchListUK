@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T08:38:59.430Z",
+  "updated_at": "2026-09-09T08:44:28.552Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -17625,6 +17625,24 @@
       "evidence": "Cloudflare discovery tx-lubbock-2026-farmers-market: live first-party route attests Lubbock, TX, actionable vendor terms, and exact event date 2026-10-24."
     },
     {
+      "id": "tx-merchandise-and-food-vendor-contract-ndash-corpus-christi-crawfish-fes-2027-03-20-a31a1bcc",
+      "name": "Merchandise and Food Vendor Contract &ndash; Corpus Christi Crawfish Fest",
+      "organiser": "Merchandise and Food Vendor Contract &ndash; Corpus Christi Crawfish Fest",
+      "source_url": "https://corpuschristicrawfishfest.com/pages/merchandise-and-food-vendor-contract",
+      "application_url": "https://corpuschristicrawfishfest.com/pages/merchandise-and-food-vendor-contract",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Corpus Christi",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-20",
+      "event_end": "2027-03-20",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-corpus-christi-2027-festival: live first-party route attests Corpus Christi, TX, actionable vendor terms, and exact event date 2027-03-20."
+    },
+    {
       "id": "tx-nutcracker-in-the-park-2026-11-28-75f38dde",
       "name": "Nutcracker in the Park Vendor Opportunity",
       "organiser": "Nutcracker in the Park",
@@ -17659,6 +17677,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-plano-2026-festival: live first-party route attests Plano, TX, actionable vendor terms, and exact event date 2026-11-07."
+    },
+    {
+      "id": "tx-south-texas-food-truck-fest-returns-march-21-2027-03-21-ac674d05",
+      "name": "South Texas Food Truck Fest Returns March 21",
+      "organiser": "South Texas Food Truck Fest Returns March 21",
+      "source_url": "https://www.milb.com/charlotte-knights/news/south-texas-food-truck-fest-returns-march-21-312944946",
+      "application_url": "https://www.milb.com/charlotte-knights/news/south-texas-food-truck-fest-returns-march-21-312944946",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Corpus Christi",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-03-21",
+      "event_end": "2027-03-21",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-corpus-christi-2027-food-truck: live first-party route attests Corpus Christi, TX, actionable vendor terms, and exact event date 2027-03-21."
     },
     {
       "id": "tx-texas-street-food-festival-arlington-texas-2023-2027-04-15-e0be76de",
