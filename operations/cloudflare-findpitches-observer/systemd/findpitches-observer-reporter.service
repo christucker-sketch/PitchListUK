@@ -8,6 +8,7 @@ Type=oneshot
 EnvironmentFile=%h/.config/findpitches-observer/reporter.env
 WorkingDirectory=%h/.openclaw/workspace/external/PitchListUK-production
 ExecStart=/usr/bin/env node %h/.openclaw/workspace/external/PitchListUK-production/operations/cloudflare-findpitches-observer/scripts/publish-controller-status.mjs
+ExecStart=/usr/bin/env node %h/.openclaw/workspace/external/PitchListUK-production/operations/cloudflare-findpitches-observer/scripts/publish-uk-status.mjs
 Nice=10
 
 [Install]
