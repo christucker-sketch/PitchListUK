@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T01:30:17.544Z",
+  "updated_at": "2026-09-09T01:33:43.001Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7426,6 +7426,24 @@
       "application_deadline": "2026-09-11",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery in-indianapolis-2026-festival: live first-party route attests Indianapolis, IN, actionable vendor terms, and exact event date range 2026-09-25 to 2026-09-26."
+    },
+    {
+      "id": "ks-calendar-leawood-touch-a-truck-2026-09-17-960566fd",
+      "name": "Calendar • Leawood Touch-A-Truck Vendor Opportunity",
+      "organiser": "Calendar • Leawood Touch-A-Truck",
+      "source_url": "https://www.leawood.org/Calendar.aspx?EID=1537&month=9&year=2026&day=17&calType=0",
+      "application_url": "https://www.leawood.org/Calendar.aspx?EID=1537&month=9&year=2026&day=17&calType=0",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-KS",
+      "region_code": "KS",
+      "locality": "Leawood",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-17",
+      "event_end": "2026-09-17",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ks-leawood-2026-food-truck: live first-party route attests Leawood, KS, actionable vendor terms, and exact event date 2026-09-17."
     },
     {
       "id": "ks-calendar-leawood-touch-a-truck-2026-09-17-984e4e35",
