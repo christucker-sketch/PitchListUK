@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T02:45:11.166Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:891a51f4b006dc05a7a79f4da456c33aa02de6308f02a9e3d8120d10b60e03eb",
-  "total": 658,
+  "exported_at": "2026-09-09T03:38:41.799Z",
+  "source": "reviewed-us-virginia-cloud-promotion:991272a64078c23a6015b4c52c83a60df61ad6ed459d8c21245dfac4a0b67ed8",
+  "total": 659,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24992,6 +24992,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_80ee81f1f97cb6c25d24"
+    },
+    {
+      "stable_id": "opp_us_6e0bcb869becc0780ca6",
+      "event_name": "Christmas Lights & Holiday Events in Newport News, VA Vendor Opportunity",
+      "organiser": "Christmas Lights & Holiday Events in Newport News, VA",
+      "source_url": "https://www.visitnewportnews.com/plan/suggested-itineraries/celebrate-in-newport-news-itinerary/",
+      "application_url": "https://www.visitnewportnews.com/plan/suggested-itineraries/celebrate-in-newport-news-itinerary",
+      "location": "Newport News",
+      "locality": "Newport News",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-10",
+      "event_end": "2026-10-10",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-christmas-lights-holiday-events-in-newport-news-va-2026-10-10-a2076e93",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_6e0bcb869becc0780ca6"
     }
   ]
 };
