@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:59:40.773Z",
-  "source": "reviewed-us-virginia-cloud-promotion:3a58a5e920a57cc21418d799a34995e1bde35c097497c083a487ad2b5959b02a",
-  "total": 691,
+  "exported_at": "2026-09-09T09:40:01.262Z",
+  "source": "reviewed-us-georgia-cloud-promotion:be061ba9313db1ffec4c6d9d83ccc3bcc139ee81c7f9801f61bc8c6f2edd73d4",
+  "total": 692,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26231,6 +26231,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_d793dc7527b6b5a7a416"
+    },
+    {
+      "stable_id": "opp_us_dd9f7cd6195e0fb23273",
+      "event_name": "Events, Festivals, Concerts & More in Johns Creek, Georgia Vendor Opportunity",
+      "organiser": "Events, Festivals, Concerts & More in Johns Creek, Georgia",
+      "source_url": "https://www.eventeny.com/events/johns-creek-ga/",
+      "application_url": "https://www.eventeny.com/events/johns-creek-ga",
+      "location": "Johns Creek",
+      "locality": "Johns Creek",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-events-festivals-concerts-more-in-johns-creek-georgia-2026-09-12-938b7223",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_dd9f7cd6195e0fb23273"
     }
   ]
 };
