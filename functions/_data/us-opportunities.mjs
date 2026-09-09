@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:11:59.720Z",
-  "source": "reviewed-us-texas-cloud-promotion:3068f142b6c4eb1eefd71bd95bca45b14ff2836a0648010a53ec87eeff91756b",
-  "total": 682,
+  "exported_at": "2026-09-09T08:16:04.315Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:82b9fe27e2e78353088f62858f2b60aae4bfcc6001a0042a836108e25f44263c",
+  "total": 683,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25891,6 +25891,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_b3825288b3af9696abd6"
+    },
+    {
+      "stable_id": "opp_us_3cda206c971c7e5b4c67",
+      "event_name": "10th Annual Wish Upon a Food Truck Festival",
+      "organiser": "10th Annual Wish Upon a Food Truck Festival",
+      "source_url": "https://www.discoverlancaster.com/events/10th-annual-wish-upon-a-food-truck-festival/",
+      "application_url": "https://www.discoverlancaster.com/events/10th-annual-wish-upon-a-food-truck-festival",
+      "location": "Lancaster",
+      "locality": "Lancaster",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "17033",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-10th-annual-wish-upon-a-food-truck-festival-2026-09-12-0ddea053",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_3cda206c971c7e5b4c67"
     }
   ]
 };
