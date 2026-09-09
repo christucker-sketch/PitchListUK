@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T10:20:17.266Z",
-  "source": "reviewed-us-illinois-cloud-promotion:f558efaa3c9dd039c3df365163293482abc8d01f25f0f56379c99fe8a17a0141",
-  "total": 696,
+  "exported_at": "2026-09-09T10:39:20.047Z",
+  "source": "reviewed-us-texas-cloud-promotion:1d71981c5f3f5a97a70ff9fca2bd46e997a0ca23cf97d73ba2155c8ad823d1c0",
+  "total": 697,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26418,6 +26418,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_5d34eab1bce750f321fb"
+    },
+    {
+      "stable_id": "opp_us_a6845aadf7dd8c151bc1",
+      "event_name": "Lubbock celebrates Christmas season with holiday events",
+      "organiser": "Lubbock celebrates Christmas season with holiday events",
+      "source_url": "https://www.kcbd.com/2022/12/01/lubbock-celebrates-christmas-season-with-holiday-events/",
+      "application_url": "https://www.kcbd.com/2022/12/01/lubbock-celebrates-christmas-season-with-holiday-events",
+      "location": "Lubbock",
+      "locality": "Lubbock",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "10107",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-10",
+      "event_end": "2026-12-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-lubbock-celebrates-christmas-season-with-holiday-events-2026-12-10-c8a1098a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_a6845aadf7dd8c151bc1"
     }
   ]
 };
