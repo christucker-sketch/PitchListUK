@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:20:07.819Z",
-  "source": "reviewed-us-ohio-cloud-promotion:3f43fa12c9d1b4fbf854336a9e7493511a2936db7e243f2c6e4392f3bbc2af28",
-  "total": 684,
+  "exported_at": "2026-09-09T08:23:37.924Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:7f6f11ce2ccb9849252a745e6a35de94f02aa8bdf7aa5b282c995d464597a150",
+  "total": 685,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25965,6 +25965,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_8ce6872b2f265fb517b4"
+    },
+    {
+      "stable_id": "opp_us_f54a0239bc06a283f7b3",
+      "event_name": "Water St Market - (Nov 21st) - Water St Market - Wilmington (Nov 21st) - Eventeny Vendor Opportunity",
+      "organiser": "Water St Market - (Nov 21st) - Water St Market - Wilmington (Nov 21st) - Eventeny",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=33445",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=33445",
+      "location": "Wilmington",
+      "locality": "Wilmington",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-21",
+      "event_end": "2026-11-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-water-st-market-nov-21st-water-st-market-wilmington-nov-21st-eventeny-2026-11-21-69ccb06c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_f54a0239bc06a283f7b3"
     }
   ]
 };
