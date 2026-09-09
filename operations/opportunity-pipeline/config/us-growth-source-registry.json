@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T04:57:33.664Z",
+  "updated_at": "2026-09-09T05:12:02.005Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14325,6 +14325,24 @@
       "event_end": "2027-08-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-mount-vernon-2027-food-truck: live first-party route attests Mount Vernon, NY, actionable vendor terms, and exact event date 2027-08-27."
+    },
+    {
+      "id": "ny-new-york-state-food-festival-b95-5-2026-09-09-fa900381",
+      "name": "New York State Food Festival - B95.5 Vendor Opportunity",
+      "organiser": "New York State Food Festival - B95.5",
+      "source_url": "https://www.b95.com/concerts-and-events/event/nys-food-festival-2026",
+      "application_url": "https://www.b95.com/concerts-and-events/event/nys-food-festival-2026",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Albany",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-09",
+      "event_end": "2026-09-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-albany-2026-food-truck: live first-party route attests Albany, NY, actionable vendor terms, and exact event date 2026-09-09."
     },
     {
       "id": "ny-newsbreak-com-2026-09-07-d9da7d63",
