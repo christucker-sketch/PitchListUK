@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T09:40:01.262Z",
-  "source": "reviewed-us-georgia-cloud-promotion:be061ba9313db1ffec4c6d9d83ccc3bcc139ee81c7f9801f61bc8c6f2edd73d4",
-  "total": 692,
+  "exported_at": "2026-09-09T09:47:28.311Z",
+  "source": "reviewed-us-arizona-cloud-promotion:532af598a7c0ea614956688c4ae442fd2dda32b780f699beae97617c18703e44",
+  "total": 693,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26269,6 +26269,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_dd9f7cd6195e0fb23273"
+    },
+    {
+      "stable_id": "opp_us_612abb11c513502520cb",
+      "event_name": "30th Annual Arizona Songwriters Gathering - City of Glendale, AZ - Library Vendor Opportunity",
+      "organiser": "30th Annual Arizona Songwriters Gathering - City of Glendale, AZ - Library",
+      "source_url": "https://library.glendaleaz.gov/Beyond-Books/Events-Programs/Arizona-Songwriters-Gathering",
+      "application_url": "https://library.glendaleaz.gov/Beyond-Books/Events-Programs/Arizona-Songwriters-Gathering",
+      "location": "Peoria",
+      "locality": "Peoria",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "85302",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-30",
+      "event_end": "2027-01-30",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-30th-annual-arizona-songwriters-gathering-city-of-glendale-az-library-2027-01-30-76871922",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_612abb11c513502520cb"
     }
   ]
 };
