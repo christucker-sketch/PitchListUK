@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T07:24:25.277Z",
-  "source": "reviewed-us-california-cloud-promotion:cc957a68b27770a8755376635660d699162994de5cf70556b8c67121202db3dc",
-  "total": 676,
+  "exported_at": "2026-09-09T07:27:00.036Z",
+  "source": "reviewed-us-texas-cloud-promotion:dceee3e2e7a77905f2b475672257804420ef4efeb492e9d17f280283d77d22c0",
+  "total": 677,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25667,6 +25667,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-california",
       "id": "opp_us_0fb1b0a96b3364b5a4cd"
+    },
+    {
+      "stable_id": "opp_us_60f1638d2d7993cbe639",
+      "event_name": "Texas Street Food Festival | Arlington, Texas | 2023 | Street Food Festivals",
+      "organiser": "Texas Street Food Festival | Arlington, Texas | 2023",
+      "source_url": "https://www.streetfoodfests.com/event/philadelphia-food-festival-copy-2-copy/",
+      "application_url": "https://www.streetfoodfests.com/event/philadelphia-food-festival-copy-2-copy",
+      "location": "Arlington",
+      "locality": "Arlington",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "76011",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-15",
+      "event_end": "2027-04-15",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-texas-street-food-festival-arlington-texas-2023-2027-04-15-e0be76de",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_60f1638d2d7993cbe639"
     }
   ]
 };
