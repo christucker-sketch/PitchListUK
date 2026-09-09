@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T03:50:53.912Z",
-  "source": "reviewed-us-kentucky-cloud-promotion:350685ff8e8dc4c68fb98d77966beca97c04d266a85ba1427d8a6a225761292d",
-  "total": 660,
+  "exported_at": "2026-09-09T03:58:58.903Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:1d8daca9e90108fbb5d2646060bc9977e5b7aa2db8b0e97baf7c6d8ad80ddc57",
+  "total": 661,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25066,6 +25066,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-kentucky",
       "id": "opp_us_3483e0393037b55b1b9a"
+    },
+    {
+      "stable_id": "opp_us_ee8fb1004a2ef4336282",
+      "event_name": "Food Truck Festival",
+      "organiser": "Food Truck Festival",
+      "source_url": "https://www.visitwestarkansas.com/events/food-truck-festival/",
+      "application_url": "https://www.visitwestarkansas.com/events/food-truck-festival",
+      "location": "Fort Smith",
+      "locality": "Fort Smith",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-food-truck-festival-2026-09-26-e09da98a",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_ee8fb1004a2ef4336282"
     }
   ]
 };
