@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T01:59:41.705Z",
-  "source": "reviewed-us-michigan-cloud-promotion:b63f5f715334000042ca473362c3ae8160ced80d09547ee018235bffd46efc56",
-  "total": 655,
+  "exported_at": "2026-09-09T02:26:39.728Z",
+  "source": "reviewed-us-nevada-cloud-promotion:f0ee1e29ef5f031be31ee70ea02079cce6d7e46eba9226bad613656797310b03",
+  "total": 656,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24880,6 +24880,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-michigan",
       "id": "opp_us_ee7ae49dca867ab345f1"
+    },
+    {
+      "stable_id": "opp_us_31ecc40dc93a3128fc27",
+      "event_name": "Great Vegas Festival of Beer Vendor Opportunity",
+      "organiser": "Great Vegas Festival of Beer",
+      "source_url": "https://www.greatvegasbeer.com/",
+      "application_url": "https://www.greatvegasbeer.com",
+      "location": "Las Vegas",
+      "locality": "Las Vegas",
+      "region": "Nevada",
+      "region_code": "NV",
+      "region_name": "Nevada",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NV",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-03",
+      "event_end": "2027-04-03",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nv-great-vegas-festival-of-beer-2027-04-03-5a6d6859",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-nevada",
+      "id": "opp_us_31ecc40dc93a3128fc27"
     }
   ]
 };
