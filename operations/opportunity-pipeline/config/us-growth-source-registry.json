@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T01:05:44.830Z",
+  "updated_at": "2026-09-09T01:10:22.953Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2525,6 +2525,24 @@
       "event_end": "2027-06-05",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-greeley-2027-festival: live first-party route attests Greeley, CO, actionable vendor terms, and exact event date range 2027-06-04 to 2027-06-05."
+    },
+    {
+      "id": "co-holiday-artisan-market-city-of-fort-collins-2026-11-27-0f67e46d",
+      "name": "Holiday Artisan Market City of Fort Collins Vendor Opportunity",
+      "organiser": "Holiday Artisan Market City of Fort Collins",
+      "source_url": "https://www.fortcollins.gov/Event-Folder/2026-Events/2026-Q4/Holiday-Artisan-Market",
+      "application_url": "https://www.fortcollins.gov/Event-Folder/2026-Events/2026-Q4/Holiday-Artisan-Market",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Fort Collins",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-27",
+      "event_end": "2026-11-28",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-fort-collins-2026-holiday-market: live first-party route attests Fort Collins, CO, actionable vendor terms, and exact event date range 2026-11-27 to 2026-11-28."
     },
     {
       "id": "co-how-to-sell-at-farmers-markets-in-colorado-cottage-foods-act-top-marke-2026-10-04-dae2e9de",
