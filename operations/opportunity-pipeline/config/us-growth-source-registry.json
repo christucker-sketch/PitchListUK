@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T01:17:08.220Z",
+  "updated_at": "2026-09-09T01:30:17.544Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -6164,6 +6164,24 @@
       "event_end": "2027-08-09",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ia-ankeny-2027-food-truck: live first-party route attests Ankeny, IA, actionable vendor terms, and exact event date range 2027-08-08 to 2027-08-09."
+    },
+    {
+      "id": "ia-vermont-holiday-market-2026-12-05-1ab31761",
+      "name": "Vermont Holiday Market Vendor Opportunity",
+      "organiser": "Vermont Holiday Market",
+      "source_url": "https://sevendaystickets.com/e/vermont-holiday-market-2026/tickets",
+      "application_url": "https://sevendaystickets.com/e/vermont-holiday-market-2026/tickets",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "region_code": "IA",
+      "locality": "Burlington",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-12-05",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ia-burlington-2026-holiday-market: live first-party route attests Burlington, IA, actionable vendor terms, and exact event date range 2026-12-05 to 2026-12-06."
     },
     {
       "id": "id-artist-information-meridian-fine-art-festival-2027-06-28-9bcecd95",
