@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T02:08:26.955Z",
+  "updated_at": "2026-09-09T02:11:15.927Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11009,6 +11009,24 @@
       "event_end": "2026-09-19",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mn-saint-paul-2026-government-events: live first-party route attests Saint Paul, MN, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "mn-special-events-shoreview-mn-2027-10-20-731b8843",
+      "name": "Special events - Shoreview, MN Vendor Opportunity",
+      "organiser": "Special events - Shoreview, MN",
+      "source_url": "https://www.shoreviewmn.gov/Parks-rec/Special-events",
+      "application_url": "https://www.shoreviewmn.gov/Parks-rec/Special-events",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MN",
+      "region_code": "MN",
+      "locality": "Shoreview",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-20",
+      "event_end": "2027-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mn-shoreview-2027-festival: live first-party route attests Shoreview, MN, actionable vendor terms, and exact event date range 2027-10-20 to 2027-10-24."
     },
     {
       "id": "mn-st-paul-food-truck-festival-mn-food-truck-association-2027-08-18-3075db3f",
