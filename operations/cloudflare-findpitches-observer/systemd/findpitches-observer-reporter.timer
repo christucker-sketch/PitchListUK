@@ -1,10 +1,10 @@
 [Unit]
-Description=Publish FindPitches observer heartbeat every minute
+Description=Publish FindPitches observer heartbeat every 10 minutes
 
 [Timer]
 OnBootSec=30s
-OnUnitActiveSec=60s
-AccuracySec=5s
+OnUnitActiveSec=10min
+AccuracySec=15s
 Persistent=true
 Unit=findpitches-observer-reporter.service
 
