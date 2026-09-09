@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T03:58:58.903Z",
-  "source": "reviewed-us-arkansas-cloud-promotion:1d8daca9e90108fbb5d2646060bc9977e5b7aa2db8b0e97baf7c6d8ad80ddc57",
-  "total": 661,
+  "exported_at": "2026-09-09T04:11:07.441Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:f071d682351eeb9fba329a5be5be947192aa5a2e85887aa521c7b88ee000874b",
+  "total": 662,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25103,6 +25103,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arkansas",
       "id": "opp_us_ee8fb1004a2ef4336282"
+    },
+    {
+      "stable_id": "opp_us_7f91ae18ec7ff9c88bfa",
+      "event_name": "Thrive! Conference Vendor Application 2027 - North Carolinians for Home Education",
+      "organiser": "Thrive! Conference",
+      "source_url": "https://nche.com/vendor-application/",
+      "application_url": "https://nche.com/vendor-application",
+      "location": "Winston-Salem",
+      "locality": "Winston-Salem",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "28277",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-28",
+      "event_end": "2027-05-29",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-thrive-conference-2027-05-28-d89f3bd7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_7f91ae18ec7ff9c88bfa"
     }
   ]
 };
