@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:16:04.315Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:82b9fe27e2e78353088f62858f2b60aae4bfcc6001a0042a836108e25f44263c",
-  "total": 683,
+  "exported_at": "2026-09-09T08:20:07.819Z",
+  "source": "reviewed-us-ohio-cloud-promotion:3f43fa12c9d1b4fbf854336a9e7493511a2936db7e243f2c6e4392f3bbc2af28",
+  "total": 684,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25928,6 +25928,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_3cda206c971c7e5b4c67"
+    },
+    {
+      "stable_id": "opp_us_8ce6872b2f265fb517b4",
+      "event_name": "Canton Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "organiser": "Canton Spooktacular Craft & Vendor Market - Hometown Vendor Market",
+      "source_url": "https://hometownvendormarket.com/cantonspooktacular/",
+      "application_url": "https://hometownvendormarket.com/cantonspooktacular",
+      "location": "Canton",
+      "locality": "Canton",
+      "region": "Ohio",
+      "region_code": "OH",
+      "region_name": "Ohio",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "currency": "USD",
+      "postal_code": "44718",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-23",
+      "event_end": "2026-10-25",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "oh-canton-spooktacular-craft-vendor-market-hometown-vendor-market-2026-10-23-8a863d8e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-ohio",
+      "id": "opp_us_8ce6872b2f265fb517b4"
     }
   ]
 };
