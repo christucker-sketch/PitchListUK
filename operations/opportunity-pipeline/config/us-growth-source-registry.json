@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T04:52:56.731Z",
+  "updated_at": "2026-09-09T04:57:33.664Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2940,6 +2940,24 @@
       "event_end": "2027-05-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-colorado-springs-2027-holiday-market: live first-party route attests Colorado Springs, CO, actionable vendor terms, and exact event date range 2027-05-29 to 2027-05-31."
+    },
+    {
+      "id": "co-thornton-harvest-fest-2026-10-03-6b2ec99e",
+      "name": "Thornton Harvest Fest Vendor Opportunity",
+      "organiser": "Thornton Harvest Fest",
+      "source_url": "https://www.thorntonco.gov/community-culture/festivals-events/thornton-harvest-fest",
+      "application_url": "https://www.thorntonco.gov/community-culture/festivals-events/thornton-harvest-fest",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Thornton",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-03",
+      "event_end": "2026-10-03",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-thornton-2026-government-events: live first-party route attests Thornton, CO, actionable vendor terms, and exact event date 2026-10-03."
     },
     {
       "id": "co-thornton-winterfest-transforms-carpenter-park-into-a-wonderland-mile-h-2026-12-12-adf67c8d",
