@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T00:27:37.828Z",
-  "source": "reviewed-us-oregon-cloud-promotion:735523521540d8eb618d300f51b2e682e0df11d85222ba72774014f5412e2258",
-  "total": 647,
+  "exported_at": "2026-09-09T00:44:02.382Z",
+  "source": "reviewed-us-texas-cloud-promotion:f1411e1236a332156d40ed42b4ad77b6e996e25c470b090e0919cc0e944f3330",
+  "total": 648,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24576,6 +24576,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-oregon",
       "id": "opp_us_006bdd285d4b013d43a4"
+    },
+    {
+      "stable_id": "opp_us_c7840e9fc2414db2f59d",
+      "event_name": "Holiday Stroll | Downtown Austin Alliance",
+      "organiser": "Holiday Stroll",
+      "source_url": "https://downtownaustin.com/holidaystroll/",
+      "application_url": "https://downtownaustin.com/holidaystroll",
+      "location": "Austin",
+      "locality": "Austin",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-holiday-stroll-2026-12-06-4dc80d5c",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_c7840e9fc2414db2f59d"
     }
   ]
 };
