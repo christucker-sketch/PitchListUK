@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T00:44:02.382Z",
-  "source": "reviewed-us-texas-cloud-promotion:f1411e1236a332156d40ed42b4ad77b6e996e25c470b090e0919cc0e944f3330",
-  "total": 648,
+  "exported_at": "2026-09-09T00:47:58.217Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:5a4cfe3f42967b2a59eeba42941c517920a127c4530d1eec0d5ae5bb3ea0b14c",
+  "total": 649,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24613,6 +24613,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_c7840e9fc2414db2f59d"
+    },
+    {
+      "stable_id": "opp_us_fb53685fcce0543452e1",
+      "event_name": "Clone of Downtown Reading's GlowFEST Block Party Vendor Application 2025",
+      "organiser": "Clone of Downtown Reading's GlowFEST Block Party",
+      "source_url": "https://form.jotform.com/262373826282159",
+      "application_url": "https://form.jotform.com/262373826282159",
+      "location": "Reading",
+      "locality": "Reading",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-17",
+      "event_end": "2026-10-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-clone-of-downtown-reading-s-glowfest-block-party-2026-10-17-daca6b73",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_fb53685fcce0543452e1"
     }
   ]
 };
