@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T02:41:03.160Z",
-  "source": "reviewed-us-ohio-cloud-promotion:0c5e8c8012e4e9a7c71f6896acc2d70495db31bf7d77756685f0b4a91d7e4345",
-  "total": 657,
+  "exported_at": "2026-09-09T02:45:11.166Z",
+  "source": "reviewed-us-north-carolina-cloud-promotion:891a51f4b006dc05a7a79f4da456c33aa02de6308f02a9e3d8120d10b60e03eb",
+  "total": 658,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24954,6 +24954,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-ohio",
       "id": "opp_us_6f32a3f78538fc3e2f2b"
+    },
+    {
+      "stable_id": "opp_us_80ee81f1f97cb6c25d24",
+      "event_name": "September 18th - ART CRUSH- Vendor Application - ART CRUSH- 2026 - Eventeny",
+      "organiser": "September 18th - ART CRUSH-",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45339",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45339",
+      "location": "Winston-Salem",
+      "locality": "Winston-Salem",
+      "region": "North Carolina",
+      "region_code": "NC",
+      "region_name": "North Carolina",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-18",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nc-september-18th-art-crush-2026-09-18-3c23360d",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-north-carolina",
+      "id": "opp_us_80ee81f1f97cb6c25d24"
     }
   ]
 };
