@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T04:16:06.446Z",
+  "updated_at": "2026-09-09T04:20:09.917Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -2437,6 +2437,25 @@
       "evidence": "Cloudflare discovery co-fort-collins-2026-festival: live first-party route attests Fort Collins, CO, actionable vendor terms, and exact event date range 2026-09-26 to 2026-09-27."
     },
     {
+      "id": "co-2025-colorado-ukrainian-festival-2027-08-23-1bdfbb7a",
+      "name": "2025 Colorado Ukrainian Festival: applications are now OPEN for vendors and volunteers &mdash; Ukrainians of Colorado Vendor Opportunity",
+      "organiser": "2025 Colorado Ukrainian Festival:",
+      "source_url": "https://www.ukrainiansofcolorado.org/blog/2025-colorado-ukrainian-festival-applications-are-now-open-for-vendors-and-volunteers",
+      "application_url": "https://www.ukrainiansofcolorado.org/blog/2025-colorado-ukrainian-festival-applications-are-now-open-for-vendors-and-volunteers",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Lakewood",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-23",
+      "event_end": "2027-08-23",
+      "application_deadline": "2027-05-22",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-lakewood-2027-arts-crafts: live first-party route attests Lakewood, CO, actionable vendor terms, and exact event date 2027-08-23."
+    },
+    {
       "id": "co-2026-arvada-summer-guide-2026-09-27-0ceff3b5",
       "name": "2026 Arvada Summer Guide Vendor Opportunity",
       "organiser": "2026 Arvada Summer Guide",
@@ -2813,6 +2832,24 @@
       "event_end": "2026-10-03",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-pueblo-2026-farmers-market: live first-party route attests Pueblo, CO, actionable vendor terms, and exact event date 2026-10-03."
+    },
+    {
+      "id": "co-requests-2027-10-24-4c1f4282",
+      "name": "Requests Vendor Opportunity",
+      "organiser": "Requests",
+      "source_url": "https://www.foodtruckbooking.us/requests",
+      "application_url": "https://www.foodtruckbooking.us/requests",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Lakewood",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-10-24",
+      "event_end": "2027-10-24",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-lakewood-2027-food-truck: live first-party route attests Lakewood, CO, actionable vendor terms, and exact event date 2027-10-24."
     },
     {
       "id": "co-rise-vibes-music-festival-on-the-border-of-colorado-and-new-mexico-in--2027-06-04-38f2530e",
