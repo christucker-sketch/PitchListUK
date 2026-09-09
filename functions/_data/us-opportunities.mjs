@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T01:47:08.004Z",
-  "source": "reviewed-us-texas-cloud-promotion:a692c80d9f5ceb4727ac1240dded53f0ee2d6f4b26c4b927f9de422255f28771",
-  "total": 654,
+  "exported_at": "2026-09-09T01:59:41.705Z",
+  "source": "reviewed-us-michigan-cloud-promotion:b63f5f715334000042ca473362c3ae8160ced80d09547ee018235bffd46efc56",
+  "total": 655,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24842,6 +24842,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_31122be92dd52243ef17"
+    },
+    {
+      "stable_id": "opp_us_ee7ae49dca867ab345f1",
+      "event_name": "Farmers market, beer garden, and concerts in the park to welcome summer back to Sterling Heights Vendor Opportunity",
+      "organiser": "Farmers market, beer garden, and concerts in the park to welcome summer back to Sterling Heights",
+      "source_url": "https://metromodemedia.com/thursday-nights-in-the-park/",
+      "application_url": "https://metromodemedia.com/thursday-nights-in-the-park",
+      "location": "Sterling Heights",
+      "locality": "Sterling Heights",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-22",
+      "event_end": "2027-08-23",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-farmers-market-beer-garden-and-concerts-in-the-park-to-welcome-summer--2027-08-22-ec58b05b",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_ee7ae49dca867ab345f1"
     }
   ]
 };
