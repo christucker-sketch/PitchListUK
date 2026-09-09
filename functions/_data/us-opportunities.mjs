@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T04:35:32.829Z",
-  "source": "reviewed-us-iowa-cloud-promotion:e60eb3eb54a2d0c06fa829e0d329198b1dee98537a8f414e8967e63bda5fdfa0",
-  "total": 668,
+  "exported_at": "2026-09-09T04:53:53.571Z",
+  "source": "reviewed-us-arizona-cloud-promotion:07d71399cf4b6540d8813d0b56d8edeab087756fb016477ef90558eca56526dd",
+  "total": 669,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25363,6 +25363,45 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-iowa",
       "id": "opp_us_8748e3aecbc6737fb4cc"
+    },
+    {
+      "stable_id": "opp_us_6725ed1ff0d98e5df43d",
+      "event_name": "Arrowhead Farmers Market Vendor Opportunity",
+      "organiser": "Arrowhead Farmers Market",
+      "source_url": "https://getlocalarizonaevents.com/saturdaymarket/",
+      "application_url": "https://getlocalarizonaevents.com/saturdaymarket",
+      "location": "Glendale",
+      "locality": "Glendale",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "21000",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-12",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "market_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-arrowhead-farmers-market-2026-09-12-009805f9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_6725ed1ff0d98e5df43d"
     }
   ]
 };
