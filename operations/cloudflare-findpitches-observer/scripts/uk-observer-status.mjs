@@ -3,7 +3,7 @@
 import { execFileSync } from 'node:child_process';
 
 const repo = process.env.FINDPITCHES_GITHUB_REPO || 'christucker-sketch/PitchListUK';
-const ghBin = process.env.FINDPITCHES_GH_BIN || '/usr/bin/gh';
+const ghBin = process.env.FINDPITCHES_GH_BIN || 'gh';
 const discoveryWorkflow = 'uk-source-discovery-schedule.yml';
 const acquisitionWorkflow = 'uk-source-registry-acquisition.yml';
 
