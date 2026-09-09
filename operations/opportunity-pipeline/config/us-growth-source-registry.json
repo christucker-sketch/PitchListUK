@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T09:04:44.570Z",
+  "updated_at": "2026-09-09T09:21:08.088Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11316,6 +11316,24 @@
       "event_end": "2027-05-02",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-traverse-city-2027-farmers-market: live first-party route attests Traverse City, MI, actionable vendor terms, and exact event date 2027-05-02."
+    },
+    {
+      "id": "mi-troy-farmers-market-2026-michigan-2026-09-26-2edf5080",
+      "name": "Troy Farmers Market 2026, Michigan Vendor Opportunity",
+      "organiser": "Troy Farmers Market 2026, Michigan",
+      "source_url": "https://vendorsmap.com/events/31599",
+      "application_url": "https://vendorsmap.com/events/31599",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Troy",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-troy-2026-farmers-market: live first-party route attests Troy, MI, actionable vendor terms, and exact event date 2026-09-26."
     },
     {
       "id": "mi-vendor-events-in-downtown-troy-al-2027-04-25-7e5ba16a",
