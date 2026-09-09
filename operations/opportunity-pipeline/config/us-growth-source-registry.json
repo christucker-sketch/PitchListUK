@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T02:40:03.967Z",
+  "updated_at": "2026-09-09T02:44:16.140Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12108,6 +12108,24 @@
       "event_end": "2026-10-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-fayetteville-2026-farmers-market: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "nc-september-18th-art-crush-2026-09-18-3c23360d",
+      "name": "September 18th - ART CRUSH- Vendor Application - ART CRUSH- 2026 - Eventeny",
+      "organiser": "September 18th - ART CRUSH-",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=45339",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=45339",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Winston-Salem",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-18",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-winston-salem-2026-festival: live first-party route attests Winston-Salem, NC, actionable vendor terms, and exact event date 2026-09-18."
     },
     {
       "id": "nc-showfest-event-innovators-conference-2027-2027-01-25-97ecf069",
