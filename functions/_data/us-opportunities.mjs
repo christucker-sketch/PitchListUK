@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T10:01:14.349Z",
-  "source": "reviewed-us-illinois-cloud-promotion:0e2424d41949c19a0bc0e579548945a5a3c9ead9e976b88abe4a96f891c15874",
-  "total": 694,
+  "exported_at": "2026-09-09T10:10:47.352Z",
+  "source": "reviewed-us-colorado-cloud-promotion:b7798f2b7b1b0fcfd54c22a3e94231669865055f95e3a13be84f969d72e4df6e",
+  "total": 695,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26344,6 +26344,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_b38427130c2062727227"
+    },
+    {
+      "stable_id": "opp_us_f0d5e518dbd2ed30a4e6",
+      "event_name": "First Peoples Festival | January Vendor Opportunity",
+      "organiser": "First Peoples Festival | January",
+      "source_url": "https://eventsinestes.com/first-peoples-festival/",
+      "application_url": "https://eventsinestes.com/first-peoples-festival",
+      "location": "Pueblo",
+      "locality": "Pueblo",
+      "region": "Colorado",
+      "region_code": "CO",
+      "region_name": "Colorado",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-14",
+      "event_end": "2027-01-17",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "co-first-peoples-festival-january-2027-01-14-1769ad1e",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-colorado",
+      "id": "opp_us_f0d5e518dbd2ed30a4e6"
     }
   ]
 };
