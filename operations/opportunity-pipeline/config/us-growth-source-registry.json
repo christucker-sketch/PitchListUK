@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T04:03:57.736Z",
+  "updated_at": "2026-09-09T04:10:11.925Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -12307,6 +12307,24 @@
       "application_deadline": "2026-09-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery nc-fayetteville-2026-arts-crafts: live first-party route attests Fayetteville, NC, actionable vendor terms, and exact event date range 2026-10-09 to 2026-10-10."
+    },
+    {
+      "id": "nc-thrive-conference-2027-05-28-d89f3bd7",
+      "name": "Thrive! Conference Vendor Application 2027 - North Carolinians for Home Education",
+      "organiser": "Thrive! Conference",
+      "source_url": "https://nche.com/vendor-application",
+      "application_url": "https://nche.com/vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NC",
+      "region_code": "NC",
+      "locality": "Winston-Salem",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-05-28",
+      "event_end": "2027-05-29",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery nc-winston-salem-2027-festival: live first-party route attests Winston-Salem, NC, actionable vendor terms, and exact event date range 2027-05-28 to 2027-05-29."
     },
     {
       "id": "nc-vendor-events-in-festival-park-and-downtown-fayetteville-nc-2027-04-24-7edb08c0",
