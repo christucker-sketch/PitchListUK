@@ -12,6 +12,9 @@ import {
   globalControllerExecutionLevel,
   resolveGlobalAcquisitionDispatch
 } from '../lib/dispatch.mjs';
+import { ControllerStateDurableObject } from './controller-state.js';
+
+export { ControllerStateDurableObject };
 
 export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
@@ -65,6 +68,7 @@ export default {
         service: 'findpitches-global-acquisition-shadow',
         execution_enabled: globalControllerExecutionEnabled(env),
         execution_level: globalControllerExecutionLevel(env),
+        controller_state_store: Boolean(env.CONTROLLER_STATE),
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
           name: market.country_name,
