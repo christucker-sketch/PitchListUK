@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T04:11:07.441Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:f071d682351eeb9fba329a5be5be947192aa5a2e85887aa521c7b88ee000874b",
-  "total": 662,
+  "exported_at": "2026-09-09T04:17:08.043Z",
+  "source": "reviewed-us-arizona-cloud-promotion:d7424f2cb799bffd1ca46e2091133b83b6f2b1c7b8242fbcd9afa7f1cb36c209",
+  "total": 663,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25140,6 +25140,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_7f91ae18ec7ff9c88bfa"
+    },
+    {
+      "stable_id": "opp_us_69ca202129c7b1361173",
+      "event_name": "Commercial Exhibitor Information",
+      "organiser": "Commercial",
+      "source_url": "https://www.scottsdaleshow.com/commercial-exhibitor-information",
+      "application_url": "https://www.scottsdaleshow.com/commercial-exhibitor-information",
+      "location": "Scottsdale",
+      "locality": "Scottsdale",
+      "region": "Arizona",
+      "region_code": "AZ",
+      "region_name": "Arizona",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AZ",
+      "currency": "USD",
+      "postal_code": "16601",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-02-11",
+      "event_end": "2027-02-21",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "az-commercial-2027-02-11-a64fb5c8",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arizona",
+      "id": "opp_us_69ca202129c7b1361173"
     }
   ]
 };
