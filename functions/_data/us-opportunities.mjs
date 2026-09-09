@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T07:27:00.036Z",
-  "source": "reviewed-us-texas-cloud-promotion:dceee3e2e7a77905f2b475672257804420ef4efeb492e9d17f280283d77d22c0",
-  "total": 677,
+  "exported_at": "2026-09-09T07:54:18.211Z",
+  "source": "reviewed-us-michigan-cloud-promotion:4fe85e3a35fe85389cd73f2c4272992ebeb560302e6c8a7466365357313d95fd",
+  "total": 678,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25704,6 +25704,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "pli-014-reviewed-texas-pilot",
       "id": "opp_us_60f1638d2d7993cbe639"
+    },
+    {
+      "stable_id": "opp_us_927504aa4acacda7dbb8",
+      "event_name": "News Flash • Canton Township, MI Vendor Opportunity",
+      "organiser": "News Flash • Canton Township, MI",
+      "source_url": "https://www.cantonmi.gov/m/newsflash?cat=1",
+      "application_url": "https://www.cantonmi.gov/m/newsflash?cat=1",
+      "location": "Livonia",
+      "locality": "Livonia",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "50625",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-26",
+      "event_end": "2026-09-26",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-news-flash-canton-township-mi-2026-09-26-4f8fb7d7",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_927504aa4acacda7dbb8"
     }
   ]
 };
