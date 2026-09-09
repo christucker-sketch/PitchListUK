@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:51:56.736Z",
-  "source": "reviewed-us-illinois-cloud-promotion:a12074103fa2c99b52ef305d9f30ecddbdfbdc73d45f500f7b2db9a7d2f70e27",
-  "total": 690,
+  "exported_at": "2026-09-09T08:59:40.773Z",
+  "source": "reviewed-us-virginia-cloud-promotion:3a58a5e920a57cc21418d799a34995e1bde35c097497c083a487ad2b5959b02a",
+  "total": 691,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26191,6 +26191,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-illinois",
       "id": "opp_us_45a28e88f7946301ebcd"
+    },
+    {
+      "stable_id": "opp_us_d793dc7527b6b5a7a416",
+      "event_name": "Vendor Dashboard - Roanoke GO Fest",
+      "organiser": "Vendor Dashboard - Roanoke GO Fest",
+      "source_url": "https://roanokegofest.com/vendor-dashboard/",
+      "application_url": "https://roanokegofest.com/vendor-dashboard",
+      "location": "Roanoke",
+      "locality": "Roanoke",
+      "region": "Virginia",
+      "region_code": "VA",
+      "region_name": "Virginia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-01",
+      "event_end": "2027-04-01",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "exhibitor",
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "va-vendor-dashboard-roanoke-go-fest-2027-04-01-41d649aa",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-virginia",
+      "id": "opp_us_d793dc7527b6b5a7a416"
     }
   ]
 };
