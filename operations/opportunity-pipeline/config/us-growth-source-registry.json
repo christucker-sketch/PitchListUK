@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T10:50:41.369Z",
+  "updated_at": "2026-09-09T11:02:04.319Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -4635,6 +4635,24 @@
       "event_end": "2026-10-31",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery fl-pensacola-2026-farmers-market: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date 2026-10-31."
+    },
+    {
+      "id": "fl-pensacola-4th-of-july-2027-07-04-2fab4c7d",
+      "name": "Pensacola 4th of July Vendor Registration - Jul 4, 2027",
+      "organiser": "Pensacola 4th of July",
+      "source_url": "http://pensacolachamberfl.chambermaster.com/events/details/pensacola-4th-of-july-food-truck-vendor-registration-07-04-2027-23060",
+      "application_url": "http://pensacolachamberfl.chambermaster.com/events/details/pensacola-4th-of-july-food-truck-vendor-registration-07-04-2027-23060",
+      "source_class": "event-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-FL",
+      "region_code": "FL",
+      "locality": "Pensacola",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-07-04",
+      "event_end": "2027-07-04",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery fl-pensacola-2027-food-truck: live first-party route attests Pensacola, FL, actionable vendor terms, and exact event date 2027-07-04."
     },
     {
       "id": "fl-pensacola-foodees-fest-eventeny-2027-02-12-16fd1223",
