@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T04:26:26.301Z",
-  "source": "reviewed-us-minnesota-cloud-promotion:58fdc3591000be6fce7dbf60502de20b835dd82ce535cb847198f0440d972586",
-  "total": 666,
+  "exported_at": "2026-09-09T04:30:46.982Z",
+  "source": "reviewed-us-louisiana-cloud-promotion:e6e2f36f5f3cef1fa775a20e79601140bee83e1a216542db88dce60ee524e4cf",
+  "total": 667,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25289,6 +25289,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-minnesota",
       "id": "opp_us_5e04e02972bf5d74dd75"
+    },
+    {
+      "stable_id": "opp_us_4060dfbda1e6c4b625a6",
+      "event_name": "The Louisiana Street Food Festival - Country Roads Magazine Vendor Opportunity",
+      "organiser": "The Louisiana Street Food Festival - Country Roads Magazine",
+      "source_url": "https://countryroadsmagazine.com/cuisine/restaurants/the-louisiana-food-truck-festival/",
+      "application_url": "https://countryroadsmagazine.com/cuisine/restaurants/the-louisiana-food-truck-festival",
+      "location": "Baton Rouge",
+      "locality": "Baton Rouge",
+      "region": "Louisiana",
+      "region_code": "LA",
+      "region_name": "Louisiana",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-LA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-01-13",
+      "event_end": "2027-01-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "la-the-louisiana-street-food-festival-country-roads-magazine-2027-01-13-a3a4e922",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-louisiana",
+      "id": "opp_us_4060dfbda1e6c4b625a6"
     }
   ]
 };
