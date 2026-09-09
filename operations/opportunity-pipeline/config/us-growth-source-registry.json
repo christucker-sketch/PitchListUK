@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T01:10:22.953Z",
+  "updated_at": "2026-09-09T01:17:08.220Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -18185,6 +18185,24 @@
       "event_end": "2027-05-21",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery wi-brookfield-2027-food-truck: live first-party route attests Brookfield, WI, actionable vendor terms, and exact event date 2027-05-21."
+    },
+    {
+      "id": "wi-holiday-arts-and-craft-fair-2026-11-08-c0264013",
+      "name": "Holiday Arts and Craft Fair Vendor Opportunity",
+      "organiser": "Holiday Arts and Craft Fair",
+      "source_url": "http://www.brookfieldeastffa.com/holiday-arts-and-craft-fair.html",
+      "application_url": "http://www.brookfieldeastffa.com/holiday-arts-and-craft-fair.html",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-WI",
+      "region_code": "WI",
+      "locality": "Brookfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-11-08",
+      "event_end": "2026-11-08",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery wi-brookfield-2026-holiday-market: live first-party route attests Brookfield, WI, actionable vendor terms, and exact event date 2026-11-08."
     },
     {
       "id": "wi-milwaukee-winter-wonderland-craft-vendor-market-hometown-vendor-market-2026-12-12-1a72c2a4",
