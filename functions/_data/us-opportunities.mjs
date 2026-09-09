@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T03:38:41.799Z",
-  "source": "reviewed-us-virginia-cloud-promotion:991272a64078c23a6015b4c52c83a60df61ad6ed459d8c21245dfac4a0b67ed8",
-  "total": 659,
+  "exported_at": "2026-09-09T03:50:53.912Z",
+  "source": "reviewed-us-kentucky-cloud-promotion:350685ff8e8dc4c68fb98d77966beca97c04d266a85ba1427d8a6a225761292d",
+  "total": 660,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25029,6 +25029,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_6e0bcb869becc0780ca6"
+    },
+    {
+      "stable_id": "opp_us_3483e0393037b55b1b9a",
+      "event_name": "Candlelight - Downtown Frankfort, Inc. Vendor Opportunity",
+      "organiser": "Candlelight - Downtown Frankfort, Inc.",
+      "source_url": "https://downtownfrankfort.com/candlelight/",
+      "application_url": "https://downtownfrankfort.com/candlelight",
+      "location": "Frankfort",
+      "locality": "Frankfort",
+      "region": "Kentucky",
+      "region_code": "KY",
+      "region_name": "Kentucky",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-KY",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-12",
+      "event_end": "2026-11-14",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ky-candlelight-downtown-frankfort-inc-2026-11-12-5fae8448",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-kentucky",
+      "id": "opp_us_3483e0393037b55b1b9a"
     }
   ]
 };
