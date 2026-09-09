@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T01:02:00.998Z",
-  "source": "reviewed-us-virginia-cloud-promotion:42881536b1d4b79f527be89f5e58eb117875634282f33788d1ebea963ec0b426",
-  "total": 651,
+  "exported_at": "2026-09-09T01:42:12.350Z",
+  "source": "reviewed-us-arkansas-cloud-promotion:20d3077dcd60baf7877b6e27d3806265f708c85a4472c9158b27c4ee7a50b1e1",
+  "total": 652,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24727,6 +24727,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_4ef7ff5731c74bd88781"
+    },
+    {
+      "stable_id": "opp_us_dc36169fadcc2dae69dc",
+      "event_name": "2026 FOOD TRUCK FESTIVAL @ THE DEPOT! , The Depot , Alma, 2 May 2026",
+      "organiser": "2026 FOOD TRUCK FESTIVAL @ THE DEPOT! , The Depot , Alma, 2 May 2026",
+      "source_url": "https://allevents.in/alma/2026-food-truck-festival-the-depot/200029152439420",
+      "application_url": "https://allevents.in/alma/2026-food-truck-festival-the-depot/200029152439420",
+      "location": "Alma",
+      "locality": "Alma",
+      "region": "Arkansas",
+      "region_code": "AR",
+      "region_name": "Arkansas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-AR",
+      "currency": "USD",
+      "postal_code": "14219",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ar-2026-food-truck-festival-the-depot-the-depot-alma-2-may-2026-2026-09-19-60fcea99",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-arkansas",
+      "id": "opp_us_dc36169fadcc2dae69dc"
     }
   ]
 };
