@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:23:37.924Z",
-  "source": "reviewed-us-north-carolina-cloud-promotion:7f6f11ce2ccb9849252a745e6a35de94f02aa8bdf7aa5b282c995d464597a150",
-  "total": 685,
+  "exported_at": "2026-09-09T08:27:08.416Z",
+  "source": "reviewed-us-michigan-cloud-promotion:d93bd218a5704fdc200e1e5fcdd1c46461b8d3f200cfb322d9fcfb5c9b232cb4",
+  "total": 686,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26004,6 +26004,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-north-carolina",
       "id": "opp_us_f54a0239bc06a283f7b3"
+    },
+    {
+      "stable_id": "opp_us_e8e33843b516e72ab987",
+      "event_name": "Mistletoe Market Show Vendor Opportunity",
+      "organiser": "Mistletoe Market Show",
+      "source_url": "https://christmasinplymouth.com/mistletoe-market-show",
+      "application_url": "https://christmasinplymouth.com/mistletoe-market-show",
+      "location": "Livonia",
+      "locality": "Livonia",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-12-11",
+      "event_end": "2026-12-12",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-mistletoe-market-show-2026-12-11-d402b592",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_e8e33843b516e72ab987"
     }
   ]
 };
