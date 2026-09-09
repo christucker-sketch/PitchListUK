@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T10:48:27.157Z",
-  "source": "reviewed-us-georgia-cloud-promotion:c4de448724f9faf890147162cda9d3fb9f180df99d0281fc1eb52f6e7dc14086",
-  "total": 700,
+  "exported_at": "2026-09-09T10:51:37.257Z",
+  "source": "reviewed-us-michigan-cloud-promotion:1d32dc248804470bd724a67dbef6777d31b72345118ba42abcc5a8ceeca3dfba",
+  "total": 701,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26570,6 +26570,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-georgia",
       "id": "opp_us_f522c2e26dbf0faaa553"
+    },
+    {
+      "stable_id": "opp_us_b986e4f3a73c1afe0edf",
+      "event_name": "Festival Fridays Vendor Opportunity",
+      "organiser": "Festival Fridays",
+      "source_url": "https://www.foodtruckrallykz.com/",
+      "application_url": "https://www.foodtruckrallykz.com",
+      "location": "Kalamazoo",
+      "locality": "Kalamazoo",
+      "region": "Michigan",
+      "region_code": "MI",
+      "region_name": "Michigan",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-09",
+      "event_end": "2026-10-09",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mi-festival-fridays-2026-10-09-70f2ba36",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-michigan",
+      "id": "opp_us_b986e4f3a73c1afe0edf"
     }
   ]
 };
