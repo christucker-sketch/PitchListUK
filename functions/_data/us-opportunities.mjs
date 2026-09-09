@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T09:47:28.311Z",
-  "source": "reviewed-us-arizona-cloud-promotion:532af598a7c0ea614956688c4ae442fd2dda32b780f699beae97617c18703e44",
-  "total": 693,
+  "exported_at": "2026-09-09T10:01:14.349Z",
+  "source": "reviewed-us-illinois-cloud-promotion:0e2424d41949c19a0bc0e579548945a5a3c9ead9e976b88abe4a96f891c15874",
+  "total": 694,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26307,6 +26307,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_612abb11c513502520cb"
+    },
+    {
+      "stable_id": "opp_us_b38427130c2062727227",
+      "event_name": "Vendor Events in Champaign Urbana, IL",
+      "organiser": "Vendor Events in Champaign Urbana, IL",
+      "source_url": "https://vendorsmap.com/cities/champaign-urbana",
+      "application_url": "https://vendorsmap.com/cities/champaign-urbana",
+      "location": "Champaign",
+      "locality": "Champaign",
+      "region": "Illinois",
+      "region_code": "IL",
+      "region_name": "Illinois",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "currency": "USD",
+      "postal_code": "61801",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-04-10",
+      "event_end": "2027-04-13",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "craft_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "il-vendor-events-in-champaign-urbana-il-2027-04-10-3e8934c9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-illinois",
+      "id": "opp_us_b38427130c2062727227"
     }
   ]
 };
