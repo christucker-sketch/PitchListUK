@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T02:59:56.783Z",
+  "updated_at": "2026-09-09T03:20:54.533Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14324,6 +14324,24 @@
       "event_end": "2026-09-20",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery oh-cincinnati-2026-festival: live first-party route attests Cincinnati, OH, actionable vendor terms, and exact event date range 2026-09-17 to 2026-09-20."
+    },
+    {
+      "id": "oh-downtown-akron-partnership-2026-09-19-230a1693",
+      "name": "Downtown Akron Partnership Vendor Opportunity",
+      "organiser": "Downtown Akron Partnership",
+      "source_url": "https://www.downtownakron.com",
+      "application_url": "https://www.downtownakron.com",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-OH",
+      "region_code": "OH",
+      "locality": "Akron",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery oh-akron-2026-food-truck: live first-party route attests Akron, OH, actionable vendor terms, and exact event date 2026-09-19."
     },
     {
       "id": "oh-event-details-u-s-national-park-service-2026-09-04-b647c076",
