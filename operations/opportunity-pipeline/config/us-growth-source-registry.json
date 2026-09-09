@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T08:58:36.001Z",
+  "updated_at": "2026-09-09T09:04:44.570Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -3174,6 +3174,24 @@
       "event_end": "2026-09-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery co-lakewood-2026-farmers-market: live first-party route attests Lakewood, CO, actionable vendor terms, and exact event date 2026-09-27."
+    },
+    {
+      "id": "co-vendor-events-in-pasadena-md-2027-08-16-29549bc2",
+      "name": "Vendor Events in Pasadena, MD",
+      "organiser": "Vendor Events in Pasadena, MD",
+      "source_url": "https://vendorsmap.com/cities/pasadena-md",
+      "application_url": "https://vendorsmap.com/cities/pasadena-md",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-CO",
+      "region_code": "CO",
+      "locality": "Westminster",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2027-08-16",
+      "event_end": "2027-08-16",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery co-westminster-2027-food-truck: live first-party route attests Westminster, CO, actionable vendor terms, and exact event date 2027-08-16."
     },
     {
       "id": "co-vendor-events-in-pueblo-co-2026-09-18-559c4e60",
