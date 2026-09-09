@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T04:30:46.982Z",
-  "source": "reviewed-us-louisiana-cloud-promotion:e6e2f36f5f3cef1fa775a20e79601140bee83e1a216542db88dce60ee524e4cf",
-  "total": 667,
+  "exported_at": "2026-09-09T04:35:32.829Z",
+  "source": "reviewed-us-iowa-cloud-promotion:e60eb3eb54a2d0c06fa829e0d329198b1dee98537a8f414e8967e63bda5fdfa0",
+  "total": 668,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25326,6 +25326,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-louisiana",
       "id": "opp_us_4060dfbda1e6c4b625a6"
+    },
+    {
+      "stable_id": "opp_us_8748e3aecbc6737fb4cc",
+      "event_name": "BestFest 8/8/2026 | Emmetsburg, Iowa Vendor Opportunity",
+      "organiser": "BestFest 8/8/2026 | Emmetsburg, Iowa",
+      "source_url": "https://www.traveliowa.com/calendar/bestfest/1660925/",
+      "application_url": "https://www.traveliowa.com/calendar/bestfest/1660925",
+      "location": "Emmetsburg",
+      "locality": "Emmetsburg",
+      "region": "Iowa",
+      "region_code": "IA",
+      "region_name": "Iowa",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-IA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-08-08",
+      "event_end": "2027-08-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ia-bestfest-8-8-2026-emmetsburg-iowa-2027-08-08-d3556038",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-iowa",
+      "id": "opp_us_8748e3aecbc6737fb4cc"
     }
   ]
 };
