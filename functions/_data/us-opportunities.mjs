@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:06:43.612Z",
-  "source": "reviewed-us-massachusetts-cloud-promotion:be8d08537e364c4ef0cbed2cd13f03e48d697d77c65ea101f2ac5fd0b6e0879a",
-  "total": 681,
+  "exported_at": "2026-09-09T08:11:59.720Z",
+  "source": "reviewed-us-texas-cloud-promotion:3068f142b6c4eb1eefd71bd95bca45b14ff2836a0648010a53ec87eeff91756b",
+  "total": 682,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25854,6 +25854,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-massachusetts",
       "id": "opp_us_93f13f11572d133c81d6"
+    },
+    {
+      "stable_id": "opp_us_b3825288b3af9696abd6",
+      "event_name": "Corpus Christi - Hollyday",
+      "organiser": "Corpus Christi - Hollyday",
+      "source_url": "https://homefortheholidaysgiftmarket.com/corpus-christi-hollyday",
+      "application_url": "https://homefortheholidaysgiftmarket.com/corpus-christi-hollyday",
+      "location": "Corpus Christi",
+      "locality": "Corpus Christi",
+      "region": "Texas",
+      "region_code": "TX",
+      "region_name": "Texas",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "currency": "USD",
+      "postal_code": "78401",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-08",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "tx-corpus-christi-hollyday-2026-11-06-5972f746",
+      "market_domain": "findpitches.com",
+      "promotion_source": "pli-014-reviewed-texas-pilot",
+      "id": "opp_us_b3825288b3af9696abd6"
     }
   ]
 };
