@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T05:51:15.850Z",
-  "source": "reviewed-us-new-york-cloud-promotion:88a02ed6f2faafc27456f8e0783f120ab126fb1c9ed66141b2665e059b2cbc0b",
-  "total": 674,
+  "exported_at": "2026-09-09T07:07:09.302Z",
+  "source": "reviewed-us-pennsylvania-cloud-promotion:7ae18f8772b3f0efadb4112974bb47b1d771d91959a1a6ae66a1994bcad5f8a6",
+  "total": 675,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25593,6 +25593,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-new-york",
       "id": "opp_us_62ba4f7ca4c8374bd126"
+    },
+    {
+      "stable_id": "opp_us_6a4e79348297e9209d29",
+      "event_name": "Bethlehem Vintage & Harvest Market Vendor Opportunity",
+      "organiser": "Bethlehem Vintage & Harvest Market",
+      "source_url": "https://www.historicbethlehem.org/visit-us/experience/bethlehem-vintage-harvest-market/",
+      "application_url": "https://www.historicbethlehem.org/visit-us/experience/bethlehem-vintage-harvest-market",
+      "location": "Bethlehem",
+      "locality": "Bethlehem",
+      "region": "Pennsylvania",
+      "region_code": "PA",
+      "region_name": "Pennsylvania",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-PA",
+      "currency": "USD",
+      "postal_code": "18018",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-18",
+      "event_end": "2026-09-19",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "pa-bethlehem-vintage-harvest-market-2026-09-18-478c396f",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-pennsylvania",
+      "id": "opp_us_6a4e79348297e9209d29"
     }
   ]
 };
