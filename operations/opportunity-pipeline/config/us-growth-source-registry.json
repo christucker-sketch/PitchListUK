@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T08:50:53.319Z",
+  "updated_at": "2026-09-09T08:58:36.001Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -18690,6 +18690,24 @@
       "event_end": "2026-11-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery va-chesapeake-2026-festival: live first-party route attests Chesapeake, VA, actionable vendor terms, and exact event date range 2026-11-06 to 2026-11-07."
+    },
+    {
+      "id": "va-vendor-dashboard-roanoke-go-fest-2027-04-01-41d649aa",
+      "name": "Vendor Dashboard - Roanoke GO Fest",
+      "organiser": "Vendor Dashboard - Roanoke GO Fest",
+      "source_url": "https://roanokegofest.com/vendor-dashboard",
+      "application_url": "https://roanokegofest.com/vendor-dashboard",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-VA",
+      "region_code": "VA",
+      "locality": "Roanoke",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-04-01",
+      "event_end": "2027-04-01",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery va-roanoke-2027-festival: live first-party route attests Roanoke, VA, actionable vendor terms, and exact event date 2027-04-01."
     },
     {
       "id": "va-vendor-events-in-alexandria-va-2026-09-26-bc96f528",
