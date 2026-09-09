@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T08:02:49.518Z",
-  "source": "reviewed-us-arizona-cloud-promotion:ae584ce8af9c051ed0f17fbc198ecdaf5709f1de6f8eb302358207bf018518a0",
-  "total": 680,
+  "exported_at": "2026-09-09T08:06:43.612Z",
+  "source": "reviewed-us-massachusetts-cloud-promotion:be8d08537e364c4ef0cbed2cd13f03e48d697d77c65ea101f2ac5fd0b6e0879a",
+  "total": 681,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25817,6 +25817,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_8c0ddf9d6e6bc276235d"
+    },
+    {
+      "stable_id": "opp_us_93f13f11572d133c81d6",
+      "event_name": "Food Access Programs Vendor Opportunity",
+      "organiser": "Food Access Programs",
+      "source_url": "https://nesfp.org/local-food/food-access-program",
+      "application_url": "https://nesfp.org/local-food/food-access-program",
+      "location": "Lynn",
+      "locality": "Lynn",
+      "region": "Massachusetts",
+      "region_code": "MA",
+      "region_name": "Massachusetts",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MA",
+      "currency": "USD",
+      "postal_code": "02151",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-10-28",
+      "event_end": "2026-10-28",
+      "application_deadline": "",
+      "recurring": true,
+      "multi_event": false,
+      "opportunity_type": "recurring",
+      "vendor_categories": [
+        "food_truck"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ma-food-access-programs-2026-10-28-9b9a6ad6",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-massachusetts",
+      "id": "opp_us_93f13f11572d133c81d6"
     }
   ]
 };
