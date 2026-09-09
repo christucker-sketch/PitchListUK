@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-08T23:49:09.641Z",
-  "source": "reviewed-us-minnesota-cloud-promotion:dadeea3e49918a5e00ea213ef65debb40bd497a8e57460ce22902c75a603e559",
-  "total": 645,
+  "exported_at": "2026-09-09T00:04:05.544Z",
+  "source": "reviewed-us-new-hampshire-cloud-promotion:4f29a8a0c7441c2910f1359da9afff791f13074bf63d8787fef92522ee826f52",
+  "total": 646,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -24502,6 +24502,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-minnesota",
       "id": "opp_us_71e97ea8c5d9d679a3bf"
+    },
+    {
+      "stable_id": "opp_us_e711078ed66650ebb576",
+      "event_name": "New Hampshire Sheep and Wool Festival 2027 Vendor Opportunity",
+      "organiser": "New Hampshire Sheep and Wool Festival 2027",
+      "source_url": "https://vendorsmap.com/events/23617",
+      "application_url": "https://vendorsmap.com/events/23617",
+      "location": "New Hampshire",
+      "locality": "New Hampshire",
+      "region": "New Hampshire",
+      "region_code": "NH",
+      "region_name": "New Hampshire",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NH",
+      "currency": "USD",
+      "postal_code": "03037",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-05-09",
+      "event_end": "2027-05-10",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nh-new-hampshire-sheep-and-wool-festival-2027-2027-05-09-8035aa52",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-hampshire",
+      "id": "opp_us_e711078ed66650ebb576"
     }
   ]
 };
