@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T04:53:53.571Z",
-  "source": "reviewed-us-arizona-cloud-promotion:07d71399cf4b6540d8813d0b56d8edeab087756fb016477ef90558eca56526dd",
-  "total": 669,
+  "exported_at": "2026-09-09T05:25:10.466Z",
+  "source": "reviewed-us-new-jersey-cloud-promotion:0114d9284ec6f02ab8ea18f793cde63f96b131ea84b18c22e930d2df40426f15",
+  "total": 670,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25402,6 +25402,46 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-arizona",
       "id": "opp_us_6725ed1ff0d98e5df43d"
+    },
+    {
+      "stable_id": "opp_us_2f624968114bf269194e",
+      "event_name": "NJIB's Guide to New Jersey Spring Food Festivals 2026 Vendor Opportunity",
+      "organiser": "NJIB's Guide to New Jersey Spring Food Festivals 2026",
+      "source_url": "https://newjerseyisntboring.com/new-jersey-spring-food-festivals-guide/",
+      "application_url": "https://newjerseyisntboring.com/new-jersey-spring-food-festivals-guide",
+      "location": "Woodbridge",
+      "locality": "Woodbridge",
+      "region": "New Jersey",
+      "region_code": "NJ",
+      "region_name": "New Jersey",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-NJ",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-11",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "food_vendor",
+        "craft_vendor",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "nj-njib-s-guide-to-new-jersey-spring-food-festivals-2026-2026-09-11-abaf01ac",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-new-jersey",
+      "id": "opp_us_2f624968114bf269194e"
     }
   ]
 };
