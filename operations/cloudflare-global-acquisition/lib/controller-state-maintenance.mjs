@@ -1,3 +1,5 @@
+import { shadowControllerDecision } from './controller-shadow-decision.mjs';
+
 function bearerToken(request) {
   const value = String(request.headers.get('authorization') || '');
   return value.startsWith('Bearer ') ? value.slice(7) : '';
@@ -41,6 +43,20 @@ export async function handleControllerStateMaintenance(request, env) {
 
   if (request.method === 'GET' && url.pathname === '/controller-state/snapshot') {
     return stub.fetch('https://controller-state.internal/snapshot');
+  }
+
+  if (request.method === 'GET' && url.pathname === '/controller-state/decision') {
+    const response = await stub.fetch('https://controller-state.internal/snapshot');
+    if (!response.ok) return response;
+    const text = await response.text();
+    const state = JSON.parse(text);
+    return Response.json({
+      ok: true,
+      authority: 'shadow',
+      state_sha256: response.headers.get('x-findpitches-state-sha256'),
+      state_version: Number(response.headers.get('x-findpitches-state-version') || 0),
+      decision: shadowControllerDecision(state)
+    });
   }
 
   if (request.method === 'PUT' && url.pathname === '/controller-state/snapshot') {
