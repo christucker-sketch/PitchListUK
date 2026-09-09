@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T05:28:05.450Z",
-  "source": "reviewed-us-virginia-cloud-promotion:6d7e90e759c5b3379249916464610d57d587caad2ab430c410c20647c4d5b33e",
-  "total": 671,
+  "exported_at": "2026-09-09T05:34:38.005Z",
+  "source": "reviewed-us-missouri-cloud-promotion:804efb2ad8fd7d58b3db56ff4e00ce6a6fd0892a5703ec63dbe94f14370a5707",
+  "total": 672,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25479,6 +25479,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-virginia",
       "id": "opp_us_52b81bc121f267140809"
+    },
+    {
+      "stable_id": "opp_us_bd49b7e46259eba4c2c1",
+      "event_name": "The Saint Charles Market Vendor Opportunity",
+      "organiser": "The Saint Charles Market",
+      "source_url": "https://www.stcharlescitymo.gov/1132/The-Saint-Charles-Market",
+      "application_url": "https://www.stcharlescitymo.gov/1132/The-Saint-Charles-Market",
+      "location": "St. Charles",
+      "locality": "St. Charles",
+      "region": "Missouri",
+      "region_code": "MO",
+      "region_name": "Missouri",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-MO",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-11-28",
+      "event_end": "2026-11-28",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "mo-the-saint-charles-market-2026-11-28-ee308799",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-missouri",
+      "id": "opp_us_bd49b7e46259eba4c2c1"
     }
   ]
 };
