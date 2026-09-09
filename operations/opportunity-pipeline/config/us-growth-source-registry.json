@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T00:26:37.581Z",
+  "updated_at": "2026-09-09T00:42:59.552Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -16236,6 +16236,24 @@
       "event_end": "2026-12-07",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery tx-san-antonio-2026-holiday-market: live first-party route attests San Antonio, TX, actionable vendor terms, and exact event date 2026-12-07."
+    },
+    {
+      "id": "tx-holiday-stroll-2026-12-06-4dc80d5c",
+      "name": "Holiday Stroll Vendor Opportunity",
+      "organiser": "Holiday Stroll",
+      "source_url": "https://downtownaustin.com/holidaystroll",
+      "application_url": "https://downtownaustin.com/holidaystroll",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-TX",
+      "region_code": "TX",
+      "locality": "Austin",
+      "recurring": true,
+      "multi_event": false,
+      "event_start": "2026-12-06",
+      "event_end": "2026-12-06",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery tx-austin-2026-holiday-market: live first-party route attests Austin, TX, actionable vendor terms, and exact event date 2026-12-06."
     },
     {
       "id": "tx-houston-day-trip-annual-events-2027-07-04-041444e2",
