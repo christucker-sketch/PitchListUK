@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T07:07:09.302Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:7ae18f8772b3f0efadb4112974bb47b1d771d91959a1a6ae66a1994bcad5f8a6",
-  "total": 675,
+  "exported_at": "2026-09-09T07:24:25.277Z",
+  "source": "reviewed-us-california-cloud-promotion:cc957a68b27770a8755376635660d699162994de5cf70556b8c67121202db3dc",
+  "total": 676,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -25630,6 +25630,43 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_6a4e79348297e9209d29"
+    },
+    {
+      "stable_id": "opp_us_0fb1b0a96b3364b5a4cd",
+      "event_name": "Long Beach Dragon Boat Festival Vendor Opportunity",
+      "organiser": "Long Beach Dragon Boat Festival",
+      "source_url": "https://www.lbdragonboat.com/",
+      "application_url": "https://www.lbdragonboat.com",
+      "location": "Long Beach",
+      "locality": "Long Beach",
+      "region": "California",
+      "region_code": "CA",
+      "region_name": "California",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-CA",
+      "currency": "USD",
+      "postal_code": "90803",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2027-07-30",
+      "event_end": "2027-07-31",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "general_vendor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ca-long-beach-dragon-boat-festival-2027-07-30-150e26b9",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-california",
+      "id": "opp_us_0fb1b0a96b3364b5a4cd"
     }
   ]
 };
