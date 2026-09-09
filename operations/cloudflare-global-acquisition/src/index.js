@@ -6,6 +6,7 @@ import { globalAcquisitionMarkets } from '../../../platform/acquisition/global-e
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
 import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflow.mjs';
+import { handleControllerStateMaintenance } from '../lib/controller-state-maintenance.mjs';
 import {
   assertGlobalControllerDispatchAllowed,
   globalControllerExecutionEnabled,
@@ -62,6 +63,11 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname.startsWith('/controller-state/')) {
+      return handleControllerStateMaintenance(request, env);
+    }
+
     if (request.method === 'GET' && url.pathname === '/health') {
       return Response.json({
         ok: true,
@@ -69,6 +75,7 @@ export default {
         execution_enabled: globalControllerExecutionEnabled(env),
         execution_level: globalControllerExecutionLevel(env),
         controller_state_store: Boolean(env.CONTROLLER_STATE),
+        controller_state_maintenance_enabled: Boolean(env.CONTROLLER_STATE_IMPORT_TOKEN),
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
           name: market.country_name,
