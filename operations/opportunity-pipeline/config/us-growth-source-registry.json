@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T10:47:19.570Z",
+  "updated_at": "2026-09-09T10:50:41.369Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -11100,6 +11100,24 @@
       "event_end": "2027-08-23",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery mi-sterling-heights-2027-arts-crafts: live first-party route attests Sterling Heights, MI, actionable vendor terms, and exact event date range 2027-08-22 to 2027-08-23."
+    },
+    {
+      "id": "mi-festival-fridays-2026-10-09-70f2ba36",
+      "name": "Festival Fridays Vendor Opportunity",
+      "organiser": "Festival Fridays",
+      "source_url": "https://www.foodtruckrallykz.com",
+      "application_url": "https://www.foodtruckrallykz.com",
+      "source_class": "market-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-MI",
+      "region_code": "MI",
+      "locality": "Kalamazoo",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-10-09",
+      "event_end": "2026-10-09",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery mi-kalamazoo-2026-food-truck: live first-party route attests Kalamazoo, MI, actionable vendor terms, and exact event date 2026-10-09."
     },
     {
       "id": "mi-grand-rapids-spooktacular-craft-vendor-market-hometown-vendor-market-2026-10-24-9889645e",
