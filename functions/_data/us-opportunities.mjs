@@ -1,7 +1,7 @@
 export const usOpportunitySnapshot = {
-  "exported_at": "2026-09-09T10:44:17.431Z",
-  "source": "reviewed-us-pennsylvania-cloud-promotion:c6cef518c6eb237d5f92f6c63324bfd64aca57bf811f60da9c1d6b671c09b787",
-  "total": 699,
+  "exported_at": "2026-09-09T10:48:27.157Z",
+  "source": "reviewed-us-georgia-cloud-promotion:c4de448724f9faf890147162cda9d3fb9f180df99d0281fc1eb52f6e7dc14086",
+  "total": 700,
   "rows": [
     {
       "stable_id": "opp_us_81ba2719ced4f3075983",
@@ -26532,6 +26532,44 @@ export const usOpportunitySnapshot = {
       "market_domain": "findpitches.com",
       "promotion_source": "reviewed-us-pennsylvania",
       "id": "opp_us_a566e33eb02497b1e817"
+    },
+    {
+      "stable_id": "opp_us_f522c2e26dbf0faaa553",
+      "event_name": "Events, Festivals, Concerts & More in Albany, Georgia Vendor Opportunity",
+      "organiser": "Events, Festivals, Concerts & More in Albany, Georgia",
+      "source_url": "https://www.eventeny.com/events/albany-ga/",
+      "application_url": "https://www.eventeny.com/events/albany-ga",
+      "location": "Albany",
+      "locality": "Albany",
+      "region": "Georgia",
+      "region_code": "GA",
+      "region_name": "Georgia",
+      "country": "United States",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "currency": "USD",
+      "postal_code": "",
+      "latitude": "",
+      "longitude": "",
+      "coordinate_source": "",
+      "coordinate_precision": "",
+      "coordinate_label": "",
+      "event_start": "2026-09-12",
+      "event_end": "2026-09-13",
+      "application_deadline": "",
+      "recurring": false,
+      "multi_event": false,
+      "opportunity_type": "event",
+      "vendor_categories": [
+        "food_truck",
+        "exhibitor"
+      ],
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "source_id": "ga-events-festivals-concerts-more-in-albany-georgia-2026-09-12-222b9cdb",
+      "market_domain": "findpitches.com",
+      "promotion_source": "reviewed-us-georgia",
+      "id": "opp_us_f522c2e26dbf0faaa553"
     }
   ]
 };
