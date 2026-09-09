@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T03:20:54.533Z",
+  "updated_at": "2026-09-09T03:24:45.295Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -5703,6 +5703,24 @@
       "organiser": "Savannah Tacos & Treats Festival 2026 (& CRAFT FAIR) - Eventeny",
       "source_url": "https://www.eventeny.com/events/savannah-tacos-treats-festival-2026-craft-fair-30856/?srsltid=AfmBOooLUZ_vQsWRh5XWcNoKq25ClNuOp6ZXf-o15VXslczIKRdfa2G_",
       "application_url": "https://www.eventeny.com/events/savannah-tacos-treats-festival-2026-craft-fair-30856/?srsltid=AfmBOooLUZ_vQsWRh5XWcNoKq25ClNuOp6ZXf-o15VXslczIKRdfa2G_",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-GA",
+      "region_code": "GA",
+      "locality": "Savannah",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2026-09-19",
+      "event_end": "2026-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ga-savannah-2026-food-truck: live first-party route attests Savannah, GA, actionable vendor terms, and exact event date 2026-09-19."
+    },
+    {
+      "id": "ga-sponsor-2026-09-19-abfafc23",
+      "name": "Sponsor Vendor Application (Small/Large Businesses, Brick & Mortar, Services, Marketing, Lead Gen) - Savannah Tacos & Treats Festival 2026 (& CRAFT FAIR) - Even",
+      "organiser": "Sponsor",
+      "source_url": "https://www.eventeny.com/events/vendor/?id=49702",
+      "application_url": "https://www.eventeny.com/events/vendor/?id=49702",
       "source_class": "festival-organisation",
       "country_code": "US",
       "jurisdiction": "US-GA",
