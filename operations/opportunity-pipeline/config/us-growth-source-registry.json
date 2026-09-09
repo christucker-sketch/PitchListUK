@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T05:52:42.787Z",
+  "updated_at": "2026-09-09T05:57:08.522Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -7083,6 +7083,24 @@
       "event_end": "2027-08-08",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery il-peoria-2027-festival: live first-party route attests Peoria, IL, actionable vendor terms, and exact event date 2027-08-08."
+    },
+    {
+      "id": "il-illinois-state-fair-2027-2027-08-13-a9059b38",
+      "name": "Illinois State Fair 2027 Vendor Opportunity",
+      "organiser": "Illinois State Fair 2027",
+      "source_url": "https://vendorsmap.com/events/28113",
+      "application_url": "https://vendorsmap.com/events/28113",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-IL",
+      "region_code": "IL",
+      "locality": "Springfield",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-08-13",
+      "event_end": "2027-08-23",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery il-springfield-2027-festival: live first-party route attests Springfield, IL, actionable vendor terms, and exact event date range 2027-08-13 to 2027-08-23."
     },
     {
       "id": "il-iu-board-craft-and-vendor-fair-illini-union-2027-04-11-981287d5",
