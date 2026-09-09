@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-09T05:33:07.889Z",
+  "updated_at": "2026-09-09T05:50:19.384Z",
   "sources": [
     {
       "id": "ak-kenai-peninsula-sport-rec-trade-show-2027-04-30-2e9c5bbd",
@@ -14183,6 +14183,24 @@
       "evidence": "Cloudflare discovery ny-albany-2026-food-truck: live first-party route attests Albany, NY, actionable vendor terms, and exact event date 2026-09-12."
     },
     {
+      "id": "ny-grandambbq-com-2027-09-17-c878646b",
+      "name": "Vendor Application &mdash; The Grand Am",
+      "organiser": "grandambbq.com",
+      "source_url": "https://www.grandambbq.com/vendor-application",
+      "application_url": "https://www.grandambbq.com/vendor-application",
+      "source_class": "government-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Albany",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-09-17",
+      "event_end": "2027-09-19",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-albany-2027-festival: live first-party route attests Albany, NY, actionable vendor terms, and exact event date range 2027-09-17 to 2027-09-19."
+    },
+    {
       "id": "ny-hamburg-farmers-market-2026-10-31-6a0e7412",
       "name": "Hamburg Farmers Market Vendor Opportunity",
       "organiser": "Hamburg Farmers Market",
@@ -14379,6 +14397,24 @@
       "event_end": "2027-08-27",
       "status": "approved-pilot",
       "evidence": "Cloudflare discovery ny-mount-vernon-2027-food-truck: live first-party route attests Mount Vernon, NY, actionable vendor terms, and exact event date 2027-08-27."
+    },
+    {
+      "id": "ny-new-york-state-craft-brewers-festival-albany-2027-01-30-7a1b3827",
+      "name": "New York State Craft Brewers Festival - Albany Vendor Opportunity",
+      "organiser": "New York State Craft Brewers Festival - Albany",
+      "source_url": "https://thinknydrinkny.com/albany",
+      "application_url": "https://thinknydrinkny.com/albany",
+      "source_class": "festival-organisation",
+      "country_code": "US",
+      "jurisdiction": "US-NY",
+      "region_code": "NY",
+      "locality": "Albany",
+      "recurring": false,
+      "multi_event": false,
+      "event_start": "2027-01-30",
+      "event_end": "2027-01-30",
+      "status": "approved-pilot",
+      "evidence": "Cloudflare discovery ny-albany-2027-food-truck: live first-party route attests Albany, NY, actionable vendor terms, and exact event date 2027-01-30."
     },
     {
       "id": "ny-new-york-state-food-festival-b95-5-2026-09-09-fa900381",
