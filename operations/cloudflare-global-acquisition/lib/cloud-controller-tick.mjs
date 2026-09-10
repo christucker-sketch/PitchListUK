@@ -5,10 +5,13 @@ import {
   resolveGlobalAcquisitionDispatch
 } from './dispatch.mjs';
 import {
+  classifyAcquisitionWorkerDeployment,
   inspectControllerPr,
+  inspectSourceMergeChecks,
   mergeControllerPr,
   validateSourcePrInspection
 } from './controller-github-client.mjs';
+import { getStateConfig } from '../../cloudflare-texas-acquisition/src/us-state-registry.js';
 
 function stateStub(env) {
   const id = env.CONTROLLER_STATE.idFromName('us-controller');
@@ -48,6 +51,10 @@ function discoveryWorkflowId(snapshot, decision) {
   return `usctl-v${snapshot.version}-${decision.state_code.toLowerCase()}-q${decision.query_offset}-l${decision.query_limit}`;
 }
 
+function acquisitionWorkflowId(snapshot, decision) {
+  return `usctl-v${snapshot.version}-${decision.state_code.toLowerCase()}-b${decision.batch_number}-acquire`;
+}
+
 function reservedDecision(state) {
   const intent = state?.cloud_controller_intent;
   if (!intent || intent.phase !== 'reserved') return null;
@@ -62,6 +69,18 @@ function reservedDecision(state) {
       plan_size: intent.plan_size,
       next_priority_cursor: intent.next_priority_cursor,
       workflow_id: intent.workflow_id
+    };
+  }
+  if (intent.action === 'trigger_acquisition') {
+    return {
+      action: 'trigger_reserved_acquisition',
+      mode: 'acquire',
+      state_code: intent.state_code,
+      state_name: intent.state_name,
+      source_ids: [...(intent.source_ids || [])],
+      batch_number: Number(intent.batch_number || 1),
+      workflow_id: intent.workflow_id,
+      source_merge_sha: intent.source_merge_sha || null
     };
   }
   if (intent.action === 'merge_source_pr') {
@@ -82,13 +101,20 @@ function decisionForState(state) {
   return reservedDecision(state) || shadowControllerDecision(state);
 }
 
+function executionMode(decision) {
+  if (decision?.mode) return decision.mode;
+  return ['trigger_acquisition_or_advance_batch', 'trigger_reserved_acquisition'].includes(decision?.action) ? 'acquire' : 'discover';
+}
+
 async function assertExecutionAllowed(env, decision) {
   const dispatch = resolveGlobalAcquisitionDispatch({
     country: 'US',
-    mode: decision.mode || 'discover',
+    mode: executionMode(decision),
     state_code: decision.state_code,
     query_offset: decision.query_offset,
     query_limit: decision.query_limit,
+    source_ids: Array.isArray(decision.source_ids) ? [...decision.source_ids] : undefined,
+    batch_number: decision.batch_number,
     trigger: 'cloud-controller'
   });
   assertGlobalControllerDispatchAllowed(env, dispatch);
@@ -99,19 +125,11 @@ async function assertExecutionAllowed(env, decision) {
 async function reserveDiscovery(stub, snapshot, decision) {
   const nextState = structuredClone(snapshot.state);
   nextState.cloud_controller_intent = {
-    phase: 'reserved',
-    action: 'trigger_discovery',
-    workflow_id: discoveryWorkflowId(snapshot, decision),
-    mode: 'discover',
-    state_code: decision.state_code,
-    state_name: decision.state_name,
-    query_offset: decision.query_offset,
-    query_limit: decision.query_limit,
-    plan_size: decision.plan_size,
-    next_priority_cursor: decision.next_priority_cursor,
-    reserved_from_version: snapshot.version,
-    reserved_from_sha256: snapshot.sha256,
-    reserved_at: new Date().toISOString()
+    phase: 'reserved', action: 'trigger_discovery', workflow_id: discoveryWorkflowId(snapshot, decision),
+    mode: 'discover', state_code: decision.state_code, state_name: decision.state_name,
+    query_offset: decision.query_offset, query_limit: decision.query_limit, plan_size: decision.plan_size,
+    next_priority_cursor: decision.next_priority_cursor, reserved_from_version: snapshot.version,
+    reserved_from_sha256: snapshot.sha256, reserved_at: new Date().toISOString()
   };
   nextState.updated_at = new Date().toISOString();
   const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
@@ -125,7 +143,6 @@ async function ensureReservedDiscoveryWorkflow(env, stub, snapshot, decision) {
   await env.GLOBAL_ACQUISITION.createBatch([{ id: workflowId, params: dispatch.payload }]);
   const instance = await env.GLOBAL_ACQUISITION.get(workflowId);
   if (!instance || instance.id !== workflowId) throw new Error('reserved_discovery_workflow_lookup_failed');
-
   const nextState = structuredClone(snapshot.state);
   const intent = nextState.cloud_controller_intent;
   if (!intent || intent.workflow_id !== workflowId || intent.phase !== 'reserved') throw new Error('reserved_discovery_intent_changed');
@@ -180,7 +197,6 @@ async function inspectActiveWorkflow(env, stub, snapshot, decision) {
   const result = normalizeWorkflowOutput(details.output);
   if (result.state_code !== active.state_code) throw new Error('active_workflow_result_state_mismatch');
   if (!Number.isInteger(Number(result.next_query_offset))) throw new Error('active_workflow_result_next_query_offset_invalid');
-
   const nextState = structuredClone(snapshot.state);
   const current = nextState.current;
   if (!current || current.state_code !== active.state_code) throw new Error('active_workflow_current_checkpoint_mismatch');
@@ -208,37 +224,21 @@ async function reserveSourcePrMerge(env, stub, snapshot, decision) {
   const validated = validateSourcePrInspection(snapshot.state, pr);
   const nextState = structuredClone(snapshot.state);
   nextState.cloud_controller_intent = {
-    phase: 'reserved',
-    action: 'merge_source_pr',
-    pr_number: validated.pr_number,
-    state_code: validated.state_code,
-    base_sha: validated.base_sha,
-    head_sha: validated.head_sha,
-    source_ids: [...validated.source_ids],
-    source_count: validated.source_count,
-    reserved_from_version: snapshot.version,
-    reserved_from_sha256: snapshot.sha256,
-    reserved_at: new Date().toISOString()
+    phase: 'reserved', action: 'merge_source_pr', pr_number: validated.pr_number, state_code: validated.state_code,
+    base_sha: validated.base_sha, head_sha: validated.head_sha, source_ids: [...validated.source_ids],
+    source_count: validated.source_count, reserved_from_version: snapshot.version,
+    reserved_from_sha256: snapshot.sha256, reserved_at: new Date().toISOString()
   };
   nextState.updated_at = new Date().toISOString();
   const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
-  return {
-    ok: true, executed: true, phase: 'source_pr_merge_reserved', pr_number: validated.pr_number,
-    state_version: checkpoint.version, state_sha256: checkpoint.sha256, source_ids: validated.source_ids, decision
-  };
+  return { ok: true, executed: true, phase: 'source_pr_merge_reserved', pr_number: validated.pr_number, state_version: checkpoint.version, state_sha256: checkpoint.sha256, source_ids: validated.source_ids, decision };
 }
 
 async function mergeReservedSourcePr(env, stub, snapshot, decision) {
   const intent = snapshot.state?.cloud_controller_intent;
   if (!intent || intent.phase !== 'reserved' || intent.action !== 'merge_source_pr') throw new Error('reserved_source_pr_intent_missing');
-  if (Number(intent.pr_number) !== Number(decision.pr_number) || intent.base_sha !== decision.base_sha || intent.head_sha !== decision.head_sha) {
-    throw new Error('reserved_source_pr_intent_changed');
-  }
-  const merged = await mergeControllerPr(env, {
-    pr_number: intent.pr_number,
-    base_sha: intent.base_sha,
-    head_sha: intent.head_sha
-  });
+  if (Number(intent.pr_number) !== Number(decision.pr_number) || intent.base_sha !== decision.base_sha || intent.head_sha !== decision.head_sha) throw new Error('reserved_source_pr_intent_changed');
+  const merged = await mergeControllerPr(env, { pr_number: intent.pr_number, base_sha: intent.base_sha, head_sha: intent.head_sha });
   const nextState = structuredClone(snapshot.state);
   nextState.pending_source_ids = [...(intent.source_ids || [])].sort();
   nextState.acquisition_batch = 1;
@@ -246,12 +246,75 @@ async function mergeReservedSourcePr(env, stub, snapshot, decision) {
   delete nextState.cloud_controller_intent;
   nextState.updated_at = new Date().toISOString();
   const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
-  return {
-    ok: true, executed: true, phase: 'source_pr_merged', pr_number: Number(intent.pr_number),
-    merge_sha: merged.merge_sha, merge_reused: merged.reused === true,
-    state_version: checkpoint.version, state_sha256: checkpoint.sha256,
-    next_status: nextState.status, source_ids: nextState.pending_source_ids, decision
+  return { ok: true, executed: true, phase: 'source_pr_merged', pr_number: Number(intent.pr_number), merge_sha: merged.merge_sha, merge_reused: merged.reused === true, state_version: checkpoint.version, state_sha256: checkpoint.sha256, next_status: nextState.status, source_ids: nextState.pending_source_ids, decision };
+}
+
+export function acquisitionSourceIdBatches(state) {
+  const code = String(state?.current?.state_code || '').toUpperCase();
+  const sourceIds = Array.isArray(state?.pending_source_ids) ? state.pending_source_ids.map(String) : [];
+  if (!code || sourceIds.length < 1) return [];
+  const scoped = getStateConfig(code);
+  const maximum = Math.max(1, Number(scoped.workflow_batch_max_sources || 4));
+  const batches = [];
+  for (let index = 0; index < sourceIds.length; index += maximum) batches.push(sourceIds.slice(index, index + maximum));
+  return batches;
+}
+
+async function reserveAcquisition(env, stub, snapshot, decision) {
+  const batches = acquisitionSourceIdBatches(snapshot.state);
+  const batchNumber = Number(snapshot.state.acquisition_batch || 1);
+  if (batchNumber > batches.length) {
+    const nextState = structuredClone(snapshot.state);
+    nextState.pending_source_ids = [];
+    nextState.acquisition_batch = 1;
+    nextState.current = null;
+    nextState.status = 'ready';
+    nextState.updated_at = new Date().toISOString();
+    const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+    return { ok: true, executed: true, phase: 'acquisition_batches_complete', state_version: checkpoint.version, state_sha256: checkpoint.sha256, next_status: 'ready', decision };
+  }
+  if (!Number.isInteger(batchNumber) || batchNumber < 1 || !batches[batchNumber - 1]?.length) throw new Error('acquisition_batch_checkpoint_invalid');
+  const prNumber = Number(snapshot.state?.current?.source_pr);
+  if (!Number.isInteger(prNumber) || prNumber <= 0) throw new Error('acquisition_source_pr_checkpoint_missing');
+  const deployment = classifyAcquisitionWorkerDeployment(await inspectSourceMergeChecks(env, prNumber));
+  if (!deployment.ready) {
+    return { ok: true, executed: false, phase: 'waiting_for_acquisition_worker_deploy', waiting_for: deployment.waiting_for, merge_sha: deployment.merge_sha, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
+  }
+  const stateCode = String(snapshot.state.current.state_code || '').toUpperCase();
+  const scoped = getStateConfig(stateCode);
+  const sourceIds = [...batches[batchNumber - 1]];
+  const acquisitionDecision = { ...decision, mode: 'acquire', state_code: stateCode, state_name: scoped.name, batch_number: batchNumber, source_ids: sourceIds };
+  const nextState = structuredClone(snapshot.state);
+  nextState.cloud_controller_intent = {
+    phase: 'reserved', action: 'trigger_acquisition', workflow_id: acquisitionWorkflowId(snapshot, acquisitionDecision),
+    mode: 'acquire', state_code: stateCode, state_name: scoped.name, batch_number: batchNumber,
+    source_ids: sourceIds, source_merge_sha: deployment.merge_sha,
+    reserved_from_version: snapshot.version, reserved_from_sha256: snapshot.sha256, reserved_at: new Date().toISOString()
   };
+  nextState.updated_at = new Date().toISOString();
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+  return { ok: true, executed: true, phase: 'acquisition_reserved', state_version: checkpoint.version, state_sha256: checkpoint.sha256, workflow_id: nextState.cloud_controller_intent.workflow_id, batch_number: batchNumber, source_ids: sourceIds, source_merge_sha: deployment.merge_sha, decision };
+}
+
+async function ensureReservedAcquisitionWorkflow(env, stub, snapshot, decision) {
+  const dispatch = await assertExecutionAllowed(env, decision);
+  const workflowId = decision.workflow_id;
+  if (!workflowId) throw new Error('reserved_acquisition_workflow_id_missing');
+  await env.GLOBAL_ACQUISITION.createBatch([{ id: workflowId, params: dispatch.payload }]);
+  const instance = await env.GLOBAL_ACQUISITION.get(workflowId);
+  if (!instance || instance.id !== workflowId) throw new Error('reserved_acquisition_workflow_lookup_failed');
+  const nextState = structuredClone(snapshot.state);
+  const intent = nextState.cloud_controller_intent;
+  if (!intent || intent.action !== 'trigger_acquisition' || intent.phase !== 'reserved' || intent.workflow_id !== workflowId) throw new Error('reserved_acquisition_intent_changed');
+  nextState.active_instance = {
+    id: workflowId, mode: 'acquire', state_code: intent.state_code, state_name: intent.state_name,
+    worker_version: nextState.worker_version || '', worker_sha: nextState.worker_sha || '', started_at: new Date().toISOString()
+  };
+  nextState.status = 'running_cloudflare_acquisition';
+  delete nextState.cloud_controller_intent;
+  nextState.updated_at = new Date().toISOString();
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+  return { ok: true, executed: true, phase: 'acquisition_workflow_bound', state_version: checkpoint.version, state_sha256: checkpoint.sha256, workflow_id: workflowId, batch_number: intent.batch_number, source_ids: [...intent.source_ids], source_merge_sha: intent.source_merge_sha, decision };
 }
 
 export async function runCloudControllerTick(env, options = {}) {
@@ -267,5 +330,7 @@ export async function runCloudControllerTick(env, options = {}) {
   if (decision.action === 'inspect_active_workflow') return inspectActiveWorkflow(env, stub, snapshot, decision);
   if (decision.action === 'review_source_pr') return reserveSourcePrMerge(env, stub, snapshot, decision);
   if (decision.action === 'merge_reserved_source_pr') return mergeReservedSourcePr(env, stub, snapshot, decision);
+  if (decision.action === 'trigger_acquisition_or_advance_batch') return reserveAcquisition(env, stub, snapshot, decision);
+  if (decision.action === 'trigger_reserved_acquisition') return ensureReservedAcquisitionWorkflow(env, stub, snapshot, decision);
   throw new Error(`cloud_controller_action_not_implemented:${decision.action}`);
 }
