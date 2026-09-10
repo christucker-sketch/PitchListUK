@@ -155,6 +155,98 @@ async function ensureReservedDiscoveryWorkflow(env, stub, snapshot, decision) {
   };
 }
 
+function normalizeWorkflowOutput(value) {
+  let output = value;
+  for (let depth = 0; depth < 2 && typeof output === 'string'; depth += 1) {
+    try { output = JSON.parse(output); }
+    catch { throw new Error('active_workflow_output_invalid_json'); }
+  }
+  if (!output || typeof output !== 'object' || Array.isArray(output)) throw new Error('active_workflow_output_invalid');
+  return output;
+}
+
+function checkpointedResult(state, active, result) {
+  const existing = Array.isArray(state.results)
+    ? state.results.find(item => item?.instance_id === active.id)
+    : null;
+  if (existing) return existing;
+  const completed = {
+    ...result,
+    instance_id: active.id,
+    worker_version: active.worker_version,
+    worker_sha: active.worker_sha
+  };
+  state.results = Array.isArray(state.results) ? state.results : [];
+  state.results.push(completed);
+  return completed;
+}
+
+async function inspectActiveWorkflow(env, stub, snapshot, decision) {
+  const active = snapshot.state.active_instance;
+  if (!active?.id || decision.instance_id !== active.id) throw new Error('active_workflow_checkpoint_mismatch');
+  const instance = await env.GLOBAL_ACQUISITION.get(active.id);
+  if (!instance || instance.id !== active.id || typeof instance.status !== 'function') throw new Error('active_workflow_lookup_failed');
+  const details = await instance.status();
+  const status = String(details?.status || 'unknown');
+
+  if (['queued', 'running', 'waiting', 'waitingForPause'].includes(status)) {
+    return {
+      ok: true,
+      executed: false,
+      phase: 'workflow_observed',
+      workflow_id: active.id,
+      workflow_status: status,
+      state_version: snapshot.version,
+      state_sha256: snapshot.sha256,
+      decision
+    };
+  }
+
+  if (status !== 'complete') {
+    const message = details?.error?.message ? `:${String(details.error.message)}` : '';
+    throw new Error(`active_workflow_terminal_${status}${message}`);
+  }
+
+  if (active.mode !== 'discover') throw new Error(`active_workflow_completion_not_implemented:${active.mode || 'unknown'}`);
+  const result = normalizeWorkflowOutput(details.output);
+  if (result.state_code !== active.state_code) throw new Error('active_workflow_result_state_mismatch');
+  if (!Number.isInteger(Number(result.next_query_offset))) throw new Error('active_workflow_result_next_query_offset_invalid');
+
+  const nextState = structuredClone(snapshot.state);
+  const current = nextState.current;
+  if (!current || current.state_code !== active.state_code) throw new Error('active_workflow_current_checkpoint_mismatch');
+  const completed = checkpointedResult(nextState, active, result);
+  nextState.active_instance = null;
+  nextState.query_offsets = { ...(nextState.query_offsets || {}), [active.state_code]: Number(completed.next_query_offset) };
+  nextState.priority_cursor = Number(current.next_priority_cursor ?? nextState.priority_cursor ?? 0);
+
+  const sourceCount = Number(completed.publication?.source_count || completed.publication?.source_ids?.length || 0);
+  if (sourceCount > 0) {
+    const prNumber = Number(completed.publication?.pr_number);
+    if (!Number.isInteger(prNumber) || prNumber <= 0) throw new Error('active_workflow_source_pr_missing');
+    nextState.current = { ...current, discovery_instance_id: active.id, source_pr: prNumber };
+    nextState.status = 'reviewing_source_pr';
+  } else {
+    nextState.current = null;
+    nextState.status = 'ready';
+  }
+  nextState.updated_at = new Date().toISOString();
+
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+  return {
+    ok: true,
+    executed: true,
+    phase: 'workflow_completed',
+    workflow_id: active.id,
+    workflow_status: status,
+    state_version: checkpoint.version,
+    state_sha256: checkpoint.sha256,
+    next_status: nextState.status,
+    source_count: sourceCount,
+    decision
+  };
+}
+
 export async function runCloudControllerTick(env, options = {}) {
   const execute = options.execute === true;
   const stub = stateStub(env);
@@ -173,11 +265,11 @@ export async function runCloudControllerTick(env, options = {}) {
   }
 
   if (snapshot.authority !== 'authoritative') throw new Error(`controller_state_not_authoritative:${snapshot.authority}`);
-
   await assertExecutionAllowed(env, decision);
 
   if (decision.action === 'trigger_discovery') return reserveDiscovery(stub, snapshot, decision);
   if (decision.action === 'trigger_reserved_discovery') return ensureReservedDiscoveryWorkflow(env, stub, snapshot, decision);
+  if (decision.action === 'inspect_active_workflow') return inspectActiveWorkflow(env, stub, snapshot, decision);
 
   throw new Error(`cloud_controller_action_not_implemented:${decision.action}`);
 }
