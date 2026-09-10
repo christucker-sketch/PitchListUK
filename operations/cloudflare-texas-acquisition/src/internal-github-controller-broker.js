@@ -1,7 +1,10 @@
+import { proveUsSourceRegistryAdditionsOnly } from './us-source-registry-diff-proof.js';
+
 const INTERNAL_HOST = 'findpitches-github-controller.internal';
 const INTERNAL_PATH = '/controller-pr';
 const INTERNAL_MARKER = 'findpitches-controller-service-v1';
 const ALLOWED_HEAD = /^(?:sources\/cloud-us-|data\/cloud-us-)[a-z0-9-]+$/i;
+const SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -45,6 +48,43 @@ async function githubJson(fetchImpl, url, options) {
   return body;
 }
 
+function decodeBase64Utf8(content) {
+  const binary = atob(String(content || '').replace(/\s+/g, ''));
+  const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+async function fetchJsonFileAtRef(fetchImpl, repo, authHeaders, path, ref) {
+  const metadata = await githubJson(
+    fetchImpl,
+    `https://api.github.com/repos/${repo}/contents/${path}?ref=${encodeURIComponent(ref)}`,
+    { headers: authHeaders }
+  );
+  let encoded = String(metadata?.content || '').trim();
+  if (!encoded) {
+    const gitUrl = String(metadata?.git_url || '');
+    if (!gitUrl.startsWith(`https://api.github.com/repos/${repo}/git/blobs/`)) throw new Error('controller_github_registry_blob_url_invalid');
+    const blob = await githubJson(fetchImpl, gitUrl, { headers: authHeaders });
+    encoded = String(blob?.content || '').trim();
+    if (String(blob?.encoding || '').toLowerCase() !== 'base64') throw new Error('controller_github_registry_blob_encoding_invalid');
+  } else if (String(metadata?.encoding || '').toLowerCase() !== 'base64') {
+    throw new Error('controller_github_registry_content_encoding_invalid');
+  }
+  if (!encoded) throw new Error('controller_github_registry_content_missing');
+  try { return JSON.parse(decodeBase64Utf8(encoded)); }
+  catch { throw new Error('controller_github_registry_json_invalid'); }
+}
+
+async function sourceRegistryProof(fetchImpl, repo, authHeaders, inspection) {
+  if (!String(inspection.head_ref || '').startsWith('sources/cloud-us-')) return null;
+  if (inspection.files.length !== 1 || inspection.files[0]?.path !== SOURCE_REGISTRY_PATH) return null;
+  const [baseRegistry, headRegistry] = await Promise.all([
+    fetchJsonFileAtRef(fetchImpl, repo, authHeaders, SOURCE_REGISTRY_PATH, inspection.base_sha),
+    fetchJsonFileAtRef(fetchImpl, repo, authHeaders, SOURCE_REGISTRY_PATH, inspection.head_sha)
+  ]);
+  return proveUsSourceRegistryAdditionsOnly(baseRegistry, headRegistry);
+}
+
 async function inspectPr(fetchImpl, repo, authHeaders, prNumber) {
   const baseUrl = `https://api.github.com/repos/${repo}`;
   const pr = await githubJson(fetchImpl, `${baseUrl}/pulls/${prNumber}`, { headers: authHeaders });
@@ -58,7 +98,7 @@ async function inspectPr(fetchImpl, repo, authHeaders, prNumber) {
     githubJson(fetchImpl, `${baseUrl}/commits/${pr.head.sha}/check-runs?per_page=100`, { headers: authHeaders })
   ]);
 
-  return {
+  const inspection = {
     number: pr.number,
     state: String(pr.state || '').toUpperCase(),
     merged: Boolean(pr.merged),
@@ -74,6 +114,8 @@ async function inspectPr(fetchImpl, repo, authHeaders, prNumber) {
     commits: Array.isArray(commits) ? commits.map(commit => ({ sha: commit.sha, parents: Array.isArray(commit.parents) ? commit.parents.map(parent => parent.sha) : [] })) : [],
     check_runs: Array.isArray(checkRuns?.check_runs) ? checkRuns.check_runs.map(run => ({ name: run.name, status: run.status, conclusion: run.conclusion })) : []
   };
+  inspection.source_registry_proof = await sourceRegistryProof(fetchImpl, repo, authHeaders, inspection);
+  return inspection;
 }
 
 export async function handleInternalGithubControllerRequest(request, env, options = {}) {
