@@ -30,7 +30,7 @@ function readyState() {
     cloud_controller_cutover_preflight: {
       status: 'ready',
       acquisition_replay_count: 1,
-      acquisition_replay_keys: ['acquire:TX:2:src_a'],
+      acquisition_replay_keys: ['acquire:TX:2'],
       proven_source_prs: [1656],
       completed_at: '2026-09-10T18:00:00.000Z'
     }
