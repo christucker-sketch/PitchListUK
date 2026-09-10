@@ -15,11 +15,18 @@ function assertNoActiveWork(state) {
   if (Array.isArray(state?.pending_source_ids) && state.pending_source_ids.length) throw new Error('controller_terminal_pending_sources_present');
 }
 
+function assertNoDeferredWork(state) {
+  if (pendingDeferred(state).length) throw new Error('controller_complete_deferred_replay_pending');
+  if (genuineBlockers(state).length) throw new Error('controller_complete_blockers_present');
+  if (state?.deferred_replay_inflight) throw new Error('controller_complete_deferred_replay_inflight');
+}
+
 export function markCloudControllerSweepComplete(state, now = new Date()) {
   if (!state || state.status !== 'ready') throw new Error('controller_sweep_complete_state_invalid');
   assertNoActiveWork(state);
   if (pendingDeferred(state).length) throw new Error('controller_sweep_complete_deferred_replay_pending');
   if (genuineBlockers(state).length) throw new Error('controller_sweep_complete_blockers_present');
+  if (state?.deferred_replay_inflight) throw new Error('controller_sweep_complete_deferred_replay_inflight');
   const order = Array.isArray(state.priority_order) ? state.priority_order : [];
   if (!order.length) throw new Error('controller_sweep_complete_priority_order_missing');
   for (const code of order) {
@@ -34,13 +41,28 @@ export function markCloudControllerSweepComplete(state, now = new Date()) {
 }
 
 export function completeCloudController(state, now = new Date()) {
-  if (!state || !['sweep_complete', 'complete'].includes(state.status)) throw new Error('controller_complete_state_invalid');
-  assertNoActiveWork(state);
-  if (pendingDeferred(state).length) throw new Error('controller_complete_deferred_replay_pending');
-  if (genuineBlockers(state).length) throw new Error('controller_complete_blockers_present');
+  if (!state) throw new Error('controller_complete_state_invalid');
+  assertNoDeferredWork(state);
+  const alreadyComplete = state.status === 'complete';
+  const cleanSweep = state.status === 'sweep_complete';
+  const targetReached = Number.isFinite(Number(state.target_count)) && Number(state.snapshot_count) >= Number(state.target_count);
+  if (!alreadyComplete && !cleanSweep && !targetReached) throw new Error('controller_complete_state_invalid');
+
+  if (alreadyComplete || cleanSweep) {
+    assertNoActiveWork(state);
+  } else {
+    if (state.active_instance) throw new Error('controller_complete_active_workflow_present');
+    if (state.cloud_controller_intent) throw new Error('controller_complete_reserved_intent_present');
+  }
+
   const nextState = structuredClone(state);
   nextState.status = 'complete';
+  nextState.current = null;
+  nextState.active_instance = null;
+  nextState.pending_source_ids = [];
+  nextState.acquisition_batch = 1;
   nextState.completed_at = nextState.completed_at || now.toISOString();
+  nextState.completion_reason = nextState.completion_reason || (targetReached ? 'target_reached' : 'sweep_exhausted');
   nextState.updated_at = now.toISOString();
   return nextState;
 }
