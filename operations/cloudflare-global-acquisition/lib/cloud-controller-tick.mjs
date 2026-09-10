@@ -1,5 +1,6 @@
 import { shadowControllerDecision } from './controller-shadow-decision.mjs';
 import { assertAuthoritativeUsMutationAllowed } from './controller-authority-guard.mjs';
+import { applyAcquisitionWorkflowCompletion } from './controller-acquisition-completion.mjs';
 import {
   assertGlobalControllerDispatchAllowed,
   resolveGlobalAcquisitionDispatch
@@ -193,9 +194,21 @@ async function inspectActiveWorkflow(env, stub, snapshot, decision) {
     const message = details?.error?.message ? `:${String(details.error.message)}` : '';
     throw new Error(`active_workflow_terminal_${status}${message}`);
   }
-  if (active.mode !== 'discover') throw new Error(`active_workflow_completion_not_implemented:${active.mode || 'unknown'}`);
   const result = normalizeWorkflowOutput(details.output);
   if (result.state_code !== active.state_code) throw new Error('active_workflow_result_state_mismatch');
+
+  if (active.mode === 'acquire') {
+    const transition = applyAcquisitionWorkflowCompletion(snapshot.state, active, result);
+    const checkpoint = await checkpointCloudControllerState(stub, snapshot, transition.next_state);
+    return {
+      ok: true, executed: true, phase: 'acquisition_workflow_completed', workflow_id: active.id,
+      workflow_status: status, state_version: checkpoint.version, state_sha256: checkpoint.sha256,
+      next_status: transition.next_status, additions: transition.additions, before: transition.before,
+      after: transition.after, data_pr: transition.data_pr, next_batch: transition.next_batch, decision
+    };
+  }
+
+  if (active.mode !== 'discover') throw new Error(`active_workflow_completion_not_implemented:${active.mode || 'unknown'}`);
   if (!Number.isInteger(Number(result.next_query_offset))) throw new Error('active_workflow_result_next_query_offset_invalid');
   const nextState = structuredClone(snapshot.state);
   const current = nextState.current;
