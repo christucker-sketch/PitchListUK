@@ -1,0 +1,250 @@
+name: US controller manual cutover and rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose cutover or rollback'
+        required: true
+        type: choice
+        options:
+          - cutover
+          - rollback
+      confirmation:
+        description: 'Cutover: CUTOVER_US_CONTROLLER_FROM_HAL_TO_CLOUDFLARE | Rollback: ROLLBACK_US_CONTROLLER_TO_SHADOW'
+        required: true
+        type: string
+      hal_quiesced_confirmation:
+        description: 'Cutover only: HAL_US_GROWTH_STOPPED_AND_DISABLED'
+        required: false
+        type: string
+      hal_final_snapshot_sha256:
+        description: 'Cutover only: SHA-256 of the final stopped Hal controller-state snapshot'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-us-controller-manual-cutover
+  cancel-in-progress: false
+
+jobs:
+  operate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
+      WORKFLOW_NAME: findpitches-global-acquisition-shadow
+      HEALTH_URL: https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health
+      EXPECTED_V14_VERSION: '14'
+      EXPECTED_V14_SHA: 23848852c67dd091513d8c26af75e8e7bd55a21d13cfe05739396cd46f2b4dec
+      CUTOVER_CONFIRMATION: CUTOVER_US_CONTROLLER_FROM_HAL_TO_CLOUDFLARE
+      HAL_CONFIRMATION: HAL_US_GROWTH_STOPPED_AND_DISABLED
+      ROLLBACK_CONFIRMATION: ROLLBACK_US_CONTROLLER_TO_SHADOW
+    steps:
+      - name: Check out exact main operator commit
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate manual operator intent
+        shell: bash
+        env:
+          ACTION: ${{ inputs.action }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          HAL_QUIESCED: ${{ inputs.hal_quiesced_confirmation }}
+          HAL_FINAL_SHA: ${{ inputs.hal_final_snapshot_sha256 }}
+        run: |
+          set -euo pipefail
+          case "$ACTION" in
+            cutover)
+              [[ "$CONFIRMATION" == "$CUTOVER_CONFIRMATION" ]] || { echo 'Exact cutover confirmation is required.' >&2; exit 1; }
+              [[ "$HAL_QUIESCED" == "$HAL_CONFIRMATION" ]] || { echo 'Hal must be explicitly confirmed stopped and disabled.' >&2; exit 1; }
+              [[ "$HAL_FINAL_SHA" == "$EXPECTED_V14_SHA" ]] || {
+                echo 'Final Hal snapshot does not match preflight-ready v14. Do not cut over; import and preflight the newer Hal snapshot first.' >&2
+                exit 1
+              }
+              ;;
+            rollback)
+              [[ "$CONFIRMATION" == "$ROLLBACK_CONFIRMATION" ]] || { echo 'Exact rollback confirmation is required.' >&2; exit 1; }
+              ;;
+            *) echo "Unsupported action: $ACTION" >&2; exit 1 ;;
+          esac
+
+      - name: Restore safe Worker policy before rollback
+        if: ${{ inputs.action == 'rollback' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.127.1 deploy --config "$CONFIG" \
+            --var GITHUB_REPO:christucker-sketch/PitchListUK \
+            --var GLOBAL_ACQUISITION_EXECUTION_ENABLED:true \
+            --var GLOBAL_ACQUISITION_EXECUTION_LEVEL:read_only \
+            --var GLOBAL_CONTROLLER_CUTOVER_ENABLED:false
+
+          ready=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$HEALTH_URL" || true)"
+            if jq -e '.ok == true and .execution_enabled == true and .execution_level == "read_only" and .us_controller_cutover_enabled == false and .manual_us_rollback_operator == true' <<<"$body" >/dev/null 2>&1; then
+              printf '%s\n' "$body" > us-controller-operator-safe-health.json
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Safe rollback Worker policy did not become observable.' >&2; exit 1; }
+
+      - name: Prove exact v14 candidate and safe policy before cutover
+        if: ${{ inputs.action == 'cutover' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$HEALTH_URL" || true)"
+            if jq -e '.ok == true and .execution_enabled == true and .execution_level == "read_only" and .us_controller_cutover_enabled == false and .manual_us_cutover_operator == true' <<<"$body" >/dev/null 2>&1; then
+              printf '%s\n' "$body" > us-controller-operator-safe-health.json
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Manual cutover operator is not observable under safe policy.' >&2; exit 1; }
+
+      - name: Promote exact v14 authority while execution remains read-only
+        if: ${{ inputs.action == 'cutover' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="us-controller-cutover-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          params="$(jq -cn \
+            --arg mode 'operator_promote_exact_v14' \
+            --arg confirmation "$CUTOVER_CONFIRMATION" \
+            --arg hal "$HAL_CONFIRMATION" \
+            '{country:"US",mode:$mode,confirmation:$confirmation,hal_quiesced_confirmation:$hal}')"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" || true)"
+            status="$(jq -r '.result.status // empty' <<<"$body" 2>/dev/null || true)"
+            if [[ "$status" == 'complete' ]]; then
+              printf '%s\n' "$body" > us-controller-cutover-authority-result.json
+              jq -e --argjson version "$EXPECTED_V14_VERSION" --arg sha "$EXPECTED_V14_SHA" '
+                .result.output.ok == true and
+                .result.output.mode == "operator_promote_exact_v14" and
+                .result.output.authority == "authoritative" and
+                .result.output.state_version == $version and
+                .result.output.state_sha256 == $sha and
+                .result.output.execution_level == "read_only" and
+                .result.output.cutover_enabled == false
+              ' <<<"$body" >/dev/null
+              completed=true
+              break
+            fi
+            if [[ "$status" == 'errored' || "$status" == 'terminated' ]]; then
+              printf '%s\n' "$body" > us-controller-cutover-authority-result.json
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          [[ "$completed" == 'true' ]] || { echo 'Exact v14 authority promotion timed out.' >&2; exit 1; }
+
+      - name: Enable Cloudflare production controller after authority promotion
+        if: ${{ inputs.action == 'cutover' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.127.1 deploy --config "$CONFIG" \
+            --var GITHUB_REPO:christucker-sketch/PitchListUK \
+            --var GLOBAL_ACQUISITION_EXECUTION_ENABLED:true \
+            --var GLOBAL_ACQUISITION_EXECUTION_LEVEL:production \
+            --var GLOBAL_CONTROLLER_CUTOVER_ENABLED:true
+
+          ready=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$HEALTH_URL" || true)"
+            if jq -e '.ok == true and .execution_enabled == true and .execution_level == "production" and .us_controller_cutover_enabled == true and .manual_us_cutover_operator == true and .manual_us_rollback_operator == true' <<<"$body" >/dev/null 2>&1; then
+              printf '%s\n' "$body" > us-controller-cutover-production-health.json
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Production cutover policy did not become observable; run rollback immediately.' >&2; exit 1; }
+
+      - name: Demote current authority after rollback policy is safe
+        if: ${{ inputs.action == 'rollback' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="us-controller-rollback-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          params="$(jq -cn --arg mode 'operator_demote_current_authoritative' --arg confirmation "$ROLLBACK_CONFIRMATION" '{country:"US",mode:$mode,confirmation:$confirmation}')"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" || true)"
+            status="$(jq -r '.result.status // empty' <<<"$body" 2>/dev/null || true)"
+            if [[ "$status" == 'complete' ]]; then
+              printf '%s\n' "$body" > us-controller-rollback-authority-result.json
+              jq -e '
+                .result.output.ok == true and
+                .result.output.mode == "operator_demote_current_authoritative" and
+                .result.output.authority == "shadow" and
+                .result.output.execution_level == "read_only" and
+                .result.output.cutover_enabled == false
+              ' <<<"$body" >/dev/null
+              completed=true
+              break
+            fi
+            if [[ "$status" == 'errored' || "$status" == 'terminated' ]]; then
+              printf '%s\n' "$body" > us-controller-rollback-authority-result.json
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          [[ "$completed" == 'true' ]] || { echo 'Rollback authority demotion timed out.' >&2; exit 1; }
+
+      - name: Summarize operator result
+        if: always()
+        shell: bash
+        env:
+          ACTION: ${{ inputs.action }}
+        run: |
+          {
+            echo "### US controller manual operator"
+            echo "Action: $ACTION"
+            echo "Main SHA: $GITHUB_SHA"
+            if [[ "$ACTION" == 'cutover' ]]; then
+              echo "Expected preflight state: v${EXPECTED_V14_VERSION} / ${EXPECTED_V14_SHA}"
+              echo 'This workflow does not trigger the first controller tick; successful cutover leaves the controller enabled but idle until separately started.'
+            else
+              echo 'Rollback order: safe Worker policy first, authority demotion second.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish operator evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-controller-manual-operator-${{ inputs.action }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            us-controller-operator-safe-health.json
+            us-controller-cutover-authority-result.json
+            us-controller-cutover-production-health.json
+            us-controller-rollback-authority-result.json
+          if-no-files-found: warn
+          retention-days: 90

@@ -9,6 +9,12 @@ import {
   STALE_AUTHORITY_RECOVERY_MODE
 } from '../lib/controller-authority-recovery.mjs';
 import {
+  CUTOVER_OPERATOR_MODE,
+  demoteCurrentAuthoritative,
+  promoteExactV14,
+  ROLLBACK_OPERATOR_MODE
+} from '../lib/controller-cutover-operator.mjs';
+import {
   FAILED_LEGACY_REPLAY_RECOVERY_MODE,
   recoverFailedLegacyReplay
 } from '../lib/controller-legacy-replay-recovery.mjs';
@@ -53,6 +59,20 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         country: 'US',
         mode: EXACT_V13_PREFLIGHT_MODE,
         ...(await prepareExactV13CutoverPreflight(this.env))
+      }));
+    }
+    if (payload.country === 'US' && payload.mode === CUTOVER_OPERATOR_MODE) {
+      return step.do('promote exact preflight-ready v14 US controller authority', async () => ({
+        country: 'US',
+        mode: CUTOVER_OPERATOR_MODE,
+        ...(await promoteExactV14(this.env, payload))
+      }));
+    }
+    if (payload.country === 'US' && payload.mode === ROLLBACK_OPERATOR_MODE) {
+      return step.do('demote current authoritative US controller after safe policy restore', async () => ({
+        country: 'US',
+        mode: ROLLBACK_OPERATOR_MODE,
+        ...(await demoteCurrentAuthoritative(this.env, payload))
       }));
     }
 
@@ -128,6 +148,8 @@ export default {
         stale_hal_authority_recovery_v12: true,
         failed_legacy_mi_replay_recovery: true,
         exact_v13_cutover_preflight: true,
+        manual_us_cutover_operator: true,
+        manual_us_rollback_operator: true,
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
           name: market.country_name,
