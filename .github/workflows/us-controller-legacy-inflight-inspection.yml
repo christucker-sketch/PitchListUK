@@ -1,0 +1,66 @@
+name: US controller legacy inflight inspection
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'operations/cloudflare-global-acquisition/lib/controller-legacy-inflight-inspection.mjs'
+      - '.github/workflows/us-controller-legacy-inflight-inspection.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-us-controller-legacy-inflight-inspection
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      WORKFLOW_NAME: pitchlist-texas-acquisition
+      INSTANCE_ID: cf_d9de4e04c49d1ad3d02156da21d02d30db1f0bbb60c0e0185ebee0c8eef41fe5
+    steps:
+      - name: Check out exact main inspection commit
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Inspect exact legacy Texas Workflow instance
+        shell: bash
+        run: |
+          set -euo pipefail
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${INSTANCE_ID}"
+          body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+          printf '%s\n' "$body" > legacy-inflight-cloudflare-result.json
+          jq -e '.success == true and (.result.status | type == "string")' <<<"$body" >/dev/null
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { summarizeLegacyInflightInspection } from './operations/cloudflare-global-acquisition/lib/controller-legacy-inflight-inspection.mjs';
+          const payload = JSON.parse(fs.readFileSync('legacy-inflight-cloudflare-result.json', 'utf8'));
+          const summary = summarizeLegacyInflightInspection(payload);
+          fs.writeFileSync('legacy-inflight-summary.json', `${JSON.stringify(summary, null, 2)}\n`);
+          NODE
+          echo '### Legacy Hal inflight Workflow inspection' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat legacy-inflight-summary.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish legacy inflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-controller-legacy-inflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            legacy-inflight-cloudflare-result.json
+            legacy-inflight-summary.json
+          if-no-files-found: warn
+          retention-days: 30
