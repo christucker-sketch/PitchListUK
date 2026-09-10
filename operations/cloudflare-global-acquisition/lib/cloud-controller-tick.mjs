@@ -19,6 +19,24 @@ async function readSnapshot(stub) {
   };
 }
 
+export async function checkpointCloudControllerState(stub, snapshot, nextState) {
+  const raw = `${JSON.stringify(nextState, null, 2)}\n`;
+  const response = await stub.fetch(new Request('https://controller-state.internal/checkpoint', {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'x-findpitches-expected-state-version': String(snapshot.version),
+      'x-findpitches-expected-state-sha256': String(snapshot.sha256)
+    },
+    body: raw
+  }));
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`${body?.error || `controller_state_checkpoint_http_${response.status}`}`);
+  }
+  return body;
+}
+
 export async function runCloudControllerTick(env, options = {}) {
   const execute = options.execute === true;
   const stub = stateStub(env);
@@ -39,7 +57,8 @@ export async function runCloudControllerTick(env, options = {}) {
   await assertAuthoritativeUsMutationAllowed(env, {
     country: 'US',
     mode: decision.mode || 'controller',
-    handler: 'us_production_workflow'
+    handler: 'us_production_workflow',
+    mutation_capable: true
   });
 
   if (snapshot.authority !== 'authoritative') {
@@ -47,7 +66,7 @@ export async function runCloudControllerTick(env, options = {}) {
   }
 
   // HAL-006B intentionally fails closed until each mutating decision handler is
-  // implemented and proven independently. This endpoint must never silently
-  // skip a controller action or manufacture a replacement checkpoint.
+  // implemented and proven independently. checkpointCloudControllerState() is
+  // the only supported persisted-write path and requires exact version/SHA CAS.
   throw new Error(`cloud_controller_action_not_implemented:${decision.action}`);
 }
