@@ -104,23 +104,6 @@ export function resolveCloudDeferredReplay(state, decision, now = new Date()) {
   return Object.freeze({ next_state: nextState, key });
 }
 
-export function resolveCloudDeferredReplayAfterWorkflowSuccess(state, active, now = new Date()) {
-  const inflight = state?.deferred_replay_inflight;
-  if (!inflight) return Object.freeze({ next_state: structuredClone(state), key: null, resolved: false });
-  const mode = string(inflight.mode);
-  const stateCode = string(inflight.state_code).toUpperCase();
-  if (!active || string(active.mode) !== mode || string(active.state_code).toUpperCase() !== stateCode) {
-    throw new Error('deferred_replay_workflow_success_identity_mismatch');
-  }
-  const key = string(inflight.key || deferredUnitKey(inflight));
-  if (!key) throw new Error('deferred_replay_workflow_success_key_invalid');
-  const nextState = structuredClone(state);
-  const resolvedKey = resolveDeferredReplay(nextState, now);
-  if (resolvedKey !== key) throw new Error('deferred_replay_workflow_success_resolution_mismatch');
-  nextState.updated_at = now.toISOString();
-  return Object.freeze({ next_state: nextState, key, resolved: true });
-}
-
 export function quarantineCloudDeferredReplayExhausted(state, decision, now = new Date(), options = {}) {
   if (!state || !decision || decision.action !== 'block' || decision.reason !== 'deferred_replay_attempts_exhausted') {
     throw new Error('deferred_replay_quarantine_decision_invalid');
