@@ -26,6 +26,11 @@ import {
   recordCloudLiveConsistencyTransientFailure,
   recordCloudLiveConsistencyWait
 } from './controller-live-consistency.mjs';
+import {
+  blockCloudController,
+  completeCloudController,
+  markCloudControllerSweepComplete
+} from './controller-terminal-lifecycle.mjs';
 import { getStateConfig } from '../../cloudflare-texas-acquisition/src/us-state-registry.js';
 
 function stateStub(env) {
@@ -465,6 +470,47 @@ async function verifyLiveConsistency(env, stub, snapshot, decision, options = {}
   };
 }
 
+async function checkpointTerminalDecision(stub, snapshot, decision) {
+  if (decision.action === 'complete' && snapshot.state.status === 'complete') {
+    return {
+      ok: true,
+      executed: false,
+      phase: 'controller_already_complete',
+      state_version: snapshot.version,
+      state_sha256: snapshot.sha256,
+      decision
+    };
+  }
+  if (decision.action === 'block' && decision.reason === 'unsupported_controller_status') {
+    throw new Error(`cloud_controller_unsupported_status:${decision.status || 'unknown'}`);
+  }
+
+  let nextState;
+  let phase;
+  if (decision.action === 'mark_sweep_complete') {
+    nextState = markCloudControllerSweepComplete(snapshot.state, new Date());
+    phase = 'controller_sweep_complete';
+  } else if (decision.action === 'complete') {
+    nextState = completeCloudController(snapshot.state, new Date());
+    phase = 'controller_complete';
+  } else if (decision.action === 'block') {
+    nextState = blockCloudController(snapshot.state, decision, new Date());
+    phase = 'controller_blocked';
+  } else {
+    throw new Error(`controller_terminal_action_invalid:${decision.action || 'unknown'}`);
+  }
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+  return {
+    ok: true,
+    executed: true,
+    phase,
+    state_version: checkpoint.version,
+    state_sha256: checkpoint.sha256,
+    next_status: nextState.status,
+    decision
+  };
+}
+
 export function acquisitionSourceIdBatches(state) {
   const code = String(state?.current?.state_code || '').toUpperCase();
   const sourceIds = Array.isArray(state?.pending_source_ids) ? state.pending_source_ids.map(String) : [];
@@ -552,5 +598,6 @@ export async function runCloudControllerTick(env, options = {}) {
   if (decision.action === 'verify_live_consistency') return verifyLiveConsistency(env, stub, snapshot, decision, options);
   if (decision.action === 'trigger_acquisition_or_advance_batch') return reserveAcquisition(env, stub, snapshot, decision);
   if (decision.action === 'trigger_reserved_acquisition') return ensureReservedAcquisitionWorkflow(env, stub, snapshot, decision);
+  if (['mark_sweep_complete', 'complete', 'block'].includes(decision.action)) return checkpointTerminalDecision(stub, snapshot, decision);
   throw new Error(`cloud_controller_action_not_implemented:${decision.action}`);
 }
