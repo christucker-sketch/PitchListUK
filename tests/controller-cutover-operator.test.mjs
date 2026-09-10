@@ -66,6 +66,7 @@ function env(options = {}) {
   return {
     calls,
     value: {
+      GLOBAL_ACQUISITION_EXECUTION_ENABLED: 'true',
       GLOBAL_ACQUISITION_EXECUTION_LEVEL: options.executionLevel || 'read_only',
       GLOBAL_CONTROLLER_CUTOVER_ENABLED: options.cutoverEnabled ? 'true' : 'false',
       CONTROLLER_STATE: {
