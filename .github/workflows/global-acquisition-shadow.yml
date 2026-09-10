@@ -5,29 +5,41 @@ on:
     paths:
       - 'operations/cloudflare-global-acquisition/**'
       - 'operations/cloudflare-uk-canary/lib/uk-approved-source-poll.mjs'
+      - 'operations/cloudflare-texas-acquisition/src/entrypoint.js'
+      - 'operations/cloudflare-texas-acquisition/src/internal-serper-broker.js'
+      - 'operations/cloudflare-texas-acquisition/wrangler.jsonc'
       - 'operations/opportunity-pipeline/lib/uk-addition-publication.js'
       - 'platform/acquisition/**'
       - 'platform/countries.mjs'
       - 'scripts/build-automatic-addition-manifest.js'
       - 'tests/global-cloudflare-acquisition-controller.test.mjs'
       - 'tests/global-acquisition-engine.test.mjs'
+      - 'tests/internal-serper-service-binding.test.mjs'
+      - 'tests/uk-cloudflare-source-discovery.test.mjs'
       - 'tests/uk-addition-publication.test.mjs'
       - 'tests/uk-approved-source-poll-publication.test.mjs'
       - '.github/workflows/global-acquisition-shadow.yml'
+      - '.github/workflows/uk-source-discovery-live-proof.yml'
   push:
     branches: [main]
     paths:
       - 'operations/cloudflare-global-acquisition/**'
       - 'operations/cloudflare-uk-canary/lib/uk-approved-source-poll.mjs'
+      - 'operations/cloudflare-texas-acquisition/src/entrypoint.js'
+      - 'operations/cloudflare-texas-acquisition/src/internal-serper-broker.js'
+      - 'operations/cloudflare-texas-acquisition/wrangler.jsonc'
       - 'operations/opportunity-pipeline/lib/uk-addition-publication.js'
       - 'platform/acquisition/**'
       - 'platform/countries.mjs'
       - 'scripts/build-automatic-addition-manifest.js'
       - 'tests/global-cloudflare-acquisition-controller.test.mjs'
       - 'tests/global-acquisition-engine.test.mjs'
+      - 'tests/internal-serper-service-binding.test.mjs'
+      - 'tests/uk-cloudflare-source-discovery.test.mjs'
       - 'tests/uk-addition-publication.test.mjs'
       - 'tests/uk-approved-source-poll-publication.test.mjs'
       - '.github/workflows/global-acquisition-shadow.yml'
+      - '.github/workflows/uk-source-discovery-live-proof.yml'
   workflow_dispatch:
 
 permissions:
@@ -50,7 +62,7 @@ jobs:
           node-version: '22'
 
       - name: Run global acquisition controller tests
-        run: node --test tests/global-acquisition-engine.test.mjs tests/global-cloudflare-acquisition-controller.test.mjs tests/country-acquisition-contract.test.mjs tests/uk-addition-publication.test.mjs tests/uk-approved-source-poll-publication.test.mjs
+        run: node --test tests/global-acquisition-engine.test.mjs tests/global-cloudflare-acquisition-controller.test.mjs tests/country-acquisition-contract.test.mjs tests/internal-serper-service-binding.test.mjs tests/uk-cloudflare-source-discovery.test.mjs tests/uk-addition-publication.test.mjs tests/uk-approved-source-poll-publication.test.mjs
 
       - name: Compile global Cloudflare acquisition shadow
         run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/cloudflare-global-acquisition/wrangler.jsonc
@@ -261,6 +273,38 @@ jobs:
           done
           [[ "$completed" == "true" ]] || { echo 'UK global additions-only PR proof timed out.' >&2; exit 1; }
 
+      - name: Run bounded UK source discovery PR proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="global-uk-source-discovery-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          as_of="$(date -u +'%Y-%m-%dT%H:%M:%S.000Z')"
+          params="$(jq -cn --arg as_of "$as_of" '{country:"UK",mode:"uk_source_discovery_pr",as_of:$as_of,query_offset:0,query_limit:4,results_per_query:5,candidate_limit:20,concurrency:2,timeout_ms:12000}')"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 300); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == "complete" ]]; then
+              printf '%s\n' "$body" > global-uk-source-discovery-result.json
+              jq -e '.result.output.country == "UK" and .result.output.mode == "uk_source_discovery_pr" and .result.output.source_removals == 0 and .result.output.opportunity_pr_attempted == false and .result.output.production_opportunity_write_attempted == false and .result.output.direct_production_deployment_attempted == false and .result.output.automatic_merge_attempted == false' <<<"$body" >/dev/null
+              echo '### Global controller — UK source discovery PR proof' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == "errored" || "$status" == "terminated" ]]; then
+              printf '%s\n' "$body" > global-uk-source-discovery-result.json
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          [[ "$completed" == "true" ]] || { echo 'UK global source discovery PR proof timed out.' >&2; exit 1; }
+
       - name: Restore read-only global shadow
         if: always()
         run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
@@ -284,5 +328,6 @@ jobs:
             global-pr-only-health.json
             global-pr-only-blocked-us-result.json
             global-uk-additions-result.json
+            global-uk-source-discovery-result.json
           if-no-files-found: ignore
           retention-days: 14
