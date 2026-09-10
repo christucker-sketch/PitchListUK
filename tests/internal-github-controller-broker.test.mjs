@@ -10,7 +10,7 @@ function request(body) {
 function env() { return { GITHUB_REPO: 'christucker-sketch/PitchListUK', GITHUB_TOKEN: 'secret' }; }
 function encoded(value) { return Buffer.from(JSON.stringify(value), 'utf8').toString('base64'); }
 
-function mockFetch({ head = 'sources/cloud-us-ma-test', sha = 'a'.repeat(40), baseSha = 'c'.repeat(40), mergeSha = 'b'.repeat(40), mutateExisting = false, alreadyMerged = false } = {}) {
+function mockFetch({ head = 'sources/cloud-us-ma-test', sha = 'a'.repeat(40), baseSha = 'c'.repeat(40), mergeSha = 'b'.repeat(40), mutateExisting = false, alreadyMerged = false, mergeChecks = null } = {}) {
   const baseRegistry = { version: 1, updated_at: 'old', sources: [{ id: 'existing', name: 'Existing', region_code: 'MA' }] };
   const headRegistry = { version: 1, updated_at: 'new', sources: [
     mutateExisting ? { id: 'existing', name: 'Changed', region_code: 'MA' } : { ...baseRegistry.sources[0] },
@@ -29,6 +29,10 @@ function mockFetch({ head = 'sources/cloud-us-ma-test', sha = 'a'.repeat(40), ba
     });
     if (/\/pulls\/1700\/files/.test(value)) return Response.json([{ filename: 'operations/opportunity-pipeline/config/us-growth-source-registry.json', status: 'modified', additions: 4, deletions: 0, changes: 4 }]);
     if (/\/pulls\/1700\/commits/.test(value)) return Response.json([{ sha, parents: [{ sha: baseSha }] }]);
+    if (value.includes(`/commits/${mergeSha}/check-runs`)) return Response.json({ check_runs: mergeChecks || [
+      { name: 'verify', status: 'completed', conclusion: 'success' },
+      { name: 'deploy_acquisition_worker_production', status: 'completed', conclusion: 'success' }
+    ] });
     if (/\/commits\/.+\/check-runs/.test(value)) return Response.json({ check_runs: [{ name: 'PitchList verification', status: 'completed', conclusion: 'success' }] });
     if (value.includes('/contents/operations/opportunity-pipeline/config/us-growth-source-registry.json')) {
       const isBase = value.includes(`ref=${baseSha}`);
@@ -90,4 +94,21 @@ test('controller GitHub broker reconciles an already-merged exact PR idempotentl
   assert.equal(body.merged, true);
   assert.equal(body.reused, true);
   assert.equal(body.merge_sha, mergeSha);
+});
+
+test('controller GitHub broker exposes checks for the exact merged source PR commit', async () => {
+  const mergeSha = 'b'.repeat(40);
+  const response = await handleInternalGithubControllerRequest(request({ action: 'inspect_merge_checks', pr_number: 1700 }), env(), { fetchImpl: mockFetch({ mergeSha, alreadyMerged: true }) });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.ok, true);
+  assert.equal(body.deployment.pr_number, 1700);
+  assert.equal(body.deployment.merge_sha, mergeSha);
+  assert.deepEqual(body.deployment.check_runs.map(run => run.name), ['verify', 'deploy_acquisition_worker_production']);
+});
+
+test('merge-check inspection refuses an unmerged source PR', async () => {
+  const response = await handleInternalGithubControllerRequest(request({ action: 'inspect_merge_checks', pr_number: 1700 }), env(), { fetchImpl: mockFetch() });
+  assert.equal(response.status, 409);
+  assert.match((await response.json()).error, /source_pr_not_merged/);
 });

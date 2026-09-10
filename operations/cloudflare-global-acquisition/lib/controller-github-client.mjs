@@ -5,9 +5,7 @@ const SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/us-growth-s
 async function brokerRequest(env, payload) {
   if (!env?.GITHUB_PR_BROKER) throw new Error('controller_github_broker_binding_missing');
   const response = await env.GITHUB_PR_BROKER.fetch(new Request(INTERNAL_URL, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-findpitches-internal-service': INTERNAL_MARKER },
-    body: JSON.stringify(payload)
+    method: 'POST', headers: { 'content-type': 'application/json', 'x-findpitches-internal-service': INTERNAL_MARKER }, body: JSON.stringify(payload)
   }));
   const body = await response.json().catch(() => ({}));
   if (!response.ok || body?.ok !== true) throw new Error(body?.error || `controller_github_broker_http_${response.status}`);
@@ -18,6 +16,23 @@ export async function inspectControllerPr(env, prNumber) {
   return (await brokerRequest(env, { action: 'inspect', pr_number: prNumber })).pr;
 }
 
+export async function inspectSourceMergeChecks(env, prNumber) {
+  return (await brokerRequest(env, { action: 'inspect_merge_checks', pr_number: prNumber })).deployment;
+}
+
+export function classifyAcquisitionWorkerDeployment(deployment) {
+  const mergeSha = String(deployment?.merge_sha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error('source_merge_deployment_sha_invalid');
+  const runs = Array.isArray(deployment?.check_runs) ? deployment.check_runs : [];
+  const verify = runs.find(run => String(run?.name || '') === 'verify');
+  const deploy = runs.find(run => String(run?.name || '') === 'deploy_acquisition_worker_production');
+  for (const [name, run] of [['verify', verify], ['deploy_acquisition_worker_production', deploy]]) {
+    if (!run || run.status !== 'completed') return { ready: false, status: 'pending', merge_sha: mergeSha, waiting_for: name };
+    if (run.conclusion !== 'success') throw new Error(`source_merge_required_check_failed:${name}:${run.conclusion || 'unknown'}`);
+  }
+  return { ready: true, status: 'passed', merge_sha: mergeSha };
+}
+
 export async function mergeControllerPr(env, inspection) {
   const prNumber = Number(inspection?.pr_number);
   const headSha = String(inspection?.head_sha || '').toLowerCase();
@@ -25,9 +40,7 @@ export async function mergeControllerPr(env, inspection) {
   if (!Number.isInteger(prNumber) || prNumber <= 0) throw new Error('controller_merge_pr_number_invalid');
   if (!/^[a-f0-9]{40}$/.test(headSha) || !/^[a-f0-9]{40}$/.test(baseSha)) throw new Error('controller_merge_sha_invalid');
   const result = await brokerRequest(env, { action: 'merge', pr_number: prNumber, expected_head_sha: headSha, expected_base_sha: baseSha });
-  if (result?.merged !== true || Number(result?.pr_number) !== prNumber || !/^[a-f0-9]{40}$/i.test(String(result?.merge_sha || ''))) {
-    throw new Error('controller_merge_not_confirmed');
-  }
+  if (result?.merged !== true || Number(result?.pr_number) !== prNumber || !/^[a-f0-9]{40}$/i.test(String(result?.merge_sha || ''))) throw new Error('controller_merge_not_confirmed');
   return result;
 }
 
@@ -36,7 +49,6 @@ function successfulChecks(checkRuns) {
   if (!runs.length) return false;
   return runs.every(run => run?.status === 'completed' && ['success', 'neutral', 'skipped'].includes(String(run?.conclusion || '')));
 }
-
 function resultForDiscovery(state) {
   const instanceId = state?.current?.discovery_instance_id;
   if (!instanceId) throw new Error('source_pr_discovery_instance_missing');
@@ -44,7 +56,6 @@ function resultForDiscovery(state) {
   if (!result) throw new Error('source_pr_checkpointed_result_missing');
   return result;
 }
-
 function requireExactRegistryProof(pr, expectedIds, expectedCount) {
   const proof = pr?.source_registry_proof;
   if (!proof || proof.additions_only !== true) throw new Error('source_pr_registry_additions_only_proof_missing');
@@ -70,32 +81,19 @@ export function validateSourcePrInspection(state, pr) {
   if (!Array.isArray(pr.commits[0]?.parents) || pr.commits[0].parents.length !== 1 || pr.commits[0].parents[0] !== pr.base_sha) throw new Error('source_pr_parent_not_exact_base');
   if (!Array.isArray(pr?.files) || pr.files.length !== 1 || pr.files[0]?.path !== SOURCE_REGISTRY_PATH) throw new Error('source_pr_file_scope_invalid');
   if (!successfulChecks(pr?.check_runs)) throw new Error('source_pr_checks_not_successful');
-
   const result = resultForDiscovery(state);
   const expectedCount = Number(result?.publication?.source_count || result?.publication?.source_ids?.length || 0);
   const expectedIds = [...(Array.isArray(result?.publication?.source_ids) ? result.publication.source_ids : [])].map(String).sort();
   if (expectedCount < 1 || expectedIds.length !== expectedCount) throw new Error('source_pr_result_evidence_incomplete');
   if (Number(result?.generated_source_count) !== expectedCount || Number(result?.evidence_passed_count) !== expectedCount) throw new Error('source_pr_result_evidence_count_mismatch');
-
   const body = String(pr?.body || '');
   const stateName = String(result?.state_name || '').trim();
   const stateCode = String(result?.state_code || current.state_code || '').trim();
-  for (const marker of [
-    `- state: ${stateName} (${stateCode})`,
-    `- net-new approved sources: ${expectedCount}`,
-    `- deterministic source evidence receipts: ${expectedCount}/${expectedCount} passed`,
-    '- additions only; no source removals',
-    '- no automatic merge or deploy requested'
-  ]) if (!body.includes(marker)) throw new Error('source_pr_body_evidence_mismatch');
+  for (const marker of [`- state: ${stateName} (${stateCode})`, `- net-new approved sources: ${expectedCount}`, `- deterministic source evidence receipts: ${expectedCount}/${expectedCount} passed`, '- additions only; no source removals', '- no automatic merge or deploy requested']) if (!body.includes(marker)) throw new Error('source_pr_body_evidence_mismatch');
   const normalizedBody = body.toLowerCase();
   for (const id of expectedIds) if (!normalizedBody.includes(`  - ${String(id).toLowerCase()}:`)) throw new Error(`source_pr_missing_evidence_receipt:${id}`);
-
   const registryProof = requireExactRegistryProof(pr, expectedIds, expectedCount);
-  return Object.freeze({
-    pr_number: expectedPr, head_sha: pr.head_sha, base_sha: pr.base_sha, state_code: stateCode,
-    source_ids: expectedIds, source_count: expectedCount,
-    registry_base_count: registryProof.base_count, registry_head_count: registryProof.head_count
-  });
+  return Object.freeze({ pr_number: expectedPr, head_sha: pr.head_sha, base_sha: pr.base_sha, state_code: stateCode, source_ids: expectedIds, source_count: expectedCount, registry_base_count: registryProof.base_count, registry_head_count: registryProof.head_count });
 }
 
 export { SOURCE_REGISTRY_PATH };
