@@ -12,6 +12,11 @@ import {
   assertControllerCutoverPromotionMetaReady,
   pendingDeferredAcquisitionUnits
 } from '../lib/controller-cutover-preflight.mjs';
+import {
+  FAILED_LEGACY_REPLAY_TARGET,
+  legacyReplayRecoveryAlreadyApplied,
+  recoverFailedLegacyReplayState
+} from '../lib/controller-legacy-replay-recovery.mjs';
 import { proveDeferredAcquisitionUnitSourcesDeployed } from '../lib/controller-replay-source-client.mjs';
 
 function validSha256(value) {
@@ -182,6 +187,55 @@ export class ControllerStateDurableObject extends DurableObject {
     return Response.json({ ok: true, changed: true, ...written }, { status: 201 });
   }
 
+  async recoverFailedLegacyReplay() {
+    const meta = this.readMeta();
+    if (!meta) return Response.json({ ok: false, error: 'controller_state_not_initialized' }, { status: 404 });
+    let state;
+    try {
+      state = JSON.parse(this.readSnapshotText(meta));
+    } catch (error) {
+      return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
+    }
+
+    if (legacyReplayRecoveryAlreadyApplied(state, meta)) {
+      return Response.json({ ok: true, changed: false, ...meta });
+    }
+
+    const exactTarget =
+      meta.authority === 'shadow' &&
+      Number(meta.version) === FAILED_LEGACY_REPLAY_TARGET.controller_state_version &&
+      String(meta.sha256).toLowerCase() === FAILED_LEGACY_REPLAY_TARGET.controller_state_sha256 &&
+      meta.source === FAILED_LEGACY_REPLAY_TARGET.controller_state_source &&
+      meta.imported_at === FAILED_LEGACY_REPLAY_TARGET.controller_state_imported_at;
+    if (!exactTarget) {
+      return Response.json({
+        ok: false,
+        error: 'legacy_replay_recovery_snapshot_identity_mismatch',
+        current: { version: meta.version, sha256: meta.sha256, source: meta.source, imported_at: meta.imported_at, authority: meta.authority }
+      }, { status: 409 });
+    }
+
+    let transition;
+    try {
+      transition = recoverFailedLegacyReplayState(state);
+      validateControllerStateText(`${JSON.stringify(transition.next_state, null, 2)}\n`);
+    } catch (error) {
+      return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 });
+    }
+
+    const current = this.readMeta();
+    if (!current || Number(current.version) !== Number(meta.version) || String(current.sha256).toLowerCase() !== String(meta.sha256).toLowerCase() || current.authority !== 'shadow') {
+      return Response.json({ ok: false, error: 'legacy_replay_recovery_precondition_changed' }, { status: 409 });
+    }
+
+    const raw = `${JSON.stringify(transition.next_state, null, 2)}\n`;
+    const written = await this.writeSnapshot(raw, {
+      source: 'cloudflare-us-controller-legacy-recovery',
+      authority: 'shadow'
+    });
+    return Response.json({ ok: true, changed: true, replay_key: transition.replay_key, replay_attempts: transition.replay_attempts, ...written }, { status: 201 });
+  }
+
   async transitionAuthority(request, targetAuthority) {
     const meta = this.readMeta();
     if (!meta) return Response.json({ ok: false, error: 'controller_state_not_initialized' }, { status: 404 });
@@ -293,6 +347,10 @@ export class ControllerStateDurableObject extends DurableObject {
       } catch (error) {
         return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
       }
+    }
+
+    if (request.method === 'POST' && url.pathname === '/recover-failed-legacy-replay') {
+      return this.recoverFailedLegacyReplay();
     }
 
     if (request.method === 'POST' && url.pathname === '/promote') {
