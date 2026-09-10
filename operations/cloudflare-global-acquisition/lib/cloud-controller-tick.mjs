@@ -27,6 +27,11 @@ import {
   recordCloudLiveConsistencyWait
 } from './controller-live-consistency.mjs';
 import {
+  quarantineCloudDeferredReplayExhausted,
+  resolveCloudDeferredReplay,
+  scheduleCloudDeferredReplay
+} from './controller-deferred-replay.mjs';
+import {
   blockCloudController,
   completeCloudController,
   markCloudControllerSweepComplete
@@ -131,8 +136,18 @@ function reservedDecision(state) {
   throw new Error(`cloud_controller_reserved_intent_unsupported:${intent.action || 'unknown'}`);
 }
 
-function decisionForState(state) {
-  return reservedDecision(state) || shadowControllerDecision(state);
+function deferredReplayMaximumAttempts(env) {
+  const raw = env?.GLOBAL_CONTROLLER_DEFERRED_REPLAY_ATTEMPTS;
+  if (raw === undefined || raw === null || String(raw).trim() === '') return 3;
+  const maximum = Number(raw);
+  if (!Number.isInteger(maximum) || maximum < 1 || maximum > 20) throw new Error('deferred_replay_maximum_attempts_invalid');
+  return maximum;
+}
+
+function decisionForState(state, env) {
+  return reservedDecision(state) || shadowControllerDecision(state, {
+    maximumReplayAttempts: deferredReplayMaximumAttempts(env)
+  });
 }
 
 function executionMode(decision) {
@@ -470,6 +485,38 @@ async function verifyLiveConsistency(env, stub, snapshot, decision, options = {}
   };
 }
 
+async function checkpointDeferredReplay(stub, snapshot, decision, env) {
+  const maximumAttempts = deferredReplayMaximumAttempts(env);
+  let transition;
+  let phase;
+
+  if (['schedule_deferred_replay', 'schedule_deferred_replay_after_plan_exhaustion'].includes(decision.action)) {
+    transition = scheduleCloudDeferredReplay(snapshot.state, decision, new Date(), { maximumAttempts });
+    phase = 'deferred_replay_scheduled';
+  } else if (decision.action === 'resume_deferred_replay') {
+    transition = resolveCloudDeferredReplay(snapshot.state, decision, new Date());
+    phase = 'deferred_replay_resolved';
+  } else if (decision.action === 'block' && decision.reason === 'deferred_replay_attempts_exhausted') {
+    transition = quarantineCloudDeferredReplayExhausted(snapshot.state, decision, new Date(), { maximumAttempts });
+    phase = 'deferred_replay_exhausted';
+  } else {
+    throw new Error(`deferred_replay_action_invalid:${decision.action || 'unknown'}`);
+  }
+
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, transition.next_state);
+  return {
+    ok: true,
+    executed: true,
+    phase,
+    replay_key: transition.key || transition.unit?.key || null,
+    blocker_count: transition.blocker_count ?? null,
+    state_version: checkpoint.version,
+    state_sha256: checkpoint.sha256,
+    next_status: transition.next_state.status,
+    decision
+  };
+}
+
 async function checkpointTerminalDecision(stub, snapshot, decision) {
   if (decision.action === 'complete' && snapshot.state.status === 'complete') {
     return {
@@ -483,6 +530,20 @@ async function checkpointTerminalDecision(stub, snapshot, decision) {
   }
   if (decision.action === 'block' && decision.reason === 'unsupported_controller_status') {
     throw new Error(`cloud_controller_unsupported_status:${decision.status || 'unknown'}`);
+  }
+  if (decision.action === 'block' && decision.reason === 'deferred_blocker' && snapshot.state.status === 'blocked_deferred') {
+    const blockers = (Array.isArray(snapshot.state.deferred_units) ? snapshot.state.deferred_units : [])
+      .filter(unit => unit?.disposition === 'genuine_blocker');
+    if (!blockers.length || Number(decision.blocker_count) !== blockers.length) throw new Error('controller_blocked_checkpoint_evidence_mismatch');
+    return {
+      ok: true,
+      executed: false,
+      phase: 'controller_already_blocked',
+      blocker_count: blockers.length,
+      state_version: snapshot.version,
+      state_sha256: snapshot.sha256,
+      decision
+    };
   }
 
   let nextState;
@@ -583,7 +644,7 @@ export async function runCloudControllerTick(env, options = {}) {
   const execute = options.execute === true;
   const stub = stateStub(env);
   const snapshot = await readSnapshot(stub);
-  const decision = decisionForState(snapshot.state);
+  const decision = decisionForState(snapshot.state, env);
   if (!execute) return { ok: true, executed: false, authority: snapshot.authority, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
   if (snapshot.authority !== 'authoritative') throw new Error(`controller_state_not_authoritative:${snapshot.authority}`);
   await assertExecutionAllowed(env, decision);
@@ -596,6 +657,12 @@ export async function runCloudControllerTick(env, options = {}) {
   if (decision.action === 'merge_reserved_data_pr') return mergeReservedDataPr(env, stub, snapshot, decision);
   if (decision.action === 'verify_or_deploy_production') return verifyProductionDeploymentGate(env, stub, snapshot, decision);
   if (decision.action === 'verify_live_consistency') return verifyLiveConsistency(env, stub, snapshot, decision, options);
+  if (['schedule_deferred_replay', 'schedule_deferred_replay_after_plan_exhaustion', 'resume_deferred_replay'].includes(decision.action)) {
+    return checkpointDeferredReplay(stub, snapshot, decision, env);
+  }
+  if (decision.action === 'block' && decision.reason === 'deferred_replay_attempts_exhausted') {
+    return checkpointDeferredReplay(stub, snapshot, decision, env);
+  }
   if (decision.action === 'trigger_acquisition_or_advance_batch') return reserveAcquisition(env, stub, snapshot, decision);
   if (decision.action === 'trigger_reserved_acquisition') return ensureReservedAcquisitionWorkflow(env, stub, snapshot, decision);
   if (['mark_sweep_complete', 'complete', 'block'].includes(decision.action)) return checkpointTerminalDecision(stub, snapshot, decision);
