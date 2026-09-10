@@ -1,1 +1,0 @@
-HAL-006B13D wires the strict live-consistency proof into the controller tick. No controller cutover flag is changed by this branch.
