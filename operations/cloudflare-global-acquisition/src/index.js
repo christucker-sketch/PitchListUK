@@ -4,6 +4,10 @@ import { TexasAcquisitionWorkflow } from '../../cloudflare-texas-acquisition/src
 import { UkApprovedSourcePollWorkflow } from '../../cloudflare-uk-canary/src/index.js';
 import { globalAcquisitionMarkets } from '../../../platform/acquisition/global-engine.mjs';
 import { assertAuthoritativeUsMutationAllowed, globalControllerCutoverEnabled } from '../lib/controller-authority-guard.mjs';
+import {
+  recoverStaleHalAuthorityV12,
+  STALE_AUTHORITY_RECOVERY_MODE
+} from '../lib/controller-authority-recovery.mjs';
 import { readControllerCutoverReadinessReport } from '../lib/controller-cutover-readiness.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
@@ -21,7 +25,16 @@ export { ControllerStateDurableObject };
 
 export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
-    const dispatch = resolveGlobalAcquisitionDispatch(event?.payload || {});
+    const payload = event?.payload || {};
+    if (payload.country === 'US' && payload.mode === STALE_AUTHORITY_RECOVERY_MODE) {
+      return step.do('recover exact stale Hal controller authority marker', async () => ({
+        country: 'US',
+        mode: STALE_AUTHORITY_RECOVERY_MODE,
+        ...(await recoverStaleHalAuthorityV12(this.env))
+      }));
+    }
+
+    const dispatch = resolveGlobalAcquisitionDispatch(payload);
     assertGlobalControllerDispatchAllowed(this.env, dispatch);
     await assertAuthoritativeUsMutationAllowed(this.env, dispatch);
 
@@ -90,6 +103,7 @@ export default {
         controller_state_store: Boolean(env.CONTROLLER_STATE),
         controller_state_maintenance_enabled: Boolean(env.CONTROLLER_STATE_IMPORT_TOKEN),
         controller_cutover_readiness_workflow: true,
+        stale_hal_authority_recovery_v12: true,
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
           name: market.country_name,
