@@ -6,6 +6,7 @@ import {
   sha256Hex,
   validateControllerStateText
 } from '../lib/controller-state-codec.mjs';
+import { assertControllerCutoverPreflightReady } from '../lib/controller-cutover-preflight.mjs';
 
 function validSha256(value) {
   return /^[a-f0-9]{64}$/.test(String(value || '').trim().toLowerCase());
@@ -119,6 +120,22 @@ export class ControllerStateDurableObject extends DurableObject {
     return Response.json({ ok: true, ...written }, { status: 201 });
   }
 
+  checkpointPreconditions(request, meta, invalidError) {
+    const expectedVersion = Number(request.headers.get('x-findpitches-expected-state-version'));
+    const expectedSha256 = String(request.headers.get('x-findpitches-expected-state-sha256') || '').trim().toLowerCase();
+    if (!Number.isInteger(expectedVersion) || expectedVersion <= 0 || !validSha256(expectedSha256)) {
+      return { error: Response.json({ ok: false, error: invalidError }, { status: 400 }) };
+    }
+    if (Number(meta.version) !== expectedVersion || String(meta.sha256).toLowerCase() !== expectedSha256) {
+      return { error: Response.json({
+        ok: false,
+        error: 'controller_state_precondition_failed',
+        current: { version: meta.version, sha256: meta.sha256, authority: meta.authority }
+      }, { status: 409 }) };
+    }
+    return { expectedVersion, expectedSha256 };
+  }
+
   async checkpointSnapshot(request) {
     const meta = this.readMeta();
     if (!meta) return Response.json({ ok: false, error: 'controller_state_not_initialized' }, { status: 404 });
@@ -126,23 +143,37 @@ export class ControllerStateDurableObject extends DurableObject {
       return Response.json({ ok: false, error: 'controller_state_not_authoritative', current_authority: meta.authority }, { status: 409 });
     }
 
-    const expectedVersion = Number(request.headers.get('x-findpitches-expected-state-version'));
-    const expectedSha256 = String(request.headers.get('x-findpitches-expected-state-sha256') || '').trim().toLowerCase();
-    if (!Number.isInteger(expectedVersion) || expectedVersion <= 0 || !validSha256(expectedSha256)) {
-      return Response.json({ ok: false, error: 'invalid_controller_checkpoint_precondition' }, { status: 400 });
-    }
-    if (Number(meta.version) !== expectedVersion || String(meta.sha256).toLowerCase() !== expectedSha256) {
-      return Response.json({
-        ok: false,
-        error: 'controller_state_precondition_failed',
-        current: { version: meta.version, sha256: meta.sha256, authority: meta.authority }
-      }, { status: 409 });
-    }
-
+    const precondition = this.checkpointPreconditions(request, meta, 'invalid_controller_checkpoint_precondition');
+    if (precondition.error) return precondition.error;
     const raw = await request.text();
     const written = await this.writeSnapshot(raw, {
       source: 'cloudflare-us-controller',
       authority: 'authoritative'
+    });
+    return Response.json({ ok: true, changed: true, ...written }, { status: 201 });
+  }
+
+  async checkpointShadowPreflight(request) {
+    const meta = this.readMeta();
+    if (!meta) return Response.json({ ok: false, error: 'controller_state_not_initialized' }, { status: 404 });
+    if (meta.authority !== 'shadow') {
+      return Response.json({ ok: false, error: 'controller_preflight_requires_shadow_authority', current_authority: meta.authority }, { status: 409 });
+    }
+    const precondition = this.checkpointPreconditions(request, meta, 'invalid_controller_preflight_precondition');
+    if (precondition.error) return precondition.error;
+
+    const raw = await request.text();
+    let state;
+    try {
+      validateControllerStateText(raw);
+      state = JSON.parse(raw);
+      assertControllerCutoverPreflightReady(state);
+    } catch (error) {
+      return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
+    }
+    const written = await this.writeSnapshot(raw, {
+      source: 'cloudflare-us-controller-preflight',
+      authority: 'shadow'
     });
     return Response.json({ ok: true, changed: true, ...written }, { status: 201 });
   }
@@ -179,6 +210,15 @@ export class ControllerStateDurableObject extends DurableObject {
     const expectedCurrentAuthority = targetAuthority === 'authoritative' ? 'shadow' : 'authoritative';
     if (meta.authority !== expectedCurrentAuthority) {
       return Response.json({ ok: false, error: 'invalid_controller_authority_transition', current_authority: meta.authority }, { status: 409 });
+    }
+
+    if (targetAuthority === 'authoritative') {
+      try {
+        const state = JSON.parse(this.readSnapshotText(meta));
+        assertControllerCutoverPreflightReady(state);
+      } catch (error) {
+        return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 });
+      }
     }
 
     this.ctx.storage.sql.exec(`
@@ -231,6 +271,14 @@ export class ControllerStateDurableObject extends DurableObject {
     if (request.method === 'PUT' && url.pathname === '/checkpoint') {
       try {
         return await this.checkpointSnapshot(request);
+      } catch (error) {
+        return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
+      }
+    }
+
+    if (request.method === 'PUT' && url.pathname === '/preflight') {
+      try {
+        return await this.checkpointShadowPreflight(request);
       } catch (error) {
         return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
       }
