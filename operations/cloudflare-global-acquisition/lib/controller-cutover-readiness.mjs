@@ -9,6 +9,11 @@ function sha64(value) {
   return /^[a-f0-9]{64}$/.test(text) ? text : null;
 }
 
+function optionalString(value) {
+  const text = String(value || '').trim();
+  return text || null;
+}
+
 export function buildControllerCutoverReadinessReport(state, meta = {}) {
   if (!state || typeof state !== 'object' || Array.isArray(state)) throw new Error('cutover_readiness_state_invalid');
   const units = pendingDeferredAcquisitionUnits(state);
@@ -25,15 +30,25 @@ export function buildControllerCutoverReadinessReport(state, meta = {}) {
   const authority = String(meta.authority || 'unknown');
   const version = Number(meta.version || 0);
   const stateSha256 = sha64(meta.sha256);
-  const replayInflight = Boolean(state.deferred_replay_inflight);
+  const replay = state.deferred_replay_inflight || null;
+  const replayInflight = Boolean(replay);
   const structurallyEligible = authority === 'shadow' && !replayInflight && unproven.length === 0 && markerReady;
 
   return Object.freeze({
     authority,
     state_version: Number.isInteger(version) && version > 0 ? version : null,
     state_sha256: stateSha256,
+    state_source: optionalString(meta.source),
+    state_imported_at: optionalString(meta.imported_at),
+    state_updated_at: optionalString(state.updated_at),
     state_status: String(state.status || 'unknown'),
+    current_state_code: optionalString(state.current?.state_code),
+    current_mode: optionalString(state.current?.mode),
+    active_instance_id: optionalString(state.active_instance?.id),
     deferred_replay_inflight: replayInflight,
+    deferred_replay_inflight_key: optionalString(replay?.key),
+    deferred_replay_inflight_mode: optionalString(replay?.mode),
+    deferred_replay_inflight_state_code: optionalString(replay?.state_code),
     deferred_acquisition_replay_count: units.length,
     deferred_acquisition_replay_proven_count: units.length - unproven.length,
     deferred_acquisition_replay_unproven_count: unproven.length,
@@ -64,6 +79,8 @@ export async function readControllerCutoverReadinessReport(env) {
   return buildControllerCutoverReadinessReport(state, {
     authority: response.headers.get('x-findpitches-state-authority') || 'unknown',
     version: Number(response.headers.get('x-findpitches-state-version') || 0),
-    sha256: response.headers.get('x-findpitches-state-sha256') || ''
+    sha256: response.headers.get('x-findpitches-state-sha256') || '',
+    source: response.headers.get('x-findpitches-state-source') || '',
+    imported_at: response.headers.get('x-findpitches-state-imported-at') || ''
   });
 }
