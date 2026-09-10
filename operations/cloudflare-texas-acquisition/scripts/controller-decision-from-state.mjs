@@ -36,6 +36,32 @@ function selectDiscovery(state, queryLimit) {
   return null;
 }
 
+function deferredReplayDecision(state, pending, blockers, maximumReplayAttempts, exhaustedAction) {
+  if (state.deferred_replay_inflight) {
+    return {
+      action: 'resume_deferred_replay',
+      mode: state.deferred_replay_inflight.mode || null,
+      state_code: state.deferred_replay_inflight.state_code || null,
+      key: state.deferred_replay_inflight.key || null
+    };
+  }
+  if (pending.length) {
+    const candidate = pending.find(unit => Number(unit?.replay_attempts || 0) < maximumReplayAttempts);
+    if (!candidate) return { action: 'block', reason: 'deferred_replay_attempts_exhausted', pending_count: pending.length };
+    return {
+      action: exhaustedAction,
+      mode: candidate.mode || null,
+      state_code: candidate.state_code || null,
+      query_offset: candidate.query_offset ?? null,
+      query_limit: candidate.query_limit ?? null,
+      batch_number: candidate.batch_number ?? null,
+      replay_attempts: Number(candidate.replay_attempts || 0)
+    };
+  }
+  if (blockers.length) return { action: 'block', reason: 'deferred_blocker', blocker_count: blockers.length };
+  return null;
+}
+
 export function authoritativeControllerDecision(state, options = {}) {
   if (!state || typeof state !== 'object') throw new Error('Controller state is required');
   const maximumReplayAttempts = Math.max(1, Number(options.maximumReplayAttempts ?? 3));
@@ -70,30 +96,13 @@ export function authoritativeControllerDecision(state, options = {}) {
       deployment_id: state.current?.live_consistency?.deployment_id ?? null
     };
   }
-  if (state.status === 'blocked_deferred' || blockers.length) {
+  if (state.status === 'blocked_deferred') {
     return { action: 'block', reason: 'deferred_blocker', blocker_count: blockers.length };
   }
 
-  if ((state.status === 'complete' || Number(state.snapshot_count) >= Number(state.target_count)) && (pending.length || state.deferred_replay_inflight)) {
-    if (state.deferred_replay_inflight) {
-      return {
-        action: 'resume_deferred_replay',
-        mode: state.deferred_replay_inflight.mode || null,
-        state_code: state.deferred_replay_inflight.state_code || null,
-        key: state.deferred_replay_inflight.key || null
-      };
-    }
-    const candidate = pending.find(unit => Number(unit?.replay_attempts || 0) < maximumReplayAttempts);
-    if (!candidate) return { action: 'block', reason: 'deferred_replay_attempts_exhausted', pending_count: pending.length };
-    return {
-      action: 'schedule_deferred_replay',
-      mode: candidate.mode || null,
-      state_code: candidate.state_code || null,
-      query_offset: candidate.query_offset ?? null,
-      query_limit: candidate.query_limit ?? null,
-      batch_number: candidate.batch_number ?? null,
-      replay_attempts: Number(candidate.replay_attempts || 0)
-    };
+  if (state.status === 'complete' || Number(state.snapshot_count) >= Number(state.target_count)) {
+    const replay = deferredReplayDecision(state, pending, blockers, maximumReplayAttempts, 'schedule_deferred_replay');
+    return replay || { action: 'complete' };
   }
 
   if (state.status === 'ready_acquisition') {
@@ -109,23 +118,10 @@ export function authoritativeControllerDecision(state, options = {}) {
   if (state.status === 'ready') {
     const discovery = selectDiscovery(state, queryLimit);
     if (discovery) return discovery;
-    if (pending.length) {
-      const candidate = pending.find(unit => Number(unit?.replay_attempts || 0) < maximumReplayAttempts);
-      return candidate
-        ? {
-            action: 'schedule_deferred_replay_after_plan_exhaustion',
-            mode: candidate.mode || null,
-            state_code: candidate.state_code || null,
-            query_offset: candidate.query_offset ?? null,
-            query_limit: candidate.query_limit ?? null,
-            batch_number: candidate.batch_number ?? null,
-            replay_attempts: Number(candidate.replay_attempts || 0)
-          }
-        : { action: 'block', reason: 'deferred_replay_attempts_exhausted', pending_count: pending.length };
-    }
-    return { action: 'block', reason: 'priority_discovery_plan_exhausted_before_target' };
+    const replay = deferredReplayDecision(state, pending, blockers, maximumReplayAttempts, 'schedule_deferred_replay_after_plan_exhaustion');
+    return replay || { action: 'mark_sweep_complete' };
   }
 
-  if (state.status === 'complete') return { action: 'complete' };
+  if (state.status === 'sweep_complete') return { action: 'complete' };
   return { action: 'block', reason: 'unsupported_controller_status', status: state.status ?? null };
 }
