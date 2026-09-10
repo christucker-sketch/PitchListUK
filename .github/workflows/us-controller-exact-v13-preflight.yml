@@ -1,0 +1,115 @@
+name: US controller exact v13 cutover preflight
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'operations/cloudflare-global-acquisition/lib/controller-exact-preflight.mjs'
+      - 'operations/cloudflare-global-acquisition/src/index.js'
+      - '.github/workflows/us-controller-exact-v13-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-us-controller-exact-v13-preflight
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
+      WORKFLOW_NAME: findpitches-global-acquisition-shadow
+      EXPECTED_PREVIOUS_VERSION: '13'
+      EXPECTED_PREVIOUS_SHA: c63721df101ea7977e5d2d618f99883541a39df7ce88dcb9ec0700af46c3538e
+    steps:
+      - name: Check out exact main preflight commit
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Wait for exact v13 preflight capability under safe execution policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          health_url='https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health'
+          ready=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$health_url" || true)"
+            if jq -e '
+              .ok == true and
+              .exact_v13_cutover_preflight == true and
+              .execution_enabled == true and
+              .execution_level == "read_only" and
+              .us_controller_cutover_enabled == false
+            ' <<<"$body" >/dev/null 2>&1; then
+              printf '%s\n' "$body" > exact-v13-preflight-health.json
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Exact-v13 preflight capability did not become observable under safe policy.' >&2; exit 1; }
+
+      - name: Execute exact v13 cutover preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="us-controller-exact-v13-preflight-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          params='{"country":"US","mode":"prepare_exact_v13_cutover_preflight"}'
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" || true)"
+            status="$(jq -r '.result.status // empty' <<<"$body" 2>/dev/null || true)"
+            if [[ "$status" == 'complete' ]]; then
+              printf '%s\n' "$body" > exact-v13-preflight-result.json
+              jq -e --argjson previous "$EXPECTED_PREVIOUS_VERSION" --arg previous_sha "$EXPECTED_PREVIOUS_SHA" '
+                .result.output.country == "US" and
+                .result.output.mode == "prepare_exact_v13_cutover_preflight" and
+                .result.output.ok == true and
+                .result.output.preflight_ready == true and
+                .result.output.authority == "shadow" and
+                .result.output.state_source == "cloudflare-us-controller-preflight" and
+                .result.output.promotion_structurally_eligible == true and
+                (.result.output.state_version | type == "number") and
+                .result.output.state_version >= 14 and
+                (.result.output.state_sha256 | type == "string") and
+                ((.result.output.changed == false) or (.result.output.previous_version == $previous and .result.output.previous_sha256 == $previous_sha))
+              ' <<<"$body" >/dev/null
+              echo '### US controller exact v13 cutover preflight' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == 'errored' || "$status" == 'terminated' ]]; then
+              printf '%s\n' "$body" > exact-v13-preflight-result.json
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          [[ "$completed" == 'true' ]] || { echo 'Exact-v13 controller preflight timed out.' >&2; exit 1; }
+
+      - name: Publish exact preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-controller-exact-v13-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            exact-v13-preflight-health.json
+            exact-v13-preflight-result.json
+          if-no-files-found: warn
+          retention-days: 30
