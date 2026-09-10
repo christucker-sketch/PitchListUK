@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  BASE64_CHUNK_PREFIX,
   chunkControllerStateText,
   joinControllerStateChunks,
   sha256Hex,
@@ -42,11 +43,32 @@ test('controller state codec chunks and reconstructs multi-megabyte state exactl
   const originalSha = await sha256Hex(text);
   const { chunks, bytes } = chunkControllerStateText(text);
   assert.ok(chunks.length > 2);
+  assert.ok(chunks.every(chunk => chunk.startsWith(BASE64_CHUNK_PREFIX)));
   assert.equal(bytes, Buffer.byteLength(text));
 
   const reconstructed = joinControllerStateChunks(chunks);
   assert.equal(reconstructed, text);
   assert.equal(await sha256Hex(reconstructed), originalSha);
+});
+
+test('controller state codec preserves a multibyte character split across the raw byte boundary', async () => {
+  const prefix = 'x'.repeat(1023);
+  const text = `${prefix}£🙂tail`;
+  const originalSha = await sha256Hex(text);
+  const { chunks, bytes } = chunkControllerStateText(text, 1024);
+  assert.ok(chunks.length >= 2);
+  assert.equal(bytes, Buffer.byteLength(text));
+  const reconstructed = joinControllerStateChunks(chunks);
+  assert.equal(reconstructed, text);
+  assert.equal(await sha256Hex(reconstructed), originalSha);
+});
+
+test('controller state codec remains backward-compatible with legacy text chunks', () => {
+  assert.equal(joinControllerStateChunks(['legacy-', 'snapshot']), 'legacy-snapshot');
+  assert.throws(
+    () => joinControllerStateChunks([`${BASE64_CHUNK_PREFIX}eA==`, 'legacy']),
+    /mix legacy and byte-safe encodings/
+  );
 });
 
 test('controller state codec rejects incomplete controller snapshots', () => {
