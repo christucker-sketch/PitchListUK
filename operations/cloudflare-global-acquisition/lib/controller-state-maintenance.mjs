@@ -1,4 +1,5 @@
 import { shadowControllerDecision } from './controller-shadow-decision.mjs';
+import { runCloudControllerTick } from './cloud-controller-tick.mjs';
 
 const PROMOTE_CONFIRMATION = 'PROMOTE_US_CONTROLLER_TO_AUTHORITATIVE';
 const DEMOTE_CONFIRMATION = 'DEMOTE_US_CONTROLLER_TO_SHADOW';
@@ -52,6 +53,21 @@ async function authorityTransitionRequest(request, stub, pathname) {
   }));
 }
 
+async function controllerTickRequest(request, env) {
+  let execute = false;
+  if (request.method === 'POST') {
+    let body;
+    try { body = await request.json(); }
+    catch { return Response.json({ ok: false, error: 'invalid_controller_tick_payload' }, { status: 400 }); }
+    execute = body?.execute === true;
+  }
+  try {
+    return Response.json(await runCloudControllerTick(env, { execute }));
+  } catch (error) {
+    return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 });
+  }
+}
+
 export async function handleControllerStateMaintenance(request, env) {
   const configuredToken = String(env?.CONTROLLER_STATE_IMPORT_TOKEN || '');
   if (!configuredToken) {
@@ -84,6 +100,10 @@ export async function handleControllerStateMaintenance(request, env) {
       state_version: Number(response.headers.get('x-findpitches-state-version') || 0),
       decision: shadowControllerDecision(state)
     });
+  }
+
+  if ((request.method === 'GET' || request.method === 'POST') && url.pathname === '/controller-state/tick') {
+    return controllerTickRequest(request, env);
   }
 
   if (request.method === 'PUT' && url.pathname === '/controller-state/snapshot') {
