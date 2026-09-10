@@ -26,7 +26,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: findpitches-global-acquisition-shadow-proof
+  group: findpitches-uk-source-discovery-live-proof
   cancel-in-progress: false
 
 jobs:
