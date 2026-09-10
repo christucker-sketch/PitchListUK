@@ -72,7 +72,7 @@ export function blockCloudController(state, decision, now = new Date()) {
   if (state.active_instance || state.cloud_controller_intent) throw new Error('controller_block_active_work_present');
   const reason = String(decision.reason || '').trim();
   if (!reason) throw new Error('controller_block_reason_missing');
-  if (!['deferred_blocker', 'deferred_replay_attempts_exhausted', 'unsupported_controller_status'].includes(reason)) {
+  if (!['deferred_blocker', 'deferred_replay_attempts_exhausted'].includes(reason)) {
     throw new Error(`controller_block_reason_unsupported:${reason}`);
   }
   if (reason === 'deferred_blocker' && genuineBlockers(state).length < 1) throw new Error('controller_block_expected_blocker_missing');
