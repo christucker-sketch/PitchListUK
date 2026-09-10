@@ -1,11 +1,12 @@
 import { assertAcquisitionCountryEnabled, normalizeAcquisitionCountry } from '../../../platform/acquisition/country-contract.mjs';
 
 const READ_ONLY_MODE = 'approved_source_cloudflare_read_only_poll';
+const CUTOVER_READINESS_MODE = 'controller_cutover_readiness';
 const UK_ADDITIONS_MODE = 'uk_additions_only_pr';
 const UK_SOURCE_DISCOVERY_MODE = 'uk_source_discovery_pr';
 const UK_PR_ONLY_MODES = Object.freeze(new Set([UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE]));
 const MODES = Object.freeze({
-  US: Object.freeze(new Set(['acquire', 'discover', READ_ONLY_MODE])),
+  US: Object.freeze(new Set(['acquire', 'discover', READ_ONLY_MODE, CUTOVER_READINESS_MODE])),
   UK: Object.freeze(new Set([READ_ONLY_MODE, UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE]))
 });
 
@@ -17,16 +18,18 @@ export function resolveGlobalAcquisitionDispatch(payload = {}) {
   const mode = String(payload.mode || READ_ONLY_MODE).trim();
   if (!MODES[country]?.has(mode)) throw new Error(`Unsupported ${country} global acquisition mode: ${mode || '(blank)'}`);
 
-  const readOnly = mode === READ_ONLY_MODE;
+  const readOnly = mode === READ_ONLY_MODE || mode === CUTOVER_READINESS_MODE;
   const handler = country === 'UK'
     ? mode === UK_ADDITIONS_MODE
       ? 'uk_additions_only_pr'
       : mode === UK_SOURCE_DISCOVERY_MODE
         ? 'uk_source_discovery_pr'
         : 'uk_approved_source_poll'
-    : readOnly
-      ? 'us_approved_source_poll'
-      : 'us_production_workflow';
+    : mode === CUTOVER_READINESS_MODE
+      ? 'us_controller_cutover_readiness'
+      : readOnly
+        ? 'us_approved_source_poll'
+        : 'us_production_workflow';
 
   return Object.freeze({
     country,
@@ -61,4 +64,4 @@ export function assertGlobalControllerDispatchAllowed(env, dispatch) {
   return true;
 }
 
-export { READ_ONLY_MODE, UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE };
+export { READ_ONLY_MODE, CUTOVER_READINESS_MODE, UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE };

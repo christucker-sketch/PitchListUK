@@ -1,0 +1,105 @@
+name: US controller cutover readiness proof
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'operations/cloudflare-global-acquisition/lib/controller-cutover-readiness.mjs'
+      - 'operations/cloudflare-global-acquisition/lib/dispatch.mjs'
+      - 'operations/cloudflare-global-acquisition/src/index.js'
+      - '.github/workflows/us-controller-cutover-readiness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-us-controller-cutover-readiness
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
+      WORKFLOW_NAME: findpitches-global-acquisition-shadow
+    steps:
+      - name: Check out verified main
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Wait for tokenless readiness capability
+        shell: bash
+        run: |
+          set -euo pipefail
+          health_url='https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health'
+          ready=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$health_url" || true)"
+            if jq -e '.ok == true and .controller_cutover_readiness_workflow == true and .us_controller_cutover_enabled == false' <<<"$body" >/dev/null 2>&1; then
+              printf '%s\n' "$body" > us-controller-cutover-readiness-health.json
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Tokenless cutover-readiness capability did not become observable.' >&2; exit 1; }
+
+      - name: Read exact shadow cutover readiness
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="us-controller-cutover-readiness-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          params='{"country":"US","mode":"controller_cutover_readiness"}'
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" || true)"
+            status="$(jq -r '.result.status // empty' <<<"$body" 2>/dev/null || true)"
+            if [[ "$status" == 'complete' ]]; then
+              printf '%s\n' "$body" > us-controller-cutover-readiness.json
+              jq -e '
+                .result.output.country == "US" and
+                .result.output.mode == "controller_cutover_readiness" and
+                .result.output.mutation_attempted == false and
+                .result.output.authority == "shadow" and
+                (.result.output.state_version | type == "number") and
+                (.result.output.state_sha256 | type == "string") and
+                (.result.output.promotion_structurally_eligible | type == "boolean") and
+                (.result.output.promotion_blockers | type == "array")
+              ' <<<"$body" >/dev/null
+              echo '### US controller cutover readiness' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == 'errored' || "$status" == 'terminated' ]]; then
+              printf '%s\n' "$body" > us-controller-cutover-readiness.json
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          [[ "$completed" == 'true' ]] || { echo 'US controller cutover-readiness Workflow timed out.' >&2; exit 1; }
+
+      - name: Publish readiness evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-controller-cutover-readiness-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            us-controller-cutover-readiness-health.json
+            us-controller-cutover-readiness.json
+          if-no-files-found: warn
+          retention-days: 14

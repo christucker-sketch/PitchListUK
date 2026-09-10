@@ -48,3 +48,22 @@ export function buildControllerCutoverReadinessReport(state, meta = {}) {
     ]
   });
 }
+
+export async function readControllerCutoverReadinessReport(env) {
+  if (!env?.CONTROLLER_STATE) throw new Error('controller_state_binding_missing');
+  const id = env.CONTROLLER_STATE.idFromName('us-controller');
+  const stub = env.CONTROLLER_STATE.get(id);
+  const response = await stub.fetch('https://controller-state.internal/snapshot');
+  if (!response.ok) throw new Error(`cutover_readiness_snapshot_http_${response.status}`);
+  let state;
+  try {
+    state = JSON.parse(await response.text());
+  } catch {
+    throw new Error('cutover_readiness_snapshot_invalid_json');
+  }
+  return buildControllerCutoverReadinessReport(state, {
+    authority: response.headers.get('x-findpitches-state-authority') || 'unknown',
+    version: Number(response.headers.get('x-findpitches-state-version') || 0),
+    sha256: response.headers.get('x-findpitches-state-sha256') || ''
+  });
+}
