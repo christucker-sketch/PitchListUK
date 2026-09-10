@@ -39,6 +39,13 @@ function acquireUnit(overrides = {}) {
     disposition: 'deferred_for_replay', mode: 'acquire', state_code: 'TX',
     batch_number: 2, source_ids: ['src_b', 'src_a'], query_offset: 72,
     replay_attempts: 1,
+    source_pr: 1656,
+    replay_source_provenance: {
+      state_code: 'TX', source_ids: ['src_a', 'src_b'],
+      main_sha: 'a'.repeat(40), registry_blob_sha: 'b'.repeat(40),
+      deployment_anchor_sha: 'c'.repeat(40), deployment_check_id: 99,
+      proven_at: '2026-09-10T17:00:00.000Z'
+    },
     first_deferred_at: '2026-09-05T11:00:00.000Z', last_deferred_at: '2026-09-05T11:00:00.000Z',
     ...overrides
   };
@@ -61,7 +68,7 @@ test('exact discovery replay reuses integrity scheduler, increments attempt and 
   assert.equal(result.next_state.deferred_replay_inflight.key, 'discover:IL:68:4');
 });
 
-test('exact acquisition replay preserves source checkpoint and batch', () => {
+test('exact acquisition replay preserves enriched source checkpoint, batch and deployment anchor', () => {
   const original = state({ deferred_units: [acquireUnit()] });
   const result = scheduleCloudDeferredReplay(original, {
     action: 'schedule_deferred_replay_after_plan_exhaustion', mode: 'acquire', state_code: 'TX',
@@ -74,7 +81,17 @@ test('exact acquisition replay preserves source checkpoint and batch', () => {
   assert.equal(result.next_state.acquisition_batch, 2);
   assert.equal(result.next_state.current.state_code, 'TX');
   assert.equal(result.next_state.current.replay_deferred_key, 'acquire:TX:2');
+  assert.equal(result.next_state.current.source_pr, 1656);
+  assert.equal(result.next_state.current.replay_source_provenance.registry_blob_sha, 'b'.repeat(40));
   assert.equal(result.next_state.deferred_units[0].replay_attempts, 2);
+});
+
+test('unenriched legacy acquisition replay fails closed before it can run', () => {
+  const original = state({ deferred_units: [acquireUnit({ source_pr: undefined, replay_source_provenance: undefined })] });
+  assert.throws(() => scheduleCloudDeferredReplay(original, {
+    action: 'schedule_deferred_replay', mode: 'acquire', state_code: 'TX', batch_number: 2, replay_attempts: 1
+  }), /source_pr_not_enriched/);
+  assert.equal(original.deferred_replay_inflight, null);
 });
 
 test('stale replay decision fails before mutating source state', () => {

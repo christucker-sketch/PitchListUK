@@ -61,3 +61,34 @@ test('replaying completion for an already checkpointed workflow does not duplica
   });
   assert.equal(result.next_state.results.length, 1);
 });
+
+test('successful deferred acquisition Workflow resolves only its exact inflight replay', () => {
+  const state = baseState();
+  state.deferred_units = [{
+    disposition: 'deferred_for_replay', mode: 'acquire', state_code: 'TX', batch_number: 2,
+    source_ids: ['tx-a'], replay_attempts: 1
+  }];
+  state.deferred_replay_inflight = {
+    disposition: 'deferred_for_replay', key: 'acquire:TX:2', mode: 'acquire', state_code: 'TX',
+    batch_number: 2, source_ids: ['tx-a'], replay_attempts: 1
+  };
+  const result = applyAcquisitionWorkflowCompletion(state, state.active_instance, {
+    state_code: 'TX', before: 704, additions: 0, after: 704, publication: {}
+  });
+  assert.equal(result.resolved_replay_key, 'acquire:TX:2');
+  assert.equal(result.next_state.deferred_replay_inflight, null);
+  assert.equal(result.next_state.deferred_units.length, 0);
+  assert.equal(result.next_state.resolved_deferred_units.at(-1).disposition, 'replayed_successfully');
+  assert.equal(result.next_state.resilience_events.at(-1).reason, 'deferred_replay_succeeded');
+});
+
+test('deferred acquisition completion refuses to resolve a different state replay', () => {
+  const state = baseState();
+  state.deferred_replay_inflight = {
+    key: 'acquire:NY:2', mode: 'acquire', state_code: 'NY', batch_number: 2,
+    source_ids: ['ny-a'], replay_attempts: 1
+  };
+  assert.throws(() => applyAcquisitionWorkflowCompletion(state, state.active_instance, {
+    state_code: 'TX', before: 704, additions: 0, after: 704, publication: {}
+  }), /deferred_replay_identity_mismatch/);
+});

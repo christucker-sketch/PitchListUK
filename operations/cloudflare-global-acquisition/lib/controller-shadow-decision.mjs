@@ -37,15 +37,19 @@ function selectDiscovery(state) {
   return null;
 }
 
+function resumeInflightDecision(state) {
+  const inflight = state?.deferred_replay_inflight;
+  if (!inflight) return null;
+  return {
+    action: 'resume_deferred_replay',
+    mode: inflight.mode || null,
+    state_code: inflight.state_code || null,
+    key: inflight.key || null
+  };
+}
+
 function deferredReplayDecision(state, pending, blockers, maximumReplayAttempts, exhaustedAction) {
-  if (state.deferred_replay_inflight) {
-    return {
-      action: 'resume_deferred_replay',
-      mode: state.deferred_replay_inflight.mode || null,
-      state_code: state.deferred_replay_inflight.state_code || null,
-      key: state.deferred_replay_inflight.key || null
-    };
-  }
+  if (state.deferred_replay_inflight) return resumeInflightDecision(state);
   if (pending.length) {
     const candidate = pending.find(unit => Number(unit?.replay_attempts || 0) < maximumReplayAttempts);
     if (!candidate) return { action: 'block', reason: 'deferred_replay_attempts_exhausted', pending_count: pending.length };
@@ -61,6 +65,32 @@ function deferredReplayDecision(state, pending, blockers, maximumReplayAttempts,
   }
   if (blockers.length) return { action: 'block', reason: 'deferred_blocker', blocker_count: blockers.length };
   return null;
+}
+
+function inflightReadyDecision(state) {
+  const inflight = state?.deferred_replay_inflight;
+  if (!inflight) return null;
+  if (state.status === 'ready_acquisition') {
+    return {
+      action: 'trigger_acquisition_or_advance_batch',
+      state_code: state.current?.state_code ?? inflight.state_code ?? null,
+      batch_number: Number(state.acquisition_batch || 1),
+      pending_source_count: Array.isArray(state.pending_source_ids) ? state.pending_source_ids.length : 0,
+      source_ids: Array.isArray(state.pending_source_ids) ? [...state.pending_source_ids] : []
+    };
+  }
+  if (state.status !== 'ready') return null;
+  if (inflight.mode === 'discover') {
+    const code = String(inflight.state_code || '').toUpperCase();
+    const originalOffset = Number(inflight.query_offset);
+    const currentOffset = Number(state?.query_offsets?.[code]);
+    if (Number.isInteger(originalOffset) && Number.isInteger(currentOffset) && currentOffset > originalOffset) {
+      return resumeInflightDecision(state);
+    }
+    return selectDiscovery(state);
+  }
+  if (inflight.mode === 'acquire') return resumeInflightDecision(state);
+  return { action: 'block', reason: 'unsupported_controller_status', status: `deferred_replay_inflight:${inflight.mode || 'unknown'}` };
 }
 
 export function shadowControllerDecision(state, options = {}) {
@@ -99,6 +129,9 @@ export function shadowControllerDecision(state, options = {}) {
   if (state.status === 'blocked_deferred') {
     return { action: 'block', reason: 'deferred_blocker', blocker_count: blockers.length };
   }
+
+  const inflightReady = inflightReadyDecision(state);
+  if (inflightReady) return inflightReady;
 
   if (state.status === 'complete' || Number(state.snapshot_count) >= Number(state.target_count)) {
     const replay = deferredReplayDecision(state, pending, blockers, maximumReplayAttempts, 'schedule_deferred_replay');

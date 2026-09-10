@@ -81,16 +81,19 @@ test('target reached completes explicitly and retires remaining acquisition cont
   assert.equal(env.getState().acquisition_batch, 1);
 });
 
-test('genuine deferred blocker checkpoints blocked_deferred with exact evidence', async () => {
+test('already-blocked deferred controller is idempotent and preserves exact evidence', async () => {
   const env = makeEnv(baseState({
     status: 'blocked_deferred',
+    blocked: { reason: 'deferred_blocker', blocker_count: 1, deferred_count: 0, blocked_at: '2026-09-10T17:00:00.000Z' },
     deferred_units: [{ disposition: 'genuine_blocker', state_code: 'MA', mode: 'discover' }]
   }));
   const result = await runCloudControllerTick(env, { execute: true });
-  assert.equal(result.phase, 'controller_blocked');
+  assert.equal(result.executed, false);
+  assert.equal(result.phase, 'controller_already_blocked');
   assert.equal(env.getState().status, 'blocked_deferred');
   assert.equal(env.getState().blocked.reason, 'deferred_blocker');
   assert.equal(env.getState().blocked.blocker_count, 1);
+  assert.equal(env.getCheckpoints(), 0);
 });
 
 test('unsupported controller status remains a hard error and never mutates state', async () => {
