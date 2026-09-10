@@ -264,7 +264,9 @@ export class ControllerStateDurableObject extends DurableObject {
           'content-type': 'application/json; charset=utf-8',
           'x-findpitches-state-version': String(meta.version),
           'x-findpitches-state-sha256': meta.sha256,
-          'x-findpitches-state-authority': meta.authority
+          'x-findpitches-state-authority': meta.authority,
+          'x-findpitches-state-source': meta.source,
+          'x-findpitches-state-imported-at': meta.imported_at
         }
       });
     }
