@@ -39,6 +39,36 @@ export function legacyAcquisitionReplayUnitsNeedingProof(state) {
   return pendingDeferredAcquisitionUnits(state).filter(unit => !acquisitionReplayProvenanceReady(unit));
 }
 
+export function assertControllerCutoverPromotionMetaReady(meta) {
+  if (!meta || meta.authority !== 'shadow') throw new Error('controller_cutover_promotion_requires_shadow_authority');
+  if (string(meta.source) !== 'cloudflare-us-controller-preflight') throw new Error('controller_cutover_promotion_requires_preflight_snapshot');
+  return true;
+}
+
+export function assertAcquisitionReplayProofStillCurrent(unit, proof) {
+  if (!acquisitionReplayProvenanceReady(unit)) throw new Error('controller_cutover_promotion_stored_provenance_invalid');
+  if (!proof || string(proof.state_code).toUpperCase() !== string(unit.state_code).toUpperCase()) {
+    throw new Error('controller_cutover_promotion_proof_state_mismatch');
+  }
+  if (Number(proof.source_pr_number) !== Number(unit.source_pr)) throw new Error('controller_cutover_promotion_source_pr_changed');
+  const expectedIds = sortedStrings(unit.source_ids);
+  const currentIds = sortedStrings(proof.source_ids);
+  if (JSON.stringify(expectedIds) !== JSON.stringify(currentIds)) throw new Error('controller_cutover_promotion_source_ids_changed');
+  const stored = unit.replay_source_provenance;
+  for (const field of ['main_sha', 'registry_blob_sha', 'deployment_anchor_sha']) {
+    if (string(proof[field]).toLowerCase() !== string(stored[field]).toLowerCase()) {
+      throw new Error(`controller_cutover_promotion_${field}_changed`);
+    }
+  }
+  if (Number(proof.deployment_check_id) !== Number(stored.deployment_check_id)) {
+    throw new Error('controller_cutover_promotion_deployment_check_changed');
+  }
+  if (string(stored.source_head_sha) && string(proof.source_head_sha).toLowerCase() !== string(stored.source_head_sha).toLowerCase()) {
+    throw new Error('controller_cutover_promotion_source_head_sha_changed');
+  }
+  return true;
+}
+
 export function stampControllerCutoverPreflight(state, now = new Date()) {
   if (!state || typeof state !== 'object') throw new Error('cutover_preflight_state_missing');
   if (state.deferred_replay_inflight) throw new Error('cutover_preflight_replay_inflight_present');
