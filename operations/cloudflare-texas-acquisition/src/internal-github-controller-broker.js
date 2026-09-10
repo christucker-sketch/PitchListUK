@@ -37,8 +37,10 @@ function validatePayload(payload = {}) {
   if (!['inspect', 'merge'].includes(action)) throw new Error('controller_github_action_rejected');
   if (!Number.isInteger(prNumber) || prNumber <= 0) throw new Error('controller_github_pr_number_invalid');
   const expectedHeadSha = String(payload.expected_head_sha || '').trim().toLowerCase();
+  const expectedBaseSha = String(payload.expected_base_sha || '').trim().toLowerCase();
   if (action === 'merge' && !/^[a-f0-9]{40}$/.test(expectedHeadSha)) throw new Error('controller_github_expected_head_sha_invalid');
-  return { action, prNumber, expectedHeadSha };
+  if (action === 'merge' && !/^[a-f0-9]{40}$/.test(expectedBaseSha)) throw new Error('controller_github_expected_base_sha_invalid');
+  return { action, prNumber, expectedHeadSha, expectedBaseSha };
 }
 
 async function githubJson(fetchImpl, url, options) {
@@ -55,11 +57,7 @@ function decodeBase64Utf8(content) {
 }
 
 async function fetchJsonFileAtRef(fetchImpl, repo, authHeaders, path, ref) {
-  const metadata = await githubJson(
-    fetchImpl,
-    `https://api.github.com/repos/${repo}/contents/${path}?ref=${encodeURIComponent(ref)}`,
-    { headers: authHeaders }
-  );
+  const metadata = await githubJson(fetchImpl, `https://api.github.com/repos/${repo}/contents/${path}?ref=${encodeURIComponent(ref)}`, { headers: authHeaders });
   let encoded = String(metadata?.content || '').trim();
   if (!encoded) {
     const gitUrl = String(metadata?.git_url || '');
@@ -67,9 +65,7 @@ async function fetchJsonFileAtRef(fetchImpl, repo, authHeaders, path, ref) {
     const blob = await githubJson(fetchImpl, gitUrl, { headers: authHeaders });
     encoded = String(blob?.content || '').trim();
     if (String(blob?.encoding || '').toLowerCase() !== 'base64') throw new Error('controller_github_registry_blob_encoding_invalid');
-  } else if (String(metadata?.encoding || '').toLowerCase() !== 'base64') {
-    throw new Error('controller_github_registry_content_encoding_invalid');
-  }
+  } else if (String(metadata?.encoding || '').toLowerCase() !== 'base64') throw new Error('controller_github_registry_content_encoding_invalid');
   if (!encoded) throw new Error('controller_github_registry_content_missing');
   try { return JSON.parse(decodeBase64Utf8(encoded)); }
   catch { throw new Error('controller_github_registry_json_invalid'); }
@@ -91,25 +87,15 @@ async function inspectPr(fetchImpl, repo, authHeaders, prNumber) {
   const head = String(pr?.head?.ref || '');
   if (!ALLOWED_HEAD.test(head)) throw new Error('controller_github_pr_head_rejected');
   if (String(pr?.base?.ref || '') !== 'main') throw new Error('controller_github_pr_base_rejected');
-
   const [files, commits, checkRuns] = await Promise.all([
     githubJson(fetchImpl, `${baseUrl}/pulls/${prNumber}/files?per_page=100`, { headers: authHeaders }),
     githubJson(fetchImpl, `${baseUrl}/pulls/${prNumber}/commits?per_page=100`, { headers: authHeaders }),
     githubJson(fetchImpl, `${baseUrl}/commits/${pr.head.sha}/check-runs?per_page=100`, { headers: authHeaders })
   ]);
-
   const inspection = {
-    number: pr.number,
-    state: String(pr.state || '').toUpperCase(),
-    merged: Boolean(pr.merged),
-    draft: Boolean(pr.draft),
-    mergeable: pr.mergeable,
-    mergeable_state: pr.mergeable_state || null,
-    base_ref: pr.base.ref,
-    base_sha: pr.base.sha,
-    head_ref: head,
-    head_sha: pr.head.sha,
-    body: String(pr.body || ''),
+    number: pr.number, state: String(pr.state || '').toUpperCase(), merged: Boolean(pr.merged), draft: Boolean(pr.draft),
+    mergeable: pr.mergeable, mergeable_state: pr.mergeable_state || null,
+    base_ref: pr.base.ref, base_sha: pr.base.sha, head_ref: head, head_sha: pr.head.sha, body: String(pr.body || ''),
     files: Array.isArray(files) ? files.map(file => ({ path: file.filename, status: file.status, additions: file.additions, deletions: file.deletions, changes: file.changes })) : [],
     commits: Array.isArray(commits) ? commits.map(commit => ({ sha: commit.sha, parents: Array.isArray(commit.parents) ? commit.parents.map(parent => parent.sha) : [] })) : [],
     check_runs: Array.isArray(checkRuns?.check_runs) ? checkRuns.check_runs.map(run => ({ name: run.name, status: run.status, conclusion: run.conclusion })) : []
@@ -123,24 +109,20 @@ export async function handleInternalGithubControllerRequest(request, env, option
   let payload;
   try { payload = validatePayload(await request.json()); }
   catch (error) { return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 }); }
-
   const repo = requireEnv(env, 'GITHUB_REPO');
   const fetchImpl = options.fetchImpl || fetch;
   const authHeaders = headers(env);
-
   try {
     const inspection = await inspectPr(fetchImpl, repo, authHeaders, payload.prNumber);
     if (payload.action === 'inspect') return Response.json({ ok: true, pr: inspection });
-
     if (inspection.state !== 'OPEN' || inspection.merged || inspection.draft) throw new Error('controller_github_pr_not_open_mergeable_candidate');
-    if (inspection.head_sha.toLowerCase() !== payload.expectedHeadSha) throw new Error('controller_github_pr_head_sha_mismatch');
+    if (String(inspection.base_sha).toLowerCase() !== payload.expectedBaseSha) throw new Error('controller_github_pr_base_sha_mismatch');
+    if (String(inspection.head_sha).toLowerCase() !== payload.expectedHeadSha) throw new Error('controller_github_pr_head_sha_mismatch');
     const merge = await githubJson(fetchImpl, `https://api.github.com/repos/${repo}/pulls/${payload.prNumber}/merge`, {
-      method: 'PUT',
-      headers: authHeaders,
-      body: JSON.stringify({ sha: payload.expectedHeadSha, merge_method: 'merge' })
+      method: 'PUT', headers: authHeaders, body: JSON.stringify({ sha: payload.expectedHeadSha, merge_method: 'merge' })
     });
     if (!merge?.merged || !/^[a-f0-9]{40}$/i.test(String(merge.sha || ''))) throw new Error('controller_github_merge_not_confirmed');
-    return Response.json({ ok: true, merged: true, merge_sha: merge.sha, pr_number: payload.prNumber });
+    return Response.json({ ok: true, merged: true, merge_sha: merge.sha, pr_number: payload.prNumber, base_sha: inspection.base_sha, head_sha: inspection.head_sha });
   } catch (error) {
     return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 });
   }
