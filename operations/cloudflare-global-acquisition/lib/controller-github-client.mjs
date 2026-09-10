@@ -35,6 +35,18 @@ function resultForDiscovery(state) {
   return result;
 }
 
+function requireExactRegistryProof(pr, expectedIds, expectedCount) {
+  const proof = pr?.source_registry_proof;
+  if (!proof || proof.additions_only !== true) throw new Error('source_pr_registry_additions_only_proof_missing');
+  const addedIds = [...(Array.isArray(proof.added_ids) ? proof.added_ids : [])].map(String).sort();
+  if (Number(proof.added_count) !== expectedCount || addedIds.length !== expectedCount) throw new Error('source_pr_registry_added_count_mismatch');
+  if (JSON.stringify(addedIds) !== JSON.stringify(expectedIds)) throw new Error('source_pr_registry_added_ids_mismatch');
+  const baseCount = Number(proof.base_count);
+  const headCount = Number(proof.head_count);
+  if (!Number.isInteger(baseCount) || baseCount < 0 || headCount !== baseCount + expectedCount) throw new Error('source_pr_registry_count_delta_invalid');
+  return { added_ids: addedIds, base_count: baseCount, head_count: headCount };
+}
+
 export function validateSourcePrInspection(state, pr) {
   const current = state?.current;
   if (!current || state?.status !== 'reviewing_source_pr') throw new Error('source_pr_controller_state_invalid');
@@ -51,7 +63,7 @@ export function validateSourcePrInspection(state, pr) {
 
   const result = resultForDiscovery(state);
   const expectedCount = Number(result?.publication?.source_count || result?.publication?.source_ids?.length || 0);
-  const expectedIds = [...(Array.isArray(result?.publication?.source_ids) ? result.publication.source_ids : [])].sort();
+  const expectedIds = [...(Array.isArray(result?.publication?.source_ids) ? result.publication.source_ids : [])].map(String).sort();
   if (expectedCount < 1 || expectedIds.length !== expectedCount) throw new Error('source_pr_result_evidence_incomplete');
   if (Number(result?.generated_source_count) !== expectedCount || Number(result?.evidence_passed_count) !== expectedCount) throw new Error('source_pr_result_evidence_count_mismatch');
 
@@ -70,13 +82,16 @@ export function validateSourcePrInspection(state, pr) {
   const normalizedBody = body.toLowerCase();
   for (const id of expectedIds) if (!normalizedBody.includes(`  - ${String(id).toLowerCase()}:`)) throw new Error(`source_pr_missing_evidence_receipt:${id}`);
 
+  const registryProof = requireExactRegistryProof(pr, expectedIds, expectedCount);
   return Object.freeze({
     pr_number: expectedPr,
     head_sha: pr.head_sha,
     base_sha: pr.base_sha,
     state_code: stateCode,
     source_ids: expectedIds,
-    source_count: expectedCount
+    source_count: expectedCount,
+    registry_base_count: registryProof.base_count,
+    registry_head_count: registryProof.head_count
   });
 }
 
