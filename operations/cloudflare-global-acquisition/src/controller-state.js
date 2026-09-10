@@ -7,6 +7,10 @@ import {
   validateControllerStateText
 } from '../lib/controller-state-codec.mjs';
 
+function validSha256(value) {
+  return /^[a-f0-9]{64}$/.test(String(value || '').trim().toLowerCase());
+}
+
 export class ControllerStateDurableObject extends DurableObject {
   constructor(ctx, env) {
     super(ctx, env);
@@ -55,18 +59,12 @@ export class ControllerStateDurableObject extends DurableObject {
     return joinControllerStateChunks(rows.map(row => row.payload));
   }
 
-  async importSnapshot(request) {
-    const raw = await request.text();
+  async writeSnapshot(raw, { source, authority }) {
     validateControllerStateText(raw);
     const checksum = await sha256Hex(raw);
     const { chunks, bytes } = chunkControllerStateText(raw);
     const previous = this.readMeta();
     const version = Number(previous?.version || 0) + 1;
-    const source = request.headers.get('x-findpitches-state-source') || 'unknown';
-    const authority = request.headers.get('x-findpitches-state-authority') || 'shadow';
-    if (!['shadow', 'authoritative'].includes(authority)) {
-      return Response.json({ ok: false, error: 'invalid_controller_state_authority' }, { status: 400 });
-    }
 
     for (let index = 0; index < chunks.length; index += 1) {
       this.ctx.storage.sql.exec(`
@@ -99,8 +97,7 @@ export class ControllerStateDurableObject extends DurableObject {
 
     this.ctx.storage.sql.exec('DELETE FROM controller_state_chunks WHERE version < ?', Math.max(1, version - 2));
 
-    return Response.json({
-      ok: true,
+    return {
       version,
       sha256: checksum,
       byte_length: bytes,
@@ -108,7 +105,46 @@ export class ControllerStateDurableObject extends DurableObject {
       imported_at: importedAt,
       source,
       authority
-    }, { status: 201 });
+    };
+  }
+
+  async importSnapshot(request) {
+    const raw = await request.text();
+    const source = request.headers.get('x-findpitches-state-source') || 'unknown';
+    const authority = request.headers.get('x-findpitches-state-authority') || 'shadow';
+    if (!['shadow', 'authoritative'].includes(authority)) {
+      return Response.json({ ok: false, error: 'invalid_controller_state_authority' }, { status: 400 });
+    }
+    const written = await this.writeSnapshot(raw, { source, authority });
+    return Response.json({ ok: true, ...written }, { status: 201 });
+  }
+
+  async checkpointSnapshot(request) {
+    const meta = this.readMeta();
+    if (!meta) return Response.json({ ok: false, error: 'controller_state_not_initialized' }, { status: 404 });
+    if (meta.authority !== 'authoritative') {
+      return Response.json({ ok: false, error: 'controller_state_not_authoritative', current_authority: meta.authority }, { status: 409 });
+    }
+
+    const expectedVersion = Number(request.headers.get('x-findpitches-expected-state-version'));
+    const expectedSha256 = String(request.headers.get('x-findpitches-expected-state-sha256') || '').trim().toLowerCase();
+    if (!Number.isInteger(expectedVersion) || expectedVersion <= 0 || !validSha256(expectedSha256)) {
+      return Response.json({ ok: false, error: 'invalid_controller_checkpoint_precondition' }, { status: 400 });
+    }
+    if (Number(meta.version) !== expectedVersion || String(meta.sha256).toLowerCase() !== expectedSha256) {
+      return Response.json({
+        ok: false,
+        error: 'controller_state_precondition_failed',
+        current: { version: meta.version, sha256: meta.sha256, authority: meta.authority }
+      }, { status: 409 });
+    }
+
+    const raw = await request.text();
+    const written = await this.writeSnapshot(raw, {
+      source: 'cloudflare-us-controller',
+      authority: 'authoritative'
+    });
+    return Response.json({ ok: true, changed: true, ...written }, { status: 201 });
   }
 
   async transitionAuthority(request, targetAuthority) {
@@ -124,7 +160,7 @@ export class ControllerStateDurableObject extends DurableObject {
 
     const expectedVersion = Number(body?.expected_version);
     const expectedSha256 = String(body?.expected_sha256 || '').trim().toLowerCase();
-    if (!Number.isInteger(expectedVersion) || expectedVersion <= 0 || !/^[a-f0-9]{64}$/.test(expectedSha256)) {
+    if (!Number.isInteger(expectedVersion) || expectedVersion <= 0 || !validSha256(expectedSha256)) {
       return Response.json({ ok: false, error: 'invalid_authority_transition_precondition' }, { status: 400 });
     }
 
@@ -187,6 +223,14 @@ export class ControllerStateDurableObject extends DurableObject {
     if (request.method === 'PUT' && url.pathname === '/snapshot') {
       try {
         return await this.importSnapshot(request);
+      } catch (error) {
+        return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
+      }
+    }
+
+    if (request.method === 'PUT' && url.pathname === '/checkpoint') {
+      try {
+        return await this.checkpointSnapshot(request);
       } catch (error) {
         return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
       }
