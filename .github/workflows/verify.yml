@@ -158,7 +158,7 @@ jobs:
           deploy=false
           while IFS= read -r changed; do
             case "$changed" in
-              src/*|platform/*|functions/_middleware.js|functions/api/*|functions/_data/opportunities.mjs|scripts/build.js|scripts/generate-seo-pages.js|scripts/deploy-public-site.js|package.json|package-lock.json|.github/workflows/verify.yml)
+              src/*|platform/*|functions/_middleware.js|functions/api/*|functions/_data/opportunities.mjs|functions/_data/us-opportunities.mjs|scripts/build.js|scripts/generate-seo-pages.js|scripts/deploy-public-site.js|package.json|package-lock.json|.github/workflows/verify.yml)
                 deploy=true
                 break
                 ;;
