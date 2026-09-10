@@ -6,10 +6,7 @@ async function brokerRequest(env, payload) {
   if (!env?.GITHUB_PR_BROKER) throw new Error('controller_github_broker_binding_missing');
   const response = await env.GITHUB_PR_BROKER.fetch(new Request(INTERNAL_URL, {
     method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-findpitches-internal-service': INTERNAL_MARKER
-    },
+    headers: { 'content-type': 'application/json', 'x-findpitches-internal-service': INTERNAL_MARKER },
     body: JSON.stringify(payload)
   }));
   const body = await response.json().catch(() => ({}));
@@ -19,6 +16,19 @@ async function brokerRequest(env, payload) {
 
 export async function inspectControllerPr(env, prNumber) {
   return (await brokerRequest(env, { action: 'inspect', pr_number: prNumber })).pr;
+}
+
+export async function mergeControllerPr(env, inspection) {
+  const prNumber = Number(inspection?.pr_number);
+  const headSha = String(inspection?.head_sha || '').toLowerCase();
+  const baseSha = String(inspection?.base_sha || '').toLowerCase();
+  if (!Number.isInteger(prNumber) || prNumber <= 0) throw new Error('controller_merge_pr_number_invalid');
+  if (!/^[a-f0-9]{40}$/.test(headSha) || !/^[a-f0-9]{40}$/.test(baseSha)) throw new Error('controller_merge_sha_invalid');
+  const result = await brokerRequest(env, { action: 'merge', pr_number: prNumber, expected_head_sha: headSha, expected_base_sha: baseSha });
+  if (result?.merged !== true || Number(result?.pr_number) !== prNumber || !/^[a-f0-9]{40}$/i.test(String(result?.merge_sha || ''))) {
+    throw new Error('controller_merge_not_confirmed');
+  }
+  return result;
 }
 
 function successfulChecks(checkRuns) {
@@ -76,22 +86,15 @@ export function validateSourcePrInspection(state, pr) {
     `- deterministic source evidence receipts: ${expectedCount}/${expectedCount} passed`,
     '- additions only; no source removals',
     '- no automatic merge or deploy requested'
-  ]) {
-    if (!body.includes(marker)) throw new Error('source_pr_body_evidence_mismatch');
-  }
+  ]) if (!body.includes(marker)) throw new Error('source_pr_body_evidence_mismatch');
   const normalizedBody = body.toLowerCase();
   for (const id of expectedIds) if (!normalizedBody.includes(`  - ${String(id).toLowerCase()}:`)) throw new Error(`source_pr_missing_evidence_receipt:${id}`);
 
   const registryProof = requireExactRegistryProof(pr, expectedIds, expectedCount);
   return Object.freeze({
-    pr_number: expectedPr,
-    head_sha: pr.head_sha,
-    base_sha: pr.base_sha,
-    state_code: stateCode,
-    source_ids: expectedIds,
-    source_count: expectedCount,
-    registry_base_count: registryProof.base_count,
-    registry_head_count: registryProof.head_count
+    pr_number: expectedPr, head_sha: pr.head_sha, base_sha: pr.base_sha, state_code: stateCode,
+    source_ids: expectedIds, source_count: expectedCount,
+    registry_base_count: registryProof.base_count, registry_head_count: registryProof.head_count
   });
 }
 
