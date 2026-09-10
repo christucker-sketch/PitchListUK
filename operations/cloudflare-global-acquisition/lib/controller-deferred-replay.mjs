@@ -49,6 +49,23 @@ function maximumAttemptsValue(value) {
   return maximum;
 }
 
+function bindEnrichedAcquisitionCheckpoint(nextState, candidate) {
+  const sourcePr = Number(candidate?.source_pr || candidate?.source_pr_number);
+  const provenance = candidate?.replay_source_provenance;
+  if (!Number.isInteger(sourcePr) || sourcePr <= 0) throw new Error('deferred_acquisition_replay_source_pr_not_enriched');
+  if (!provenance || !/^[a-f0-9]{40}$/i.test(String(provenance.registry_blob_sha || '')) || !/^[a-f0-9]{40}$/i.test(String(provenance.deployment_anchor_sha || ''))) {
+    throw new Error('deferred_acquisition_replay_provenance_not_enriched');
+  }
+  const expectedIds = [...(Array.isArray(candidate?.source_ids) ? candidate.source_ids : [])].map(String).sort();
+  const provenIds = [...(Array.isArray(provenance.source_ids) ? provenance.source_ids : [])].map(String).sort();
+  if (!expectedIds.length || JSON.stringify(expectedIds) !== JSON.stringify(provenIds)) throw new Error('deferred_acquisition_replay_provenance_ids_mismatch');
+  nextState.current = {
+    ...(nextState.current || {}),
+    source_pr: sourcePr,
+    replay_source_provenance: structuredClone(provenance)
+  };
+}
+
 export function scheduleCloudDeferredReplay(state, decision, now = new Date(), options = {}) {
   if (!state || !decision || !['schedule_deferred_replay', 'schedule_deferred_replay_after_plan_exhaustion'].includes(decision.action)) {
     throw new Error('deferred_replay_schedule_decision_invalid');
@@ -65,6 +82,7 @@ export function scheduleCloudDeferredReplay(state, decision, now = new Date(), o
   const replay = scheduleNextDeferredReplay(nextState, now, { maximumAttempts });
   if (replay?.scheduled !== true || !replay?.unit) throw new Error(`deferred_replay_schedule_failed:${replay?.reason || 'unknown'}`);
   if (string(replay.unit.key) !== expectedKey) throw new Error('deferred_replay_schedule_key_mismatch');
+  if (replay.unit.mode === 'acquire') bindEnrichedAcquisitionCheckpoint(nextState, candidate);
   nextState.updated_at = now.toISOString();
   return Object.freeze({ next_state: nextState, unit: structuredClone(replay.unit), key: expectedKey });
 }
@@ -84,6 +102,23 @@ export function resolveCloudDeferredReplay(state, decision, now = new Date()) {
   if (resolved !== key) throw new Error('deferred_replay_resume_resolution_mismatch');
   nextState.updated_at = now.toISOString();
   return Object.freeze({ next_state: nextState, key });
+}
+
+export function resolveCloudDeferredReplayAfterWorkflowSuccess(state, active, now = new Date()) {
+  const inflight = state?.deferred_replay_inflight;
+  if (!inflight) return Object.freeze({ next_state: structuredClone(state), key: null, resolved: false });
+  const mode = string(inflight.mode);
+  const stateCode = string(inflight.state_code).toUpperCase();
+  if (!active || string(active.mode) !== mode || string(active.state_code).toUpperCase() !== stateCode) {
+    throw new Error('deferred_replay_workflow_success_identity_mismatch');
+  }
+  const key = string(inflight.key || deferredUnitKey(inflight));
+  if (!key) throw new Error('deferred_replay_workflow_success_key_invalid');
+  const nextState = structuredClone(state);
+  const resolvedKey = resolveDeferredReplay(nextState, now);
+  if (resolvedKey !== key) throw new Error('deferred_replay_workflow_success_resolution_mismatch');
+  nextState.updated_at = now.toISOString();
+  return Object.freeze({ next_state: nextState, key, resolved: true });
 }
 
 export function quarantineCloudDeferredReplayExhausted(state, decision, now = new Date(), options = {}) {
