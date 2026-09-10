@@ -14,8 +14,8 @@ function makeEnv(state) {
   return {
     CONTROLLER_STATE: { idFromName: v => v, get: () => stub },
     GLOBAL_CONTROLLER_CUTOVER_ENABLED: 'false',
-    GLOBAL_CONTROLLER_EXECUTION_LEVEL: 'read_only',
-    GLOBAL_CONTROLLER_EXECUTION_ENABLED: 'true'
+    GLOBAL_ACQUISITION_EXECUTION_LEVEL: 'production',
+    GLOBAL_ACQUISITION_EXECUTION_ENABLED: 'true'
   };
 }
 
