@@ -24,7 +24,7 @@ export function isInternalGithubControllerRequest(request) {
 function validatePayload(payload = {}) {
   const action = String(payload.action || 'inspect');
   const prNumber = Number(payload.pr_number);
-  if (!['inspect', 'merge', 'inspect_merge_checks'].includes(action)) throw new Error('controller_github_action_rejected');
+  if (!['inspect', 'merge', 'inspect_merge_checks', 'inspect_data_merge_checks'].includes(action)) throw new Error('controller_github_action_rejected');
   if (!Number.isInteger(prNumber) || prNumber <= 0) throw new Error('controller_github_pr_number_invalid');
   const expectedHeadSha = String(payload.expected_head_sha || '').trim().toLowerCase();
   const expectedBaseSha = String(payload.expected_base_sha || '').trim().toLowerCase();
@@ -39,7 +39,7 @@ async function githubJson(fetchImpl, url, options) {
   return body;
 }
 function compactChecks(checkRuns) {
-  return Array.isArray(checkRuns?.check_runs) ? checkRuns.check_runs.map(run => ({ name: run.name, status: run.status, conclusion: run.conclusion })) : [];
+  return Array.isArray(checkRuns?.check_runs) ? checkRuns.check_runs.map(run => ({ id: run.id, name: run.name, status: run.status, conclusion: run.conclusion })) : [];
 }
 function decodeBase64Utf8(content) {
   const binary = atob(String(content || '').replace(/\s+/g, ''));
@@ -112,16 +112,22 @@ async function inspectPr(fetchImpl, repo, authHeaders, prNumber) {
   inspection.data_snapshot_proof = await dataSnapshotProof(fetchImpl, repo, authHeaders, inspection);
   return inspection;
 }
-async function inspectMergeChecks(fetchImpl, repo, authHeaders, prNumber) {
+async function inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, expectedHeadPrefix, errorPrefix) {
   const baseUrl = `https://api.github.com/repos/${repo}`;
   const pr = await githubJson(fetchImpl, `${baseUrl}/pulls/${prNumber}`, { headers: authHeaders });
   const head = String(pr?.head?.ref || '');
-  if (!head.startsWith('sources/cloud-us-')) throw new Error('controller_github_source_merge_head_rejected');
-  if (String(pr?.base?.ref || '') !== 'main' || !pr?.merged || !pr?.merged_at) throw new Error('controller_github_source_pr_not_merged');
+  if (!head.startsWith(expectedHeadPrefix)) throw new Error(`controller_github_${errorPrefix}_merge_head_rejected`);
+  if (String(pr?.base?.ref || '') !== 'main' || !pr?.merged || !pr?.merged_at) throw new Error(`controller_github_${errorPrefix}_pr_not_merged`);
   const mergeSha = String(pr?.merge_commit_sha || '').toLowerCase();
-  if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error('controller_github_source_merge_sha_invalid');
+  if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error(`controller_github_${errorPrefix}_merge_sha_invalid`);
   const checkRuns = await githubJson(fetchImpl, `${baseUrl}/commits/${mergeSha}/check-runs?per_page=100`, { headers: authHeaders });
   return { pr_number: Number(pr.number), merge_sha: mergeSha, merged_at: pr.merged_at, check_runs: compactChecks(checkRuns) };
+}
+async function inspectSourceMergeChecks(fetchImpl, repo, authHeaders, prNumber) {
+  return inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, 'sources/cloud-us-', 'source');
+}
+async function inspectDataMergeChecks(fetchImpl, repo, authHeaders, prNumber) {
+  return inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, 'data/cloud-us-', 'data');
 }
 
 export async function handleInternalGithubControllerRequest(request, env, options = {}) {
@@ -132,7 +138,8 @@ export async function handleInternalGithubControllerRequest(request, env, option
   const fetchImpl = options.fetchImpl || fetch;
   const authHeaders = headers(env);
   try {
-    if (payload.action === 'inspect_merge_checks') return Response.json({ ok: true, deployment: await inspectMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
+    if (payload.action === 'inspect_merge_checks') return Response.json({ ok: true, deployment: await inspectSourceMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
+    if (payload.action === 'inspect_data_merge_checks') return Response.json({ ok: true, deployment: await inspectDataMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
     const inspection = await inspectPr(fetchImpl, repo, authHeaders, payload.prNumber);
     if (payload.action === 'inspect') return Response.json({ ok: true, pr: inspection });
     if (String(inspection.base_sha).toLowerCase() !== payload.expectedBaseSha) throw new Error('controller_github_pr_base_sha_mismatch');
