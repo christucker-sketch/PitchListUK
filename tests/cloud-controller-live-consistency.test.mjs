@@ -110,16 +110,15 @@ test('live consistency tick fails closed on mixed partial publication without ch
   assert.equal(env.getState().status, 'waiting_for_live_consistency');
 });
 
-test('live consistency tick rejects stale decision identity before reading production', async () => {
+test('live consistency tick derives deployment identity from the latest checkpoint snapshot', async () => {
   const env = makeEnv();
   env.getState().current.live_consistency.deployment_id = 'github-check:999';
-  let called = false;
-  await assert.rejects(
-    () => runCloudControllerTick(env, { execute: true, liveFetch: async () => { called = true; return Response.json({}); } }),
-    /live_consistency_decision_deployment_mismatch/
-  );
-  assert.equal(called, false);
-  assert.equal(env.getCheckpoints(), 0);
+  env.getState().current.live_consistency.deployment_check_id = 999;
+  const result = await runCloudControllerTick(env, { execute: true, liveFetch: liveFetch(706, ['legacy_a', 'opp_a', 'opp_b']) });
+  assert.equal(result.phase, 'live_consistency_verified');
+  assert.equal(env.getCheckpoints(), 1);
+  assert.equal(env.getState().deployments[0].deployment_id, 'github-check:999');
+  assert.equal(env.getState().deployments[0].deployment_check_id, 999);
 });
 
 test('transient live API failure is checkpointed inside the deadline instead of losing retry history', async () => {
