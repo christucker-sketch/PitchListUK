@@ -6,7 +6,8 @@ import { handleControllerStateMaintenance } from '../operations/cloudflare-globa
 function envFor(snapshot) {
   const internalHeaders = new Headers({
     'x-findpitches-state-sha256': 'abc123',
-    'x-findpitches-state-version': '7'
+    'x-findpitches-state-version': '7',
+    'x-findpitches-state-authority': 'shadow'
   });
   const stub = {
     async fetch(url) {

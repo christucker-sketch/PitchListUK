@@ -111,6 +111,54 @@ export class ControllerStateDurableObject extends DurableObject {
     }, { status: 201 });
   }
 
+  async transitionAuthority(request, targetAuthority) {
+    const meta = this.readMeta();
+    if (!meta) return Response.json({ ok: false, error: 'controller_state_not_initialized' }, { status: 404 });
+
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return Response.json({ ok: false, error: 'invalid_authority_transition_payload' }, { status: 400 });
+    }
+
+    const expectedVersion = Number(body?.expected_version);
+    const expectedSha256 = String(body?.expected_sha256 || '').trim().toLowerCase();
+    if (!Number.isInteger(expectedVersion) || expectedVersion <= 0 || !/^[a-f0-9]{64}$/.test(expectedSha256)) {
+      return Response.json({ ok: false, error: 'invalid_authority_transition_precondition' }, { status: 400 });
+    }
+
+    if (Number(meta.version) !== expectedVersion || String(meta.sha256).toLowerCase() !== expectedSha256) {
+      return Response.json({
+        ok: false,
+        error: 'controller_state_precondition_failed',
+        current: { version: meta.version, sha256: meta.sha256, authority: meta.authority }
+      }, { status: 409 });
+    }
+
+    if (meta.authority === targetAuthority) {
+      return Response.json({ ok: true, changed: false, state: meta });
+    }
+
+    const expectedCurrentAuthority = targetAuthority === 'authoritative' ? 'shadow' : 'authoritative';
+    if (meta.authority !== expectedCurrentAuthority) {
+      return Response.json({ ok: false, error: 'invalid_controller_authority_transition', current_authority: meta.authority }, { status: 409 });
+    }
+
+    this.ctx.storage.sql.exec(`
+      UPDATE controller_state_meta
+      SET authority = ?
+      WHERE singleton = 1 AND version = ? AND sha256 = ? AND authority = ?
+    `, targetAuthority, expectedVersion, expectedSha256, expectedCurrentAuthority);
+
+    const updated = this.readMeta();
+    if (!updated || updated.authority !== targetAuthority || Number(updated.version) !== expectedVersion || String(updated.sha256).toLowerCase() !== expectedSha256) {
+      return Response.json({ ok: false, error: 'controller_authority_transition_failed' }, { status: 409 });
+    }
+
+    return Response.json({ ok: true, changed: true, state: updated });
+  }
+
   async fetch(request) {
     const url = new URL(request.url);
 
@@ -142,6 +190,14 @@ export class ControllerStateDurableObject extends DurableObject {
       } catch (error) {
         return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
       }
+    }
+
+    if (request.method === 'POST' && url.pathname === '/promote') {
+      return this.transitionAuthority(request, 'authoritative');
+    }
+
+    if (request.method === 'POST' && url.pathname === '/demote') {
+      return this.transitionAuthority(request, 'shadow');
     }
 
     return new Response('Not found', { status: 404 });

@@ -1,5 +1,8 @@
 import { shadowControllerDecision } from './controller-shadow-decision.mjs';
 
+const PROMOTE_CONFIRMATION = 'PROMOTE_US_CONTROLLER_TO_AUTHORITATIVE';
+const DEMOTE_CONFIRMATION = 'DEMOTE_US_CONTROLLER_TO_SHADOW';
+
 function bearerToken(request) {
   const value = String(request.headers.get('authorization') || '');
   return value.startsWith('Bearer ') ? value.slice(7) : '';
@@ -23,6 +26,30 @@ export function controllerStateStub(env) {
   if (!env?.CONTROLLER_STATE) throw new Error('controller_state_binding_missing');
   const id = env.CONTROLLER_STATE.idFromName('us-controller');
   return env.CONTROLLER_STATE.get(id);
+}
+
+async function authorityTransitionRequest(request, stub, pathname) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ ok: false, error: 'invalid_authority_transition_payload' }, { status: 400 });
+  }
+
+  const promotion = pathname === '/controller-state/promote';
+  const expectedConfirmation = promotion ? PROMOTE_CONFIRMATION : DEMOTE_CONFIRMATION;
+  if (String(body?.confirmation || '') !== expectedConfirmation) {
+    return Response.json({ ok: false, error: 'authority_transition_confirmation_required' }, { status: 400 });
+  }
+
+  return stub.fetch(new Request(`https://controller-state.internal/${promotion ? 'promote' : 'demote'}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      expected_version: body.expected_version,
+      expected_sha256: body.expected_sha256
+    })
+  }));
 }
 
 export async function handleControllerStateMaintenance(request, env) {
@@ -52,7 +79,7 @@ export async function handleControllerStateMaintenance(request, env) {
     const state = JSON.parse(text);
     return Response.json({
       ok: true,
-      authority: 'shadow',
+      authority: response.headers.get('x-findpitches-state-authority') || 'unknown',
       state_sha256: response.headers.get('x-findpitches-state-sha256'),
       state_version: Number(response.headers.get('x-findpitches-state-version') || 0),
       decision: shadowControllerDecision(state)
@@ -71,5 +98,11 @@ export async function handleControllerStateMaintenance(request, env) {
     }));
   }
 
+  if (request.method === 'POST' && (url.pathname === '/controller-state/promote' || url.pathname === '/controller-state/demote')) {
+    return authorityTransitionRequest(request, stub, url.pathname);
+  }
+
   return new Response('Not found', { status: 404 });
 }
+
+export { PROMOTE_CONFIRMATION, DEMOTE_CONFIRMATION };
