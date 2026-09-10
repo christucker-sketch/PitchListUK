@@ -8,6 +8,10 @@ import {
   recoverStaleHalAuthorityV12,
   STALE_AUTHORITY_RECOVERY_MODE
 } from '../lib/controller-authority-recovery.mjs';
+import {
+  FAILED_LEGACY_REPLAY_RECOVERY_MODE,
+  recoverFailedLegacyReplay
+} from '../lib/controller-legacy-replay-recovery.mjs';
 import { readControllerCutoverReadinessReport } from '../lib/controller-cutover-readiness.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
@@ -31,6 +35,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         country: 'US',
         mode: STALE_AUTHORITY_RECOVERY_MODE,
         ...(await recoverStaleHalAuthorityV12(this.env))
+      }));
+    }
+    if (payload.country === 'US' && payload.mode === FAILED_LEGACY_REPLAY_RECOVERY_MODE) {
+      return step.do('return exact failed legacy Michigan replay to deferred queue', async () => ({
+        country: 'US',
+        mode: FAILED_LEGACY_REPLAY_RECOVERY_MODE,
+        ...(await recoverFailedLegacyReplay(this.env))
       }));
     }
 
@@ -104,6 +115,7 @@ export default {
         controller_state_maintenance_enabled: Boolean(env.CONTROLLER_STATE_IMPORT_TOKEN),
         controller_cutover_readiness_workflow: true,
         stale_hal_authority_recovery_v12: true,
+        failed_legacy_mi_replay_recovery: true,
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
           name: market.country_name,
