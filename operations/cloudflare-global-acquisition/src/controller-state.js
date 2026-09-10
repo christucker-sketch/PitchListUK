@@ -6,7 +6,13 @@ import {
   sha256Hex,
   validateControllerStateText
 } from '../lib/controller-state-codec.mjs';
-import { assertControllerCutoverPreflightReady } from '../lib/controller-cutover-preflight.mjs';
+import {
+  assertAcquisitionReplayProofStillCurrent,
+  assertControllerCutoverPreflightReady,
+  assertControllerCutoverPromotionMetaReady,
+  pendingDeferredAcquisitionUnits
+} from '../lib/controller-cutover-preflight.mjs';
+import { proveDeferredAcquisitionUnitSourcesDeployed } from '../lib/controller-replay-source-client.mjs';
 
 function validSha256(value) {
   return /^[a-f0-9]{64}$/.test(String(value || '').trim().toLowerCase());
@@ -163,11 +169,9 @@ export class ControllerStateDurableObject extends DurableObject {
     if (precondition.error) return precondition.error;
 
     const raw = await request.text();
-    let state;
     try {
       validateControllerStateText(raw);
-      state = JSON.parse(raw);
-      assertControllerCutoverPreflightReady(state);
+      assertControllerCutoverPreflightReady(JSON.parse(raw));
     } catch (error) {
       return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 });
     }
@@ -214,8 +218,13 @@ export class ControllerStateDurableObject extends DurableObject {
 
     if (targetAuthority === 'authoritative') {
       try {
+        assertControllerCutoverPromotionMetaReady(meta);
         const state = JSON.parse(this.readSnapshotText(meta));
         assertControllerCutoverPreflightReady(state);
+        for (const unit of pendingDeferredAcquisitionUnits(state)) {
+          const proof = await proveDeferredAcquisitionUnitSourcesDeployed(this.env, unit);
+          assertAcquisitionReplayProofStillCurrent(unit, proof);
+        }
       } catch (error) {
         return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 });
       }
