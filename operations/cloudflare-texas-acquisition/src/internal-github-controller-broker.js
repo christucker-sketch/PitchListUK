@@ -1,4 +1,5 @@
 import { proveUsSourceRegistryAdditionsOnly } from './us-source-registry-diff-proof.js';
+import { parseGrowthRegistry, sourcesForState } from './us-growth-registry.js';
 import { proveUsOpportunitySnapshotAdditionsOnly } from '../../cloudflare-global-acquisition/lib/us-opportunity-snapshot-diff-proof.mjs';
 
 const INTERNAL_HOST = 'findpitches-github-controller.internal';
@@ -23,8 +24,16 @@ export function isInternalGithubControllerRequest(request) {
 }
 function validatePayload(payload = {}) {
   const action = String(payload.action || 'inspect');
+  if (!['inspect', 'merge', 'inspect_merge_checks', 'inspect_data_merge_checks', 'inspect_replay_source_provenance'].includes(action)) throw new Error('controller_github_action_rejected');
+  if (action === 'inspect_replay_source_provenance') {
+    const stateCode = String(payload.state_code || '').trim().toUpperCase();
+    const sourceIds = [...(Array.isArray(payload.source_ids) ? payload.source_ids : [])]
+      .map(value => String(value || '').trim().toLowerCase()).filter(Boolean).sort();
+    if (!/^[A-Z]{2}$/.test(stateCode)) throw new Error('controller_github_replay_state_code_invalid');
+    if (!sourceIds.length || sourceIds.length > 50 || new Set(sourceIds).size !== sourceIds.length) throw new Error('controller_github_replay_source_ids_invalid');
+    return { action, stateCode, sourceIds };
+  }
   const prNumber = Number(payload.pr_number);
-  if (!['inspect', 'merge', 'inspect_merge_checks', 'inspect_data_merge_checks'].includes(action)) throw new Error('controller_github_action_rejected');
   if (!Number.isInteger(prNumber) || prNumber <= 0) throw new Error('controller_github_pr_number_invalid');
   const expectedHeadSha = String(payload.expected_head_sha || '').trim().toLowerCase();
   const expectedBaseSha = String(payload.expected_base_sha || '').trim().toLowerCase();
@@ -46,8 +55,11 @@ function decodeBase64Utf8(content) {
   const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
   return new TextDecoder().decode(bytes);
 }
+async function fetchFileMetadataAtRef(fetchImpl, repo, authHeaders, path, ref) {
+  return githubJson(fetchImpl, `https://api.github.com/repos/${repo}/contents/${path}?ref=${encodeURIComponent(ref)}`, { headers: authHeaders });
+}
 async function fetchFileTextAtRef(fetchImpl, repo, authHeaders, path, ref) {
-  const metadata = await githubJson(fetchImpl, `https://api.github.com/repos/${repo}/contents/${path}?ref=${encodeURIComponent(ref)}`, { headers: authHeaders });
+  const metadata = await fetchFileMetadataAtRef(fetchImpl, repo, authHeaders, path, ref);
   let encoded = String(metadata?.content || '').trim();
   if (!encoded) {
     const gitUrl = String(metadata?.git_url || '');
@@ -130,6 +142,65 @@ async function inspectDataMergeChecks(fetchImpl, repo, authHeaders, prNumber) {
   return inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, 'data/cloud-us-', 'data');
 }
 
+function successfulNamedCheck(checkRuns, name) {
+  return compactChecks(checkRuns).some(run => run.name === name && run.status === 'completed' && run.conclusion === 'success');
+}
+
+async function inspectReplaySourceProvenance(fetchImpl, repo, authHeaders, stateCode, sourceIds) {
+  const baseUrl = `https://api.github.com/repos/${repo}`;
+  const mainRef = await githubJson(fetchImpl, `${baseUrl}/git/ref/heads/main`, { headers: authHeaders });
+  const mainSha = String(mainRef?.object?.sha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(mainSha)) throw new Error('controller_github_replay_main_sha_invalid');
+
+  const currentMetadata = await fetchFileMetadataAtRef(fetchImpl, repo, authHeaders, SOURCE_REGISTRY_PATH, mainSha);
+  const registryBlobSha = String(currentMetadata?.sha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(registryBlobSha)) throw new Error('controller_github_replay_registry_blob_invalid');
+  const registry = parseGrowthRegistry(await fetchJsonFileAtRef(fetchImpl, repo, authHeaders, SOURCE_REGISTRY_PATH, mainSha));
+  const selected = sourcesForState(registry, stateCode, sourceIds);
+  const selectedIds = selected.map(source => source.id).sort();
+  if (selectedIds.length !== sourceIds.length || JSON.stringify(selectedIds) !== JSON.stringify(sourceIds)) throw new Error('controller_github_replay_sources_not_exact');
+
+  const history = await githubJson(fetchImpl, `${baseUrl}/commits?sha=main&path=${encodeURIComponent(SOURCE_REGISTRY_PATH)}&per_page=20`, { headers: authHeaders });
+  if (!Array.isArray(history) || !history.length) throw new Error('controller_github_replay_registry_history_missing');
+
+  for (const candidate of history) {
+    const sourceHeadSha = String(candidate?.sha || '').toLowerCase();
+    if (!/^[a-f0-9]{40}$/.test(sourceHeadSha)) continue;
+    const candidateMetadata = await fetchFileMetadataAtRef(fetchImpl, repo, authHeaders, SOURCE_REGISTRY_PATH, sourceHeadSha).catch(() => null);
+    if (String(candidateMetadata?.sha || '').toLowerCase() !== registryBlobSha) continue;
+
+    const pulls = await githubJson(fetchImpl, `${baseUrl}/commits/${sourceHeadSha}/pulls`, { headers: { ...authHeaders, accept: 'application/vnd.github+json' } });
+    const merged = (Array.isArray(pulls) ? pulls : []).find(pr => pr?.merged_at && pr?.merge_commit_sha && String(pr?.base?.ref || '') === 'main');
+    if (!merged) continue;
+    const deploymentAnchorSha = String(merged.merge_commit_sha || '').toLowerCase();
+    if (!/^[a-f0-9]{40}$/.test(deploymentAnchorSha)) continue;
+
+    const [anchorMetadata, comparison, checkRuns] = await Promise.all([
+      fetchFileMetadataAtRef(fetchImpl, repo, authHeaders, SOURCE_REGISTRY_PATH, deploymentAnchorSha),
+      githubJson(fetchImpl, `${baseUrl}/compare/${deploymentAnchorSha}...${mainSha}`, { headers: authHeaders }),
+      githubJson(fetchImpl, `${baseUrl}/commits/${deploymentAnchorSha}/check-runs?per_page=100`, { headers: authHeaders })
+    ]);
+    const deploymentRegistryBlobSha = String(anchorMetadata?.sha || '').toLowerCase();
+    const ancestor = deploymentAnchorSha === mainSha || String(comparison?.merge_base_commit?.sha || '').toLowerCase() === deploymentAnchorSha;
+    if (deploymentRegistryBlobSha !== registryBlobSha || !ancestor) continue;
+    if (!successfulNamedCheck(checkRuns, 'verify') || !successfulNamedCheck(checkRuns, 'deploy_acquisition_worker_production')) continue;
+
+    return {
+      state_code: stateCode,
+      source_ids: selectedIds,
+      main_sha: mainSha,
+      registry_blob_sha: registryBlobSha,
+      deployment_anchor_sha: deploymentAnchorSha,
+      deployment_registry_blob_sha: deploymentRegistryBlobSha,
+      deployment_anchor_is_main_ancestor: true,
+      source_pr_number: Number(merged.number || 0) || null,
+      source_head_sha: sourceHeadSha,
+      check_runs: compactChecks(checkRuns)
+    };
+  }
+  throw new Error('controller_github_replay_deployed_registry_proof_missing');
+}
+
 export async function handleInternalGithubControllerRequest(request, env, options = {}) {
   if (!isInternalGithubControllerRequest(request)) return new Response('Not found', { status: 404 });
   let payload;
@@ -138,6 +209,7 @@ export async function handleInternalGithubControllerRequest(request, env, option
   const fetchImpl = options.fetchImpl || fetch;
   const authHeaders = headers(env);
   try {
+    if (payload.action === 'inspect_replay_source_provenance') return Response.json({ ok: true, provenance: await inspectReplaySourceProvenance(fetchImpl, repo, authHeaders, payload.stateCode, payload.sourceIds) });
     if (payload.action === 'inspect_merge_checks') return Response.json({ ok: true, deployment: await inspectSourceMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
     if (payload.action === 'inspect_data_merge_checks') return Response.json({ ok: true, deployment: await inspectDataMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
     const inspection = await inspectPr(fetchImpl, repo, authHeaders, payload.prNumber);
