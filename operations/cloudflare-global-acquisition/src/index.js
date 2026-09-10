@@ -3,6 +3,7 @@ import { WorkflowEntrypoint } from 'cloudflare:workers';
 import { TexasAcquisitionWorkflow } from '../../cloudflare-texas-acquisition/src/index.js';
 import { UkApprovedSourcePollWorkflow } from '../../cloudflare-uk-canary/src/index.js';
 import { globalAcquisitionMarkets } from '../../../platform/acquisition/global-engine.mjs';
+import { assertAuthoritativeUsMutationAllowed, globalControllerCutoverEnabled } from '../lib/controller-authority-guard.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
 import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflow.mjs';
@@ -21,6 +22,7 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
     const dispatch = resolveGlobalAcquisitionDispatch(event?.payload || {});
     assertGlobalControllerDispatchAllowed(this.env, dispatch);
+    await assertAuthoritativeUsMutationAllowed(this.env, dispatch);
 
     if (dispatch.handler === 'us_approved_source_poll') {
       return step.do(`run read-only US ${dispatch.payload.state_code || 'state'} approved-source poll`, {
@@ -74,6 +76,7 @@ export default {
         service: 'findpitches-global-acquisition-shadow',
         execution_enabled: globalControllerExecutionEnabled(env),
         execution_level: globalControllerExecutionLevel(env),
+        us_controller_cutover_enabled: globalControllerCutoverEnabled(env),
         controller_state_store: Boolean(env.CONTROLLER_STATE),
         controller_state_maintenance_enabled: Boolean(env.CONTROLLER_STATE_IMPORT_TOKEN),
         markets: globalAcquisitionMarkets().map(market => ({
@@ -92,6 +95,7 @@ export default {
         params = await request.json();
         const dispatch = resolveGlobalAcquisitionDispatch(params);
         assertGlobalControllerDispatchAllowed(env, dispatch);
+        await assertAuthoritativeUsMutationAllowed(env, dispatch);
         const instance = await env.GLOBAL_ACQUISITION.create({ params: dispatch.payload });
         return Response.json({
           ok: true,
