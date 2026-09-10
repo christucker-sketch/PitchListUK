@@ -10,6 +10,7 @@ import {
   inspectControllerPr,
   inspectSourceMergeChecks,
   mergeControllerPr,
+  validateDataPrInspection,
   validateSourcePrInspection
 } from './controller-github-client.mjs';
 import { getStateConfig } from '../../cloudflare-texas-acquisition/src/us-state-registry.js';
@@ -95,6 +96,20 @@ function reservedDecision(state) {
       source_ids: [...(intent.source_ids || [])]
     };
   }
+  if (intent.action === 'merge_data_pr') {
+    return {
+      action: 'merge_reserved_data_pr',
+      mode: 'acquire',
+      state_code: intent.state_code,
+      pr_number: intent.pr_number,
+      base_sha: intent.base_sha,
+      head_sha: intent.head_sha,
+      before: intent.before,
+      after: intent.after,
+      additions: intent.additions,
+      opportunity_ids: [...(intent.opportunity_ids || [])]
+    };
+  }
   throw new Error(`cloud_controller_reserved_intent_unsupported:${intent.action || 'unknown'}`);
 }
 
@@ -104,7 +119,7 @@ function decisionForState(state) {
 
 function executionMode(decision) {
   if (decision?.mode) return decision.mode;
-  return ['trigger_acquisition_or_advance_batch', 'trigger_reserved_acquisition'].includes(decision?.action) ? 'acquire' : 'discover';
+  return ['trigger_acquisition_or_advance_batch', 'trigger_reserved_acquisition', 'review_data_pr', 'merge_reserved_data_pr'].includes(decision?.action) ? 'acquire' : 'discover';
 }
 
 async function assertExecutionAllowed(env, decision) {
@@ -262,6 +277,72 @@ async function mergeReservedSourcePr(env, stub, snapshot, decision) {
   return { ok: true, executed: true, phase: 'source_pr_merged', pr_number: Number(intent.pr_number), merge_sha: merged.merge_sha, merge_reused: merged.reused === true, state_version: checkpoint.version, state_sha256: checkpoint.sha256, next_status: nextState.status, source_ids: nextState.pending_source_ids, decision };
 }
 
+async function reserveDataPrMerge(env, stub, snapshot, decision) {
+  const pr = await inspectControllerPr(env, decision.pr_number);
+  const validated = validateDataPrInspection(snapshot.state, pr);
+  const nextState = structuredClone(snapshot.state);
+  nextState.cloud_controller_intent = {
+    phase: 'reserved', action: 'merge_data_pr', pr_number: validated.pr_number, state_code: validated.state_code,
+    base_sha: validated.base_sha, head_sha: validated.head_sha,
+    before: validated.before, after: validated.after, additions: validated.additions,
+    opportunity_ids: [...validated.opportunity_ids], reserved_from_version: snapshot.version,
+    reserved_from_sha256: snapshot.sha256, reserved_at: new Date().toISOString()
+  };
+  nextState.updated_at = new Date().toISOString();
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+  return {
+    ok: true, executed: true, phase: 'data_pr_merge_reserved', pr_number: validated.pr_number,
+    state_version: checkpoint.version, state_sha256: checkpoint.sha256,
+    before: validated.before, after: validated.after, additions: validated.additions,
+    opportunity_ids: validated.opportunity_ids, decision
+  };
+}
+
+async function mergeReservedDataPr(env, stub, snapshot, decision) {
+  const intent = snapshot.state?.cloud_controller_intent;
+  if (!intent || intent.phase !== 'reserved' || intent.action !== 'merge_data_pr') throw new Error('reserved_data_pr_intent_missing');
+  if (Number(intent.pr_number) !== Number(decision.pr_number) || intent.base_sha !== decision.base_sha || intent.head_sha !== decision.head_sha) throw new Error('reserved_data_pr_intent_changed');
+  const before = Number(intent.before);
+  const after = Number(intent.after);
+  const additions = Number(intent.additions);
+  if (!Number.isInteger(before) || Number(snapshot.state.snapshot_count) !== before || !Number.isInteger(after) || !Number.isInteger(additions) || additions < 1 || after !== before + additions) {
+    throw new Error('reserved_data_pr_snapshot_checkpoint_changed');
+  }
+  const opportunityIds = [...(Array.isArray(intent.opportunity_ids) ? intent.opportunity_ids : [])].map(String).sort();
+  if (opportunityIds.length !== additions || new Set(opportunityIds).size !== additions || opportunityIds.some(id => !id)) throw new Error('reserved_data_pr_opportunity_ids_invalid');
+  const merged = await mergeControllerPr(env, { pr_number: intent.pr_number, base_sha: intent.base_sha, head_sha: intent.head_sha });
+  const nextState = structuredClone(snapshot.state);
+  const stateCode = String(intent.state_code || '').toUpperCase();
+  if (!stateCode || String(nextState.current?.state_code || '').toUpperCase() !== stateCode) throw new Error('reserved_data_pr_state_checkpoint_changed');
+  nextState.snapshot_count = after;
+  if (nextState.state_totals && typeof nextState.state_totals === 'object' && !Array.isArray(nextState.state_totals)) {
+    const priorStateTotal = Number(nextState.state_totals[stateCode] || 0);
+    if (!Number.isInteger(priorStateTotal) || priorStateTotal < 0) throw new Error('reserved_data_pr_state_total_invalid');
+    nextState.state_totals = { ...nextState.state_totals, [stateCode]: priorStateTotal + additions };
+  }
+  nextState.current = {
+    ...nextState.current,
+    pending_deploy: {
+      sha: merged.merge_sha,
+      count: after,
+      previous_count: before,
+      additions,
+      opportunity_ids: opportunityIds,
+      pr_number: Number(intent.pr_number)
+    }
+  };
+  nextState.status = 'deploying_production';
+  delete nextState.cloud_controller_intent;
+  nextState.updated_at = new Date().toISOString();
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+  return {
+    ok: true, executed: true, phase: 'data_pr_merged', pr_number: Number(intent.pr_number),
+    merge_sha: merged.merge_sha, merge_reused: merged.reused === true,
+    state_version: checkpoint.version, state_sha256: checkpoint.sha256,
+    next_status: nextState.status, before, after, additions, opportunity_ids: opportunityIds, decision
+  };
+}
+
 export function acquisitionSourceIdBatches(state) {
   const code = String(state?.current?.state_code || '').toUpperCase();
   const sourceIds = Array.isArray(state?.pending_source_ids) ? state.pending_source_ids.map(String) : [];
@@ -343,6 +424,8 @@ export async function runCloudControllerTick(env, options = {}) {
   if (decision.action === 'inspect_active_workflow') return inspectActiveWorkflow(env, stub, snapshot, decision);
   if (decision.action === 'review_source_pr') return reserveSourcePrMerge(env, stub, snapshot, decision);
   if (decision.action === 'merge_reserved_source_pr') return mergeReservedSourcePr(env, stub, snapshot, decision);
+  if (decision.action === 'review_data_pr') return reserveDataPrMerge(env, stub, snapshot, decision);
+  if (decision.action === 'merge_reserved_data_pr') return mergeReservedDataPr(env, stub, snapshot, decision);
   if (decision.action === 'trigger_acquisition_or_advance_batch') return reserveAcquisition(env, stub, snapshot, decision);
   if (decision.action === 'trigger_reserved_acquisition') return ensureReservedAcquisitionWorkflow(env, stub, snapshot, decision);
   throw new Error(`cloud_controller_action_not_implemented:${decision.action}`);
