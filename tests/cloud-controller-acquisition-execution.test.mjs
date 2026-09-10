@@ -13,6 +13,9 @@ function makeHarness(initialState, { deployReady = true } = {}) {
   const stub = {
     async fetch(input) {
       const url = new URL(typeof input === 'string' ? input : input.url);
+      if (url.pathname === '/meta') {
+        return Response.json({ ok: true, state: { version, sha256, authority: 'authoritative' } });
+      }
       if (url.pathname === '/snapshot') {
         return new Response(`${JSON.stringify(state, null, 2)}\n`, {
           status: 200,
