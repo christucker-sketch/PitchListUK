@@ -36,8 +36,11 @@ test('tick reads the exact stored controller snapshot and returns its decision',
   assert.equal(result.decision.query_offset, 72);
 });
 
-test('tick stays gated while cutover is disabled', async () => {
-  await assert.rejects(() => runCloudControllerTick(makeEnv(state), { execute: true }));
+test('tick is explicitly blocked by the cutover guard while cutover is disabled', async () => {
+  await assert.rejects(
+    () => runCloudControllerTick(makeEnv(state), { execute: true }),
+    /cutover flag is explicitly enabled/
+  );
 });
 
 test('checkpoint helper uses exact version and SHA compare-and-swap preconditions', async () => {
