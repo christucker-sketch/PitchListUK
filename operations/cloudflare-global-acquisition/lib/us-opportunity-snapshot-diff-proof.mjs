@@ -29,7 +29,6 @@ function normalizeSnapshot(input, side) {
 export function proveUsOpportunitySnapshotAdditionsOnly(baseInput, headInput) {
   const base = normalizeSnapshot(baseInput, 'base');
   const head = normalizeSnapshot(headInput, 'head');
-  if (head.snapshot.total <= base.snapshot.total) throw new Error('us_snapshot_no_additions');
 
   const baseById = new Map(base.snapshot.rows.map(row => [String(row?.stable_id || row?.id || '').trim(), row]));
   const headById = new Map(head.snapshot.rows.map(row => [String(row?.stable_id || row?.id || '').trim(), row]));
@@ -38,6 +37,7 @@ export function proveUsOpportunitySnapshotAdditionsOnly(baseInput, headInput) {
     if (!equal(row, headById.get(id))) throw new Error(`us_snapshot_opportunity_modified:${id}`);
   }
 
+  if (head.snapshot.total <= base.snapshot.total) throw new Error('us_snapshot_no_additions');
   const addedIds = [...headById.keys()].filter(id => !baseById.has(id)).sort();
   const addedCount = head.snapshot.total - base.snapshot.total;
   if (addedIds.length !== addedCount) throw new Error('us_snapshot_added_identity_delta_invalid');
