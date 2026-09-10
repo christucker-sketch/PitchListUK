@@ -12,6 +12,10 @@ import {
   FAILED_LEGACY_REPLAY_RECOVERY_MODE,
   recoverFailedLegacyReplay
 } from '../lib/controller-legacy-replay-recovery.mjs';
+import {
+  EXACT_V13_PREFLIGHT_MODE,
+  prepareExactV13CutoverPreflight
+} from '../lib/controller-exact-preflight.mjs';
 import { readControllerCutoverReadinessReport } from '../lib/controller-cutover-readiness.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
@@ -42,6 +46,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         country: 'US',
         mode: FAILED_LEGACY_REPLAY_RECOVERY_MODE,
         ...(await recoverFailedLegacyReplay(this.env))
+      }));
+    }
+    if (payload.country === 'US' && payload.mode === EXACT_V13_PREFLIGHT_MODE) {
+      return step.do('prepare exact v13 US controller cutover preflight', async () => ({
+        country: 'US',
+        mode: EXACT_V13_PREFLIGHT_MODE,
+        ...(await prepareExactV13CutoverPreflight(this.env))
       }));
     }
 
@@ -116,6 +127,7 @@ export default {
         controller_cutover_readiness_workflow: true,
         stale_hal_authority_recovery_v12: true,
         failed_legacy_mi_replay_recovery: true,
+        exact_v13_cutover_preflight: true,
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
           name: market.country_name,
