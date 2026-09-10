@@ -10,7 +10,21 @@ function fakeEnv({ token = 'correct-token' } = {}) {
       const normalized = request instanceof Request ? request : new Request(request);
       calls.push({ method: normalized.method, url: normalized.url, headers: Object.fromEntries(normalized.headers) });
       if (normalized.method === 'GET' && normalized.url.endsWith('/meta')) return Response.json({ ok: true, state: { authority: 'shadow' } });
-      if (normalized.method === 'GET' && normalized.url.endsWith('/snapshot')) return new Response('{"priority_order":[]}');
+      if (normalized.method === 'GET' && normalized.url.endsWith('/snapshot')) {
+        const state = {
+          status: 'ready', deferred_replay_inflight: null, deferred_units: [],
+          cloud_controller_cutover_preflight: {
+            status: 'ready', acquisition_replay_count: 0,
+            acquisition_replay_keys: [], proven_source_prs: [],
+            completed_at: '2026-09-10T18:00:00.000Z'
+          }
+        };
+        return new Response(JSON.stringify(state), { headers: {
+          'x-findpitches-state-version': '10',
+          'x-findpitches-state-sha256': 'a'.repeat(64),
+          'x-findpitches-state-authority': 'shadow'
+        }});
+      }
       if (normalized.method === 'PUT') {
         return Response.json({
           ok: true,
@@ -56,6 +70,24 @@ test('authenticated metadata reads are forwarded to the US controller durable ob
   assert.equal(response.status, 200);
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, 'https://controller-state.internal/meta');
+});
+
+test('authenticated cutover readiness is read-only and reports exact shadow snapshot identity', async () => {
+  const { env, calls } = fakeEnv();
+  const response = await handleControllerStateMaintenance(new Request('https://example.test/controller-state/cutover-readiness', {
+    headers: { authorization: 'Bearer correct-token' }
+  }), env);
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.ok, true);
+  assert.equal(body.authority, 'shadow');
+  assert.equal(body.state_version, 10);
+  assert.equal(body.state_sha256, 'a'.repeat(64));
+  assert.equal(body.promotion_structurally_eligible, true);
+  assert.deepEqual(body.promotion_blockers, []);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].method, 'GET');
+  assert.equal(calls[0].url, 'https://controller-state.internal/snapshot');
 });
 
 test('snapshot imports are forced to Hal source and shadow authority', async () => {
