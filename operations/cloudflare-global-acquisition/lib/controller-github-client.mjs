@@ -21,6 +21,10 @@ export async function inspectSourceMergeChecks(env, prNumber) {
   return (await brokerRequest(env, { action: 'inspect_merge_checks', pr_number: prNumber })).deployment;
 }
 
+export async function inspectDataMergeChecks(env, prNumber) {
+  return (await brokerRequest(env, { action: 'inspect_data_merge_checks', pr_number: prNumber })).deployment;
+}
+
 export function classifyAcquisitionWorkerDeployment(deployment) {
   const mergeSha = String(deployment?.merge_sha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error('source_merge_deployment_sha_invalid');
@@ -32,6 +36,27 @@ export function classifyAcquisitionWorkerDeployment(deployment) {
     if (run.conclusion !== 'success') throw new Error(`source_merge_required_check_failed:${name}:${run.conclusion || 'unknown'}`);
   }
   return { ready: true, status: 'passed', merge_sha: mergeSha };
+}
+
+function newestCheck(runs, name) {
+  return runs
+    .filter(run => String(run?.name || '') === name)
+    .sort((left, right) => Number(right?.id || 0) - Number(left?.id || 0))[0] || null;
+}
+
+export function classifyFrontendProductionDeployment(deployment) {
+  const mergeSha = String(deployment?.merge_sha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error('data_merge_deployment_sha_invalid');
+  const runs = Array.isArray(deployment?.check_runs) ? deployment.check_runs : [];
+  const verify = newestCheck(runs, 'verify');
+  const deploy = newestCheck(runs, 'deploy_frontend_production');
+  for (const [name, run] of [['verify', verify], ['deploy_frontend_production', deploy]]) {
+    if (!run || run.status !== 'completed') return { ready: false, status: 'pending', merge_sha: mergeSha, waiting_for: name };
+    if (run.conclusion !== 'success') throw new Error(`data_merge_required_check_failed:${name}:${run.conclusion || 'unknown'}`);
+  }
+  const deploymentCheckId = Number(deploy.id);
+  if (!Number.isInteger(deploymentCheckId) || deploymentCheckId <= 0) throw new Error('data_merge_deployment_check_id_invalid');
+  return { ready: true, status: 'passed', merge_sha: mergeSha, deployment_check_id: deploymentCheckId };
 }
 
 export async function mergeControllerPr(env, inspection) {
