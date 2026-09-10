@@ -87,6 +87,27 @@ jobs:
           --var GLOBAL_ACQUISITION_EXECUTION_LEVEL:pr_only
           --var GITHUB_REPO:christucker-sketch/PitchListUK
 
+      - name: Wait for PR-only Worker propagation
+        shell: bash
+        run: |
+          set -euo pipefail
+          endpoint='https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health'
+          observed=false
+          for attempt in $(seq 1 45); do
+            if body="$(curl --silent --show-error --fail-with-body "$endpoint")"; then
+              level="$(jq -r '.execution_level // empty' <<<"$body")"
+              enabled="$(jq -r '.execution_enabled // false' <<<"$body")"
+              cutover="$(jq -r '.us_controller_cutover_enabled // true' <<<"$body")"
+              if [[ "$level" == 'pr_only' && "$enabled" == 'true' && "$cutover" == 'false' ]]; then
+                printf '%s\n' "$body" > uk-source-discovery-pr-only-health.json
+                observed=true
+                break
+              fi
+            fi
+            sleep 2
+          done
+          [[ "$observed" == 'true' ]] || { echo 'PR-only Worker deployment did not become observable before UK live proof.' >&2; exit 1; }
+
       - name: Prove PR-only still blocks US production acquisition
         shell: bash
         run: |
@@ -160,6 +181,7 @@ jobs:
         with:
           name: uk-source-discovery-proof-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
+            uk-source-discovery-pr-only-health.json
             uk-source-discovery-blocked-us.json
             uk-source-discovery-result.json
           if-no-files-found: ignore
