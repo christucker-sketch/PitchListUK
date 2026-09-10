@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildControllerCutoverReadinessReport } from '../operations/cloudflare-global-acquisition/lib/controller-cutover-readiness.mjs';
+import {
+  buildControllerCutoverReadinessReport,
+  readControllerCutoverReadinessReport
+} from '../operations/cloudflare-global-acquisition/lib/controller-cutover-readiness.mjs';
 
 function provenUnit() {
   return {
@@ -79,4 +82,35 @@ test('readiness report never calls non-shadow authority structurally eligible', 
   });
   assert.equal(report.promotion_structurally_eligible, false);
   assert.ok(report.promotion_blockers.includes('authority:authoritative'));
+});
+
+test('tokenless readiness reader performs one exact Durable Object snapshot GET and no write', async () => {
+  const calls = [];
+  const env = {
+    CONTROLLER_STATE: {
+      idFromName(name) {
+        assert.equal(name, 'us-controller');
+        return 'us-controller-id';
+      },
+      get(id) {
+        assert.equal(id, 'us-controller-id');
+        return {
+          async fetch(request) {
+            calls.push(String(request));
+            return new Response(JSON.stringify(readyState()), {
+              status: 200,
+              headers: {
+                'x-findpitches-state-authority': 'shadow',
+                'x-findpitches-state-version': '12',
+                'x-findpitches-state-sha256': 'a'.repeat(64)
+              }
+            });
+          }
+        };
+      }
+    }
+  };
+  const report = await readControllerCutoverReadinessReport(env);
+  assert.equal(report.promotion_structurally_eligible, true);
+  assert.deepEqual(calls, ['https://controller-state.internal/snapshot']);
 });
