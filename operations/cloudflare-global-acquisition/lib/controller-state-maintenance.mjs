@@ -1,5 +1,6 @@
 import { shadowControllerDecision } from './controller-shadow-decision.mjs';
 import { runCloudControllerTick } from './cloud-controller-tick.mjs';
+import { buildControllerCutoverReadinessReport } from './controller-cutover-readiness.mjs';
 import {
   pendingDeferredAcquisitionUnits,
   stampControllerCutoverPreflight
@@ -150,6 +151,24 @@ async function controllerReplayPreflightRequest(request, env, stub) {
   }, { status: 201 });
 }
 
+async function controllerCutoverReadinessRequest(stub) {
+  const response = await stub.fetch('https://controller-state.internal/snapshot');
+  if (!response.ok) return response;
+  const text = await response.text();
+  let state;
+  try {
+    state = JSON.parse(text);
+  } catch {
+    return Response.json({ ok: false, error: 'cutover_readiness_snapshot_invalid_json' }, { status: 409 });
+  }
+  const report = buildControllerCutoverReadinessReport(state, {
+    authority: response.headers.get('x-findpitches-state-authority') || 'unknown',
+    version: Number(response.headers.get('x-findpitches-state-version') || 0),
+    sha256: response.headers.get('x-findpitches-state-sha256') || ''
+  });
+  return Response.json({ ok: true, ...report });
+}
+
 async function controllerTickRequest(request, env) {
   let execute = false;
   if (request.method === 'POST') {
@@ -183,6 +202,10 @@ export async function handleControllerStateMaintenance(request, env) {
 
   if (request.method === 'GET' && url.pathname === '/controller-state/snapshot') {
     return stub.fetch('https://controller-state.internal/snapshot');
+  }
+
+  if (request.method === 'GET' && url.pathname === '/controller-state/cutover-readiness') {
+    return controllerCutoverReadinessRequest(stub);
   }
 
   if (request.method === 'GET' && url.pathname === '/controller-state/decision') {
