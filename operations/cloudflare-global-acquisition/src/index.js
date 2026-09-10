@@ -4,6 +4,7 @@ import { TexasAcquisitionWorkflow } from '../../cloudflare-texas-acquisition/src
 import { UkApprovedSourcePollWorkflow } from '../../cloudflare-uk-canary/src/index.js';
 import { globalAcquisitionMarkets } from '../../../platform/acquisition/global-engine.mjs';
 import { assertAuthoritativeUsMutationAllowed, globalControllerCutoverEnabled } from '../lib/controller-authority-guard.mjs';
+import { readControllerCutoverReadinessReport } from '../lib/controller-cutover-readiness.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
 import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflow.mjs';
@@ -23,6 +24,15 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
     const dispatch = resolveGlobalAcquisitionDispatch(event?.payload || {});
     assertGlobalControllerDispatchAllowed(this.env, dispatch);
     await assertAuthoritativeUsMutationAllowed(this.env, dispatch);
+
+    if (dispatch.handler === 'us_controller_cutover_readiness') {
+      return step.do('read US controller cutover readiness', async () => ({
+        country: 'US',
+        mode: dispatch.mode,
+        mutation_attempted: false,
+        ...(await readControllerCutoverReadinessReport(this.env))
+      }));
+    }
 
     if (dispatch.handler === 'us_approved_source_poll') {
       return step.do(`run read-only US ${dispatch.payload.state_code || 'state'} approved-source poll`, {
