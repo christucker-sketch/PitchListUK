@@ -75,7 +75,7 @@ test('deferred blocker decision records explicit blocked checkpoint', () => {
   assert.equal(next.blocked.deferred_count, 0);
 });
 
-test('block transition refuses a reason not proven by current checkpoint', () => {
+test('block transition refuses a reason not proven by current checkpoint or an unsupported state reason', () => {
   assert.throws(
     () => blockCloudController(baseState(), { action: 'block', reason: 'deferred_blocker' }),
     /expected_blocker_missing/
@@ -83,5 +83,9 @@ test('block transition refuses a reason not proven by current checkpoint', () =>
   assert.throws(
     () => blockCloudController(baseState(), { action: 'block', reason: 'deferred_replay_attempts_exhausted' }),
     /expected_deferred_missing/
+  );
+  assert.throws(
+    () => blockCloudController(baseState({ status: 'mystery' }), { action: 'block', reason: 'unsupported_controller_status' }),
+    /controller_block_reason_unsupported/
   );
 });
