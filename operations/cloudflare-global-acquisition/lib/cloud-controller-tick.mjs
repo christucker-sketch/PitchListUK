@@ -19,6 +19,13 @@ import {
   beginCloudLiveConsistency,
   validatePendingProductionDeployment
 } from './controller-production-deployment.mjs';
+import {
+  classifyCloudLiveConsistency,
+  finishCloudLiveConsistency,
+  readLiveUsOpportunityConsistency,
+  recordCloudLiveConsistencyTransientFailure,
+  recordCloudLiveConsistencyWait
+} from './controller-live-consistency.mjs';
 import { getStateConfig } from '../../cloudflare-texas-acquisition/src/us-state-registry.js';
 
 function stateStub(env) {
@@ -395,6 +402,69 @@ async function verifyProductionDeploymentGate(env, stub, snapshot, decision) {
   };
 }
 
+function validateLiveConsistencyDecision(state, decision) {
+  if (state?.status !== 'waiting_for_live_consistency' || !state?.current?.pending_deploy || !state?.current?.live_consistency) {
+    throw new Error('live_consistency_controller_state_invalid');
+  }
+  const stateCode = String(state.current.state_code || '').trim().toUpperCase();
+  if (!stateCode || String(decision?.state_code || '').trim().toUpperCase() !== stateCode) throw new Error('live_consistency_decision_state_mismatch');
+  const expectedCount = Number(state.current.pending_deploy.count);
+  if (!Number.isInteger(expectedCount) || Number(decision?.expected_count) !== expectedCount) throw new Error('live_consistency_decision_count_mismatch');
+  const deploymentId = String(state.current.live_consistency.deployment_id || '');
+  if (!deploymentId || String(decision?.deployment_id || '') !== deploymentId) throw new Error('live_consistency_decision_deployment_mismatch');
+  return { state_code: stateCode, expected_count: expectedCount, deployment_id: deploymentId };
+}
+
+async function verifyLiveConsistency(env, stub, snapshot, decision, options = {}) {
+  const identity = validateLiveConsistencyDecision(snapshot.state, decision);
+  let live;
+  try {
+    live = await readLiveUsOpportunityConsistency(identity.state_code, { fetchImpl: options.liveFetch || fetch });
+  } catch (error) {
+    if (!error?.liveConsistencyTransient) throw error;
+    const nextState = recordCloudLiveConsistencyTransientFailure(snapshot.state, error, new Date());
+    const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+    return {
+      ok: true,
+      executed: true,
+      phase: 'live_consistency_transient_failure',
+      error: String(error?.message || error),
+      state_version: checkpoint.version,
+      state_sha256: checkpoint.sha256,
+      decision
+    };
+  }
+
+  const consistency = classifyCloudLiveConsistency(snapshot.state.current.pending_deploy, live);
+  if (consistency.status === 'waiting') {
+    const nextState = recordCloudLiveConsistencyWait(snapshot.state, consistency, new Date());
+    const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+    return {
+      ok: true,
+      executed: true,
+      phase: 'live_consistency_waiting',
+      live_count: consistency.live_count,
+      state_version: checkpoint.version,
+      state_sha256: checkpoint.sha256,
+      decision
+    };
+  }
+
+  const nextState = finishCloudLiveConsistency(snapshot.state, consistency, new Date());
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+  return {
+    ok: true,
+    executed: true,
+    phase: 'live_consistency_verified',
+    live_count: consistency.live_count,
+    state_version: checkpoint.version,
+    state_sha256: checkpoint.sha256,
+    next_status: nextState.status,
+    next_batch: nextState.acquisition_batch,
+    decision
+  };
+}
+
 export function acquisitionSourceIdBatches(state) {
   const code = String(state?.current?.state_code || '').toUpperCase();
   const sourceIds = Array.isArray(state?.pending_source_ids) ? state.pending_source_ids.map(String) : [];
@@ -479,6 +549,7 @@ export async function runCloudControllerTick(env, options = {}) {
   if (decision.action === 'review_data_pr') return reserveDataPrMerge(env, stub, snapshot, decision);
   if (decision.action === 'merge_reserved_data_pr') return mergeReservedDataPr(env, stub, snapshot, decision);
   if (decision.action === 'verify_or_deploy_production') return verifyProductionDeploymentGate(env, stub, snapshot, decision);
+  if (decision.action === 'verify_live_consistency') return verifyLiveConsistency(env, stub, snapshot, decision, options);
   if (decision.action === 'trigger_acquisition_or_advance_batch') return reserveAcquisition(env, stub, snapshot, decision);
   if (decision.action === 'trigger_reserved_acquisition') return ensureReservedAcquisitionWorkflow(env, stub, snapshot, decision);
   throw new Error(`cloud_controller_action_not_implemented:${decision.action}`);
