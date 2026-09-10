@@ -7,12 +7,18 @@ import {
 } from './dispatch.mjs';
 import {
   classifyAcquisitionWorkerDeployment,
+  classifyFrontendProductionDeployment,
   inspectControllerPr,
+  inspectDataMergeChecks,
   inspectSourceMergeChecks,
   mergeControllerPr,
   validateDataPrInspection,
   validateSourcePrInspection
 } from './controller-github-client.mjs';
+import {
+  beginCloudLiveConsistency,
+  validatePendingProductionDeployment
+} from './controller-production-deployment.mjs';
 import { getStateConfig } from '../../cloudflare-texas-acquisition/src/us-state-registry.js';
 
 function stateStub(env) {
@@ -119,7 +125,7 @@ function decisionForState(state) {
 
 function executionMode(decision) {
   if (decision?.mode) return decision.mode;
-  return ['trigger_acquisition_or_advance_batch', 'trigger_reserved_acquisition', 'review_data_pr', 'merge_reserved_data_pr'].includes(decision?.action) ? 'acquire' : 'discover';
+  return ['trigger_acquisition_or_advance_batch', 'trigger_reserved_acquisition', 'review_data_pr', 'merge_reserved_data_pr', 'verify_or_deploy_production', 'verify_live_consistency'].includes(decision?.action) ? 'acquire' : 'discover';
 }
 
 async function assertExecutionAllowed(env, decision) {
@@ -343,6 +349,52 @@ async function mergeReservedDataPr(env, stub, snapshot, decision) {
   };
 }
 
+function productionLiveConsistencyTimeoutSeconds(env) {
+  const value = env?.GLOBAL_CONTROLLER_LIVE_CONSISTENCY_TIMEOUT_SECONDS;
+  if (value === undefined || value === null || String(value).trim() === '') return 120;
+  const seconds = Number(value);
+  if (!Number.isFinite(seconds) || seconds < 30 || seconds > 900) throw new Error('production_live_consistency_timeout_invalid');
+  return seconds;
+}
+
+async function verifyProductionDeploymentGate(env, stub, snapshot, decision) {
+  const pending = snapshot.state?.current?.pending_deploy;
+  const prNumber = Number(pending?.pr_number);
+  if (!Number.isInteger(prNumber) || prNumber <= 0) throw new Error('production_deploy_pr_number_invalid');
+  const deployment = await inspectDataMergeChecks(env, prNumber);
+  const validated = validatePendingProductionDeployment(snapshot.state, decision, deployment);
+  const gate = classifyFrontendProductionDeployment(deployment);
+  if (!gate.ready) {
+    return {
+      ok: true,
+      executed: false,
+      phase: 'waiting_for_frontend_production_deploy',
+      waiting_for: gate.waiting_for,
+      pr_number: prNumber,
+      merge_sha: validated.merge_sha,
+      state_version: snapshot.version,
+      state_sha256: snapshot.sha256,
+      decision
+    };
+  }
+  const nextState = beginCloudLiveConsistency(snapshot.state, validated, gate, new Date(), {
+    timeoutSeconds: productionLiveConsistencyTimeoutSeconds(env)
+  });
+  const checkpoint = await checkpointCloudControllerState(stub, snapshot, nextState);
+  return {
+    ok: true,
+    executed: true,
+    phase: 'frontend_production_deploy_verified',
+    pr_number: prNumber,
+    merge_sha: validated.merge_sha,
+    deployment_check_id: gate.deployment_check_id,
+    state_version: checkpoint.version,
+    state_sha256: checkpoint.sha256,
+    next_status: nextState.status,
+    decision
+  };
+}
+
 export function acquisitionSourceIdBatches(state) {
   const code = String(state?.current?.state_code || '').toUpperCase();
   const sourceIds = Array.isArray(state?.pending_source_ids) ? state.pending_source_ids.map(String) : [];
@@ -426,6 +478,7 @@ export async function runCloudControllerTick(env, options = {}) {
   if (decision.action === 'merge_reserved_source_pr') return mergeReservedSourcePr(env, stub, snapshot, decision);
   if (decision.action === 'review_data_pr') return reserveDataPrMerge(env, stub, snapshot, decision);
   if (decision.action === 'merge_reserved_data_pr') return mergeReservedDataPr(env, stub, snapshot, decision);
+  if (decision.action === 'verify_or_deploy_production') return verifyProductionDeploymentGate(env, stub, snapshot, decision);
   if (decision.action === 'trigger_acquisition_or_advance_batch') return reserveAcquisition(env, stub, snapshot, decision);
   if (decision.action === 'trigger_reserved_acquisition') return ensureReservedAcquisitionWorkflow(env, stub, snapshot, decision);
   throw new Error(`cloud_controller_action_not_implemented:${decision.action}`);
