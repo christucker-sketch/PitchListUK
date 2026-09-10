@@ -12,7 +12,7 @@ function baseState(overrides = {}) {
     priority_order: ['MA', 'CA'], query_offsets: { MA: 144, CA: 144 },
     priority_cursor: 0, current: null, active_instance: null,
     pending_source_ids: [], acquisition_batch: 1,
-    deferred_units: [], cloud_controller_intent: null,
+    deferred_units: [], deferred_replay_inflight: null, cloud_controller_intent: null,
     ...overrides
   };
 }
@@ -31,6 +31,7 @@ test('sweep completion fails closed while current, reserved, pending-source or d
   assert.throws(() => markCloudControllerSweepComplete(baseState({ pending_source_ids: ['src'] })), /pending_sources_present/);
   assert.throws(() => markCloudControllerSweepComplete(baseState({ deferred_units: [{ disposition: 'deferred_for_replay' }] })), /deferred_replay_pending/);
   assert.throws(() => markCloudControllerSweepComplete(baseState({ deferred_units: [{ disposition: 'genuine_blocker' }] })), /blockers_present/);
+  assert.throws(() => markCloudControllerSweepComplete(baseState({ deferred_replay_inflight: { key: 'discover:MA:8:4' } })), /deferred_replay_inflight/);
 });
 
 test('sweep_complete advances idempotently to complete only with no deferred/blocking work', () => {
@@ -38,8 +39,28 @@ test('sweep_complete advances idempotently to complete only with no deferred/blo
   const next = completeCloudController(state, new Date('2026-09-10T17:01:00.000Z'));
   assert.equal(next.status, 'complete');
   assert.equal(next.completed_at, '2026-09-10T17:01:00.000Z');
+  assert.equal(next.completion_reason, 'sweep_exhausted');
   const again = completeCloudController(next, new Date('2026-09-10T17:02:00.000Z'));
   assert.equal(again.completed_at, next.completed_at);
+});
+
+test('target reached explicitly retires remaining batch context but never deferred work', () => {
+  const state = baseState({
+    status: 'ready_acquisition', snapshot_count: 1200, target_count: 1200,
+    current: { state_code: 'TX', source_pr: 1700 },
+    pending_source_ids: ['src_a', 'src_b'], acquisition_batch: 3
+  });
+  const next = completeCloudController(state, new Date('2026-09-10T17:02:30.000Z'));
+  assert.equal(next.status, 'complete');
+  assert.equal(next.completion_reason, 'target_reached');
+  assert.equal(next.current, null);
+  assert.deepEqual(next.pending_source_ids, []);
+  assert.equal(next.acquisition_batch, 1);
+
+  assert.throws(() => completeCloudController({
+    ...state,
+    deferred_units: [{ disposition: 'deferred_for_replay', mode: 'discover', state_code: 'IL' }]
+  }), /deferred_replay_pending/);
 });
 
 test('deferred blocker decision records explicit blocked checkpoint', () => {
