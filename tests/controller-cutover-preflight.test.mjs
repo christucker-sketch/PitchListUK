@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 
 import {
   acquisitionReplayProvenanceReady,
+  assertAcquisitionReplayProofStillCurrent,
   assertControllerCutoverPreflightReady,
+  assertControllerCutoverPromotionMetaReady,
   legacyAcquisitionReplayUnitsNeedingProof,
   stampControllerCutoverPreflight
 } from '../operations/cloudflare-global-acquisition/lib/controller-cutover-preflight.mjs';
@@ -15,9 +17,18 @@ function acquire(overrides = {}) {
     replay_source_provenance: {
       state_code: 'TX', source_ids: ['src_a', 'src_b'], main_sha: 'a'.repeat(40),
       registry_blob_sha: 'b'.repeat(40), deployment_anchor_sha: 'c'.repeat(40),
-      deployment_check_id: 123
+      deployment_check_id: 123, source_head_sha: 'd'.repeat(40)
     },
     ...overrides
+  };
+}
+
+function currentProof(overrides = {}) {
+  return {
+    state_code: 'TX', source_ids: ['src_a', 'src_b'], source_pr_number: 1656,
+    main_sha: 'a'.repeat(40), registry_blob_sha: 'b'.repeat(40),
+    deployment_anchor_sha: 'c'.repeat(40), deployment_check_id: 123,
+    source_head_sha: 'd'.repeat(40), ...overrides
   };
 }
 
@@ -86,4 +97,20 @@ test('promotion contract detects stale marker count, replay keys and source PR a
   const stalePr = structuredClone(stamped);
   stalePr.cloud_controller_cutover_preflight.proven_source_prs = [9999];
   assert.throws(() => assertControllerCutoverPreflightReady(stalePr), /source_pr_mismatch/);
+});
+
+test('promotion requires a snapshot written by the dedicated shadow preflight path', () => {
+  assert.doesNotThrow(() => assertControllerCutoverPromotionMetaReady({ authority: 'shadow', source: 'cloudflare-us-controller-preflight' }));
+  assert.throws(() => assertControllerCutoverPromotionMetaReady({ authority: 'shadow', source: 'hal-us-growth' }), /requires_preflight_snapshot/);
+  assert.throws(() => assertControllerCutoverPromotionMetaReady({ authority: 'authoritative', source: 'cloudflare-us-controller-preflight' }), /requires_shadow_authority/);
+});
+
+test('promotion revalidation requires the current deployment proof to exactly match stored preflight provenance', () => {
+  const unit = acquire();
+  assert.doesNotThrow(() => assertAcquisitionReplayProofStillCurrent(unit, currentProof()));
+  assert.throws(() => assertAcquisitionReplayProofStillCurrent(unit, currentProof({ registry_blob_sha: 'e'.repeat(40) })), /registry_blob_sha_changed/);
+  assert.throws(() => assertAcquisitionReplayProofStillCurrent(unit, currentProof({ main_sha: 'e'.repeat(40) })), /main_sha_changed/);
+  assert.throws(() => assertAcquisitionReplayProofStillCurrent(unit, currentProof({ source_pr_number: 9999 })), /source_pr_changed/);
+  assert.throws(() => assertAcquisitionReplayProofStillCurrent(unit, currentProof({ deployment_check_id: 999 })), /deployment_check_changed/);
+  assert.throws(() => assertAcquisitionReplayProofStillCurrent(unit, currentProof({ source_ids: ['src_a'] })), /source_ids_changed/);
 });
