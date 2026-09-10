@@ -28,6 +28,9 @@ function readyState() {
   const unit = provenUnit();
   return {
     status: 'ready',
+    updated_at: '2026-09-10T18:00:01.000Z',
+    current: { state_code: 'TX', mode: 'discover' },
+    active_instance: null,
     deferred_replay_inflight: null,
     deferred_units: [unit],
     cloud_controller_cutover_preflight: {
@@ -42,13 +45,19 @@ function readyState() {
 
 test('cutover readiness reports structurally eligible only for exact shadow preflight state', () => {
   const report = buildControllerCutoverReadinessReport(readyState(), {
-    authority: 'shadow', version: 12, sha256: 'a'.repeat(64)
+    authority: 'shadow', version: 12, sha256: 'a'.repeat(64),
+    source: 'cloudflare-us-controller-preflight', imported_at: '2026-09-10T18:00:00.500Z'
   });
   assert.equal(report.promotion_structurally_eligible, true);
   assert.equal(report.deferred_acquisition_replay_count, 1);
   assert.equal(report.deferred_acquisition_replay_proven_count, 1);
   assert.equal(report.deferred_acquisition_replay_unproven_count, 0);
   assert.equal(report.preflight_marker_ready, true);
+  assert.equal(report.state_source, 'cloudflare-us-controller-preflight');
+  assert.equal(report.state_imported_at, '2026-09-10T18:00:00.500Z');
+  assert.equal(report.state_updated_at, '2026-09-10T18:00:01.000Z');
+  assert.equal(report.current_state_code, 'TX');
+  assert.equal(report.current_mode, 'discover');
   assert.deepEqual(report.promotion_blockers, []);
 });
 
@@ -65,14 +74,21 @@ test('readiness report exposes unproven replay and marker mismatch without mutat
   assert.equal(JSON.stringify(state), before);
 });
 
-test('readiness report blocks an inflight replay even with a valid marker', () => {
+test('readiness report exposes exact inflight replay identity', () => {
   const state = readyState();
-  state.deferred_replay_inflight = { mode: 'acquire', state_code: 'TX', source_ids: ['src_a'] };
+  state.deferred_replay_inflight = {
+    key: 'discover:NY:8:2', mode: 'discover', state_code: 'NY', query_offset: 8, query_limit: 2
+  };
+  state.active_instance = { id: 'cf_active' };
   const report = buildControllerCutoverReadinessReport(state, {
     authority: 'shadow', version: 12, sha256: 'a'.repeat(64)
   });
   assert.equal(report.promotion_structurally_eligible, false);
   assert.equal(report.deferred_replay_inflight, true);
+  assert.equal(report.deferred_replay_inflight_key, 'discover:NY:8:2');
+  assert.equal(report.deferred_replay_inflight_mode, 'discover');
+  assert.equal(report.deferred_replay_inflight_state_code, 'NY');
+  assert.equal(report.active_instance_id, 'cf_active');
   assert.ok(report.promotion_blockers.includes('deferred_replay_inflight'));
 });
 
@@ -84,7 +100,7 @@ test('readiness report never calls non-shadow authority structurally eligible', 
   assert.ok(report.promotion_blockers.includes('authority:authoritative'));
 });
 
-test('tokenless readiness reader performs one exact Durable Object snapshot GET and no write', async () => {
+test('tokenless readiness reader performs one exact Durable Object snapshot GET and exposes provenance headers', async () => {
   const calls = [];
   const env = {
     CONTROLLER_STATE: {
@@ -102,7 +118,9 @@ test('tokenless readiness reader performs one exact Durable Object snapshot GET 
               headers: {
                 'x-findpitches-state-authority': 'shadow',
                 'x-findpitches-state-version': '12',
-                'x-findpitches-state-sha256': 'a'.repeat(64)
+                'x-findpitches-state-sha256': 'a'.repeat(64),
+                'x-findpitches-state-source': 'cloudflare-us-controller-preflight',
+                'x-findpitches-state-imported-at': '2026-09-10T18:00:00.500Z'
               }
             });
           }
@@ -112,5 +130,7 @@ test('tokenless readiness reader performs one exact Durable Object snapshot GET 
   };
   const report = await readControllerCutoverReadinessReport(env);
   assert.equal(report.promotion_structurally_eligible, true);
+  assert.equal(report.state_source, 'cloudflare-us-controller-preflight');
+  assert.equal(report.state_imported_at, '2026-09-10T18:00:00.500Z');
   assert.deepEqual(calls, ['https://controller-state.internal/snapshot']);
 });
