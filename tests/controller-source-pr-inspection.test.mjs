@@ -29,6 +29,13 @@ function pr() {
     commits: [{ sha: head, parents: [base] }],
     files: [{ path: 'operations/opportunity-pipeline/config/us-growth-source-registry.json' }],
     check_runs: [{ status: 'completed', conclusion: 'success' }],
+    source_registry_proof: {
+      additions_only: true,
+      base_count: 100,
+      head_count: 102,
+      added_count: 2,
+      added_ids: ['src_b','src_a']
+    },
     body: [
       '- state: Texas (TX)',
       '- net-new approved sources: 2',
@@ -45,6 +52,8 @@ test('source PR inspection accepts exact one-commit one-file evidence-complete c
   const result = validateSourcePrInspection(state(), pr());
   assert.deepEqual(result.source_ids, ['src_a','src_b']);
   assert.equal(result.head_sha, head);
+  assert.equal(result.registry_base_count, 100);
+  assert.equal(result.registry_head_count, 102);
 });
 
 test('source PR inspection fails closed when branch, parent, file scope or CI is wrong', () => {
@@ -63,4 +72,14 @@ test('source PR inspection requires every checkpointed evidence receipt', () => 
   const candidate = pr();
   candidate.body = candidate.body.replace('  - src_b: receipt', '');
   assert.throws(() => validateSourcePrInspection(state(), candidate), /missing_evidence_receipt/);
+});
+
+test('source PR inspection rejects missing, extra or substituted registry additions', () => {
+  for (const addedIds of [[], ['src_a'], ['src_a','src_b','src_c'], ['src_a','src_c']]) {
+    const candidate = pr();
+    candidate.source_registry_proof.added_ids = addedIds;
+    candidate.source_registry_proof.added_count = addedIds.length;
+    candidate.source_registry_proof.head_count = 100 + addedIds.length;
+    assert.throws(() => validateSourcePrInspection(state(), candidate));
+  }
 });
