@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 import { authoritativeControllerDecision } from '../../cloudflare-texas-acquisition/scripts/controller-decision-from-state.mjs';
@@ -34,6 +35,27 @@ async function checkedJson(response, label) {
   return JSON.parse(text);
 }
 
+function curlJson({ method = 'GET', url, token, body = null }) {
+  const args = [
+    '--silent',
+    '--show-error',
+    '--fail-with-body',
+    '-X', method,
+    '-H', `Authorization: Bearer ${token}`
+  ];
+  if (body !== null) {
+    args.push('-H', 'Content-Type: application/json', '--data-binary', '@-');
+  }
+  args.push(url);
+  const output = execFileSync('curl', args, {
+    input: body ?? undefined,
+    encoding: 'utf8',
+    maxBuffer: 16 * 1024 * 1024,
+    stdio: ['pipe', 'pipe', 'pipe']
+  });
+  return JSON.parse(output);
+}
+
 export async function runParityCheck(options = {}) {
   const stateFile = path.resolve(options.stateFile || defaultStateFile);
   const token = String(options.token || process.env.CONTROLLER_STATE_IMPORT_TOKEN || '');
@@ -49,16 +71,12 @@ export async function runParityCheck(options = {}) {
     maximumReplayAttempts: Math.max(1, Number(process.env.PITCHLIST_GROWTH_DEFERRED_REPLAY_ATTEMPTS || 3))
   });
 
-  const headers = {
-    authorization: `Bearer ${token}`,
-    'content-type': 'application/json'
-  };
-
-  const imported = await checkedJson(await fetch(`${workerUrl}/controller-state/snapshot`, {
+  const imported = curlJson({
     method: 'PUT',
-    headers,
-    body: source
-  }), 'Shadow import');
+    token,
+    body: source,
+    url: `${workerUrl}/controller-state/snapshot`
+  });
 
   assert.equal(imported.sha256, frozenSha, 'Cloudflare imported SHA does not match frozen Hal snapshot');
   assert.equal(imported.authority, 'shadow', 'Cloudflare controller state is not shadow authority');
