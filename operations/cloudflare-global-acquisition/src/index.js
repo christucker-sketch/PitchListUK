@@ -89,6 +89,7 @@ export default {
         us_controller_cutover_enabled: globalControllerCutoverEnabled(env),
         controller_state_store: Boolean(env.CONTROLLER_STATE),
         controller_state_maintenance_enabled: Boolean(env.CONTROLLER_STATE_IMPORT_TOKEN),
+        controller_cutover_readiness_workflow: true,
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
           name: market.country_name,
