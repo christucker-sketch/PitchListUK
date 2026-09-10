@@ -57,7 +57,8 @@ export async function runCloudControllerTick(env, options = {}) {
   await assertAuthoritativeUsMutationAllowed(env, {
     country: 'US',
     mode: decision.mode || 'controller',
-    handler: 'us_production_workflow'
+    handler: 'us_production_workflow',
+    mutation_capable: true
   });
 
   if (snapshot.authority !== 'authoritative') {
