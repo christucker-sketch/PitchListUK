@@ -1,10 +1,12 @@
 import { proveUsSourceRegistryAdditionsOnly } from './us-source-registry-diff-proof.js';
+import { proveUsOpportunitySnapshotAdditionsOnly } from '../../cloudflare-global-acquisition/lib/us-opportunity-snapshot-diff-proof.mjs';
 
 const INTERNAL_HOST = 'findpitches-github-controller.internal';
 const INTERNAL_PATH = '/controller-pr';
 const INTERNAL_MARKER = 'findpitches-controller-service-v1';
 const ALLOWED_HEAD = /^(?:sources\/cloud-us-|data\/cloud-us-)[a-z0-9-]+$/i;
 const SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
+const US_SNAPSHOT_PATH = 'functions/_data/us-opportunities.mjs';
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -44,18 +46,29 @@ function decodeBase64Utf8(content) {
   const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
   return new TextDecoder().decode(bytes);
 }
-async function fetchJsonFileAtRef(fetchImpl, repo, authHeaders, path, ref) {
+async function fetchFileTextAtRef(fetchImpl, repo, authHeaders, path, ref) {
   const metadata = await githubJson(fetchImpl, `https://api.github.com/repos/${repo}/contents/${path}?ref=${encodeURIComponent(ref)}`, { headers: authHeaders });
   let encoded = String(metadata?.content || '').trim();
   if (!encoded) {
     const gitUrl = String(metadata?.git_url || '');
-    if (!gitUrl.startsWith(`https://api.github.com/repos/${repo}/git/blobs/`)) throw new Error('controller_github_registry_blob_url_invalid');
+    if (!gitUrl.startsWith(`https://api.github.com/repos/${repo}/git/blobs/`)) throw new Error('controller_github_blob_url_invalid');
     const blob = await githubJson(fetchImpl, gitUrl, { headers: authHeaders });
     encoded = String(blob?.content || '').trim();
-    if (String(blob?.encoding || '').toLowerCase() !== 'base64') throw new Error('controller_github_registry_blob_encoding_invalid');
-  } else if (String(metadata?.encoding || '').toLowerCase() !== 'base64') throw new Error('controller_github_registry_content_encoding_invalid');
-  if (!encoded) throw new Error('controller_github_registry_content_missing');
-  try { return JSON.parse(decodeBase64Utf8(encoded)); } catch { throw new Error('controller_github_registry_json_invalid'); }
+    if (String(blob?.encoding || '').toLowerCase() !== 'base64') throw new Error('controller_github_blob_encoding_invalid');
+  } else if (String(metadata?.encoding || '').toLowerCase() !== 'base64') throw new Error('controller_github_content_encoding_invalid');
+  if (!encoded) throw new Error('controller_github_content_missing');
+  return decodeBase64Utf8(encoded);
+}
+async function fetchJsonFileAtRef(fetchImpl, repo, authHeaders, path, ref) {
+  try { return JSON.parse(await fetchFileTextAtRef(fetchImpl, repo, authHeaders, path, ref)); } catch (error) {
+    if (String(error?.message || error).startsWith('controller_github_')) throw error;
+    throw new Error('controller_github_json_invalid');
+  }
+}
+function parseUsSnapshotModule(source) {
+  const match = String(source || '').match(/export const usOpportunitySnapshot\s*=\s*([\s\S]+);\s*$/);
+  if (!match) throw new Error('controller_github_us_snapshot_module_invalid');
+  try { return JSON.parse(match[1]); } catch { throw new Error('controller_github_us_snapshot_json_invalid'); }
 }
 async function sourceRegistryProof(fetchImpl, repo, authHeaders, inspection) {
   if (!String(inspection.head_ref || '').startsWith('sources/cloud-us-')) return null;
@@ -65,6 +78,15 @@ async function sourceRegistryProof(fetchImpl, repo, authHeaders, inspection) {
     fetchJsonFileAtRef(fetchImpl, repo, authHeaders, SOURCE_REGISTRY_PATH, inspection.head_sha)
   ]);
   return proveUsSourceRegistryAdditionsOnly(baseRegistry, headRegistry);
+}
+async function dataSnapshotProof(fetchImpl, repo, authHeaders, inspection) {
+  if (!String(inspection.head_ref || '').startsWith('data/cloud-us-')) return null;
+  if (inspection.files.length !== 1 || inspection.files[0]?.path !== US_SNAPSHOT_PATH) return null;
+  const [baseSource, headSource] = await Promise.all([
+    fetchFileTextAtRef(fetchImpl, repo, authHeaders, US_SNAPSHOT_PATH, inspection.base_sha),
+    fetchFileTextAtRef(fetchImpl, repo, authHeaders, US_SNAPSHOT_PATH, inspection.head_sha)
+  ]);
+  return proveUsOpportunitySnapshotAdditionsOnly(parseUsSnapshotModule(baseSource), parseUsSnapshotModule(headSource));
 }
 async function inspectPr(fetchImpl, repo, authHeaders, prNumber) {
   const baseUrl = `https://api.github.com/repos/${repo}`;
@@ -87,6 +109,7 @@ async function inspectPr(fetchImpl, repo, authHeaders, prNumber) {
     check_runs: compactChecks(checkRuns)
   };
   inspection.source_registry_proof = await sourceRegistryProof(fetchImpl, repo, authHeaders, inspection);
+  inspection.data_snapshot_proof = await dataSnapshotProof(fetchImpl, repo, authHeaders, inspection);
   return inspection;
 }
 async function inspectMergeChecks(fetchImpl, repo, authHeaders, prNumber) {
