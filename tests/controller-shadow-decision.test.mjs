@@ -62,8 +62,18 @@ test('completed controller with deferred work schedules replay', () => {
   assert.equal(decision.query_offset, 68);
 });
 
-test('deferred blockers fail closed', () => {
+test('deferred blockers do not preempt remaining discovery work', () => {
   const decision = shadowControllerDecision(baseState({
+    deferred_units: [{ disposition: 'genuine_blocker', mode: 'discover', state_code: 'MA' }]
+  }));
+  assert.equal(decision.action, 'trigger_discovery');
+  assert.equal(decision.state_code, 'MA');
+  assert.equal(decision.query_offset, 72);
+});
+
+test('deferred blockers fail closed after discovery and replay are exhausted', () => {
+  const decision = shadowControllerDecision(baseState({
+    query_offsets: { MA: 144, CA: 144 },
     deferred_units: [{ disposition: 'genuine_blocker', mode: 'discover', state_code: 'MA' }]
   }));
   assert.equal(decision.action, 'block');
