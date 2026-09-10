@@ -1,0 +1,113 @@
+name: US controller one-shot authority recovery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'operations/cloudflare-global-acquisition/lib/controller-authority-recovery.mjs'
+      - 'operations/cloudflare-global-acquisition/src/index.js'
+      - '.github/workflows/us-controller-authority-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-us-controller-one-shot-authority-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
+      WORKFLOW_NAME: findpitches-global-acquisition-shadow
+      EXPECTED_VERSION: '12'
+      EXPECTED_SHA: bab094984c928a20db4ee6dfd929a9e94e066cae9ad7baa76b84820c945a754b
+      EXPECTED_SOURCE: hal-us-growth
+    steps:
+      - name: Check out exact main recovery commit
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Wait for exact recovery capability under safe execution policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          health_url='https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health'
+          ready=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$health_url" || true)"
+            if jq -e '
+              .ok == true and
+              .stale_hal_authority_recovery_v12 == true and
+              .execution_enabled == true and
+              .execution_level == "read_only" and
+              .us_controller_cutover_enabled == false
+            ' <<<"$body" >/dev/null 2>&1; then
+              printf '%s\n' "$body" > us-controller-authority-recovery-health.json
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Exact stale-authority recovery capability did not become observable under safe policy.' >&2; exit 1; }
+
+      - name: Execute exact one-shot authority recovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="us-controller-authority-recovery-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          params='{"country":"US","mode":"recover_stale_hal_authority_v12"}'
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" || true)"
+            status="$(jq -r '.result.status // empty' <<<"$body" 2>/dev/null || true)"
+            if [[ "$status" == 'complete' ]]; then
+              printf '%s\n' "$body" > us-controller-authority-recovery-result.json
+              jq -e --argjson version "$EXPECTED_VERSION" --arg sha "$EXPECTED_SHA" --arg source "$EXPECTED_SOURCE" '
+                .result.output.country == "US" and
+                .result.output.mode == "recover_stale_hal_authority_v12" and
+                .result.output.ok == true and
+                .result.output.recovered == true and
+                .result.output.authority == "shadow" and
+                .result.output.state_version == $version and
+                .result.output.state_sha256 == $sha and
+                .result.output.state_source == $source
+              ' <<<"$body" >/dev/null
+              echo '### US controller stale authority recovery' >> "$GITHUB_STEP_SUMMARY"
+              echo '```json' >> "$GITHUB_STEP_SUMMARY"
+              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              completed=true
+              break
+            fi
+            if [[ "$status" == 'errored' || "$status" == 'terminated' ]]; then
+              printf '%s\n' "$body" > us-controller-authority-recovery-result.json
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          [[ "$completed" == 'true' ]] || { echo 'One-shot stale authority recovery timed out.' >&2; exit 1; }
+
+      - name: Publish recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-controller-authority-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            us-controller-authority-recovery-health.json
+            us-controller-authority-recovery-result.json
+          if-no-files-found: warn
+          retention-days: 30
