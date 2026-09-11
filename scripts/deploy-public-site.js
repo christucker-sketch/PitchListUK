@@ -27,10 +27,62 @@ function resultExitCode(result, logger = console) {
   return result.status;
 }
 
+function deploymentResultText(result) {
+  return [result?.error?.message, result?.stdout, result?.stderr]
+    .filter(Boolean)
+    .map(value => String(value))
+    .join('\n');
+}
+
+function isTransientCloudflareDeploymentFailure(result) {
+  const text = deploymentResultText(result);
+  return /Unknown internal error occurred|workflows\.api\.error\.internal_server|code:\s*10001|\b(?:ECONNRESET|ETIMEDOUT|EAI_AGAIN)\b|fetch failed|socket hang up|\b(?:502|503|504)\b|Internal Server Error|Bad Gateway|Service Unavailable|Gateway Timeout/i.test(text);
+}
+
+function deploymentRetryBackoffMilliseconds(attempt, options = {}) {
+  const base = Number(options.baseMs ?? 5000);
+  const maximum = Number(options.maximumMs ?? 60000);
+  if (!Number.isFinite(base) || base < 0 || !Number.isFinite(maximum) || maximum < base) {
+    throw new Error('Cloudflare deployment retry backoff configuration is invalid');
+  }
+  return Math.min(maximum, base * (2 ** Math.max(0, Number(attempt || 1) - 1)));
+}
+
+function cleanupFailedDeploymentArtifacts(root, options = {}) {
+  const git = options.git || spawnSync;
+  const logger = options.logger || console;
+  let clean = true;
+  try {
+    const restored = git('git', ['restore', '--source=HEAD', '--', 'public/sitemap.xml'], {
+      cwd: root,
+      stdio: 'ignore'
+    });
+    if (restored?.error || restored?.signal || restored?.status !== 0) clean = false;
+  } catch {
+    clean = false;
+  }
+  for (const directory of ['global', 'us', 'uk', 'shared']) {
+    try {
+      fs.rmSync(path.join(root, 'public', directory), { recursive: true, force: true });
+    } catch {
+      clean = false;
+    }
+  }
+  if (!clean) logger.error('Failed to fully clean generated deployment artifacts after deployment failure.');
+  return clean;
+}
+
+function relayResultOutput(result, output = process) {
+  if (result?.stdout && output?.stdout?.write) output.stdout.write(String(result.stdout));
+  if (result?.stderr && output?.stderr?.write) output.stderr.write(String(result.stderr));
+}
+
 function deployPublicSite(options = {}) {
   const env = options.env || process.env;
   const logger = options.logger || console;
   const spawn = options.spawn || spawnSync;
+  const sleep = options.sleep || (milliseconds => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds));
+  const output = options.output || process;
   const repositoryRoot = path.resolve(__dirname, '..');
   const siteRoot = path.resolve(repositoryRoot, env.PITCHLIST_PUBLIC_SITE_ROOT || '.');
   const project = env.PITCHLIST_CLOUDFLARE_PAGES_PROJECT || 'pitchlistuk';
@@ -70,19 +122,36 @@ function deployPublicSite(options = {}) {
   ];
   if (envFile) args.push('--env-file', envFile);
 
+  const configuredRetries = Number(env.PITCHLIST_DEPLOY_RETRIES ?? 3);
+  const maxRetries = Number.isFinite(configuredRetries) ? Math.max(0, Math.min(10, Math.floor(configuredRetries))) : 3;
+  const baseMs = Number(env.PITCHLIST_DEPLOY_RETRY_BASE_MS ?? 5000);
+  const maximumMs = Number(env.PITCHLIST_DEPLOY_RETRY_MAX_MS ?? 60000);
+
   let result;
-  try {
-    result = spawn('npx', args, {
-      cwd: siteRoot,
-      stdio: 'inherit',
-      env
-    });
-  } catch (error) {
-    const detail = safeDetail(error?.code || 'unknown error');
-    logger.error(`Wrangler failed to start${detail ? `: ${detail}` : '.'}`);
-    return 1;
+  let transientFailures = 0;
+  for (;;) {
+    try {
+      result = spawn('npx', args, {
+        cwd: siteRoot,
+        stdio: ['ignore', 'pipe', 'pipe'],
+        encoding: 'utf8',
+        env
+      });
+    } catch (error) {
+      result = { status: null, signal: null, error };
+    }
+    relayResultOutput(result, output);
+
+    if (resultExitCode(result, logger) === 0) return 0;
+    if (!isTransientCloudflareDeploymentFailure(result) || transientFailures >= maxRetries) break;
+
+    transientFailures += 1;
+    const delay = deploymentRetryBackoffMilliseconds(transientFailures, { baseMs, maximumMs });
+    logger.error(`Transient Cloudflare Pages deployment failure; retry ${transientFailures}/${maxRetries} in ${delay}ms.`);
+    sleep(delay);
   }
 
+  cleanupFailedDeploymentArtifacts(siteRoot, { logger, git: options.git });
   return resultExitCode(result, logger);
 }
 
@@ -90,4 +159,10 @@ if (require.main === module) {
   process.exitCode = deployPublicSite();
 }
 
-module.exports = { deployPublicSite, resultExitCode };
+module.exports = {
+  cleanupFailedDeploymentArtifacts,
+  deployPublicSite,
+  deploymentRetryBackoffMilliseconds,
+  isTransientCloudflareDeploymentFailure,
+  resultExitCode
+};
