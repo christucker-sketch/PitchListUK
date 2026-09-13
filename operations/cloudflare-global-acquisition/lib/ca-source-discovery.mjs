@@ -135,8 +135,7 @@ export async function runCanadaSourceDiscovery(env, payload = {}, options = {}) 
       application_url: page.url || candidate.result.url,
       title: candidate.result.title,
       snippet: candidate.result.snippet,
-      page_text: page.text || '',
-      region: candidate.plan.region
+      page_text: page.text || ''
     });
     if (evidence.status === 'approved') approved.push(toApprovedSource(candidate.result, candidate.plan, page, evidence, generatedAt));
     else if (evidence.status === 'review') review.push(Object.freeze({ url: page.url || candidate.result.url, region_code: candidate.plan.region_code, reason: evidence.reason }));
