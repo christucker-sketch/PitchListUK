@@ -74,8 +74,46 @@ test('Canada controller drives source PR review through reserved merge and deplo
   assert.deepEqual(caControllerDecision(deploy), { action: 'verify_source_deploy', merge_sha: 'b'.repeat(40) });
 });
 
-test('Canada controller still keeps opportunity acquisition explicitly unarmed', () => {
+test('Canada controller reserves and binds opportunity acquisition without duplicating work', () => {
   const acquisition = buildInitialCaControllerState();
   acquisition.status = 'ready_acquisition';
-  assert.deepEqual(caControllerDecision(acquisition), { action: 'start_acquisition', cycle: 0 });
+  acquisition.cycle = 3;
+  assert.deepEqual(caControllerDecision(acquisition), { action: 'start_acquisition', cycle: 3 });
+
+  const reserved = buildInitialCaControllerState();
+  reserved.status = 'ready_acquisition';
+  reserved.cloud_controller_intent = {
+    phase: 'reserved',
+    action: 'start_acquisition',
+    workflow_id: 'cactl-v12-acquire-c3'
+  };
+  assert.deepEqual(caControllerDecision(reserved), {
+    action: 'bind_reserved_acquisition',
+    workflow_id: 'cactl-v12-acquire-c3'
+  });
+
+  const active = buildInitialCaControllerState();
+  active.status = 'running_acquisition';
+  active.active_instance = { id: 'cactl-v13-acquire-c3', mode: 'acquisition' };
+  assert.deepEqual(caControllerDecision(active), {
+    action: 'inspect_active_workflow',
+    workflow_id: 'cactl-v13-acquire-c3',
+    mode: 'acquisition'
+  });
+});
+
+test('Canada controller drives data PR review through exact merge and frontend deployment', () => {
+  const review = buildInitialCaControllerState();
+  review.status = 'reviewing_data_pr';
+  review.pending_data_pr = { pr_number: 1900, workflow_id: 'cactl-v14-acquire-c3' };
+  assert.deepEqual(caControllerDecision(review), { action: 'review_data_pr', pr_number: 1900 });
+
+  const reservedMerge = buildInitialCaControllerState();
+  reservedMerge.cloud_controller_intent = { phase: 'reserved', action: 'merge_data_pr', pr_number: 1900 };
+  assert.deepEqual(caControllerDecision(reservedMerge), { action: 'merge_reserved_data_pr', pr_number: 1900 });
+
+  const deploy = buildInitialCaControllerState();
+  deploy.status = 'waiting_frontend_deploy';
+  deploy.pending_deployment = { kind: 'data', merge_sha: 'c'.repeat(40) };
+  assert.deepEqual(caControllerDecision(deploy), { action: 'verify_frontend_deploy', merge_sha: 'c'.repeat(40) });
 });

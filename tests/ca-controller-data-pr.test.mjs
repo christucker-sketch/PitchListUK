@@ -1,0 +1,81 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+
+import { validateCaDataPr } from '../operations/cloudflare-global-acquisition/lib/ca-controller-data-pr.mjs';
+
+function result() {
+  return {
+    production_count_before: 4,
+    production_count_after_planned: 6,
+    manifest_additions: 2,
+    opportunity_ids: ['CA-OPP-AAAAAAAAAAAA', 'CA-OPP-BBBBBBBBBBBB'],
+    opportunity_pr: {
+      pr_number: 1900,
+      branch: 'data/cloud-ca-approved-additions-1234567890abcdef-base-1234567890abcdef',
+      additions: 2
+    }
+  };
+}
+
+function pr(overrides = {}) {
+  return {
+    number: 1900,
+    state: 'OPEN',
+    merged: false,
+    draft: false,
+    base_ref: 'main',
+    base_sha: '1'.repeat(40),
+    head_ref: 'data/cloud-ca-approved-additions-1234567890abcdef-base-1234567890abcdef',
+    head_sha: '2'.repeat(40),
+    files: ['functions/_data/ca-opportunities.mjs'],
+    body: [
+      '- production snapshot: 4 -> 6',
+      '- net-new additions: 2',
+      '- updates: forbidden',
+      '- removals: forbidden',
+      '- approved-source direct fetch only',
+      '- Serper credits: 0',
+      '- automatic merge: disabled',
+      '- direct production deployment: disabled',
+      '- CA-OPP-AAAAAAAAAAAA: https://www.ontario.ca/a; jurisdiction=CA-ON',
+      '- CA-OPP-BBBBBBBBBBBB: https://www.ontario.ca/b; jurisdiction=CA-ON'
+    ].join('\n'),
+    check_runs: [{ id: 1, name: 'verify', status: 'completed', conclusion: 'success' }],
+    ...overrides
+  };
+}
+
+test('Canada data PR gate accepts exact additions-only evidence after CI succeeds', () => {
+  const validated = validateCaDataPr(result(), pr());
+  assert.equal(validated.ready, true);
+  assert.equal(validated.pr_number, 1900);
+  assert.equal(validated.additions, 2);
+  assert.equal(validated.before, 4);
+  assert.equal(validated.after, 6);
+  assert.deepEqual(validated.opportunity_ids, ['CA-OPP-AAAAAAAAAAAA', 'CA-OPP-BBBBBBBBBBBB']);
+});
+
+test('Canada data PR gate remains pending while checks are incomplete', () => {
+  const validated = validateCaDataPr(result(), pr({
+    check_runs: [{ id: 1, name: 'verify', status: 'in_progress', conclusion: null }]
+  }));
+  assert.equal(validated.ready, false);
+});
+
+test('Canada data PR gate rejects wider file scope and count drift', () => {
+  assert.throws(() => validateCaDataPr(result(), pr({
+    files: ['functions/_data/ca-opportunities.mjs', 'public/ca/index.html']
+  })), /file_scope/);
+
+  const drift = result();
+  drift.production_count_after_planned = 7;
+  assert.throws(() => validateCaDataPr(drift, pr()), /count_delta/);
+});
+
+test('Canada data PR gate rejects substituted IDs, missing receipts and branch drift', () => {
+  const substituted = result();
+  substituted.opportunity_ids = ['CA-OPP-AAAAAAAAAAAA', 'CA-OPP-CCCCCCCCCCCC'];
+  assert.throws(() => validateCaDataPr(substituted, pr()), /receipt_missing/);
+  assert.throws(() => validateCaDataPr(result(), pr({ body: '- production snapshot: 4 -> 6' })), /body_evidence/);
+  assert.throws(() => validateCaDataPr(result(), pr({ head_ref: 'data/cloud-us-approved-additions-1234' })), /head_invalid|branch_mismatch/);
+});
