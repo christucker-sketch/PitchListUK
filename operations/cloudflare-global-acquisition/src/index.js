@@ -11,7 +11,9 @@ import {
 import {
   CUTOVER_OPERATOR_MODE,
   demoteCurrentAuthoritative,
+  FINAL_HAL_CUTOVER_OPERATOR_MODE,
   promoteExactV14,
+  promoteFinalHalHandover,
   ROLLBACK_OPERATOR_MODE
 } from '../lib/controller-cutover-operator.mjs';
 import {
@@ -22,6 +24,10 @@ import {
   EXACT_V13_PREFLIGHT_MODE,
   prepareExactV13CutoverPreflight
 } from '../lib/controller-exact-preflight.mjs';
+import {
+  FINAL_HAL_HANDOVER_PATH,
+  handleExactFinalHalHandover
+} from '../lib/controller-final-hal-handover.mjs';
 import { readControllerCutoverReadinessReport } from '../lib/controller-cutover-readiness.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
@@ -66,6 +72,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         country: 'US',
         mode: CUTOVER_OPERATOR_MODE,
         ...(await promoteExactV14(this.env, payload))
+      }));
+    }
+    if (payload.country === 'US' && payload.mode === FINAL_HAL_CUTOVER_OPERATOR_MODE) {
+      return step.do('promote final stopped Hal handover US controller authority', async () => ({
+        country: 'US',
+        mode: FINAL_HAL_CUTOVER_OPERATOR_MODE,
+        ...(await promoteFinalHalHandover(this.env, payload))
       }));
     }
     if (payload.country === 'US' && payload.mode === ROLLBACK_OPERATOR_MODE) {
@@ -131,6 +144,14 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    if (url.pathname === FINAL_HAL_HANDOVER_PATH) {
+      try {
+        return await handleExactFinalHalHandover(request, env);
+      } catch (error) {
+        return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 });
+      }
+    }
+
     if (url.pathname.startsWith('/controller-state/')) {
       return handleControllerStateMaintenance(request, env);
     }
@@ -148,6 +169,7 @@ export default {
         stale_hal_authority_recovery_v12: true,
         failed_legacy_mi_replay_recovery: true,
         exact_v13_cutover_preflight: true,
+        exact_final_hal_handover_import: true,
         manual_us_cutover_operator: true,
         manual_us_rollback_operator: true,
         markets: globalAcquisitionMarkets().map(market => ({

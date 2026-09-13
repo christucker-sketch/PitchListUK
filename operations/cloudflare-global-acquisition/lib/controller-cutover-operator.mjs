@@ -1,9 +1,14 @@
 import { controllerStateStub } from './controller-state-maintenance.mjs';
 import { buildControllerCutoverReadinessReport } from './controller-cutover-readiness.mjs';
 import { globalControllerCutoverEnabled } from './controller-authority-guard.mjs';
+import {
+  FINAL_HAL_SNAPSHOT_SHA256,
+  finalHalHandoverMarkerReady
+} from './controller-final-hal-handover.mjs';
 import { globalControllerExecutionLevel } from './dispatch.mjs';
 
 export const CUTOVER_OPERATOR_MODE = 'operator_promote_exact_v14';
+export const FINAL_HAL_CUTOVER_OPERATOR_MODE = 'operator_promote_final_hal_handover';
 export const ROLLBACK_OPERATOR_MODE = 'operator_demote_current_authoritative';
 export const CUTOVER_CONFIRMATION = 'CUTOVER_US_CONTROLLER_FROM_HAL_TO_CLOUDFLARE';
 export const HAL_QUIESCED_CONFIRMATION = 'HAL_US_GROWTH_STOPPED_AND_DISABLED';
@@ -56,6 +61,20 @@ function assertExactPromotionCandidate(snapshot) {
   return readiness;
 }
 
+function assertFinalHalPromotionCandidate(snapshot) {
+  const { state, meta } = snapshot;
+  if (meta.source !== 'cloudflare-us-controller-preflight') throw new Error(`final_hal_cutover_operator_source_drift:${meta.source}`);
+  if (meta.authority !== 'shadow') throw new Error(`final_hal_cutover_operator_requires_shadow_authority:${meta.authority}`);
+  if (!finalHalHandoverMarkerReady(state)) throw new Error('final_hal_cutover_operator_handover_marker_not_ready');
+
+  const readiness = buildControllerCutoverReadinessReport(state, meta);
+  if (!readiness.preflight_marker_ready) throw new Error(`final_hal_cutover_operator_preflight_not_ready:${readiness.preflight_marker_error || 'unknown'}`);
+  if (!readiness.promotion_structurally_eligible || readiness.promotion_blockers.length) {
+    throw new Error(`final_hal_cutover_operator_not_structurally_eligible:${readiness.promotion_blockers.join(',')}`);
+  }
+  return readiness;
+}
+
 export async function promoteExactV14(env, payload = {}) {
   const policy = assertSafeOperatorPolicy(env);
   if (String(payload.confirmation || '') !== CUTOVER_CONFIRMATION) throw new Error('cutover_operator_confirmation_required');
@@ -82,6 +101,47 @@ export async function promoteExactV14(env, payload = {}) {
     ok: true,
     changed: body.changed === true,
     phase: 'authority_promoted_execution_still_safe',
+    state_version: after.meta.version,
+    state_sha256: after.meta.sha256,
+    state_source: after.meta.source,
+    authority: after.meta.authority,
+    execution_level: policy.execution_level,
+    cutover_enabled: policy.cutover_enabled,
+    promotion_structurally_eligible: readiness.promotion_structurally_eligible
+  };
+}
+
+export async function promoteFinalHalHandover(env, payload = {}) {
+  const policy = assertSafeOperatorPolicy(env);
+  if (String(payload.confirmation || '') !== CUTOVER_CONFIRMATION) throw new Error('final_hal_cutover_operator_confirmation_required');
+  if (String(payload.hal_quiesced_confirmation || '') !== HAL_QUIESCED_CONFIRMATION) throw new Error('final_hal_cutover_operator_hal_quiesced_confirmation_required');
+  if (String(payload.hal_final_snapshot_sha256 || '').toLowerCase() !== FINAL_HAL_SNAPSHOT_SHA256) {
+    throw new Error('final_hal_cutover_operator_snapshot_sha_mismatch');
+  }
+
+  const stub = controllerStateStub(env);
+  const before = await readSnapshot(stub);
+  const readiness = assertFinalHalPromotionCandidate(before);
+
+  const response = await stub.fetch(new Request('https://controller-state.internal/promote', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ expected_version: before.meta.version, expected_sha256: before.meta.sha256 })
+  }));
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(`final_hal_cutover_operator_promotion_failed:${body.error || response.status}`);
+
+  const after = await readSnapshot(stub);
+  if (after.meta.version !== before.meta.version || after.meta.sha256 !== before.meta.sha256 || after.meta.authority !== 'authoritative') {
+    throw new Error('final_hal_cutover_operator_post_promotion_identity_mismatch');
+  }
+  if (!finalHalHandoverMarkerReady(after.state)) throw new Error('final_hal_cutover_operator_post_promotion_marker_missing');
+
+  return {
+    ok: true,
+    changed: body.changed === true,
+    phase: 'final_hal_handover_authority_promoted_execution_still_safe',
+    final_hal_snapshot_sha256: FINAL_HAL_SNAPSHOT_SHA256,
     state_version: after.meta.version,
     state_sha256: after.meta.sha256,
     state_source: after.meta.source,
