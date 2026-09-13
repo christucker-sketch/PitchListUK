@@ -6,7 +6,7 @@ import { runCanadaSourceDiscovery } from '../operations/cloudflare-global-acquis
 test('Canada discovery searches bounded Canadian plans and auto-approves only official evidence', async () => {
   const searched = [];
   const result = await runCanadaSourceDiscovery({}, {
-    query_offset: 64,
+    query_offset: 48,
     query_limit: 1,
     results_per_query: 8,
     as_of: '2026-09-13T15:30:00.000Z'
@@ -29,8 +29,8 @@ test('Canada discovery searches bounded Canadian plans and auto-approves only of
   assert.equal(searched.length, 1);
   assert.match(searched[0].query, /Ontario/);
   assert.equal(result.country, 'CA');
-  assert.equal(result.query_offset, 64);
-  assert.equal(result.next_query_offset, 65);
+  assert.equal(result.query_offset, 48);
+  assert.equal(result.next_query_offset, 49);
   assert.equal(result.approved_source_count, 1);
   assert.equal(result.manual_review_count, 1);
   assert.equal(result.held_count, 0);
@@ -55,7 +55,7 @@ test('Canada discovery holds fetch failures and advances the exact plan offset',
 });
 
 test('Canada discovery deduplicates the same route across multiple queries', async () => {
-  const result = await runCanadaSourceDiscovery({}, { query_offset: 64, query_limit: 2 }, {
+  const result = await runCanadaSourceDiscovery({}, { query_offset: 48, query_limit: 2 }, {
     search: async () => [{ title: 'Ontario Vendor Application', link: 'https://ontario.ca/vendors', snippet: 'Ontario vendor application' }],
     fetchCandidate: async url => ({ url, text: 'Ontario vendors can apply. Application form, vendor fee and deadline.' })
   });
