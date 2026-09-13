@@ -1,6 +1,37 @@
 const DEFAULT_CONTROLLER_STATE_CHUNK_BYTES = 384 * 1024;
 const BASE64_CHUNK_PREFIX = 'b64:';
 
+function validateUkControllerState(parsed) {
+  const allowedStatuses = new Set([
+    'ready_discovery',
+    'running_discovery',
+    'reviewing_source_pr',
+    'waiting_source_deploy',
+    'ready_acquisition',
+    'running_acquisition',
+    'reviewing_data_pr',
+    'waiting_frontend_deploy',
+    'blocked'
+  ]);
+  if (!allowedStatuses.has(String(parsed.status || ''))) throw new Error('UK controller state has an unsupported status');
+  const offset = Number(parsed.query_offset);
+  const limit = Number(parsed.query_limit);
+  const planSize = Number(parsed.plan_size);
+  if (!Number.isInteger(offset) || offset < 0 || offset >= 96) throw new Error('UK controller state query_offset is invalid');
+  if (!Number.isInteger(limit) || limit < 1 || limit > 12) throw new Error('UK controller state query_limit is invalid');
+  if (!Number.isInteger(planSize) || planSize !== 96) throw new Error('UK controller state plan_size must be 96');
+  if (!Number.isInteger(Number(parsed.cycle || 0)) || Number(parsed.cycle || 0) < 0) throw new Error('UK controller state cycle is invalid');
+  if (parsed.active_instance !== null && (typeof parsed.active_instance !== 'object' || Array.isArray(parsed.active_instance))) {
+    throw new Error('UK controller state active_instance is invalid');
+  }
+  if (parsed.cloud_controller_intent !== null && (typeof parsed.cloud_controller_intent !== 'object' || Array.isArray(parsed.cloud_controller_intent))) {
+    throw new Error('UK controller state cloud_controller_intent is invalid');
+  }
+  if (!Array.isArray(parsed.results)) throw new Error('UK controller state results must be an array');
+  if (!parsed.totals || typeof parsed.totals !== 'object' || Array.isArray(parsed.totals)) throw new Error('UK controller state totals are missing');
+  return parsed;
+}
+
 export function validateControllerStateText(text) {
   const source = String(text ?? '');
   if (!source.trim()) throw new Error('Controller state snapshot is empty');
@@ -13,6 +44,7 @@ export function validateControllerStateText(text) {
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error('Controller state snapshot must be a JSON object');
   }
+  if (parsed.controller_kind === 'uk') return validateUkControllerState(parsed);
   if (!Array.isArray(parsed.priority_order) || parsed.priority_order.length !== 50) {
     throw new Error('Controller state snapshot must contain the 50-state priority_order');
   }

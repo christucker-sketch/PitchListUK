@@ -25,11 +25,19 @@
       {
         "name": "CONTROLLER_STATE",
         "class_name": "ControllerStateDurableObject"
+      },
+      {
+        "name": "UK_CONTROLLER_STATE",
+        "class_name": "UkControllerStateDurableObject"
       }
     ]
   },
   "exports": {
     "ControllerStateDurableObject": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    },
+    "UkControllerStateDurableObject": {
       "type": "durable-object",
       "storage": "sqlite"
     }
@@ -48,6 +56,7 @@
     "GITHUB_REPO": "christucker-sketch/PitchListUK",
     "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "true",
     "GLOBAL_ACQUISITION_EXECUTION_LEVEL": "production",
-    "GLOBAL_CONTROLLER_CUTOVER_ENABLED": "true"
+    "GLOBAL_CONTROLLER_CUTOVER_ENABLED": "true",
+    "GLOBAL_UK_CONTROLLER_CUTOVER_ENABLED": "false"
   }
 }

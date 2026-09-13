@@ -1,0 +1,54 @@
+name: UK source controller deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'operations/opportunity-pipeline/config/approved-source-routes.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-uk-source-controller-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy_and_prove:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
+    steps:
+      - name: Check out verified main
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run UK controller source safety tests
+        run: >-
+          node --test
+          tests/uk-cloudflare-source-discovery.test.mjs
+          tests/uk-approved-source-poll-publication.test.mjs
+          tests/uk-cloud-controller.test.mjs
+          tests/uk-controller-github-client.test.mjs
+
+      - name: Compile global acquisition Worker
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config "$CONFIG"
+
+      - name: Deploy global acquisition Worker with current production policy
+        run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
+
+      - name: Verify production health
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health)"
+          jq -e '.ok == true and .execution_level == "production" and .us_controller_cutover_enabled == true and .uk_controller_state_store == true' <<<"$body" >/dev/null
