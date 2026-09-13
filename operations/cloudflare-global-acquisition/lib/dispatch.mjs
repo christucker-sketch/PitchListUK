@@ -11,7 +11,7 @@ const CA_SHADOW_PR_ONLY_MODES = Object.freeze(new Set([CA_SOURCE_DISCOVERY_MODE,
 const MODES = Object.freeze({
   US: Object.freeze(new Set(['acquire', 'discover', READ_ONLY_MODE, CUTOVER_READINESS_MODE])),
   UK: Object.freeze(new Set([READ_ONLY_MODE, UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE])),
-  CA: Object.freeze(new Set([CA_SOURCE_DISCOVERY_MODE, CA_ADDITIONS_MODE]))
+  CA: Object.freeze(new Set([CUTOVER_READINESS_MODE, CA_SOURCE_DISCOVERY_MODE, CA_ADDITIONS_MODE]))
 });
 
 export function resolveGlobalAcquisitionDispatch(payload = {}) {
@@ -19,8 +19,9 @@ export function resolveGlobalAcquisitionDispatch(payload = {}) {
   const country = normalizeAcquisitionCountry(payload.country);
   const mode = String(payload.mode || READ_ONLY_MODE).trim();
 
-  const plannedCanadaShadowMode = country === 'CA' && CA_SHADOW_PR_ONLY_MODES.has(mode);
-  if (!plannedCanadaShadowMode) assertAcquisitionCountryEnabled(country);
+  const plannedCanadaPrMode = country === 'CA' && CA_SHADOW_PR_ONLY_MODES.has(mode);
+  const plannedCanadaReadOnlyMode = country === 'CA' && mode === CUTOVER_READINESS_MODE;
+  if (!plannedCanadaPrMode && !plannedCanadaReadOnlyMode) assertAcquisitionCountryEnabled(country);
   if (!MODES[country]?.has(mode)) throw new Error(`Unsupported ${country} global acquisition mode: ${mode || '(blank)'}`);
 
   const readOnly = mode === READ_ONLY_MODE || mode === CUTOVER_READINESS_MODE;
@@ -31,9 +32,11 @@ export function resolveGlobalAcquisitionDispatch(payload = {}) {
         ? 'uk_source_discovery_pr'
         : 'uk_approved_source_poll'
     : country === 'CA'
-      ? mode === CA_ADDITIONS_MODE
-        ? 'ca_additions_only_pr'
-        : 'ca_source_discovery_pr'
+      ? mode === CUTOVER_READINESS_MODE
+        ? 'ca_controller_cutover_readiness'
+        : mode === CA_ADDITIONS_MODE
+          ? 'ca_additions_only_pr'
+          : 'ca_source_discovery_pr'
       : mode === CUTOVER_READINESS_MODE
         ? 'us_controller_cutover_readiness'
         : readOnly
@@ -45,7 +48,7 @@ export function resolveGlobalAcquisitionDispatch(payload = {}) {
     mode,
     handler,
     mutation_capable: !readOnly,
-    shadow_only: plannedCanadaShadowMode,
+    shadow_only: plannedCanadaPrMode,
     payload: Object.freeze({ ...payload, country, mode })
   });
 }

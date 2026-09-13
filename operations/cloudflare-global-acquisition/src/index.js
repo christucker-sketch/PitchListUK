@@ -38,6 +38,7 @@ import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
 import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflow.mjs';
 import { runCanadaSourceDiscoveryWorkflow } from '../lib/ca-source-discovery-workflow.mjs';
 import { runCanadaAdditionsOnlyWorkflow } from '../lib/ca-additions-workflow.mjs';
+import { readCaControllerCutoverReadinessReport } from '../lib/ca-controller-cutover-readiness.mjs';
 import { handleControllerStateMaintenance } from '../lib/controller-state-maintenance.mjs';
 import { runCloudControllerTick } from '../lib/cloud-controller-tick.mjs';
 import {
@@ -118,6 +119,15 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         mode: dispatch.mode,
         mutation_attempted: false,
         ...(await readControllerCutoverReadinessReport(this.env))
+      }));
+    }
+
+    if (dispatch.handler === 'ca_controller_cutover_readiness') {
+      return step.do('read Canada controller cutover readiness', async () => ({
+        country: 'CA',
+        mode: dispatch.mode,
+        mutation_attempted: false,
+        ...(await readCaControllerCutoverReadinessReport(this.env))
       }));
     }
 
