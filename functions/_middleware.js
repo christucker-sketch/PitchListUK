@@ -1,6 +1,12 @@
 import { isFindPitchesHost } from '../platform/routing.mjs';
 
 const UK_PREVIEW_PATHS = new Set(['/preview/uk', '/preview/uk/']);
+const CA_PUBLIC_PATHS = new Set([
+  '/ca/find-pitches',
+  '/ca/find-pitches/',
+  '/ca/find-pitches.css',
+  '/ca/find-pitches.js'
+]);
 
 function notFound() {
   return new Response('Not found', {
@@ -10,6 +16,10 @@ function notFound() {
       'x-robots-tag': 'noindex'
     }
   });
+}
+
+export function isCanadaCustomerSurfacePublic(env = {}) {
+  return String(env.CA_CUSTOMER_SEARCH_PUBLIC_ENABLED || '').trim().toLowerCase() === 'true';
 }
 
 function isSharedAsset(pathname) {
@@ -35,7 +45,21 @@ export async function onRequest(context) {
 
   if (!isFindPitchesHost(url.hostname)) return context.next();
 
-  if (url.pathname.startsWith('/api/') || isSharedAsset(url.pathname)) {
+  if (url.pathname.startsWith('/api/')) {
+    return context.next();
+  }
+
+  if (url.pathname === '/ca' || url.pathname.startsWith('/ca/')) {
+    if (!isCanadaCustomerSurfacePublic(context.env)) return notFound();
+    if (url.pathname === '/ca' || url.pathname === '/ca/') return redirect('/ca/find-pitches', url);
+    if (CA_PUBLIC_PATHS.has(url.pathname)) {
+      const assetPath = url.pathname === '/ca/find-pitches/' ? '/ca/find-pitches' : url.pathname;
+      return context.env.ASSETS.fetch(new URL(assetPath, url));
+    }
+    return notFound();
+  }
+
+  if (isSharedAsset(url.pathname)) {
     return context.next();
   }
 
