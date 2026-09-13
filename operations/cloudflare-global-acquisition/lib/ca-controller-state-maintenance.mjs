@@ -1,4 +1,5 @@
 import { caControllerDecision, runCaCloudControllerTick } from './ca-cloud-controller.mjs';
+import { readCaControllerCutoverReadinessReport } from './ca-controller-cutover-readiness.mjs';
 
 const PROMOTE_CA_CONFIRMATION = 'PROMOTE_CA_CONTROLLER_TO_AUTHORITATIVE';
 const DEMOTE_CA_CONFIRMATION = 'DEMOTE_CA_CONTROLLER_TO_SHADOW';
@@ -31,6 +32,44 @@ async function transition(request, env, target) {
   try { body = await request.json(); } catch { return Response.json({ ok: false, error: 'ca_controller_authority_payload_invalid' }, { status: 400 }); }
   const expected = target === 'authoritative' ? PROMOTE_CA_CONFIRMATION : DEMOTE_CA_CONFIRMATION;
   if (String(body?.confirmation || '') !== expected) return Response.json({ ok: false, error: 'ca_controller_authority_confirmation_required' }, { status: 400 });
+
+  if (target === 'authoritative') {
+    let readiness;
+    try { readiness = await readCaControllerCutoverReadinessReport(env); }
+    catch (error) { return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 }); }
+
+    if (!readiness.promotion_ready) {
+      return Response.json({
+        ok: false,
+        error: 'ca_controller_cutover_not_ready',
+        blockers: readiness.promotion_blockers,
+        readiness
+      }, { status: 409 });
+    }
+
+    const expectedMainSha = String(body?.expected_main_sha || '').trim().toLowerCase();
+    const expectedStateSha = String(body?.expected_sha256 || '').trim().toLowerCase();
+    if (expectedMainSha !== readiness.current_main_sha) {
+      return Response.json({
+        ok: false,
+        error: 'ca_controller_main_precondition_failed',
+        expected_main_sha: expectedMainSha || null,
+        current_main_sha: readiness.current_main_sha
+      }, { status: 409 });
+    }
+    if (Number(body?.expected_version) !== readiness.state_version || expectedStateSha !== readiness.state_sha256) {
+      return Response.json({
+        ok: false,
+        error: 'ca_controller_state_precondition_failed',
+        current: {
+          version: readiness.state_version,
+          sha256: readiness.state_sha256,
+          authority: readiness.authority
+        }
+      }, { status: 409 });
+    }
+  }
+
   return stateStub(env).fetch(new Request(`https://ca-controller-state.internal/${target === 'authoritative' ? 'promote' : 'demote'}`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -47,6 +86,10 @@ export async function handleCaControllerStateMaintenance(request, env) {
 
   if (request.method === 'GET' && url.pathname === '/ca-controller-state/meta') return stub.fetch('https://ca-controller-state.internal/meta');
   if (request.method === 'GET' && url.pathname === '/ca-controller-state/snapshot') return stub.fetch('https://ca-controller-state.internal/snapshot');
+  if (request.method === 'GET' && url.pathname === '/ca-controller-state/readiness') {
+    try { return Response.json({ ok: true, ...(await readCaControllerCutoverReadinessReport(env)) }); }
+    catch (error) { return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 }); }
+  }
   if (request.method === 'GET' && url.pathname === '/ca-controller-state/decision') {
     const response = await stub.fetch('https://ca-controller-state.internal/snapshot');
     if (!response.ok) return response;
