@@ -92,6 +92,17 @@ function resultForAcquisition(state) {
   return result;
 }
 
+function singleHeadParent(pr, errorPrefix) {
+  if (!Array.isArray(pr?.commits) || pr.commits.length !== 1 || pr.commits[0]?.sha !== pr.head_sha) {
+    throw new Error(`${errorPrefix}_commit_shape_invalid`);
+  }
+  const parents = pr.commits[0]?.parents;
+  if (!Array.isArray(parents) || parents.length !== 1 || !/^[a-f0-9]{40}$/i.test(String(parents[0] || ''))) {
+    throw new Error(`${errorPrefix}_parent_invalid`);
+  }
+  return String(parents[0]).toLowerCase();
+}
+
 function requireExactRegistryProof(pr, expectedIds, expectedCount) {
   const proof = pr?.source_registry_proof;
   if (!proof || proof.additions_only !== true) throw new Error('source_pr_registry_additions_only_proof_missing');
@@ -132,8 +143,7 @@ export function validateSourcePrInspection(state, pr) {
   if (pr?.base_ref !== 'main') throw new Error('source_pr_base_not_main');
   if (!String(pr?.head_ref || '').startsWith('sources/cloud-us-')) throw new Error('source_pr_head_invalid');
   if (!/^[a-f0-9]{40}$/i.test(String(pr?.base_sha || '')) || !/^[a-f0-9]{40}$/i.test(String(pr?.head_sha || ''))) throw new Error('source_pr_sha_invalid');
-  if (!Array.isArray(pr?.commits) || pr.commits.length !== 1 || pr.commits[0]?.sha !== pr.head_sha) throw new Error('source_pr_commit_shape_invalid');
-  if (!Array.isArray(pr.commits[0]?.parents) || pr.commits[0].parents.length !== 1 || pr.commits[0].parents[0] !== pr.base_sha) throw new Error('source_pr_parent_not_exact_base');
+  singleHeadParent(pr, 'source_pr');
   if (!Array.isArray(pr?.files) || pr.files.length !== 1 || pr.files[0]?.path !== SOURCE_REGISTRY_PATH) throw new Error('source_pr_file_scope_invalid');
   if (!successfulChecks(pr?.check_runs)) throw new Error('source_pr_checks_not_successful');
   const result = resultForDiscovery(state);
@@ -161,8 +171,7 @@ export function validateDataPrInspection(state, pr) {
   const headRef = String(pr?.head_ref || '');
   if (!/^data\/cloud-[a-z0-9-]+-growth-[a-f0-9]{16}-base-[a-f0-9]{16}$/.test(headRef)) throw new Error('data_pr_head_invalid');
   if (!/^[a-f0-9]{40}$/i.test(String(pr?.base_sha || '')) || !/^[a-f0-9]{40}$/i.test(String(pr?.head_sha || ''))) throw new Error('data_pr_sha_invalid');
-  if (!Array.isArray(pr?.commits) || pr.commits.length !== 1 || pr.commits[0]?.sha !== pr.head_sha) throw new Error('data_pr_commit_shape_invalid');
-  if (!Array.isArray(pr.commits[0]?.parents) || pr.commits[0].parents.length !== 1 || pr.commits[0].parents[0] !== pr.base_sha) throw new Error('data_pr_parent_not_exact_base');
+  const creationBaseSha = singleHeadParent(pr, 'data_pr');
   if (!Array.isArray(pr?.files) || pr.files.length !== 1 || pr.files[0]?.path !== US_SNAPSHOT_PATH) throw new Error('data_pr_file_scope_invalid');
   if (!successfulChecks(pr?.check_runs)) throw new Error('data_pr_checks_not_successful');
 
@@ -176,7 +185,7 @@ export function validateDataPrInspection(state, pr) {
   if (!expectedBranch || headRef !== expectedBranch) throw new Error('data_pr_result_branch_mismatch');
   const promotionSha = String(result?.promotion_rows_sha256 || '').trim().toLowerCase();
   if (!/^[a-f0-9]{64}$/.test(promotionSha)) throw new Error('data_pr_promotion_sha_invalid');
-  if (!headRef.includes(`-growth-${promotionSha.slice(0, 16)}-base-${String(pr.base_sha).slice(0, 16).toLowerCase()}`)) throw new Error('data_pr_branch_provenance_mismatch');
+  if (!headRef.includes(`-growth-${promotionSha.slice(0, 16)}-base-${creationBaseSha.slice(0, 16)}`)) throw new Error('data_pr_branch_provenance_mismatch');
 
   const staged = Number(result?.staged_count);
   const evidence = Number(result?.evidence_passed_count);

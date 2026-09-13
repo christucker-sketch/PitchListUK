@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { runCloudControllerTick } from '../operations/cloudflare-global-acquisition/lib/cloud-controller-tick.mjs';
 
+const creationBaseSha = 'd'.repeat(40);
 const baseSha = 'b'.repeat(40);
 const headSha = 'a'.repeat(40);
 
@@ -47,7 +48,7 @@ function makeEnv() {
       if (payload.action === 'inspect') return Response.json({ ok: true, pr: {
         number: 1700, state: 'OPEN', merged: false, draft: false,
         base_ref: 'main', base_sha: baseSha, head_ref: 'sources/cloud-us-tx-demo', head_sha: headSha,
-        commits: [{ sha: headSha, parents: [baseSha] }],
+        commits: [{ sha: headSha, parents: [creationBaseSha] }],
         files: [{ path: 'operations/opportunity-pipeline/config/us-growth-source-registry.json' }],
         check_runs: [{ status: 'completed', conclusion: 'success' }],
         source_registry_proof: { additions_only: true, base_count: 100, head_count: 101, added_count: 1, added_ids: ['src_new'] },
@@ -80,12 +81,13 @@ function makeEnv() {
   };
 }
 
-test('source PR transition reserves exact evidence before merge then checkpoints Hal-compatible ready_acquisition state', async () => {
+test('source PR transition tolerates unrelated main advance, reserves exact evidence, then checkpoints ready_acquisition state', async () => {
   const env = makeEnv();
   const reserved = await runCloudControllerTick(env, { execute: true });
   assert.equal(reserved.phase, 'source_pr_merge_reserved');
   assert.equal(env.getMergeCalls(), 0);
   assert.equal(env.getState().cloud_controller_intent.head_sha, headSha);
+  assert.equal(env.getState().cloud_controller_intent.base_sha, baseSha);
   assert.deepEqual(env.getState().cloud_controller_intent.source_ids, ['src_new']);
 
   const merged = await runCloudControllerTick(env, { execute: true });
