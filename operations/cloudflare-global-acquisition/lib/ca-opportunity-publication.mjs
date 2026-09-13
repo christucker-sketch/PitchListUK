@@ -6,6 +6,12 @@ import { githubJson } from './github-publication.mjs';
 
 const CA_SNAPSHOT_PATH = acquisitionCountryConfig('CA').snapshot_path;
 
+function requireEnv(env, key) {
+  const value = String(env?.[key] || '').trim();
+  if (!value) throw new Error(`Missing required secret/config: ${key}`);
+  return value;
+}
+
 function decodeBase64Utf8(value) {
   const binary = atob(String(value || '').replace(/\s+/g, ''));
   return new TextDecoder().decode(Uint8Array.from(binary, char => char.charCodeAt(0)));
@@ -151,16 +157,8 @@ export async function openCanadaOpportunityPullRequest(env, options = {}) {
 
   const currentMainAfterWrite = await githubJson(env, '/git/ref/heads/main');
   if (String(currentMainAfterWrite?.object?.sha || '') !== base.mainSha) throw new Error('ca_opportunity_publication_main_advanced');
-  const owner = String(options.owner || '').trim() || String((await githubJson(env, '/')).owner?.login || '');
-  let ownerName = owner;
-  if (!ownerName) {
-    const repo = String(options.repo || '').trim();
-    ownerName = repo.includes('/') ? repo.split('/')[0] : '';
-  }
-  if (!ownerName) {
-    const repoName = String(options.repository || '').trim();
-    ownerName = repoName.includes('/') ? repoName.split('/')[0] : '';
-  }
+  const repo = requireEnv(env, 'GITHUB_REPO');
+  const ownerName = repo.split('/')[0];
   if (!ownerName) throw new Error('ca_opportunity_publication_owner_missing');
 
   const existingPrs = await githubJson(env, `/pulls?state=open&head=${encodeURIComponent(`${ownerName}:${branch}`)}&base=main`);
