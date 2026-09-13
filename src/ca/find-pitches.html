@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Find Canadian Vendor Opportunities | FindPitches</title>
+  <meta name="description" content="Search checked Canadian vendor opportunities across all 10 provinces and 3 territories with FindPitches." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#b5121b" />
+  <link rel="canonical" href="https://findpitches.com/ca/find-pitches" />
+  <link rel="stylesheet" href="/styles.css?v=20260731-4" />
+  <link rel="stylesheet" href="/shared/findpitches-shell.css?v=20260831-1" />
+  <link rel="stylesheet" href="/ca/find-pitches.css?v=20260913-1" />
+</head>
+<body class="fp-country fp-country-ca ca-search-page" data-country="ca">
+  <header class="fp-header ca-topbar">
+    <a class="fp-brand ca-logo" href="/" aria-label="FindPitches home"><span>Find</span><strong>Pitches</strong><small>FAIRS · FESTIVALS · OPPORTUNITIES</small></a>
+    <nav class="fp-nav ca-nav" aria-label="Primary navigation">
+      <a class="active" href="/ca/find-pitches">Find Opportunities</a>
+      <a class="fp-country-switcher ca-country" href="/" aria-label="Choose country">🇨🇦 Canada</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="ca-search-hero">
+      <div class="ca-search-hero-inner">
+        <div>
+          <p class="ca-search-kicker">VENDOR OPPORTUNITIES · COAST TO COAST TO COAST</p>
+          <h1>Find your next <em>place to sell.</em></h1>
+          <p class="lede">Search checked Canadian vendor opportunities by province or territory, category and keyword. First-party application routes, gathered into one national search.</p>
+          <div class="ca-search-proof">
+            <span>10 provinces · 3 territories</span>
+            <span>evidence checked</span>
+            <span>CAD market</span>
+          </div>
+        </div>
+        <div class="ca-search-status" id="databaseStatus"><b>...</b><span>loading opportunities</span></div>
+      </div>
+    </section>
+
+    <section class="ca-search-main">
+      <div class="ca-search-panel">
+        <form class="cloud-search" id="cloudSearch">
+          <label><span>Province / territory</span><select name="province">
+            <option value="" selected>All Canada</option>
+            <option value="AB">Alberta</option><option value="BC">British Columbia</option><option value="MB">Manitoba</option>
+            <option value="NB">New Brunswick</option><option value="NL">Newfoundland and Labrador</option><option value="NS">Nova Scotia</option>
+            <option value="ON">Ontario</option><option value="PE">Prince Edward Island</option><option value="QC">Quebec</option>
+            <option value="SK">Saskatchewan</option><option value="NT">Northwest Territories</option><option value="NU">Nunavut</option>
+            <option value="YT">Yukon</option>
+          </select></label>
+          <label><span>Category</span><input name="category" placeholder="food vendor, craft, exhibitor" /></label>
+          <label><span>Keywords</span><input name="q" placeholder="festival, market, fair..." /></label>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <section class="cloud-metrics" id="cloudMetrics" aria-live="polite"></section>
+      <section class="cloud-results" id="cloudResults" aria-live="polite"></section>
+    </section>
+  </main>
+
+  <script src="/analytics.js?v=20260809-1" defer></script>
+  <script src="/ca/find-pitches.js?v=20260913-1"></script>
+  <footer class="fp-footer ca-footer"><strong>FindPitches Canada</strong><span>Find the crowd. Claim the pitch. Make the sale.</span></footer>
+</body>
+</html>
