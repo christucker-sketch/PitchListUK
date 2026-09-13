@@ -58,12 +58,23 @@ test('Canada controller exposes reserved discovery and active workflow decisions
   });
 });
 
-test('Canada controller exposes source PR review but keeps acquisition explicitly unarmed', () => {
+test('Canada controller drives source PR review through reserved merge and deploy verification', () => {
   const review = buildInitialCaControllerState();
   review.status = 'reviewing_source_pr';
-  review.pending_source_pr = { pr_number: 1727, workflow_id: 'cactl-v3-discover-q0-l4' };
-  assert.deepEqual(caControllerDecision(review), { action: 'review_source_pr', pr_number: 1727 });
+  review.pending_source_pr = { pr_number: 1728, workflow_id: 'cactl-v3-discover-q0-l4' };
+  assert.deepEqual(caControllerDecision(review), { action: 'review_source_pr', pr_number: 1728 });
 
+  const reservedMerge = buildInitialCaControllerState();
+  reservedMerge.cloud_controller_intent = { phase: 'reserved', action: 'merge_source_pr', pr_number: 1728 };
+  assert.deepEqual(caControllerDecision(reservedMerge), { action: 'merge_reserved_source_pr', pr_number: 1728 });
+
+  const deploy = buildInitialCaControllerState();
+  deploy.status = 'waiting_source_deploy';
+  deploy.pending_deployment = { kind: 'source', merge_sha: 'b'.repeat(40) };
+  assert.deepEqual(caControllerDecision(deploy), { action: 'verify_source_deploy', merge_sha: 'b'.repeat(40) });
+});
+
+test('Canada controller still keeps opportunity acquisition explicitly unarmed', () => {
   const acquisition = buildInitialCaControllerState();
   acquisition.status = 'ready_acquisition';
   assert.deepEqual(caControllerDecision(acquisition), { action: 'start_acquisition', cycle: 0 });
