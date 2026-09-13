@@ -39,14 +39,20 @@ import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflo
 import { handleControllerStateMaintenance } from '../lib/controller-state-maintenance.mjs';
 import { runCloudControllerTick } from '../lib/cloud-controller-tick.mjs';
 import {
+  globalUkControllerCutoverEnabled,
+  runUkCloudControllerTick
+} from '../lib/uk-cloud-controller.mjs';
+import { handleUkControllerStateMaintenance } from '../lib/uk-controller-state-maintenance.mjs';
+import {
   assertGlobalControllerDispatchAllowed,
   globalControllerExecutionEnabled,
   globalControllerExecutionLevel,
   resolveGlobalAcquisitionDispatch
 } from '../lib/dispatch.mjs';
 import { ControllerStateDurableObject } from './controller-state.js';
+import { UkControllerStateDurableObject } from './uk-controller-state.js';
 
-export { ControllerStateDurableObject };
+export { ControllerStateDurableObject, UkControllerStateDurableObject };
 
 export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
@@ -145,16 +151,21 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
   }
 }
 
+async function runScheduledControllers(env) {
+  const results = await Promise.allSettled([
+    runCloudControllerTick(env, { execute: true }),
+    runUkCloudControllerTick({ ...env, CONTROLLER_STATE: env.UK_CONTROLLER_STATE }, { execute: true })
+  ]);
+  const [us, uk] = results;
+  if (us.status === 'fulfilled') console.log('autonomous_cloud_controller_tick', JSON.stringify(us.value));
+  else console.error('autonomous_cloud_controller_tick_failed', String(us.reason?.message || us.reason));
+  if (uk.status === 'fulfilled') console.log('autonomous_uk_cloud_controller_tick', JSON.stringify(uk.value));
+  else console.error('autonomous_uk_cloud_controller_tick_failed', String(uk.reason?.message || uk.reason));
+}
+
 export default {
   async scheduled(_event, env, ctx) {
-    ctx.waitUntil((async () => {
-      try {
-        const result = await runCloudControllerTick(env, { execute: true });
-        console.log('autonomous_cloud_controller_tick', JSON.stringify(result));
-      } catch (error) {
-        console.error('autonomous_cloud_controller_tick_failed', String(error?.message || error));
-      }
-    })());
+    ctx.waitUntil(runScheduledControllers(env));
   },
 
   async fetch(request, env) {
@@ -176,6 +187,10 @@ export default {
       }
     }
 
+    if (url.pathname.startsWith('/uk-controller-state/')) {
+      return handleUkControllerStateMaintenance(request, env);
+    }
+
     if (url.pathname.startsWith('/controller-state/')) {
       return handleControllerStateMaintenance(request, env);
     }
@@ -187,7 +202,9 @@ export default {
         execution_enabled: globalControllerExecutionEnabled(env),
         execution_level: globalControllerExecutionLevel(env),
         us_controller_cutover_enabled: globalControllerCutoverEnabled(env),
+        uk_controller_cutover_enabled: globalUkControllerCutoverEnabled(env),
         controller_state_store: Boolean(env.CONTROLLER_STATE),
+        uk_controller_state_store: Boolean(env.UK_CONTROLLER_STATE),
         controller_state_maintenance_enabled: Boolean(env.CONTROLLER_STATE_IMPORT_TOKEN),
         controller_cutover_readiness_workflow: true,
         stale_hal_authority_recovery_v12: true,
@@ -197,6 +214,8 @@ export default {
         exact_terminal_discovery_recovery: true,
         manual_us_cutover_operator: true,
         manual_us_rollback_operator: true,
+        manual_uk_cutover_operator: true,
+        manual_uk_rollback_operator: true,
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
           name: market.country_name,
