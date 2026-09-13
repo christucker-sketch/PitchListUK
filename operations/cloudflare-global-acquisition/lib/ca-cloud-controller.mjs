@@ -2,10 +2,17 @@ import { githubJson } from './github-publication.mjs';
 import { parseAcquisitionSnapshotModule } from '../../../platform/acquisition/global-engine.mjs';
 import { CA_DISCOVERY_PLAN_SIZE } from './ca-source-discovery-plan.mjs';
 import { assertGlobalControllerDispatchAllowed, resolveGlobalAcquisitionDispatch } from './dispatch.mjs';
+import {
+  inspectCaControllerPr,
+  inspectCaMergeChecks,
+  mergeCaControllerPr,
+  validateCaSourcePr
+} from './ca-controller-github-client.mjs';
 
 const CA_QUERY_LIMIT = 4;
 const CA_SNAPSHOT_PATH = 'functions/_data/ca-opportunities.mjs';
 const CA_SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
+const SOURCE_DEPLOY_CHECKS = Object.freeze(['verify', 'deploy_and_prove']);
 
 function decodeBase64Utf8(value) {
   const binary = atob(String(value || '').replace(/\s+/g, ''));
@@ -117,6 +124,7 @@ function reservedDecision(state) {
   const intent = state?.cloud_controller_intent;
   if (!intent || intent.phase !== 'reserved') return null;
   if (intent.action === 'start_discovery') return { action: 'bind_reserved_discovery', workflow_id: intent.workflow_id };
+  if (intent.action === 'merge_source_pr') return { action: 'merge_reserved_source_pr', pr_number: Number(intent.pr_number || 0) };
   throw new Error(`ca_controller_reserved_intent_unsupported:${intent.action || 'unknown'}`);
 }
 
@@ -132,6 +140,7 @@ export function caControllerDecision(state) {
     cycle: Number(state.cycle || 0)
   };
   if (state.status === 'reviewing_source_pr') return { action: 'review_source_pr', pr_number: Number(state.pending_source_pr?.pr_number || 0) };
+  if (state.status === 'waiting_source_deploy') return { action: 'verify_source_deploy', merge_sha: state.pending_deployment?.merge_sha || null };
   if (state.status === 'ready_acquisition') return { action: 'start_acquisition', cycle: Number(state.cycle || 0) };
   if (state.status === 'blocked') return { action: 'blocked', reason: state.blocker || 'unknown' };
   return { action: 'await_implementation', status: state.status };
@@ -252,6 +261,77 @@ async function inspectActiveWorkflow(env, stub, snapshot, decision) {
   return { ok: true, executed: true, phase: 'workflow_completed', workflow_id: active.id, workflow_status: status, next_status: next.status, state_version: written.version, state_sha256: written.sha256, decision };
 }
 
+async function reserveSourcePrMerge(env, stub, snapshot, decision) {
+  const result = snapshot.state.last_discovery?.result;
+  if (!result) throw new Error('ca_controller_source_result_missing');
+  const pr = await inspectCaControllerPr(env, decision.pr_number);
+  const validated = validateCaSourcePr(result, pr);
+  if (!validated.ready) {
+    return { ok: true, executed: false, phase: 'source_pr_checks_pending', pr_number: decision.pr_number, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
+  }
+  const next = structuredClone(snapshot.state);
+  next.cloud_controller_intent = {
+    phase: 'reserved',
+    action: 'merge_source_pr',
+    pr_number: validated.pr_number,
+    head_sha: validated.head_sha,
+    base_sha: validated.base_sha,
+    additions: validated.additions,
+    source_ids: [...validated.source_ids],
+    reserved_from_version: snapshot.version,
+    reserved_from_sha256: snapshot.sha256,
+    reserved_at: new Date().toISOString()
+  };
+  next.updated_at = new Date().toISOString();
+  const written = await checkpoint(stub, snapshot, next);
+  return { ok: true, executed: true, phase: 'source_pr_merge_reserved', pr_number: validated.pr_number, state_version: written.version, state_sha256: written.sha256, decision };
+}
+
+async function mergeReservedSourcePr(env, stub, snapshot, decision) {
+  const intent = snapshot.state.cloud_controller_intent;
+  if (!intent || intent.phase !== 'reserved' || intent.action !== 'merge_source_pr' || Number(intent.pr_number) !== Number(decision.pr_number)) {
+    throw new Error('ca_controller_reserved_source_pr_changed');
+  }
+  const merged = await mergeCaControllerPr(env, { pr_number: intent.pr_number, head_sha: intent.head_sha });
+  const next = structuredClone(snapshot.state);
+  next.cloud_controller_intent = null;
+  next.status = 'waiting_source_deploy';
+  next.pending_deployment = {
+    kind: 'source',
+    pr_number: Number(intent.pr_number),
+    merge_sha: merged.merge_sha,
+    additions: Number(intent.additions || 0),
+    source_ids: Array.isArray(intent.source_ids) ? [...intent.source_ids] : [],
+    merged_at: new Date().toISOString()
+  };
+  next.updated_at = new Date().toISOString();
+  const written = await checkpoint(stub, snapshot, next);
+  return { ok: true, executed: true, phase: 'source_pr_merged', pr_number: Number(intent.pr_number), merge_sha: merged.merge_sha, state_version: written.version, state_sha256: written.sha256, decision };
+}
+
+async function verifySourceDeploy(env, stub, snapshot, decision) {
+  const pending = snapshot.state.pending_deployment;
+  if (!pending || pending.kind !== 'source' || pending.merge_sha !== decision.merge_sha) throw new Error('ca_controller_source_deployment_mismatch');
+  const checks = await inspectCaMergeChecks(env, pending.merge_sha, SOURCE_DEPLOY_CHECKS);
+  if (!checks.ready) {
+    return { ok: true, executed: false, phase: 'source_deploy_checks_pending', pending: checks.pending, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
+  }
+  const base = await readCanadaBases(env);
+  const additions = Number(pending.additions || 0);
+  if (base.sourceCount !== Number(snapshot.state.source_count || 0) + additions) throw new Error('ca_controller_source_registry_count_mismatch_after_merge');
+
+  const next = structuredClone(snapshot.state);
+  next.source_count = base.sourceCount;
+  next.base_main_sha = base.mainSha;
+  next.totals.source_prs_merged = Number(next.totals?.source_prs_merged || 0) + 1;
+  next.pending_source_pr = null;
+  next.pending_deployment = null;
+  next.status = 'ready_acquisition';
+  next.updated_at = new Date().toISOString();
+  const written = await checkpoint(stub, snapshot, next);
+  return { ok: true, executed: true, phase: 'source_deploy_verified', next_status: next.status, source_count: next.source_count, state_version: written.version, state_sha256: written.sha256, decision };
+}
+
 export async function runCaCloudControllerTick(env, { execute = false } = {}) {
   const stub = caControllerStateStub(env);
   let snapshot = await readSnapshot(stub);
@@ -281,9 +361,9 @@ export async function runCaCloudControllerTick(env, { execute = false } = {}) {
   if (decision.action === 'start_discovery') return reserveDiscovery(stub, snapshot, decision);
   if (decision.action === 'bind_reserved_discovery') return bindReservedDiscovery(env, stub, snapshot, decision);
   if (decision.action === 'inspect_active_workflow') return inspectActiveWorkflow(env, stub, snapshot, decision);
-  if (decision.action === 'review_source_pr') {
-    return { ok: true, executed: false, phase: 'source_pr_review_not_armed', state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
-  }
+  if (decision.action === 'review_source_pr') return reserveSourcePrMerge(env, stub, snapshot, decision);
+  if (decision.action === 'merge_reserved_source_pr') return mergeReservedSourcePr(env, stub, snapshot, decision);
+  if (decision.action === 'verify_source_deploy') return verifySourceDeploy(env, stub, snapshot, decision);
   if (decision.action === 'start_acquisition') {
     return { ok: true, executed: false, phase: 'acquisition_not_armed', state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
   }
@@ -293,4 +373,4 @@ export async function runCaCloudControllerTick(env, { execute = false } = {}) {
   throw new Error(`ca_controller_action_unsupported:${decision.action || 'unknown'}`);
 }
 
-export { CA_QUERY_LIMIT, CA_SNAPSHOT_PATH, CA_SOURCE_REGISTRY_PATH };
+export { CA_QUERY_LIMIT, CA_SNAPSHOT_PATH, CA_SOURCE_REGISTRY_PATH, SOURCE_DEPLOY_CHECKS };
