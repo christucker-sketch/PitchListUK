@@ -36,6 +36,7 @@ import { readControllerCutoverReadinessReport } from '../lib/controller-cutover-
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
 import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflow.mjs';
+import { runCanadaSourceDiscoveryWorkflow } from '../lib/ca-source-discovery-workflow.mjs';
 import { handleControllerStateMaintenance } from '../lib/controller-state-maintenance.mjs';
 import { runCloudControllerTick } from '../lib/cloud-controller-tick.mjs';
 import {
@@ -148,6 +149,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
 
     if (dispatch.handler === 'uk_approved_source_poll') {
       return UkApprovedSourcePollWorkflow.prototype.run.call({ env: this.env }, {
+        ...event,
+        payload: dispatch.payload
+      }, step);
+    }
+
+    if (dispatch.handler === 'ca_source_discovery_pr') {
+      return runCanadaSourceDiscoveryWorkflow(this.env, {
         ...event,
         payload: dispatch.payload
       }, step);
