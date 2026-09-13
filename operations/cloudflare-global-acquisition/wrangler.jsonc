@@ -29,6 +29,10 @@
       {
         "name": "UK_CONTROLLER_STATE",
         "class_name": "UkControllerStateDurableObject"
+      },
+      {
+        "name": "CA_CONTROLLER_STATE",
+        "class_name": "CaControllerStateDurableObject"
       }
     ]
   },
@@ -38,6 +42,10 @@
       "storage": "sqlite"
     },
     "UkControllerStateDurableObject": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    },
+    "CaControllerStateDurableObject": {
       "type": "durable-object",
       "storage": "sqlite"
     }
@@ -57,6 +65,7 @@
     "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "true",
     "GLOBAL_ACQUISITION_EXECUTION_LEVEL": "production",
     "GLOBAL_CONTROLLER_CUTOVER_ENABLED": "true",
-    "GLOBAL_UK_CONTROLLER_CUTOVER_ENABLED": "true"
+    "GLOBAL_UK_CONTROLLER_CUTOVER_ENABLED": "true",
+    "GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED": "false"
   }
 }
