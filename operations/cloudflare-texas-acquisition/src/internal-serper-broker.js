@@ -3,6 +3,10 @@ const INTERNAL_PATH = '/search';
 const INTERNAL_MARKER = 'findpitches-service-binding-v1';
 const MAX_RESULTS = 8;
 const MAX_QUERY_LENGTH = 500;
+const MARKET_CONFIG = Object.freeze({
+  UK: Object.freeze({ gl: 'uk', hl: 'en' }),
+  CA: Object.freeze({ gl: 'ca', hl: 'en' })
+});
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -22,8 +26,13 @@ export function isInternalSerperRequest(request) {
 export function validateInternalSerperPayload(payload = {}) {
   const query = String(payload.q || '').trim();
   if (!query || query.length > MAX_QUERY_LENGTH) throw new Error('internal_serper_query_invalid');
-  const num = Math.min(MAX_RESULTS, Math.max(1, Number(payload.num || 5)));
-  return Object.freeze({ q: query, num, gl: 'uk', hl: 'en' });
+  const market = String(payload.market || 'UK').trim().toUpperCase();
+  const config = MARKET_CONFIG[market];
+  if (!config) throw new Error('internal_serper_market_invalid');
+  const numericNum = Number(payload.num || 5);
+  if (!Number.isFinite(numericNum)) throw new Error('internal_serper_num_invalid');
+  const num = Math.min(MAX_RESULTS, Math.max(1, Math.trunc(numericNum)));
+  return Object.freeze({ q: query, num, gl: config.gl, hl: config.hl });
 }
 
 export async function handleInternalSerperRequest(request, env, options = {}) {
@@ -56,6 +65,7 @@ export const INTERNAL_SERPER_BROKER = Object.freeze({
   host: INTERNAL_HOST,
   path: INTERNAL_PATH,
   marker: INTERNAL_MARKER,
+  supported_markets: Object.freeze(Object.keys(MARKET_CONFIG)),
   maximum_results: MAX_RESULTS,
   maximum_query_length: MAX_QUERY_LENGTH
 });
