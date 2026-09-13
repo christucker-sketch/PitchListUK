@@ -4,6 +4,7 @@ import { validateSourcePrInspection } from '../operations/cloudflare-global-acqu
 
 const head = 'a'.repeat(40);
 const base = 'b'.repeat(40);
+const branch = 'sources/cloud-us-growth-tx-demo';
 
 function state() {
   return {
@@ -15,7 +16,7 @@ function state() {
       state_code: 'TX',
       generated_source_count: 2,
       evidence_passed_count: 2,
-      publication: { source_count: 2, source_ids: ['src_b','src_a'] }
+      publication: { source_count: 2, source_ids: ['src_b','src_a'], pr_number: 123, branch }
     }]
   };
 }
@@ -24,7 +25,7 @@ function pr() {
   return {
     number: 123,
     state: 'OPEN', merged: false, draft: false,
-    base_ref: 'main', head_ref: 'sources/cloud-us-growth-tx-demo',
+    base_ref: 'main', head_ref: branch,
     base_sha: base, head_sha: head,
     commits: [{ sha: head, parents: [base] }],
     files: [{ path: 'operations/opportunity-pipeline/config/us-growth-source-registry.json' }],
@@ -54,6 +55,23 @@ test('source PR inspection accepts exact one-commit one-file evidence-complete c
   assert.equal(result.head_sha, head);
   assert.equal(result.registry_base_count, 100);
   assert.equal(result.registry_head_count, 102);
+});
+
+test('source PR inspection recovers missing checkpointed source IDs from the exact additions-only PR proof', () => {
+  const checkpoint = state();
+  delete checkpoint.results[0].publication.source_ids;
+  const result = validateSourcePrInspection(checkpoint, pr());
+  assert.deepEqual(result.source_ids, ['src_a','src_b']);
+});
+
+test('source PR inspection binds the checkpoint to the exact generated PR and branch', () => {
+  const wrongPr = state();
+  wrongPr.results[0].publication.pr_number = 999;
+  assert.throws(() => validateSourcePrInspection(wrongPr, pr()), /source_pr_result_pr_mismatch/);
+
+  const wrongBranch = state();
+  wrongBranch.results[0].publication.branch = 'sources/cloud-us-growth-tx-other';
+  assert.throws(() => validateSourcePrInspection(wrongBranch, pr()), /source_pr_result_branch_mismatch/);
 });
 
 test('source PR inspection accepts an older immutable creation parent after main advances', () => {

@@ -141,23 +141,34 @@ export function validateSourcePrInspection(state, pr) {
   if (!Number.isInteger(expectedPr) || expectedPr <= 0 || Number(pr?.number) !== expectedPr) throw new Error('source_pr_number_mismatch');
   if (pr?.state !== 'OPEN' || pr?.merged || pr?.draft) throw new Error('source_pr_not_open_candidate');
   if (pr?.base_ref !== 'main') throw new Error('source_pr_base_not_main');
-  if (!String(pr?.head_ref || '').startsWith('sources/cloud-us-')) throw new Error('source_pr_head_invalid');
+  const headRef = String(pr?.head_ref || '');
+  if (!headRef.startsWith('sources/cloud-us-')) throw new Error('source_pr_head_invalid');
   if (!/^[a-f0-9]{40}$/i.test(String(pr?.base_sha || '')) || !/^[a-f0-9]{40}$/i.test(String(pr?.head_sha || ''))) throw new Error('source_pr_sha_invalid');
   singleHeadParent(pr, 'source_pr');
   if (!Array.isArray(pr?.files) || pr.files.length !== 1 || pr.files[0]?.path !== SOURCE_REGISTRY_PATH) throw new Error('source_pr_file_scope_invalid');
   if (!successfulChecks(pr?.check_runs)) throw new Error('source_pr_checks_not_successful');
+
   const result = resultForDiscovery(state);
   const expectedCount = Number(result?.publication?.source_count || result?.publication?.source_ids?.length || 0);
-  const expectedIds = [...(Array.isArray(result?.publication?.source_ids) ? result.publication.source_ids : [])].map(String).sort();
-  if (expectedCount < 1 || expectedIds.length !== expectedCount) throw new Error('source_pr_result_evidence_incomplete');
+  if (!Number.isInteger(expectedCount) || expectedCount < 1) throw new Error('source_pr_result_evidence_incomplete');
+  if (Number(result?.publication?.pr_number) !== expectedPr) throw new Error('source_pr_result_pr_mismatch');
+  const expectedBranch = String(result?.publication?.branch || '');
+  if (!expectedBranch || expectedBranch !== headRef) throw new Error('source_pr_result_branch_mismatch');
   if (Number(result?.generated_source_count) !== expectedCount || Number(result?.evidence_passed_count) !== expectedCount) throw new Error('source_pr_result_evidence_count_mismatch');
+
+  const checkpointedIds = [...(Array.isArray(result?.publication?.source_ids) ? result.publication.source_ids : [])].map(String).sort();
+  const proofIds = [...(Array.isArray(pr?.source_registry_proof?.added_ids) ? pr.source_registry_proof.added_ids : [])].map(String).sort();
+  const expectedIds = checkpointedIds.length ? checkpointedIds : proofIds;
+  if (expectedIds.length !== expectedCount) throw new Error('source_pr_result_evidence_incomplete');
+  const registryProof = requireExactRegistryProof(pr, expectedIds, expectedCount);
+
   const body = String(pr?.body || '');
   const stateName = String(result?.state_name || '').trim();
   const stateCode = String(result?.state_code || current.state_code || '').trim();
   for (const marker of [`- state: ${stateName} (${stateCode})`, `- net-new approved sources: ${expectedCount}`, `- deterministic source evidence receipts: ${expectedCount}/${expectedCount} passed`, '- additions only; no source removals', '- no automatic merge or deploy requested']) if (!body.includes(marker)) throw new Error('source_pr_body_evidence_mismatch');
   const normalizedBody = body.toLowerCase();
   for (const id of expectedIds) if (!normalizedBody.includes(`  - ${String(id).toLowerCase()}:`)) throw new Error(`source_pr_missing_evidence_receipt:${id}`);
-  const registryProof = requireExactRegistryProof(pr, expectedIds, expectedCount);
+
   return Object.freeze({ pr_number: expectedPr, head_sha: pr.head_sha, base_sha: pr.base_sha, state_code: stateCode, source_ids: expectedIds, source_count: expectedCount, registry_base_count: registryProof.base_count, registry_head_count: registryProof.head_count });
 }
 
