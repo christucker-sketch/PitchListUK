@@ -5,12 +5,13 @@ const CUTOVER_READINESS_MODE = 'controller_cutover_readiness';
 const UK_ADDITIONS_MODE = 'uk_additions_only_pr';
 const UK_SOURCE_DISCOVERY_MODE = 'uk_source_discovery_pr';
 const CA_SOURCE_DISCOVERY_MODE = 'ca_source_discovery_pr';
+const CA_ADDITIONS_MODE = 'ca_additions_only_pr';
 const UK_PR_ONLY_MODES = Object.freeze(new Set([UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE]));
-const CA_SHADOW_PR_ONLY_MODES = Object.freeze(new Set([CA_SOURCE_DISCOVERY_MODE]));
+const CA_SHADOW_PR_ONLY_MODES = Object.freeze(new Set([CA_SOURCE_DISCOVERY_MODE, CA_ADDITIONS_MODE]));
 const MODES = Object.freeze({
   US: Object.freeze(new Set(['acquire', 'discover', READ_ONLY_MODE, CUTOVER_READINESS_MODE])),
   UK: Object.freeze(new Set([READ_ONLY_MODE, UK_ADDITIONS_MODE, UK_SOURCE_DISCOVERY_MODE])),
-  CA: Object.freeze(new Set([CA_SOURCE_DISCOVERY_MODE]))
+  CA: Object.freeze(new Set([CA_SOURCE_DISCOVERY_MODE, CA_ADDITIONS_MODE]))
 });
 
 export function resolveGlobalAcquisitionDispatch(payload = {}) {
@@ -30,7 +31,9 @@ export function resolveGlobalAcquisitionDispatch(payload = {}) {
         ? 'uk_source_discovery_pr'
         : 'uk_approved_source_poll'
     : country === 'CA'
-      ? 'ca_source_discovery_pr'
+      ? mode === CA_ADDITIONS_MODE
+        ? 'ca_additions_only_pr'
+        : 'ca_source_discovery_pr'
       : mode === CUTOVER_READINESS_MODE
         ? 'us_controller_cutover_readiness'
         : readOnly
@@ -80,5 +83,6 @@ export {
   CUTOVER_READINESS_MODE,
   UK_ADDITIONS_MODE,
   UK_SOURCE_DISCOVERY_MODE,
-  CA_SOURCE_DISCOVERY_MODE
+  CA_SOURCE_DISCOVERY_MODE,
+  CA_ADDITIONS_MODE
 };
