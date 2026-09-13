@@ -31,6 +31,8 @@ export async function inspectUkControllerPr(env, prNumber) {
     number,
     state: String(pr?.state || '').toUpperCase(),
     merged: Boolean(pr?.merged),
+    merged_at: pr?.merged_at || null,
+    merge_commit_sha: String(pr?.merge_commit_sha || '').toLowerCase() || null,
     draft: Boolean(pr?.draft),
     mergeable: pr?.mergeable,
     mergeable_state: String(pr?.mergeable_state || ''),
@@ -113,13 +115,24 @@ export async function mergeUkControllerPr(env, inspection) {
   const prNumber = Number(inspection?.pr_number);
   const headSha = String(inspection?.head_sha || '').toLowerCase();
   if (!Number.isInteger(prNumber) || prNumber <= 0 || !/^[a-f0-9]{40}$/.test(headSha)) throw new Error('uk_controller_merge_precondition_invalid');
+
+  const current = await githubJson(env, `/pulls/${prNumber}`);
+  const currentHead = String(current?.head?.sha || '').toLowerCase();
+  if (currentHead !== headSha) throw new Error('uk_controller_merge_head_changed');
+  if (current?.merged === true) {
+    const reusedSha = String(current?.merge_commit_sha || '').toLowerCase();
+    if (!/^[a-f0-9]{40}$/.test(reusedSha)) throw new Error('uk_controller_existing_merge_sha_invalid');
+    return Object.freeze({ pr_number: prNumber, merge_sha: reusedSha, reused: true });
+  }
+  if (String(current?.state || '').toUpperCase() !== 'OPEN' || current?.draft) throw new Error('uk_controller_merge_pr_not_open');
+
   const merged = await githubJson(env, `/pulls/${prNumber}/merge`, {
     method: 'PUT',
     body: JSON.stringify({ sha: headSha, merge_method: 'merge' })
   });
   const mergeSha = String(merged?.sha || '').toLowerCase();
   if (merged?.merged !== true || !/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error(`uk_controller_merge_not_confirmed:${String(merged?.message || '')}`);
-  return Object.freeze({ pr_number: prNumber, merge_sha: mergeSha });
+  return Object.freeze({ pr_number: prNumber, merge_sha: mergeSha, reused: false });
 }
 
 export async function inspectUkMergeChecks(env, mergeSha, requiredNames = []) {
