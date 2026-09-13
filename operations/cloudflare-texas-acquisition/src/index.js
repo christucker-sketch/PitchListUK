@@ -81,6 +81,21 @@ function encodeBase64Utf8(value) {
   return btoa(binary);
 }
 
+async function githubContentFile(env, path, ref = 'main') {
+  const file = await githubJson(env, `/contents/${path}?ref=${encodeURIComponent(ref)}`);
+  let encoded = String(file?.content || '').trim();
+  if (!encoded) {
+    const sha = String(file?.sha || '').trim();
+    if (!sha) throw new Error(`GitHub contents response missing blob SHA for ${path}@${ref}`);
+    const blob = await githubJson(env, `/git/blobs/${sha}`);
+    if (String(blob?.encoding || '').toLowerCase() !== 'base64' || !String(blob?.content || '').trim()) {
+      throw new Error(`GitHub blob response missing base64 content for ${path}@${ref}`);
+    }
+    encoded = blob.content;
+  }
+  return { ...file, decoded: decodeBase64Utf8(encoded) };
+}
+
 function parseSnapshotModule(source) {
   const match = String(source || '').match(/export\s+const\s+usOpportunitySnapshot\s*=\s*([\s\S]*);\s*$/);
   if (!match) throw new Error('Could not parse US production snapshot module');
@@ -94,25 +109,25 @@ function serializeSnapshot(snapshot) {
 async function readMainSnapshot(env, state) {
   const ref = await githubJson(env, '/git/ref/heads/main');
   const [file, growthFile] = await Promise.all([
-    githubJson(env, `/contents/${state.snapshot_path}?ref=main`),
-    githubJson(env, `/contents/${growthRegistryPath}?ref=main`)
+    githubContentFile(env, state.snapshot_path, 'main'),
+    githubContentFile(env, growthRegistryPath, 'main')
   ]);
   return {
     mainSha: ref?.object?.sha,
     fileSha: file?.sha,
-    snapshot: parseSnapshotModule(decodeBase64Utf8(file?.content)),
-    growthRegistry: parseGrowthRegistry(decodeBase64Utf8(growthFile?.content)),
+    snapshot: parseSnapshotModule(file.decoded),
+    growthRegistry: parseGrowthRegistry(growthFile.decoded),
     growthRegistryFileSha: growthFile?.sha
   };
 }
 
 async function readMainGrowthRegistry(env) {
   const ref = await githubJson(env, '/git/ref/heads/main');
-  const file = await githubJson(env, `/contents/${growthRegistryPath}?ref=main`);
+  const file = await githubContentFile(env, growthRegistryPath, 'main');
   return {
     mainSha: ref?.object?.sha,
     fileSha: file?.sha,
-    registry: parseGrowthRegistry(decodeBase64Utf8(file?.content))
+    registry: parseGrowthRegistry(file.decoded)
   };
 }
 
@@ -130,8 +145,8 @@ async function openDataPullRequest(env, state, planned, promotionManifest, base,
   assertMainUnchanged(base.mainSha, currentMain?.object?.sha);
   const branch = dataBranchName(state, promotionManifest, base.mainSha);
   await ensureBranch(env, branch, base.mainSha);
-  const branchFile = await githubJson(env, `/contents/${state.snapshot_path}?ref=${encodeURIComponent(branch)}`);
-  const branchSnapshot = parseSnapshotModule(decodeBase64Utf8(branchFile.content));
+  const branchFile = await githubContentFile(env, state.snapshot_path, branch);
+  const branchSnapshot = parseSnapshotModule(branchFile.decoded);
   const alreadyWritten = Number(branchSnapshot.total || branchSnapshot.rows?.length || 0) === planned.summary.after_count
     && String(branchSnapshot.source || '').includes(promotionManifest.rows_sha256);
 
@@ -201,8 +216,8 @@ async function openSourcePullRequest(env, state, base, discovery) {
   assertMainUnchanged(base.mainSha, currentMain?.object?.sha);
   const branch = sourceBranchName(state, merged.added, base.mainSha);
   await ensureBranch(env, branch, base.mainSha);
-  const branchFile = await githubJson(env, `/contents/${growthRegistryPath}?ref=${encodeURIComponent(branch)}`);
-  const branchRegistry = parseGrowthRegistry(decodeBase64Utf8(branchFile.content));
+  const branchFile = await githubContentFile(env, growthRegistryPath, branch);
+  const branchRegistry = parseGrowthRegistry(branchFile.decoded);
   const expectedIds = merged.added.map(source => source.id).sort();
   const evidenceReceipts = receiptsForAddedSources(discovery.receipts, merged.added);
   const alreadyWritten = expectedIds.every(id => branchRegistry.sources.some(source => source.id === id));
