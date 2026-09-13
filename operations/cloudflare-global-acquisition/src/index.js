@@ -37,6 +37,7 @@ import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
 import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflow.mjs';
 import { runCanadaSourceDiscoveryWorkflow } from '../lib/ca-source-discovery-workflow.mjs';
+import { runCanadaAdditionsOnlyWorkflow } from '../lib/ca-additions-workflow.mjs';
 import { handleControllerStateMaintenance } from '../lib/controller-state-maintenance.mjs';
 import { runCloudControllerTick } from '../lib/cloud-controller-tick.mjs';
 import {
@@ -156,6 +157,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
 
     if (dispatch.handler === 'ca_source_discovery_pr') {
       return runCanadaSourceDiscoveryWorkflow(this.env, {
+        ...event,
+        payload: dispatch.payload
+      }, step);
+    }
+
+    if (dispatch.handler === 'ca_additions_only_pr') {
+      return runCanadaAdditionsOnlyWorkflow(this.env, {
         ...event,
         payload: dispatch.payload
       }, step);
