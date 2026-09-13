@@ -56,10 +56,19 @@ test('source PR inspection accepts exact one-commit one-file evidence-complete c
   assert.equal(result.registry_head_count, 102);
 });
 
-test('source PR inspection fails closed when branch, parent, file scope or CI is wrong', () => {
+test('source PR inspection accepts an older immutable creation parent after main advances', () => {
+  const candidate = pr();
+  candidate.commits[0].parents = ['c'.repeat(40)];
+  const result = validateSourcePrInspection(state(), candidate);
+  assert.equal(result.base_sha, base);
+  assert.equal(result.head_sha, head);
+});
+
+test('source PR inspection fails closed when branch, parent shape, file scope or CI is wrong', () => {
   for (const mutate of [
     p => { p.head_ref = 'data/cloud-us-bad'; },
-    p => { p.commits[0].parents = ['c'.repeat(40)]; },
+    p => { p.commits[0].parents = []; },
+    p => { p.commits[0].parents = ['c'.repeat(40), 'd'.repeat(40)]; },
     p => { p.files.push({ path: 'README.md' }); },
     p => { p.check_runs[0].conclusion = 'failure'; }
   ]) {
