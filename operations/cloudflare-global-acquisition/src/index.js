@@ -37,6 +37,7 @@ import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
 import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflow.mjs';
 import { handleControllerStateMaintenance } from '../lib/controller-state-maintenance.mjs';
+import { runCloudControllerTick } from '../lib/cloud-controller-tick.mjs';
 import {
   assertGlobalControllerDispatchAllowed,
   globalControllerExecutionEnabled,
@@ -145,6 +146,17 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
 }
 
 export default {
+  async scheduled(_event, env, ctx) {
+    ctx.waitUntil((async () => {
+      try {
+        const result = await runCloudControllerTick(env, { execute: true });
+        console.log('autonomous_cloud_controller_tick', JSON.stringify(result));
+      } catch (error) {
+        console.error('autonomous_cloud_controller_tick_failed', String(error?.message || error));
+      }
+    })());
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
 

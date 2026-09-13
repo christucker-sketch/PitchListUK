@@ -10,6 +10,9 @@
   "observability": {
     "enabled": true
   },
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
   "workflows": [
     {
       "name": "findpitches-global-acquisition-shadow",
