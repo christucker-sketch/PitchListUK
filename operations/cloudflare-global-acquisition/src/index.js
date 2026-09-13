@@ -28,6 +28,10 @@ import {
   FINAL_HAL_HANDOVER_PATH,
   handleExactFinalHalHandover
 } from '../lib/controller-final-hal-handover.mjs';
+import {
+  handleTerminalDiscoveryRecovery,
+  RECOVERY_PATH as TERMINAL_DISCOVERY_RECOVERY_PATH
+} from '../lib/controller-terminal-discovery-recovery.mjs';
 import { readControllerCutoverReadinessReport } from '../lib/controller-cutover-readiness.mjs';
 import { runUsApprovedSourceReadOnlyPoll } from '../lib/us-approved-source-poll.mjs';
 import { runUkAdditionsOnlyWorkflow } from '../lib/uk-additions-workflow.mjs';
@@ -152,6 +156,14 @@ export default {
       }
     }
 
+    if (url.pathname === TERMINAL_DISCOVERY_RECOVERY_PATH) {
+      try {
+        return await handleTerminalDiscoveryRecovery(request, env);
+      } catch (error) {
+        return Response.json({ ok: false, error: String(error?.message || error) }, { status: 409 });
+      }
+    }
+
     if (url.pathname.startsWith('/controller-state/')) {
       return handleControllerStateMaintenance(request, env);
     }
@@ -170,6 +182,7 @@ export default {
         failed_legacy_mi_replay_recovery: true,
         exact_v13_cutover_preflight: true,
         exact_final_hal_handover_import: true,
+        exact_terminal_discovery_recovery: true,
         manual_us_cutover_operator: true,
         manual_us_rollback_operator: true,
         markets: globalAcquisitionMarkets().map(market => ({
