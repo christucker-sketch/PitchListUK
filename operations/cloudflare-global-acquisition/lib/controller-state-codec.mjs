@@ -1,7 +1,7 @@
 const DEFAULT_CONTROLLER_STATE_CHUNK_BYTES = 384 * 1024;
 const BASE64_CHUNK_PREFIX = 'b64:';
 
-function validateUkControllerState(parsed) {
+function validateRegionalControllerState(parsed, { kind, label, planSize }) {
   const allowedStatuses = new Set([
     'ready_discovery',
     'running_discovery',
@@ -13,22 +13,23 @@ function validateUkControllerState(parsed) {
     'waiting_frontend_deploy',
     'blocked'
   ]);
-  if (!allowedStatuses.has(String(parsed.status || ''))) throw new Error('UK controller state has an unsupported status');
+  if (parsed.controller_kind !== kind) throw new Error(`${label} controller state kind is invalid`);
+  if (!allowedStatuses.has(String(parsed.status || ''))) throw new Error(`${label} controller state has an unsupported status`);
   const offset = Number(parsed.query_offset);
   const limit = Number(parsed.query_limit);
-  const planSize = Number(parsed.plan_size);
-  if (!Number.isInteger(offset) || offset < 0 || offset >= 96) throw new Error('UK controller state query_offset is invalid');
-  if (!Number.isInteger(limit) || limit < 1 || limit > 12) throw new Error('UK controller state query_limit is invalid');
-  if (!Number.isInteger(planSize) || planSize !== 96) throw new Error('UK controller state plan_size must be 96');
-  if (!Number.isInteger(Number(parsed.cycle || 0)) || Number(parsed.cycle || 0) < 0) throw new Error('UK controller state cycle is invalid');
+  const actualPlanSize = Number(parsed.plan_size);
+  if (!Number.isInteger(offset) || offset < 0 || offset >= planSize) throw new Error(`${label} controller state query_offset is invalid`);
+  if (!Number.isInteger(limit) || limit < 1 || limit > 12) throw new Error(`${label} controller state query_limit is invalid`);
+  if (!Number.isInteger(actualPlanSize) || actualPlanSize !== planSize) throw new Error(`${label} controller state plan_size must be ${planSize}`);
+  if (!Number.isInteger(Number(parsed.cycle || 0)) || Number(parsed.cycle || 0) < 0) throw new Error(`${label} controller state cycle is invalid`);
   if (parsed.active_instance !== null && (typeof parsed.active_instance !== 'object' || Array.isArray(parsed.active_instance))) {
-    throw new Error('UK controller state active_instance is invalid');
+    throw new Error(`${label} controller state active_instance is invalid`);
   }
   if (parsed.cloud_controller_intent !== null && (typeof parsed.cloud_controller_intent !== 'object' || Array.isArray(parsed.cloud_controller_intent))) {
-    throw new Error('UK controller state cloud_controller_intent is invalid');
+    throw new Error(`${label} controller state cloud_controller_intent is invalid`);
   }
-  if (!Array.isArray(parsed.results)) throw new Error('UK controller state results must be an array');
-  if (!parsed.totals || typeof parsed.totals !== 'object' || Array.isArray(parsed.totals)) throw new Error('UK controller state totals are missing');
+  if (!Array.isArray(parsed.results)) throw new Error(`${label} controller state results must be an array`);
+  if (!parsed.totals || typeof parsed.totals !== 'object' || Array.isArray(parsed.totals)) throw new Error(`${label} controller state totals are missing`);
   return parsed;
 }
 
@@ -44,7 +45,8 @@ export function validateControllerStateText(text) {
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error('Controller state snapshot must be a JSON object');
   }
-  if (parsed.controller_kind === 'uk') return validateUkControllerState(parsed);
+  if (parsed.controller_kind === 'uk') return validateRegionalControllerState(parsed, { kind: 'uk', label: 'UK', planSize: 96 });
+  if (parsed.controller_kind === 'ca') return validateRegionalControllerState(parsed, { kind: 'ca', label: 'Canada', planSize: 104 });
   if (!Array.isArray(parsed.priority_order) || parsed.priority_order.length !== 50) {
     throw new Error('Controller state snapshot must contain the 50-state priority_order');
   }
