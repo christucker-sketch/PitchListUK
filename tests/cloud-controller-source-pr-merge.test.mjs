@@ -5,6 +5,7 @@ import { runCloudControllerTick } from '../operations/cloudflare-global-acquisit
 const creationBaseSha = 'd'.repeat(40);
 const baseSha = 'b'.repeat(40);
 const headSha = 'a'.repeat(40);
+const headRef = 'sources/cloud-us-tx-demo';
 
 function initialState() {
   return {
@@ -14,7 +15,7 @@ function initialState() {
     active_instance: null, pending_source_ids: [], acquisition_batch: 9, deferred_units: [],
     results: [{
       instance_id: 'cf_demo', state_name: 'Texas', state_code: 'TX', generated_source_count: 1, evidence_passed_count: 1,
-      publication: { pr_number: 1700, source_count: 1, source_ids: ['src_new'] }
+      publication: { pr_number: 1700, branch: headRef, source_count: 1, source_ids: ['src_new'] }
     }]
   };
 }
@@ -47,7 +48,7 @@ function makeEnv() {
       const payload = JSON.parse(await request.text());
       if (payload.action === 'inspect') return Response.json({ ok: true, pr: {
         number: 1700, state: 'OPEN', merged: false, draft: false,
-        base_ref: 'main', base_sha: baseSha, head_ref: 'sources/cloud-us-tx-demo', head_sha: headSha,
+        base_ref: 'main', base_sha: baseSha, head_ref: headRef, head_sha: headSha,
         commits: [{ sha: headSha, parents: [creationBaseSha] }],
         files: [{ path: 'operations/opportunity-pipeline/config/us-growth-source-registry.json' }],
         check_runs: [{ status: 'completed', conclusion: 'success' }],
