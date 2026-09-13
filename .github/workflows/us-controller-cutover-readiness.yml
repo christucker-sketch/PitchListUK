@@ -1,13 +1,6 @@
 name: US controller cutover readiness proof
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'operations/cloudflare-global-acquisition/lib/controller-cutover-readiness.mjs'
-      - 'operations/cloudflare-global-acquisition/lib/dispatch.mjs'
-      - 'operations/cloudflare-global-acquisition/src/index.js'
-      - '.github/workflows/us-controller-cutover-readiness.yml'
   workflow_dispatch:
 
 permissions:

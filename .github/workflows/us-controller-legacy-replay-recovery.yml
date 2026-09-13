@@ -1,13 +1,6 @@
 name: US controller one-shot legacy replay recovery
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'operations/cloudflare-global-acquisition/lib/controller-legacy-replay-recovery.mjs'
-      - 'operations/cloudflare-global-acquisition/src/controller-state.js'
-      - 'operations/cloudflare-global-acquisition/src/index.js'
-      - '.github/workflows/us-controller-legacy-replay-recovery.yml'
   workflow_dispatch:
 
 permissions:

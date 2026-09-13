@@ -1,12 +1,6 @@
 name: US controller one-shot authority recovery
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'operations/cloudflare-global-acquisition/lib/controller-authority-recovery.mjs'
-      - 'operations/cloudflare-global-acquisition/src/index.js'
-      - '.github/workflows/us-controller-authority-recovery.yml'
   workflow_dispatch:
 
 permissions:
