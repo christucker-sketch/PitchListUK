@@ -1,12 +1,6 @@
 name: US controller exact v13 cutover preflight
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'operations/cloudflare-global-acquisition/lib/controller-exact-preflight.mjs'
-      - 'operations/cloudflare-global-acquisition/src/index.js'
-      - '.github/workflows/us-controller-exact-v13-preflight.yml'
   workflow_dispatch:
 
 permissions:
