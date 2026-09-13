@@ -36,8 +36,35 @@ test('Canada controller state codec rejects UK plan size and invalid offsets', (
   assert.throws(() => validateControllerStateText(JSON.stringify(wrongOffset)), /query_offset is invalid/);
 });
 
-test('Canada controller keeps future PR/deployment statuses non-mutating until implementation is armed', () => {
-  const state = buildInitialCaControllerState();
-  state.status = 'reviewing_source_pr';
-  assert.deepEqual(caControllerDecision(state), { action: 'await_implementation', status: 'reviewing_source_pr' });
+test('Canada controller exposes reserved discovery and active workflow decisions without duplicating work', () => {
+  const reserved = buildInitialCaControllerState();
+  reserved.cloud_controller_intent = {
+    phase: 'reserved',
+    action: 'start_discovery',
+    workflow_id: 'cactl-v1-discover-q0-l4'
+  };
+  assert.deepEqual(caControllerDecision(reserved), {
+    action: 'bind_reserved_discovery',
+    workflow_id: 'cactl-v1-discover-q0-l4'
+  });
+
+  const active = buildInitialCaControllerState();
+  active.status = 'running_discovery';
+  active.active_instance = { id: 'cactl-v2-discover-q0-l4', mode: 'discovery' };
+  assert.deepEqual(caControllerDecision(active), {
+    action: 'inspect_active_workflow',
+    workflow_id: 'cactl-v2-discover-q0-l4',
+    mode: 'discovery'
+  });
+});
+
+test('Canada controller exposes source PR review but keeps acquisition explicitly unarmed', () => {
+  const review = buildInitialCaControllerState();
+  review.status = 'reviewing_source_pr';
+  review.pending_source_pr = { pr_number: 1727, workflow_id: 'cactl-v3-discover-q0-l4' };
+  assert.deepEqual(caControllerDecision(review), { action: 'review_source_pr', pr_number: 1727 });
+
+  const acquisition = buildInitialCaControllerState();
+  acquisition.status = 'ready_acquisition';
+  assert.deepEqual(caControllerDecision(acquisition), { action: 'start_acquisition', cycle: 0 });
 });
