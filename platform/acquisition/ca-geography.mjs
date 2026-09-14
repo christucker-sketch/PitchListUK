@@ -9,19 +9,19 @@ const unit = (code, name, kind, order, aliases = []) => Object.freeze({
 });
 
 export const CA_ACQUISITION_UNITS = Object.freeze([
-  unit('AB', 'Alberta', 'province', 10),
-  unit('BC', 'British Columbia', 'province', 20, ['B.C.']),
-  unit('MB', 'Manitoba', 'province', 30),
-  unit('NB', 'New Brunswick', 'province', 40, ['N.B.']),
+  unit('AB', 'Alberta', 'province', 10, ['Calgary', 'Edmonton']),
+  unit('BC', 'British Columbia', 'province', 20, ['B.C.', 'Vancouver']),
+  unit('MB', 'Manitoba', 'province', 30, ['Winnipeg']),
+  unit('NB', 'New Brunswick', 'province', 40, ['N.B.', 'Moncton']),
   unit('NL', 'Newfoundland and Labrador', 'province', 50, ['Newfoundland & Labrador', 'Newfoundland', 'Labrador', 'N.L.']),
-  unit('NS', 'Nova Scotia', 'province', 60, ['N.S.']),
-  unit('ON', 'Ontario', 'province', 70),
+  unit('NS', 'Nova Scotia', 'province', 60, ['N.S.', 'Halifax']),
+  unit('ON', 'Ontario', 'province', 70, ['Toronto', 'Ottawa']),
   unit('PE', 'Prince Edward Island', 'province', 80, ['PEI', 'P.E.I.', 'P.E.']),
-  unit('QC', 'Quebec', 'province', 90, ['Québec', 'PQ', 'P.Q.']),
-  unit('SK', 'Saskatchewan', 'province', 100),
-  unit('NT', 'Northwest Territories', 'territory', 110, ['NWT', 'N.W.T.']),
+  unit('QC', 'Quebec', 'province', 90, ['Québec', 'PQ', 'P.Q.', 'Montreal', 'Montréal']),
+  unit('SK', 'Saskatchewan', 'province', 100, ['Saskatoon', 'Regina']),
+  unit('NT', 'Northwest Territories', 'territory', 110, ['NWT', 'N.W.T.', 'Yellowknife']),
   unit('NU', 'Nunavut', 'territory', 120),
-  unit('YT', 'Yukon', 'territory', 130, ['Yukon Territory'])
+  unit('YT', 'Yukon', 'territory', 130, ['Yukon Territory', 'Whitehorse'])
 ]);
 
 const normalise = value => String(value || '')

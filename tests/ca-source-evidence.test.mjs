@@ -29,12 +29,16 @@ test('Canada approved source registry contains only valid Canadian routes and ca
   }
 });
 
-test('Canada public-service host policy accepts bounded federal and provincial roots only', () => {
+test('Canada public-service host policy accepts bounded government and curated municipal roots only', () => {
   assert.equal(isCanadianPublicServiceHost('https://www.canada.ca/en/services.html'), true);
   assert.equal(isCanadianPublicServiceHost('https://www2.gov.bc.ca/gov/content/home'), true);
   assert.equal(isCanadianPublicServiceHost('https://www.ontario.ca/page/example'), true);
+  assert.equal(isCanadianPublicServiceHost('https://www.toronto.ca/services-payments/permits-licences-bylaws/'), true);
+  assert.equal(isCanadianPublicServiceHost('https://cdn.halifax.ca/example'), true);
+  assert.equal(isCanadianPublicServiceHost('https://legacy.winnipeg.ca/example'), true);
   assert.equal(isCanadianPublicServiceHost('https://example.ca/vendors'), false);
-  assert.equal(isCanadianPublicServiceHost('http://ontario.ca/vendors'), false);
+  assert.equal(isCanadianPublicServiceHost('https://toronto.example.ca/vendors'), false);
+  assert.equal(isCanadianPublicServiceHost('http://toronto.ca/vendors'), false);
 });
 
 test('Canada evidence auto-approves exact province plus actionable vendor evidence on a public-service route', () => {
@@ -50,12 +54,37 @@ test('Canada evidence auto-approves exact province plus actionable vendor eviden
   assert.equal(result.jurisdiction, 'CA-ON');
 });
 
+test('Canada evidence auto-approves curated municipal authority with exact city geography', () => {
+  const result = evaluateCanadaSourceEvidence({
+    region_code: 'ON',
+    source_url: 'https://www.toronto.ca/services-payments/permits-licences-bylaws/vending-permits/',
+    application_url: 'https://www.toronto.ca/services-payments/permits-licences-bylaws/vending-permits/',
+    title: 'Toronto Vendor Permit Application',
+    page_text: 'Toronto food truck vendors can apply using the application form and pay the permit fee.'
+  });
+  assert.equal(result.status, 'approved');
+  assert.equal(result.region_code, 'ON');
+  assert.equal(result.jurisdiction, 'CA-ON');
+});
+
+test('Canada geography attestation uses exact phrases and cannot match short province codes inside normal words', () => {
+  const result = evaluateCanadaSourceEvidence({
+    region_code: 'ON',
+    source_url: 'https://www.ontario.ca/page/example-market',
+    application_url: 'https://www.ontario.ca/page/example-market',
+    title: 'Vendor application online',
+    page_text: 'Vendor applications are online. Submit the form and registration fee.'
+  });
+  assert.equal(result.status, 'held');
+  assert.equal(result.reason, 'canada_region_not_attested');
+});
+
 test('Canada evidence requires manual review for otherwise valid non-public-service first-party hosts', () => {
   const result = evaluateCanadaSourceEvidence({
     region_code: 'BC',
     source_url: 'https://examplemarket.ca/vendors',
-    title: 'British Columbia Market Vendor Application',
-    page_text: 'British Columbia vendors may apply for a booth using the registration form.'
+    title: 'Vancouver Market Vendor Application',
+    page_text: 'Vancouver vendors may apply for a booth using the registration form.'
   });
   assert.equal(result.status, 'review');
   assert.equal(result.reason, 'canada_non_public_service_requires_review');

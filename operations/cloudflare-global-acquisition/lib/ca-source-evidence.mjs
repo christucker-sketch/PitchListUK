@@ -1,9 +1,20 @@
 import { getCaAcquisitionUnit } from '../../../platform/acquisition/ca-geography.mjs';
 
-const PUBLIC_SERVICE_ROOTS = Object.freeze([
+const FEDERAL_PROVINCIAL_PUBLIC_SERVICE_ROOTS = Object.freeze([
   'canada.ca', 'gc.ca', 'alberta.ca', 'gov.bc.ca', 'ontario.ca', 'quebec.ca', 'saskatchewan.ca',
   'manitoba.ca', 'gnb.ca', 'novascotia.ca', 'gov.nl.ca', 'princeedwardisland.ca', 'gov.nt.ca',
   'gov.nu.ca', 'yukon.ca'
+]);
+
+const MUNICIPAL_PUBLIC_SERVICE_ROOTS = Object.freeze([
+  'toronto.ca', 'ottawa.ca', 'vancouver.ca', 'calgary.ca', 'edmonton.ca', 'winnipeg.ca',
+  'moncton.ca', 'halifax.ca', 'montreal.ca', 'saskatoon.ca', 'regina.ca', 'whitehorse.ca',
+  'yellowknife.ca'
+]);
+
+const PUBLIC_SERVICE_ROOTS = Object.freeze([
+  ...FEDERAL_PROVINCIAL_PUBLIC_SERVICE_ROOTS,
+  ...MUNICIPAL_PUBLIC_SERVICE_ROOTS
 ]);
 
 const VENDOR_SIGNAL = /\b(vendor|vendors|exhibitor|exhibitors|booth|booths|concession|concessions|food truck|food trucks|market vendor|market vendors|artisan|artisans)\b/i;
@@ -12,6 +23,13 @@ const NEGATIVE_SIGNAL = /\b(closed to vendors|applications? closed|no vendors?|n
 
 function normalise(value) {
   return String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function containsPhrase(haystack, phrase) {
+  const haystackTokens = normalise(haystack).split(' ').filter(Boolean);
+  const phraseTokens = normalise(phrase).split(' ').filter(Boolean);
+  if (!phraseTokens.length || phraseTokens.length > haystackTokens.length) return false;
+  return haystackTokens.some((_, index) => phraseTokens.every((token, offset) => haystackTokens[index + offset] === token));
 }
 
 function hostOf(value) {
@@ -41,9 +59,10 @@ export function evaluateCanadaSourceEvidence(candidate = {}) {
 
   const text = [candidate.title, candidate.snippet, candidate.page_text, candidate.location, candidate.region, candidate.province]
     .filter(Boolean).join(' ');
-  const normalized = normalise(text);
-  const regionSignals = [unit.name, unit.code, unit.jurisdiction, ...(unit.aliases || [])].map(normalise).filter(Boolean);
-  if (!regionSignals.some(signal => normalized.includes(signal))) {
+  const unitCode = normalise(unit.code);
+  const regionSignals = [unit.name, unit.jurisdiction, ...(unit.aliases || [])]
+    .filter(signal => normalise(signal) !== unitCode);
+  if (!regionSignals.some(signal => containsPhrase(text, signal))) {
     return Object.freeze({ status: 'held', reason: 'canada_region_not_attested', region_code: unit.code });
   }
   if (NEGATIVE_SIGNAL.test(text)) return Object.freeze({ status: 'held', reason: 'canada_negative_vendor_signal', region_code: unit.code });
@@ -71,4 +90,8 @@ export function evaluateCanadaSourceEvidence(candidate = {}) {
   });
 }
 
-export { PUBLIC_SERVICE_ROOTS };
+export {
+  FEDERAL_PROVINCIAL_PUBLIC_SERVICE_ROOTS,
+  MUNICIPAL_PUBLIC_SERVICE_ROOTS,
+  PUBLIC_SERVICE_ROOTS
+};
