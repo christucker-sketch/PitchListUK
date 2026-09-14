@@ -10,9 +10,20 @@ function boundedNumber(value, fallback, maximum, minimum = 1) {
   return Math.min(maximum, Math.max(minimum, Number.isFinite(number) ? number : fallback));
 }
 
+export function canadaSourceDiscoveryWorkflowLimits(payload = {}) {
+  const controllerTriggered = payload.trigger === 'ca-cloud-controller';
+  return Object.freeze({
+    query_limit: boundedNumber(payload.query_limit, 4, 12),
+    results_per_query: controllerTriggered ? 8 : boundedNumber(payload.results_per_query, 5, 8),
+    candidate_limit: controllerTriggered ? 32 : boundedNumber(payload.candidate_limit, 24, 32),
+    timeout_ms: boundedNumber(payload.timeout_ms, 12000, 30000, 1000)
+  });
+}
+
 export async function runCanadaSourceDiscoveryWorkflow(env, event, step) {
   const payload = event?.payload || {};
   const generatedAt = String(payload.as_of || new Date().toISOString());
+  const limits = canadaSourceDiscoveryWorkflowLimits(payload);
 
   const base = await step.do('read current Canada approved source registry from GitHub main', {
     retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' },
@@ -25,10 +36,7 @@ export async function runCanadaSourceDiscoveryWorkflow(env, event, step) {
   }, async () => runCanadaSourceDiscovery(env, {
     ...payload,
     as_of: generatedAt,
-    query_limit: boundedNumber(payload.query_limit, 4, 12),
-    results_per_query: boundedNumber(payload.results_per_query, 5, 8),
-    candidate_limit: boundedNumber(payload.candidate_limit, 24, 32),
-    timeout_ms: boundedNumber(payload.timeout_ms, 12000, 30000, 1000)
+    ...limits
   }));
 
   const plan = await step.do('build additions-only Canada source promotion plan', async () => (
@@ -57,6 +65,8 @@ export async function runCanadaSourceDiscoveryWorkflow(env, event, step) {
     next_query_offset: discovery.next_query_offset,
     query_count: discovery.query_count,
     plan_size: discovery.plan_size,
+    results_per_query: limits.results_per_query,
+    candidate_limit: limits.candidate_limit,
     serper_credits_used: discovery.serper_credits_used,
     search_candidates: discovery.search_candidates,
     auto_approved_count: discovery.approved_source_count,
