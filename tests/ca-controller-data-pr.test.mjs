@@ -170,6 +170,9 @@ test('Canada frontend deployment can recover through a verified descendant only 
         ]
       };
     }
+    if (url.pathname === `/repos/christucker-sketch/PitchListUK/commits/${mainSha}`) {
+      return { files: [{ filename: '.github/workflows/ca-opportunity-frontend-deploy.yml' }] };
+    }
     throw new Error(`Unexpected GitHub path: ${url.pathname}${url.search}`);
   }, async () => {
     const inspected = await inspectCaFrontendDeployment(controllerEnv, mergeSha);
