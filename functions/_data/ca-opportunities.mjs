@@ -1,7 +1,7 @@
 export const caOpportunitySnapshot = {
-  "exported_at": "2026-09-14T10:15:21.671Z",
-  "source": "cloudflare-canada-additions:dbc842ae37477146",
-  "total": 2,
+  "exported_at": "2026-09-14T11:21:21.622Z",
+  "source": "cloudflare-canada-additions:46a8acf4cfe044e0",
+  "total": 3,
   "rows": [
     {
       "id": "CA-OPP-3CB195ED10E5",
@@ -64,6 +64,37 @@ export const caOpportunitySnapshot = {
       "notes": "Official Canadian public-service vendor route revalidated by FindPitches on 2026-09-14.",
       "application_url": "https://www.alberta.ca/resources-for-farmers-market-managers",
       "source_url": "https://www.alberta.ca/resources-for-farmers-market-managers"
+    },
+    {
+      "id": "CA-OPP-D98C981BC60F",
+      "event_name": "Starting a food or beverage processing business - Gov.bc.ca",
+      "organiser": "www2.gov.bc.ca",
+      "location": "British Columbia",
+      "county": "",
+      "region": "British Columbia",
+      "event_start": "",
+      "event_end": "",
+      "application_deadline": "",
+      "stall_fee": "",
+      "vendor_categories": "artisans; makers; market vendors",
+      "last_checked": "2026-09-14",
+      "freshness_status": "fresh",
+      "freshness_age_days": 0,
+      "confidence": "high",
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "area_confidence": "exact",
+      "route_type": "farmers_market",
+      "organiser_type": "public_service",
+      "country": "Canada",
+      "jurisdiction": "CA-BC",
+      "currency": "CAD",
+      "market_domain": "findpitches.com",
+      "tax_region": "CA-BC",
+      "buyer_fit_tags": "canada;bc;vendor_application",
+      "notes": "Official Canadian public-service vendor route revalidated by FindPitches on 2026-09-14.",
+      "application_url": "https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/business-market-development/food-beverage-processing/food-processing-business-startup",
+      "source_url": "https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/business-market-development/food-beverage-processing/food-processing-business-startup"
     }
   ]
 };
