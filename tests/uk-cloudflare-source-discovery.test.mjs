@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
+import sourceDiscoveryLib from '../operations/opportunity-pipeline/acquisition/source-discovery.js';
 import { runUkSourceDiscovery, UK_SOURCE_DISCOVERY_LIMITS } from '../operations/cloudflare-global-acquisition/lib/uk-source-discovery.mjs';
 import { planUkSourceRegistry, ukSourceBranchName } from '../operations/cloudflare-global-acquisition/lib/uk-source-publication.mjs';
 
+const { DISCOVERY_TEMPLATES, discoveryQueries, templateKeyForQuery } = sourceDiscoveryLib;
 const NOW = '2026-09-08T17:30:00.000Z';
 
 function searchFixture() {
@@ -38,6 +40,22 @@ async function fetchFixture(result, plan) {
   };
 }
 
+test('UK rapid discovery plan targets eight high-yield public-service application routes per region', () => {
+  assert.equal(DISCOVERY_TEMPLATES.length, 8);
+  const plans = discoveryQueries({ regions: ['Yorkshire'], limit: 8, offset: 0 });
+  assert.equal(plans.length, 8);
+  assert.equal(new Set(plans.map(item => item.template_id)).size, 8);
+  for (const plan of plans) {
+    assert.match(plan.query, /site:\.gov\.uk/i);
+    assert.notEqual(templateKeyForQuery(plan.query), '');
+  }
+  assert.ok(plans.some(item => /apply to trade/i.test(item.query)));
+  assert.ok(plans.some(item => /market stall/i.test(item.query)));
+  assert.ok(plans.some(item => /event trader/i.test(item.query)));
+  assert.ok(plans.some(item => /food vendor/i.test(item.query)));
+  assert.ok(plans.some(item => /concession pitch/i.test(item.query)));
+});
+
 test('UK discovery is bounded and auto-approves only deterministic public-service sources', async () => {
   const discovery = await runUkSourceDiscovery({ SERPER_API_KEY: 'fixture' }, {
     query_limit: 1,
@@ -62,6 +80,7 @@ test('UK discovery is bounded and auto-approves only deterministic public-servic
   assert.equal(discovery.production_opportunity_write_attempted, false);
   assert.equal(discovery.source_registry_write_attempted, false);
   assert.equal(UK_SOURCE_DISCOVERY_LIMITS.maximum_query_limit, 12);
+  assert.equal(UK_SOURCE_DISCOVERY_LIMITS.maximum_results_per_query, 8);
   assert.equal(UK_SOURCE_DISCOVERY_LIMITS.maximum_candidate_limit, 50);
 });
 
