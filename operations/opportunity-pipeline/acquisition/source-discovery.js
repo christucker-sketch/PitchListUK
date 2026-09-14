@@ -7,27 +7,27 @@ const DISCOVERY_REGIONS = Object.freeze([
 
 const EXCLUDED_DISCOVERY_SITES = '-site:facebook.com -site:instagram.com -site:youtube.com -site:eventbrite.co.uk -site:eventbrite.com -site:linkedin.com';
 const DISCOVERY_TEMPLATES = Object.freeze([
-  { id: 'council_markets', priority: 90, query: region => `site:.gov.uk ${region} council markets apply stall trader` },
-  { id: 'council_events', priority: 88, query: region => `site:.gov.uk ${region} event trader application food vendor` },
-  { id: 'market_operator', priority: 96, query: region => `${region} market operator become a trader official` },
-  { id: 'food_festival', priority: 94, query: region => `${region} food festival trader application official` },
-  { id: 'county_show', priority: 72, query: region => `${region} agricultural county show trade stand application official` },
-  { id: 'christmas_market', priority: 98, query: region => `${region} Christmas market stallholder application official` },
-  { id: 'racecourse', priority: 65, query: region => `${region} racecourse tradestand catering application official` },
-  { id: 'artisan_market', priority: 76, query: region => `${region} recurring artisan market apply stallholder official` }
+  { id: 'council_markets', priority: 100, query: region => `site:.gov.uk ${region} "apply to trade" market trader stall` },
+  { id: 'council_market_stalls', priority: 99, query: region => `site:.gov.uk ${region} "market stall" application trader` },
+  { id: 'council_events', priority: 98, query: region => `site:.gov.uk ${region} "event trader" application vendor` },
+  { id: 'council_food_vendors', priority: 97, query: region => `site:.gov.uk ${region} "food vendor" application event` },
+  { id: 'council_festivals', priority: 96, query: region => `site:.gov.uk ${region} festival trader application vendor` },
+  { id: 'council_christmas', priority: 95, query: region => `site:.gov.uk ${region} Christmas market stallholder application` },
+  { id: 'council_concessions', priority: 94, query: region => `site:.gov.uk ${region} concession pitch application food trader` },
+  { id: 'council_street_markets', priority: 93, query: region => `site:.gov.uk ${region} market trader application stallholder` }
 ]);
 const ORGANISER_QUERIES = Object.freeze(DISCOVERY_TEMPLATES.map(template => template.query));
 
 function templateKeyForQuery(query) {
   const text = String(query || '');
-  if (/site:\.gov\.uk.*council markets/i.test(text)) return 'council_markets';
-  if (/site:\.gov\.uk.*event trader/i.test(text)) return 'council_events';
-  if (/market operator become a trader/i.test(text)) return 'market_operator';
-  if (/food festival trader application/i.test(text)) return 'food_festival';
-  if (/agricultural county show/i.test(text)) return 'county_show';
-  if (/Christmas market stallholder/i.test(text)) return 'christmas_market';
-  if (/racecourse tradestand/i.test(text)) return 'racecourse';
-  if (/recurring artisan market/i.test(text)) return 'artisan_market';
+  if (/site:\.gov\.uk.*"apply to trade".*market trader stall/i.test(text)) return 'council_markets';
+  if (/site:\.gov\.uk.*"market stall".*application trader/i.test(text)) return 'council_market_stalls';
+  if (/site:\.gov\.uk.*"event trader".*application vendor/i.test(text)) return 'council_events';
+  if (/site:\.gov\.uk.*"food vendor".*application event/i.test(text)) return 'council_food_vendors';
+  if (/site:\.gov\.uk.*festival trader application vendor/i.test(text)) return 'council_festivals';
+  if (/site:\.gov\.uk.*Christmas market stallholder application/i.test(text)) return 'council_christmas';
+  if (/site:\.gov\.uk.*concession pitch application food trader/i.test(text)) return 'council_concessions';
+  if (/site:\.gov\.uk.*market trader application stallholder/i.test(text)) return 'council_street_markets';
   return '';
 }
 
