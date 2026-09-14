@@ -58,5 +58,20 @@
     "discovered_at": "2026-09-14T11:40:21.715Z",
     "discovery_query": "New Brunswick festival vendor application official Canada -site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com",
     "evidence": "Cloudflare Canada discovery festival_vendor: official public-service route attests New Brunswick and actionable vendor application evidence."
+  },
+  {
+    "id": "ca-nl-e6456d5992b4",
+    "name": "[PDF] Public Market Guidelines",
+    "source_url": "https://www.gov.nl.ca/gs/files/licenses-env-health-pdf-public-market-guidelines.pdf",
+    "application_url": "https://www.gov.nl.ca/gs/files/licenses-env-health-pdf-public-market-guidelines.pdf",
+    "source_class": "public-service",
+    "country_code": "CA",
+    "jurisdiction": "CA-NL",
+    "region_code": "NL",
+    "region_name": "Newfoundland and Labrador",
+    "status": "approved-pilot",
+    "discovered_at": "2026-09-14T11:55:21.687Z",
+    "discovery_query": "Newfoundland and Labrador municipal market vendor application official Canada -site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com",
+    "evidence": "Cloudflare Canada discovery municipal_market: official public-service route attests Newfoundland and Labrador and actionable vendor application evidence."
   }
 ]
