@@ -20,6 +20,24 @@ test('Canada discovery plan covers every province and territory across eight bou
   assert.match(plan[0].query, /Canada/);
 });
 
+test('Canada discovery prioritises official permit and vendor application language', () => {
+  assert.deepEqual(CA_DISCOVERY_TEMPLATES.map(template => template.id), [
+    'public_market',
+    'temporary_food_event',
+    'special_event_vendor',
+    'farmers_market',
+    'municipal_market',
+    'festival_vendor',
+    'food_vendor',
+    'mobile_food_vendor'
+  ]);
+  const alberta = canadaDiscoveryQueries({ limit: 4, offset: 0 });
+  assert.match(alberta[0].query, /public market food vendor permit application official/);
+  assert.match(alberta[1].query, /temporary food event vendor permit application official/);
+  assert.match(alberta[2].query, /special event vendor licence permit application official/);
+  assert.match(alberta[3].query, /farmers market vendor application official/);
+});
+
 test('Canada discovery plan is deterministic and advances from province to province', () => {
   const alberta = canadaDiscoveryQueries({ limit: 8, offset: 0 });
   assert.ok(alberta.every(item => item.region_code === 'AB'));

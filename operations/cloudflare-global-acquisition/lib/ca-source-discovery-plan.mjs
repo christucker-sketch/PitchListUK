@@ -3,14 +3,14 @@ import { enabledCaAcquisitionUnits } from '../../../platform/acquisition/ca-geog
 const EXCLUDED_SITES = '-site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com';
 
 export const CA_DISCOVERY_TEMPLATES = Object.freeze([
-  Object.freeze({ id: 'municipal_market', query: unit => `${unit.name} municipal market vendor application official` }),
+  Object.freeze({ id: 'public_market', query: unit => `${unit.name} public market food vendor permit application official` }),
+  Object.freeze({ id: 'temporary_food_event', query: unit => `${unit.name} temporary food event vendor permit application official` }),
+  Object.freeze({ id: 'special_event_vendor', query: unit => `${unit.name} special event vendor licence permit application official` }),
   Object.freeze({ id: 'farmers_market', query: unit => `${unit.name} farmers market vendor application official` }),
+  Object.freeze({ id: 'municipal_market', query: unit => `${unit.name} municipal market vendor application official` }),
   Object.freeze({ id: 'festival_vendor', query: unit => `${unit.name} festival vendor application official` }),
-  Object.freeze({ id: 'fair_exhibitor', query: unit => `${unit.name} fair exhibition vendor exhibitor application official` }),
-  Object.freeze({ id: 'holiday_market', query: unit => `${unit.name} Christmas holiday market vendor application official` }),
-  Object.freeze({ id: 'food_vendor', query: unit => `${unit.name} food vendor food truck concession application official` }),
-  Object.freeze({ id: 'artisan_market', query: unit => `${unit.name} artisan craft market vendor application official` }),
-  Object.freeze({ id: 'community_event', query: unit => `${unit.name} community event vendor booth application official` })
+  Object.freeze({ id: 'food_vendor', query: unit => `${unit.name} food vendor concession permit application official` }),
+  Object.freeze({ id: 'mobile_food_vendor', query: unit => `${unit.name} mobile food vendor food truck permit application official` })
 ]);
 
 export const CA_DISCOVERY_PLAN_SIZE = enabledCaAcquisitionUnits().length * CA_DISCOVERY_TEMPLATES.length;
