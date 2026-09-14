@@ -1,7 +1,7 @@
 const INTERNAL_HOST = 'findpitches-github-pr.internal';
 const INTERNAL_PATH = '/pulls';
 const INTERNAL_MARKER = 'findpitches-service-binding-v1';
-const ALLOWED_HEAD = /^(?:sources\/cloud-uk-growth-|data\/cloud-uk-approved-additions-)[a-z0-9-]+$/i;
+const ALLOWED_HEAD = /^(?:sources\/cloud-(?:uk|ca)-growth-|data\/cloud-(?:uk|ca)-approved-additions-)[a-z0-9-]+$/i;
 const MAX_TEXT = 12000;
 
 function requireEnv(env, key) {
