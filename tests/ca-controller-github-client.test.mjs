@@ -1,7 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { validateCaSourcePr } from '../operations/cloudflare-global-acquisition/lib/ca-controller-github-client.mjs';
+import {
+  evaluateCaMergeChecks,
+  validateCaSourcePr
+} from '../operations/cloudflare-global-acquisition/lib/ca-controller-github-client.mjs';
+
+const caRegistryPath = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
 
 function result() {
   return {
@@ -25,7 +30,7 @@ function pr(overrides = {}) {
     base_sha: '1'.repeat(40),
     head_ref: 'sources/cloud-ca-growth-1234567890abcdef-base-1234567890abcdef',
     head_sha: '2'.repeat(40),
-    files: ['operations/opportunity-pipeline/config/ca-approved-source-routes.json'],
+    files: [caRegistryPath],
     body: [
       '- net-new approved sources: 1',
       '- deterministic source evidence receipts: 1/1 passed',
@@ -75,6 +80,40 @@ test('Canada source PR validation still blocks when the latest check attempt is 
   assert.equal(pending.ready, false);
 });
 
+test('Canada registry-only source merge treats an absent deploy_and_prove check as inapplicable', () => {
+  const evaluated = evaluateCaMergeChecks(
+    ['verify', 'deploy_and_prove'],
+    [{ id: 10, name: 'verify', status: 'completed', conclusion: 'success' }],
+    [caRegistryPath]
+  );
+  assert.equal(evaluated.ready, true);
+  assert.equal(evaluated.registry_only_source_merge, true);
+  assert.deepEqual(evaluated.pending, []);
+  assert.deepEqual(evaluated.inapplicable, ['deploy_and_prove']);
+});
+
+test('Canada merge checks still require deploy_and_prove for wider commits', () => {
+  const evaluated = evaluateCaMergeChecks(
+    ['verify', 'deploy_and_prove'],
+    [{ id: 10, name: 'verify', status: 'completed', conclusion: 'success' }],
+    [caRegistryPath, 'operations/cloudflare-global-acquisition/src/index.js']
+  );
+  assert.equal(evaluated.ready, false);
+  assert.equal(evaluated.registry_only_source_merge, false);
+  assert.deepEqual(evaluated.pending, ['deploy_and_prove']);
+});
+
+test('Canada registry-only merge still fails closed when an actual deploy_and_prove check fails', () => {
+  assert.throws(() => evaluateCaMergeChecks(
+    ['verify', 'deploy_and_prove'],
+    [
+      { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+      { id: 11, name: 'deploy_and_prove', status: 'completed', conclusion: 'failure' }
+    ],
+    [caRegistryPath]
+  ), /required_check_failed:deploy_and_prove:failure/);
+});
+
 test('Canada source PR validation waits while checks are incomplete', () => {
   const validated = validateCaSourcePr(result(), pr({
     check_runs: [{ id: 1, name: 'verify', status: 'in_progress', conclusion: null }]
@@ -84,7 +123,7 @@ test('Canada source PR validation waits while checks are incomplete', () => {
 
 test('Canada source PR validation rejects wider file scope, substituted IDs and missing receipts', () => {
   assert.throws(() => validateCaSourcePr(result(), pr({
-    files: ['operations/opportunity-pipeline/config/ca-approved-source-routes.json', 'functions/_data/ca-opportunities.mjs']
+    files: [caRegistryPath, 'functions/_data/ca-opportunities.mjs']
   })), /file_scope/);
 
   const substituted = result();
