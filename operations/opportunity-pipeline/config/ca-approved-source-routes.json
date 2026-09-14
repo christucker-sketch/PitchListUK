@@ -28,5 +28,20 @@
     "discovered_at": "2026-09-14T09:45:21.718Z",
     "discovery_query": "Alberta farmers market vendor application official Canada -site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com",
     "evidence": "Cloudflare Canada discovery farmers_market: official public-service route attests Alberta and actionable vendor application evidence."
+  },
+  {
+    "id": "ca-bc-c52afbb5e93c",
+    "name": "Starting a food or beverage processing business - Gov.bc.ca",
+    "source_url": "https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/business-market-development/food-beverage-processing/food-processing-business-startup",
+    "application_url": "https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/business-market-development/food-beverage-processing/food-processing-business-startup",
+    "source_class": "public-service",
+    "country_code": "CA",
+    "jurisdiction": "CA-BC",
+    "region_code": "BC",
+    "region_name": "British Columbia",
+    "status": "approved-pilot",
+    "discovered_at": "2026-09-14T11:15:21.697Z",
+    "discovery_query": "British Columbia food vendor food truck concession application official Canada -site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com",
+    "evidence": "Cloudflare Canada discovery food_vendor: official public-service route attests British Columbia and actionable vendor application evidence."
   }
 ]
