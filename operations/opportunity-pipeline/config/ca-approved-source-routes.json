@@ -43,5 +43,20 @@
     "discovered_at": "2026-09-14T11:15:21.697Z",
     "discovery_query": "British Columbia food vendor food truck concession application official Canada -site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com",
     "evidence": "Cloudflare Canada discovery food_vendor: official public-service route attests British Columbia and actionable vendor application evidence."
+  },
+  {
+    "id": "ca-nb-7cc524574416",
+    "name": "Food Vendor Application for a Temporary Event (TE)",
+    "source_url": "https://www2.gnb.ca/content/dam/gnb/Departments/h-s/pdf/en/HealthyEnvironments/food-vendor-application-temporary-event.pdf",
+    "application_url": "https://www2.gnb.ca/content/dam/gnb/Departments/h-s/pdf/en/HealthyEnvironments/food-vendor-application-temporary-event.pdf",
+    "source_class": "public-service",
+    "country_code": "CA",
+    "jurisdiction": "CA-NB",
+    "region_code": "NB",
+    "region_name": "New Brunswick",
+    "status": "approved-pilot",
+    "discovered_at": "2026-09-14T11:40:21.715Z",
+    "discovery_query": "New Brunswick festival vendor application official Canada -site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com",
+    "evidence": "Cloudflare Canada discovery festival_vendor: official public-service route attests New Brunswick and actionable vendor application evidence."
   }
 ]
