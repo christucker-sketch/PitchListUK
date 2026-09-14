@@ -1,6 +1,7 @@
 import { WorkflowEntrypoint } from 'cloudflare:workers';
 
 import { buildUkCloudflareCanaryPlan } from '../../../platform/acquisition/uk-cloudflare-canary.mjs';
+import { readUkControllerReadonlyReceipt } from '../../cloudflare-global-acquisition/lib/uk-controller-readonly-receipt.mjs';
 import { assertUkCanaryHealthGate, executeUkCloudflareCanary } from '../lib/uk-cloudflare-canary-execution.mjs';
 import { sourcePollBatches, pollApprovedSourceBatch, summarizeApprovedSourcePoll } from '../lib/uk-approved-source-poll.mjs';
 
@@ -56,9 +57,17 @@ export class UkApprovedSourcePollWorkflow extends WorkflowEntrypoint {
       })));
     }
 
-    return step.do('emit UK approved-source read-only poll result', async () => summarizeApprovedSourcePoll(reports, {
+    const summary = await step.do('emit UK approved-source read-only poll result', async () => summarizeApprovedSourcePoll(reports, {
       generated_at: asOf
     }));
+    const controllerState = await step.do('read UK controller state without mutation', async () => (
+      readUkControllerReadonlyReceipt(this.env)
+    ));
+
+    return Object.freeze({
+      ...summary,
+      controller_state: controllerState
+    });
   }
 }
 
