@@ -26,6 +26,42 @@ export function trustedUkDiscoverySeeds(registry = [], approvedSources = APPROVE
   return Object.freeze([...new Set(routes.map(route => canonicalUrl(route)).filter(route => route?.startsWith('https://')))].sort());
 }
 
+function addClassificationCounts(left = {}, right = {}) {
+  const merged = { ...left };
+  for (const [key, value] of Object.entries(right || {})) merged[key] = Number(merged[key] || 0) + Number(value || 0);
+  return Object.freeze(merged);
+}
+
+export async function runUkDiscoveryWithEffectiveFallback(env, payload = {}, options = {}) {
+  const direct = await runUkSourceDiscovery(env, payload, options);
+  const shouldSearch = payload.serper_fallback !== false
+    && direct.serper_fallback_used !== true
+    && Number(direct.auto_approved_count || 0) === 0;
+  if (!shouldSearch) return direct;
+
+  const searched = await runUkSourceDiscovery(env, {
+    ...payload,
+    seed_routes: [],
+    serper_fallback: true
+  }, options);
+
+  return Object.freeze({
+    ...searched,
+    discovery_network: `${direct.discovery_network}+${searched.discovery_network}`,
+    direct_seed_count: Number(direct.direct_seed_count || 0),
+    direct_candidates_found: Number(direct.direct_candidates_found || 0),
+    serper_fallback_used: searched.serper_fallback_used === true,
+    search_results: Number(direct.search_results || 0) + Number(searched.search_results || 0),
+    candidates_fetched: Number(direct.candidates_fetched || 0) + Number(searched.candidates_fetched || 0),
+    candidates_classified: Number(direct.candidates_classified || 0) + Number(searched.candidates_classified || 0),
+    auto_approved_count: Number(searched.auto_approved_count || 0),
+    manual_review_count: Number(direct.manual_review_count || 0) + Number(searched.manual_review_count || 0),
+    classifications: addClassificationCounts(direct.classifications, searched.classifications),
+    approved_candidates: searched.approved_candidates,
+    review_queue: Object.freeze([...(direct.review_queue || []), ...(searched.review_queue || [])])
+  });
+}
+
 export async function runUkSourceDiscoveryWorkflow(env, event, step) {
   const payload = event?.payload || {};
   const generatedAt = String(payload.as_of || new Date().toISOString());
@@ -35,11 +71,7 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
   }, async () => readMainUkSourceRegistry(env));
 
   const trustedSeeds = trustedUkDiscoverySeeds(base.registry);
-
-  const discovery = await step.do(`discover UK source candidates offset ${Math.max(0, Number(payload.query_offset || 0))}`, {
-    retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' },
-    timeout: '15 minutes'
-  }, async () => runUkSourceDiscovery(env, {
+  const effectivePayload = {
     ...payload,
     seed_routes: Array.isArray(payload.seed_routes) && payload.seed_routes.length ? payload.seed_routes : trustedSeeds,
     serper_fallback: payload.serper_fallback !== false,
@@ -50,7 +82,12 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     direct_seed_limit: boundedNumber(payload.direct_seed_limit, 50, 50),
     concurrency: boundedNumber(payload.concurrency, 2, 3),
     timeout_ms: boundedNumber(payload.timeout_ms, 12000, 20000, 5000)
-  }, {
+  };
+
+  const discovery = await step.do(`discover UK source candidates offset ${Math.max(0, Number(payload.query_offset || 0))}`, {
+    retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' },
+    timeout: '15 minutes'
+  }, async () => runUkDiscoveryWithEffectiveFallback(env, effectivePayload, {
     search: searchViaSerperBroker
   }));
 
