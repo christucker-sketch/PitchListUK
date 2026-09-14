@@ -102,7 +102,7 @@ jobs:
           healthy=false
           for attempt in $(seq 1 30); do
             body="$(curl --silent --show-error --fail-with-body "$endpoint")"
-            if jq -e '.ok == true and .execution_enabled == true and .execution_level == "production" and .us_controller_cutover_enabled == true and .uk_controller_cutover_enabled == true and .ca_controller_cutover_enabled == false and .controller_state_store == true and .uk_controller_state_store == true and .ca_controller_state_store == true' <<<"$body" >/dev/null; then
+            if jq -e '.ok == true and .execution_enabled == true and .execution_level == "production" and .us_controller_cutover_enabled == true and .uk_controller_cutover_enabled == true and .ca_controller_cutover_enabled == true and .controller_state_store == true and .uk_controller_state_store == true and .ca_controller_state_store == true' <<<"$body" >/dev/null; then
               printf '%s\n' "$body" > global-production-health.json
               healthy=true
               break
@@ -162,28 +162,74 @@ jobs:
           done
           [[ "$completed" == "true" ]] || { echo 'UK global read-only poll timed out.' >&2; exit 1; }
 
-      - name: Prove Canada shadow controller readiness without mutation
+      - name: Prove Canada authoritative controller has entered live acquisition
         shell: bash
         run: |
           set -euo pipefail
-          instance_id="global-ca-readiness-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          params='{"country":"CA","mode":"controller_cutover_readiness"}'
-          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG"
-          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
-          completed=false
-          for attempt in $(seq 1 120); do
-            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
-            status="$(jq -r '.result.status // empty' <<<"$body")"
-            if [[ "$status" == "complete" ]]; then
-              printf '%s\n' "$body" > global-ca-readiness-result.json
-              jq -e '.result.output.country == "CA" and .result.output.mode == "controller_cutover_readiness" and .result.output.mutation_attempted == false and .result.output.authority == "shadow" and .result.output.cutover_enabled == false and .result.output.clean_checkpoint == true and .result.output.production_count_matches == true and .result.output.source_count_matches == true and .result.output.promotion_ready == true and .result.output.launch_ready == false' <<<"$body" >/dev/null
-              completed=true
+
+          read_readiness() {
+            local id="$1"
+            local endpoint body status
+            npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" '{"country":"CA","mode":"controller_cutover_readiness"}' --id "$id" --config "$CONFIG" >/dev/null
+            endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${id}"
+            for poll in $(seq 1 60); do
+              body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+              status="$(jq -r '.result.status // empty' <<<"$body")"
+              if [[ "$status" == 'complete' ]]; then
+                printf '%s\n' "$body"
+                return 0
+              fi
+              [[ "$status" != 'errored' && "$status" != 'terminated' ]] || { jq '.result.error' <<<"$body" >&2; return 1; }
+              sleep 2
+            done
+            echo 'Canada readiness workflow timed out.' >&2
+            return 1
+          }
+
+          baseline_body="$(read_readiness "global-ca-live-baseline-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}")"
+          baseline_output="$(jq -c '.result.output' <<<"$baseline_body")"
+          jq -e '
+            .country == "CA" and
+            .mode == "controller_cutover_readiness" and
+            .mutation_attempted == false and
+            .authority == "authoritative" and
+            .cutover_enabled == true and
+            .controller_kind == "ca" and
+            .plan_size == .expected_plan_size and
+            (.state_version | numbers) and
+            (.state_version > 0) and
+            (.state_status != "blocked")
+          ' <<<"$baseline_output" >/dev/null
+          baseline_version="$(jq -r '.state_version' <<<"$baseline_output")"
+
+          if jq -e '.clean_checkpoint == false or .state_status != "ready_discovery" or .current_source_count > 0 or .current_production_count > 0' <<<"$baseline_output" >/dev/null; then
+            printf '%s\n' "$baseline_body" > global-ca-live-result.json
+            exit 0
+          fi
+
+          engaged=false
+          for attempt in $(seq 1 60); do
+            body="$(read_readiness "global-ca-live-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${attempt}")"
+            output="$(jq -c '.result.output' <<<"$body")"
+            jq -e '
+              .country == "CA" and
+              .mode == "controller_cutover_readiness" and
+              .mutation_attempted == false and
+              .authority == "authoritative" and
+              .cutover_enabled == true and
+              .controller_kind == "ca" and
+              .plan_size == .expected_plan_size and
+              (.state_status != "blocked")
+            ' <<<"$output" >/dev/null
+            current_version="$(jq -r '.state_version' <<<"$output")"
+            if [[ "$current_version" -gt "$baseline_version" ]] || jq -e '.clean_checkpoint == false or .state_status != "ready_discovery" or .current_source_count > 0 or .current_production_count > 0' <<<"$output" >/dev/null; then
+              printf '%s\n' "$body" > global-ca-live-result.json
+              engaged=true
               break
             fi
-            [[ "$status" != "errored" && "$status" != "terminated" ]] || { jq '.result.error' <<<"$body" >&2; exit 1; }
             sleep 5
           done
-          [[ "$completed" == "true" ]] || { echo 'Canada shadow readiness proof timed out.' >&2; exit 1; }
+          [[ "$engaged" == 'true' ]] || { echo 'Canada cutover is enabled but the autonomous controller did not advance.' >&2; exit 1; }
 
       - name: Publish global parity evidence
         if: always()
@@ -194,6 +240,6 @@ jobs:
             global-production-health.json
             global-us-readonly-result.json
             global-uk-readonly-result.json
-            global-ca-readiness-result.json
+            global-ca-live-result.json
           if-no-files-found: ignore
           retention-days: 14
