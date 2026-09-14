@@ -71,14 +71,15 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
   }, async () => readMainUkSourceRegistry(env));
 
   const trustedSeeds = trustedUkDiscoverySeeds(base.registry);
+  const controllerRun = String(payload.trigger || '') === 'uk-cloud-controller';
   const effectivePayload = {
     ...payload,
     seed_routes: Array.isArray(payload.seed_routes) && payload.seed_routes.length ? payload.seed_routes : trustedSeeds,
     serper_fallback: payload.serper_fallback !== false,
     as_of: generatedAt,
     query_limit: boundedNumber(payload.query_limit, 8, 12),
-    results_per_query: boundedNumber(payload.results_per_query, 5, 8),
-    candidate_limit: boundedNumber(payload.candidate_limit, 30, 50),
+    results_per_query: controllerRun ? 8 : boundedNumber(payload.results_per_query, 5, 8),
+    candidate_limit: controllerRun ? 50 : boundedNumber(payload.candidate_limit, 30, 50),
     direct_seed_limit: boundedNumber(payload.direct_seed_limit, 50, 50),
     concurrency: boundedNumber(payload.concurrency, 2, 3),
     timeout_ms: boundedNumber(payload.timeout_ms, 12000, 20000, 5000)
@@ -123,6 +124,8 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     serper_fallback_used: discovery.serper_fallback_used,
     query_offset: discovery.query_offset,
     query_count: discovery.query_count,
+    effective_results_per_query: effectivePayload.results_per_query,
+    effective_candidate_limit: effectivePayload.candidate_limit,
     serper_credits_used: discovery.serper_credits_used,
     search_results: discovery.search_results,
     candidates_fetched: discovery.candidates_fetched,
