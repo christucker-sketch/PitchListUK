@@ -28,10 +28,7 @@ function exactPreconditions(payload = {}) {
 }
 
 function assertPromotionReadiness(readiness, expected) {
-  if (globalCaControllerCutoverEnabled({ GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED: readiness?.cutover_enabled ? 'true' : 'false' })) {
-    throw new Error('ca_authority_operator_requires_cutover_disabled');
-  }
-  if (readiness?.cutover_enabled) throw new Error('ca_authority_operator_requires_cutover_disabled');
+  if (readiness?.cutover_enabled !== false) throw new Error('ca_authority_operator_requires_cutover_disabled');
   if (!readiness?.promotion_ready) {
     throw new Error(`ca_authority_operator_not_ready:${(readiness?.promotion_blockers || []).join(',') || 'unknown'}`);
   }
@@ -119,7 +116,8 @@ export async function promoteCanadaShadowAuthority(env, payload = {}) {
     source_count_matches: after.source_count_matches,
     launch_ready: after.launch_ready,
     promotion_ready: after.promotion_ready,
-    mutation_attempted: false,
+    authority_metadata_mutation_attempted: true,
+    opportunity_data_mutation_attempted: false,
     acquisition_started: false
   });
 }
