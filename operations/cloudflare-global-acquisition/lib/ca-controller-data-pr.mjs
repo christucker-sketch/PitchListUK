@@ -4,9 +4,28 @@ import {
   latestCaChecksSuccessful,
   mergeCaControllerPr
 } from './ca-controller-github-client.mjs';
+import { githubJson } from './github-publication.mjs';
 
 const CA_SNAPSHOT_PATH = 'functions/_data/ca-opportunities.mjs';
 const FRONTEND_DEPLOY_CHECKS = Object.freeze(['verify', 'deploy_frontend_production']);
+
+function latestNamedCheck(checkRuns, name) {
+  return (Array.isArray(checkRuns) ? checkRuns : [])
+    .filter(run => String(run?.name || '') === name)
+    .sort((a, b) => Number(b?.id || 0) - Number(a?.id || 0))[0] || null;
+}
+
+async function readCheckRuns(env, sha) {
+  const body = await githubJson(env, `/commits/${sha}/check-runs?per_page=100`);
+  return Array.isArray(body?.check_runs) ? body.check_runs : [];
+}
+
+async function canadaSnapshotBlobSha(env, ref) {
+  const file = await githubJson(env, `/contents/${CA_SNAPSHOT_PATH}?ref=${encodeURIComponent(ref)}`);
+  const sha = String(file?.sha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('ca_frontend_snapshot_blob_sha_invalid');
+  return sha;
+}
 
 export function validateCaDataPr(result, pr) {
   if (pr?.state !== 'OPEN' || pr?.merged || pr?.draft) throw new Error('ca_data_pr_not_open_candidate');
@@ -66,7 +85,55 @@ export async function mergeValidatedCaDataPr(env, validated) {
 }
 
 export async function inspectCaFrontendDeployment(env, mergeSha) {
-  return inspectCaMergeChecks(env, mergeSha, FRONTEND_DEPLOY_CHECKS);
+  const sha = String(mergeSha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('ca_frontend_merge_sha_invalid');
+
+  const exactRuns = await readCheckRuns(env, sha);
+  const exactVerify = latestNamedCheck(exactRuns, 'verify');
+  const exactDeploy = latestNamedCheck(exactRuns, 'deploy_frontend_production');
+
+  if (exactVerify?.status === 'completed' && exactVerify?.conclusion !== 'success') {
+    throw new Error(`ca_controller_required_check_failed:verify:${exactVerify.conclusion || 'unknown'}`);
+  }
+  if (exactDeploy?.status === 'completed' && !['success', 'skipped'].includes(String(exactDeploy?.conclusion || ''))) {
+    throw new Error(`ca_controller_required_check_failed:deploy_frontend_production:${exactDeploy.conclusion || 'unknown'}`);
+  }
+  if (exactVerify?.status !== 'completed' || exactVerify?.conclusion !== 'success') {
+    return Object.freeze({ ready: false, pending: Object.freeze(['verify']), deployment_sha: sha, recovery: false });
+  }
+  if (exactDeploy?.status === 'completed' && exactDeploy?.conclusion === 'success') {
+    return Object.freeze({ ready: true, pending: Object.freeze([]), deployment_sha: sha, recovery: false });
+  }
+  if (exactDeploy && exactDeploy.status !== 'completed') {
+    return Object.freeze({ ready: false, pending: Object.freeze(['deploy_frontend_production']), deployment_sha: sha, recovery: false });
+  }
+
+  const ref = await githubJson(env, '/git/ref/heads/main');
+  const mainSha = String(ref?.object?.sha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(mainSha)) throw new Error('ca_frontend_recovery_main_sha_invalid');
+  if (mainSha === sha) {
+    return Object.freeze({ ready: false, pending: Object.freeze(['deploy_frontend_production']), deployment_sha: sha, recovery: false });
+  }
+
+  const compare = await githubJson(env, `/compare/${sha}...${mainSha}`);
+  if (String(compare?.status || '') !== 'ahead' || String(compare?.merge_base_commit?.sha || '').toLowerCase() !== sha) {
+    throw new Error('ca_frontend_recovery_main_not_descendant');
+  }
+
+  const [mergedSnapshotSha, currentSnapshotSha] = await Promise.all([
+    canadaSnapshotBlobSha(env, sha),
+    canadaSnapshotBlobSha(env, mainSha)
+  ]);
+  if (mergedSnapshotSha !== currentSnapshotSha) throw new Error('ca_frontend_recovery_snapshot_changed');
+
+  const recovered = await inspectCaMergeChecks(env, mainSha, FRONTEND_DEPLOY_CHECKS);
+  return Object.freeze({
+    ...recovered,
+    deployment_sha: mainSha,
+    recovery: true,
+    recovered_from_merge_sha: sha,
+    snapshot_blob_sha: currentSnapshotSha
+  });
 }
 
 export { CA_SNAPSHOT_PATH, FRONTEND_DEPLOY_CHECKS };
