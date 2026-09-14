@@ -39,6 +39,10 @@ import { runUkSourceDiscoveryWorkflow } from '../lib/uk-source-discovery-workflo
 import { runCanadaSourceDiscoveryWorkflow } from '../lib/ca-source-discovery-workflow.mjs';
 import { runCanadaAdditionsOnlyWorkflow } from '../lib/ca-additions-workflow.mjs';
 import { readCaControllerCutoverReadinessReport } from '../lib/ca-controller-cutover-readiness.mjs';
+import {
+  CA_AUTHORITY_PROMOTION_MODE,
+  promoteCanadaShadowAuthority
+} from '../lib/ca-controller-cutover-operator.mjs';
 import { handleControllerStateMaintenance } from '../lib/controller-state-maintenance.mjs';
 import { runCloudControllerTick } from '../lib/cloud-controller-tick.mjs';
 import {
@@ -106,6 +110,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         country: 'US',
         mode: ROLLBACK_OPERATOR_MODE,
         ...(await demoteCurrentAuthoritative(this.env, payload))
+      }));
+    }
+    if (payload.country === 'CA' && payload.mode === CA_AUTHORITY_PROMOTION_MODE) {
+      return step.do('promote proven Canada shadow authority while cutover remains disabled', async () => ({
+        country: 'CA',
+        mode: CA_AUTHORITY_PROMOTION_MODE,
+        ...(await promoteCanadaShadowAuthority(this.env, payload))
       }));
     }
 
@@ -258,6 +269,7 @@ export default {
         manual_uk_cutover_operator: true,
         manual_uk_rollback_operator: true,
         manual_ca_cutover_operator: true,
+        manual_ca_authority_promotion_operator: true,
         manual_ca_rollback_operator: true,
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
