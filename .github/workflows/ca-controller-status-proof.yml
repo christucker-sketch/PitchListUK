@@ -1,0 +1,105 @@
+name: Canada controller status proof
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ca-controller-status-proof.yml'
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-ca-controller-status-proof
+  cancel-in-progress: true
+
+jobs:
+  prove:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
+      WORKFLOW_NAME: findpitches-global-acquisition-shadow
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify production controller health
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body 'https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health')"
+          jq -e '
+            .ok == true and
+            .execution_enabled == true and
+            .execution_level == "production" and
+            .ca_controller_cutover_enabled == true and
+            .ca_controller_state_store == true
+          ' <<<"$body" >/dev/null
+          printf '%s\n' "$body" > ca-production-health.json
+
+      - name: Read Canada controller readiness without mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="ca-status-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" '{"country":"CA","mode":"controller_cutover_readiness"}' --id "$instance_id" --config "$CONFIG" >/dev/null
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          completed=false
+          for attempt in $(seq 1 90); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == 'complete' ]]; then
+              printf '%s\n' "$body" > ca-controller-status.json
+              jq -e '
+                .result.output.country == "CA" and
+                .result.output.mode == "controller_cutover_readiness" and
+                .result.output.mutation_attempted == false and
+                .result.output.authority == "authoritative" and
+                .result.output.cutover_enabled == true and
+                .result.output.controller_kind == "ca" and
+                .result.output.state_status != "blocked"
+              ' <<<"$body" >/dev/null
+              completed=true
+              break
+            fi
+            [[ "$status" != 'errored' && "$status" != 'terminated' ]] || {
+              jq '.result.error' <<<"$body" >&2
+              exit 1
+            }
+            sleep 2
+          done
+          [[ "$completed" == 'true' ]] || { echo 'Canada controller status proof timed out.' >&2; exit 1; }
+
+          jq -r '
+            .result.output |
+            "Canada controller: status=\(.state_status) version=\(.state_version) production=\(.state_production_count)/\(.current_production_count) sources=\(.state_source_count)/\(.current_source_count) clean=\(.clean_checkpoint) main=\(.current_main_sha)"
+          ' ca-controller-status.json | tee ca-controller-summary.txt
+
+          {
+            echo '### Canada controller status'
+            echo '```'
+            cat ca-controller-summary.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Canada controller evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: ca-controller-status-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ca-production-health.json
+            ca-controller-status.json
+            ca-controller-summary.txt
+          retention-days: 14
