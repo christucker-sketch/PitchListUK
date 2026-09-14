@@ -16,6 +16,17 @@ const MAX_CANDIDATE_LIMIT = 50;
 const MAX_BODY_BYTES = 240000;
 const MAX_REDIRECTS = 3;
 
+export const UK_DISCOVERY_TEMPLATES = Object.freeze([
+  Object.freeze({ id: 'uk_council_markets', query: region => `site:.gov.uk ${region} "apply to trade" market trader stall` }),
+  Object.freeze({ id: 'uk_council_market_stalls', query: region => `site:.gov.uk ${region} "market stall" application trader` }),
+  Object.freeze({ id: 'uk_council_events', query: region => `site:.gov.uk ${region} "event trader" application vendor` }),
+  Object.freeze({ id: 'uk_council_food_vendors', query: region => `site:.gov.uk ${region} "food vendor" application event` }),
+  Object.freeze({ id: 'uk_council_festivals', query: region => `site:.gov.uk ${region} festival trader application vendor` }),
+  Object.freeze({ id: 'uk_council_christmas', query: region => `site:.gov.uk ${region} Christmas market stallholder application` }),
+  Object.freeze({ id: 'uk_council_concessions', query: region => `site:.gov.uk ${region} concession pitch application food trader` }),
+  Object.freeze({ id: 'uk_council_street_markets', query: region => `site:.gov.uk ${region} market trader application stallholder` })
+]);
+
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
   if (!value) throw new Error(`Missing required secret/config: ${key}`);
@@ -195,7 +206,7 @@ export async function runUkSourceDiscovery(env, payload = {}, options = {}) {
 
   if (items.length === 0 && payload.serper_fallback !== false) {
     discoveryNetwork = 'serper_fallback';
-    plans = discoveryQueries({ limit: queryLimit, offset: queryOffset });
+    plans = discoveryQueries({ limit: queryLimit, offset: queryOffset, templates: UK_DISCOVERY_TEMPLATES });
     for (const plan of plans) {
       const found = await (options.search || serperSearch)(env, plan.query, { num: resultsPerQuery, fetchImpl: options.fetchImpl, timeout_ms: payload.timeout_ms });
       items.push(...found.map(result => ({ result, plan })));
