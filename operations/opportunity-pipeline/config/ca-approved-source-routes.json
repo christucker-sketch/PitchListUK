@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": "ca-ab-12b96a0a872d",
+    "name": "Start an approved farmers' market | Alberta.ca",
+    "source_url": "https://www.alberta.ca/starting-a-new-farmers-market",
+    "application_url": "https://www.alberta.ca/starting-a-new-farmers-market",
+    "source_class": "public-service",
+    "country_code": "CA",
+    "jurisdiction": "CA-AB",
+    "region_code": "AB",
+    "region_name": "Alberta",
+    "status": "approved-pilot",
+    "discovered_at": "2026-09-14T09:45:21.718Z",
+    "discovery_query": "Alberta municipal market vendor application official Canada -site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com",
+    "evidence": "Cloudflare Canada discovery municipal_market: official public-service route attests Alberta and actionable vendor application evidence."
+  },
+  {
+    "id": "ca-ab-e9cdeb8ca08c",
+    "name": "Resources for farmers' market managers and vendors | Alberta.ca",
+    "source_url": "https://www.alberta.ca/resources-for-farmers-market-managers",
+    "application_url": "https://www.alberta.ca/resources-for-farmers-market-managers",
+    "source_class": "public-service",
+    "country_code": "CA",
+    "jurisdiction": "CA-AB",
+    "region_code": "AB",
+    "region_name": "Alberta",
+    "status": "approved-pilot",
+    "discovered_at": "2026-09-14T09:45:21.718Z",
+    "discovery_query": "Alberta farmers market vendor application official Canada -site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com",
+    "evidence": "Cloudflare Canada discovery farmers_market: official public-service route attests Alberta and actionable vendor application evidence."
+  }
+]
