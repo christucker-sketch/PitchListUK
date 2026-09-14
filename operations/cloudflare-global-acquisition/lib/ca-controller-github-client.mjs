@@ -124,21 +124,53 @@ export async function mergeCaControllerPr(env, inspection) {
   return Object.freeze({ pr_number: prNumber, merge_sha: mergeSha, reused: false });
 }
 
-export async function inspectCaMergeChecks(env, mergeSha, requiredNames = []) {
-  const sha = String(mergeSha || '').toLowerCase();
-  if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('ca_controller_merge_sha_invalid');
-  const body = await githubJson(env, `/commits/${sha}/check-runs?per_page=100`);
-  const runs = compactChecks(body);
+export function evaluateCaMergeChecks(requiredNames = [], checkRuns = [], changedFiles = []) {
+  const runs = Array.isArray(checkRuns) ? checkRuns : [];
+  const files = (Array.isArray(changedFiles) ? changedFiles : []).map(String);
+  const registryOnlySourceMerge = files.length === 1 && files[0] === CA_SOURCE_REGISTRY_PATH;
   const pending = [];
+  const inapplicable = [];
+
   for (const name of requiredNames) {
     const matching = runs.filter(run => run.name === name).sort((a, b) => Number(b.id || 0) - Number(a.id || 0))[0];
-    if (!matching || matching.status !== 'completed') {
+    if (!matching) {
+      if (name === 'deploy_and_prove' && registryOnlySourceMerge) {
+        inapplicable.push(name);
+        continue;
+      }
+      pending.push(name);
+      continue;
+    }
+    if (matching.status !== 'completed') {
       pending.push(name);
       continue;
     }
     if (matching.conclusion !== 'success') throw new Error(`ca_controller_required_check_failed:${name}:${matching.conclusion || 'unknown'}`);
   }
-  return Object.freeze({ ready: pending.length === 0, pending: Object.freeze(pending), check_runs: Object.freeze(runs) });
+
+  return Object.freeze({
+    ready: pending.length === 0,
+    pending: Object.freeze(pending),
+    inapplicable: Object.freeze(inapplicable),
+    registry_only_source_merge: registryOnlySourceMerge
+  });
+}
+
+export async function inspectCaMergeChecks(env, mergeSha, requiredNames = []) {
+  const sha = String(mergeSha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('ca_controller_merge_sha_invalid');
+  const [body, commit] = await Promise.all([
+    githubJson(env, `/commits/${sha}/check-runs?per_page=100`),
+    githubJson(env, `/commits/${sha}`)
+  ]);
+  const runs = compactChecks(body);
+  const changedFiles = (Array.isArray(commit?.files) ? commit.files : []).map(file => String(file?.filename || ''));
+  const evaluation = evaluateCaMergeChecks(requiredNames, runs, changedFiles);
+  return Object.freeze({
+    ...evaluation,
+    check_runs: Object.freeze(runs),
+    changed_files: Object.freeze(changedFiles)
+  });
 }
 
 export { CA_SOURCE_REGISTRY_PATH };
