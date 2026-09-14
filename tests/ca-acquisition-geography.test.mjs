@@ -12,6 +12,7 @@ import { parseAcquisitionSnapshotModule } from '../platform/acquisition/global-e
 import { readFileSync } from 'node:fs';
 
 const expectedCodes = ['AB','BC','MB','NB','NL','NS','ON','PE','QC','SK','NT','NU','YT'];
+const expectedJurisdictions = new Set(expectedCodes.map(code => `CA-${code}`));
 
 test('Canada registry contains all ten provinces and three territories exactly once', () => {
   assert.equal(CA_ACQUISITION_UNITS.length, 13);
@@ -48,10 +49,24 @@ test('Canada geography resolver fails closed for broad, ambiguous and unmapped g
   assert.equal(resolveCaAcquisitionUnit({ location: 'Unknown Place' }).reason, 'unmapped_geography');
 });
 
-test('Canada shadow snapshot is parseable and empty before deliberate launch', () => {
+test('Canada production snapshot is parseable and contains only customer-ready Canadian opportunities', () => {
   const source = readFileSync(new URL('../functions/_data/ca-opportunities.mjs', import.meta.url), 'utf8');
   const snapshot = parseAcquisitionSnapshotModule(source, 'CA');
-  assert.equal(snapshot.total, 0);
-  assert.deepEqual(snapshot.rows, []);
-  assert.equal(snapshot.source, 'canada-shadow-bootstrap');
+
+  assert.equal(snapshot.total, snapshot.rows.length);
+  assert.equal(typeof snapshot.source, 'string');
+  assert.ok(snapshot.source.length > 0);
+
+  const ids = new Set();
+  for (const row of snapshot.rows) {
+    assert.match(row.id, /^CA-OPP-[A-F0-9]{12}$/);
+    assert.equal(row.country, 'Canada');
+    assert.ok(expectedJurisdictions.has(row.jurisdiction));
+    assert.equal(row.currency, 'CAD');
+    assert.equal(row.publishable, true);
+    assert.equal(row.quality_status, 'customer_ready');
+    assert.equal(row.area_confidence, 'exact');
+    assert.equal(ids.has(row.id), false);
+    ids.add(row.id);
+  }
 });

@@ -7,8 +7,26 @@ import {
 } from '../operations/cloudflare-global-acquisition/lib/ca-source-evidence.mjs';
 import registry from '../operations/opportunity-pipeline/config/ca-approved-source-routes.json' with { type: 'json' };
 
-test('Canada approved source registry starts empty and cannot leak UK or US routes', () => {
-  assert.deepEqual(registry, []);
+const allowedRegionCodes = new Set(['AB','BC','MB','NB','NL','NS','ON','PE','QC','SK','NT','NU','YT']);
+
+test('Canada approved source registry contains only valid Canadian routes and cannot leak UK or US sources', () => {
+  assert.ok(Array.isArray(registry));
+
+  const ids = new Set();
+  const sourceUrls = new Set();
+  for (const source of registry) {
+    assert.equal(source.country_code, 'CA');
+    assert.ok(allowedRegionCodes.has(source.region_code));
+    assert.equal(source.jurisdiction, `CA-${source.region_code}`);
+    assert.equal(source.source_class, 'public-service');
+    assert.match(source.id, /^ca-[a-z]{2}-[a-f0-9]{12}$/i);
+    assert.equal(isCanadianPublicServiceHost(source.source_url), true);
+    assert.equal(isCanadianPublicServiceHost(source.application_url), true);
+    assert.equal(ids.has(source.id), false);
+    assert.equal(sourceUrls.has(source.source_url), false);
+    ids.add(source.id);
+    sourceUrls.add(source.source_url);
+  }
 });
 
 test('Canada public-service host policy accepts bounded federal and provincial roots only', () => {
