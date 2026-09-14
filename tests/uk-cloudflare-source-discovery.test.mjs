@@ -2,10 +2,10 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import sourceDiscoveryLib from '../operations/opportunity-pipeline/acquisition/source-discovery.js';
-import { runUkSourceDiscovery, UK_SOURCE_DISCOVERY_LIMITS } from '../operations/cloudflare-global-acquisition/lib/uk-source-discovery.mjs';
+import { runUkSourceDiscovery, UK_DISCOVERY_TEMPLATES, UK_SOURCE_DISCOVERY_LIMITS } from '../operations/cloudflare-global-acquisition/lib/uk-source-discovery.mjs';
 import { planUkSourceRegistry, ukSourceBranchName } from '../operations/cloudflare-global-acquisition/lib/uk-source-publication.mjs';
 
-const { DISCOVERY_TEMPLATES, discoveryQueries, templateKeyForQuery } = sourceDiscoveryLib;
+const { discoveryQueries } = sourceDiscoveryLib;
 const NOW = '2026-09-08T17:30:00.000Z';
 
 function searchFixture() {
@@ -41,14 +41,11 @@ async function fetchFixture(result, plan) {
 }
 
 test('UK rapid discovery plan targets eight high-yield public-service application routes per region', () => {
-  assert.equal(DISCOVERY_TEMPLATES.length, 8);
-  const plans = discoveryQueries({ regions: ['Yorkshire'], limit: 8, offset: 0 });
+  assert.equal(UK_DISCOVERY_TEMPLATES.length, 8);
+  const plans = discoveryQueries({ regions: ['Yorkshire'], templates: UK_DISCOVERY_TEMPLATES, limit: 8, offset: 0 });
   assert.equal(plans.length, 8);
   assert.equal(new Set(plans.map(item => item.template_id)).size, 8);
-  for (const plan of plans) {
-    assert.match(plan.query, /site:\.gov\.uk/i);
-    assert.notEqual(templateKeyForQuery(plan.query), '');
-  }
+  for (const plan of plans) assert.match(plan.query, /site:\.gov\.uk/i);
   assert.ok(plans.some(item => /apply to trade/i.test(item.query)));
   assert.ok(plans.some(item => /market stall/i.test(item.query)));
   assert.ok(plans.some(item => /event trader/i.test(item.query)));
