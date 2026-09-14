@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { validateCaDataPr } from '../operations/cloudflare-global-acquisition/lib/ca-controller-data-pr.mjs';
+import {
+  inspectCaFrontendDeployment,
+  validateCaDataPr
+} from '../operations/cloudflare-global-acquisition/lib/ca-controller-data-pr.mjs';
 
 function result() {
   return {
@@ -44,6 +47,28 @@ function pr(overrides = {}) {
     ...overrides
   };
 }
+
+async function withGitHubFetchMock(handler, fn) {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async input => {
+    const url = new URL(typeof input === 'string' ? input : input.url);
+    const body = await handler(url);
+    return new Response(JSON.stringify(body), {
+      status: 200,
+      headers: { 'content-type': 'application/json' }
+    });
+  };
+  try {
+    return await fn();
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
+const controllerEnv = Object.freeze({
+  GITHUB_TOKEN: 'test-token',
+  GITHUB_REPO: 'christucker-sketch/PitchListUK'
+});
 
 test('Canada data PR gate accepts exact additions-only evidence after CI succeeds', () => {
   const validated = validateCaDataPr(result(), pr());
@@ -96,4 +121,90 @@ test('Canada data PR gate rejects substituted IDs, missing receipts and branch d
   assert.throws(() => validateCaDataPr(substituted, pr()), /receipt_missing/);
   assert.throws(() => validateCaDataPr(result(), pr({ body: '- production snapshot: 4 -> 6' })), /body_evidence/);
   assert.throws(() => validateCaDataPr(result(), pr({ head_ref: 'data/cloud-us-approved-additions-1234' })), /head_invalid|branch_mismatch/);
+});
+
+test('Canada frontend deployment accepts exact verified deployment on the data merge SHA', async () => {
+  const mergeSha = 'a'.repeat(40);
+  await withGitHubFetchMock(url => {
+    assert.equal(url.pathname, `/repos/christucker-sketch/PitchListUK/commits/${mergeSha}/check-runs`);
+    return {
+      check_runs: [
+        { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+        { id: 20, name: 'deploy_frontend_production', status: 'completed', conclusion: 'success' }
+      ]
+    };
+  }, async () => {
+    const inspected = await inspectCaFrontendDeployment(controllerEnv, mergeSha);
+    assert.equal(inspected.ready, true);
+    assert.equal(inspected.recovery, false);
+    assert.equal(inspected.deployment_sha, mergeSha);
+  });
+});
+
+test('Canada frontend deployment can recover through a verified descendant only when the snapshot blob is unchanged', async () => {
+  const mergeSha = 'a'.repeat(40);
+  const mainSha = 'b'.repeat(40);
+  const snapshotSha = 'c'.repeat(40);
+  await withGitHubFetchMock(url => {
+    if (url.pathname === `/repos/christucker-sketch/PitchListUK/commits/${mergeSha}/check-runs`) {
+      return {
+        check_runs: [
+          { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+          { id: 20, name: 'deploy_frontend_production', status: 'completed', conclusion: 'skipped' }
+        ]
+      };
+    }
+    if (url.pathname === '/repos/christucker-sketch/PitchListUK/git/ref/heads/main') return { object: { sha: mainSha } };
+    if (url.pathname === `/repos/christucker-sketch/PitchListUK/compare/${mergeSha}...${mainSha}`) {
+      return { status: 'ahead', merge_base_commit: { sha: mergeSha } };
+    }
+    if (url.pathname === '/repos/christucker-sketch/PitchListUK/contents/functions/_data/ca-opportunities.mjs') {
+      assert.ok([mergeSha, mainSha].includes(url.searchParams.get('ref')));
+      return { sha: snapshotSha };
+    }
+    if (url.pathname === `/repos/christucker-sketch/PitchListUK/commits/${mainSha}/check-runs`) {
+      return {
+        check_runs: [
+          { id: 30, name: 'verify', status: 'completed', conclusion: 'success' },
+          { id: 40, name: 'deploy_frontend_production', status: 'completed', conclusion: 'success' }
+        ]
+      };
+    }
+    if (url.pathname === `/repos/christucker-sketch/PitchListUK/commits/${mainSha}`) {
+      return { files: [{ filename: '.github/workflows/ca-opportunity-frontend-deploy.yml' }] };
+    }
+    throw new Error(`Unexpected GitHub path: ${url.pathname}${url.search}`);
+  }, async () => {
+    const inspected = await inspectCaFrontendDeployment(controllerEnv, mergeSha);
+    assert.equal(inspected.ready, true);
+    assert.equal(inspected.recovery, true);
+    assert.equal(inspected.deployment_sha, mainSha);
+    assert.equal(inspected.recovered_from_merge_sha, mergeSha);
+    assert.equal(inspected.snapshot_blob_sha, snapshotSha);
+  });
+});
+
+test('Canada frontend recovery fails closed if the Canadian snapshot changed after the pending data merge', async () => {
+  const mergeSha = 'a'.repeat(40);
+  const mainSha = 'b'.repeat(40);
+  await withGitHubFetchMock(url => {
+    if (url.pathname === `/repos/christucker-sketch/PitchListUK/commits/${mergeSha}/check-runs`) {
+      return {
+        check_runs: [
+          { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+          { id: 20, name: 'deploy_frontend_production', status: 'completed', conclusion: 'skipped' }
+        ]
+      };
+    }
+    if (url.pathname === '/repos/christucker-sketch/PitchListUK/git/ref/heads/main') return { object: { sha: mainSha } };
+    if (url.pathname === `/repos/christucker-sketch/PitchListUK/compare/${mergeSha}...${mainSha}`) {
+      return { status: 'ahead', merge_base_commit: { sha: mergeSha } };
+    }
+    if (url.pathname === '/repos/christucker-sketch/PitchListUK/contents/functions/_data/ca-opportunities.mjs') {
+      return { sha: url.searchParams.get('ref') === mergeSha ? 'c'.repeat(40) : 'd'.repeat(40) };
+    }
+    throw new Error(`Unexpected GitHub path: ${url.pathname}${url.search}`);
+  }, async () => {
+    await assert.rejects(() => inspectCaFrontendDeployment(controllerEnv, mergeSha), /snapshot_changed/);
+  });
 });
