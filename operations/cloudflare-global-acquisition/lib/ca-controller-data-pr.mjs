@@ -1,17 +1,12 @@
 import {
   inspectCaControllerPr,
   inspectCaMergeChecks,
+  latestCaChecksSuccessful,
   mergeCaControllerPr
 } from './ca-controller-github-client.mjs';
 
 const CA_SNAPSHOT_PATH = 'functions/_data/ca-opportunities.mjs';
 const FRONTEND_DEPLOY_CHECKS = Object.freeze(['verify', 'deploy_frontend_production']);
-
-function successfulChecks(checkRuns) {
-  const runs = Array.isArray(checkRuns) ? checkRuns : [];
-  if (!runs.length) return false;
-  return runs.every(run => run?.status === 'completed' && ['success', 'neutral', 'skipped'].includes(String(run?.conclusion || '')));
-}
 
 export function validateCaDataPr(result, pr) {
   if (pr?.state !== 'OPEN' || pr?.merged || pr?.draft) throw new Error('ca_data_pr_not_open_candidate');
@@ -50,7 +45,7 @@ export function validateCaDataPr(result, pr) {
   }
 
   return Object.freeze({
-    ready: successfulChecks(pr.check_runs),
+    ready: latestCaChecksSuccessful(pr.check_runs),
     pr_number: expectedPr,
     head_sha: pr.head_sha,
     base_sha: pr.base_sha,
