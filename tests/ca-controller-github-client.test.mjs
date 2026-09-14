@@ -46,6 +46,35 @@ test('Canada source PR validation accepts exact additions-only evidence after CI
   assert.deepEqual(validated.source_ids, ['ca-on-aaaaaaaaaaaa']);
 });
 
+test('Canada source PR validation uses the latest attempt for each immutable-head check name', () => {
+  const validated = validateCaSourcePr(result(), pr({
+    check_runs: [
+      { id: 10, name: 'verify', status: 'completed', conclusion: 'failure' },
+      { id: 11, name: 'deploy_frontend_production', status: 'completed', conclusion: 'skipped' },
+      { id: 20, name: 'verify', status: 'completed', conclusion: 'success' }
+    ]
+  }));
+  assert.equal(validated.ready, true);
+});
+
+test('Canada source PR validation still blocks when the latest check attempt is failed or pending', () => {
+  const failed = validateCaSourcePr(result(), pr({
+    check_runs: [
+      { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+      { id: 20, name: 'verify', status: 'completed', conclusion: 'failure' }
+    ]
+  }));
+  assert.equal(failed.ready, false);
+
+  const pending = validateCaSourcePr(result(), pr({
+    check_runs: [
+      { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+      { id: 20, name: 'verify', status: 'in_progress', conclusion: null }
+    ]
+  }));
+  assert.equal(pending.ready, false);
+});
+
 test('Canada source PR validation waits while checks are incomplete', () => {
   const validated = validateCaSourcePr(result(), pr({
     check_runs: [{ id: 1, name: 'verify', status: 'in_progress', conclusion: null }]

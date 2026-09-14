@@ -55,6 +55,24 @@ test('Canada data PR gate accepts exact additions-only evidence after CI succeed
   assert.deepEqual(validated.opportunity_ids, ['CA-OPP-AAAAAAAAAAAA', 'CA-OPP-BBBBBBBBBBBB']);
 });
 
+test('Canada data PR gate ignores superseded failed attempts but blocks on the latest failed attempt', () => {
+  const recovered = validateCaDataPr(result(), pr({
+    check_runs: [
+      { id: 10, name: 'verify', status: 'completed', conclusion: 'failure' },
+      { id: 20, name: 'verify', status: 'completed', conclusion: 'success' }
+    ]
+  }));
+  assert.equal(recovered.ready, true);
+
+  const regressed = validateCaDataPr(result(), pr({
+    check_runs: [
+      { id: 20, name: 'verify', status: 'completed', conclusion: 'success' },
+      { id: 30, name: 'verify', status: 'completed', conclusion: 'failure' }
+    ]
+  }));
+  assert.equal(regressed.ready, false);
+});
+
 test('Canada data PR gate remains pending while checks are incomplete', () => {
   const validated = validateCaDataPr(result(), pr({
     check_runs: [{ id: 1, name: 'verify', status: 'in_progress', conclusion: null }]

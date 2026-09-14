@@ -2,8 +2,20 @@ import { githubJson } from './github-publication.mjs';
 
 const CA_SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
 
-function successfulChecks(checkRuns) {
-  const runs = Array.isArray(checkRuns) ? checkRuns : [];
+export function latestCaCheckRuns(checkRuns) {
+  const latest = new Map();
+  for (const run of Array.isArray(checkRuns) ? checkRuns : []) {
+    const id = Number(run?.id || 0);
+    const name = String(run?.name || '').trim();
+    const key = name || `__unnamed_check_${id}`;
+    const previous = latest.get(key);
+    if (!previous || id > Number(previous?.id || 0)) latest.set(key, run);
+  }
+  return Object.freeze([...latest.values()]);
+}
+
+export function latestCaChecksSuccessful(checkRuns) {
+  const runs = latestCaCheckRuns(checkRuns);
   if (!runs.length) return false;
   return runs.every(run => run?.status === 'completed' && ['success', 'neutral', 'skipped'].includes(String(run?.conclusion || '')));
 }
@@ -78,7 +90,7 @@ export function validateCaSourcePr(result, pr) {
     if (!body.includes(`- ${id}:`)) throw new Error('ca_source_pr_receipt_missing');
   }
   return Object.freeze({
-    ready: successfulChecks(pr.check_runs),
+    ready: latestCaChecksSuccessful(pr.check_runs),
     pr_number: expectedPr,
     head_sha: pr.head_sha,
     base_sha: pr.base_sha,
