@@ -11,9 +11,19 @@ function boundedNumber(value, fallback, maximum, minimum = 1) {
   return Math.min(maximum, Math.max(minimum, Number.isFinite(number) ? number : fallback));
 }
 
+export function canadaAdditionWorkflowLimits(payload = {}) {
+  const controllerTriggered = payload.trigger === 'ca-cloud-controller';
+  return Object.freeze({
+    concurrency: controllerTriggered ? 4 : boundedNumber(payload.concurrency, 3, 4),
+    timeout_ms: boundedNumber(payload.timeout_ms, 12000, 30000, 1000),
+    max_additions: controllerTriggered ? 25 : boundedNumber(payload.max_additions, 10, 25)
+  });
+}
+
 export async function runCanadaAdditionsOnlyWorkflow(env, event, step) {
   const payload = event?.payload || {};
   const generatedAt = String(payload.as_of || new Date().toISOString());
+  const limits = canadaAdditionWorkflowLimits(payload);
   const [sources, base] = await Promise.all([
     step.do('read current Canada approved source registry from GitHub main', {
       retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' },
@@ -31,15 +41,15 @@ export async function runCanadaAdditionsOnlyWorkflow(env, event, step) {
     retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' },
     timeout: '15 minutes'
   }, async () => pollCanadaApprovedSources(approvedSources, {
-    concurrency: boundedNumber(payload.concurrency, 3, 4),
-    timeout_ms: boundedNumber(payload.timeout_ms, 12000, 30000, 1000),
+    concurrency: limits.concurrency,
+    timeout_ms: limits.timeout_ms,
     now: generatedAt
   }));
 
   const plan = await step.do('plan additions-only Canada opportunity snapshot', async () => (
     planCanadaOpportunityAdditions(base, poll.rows, {
       generated_at: generatedAt,
-      max_additions: boundedNumber(payload.max_additions, 10, 25)
+      max_additions: limits.max_additions
     })
   ));
 
@@ -56,6 +66,8 @@ export async function runCanadaAdditionsOnlyWorkflow(env, event, step) {
     mode: 'ca_additions_only_pr',
     generated_at: generatedAt,
     source_count: approvedSources.length,
+    concurrency: limits.concurrency,
+    max_additions: limits.max_additions,
     passed_source_count: poll.passed_count,
     held_source_count: poll.held_count,
     held: poll.held,
