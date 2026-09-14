@@ -1,0 +1,169 @@
+name: Canada PR broker recovery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'operations/cloudflare-texas-acquisition/src/internal-github-pr-broker.js'
+      - 'operations/cloudflare-global-acquisition/lib/ca-pr-broker-recovery.mjs'
+      - 'operations/cloudflare-global-acquisition/src/index.js'
+      - 'tests/ca-internal-github-pr-broker-policy.test.mjs'
+      - 'tests/ca-pr-broker-recovery.test.mjs'
+      - '.github/workflows/ca-pr-broker-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: findpitches-canada-pr-broker-recovery
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    environment: findpitches-production
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
+      WORKFLOW_NAME: findpitches-global-acquisition-shadow
+    steps:
+      - name: Check out exact main recovery commit
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Wait for exact-main broker and controller deployments
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=false
+          for attempt in $(seq 1 180); do
+            runs="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${GITHUB_SHA}&event=push&per_page=50")"
+            verify_status="$(jq -r '[.workflow_runs[] | select(.name == "PitchList verification")][0].status // "missing"' <<<"$runs")"
+            verify_conclusion="$(jq -r '[.workflow_runs[] | select(.name == "PitchList verification")][0].conclusion // ""' <<<"$runs")"
+            global_status="$(jq -r '[.workflow_runs[] | select(.name == "Global acquisition shadow proof")][0].status // "missing"' <<<"$runs")"
+            global_conclusion="$(jq -r '[.workflow_runs[] | select(.name == "Global acquisition shadow proof")][0].conclusion // ""' <<<"$runs")"
+            if [[ "$verify_status" == 'completed' && "$verify_conclusion" != 'success' ]]; then
+              echo "PitchList verification failed: $verify_conclusion" >&2
+              exit 1
+            fi
+            if [[ "$global_status" == 'completed' && "$global_conclusion" != 'success' ]]; then
+              echo "Global acquisition shadow proof failed: $global_conclusion" >&2
+              exit 1
+            fi
+            if [[ "$verify_status" == 'completed' && "$verify_conclusion" == 'success' && "$global_status" == 'completed' && "$global_conclusion" == 'success' ]]; then
+              ready=true
+              break
+            fi
+            sleep 5
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Exact-main production deployments did not complete in time.' >&2; exit 1; }
+
+      - name: Verify recovery capability and Canada live policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          endpoint='https://findpitches-global-acquisition-shadow.ctucker.workers.dev/health'
+          ready=false
+          for attempt in $(seq 1 60); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" || true)"
+            if jq -e '
+              .ok == true and
+              .execution_enabled == true and
+              .execution_level == "production" and
+              .ca_controller_cutover_enabled == true and
+              .ca_controller_state_store == true and
+              .ca_pr_broker_recovery_operator == true
+            ' <<<"$body" >/dev/null 2>&1; then
+              printf '%s\n' "$body" > ca-pr-broker-recovery-health.json
+              ready=true
+              break
+            fi
+            sleep 2
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Canada PR broker recovery capability did not become observable.' >&2; exit 1; }
+
+      - name: Recover exact failed Canada PR-broker workflow if still required
+        shell: bash
+        run: |
+          set -euo pipefail
+          completed=false
+          recovery_version=0
+          for attempt in $(seq 1 36); do
+            instance_id="ca-pr-broker-recovery-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${attempt}"
+            params='{"country":"CA","mode":"recover_failed_ca_pr_broker_workflow"}'
+            npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" "$params" --id "$instance_id" --config "$CONFIG" >/dev/null
+            endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+            body=''
+            for poll in $(seq 1 60); do
+              body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+              status="$(jq -r '.result.status // empty' <<<"$body")"
+              if [[ "$status" == 'complete' ]]; then break; fi
+              if [[ "$status" == 'errored' || "$status" == 'terminated' ]]; then
+                printf '%s\n' "$body" > ca-pr-broker-recovery-result.json
+                jq '.result.error' <<<"$body" >&2
+                exit 1
+              fi
+              sleep 2
+            done
+            output="$(jq -c '.result.output // {}' <<<"$body")"
+            if jq -e '.ok == true and (.recovered == true or .already_progressed == true)' <<<"$output" >/dev/null; then
+              printf '%s\n' "$body" > ca-pr-broker-recovery-result.json
+              recovery_version="$(jq -r '.state_version // 0' <<<"$output")"
+              completed=true
+              break
+            fi
+            jq -e '.ok == true and .pending == true' <<<"$output" >/dev/null || { echo 'Recovery returned an unexpected result.' >&2; jq . <<<"$output" >&2; exit 1; }
+            sleep 5
+          done
+          [[ "$completed" == 'true' ]] || { echo 'Canada PR broker recovery never reached a recoverable or already-progressed checkpoint.' >&2; exit 1; }
+          echo "RECOVERY_VERSION=$recovery_version" >> "$GITHUB_ENV"
+
+      - name: Prove autonomous Canada controller advances after recovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          advanced=false
+          for attempt in $(seq 1 90); do
+            instance_id="ca-post-recovery-readiness-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${attempt}"
+            npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" '{"country":"CA","mode":"controller_cutover_readiness"}' --id "$instance_id" --config "$CONFIG" >/dev/null
+            endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+            body=''
+            for poll in $(seq 1 60); do
+              body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+              status="$(jq -r '.result.status // empty' <<<"$body")"
+              if [[ "$status" == 'complete' ]]; then break; fi
+              [[ "$status" != 'errored' && "$status" != 'terminated' ]] || { jq '.result.error' <<<"$body" >&2; exit 1; }
+              sleep 2
+            done
+            output="$(jq -c '.result.output // {}' <<<"$body")"
+            jq -e '.country == "CA" and .authority == "authoritative" and .cutover_enabled == true and .state_status != "blocked"' <<<"$output" >/dev/null
+            version="$(jq -r '.state_version // 0' <<<"$output")"
+            if [[ "$version" -gt "${RECOVERY_VERSION:-0}" ]] || jq -e '.current_source_count > 0 or .current_production_count > 0 or .state_status == "reviewing_source_pr" or .state_status == "ready_acquisition" or .state_status == "running_acquisition" or .state_status == "reviewing_data_pr" or .state_status == "waiting_source_deploy" or .state_status == "waiting_frontend_deploy"' <<<"$output" >/dev/null; then
+              printf '%s\n' "$body" > ca-post-recovery-readiness.json
+              advanced=true
+              break
+            fi
+            sleep 5
+          done
+          [[ "$advanced" == 'true' ]] || { echo 'Canada controller did not advance after PR broker recovery.' >&2; exit 1; }
+
+      - name: Publish Canada recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ca-pr-broker-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ca-pr-broker-recovery-health.json
+            ca-pr-broker-recovery-result.json
+            ca-post-recovery-readiness.json
+          if-no-files-found: warn
+          retention-days: 30
