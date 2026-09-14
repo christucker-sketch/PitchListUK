@@ -43,6 +43,10 @@ import {
   CA_AUTHORITY_PROMOTION_MODE,
   promoteCanadaShadowAuthority
 } from '../lib/ca-controller-cutover-operator.mjs';
+import {
+  CA_PR_BROKER_RECOVERY_MODE,
+  recoverFailedCanadaPrBrokerWorkflow
+} from '../lib/ca-pr-broker-recovery.mjs';
 import { handleControllerStateMaintenance } from '../lib/controller-state-maintenance.mjs';
 import { runCloudControllerTick } from '../lib/cloud-controller-tick.mjs';
 import {
@@ -117,6 +121,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         country: 'CA',
         mode: CA_AUTHORITY_PROMOTION_MODE,
         ...(await promoteCanadaShadowAuthority(this.env, payload))
+      }));
+    }
+    if (payload.country === 'CA' && payload.mode === CA_PR_BROKER_RECOVERY_MODE) {
+      return step.do('recover only the exact failed Canada PR broker workflow checkpoint', async () => ({
+        country: 'CA',
+        mode: CA_PR_BROKER_RECOVERY_MODE,
+        ...(await recoverFailedCanadaPrBrokerWorkflow(this.env))
       }));
     }
 
@@ -270,6 +281,7 @@ export default {
         manual_uk_rollback_operator: true,
         manual_ca_cutover_operator: true,
         manual_ca_authority_promotion_operator: true,
+        ca_pr_broker_recovery_operator: true,
         manual_ca_rollback_operator: true,
         markets: globalAcquisitionMarkets().map(market => ({
           country: market.country,
