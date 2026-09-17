@@ -4,8 +4,8 @@ import { evaluateCanadaSourceEvidence } from './ca-source-evidence.mjs';
 
 const MAX_BODY_BYTES = 240000;
 const MAX_REDIRECTS = 3;
-const VENDOR_SIGNAL = /\b(vendor|vendors|exhibitor|exhibitors|booth|booths|concession|concessions|food truck|food trucks|market vendor|market vendors|artisan|artisans)\b/i;
-const ACTION_SIGNAL = /\b(apply|application|applications|register|registration|book|booking|submit|form|deadline|fees?|rates?)\b/i;
+const VENDOR_SIGNAL = /\b(vendor|vendors|exhibitor|exhibitors|booth|booths|concession|concessions|food truck|food trucks|market vendor|market vendors|artisan|artisans|merchant|merchants)\b/i;
+const ACTION_SIGNAL = /\b(apply|application|applications|register|registration|book|booking|submit|form|deadline|fees?|rates?|become a vendor|vendor applications? open)\b/i;
 const NEGATIVE_SIGNAL = /\b(closed to vendors|applications? closed|no vendors?|not accepting vendors?|cancelled|canceled)\b/i;
 
 function canonicalHttpsUrl(value) {
@@ -38,7 +38,7 @@ async function fetchPage(fetchImpl, value, timeoutMs, redirects = 0) {
   const url = canonicalHttpsUrl(value);
   const response = await timedFetch(fetchImpl, url, {
     redirect: 'manual',
-    headers: { 'user-agent': 'FindPitches-Canada-Acquisition/1.0' }
+    headers: { 'user-agent': 'FindPitches-Canada-Acquisition/2.0' }
   }, timeoutMs);
   if (response.status >= 300 && response.status < 400 && response.headers?.get('location')) {
     if (redirects >= MAX_REDIRECTS) throw new Error('ca_opportunity_redirect_limit');
@@ -65,7 +65,7 @@ function categories(text) {
   if (/food truck|food vendor|food vendors|catering/i.test(text)) values.push('food vendors', 'food trucks');
   if (/artisan|craft|maker/i.test(text)) values.push('artisans', 'makers');
   if (/exhibitor/i.test(text)) values.push('exhibitors');
-  if (/market vendor|vendor|vendors/i.test(text)) values.push('market vendors');
+  if (/market vendor|vendor|vendors|merchant/i.test(text)) values.push('market vendors');
   return [...new Set(values.length ? values : ['vendors'])].join('; ');
 }
 
@@ -101,6 +101,7 @@ export function buildCanadaOpportunityRow(source, page, { now = new Date().toISO
   const day = String(now).slice(0, 10);
   const title = String(source.name || `${source.region_name} vendor opportunity`).trim();
   const host = sourceHost(route);
+  const publicService = source.source_class === 'public-service' || evidence.source_class === 'public-service';
   return Object.freeze({
     id: stableOpportunityId(source, route),
     event_name: title,
@@ -121,14 +122,14 @@ export function buildCanadaOpportunityRow(source, page, { now = new Date().toISO
     publishable: true,
     area_confidence: 'exact',
     route_type: routeType(`${title} ${text}`),
-    organiser_type: 'public_service',
+    organiser_type: publicService ? 'public_service' : 'event_organiser',
     country: 'Canada',
     jurisdiction: source.jurisdiction,
     currency: 'CAD',
     market_domain: 'findpitches.com',
     tax_region: source.jurisdiction,
     buyer_fit_tags: `canada;${String(source.region_code || '').toLowerCase()};vendor_application`,
-    notes: `Official Canadian public-service vendor route revalidated by FindPitches on ${day}.`,
+    notes: `${publicService ? 'Official Canadian public-service' : 'Verified Canadian first-party organiser'} vendor route revalidated by FindPitches on ${day}.`,
     application_url: route,
     source_url: canonicalHttpsUrl(source.source_url)
   });
