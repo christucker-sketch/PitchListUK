@@ -26,15 +26,19 @@ const STATE_LOCALITIES = Object.freeze({
 });
 
 const QUERY_TEMPLATES = Object.freeze([
-  { id: 'government-events', build: ({ locality, stateName, year }) => `site:.gov "${locality}" "${stateName}" ${year} vendor application event festival` },
-  { id: 'farmers-market', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} farmers market vendor application official` },
-  { id: 'festival', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} festival vendor application official` },
-  { id: 'arts-crafts', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} arts crafts market vendor application official` },
-  { id: 'food-truck', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} food truck vendor application event official` },
-  { id: 'holiday-market', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} holiday Christmas market vendor application official` }
+  { id: 'vendor-applications', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} "vendor applications" market festival fair` },
+  { id: 'become-vendor', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} "become a vendor" market festival fair` },
+  { id: 'vendor-registration', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} vendor registration market festival event` },
+  { id: 'farmers-market', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} farmers market vendor application` },
+  { id: 'festival', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} festival vendor application` },
+  { id: 'arts-crafts', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} arts crafts market vendor application` },
+  { id: 'food-truck', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} food truck vendor application event` },
+  { id: 'holiday-market', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} holiday Christmas market vendor application` },
+  { id: 'exhibitor', build: ({ locality, stateName, year }) => `"${locality}" "${stateName}" ${year} exhibitor application fair show festival` },
+  { id: 'government-events', build: ({ locality, stateName, year }) => `site:.gov "${locality}" "${stateName}" ${year} vendor application event festival` }
 ]);
 
-const EXCLUSIONS = '-site:facebook.com -site:instagram.com -site:youtube.com -site:eventbrite.com -site:linkedin.com -site:reddit.com -site:yelp.com';
+const EXCLUSIONS = '-site:facebook.com -site:instagram.com -site:youtube.com -site:eventbrite.com -site:linkedin.com -site:reddit.com -site:yelp.com -site:10times.com -site:festivalnet.com';
 
 function sourceLocalities(state) {
   return [...new Set((Array.isArray(state?.sources) ? state.sources : [])
@@ -44,8 +48,9 @@ function sourceLocalities(state) {
 
 export function growthQueryPlan(state, options = {}) {
   const code = String(state?.code || '').toUpperCase();
-  const localities = STATE_LOCALITIES[code] || sourceLocalities(state);
-  if (!localities.length) throw new Error(`No growth discovery localities configured for ${code}`);
+  const configured = STATE_LOCALITIES[code] || sourceLocalities(state);
+  const localities = configured.length ? configured : [String(state?.name || code).trim()].filter(Boolean);
+  if (!localities.length) throw new Error(`No growth discovery geography configured for ${code}`);
   const years = options.years?.length ? options.years : [new Date().getUTCFullYear(), new Date().getUTCFullYear() + 1];
   return localities.flatMap(locality => years.flatMap(year => QUERY_TEMPLATES.map(template => ({
     id: `${code.toLowerCase()}-${String(locality).toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${year}-${template.id}`,
@@ -61,7 +66,7 @@ export function growthQueryPlan(state, options = {}) {
 export function growthQueryBatch(state, options = {}) {
   const plan = growthQueryPlan(state, options);
   const offset = Math.max(0, Number(options.offset || 0));
-  const limit = Math.max(1, Math.min(4, Number(options.limit || 2)));
+  const limit = Math.max(1, Math.min(8, Number(options.limit || 4)));
   if (offset >= plan.length) return [];
   return plan.slice(offset, offset + limit);
 }
