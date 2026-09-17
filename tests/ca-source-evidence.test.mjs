@@ -50,6 +50,7 @@ test('Canada evidence auto-approves exact province plus actionable vendor eviden
     page_text: 'Ontario vendors can apply using this application form. Vendor fee and registration deadline apply.'
   });
   assert.equal(result.status, 'approved');
+  assert.equal(result.source_class, 'public-service');
   assert.equal(result.region_code, 'ON');
   assert.equal(result.jurisdiction, 'CA-ON');
 });
@@ -59,10 +60,11 @@ test('Canada evidence auto-approves curated municipal authority with exact city 
     region_code: 'ON',
     source_url: 'https://www.toronto.ca/services-payments/permits-licences-bylaws/vending-permits/',
     application_url: 'https://www.toronto.ca/services-payments/permits-licences-bylaws/vending-permits/',
-    title: 'Toronto Vendor Permit Application',
-    page_text: 'Toronto food truck vendors can apply using the application form and pay the permit fee.'
+    title: 'Toronto Market Vendor Permit Application',
+    page_text: 'Toronto market food truck vendors can apply using the application form and pay the permit fee.'
   });
   assert.equal(result.status, 'approved');
+  assert.equal(result.source_class, 'public-service');
   assert.equal(result.region_code, 'ON');
   assert.equal(result.jurisdiction, 'CA-ON');
 });
@@ -73,26 +75,41 @@ test('Canada geography attestation uses exact phrases and cannot match short pro
     source_url: 'https://www.ontario.ca/page/example-market',
     application_url: 'https://www.ontario.ca/page/example-market',
     title: 'Vendor application online',
-    page_text: 'Vendor applications are online. Submit the form and registration fee.'
+    page_text: 'Vendor applications are online. Submit the form and registration fee for the market.'
   });
   assert.equal(result.status, 'held');
   assert.equal(result.reason, 'canada_region_not_attested');
 });
 
-test('Canada evidence requires manual review for otherwise valid non-public-service first-party hosts', () => {
+test('Canada evidence approves actionable same-host private first-party organiser routes', () => {
   const result = evaluateCanadaSourceEvidence({
     region_code: 'BC',
     source_url: 'https://examplemarket.ca/vendors',
+    application_url: 'https://examplemarket.ca/vendors/apply',
     title: 'Vancouver Market Vendor Application',
-    page_text: 'Vancouver vendors may apply for a booth using the registration form.'
+    page_text: 'Vancouver market vendors may apply for a booth using the registration form.'
   });
-  assert.equal(result.status, 'review');
-  assert.equal(result.reason, 'canada_non_public_service_requires_review');
+  assert.equal(result.status, 'approved');
+  assert.equal(result.reason, 'canada_deterministic_first_party_organiser_evidence');
+  assert.equal(result.source_class, 'event-organiser');
 });
 
-test('Canada evidence fails closed on missing geography, vendor/action evidence and negative signals', () => {
+test('Canada evidence keeps cross-host forms review-gated', () => {
+  const result = evaluateCanadaSourceEvidence({
+    region_code: 'BC',
+    source_url: 'https://examplemarket.ca/vendors',
+    application_url: 'https://forms.example.net/vendor-application',
+    title: 'Vancouver Market Vendor Application',
+    page_text: 'Vancouver market vendors may apply for a booth using the registration form.'
+  });
+  assert.equal(result.status, 'review');
+  assert.equal(result.reason, 'canada_cross_host_application_requires_review');
+});
+
+test('Canada evidence fails closed on missing geography, vendor/action/opportunity evidence and negative signals', () => {
   assert.equal(evaluateCanadaSourceEvidence({ source_url: 'https://ontario.ca/x', page_text: 'Vendor application' }).reason, 'canada_region_not_attested');
   assert.equal(evaluateCanadaSourceEvidence({ region_code: 'ON', source_url: 'https://ontario.ca/x', page_text: 'Ontario event application' }).reason, 'canada_vendor_signal_missing');
-  assert.equal(evaluateCanadaSourceEvidence({ region_code: 'ON', source_url: 'https://ontario.ca/x', page_text: 'Ontario vendor information' }).reason, 'canada_action_signal_missing');
-  assert.equal(evaluateCanadaSourceEvidence({ region_code: 'ON', source_url: 'https://ontario.ca/x', page_text: 'Ontario vendor applications closed' }).reason, 'canada_negative_vendor_signal');
+  assert.equal(evaluateCanadaSourceEvidence({ region_code: 'ON', source_url: 'https://ontario.ca/x', page_text: 'Ontario market vendor information' }).reason, 'canada_action_signal_missing');
+  assert.equal(evaluateCanadaSourceEvidence({ region_code: 'ON', source_url: 'https://ontario.ca/x', page_text: 'Ontario vendor applications open' }).reason, 'canada_opportunity_context_missing');
+  assert.equal(evaluateCanadaSourceEvidence({ region_code: 'ON', source_url: 'https://ontario.ca/x', page_text: 'Ontario market vendor applications closed' }).reason, 'canada_negative_vendor_signal');
 });
