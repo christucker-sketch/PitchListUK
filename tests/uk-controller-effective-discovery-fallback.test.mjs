@@ -7,6 +7,7 @@ const NOW = '2026-09-14T13:40:00.000Z';
 
 async function fetchCandidate(result, plan) {
   const council = result.url.includes('.gov.uk/');
+  const nonActionablePrivate = result.url.endsWith('/about');
   return {
     result,
     plan,
@@ -14,7 +15,9 @@ async function fetchCandidate(result, plan) {
     final_url: result.url,
     page_text: council
       ? 'England market. Applications open. Apply to trade at our market. Trader pitches are available.'
-      : 'United Kingdom artisan market. Become a trader and apply for a market stall.'
+      : nonActionablePrivate
+        ? 'United Kingdom artisan market. Independent makers, food and community events.'
+        : 'United Kingdom artisan market. Become a trader and apply for a market stall.'
   };
 }
 
@@ -34,9 +37,9 @@ test('UK controller uses Serper batch when direct graph returns links but no aut
       candidates: seeds.length ? [{
         query: 'cloudflare-first-party-graph',
         rank: 1,
-        title: 'Private artisan market - become a trader',
-        url: 'https://new-private-market.co.uk/apply',
-        snippet: 'Become a trader at our UK artisan market.'
+        title: 'Private artisan market information',
+        url: 'https://new-private-market.co.uk/about',
+        snippet: 'Independent makers, food and community events in the UK.'
       }] : []
     }),
     search: async (_env, query) => {
