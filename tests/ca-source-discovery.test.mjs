@@ -6,7 +6,7 @@ import { runCanadaSourceDiscovery } from '../operations/cloudflare-global-acquis
 test('Canada discovery searches bounded opportunity-first plans and approves verified first-party organisers', async () => {
   const searched = [];
   const result = await runCanadaSourceDiscovery({}, {
-    query_offset: 60,
+    query_offset: 48,
     query_limit: 1,
     results_per_query: 8,
     as_of: '2026-09-13T15:30:00.000Z'
@@ -29,8 +29,8 @@ test('Canada discovery searches bounded opportunity-first plans and approves ver
   assert.equal(searched.length, 1);
   assert.match(searched[0].query, /Ontario/);
   assert.equal(result.country, 'CA');
-  assert.equal(result.query_offset, 60);
-  assert.equal(result.next_query_offset, 61);
+  assert.equal(result.query_offset, 48);
+  assert.equal(result.next_query_offset, 49);
   assert.equal(result.approved_source_count, 2);
   assert.equal(result.deterministic_first_party_count, 1);
   assert.equal(result.public_service_count, 1);
@@ -46,7 +46,7 @@ test('Canada discovery searches bounded opportunity-first plans and approves ver
 });
 
 test('Canada discovery holds fetch failures and advances the exact plan offset with wrap', async () => {
-  const result = await runCanadaSourceDiscovery({}, { query_offset: 129, query_limit: 4 }, {
+  const result = await runCanadaSourceDiscovery({}, { query_offset: 103, query_limit: 4 }, {
     search: async () => [{ title: 'Yukon Market Vendor Application', link: 'https://yukon.ca/vendor', snippet: 'Yukon market vendor application' }],
     fetchCandidate: async () => { throw new Error('fetch_failed'); }
   });
@@ -58,7 +58,7 @@ test('Canada discovery holds fetch failures and advances the exact plan offset w
 });
 
 test('Canada discovery deduplicates the same route across multiple queries', async () => {
-  const result = await runCanadaSourceDiscovery({}, { query_offset: 60, query_limit: 2 }, {
+  const result = await runCanadaSourceDiscovery({}, { query_offset: 48, query_limit: 2 }, {
     search: async () => [{ title: 'Ontario Market Vendor Application', link: 'https://ontario.ca/vendors', snippet: 'Ontario market vendor application' }],
     fetchCandidate: async url => ({ url, text: 'Ontario market vendors can apply. Application form, vendor fee and deadline.' })
   });
