@@ -32,18 +32,64 @@ function addClassificationCounts(left = {}, right = {}) {
   return Object.freeze(merged);
 }
 
+function deterministicPrivateFirstParty(candidate, now) {
+  if (!candidate || candidate.classification !== 'manual-review-required') return null;
+  if (candidate.rejection_reason !== 'private_or_non_public_service_source_requires_review') return null;
+  if (!candidate.canonical_route || !candidate.canonical_host || !candidate.organisation || !candidate.geographic_coverage || !candidate.opportunity_type) return null;
+  if (!candidate.trader_application_evidence || candidate.fetch_status !== 'fetched' || candidate.robots_result !== 'allowed') return null;
+  return Object.freeze({
+    ...candidate,
+    approval_status: 'approved',
+    reviewer_decision: 'approved_deterministic_first_party_live_trader_route',
+    reviewer: 'FindPitches Cloudflare deterministic opportunity evidence',
+    decision_timestamp: now
+  });
+}
+
+export function promoteUkOpportunityFirstCandidates(discovery, { now = new Date().toISOString() } = {}) {
+  const approved = [...(discovery?.approved_candidates || [])];
+  const remainingReview = [];
+  let promoted = 0;
+  for (const candidate of discovery?.review_queue || []) {
+    const deterministic = deterministicPrivateFirstParty(candidate, now);
+    if (deterministic) {
+      approved.push(deterministic);
+      promoted += 1;
+    } else {
+      remainingReview.push(candidate);
+    }
+  }
+  return Object.freeze({
+    ...discovery,
+    approved_candidates: Object.freeze(approved),
+    review_queue: Object.freeze(remainingReview),
+    auto_approved_count: Number(discovery?.auto_approved_count || 0) + promoted,
+    deterministic_first_party_promotions: promoted,
+    manual_review_count: remainingReview.length
+  });
+}
+
 export async function runUkDiscoveryWithEffectiveFallback(env, payload = {}, options = {}) {
-  const direct = await runUkSourceDiscovery(env, payload, options);
+  const direct = promoteUkOpportunityFirstCandidates(await runUkSourceDiscovery(env, payload, options), { now: payload.as_of });
+  const controllerRun = String(payload.trigger || '') === 'uk-cloud-controller';
   const shouldSearch = payload.serper_fallback !== false
     && direct.serper_fallback_used !== true
-    && Number(direct.auto_approved_count || 0) === 0;
+    && (controllerRun || Number(direct.auto_approved_count || 0) === 0);
   if (!shouldSearch) return direct;
 
-  const searched = await runUkSourceDiscovery(env, {
+  const searched = promoteUkOpportunityFirstCandidates(await runUkSourceDiscovery(env, {
     ...payload,
     seed_routes: [],
     serper_fallback: true
-  }, options);
+  }, options), { now: payload.as_of });
+
+  const directApproved = direct.approved_candidates || [];
+  const searchedApproved = searched.approved_candidates || [];
+  const approvedByRoute = new Map();
+  for (const candidate of [...directApproved, ...searchedApproved]) {
+    const route = canonicalUrl(candidate?.canonical_route);
+    if (route && !approvedByRoute.has(route)) approvedByRoute.set(route, candidate);
+  }
 
   return Object.freeze({
     ...searched,
@@ -54,10 +100,11 @@ export async function runUkDiscoveryWithEffectiveFallback(env, payload = {}, opt
     search_results: Number(direct.search_results || 0) + Number(searched.search_results || 0),
     candidates_fetched: Number(direct.candidates_fetched || 0) + Number(searched.candidates_fetched || 0),
     candidates_classified: Number(direct.candidates_classified || 0) + Number(searched.candidates_classified || 0),
-    auto_approved_count: Number(searched.auto_approved_count || 0),
+    auto_approved_count: approvedByRoute.size,
+    deterministic_first_party_promotions: Number(direct.deterministic_first_party_promotions || 0) + Number(searched.deterministic_first_party_promotions || 0),
     manual_review_count: Number(direct.manual_review_count || 0) + Number(searched.manual_review_count || 0),
     classifications: addClassificationCounts(direct.classifications, searched.classifications),
-    approved_candidates: searched.approved_candidates,
+    approved_candidates: Object.freeze([...approvedByRoute.values()]),
     review_queue: Object.freeze([...(direct.review_queue || []), ...(searched.review_queue || [])])
   });
 }
@@ -85,7 +132,7 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     timeout_ms: boundedNumber(payload.timeout_ms, 12000, 20000, 5000)
   };
 
-  const discovery = await step.do(`discover UK source candidates offset ${Math.max(0, Number(payload.query_offset || 0))}`, {
+  const discovery = await step.do(`discover UK opportunity/source candidates offset ${Math.max(0, Number(payload.query_offset || 0))}`, {
     retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' },
     timeout: '15 minutes'
   }, async () => runUkDiscoveryWithEffectiveFallback(env, effectivePayload, {
@@ -94,7 +141,7 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
 
   const plan = await step.do('build additions-only UK source promotion plan', async () => (
     planUkSourceRegistry(base, discovery.approved_candidates, {
-      reviewer: 'FindPitches Cloudflare deterministic source automation',
+      reviewer: 'FindPitches Cloudflare deterministic opportunity evidence',
       generated_at: generatedAt
     })
   ));
@@ -118,6 +165,7 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     mode: 'uk_source_discovery_pr',
     generated_at: generatedAt,
     discovery_network: discovery.discovery_network,
+    discovery_strategy: 'opportunity_first_with_source_promotion',
     trusted_seed_inventory_count: trustedSeeds.length,
     direct_seed_count: discovery.direct_seed_count,
     direct_candidates_found: discovery.direct_candidates_found,
@@ -131,12 +179,14 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     candidates_fetched: discovery.candidates_fetched,
     candidates_classified: discovery.candidates_classified,
     auto_approved_count: discovery.auto_approved_count,
+    deterministic_first_party_promotions: Number(discovery.deterministic_first_party_promotions || 0),
     manual_review_count: discovery.manual_review_count,
     classifications: discovery.classifications,
     source_count_before: base.registry.length,
     source_count_after_planned: plan.summary.after_count,
     source_additions: additions,
     source_removals: 0,
+    growth_health: additions > 0 ? 'productive' : (Number(discovery.search_results || 0) > 0 ? 'zero_yield' : 'no_search_results'),
     source_pr_attempted: additions > 0,
     source_pr: publication,
     opportunity_pr_attempted: false,
