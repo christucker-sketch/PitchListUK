@@ -269,7 +269,7 @@ async function runGrowthDiscoveryWorkflow(env, event, step, state) {
     retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' }, timeout: '5 minutes'
   }, async () => readMainGrowthRegistry(env));
   const queryOffset = Math.max(0, Number(event?.payload?.query_offset || 0));
-  const queryLimit = Math.max(1, Math.min(4, Number(event?.payload?.query_limit || 2)));
+  const queryLimit = Math.max(1, Math.min(8, Number(event?.payload?.query_limit || 2)));
   const asOfDate = String(event?.payload?.as_of_date || new Date().toISOString()).slice(0, 10);
   const plans = growthQueryBatch(state, { offset: queryOffset, limit: queryLimit });
   const searchBatches = [];
