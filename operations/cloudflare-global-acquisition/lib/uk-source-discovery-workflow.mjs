@@ -1,6 +1,7 @@
 import sourcesLib from '../../opportunity-pipeline/config/sources.js';
 import safetyLib from '../../opportunity-pipeline/lib/opportunity-safety.js';
 import { runUkSourceDiscovery } from './uk-source-discovery.mjs';
+import { runUkOpportunityFirstDiscovery } from './uk-opportunity-first-discovery.mjs';
 import { searchViaSerperBroker } from './service-serper-search.mjs';
 import {
   openUkSourcePullRequest,
@@ -83,10 +84,8 @@ export async function runUkDiscoveryWithEffectiveFallback(env, payload = {}, opt
     serper_fallback: true
   }, options), { now: payload.as_of });
 
-  const directApproved = direct.approved_candidates || [];
-  const searchedApproved = searched.approved_candidates || [];
   const approvedByRoute = new Map();
-  for (const candidate of [...directApproved, ...searchedApproved]) {
+  for (const candidate of [...(direct.approved_candidates || []), ...(searched.approved_candidates || [])]) {
     const route = canonicalUrl(candidate?.canonical_route);
     if (route && !approvedByRoute.has(route)) approvedByRoute.set(route, candidate);
   }
@@ -107,6 +106,15 @@ export async function runUkDiscoveryWithEffectiveFallback(env, payload = {}, opt
     approved_candidates: Object.freeze([...approvedByRoute.values()]),
     review_queue: Object.freeze([...(direct.review_queue || []), ...(searched.review_queue || [])])
   });
+}
+
+function mergeApprovedCandidates(...groups) {
+  const byRoute = new Map();
+  for (const candidate of groups.flat()) {
+    const route = canonicalUrl(candidate?.canonical_route);
+    if (route && !byRoute.has(route)) byRoute.set(route, candidate);
+  }
+  return Object.freeze([...byRoute.values()]);
 }
 
 export async function runUkSourceDiscoveryWorkflow(env, event, step) {
@@ -132,21 +140,36 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     timeout_ms: boundedNumber(payload.timeout_ms, 12000, 20000, 5000)
   };
 
-  const discovery = await step.do(`discover UK opportunity/source candidates offset ${Math.max(0, Number(payload.query_offset || 0))}`, {
+  const discovery = await step.do(`discover UK source graph candidates offset ${Math.max(0, Number(payload.query_offset || 0))}`, {
     retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' },
     timeout: '15 minutes'
   }, async () => runUkDiscoveryWithEffectiveFallback(env, effectivePayload, {
     search: searchViaSerperBroker
   }));
 
+  const opportunityDiscovery = await step.do(`discover UK opportunities directly offset ${Math.max(0, Number(payload.query_offset || 0))}`, {
+    retries: { limit: 2, delay: '30 seconds', backoff: 'exponential' },
+    timeout: '15 minutes'
+  }, async () => runUkOpportunityFirstDiscovery(env, {
+    ...effectivePayload,
+    query_limit: controllerRun ? 4 : Math.min(4, effectivePayload.query_limit),
+    candidate_limit: controllerRun ? 48 : Math.min(32, effectivePayload.candidate_limit)
+  }, {
+    search: (query, options) => searchViaSerperBroker(env, query, options)
+  }));
+
+  const approvedCandidates = mergeApprovedCandidates(discovery.approved_candidates || [], opportunityDiscovery.approved_candidates || []);
   const plan = await step.do('build additions-only UK source promotion plan', async () => (
-    planUkSourceRegistry(base, discovery.approved_candidates, {
+    planUkSourceRegistry(base, approvedCandidates, {
       reviewer: 'FindPitches Cloudflare deterministic opportunity evidence',
       generated_at: generatedAt
     })
   ));
 
   const additions = Number(plan.summary.additions || 0);
+  const totalSearchResults = Number(discovery.search_results || 0) + Number(opportunityDiscovery.results_seen || 0);
+  const totalSerperCredits = Number(discovery.serper_credits_used || 0) + Number(opportunityDiscovery.serper_credits_used || 0);
+  const totalReview = Number(discovery.manual_review_count || 0) + Number(opportunityDiscovery.review_count || 0);
   const publication = additions > 0
     ? await step.do('create or reuse UK source-registry PR', {
         retries: { limit: 2, delay: '15 seconds', backoff: 'exponential' },
@@ -154,9 +177,9 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
       }, async () => openUkSourcePullRequest(env, {
         base,
         plan,
-        query_count: discovery.query_count,
-        serper_credits_used: discovery.serper_credits_used,
-        manual_review_count: discovery.manual_review_count
+        query_count: Number(discovery.query_count || 0) + Number(opportunityDiscovery.query_count || 0),
+        serper_credits_used: totalSerperCredits,
+        manual_review_count: totalReview
       }))
     : Object.freeze({ created: false, reason: 'no_net_new_sources', additions: 0 });
 
@@ -164,29 +187,31 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     country: 'UK',
     mode: 'uk_source_discovery_pr',
     generated_at: generatedAt,
-    discovery_network: discovery.discovery_network,
+    discovery_network: `${discovery.discovery_network}+opportunity_first_serper`,
     discovery_strategy: 'opportunity_first_with_source_promotion',
     trusted_seed_inventory_count: trustedSeeds.length,
     direct_seed_count: discovery.direct_seed_count,
     direct_candidates_found: discovery.direct_candidates_found,
     serper_fallback_used: discovery.serper_fallback_used,
     query_offset: discovery.query_offset,
-    query_count: discovery.query_count,
+    query_count: Number(discovery.query_count || 0) + Number(opportunityDiscovery.query_count || 0),
     effective_results_per_query: effectivePayload.results_per_query,
     effective_candidate_limit: effectivePayload.candidate_limit,
-    serper_credits_used: discovery.serper_credits_used,
-    search_results: discovery.search_results,
-    candidates_fetched: discovery.candidates_fetched,
-    candidates_classified: discovery.candidates_classified,
-    auto_approved_count: discovery.auto_approved_count,
-    deterministic_first_party_promotions: Number(discovery.deterministic_first_party_promotions || 0),
-    manual_review_count: discovery.manual_review_count,
+    serper_credits_used: totalSerperCredits,
+    search_results: totalSearchResults,
+    candidates_fetched: Number(discovery.candidates_fetched || 0) + Number(opportunityDiscovery.candidates_fetched || 0),
+    candidates_classified: Number(discovery.candidates_classified || 0) + Number(opportunityDiscovery.candidates_fetched || 0),
+    auto_approved_count: approvedCandidates.length,
+    deterministic_first_party_promotions: Number(discovery.deterministic_first_party_promotions || 0) + Number(opportunityDiscovery.approved_count || 0),
+    opportunity_first_approved_count: Number(opportunityDiscovery.approved_count || 0),
+    opportunity_first_held_count: Number(opportunityDiscovery.held_count || 0),
+    manual_review_count: totalReview,
     classifications: discovery.classifications,
     source_count_before: base.registry.length,
     source_count_after_planned: plan.summary.after_count,
     source_additions: additions,
     source_removals: 0,
-    growth_health: additions > 0 ? 'productive' : (Number(discovery.search_results || 0) > 0 ? 'zero_yield' : 'no_search_results'),
+    growth_health: additions > 0 ? 'productive' : (totalSearchResults > 0 ? 'zero_yield' : 'no_search_results'),
     source_pr_attempted: additions > 0,
     source_pr: publication,
     opportunity_pr_attempted: false,
