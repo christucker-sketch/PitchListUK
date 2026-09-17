@@ -10,9 +10,7 @@ export const CA_DISCOVERY_TEMPLATES = Object.freeze([
   Object.freeze({ id: 'artisan_market', query: unit => `"${unit.name}" artisan craft market vendor application 2026 2027` }),
   Object.freeze({ id: 'food_vendor', query: unit => `"${unit.name}" food vendor application festival market 2026 2027` }),
   Object.freeze({ id: 'holiday_market', query: unit => `"${unit.name}" Christmas holiday market vendor application 2026` }),
-  Object.freeze({ id: 'exhibitor_application', query: unit => `"${unit.name}" exhibitor application fair show festival 2026 2027` }),
-  Object.freeze({ id: 'public_market', query: unit => `${unit.name} public market food vendor application official` }),
-  Object.freeze({ id: 'municipal_market', query: unit => `${unit.name} municipal market vendor application official` })
+  Object.freeze({ id: 'exhibitor_application', query: unit => `"${unit.name}" exhibitor application fair show festival 2026 2027` })
 ]);
 
 export const CA_DISCOVERY_PLAN_SIZE = enabledCaAcquisitionUnits().length * CA_DISCOVERY_TEMPLATES.length;
