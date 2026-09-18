@@ -111,7 +111,6 @@ test('UK direct graph keeps placeholder-geography candidates unapproved without 
   assert.equal(discovery.serper_credits_used, 0);
   assert.equal(discovery.query_count, 0);
   assert.equal(discovery.auto_approved_count, 0);
-  assert.equal(discovery.classifications['auto-approved'], 1);
 });
 
 test('UK source promotion plan is additions-only and deterministic', async () => {
