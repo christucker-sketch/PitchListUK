@@ -66,6 +66,17 @@ function setup({ cutover = 'false', driftAfterPromotion = false } = {}) {
     env: {
       GITHUB_TOKEN: 'github-token',
       GITHUB_REPO: 'owner/repo',
+      GITHUB_PR_BROKER: {
+        fetch: async request => {
+          const body = await request.json();
+          assert.deepEqual(body, { action: 'read_ca_production_bases' });
+          const sourceCount = driftAfterPromotion && authority === 'authoritative' ? 1 : 0;
+          return Response.json({
+            ok: true,
+            bases: { main_sha: MAIN_SHA, production_count: 0, source_count: sourceCount }
+          });
+        }
+      },
       GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED: cutover,
       CA_CONTROLLER_STATE: {
         idFromName(name) { assert.equal(name, 'ca-controller'); return 'ca-id'; },
