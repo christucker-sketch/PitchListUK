@@ -22,7 +22,7 @@ function mockFetch({ head = 'sources/cloud-us-ma-test', sha = 'a'.repeat(40), ba
     mutateDataExisting ? { stable_id: 'opp_old', event_name: 'Changed', region_code: 'MA' } : { ...baseSnapshot.rows[0] },
     { stable_id: 'opp_new', event_name: 'New', region_code: 'MA' }
   ] };
-  const effectiveHead = dataMode ? 'data/cloud-us-ma-test' : head;
+  const effectiveHead = dataMode && head === 'sources/cloud-us-ma-test' ? 'data/cloud-us-ma-test' : head;
   const effectiveFile = dataMode ? 'functions/_data/us-opportunities.mjs' : 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
   return async (url, options = {}) => {
     const value = String(url);
