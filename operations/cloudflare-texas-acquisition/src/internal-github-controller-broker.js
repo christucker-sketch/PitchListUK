@@ -10,6 +10,8 @@ const ALLOWED_SOURCE_HEAD = /^sources\/cloud-(?:us|uk|ca)-/i;
 const ALLOWED_DATA_HEAD = /^data\/cloud-(?:us|uk|ca)-/i;
 const SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
 const US_SNAPSHOT_PATH = 'functions/_data/us-opportunities.mjs';
+const CA_SNAPSHOT_PATH = 'functions/_data/ca-opportunities.mjs';
+const CA_SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -26,7 +28,8 @@ export function isInternalGithubControllerRequest(request) {
 }
 function validatePayload(payload = {}) {
   const action = String(payload.action || 'inspect');
-  if (!['inspect', 'merge', 'inspect_merge_checks', 'inspect_data_merge_checks', 'inspect_replay_source_provenance'].includes(action)) throw new Error('controller_github_action_rejected');
+  if (!['inspect', 'merge', 'inspect_merge_checks', 'inspect_data_merge_checks', 'inspect_replay_source_provenance', 'read_ca_production_bases'].includes(action)) throw new Error('controller_github_action_rejected');
+  if (action === 'read_ca_production_bases') return { action };
   if (action === 'inspect_replay_source_provenance') {
     const stateCode = String(payload.state_code || '').trim().toUpperCase();
     const sourceIds = [...(Array.isArray(payload.source_ids) ? payload.source_ids : [])]
@@ -83,6 +86,26 @@ function parseUsSnapshotModule(source) {
   const match = String(source || '').match(/export const usOpportunitySnapshot\s*=\s*([\s\S]+);\s*$/);
   if (!match) throw new Error('controller_github_us_snapshot_module_invalid');
   try { return JSON.parse(match[1]); } catch { throw new Error('controller_github_us_snapshot_json_invalid'); }
+}
+function parseCaSnapshotModule(source) {
+  const match = String(source || '').match(/export const caOpportunitySnapshot\s*=\s*([\s\S]+);\s*$/);
+  if (!match) throw new Error('controller_github_ca_snapshot_module_invalid');
+  try { return JSON.parse(match[1]); } catch { throw new Error('controller_github_ca_snapshot_json_invalid'); }
+}
+async function readCaProductionBases(fetchImpl, repo, authHeaders) {
+  const baseUrl = `https://api.github.com/repos/${repo}`;
+  const ref = await githubJson(fetchImpl, `${baseUrl}/git/ref/heads/main`, { headers: authHeaders });
+  const mainSha = String(ref?.object?.sha || '').toLowerCase();
+  if (!/^[a-f0-9]{40}$/.test(mainSha)) throw new Error('controller_github_ca_main_sha_invalid');
+  const [snapshotSource, sources] = await Promise.all([
+    fetchFileTextAtRef(fetchImpl, repo, authHeaders, CA_SNAPSHOT_PATH, mainSha),
+    fetchJsonFileAtRef(fetchImpl, repo, authHeaders, CA_SOURCE_REGISTRY_PATH, mainSha)
+  ]);
+  const snapshot = parseCaSnapshotModule(snapshotSource);
+  const rows = Array.isArray(snapshot?.rows) ? snapshot.rows : null;
+  if (!rows || Number(snapshot?.total) !== rows.length) throw new Error('controller_github_ca_snapshot_invalid');
+  if (!Array.isArray(sources)) throw new Error('controller_github_ca_source_registry_invalid');
+  return { main_sha: mainSha, production_count: rows.length, source_count: sources.length };
 }
 async function sourceRegistryProof(fetchImpl, repo, authHeaders, inspection) {
   if (!String(inspection.head_ref || '').startsWith('sources/cloud-us-')) return null;
@@ -220,6 +243,7 @@ export async function handleInternalGithubControllerRequest(request, env, option
   const fetchImpl = options.fetchImpl || fetch;
   const authHeaders = headers(env);
   try {
+    if (payload.action === 'read_ca_production_bases') return Response.json({ ok: true, bases: await readCaProductionBases(fetchImpl, repo, authHeaders) });
     if (payload.action === 'inspect_replay_source_provenance') return Response.json({ ok: true, provenance: await inspectReplaySourceProvenance(fetchImpl, repo, authHeaders, payload.stateCode, payload.sourceIds) });
     if (payload.action === 'inspect_merge_checks') return Response.json({ ok: true, deployment: await inspectSourceMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
     if (payload.action === 'inspect_data_merge_checks') return Response.json({ ok: true, deployment: await inspectDataMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
