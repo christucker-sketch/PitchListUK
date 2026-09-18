@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import { buildInitialCaControllerState } from '../operations/cloudflare-global-acquisition/lib/ca-cloud-controller.mjs';
 import {
+  boundedGithubJson,
   buildCaControllerCutoverReadinessReport,
   globalCaCutoverFlagEnabled
 } from '../operations/cloudflare-global-acquisition/lib/ca-controller-cutover-readiness.mjs';
@@ -101,4 +102,21 @@ test('authoritative clean checkpoint is launch-ready only while cutover remains 
   assert.equal(report.launch_ready, true);
   assert.ok(report.promotion_blockers.includes('authority:authoritative'));
   assert.deepEqual(report.launch_blockers, []);
+});
+
+test('Canada readiness GitHub reads abort instead of hanging indefinitely', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (_url, options = {}) => new Promise((_resolve, reject) => {
+    const signal = options.signal;
+    if (signal?.aborted) return reject(signal.reason || new Error('aborted'));
+    signal?.addEventListener('abort', () => reject(signal.reason || new Error('aborted')), { once: true });
+  });
+  try {
+    await assert.rejects(
+      () => boundedGithubJson({ GITHUB_REPO: 'example/repo', GITHUB_TOKEN: 'fixture' }, '/git/ref/heads/main', 10),
+      /ca_readiness_github_timeout|aborted/
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
