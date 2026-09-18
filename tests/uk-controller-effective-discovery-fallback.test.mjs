@@ -77,13 +77,13 @@ test('UK controller falls back to Serper when a direct-graph source lacks custom
   }, {
     directDiscovery: async seeds => ({
       seed_count: seeds.length,
-      candidates: [{
+      candidates: seeds.length ? [{
         query: 'cloudflare-first-party-graph',
         rank: 1,
         title: 'Apply for a market stall',
         url: 'https://new-council.gov.uk/markets/apply',
         snippet: 'Apply to trade at our market in England.'
-      }]
+      }] : []
     }),
     search: async (_env, query) => {
       searchCalls += 1;
