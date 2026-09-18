@@ -37,6 +37,7 @@ function deterministicPrivateFirstParty(candidate, now) {
   if (!candidate || candidate.classification !== 'manual-review-required') return null;
   if (candidate.rejection_reason !== 'private_or_non_public_service_source_requires_review') return null;
   if (!candidate.canonical_route || !candidate.canonical_host || !candidate.organisation || !candidate.geographic_coverage || !candidate.opportunity_type) return null;
+  if (/trusted-source graph/i.test(String(candidate.geographic_coverage || ''))) return null;
   if (!candidate.trader_application_evidence || candidate.fetch_status !== 'fetched' || candidate.robots_result !== 'allowed') return null;
   return Object.freeze({
     ...candidate,
