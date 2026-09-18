@@ -156,7 +156,10 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
     }
 
     if (dispatch.handler === 'ca_controller_cutover_readiness') {
-      return step.do('read Canada controller cutover readiness', async () => ({
+      return step.do('read Canada controller cutover readiness', {
+        retries: { limit: 2, delay: '5 seconds', backoff: 'exponential' },
+        timeout: '45 seconds'
+      }, async () => ({
         country: 'CA',
         mode: dispatch.mode,
         mutation_attempted: false,
