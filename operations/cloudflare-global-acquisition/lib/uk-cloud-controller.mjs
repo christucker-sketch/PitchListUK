@@ -322,10 +322,52 @@ async function inspectActiveWorkflow(env, stub, snapshot, decision) {
   return { ok: true, executed: true, phase: 'workflow_completed', workflow_id: active.id, workflow_status: status, next_status: next.status, state_version: written.version, state_sha256: written.sha256, decision };
 }
 
+export function ukControllerPrFailureReason(pr) {
+  if (pr?.merged) return null;
+  const state = String(pr?.state || '').toUpperCase();
+  if (state && state !== 'OPEN') return `closed_unmerged:${state.toLowerCase()}`;
+  const runs = Array.isArray(pr?.check_runs) ? pr.check_runs : [];
+  if (!runs.length || !runs.every(run => run?.status === 'completed')) return null;
+  const failed = runs.filter(run => !['success', 'neutral', 'skipped'].includes(String(run?.conclusion || '')));
+  return failed.length ? `terminal_ci_failure:${failed.map(run => run.name || 'unknown').join(',')}` : null;
+}
+
+async function checkpointRejectedPr(stub, snapshot, decision, kind, reason) {
+  const next = structuredClone(snapshot.state);
+  if (kind === 'source') {
+    next.pending_source_pr = null;
+    next.status = 'ready_discovery';
+  } else {
+    next.pending_data_pr = null;
+    next.status = 'ready_acquisition';
+  }
+  appendResult(next, {
+    pr_number: Number(decision.pr_number),
+    mode: kind === 'source' ? 'source_pr' : 'data_pr',
+    recovered_at: new Date().toISOString(),
+    recovery_reason: String(reason)
+  });
+  next.updated_at = new Date().toISOString();
+  const written = await checkpoint(stub, snapshot, next);
+  return {
+    ok: true,
+    executed: true,
+    phase: `${kind}_pr_rejected`,
+    pr_number: Number(decision.pr_number),
+    recovery_reason: String(reason),
+    next_status: next.status,
+    state_version: written.version,
+    state_sha256: written.sha256,
+    decision
+  };
+}
+
 async function reservePrMerge(env, stub, snapshot, decision, kind) {
   const result = kind === 'source' ? snapshot.state.last_discovery?.result : snapshot.state.last_acquisition?.result;
   if (!result) throw new Error(`uk_controller_${kind}_result_missing`);
   const pr = await inspectUkControllerPr(env, decision.pr_number);
+  const failureReason = ukControllerPrFailureReason(pr);
+  if (failureReason) return checkpointRejectedPr(stub, snapshot, decision, kind, failureReason);
   const validated = kind === 'source' ? validateUkSourcePr(result, pr) : validateUkDataPr(result, pr);
   if (!validated.ready) {
     return { ok: true, executed: false, phase: `${kind}_pr_checks_pending`, pr_number: decision.pr_number, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
