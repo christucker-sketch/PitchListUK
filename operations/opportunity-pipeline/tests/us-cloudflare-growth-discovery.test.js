@@ -52,7 +52,9 @@ test('growth query plan prioritises the requested high-density states and stays 
   const plan = growthQueryPlan(state, { years: [2026] });
   assert.equal(plan.length, 120);
   assert.match(plan[0].query, /California/);
-  assert.match(plan[0].query, /site:\.gov/);
+  assert.doesNotMatch(plan[0].query, /site:\.gov/);
+  assert.ok(plan.some(item => item.template_id === 'government-events' && /site:\.gov/.test(item.query)));
+  assert.equal(growthQueryBatch(state, { years: [2026], offset: 0, limit: 8 }).length, 8);
   assert.deepEqual(growthQueryBatch(state, { years: [2026], offset: 3, limit: 2 }).map(item => item.id), plan.slice(3, 5).map(item => item.id));
   assert.equal(growthQueryBatch(state, { years: [2026], offset: plan.length, limit: 2 }).length, 0);
 });
