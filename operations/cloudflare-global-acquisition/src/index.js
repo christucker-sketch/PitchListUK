@@ -54,6 +54,7 @@ import {
   runUkCloudControllerTick
 } from '../lib/uk-cloud-controller.mjs';
 import { handleUkControllerStateMaintenance } from '../lib/uk-controller-state-maintenance.mjs';
+import { readUkControllerReadonlyReceipt } from '../lib/uk-controller-readonly-receipt.mjs';
 import {
   globalCaControllerCutoverEnabled,
   runCaCloudControllerTick
@@ -141,6 +142,16 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         mode: dispatch.mode,
         mutation_attempted: false,
         ...(await readControllerCutoverReadinessReport(this.env))
+      }));
+    }
+
+    if (dispatch.handler === 'uk_controller_cutover_readiness') {
+      return step.do('read UK controller cutover readiness', async () => ({
+        country: 'UK',
+        mode: dispatch.mode,
+        mutation_attempted: false,
+        cutover_enabled: globalUkControllerCutoverEnabled(this.env),
+        ...(await readUkControllerReadonlyReceipt(this.env))
       }));
     }
 
