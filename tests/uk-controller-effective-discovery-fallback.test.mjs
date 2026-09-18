@@ -65,7 +65,7 @@ test('UK controller uses Serper batch when direct graph returns links but no aut
   assert.match(discovery.discovery_network, /cloudflare_direct_fetch\+serper_fallback/);
 });
 
-test('UK controller keeps zero-credit direct path when graph finds an auto-approved source', async () => {
+test('UK controller falls back to Serper when a direct-graph source lacks customer-facing geography', async () => {
   let searchCalls = 0;
   const discovery = await runUkDiscoveryWithEffectiveFallback({}, {
     seed_routes: ['https://known-council.gov.uk/markets'],
@@ -85,13 +85,23 @@ test('UK controller keeps zero-credit direct path when graph finds an auto-appro
         snippet: 'Apply to trade at our market in England.'
       }]
     }),
-    search: async () => { searchCalls += 1; return []; },
+    search: async (_env, query) => {
+      searchCalls += 1;
+      return [{
+        query,
+        rank: 1,
+        title: 'Example Borough Council market - apply to trade',
+        url: 'https://example-borough.gov.uk/markets/apply-to-trade',
+        snippet: 'Apply to trade at our market in England.'
+      }];
+    },
     fetchCandidate
   });
 
-  assert.equal(searchCalls, 0);
-  assert.equal(discovery.serper_fallback_used, false);
-  assert.equal(discovery.serper_credits_used, 0);
+  assert.equal(searchCalls, 4);
+  assert.equal(discovery.serper_fallback_used, true);
+  assert.equal(discovery.serper_credits_used, 4);
   assert.equal(discovery.auto_approved_count, 1);
-  assert.equal(discovery.approved_candidates[0].canonical_host, 'new-council.gov.uk');
+  assert.equal(discovery.approved_candidates[0].canonical_host, 'example-borough.gov.uk');
+  assert.match(discovery.discovery_network, /cloudflare_direct_fetch\+serper_fallback/);
 });
