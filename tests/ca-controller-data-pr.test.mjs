@@ -65,10 +65,26 @@ async function withGitHubFetchMock(handler, fn) {
   }
 }
 
-const controllerEnv = Object.freeze({
-  GITHUB_TOKEN: 'test-token',
-  GITHUB_REPO: 'christucker-sketch/PitchListUK'
-});
+function controllerEnvForDeployment(mergeSha, checkRuns) {
+  return {
+    GITHUB_REPO: 'christucker-sketch/PitchListUK',
+    GITHUB_PR_BROKER: {
+      fetch: async request => {
+        const payload = await request.json();
+        assert.deepEqual(payload, { action: 'inspect_data_merge_checks', pr_number: 1900 });
+        return Response.json({
+          ok: true,
+          deployment: {
+            pr_number: 1900,
+            merge_sha: mergeSha,
+            check_runs: checkRuns,
+            changed_files: ['functions/_data/ca-opportunities.mjs']
+          }
+        });
+      }
+    }
+  };
+}
 
 test('Canada data PR gate accepts exact additions-only evidence after CI succeeds', () => {
   const validated = validateCaDataPr(result(), pr());
@@ -125,26 +141,24 @@ test('Canada data PR gate rejects substituted IDs, missing receipts and branch d
 
 test('Canada frontend deployment accepts exact verified deployment on the data merge SHA', async () => {
   const mergeSha = 'a'.repeat(40);
-  await withGitHubFetchMock(url => {
-    assert.equal(url.pathname, `/repos/christucker-sketch/PitchListUK/commits/${mergeSha}/check-runs`);
-    return {
-      check_runs: [
-        { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
-        { id: 20, name: 'deploy_frontend_production', status: 'completed', conclusion: 'success' }
-      ]
-    };
-  }, async () => {
-    const inspected = await inspectCaFrontendDeployment(controllerEnv, mergeSha);
-    assert.equal(inspected.ready, true);
-    assert.equal(inspected.recovery, false);
-    assert.equal(inspected.deployment_sha, mergeSha);
-  });
+  const env = controllerEnvForDeployment(mergeSha, [
+    { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+    { id: 20, name: 'deploy_frontend_production', status: 'completed', conclusion: 'success' }
+  ]);
+  const inspected = await inspectCaFrontendDeployment(env, 1900, mergeSha);
+  assert.equal(inspected.ready, true);
+  assert.equal(inspected.recovery, false);
+  assert.equal(inspected.deployment_sha, mergeSha);
 });
 
 test('Canada frontend deployment can recover through a verified descendant only when the snapshot blob is unchanged', async () => {
   const mergeSha = 'a'.repeat(40);
   const mainSha = 'b'.repeat(40);
   const snapshotSha = 'c'.repeat(40);
+  const env = controllerEnvForDeployment(mergeSha, [
+    { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+    { id: 20, name: 'deploy_frontend_production', status: 'completed', conclusion: 'skipped' }
+  ]);
   await withGitHubFetchMock(url => {
     if (url.pathname === `/repos/christucker-sketch/PitchListUK/commits/${mergeSha}/check-runs`) {
       return {
@@ -175,7 +189,7 @@ test('Canada frontend deployment can recover through a verified descendant only 
     }
     throw new Error(`Unexpected GitHub path: ${url.pathname}${url.search}`);
   }, async () => {
-    const inspected = await inspectCaFrontendDeployment(controllerEnv, mergeSha);
+    const inspected = await inspectCaFrontendDeployment(env, 1900, mergeSha);
     assert.equal(inspected.ready, true);
     assert.equal(inspected.recovery, true);
     assert.equal(inspected.deployment_sha, mainSha);
@@ -187,6 +201,10 @@ test('Canada frontend deployment can recover through a verified descendant only 
 test('Canada frontend recovery fails closed if the Canadian snapshot changed after the pending data merge', async () => {
   const mergeSha = 'a'.repeat(40);
   const mainSha = 'b'.repeat(40);
+  const env = controllerEnvForDeployment(mergeSha, [
+    { id: 10, name: 'verify', status: 'completed', conclusion: 'success' },
+    { id: 20, name: 'deploy_frontend_production', status: 'completed', conclusion: 'skipped' }
+  ]);
   await withGitHubFetchMock(url => {
     if (url.pathname === `/repos/christucker-sketch/PitchListUK/commits/${mergeSha}/check-runs`) {
       return {
@@ -205,6 +223,6 @@ test('Canada frontend recovery fails closed if the Canadian snapshot changed aft
     }
     throw new Error(`Unexpected GitHub path: ${url.pathname}${url.search}`);
   }, async () => {
-    await assert.rejects(() => inspectCaFrontendDeployment(controllerEnv, mergeSha), /snapshot_changed/);
+    await assert.rejects(() => inspectCaFrontendDeployment(env, 1900, mergeSha), /snapshot_changed/);
   });
 });
