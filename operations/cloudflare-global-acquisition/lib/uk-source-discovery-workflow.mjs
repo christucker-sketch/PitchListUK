@@ -153,7 +153,7 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     timeout: '15 minutes'
   }, async () => runUkOpportunityFirstDiscovery(env, {
     ...effectivePayload,
-    query_limit: controllerRun ? 4 : Math.min(4, effectivePayload.query_limit),
+    query_limit: controllerRun ? 8 : Math.min(8, effectivePayload.query_limit),
     candidate_limit: controllerRun ? 48 : Math.min(32, effectivePayload.candidate_limit)
   }, {
     search: (query, options) => searchViaSerperBroker(env, query, options)
