@@ -1,8 +1,10 @@
 import sourceOnboardingLib from '../../opportunity-pipeline/lib/source-onboarding.js';
+import lanesLib from '../../opportunity-pipeline/acquisition/lanes.js';
 import safetyLib from '../../opportunity-pipeline/lib/opportunity-safety.js';
 import { searchViaSerperBroker } from './service-serper-search.mjs';
 
 const { STATUS, PLATFORM_HOST, NON_SOURCE_HOST, classifySourceCandidate } = sourceOnboardingLib;
+const { LANES } = lanesLib;
 const { canonicalUrl } = safetyLib;
 
 const MAX_BODY_BYTES = 240000;
@@ -14,7 +16,12 @@ const MAX_CANDIDATES = 48;
 
 const REGIONS = Object.freeze([
   'UK', 'England', 'Scotland', 'Wales', 'Northern Ireland', 'London', 'South East England', 'South West England',
-  'East of England', 'West Midlands', 'East Midlands', 'North West England', 'North East England', 'Yorkshire'
+  'East of England', 'West Midlands', 'East Midlands', 'North West England', 'North East England', 'Yorkshire',
+  'Manchester', 'Liverpool', 'Leeds', 'Sheffield', 'Birmingham', 'Bristol', 'Newcastle', 'Nottingham',
+  'Cardiff', 'Glasgow', 'Edinburgh', 'Belfast', 'Kent', 'Surrey', 'Sussex', 'Devon', 'Cornwall',
+  'Norfolk', 'Suffolk', 'Essex', 'Hampshire', 'Cheshire', 'Lancashire', 'Cumbria', 'Dorset', 'Somerset',
+  'Oxfordshire', 'Cambridgeshire', 'Lincolnshire', 'Northumberland', 'County Durham', 'Tyne and Wear',
+  'South Yorkshire', 'Buckinghamshire'
 ]);
 
 export const UK_OPPORTUNITY_QUERY_TEMPLATES = Object.freeze([
@@ -28,15 +35,51 @@ export const UK_OPPORTUNITY_QUERY_TEMPLATES = Object.freeze([
   region => `"${region}" "Christmas market" stallholder application 2026 -site:facebook.com -site:instagram.com -site:eventbrite.com`
 ]);
 
-function buildPlan() {
+function inferPlanRegion(lane, query) {
+  const explicit = String(lane?.area || '').trim();
+  if (explicit) return explicit;
+  const haystack = `${lane?.title || ''} ${query || ''}`.toLowerCase();
+  const match = [...REGIONS]
+    .sort((a, b) => b.length - a.length)
+    .find(region => haystack.includes(region.toLowerCase()));
+  return match || 'UK';
+}
+
+function buildHalLanePlan() {
+  return [...LANES]
+    .filter(lane => !lane?.country || lane.country === 'United Kingdom')
+    .sort((a, b) => Number(b?.priority || 0) - Number(a?.priority || 0))
+    .flatMap(lane => (Array.isArray(lane?.queries) ? lane.queries : []).filter(Boolean).map((query, queryIndex) => Object.freeze({
+      id: `uk-hal-${lane.id}-${queryIndex + 1}`,
+      lane_id: lane.id,
+      lane_title: lane.title,
+      lane_priority: Number(lane.priority || 0),
+      region: inferPlanRegion(lane, query),
+      query
+    })));
+}
+
+function buildGenericPlan() {
   return REGIONS.flatMap(region => UK_OPPORTUNITY_QUERY_TEMPLATES.map((build, templateIndex) => Object.freeze({
     id: `uk-opportunity-${String(region).toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${templateIndex + 1}`,
+    lane_id: 'cloud-generic-opportunity',
+    lane_title: 'Cloud generic opportunity discovery',
+    lane_priority: 0,
     region,
     query: build(region)
   })));
 }
 
-export const UK_OPPORTUNITY_PLAN_SIZE = REGIONS.length * UK_OPPORTUNITY_QUERY_TEMPLATES.length;
+export function buildUkOpportunityPlan() {
+  const byQuery = new Map();
+  for (const item of [...buildHalLanePlan(), ...buildGenericPlan()]) {
+    const key = String(item.query || '').trim().toLowerCase();
+    if (key && !byQuery.has(key)) byQuery.set(key, item);
+  }
+  return Object.freeze([...byQuery.values()]);
+}
+
+export const UK_OPPORTUNITY_PLAN_SIZE = buildUkOpportunityPlan().length;
 
 function publicHttpsUrl(value) {
   const url = new URL(String(value || ''));
@@ -114,7 +157,7 @@ function promoteCandidate(candidate, now) {
 }
 
 export async function runUkOpportunityFirstDiscovery(env, payload = {}, options = {}) {
-  const plan = buildPlan();
+  const plan = buildUkOpportunityPlan();
   const queryOffset = Math.max(0, Number(payload.query_offset || 0)) % plan.length;
   const queryLimit = Math.min(MAX_QUERY_LIMIT, Math.max(1, Number(payload.query_limit || DEFAULT_QUERY_LIMIT)));
   const resultsPerQuery = Math.min(8, Math.max(1, Number(payload.results_per_query || DEFAULT_RESULTS_PER_QUERY)));

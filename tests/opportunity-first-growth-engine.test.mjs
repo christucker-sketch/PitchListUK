@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { evaluateCanadaSourceEvidence } from '../operations/cloudflare-global-acquisition/lib/ca-source-evidence.mjs';
-import { hasUkActionableOpportunityEvidence, runUkOpportunityFirstDiscovery } from '../operations/cloudflare-global-acquisition/lib/uk-opportunity-first-discovery.mjs';
+import { buildUkOpportunityPlan, hasUkActionableOpportunityEvidence, runUkOpportunityFirstDiscovery } from '../operations/cloudflare-global-acquisition/lib/uk-opportunity-first-discovery.mjs';
 import { promoteUkOpportunityFirstCandidates } from '../operations/cloudflare-global-acquisition/lib/uk-source-discovery-workflow.mjs';
 import { growthQueryBatch, growthQueryPlan } from '../operations/cloudflare-texas-acquisition/src/us-growth-plan.js';
 
@@ -127,4 +127,19 @@ test('US growth plan cannot starve a state merely because it has no seed sources
   assert.ok(plan.some(item => item.query.includes('vendor applications')));
   const batch = growthQueryBatch(state, { years: [2027], offset: 0, limit: 8 });
   assert.equal(batch.length, 8);
+});
+
+test('UK cloud opportunity plan restores the productive Hal lane breadth', () => {
+  const plan = buildUkOpportunityPlan();
+  const queries = plan.map(item => item.query.toLowerCase());
+  assert.ok(plan.length > 200);
+  assert.ok(plan.some(item => item.lane_id === 'london-food-trucks'));
+  assert.ok(queries.some(query => query.includes('county show')));
+  assert.ok(queries.some(query => query.includes('agricultural show')));
+  assert.ok(queries.some(query => query.includes('bonfire night')));
+  assert.ok(queries.some(query => query.includes('marathon food vendor')));
+  assert.ok(queries.some(query => query.includes('university') && query.includes('food')));
+  assert.ok(queries.some(query => query.includes('brewery') && query.includes('food truck')));
+  assert.ok(queries.some(query => query.includes('shopping centre') && query.includes('food')));
+  assert.ok(queries.some(query => query.includes('private land') && query.includes('food truck')));
 });
