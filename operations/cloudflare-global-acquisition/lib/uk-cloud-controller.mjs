@@ -419,7 +419,7 @@ async function verifyDeployment(env, stub, snapshot, decision, kind) {
   const pending = snapshot.state.pending_deployment;
   if (!pending?.merge_sha || pending.merge_sha !== decision.merge_sha) throw new Error('uk_controller_pending_deployment_mismatch');
   const required = kind === 'source' ? SOURCE_DEPLOY_CHECKS : FRONTEND_DEPLOY_CHECKS;
-  const inspection = await inspectUkMergeChecks(env, pending.merge_sha, required);
+  const inspection = await inspectUkMergeChecks(env, pending.pr_number, pending.merge_sha, required, kind === 'source' ? 'source' : 'data');
   if (!inspection.ready) {
     return { ok: true, executed: false, phase: `${kind}_deployment_pending`, merge_sha: pending.merge_sha, waiting_for: inspection.pending, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
   }
