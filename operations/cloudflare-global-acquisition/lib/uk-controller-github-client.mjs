@@ -48,7 +48,14 @@ export async function inspectUkControllerPr(env, prNumber) {
 }
 
 function requireOpenCandidate(pr) {
-  if (pr?.state !== 'OPEN' || pr?.merged || pr?.draft) throw new Error('uk_controller_pr_not_open_candidate');
+  if (pr?.draft) throw new Error('uk_controller_pr_not_open_candidate');
+  const state = String(pr?.state || '').toUpperCase();
+  if (pr?.merged === true) {
+    if (state !== 'CLOSED') throw new Error('uk_controller_pr_merged_state_invalid');
+    if (!/^[a-f0-9]{40}$/.test(String(pr?.merge_commit_sha || ''))) throw new Error('uk_controller_existing_merge_sha_invalid');
+  } else if (state !== 'OPEN') {
+    throw new Error('uk_controller_pr_not_open_candidate');
+  }
   if (pr?.base_ref !== 'main') throw new Error('uk_controller_pr_base_not_main');
   if (!/^[a-f0-9]{40}$/.test(String(pr?.base_sha || '')) || !/^[a-f0-9]{40}$/.test(String(pr?.head_sha || ''))) {
     throw new Error('uk_controller_pr_sha_invalid');
