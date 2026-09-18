@@ -3,8 +3,11 @@ import test from 'node:test';
 
 import {
   buildInitialCaControllerState,
+  caActiveWorkflowIsStale,
   caControllerDecision,
-  globalCaControllerCutoverEnabled
+  globalCaControllerCutoverEnabled,
+  recoverCaActiveWorkflowState,
+  CA_ACTIVE_WORKFLOW_STALE_MS
 } from '../operations/cloudflare-global-acquisition/lib/ca-cloud-controller.mjs';
 import { validateControllerStateText } from '../operations/cloudflare-global-acquisition/lib/controller-state-codec.mjs';
 
@@ -56,6 +59,49 @@ test('Canada controller exposes reserved discovery and active workflow decisions
     workflow_id: 'cactl-v2-discover-q0-l4',
     mode: 'discovery'
   });
+});
+
+test('Canada stale workflow recovery preserves counts and retries the same checkpoint', () => {
+  const state = buildInitialCaControllerState({ productionCount: 3, sourceCount: 5, mainSha: 'a'.repeat(40), now: '2026-09-14T12:00:00.000Z' });
+  state.status = 'running_discovery';
+  state.query_offset = 40;
+  state.cycle = 2;
+  state.totals.discovery_runs = 20;
+  state.totals.acquisition_runs = 19;
+  const active = {
+    id: 'cactl-v77-discover-q40-l4',
+    mode: 'discovery',
+    query_offset: 40,
+    query_limit: 4,
+    started_at: '2026-09-14T12:00:00.000Z'
+  };
+  state.active_instance = active;
+  assert.equal(caActiveWorkflowIsStale(active, { now: Date.parse('2026-09-14T12:29:59.999Z') }), false);
+  assert.equal(caActiveWorkflowIsStale(active, { now: Date.parse('2026-09-14T12:30:00.000Z') }), true);
+  assert.equal(CA_ACTIVE_WORKFLOW_STALE_MS, 30 * 60 * 1000);
+
+  const recovered = recoverCaActiveWorkflowState(state, active, { reason: 'stale_running', now: '2026-09-18T06:00:00.000Z' });
+  assert.equal(recovered.status, 'ready_discovery');
+  assert.equal(recovered.active_instance, null);
+  assert.equal(recovered.query_offset, 40);
+  assert.equal(recovered.cycle, 2);
+  assert.equal(recovered.production_count, 3);
+  assert.equal(recovered.source_count, 5);
+  assert.deepEqual(recovered.totals, state.totals);
+  assert.equal(recovered.results.at(-1).workflow_id, active.id);
+  assert.equal(recovered.results.at(-1).recovery_reason, 'stale_running');
+});
+
+test('Canada stale acquisition recovery returns to acquisition without inventing additions', () => {
+  const state = buildInitialCaControllerState({ productionCount: 3, sourceCount: 5 });
+  state.status = 'running_acquisition';
+  state.totals.opportunity_additions = 3;
+  const active = { id: 'cactl-v80-acquire-c2', mode: 'acquisition', started_at: '2026-09-18T04:00:00.000Z' };
+  state.active_instance = active;
+  const recovered = recoverCaActiveWorkflowState(state, active, { reason: 'terminal_errored:test', now: '2026-09-18T06:00:00.000Z' });
+  assert.equal(recovered.status, 'ready_acquisition');
+  assert.equal(recovered.active_instance, null);
+  assert.equal(recovered.totals.opportunity_additions, 3);
 });
 
 test('Canada controller drives source PR review through reserved merge and deploy verification', () => {
