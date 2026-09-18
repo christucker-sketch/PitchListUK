@@ -159,7 +159,9 @@ function candidateInput(outcome, now) {
 
 export function autoApprovePublicServiceCandidates(candidates = [], options = {}) {
   const now = options.now || new Date().toISOString();
-  return candidates.map(item => item.classification === STATUS.AUTO && item.approval_status === 'pending'
+  return candidates.map(item => item.classification === STATUS.AUTO
+    && item.approval_status === 'pending'
+    && !/trusted-source graph/i.test(String(item.geographic_coverage || ''))
     ? Object.freeze({ ...item, approval_status: 'approved', reviewer_decision: 'approved_unambiguous_public_service_first_party', reviewer: 'FindPitches Cloudflare deterministic source automation', decision_timestamp: now })
     : item);
 }
