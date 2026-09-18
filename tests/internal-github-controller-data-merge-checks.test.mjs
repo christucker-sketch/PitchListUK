@@ -31,6 +31,9 @@ function mockFetch({ head = 'data/cloud-us-ma-test', merged = true } = {}) {
       { id: 101, name: 'verify', status: 'completed', conclusion: 'success' },
       { id: 102, name: 'deploy_frontend_production', status: 'completed', conclusion: 'success' }
     ] });
+    if (/\/pulls\/1700\/files/.test(value)) return Response.json([
+      { filename: 'functions/_data/us-opportunities.mjs' }
+    ]);
     return Response.json({ message: 'not found' }, { status: 404 });
   };
 }

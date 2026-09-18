@@ -5,7 +5,9 @@ import { proveUsOpportunitySnapshotAdditionsOnly } from '../../cloudflare-global
 const INTERNAL_HOST = 'findpitches-github-controller.internal';
 const INTERNAL_PATH = '/controller-pr';
 const INTERNAL_MARKER = 'findpitches-controller-service-v1';
-const ALLOWED_HEAD = /^(?:sources\/cloud-us-|data\/cloud-us-)[a-z0-9-]+$/i;
+const ALLOWED_HEAD = /^(?:sources\/cloud-(?:us|uk|ca)-|data\/cloud-(?:us|uk|ca)-)[a-z0-9-]+$/i;
+const ALLOWED_SOURCE_HEAD = /^sources\/cloud-(?:us|uk|ca)-/i;
+const ALLOWED_DATA_HEAD = /^data\/cloud-(?:us|uk|ca)-/i;
 const SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
 const US_SNAPSHOT_PATH = 'functions/_data/us-opportunities.mjs';
 
@@ -124,22 +126,31 @@ async function inspectPr(fetchImpl, repo, authHeaders, prNumber) {
   inspection.data_snapshot_proof = await dataSnapshotProof(fetchImpl, repo, authHeaders, inspection);
   return inspection;
 }
-async function inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, expectedHeadPrefix, errorPrefix) {
+async function inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, allowedHead, errorPrefix) {
   const baseUrl = `https://api.github.com/repos/${repo}`;
   const pr = await githubJson(fetchImpl, `${baseUrl}/pulls/${prNumber}`, { headers: authHeaders });
   const head = String(pr?.head?.ref || '');
-  if (!head.startsWith(expectedHeadPrefix)) throw new Error(`controller_github_${errorPrefix}_merge_head_rejected`);
+  if (!allowedHead.test(head)) throw new Error(`controller_github_${errorPrefix}_merge_head_rejected`);
   if (String(pr?.base?.ref || '') !== 'main' || !pr?.merged || !pr?.merged_at) throw new Error(`controller_github_${errorPrefix}_pr_not_merged`);
   const mergeSha = String(pr?.merge_commit_sha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error(`controller_github_${errorPrefix}_merge_sha_invalid`);
-  const checkRuns = await githubJson(fetchImpl, `${baseUrl}/commits/${mergeSha}/check-runs?per_page=100`, { headers: authHeaders });
-  return { pr_number: Number(pr.number), merge_sha: mergeSha, merged_at: pr.merged_at, check_runs: compactChecks(checkRuns) };
+  const [checkRuns, files] = await Promise.all([
+    githubJson(fetchImpl, `${baseUrl}/commits/${mergeSha}/check-runs?per_page=100`, { headers: authHeaders }),
+    githubJson(fetchImpl, `${baseUrl}/pulls/${prNumber}/files?per_page=100`, { headers: authHeaders })
+  ]);
+  return {
+    pr_number: Number(pr.number),
+    merge_sha: mergeSha,
+    merged_at: pr.merged_at,
+    check_runs: compactChecks(checkRuns),
+    changed_files: Object.freeze((Array.isArray(files) ? files : []).map(file => String(file?.filename || '')))
+  };
 }
 async function inspectSourceMergeChecks(fetchImpl, repo, authHeaders, prNumber) {
-  return inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, 'sources/cloud-us-', 'source');
+  return inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, ALLOWED_SOURCE_HEAD, 'source');
 }
 async function inspectDataMergeChecks(fetchImpl, repo, authHeaders, prNumber) {
-  return inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, 'data/cloud-us-', 'data');
+  return inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, ALLOWED_DATA_HEAD, 'data');
 }
 
 function successfulNamedCheck(checkRuns, name) {

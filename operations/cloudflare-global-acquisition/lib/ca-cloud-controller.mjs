@@ -1,6 +1,6 @@
-import { githubJson } from './github-publication.mjs';
 import { parseAcquisitionSnapshotModule } from '../../../platform/acquisition/global-engine.mjs';
 import { CA_DISCOVERY_PLAN_SIZE } from './ca-source-discovery-plan.mjs';
+import { boundedGithubJson } from './ca-controller-cutover-readiness.mjs';
 import { assertGlobalControllerDispatchAllowed, resolveGlobalAcquisitionDispatch } from './dispatch.mjs';
 import {
   inspectCaControllerPr,
@@ -63,9 +63,9 @@ async function checkpoint(stub, snapshot, nextState) {
 
 async function readCanadaBases(env) {
   const [ref, snapshotFile, sourceFile] = await Promise.all([
-    githubJson(env, '/git/ref/heads/main'),
-    githubJson(env, `/contents/${CA_SNAPSHOT_PATH}?ref=main`),
-    githubJson(env, `/contents/${CA_SOURCE_REGISTRY_PATH}?ref=main`)
+    boundedGithubJson(env, '/git/ref/heads/main'),
+    boundedGithubJson(env, `/contents/${CA_SNAPSHOT_PATH}?ref=main`),
+    boundedGithubJson(env, `/contents/${CA_SOURCE_REGISTRY_PATH}?ref=main`)
   ]);
   const snapshot = parseAcquisitionSnapshotModule(decodeBase64Utf8(snapshotFile?.content), 'CA');
   const registry = JSON.parse(decodeBase64Utf8(sourceFile?.content));
@@ -411,7 +411,7 @@ async function mergeReservedPr(env, stub, snapshot, decision, kind) {
     throw new Error(`ca_controller_reserved_${kind}_pr_changed`);
   }
   const merged = kind === 'source'
-    ? await mergeCaControllerPr(env, { pr_number: intent.pr_number, head_sha: intent.head_sha })
+    ? await mergeCaControllerPr(env, { pr_number: intent.pr_number, head_sha: intent.head_sha, base_sha: intent.base_sha })
     : await mergeValidatedCaDataPr(env, { pr_number: intent.pr_number, head_sha: intent.head_sha });
   const next = structuredClone(snapshot.state);
   next.cloud_controller_intent = null;
@@ -438,7 +438,7 @@ async function mergeReservedPr(env, stub, snapshot, decision, kind) {
 async function verifySourceDeploy(env, stub, snapshot, decision) {
   const pending = snapshot.state.pending_deployment;
   if (!pending || pending.kind !== 'source' || pending.merge_sha !== decision.merge_sha) throw new Error('ca_controller_source_deployment_mismatch');
-  const checks = await inspectCaMergeChecks(env, pending.merge_sha, SOURCE_DEPLOY_CHECKS);
+  const checks = await inspectCaMergeChecks(env, pending.pr_number, pending.merge_sha, SOURCE_DEPLOY_CHECKS);
   if (!checks.ready) {
     return { ok: true, executed: false, phase: 'source_deploy_checks_pending', pending: checks.pending, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
   }
@@ -461,7 +461,7 @@ async function verifySourceDeploy(env, stub, snapshot, decision) {
 async function verifyFrontendDeploy(env, stub, snapshot, decision) {
   const pending = snapshot.state.pending_deployment;
   if (!pending || pending.kind !== 'data' || pending.merge_sha !== decision.merge_sha) throw new Error('ca_controller_frontend_deployment_mismatch');
-  const checks = await inspectCaFrontendDeployment(env, pending.merge_sha);
+  const checks = await inspectCaFrontendDeployment(env, pending.pr_number, pending.merge_sha);
   if (!checks.ready) {
     return { ok: true, executed: false, phase: 'frontend_deploy_checks_pending', pending: checks.pending, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
   }

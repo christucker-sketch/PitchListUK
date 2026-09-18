@@ -1,10 +1,10 @@
 import {
   inspectCaControllerPr,
-  inspectCaMergeChecks,
   latestCaChecksSuccessful,
   mergeCaControllerPr
 } from './ca-controller-github-client.mjs';
-import { githubJson } from './github-publication.mjs';
+import { inspectDataMergeChecks as inspectBrokerDataMergeChecks } from './controller-github-client.mjs';
+import { boundedGithubJson } from './ca-controller-cutover-readiness.mjs';
 
 const CA_SNAPSHOT_PATH = 'functions/_data/ca-opportunities.mjs';
 const FRONTEND_DEPLOY_CHECKS = Object.freeze(['verify', 'deploy_frontend_production']);
@@ -16,12 +16,12 @@ function latestNamedCheck(checkRuns, name) {
 }
 
 async function readCheckRuns(env, sha) {
-  const body = await githubJson(env, `/commits/${sha}/check-runs?per_page=100`);
+  const body = await boundedGithubJson(env, `/commits/${sha}/check-runs?per_page=100`);
   return Array.isArray(body?.check_runs) ? body.check_runs : [];
 }
 
 async function canadaSnapshotBlobSha(env, ref) {
-  const file = await githubJson(env, `/contents/${CA_SNAPSHOT_PATH}?ref=${encodeURIComponent(ref)}`);
+  const file = await boundedGithubJson(env, `/contents/${CA_SNAPSHOT_PATH}?ref=${encodeURIComponent(ref)}`);
   const sha = String(file?.sha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('ca_frontend_snapshot_blob_sha_invalid');
   return sha;
@@ -84,11 +84,14 @@ export async function mergeValidatedCaDataPr(env, validated) {
   return mergeCaControllerPr(env, validated);
 }
 
-export async function inspectCaFrontendDeployment(env, mergeSha) {
+export async function inspectCaFrontendDeployment(env, prNumber, mergeSha) {
   const sha = String(mergeSha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('ca_frontend_merge_sha_invalid');
 
-  const exactRuns = await readCheckRuns(env, sha);
+  const exactDeployment = await inspectBrokerDataMergeChecks(env, prNumber);
+  const brokerMergeSha = String(exactDeployment?.merge_sha || '').toLowerCase();
+  if (brokerMergeSha !== sha) throw new Error('ca_frontend_merge_sha_mismatch');
+  const exactRuns = Array.isArray(exactDeployment?.check_runs) ? exactDeployment.check_runs : [];
   const exactVerify = latestNamedCheck(exactRuns, 'verify');
   const exactDeploy = latestNamedCheck(exactRuns, 'deploy_frontend_production');
 
@@ -108,14 +111,14 @@ export async function inspectCaFrontendDeployment(env, mergeSha) {
     return Object.freeze({ ready: false, pending: Object.freeze(['deploy_frontend_production']), deployment_sha: sha, recovery: false });
   }
 
-  const ref = await githubJson(env, '/git/ref/heads/main');
+  const ref = await boundedGithubJson(env, '/git/ref/heads/main');
   const mainSha = String(ref?.object?.sha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(mainSha)) throw new Error('ca_frontend_recovery_main_sha_invalid');
   if (mainSha === sha) {
     return Object.freeze({ ready: false, pending: Object.freeze(['deploy_frontend_production']), deployment_sha: sha, recovery: false });
   }
 
-  const compare = await githubJson(env, `/compare/${sha}...${mainSha}`);
+  const compare = await boundedGithubJson(env, `/compare/${sha}...${mainSha}`);
   if (String(compare?.status || '') !== 'ahead' || String(compare?.merge_base_commit?.sha || '').toLowerCase() !== sha) {
     throw new Error('ca_frontend_recovery_main_not_descendant');
   }
@@ -126,9 +129,22 @@ export async function inspectCaFrontendDeployment(env, mergeSha) {
   ]);
   if (mergedSnapshotSha !== currentSnapshotSha) throw new Error('ca_frontend_recovery_snapshot_changed');
 
-  const recovered = await inspectCaMergeChecks(env, mainSha, FRONTEND_DEPLOY_CHECKS);
+  const recoveredRuns = await readCheckRuns(env, mainSha);
+  const recoveredVerify = latestNamedCheck(recoveredRuns, 'verify');
+  const recoveredDeploy = latestNamedCheck(recoveredRuns, 'deploy_frontend_production');
+  if (recoveredVerify?.status === 'completed' && recoveredVerify?.conclusion !== 'success') {
+    throw new Error(`ca_controller_required_check_failed:verify:${recoveredVerify.conclusion || 'unknown'}`);
+  }
+  if (recoveredDeploy?.status === 'completed' && recoveredDeploy?.conclusion !== 'success') {
+    throw new Error(`ca_controller_required_check_failed:deploy_frontend_production:${recoveredDeploy.conclusion || 'unknown'}`);
+  }
+  const pending = [];
+  if (recoveredVerify?.status !== 'completed' || recoveredVerify?.conclusion !== 'success') pending.push('verify');
+  if (recoveredDeploy?.status !== 'completed' || recoveredDeploy?.conclusion !== 'success') pending.push('deploy_frontend_production');
   return Object.freeze({
-    ...recovered,
+    ready: pending.length === 0,
+    pending: Object.freeze(pending),
+    check_runs: Object.freeze(recoveredRuns),
     deployment_sha: mainSha,
     recovery: true,
     recovered_from_merge_sha: sha,

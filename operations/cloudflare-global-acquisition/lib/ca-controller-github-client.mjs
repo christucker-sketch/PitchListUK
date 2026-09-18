@@ -1,4 +1,8 @@
-import { githubJson } from './github-publication.mjs';
+import {
+  inspectControllerPr,
+  inspectSourceMergeChecks as inspectBrokerSourceMergeChecks,
+  mergeControllerPr
+} from './controller-github-client.mjs';
 
 const CA_SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
 
@@ -29,14 +33,9 @@ function compactChecks(body) {
 export async function inspectCaControllerPr(env, prNumber) {
   const number = Number(prNumber);
   if (!Number.isInteger(number) || number <= 0) throw new Error('ca_controller_pr_number_invalid');
-  const pr = await githubJson(env, `/pulls/${number}`);
-  const headSha = String(pr?.head?.sha || '').toLowerCase();
+  const pr = await inspectControllerPr(env, number);
+  const headSha = String(pr?.head_sha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(headSha)) throw new Error('ca_controller_pr_head_sha_invalid');
-  const [files, commits, checkRuns] = await Promise.all([
-    githubJson(env, `/pulls/${number}/files?per_page=100`),
-    githubJson(env, `/pulls/${number}/commits?per_page=100`),
-    githubJson(env, `/commits/${headSha}/check-runs?per_page=100`)
-  ]);
   return Object.freeze({
     number,
     state: String(pr?.state || '').toUpperCase(),
@@ -46,14 +45,14 @@ export async function inspectCaControllerPr(env, prNumber) {
     draft: Boolean(pr?.draft),
     mergeable: pr?.mergeable,
     mergeable_state: String(pr?.mergeable_state || ''),
-    base_ref: String(pr?.base?.ref || ''),
-    base_sha: String(pr?.base?.sha || '').toLowerCase(),
-    head_ref: String(pr?.head?.ref || ''),
+    base_ref: String(pr?.base_ref || ''),
+    base_sha: String(pr?.base_sha || '').toLowerCase(),
+    head_ref: String(pr?.head_ref || ''),
     head_sha: headSha,
     body: String(pr?.body || ''),
-    files: Object.freeze((Array.isArray(files) ? files : []).map(file => String(file?.filename || ''))),
-    commits: Object.freeze((Array.isArray(commits) ? commits : []).map(commit => String(commit?.sha || '').toLowerCase())),
-    check_runs: Object.freeze(compactChecks(checkRuns))
+    files: Object.freeze((Array.isArray(pr?.files) ? pr.files : []).map(file => String(file?.path || file || ''))),
+    commits: Object.freeze((Array.isArray(pr?.commits) ? pr.commits : []).map(commit => String(commit?.sha || commit || '').toLowerCase())),
+    check_runs: Object.freeze(Array.isArray(pr?.check_runs) ? pr.check_runs : [])
   });
 }
 
@@ -103,25 +102,16 @@ export function validateCaSourcePr(result, pr) {
 export async function mergeCaControllerPr(env, inspection) {
   const prNumber = Number(inspection?.pr_number);
   const headSha = String(inspection?.head_sha || '').toLowerCase();
-  if (!Number.isInteger(prNumber) || prNumber <= 0 || !/^[a-f0-9]{40}$/.test(headSha)) throw new Error('ca_controller_merge_precondition_invalid');
-
-  const current = await githubJson(env, `/pulls/${prNumber}`);
-  const currentHead = String(current?.head?.sha || '').toLowerCase();
-  if (currentHead !== headSha) throw new Error('ca_controller_merge_head_changed');
-  if (current?.merged === true) {
-    const reusedSha = String(current?.merge_commit_sha || '').toLowerCase();
-    if (!/^[a-f0-9]{40}$/.test(reusedSha)) throw new Error('ca_controller_existing_merge_sha_invalid');
-    return Object.freeze({ pr_number: prNumber, merge_sha: reusedSha, reused: true });
+  const baseSha = String(inspection?.base_sha || '').toLowerCase();
+  if (!Number.isInteger(prNumber) || prNumber <= 0 || !/^[a-f0-9]{40}$/.test(headSha) || !/^[a-f0-9]{40}$/.test(baseSha)) {
+    throw new Error('ca_controller_merge_precondition_invalid');
   }
-  if (String(current?.state || '').toUpperCase() !== 'OPEN' || current?.draft) throw new Error('ca_controller_merge_pr_not_open');
-
-  const merged = await githubJson(env, `/pulls/${prNumber}/merge`, {
-    method: 'PUT',
-    body: JSON.stringify({ sha: headSha, merge_method: 'merge' })
+  const merged = await mergeControllerPr(env, { pr_number: prNumber, head_sha: headSha, base_sha: baseSha });
+  return Object.freeze({
+    pr_number: prNumber,
+    merge_sha: String(merged.merge_sha).toLowerCase(),
+    reused: merged.reused === true
   });
-  const mergeSha = String(merged?.sha || '').toLowerCase();
-  if (merged?.merged !== true || !/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error(`ca_controller_merge_not_confirmed:${String(merged?.message || '')}`);
-  return Object.freeze({ pr_number: prNumber, merge_sha: mergeSha, reused: false });
 }
 
 export function evaluateCaMergeChecks(requiredNames = [], checkRuns = [], changedFiles = []) {
@@ -156,15 +146,14 @@ export function evaluateCaMergeChecks(requiredNames = [], checkRuns = [], change
   });
 }
 
-export async function inspectCaMergeChecks(env, mergeSha, requiredNames = []) {
-  const sha = String(mergeSha || '').toLowerCase();
+export async function inspectCaMergeChecks(env, prNumber, expectedMergeSha, requiredNames = []) {
+  const sha = String(expectedMergeSha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('ca_controller_merge_sha_invalid');
-  const [body, commit] = await Promise.all([
-    githubJson(env, `/commits/${sha}/check-runs?per_page=100`),
-    githubJson(env, `/commits/${sha}`)
-  ]);
-  const runs = compactChecks(body);
-  const changedFiles = (Array.isArray(commit?.files) ? commit.files : []).map(file => String(file?.filename || ''));
+  const deployment = await inspectBrokerSourceMergeChecks(env, prNumber);
+  const actualSha = String(deployment?.merge_sha || '').toLowerCase();
+  if (actualSha !== sha) throw new Error('ca_controller_merge_sha_mismatch');
+  const runs = Array.isArray(deployment?.check_runs) ? deployment.check_runs : [];
+  const changedFiles = Array.isArray(deployment?.changed_files) ? deployment.changed_files : [];
   const evaluation = evaluateCaMergeChecks(requiredNames, runs, changedFiles);
   return Object.freeze({
     ...evaluation,

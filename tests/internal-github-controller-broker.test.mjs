@@ -22,7 +22,7 @@ function mockFetch({ head = 'sources/cloud-us-ma-test', sha = 'a'.repeat(40), ba
     mutateDataExisting ? { stable_id: 'opp_old', event_name: 'Changed', region_code: 'MA' } : { ...baseSnapshot.rows[0] },
     { stable_id: 'opp_new', event_name: 'New', region_code: 'MA' }
   ] };
-  const effectiveHead = dataMode ? 'data/cloud-us-ma-test' : head;
+  const effectiveHead = dataMode && head === 'sources/cloud-us-ma-test' ? 'data/cloud-us-ma-test' : head;
   const effectiveFile = dataMode ? 'functions/_data/us-opportunities.mjs' : 'operations/opportunity-pipeline/config/us-growth-source-registry.json';
   return async (url, options = {}) => {
     const value = String(url);
@@ -84,10 +84,29 @@ test('controller GitHub broker rejects a data PR that rewrites an existing oppor
   assert.match((await response.json()).error, /us_snapshot_opportunity_modified:opp_old/);
 });
 
-test('controller GitHub broker rejects non-US acquisition branches', async () => {
+test('controller GitHub broker rejects non-acquisition branches', async () => {
   const response = await handleInternalGithubControllerRequest(request({ action: 'inspect', pr_number: 1700 }), env(), { fetchImpl: mockFetch({ head: 'feature/not-acquisition' }) });
   assert.equal(response.status, 409);
   assert.match((await response.json()).error, /controller_github_pr_head_rejected/);
+});
+
+test('controller GitHub broker permits guarded UK and Canada generated PR families', async () => {
+  for (const head of [
+    'sources/cloud-uk-growth-0123456789abcdef-base-0123456789abcdef',
+    'data/cloud-uk-approved-additions-0123456789abcdef-base-0123456789abcdef',
+    'sources/cloud-ca-growth-0123456789abcdef-base-0123456789abcdef',
+    'data/cloud-ca-approved-additions-0123456789abcdef-base-0123456789abcdef'
+  ]) {
+    const response = await handleInternalGithubControllerRequest(
+      request({ action: 'inspect', pr_number: 1700 }),
+      env(),
+      { fetchImpl: mockFetch({ head, dataMode: head.startsWith('data/') }) }
+    );
+    assert.equal(response.status, 200, head);
+    const body = await response.json();
+    assert.equal(body.ok, true);
+    assert.equal(body.pr.head_ref, head);
+  }
 });
 
 test('controller GitHub broker fails closed if an existing registry source changed', async () => {
