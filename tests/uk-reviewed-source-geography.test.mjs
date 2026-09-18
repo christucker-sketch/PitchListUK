@@ -10,6 +10,11 @@ test('approved UK source routes never expose discovery placeholder geography', (
   assert.deepEqual(bad.map(source => source.host), []);
 });
 
+test('approved UK source routes exclude informational careers pages', () => {
+  const bad = APPROVED_SOURCES.filter(source => source.host === 'nationalcareers.service.gov.uk' || /\/job-profiles?\//i.test(String(source.official_application_route || '')));
+  assert.deepEqual(bad.map(source => source.host), []);
+});
+
 test('Barnsley reviewed application route carries customer-facing canonical metadata', () => {
   const source = APPROVED_SOURCES.find(source => source.host === 'my.barnsley.gov.uk');
   assert.ok(source, 'expected reviewed Barnsley application source');
