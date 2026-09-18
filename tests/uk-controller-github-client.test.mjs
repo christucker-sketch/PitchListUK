@@ -82,3 +82,43 @@ test('UK data PR remains pending while checks are incomplete', () => {
   };
   assert.equal(validateUkDataPr(result, pr).ready, false);
 });
+
+test('UK controller can validate an already-merged generated source PR before reusing its merge', () => {
+  const result = {
+    source_additions: 2,
+    source_pr: { pr_number: 12, branch: 'sources/cloud-uk-growth-0123456789abcdef-base-0123456789abcdef', additions: 2 }
+  };
+  const pr = {
+    number: 12,
+    state: 'CLOSED', merged: true, merged_at: '2026-09-18T06:03:30Z', merge_commit_sha: 'c'.repeat(40), draft: false,
+    base_ref: 'main', base_sha: 'a'.repeat(40), head_sha: 'b'.repeat(40),
+    head_ref: result.source_pr.branch,
+    files: [UK_SOURCE_REGISTRY_PATH],
+    check_runs: successfulChecks(),
+    body: '- net-new public-service sources: 2\n- source removals: forbidden\n- automatic merge: disabled'
+  };
+  const validated = validateUkSourcePr(result, pr);
+  assert.equal(validated.ready, true);
+  assert.equal(validated.pr_number, 12);
+});
+
+test('UK controller can validate an already-merged generated data PR before reusing its merge', () => {
+  const result = {
+    manifest_additions: 1,
+    production_count_before: 289,
+    production_count_after_planned: 290,
+    opportunity_pr: { pr_number: 45, branch: 'data/cloud-uk-approved-additions-fedcba9876543210-base-fedcba9876543210', additions: 1 }
+  };
+  const pr = {
+    number: 45,
+    state: 'CLOSED', merged: true, merged_at: '2026-09-18T06:03:30Z', merge_commit_sha: '1'.repeat(40), draft: false,
+    base_ref: 'main', base_sha: 'e'.repeat(40), head_sha: 'f'.repeat(40),
+    head_ref: result.opportunity_pr.branch,
+    files: [UK_SNAPSHOT_PATH],
+    check_runs: successfulChecks(),
+    body: '- production snapshot: 289 -> 290\n- net-new additions: 1\n- updates: forbidden\n- removals: forbidden\n- automatic merge: disabled'
+  };
+  const validated = validateUkDataPr(result, pr);
+  assert.equal(validated.ready, true);
+  assert.equal(validated.after, 290);
+});
