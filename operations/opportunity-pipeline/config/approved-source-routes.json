@@ -16,6 +16,22 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
+    "host": "broadstairsfoodfestival.org.uk",
+    "organisation": "Terms and Conditions &#8211; please read prior to application",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "UK trusted-source graph",
+    "opportunity_type": "festival_trader_application",
+    "official_application_route": "https://broadstairsfoodfestival.org.uk/trader-tcs",
+    "recurring": false,
+    "recommended_polling_days": 30,
+    "opportunity_title": "Terms and Conditions &#8211; please read prior to application",
+    "source_path_prefix": "/trader-tcs",
+    "approval_evidence_hash": "4cac9f61f92637622d4753d0432bbe5897decbfc0eee173b1a601376a0aa7faa",
+    "approval_decision": "approved_deterministic_first_party_live_trader_route",
+    "approval_manifest_hash": "3e2cae681ffed2619cc612898011957869d1428a02ee5bc2bf5fc03e70b778d1"
+  },
+  {
     "host": "eastherts.gov.uk",
     "organisation": "East Herts District Council",
     "type": "local-authority",
@@ -158,6 +174,22 @@
     "approval_evidence_hash": "f55ce995cc1ecaafddec74a5a6485639e5e64cb61737d83c50ed7b73d7fc7c73",
     "approval_decision": "approved_unambiguous_public_service_first_party",
     "approval_manifest_hash": "4af0fddb5f7c99ecdb8fd808a4df631397913add4e9a7db7489106cdad9bbab6"
+  },
+  {
+    "host": "nationalcareers.service.gov.uk",
+    "organisation": "Market trader | Explore Careers",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "Northern Ireland",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://nationalcareers.service.gov.uk/job-profiles/market-trader",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Market trader | Explore Careers",
+    "source_path_prefix": "/job-profiles/market-trader",
+    "approval_evidence_hash": "28ed3b5ab1ec56408b63f426a830efa2512a2d0d903b77bb7c53f6eb1e5ac873",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "3e2cae681ffed2619cc612898011957869d1428a02ee5bc2bf5fc03e70b778d1"
   },
   {
     "host": "portsmouth.gov.uk",
