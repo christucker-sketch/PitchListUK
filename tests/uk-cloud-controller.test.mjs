@@ -4,6 +4,9 @@ import test from 'node:test';
 import {
   buildInitialUkControllerState,
   globalUkControllerCutoverEnabled,
+  recoverUkActiveWorkflowState,
+  UK_ACTIVE_WORKFLOW_STALE_MS,
+  ukActiveWorkflowIsStale,
   ukControllerDecision
 } from '../operations/cloudflare-global-acquisition/lib/uk-cloud-controller.mjs';
 import { validateControllerStateText } from '../operations/cloudflare-global-acquisition/lib/controller-state-codec.mjs';
@@ -40,6 +43,49 @@ test('UK controller decisions preserve reserved two-phase execution', () => {
     workflow_id: 'ukctl-v1-discover-q0-l4',
     mode: 'discovery'
   });
+});
+
+test('UK stale workflow recovery preserves counts and retries the same checkpoint', () => {
+  const state = buildInitialUkControllerState({ productionCount: 289, sourceCount: 70, mainSha: 'a'.repeat(40), now: '2026-09-14T14:09:44.000Z' });
+  state.status = 'running_discovery';
+  state.query_offset = 88;
+  state.cycle = 9;
+  state.totals.discovery_runs = 238;
+  state.totals.acquisition_runs = 238;
+  const active = {
+    id: 'ukctl-v1429-discover-q88-l4',
+    mode: 'discovery',
+    query_offset: 88,
+    query_limit: 4,
+    started_at: '2026-09-14T14:09:43.949Z'
+  };
+  state.active_instance = active;
+  assert.equal(ukActiveWorkflowIsStale(active, { now: Date.parse('2026-09-14T14:39:43.948Z') }), false);
+  assert.equal(ukActiveWorkflowIsStale(active, { now: Date.parse('2026-09-14T14:39:43.949Z') }), true);
+  assert.equal(UK_ACTIVE_WORKFLOW_STALE_MS, 30 * 60 * 1000);
+
+  const recovered = recoverUkActiveWorkflowState(state, active, { reason: 'stale_running', now: '2026-09-18T06:00:00.000Z' });
+  assert.equal(recovered.status, 'ready_discovery');
+  assert.equal(recovered.active_instance, null);
+  assert.equal(recovered.query_offset, 88);
+  assert.equal(recovered.cycle, 9);
+  assert.equal(recovered.production_count, 289);
+  assert.equal(recovered.source_count, 70);
+  assert.deepEqual(recovered.totals, state.totals);
+  assert.equal(recovered.results.at(-1).workflow_id, active.id);
+  assert.equal(recovered.results.at(-1).recovery_reason, 'stale_running');
+});
+
+test('UK stale acquisition recovery returns to acquisition without inventing additions', () => {
+  const state = buildInitialUkControllerState({ productionCount: 289, sourceCount: 70 });
+  state.status = 'running_acquisition';
+  state.totals.opportunity_additions = 7;
+  const active = { id: 'ukctl-v1500-acquire-c10', mode: 'acquisition', started_at: '2026-09-18T04:00:00.000Z' };
+  state.active_instance = active;
+  const recovered = recoverUkActiveWorkflowState(state, active, { reason: 'terminal_errored:test', now: '2026-09-18T06:00:00.000Z' });
+  assert.equal(recovered.status, 'ready_acquisition');
+  assert.equal(recovered.active_instance, null);
+  assert.equal(recovered.totals.opportunity_additions, 7);
 });
 
 test('UK controller moves through PR and deployment gates', () => {

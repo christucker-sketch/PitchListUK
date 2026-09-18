@@ -11,6 +11,7 @@ import {
 
 const UK_PLAN_SIZE = 96;
 const UK_QUERY_LIMIT = 4;
+const UK_ACTIVE_WORKFLOW_STALE_MS = 30 * 60 * 1000;
 const SOURCE_DEPLOY_CHECKS = Object.freeze(['verify', 'deploy_and_prove']);
 const FRONTEND_DEPLOY_CHECKS = Object.freeze(['verify', 'deploy_frontend_production']);
 
@@ -152,6 +153,45 @@ function normalizeWorkflowOutput(value) {
   return output;
 }
 
+export function ukActiveWorkflowIsStale(active, { now = Date.now(), staleAfterMs = UK_ACTIVE_WORKFLOW_STALE_MS } = {}) {
+  const startedAt = Date.parse(String(active?.started_at || ''));
+  if (!Number.isFinite(startedAt)) return true;
+  return Number(now) - startedAt >= Number(staleAfterMs);
+}
+
+export function recoverUkActiveWorkflowState(state, active, { reason = 'stale_workflow', now = new Date().toISOString() } = {}) {
+  if (!active?.id) throw new Error('uk_controller_recovery_active_workflow_missing');
+  if (!['discovery', 'acquisition'].includes(active.mode)) throw new Error('uk_controller_recovery_active_mode_unsupported');
+  const next = structuredClone(state);
+  next.active_instance = null;
+  next.cloud_controller_intent = null;
+  next.status = active.mode === 'discovery' ? 'ready_discovery' : 'ready_acquisition';
+  appendResult(next, {
+    workflow_id: active.id,
+    mode: active.mode,
+    recovered_at: String(now),
+    recovery_reason: String(reason)
+  });
+  next.updated_at = String(now);
+  return next;
+}
+
+async function checkpointRecoveredActiveWorkflow(stub, snapshot, active, reason, decision) {
+  const next = recoverUkActiveWorkflowState(snapshot.state, active, { reason });
+  const written = await checkpoint(stub, snapshot, next);
+  return {
+    ok: true,
+    executed: true,
+    phase: 'workflow_recovered',
+    workflow_id: active.id,
+    recovery_reason: String(reason),
+    next_status: next.status,
+    state_version: written.version,
+    state_sha256: written.sha256,
+    decision
+  };
+}
+
 async function reserveWorkflow(stub, snapshot, decision, mode) {
   const next = structuredClone(snapshot.state);
   const workflowId = mode === 'discovery' ? discoveryWorkflowId(snapshot, decision) : acquisitionWorkflowId(snapshot, next);
@@ -212,14 +252,33 @@ async function bindReservedWorkflow(env, stub, snapshot, decision) {
 async function inspectActiveWorkflow(env, stub, snapshot, decision) {
   const active = snapshot.state.active_instance;
   if (!active?.id || active.id !== decision.workflow_id) throw new Error('uk_controller_active_workflow_mismatch');
-  const instance = await env.GLOBAL_ACQUISITION.get(active.id);
-  if (!instance || typeof instance.status !== 'function') throw new Error('uk_controller_active_workflow_lookup_failed');
-  const details = await instance.status();
+  const stale = ukActiveWorkflowIsStale(active);
+  let instance;
+  try {
+    instance = await env.GLOBAL_ACQUISITION.get(active.id);
+  } catch (error) {
+    if (stale) return checkpointRecoveredActiveWorkflow(stub, snapshot, active, `lookup_error:${String(error?.message || error)}`, decision);
+    throw error;
+  }
+  if (!instance || typeof instance.status !== 'function') {
+    if (stale) return checkpointRecoveredActiveWorkflow(stub, snapshot, active, 'lookup_failed', decision);
+    throw new Error('uk_controller_active_workflow_lookup_failed');
+  }
+  let details;
+  try {
+    details = await instance.status();
+  } catch (error) {
+    if (stale) return checkpointRecoveredActiveWorkflow(stub, snapshot, active, `status_error:${String(error?.message || error)}`, decision);
+    throw error;
+  }
   const status = String(details?.status || 'unknown');
   if (['queued', 'running', 'waiting', 'waitingForPause'].includes(status)) {
+    if (stale) return checkpointRecoveredActiveWorkflow(stub, snapshot, active, `stale_${status}`, decision);
     return { ok: true, executed: false, phase: 'workflow_observed', workflow_id: active.id, workflow_status: status, state_version: snapshot.version, state_sha256: snapshot.sha256, decision };
   }
-  if (status !== 'complete') throw new Error(`uk_controller_active_workflow_terminal_${status}:${String(details?.error?.message || '')}`);
+  if (status !== 'complete') {
+    return checkpointRecoveredActiveWorkflow(stub, snapshot, active, `terminal_${status}:${String(details?.error?.message || '')}`, decision);
+  }
   const result = normalizeWorkflowOutput(details.output);
   if (result.country !== 'UK') throw new Error('uk_controller_workflow_country_mismatch');
   const next = structuredClone(snapshot.state);
@@ -373,4 +432,4 @@ export async function runUkCloudControllerTick(env, { execute = false } = {}) {
   }
 }
 
-export { UK_PLAN_SIZE, UK_QUERY_LIMIT, SOURCE_DEPLOY_CHECKS, FRONTEND_DEPLOY_CHECKS };
+export { UK_PLAN_SIZE, UK_QUERY_LIMIT, UK_ACTIVE_WORKFLOW_STALE_MS, SOURCE_DEPLOY_CHECKS, FRONTEND_DEPLOY_CHECKS };
