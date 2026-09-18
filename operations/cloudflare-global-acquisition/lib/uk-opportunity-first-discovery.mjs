@@ -92,6 +92,17 @@ function organisation(result, route) {
     .trim() || host;
 }
 
+const INFORMATIONAL_NON_OPPORTUNITY = /(?:job profiles?|explore careers|career path|careers service|salary|skills|training|how to become)/i;
+const ACTIONABLE_TRADER_APPLICATION = /(?:(?:trader|vendor|stallholder|exhibitor|concession|food[-\s]?trader|food[-\s]?vendor).{0,140}(?:apply|applications?|register|registration|book(?:ing)?|pitch)|(?:apply|applications?|register|registration|book(?:ing)?).{0,140}(?:trader|vendor|stallholder|exhibitor|concession|pitch))/i;
+
+export function hasUkActionableOpportunityEvidence({ route = '', title = '', snippet = '', pageText = '' } = {}) {
+  const path = (() => { try { return new URL(String(route || '')).pathname; } catch { return ''; } })();
+  const text = `${title} ${snippet} ${pageText}`;
+  if (/\/job-profiles?\//i.test(path)) return false;
+  if (INFORMATIONAL_NON_OPPORTUNITY.test(text) && !ACTIONABLE_TRADER_APPLICATION.test(text)) return false;
+  return ACTIONABLE_TRADER_APPLICATION.test(text);
+}
+
 function promoteCandidate(candidate, now) {
   if (candidate.classification === STATUS.AUTO && candidate.approval_status === 'pending') {
     return Object.freeze({ ...candidate, approval_status: 'approved', reviewer_decision: 'approved_public_service_opportunity', reviewer: 'FindPitches Cloudflare deterministic opportunity evidence', decision_timestamp: now });
@@ -143,6 +154,15 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
     }
     let host = '';
     try { host = new URL(page.url || item.result.url).hostname.replace(/^www\./, ''); } catch {}
+    if (!hasUkActionableOpportunityEvidence({
+      route: page.url || item.result.url,
+      title: item.result.title,
+      snippet: item.result.snippet,
+      pageText: page.text
+    })) {
+      held.push(Object.freeze({ route: page.url || item.result.url, query_id: item.plan.id, reason: 'non_actionable_or_informational_result' }));
+      continue;
+    }
     const classified = promoteCandidate(classifySourceCandidate({
       url: page.url || item.result.url,
       title: item.result.title,

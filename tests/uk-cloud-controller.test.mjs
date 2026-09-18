@@ -7,7 +7,8 @@ import {
   recoverUkActiveWorkflowState,
   UK_ACTIVE_WORKFLOW_STALE_MS,
   ukActiveWorkflowIsStale,
-  ukControllerDecision
+  ukControllerDecision,
+  ukControllerPrFailureReason
 } from '../operations/cloudflare-global-acquisition/lib/uk-cloud-controller.mjs';
 import { validateControllerStateText } from '../operations/cloudflare-global-acquisition/lib/controller-state-codec.mjs';
 
@@ -86,6 +87,29 @@ test('UK stale acquisition recovery returns to acquisition without inventing add
   assert.equal(recovered.status, 'ready_acquisition');
   assert.equal(recovered.active_instance, null);
   assert.equal(recovered.totals.opportunity_additions, 7);
+});
+
+test('UK controller recognises terminal generated PR failure without treating pending CI as failed', () => {
+  assert.equal(ukControllerPrFailureReason({
+    state: 'OPEN',
+    merged: false,
+    check_runs: [{ name: 'verify', status: 'in_progress', conclusion: null }]
+  }), null);
+  assert.equal(ukControllerPrFailureReason({
+    state: 'OPEN',
+    merged: false,
+    check_runs: [{ name: 'verify', status: 'completed', conclusion: 'success' }]
+  }), null);
+  assert.equal(ukControllerPrFailureReason({
+    state: 'OPEN',
+    merged: false,
+    check_runs: [{ name: 'verify', status: 'completed', conclusion: 'failure' }]
+  }), 'terminal_ci_failure:verify');
+  assert.equal(ukControllerPrFailureReason({
+    state: 'CLOSED',
+    merged: false,
+    check_runs: []
+  }), 'closed_unmerged:closed');
 });
 
 test('UK controller moves through PR and deployment gates', () => {
