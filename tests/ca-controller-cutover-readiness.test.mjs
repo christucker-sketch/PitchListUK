@@ -5,7 +5,8 @@ import { buildInitialCaControllerState } from '../operations/cloudflare-global-a
 import {
   boundedGithubJson,
   buildCaControllerCutoverReadinessReport,
-  globalCaCutoverFlagEnabled
+  globalCaCutoverFlagEnabled,
+  readCaProductionBases
 } from '../operations/cloudflare-global-acquisition/lib/ca-controller-cutover-readiness.mjs';
 
 const meta = {
@@ -136,4 +137,28 @@ test('Canada readiness public GitHub reads do not require a write token', async 
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test('Canada readiness reads live production bases through the internal GitHub broker', async () => {
+  const env = {
+    GITHUB_PR_BROKER: {
+      fetch: async request => {
+        const body = await request.json();
+        assert.deepEqual(body, { action: 'read_ca_production_bases' });
+        return Response.json({
+          ok: true,
+          bases: {
+            main_sha: 'a'.repeat(40),
+            production_count: 3,
+            source_count: 5
+          }
+        });
+      }
+    }
+  };
+  assert.deepEqual(await readCaProductionBases(env), {
+    main_sha: 'a'.repeat(40),
+    production_count: 3,
+    source_count: 5
+  });
 });

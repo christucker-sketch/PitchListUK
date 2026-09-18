@@ -1,14 +1,7 @@
-import { parseAcquisitionSnapshotModule } from '../../../platform/acquisition/global-engine.mjs';
 import { CA_DISCOVERY_PLAN_SIZE } from './ca-source-discovery-plan.mjs';
+import { readCaProductionBasesViaBroker } from './controller-github-client.mjs';
 
-const CA_SNAPSHOT_PATH = 'functions/_data/ca-opportunities.mjs';
-const CA_SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
 const PROMOTABLE_STATUSES = new Set(['ready_discovery', 'ready_acquisition']);
-
-function decodeBase64Utf8(value) {
-  const binary = atob(String(value || '').replace(/\s+/g, ''));
-  return new TextDecoder().decode(Uint8Array.from(binary, char => char.charCodeAt(0)));
-}
 
 function gitSha(value) {
   const text = String(value || '').trim().toLowerCase();
@@ -57,26 +50,17 @@ export async function boundedGithubJson(env, path, timeoutMs = 15000) {
 }
 
 export async function readCaProductionBases(env) {
-  const [ref, snapshotFile, sourceFile] = await Promise.all([
-    boundedGithubJson(env, '/git/ref/heads/main'),
-    boundedGithubJson(env, `/contents/${CA_SNAPSHOT_PATH}?ref=main`),
-    boundedGithubJson(env, `/contents/${CA_SOURCE_REGISTRY_PATH}?ref=main`)
-  ]);
-
-  const mainSha = gitSha(ref?.object?.sha);
+  const bases = await readCaProductionBasesViaBroker(env);
+  const mainSha = gitSha(bases?.main_sha);
+  const productionCount = Number(bases?.production_count);
+  const sourceCount = Number(bases?.source_count);
   if (!mainSha) throw new Error('ca_cutover_main_sha_invalid');
-
-  const snapshot = parseAcquisitionSnapshotModule(decodeBase64Utf8(snapshotFile?.content), 'CA');
-  const sources = JSON.parse(decodeBase64Utf8(sourceFile?.content));
-  if (!Array.isArray(snapshot.rows) || Number(snapshot.total) !== snapshot.rows.length) {
-    throw new Error('ca_cutover_snapshot_invalid');
-  }
-  if (!Array.isArray(sources)) throw new Error('ca_cutover_source_registry_invalid');
-
+  if (!Number.isInteger(productionCount) || productionCount < 0) throw new Error('ca_cutover_snapshot_invalid');
+  if (!Number.isInteger(sourceCount) || sourceCount < 0) throw new Error('ca_cutover_source_registry_invalid');
   return Object.freeze({
     main_sha: mainSha,
-    production_count: snapshot.rows.length,
-    source_count: sources.length
+    production_count: productionCount,
+    source_count: sourceCount
   });
 }
 

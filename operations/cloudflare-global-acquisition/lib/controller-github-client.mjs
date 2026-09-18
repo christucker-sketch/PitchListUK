@@ -25,6 +25,10 @@ export async function inspectDataMergeChecks(env, prNumber) {
   return (await brokerRequest(env, { action: 'inspect_data_merge_checks', pr_number: prNumber })).deployment;
 }
 
+export async function readCaProductionBasesViaBroker(env) {
+  return (await brokerRequest(env, { action: 'read_ca_production_bases' })).bases;
+}
+
 export function classifyAcquisitionWorkerDeployment(deployment) {
   const mergeSha = String(deployment?.merge_sha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error('source_merge_deployment_sha_invalid');
