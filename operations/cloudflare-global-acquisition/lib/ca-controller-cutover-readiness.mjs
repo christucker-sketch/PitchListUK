@@ -33,11 +33,21 @@ export function globalCaCutoverFlagEnabled(env = {}) {
   return String(env.GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED || '').trim().toLowerCase() === 'true';
 }
 
+async function boundedGithubJson(env, path, timeoutMs = 15000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(new Error(`ca_readiness_github_timeout:${path}`)), timeoutMs);
+  try {
+    return await githubJson(env, path, { signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export async function readCaProductionBases(env) {
   const [ref, snapshotFile, sourceFile] = await Promise.all([
-    githubJson(env, '/git/ref/heads/main'),
-    githubJson(env, `/contents/${CA_SNAPSHOT_PATH}?ref=main`),
-    githubJson(env, `/contents/${CA_SOURCE_REGISTRY_PATH}?ref=main`)
+    boundedGithubJson(env, '/git/ref/heads/main'),
+    boundedGithubJson(env, `/contents/${CA_SNAPSHOT_PATH}?ref=main`),
+    boundedGithubJson(env, `/contents/${CA_SOURCE_REGISTRY_PATH}?ref=main`)
   ]);
 
   const mainSha = gitSha(ref?.object?.sha);
