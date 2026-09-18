@@ -1,6 +1,5 @@
 import { parseAcquisitionSnapshotModule } from '../../../platform/acquisition/global-engine.mjs';
 import { CA_DISCOVERY_PLAN_SIZE } from './ca-source-discovery-plan.mjs';
-import { githubJson } from './github-publication.mjs';
 
 const CA_SNAPSHOT_PATH = 'functions/_data/ca-opportunities.mjs';
 const CA_SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
@@ -34,10 +33,24 @@ export function globalCaCutoverFlagEnabled(env = {}) {
 }
 
 export async function boundedGithubJson(env, path, timeoutMs = 15000) {
+  const repo = String(env?.GITHUB_REPO || '').trim();
+  if (!repo) throw new Error('ca_readiness_github_repo_missing');
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(new Error(`ca_readiness_github_timeout:${path}`)), timeoutMs);
   try {
-    return await githubJson(env, path, { signal: controller.signal });
+    const response = await fetch(`https://api.github.com/repos/${repo}${path}`, {
+      signal: controller.signal,
+      headers: {
+        accept: 'application/vnd.github+json',
+        'x-github-api-version': '2022-11-28',
+        'user-agent': 'FindPitches-Canada-readiness'
+      }
+    });
+    const text = await response.text();
+    let body = null;
+    try { body = text ? JSON.parse(text) : null; } catch { body = { message: text }; }
+    if (!response.ok) throw new Error(`ca_readiness_github_${response.status}:${body?.message || response.statusText}`);
+    return body;
   } finally {
     clearTimeout(timer);
   }
