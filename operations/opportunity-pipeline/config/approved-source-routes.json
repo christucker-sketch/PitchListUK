@@ -176,22 +176,6 @@
     "approval_manifest_hash": "4af0fddb5f7c99ecdb8fd808a4df631397913add4e9a7db7489106cdad9bbab6"
   },
   {
-    "host": "nationalcareers.service.gov.uk",
-    "organisation": "Market trader | Explore Careers",
-    "type": "local-authority",
-    "terms_policy": "public-service",
-    "geographic_coverage": "Northern Ireland",
-    "opportunity_type": "recurring_market",
-    "official_application_route": "https://nationalcareers.service.gov.uk/job-profiles/market-trader",
-    "recurring": false,
-    "recommended_polling_days": 14,
-    "opportunity_title": "Market trader | Explore Careers",
-    "source_path_prefix": "/job-profiles/market-trader",
-    "approval_evidence_hash": "28ed3b5ab1ec56408b63f426a830efa2512a2d0d903b77bb7c53f6eb1e5ac873",
-    "approval_decision": "approved_unambiguous_public_service_first_party",
-    "approval_manifest_hash": "3e2cae681ffed2619cc612898011957869d1428a02ee5bc2bf5fc03e70b778d1"
-  },
-  {
     "host": "portsmouth.gov.uk",
     "organisation": "Portsmouth City Council",
     "type": "local-authority",
