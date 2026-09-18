@@ -17,3 +17,8 @@ test('Barnsley reviewed application route carries customer-facing canonical meta
   assert.equal(source.geographic_coverage, 'South Yorkshire');
   assert.equal(source.opportunity_title, 'Barnsley local market stall applications');
 });
+
+test('approved UK source routes exclude informational careers job-profile pages', () => {
+  const bad = APPROVED_SOURCES.filter(source => /\/job-profiles?\//i.test(String(source.official_application_route || '')));
+  assert.deepEqual(bad.map(source => source.host), []);
+});
