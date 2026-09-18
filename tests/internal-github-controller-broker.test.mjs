@@ -159,3 +159,39 @@ test('merge-check inspection refuses an unmerged source PR', async () => {
   assert.equal(response.status, 409);
   assert.match((await response.json()).error, /source_pr_not_merged/);
 });
+
+test('controller GitHub broker returns authenticated Canada production bases', async () => {
+  const mainSha = 'd'.repeat(40);
+  const caSnapshot = `export const caOpportunitySnapshot = ${JSON.stringify({
+    exported_at: '2026-09-18T00:00:00Z',
+    source: 'fixture',
+    total: 3,
+    rows: [{ stable_id: 'ca1' }, { stable_id: 'ca2' }, { stable_id: 'ca3' }]
+  })};\n`;
+  const sources = [
+    { id: 'ca-on-1' }, { id: 'ca-bc-1' }, { id: 'ca-qc-1' }, { id: 'ca-ab-1' }, { id: 'ca-ns-1' }
+  ];
+  const fetchImpl = async (url, options = {}) => {
+    assert.match(String(options?.headers?.authorization || ''), /^Bearer /);
+    const value = String(url);
+    if (value.endsWith('/git/ref/heads/main')) return Response.json({ object: { sha: mainSha } });
+    if (value.includes('/contents/functions/_data/ca-opportunities.mjs?ref=')) {
+      return Response.json({ encoding: 'base64', content: encoded(caSnapshot) });
+    }
+    if (value.includes('/contents/operations/opportunity-pipeline/config/ca-approved-source-routes.json?ref=')) {
+      return Response.json({ encoding: 'base64', content: encoded(sources) });
+    }
+    return Response.json({ message: 'not found' }, { status: 404 });
+  };
+  const response = await handleInternalGithubControllerRequest(
+    request({ action: 'read_ca_production_bases' }),
+    env(),
+    { fetchImpl }
+  );
+  assert.equal(response.status, 200);
+  assert.deepEqual((await response.json()).bases, {
+    main_sha: mainSha,
+    production_count: 3,
+    source_count: 5
+  });
+});
