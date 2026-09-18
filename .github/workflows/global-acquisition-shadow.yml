@@ -162,6 +162,37 @@ jobs:
           done
           [[ "$completed" == "true" ]] || { echo 'UK global read-only poll timed out.' >&2; exit 1; }
 
+      - name: Read authoritative UK controller state
+        shell: bash
+        run: |
+          set -euo pipefail
+          instance_id="global-uk-controller-readiness-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" '{"country":"UK","mode":"controller_cutover_readiness"}' --id "$instance_id" --config "$CONFIG" >/dev/null
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
+          for attempt in $(seq 1 60); do
+            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            status="$(jq -r '.result.status // empty' <<<"$body")"
+            if [[ "$status" == 'complete' ]]; then
+              jq -e '
+                .result.output.country == "UK" and
+                .result.output.mode == "controller_cutover_readiness" and
+                .result.output.mutation_attempted == false and
+                .result.output.available == true and
+                .result.output.cutover_enabled == true and
+                .result.output.authority == "authoritative" and
+                (.result.output.state_version | numbers) and
+                (.result.output.state_version > 0)
+              ' <<<"$body" >/dev/null
+              printf '%s\n' "$body" > global-uk-controller-readiness.json
+              jq '.result.output' <<<"$body" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            if [[ "$status" == 'errored' || "$status" == 'terminated' ]]; then jq '.result.error' <<<"$body" >&2; exit 1; fi
+            sleep 2
+          done
+          echo 'UK controller readiness workflow timed out.' >&2
+          exit 1
+
       - name: Prove Canada authoritative controller has entered live acquisition
         shell: bash
         run: |
@@ -240,6 +271,7 @@ jobs:
             global-production-health.json
             global-us-readonly-result.json
             global-uk-readonly-result.json
+            global-uk-controller-readiness.json
             global-ca-live-result.json
           if-no-files-found: ignore
           retention-days: 14
