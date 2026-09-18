@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { evaluateCanadaSourceEvidence } from '../operations/cloudflare-global-acquisition/lib/ca-source-evidence.mjs';
-import { runUkOpportunityFirstDiscovery } from '../operations/cloudflare-global-acquisition/lib/uk-opportunity-first-discovery.mjs';
+import { hasUkActionableOpportunityEvidence, runUkOpportunityFirstDiscovery } from '../operations/cloudflare-global-acquisition/lib/uk-opportunity-first-discovery.mjs';
 import { promoteUkOpportunityFirstCandidates } from '../operations/cloudflare-global-acquisition/lib/uk-source-discovery-workflow.mjs';
 import { growthQueryBatch, growthQueryPlan } from '../operations/cloudflare-texas-acquisition/src/us-growth-plan.js';
 
@@ -61,6 +61,40 @@ test('UK deterministic first-party review candidates are promoted without weaken
   assert.equal(result.approved_candidates.length, 1);
   assert.equal(result.review_queue.length, 0);
   assert.equal(result.approved_candidates[0].reviewer_decision, 'approved_deterministic_first_party_live_trader_route');
+});
+
+test('UK direct-graph private promotion refuses placeholder geography', () => {
+  const candidate = {
+    classification: 'manual-review-required',
+    rejection_reason: 'private_or_non_public_service_source_requires_review',
+    approval_status: 'pending',
+    canonical_route: 'https://broadstairsfoodfestival.org.uk/trader-tcs',
+    canonical_host: 'broadstairsfoodfestival.org.uk',
+    organisation: 'Broadstairs Food Festival',
+    geographic_coverage: 'UK trusted-source graph',
+    opportunity_type: 'festival_trader_application',
+    trader_application_evidence: 'Trader terms and application conditions',
+    fetch_status: 'fetched',
+    robots_result: 'allowed'
+  };
+  const result = promoteUkOpportunityFirstCandidates({ approved_candidates: [], review_queue: [candidate], auto_approved_count: 0 });
+  assert.equal(result.approved_candidates.length, 0);
+  assert.equal(result.review_queue.length, 1);
+});
+
+test('UK opportunity evidence rejects careers information but accepts actionable trader applications', () => {
+  assert.equal(hasUkActionableOpportunityEvidence({
+    route: 'https://nationalcareers.service.gov.uk/job-profiles/market-trader',
+    title: 'Market trader | Explore Careers',
+    snippet: 'Learn about salary, skills and how to become a market trader.',
+    pageText: 'Explore careers. Market trader skills, salary and training.'
+  }), false);
+  assert.equal(hasUkActionableOpportunityEvidence({
+    route: 'https://examplefestival.co.uk/traders',
+    title: 'Trader applications',
+    snippet: 'Applications are open for food traders.',
+    pageText: 'Food traders can apply now for a pitch at the 2027 festival.'
+  }), true);
 });
 
 test('UK opportunity-first lane accepts a private first-party market application page', async () => {
