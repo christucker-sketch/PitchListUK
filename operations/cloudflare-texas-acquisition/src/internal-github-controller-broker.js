@@ -134,8 +134,17 @@ async function inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, all
   if (String(pr?.base?.ref || '') !== 'main' || !pr?.merged || !pr?.merged_at) throw new Error(`controller_github_${errorPrefix}_pr_not_merged`);
   const mergeSha = String(pr?.merge_commit_sha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error(`controller_github_${errorPrefix}_merge_sha_invalid`);
-  const checkRuns = await githubJson(fetchImpl, `${baseUrl}/commits/${mergeSha}/check-runs?per_page=100`, { headers: authHeaders });
-  return { pr_number: Number(pr.number), merge_sha: mergeSha, merged_at: pr.merged_at, check_runs: compactChecks(checkRuns) };
+  const [checkRuns, files] = await Promise.all([
+    githubJson(fetchImpl, `${baseUrl}/commits/${mergeSha}/check-runs?per_page=100`, { headers: authHeaders }),
+    githubJson(fetchImpl, `${baseUrl}/pulls/${prNumber}/files?per_page=100`, { headers: authHeaders })
+  ]);
+  return {
+    pr_number: Number(pr.number),
+    merge_sha: mergeSha,
+    merged_at: pr.merged_at,
+    check_runs: compactChecks(checkRuns),
+    changed_files: Object.freeze((Array.isArray(files) ? files : []).map(file => String(file?.filename || '')))
+  };
 }
 async function inspectSourceMergeChecks(fetchImpl, repo, authHeaders, prNumber) {
   return inspectMergedPrChecks(fetchImpl, repo, authHeaders, prNumber, ALLOWED_SOURCE_HEAD, 'source');
