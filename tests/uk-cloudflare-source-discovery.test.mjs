@@ -81,7 +81,7 @@ test('UK discovery is bounded and auto-approves only deterministic public-servic
   assert.equal(UK_SOURCE_DISCOVERY_LIMITS.maximum_candidate_limit, 50);
 });
 
-test('UK discovery uses Cloudflare direct graph first and spends zero Serper credits when it finds candidates', async () => {
+test('UK direct graph keeps placeholder-geography candidates unapproved without spending Serper inside the low-level pass', async () => {
   let searchCalled = false;
   const discovery = await runUkSourceDiscovery({}, {
     seed_routes: ['https://known-council.gov.uk/markets'],
@@ -110,7 +110,8 @@ test('UK discovery uses Cloudflare direct graph first and spends zero Serper cre
   assert.equal(discovery.serper_fallback_used, false);
   assert.equal(discovery.serper_credits_used, 0);
   assert.equal(discovery.query_count, 0);
-  assert.equal(discovery.auto_approved_count, 1);
+  assert.equal(discovery.auto_approved_count, 0);
+  assert.equal(discovery.classifications['auto-approved'], 1);
 });
 
 test('UK source promotion plan is additions-only and deterministic', async () => {
