@@ -50,9 +50,11 @@ function source(overrides = {}) {
 test('growth query plan prioritises the requested high-density states and stays bounded per Workflow', () => {
   assert.deepEqual(PRIORITY_STATE_CODES.slice(0, 5), ['CA', 'TX', 'FL', 'NY', 'PA']);
   const plan = growthQueryPlan(state, { years: [2026] });
-  assert.equal(plan.length, 72);
+  assert.equal(plan.length, 120);
   assert.match(plan[0].query, /California/);
-  assert.match(plan[0].query, /site:\.gov/);
+  assert.doesNotMatch(plan[0].query, /site:\.gov/);
+  assert.ok(plan.some(item => item.template_id === 'government-events' && /site:\.gov/.test(item.query)));
+  assert.equal(growthQueryBatch(state, { years: [2026], offset: 0, limit: 8 }).length, 8);
   assert.deepEqual(growthQueryBatch(state, { years: [2026], offset: 3, limit: 2 }).map(item => item.id), plan.slice(3, 5).map(item => item.id));
   assert.equal(growthQueryBatch(state, { years: [2026], offset: plan.length, limit: 2 }).length, 0);
 });
@@ -199,6 +201,7 @@ test('Worker source routes discovery and selected growth sources through Cloudfl
   const wrangler = JSON.parse(fs.readFileSync(path.join(repositoryRoot, 'operations/cloudflare-texas-acquisition/wrangler.jsonc'), 'utf8'));
   assert.equal(wrangler.limits.cpu_ms, 300000);
   assert.match(worker, /event\?\.payload\?\.mode === 'discover'/);
+  assert.match(worker, /const queryLimit = Math\.max\(1, Math\.min\(8, Number\(event\?\.payload\?\.query_limit \|\| 2\)\)\);/);
   assert.match(worker, /search \$\{state\.code\} growth query \$\{plan\.id\}/);
   assert.match(worker, /normalize \$\{state\.code\} growth candidates offset/);
   assert.match(worker, /validate \$\{state\.code\} growth candidates batch/);

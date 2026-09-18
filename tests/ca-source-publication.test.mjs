@@ -19,8 +19,8 @@ function source(overrides = {}) {
     region_name: 'Ontario',
     status: 'approved-pilot',
     discovered_at: '2026-09-13T15:30:00.000Z',
-    discovery_query: 'Ontario market vendor application official Canada',
-    evidence: 'Official Ontario public-service route contains vendor application evidence.',
+    discovery_query: 'Ontario market vendor application Canada',
+    evidence: 'Verified Ontario first-party route contains vendor application evidence.',
     ...overrides
   };
 }
@@ -36,6 +36,23 @@ test('Canada source publication is additions-only and deterministic', () => {
   assert.equal(first.registry.length, 1);
   assert.equal(first.registry[0].id, candidate.id);
   assert.equal(first.additions[0].source_url, candidate.source_url);
+});
+
+test('Canada source publication accepts only the two evidence-backed source classes', () => {
+  const organiser = source({
+    id: 'ca-on-bbbbbbbbbbbb',
+    name: 'Example Festival Vendor Application',
+    source_url: 'https://examplefestival.ca/vendors',
+    application_url: 'https://examplefestival.ca/vendors/apply',
+    source_class: 'event-organiser',
+    evidence: 'Deterministic first-party organiser route with region, vendor, action and opportunity evidence.'
+  });
+  const plan = planCanadaSourceRegistry({ registry: [] }, [organiser]);
+  assert.equal(plan.summary.additions, 1);
+  assert.equal(plan.additions[0].source_class, 'event-organiser');
+
+  assert.throws(() => planCanadaSourceRegistry({ registry: [] }, [source({ source_class: 'private-event' })]), /canada_source_class_invalid/);
+  assert.throws(() => planCanadaSourceRegistry({ registry: [] }, [source({ source_class: 'aggregator' })]), /canada_source_class_invalid/);
 });
 
 test('Canada source publication does not rewrite or duplicate an existing source identity', () => {

@@ -17,8 +17,15 @@ const PUBLIC_SERVICE_ROOTS = Object.freeze([
   ...MUNICIPAL_PUBLIC_SERVICE_ROOTS
 ]);
 
-const VENDOR_SIGNAL = /\b(vendor|vendors|exhibitor|exhibitors|booth|booths|concession|concessions|food truck|food trucks|market vendor|market vendors|artisan|artisans)\b/i;
-const ACTION_SIGNAL = /\b(apply|application|applications|register|registration|book|booking|submit|form|deadline|fees?|rates?)\b/i;
+const NON_FIRST_PARTY_ROOTS = Object.freeze([
+  'facebook.com', 'instagram.com', 'youtube.com', 'youtu.be', 'linkedin.com', 'tiktok.com',
+  'x.com', 'twitter.com', 'reddit.com', 'eventbrite.com', 'eventbrite.ca', '10times.com',
+  'allevents.in', 'festivalnet.com'
+]);
+
+const VENDOR_SIGNAL = /\b(vendor|vendors|exhibitor|exhibitors|booth|booths|concession|concessions|food truck|food trucks|market vendor|market vendors|artisan|artisans|merchant|merchants)\b/i;
+const ACTION_SIGNAL = /\b(apply|application|applications|register|registration|book|booking|submit|form|deadline|fees?|rates?|become a vendor|vendor applications? open)\b/i;
+const OPPORTUNITY_SIGNAL = /\b(market|festival|fair|show|event|holiday market|christmas market|farmers? market|artisan market)\b/i;
 const NEGATIVE_SIGNAL = /\b(closed to vendors|applications? closed|no vendors?|not accepting vendors?|cancelled|canceled)\b/i;
 
 function normalise(value) {
@@ -44,6 +51,24 @@ function hostWithin(host, root) {
   return host === root || host.endsWith(`.${root}`);
 }
 
+function registrableComparableHost(host) {
+  const parts = String(host || '').split('.').filter(Boolean);
+  if (parts.length <= 2) return parts.join('.');
+  const twoLevelCountrySuffix = /\.(?:co|com|org|net|gov)\.[a-z]{2}$/i.test(host);
+  return parts.slice(twoLevelCountrySuffix ? -3 : -2).join('.');
+}
+
+function sameFirstPartyHost(left, right) {
+  const a = hostOf(left);
+  const b = hostOf(right);
+  return Boolean(a && b && registrableComparableHost(a) === registrableComparableHost(b));
+}
+
+function isExcludedFirstParty(value) {
+  const host = hostOf(value);
+  return Boolean(host && NON_FIRST_PARTY_ROOTS.some(root => hostWithin(host, root)));
+}
+
 export function isCanadianPublicServiceHost(value) {
   const host = hostOf(value);
   return Boolean(host && PUBLIC_SERVICE_ROOTS.some(root => hostWithin(host, root)));
@@ -56,6 +81,9 @@ export function evaluateCanadaSourceEvidence(candidate = {}) {
   const sourceUrl = String(candidate.source_url || candidate.url || '');
   const applicationUrl = String(candidate.application_url || sourceUrl);
   if (!hostOf(sourceUrl) || !hostOf(applicationUrl)) return Object.freeze({ status: 'held', reason: 'canada_source_url_invalid' });
+  if (isExcludedFirstParty(sourceUrl) || isExcludedFirstParty(applicationUrl)) {
+    return Object.freeze({ status: 'held', reason: 'canada_non_first_party_platform_rejected', region_code: unit.code });
+  }
 
   const text = [candidate.title, candidate.snippet, candidate.page_text, candidate.location, candidate.region, candidate.province]
     .filter(Boolean).join(' ');
@@ -68,30 +96,49 @@ export function evaluateCanadaSourceEvidence(candidate = {}) {
   if (NEGATIVE_SIGNAL.test(text)) return Object.freeze({ status: 'held', reason: 'canada_negative_vendor_signal', region_code: unit.code });
   if (!VENDOR_SIGNAL.test(text)) return Object.freeze({ status: 'held', reason: 'canada_vendor_signal_missing', region_code: unit.code });
   if (!ACTION_SIGNAL.test(text)) return Object.freeze({ status: 'held', reason: 'canada_action_signal_missing', region_code: unit.code });
+  if (!OPPORTUNITY_SIGNAL.test(text)) return Object.freeze({ status: 'held', reason: 'canada_opportunity_context_missing', region_code: unit.code });
 
   const publicService = isCanadianPublicServiceHost(sourceUrl) && isCanadianPublicServiceHost(applicationUrl);
-  if (!publicService) {
+  if (publicService) {
     return Object.freeze({
-      status: 'review',
-      reason: 'canada_non_public_service_requires_review',
+      status: 'approved',
+      reason: 'canada_public_service_first_party_evidence',
+      source_class: 'public-service',
       region_code: unit.code,
-      jurisdiction: unit.jurisdiction
+      region_name: unit.name,
+      jurisdiction: unit.jurisdiction,
+      source_url: sourceUrl,
+      application_url: applicationUrl
+    });
+  }
+
+  if (sameFirstPartyHost(sourceUrl, applicationUrl)) {
+    return Object.freeze({
+      status: 'approved',
+      reason: 'canada_deterministic_first_party_organiser_evidence',
+      source_class: 'event-organiser',
+      region_code: unit.code,
+      region_name: unit.name,
+      jurisdiction: unit.jurisdiction,
+      source_url: sourceUrl,
+      application_url: applicationUrl
     });
   }
 
   return Object.freeze({
-    status: 'approved',
-    reason: 'canada_public_service_first_party_evidence',
+    status: 'review',
+    reason: 'canada_cross_host_application_requires_review',
+    source_class: 'event-organiser',
     region_code: unit.code,
     region_name: unit.name,
-    jurisdiction: unit.jurisdiction,
-    source_url: sourceUrl,
-    application_url: applicationUrl
+    jurisdiction: unit.jurisdiction
   });
 }
 
 export {
   FEDERAL_PROVINCIAL_PUBLIC_SERVICE_ROOTS,
   MUNICIPAL_PUBLIC_SERVICE_ROOTS,
-  PUBLIC_SERVICE_ROOTS
+  PUBLIC_SERVICE_ROOTS,
+  NON_FIRST_PARTY_ROOTS,
+  sameFirstPartyHost
 };

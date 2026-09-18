@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { githubJson } from './github-publication.mjs';
 
 const SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
+const ALLOWED_SOURCE_CLASSES = new Set(['public-service', 'event-organiser']);
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -35,7 +36,7 @@ function assertSource(source) {
   if (String(source.country_code || '') !== 'CA') throw new Error('canada_source_country_invalid');
   const region = String(source.region_code || '').toUpperCase();
   if (!/^[A-Z]{2}$/.test(region) || String(source.jurisdiction || '') !== `CA-${region}`) throw new Error('canada_source_jurisdiction_invalid');
-  if (String(source.source_class || '') !== 'public-service') throw new Error('canada_source_class_invalid');
+  if (!ALLOWED_SOURCE_CLASSES.has(String(source.source_class || ''))) throw new Error('canada_source_class_invalid');
   if (String(source.status || '') !== 'approved-pilot') throw new Error('canada_source_status_invalid');
   canonicalUrl(source.source_url);
   canonicalUrl(source.application_url);
@@ -140,7 +141,7 @@ export async function openCanadaSourcePullRequest(env, options = {}) {
     return Object.freeze({ created: false, reused: true, branch, pr_number: pr.number, pr_url: pr.html_url, additions, source_ids: plan.additions.map(source => source.id) });
   }
 
-  const receipts = plan.additions.map(source => `  - ${source.id}: ${source.source_url}; region=${source.region_code}`);
+  const receipts = plan.additions.map(source => `  - ${source.id}: ${source.source_url}; region=${source.region_code}; class=${source.source_class}`);
   const pr = await githubJson(env, '/pulls', {
     method: 'POST',
     body: JSON.stringify({
@@ -148,7 +149,7 @@ export async function openCanadaSourcePullRequest(env, options = {}) {
       head: branch,
       base: 'main',
       body: [
-        'Cloudflare global acquisition Workflow — Canada source-discovery run.', '',
+        'Cloudflare global acquisition Workflow — Canada opportunity-first source promotion.', '',
         `- approved Canada source registry: ${base.registry.length} -> ${plan.registry.length}`,
         `- net-new approved sources: ${additions}`,
         `- deterministic source evidence receipts: ${additions}/${additions} passed`,
@@ -157,13 +158,13 @@ export async function openCanadaSourcePullRequest(env, options = {}) {
         `- Serper credits used: ${Number(options.serper_credits_used || 0)}`,
         `- manual-review candidates held out: ${Number(options.manual_review_count || 0)}`,
         '- additions only; no source removals',
-        '- production Canada opportunities untouched',
-        '- no automatic merge or deploy requested', '',
-        'GitHub CI remains the publication gate. Canada cutover remains disabled.'
+        '- production Canada opportunities untouched by this PR',
+        '- no automatic merge or deploy requested by the source-discovery Workflow', '',
+        'GitHub CI and the controller publication gates remain authoritative.'
       ].join('\n')
     })
   });
   return Object.freeze({ created: true, reused: false, branch, pr_number: pr.number, pr_url: pr.html_url, additions, source_ids: plan.additions.map(source => source.id) });
 }
 
-export { SOURCE_REGISTRY_PATH };
+export { SOURCE_REGISTRY_PATH, ALLOWED_SOURCE_CLASSES };

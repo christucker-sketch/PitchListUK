@@ -39,7 +39,7 @@ const parityStates = [
   }),
   baseState({ status: 'blocked_deferred', deferred_units: [{ disposition: 'genuine_blocker', mode: 'discover', state_code: 'MA' }] }),
   baseState({ status: 'ready_acquisition', current: { state_code: 'NY' }, pending_source_ids: ['source-1'], acquisition_batch: 2 }),
-  baseState({ status: 'sweep_complete', query_offsets: { MA: 144, CA: 144 } })
+  baseState({ status: 'sweep_complete', query_offsets: { MA: 240, CA: 240 } })
 ];
 
 for (const state of parityStates) {
@@ -68,7 +68,7 @@ test('genuine deferred blockers do not preempt remaining discovery work', () => 
 test('genuine deferred blockers stop only after discovery and replay work are exhausted', () => {
   const state = baseState({
     priority_order: ['MA', 'CA'],
-    query_offsets: { MA: 144, CA: 144 },
+    query_offsets: { MA: 240, CA: 240 },
     deferred_units: [{ disposition: 'genuine_blocker', mode: 'discover', state_code: 'MA' }]
   });
   const expected = { action: 'block', reason: 'deferred_blocker', blocker_count: 1 };
@@ -79,7 +79,7 @@ test('genuine deferred blockers stop only after discovery and replay work are ex
 test('plan exhaustion with no deferred work marks the sweep complete', () => {
   const state = baseState({
     priority_order: ['MA', 'CA'],
-    query_offsets: { MA: 144, CA: 144 }
+    query_offsets: { MA: 240, CA: 240 }
   });
   const expected = { action: 'mark_sweep_complete' };
   assert.deepEqual(authoritativeControllerDecision(state), expected);

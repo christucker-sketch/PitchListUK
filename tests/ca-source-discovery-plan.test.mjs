@@ -8,7 +8,7 @@ import {
   nextCanadaDiscoveryOffset
 } from '../operations/cloudflare-global-acquisition/lib/ca-source-discovery-plan.mjs';
 
-test('Canada discovery plan covers every province and territory across eight bounded templates', () => {
+test('Canada discovery plan covers every province and territory across eight opportunity-first templates', () => {
   assert.equal(CA_DISCOVERY_TEMPLATES.length, 8);
   assert.equal(CA_DISCOVERY_PLAN_SIZE, 104);
   const plan = canadaDiscoveryQueries({ limit: 12, offset: 0 });
@@ -20,22 +20,22 @@ test('Canada discovery plan covers every province and territory across eight bou
   assert.match(plan[0].query, /Canada/);
 });
 
-test('Canada discovery prioritises official permit and vendor application language', () => {
+test('Canada discovery prioritises direct vendor application intent', () => {
   assert.deepEqual(CA_DISCOVERY_TEMPLATES.map(template => template.id), [
-    'public_market',
-    'temporary_food_event',
-    'special_event_vendor',
-    'farmers_market',
-    'municipal_market',
+    'vendor_applications_open',
+    'become_a_vendor',
     'festival_vendor',
+    'farmers_market',
+    'artisan_market',
     'food_vendor',
-    'mobile_food_vendor'
+    'holiday_market',
+    'exhibitor_application'
   ]);
   const alberta = canadaDiscoveryQueries({ limit: 4, offset: 0 });
-  assert.match(alberta[0].query, /public market food vendor permit application official/);
-  assert.match(alberta[1].query, /temporary food event vendor permit application official/);
-  assert.match(alberta[2].query, /special event vendor licence permit application official/);
-  assert.match(alberta[3].query, /farmers market vendor application official/);
+  assert.match(alberta[0].query, /vendor applications/);
+  assert.match(alberta[1].query, /become a vendor/);
+  assert.match(alberta[2].query, /festival vendor application/);
+  assert.match(alberta[3].query, /farmers market vendor application/);
 });
 
 test('Canada discovery plan is deterministic and advances from province to province', () => {

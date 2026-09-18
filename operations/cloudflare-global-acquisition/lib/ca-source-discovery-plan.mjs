@@ -1,16 +1,16 @@
 import { enabledCaAcquisitionUnits } from '../../../platform/acquisition/ca-geography.mjs';
 
-const EXCLUDED_SITES = '-site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com';
+const EXCLUDED_SITES = '-site:facebook.com -site:instagram.com -site:youtube.com -site:linkedin.com -site:eventbrite.ca -site:eventbrite.com -site:reddit.com';
 
 export const CA_DISCOVERY_TEMPLATES = Object.freeze([
-  Object.freeze({ id: 'public_market', query: unit => `${unit.name} public market food vendor permit application official` }),
-  Object.freeze({ id: 'temporary_food_event', query: unit => `${unit.name} temporary food event vendor permit application official` }),
-  Object.freeze({ id: 'special_event_vendor', query: unit => `${unit.name} special event vendor licence permit application official` }),
-  Object.freeze({ id: 'farmers_market', query: unit => `${unit.name} farmers market vendor application official` }),
-  Object.freeze({ id: 'municipal_market', query: unit => `${unit.name} municipal market vendor application official` }),
-  Object.freeze({ id: 'festival_vendor', query: unit => `${unit.name} festival vendor application official` }),
-  Object.freeze({ id: 'food_vendor', query: unit => `${unit.name} food vendor concession permit application official` }),
-  Object.freeze({ id: 'mobile_food_vendor', query: unit => `${unit.name} mobile food vendor food truck permit application official` })
+  Object.freeze({ id: 'vendor_applications_open', query: unit => `"${unit.name}" "vendor applications" market festival 2026 2027` }),
+  Object.freeze({ id: 'become_a_vendor', query: unit => `"${unit.name}" "become a vendor" market festival fair 2026 2027` }),
+  Object.freeze({ id: 'festival_vendor', query: unit => `"${unit.name}" festival vendor application 2026 2027` }),
+  Object.freeze({ id: 'farmers_market', query: unit => `"${unit.name}" farmers market vendor application 2026 2027` }),
+  Object.freeze({ id: 'artisan_market', query: unit => `"${unit.name}" artisan craft market vendor application 2026 2027` }),
+  Object.freeze({ id: 'food_vendor', query: unit => `"${unit.name}" food vendor application festival market 2026 2027` }),
+  Object.freeze({ id: 'holiday_market', query: unit => `"${unit.name}" Christmas holiday market vendor application 2026` }),
+  Object.freeze({ id: 'exhibitor_application', query: unit => `"${unit.name}" exhibitor application fair show festival 2026 2027` })
 ]);
 
 export const CA_DISCOVERY_PLAN_SIZE = enabledCaAcquisitionUnits().length * CA_DISCOVERY_TEMPLATES.length;

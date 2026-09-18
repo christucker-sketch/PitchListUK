@@ -4,7 +4,7 @@ import { canadaDiscoveryQueries, CA_DISCOVERY_PLAN_SIZE, nextCanadaDiscoveryOffs
 import { evaluateCanadaSourceEvidence } from './ca-source-evidence.mjs';
 
 const MAX_RESULTS_PER_QUERY = 8;
-const MAX_CANDIDATES = 32;
+const MAX_CANDIDATES = 48;
 const MAX_BODY_BYTES = 240000;
 const MAX_REDIRECTS = 3;
 const INTERNAL_SERPER_URL = 'https://findpitches-serper.internal/search';
@@ -41,7 +41,7 @@ async function timedFetch(fetchImpl, url, init = {}, timeoutMs = 15000) {
 
 async function fetchCandidatePage(fetchImpl, value, timeoutMs, redirects = 0) {
   const url = canonicalHttpsUrl(value);
-  const response = await timedFetch(fetchImpl, url, { redirect: 'manual', headers: { 'user-agent': 'FindPitches-Canada-Acquisition/1.0' } }, timeoutMs);
+  const response = await timedFetch(fetchImpl, url, { redirect: 'manual', headers: { 'user-agent': 'FindPitches-Canada-Acquisition/2.0' } }, timeoutMs);
   if (response.status >= 300 && response.status < 400 && response.headers?.get('location')) {
     if (redirects >= MAX_REDIRECTS) throw new Error('canada_candidate_redirect_limit');
     const next = new URL(response.headers.get('location'), url).toString();
@@ -73,12 +73,13 @@ function stableSourceId(regionCode, url) {
 
 function toApprovedSource(result, plan, page, evidence, now) {
   const sourceUrl = evidence.source_url || page.url;
+  const sourceClass = evidence.source_class || 'event-organiser';
   return Object.freeze({
     id: stableSourceId(evidence.region_code, sourceUrl),
     name: String(result.title || `${evidence.region_name} vendor opportunity`).trim(),
     source_url: sourceUrl,
     application_url: evidence.application_url || sourceUrl,
-    source_class: 'public-service',
+    source_class: sourceClass,
     country_code: 'CA',
     jurisdiction: evidence.jurisdiction,
     region_code: evidence.region_code,
@@ -86,15 +87,15 @@ function toApprovedSource(result, plan, page, evidence, now) {
     status: 'approved-pilot',
     discovered_at: now,
     discovery_query: plan.query,
-    evidence: `Cloudflare Canada discovery ${plan.template_id}: official public-service route attests ${evidence.region_name} and actionable vendor application evidence.`
+    evidence: `Cloudflare Canada opportunity-first discovery ${plan.template_id}: ${evidence.reason}; route attests ${evidence.region_name} and actionable vendor application evidence.`
   });
 }
 
 export async function runCanadaSourceDiscovery(env, payload = {}, options = {}) {
   const queryOffset = Math.max(0, Number(payload.query_offset || 0)) % CA_DISCOVERY_PLAN_SIZE;
   const queryLimit = Math.min(12, Math.max(1, Number(payload.query_limit || 4)));
-  const resultsPerQuery = Math.min(MAX_RESULTS_PER_QUERY, Math.max(1, Number(payload.results_per_query || 5)));
-  const candidateLimit = Math.min(MAX_CANDIDATES, Math.max(1, Number(payload.candidate_limit || 24)));
+  const resultsPerQuery = Math.min(MAX_RESULTS_PER_QUERY, Math.max(1, Number(payload.results_per_query || 8)));
+  const candidateLimit = Math.min(MAX_CANDIDATES, Math.max(1, Number(payload.candidate_limit || 40)));
   const timeoutMs = Math.min(30000, Math.max(1000, Number(payload.timeout_ms || 15000)));
   const generatedAt = String(payload.as_of || new Date().toISOString());
   const plans = canadaDiscoveryQueries({ offset: queryOffset, limit: queryLimit });
@@ -103,8 +104,10 @@ export async function runCanadaSourceDiscovery(env, payload = {}, options = {}) 
 
   const candidates = [];
   const seen = new Set();
+  let resultsSeen = 0;
   for (const plan of plans) {
     const results = await search(plan.query, resultsPerQuery);
+    resultsSeen += results.length;
     for (const raw of results) {
       let url;
       try { url = canonicalHttpsUrl(raw.link || raw.url); } catch { continue; }
@@ -147,16 +150,22 @@ export async function runCanadaSourceDiscovery(env, payload = {}, options = {}) 
   return Object.freeze({
     country: 'CA',
     mode: 'ca_source_discovery',
+    discovery_strategy: 'opportunity_first_with_source_promotion',
     generated_at: generatedAt,
     query_offset: queryOffset,
     next_query_offset: nextOffset,
     query_count: plans.length,
     plan_size: CA_DISCOVERY_PLAN_SIZE,
     serper_credits_used: plans.length,
+    search_results: resultsSeen,
     search_candidates: candidates.length,
+    unique_routes_considered: seen.size,
     approved_source_count: uniqueApproved.length,
+    deterministic_first_party_count: uniqueApproved.filter(source => source.source_class === 'event-organiser').length,
+    public_service_count: uniqueApproved.filter(source => source.source_class === 'public-service').length,
     manual_review_count: review.length,
     held_count: held.length,
+    growth_health: uniqueApproved.length > 0 ? 'productive' : (resultsSeen > 0 ? 'zero_yield' : 'no_search_results'),
     approved_sources: Object.freeze(uniqueApproved),
     review_queue: Object.freeze(review),
     held: Object.freeze(held),
