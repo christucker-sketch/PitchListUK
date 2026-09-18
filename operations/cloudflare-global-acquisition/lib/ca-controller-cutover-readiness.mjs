@@ -33,7 +33,7 @@ export function globalCaCutoverFlagEnabled(env = {}) {
   return String(env.GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED || '').trim().toLowerCase() === 'true';
 }
 
-async function boundedGithubJson(env, path, timeoutMs = 15000) {
+export async function boundedGithubJson(env, path, timeoutMs = 15000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(new Error(`ca_readiness_github_timeout:${path}`)), timeoutMs);
   try {
