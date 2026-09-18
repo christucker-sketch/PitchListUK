@@ -113,9 +113,26 @@ test('Canada readiness GitHub reads abort instead of hanging indefinitely', asyn
   });
   try {
     await assert.rejects(
-      () => boundedGithubJson({ GITHUB_REPO: 'example/repo', GITHUB_TOKEN: 'fixture' }, '/git/ref/heads/main', 10),
+      () => boundedGithubJson({ GITHUB_REPO: 'example/repo' }, '/git/ref/heads/main', 10),
       /ca_readiness_github_timeout|aborted/
     );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('Canada readiness public GitHub reads do not require a write token', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (_url, options = {}) => {
+    assert.equal(options.headers.authorization, undefined);
+    return new Response(JSON.stringify({ object: { sha: 'a'.repeat(40) } }), {
+      status: 200,
+      headers: { 'content-type': 'application/json' }
+    });
+  };
+  try {
+    const body = await boundedGithubJson({ GITHUB_REPO: 'example/repo' }, '/git/ref/heads/main', 100);
+    assert.equal(body.object.sha, 'a'.repeat(40));
   } finally {
     globalThis.fetch = originalFetch;
   }
