@@ -1,4 +1,11 @@
+import { acquireBatch } from '../../../platform/findpitches-v2/engine/acquire-batch.mjs';
+import { createDefaultCandidateEvaluator } from '../../../platform/findpitches-v2/engine/evaluator.mjs';
+import { createHttpFetchProvider } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
+import { createSerperSearchProvider } from '../../../platform/findpitches-v2/providers/search/serper.mjs';
+import { persistBatchResult, recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
+
 const SERVICE = 'findpitches-v2-shadow';
+const QUERY_LIMIT = 4;
 
 export default {
   async fetch(request, env) {
@@ -33,6 +40,7 @@ async function health(env) {
       mode: env.FINDPITCHES_V2_MODE || 'unknown',
       markets: String(env.FINDPITCHES_V2_MARKETS || '').split(',').filter(Boolean),
       database: 'isolated',
+      search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
       publication_enabled: false,
       legacy_runtime_dependency: false,
       local_runtime_dependency: false
@@ -47,18 +55,29 @@ async function health(env) {
 }
 
 async function status(env) {
-  const [runs, candidates, jobs, publication] = await Promise.all([
+  const [runs, candidates, jobs, publication, latestRun] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
-    count(env, 'publication_queue')
+    count(env, 'publication_queue'),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT run_id, market, region_code, status, query_count, search_results,
+              unique_candidates, validated, duplicates, held, rejected,
+              started_at, completed_at, error_code
+         FROM acquisition_runs
+        ORDER BY started_at DESC
+        LIMIT 1`
+    ).first()
   ]);
 
   return Response.json({
     ok: true,
     service: SERVICE,
     mode: env.FINDPITCHES_V2_MODE || 'unknown',
-    counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication }
+    search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
+    publication_enabled: false,
+    counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication },
+    latest_run: latestRun || null
   });
 }
 
@@ -95,30 +114,104 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
   }
 
   const runId = crypto.randomUUID();
-  await env.FINDPITCHES_DB.prepare(
-    `INSERT INTO acquisition_runs (
-       run_id, market, region_code, status, started_at, completed_at
-     ) VALUES (?, ?, ?, 'shadow_scheduler_probe', ?, ?)`
-  ).bind(runId, job.market, job.region_code, timestamp, timestamp).run();
+  const searchKey = String(env.FINDPITCHES_SEARCH_API_KEY || '').trim();
 
-  const nextAvailable = new Date(now.getTime() + 15 * 60 * 1000).toISOString();
-  await env.FINDPITCHES_DB.prepare(
+  if (!searchKey) {
+    await env.FINDPITCHES_DB.prepare(
+      `INSERT INTO acquisition_runs (
+        run_id, market, region_code, status, error_code, started_at, completed_at
+      ) VALUES (?, ?, ?, 'waiting_search_secret', 'search_secret_not_configured', ?, ?)`
+    ).bind(runId, job.market, job.region_code, timestamp, timestamp).run();
+
+    await requeueJob(env.FINDPITCHES_DB, job.id, now, 15, 'search_secret_not_configured');
+
+    return {
+      ok: true,
+      service: SERVICE,
+      trigger,
+      phase: 'waiting_search_secret',
+      run_id: runId,
+      market: job.market,
+      region_code: job.region_code,
+      publication_attempted: false,
+      at: timestamp
+    };
+  }
+
+  try {
+    const fetchProvider = createHttpFetchProvider();
+    const searchProvider = createSerperSearchProvider({ apiKey: searchKey, resultsPerQuery: 8 });
+    const evaluateCandidate = createDefaultCandidateEvaluator({ fetchProvider });
+
+    const result = await acquireBatch({
+      market: job.market,
+      region_code: job.region_code,
+      location: job.location,
+      query_limit: QUERY_LIMIT
+    }, {
+      searchProvider,
+      evaluateCandidate
+    });
+
+    const persisted = await persistBatchResult(
+      env.FINDPITCHES_DB,
+      { ...job, run_id: runId },
+      result
+    );
+
+    await requeueJob(env.FINDPITCHES_DB, job.id, now, 15, null);
+
+    return {
+      ok: true,
+      service: SERVICE,
+      trigger,
+      phase: 'shadow_acquisition_complete',
+      run_id: persisted.run_id,
+      market: result.market,
+      region_code: result.region,
+      metrics: result.metrics,
+      stored_candidates: persisted.stored_candidates,
+      publishable_candidates: persisted.publishable_candidates,
+      publication_queued: 0,
+      publication_attempted: false,
+      at: timestamp
+    };
+  } catch (error) {
+    await recordRunFailure(env.FINDPITCHES_DB, {
+      runId,
+      market: job.market,
+      regionCode: job.region_code,
+      error,
+      startedAt: timestamp,
+      completedAt: new Date().toISOString()
+    });
+
+    await requeueJob(env.FINDPITCHES_DB, job.id, now, 30, String(error?.message || error));
+
+    return {
+      ok: false,
+      service: SERVICE,
+      trigger,
+      phase: 'shadow_acquisition_failed',
+      run_id: runId,
+      market: job.market,
+      region_code: job.region_code,
+      error: String(error?.message || error),
+      publication_attempted: false,
+      at: timestamp
+    };
+  }
+}
+
+async function requeueJob(db, jobId, now, delayMinutes, lastError) {
+  const availableAt = new Date(now.getTime() + delayMinutes * 60 * 1000).toISOString();
+  await db.prepare(
     `UPDATE scheduler_jobs
-        SET status = 'ready', available_at = ?, lease_until = NULL, updated_at = ?
+        SET status = 'ready',
+            available_at = ?,
+            lease_until = NULL,
+            last_error = ?,
+            updated_at = ?
       WHERE id = ?`
-  ).bind(nextAvailable, timestamp, job.id).run();
-
-  return {
-    ok: true,
-    service: SERVICE,
-    trigger,
-    phase: 'shadow_scheduler_probe',
-    run_id: runId,
-    market: job.market,
-    region_code: job.region_code,
-    location: job.location,
-    query_group: Number(job.query_group || 0),
-    publication_attempted: false,
-    at: timestamp
-  };
+  ).bind(availableAt, lastError, new Date().toISOString(), jobId).run();
 }
