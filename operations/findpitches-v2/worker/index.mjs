@@ -2,6 +2,7 @@ import { acquireBatch } from '../../../platform/findpitches-v2/engine/acquire-ba
 import { createDefaultCandidateEvaluator } from '../../../platform/findpitches-v2/engine/evaluator.mjs';
 import { createHttpFetchProvider } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
 import { createSerperSearchProvider } from '../../../platform/findpitches-v2/providers/search/serper.mjs';
+import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
 import { persistBatchResult, recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
 
 const SERVICE = 'findpitches-v2-shadow';
@@ -55,7 +56,7 @@ async function health(env) {
 }
 
 async function status(env) {
-  const [runs, candidates, jobs, publication, latestRun] = await Promise.all([
+  const [runs, candidates, jobs, publication, latestRun, marketRows, catalogueMeta] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
@@ -67,6 +68,20 @@ async function status(env) {
          FROM acquisition_runs
         ORDER BY started_at DESC
         LIMIT 1`
+    ).first(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT market,
+              COUNT(*) AS jobs,
+              SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) AS ready_jobs,
+              MIN(CASE WHEN status = 'ready' THEN available_at ELSE NULL END) AS next_available
+         FROM scheduler_jobs
+        GROUP BY market
+        ORDER BY market`
+    ).all(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT value, updated_at
+         FROM runtime_meta
+        WHERE key = 'geography_catalog_version'`
     ).first()
   ]);
 
@@ -76,7 +91,9 @@ async function status(env) {
     mode: env.FINDPITCHES_V2_MODE || 'unknown',
     search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
     publication_enabled: false,
+    catalogue: catalogueMeta || null,
     counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication },
+    markets: Array.isArray(marketRows?.results) ? marketRows.results : [],
     latest_run: latestRun || null
   });
 }
@@ -90,16 +107,31 @@ async function count(env, table) {
 
 export async function runShadowTick(env, { trigger = 'unknown', now = new Date() } = {}) {
   const timestamp = now.toISOString();
+  const catalogue = await ensureSchedulerCatalogue(env.FINDPITCHES_DB, { now });
+  const searchKey = String(env.FINDPITCHES_SEARCH_API_KEY || '').trim();
+
+  if (!searchKey) {
+    return {
+      ok: true,
+      service: SERVICE,
+      trigger,
+      phase: 'waiting_search_secret',
+      catalogue,
+      publication_attempted: false,
+      at: timestamp
+    };
+  }
+
   const job = await env.FINDPITCHES_DB.prepare(
     `SELECT id, market, region_code, location, query_group, attempts
        FROM scheduler_jobs
       WHERE status = 'ready' AND available_at <= ?
-      ORDER BY priority DESC, available_at ASC, id ASC
+      ORDER BY available_at ASC, id ASC
       LIMIT 1`
   ).bind(timestamp).first();
 
   if (!job) {
-    return { ok: true, service: SERVICE, trigger, phase: 'idle', at: timestamp };
+    return { ok: true, service: SERVICE, trigger, phase: 'idle', catalogue, at: timestamp };
   }
 
   const leaseUntil = new Date(now.getTime() + 4 * 60 * 1000).toISOString();
@@ -110,33 +142,10 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
   ).bind(leaseUntil, timestamp, job.id).run();
 
   if (Number(claim?.meta?.changes || 0) !== 1) {
-    return { ok: true, service: SERVICE, trigger, phase: 'claim_raced', job_id: job.id, at: timestamp };
+    return { ok: true, service: SERVICE, trigger, phase: 'claim_raced', job_id: job.id, catalogue, at: timestamp };
   }
 
   const runId = crypto.randomUUID();
-  const searchKey = String(env.FINDPITCHES_SEARCH_API_KEY || '').trim();
-
-  if (!searchKey) {
-    await env.FINDPITCHES_DB.prepare(
-      `INSERT INTO acquisition_runs (
-        run_id, market, region_code, status, error_code, started_at, completed_at
-      ) VALUES (?, ?, ?, 'waiting_search_secret', 'search_secret_not_configured', ?, ?)`
-    ).bind(runId, job.market, job.region_code, timestamp, timestamp).run();
-
-    await requeueJob(env.FINDPITCHES_DB, job.id, now, 15, 'search_secret_not_configured');
-
-    return {
-      ok: true,
-      service: SERVICE,
-      trigger,
-      phase: 'waiting_search_secret',
-      run_id: runId,
-      market: job.market,
-      region_code: job.region_code,
-      publication_attempted: false,
-      at: timestamp
-    };
-  }
 
   try {
     const fetchProvider = createHttpFetchProvider();
@@ -174,6 +183,7 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
       publishable_candidates: persisted.publishable_candidates,
       publication_queued: 0,
       publication_attempted: false,
+      catalogue,
       at: timestamp
     };
   } catch (error) {
@@ -198,6 +208,7 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
       region_code: job.region_code,
       error: String(error?.message || error),
       publication_attempted: false,
+      catalogue,
       at: timestamp
     };
   }

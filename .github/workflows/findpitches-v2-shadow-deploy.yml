@@ -65,10 +65,14 @@ jobs:
             echo "::warning title=FindPitches v2 search secret not configured::Shadow runtime is healthy but discovery will remain paused until FINDPITCHES_SEARCH_API_KEY is supplied."
           fi
 
-      - name: Apply isolated D1 schema
+      - name: Apply isolated D1 migrations
+        shell: bash
         run: |
-          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file operations/findpitches-v2/migrations/0001_core.sql --config "$CONFIG"
-          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file operations/findpitches-v2/migrations/0002_seed_shadow_pilots.sql --config "$CONFIG"
+          set -euo pipefail
+          for migration in operations/findpitches-v2/migrations/*.sql; do
+            echo "Applying $migration"
+            npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file "$migration" --config "$CONFIG"
+          done
 
       - name: Prove isolated cloud runtime
         shell: bash
