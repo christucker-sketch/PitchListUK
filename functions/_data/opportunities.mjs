@@ -1,7 +1,7 @@
 export const opportunitySnapshot = {
   "exported_at": "2026-09-19T08:55:59Z",
-  "source": "global-uk-approved-additions:6ca981c02372c971d97be2c691589b24814226e55264df5f2748cfa53fcb241b",
-  "total": 291,
+  "source": "operator-reviewed:uk-growth-repair-2026-09-19",
+  "total": 290,
   "rows": [
     {
       "id": "OPP-00495",
@@ -10145,37 +10145,6 @@ export const opportunitySnapshot = {
       "coordinate_source": "area-centroid",
       "coordinate_precision": "area",
       "coordinate_label": "Essex"
-    },
-    {
-      "id": "opp_5a357ca5a3788b2a5dfc",
-      "event_name": "Market stall licence - GOV.UK",
-      "organiser": "Market stall licence - GOV.UK",
-      "location": "South East England",
-      "county": "South East England",
-      "region": "South East England",
-      "event_start": "",
-      "event_end": "",
-      "application_deadline": "",
-      "stall_fee": "",
-      "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
-      "last_checked": "2026-09-19",
-      "freshness_status": "fresh",
-      "freshness_age_days": 0,
-      "confidence": "medium",
-      "quality_status": "customer_ready",
-      "publishable": true,
-      "area_confidence": "region",
-      "route_type": "recurring_market",
-      "organiser_type": "market_operator",
-      "country": "United Kingdom",
-      "jurisdiction": "GB",
-      "currency": "GBP",
-      "market_domain": "pitchlist.uk",
-      "tax_region": "UK",
-      "buyer_fit_tags": "food traders;stallholders;exhibitors;event concessions",
-      "notes": "Automatically staged from a directly fetched, approved first-party source on 2026-09-19.",
-      "application_url": "https://gov.uk/find-licences/market-stall-licence",
-      "source_url": "https://gov.uk/find-licences/market-stall-licence"
     }
   ]
 };
