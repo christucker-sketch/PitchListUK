@@ -74,22 +74,38 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          health="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/health)"
-          jq -e '
-            .ok == true and
-            .service == "findpitches-v2-shadow" and
-            .mode == "shadow" and
-            .database == "isolated" and
-            (.search_configured | type == "boolean") and
-            .publication_enabled == false and
-            .legacy_runtime_dependency == false and
-            .local_runtime_dependency == false
-          ' <<<"$health" >/dev/null
 
-          status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/status)"
-          jq -e '
-            .ok == true and
-            (.search_configured | type == "boolean") and
-            .publication_enabled == false and
-            .counts.scheduler_jobs >= 3
-          ' <<<"$status" >/dev/null
+          passed=false
+          for attempt in $(seq 1 15); do
+            health="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/health || true)"
+            status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/status || true)"
+
+            if jq -e '
+              .ok == true and
+              .service == "findpitches-v2-shadow" and
+              .mode == "shadow" and
+              .database == "isolated" and
+              (.search_configured | type == "boolean") and
+              .publication_enabled == false and
+              .legacy_runtime_dependency == false and
+              .local_runtime_dependency == false
+            ' <<<"$health" >/dev/null 2>&1 && jq -e '
+              .ok == true and
+              (.search_configured | type == "boolean") and
+              .publication_enabled == false and
+              .counts.scheduler_jobs >= 3
+            ' <<<"$status" >/dev/null 2>&1; then
+              passed=true
+              break
+            fi
+
+            sleep 2
+          done
+
+          if [[ "$passed" != "true" ]]; then
+            echo "Final health response:" >&2
+            printf '%s\n' "$health" >&2
+            echo "Final status response:" >&2
+            printf '%s\n' "$status" >&2
+            exit 1
+          fi
