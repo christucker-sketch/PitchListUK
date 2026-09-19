@@ -9,12 +9,14 @@ on:
       - 'operations/findpitches-v2/**'
       - 'tests/findpitches-v2/**'
       - '.github/workflows/findpitches-v2-ci.yml'
+      - '.github/workflows/findpitches-v2-shadow-deploy.yml'
   pull_request:
     paths:
       - 'platform/findpitches-v2/**'
       - 'operations/findpitches-v2/**'
       - 'tests/findpitches-v2/**'
       - '.github/workflows/findpitches-v2-ci.yml'
+      - '.github/workflows/findpitches-v2-shadow-deploy.yml'
 
 permissions:
   contents: read
