@@ -1,0 +1,22 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "findpitches-v2-shadow",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2026-09-19",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": ["*/5 * * * *"]
+  },
+  "d1_databases": [
+    {
+      "binding": "FINDPITCHES_DB"
+    }
+  ],
+  "vars": {
+    "FINDPITCHES_V2_MODE": "shadow",
+    "FINDPITCHES_V2_MARKETS": "GB,US,CA"
+  }
+}
