@@ -1,5 +1,21 @@
 [
   {
+    "host": "biglovefestival.co.uk",
+    "organisation": "Food Trader Pitches at Big Love",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "London",
+    "opportunity_type": "food_trader_application",
+    "official_application_route": "https://biglovefestival.co.uk/contact/food-traders",
+    "recurring": false,
+    "recommended_polling_days": 30,
+    "opportunity_title": "Food Trader Pitches at Big Love",
+    "source_path_prefix": "/contact/food-traders",
+    "approval_evidence_hash": "7710bdd7604f645b97f8a66fa578181a1d44494d72986273fa103174b45da3c8",
+    "approval_decision": "approved_deterministic_first_party_live_trader_route",
+    "approval_manifest_hash": "b173baeb870440bbb7293883e2251db9b0d4ad5172f32aa752059077ce4d48a5"
+  },
+  {
     "host": "boroughmarket.org.uk",
     "organisation": "Borough Market",
     "type": "event-organiser",
@@ -80,6 +96,22 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
+    "host": "foodanddrinkfestivalsuk.co.uk",
+    "organisation": "FOOD AND DRINK FESTIVAL UK",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "London",
+    "opportunity_type": "festival_trader_application",
+    "official_application_route": "https://foodanddrinkfestivalsuk.co.uk/food-and-drink-festival-application-colchester",
+    "recurring": false,
+    "recommended_polling_days": 30,
+    "opportunity_title": "FOOD AND DRINK FESTIVAL UK",
+    "source_path_prefix": "/food-and-drink-festival-application-colchester",
+    "approval_evidence_hash": "c87d62c70c1697bc3e90116ae8334a7ea751efe23fb15ec16ddb87a022a04cc9",
+    "approval_decision": "approved_deterministic_first_party_live_trader_route",
+    "approval_manifest_hash": "b173baeb870440bbb7293883e2251db9b0d4ad5172f32aa752059077ce4d48a5"
+  },
+  {
     "host": "greenwichmarket.london",
     "organisation": "Greenwich Market",
     "type": "event-organiser",
@@ -110,6 +142,38 @@
     "approval_evidence_hash": "79dc8bf4ca1596de56cb81cf7133649eb1848b9e3860ca18bb6bda25e031a061",
     "approval_decision": "approved_by_human_review:live_stallholder_application_26_29_november_2026",
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
+  },
+  {
+    "host": "holdstorage.co.uk",
+    "organisation": "Greenwich Market: Visitors Guide & Setting Up a Stall",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "London",
+    "opportunity_type": "christmas_market",
+    "official_application_route": "https://holdstorage.co.uk/blog/greenwich-market-guide",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Greenwich Market: Visitors Guide & Setting Up a Stall",
+    "source_path_prefix": "/blog/greenwich-market-guide",
+    "approval_evidence_hash": "1598318b15ed685e395523401e8060536aadc8296bab6c78b7e9d782853dfe15",
+    "approval_decision": "approved_deterministic_first_party_live_trader_route",
+    "approval_manifest_hash": "b173baeb870440bbb7293883e2251db9b0d4ad5172f32aa752059077ce4d48a5"
+  },
+  {
+    "host": "islington.gov.uk",
+    "organisation": "Market trading licences | Islington Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "London",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://islington.gov.uk/business/licences-permits-registration/trading-on-our-streets/market-trading",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Market trading licences | Islington Council",
+    "source_path_prefix": "/business/licences-permits-registration/trading-on-our-streets/market-trading",
+    "approval_evidence_hash": "3768147e783c175dc7a5a31669e0777535258119cd68335a19c89c6ffe4ab680",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "b173baeb870440bbb7293883e2251db9b0d4ad5172f32aa752059077ce4d48a5"
   },
   {
     "host": "lambeth.gov.uk",
@@ -144,6 +208,22 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
+    "host": "lewisham.gov.uk",
+    "organisation": "Street trading and markets licences - Lewisham Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "London",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://lewisham.gov.uk/myservices/business/licences-and-street-trading/other-licences/street-trading-licences/street-trading-and-markets-licences",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Street trading and markets licences - Lewisham Council",
+    "source_path_prefix": "/myservices/business/licences-and-street-trading/other-licences/street-trading-licences/street-trading-and-markets-licences",
+    "approval_evidence_hash": "216249f603fe002902d004defc53ffccd9f2da9047ffd4966bab4af23206c57f",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "b173baeb870440bbb7293883e2251db9b0d4ad5172f32aa752059077ce4d48a5"
+  },
+  {
     "host": "lovewimbledon.org",
     "organisation": "Love Wimbledon",
     "type": "event-organiser",
@@ -176,6 +256,22 @@
     "approval_manifest_hash": "4af0fddb5f7c99ecdb8fd808a4df631397913add4e9a7db7489106cdad9bbab6"
   },
   {
+    "host": "nationalcareers.service.gov.uk",
+    "organisation": "Market trader | Explore Careers",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "London",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://nationalcareers.service.gov.uk/job-profiles/market-trader",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Market trader | Explore Careers",
+    "source_path_prefix": "/job-profiles/market-trader",
+    "approval_evidence_hash": "28ed3b5ab1ec56408b63f426a830efa2512a2d0d903b77bb7c53f6eb1e5ac873",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "b173baeb870440bbb7293883e2251db9b0d4ad5172f32aa752059077ce4d48a5"
+  },
+  {
     "host": "portsmouth.gov.uk",
     "organisation": "Portsmouth City Council",
     "type": "local-authority",
@@ -206,6 +302,22 @@
     "approval_evidence_hash": "485e1d8df21a3e5d0193b39c6416014810c94fc7d25d51c98ce3019908439491",
     "approval_decision": "approved_by_human_review",
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
+  },
+  {
+    "host": "royalgreenwich.gov.uk",
+    "organisation": "Apply for a market trader licence",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "London",
+    "opportunity_type": "food_trader_application",
+    "official_application_route": "https://royalgreenwich.gov.uk/business-and-licences/licences-permits/market-street-trading/apply-market-trader-licence/apply",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Apply for a market trader licence",
+    "source_path_prefix": "/business-and-licences/licences-permits/market-street-trading/apply-market-trader-licence/apply",
+    "approval_evidence_hash": "db1cb7451dfc70b336d2ed3c17b1a2ed0054c4e93c35eef74ad51ae0c0641b03",
+    "approval_decision": "approved_public_service_opportunity",
+    "approval_manifest_hash": "b173baeb870440bbb7293883e2251db9b0d4ad5172f32aa752059077ce4d48a5"
   },
   {
     "host": "stallholders.leicesterchristmasmarket.co.uk",
