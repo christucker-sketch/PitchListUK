@@ -1,11 +1,13 @@
 import sourceOnboardingLib from '../../opportunity-pipeline/lib/source-onboarding.js';
 import lanesLib from '../../opportunity-pipeline/acquisition/lanes.js';
 import safetyLib from '../../opportunity-pipeline/lib/opportunity-safety.js';
+import geoNormaliseLib from '../../opportunity-pipeline/lib/geo-normalise.js';
 import { searchViaSerperBroker } from './service-serper-search.mjs';
 
 const { STATUS, PLATFORM_HOST, NON_SOURCE_HOST, classifySourceCandidate } = sourceOnboardingLib;
 const { LANES } = lanesLib;
 const { canonicalUrl } = safetyLib;
+const { inferKnownCounty } = geoNormaliseLib;
 
 const MAX_BODY_BYTES = 240000;
 const MAX_REDIRECTS = 3;
@@ -206,6 +208,7 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
       held.push(Object.freeze({ route: page.url || item.result.url, query_id: item.plan.id, reason: 'non_actionable_or_informational_result' }));
       continue;
     }
+    const inferredGeography = inferKnownCounty(item.result.title, item.result.snippet, page.text, page.url || item.result.url);
     const classified = promoteCandidate(classifySourceCandidate({
       url: page.url || item.result.url,
       title: item.result.title,
@@ -213,7 +216,7 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
       page_text: page.text,
       organisation: organisation(item.result, page.url || item.result.url),
       organiser_type: /\.gov\.uk$/i.test(host) ? 'local-authority' : 'event-organiser',
-      geographic_coverage: item.plan.region,
+      geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : item.plan.region,
       opportunity_type: inferOpportunityType(`${item.plan.query} ${item.result.title || ''} ${item.result.snippet || ''} ${page.text || ''}`),
       discovery_query: item.plan.query,
       discovered_at: now,

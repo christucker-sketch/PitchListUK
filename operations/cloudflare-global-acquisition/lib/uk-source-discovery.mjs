@@ -1,11 +1,13 @@
 import sourceDiscoveryLib from '../../opportunity-pipeline/acquisition/source-discovery.js';
 import sourceOnboardingLib from '../../opportunity-pipeline/lib/source-onboarding.js';
 import safetyLib from '../../opportunity-pipeline/lib/opportunity-safety.js';
+import geoNormaliseLib from '../../opportunity-pipeline/lib/geo-normalise.js';
 import { discoverUkDirectSourceGraph } from './uk-direct-source-graph.mjs';
 
 const { discoveryQueries } = sourceDiscoveryLib;
 const { STATUS, PLATFORM_HOST, NON_SOURCE_HOST, classifySourceCandidate } = sourceOnboardingLib;
 const { canonicalUrl } = safetyLib;
+const { inferKnownCounty } = geoNormaliseLib;
 
 const DEFAULT_QUERY_LIMIT = 8;
 const MAX_QUERY_LIMIT = 12;
@@ -141,11 +143,12 @@ function candidateInput(outcome, now) {
   const route = canonicalUrl(outcome.final_url || result.url);
   let host = '';
   try { host = new URL(route).hostname.replace(/^www\./, ''); } catch {}
+  const inferredGeography = inferKnownCounty(result.title, result.snippet, pageText, route);
   return {
     url: route, title: result.title, snippet: result.snippet, page_text: pageText,
     organisation: inferOrganisation(result.title, host),
     organiser_type: /\.gov\.uk$/i.test(host) ? 'local-authority' : 'event-organiser',
-    geographic_coverage: outcome.plan?.region || '',
+    geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : (outcome.plan?.region || ''),
     opportunity_type: inferOpportunityType(`${outcome.plan?.query || ''} ${result.title || ''} ${result.snippet || ''}`),
     discovery_query: outcome.plan?.query || result.query || '', discovered_at: now,
     first_party_evidence: /\.gov\.uk$/i.test(host) ? `Official public-service host ${host}` : `Retrieved canonical host ${host}`,
@@ -157,11 +160,21 @@ function candidateInput(outcome, now) {
   };
 }
 
+export function isUkLiveSourceRouteCandidate(value) {
+  let parsed;
+  try { parsed = new URL(String(value || '')); } catch { return false; }
+  const host = parsed.hostname.toLowerCase().replace(/^www\./, '');
+  if (host === 'gov.uk') return false;
+  if (/\/job-profiles?(?:\/|$)/i.test(parsed.pathname)) return false;
+  return true;
+}
+
 export function autoApprovePublicServiceCandidates(candidates = [], options = {}) {
   const now = options.now || new Date().toISOString();
   return candidates.map(item => item.classification === STATUS.AUTO
     && item.approval_status === 'pending'
     && !/trusted-source graph/i.test(String(item.geographic_coverage || ''))
+    && isUkLiveSourceRouteCandidate(item.canonical_route)
     ? Object.freeze({ ...item, approval_status: 'approved', reviewer_decision: 'approved_unambiguous_public_service_first_party', reviewer: 'FindPitches Cloudflare deterministic source automation', decision_timestamp: now })
     : item);
 }
