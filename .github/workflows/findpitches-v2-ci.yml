@@ -1,0 +1,59 @@
+name: FindPitches v2 CI
+
+on:
+  push:
+    branches:
+      - 'findpitches-v2/**'
+    paths:
+      - 'platform/findpitches-v2/**'
+      - 'operations/findpitches-v2/**'
+      - 'tests/findpitches-v2/**'
+      - '.github/workflows/findpitches-v2-ci.yml'
+  pull_request:
+    paths:
+      - 'platform/findpitches-v2/**'
+      - 'operations/findpitches-v2/**'
+      - 'tests/findpitches-v2/**'
+      - '.github/workflows/findpitches-v2-ci.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run FindPitches v2 tests
+        run: node --test tests/findpitches-v2/*.test.mjs
+
+      - name: Validate fresh D1 schema
+        run: |
+          sqlite3 /tmp/findpitches-v2.db < operations/findpitches-v2/migrations/0001_core.sql
+          sqlite3 /tmp/findpitches-v2.db ".tables"
+
+      - name: Reject accidental production dataset changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only origin/main...HEAD)"
+          if grep -Eq '^(functions/_data/|public/index\.html$)' <<<"$changed"; then
+            echo "FindPitches v2 foundation must not modify production datasets or homepage." >&2
+            exit 1
+          fi
