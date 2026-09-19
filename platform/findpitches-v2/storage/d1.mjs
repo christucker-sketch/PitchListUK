@@ -10,7 +10,7 @@ export async function persistBatchResult(db, job, result) {
       run_id, market, region_code, status, query_count, search_results,
       unique_candidates, validated, duplicates, held, rejected, queued,
       published, started_at, completed_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)`
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?)`
   ).bind(
     runId,
     result.market,
@@ -23,7 +23,6 @@ export async function persistBatchResult(db, job, result) {
     Number(result.metrics?.duplicates || 0),
     Number(result.metrics?.held || 0),
     Number(result.metrics?.rejected || 0),
-    Number(result.metrics?.publishable || 0),
     startedAt,
     completedAt
   ).run();
@@ -96,7 +95,12 @@ export async function persistBatchResult(db, job, result) {
     ).run();
   }
 
-  return Object.freeze({ run_id: runId, stored_candidates: storedCandidates });
+  return Object.freeze({
+    run_id: runId,
+    stored_candidates: storedCandidates,
+    publishable_candidates: Number(result.metrics?.publishable || 0),
+    publication_queued: 0
+  });
 }
 
 export async function recordRunFailure(db, {
