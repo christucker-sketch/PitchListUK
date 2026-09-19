@@ -43,10 +43,18 @@ jobs:
       - name: Run FindPitches v2 tests
         run: node --test tests/findpitches-v2/*.test.mjs
 
-      - name: Validate fresh D1 schema
+      - name: Validate fresh D1 migrations
+        shell: bash
         run: |
-          sqlite3 /tmp/findpitches-v2.db < operations/findpitches-v2/migrations/0001_core.sql
+          set -euo pipefail
+          rm -f /tmp/findpitches-v2.db
+          for migration in operations/findpitches-v2/migrations/*.sql; do
+            sqlite3 /tmp/findpitches-v2.db < "$migration"
+          done
           sqlite3 /tmp/findpitches-v2.db ".tables"
+
+      - name: Compile isolated FindPitches v2 Worker
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/findpitches-v2/wrangler.jsonc
 
       - name: Reject accidental production dataset changes
         shell: bash
@@ -54,6 +62,6 @@ jobs:
           set -euo pipefail
           changed="$(git diff --name-only origin/main...HEAD)"
           if grep -Eq '^(functions/_data/|public/index\.html$)' <<<"$changed"; then
-            echo "FindPitches v2 foundation must not modify production datasets or homepage." >&2
+            echo "FindPitches v2 must not modify production datasets or homepage during shadow development." >&2
             exit 1
           fi
