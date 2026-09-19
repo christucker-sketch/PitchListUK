@@ -1,5 +1,37 @@
 [
   {
+    "host": "biglovefestival.co.uk",
+    "organisation": "Food Trader Pitches at Big Love",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "Buckinghamshire",
+    "opportunity_type": "food_trader_application",
+    "official_application_route": "https://biglovefestival.co.uk/contact/food-traders",
+    "recurring": false,
+    "recommended_polling_days": 30,
+    "opportunity_title": "Food Trader Pitches at Big Love",
+    "source_path_prefix": "/contact/food-traders",
+    "approval_evidence_hash": "7710bdd7604f645b97f8a66fa578181a1d44494d72986273fa103174b45da3c8",
+    "approval_decision": "approved_deterministic_first_party_live_trader_route",
+    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
+  },
+  {
+    "host": "bluereeffestival.co.uk",
+    "organisation": "Caterers",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "Buckinghamshire",
+    "opportunity_type": "festival_trader_application",
+    "official_application_route": "https://bluereeffestival.co.uk/caterers",
+    "recurring": false,
+    "recommended_polling_days": 30,
+    "opportunity_title": "Caterers",
+    "source_path_prefix": "/caterers",
+    "approval_evidence_hash": "0bf79c3484e15098ea3095eb99ec8e1b8eef262de9d256ef68cfb357eb4fe94c",
+    "approval_decision": "approved_deterministic_first_party_live_trader_route",
+    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
+  },
+  {
     "host": "boroughmarket.org.uk",
     "organisation": "Borough Market",
     "type": "event-organiser",
@@ -78,6 +110,22 @@
     "approval_evidence_hash": "5640fbce685ea8bfefd6abb7847eb430adcec46aeecc3fa07519ca1c89dcc13a",
     "approval_decision": "approved_by_human_review:acton_market_w3_trader_route",
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
+  },
+  {
+    "host": "gov.uk",
+    "organisation": "Apply for authorisation for the UK Internal Market Scheme if you ...",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "Northern Ireland",
+    "opportunity_type": "christmas_market",
+    "official_application_route": "https://gov.uk/guidance/apply-for-authorisation-for-the-uk-internal-market-scheme-if-you-bring-goods-into-northern-ireland",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Apply for authorisation for the UK Internal Market Scheme if you ...",
+    "source_path_prefix": "/guidance/apply-for-authorisation-for-the-uk-internal-market-scheme-if-you-bring-goods-into-northern-ireland",
+    "approval_evidence_hash": "1f1c97f2b17708de8312cec2c2b3b4ad6e993ba9ab3fe1193de1da2a63b19002",
+    "approval_decision": "approved_deterministic_first_party_live_trader_route",
+    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
   },
   {
     "host": "greenwichmarket.london",
@@ -160,6 +208,22 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
+    "host": "lymingtonandpennington-tc.gov.uk",
+    "organisation": "Market Trader Application - Lymington and Pennington Town Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "Northern Ireland",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://lymingtonandpennington-tc.gov.uk/market-application",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Market Trader Application - Lymington and Pennington Town Council",
+    "source_path_prefix": "/market-application",
+    "approval_evidence_hash": "eee7704063c189125914d610a50566b2df3303423a5dedadb01731b92df59d16",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
+  },
+  {
     "host": "my.barnsley.gov.uk",
     "organisation": "Barnsley Council",
     "type": "local-authority",
@@ -174,6 +238,22 @@
     "approval_evidence_hash": "f55ce995cc1ecaafddec74a5a6485639e5e64cb61737d83c50ed7b73d7fc7c73",
     "approval_decision": "approved_unambiguous_public_service_first_party",
     "approval_manifest_hash": "4af0fddb5f7c99ecdb8fd808a4df631397913add4e9a7db7489106cdad9bbab6"
+  },
+  {
+    "host": "nationalcareers.service.gov.uk",
+    "organisation": "Market trader | Explore Careers",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "Northern Ireland",
+    "opportunity_type": "festival_trader_application",
+    "official_application_route": "https://nationalcareers.service.gov.uk/job-profiles/market-trader",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Market trader | Explore Careers",
+    "source_path_prefix": "/job-profiles/market-trader",
+    "approval_evidence_hash": "28ed3b5ab1ec56408b63f426a830efa2512a2d0d903b77bb7c53f6eb1e5ac873",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
   },
   {
     "host": "portsmouth.gov.uk",
@@ -222,5 +302,21 @@
     "approval_evidence_hash": "aed3389fa1c0f4f70f6896298b9b3421ab4f640df391ccce3c3430f674791ab0",
     "approval_decision": "approved_ai_review_exact_2026_first_party_stallholder_route",
     "approval_manifest_hash": "6796416eeba63bf826e68527777a620df4433aaeff43d35bb7ef2f826afaa643"
+  },
+  {
+    "host": "winchester.gov.uk",
+    "organisation": "Trading at the Winchester City Street Market",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "Northern Ireland",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://winchester.gov.uk/business/street-market-trading",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Trading at the Winchester City Street Market",
+    "source_path_prefix": "/business/street-market-trading",
+    "approval_evidence_hash": "5a4e45e70b36e6151936687023f21cd1da8fde00bf1545d3be368b293ad01ad0",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
   }
 ]
