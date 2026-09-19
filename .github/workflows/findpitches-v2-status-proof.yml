@@ -1,0 +1,94 @@
+name: FindPitches v2 Status Proof
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-status-proof
+  cancel-in-progress: true
+
+jobs:
+  prove:
+    name: prove
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Prove FindPitches v2 cloud health
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          health="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/health)"
+          status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/status)"
+
+          jq -e '
+            .ok == true and
+            .service == "findpitches-v2-shadow" and
+            .mode == "shadow" and
+            .database == "isolated" and
+            .publication_enabled == false and
+            .legacy_runtime_dependency == false and
+            .local_runtime_dependency == false
+          ' <<<"$health" >/dev/null
+
+          jq -e '
+            .ok == true and
+            .service == "findpitches-v2-shadow" and
+            .mode == "shadow" and
+            .publication_enabled == false and
+            .counts.scheduler_jobs >= 3
+          ' <<<"$status" >/dev/null
+
+          catalogue="$(jq -r '.catalogue.value // empty' <<<"$status")"
+          jobs="$(jq -r '.counts.scheduler_jobs // 0' <<<"$status")"
+          search_configured="$(jq -r '.search_configured // false' <<<"$status")"
+
+          if [[ -n "$catalogue" ]]; then
+            if [[ "$catalogue" != "2026-09-19.1" ]]; then
+              echo "::error title=FindPitches v2 catalogue mismatch::Expected geography catalogue 2026-09-19.1, got $catalogue"
+              exit 1
+            fi
+
+            if [[ "$jobs" -ne 111 ]]; then
+              echo "::error title=FindPitches v2 scheduler mismatch::Reconciled catalogue should contain 111 jobs, got $jobs"
+              exit 1
+            fi
+          fi
+
+          if [[ "$search_configured" != "true" ]]; then
+            echo "::warning title=FindPitches v2 search paused::Dedicated FINDPITCHES_SEARCH_API_KEY is not configured; cloud runtime is healthy but discovery is paused."
+          fi
+
+          {
+            echo "## FindPitches v2 cloud status"
+            echo
+            echo "- Service: $(jq -r '.service' <<<"$status")"
+            echo "- Mode: $(jq -r '.mode' <<<"$status")"
+            echo "- Search configured: $search_configured"
+            echo "- Publication enabled: $(jq -r '.publication_enabled' <<<"$status")"
+            echo "- Scheduler jobs: $jobs"
+            echo "- Acquisition runs: $(jq -r '.counts.runs' <<<"$status")"
+            echo "- Candidates: $(jq -r '.counts.candidates' <<<"$status")"
+            echo "- Publication queue: $(jq -r '.counts.publication_queue' <<<"$status")"
+            if [[ -n "$catalogue" ]]; then
+              echo "- Catalogue version: $catalogue"
+            else
+              echo "- Catalogue version: not reconciled yet"
+            fi
+            echo
+            echo "### Market scheduler"
+            echo '~~~json'
+            jq '.markets' <<<"$status"
+            echo '~~~'
+            echo
+            echo "### Latest run"
+            echo '~~~json'
+            jq '.latest_run' <<<"$status"
+            echo '~~~'
+          } >> "$GITHUB_STEP_SUMMARY"
