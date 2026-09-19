@@ -19,9 +19,10 @@ export async function ensureSchedulerCatalogue(db, { now = new Date() } = {}) {
   const schedule = roundRobinSchedule();
   const timestamp = now.toISOString();
 
-  await db.prepare(
-    "DELETE FROM scheduler_jobs WHERE id LIKE 'catalog:%'"
-  ).run();
+  await db.batch([
+    db.prepare("DELETE FROM scheduler_jobs WHERE id LIKE 'catalog:%'"),
+    db.prepare("DELETE FROM scheduler_jobs WHERE id LIKE 'shadow-%'")
+  ]);
 
   const statements = schedule.map((item, index) => {
     const sequence = String(index + 1).padStart(4, '0');
