@@ -12,6 +12,18 @@ const SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/us-growth-s
 const US_SNAPSHOT_PATH = 'functions/_data/us-opportunities.mjs';
 const CA_SNAPSHOT_PATH = 'functions/_data/ca-opportunities.mjs';
 const CA_SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/ca-approved-source-routes.json';
+const UK_SNAPSHOT_PATH = 'functions/_data/opportunities.mjs';
+const UK_SOURCE_REGISTRY_PATH = 'operations/opportunity-pipeline/config/approved-source-routes.json';
+const UK_HOMEPAGE_PATH = 'public/index.html';
+const PUBLICATION_BRANCH = /^(?:sources\/cloud-(?:uk|ca)-growth-|data\/cloud-(?:uk|ca)-approved-additions-)[a-z0-9-]+$/i;
+const PUBLICATION_FILES = new Set([
+  UK_SNAPSHOT_PATH,
+  CA_SNAPSHOT_PATH,
+  UK_SOURCE_REGISTRY_PATH,
+  CA_SOURCE_REGISTRY_PATH,
+  UK_HOMEPAGE_PATH
+]);
+const MAX_PUBLICATION_CONTENT = 3_000_000;
 
 function requireEnv(env, key) {
   const value = String(env?.[key] || '').trim();
@@ -28,7 +40,13 @@ export function isInternalGithubControllerRequest(request) {
 }
 function validatePayload(payload = {}) {
   const action = String(payload.action || 'inspect');
-  if (!['inspect', 'merge', 'inspect_merge_checks', 'inspect_data_merge_checks', 'inspect_replay_source_provenance', 'read_ca_production_bases'].includes(action)) throw new Error('controller_github_action_rejected');
+  if (!['inspect', 'merge', 'inspect_merge_checks', 'inspect_data_merge_checks', 'inspect_replay_source_provenance', 'read_ca_production_bases', 'publication_request'].includes(action)) throw new Error('controller_github_action_rejected');
+  if (action === 'publication_request') {
+    const path = String(payload.path || '');
+    const method = String(payload.method || 'GET').toUpperCase();
+    if (!path.startsWith('/') || path.length > 1000 || !['GET', 'POST', 'PUT'].includes(method)) throw new Error('controller_github_publication_request_invalid');
+    return { action, path, method, body: payload.body ?? null };
+  }
   if (action === 'read_ca_production_bases') return { action };
   if (action === 'inspect_replay_source_provenance') {
     const stateCode = String(payload.state_code || '').trim().toUpperCase();
@@ -45,6 +63,96 @@ function validatePayload(payload = {}) {
   if (action === 'merge' && !/^[a-f0-9]{40}$/.test(expectedHeadSha)) throw new Error('controller_github_expected_head_sha_invalid');
   if (action === 'merge' && !/^[a-f0-9]{40}$/.test(expectedBaseSha)) throw new Error('controller_github_expected_base_sha_invalid');
   return { action, prNumber, expectedHeadSha, expectedBaseSha };
+}
+
+function publicationBranch(value) {
+  const branch = String(value || '').trim();
+  if (!PUBLICATION_BRANCH.test(branch)) throw new Error('controller_github_publication_branch_rejected');
+  return branch;
+}
+
+function publicationPath(value) {
+  const path = String(value || '').replace(/^\/+/, '');
+  if (!PUBLICATION_FILES.has(path)) throw new Error('controller_github_publication_file_rejected');
+  return path;
+}
+
+function assertPublicationFileMatchesBranch(path, branch) {
+  const allowed = branch.startsWith('sources/cloud-uk-growth-') ? [UK_SOURCE_REGISTRY_PATH]
+    : branch.startsWith('sources/cloud-ca-growth-') ? [CA_SOURCE_REGISTRY_PATH]
+      : branch.startsWith('data/cloud-uk-approved-additions-') ? [UK_SNAPSHOT_PATH, UK_HOMEPAGE_PATH]
+        : branch.startsWith('data/cloud-ca-approved-additions-') ? [CA_SNAPSHOT_PATH]
+          : [];
+  if (!allowed.includes(path)) throw new Error('controller_github_publication_branch_file_mismatch');
+}
+
+export function validatePublicationGithubRequest(payload, repo) {
+  const method = String(payload?.method || 'GET').toUpperCase();
+  let url;
+  try { url = new URL(`https://api.github.com/repos/${repo}${String(payload?.path || '')}`); }
+  catch { throw new Error('controller_github_publication_path_invalid'); }
+  const prefix = `/repos/${repo}`;
+  if (!url.pathname.startsWith(`${prefix}/`)) throw new Error('controller_github_publication_path_rejected');
+  const relative = url.pathname.slice(prefix.length);
+
+  if (method === 'GET' && relative === '/git/ref/heads/main' && !url.search) return { method, path: `${relative}` };
+
+  if (method === 'GET' && relative.startsWith('/git/ref/heads/') && !url.search) {
+    publicationBranch(decodeURIComponent(relative.slice('/git/ref/heads/'.length)));
+    return { method, path: `${relative}` };
+  }
+
+  if (method === 'GET' && relative.startsWith('/contents/')) {
+    const file = publicationPath(decodeURIComponent(relative.slice('/contents/'.length)));
+    const ref = url.searchParams.get('ref');
+    if (url.searchParams.size !== 1 || (ref !== 'main' && !PUBLICATION_BRANCH.test(String(ref || '')))) throw new Error('controller_github_publication_ref_rejected');
+    if (ref !== 'main') assertPublicationFileMatchesBranch(file, ref);
+    return { method, path: `${relative}${url.search}` };
+  }
+
+  if (method === 'GET' && relative === '/pulls') {
+    const owner = String(repo).split('/')[0];
+    const head = String(url.searchParams.get('head') || '');
+    if (url.searchParams.get('state') !== 'open' || url.searchParams.get('base') !== 'main' || !head.startsWith(`${owner}:`)) throw new Error('controller_github_publication_pull_lookup_rejected');
+    publicationBranch(head.slice(owner.length + 1));
+    if (url.searchParams.size !== 3) throw new Error('controller_github_publication_pull_lookup_rejected');
+    return { method, path: `${relative}${url.search}` };
+  }
+
+  if (method === 'POST' && relative === '/git/refs' && !url.search) {
+    const body = payload?.body;
+    const ref = String(body?.ref || '');
+    const sha = String(body?.sha || '').toLowerCase();
+    if (Object.keys(body || {}).sort().join(',') !== 'ref,sha' || !ref.startsWith('refs/heads/') || !/^[a-f0-9]{40}$/.test(sha)) throw new Error('controller_github_publication_branch_create_rejected');
+    publicationBranch(ref.slice('refs/heads/'.length));
+    return { method, path: relative, body: { ref, sha } };
+  }
+
+  if (method === 'PUT' && relative.startsWith('/contents/') && !url.search) {
+    const file = publicationPath(decodeURIComponent(relative.slice('/contents/'.length)));
+    const body = payload?.body;
+    const message = String(body?.message || '');
+    const content = String(body?.content || '');
+    const sha = String(body?.sha || '').toLowerCase();
+    const branch = publicationBranch(body?.branch);
+    assertPublicationFileMatchesBranch(file, branch);
+    if (!message || message.length > 200 || !/^[A-Za-z0-9+/=\r\n]+$/.test(content) || content.length > MAX_PUBLICATION_CONTENT || !/^[a-f0-9]{40}$/.test(sha)) throw new Error('controller_github_publication_file_write_rejected');
+    if (Object.keys(body || {}).sort().join(',') !== 'branch,content,message,sha') throw new Error('controller_github_publication_file_write_rejected');
+    return { method, path: relative, body: { message, content, sha, branch } };
+  }
+
+  throw new Error('controller_github_publication_request_rejected');
+}
+
+async function proxyPublicationRequest(fetchImpl, repo, authHeaders, payload) {
+  const request = validatePublicationGithubRequest(payload, repo);
+  const response = await fetchImpl(`https://api.github.com/repos/${repo}${request.path}`, {
+    method: request.method,
+    headers: authHeaders,
+    ...(request.body ? { body: JSON.stringify(request.body) } : {})
+  });
+  const body = await response.json().catch(() => ({}));
+  return { github_status: response.status, github_body: body };
 }
 async function githubJson(fetchImpl, url, options) {
   const response = await fetchImpl(url, options);
@@ -243,6 +351,7 @@ export async function handleInternalGithubControllerRequest(request, env, option
   const fetchImpl = options.fetchImpl || fetch;
   const authHeaders = headers(env);
   try {
+    if (payload.action === 'publication_request') return Response.json({ ok: true, ...(await proxyPublicationRequest(fetchImpl, repo, authHeaders, payload)) });
     if (payload.action === 'read_ca_production_bases') return Response.json({ ok: true, bases: await readCaProductionBases(fetchImpl, repo, authHeaders) });
     if (payload.action === 'inspect_replay_source_provenance') return Response.json({ ok: true, provenance: await inspectReplaySourceProvenance(fetchImpl, repo, authHeaders, payload.stateCode, payload.sourceIds) });
     if (payload.action === 'inspect_merge_checks') return Response.json({ ok: true, deployment: await inspectSourceMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });

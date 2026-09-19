@@ -29,6 +29,18 @@ export async function readCaProductionBasesViaBroker(env) {
   return (await brokerRequest(env, { action: 'read_ca_production_bases' })).bases;
 }
 
+export async function githubPublicationRequest(env, request = {}) {
+  const result = await brokerRequest(env, {
+    action: 'publication_request',
+    path: request.path,
+    method: request.method || 'GET',
+    body: request.body ?? null
+  });
+  const status = Number(result.github_status);
+  if (!Number.isInteger(status) || status < 100 || status > 599) throw new Error('publication_github_status_invalid');
+  return Object.freeze({ status, body: result.github_body ?? null });
+}
+
 export function classifyAcquisitionWorkerDeployment(deployment) {
   const mergeSha = String(deployment?.merge_sha || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(mergeSha)) throw new Error('source_merge_deployment_sha_invalid');

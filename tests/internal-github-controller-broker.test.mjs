@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { handleInternalGithubControllerRequest } from '../operations/cloudflare-texas-acquisition/src/internal-github-controller-broker.js';
+import {
+  handleInternalGithubControllerRequest,
+  validatePublicationGithubRequest
+} from '../operations/cloudflare-texas-acquisition/src/internal-github-controller-broker.js';
 
 function request(body) {
   return new Request('https://findpitches-github-controller.internal/controller-pr', {
@@ -193,5 +196,55 @@ test('controller GitHub broker returns authenticated Canada production bases', a
     main_sha: mainSha,
     production_count: 3,
     source_count: 5
+  });
+});
+
+test('controller GitHub broker permits only bounded UK and Canada publication requests', () => {
+  const repo = 'christucker-sketch/PitchListUK';
+  const branch = 'data/cloud-uk-approved-additions-0123456789abcdef-base-fedcba9876543210';
+  assert.deepEqual(validatePublicationGithubRequest({
+    method: 'GET',
+    path: '/git/ref/heads/main'
+  }, repo), { method: 'GET', path: '/git/ref/heads/main' });
+  assert.deepEqual(validatePublicationGithubRequest({
+    method: 'GET',
+    path: `/contents/functions/_data/opportunities.mjs?ref=${encodeURIComponent(branch)}`
+  }, repo), {
+    method: 'GET',
+    path: `/contents/functions/_data/opportunities.mjs?ref=${encodeURIComponent(branch)}`
+  });
+  assert.throws(() => validatePublicationGithubRequest({
+    method: 'GET',
+    path: '/contents/.github/workflows/verify.yml?ref=main'
+  }, repo), /publication_file_rejected/);
+  assert.throws(() => validatePublicationGithubRequest({
+    method: 'PUT',
+    path: '/contents/functions/_data/opportunities.mjs',
+    body: { message: 'unsafe', content: 'e30=', sha: 'a'.repeat(40), branch: 'main' }
+  }, repo), /publication_branch_rejected/);
+  assert.throws(() => validatePublicationGithubRequest({
+    method: 'PUT',
+    path: '/contents/operations/opportunity-pipeline/config/approved-source-routes.json',
+    body: { message: 'wrong branch family', content: 'e30=', sha: 'a'.repeat(40), branch }
+  }, repo), /publication_branch_file_mismatch/);
+});
+
+test('controller GitHub broker proxies an authenticated bounded publication read without exposing its token', async () => {
+  const mainSha = 'd'.repeat(40);
+  const fetchImpl = async (url, options = {}) => {
+    assert.equal(String(url), 'https://api.github.com/repos/christucker-sketch/PitchListUK/git/ref/heads/main');
+    assert.match(String(options?.headers?.authorization || ''), /^Bearer /);
+    return Response.json({ object: { sha: mainSha } });
+  };
+  const response = await handleInternalGithubControllerRequest(
+    request({ action: 'publication_request', method: 'GET', path: '/git/ref/heads/main' }),
+    env(),
+    { fetchImpl }
+  );
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), {
+    ok: true,
+    github_status: 200,
+    github_body: { object: { sha: mainSha } }
   });
 });
