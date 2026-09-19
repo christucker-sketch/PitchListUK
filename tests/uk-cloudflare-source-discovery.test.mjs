@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import sourceDiscoveryLib from '../operations/opportunity-pipeline/acquisition/source-discovery.js';
-import { runUkSourceDiscovery, UK_DISCOVERY_TEMPLATES, UK_SOURCE_DISCOVERY_LIMITS } from '../operations/cloudflare-global-acquisition/lib/uk-source-discovery.mjs';
+import { autoApprovePublicServiceCandidates, isUkLiveSourceRouteCandidate, runUkSourceDiscovery, UK_DISCOVERY_TEMPLATES, UK_SOURCE_DISCOVERY_LIMITS } from '../operations/cloudflare-global-acquisition/lib/uk-source-discovery.mjs';
 import { planUkSourceRegistry, ukSourceBranchName } from '../operations/cloudflare-global-acquisition/lib/uk-source-publication.mjs';
 
 const { discoveryQueries } = sourceDiscoveryLib;
@@ -147,4 +147,29 @@ test('UK source promotion returns clean zero growth with no approved candidates'
   assert.equal(plan.summary.additions, 0);
   assert.equal(plan.summary.after_count, 1);
   assert.equal(plan.registry, base.registry);
+});
+
+test('UK deterministic approval rejects central guidance and careers profiles', () => {
+  assert.equal(isUkLiveSourceRouteCandidate('https://gov.uk/guidance/internal-market-scheme'), false);
+  assert.equal(isUkLiveSourceRouteCandidate('https://nationalcareers.service.gov.uk/job-profiles/market-trader'), false);
+  assert.equal(isUkLiveSourceRouteCandidate('https://example.gov.uk/markets/apply'), true);
+  const candidates = [
+    { classification: 'auto-approvable-first-party', approval_status: 'pending', geographic_coverage: 'Northern Ireland', canonical_route: 'https://gov.uk/guidance/internal-market-scheme' },
+    { classification: 'auto-approvable-first-party', approval_status: 'pending', geographic_coverage: 'Northern Ireland', canonical_route: 'https://nationalcareers.service.gov.uk/job-profiles/market-trader' }
+  ];
+  assert.deepEqual(autoApprovePublicServiceCandidates(candidates, { now: NOW }), candidates);
+});
+
+test('UK discovery prefers page-backed geography over the search query region', async () => {
+  const discovery = await runUkSourceDiscovery({ SERPER_API_KEY: 'fixture' }, {
+    query_limit: 1,
+    results_per_query: 1,
+    candidate_limit: 1,
+    as_of: NOW
+  }, {
+    directDiscovery: async () => ({ seed_count: 0, candidates: [] }),
+    search: async (_env, query) => [{ query, rank: 1, title: 'Winchester City Council markets - apply to trade', url: 'https://new-winchester.gov.uk/business/street-market-trading', snippet: 'Apply to trade at Winchester market in England.' }],
+    fetchCandidate: async (result, plan) => ({ result, plan, fetch_status: 'fetched', final_url: result.url, page_text: 'England market. Apply to trade at Winchester market. Trader applications are open and pitches are available.' })
+  });
+  assert.equal(discovery.approved_candidates[0].geographic_coverage, 'Hampshire');
 });

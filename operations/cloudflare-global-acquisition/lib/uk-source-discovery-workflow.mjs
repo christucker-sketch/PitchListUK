@@ -1,6 +1,6 @@
 import sourcesLib from '../../opportunity-pipeline/config/sources.js';
 import safetyLib from '../../opportunity-pipeline/lib/opportunity-safety.js';
-import { runUkSourceDiscovery } from './uk-source-discovery.mjs';
+import { isUkLiveSourceRouteCandidate, runUkSourceDiscovery } from './uk-source-discovery.mjs';
 import { runUkOpportunityFirstDiscovery } from './uk-opportunity-first-discovery.mjs';
 import { searchViaSerperBroker } from './service-serper-search.mjs';
 import {
@@ -37,6 +37,7 @@ function deterministicPrivateFirstParty(candidate, now) {
   if (!candidate || candidate.classification !== 'manual-review-required') return null;
   if (candidate.rejection_reason !== 'private_or_non_public_service_source_requires_review') return null;
   if (!candidate.canonical_route || !candidate.canonical_host || !candidate.organisation || !candidate.geographic_coverage || !candidate.opportunity_type) return null;
+  if (!isUkLiveSourceRouteCandidate(candidate.canonical_route)) return null;
   if (/trusted-source graph/i.test(String(candidate.geographic_coverage || ''))) return null;
   if (!candidate.trader_application_evidence || candidate.fetch_status !== 'fetched' || candidate.robots_result !== 'allowed') return null;
   return Object.freeze({
