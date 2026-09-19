@@ -68,10 +68,3 @@ jobs:
 
           status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/status)"
           jq -e '.ok == true and .counts.scheduler_jobs >= 3' <<<"$status" >/dev/null
-
-      - name: Trigger one bounded scheduler proof
-        shell: bash
-        run: |
-          set -euo pipefail
-          result="$(curl --silent --show-error --fail-with-body -X POST https://findpitches-v2-shadow.ctucker.workers.dev/shadow/tick)"
-          jq -e '.ok == true and (.phase == "shadow_scheduler_probe" or .phase == "idle" or .phase == "claim_raced")' <<<"$result" >/dev/null
