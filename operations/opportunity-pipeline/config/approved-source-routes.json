@@ -64,6 +64,22 @@
     "approval_manifest_hash": "3e2cae681ffed2619cc612898011957869d1428a02ee5bc2bf5fc03e70b778d1"
   },
   {
+    "host": "centralbedfordshire.gov.uk",
+    "organisation": "Food business - Central Bedfordshire Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "South East England",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://centralbedfordshire.gov.uk/business/licensing/licensing/food-business",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Food business - Central Bedfordshire Council",
+    "source_path_prefix": "/business/licensing/licensing/food-business",
+    "approval_evidence_hash": "4745457657ace52a39329bf985969f615dbd79289d64786c375e5f5411e56db2",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "327cfb1c93e56160793ea381c9334c195fb831fee37a7c15f20cbce33aef42e2"
+  },
+  {
     "host": "eastherts.gov.uk",
     "organisation": "East Herts District Council",
     "type": "local-authority",
@@ -112,20 +128,20 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
-    "host": "braintree.gov.uk",
-    "organisation": "Braintree District Council",
-    "type": "local-authority",
-    "terms_policy": "public-service",
-    "geographic_coverage": "Essex",
+    "host": "gov.uk",
+    "organisation": "Market stall licence - GOV.UK",
+    "type": "event-organiser",
+    "terms_policy": "manual-reviewed",
+    "geographic_coverage": "South East England",
     "opportunity_type": "recurring_market",
-    "official_application_route": "https://www.braintree.gov.uk/xfp/form/165",
-    "recurring": true,
+    "official_application_route": "https://gov.uk/find-licences/market-stall-licence",
+    "recurring": false,
     "recommended_polling_days": 14,
-    "opportunity_title": "Braintree market trader applications",
-    "source_path_prefix": "/xfp/form/165",
-    "approval_evidence_hash": "49eb6cb05f9028b79296ea8c582e1f7ecaccc41da6cac5538438cdd1cbebc4c1",
-    "approval_decision": "approved_by_operator_live_market_application_route",
-    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
+    "opportunity_title": "Market stall licence - GOV.UK",
+    "source_path_prefix": "/find-licences/market-stall-licence",
+    "approval_evidence_hash": "b540b0bccdab9e50d59d013b6fbc84653ee2f209b44324ac60a4f59af4e8947c",
+    "approval_decision": "approved_deterministic_first_party_live_trader_route",
+    "approval_manifest_hash": "327cfb1c93e56160793ea381c9334c195fb831fee37a7c15f20cbce33aef42e2"
   },
   {
     "host": "greenwichmarket.london",
@@ -192,6 +208,22 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
+    "host": "lewisham.gov.uk",
+    "organisation": "Street trading and markets licences - Lewisham Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "South East England",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://lewisham.gov.uk/myservices/business/licences-and-street-trading/other-licences/street-trading-licences/street-trading-and-markets-licences",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Street trading and markets licences - Lewisham Council",
+    "source_path_prefix": "/myservices/business/licences-and-street-trading/other-licences/street-trading-licences/street-trading-and-markets-licences",
+    "approval_evidence_hash": "216249f603fe002902d004defc53ffccd9f2da9047ffd4966bab4af23206c57f",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "327cfb1c93e56160793ea381c9334c195fb831fee37a7c15f20cbce33aef42e2"
+  },
+  {
     "host": "lovewimbledon.org",
     "organisation": "Love Wimbledon",
     "type": "event-organiser",
@@ -240,22 +272,6 @@
     "approval_manifest_hash": "4af0fddb5f7c99ecdb8fd808a4df631397913add4e9a7db7489106cdad9bbab6"
   },
   {
-    "host": "wells.gov.uk",
-    "organisation": "Wells City Council",
-    "type": "local-authority",
-    "terms_policy": "public-service",
-    "geographic_coverage": "Somerset",
-    "opportunity_type": "recurring_market",
-    "official_application_route": "https://www.wells.gov.uk/market-trader-application",
-    "recurring": true,
-    "recommended_polling_days": 14,
-    "opportunity_title": "Wells market trader applications",
-    "source_path_prefix": "/market-trader-application",
-    "approval_evidence_hash": "910db16aca54d6996dcacee5b48edd45790d1cafb43447f675468e4f17909c56",
-    "approval_decision": "approved_by_operator_live_market_application_route",
-    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
-  },
-  {
     "host": "portsmouth.gov.uk",
     "organisation": "Portsmouth City Council",
     "type": "local-authority",
@@ -288,6 +304,22 @@
     "approval_manifest_hash": "32e0e6776f91de7e2294b7decfa5699fbf6bb342e9cc27b16ac3a91eb7211a8a"
   },
   {
+    "host": "southkesteven.gov.uk",
+    "organisation": "Markets | South Kesteven District Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "South East England",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://southkesteven.gov.uk/markets",
+    "recurring": false,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Markets | South Kesteven District Council",
+    "source_path_prefix": "/markets",
+    "approval_evidence_hash": "256cd83dc4eea563ed3a7283137e8808322376a9639c18fbcadbd67ff655f265",
+    "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "327cfb1c93e56160793ea381c9334c195fb831fee37a7c15f20cbce33aef42e2"
+  },
+  {
     "host": "stallholders.leicesterchristmasmarket.co.uk",
     "organisation": "Leicester Christmas Market",
     "type": "event-organiser",
@@ -317,6 +349,38 @@
     "source_path_prefix": "/business/street-market-trading",
     "approval_evidence_hash": "5a4e45e70b36e6151936687023f21cd1da8fde00bf1545d3be368b293ad01ad0",
     "approval_decision": "approved_unambiguous_public_service_first_party",
+    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
+  },
+  {
+    "host": "braintree.gov.uk",
+    "organisation": "Braintree District Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "Essex",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://www.braintree.gov.uk/xfp/form/165",
+    "recurring": true,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Braintree market trader applications",
+    "source_path_prefix": "/xfp/form/165",
+    "approval_evidence_hash": "49eb6cb05f9028b79296ea8c582e1f7ecaccc41da6cac5538438cdd1cbebc4c1",
+    "approval_decision": "approved_by_operator_live_market_application_route",
+    "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
+  },
+  {
+    "host": "wells.gov.uk",
+    "organisation": "Wells City Council",
+    "type": "local-authority",
+    "terms_policy": "public-service",
+    "geographic_coverage": "Somerset",
+    "opportunity_type": "recurring_market",
+    "official_application_route": "https://www.wells.gov.uk/market-trader-application",
+    "recurring": true,
+    "recommended_polling_days": 14,
+    "opportunity_title": "Wells market trader applications",
+    "source_path_prefix": "/market-trader-application",
+    "approval_evidence_hash": "910db16aca54d6996dcacee5b48edd45790d1cafb43447f675468e4f17909c56",
+    "approval_decision": "approved_by_operator_live_market_application_route",
     "approval_manifest_hash": "d600a91be38e684606a193dcb5ffad773f78472e5cea7d90fa4e62e8e05500cf"
   }
 ]
