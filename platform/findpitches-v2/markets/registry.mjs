@@ -7,6 +7,7 @@ const MARKET_DEFINITIONS = {
     language: 'en',
     currency: 'GBP',
     geographyProvider: 'GB',
+    search: { gl: 'gb', hl: 'en' },
     terminology: ['trader', 'stallholder', 'pitch', 'vendor', 'exhibitor'],
     capabilities: {
       states: false,
@@ -24,6 +25,7 @@ const MARKET_DEFINITIONS = {
     language: 'en',
     currency: 'USD',
     geographyProvider: 'US',
+    search: { gl: 'us', hl: 'en' },
     terminology: ['vendor', 'food vendor', 'food truck', 'booth', 'exhibitor'],
     capabilities: {
       states: true,
@@ -41,6 +43,7 @@ const MARKET_DEFINITIONS = {
     language: 'en',
     currency: 'CAD',
     geographyProvider: 'CA',
+    search: { gl: 'ca', hl: 'en' },
     terminology: ['vendor', 'market vendor', 'food vendor', 'exhibitor'],
     capabilities: {
       states: false,
@@ -58,6 +61,7 @@ export const MARKETS = Object.freeze(
       code,
       Object.freeze({
         ...market,
+        search: Object.freeze({ ...market.search }),
         terminology: Object.freeze([...market.terminology]),
         capabilities: Object.freeze({ ...market.capabilities })
       })
