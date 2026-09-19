@@ -3,5 +3,3 @@ CREATE TABLE IF NOT EXISTS runtime_meta (
   value TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
-
-DELETE FROM scheduler_jobs WHERE id LIKE 'shadow-%';
