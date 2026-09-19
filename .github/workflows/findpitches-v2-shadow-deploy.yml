@@ -46,6 +46,25 @@ jobs:
       - name: Deploy isolated shadow Worker and auto-provision dedicated D1
         run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
 
+      - name: Copy search credential into dedicated v2 Worker secret
+        shell: bash
+        env:
+          V2_SEARCH_KEY: ${{ secrets.FINDPITCHES_SEARCH_API_KEY }}
+          MIGRATION_SEARCH_KEY: ${{ secrets.SERPER_API_KEY }}
+        run: |
+          set -euo pipefail
+          key="$V2_SEARCH_KEY"
+          if [[ -z "$key" ]]; then
+            key="$MIGRATION_SEARCH_KEY"
+          fi
+
+          if [[ -n "$key" ]]; then
+            printf '%s' "$key" | npx --yes wrangler@4.127.1 secret put FINDPITCHES_SEARCH_API_KEY --config "$CONFIG"
+            echo "Dedicated FindPitches v2 search secret configured."
+          else
+            echo "::warning title=FindPitches v2 search secret not configured::Shadow runtime is healthy but discovery will remain paused until FINDPITCHES_SEARCH_API_KEY is supplied."
+          fi
+
       - name: Apply isolated D1 schema
         run: |
           npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file operations/findpitches-v2/migrations/0001_core.sql --config "$CONFIG"
@@ -61,10 +80,16 @@ jobs:
             .service == "findpitches-v2-shadow" and
             .mode == "shadow" and
             .database == "isolated" and
+            (.search_configured | type == "boolean") and
             .publication_enabled == false and
             .legacy_runtime_dependency == false and
             .local_runtime_dependency == false
           ' <<<"$health" >/dev/null
 
           status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/status)"
-          jq -e '.ok == true and .counts.scheduler_jobs >= 3' <<<"$status" >/dev/null
+          jq -e '
+            .ok == true and
+            (.search_configured | type == "boolean") and
+            .publication_enabled == false and
+            .counts.scheduler_jobs >= 3
+          ' <<<"$status" >/dev/null
