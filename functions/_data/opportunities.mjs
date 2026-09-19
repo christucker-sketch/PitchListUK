@@ -1,7 +1,7 @@
 export const opportunitySnapshot = {
-  "exported_at": "2026-08-27T09:23:13.154Z",
-  "source": "reviewed-manifest:automatic-approved-additions-1787822588766.json",
-  "total": 289,
+  "exported_at": "2026-09-19T08:55:59Z",
+  "source": "operator-reviewed:uk-growth-repair-2026-09-19",
+  "total": 290,
   "rows": [
     {
       "id": "OPP-00495",
@@ -10109,6 +10109,42 @@ export const opportunitySnapshot = {
       "coordinate_source": "place-centroid",
       "coordinate_precision": "place",
       "coordinate_label": "Leicester"
+    },
+    {
+      "id": "opp_eb9f7cd6652967e0156a",
+      "event_name": "Braintree market trader applications",
+      "organiser": "Braintree District Council",
+      "location": "Essex",
+      "county": "Essex",
+      "region": "Essex",
+      "event_start": "",
+      "event_end": "",
+      "application_deadline": "",
+      "stall_fee": "",
+      "vendor_categories": "food traders; stallholders; exhibitors; event concessions",
+      "last_checked": "2026-09-19",
+      "freshness_status": "fresh",
+      "freshness_age_days": 0,
+      "confidence": "medium",
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "area_confidence": "region",
+      "route_type": "recurring_market",
+      "organiser_type": "local_council",
+      "country": "United Kingdom",
+      "jurisdiction": "GB",
+      "currency": "GBP",
+      "market_domain": "pitchlist.uk",
+      "tax_region": "UK",
+      "buyer_fit_tags": "food traders;stallholders;exhibitors;event concessions",
+      "notes": "Automatically staged from a directly fetched, approved first-party source on 2026-09-19.",
+      "application_url": "https://braintree.gov.uk/xfp/form/165",
+      "source_url": "https://braintree.gov.uk/xfp/form/165",
+      "latitude": 51.7343,
+      "longitude": 0.4691,
+      "coordinate_source": "area-centroid",
+      "coordinate_precision": "area",
+      "coordinate_label": "Essex"
     }
   ]
 };
