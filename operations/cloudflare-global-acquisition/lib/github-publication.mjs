@@ -2,11 +2,11 @@ import { createHash } from 'node:crypto';
 
 import {
   getGlobalAcquisitionMarket,
-  globalAcquisitionServiceIdentity,
   parseAcquisitionSnapshotModule,
   serializeAcquisitionSnapshotModule
 } from '../../../platform/acquisition/global-engine.mjs';
 import { assertMainUnchanged } from '../../cloudflare-texas-acquisition/src/data-branch-name.js';
+import { githubPublicationRequest } from './controller-github-client.mjs';
 import { openPullRequestViaBroker } from './github-pr-broker.mjs';
 
 function requireEnv(env, key) {
@@ -15,25 +15,25 @@ function requireEnv(env, key) {
   return value;
 }
 
-function apiHeaders(env) {
-  return {
-    authorization: `Bearer ${requireEnv(env, 'GITHUB_TOKEN')}`,
-    accept: 'application/vnd.github+json',
-    'x-github-api-version': '2022-11-28',
-    'user-agent': globalAcquisitionServiceIdentity()
-  };
-}
-
 async function githubRequest(env, path, options = {}) {
-  const repo = requireEnv(env, 'GITHUB_REPO');
-  const response = await fetch(`https://api.github.com/repos/${repo}${path}`, {
-    ...options,
-    headers: { ...apiHeaders(env), ...(options.headers || {}) }
-  });
-  const text = await response.text();
   let body = null;
-  try { body = text ? JSON.parse(text) : null; } catch { body = { message: text }; }
-  return { response, body };
+  if (options.body != null) {
+    try { body = typeof options.body === 'string' ? JSON.parse(options.body) : options.body; }
+    catch { throw new Error('GitHub publication request body is invalid JSON'); }
+  }
+  const result = await githubPublicationRequest(env, {
+    path,
+    method: String(options.method || 'GET').toUpperCase(),
+    body
+  });
+  return {
+    response: {
+      ok: result.status >= 200 && result.status < 300,
+      status: result.status,
+      statusText: `GitHub HTTP ${result.status}`
+    },
+    body: result.body
+  };
 }
 
 export async function githubJson(env, path, options = {}) {
