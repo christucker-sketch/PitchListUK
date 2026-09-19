@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Check out candidate
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Use Node.js 22
         uses: actions/setup-node@v4
@@ -50,7 +52,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch origin main --depth=1
           changed="$(git diff --name-only origin/main...HEAD)"
           if grep -Eq '^(functions/_data/|public/index\.html$)' <<<"$changed"; then
             echo "FindPitches v2 foundation must not modify production datasets or homepage." >&2
