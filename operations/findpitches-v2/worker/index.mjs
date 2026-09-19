@@ -12,11 +12,6 @@ export default {
       return status(env);
     }
 
-    if (request.method === 'POST' && url.pathname === '/shadow/tick') {
-      const result = await runShadowTick(env, { trigger: 'http' });
-      return Response.json(result, { status: result.ok ? 200 : 500 });
-    }
-
     return Response.json({ ok: false, service: SERVICE, error: 'not_found' }, { status: 404 });
   },
 
