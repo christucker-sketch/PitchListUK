@@ -6,7 +6,8 @@ import { extname, join, relative } from 'node:path';
 const ROOTS = ['platform/findpitches-v2', 'operations/findpitches-v2'];
 const EXTRA_FILES = [
   '.github/workflows/findpitches-v2-ci.yml',
-  '.github/workflows/findpitches-v2-shadow-deploy.yml'
+  '.github/workflows/findpitches-v2-shadow-deploy.yml',
+  '.github/workflows/findpitches-v2-status-proof.yml'
 ];
 const TEXT_EXTENSIONS = new Set(['.js', '.mjs', '.cjs', '.json', '.jsonc', '.md', '.sql', '.toml', '.yml', '.yaml']);
 const FORBIDDEN = [
