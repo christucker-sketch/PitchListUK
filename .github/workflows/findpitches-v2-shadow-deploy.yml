@@ -113,3 +113,10 @@ jobs:
             printf '%s\n' "$status" >&2
             exit 1
           fi
+
+
+      - name: Show recent validated shadow sample
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --silent --show-error --fail-with-body 'https://findpitches-v2-shadow.ctucker.workers.dev/sample?status=validated&limit=12' | jq .
