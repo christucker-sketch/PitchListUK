@@ -13,7 +13,16 @@ export async function ensureSchedulerCatalogue(db, { now = new Date() } = {}) {
   ).bind(META_KEY).first();
 
   if (current?.value === GEOGRAPHY_CATALOG_VERSION) {
-    return Object.freeze({ changed: false, version: GEOGRAPHY_CATALOG_VERSION, jobs: 0 });
+    // Old pilot rows can be reintroduced by the seed migration on a later deploy.
+    // Prune them even when the catalogue version itself is already current so the
+    // runtime converges to the canonical 111 catalogue jobs.
+    const cleanup = await db.prepare("DELETE FROM scheduler_jobs WHERE id LIKE 'shadow-%'").run();
+    return Object.freeze({
+      changed: Number(cleanup?.meta?.changes || 0) > 0,
+      version: GEOGRAPHY_CATALOG_VERSION,
+      jobs: 0,
+      pruned_legacy_jobs: Number(cleanup?.meta?.changes || 0)
+    });
   }
 
   const schedule = roundRobinSchedule();
