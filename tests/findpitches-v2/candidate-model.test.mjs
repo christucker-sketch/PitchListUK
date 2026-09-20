@@ -7,7 +7,7 @@ test('candidate model strips tracking and preserves one global shape', () => {
   const candidate = normalizeCandidate({
     candidate_id: 'cand-1',
     market: 'GB',
-    source_url: 'https://example.test/apply?utm_source=x&gclid=123&keep=yes#section',
+    source_url: 'https://example.test/apply?utm_source=x&gclid=123&srsltid=SERPER123&keep=yes#section',
     event_name: 'Example Market',
     organiser: 'Example Council',
     geography: { region: 'England', subregion: 'Kent', locality: 'Maidstone' },
