@@ -29,7 +29,17 @@ const NEGATIVE_PHRASES = Object.freeze([
   'resale certificates',
   'trade registration application',
   'trade account application',
-  'wholesale account application'
+  'wholesale account application',
+  'request for qualifications',
+  'request for proposal',
+  'request for proposals',
+  'invitation to bid',
+  'public purchase',
+  'supplier registration',
+  'procurement portal',
+  'buyer public home',
+  'forum thread',
+  'community forum'
 ]);
 
 const APPLICATION_HINT = /(apply|application|vendor|trader|stallholder|exhibitor|pitch|food[ -]?truck)/i;
