@@ -20,6 +20,10 @@ export default {
       return status(env);
     }
 
+    if (request.method === 'GET' && url.pathname === '/sample') {
+      return sample(env, url);
+    }
+
     return Response.json({ ok: false, service: SERVICE, error: 'not_found' }, { status: 404 });
   },
 
@@ -95,6 +99,41 @@ async function status(env) {
     counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication },
     markets: Array.isArray(marketRows?.results) ? marketRows.results : [],
     latest_run: latestRun || null
+  });
+}
+
+async function sample(env, url) {
+  const allowedStatuses = new Set(['validated', 'held']);
+  const requestedStatus = url.searchParams.get('status') || 'validated';
+  const statusValue = allowedStatuses.has(requestedStatus) ? requestedStatus : 'validated';
+  const requestedMarket = String(url.searchParams.get('market') || '').toUpperCase();
+  const market = ['GB', 'US', 'CA'].includes(requestedMarket) ? requestedMarket : null;
+  const requestedLimit = Number(url.searchParams.get('limit') || 12);
+  const limit = Math.max(1, Math.min(Number.isFinite(requestedLimit) ? requestedLimit : 12, 25));
+
+  const sql = `
+    SELECT id, market, region_code, event_name, organiser, canonical_url,
+           application_url, score, status, rejection_reason, first_seen, last_checked
+      FROM candidates
+     WHERE status = ?
+       ${market ? 'AND market = ?' : ''}
+     ORDER BY score DESC, last_checked DESC
+     LIMIT ?
+  `;
+  const statement = env.FINDPITCHES_DB.prepare(sql);
+  const rows = market
+    ? await statement.bind(statusValue, market, limit).all()
+    : await statement.bind(statusValue, limit).all();
+
+  return Response.json({
+    ok: true,
+    service: SERVICE,
+    mode: env.FINDPITCHES_V2_MODE || 'unknown',
+    status: statusValue,
+    market,
+    limit,
+    publication_enabled: false,
+    candidates: Array.isArray(rows?.results) ? rows.results : []
   });
 }
 
