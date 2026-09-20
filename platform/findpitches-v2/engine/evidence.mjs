@@ -24,7 +24,12 @@ const NEGATIVE_PHRASES = Object.freeze([
   'tourist information',
   'visitor information',
   'shopping directory',
-  'business directory'
+  'business directory',
+  'resale certificate',
+  'resale certificates',
+  'trade registration application',
+  'trade account application',
+  'wholesale account application'
 ]);
 
 const APPLICATION_HINT = /(apply|application|vendor|trader|stallholder|exhibitor|pitch|food[ -]?truck)/i;
