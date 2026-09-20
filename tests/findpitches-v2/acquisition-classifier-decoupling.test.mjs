@@ -39,6 +39,10 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
   );
 
   assert.match(worker, /runClassifierTick/);
+  assert.match(worker, /enqueueStaleClassifications/);
+  assert.match(worker, /classifier_ruleset_version/);
+  assert.match(worker, /c\.status IN \('validated', 'held'\)/);
+  assert.match(worker, /RECLASSIFY_BATCH_LIMIT = 24/);
   assert.match(worker, /runShadowTick/);
   assert.match(worker, /event\?\.cron === CLASSIFIER_CRON/);
   assert.match(config, /"\*\/5 \* \* \* \*"/);
