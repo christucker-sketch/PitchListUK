@@ -39,7 +39,19 @@ const NEGATIVE_PHRASES = Object.freeze([
   'procurement portal',
   'buyer public home',
   'forum thread',
-  'community forum'
+  'community forum',
+  'bids and rfps',
+  'bids & rfps',
+  'building inspections',
+  'building permit',
+  'vendor permit and license',
+  'vendor permit and licence',
+  'how to become a vendor for the city',
+  'surety bond',
+  'franchise bond',
+  'probate bond',
+  'multistate lawsuit',
+  'challenging tariffs'
 ]);
 
 const APPLICATION_HINT = /(apply|application|vendor|trader|stallholder|exhibitor|pitch|food[ -]?truck)/i;
