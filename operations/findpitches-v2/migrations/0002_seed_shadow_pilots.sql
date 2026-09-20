@@ -1,7 +1,4 @@
-INSERT OR IGNORE INTO scheduler_jobs (
-  id, market, region_code, location, query_group, priority, status,
-  available_at, attempts, created_at, updated_at
-) VALUES
-  ('shadow-gb-kent-0', 'GB', 'KENT', 'Kent', 0, 30, 'ready', datetime('now'), 0, datetime('now'), datetime('now')),
-  ('shadow-us-tx-0', 'US', 'TX', 'Texas', 0, 60, 'ready', datetime('now'), 0, datetime('now'), datetime('now')),
-  ('shadow-ca-on-0', 'CA', 'ON', 'Ontario', 0, 30, 'ready', datetime('now'), 0, datetime('now'), datetime('now'));
+-- Historical pilot scheduler rows are obsolete now that the global geography catalogue
+-- owns scheduler reconciliation. Deploy applies migration files idempotently on every run,
+-- so this migration must converge old databases instead of re-seeding the three pilots.
+DELETE FROM scheduler_jobs WHERE id LIKE 'shadow-%';
