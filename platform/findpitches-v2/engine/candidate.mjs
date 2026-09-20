@@ -57,7 +57,7 @@ export function canonicalUrl(value) {
 
   url.hash = '';
   for (const key of [...url.searchParams.keys()]) {
-    if (/^(utm_.+|gclid|fbclid|msclkid)$/i.test(key)) url.searchParams.delete(key);
+    if (/^(utm_.+|gclid|fbclid|msclkid|srsltid)$/i.test(key)) url.searchParams.delete(key);
   }
   url.searchParams.sort();
   return url.toString();
