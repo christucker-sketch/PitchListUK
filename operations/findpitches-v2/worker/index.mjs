@@ -1,12 +1,15 @@
-import { acquireBatch } from '../../../platform/findpitches-v2/engine/acquire-batch.mjs';
-import { createDefaultCandidateEvaluator } from '../../../platform/findpitches-v2/engine/evaluator.mjs';
+import { discoverBatch } from '../../../platform/findpitches-v2/acquisition/discover-batch.mjs';
+import { persistDiscoveryBatch } from '../../../platform/findpitches-v2/acquisition/storage.mjs';
+import { runClassificationBatch } from '../../../platform/findpitches-v2/classifier/run-batch.mjs';
 import { createHttpFetchProvider } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
 import { createSerperSearchProvider } from '../../../platform/findpitches-v2/providers/search/serper.mjs';
 import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
-import { persistBatchResult, recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
+import { recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
 
 const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 4;
+const CLASSIFIER_CRON = '* * * * *';
+const CLASSIFIER_BATCH_LIMIT = 12;
 
 export default {
   async fetch(request, env) {
@@ -27,11 +30,20 @@ export default {
     return Response.json({ ok: false, service: SERVICE, error: 'not_found' }, { status: 404 });
   },
 
-  async scheduled(_event, env, ctx) {
+  async scheduled(event, env, ctx) {
+    if (event?.cron === CLASSIFIER_CRON) {
+      ctx.waitUntil(
+        runClassifierTick(env)
+          .then(result => console.log('findpitches_v2_classifier_tick', JSON.stringify(result)))
+          .catch(error => console.error('findpitches_v2_classifier_tick_failed', String(error?.stack || error)))
+      );
+      return;
+    }
+
     ctx.waitUntil(
       runShadowTick(env, { trigger: 'cron' })
-        .then(result => console.log('findpitches_v2_shadow_tick', JSON.stringify(result)))
-        .catch(error => console.error('findpitches_v2_shadow_tick_failed', String(error?.stack || error)))
+        .then(result => console.log('findpitches_v2_acquisition_tick', JSON.stringify(result)))
+        .catch(error => console.error('findpitches_v2_acquisition_tick_failed', String(error?.stack || error)))
     );
   }
 };
@@ -60,11 +72,12 @@ async function health(env) {
 }
 
 async function status(env) {
-  const [runs, candidates, jobs, publication, latestRun, marketRows, catalogueMeta] = await Promise.all([
+  const [runs, candidates, jobs, publication, classification, latestRun, marketRows, catalogueMeta, candidateStates] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
     count(env, 'publication_queue'),
+    count(env, 'classification_queue'),
     env.FINDPITCHES_DB.prepare(
       `SELECT run_id, market, region_code, status, query_count, search_results,
               unique_candidates, validated, duplicates, held, rejected,
@@ -86,7 +99,13 @@ async function status(env) {
       `SELECT value, updated_at
          FROM runtime_meta
         WHERE key = 'geography_catalog_version'`
-    ).first()
+    ).first(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT status, COUNT(*) AS count
+         FROM candidates
+        GROUP BY status
+        ORDER BY status`
+    ).all()
   ]);
 
   return Response.json({
@@ -96,7 +115,8 @@ async function status(env) {
     search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
     publication_enabled: false,
     catalogue: catalogueMeta || null,
-    counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication },
+    counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification },
+    candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
     markets: Array.isArray(marketRows?.results) ? marketRows.results : [],
     latest_run: latestRun || null
   });
@@ -138,7 +158,7 @@ async function sample(env, url) {
 }
 
 async function count(env, table) {
-  const allowed = new Set(['acquisition_runs', 'candidates', 'scheduler_jobs', 'publication_queue']);
+  const allowed = new Set(['acquisition_runs', 'candidates', 'scheduler_jobs', 'publication_queue', 'classification_queue']);
   if (!allowed.has(table)) throw new Error('findpitches_v2_status_table_rejected');
   const row = await env.FINDPITCHES_DB.prepare(`SELECT COUNT(*) AS count FROM ${table}`).first();
   return Number(row?.count || 0);
@@ -187,21 +207,18 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
   const runId = crypto.randomUUID();
 
   try {
-    const fetchProvider = createHttpFetchProvider();
     const searchProvider = createSerperSearchProvider({ apiKey: searchKey, resultsPerQuery: 8 });
-    const evaluateCandidate = createDefaultCandidateEvaluator({ fetchProvider });
 
-    const result = await acquireBatch({
+    const result = await discoverBatch({
       market: job.market,
       region_code: job.region_code,
       location: job.location,
       query_limit: QUERY_LIMIT
     }, {
-      searchProvider,
-      evaluateCandidate
+      searchProvider
     });
 
-    const persisted = await persistBatchResult(
+    const persisted = await persistDiscoveryBatch(
       env.FINDPITCHES_DB,
       { ...job, run_id: runId },
       result
@@ -213,13 +230,13 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
       ok: true,
       service: SERVICE,
       trigger,
-      phase: 'shadow_acquisition_complete',
+      phase: 'shadow_discovery_complete',
       run_id: persisted.run_id,
       market: result.market,
       region_code: result.region,
       metrics: result.metrics,
       stored_candidates: persisted.stored_candidates,
-      publishable_candidates: persisted.publishable_candidates,
+      classification_enqueued: persisted.classification_enqueued,
       publication_queued: 0,
       publication_attempted: false,
       catalogue,
@@ -251,6 +268,23 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
       at: timestamp
     };
   }
+}
+
+export async function runClassifierTick(env, { now = new Date() } = {}) {
+  const result = await runClassificationBatch(env.FINDPITCHES_DB, {
+    fetchProvider: createHttpFetchProvider(),
+    limit: CLASSIFIER_BATCH_LIMIT,
+    now
+  });
+
+  return Object.freeze({
+    ok: true,
+    service: SERVICE,
+    engine: 'findpitches-v2-classifier',
+    publication_attempted: false,
+    ...result,
+    at: now.toISOString()
+  });
 }
 
 async function requeueJob(db, jobId, now, delayMinutes, lastError) {
