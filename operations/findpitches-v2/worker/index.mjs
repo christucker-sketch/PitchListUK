@@ -29,6 +29,13 @@ export default {
       return sample(env, url);
     }
 
+    if (request.method === 'GET' && url.pathname === '/ops') {
+      if (!isOpsAuthorized(request, env)) {
+        return Response.json({ ok: false, service: SERVICE, error: 'unauthorized' }, { status: 401 });
+      }
+      return observability(env, url);
+    }
+
     return Response.json({ ok: false, service: SERVICE, error: 'not_found' }, { status: 404 });
   },
 
@@ -156,6 +163,95 @@ async function sample(env, url) {
     limit,
     publication_enabled: false,
     candidates: Array.isArray(rows?.results) ? rows.results : []
+  });
+}
+
+function isOpsAuthorized(request, env) {
+  const expected = String(env.FINDPITCHES_OBSERVABILITY_TOKEN || '').trim();
+  if (!expected) return false;
+  const supplied = String(request.headers.get('authorization') || '');
+  return supplied === `Bearer ${expected}`;
+}
+
+async function observability(env, url) {
+  const requestedMarket = String(url.searchParams.get('market') || '').toUpperCase();
+  const market = ['GB', 'US', 'CA'].includes(requestedMarket) ? requestedMarket : null;
+  const requestedLimit = Number(url.searchParams.get('limit') || 20);
+  const limit = Math.max(1, Math.min(Number.isFinite(requestedLimit) ? requestedLimit : 20, 50));
+  const marketWhere = market ? 'WHERE market = ?' : '';
+  const marketAnd = market ? 'AND market = ?' : '';
+
+  const bindMaybe = (statement, ...args) => market ? statement.bind(...args, market) : statement.bind(...args);
+
+  const [
+    candidateStates,
+    candidateMarkets,
+    queueStates,
+    recent24h,
+    recent7d,
+    rejectionReasons,
+    latestValidated,
+    latestRuns
+  ] = await Promise.all([
+    bindMaybe(env.FINDPITCHES_DB.prepare(
+      `SELECT status, COUNT(*) AS count FROM candidates ${marketWhere} GROUP BY status ORDER BY status`
+    )).all(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT market, status, COUNT(*) AS count FROM candidates GROUP BY market, status ORDER BY market, status`
+    ).all(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT status, COUNT(*) AS count FROM classification_queue GROUP BY status ORDER BY status`
+    ).all(),
+    bindMaybe(env.FINDPITCHES_DB.prepare(
+      `SELECT COUNT(*) AS runs, COALESCE(SUM(search_results),0) AS search_results,
+              COALESCE(SUM(unique_candidates),0) AS unique_candidates
+         FROM acquisition_runs
+        WHERE started_at >= datetime('now','-1 day') ${marketAnd}`
+    )).first(),
+    bindMaybe(env.FINDPITCHES_DB.prepare(
+      `SELECT COUNT(*) AS runs, COALESCE(SUM(search_results),0) AS search_results,
+              COALESCE(SUM(unique_candidates),0) AS unique_candidates
+         FROM acquisition_runs
+        WHERE started_at >= datetime('now','-7 day') ${marketAnd}`
+    )).first(),
+    bindMaybe(env.FINDPITCHES_DB.prepare(
+      `SELECT rejection_reason, COUNT(*) AS count
+         FROM candidates
+        WHERE status = 'rejected' AND rejection_reason IS NOT NULL ${marketAnd}
+        GROUP BY rejection_reason ORDER BY count DESC LIMIT 20`
+    )).all(),
+    bindMaybe(env.FINDPITCHES_DB.prepare(
+      `SELECT id, market, region_code, event_name, organiser, canonical_url,
+              application_url, score, status, first_seen, last_checked
+         FROM candidates
+        WHERE status = 'validated' ${marketAnd}
+        ORDER BY last_checked DESC, score DESC LIMIT ?`
+    ), limit).all(),
+    bindMaybe(env.FINDPITCHES_DB.prepare(
+      `SELECT run_id, market, region_code, status, query_count, search_results,
+              unique_candidates, started_at, completed_at, error_code
+         FROM acquisition_runs
+        ${marketWhere}
+        ORDER BY started_at DESC LIMIT ?`
+    ), limit).all()
+  ]);
+
+  return Response.json({
+    ok: true,
+    service: SERVICE,
+    mode: env.FINDPITCHES_V2_MODE || 'unknown',
+    market,
+    generated_at: new Date().toISOString(),
+    publication_enabled: false,
+    candidate_statuses: candidateStates?.results || [],
+    candidates_by_market: candidateMarkets?.results || [],
+    classification_queue: queueStates?.results || [],
+    acquisition: { last_24h: recent24h || {}, last_7d: recent7d || {} },
+    rejection_reasons: rejectionReasons?.results || [],
+    latest_validated: latestValidated?.results || [],
+    latest_runs: latestRuns?.results || []
+  }, {
+    headers: { 'Cache-Control': 'no-store' }
   });
 }
 
