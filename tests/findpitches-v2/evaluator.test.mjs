@@ -69,3 +69,28 @@ test('shared evaluator rejects career pages even when vendor wording is present'
   assert.equal(candidate.rejection_reason, 'negative_page_signal');
   assert.equal(candidate.publishable, false);
 });
+
+
+test('shared evaluator rejects trade-account pages even when generic vendor wording is present', async () => {
+  const evaluator = createDefaultCandidateEvaluator({
+    fetchProvider: {
+      async fetch(url) {
+        return {
+          final_url: url,
+          body: '<html><head><title>Resale Certificates for Interior Designers by State</title></head><body><h1>Vendor application</h1><p>Resale certificates and trade registration application for designers.</p><a href="/trade-registration-application">Trade registration application</a></body></html>'
+        };
+      }
+    }
+  });
+
+  const candidate = await evaluator({
+    market: getMarket('US'),
+    region_code: 'NC',
+    location: 'North Carolina',
+    result: { url: 'https://example.test/resale-certificate-guide' }
+  });
+
+  assert.equal(candidate.status, 'rejected');
+  assert.equal(candidate.rejection_reason, 'negative_page_signal');
+  assert.equal(candidate.publishable, false);
+});
