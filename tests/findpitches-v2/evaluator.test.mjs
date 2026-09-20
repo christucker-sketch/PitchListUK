@@ -111,3 +111,20 @@ test('shared evaluator rejects forum pages even when vendor wording is present',
   assert.equal(candidate.rejection_reason, 'negative_page_signal');
   assert.equal(candidate.publishable, false);
 });
+
+
+for (const bad of [
+  ['government procurement', '<h1>Become a Vendor</h1><p>Bids and RFPs for county suppliers.</p><a href="/forms">Vendor application</a>'],
+  ['building inspections', '<h1>Building Inspections</h1><p>Building permit services.</p><a href="/application.pdf">Permit application</a>'],
+  ['vendor guide article', '<h1>How to Become a Vendor for the City</h1><p>Vendor permit and license guide.</p><a href="/apply">Vendor application</a>'],
+  ['surety bond', '<h1>Vendor application</h1><p>Fitness franchise bond and surety bond requirements.</p><a href="/probate">Apply</a>'],
+  ['unrelated news', '<h1>New Jersey joins multistate lawsuit challenging tariffs</h1><p>News report.</p><a href="/fcc-applications">Applications</a>']
+]) {
+  test('shared evaluator rejects ' + bad[0] + ' false positive', async () => {
+    const evaluator = createDefaultCandidateEvaluator({ fetchProvider: { async fetch(url) { return { final_url: url, body: '<html><body>' + bad[1] + '</body></html>' }; } } });
+    const candidate = await evaluator({ market: getMarket('US'), region_code: 'NJ', location: 'New Jersey', result: { url: 'https://example.test/not-an-opportunity' } });
+    assert.equal(candidate.status, 'rejected');
+    assert.equal(candidate.rejection_reason, 'negative_page_signal');
+    assert.equal(candidate.publishable, false);
+  });
+}
