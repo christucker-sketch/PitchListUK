@@ -10,7 +10,7 @@ const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 4;
 const CLASSIFIER_CRON = '* * * * *';
 const CLASSIFIER_BATCH_LIMIT = 12;
-const CLASSIFIER_RULESET_VERSION = '2026-09-20-forum-procurement-v1';
+const CLASSIFIER_RULESET_VERSION = '2026-09-20-opportunity-intent-v2';
 const RECLASSIFY_BATCH_LIMIT = 24;
 
 export default {
