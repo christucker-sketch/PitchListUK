@@ -94,3 +94,20 @@ test('shared evaluator rejects trade-account pages even when generic vendor word
   assert.equal(candidate.rejection_reason, 'negative_page_signal');
   assert.equal(candidate.publishable, false);
 });
+
+
+test('shared evaluator rejects procurement pages even when vendor wording is present', async () => {
+  const evaluator = createDefaultCandidateEvaluator({ fetchProvider: { async fetch(url) { return { final_url: url, body: '<html><head><title>2026 Vendor Request for Qualifications</title></head><body><h1>Become a Service Partner</h1><p>Public purchase supplier registration. Vendor application and request for qualifications.</p><a href="/vendor-application">Vendor application</a></body></html>' }; } } });
+  const candidate = await evaluator({ market: getMarket('US'), region_code: 'KY', location: 'Kentucky', result: { url: 'https://example.test/vendor-rfq' } });
+  assert.equal(candidate.status, 'rejected');
+  assert.equal(candidate.rejection_reason, 'negative_page_signal');
+  assert.equal(candidate.publishable, false);
+});
+
+test('shared evaluator rejects forum pages even when vendor wording is present', async () => {
+  const evaluator = createDefaultCandidateEvaluator({ fetchProvider: { async fetch(url) { return { final_url: url, body: '<html><head><title>Model Y UK Delivery | Community Forum</title></head><body><p>Forum thread discussing a vendor application and delivery.</p></body></html>' }; } } });
+  const candidate = await evaluator({ market: getMarket('GB'), region_code: 'HERTS', location: 'Hertfordshire', result: { url: 'https://example.test/forum/thread' } });
+  assert.equal(candidate.status, 'rejected');
+  assert.equal(candidate.rejection_reason, 'negative_page_signal');
+  assert.equal(candidate.publishable, false);
+});
