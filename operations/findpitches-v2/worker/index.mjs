@@ -75,7 +75,7 @@ async function health(env) {
 
 async function status(env) {
   const now = new Date().toISOString();
-  const [runs, candidates, jobs, publication, classification, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates] = await Promise.all([
+  const [runs, candidates, jobs, publication, classification, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
@@ -115,6 +115,14 @@ async function status(env) {
          SUM(CASE WHEN status = 'leased' THEN 1 ELSE 0 END) AS leased,
          SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
        FROM scheduler_jobs`
+    ).bind(now).first(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT
+         SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) AS ready,
+         SUM(CASE WHEN status = 'leased' THEN 1 ELSE 0 END) AS leased,
+         SUM(CASE WHEN status = 'complete' THEN 1 ELSE 0 END) AS complete,
+         SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
+       FROM classification_queue`
     ).bind(now).first()
   ]);
 
@@ -130,6 +138,12 @@ async function status(env) {
       ready: Number(schedulerStates?.ready || 0),
       leased: Number(schedulerStates?.leased || 0),
       expired: Number(schedulerStates?.expired || 0)
+    },
+    classifier: {
+      ready: Number(classifierStates?.ready || 0),
+      leased: Number(classifierStates?.leased || 0),
+      complete: Number(classifierStates?.complete || 0),
+      expired: Number(classifierStates?.expired || 0)
     },
     candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
     markets: Array.isArray(marketRows?.results) ? marketRows.results : [],
