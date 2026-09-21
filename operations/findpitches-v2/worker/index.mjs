@@ -353,10 +353,17 @@ async function requeueJob(db, jobId, now, delayMinutes, lastError) {
 export async function enqueueStaleClassifications(db, { now = new Date(), limit = RECLASSIFY_BATCH_LIMIT } = {}) {
   const timestamp = now.toISOString();
   const metaKey = 'classifier_ruleset_version';
+  const sweepKey = 'classifier_ruleset_sweep_started_at';
   const current = await db.prepare('SELECT value FROM runtime_meta WHERE key = ?').bind(metaKey).first();
   if (current?.value === CLASSIFIER_RULESET_VERSION) return Object.freeze({ ruleset: CLASSIFIER_RULESET_VERSION, enqueued: 0, complete: true });
 
-  const rows = await db.prepare("SELECT c.id FROM candidates c LEFT JOIN classification_queue q ON q.candidate_id = c.id WHERE c.status IN ('validated', 'held') AND (q.candidate_id IS NULL OR q.status = 'complete') ORDER BY c.last_checked ASC, c.id ASC LIMIT ?").bind(Math.max(1, Math.min(Number(limit) || RECLASSIFY_BATCH_LIMIT, 50))).all();
+  let sweep = await db.prepare('SELECT value FROM runtime_meta WHERE key = ?').bind(sweepKey).first();
+  if (!sweep?.value) {
+    await db.prepare("INSERT INTO runtime_meta (key, value, updated_at) VALUES (?, ?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at").bind(sweepKey, timestamp, timestamp).run();
+    sweep = { value: timestamp };
+  }
+
+  const rows = await db.prepare("SELECT c.id FROM candidates c LEFT JOIN classification_queue q ON q.candidate_id = c.id WHERE c.status IN ('validated', 'held') AND c.last_checked < ? AND (q.candidate_id IS NULL OR q.status = 'complete') ORDER BY c.last_checked ASC, c.id ASC LIMIT ?").bind(sweep.value, Math.max(1, Math.min(Number(limit) || RECLASSIFY_BATCH_LIMIT, 50))).all();
   const candidates = Array.isArray(rows?.results) ? rows.results : [];
 
   for (const row of candidates) {
@@ -367,5 +374,5 @@ export async function enqueueStaleClassifications(db, { now = new Date(), limit 
     await db.prepare("INSERT INTO runtime_meta (key, value, updated_at) VALUES (?, ?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at").bind(metaKey, CLASSIFIER_RULESET_VERSION, timestamp).run();
   }
 
-  return Object.freeze({ ruleset: CLASSIFIER_RULESET_VERSION, enqueued: candidates.length, complete: candidates.length === 0 });
+  return Object.freeze({ ruleset: CLASSIFIER_RULESET_VERSION, sweep_started_at: sweep.value, enqueued: candidates.length, complete: candidates.length === 0 });
 }
