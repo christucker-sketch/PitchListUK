@@ -81,8 +81,8 @@ jobs:
 
           passed=false
           for attempt in $(seq 1 15); do
-            health="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/health || true)"
-            status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/status || true)"
+            health="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/health || true)"
+            status="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/status || true)"
 
             if jq -e '
               .ok == true and
@@ -119,4 +119,4 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl --silent --show-error --fail-with-body 'https://findpitches-v2-shadow.ctucker.workers.dev/sample?status=validated&limit=12' | jq .
+          curl --silent --show-error --fail-with-body 'https://api.findpitches.com/sample?status=validated&limit=12' | jq .
