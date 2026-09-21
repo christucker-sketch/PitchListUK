@@ -74,7 +74,8 @@ async function health(env) {
 }
 
 async function status(env) {
-  const [runs, candidates, jobs, publication, classification, latestRun, marketRows, catalogueMeta, candidateStates] = await Promise.all([
+  const now = new Date().toISOString();
+  const [runs, candidates, jobs, publication, classification, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
@@ -107,7 +108,14 @@ async function status(env) {
          FROM candidates
         GROUP BY status
         ORDER BY status`
-    ).all()
+    ).all(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT
+         SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) AS ready,
+         SUM(CASE WHEN status = 'leased' THEN 1 ELSE 0 END) AS leased,
+         SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
+       FROM scheduler_jobs`
+    ).bind(now).first()
   ]);
 
   return Response.json({
@@ -118,6 +126,11 @@ async function status(env) {
     publication_enabled: false,
     catalogue: catalogueMeta || null,
     counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification },
+    scheduler: {
+      ready: Number(schedulerStates?.ready || 0),
+      leased: Number(schedulerStates?.leased || 0),
+      expired: Number(schedulerStates?.expired || 0)
+    },
     candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
     markets: Array.isArray(marketRows?.results) ? marketRows.results : [],
     latest_run: latestRun || null
@@ -169,6 +182,7 @@ async function count(env, table) {
 export async function runShadowTick(env, { trigger = 'unknown', now = new Date() } = {}) {
   const timestamp = now.toISOString();
   const catalogue = await ensureSchedulerCatalogue(env.FINDPITCHES_DB, { now });
+  const recoveredExpiredLeases = await recoverExpiredSchedulerLeases(env.FINDPITCHES_DB, { now });
   const searchKey = String(env.FINDPITCHES_SEARCH_API_KEY || '').trim();
 
   if (!searchKey) {
@@ -178,6 +192,7 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
       trigger,
       phase: 'waiting_search_secret',
       catalogue,
+      recovered_expired_leases: recoveredExpiredLeases,
       publication_attempted: false,
       at: timestamp
     };
@@ -192,7 +207,7 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
   ).bind(timestamp).first();
 
   if (!job) {
-    return { ok: true, service: SERVICE, trigger, phase: 'idle', catalogue, at: timestamp };
+    return { ok: true, service: SERVICE, trigger, phase: 'idle', catalogue, recovered_expired_leases: recoveredExpiredLeases, at: timestamp };
   }
 
   const leaseUntil = new Date(now.getTime() + 4 * 60 * 1000).toISOString();
@@ -270,6 +285,22 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
       at: timestamp
     };
   }
+}
+
+export async function recoverExpiredSchedulerLeases(db, { now = new Date() } = {}) {
+  const timestamp = now.toISOString();
+  const result = await db.prepare(
+    `UPDATE scheduler_jobs
+        SET status = 'ready',
+            lease_until = NULL,
+            available_at = ?,
+            last_error = 'expired_lease_recovered',
+            updated_at = ?
+      WHERE status = 'leased'
+        AND lease_until IS NOT NULL
+        AND lease_until <= ?`
+  ).bind(timestamp, timestamp, timestamp).run();
+  return Number(result?.meta?.changes || 0);
 }
 
 export async function runClassifierTick(env, { now = new Date() } = {}) {
