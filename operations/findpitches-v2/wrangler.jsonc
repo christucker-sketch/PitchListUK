@@ -11,6 +11,10 @@
     {
       "pattern": "api.findpitches.com",
       "custom_domain": true
+    },
+    {
+      "pattern": "api.pitchlist.uk",
+      "custom_domain": true
     }
   ],
   "triggers": {
