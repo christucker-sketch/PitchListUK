@@ -7,6 +7,12 @@
   "observability": {
     "enabled": true
   },
+  "routes": [
+    {
+      "pattern": "api.findpitches.com",
+      "custom_domain": true
+    }
+  ],
   "triggers": {
     "crons": ["*/5 * * * *", "* * * * *"]
   },
