@@ -51,7 +51,10 @@ const NEGATIVE_PHRASES = Object.freeze([
   'franchise bond',
   'probate bond',
   'multistate lawsuit',
-  'challenging tariffs'
+  'challenging tariffs',
+  'press release',
+  'news release',
+  'available to traders in'
 ]);
 
 const APPLICATION_HINT = /(apply|application|vendor|trader|stallholder|exhibitor|pitch|food[ -]?truck)/i;
