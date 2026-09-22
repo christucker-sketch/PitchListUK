@@ -128,3 +128,26 @@ for (const bad of [
     assert.equal(candidate.publishable, false);
   });
 }
+
+
+test('shared evaluator rejects financial-product trader news false positive', async () => {
+  const evaluator = createDefaultCandidateEvaluator({
+    fetchProvider: {
+      async fetch(url) {
+        return {
+          final_url: url,
+          body: '<html><head><title>TradeStation Crypto Now Available to Traders in Connecticut</title></head><body><p>News release: crypto is now available to traders in Connecticut.</p><h2>Vendor application</h2></body></html>'
+        };
+      }
+    }
+  });
+  const candidate = await evaluator({
+    market: getMarket('US'),
+    region_code: 'CT',
+    location: 'Connecticut',
+    result: { url: 'https://example.test/news/tradestation-crypto-connecticut' }
+  });
+  assert.equal(candidate.status, 'rejected');
+  assert.equal(candidate.rejection_reason, 'negative_page_signal');
+  assert.equal(candidate.publishable, false);
+});
