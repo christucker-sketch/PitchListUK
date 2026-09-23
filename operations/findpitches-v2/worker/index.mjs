@@ -2,6 +2,7 @@ import { discoverBatch } from '../../../platform/findpitches-v2/acquisition/disc
 import { persistDiscoveryBatch } from '../../../platform/findpitches-v2/acquisition/storage.mjs';
 import { runClassificationBatch } from '../../../platform/findpitches-v2/classifier/run-batch.mjs';
 import { createHttpFetchProvider } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
+import { createRevalidator } from '../../../platform/findpitches-v2/revalidation/index.mjs';
 import { createSerperSearchProvider } from '../../../platform/findpitches-v2/providers/search/serper.mjs';
 import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
 import { recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
@@ -12,6 +13,7 @@ const CLASSIFIER_CRON = '* * * * *';
 const CLASSIFIER_BATCH_LIMIT = 12;
 const CLASSIFIER_RULESET_VERSION = '2026-09-20-opportunity-intent-v2';
 const RECLASSIFY_BATCH_LIMIT = 24;
+const REVALIDATOR_BATCH_LIMIT = 6;
 
 export default {
   async fetch(request, env) {
@@ -146,6 +148,10 @@ async function status(env) {
       expired: Number(classifierStates?.expired || 0)
     },
     candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
+    revalidation: {
+      archive_candidates: Number((Array.isArray(candidateStates?.results) ? candidateStates.results : []).find(row => row.status === 'held')?.count || 0),
+      stale_validated_24h: Number((await env.FINDPITCHES_DB.prepare("SELECT COUNT(*) AS count FROM candidates WHERE status = 'validated' AND last_checked <= ?").bind(new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()).first())?.count || 0)
+    },
     markets: Array.isArray(marketRows?.results) ? marketRows.results : [],
     latest_run: latestRun || null
   });
@@ -318,6 +324,7 @@ export async function recoverExpiredSchedulerLeases(db, { now = new Date() } = {
 }
 
 export async function runClassifierTick(env, { now = new Date() } = {}) {
+  const revalidation = await runRevalidationBatch(env.FINDPITCHES_DB, { fetchProvider: createHttpFetchProvider(), now });
   const reclassification = await enqueueStaleClassifications(env.FINDPITCHES_DB, { now });
   const result = await runClassificationBatch(env.FINDPITCHES_DB, {
     fetchProvider: createHttpFetchProvider(),
@@ -330,10 +337,41 @@ export async function runClassifierTick(env, { now = new Date() } = {}) {
     service: SERVICE,
     engine: 'findpitches-v2-classifier',
     publication_attempted: false,
+    revalidation,
     reclassification,
     ...result,
     at: now.toISOString()
   });
+}
+
+
+export async function runRevalidationBatch(db, { fetchProvider, now = new Date(), limit = REVALIDATOR_BATCH_LIMIT } = {}) {
+  const timestamp = now.toISOString();
+  const cutoff = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
+  const rows = await db.prepare(
+    "SELECT id, market, source_url, canonical_url FROM candidates WHERE status = 'validated' AND last_checked <= ? ORDER BY last_checked ASC, id ASC LIMIT ?"
+  ).bind(cutoff, Math.max(1, Math.min(Number(limit) || REVALIDATOR_BATCH_LIMIT, 25))).all();
+  const candidates = Array.isArray(rows?.results) ? rows.results : [];
+  const revalidator = createRevalidator({ fetchProvider, now: () => now });
+  const outcomes = { checked: 0, current: 0, archive_candidates: 0, retry: 0 };
+
+  for (const candidate of candidates) {
+    const result = await revalidator.revalidate(candidate);
+    outcomes.checked += 1;
+    if (result.status === 'archive_candidate') {
+      outcomes.archive_candidates += 1;
+      await db.prepare("UPDATE candidates SET status = 'held', rejection_reason = ?, last_checked = ? WHERE id = ? AND status = 'validated'")
+        .bind('revalidation:' + result.reason, timestamp, candidate.id).run();
+    } else if (result.status === 'recheck_required') {
+      outcomes.retry += 1;
+      await db.prepare("UPDATE candidates SET retry_count = retry_count + 1 WHERE id = ?").bind(candidate.id).run();
+    } else {
+      outcomes.current += 1;
+      await db.prepare("UPDATE candidates SET last_checked = ?, retry_count = 0 WHERE id = ?").bind(timestamp, candidate.id).run();
+    }
+  }
+
+  return Object.freeze(outcomes);
 }
 
 async function requeueJob(db, jobId, now, delayMinutes, lastError) {
