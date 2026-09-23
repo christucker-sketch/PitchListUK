@@ -149,7 +149,7 @@ async function status(env) {
     },
     candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
     revalidation: {
-      archive_candidates: Number((Array.isArray(candidateStates?.results) ? candidateStates.results : []).find(row => row.status === 'held')?.count || 0),
+      archive_candidates: Number((await env.FINDPITCHES_DB.prepare("SELECT COUNT(*) AS count FROM candidates WHERE status = 'held' AND rejection_reason IN ('revalidation:event_cancelled', 'revalidation:applications_closed')").first())?.count || 0),
       stale_validated_24h: Number((await env.FINDPITCHES_DB.prepare("SELECT COUNT(*) AS count FROM candidates WHERE status = 'validated' AND last_checked <= ?").bind(new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()).first())?.count || 0)
     },
     markets: Array.isArray(marketRows?.results) ? marketRows.results : [],
@@ -364,7 +364,7 @@ export async function runRevalidationBatch(db, { fetchProvider, now = new Date()
         .bind('revalidation:' + result.reason, timestamp, candidate.id).run();
     } else if (result.status === 'recheck_required') {
       outcomes.retry += 1;
-      await db.prepare("UPDATE candidates SET retry_count = retry_count + 1 WHERE id = ?").bind(candidate.id).run();
+      await db.prepare("UPDATE candidates SET retry_count = retry_count + 1, last_checked = ? WHERE id = ?").bind(timestamp, candidate.id).run();
     } else {
       outcomes.current += 1;
       await db.prepare("UPDATE candidates SET last_checked = ?, retry_count = 0 WHERE id = ?").bind(timestamp, candidate.id).run();
