@@ -24,8 +24,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          health="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/health)"
-          status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-shadow.ctucker.workers.dev/status)"
+          health="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/health)"
+          status="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/status)"
 
           jq -e '
             .ok == true and
