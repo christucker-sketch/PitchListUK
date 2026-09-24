@@ -8,7 +8,7 @@ export const QUERY_TEMPLATES = Object.freeze([
   Object.freeze({ id: 'exhibitor', template: '"exhibitor application" {location}', category: 'event', weight: 90 })
 ]);
 
-export function buildQueries({ market, location, limit = 8 }) {
+export function buildQueries({ market, location, limit = 8, rotation = 0 }) {
   if (!market?.terminology?.length) throw new Error('findpitches_v2_query_market_terms_missing');
   const place = String(location || '').trim();
   if (!place) throw new Error('findpitches_v2_query_location_missing');
@@ -30,9 +30,8 @@ export function buildQueries({ market, location, limit = 8 }) {
     }
   }
 
-  return Object.freeze(
-    queries
-      .sort((a, b) => b.weight - a.weight || a.query.localeCompare(b.query))
-      .slice(0, Math.max(1, Number(limit) || 8))
-  );
+  const ordered = queries.sort((a, b) => b.weight - a.weight || a.query.localeCompare(b.query));
+  const take = Math.min(ordered.length, Math.max(1, Number(limit) || 8));
+  const start = ordered.length ? Math.abs(Number(rotation) || 0) % ordered.length : 0;
+  return Object.freeze(Array.from({ length: take }, (_, index) => ordered[(start + index) % ordered.length]));
 }
