@@ -13,7 +13,7 @@ export async function discoverBatch(job = {}, dependencies = {}) {
   }
 
   const queryLimit = Math.max(1, Number(job.query_limit ?? job.queryLimit ?? 8) || 8);
-  const queries = buildQueries({ market, location, limit: queryLimit });
+  const queries = buildQueries({ market, location, limit: queryLimit, rotation: job.query_rotation ?? job.queryRotation ?? 0 });
   const startedAt = new Date().toISOString();
   const searchResults = [];
   const searchErrors = [];
