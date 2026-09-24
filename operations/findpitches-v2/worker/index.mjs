@@ -164,7 +164,9 @@ async function sample(env, url) {
   const requestedMarket = String(url.searchParams.get('market') || '').toUpperCase();
   const market = ['GB', 'US', 'CA'].includes(requestedMarket) ? requestedMarket : null;
   const requestedLimit = Number(url.searchParams.get('limit') || 12);
-  const limit = Math.max(1, Math.min(Number.isFinite(requestedLimit) ? requestedLimit : 12, 25));
+  const limit = Math.max(1, Math.min(Number.isFinite(requestedLimit) ? requestedLimit : 12, 250));
+  const requestedOffset = Number(url.searchParams.get('offset') || 0);
+  const offset = Math.max(0, Number.isFinite(requestedOffset) ? Math.floor(requestedOffset) : 0);
 
   const sql = `
     SELECT id, market, region_code, event_name, organiser, canonical_url,
@@ -172,13 +174,13 @@ async function sample(env, url) {
       FROM candidates
      WHERE status = ?
        ${market ? 'AND market = ?' : ''}
-     ORDER BY score DESC, last_checked DESC
-     LIMIT ?
+     ORDER BY score DESC, last_checked DESC, id ASC
+     LIMIT ? OFFSET ?
   `;
   const statement = env.FINDPITCHES_DB.prepare(sql);
   const rows = market
-    ? await statement.bind(statusValue, market, limit).all()
-    : await statement.bind(statusValue, limit).all();
+    ? await statement.bind(statusValue, market, limit, offset).all()
+    : await statement.bind(statusValue, limit, offset).all();
 
   return Response.json({
     ok: true,
@@ -187,6 +189,8 @@ async function sample(env, url) {
     status: statusValue,
     market,
     limit,
+    offset,
+    returned: Array.isArray(rows?.results) ? rows.results.length : 0,
     publication_enabled: false,
     candidates: Array.isArray(rows?.results) ? rows.results : []
   });
