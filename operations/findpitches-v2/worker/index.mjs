@@ -8,7 +8,7 @@ import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/sched
 import { recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
 
 const SERVICE = 'findpitches-v2-shadow';
-const QUERY_LIMIT = 4;
+const QUERY_LIMIT = 8;
 const CLASSIFIER_CRON = '* * * * *';
 const CLASSIFIER_BATCH_LIMIT = 12;
 const CLASSIFIER_RULESET_VERSION = '2026-09-20-opportunity-intent-v2';
