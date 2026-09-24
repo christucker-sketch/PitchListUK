@@ -71,7 +71,18 @@ jobs:
           set -euo pipefail
           for migration in operations/findpitches-v2/migrations/*.sql; do
             echo "Applying $migration"
-            npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file "$migration" --config "$CONFIG"
+            set +e
+            output="$(npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file "$migration" --config "$CONFIG" 2>&1)"
+            rc=$?
+            set -e
+            printf '%s\n' "$output"
+            if [[ $rc -ne 0 ]]; then
+              if grep -Fq "Not currently importing anything." <<<"$output"; then
+                echo "Wrangler reported an empty/idempotent import for $migration; continuing."
+              else
+                exit "$rc"
+              fi
+            fi
           done
 
       - name: Prove isolated cloud runtime
