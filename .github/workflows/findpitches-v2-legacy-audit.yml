@@ -1,0 +1,26 @@
+name: FindPitches v2 Legacy Rediscovery Audit
+
+on:
+  pull_request:
+    paths:
+      - 'operations/findpitches-v2/audit/**'
+      - '.github/workflows/findpitches-v2-legacy-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Compare legacy catalogue with live v2 validated pool
+        run: node operations/findpitches-v2/audit/legacy-v2-rediscovery.mjs | tee /tmp/rediscovery.json
+      - name: Publish audit summary
+        run: |
+          echo '## FindPitches v2 legacy rediscovery audit' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/rediscovery.json >> "$GITHUB_STEP_SUMMARY"
