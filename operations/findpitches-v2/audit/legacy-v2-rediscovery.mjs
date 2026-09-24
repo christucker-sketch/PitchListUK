@@ -1,6 +1,6 @@
-import { opportunitySnapshot } from '../../functions/_data/opportunities.mjs';
-import { usOpportunitySnapshot } from '../../functions/_data/us-opportunities.mjs';
-import { caOpportunitySnapshot } from '../../functions/_data/ca-opportunities.mjs';
+import { opportunitySnapshot } from '../../../functions/_data/opportunities.mjs';
+import { usOpportunitySnapshot } from '../../../functions/_data/us-opportunities.mjs';
+import { caOpportunitySnapshot } from '../../../functions/_data/ca-opportunities.mjs';
 
 const API = 'https://api.findpitches.com';
 const pageSize = 250;
