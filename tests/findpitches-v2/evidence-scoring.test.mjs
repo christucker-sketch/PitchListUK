@@ -51,3 +51,26 @@ test('negative career signal carries a strong penalty', () => {
   assert.ok(scored.score < 0);
   assert.ok(extracted.evidence.some(item => item.type === 'negative_phrase'));
 });
+
+
+test('generic Instagram hashtag pages are negative even when vendor wording is present', () => {
+  const extracted = extractEvidence({
+    body: '<html><body><h1>Become a trader</h1><p>Vendor application</p></body></html>',
+    sourceUrl: 'https://www.instagram.com/explore/tags/becomeatrader/',
+    location: 'Warwickshire',
+    now: new Date('2026-09-23T00:00:00Z')
+  });
+  assert.ok(extracted.evidence.some(item => item.type === 'negative_phrase' && item.value === 'generic social hashtag page'));
+});
+
+test('vehicle finance and specials pages carry a strong negative signal', () => {
+  const extracted = extractEvidence({
+    body: '<html><body><h1>2026 Chevrolet Specials</h1><p>Pre-qualify for financing today. Vendor application options available.</p></body></html>',
+    sourceUrl: 'https://dealer.test/offerdetails/',
+    location: 'Colorado',
+    now: new Date('2026-09-23T00:00:00Z')
+  });
+  const scored = scoreCandidate({ evidence: extracted.evidence, sourceUrl: 'https://dealer.test/offerdetails/', applicationUrl: extracted.application_url });
+  assert.ok(scored.score < 0);
+  assert.ok(extracted.evidence.some(item => item.type === 'negative_phrase'));
+});

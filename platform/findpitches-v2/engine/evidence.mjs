@@ -54,7 +54,10 @@ const NEGATIVE_PHRASES = Object.freeze([
   'challenging tariffs',
   'press release',
   'news release',
-  'available to traders in'
+  'available to traders in',
+  'pre-qualify for financing',
+  'prequalify for financing',
+  'vehicle specials'
 ]);
 
 const APPLICATION_HINT = /(apply|application|vendor|trader|stallholder|exhibitor|pitch|food[ -]?truck)/i;
@@ -69,6 +72,10 @@ export function extractEvidence({
   const text = htmlToText(html);
   const normalized = text.toLowerCase();
   const evidence = [];
+
+  if (/^https?:\/\/(?:www\.)?instagram\.com\/explore\/tags\//i.test(String(sourceUrl || ''))) {
+    evidence.push(Object.freeze({ type: 'negative_phrase', value: 'generic social hashtag page', confidence: 1 }));
+  }
 
   for (const phrase of POSITIVE_PHRASES) {
     if (normalized.includes(phrase)) {
