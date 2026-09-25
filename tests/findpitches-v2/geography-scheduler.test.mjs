@@ -14,22 +14,29 @@ test('global geography catalogue covers every enabled market', () => {
   assert.equal(enabledGeographies('GB').length, 48);
   assert.equal(enabledGeographies('US').length, 50);
   assert.equal(enabledGeographies('CA').length, 13);
+  assert.equal(enabledGeographies('AU').length, 8);
+  assert.equal(enabledGeographies('IE').length, 26);
+  assert.equal(enabledGeographies('NZ').length, 16);
+  assert.equal(enabledGeographies('SG').length, 1);
+  assert.equal(enabledGeographies('HK').length, 1);
   assert.match(GEOGRAPHY_CATALOG_VERSION, /^\d{4}-\d{2}-\d{2}\./);
 });
 
 test('round-robin scheduler covers every geography once and interleaves markets', () => {
   const schedule = roundRobinSchedule();
 
-  assert.equal(schedule.length, 111);
+  assert.equal(schedule.length, 163);
   assert.deepEqual(
-    schedule.slice(0, 6).map(item => [item.market, item.code]),
+    schedule.slice(0, 8).map(item => [item.market, item.code]),
     [
       ['GB', 'GB-ENG-BEDS'],
       ['US', 'AL'],
       ['CA', 'AB'],
-      ['GB', 'GB-ENG-BERKS'],
-      ['US', 'AK'],
-      ['CA', 'BC']
+      ['AU', 'ACT'],
+      ['IE', 'CW'],
+      ['NZ', 'NTL'],
+      ['SG', 'SG'],
+      ['HK', 'HK']
     ]
   );
 
