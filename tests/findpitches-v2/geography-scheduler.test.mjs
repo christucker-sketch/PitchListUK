@@ -31,12 +31,12 @@ test('round-robin scheduler covers every geography once and interleaves markets'
     [
       ['GB', 'GB-ENG-BEDS'],
       ['US', 'AL'],
-      ['CA', 'AB'],
       ['AU', 'ACT'],
       ['IE', 'CW'],
       ['NZ', 'NTL'],
       ['SG', 'SG'],
-      ['HK', 'HK']
+      ['HK', 'HK'],
+      ['CA', 'AB']
     ]
   );
 
