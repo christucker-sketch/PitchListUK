@@ -15,7 +15,7 @@ export async function ensureSchedulerCatalogue(db, { now = new Date() } = {}) {
   if (current?.value === GEOGRAPHY_CATALOG_VERSION) {
     // Old pilot rows can be reintroduced by the seed migration on a later deploy.
     // Prune them even when the catalogue version itself is already current so the
-    // runtime converges to the canonical 111 catalogue jobs.
+    // runtime converges to the canonical enabled-geography catalogue.
     const cleanup = await db.prepare("DELETE FROM scheduler_jobs WHERE id LIKE 'shadow-%'").run();
     return Object.freeze({
       changed: Number(cleanup?.meta?.changes || 0) > 0,
