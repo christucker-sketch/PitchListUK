@@ -1,3 +1,4 @@
+import { enabledMarkets } from '../../../platform/findpitches-v2/markets/registry.mjs';
 import { discoverBatch } from '../../../platform/findpitches-v2/acquisition/discover-batch.mjs';
 import { persistDiscoveryBatch } from '../../../platform/findpitches-v2/acquisition/storage.mjs';
 import { runClassificationBatch } from '../../../platform/findpitches-v2/classifier/run-batch.mjs';
@@ -162,7 +163,8 @@ async function sample(env, url) {
   const requestedStatus = url.searchParams.get('status') || 'validated';
   const statusValue = allowedStatuses.has(requestedStatus) ? requestedStatus : 'validated';
   const requestedMarket = String(url.searchParams.get('market') || '').toUpperCase();
-  const market = ['GB', 'US', 'CA'].includes(requestedMarket) ? requestedMarket : null;
+  const enabledMarketCodes = new Set(enabledMarkets().map(item => item.code));
+  const market = enabledMarketCodes.has(requestedMarket) ? requestedMarket : null;
   const requestedLimit = Number(url.searchParams.get('limit') || 12);
   const limit = Math.max(1, Math.min(Number.isFinite(requestedLimit) ? requestedLimit : 12, 250));
   const requestedOffset = Number(url.searchParams.get('offset') || 0);
