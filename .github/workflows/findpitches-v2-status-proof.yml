@@ -19,11 +19,16 @@ jobs:
     timeout-minutes: 5
 
     steps:
+      - name: Check out current catalogue
+        uses: actions/checkout@v4
+
       - name: Prove FindPitches v2 cloud health
         shell: bash
         run: |
           set -euo pipefail
 
+          expected_jobs="$(node --input-type=module -e "import { roundRobinSchedule } from './platform/findpitches-v2/scheduler/catalogue.mjs'; process.stdout.write(String(roundRobinSchedule().length))")"
+          expected_catalogue="$(node --input-type=module -e "import { GEOGRAPHY_CATALOG_VERSION } from './platform/findpitches-v2/geography/catalog.mjs'; process.stdout.write(GEOGRAPHY_CATALOG_VERSION)")"
           health="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/health)"
           status="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/status)"
 
@@ -50,13 +55,13 @@ jobs:
           search_configured="$(jq -r '.search_configured // false' <<<"$status")"
 
           if [[ -n "$catalogue" ]]; then
-            if [[ "$catalogue" != "2026-09-25.1" ]]; then
-              echo "::error title=FindPitches v2 catalogue mismatch::Expected geography catalogue 2026-09-25.1, got $catalogue"
+            if [[ "$catalogue" != "$expected_catalogue" ]]; then
+              echo "::error title=FindPitches v2 catalogue mismatch::Expected geography catalogue $expected_catalogue, got $catalogue"
               exit 1
             fi
 
-            if [[ "$jobs" -ne 163 ]]; then
-              echo "::error title=FindPitches v2 scheduler mismatch::Reconciled catalogue should contain 163 jobs, got $jobs"
+            if [[ "$jobs" -ne "$expected_jobs" ]]; then
+              echo "::error title=FindPitches v2 scheduler mismatch::Current enabled geography catalogue should contain $expected_jobs jobs, got $jobs"
               exit 1
             fi
           fi
