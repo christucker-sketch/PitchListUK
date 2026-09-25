@@ -50,13 +50,13 @@ jobs:
           search_configured="$(jq -r '.search_configured // false' <<<"$status")"
 
           if [[ -n "$catalogue" ]]; then
-            if [[ "$catalogue" != "2026-09-19.1" ]]; then
-              echo "::error title=FindPitches v2 catalogue mismatch::Expected geography catalogue 2026-09-19.1, got $catalogue"
+            if [[ "$catalogue" != "2026-09-25.1" ]]; then
+              echo "::error title=FindPitches v2 catalogue mismatch::Expected geography catalogue 2026-09-25.1, got $catalogue"
               exit 1
             fi
 
-            if [[ "$jobs" -ne 111 ]]; then
-              echo "::error title=FindPitches v2 scheduler mismatch::Reconciled catalogue should contain 111 jobs, got $jobs"
+            if [[ "$jobs" -ne 163 ]]; then
+              echo "::error title=FindPitches v2 scheduler mismatch::Reconciled catalogue should contain 163 jobs, got $jobs"
               exit 1
             fi
           fi
