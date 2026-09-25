@@ -87,12 +87,27 @@ const CA = Object.freeze([
   geography('CA','YT','Yukon',130)
 ]);
 
-export const GEOGRAPHY_CATALOG_VERSION = '2026-09-19.1';
+
+const AU = Object.freeze([['ACT','Australian Capital Territory'],['NSW','New South Wales'],['NT','Northern Territory'],['QLD','Queensland'],['SA','South Australia'],['TAS','Tasmania'],['VIC','Victoria'],['WA','Western Australia']].map(([code,name],i)=>geography('AU',code,name,(i+1)*10)));
+
+const IE = Object.freeze([['CW','Carlow'],['CN','Cavan'],['CE','Clare'],['CO','Cork'],['DL','Donegal'],['D','Dublin'],['G','Galway'],['KY','Kerry'],['KE','Kildare'],['KK','Kilkenny'],['LS','Laois'],['LM','Leitrim'],['LK','Limerick'],['LD','Longford'],['LH','Louth'],['MO','Mayo'],['MH','Meath'],['MN','Monaghan'],['OY','Offaly'],['RN','Roscommon'],['SO','Sligo'],['TA','Tipperary'],['WD','Waterford'],['WH','Westmeath'],['WX','Wexford'],['WW','Wicklow']].map(([code,name],i)=>geography('IE',code,name,(i+1)*10)));
+
+const NZ = Object.freeze([['NTL','Northland'],['AUK','Auckland'],['WKO','Waikato'],['BOP','Bay of Plenty'],['GIS','Gisborne'],['HKB',"Hawke's Bay"],['TKI','Taranaki'],['MWT','Manawatu-Whanganui'],['WGN','Wellington'],['TAS','Tasman'],['NSN','Nelson'],['MBH','Marlborough'],['WTC','West Coast'],['CAN','Canterbury'],['OTA','Otago'],['STL','Southland']].map(([code,name],i)=>geography('NZ',code,name,(i+1)*10)));
+
+const SG = Object.freeze([geography('SG','SG','Singapore',10)]);
+const HK = Object.freeze([geography('HK','HK','Hong Kong',10)]);
+
+export const GEOGRAPHY_CATALOG_VERSION = '2026-09-25.1';
 
 export const GEOGRAPHIES = Object.freeze({
   GB,
   US,
-  CA
+  CA,
+  AU,
+  IE,
+  NZ,
+  SG,
+  HK
 });
 
 export function enabledGeographies(market) {
