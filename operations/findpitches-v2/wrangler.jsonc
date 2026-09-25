@@ -23,6 +23,6 @@
   ],
   "vars": {
     "FINDPITCHES_V2_MODE": "shadow",
-    "FINDPITCHES_V2_MARKETS": "GB,US,CA"
+    "FINDPITCHES_V2_MARKETS": "GB,US,CA,AU,IE,NZ,SG,HK"
   }
 }
