@@ -28,6 +28,10 @@ export default {
       return status(env);
     }
 
+    if (request.method === 'GET' && url.pathname === '/status.txt') {
+      return statusText(env);
+    }
+
     if (request.method === 'GET' && url.pathname === '/sample') {
       return sample(env, url);
     }
@@ -155,6 +159,53 @@ async function status(env) {
     },
     markets: Array.isArray(marketRows?.results) ? marketRows.results : [],
     latest_run: latestRun || null
+  });
+}
+
+async function statusText(env) {
+  const response = await status(env);
+  const data = await response.json();
+  const candidateStatuses = Object.fromEntries((data.candidate_statuses || []).map(row => [row.status, Number(row.count || 0)]));
+  const markets = (data.markets || []).map(row =>
+    `${row.market}: jobs=${Number(row.jobs || 0)}, ready=${Number(row.ready_jobs || 0)}, next=${row.next_available || 'n/a'}`
+  );
+
+  const lines = [
+    'FindPitches v2 live status',
+    `service: ${data.service}`,
+    `mode: ${data.mode}`,
+    `search_configured: ${data.search_configured}`,
+    `publication_enabled: ${data.publication_enabled}`,
+    `catalogue: ${data.catalogue?.value || 'not reconciled'}`,
+    `scheduler_jobs: ${Number(data.counts?.scheduler_jobs || 0)}`,
+    `acquisition_runs: ${Number(data.counts?.runs || 0)}`,
+    `candidates_total: ${Number(data.counts?.candidates || 0)}`,
+    `validated: ${candidateStatuses.validated || 0}`,
+    `held: ${candidateStatuses.held || 0}`,
+    `rejected: ${candidateStatuses.rejected || 0}`,
+    `discovered: ${candidateStatuses.discovered || 0}`,
+    `classifier_ready: ${Number(data.classifier?.ready || 0)}`,
+    `classifier_leased: ${Number(data.classifier?.leased || 0)}`,
+    `classifier_complete: ${Number(data.classifier?.complete || 0)}`,
+    `classifier_expired: ${Number(data.classifier?.expired || 0)}`,
+    `scheduler_ready: ${Number(data.scheduler?.ready || 0)}`,
+    `scheduler_leased: ${Number(data.scheduler?.leased || 0)}`,
+    `scheduler_expired: ${Number(data.scheduler?.expired || 0)}`,
+    `publication_queue: ${Number(data.counts?.publication_queue || 0)}`,
+    '',
+    'markets:',
+    ...markets,
+    '',
+    'latest_run:',
+    JSON.stringify(data.latest_run || null)
+  ];
+
+  return new Response(lines.join('\n') + '\n', {
+    headers: {
+      'content-type': 'text/plain; charset=utf-8',
+      'cache-control': 'no-store',
+      'x-robots-tag': 'noindex, nofollow'
+    }
   });
 }
 
