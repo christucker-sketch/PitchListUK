@@ -84,7 +84,7 @@ async function health(env) {
 
 async function status(env) {
   const now = new Date().toISOString();
-  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates] = await Promise.all([
+  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
@@ -133,7 +133,16 @@ async function status(env) {
          SUM(CASE WHEN status = 'complete' THEN 1 ELSE 0 END) AS complete,
          SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
        FROM classification_queue`
-    ).bind(now).first()
+    ).bind(now).first(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT
+         COUNT(*) AS validated,
+         SUM(CASE WHEN o.id IS NOT NULL AND o.last_checked >= c.last_checked THEN 1 ELSE 0 END) AS current_ready,
+         SUM(CASE WHEN o.id IS NULL OR o.last_checked < c.last_checked THEN 1 ELSE 0 END) AS pending
+       FROM candidates c
+       LEFT JOIN customer_opportunities o ON o.id = c.id
+       WHERE c.status = 'validated'`
+    ).first()
   ]);
 
   return Response.json({
@@ -156,6 +165,11 @@ async function status(env) {
       expired: Number(classifierStates?.expired || 0)
     },
     candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
+    customer_promotion: {
+      validated: Number(customerPromotionStates?.validated || 0),
+      current_ready: Number(customerPromotionStates?.current_ready || 0),
+      pending: Number(customerPromotionStates?.pending || 0)
+    },
     revalidation: {
       archive_candidates: Number((await env.FINDPITCHES_DB.prepare("SELECT COUNT(*) AS count FROM candidates WHERE status = 'held' AND rejection_reason IN ('revalidation:event_cancelled', 'revalidation:applications_closed')").first())?.count || 0),
       stale_validated_24h: Number((await env.FINDPITCHES_DB.prepare("SELECT COUNT(*) AS count FROM candidates WHERE status = 'validated' AND last_checked <= ?").bind(new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()).first())?.count || 0)
@@ -196,6 +210,9 @@ async function statusText(env) {
     `scheduler_expired: ${Number(data.scheduler?.expired || 0)}`,
     `publication_queue: ${Number(data.counts?.publication_queue || 0)}`,
     `customer_ready: ${Number(data.counts?.customer_ready || 0)}`,
+    `customer_promotion_validated: ${Number(data.customer_promotion?.validated || 0)}`,
+    `customer_promotion_current_ready: ${Number(data.customer_promotion?.current_ready || 0)}`,
+    `customer_promotion_pending: ${Number(data.customer_promotion?.pending || 0)}`,
     '',
     'markets:',
     ...markets,
