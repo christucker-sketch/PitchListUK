@@ -20,7 +20,7 @@ export async function runClassificationBatch(db, {
          OR (q.status = 'leased' AND q.lease_until <= ?)
       ORDER BY q.available_at ASC, q.candidate_id ASC
       LIMIT ?`
-  ).bind(timestamp, timestamp, Math.max(1, Math.min(Number(limit) || 12, 25))).all();
+  ).bind(timestamp, timestamp, Math.max(1, Math.min(Number(limit) || 12, 50))).all();
 
   const rows = Array.isArray(ready?.results) ? ready.results : [];
   const outcomes = { processed: 0, validated: 0, held: 0, rejected: 0, failed: 0 };
