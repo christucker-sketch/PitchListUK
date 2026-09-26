@@ -12,7 +12,7 @@ import { runCustomerPromotionBatch } from '../../../platform/findpitches-v2/cust
 const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 8;
 const CLASSIFIER_CRON = '* * * * *';
-const CLASSIFIER_BATCH_LIMIT = 12;
+const CLASSIFIER_BATCH_LIMIT = 24;
 const CLASSIFIER_RULESET_VERSION = '2026-09-26-quality-rules-v3';
 const RECLASSIFY_BATCH_LIMIT = 24;
 const REVALIDATOR_BATCH_LIMIT = 6;
