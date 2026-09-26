@@ -7,6 +7,7 @@ import { createRevalidator } from '../../../platform/findpitches-v2/revalidation
 import { createSerperSearchProvider } from '../../../platform/findpitches-v2/providers/search/serper.mjs';
 import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
 import { recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
+import { runCustomerPromotionBatch } from '../../../platform/findpitches-v2/customer/run-batch.mjs';
 
 const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 8;
@@ -15,6 +16,7 @@ const CLASSIFIER_BATCH_LIMIT = 12;
 const CLASSIFIER_RULESET_VERSION = '2026-09-26-quality-rules-v3';
 const RECLASSIFY_BATCH_LIMIT = 24;
 const REVALIDATOR_BATCH_LIMIT = 6;
+const CUSTOMER_PROMOTION_BATCH_LIMIT = 12;
 
 export default {
   async fetch(request, env) {
@@ -82,12 +84,13 @@ async function health(env) {
 
 async function status(env) {
   const now = new Date().toISOString();
-  const [runs, candidates, jobs, publication, classification, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates] = await Promise.all([
+  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
     count(env, 'publication_queue'),
     count(env, 'classification_queue'),
+    count(env, 'customer_opportunities'),
     env.FINDPITCHES_DB.prepare(
       `SELECT run_id, market, region_code, status, query_count, search_results,
               unique_candidates, validated, duplicates, held, rejected,
@@ -140,7 +143,7 @@ async function status(env) {
     search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
     publication_enabled: false,
     catalogue: catalogueMeta || null,
-    counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification },
+    counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification, customer_ready: customerReady },
     scheduler: {
       ready: Number(schedulerStates?.ready || 0),
       leased: Number(schedulerStates?.leased || 0),
@@ -192,6 +195,7 @@ async function statusText(env) {
     `scheduler_leased: ${Number(data.scheduler?.leased || 0)}`,
     `scheduler_expired: ${Number(data.scheduler?.expired || 0)}`,
     `publication_queue: ${Number(data.counts?.publication_queue || 0)}`,
+    `customer_ready: ${Number(data.counts?.customer_ready || 0)}`,
     '',
     'markets:',
     ...markets,
@@ -389,6 +393,7 @@ export async function runClassifierTick(env, { now = new Date() } = {}) {
     limit: CLASSIFIER_BATCH_LIMIT,
     now
   });
+  const customerPromotion = await runCustomerPromotionBatch(env.FINDPITCHES_DB, { limit: CUSTOMER_PROMOTION_BATCH_LIMIT });
 
   return Object.freeze({
     ok: true,
@@ -397,6 +402,7 @@ export async function runClassifierTick(env, { now = new Date() } = {}) {
     publication_attempted: false,
     revalidation,
     reclassification,
+    customer_promotion: customerPromotion,
     ...result,
     at: now.toISOString()
   });
