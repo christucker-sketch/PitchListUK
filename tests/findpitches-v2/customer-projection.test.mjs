@@ -14,15 +14,15 @@ test('projects classifier data without inventing enrichment',()=>{
  assert.equal(opportunity.title,'Town Market');
  assert.equal(opportunity.organiser,null);
  assert.equal(opportunity.recurring,null);
- assert.equal(opportunity.sells,null);
+ assert.equal(opportunity.offerings,null);
  assert.equal(opportunity.coordinates,null);
  assert.equal(readiness.ready,true);
 });
 
 test('enrichment overlays customer fields without mutating candidate',()=>{
- const {opportunity}=projectCustomerOpportunity(candidate,{organiser:'Town Council',sells:['food','craft','food'],recurring:false,coordinates:{lat:51.2,lng:0.5}});
+ const {opportunity}=projectCustomerOpportunity(candidate,{organiser:'Town Council',offerings:[{label:'Jamaican jerk',kind:'food',cuisine:'Jamaican'},{label:'Handmade ceramics',kind:'craft'}],recurring:false,coordinates:{lat:51.2,lng:0.5}});
  assert.equal(opportunity.organiser,'Town Council');
- assert.deepEqual(opportunity.sells,['food','craft']);
+ assert.deepEqual(opportunity.offerings,[{label:'Jamaican jerk',kind:'food',cuisine:'Jamaican',product:null},{label:'Handmade ceramics',kind:'craft',cuisine:null,product:null}]);
  assert.equal(opportunity.recurring,false);
  assert.deepEqual(opportunity.coordinates,{lat:51.2,lng:0.5});
  assert.equal(candidate.organiser,null);
