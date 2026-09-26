@@ -1,0 +1,32 @@
+name: FindPitches v2 Customer Quality Audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'operations/findpitches-v2/audit/customer-quality.mjs'
+      - '.github/workflows/findpitches-v2-customer-quality.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Audit live validated pool
+        shell: bash
+        run: |
+          set -o pipefail
+          node operations/findpitches-v2/audit/customer-quality.mjs | tee /tmp/customer-quality.json
+      - name: Publish audit
+        run: |
+          echo '## FindPitches v2 customer-readiness audit' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Read-only: no acquisition, classifier or publication changes.' >> "$GITHUB_STEP_SUMMARY"
+          echo '~~~json' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/customer-quality.json >> "$GITHUB_STEP_SUMMARY"
+          echo '~~~' >> "$GITHUB_STEP_SUMMARY"
