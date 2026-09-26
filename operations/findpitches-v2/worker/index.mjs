@@ -254,7 +254,7 @@ async function sample(env, url) {
 }
 
 async function count(env, table) {
-  const allowed = new Set(['acquisition_runs', 'candidates', 'scheduler_jobs', 'publication_queue', 'classification_queue']);
+  const allowed = new Set(['acquisition_runs', 'candidates', 'scheduler_jobs', 'publication_queue', 'classification_queue', 'customer_opportunities']);
   if (!allowed.has(table)) throw new Error('findpitches_v2_status_table_rejected');
   const row = await env.FINDPITCHES_DB.prepare(`SELECT COUNT(*) AS count FROM ${table}`).first();
   return Number(row?.count || 0);
