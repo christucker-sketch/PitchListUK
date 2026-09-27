@@ -3,12 +3,6 @@ name: FindPitches v2 Shadow Deploy
 on:
   push:
     branches: [main]
-    paths:
-      - 'platform/findpitches-v2/**'
-      - 'operations/findpitches-v2/**'
-      - 'operations/findpitches-v2-enrichment/**'
-      - 'tests/findpitches-v2/**'
-      - '.github/workflows/findpitches-v2-shadow-deploy.yml'
   workflow_dispatch:
 
 permissions:
