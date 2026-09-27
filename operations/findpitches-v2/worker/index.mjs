@@ -8,6 +8,7 @@ import { createSerperSearchProvider } from '../../../platform/findpitches-v2/pro
 import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
 import { recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
 import { runCustomerPromotionBatch } from '../../../platform/findpitches-v2/customer/run-batch.mjs';
+import { enqueueValidatedForEnrichment, runEnrichmentBatch } from '../../../platform/findpitches-v2/enrichment/run-batch.mjs';
 
 const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 8;
@@ -17,6 +18,7 @@ const CLASSIFIER_RULESET_VERSION = '2026-09-26-quality-rules-v3';
 const RECLASSIFY_BATCH_LIMIT = 24;
 const REVALIDATOR_BATCH_LIMIT = 6;
 const CUSTOMER_PROMOTION_BATCH_LIMIT = 12;
+const ENRICHMENT_BATCH_LIMIT = 8;
 
 export default {
   async fetch(request, env) {
@@ -410,6 +412,12 @@ export async function runClassifierTick(env, { now = new Date() } = {}) {
     limit: CLASSIFIER_BATCH_LIMIT,
     now
   });
+  const enrichmentQueued = await enqueueValidatedForEnrichment(env.FINDPITCHES_DB, { now });
+  const enrichment = await runEnrichmentBatch(env.FINDPITCHES_DB, {
+    fetchProvider: createHttpFetchProvider(),
+    limit: ENRICHMENT_BATCH_LIMIT,
+    now
+  });
   const customerPromotion = await runCustomerPromotionBatch(env.FINDPITCHES_DB, { limit: CUSTOMER_PROMOTION_BATCH_LIMIT });
 
   return Object.freeze({
@@ -420,6 +428,8 @@ export async function runClassifierTick(env, { now = new Date() } = {}) {
     revalidation,
     reclassification,
     customer_promotion: customerPromotion,
+    enrichment_queued: enrichmentQueued,
+    enrichment,
     ...result,
     at: now.toISOString()
   });
