@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "findpitches-v2-enrichment",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2026-09-19",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "triggers": { "crons": ["* * * * *"] },
+  "d1_databases": [{ "binding": "FINDPITCHES_DB" }],
+  "vars": { "FINDPITCHES_V2_MODE": "shadow" }
+}

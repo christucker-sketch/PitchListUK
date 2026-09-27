@@ -4,8 +4,10 @@ export async function runCustomerPromotionBatch(db, { limit = 12 } = {}) {
   if (!db?.prepare) throw new Error('findpitches_customer_promotion_db_missing');
   const ready = await db.prepare(
     `SELECT c.id, c.market, c.region_code, c.canonical_url, c.application_url,
-            c.event_name, c.organiser, c.geography_json, c.score, c.status, c.last_checked
+            c.event_name, c.organiser, c.geography_json, c.score, c.status, c.last_checked,
+            e.enrichment_json, e.source_last_checked
        FROM candidates c
+       JOIN candidate_enrichment e ON e.candidate_id = c.id AND e.source_last_checked >= c.last_checked
        LEFT JOIN customer_opportunities o ON o.id = c.id
       WHERE c.status = 'validated'
         AND (o.id IS NULL OR o.last_checked < c.last_checked)
@@ -18,18 +20,8 @@ export async function runCustomerPromotionBatch(db, { limit = 12 } = {}) {
 
   for (const row of rows) {
     const geography = parse(row.geography_json);
-    const candidate = {
-      ...row,
-      geography,
-      organiser: row.organiser,
-      candidate_id: row.id
-    };
-    // First shadow pass deliberately uses only evidence already held in the
-    // classifier candidate. Dedicated enrichment can add optional fields later.
-    const enrichment = {
-      organiser: row.organiser,
-      location: geography.location ?? geography.discovery_location ?? null
-    };
+    const candidate = { ...row, geography, organiser: row.organiser, candidate_id: row.id };
+    const enrichment = parse(row.enrichment_json);
     const result = await promoteCustomerOpportunity(db, candidate, enrichment);
     outcomes.inspected += 1;
     if (result.promoted) outcomes.promoted += 1;
