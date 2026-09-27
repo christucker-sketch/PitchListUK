@@ -6,6 +6,6 @@
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
   "triggers": { "crons": ["* * * * *"] },
-  "d1_databases": [{ "binding": "FINDPITCHES_DB" }],
+  "d1_databases": [{ "binding": "FINDPITCHES_DB", "database_id": "6732bcc9-a172-4d38-ad4d-7660ed13392f" }],
   "vars": { "FINDPITCHES_V2_MODE": "shadow" }
 }

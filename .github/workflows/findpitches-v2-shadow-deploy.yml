@@ -87,6 +87,49 @@ jobs:
       - name: Deploy dedicated enrichment Worker
         run: npx --yes wrangler@4.127.1 deploy --config "$ENRICHMENT_CONFIG"
 
+      - name: Prove dedicated enrichment runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          passed=false
+          for attempt in $(seq 1 15); do
+            health="$(curl --silent --show-error --fail-with-body https://findpitches-v2-enrichment.ctucker.workers.dev/health || true)"
+            status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-enrichment.ctucker.workers.dev/status || true)"
+            if jq -e '.ok == true and .service == "findpitches-v2-enrichment" and .database == "isolated" and .serper_configured == false' <<<"$health" >/dev/null 2>&1 && jq -e '.ok == true and .service == "findpitches-v2-enrichment" and (.queue.ready >= 0) and (.queue.leased >= 0) and (.queue.complete >= 0) and (.enriched >= 0)' <<<"$status" >/dev/null 2>&1; then
+              passed=true
+              break
+            fi
+            sleep 2
+          done
+          if [[ "$passed" != "true" ]]; then
+            echo "Final enrichment health response:" >&2
+            printf '%s\n' "$health" >&2
+            echo "Final enrichment status response:" >&2
+            printf '%s\n' "$status" >&2
+            exit 1
+          fi
+
+      - name: Prove enrichment queue begins populating
+        shell: bash
+        run: |
+          set -euo pipefail
+          populated=false
+          for attempt in $(seq 1 18); do
+            status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-enrichment.ctucker.workers.dev/status || true)"
+            total="$(jq -r '(.queue.ready // 0) + (.queue.leased // 0) + (.queue.complete // 0)' <<<"$status" 2>/dev/null || echo 0)"
+            enriched="$(jq -r '.enriched // 0' <<<"$status" 2>/dev/null || echo 0)"
+            if [[ "$total" -gt 0 || "$enriched" -gt 0 ]]; then
+              populated=true
+              break
+            fi
+            sleep 5
+          done
+          if [[ "$populated" != "true" ]]; then
+            echo "Enrichment queue did not populate after deployment." >&2
+            printf '%s\n' "$status" >&2
+            exit 1
+          fi
+
       - name: Prove isolated cloud runtime
         shell: bash
         run: |
