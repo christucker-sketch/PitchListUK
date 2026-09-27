@@ -6,6 +6,7 @@ on:
     paths:
       - 'platform/findpitches-v2/**'
       - 'operations/findpitches-v2/**'
+      - 'operations/findpitches-v2-enrichment/**'
       - 'tests/findpitches-v2/**'
       - '.github/workflows/findpitches-v2-shadow-deploy.yml'
   workflow_dispatch:
@@ -27,6 +28,7 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       CONFIG: operations/findpitches-v2/wrangler.jsonc
+      ENRICHMENT_CONFIG: operations/findpitches-v2-enrichment/wrangler.jsonc
 
     steps:
       - name: Check out verified main
@@ -45,6 +47,9 @@ jobs:
 
       - name: Deploy isolated shadow Worker and auto-provision dedicated D1
         run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
+
+      - name: Compile dedicated enrichment Worker
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config "$ENRICHMENT_CONFIG"
 
       - name: Copy search credential into dedicated v2 Worker secret
         shell: bash
@@ -84,6 +89,9 @@ jobs:
               fi
             fi
           done
+
+      - name: Deploy dedicated enrichment Worker
+        run: npx --yes wrangler@4.127.1 deploy --config "$ENRICHMENT_CONFIG"
 
       - name: Prove isolated cloud runtime
         shell: bash
