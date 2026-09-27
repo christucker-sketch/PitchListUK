@@ -84,7 +84,7 @@ async function health(env) {
 
 async function status(env) {
   const now = new Date().toISOString();
-  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates] = await Promise.all([
+  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates, enrichmentStates, enrichedStored] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
@@ -142,7 +142,16 @@ async function status(env) {
        FROM candidates c
        LEFT JOIN customer_opportunities o ON o.id = c.id
        WHERE c.status = 'validated'`
-    ).first()
+    ).first(),
+    env.FINDPITCHES_DB.prepare(
+      `SELECT
+         SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) AS ready,
+         SUM(CASE WHEN status = 'leased' THEN 1 ELSE 0 END) AS leased,
+         SUM(CASE WHEN status = 'complete' THEN 1 ELSE 0 END) AS complete,
+         SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
+       FROM enrichment_queue`
+    ).bind(now).first(),
+    env.FINDPITCHES_DB.prepare('SELECT COUNT(*) AS count FROM candidate_enrichment').first()
   ]);
 
   return Response.json({
@@ -163,6 +172,13 @@ async function status(env) {
       leased: Number(classifierStates?.leased || 0),
       complete: Number(classifierStates?.complete || 0),
       expired: Number(classifierStates?.expired || 0)
+    },
+    enrichment: {
+      ready: Number(enrichmentStates?.ready || 0),
+      leased: Number(enrichmentStates?.leased || 0),
+      complete: Number(enrichmentStates?.complete || 0),
+      expired: Number(enrichmentStates?.expired || 0),
+      enriched: Number(enrichedStored?.count || 0)
     },
     candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
     customer_promotion: {
@@ -205,6 +221,11 @@ async function statusText(env) {
     `classifier_leased: ${Number(data.classifier?.leased || 0)}`,
     `classifier_complete: ${Number(data.classifier?.complete || 0)}`,
     `classifier_expired: ${Number(data.classifier?.expired || 0)}`,
+    `enrichment_ready: ${Number(data.enrichment?.ready || 0)}`,
+    `enrichment_leased: ${Number(data.enrichment?.leased || 0)}`,
+    `enrichment_complete: ${Number(data.enrichment?.complete || 0)}`,
+    `enrichment_expired: ${Number(data.enrichment?.expired || 0)}`,
+    `enrichment_enriched: ${Number(data.enrichment?.enriched || 0)}`,
     `scheduler_ready: ${Number(data.scheduler?.ready || 0)}`,
     `scheduler_leased: ${Number(data.scheduler?.leased || 0)}`,
     `scheduler_expired: ${Number(data.scheduler?.expired || 0)}`,
