@@ -1,6 +1,6 @@
 name: FindPitches v2 Shadow Deploy
 
-on:
+"on":
   push:
     branches: [main]
   workflow_dispatch:
