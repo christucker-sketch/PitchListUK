@@ -6,8 +6,6 @@ name: FindPitches v2 Bounded PDF Replay
     paths:
       - '.github/workflows/findpitches-v2-bounded-pdf-replay.yml'
       - 'operations/findpitches-v2/replay-legacy-pdfs.mjs'
-  schedule:
-    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
 permissions:
