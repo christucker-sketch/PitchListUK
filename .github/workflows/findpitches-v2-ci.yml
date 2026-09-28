@@ -44,6 +44,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install PDF parser
+        run: npm install --no-audit --no-fund
+
       - name: Run FindPitches v2 tests
         run: node --test tests/findpitches-v2/*.test.mjs
 

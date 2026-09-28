@@ -1,3 +1,4 @@
+import { extractPdfText } from './pdf.mjs';
 const DEFAULT_TIMEOUT_MS = 12_000;
 const DEFAULT_MAX_BYTES = 1_500_000;
 
@@ -25,7 +26,7 @@ export function createHttpFetchProvider({
           redirect: 'follow',
           signal: controller.signal,
           headers: {
-            accept: 'text/html,application/xhtml+xml;q=0.9,text/plain;q=0.7,*/*;q=0.1',
+            accept: 'text/html,application/xhtml+xml;q=0.9,application/pdf;q=0.8,text/plain;q=0.7,*/*;q=0.1',
             'user-agent': userAgent
           }
         });
@@ -36,12 +37,14 @@ export function createHttpFetchProvider({
         if (contentLength > maxBytes) throw new Error('findpitches_v2_fetch_too_large');
 
         const contentType = String(response.headers.get('content-type') || '').toLowerCase();
-        if (!contentType.includes('text/html') && !contentType.includes('application/xhtml+xml') && !contentType.includes('text/plain')) {
+        const isPdf = contentType.includes('application/pdf') || /\\.pdf(?:$|[?#])/i.test(response.url || target.toString());
+        if (!isPdf && !contentType.includes('text/html') && !contentType.includes('application/xhtml+xml') && !contentType.includes('text/plain')) {
           throw new Error(`findpitches_v2_fetch_content_type_unsupported:${contentType || 'unknown'}`);
         }
 
-        const body = await response.text();
-        if (new TextEncoder().encode(body).byteLength > maxBytes) throw new Error('findpitches_v2_fetch_too_large');
+        const bytes = new Uint8Array(await response.arrayBuffer());
+        if (bytes.byteLength > maxBytes) throw new Error('findpitches_v2_fetch_too_large');
+        const body = isPdf ? await extractPdfText(bytes) : new TextDecoder().decode(bytes);
 
         return Object.freeze({
           requested_url: target.toString(),
