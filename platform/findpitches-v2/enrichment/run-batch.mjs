@@ -1,5 +1,6 @@
 import { normalizeEnrichment } from '../customer/enrichment.mjs';
 import { extractNamedFields } from './named-fields.mjs';
+import { isTerminalPdfError } from '../providers/fetch/pdf-error-policy.mjs';
 
 const DEFAULT_LIMIT = 8;
 const LEASE_MINUTES = 5;
@@ -75,7 +76,7 @@ export async function runEnrichmentBatch(db, { fetchProvider, now = new Date(), 
     }catch(error){
       const retryAt=new Date(now.getTime()+RETRY_MINUTES*60000).toISOString();
       await db.prepare("UPDATE enrichment_queue SET status=?,available_at=?,lease_until=NULL,last_error=?,updated_at=? WHERE candidate_id=?")
-        .bind(Number(row.attempts||0)+1>=MAX_ATTEMPTS?'dead':'ready',retryAt,String(error?.message||error).slice(0,500),timestamp,row.candidate_id).run();
+        .bind(isTerminalPdfError(error) || Number(row.attempts||0)+1>=MAX_ATTEMPTS?'dead':'ready',retryAt,String(error?.message||error).slice(0,500),timestamp,row.candidate_id).run();
       outcomes.failed++;
     }
   }
