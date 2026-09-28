@@ -9,6 +9,7 @@ import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/sched
 import { recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
 import { runCustomerPromotionBatch } from '../../../platform/findpitches-v2/customer/run-batch.mjs';
 import { runNativePdfRecovery } from '../../../platform/findpitches-v2/pdf-recovery/native.mjs';
+import { runObservedPdfRecovery, getPdfRecoveryTelemetry } from '../../../platform/findpitches-v2/pdf-recovery/telemetry.mjs';
 
 const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 8;
@@ -45,7 +46,7 @@ export default {
 
   async scheduled(event, env, ctx) {
     if (event?.cron === PDF_RECOVERY_CRON) {
-      ctx.waitUntil(runNativePdfRecovery(env.FINDPITCHES_DB)
+      ctx.waitUntil(runObservedPdfRecovery(env.FINDPITCHES_DB, runNativePdfRecovery, {cron:event.cron})
         .then(result => console.log('findpitches_v2_pdf_recovery_tick', JSON.stringify(result)))
         .catch(error => console.error('findpitches_v2_pdf_recovery_tick_failed', String(error?.stack || error))));
       return;
@@ -92,7 +93,7 @@ async function health(env) {
 
 async function status(env) {
   const now = new Date().toISOString();
-  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates, enrichmentStates, enrichedStored] = await Promise.all([
+  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates, enrichmentStates, enrichedStored, pdfRecoveryTick] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
@@ -161,7 +162,8 @@ async function status(env) {
          SUM(CASE WHEN status = 'dead' THEN 1 ELSE 0 END) AS dead
        FROM enrichment_queue`
     ).bind(now).first(),
-    env.FINDPITCHES_DB.prepare('SELECT COUNT(*) AS count FROM candidate_enrichment').first()
+    env.FINDPITCHES_DB.prepare('SELECT COUNT(*) AS count FROM candidate_enrichment').first(),
+    getPdfRecoveryTelemetry(env.FINDPITCHES_DB)
   ]);
 
   return Response.json({
@@ -170,6 +172,7 @@ async function status(env) {
     mode: env.FINDPITCHES_V2_MODE || 'unknown',
     search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
     publication_enabled: false,
+    pdf_recovery: pdfRecoveryTick,
     catalogue: catalogueMeta || null,
     counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification, customer_ready: customerReady },
     scheduler: {
@@ -248,6 +251,7 @@ async function statusText(env) {
     `customer_promotion_validated: ${Number(data.customer_promotion?.validated || 0)}`,
     `customer_promotion_current_ready: ${Number(data.customer_promotion?.current_ready || 0)}`,
     `customer_promotion_pending: ${Number(data.customer_promotion?.pending || 0)}`,
+    `last_pdf_recovery_tick: ${JSON.stringify(data.pdf_recovery || null)}`,
     '',
     'markets:',
     ...markets,
