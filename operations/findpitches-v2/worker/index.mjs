@@ -171,13 +171,15 @@ async function status(env) {
       ready: Number(classifierStates?.ready || 0),
       leased: Number(classifierStates?.leased || 0),
       complete: Number(classifierStates?.complete || 0),
-      expired: Number(classifierStates?.expired || 0)
+      expired: Number(classifierStates?.expired || 0),
+      dead: Number(classifierStates?.dead || 0)
     },
     enrichment: {
       ready: Number(enrichmentStates?.ready || 0),
       leased: Number(enrichmentStates?.leased || 0),
       complete: Number(enrichmentStates?.complete || 0),
       expired: Number(enrichmentStates?.expired || 0),
+      dead: Number(enrichmentStates?.dead || 0),
       enriched: Number(enrichedStored?.count || 0)
     },
     candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
@@ -221,10 +223,12 @@ async function statusText(env) {
     `classifier_leased: ${Number(data.classifier?.leased || 0)}`,
     `classifier_complete: ${Number(data.classifier?.complete || 0)}`,
     `classifier_expired: ${Number(data.classifier?.expired || 0)}`,
+    `classifier_dead: ${Number(data.classifier?.dead || 0)}`,
     `enrichment_ready: ${Number(data.enrichment?.ready || 0)}`,
     `enrichment_leased: ${Number(data.enrichment?.leased || 0)}`,
     `enrichment_complete: ${Number(data.enrichment?.complete || 0)}`,
     `enrichment_expired: ${Number(data.enrichment?.expired || 0)}`,
+    `enrichment_dead: ${Number(data.enrichment?.dead || 0)}`,
     `enrichment_enriched: ${Number(data.enrichment?.enriched || 0)}`,
     `scheduler_ready: ${Number(data.scheduler?.ready || 0)}`,
     `scheduler_leased: ${Number(data.scheduler?.leased || 0)}`,
