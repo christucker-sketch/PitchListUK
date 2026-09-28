@@ -20,6 +20,7 @@ on:
       - '.github/workflows/findpitches-v2-ci.yml'
       - '.github/workflows/findpitches-v2-shadow-deploy.yml'
       - '.github/workflows/findpitches-v2-status-proof.yml'
+      - '.github/workflows/findpitches-v2-bounded-pdf-replay.yml'
 
 permissions:
   contents: read
