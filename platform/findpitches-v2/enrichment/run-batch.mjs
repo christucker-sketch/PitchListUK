@@ -4,6 +4,7 @@ const DEFAULT_LIMIT = 8;
 const LEASE_MINUTES = 5;
 const RETRY_MINUTES = 30;
 const MAX_LINKS = 3;
+const MAX_ATTEMPTS = 5;
 
 export async function enqueueValidatedForEnrichment(db, { now = new Date(), limit = 50 } = {}) {
   const timestamp = now.toISOString();
@@ -14,7 +15,7 @@ export async function enqueueValidatedForEnrichment(db, { now = new Date(), limi
        LEFT JOIN enrichment_queue q ON q.candidate_id = c.id
       WHERE c.status = 'validated'
         AND (e.candidate_id IS NULL OR e.source_last_checked < c.last_checked)
-        AND (q.candidate_id IS NULL OR q.source_last_checked < c.last_checked OR q.status = 'complete')
+        AND (q.candidate_id IS NULL OR q.source_last_checked < c.last_checked OR (q.status = 'complete' AND e.candidate_id IS NULL))
       ORDER BY c.last_checked ASC, c.id ASC
       LIMIT ?`
   ).bind(Math.max(1, Math.min(Number(limit) || 50, 100))).all();
@@ -37,8 +38,9 @@ export async function runEnrichmentBatch(db, { fetchProvider, now = new Date(), 
   if (!fetchProvider?.fetch) throw new Error('findpitches_v2_enrichment_fetch_missing');
   const timestamp=now.toISOString();
   const leaseUntil=new Date(now.getTime()+LEASE_MINUTES*60000).toISOString();
+  await db.prepare("UPDATE enrichment_queue SET status='dead',lease_until=NULL,updated_at=? WHERE attempts>=? AND status IN ('ready','leased')").bind(timestamp,MAX_ATTEMPTS).run();
   const rows=await db.prepare(
-    `SELECT q.candidate_id,q.source_last_checked,c.canonical_url,c.application_url,c.event_name,c.organiser,c.geography_json
+    `SELECT q.candidate_id,q.attempts,q.source_last_checked,c.canonical_url,c.application_url,c.event_name,c.organiser,c.geography_json
        FROM enrichment_queue q JOIN candidates c ON c.id=q.candidate_id
       WHERE c.status='validated' AND ((q.status='ready' AND q.available_at<=?) OR (q.status='leased' AND q.lease_until<=?))
       ORDER BY q.available_at ASC,q.candidate_id ASC LIMIT ?`
@@ -71,8 +73,8 @@ export async function runEnrichmentBatch(db, { fetchProvider, now = new Date(), 
       outcomes.complete++;
     }catch(error){
       const retryAt=new Date(now.getTime()+RETRY_MINUTES*60000).toISOString();
-      await db.prepare("UPDATE enrichment_queue SET status='ready',available_at=?,lease_until=NULL,last_error=?,updated_at=? WHERE candidate_id=?")
-        .bind(retryAt,String(error?.message||error).slice(0,500),timestamp,row.candidate_id).run();
+      await db.prepare("UPDATE enrichment_queue SET status=?,available_at=?,lease_until=NULL,last_error=?,updated_at=? WHERE candidate_id=?")
+        .bind(Number(row.attempts||0)+1>=MAX_ATTEMPTS?'dead':'ready',retryAt,String(error?.message||error).slice(0,500),timestamp,row.candidate_id).run();
       outcomes.failed++;
     }
   }
