@@ -2,6 +2,7 @@ const MAX_ATTEMPTS = 5;
 
 import { getMarket } from '../markets/registry.mjs';
 import { createDefaultCandidateEvaluator } from '../engine/evaluator.mjs';
+import { isTerminalPdfError } from '../providers/fetch/pdf-error-policy.mjs';
 
 export async function runClassificationBatch(db, {
   fetchProvider,
@@ -86,7 +87,7 @@ export async function runClassificationBatch(db, {
                 last_error = ?, updated_at = ?
           WHERE candidate_id = ?`
       ).bind(
-        Number(row.attempts || 0) + 1 >= MAX_ATTEMPTS ? 'dead' : 'ready',
+        isTerminalPdfError(error) || Number(row.attempts || 0) + 1 >= MAX_ATTEMPTS ? 'dead' : 'ready',
         retryAt,
         String(error?.message || error).slice(0, 500),
         new Date().toISOString(),
