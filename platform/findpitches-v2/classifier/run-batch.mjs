@@ -1,3 +1,5 @@
+const MAX_ATTEMPTS = 5;
+
 import { getMarket } from '../markets/registry.mjs';
 import { createDefaultCandidateEvaluator } from '../engine/evaluator.mjs';
 
@@ -10,6 +12,8 @@ export async function runClassificationBatch(db, {
   const evaluator = createDefaultCandidateEvaluator({ fetchProvider });
   const timestamp = now.toISOString();
   const leaseUntil = new Date(now.getTime() + 4 * 60 * 1000).toISOString();
+
+  await db.prepare("UPDATE classification_queue SET status='dead',lease_until=NULL,updated_at=? WHERE attempts>=? AND status IN ('ready','leased')").bind(timestamp,MAX_ATTEMPTS).run();
 
   const ready = await db.prepare(
     `SELECT q.candidate_id, c.market, c.region_code, c.canonical_url, c.event_name,
@@ -78,10 +82,11 @@ export async function runClassificationBatch(db, {
       const retryAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
       await db.prepare(
         `UPDATE classification_queue
-            SET status = 'ready', available_at = ?, lease_until = NULL,
+            SET status = ?, available_at = ?, lease_until = NULL,
                 last_error = ?, updated_at = ?
           WHERE candidate_id = ?`
       ).bind(
+        Number(row.attempts || 0) + 1 >= MAX_ATTEMPTS ? 'dead' : 'ready',
         retryAt,
         String(error?.message || error).slice(0, 500),
         new Date().toISOString(),
