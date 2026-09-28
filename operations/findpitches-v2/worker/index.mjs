@@ -8,10 +8,12 @@ import { createSerperSearchProvider } from '../../../platform/findpitches-v2/pro
 import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
 import { recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
 import { runCustomerPromotionBatch } from '../../../platform/findpitches-v2/customer/run-batch.mjs';
+import { runNativePdfRecovery } from '../../../platform/findpitches-v2/pdf-recovery/native.mjs';
 
 const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 8;
 const CLASSIFIER_CRON = '* * * * *';
+const PDF_RECOVERY_CRON = '7,22,37,52 * * * *';
 const CLASSIFIER_BATCH_LIMIT = 24;
 const CLASSIFIER_RULESET_VERSION = '2026-09-26-quality-rules-v3';
 const RECLASSIFY_BATCH_LIMIT = 24;
@@ -42,6 +44,12 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
+    if (event?.cron === PDF_RECOVERY_CRON) {
+      ctx.waitUntil(runNativePdfRecovery(env.FINDPITCHES_DB)
+        .then(result => console.log('findpitches_v2_pdf_recovery_tick', JSON.stringify(result)))
+        .catch(error => console.error('findpitches_v2_pdf_recovery_tick_failed', String(error?.stack || error))));
+      return;
+    }
     if (event?.cron === CLASSIFIER_CRON) {
       ctx.waitUntil(
         runClassifierTick(env)
