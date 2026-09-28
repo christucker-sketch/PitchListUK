@@ -12,7 +12,8 @@ async function extractPdfText(bytes) {
     const { text } = await extractText(pdf, { mergePages: true });
     return String(text || '');
   } finally {
-    await pdf.destroy();
+    // unpdf's serverless proxy may omit destroy(); do not turn a successful extraction into a failure.
+    if (typeof pdf.destroy === 'function') await pdf.destroy();
   }
 }
 
