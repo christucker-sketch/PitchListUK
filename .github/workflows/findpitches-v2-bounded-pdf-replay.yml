@@ -1,0 +1,30 @@
+name: FindPitches v2 Bounded PDF Replay
+
+"on":
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-bounded-pdf-replay
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    name: Recover up to 25 historical PDF rows
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Replay one bounded batch with D1 ledger and Worker health checks
+        run: node operations/findpitches-v2/replay-legacy-pdfs.mjs
