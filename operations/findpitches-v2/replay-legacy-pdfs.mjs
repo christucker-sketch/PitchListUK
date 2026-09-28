@@ -6,7 +6,7 @@ const token = process.env.CLOUDFLARE_API_TOKEN;
 const account = process.env.CLOUDFLARE_ACCOUNT_ID;
 const batch = String(process.env.GITHUB_RUN_ID || '') + '-' + String(process.env.GITHUB_RUN_ATTEMPT || '1');
 const LIMIT = 25;
-const LEGACY_ERROR = 'findpitches_v2_fetch_content_type_unsupported:%pdf%';
+// Avoid D1's SQLITE_ERROR for complex LIKE/GLOB patterns. Match only the\n// legacy unsupported-content-type error prefix containing PDF, not new parse failures.\nconst LEGACY_PDF_CONDITION = "instr(q.last_error, 'findpitches_v2_fetch_content_type_unsupported:') = 1 AND instr(lower(q.last_error), 'pdf') > 0";
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 if (!token || !account || !process.env.GITHUB_RUN_ID) {
@@ -70,7 +70,7 @@ if (prior.length) {
 const remaining = {};
 for (const lane of lanes) {
   const table = tables[lane];
-  const rows = await query("SELECT COUNT(*) AS count FROM " + table + " q LEFT JOIN pdf_recovery_ledger l ON l.lane=? AND l.candidate_id=q.candidate_id WHERE q.status='dead' AND q.last_error LIKE ? AND l.candidate_id IS NULL", [lane, LEGACY_ERROR]);
+  const rows = await query("SELECT COUNT(*) AS count FROM " + table + " q LEFT JOIN pdf_recovery_ledger l ON l.lane=? AND l.candidate_id=q.candidate_id WHERE q.status='dead' AND " + LEGACY_PDF_CONDITION + " AND l.candidate_id IS NULL", [lane]);
   remaining[lane] = Number(rows[0]?.count || 0);
 }
 await report('Unreleased legacy PDF dead letters: ' + JSON.stringify(remaining));
@@ -88,11 +88,11 @@ if (Number(active.ready || 0) > maxReady || Number(active.leased || 0) > 24) {
 }
 // Ledger first, then targeted release. All selections exclude any previous replay.
 const now = new Date().toISOString();
-await query("INSERT OR IGNORE INTO pdf_recovery_ledger(lane,candidate_id,batch_id,released_at) SELECT ?,q.candidate_id,?,? FROM " + table + " q LEFT JOIN pdf_recovery_ledger l ON l.lane=? AND l.candidate_id=q.candidate_id WHERE q.status='dead' AND q.last_error LIKE ? AND l.candidate_id IS NULL ORDER BY q.updated_at,q.candidate_id LIMIT ?", [lane,batch,now,lane,LEGACY_ERROR,LIMIT]);
+await query("INSERT OR IGNORE INTO pdf_recovery_ledger(lane,candidate_id,batch_id,released_at) SELECT ?,q.candidate_id,?,? FROM " + table + " q LEFT JOIN pdf_recovery_ledger l ON l.lane=? AND l.candidate_id=q.candidate_id WHERE q.status='dead' AND " + LEGACY_PDF_CONDITION + " AND l.candidate_id IS NULL ORDER BY q.updated_at,q.candidate_id LIMIT ?", [lane,batch,now,lane,LIMIT]);
 const selected = await query("SELECT candidate_id FROM pdf_recovery_ledger WHERE lane=? AND batch_id=?", [lane,batch]);
 if (!selected.length) process.exit(0);
 const placeholders = selected.map(() => '?').join(',');
-await query("UPDATE " + table + " SET status='ready',attempts=0,available_at=?,lease_until=NULL,last_error=NULL,updated_at=? WHERE status='dead' AND last_error LIKE ? AND candidate_id IN (" + placeholders + ")", [now,now,LEGACY_ERROR,...selected.map(item => item.candidate_id)]);
+await query("UPDATE " + table + " SET status='ready',attempts=0,available_at=?,lease_until=NULL,last_error=NULL,updated_at=? WHERE status='dead' AND last_error LIKE ? AND candidate_id IN (" + placeholders + ")", [now,now,...selected.map(item => item.candidate_id)]);
 await report('Released ' + selected.length + ' ' + lane + ' PDF dead letters in batch ' + batch + ' (one replay per row).');
 // Give the dedicated Workers time to pick up the batch; never release another
 // while the ledger reports active rows or an excessive dead-letter rate.
