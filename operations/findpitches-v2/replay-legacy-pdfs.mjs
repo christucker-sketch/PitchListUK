@@ -87,15 +87,13 @@ if (Number(active.ready || 0) > maxReady || Number(active.leased || 0) > 24) {
   process.exit(0);
 }
 // Ledger first, then targeted release. All selections exclude any previous replay.
-const ids = await query("SELECT q.candidate_id FROM " + table + " q LEFT JOIN pdf_recovery_ledger l ON l.lane=? AND l.candidate_id=q.candidate_id WHERE q.status='dead' AND q.last_error LIKE ? AND l.candidate_id IS NULL ORDER BY q.updated_at,q.candidate_id LIMIT ?", [lane, LEGACY_ERROR, LIMIT]);
-if (!ids.length) process.exit(0);
 const now = new Date().toISOString();
-for (const item of ids) {
-  await query("INSERT OR IGNORE INTO pdf_recovery_ledger(lane,candidate_id,batch_id,released_at) VALUES (?,?,?,?)", [lane, item.candidate_id, batch, now]);
-}
-const placeholders = ids.map(() => '?').join(',');
-await query("UPDATE " + table + " SET status='ready',attempts=0,available_at=?,lease_until=NULL,last_error=NULL,updated_at=? WHERE status='dead' AND last_error LIKE ? AND candidate_id IN (" + placeholders + ")", [now,now,LEGACY_ERROR,...ids.map(item => item.candidate_id)]);
-await report('Released ' + ids.length + ' ' + lane + ' PDF dead letters in batch ' + batch + ' (one replay per row).');
+await query("INSERT OR IGNORE INTO pdf_recovery_ledger(lane,candidate_id,batch_id,released_at) SELECT ?,q.candidate_id,?,? FROM " + table + " q LEFT JOIN pdf_recovery_ledger l ON l.lane=? AND l.candidate_id=q.candidate_id WHERE q.status='dead' AND q.last_error LIKE ? AND l.candidate_id IS NULL ORDER BY q.updated_at,q.candidate_id LIMIT ?", [lane,batch,now,lane,LEGACY_ERROR,LIMIT]);
+const selected = await query("SELECT candidate_id FROM pdf_recovery_ledger WHERE lane=? AND batch_id=?", [lane,batch]);
+if (!selected.length) process.exit(0);
+const placeholders = selected.map(() => '?').join(',');
+await query("UPDATE " + table + " SET status='ready',attempts=0,available_at=?,lease_until=NULL,last_error=NULL,updated_at=? WHERE status='dead' AND last_error LIKE ? AND candidate_id IN (" + placeholders + ")", [now,now,LEGACY_ERROR,...selected.map(item => item.candidate_id)]);
+await report('Released ' + selected.length + ' ' + lane + ' PDF dead letters in batch ' + batch + ' (one replay per row).');
 // Give the dedicated Workers time to pick up the batch; never release another
 // while the ledger reports active rows or an excessive dead-letter rate.
 await sleep(90000);
