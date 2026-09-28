@@ -47,6 +47,9 @@ jobs:
       - name: Install PDF parser dependency
         run: npm install --no-audit --no-fund
 
+      - name: Run PDF provider regression tests
+        run: node --test tests/findpitches-v2/fetch-provider-pdf.test.mjs
+
       - name: Run FindPitches v2 tests
         run: node --test tests/findpitches-v2/*.test.mjs
 
