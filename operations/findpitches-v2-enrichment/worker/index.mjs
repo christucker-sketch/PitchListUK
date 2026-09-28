@@ -35,5 +35,5 @@ async function status(env){
     SUM(CASE WHEN status='leased' AND lease_until IS NOT NULL AND lease_until<=? THEN 1 ELSE 0 END) AS expired
     FROM enrichment_queue`).bind(now).first();
   const stored=await env.FINDPITCHES_DB.prepare('SELECT COUNT(*) AS count FROM candidate_enrichment').first();
-  return Response.json({ok:true,service:SERVICE,serper_configured:false,queue:{ready:Number(row?.ready||0),leased:Number(row?.leased||0),complete:Number(row?.complete||0),expired:Number(row?.expired||0)},enriched:Number(stored?.count||0)});
+  return Response.json({ok:true,service:SERVICE,serper_configured:false,queue:{ready:Number(row?.ready||0),leased:Number(row?.leased||0),complete:Number(row?.complete||0),expired:Number(row?.expired||0),dead:Number(row?.dead||0)},enriched:Number(stored?.count||0)});
 }
