@@ -7,7 +7,7 @@ name: FindPitches v2 Bounded PDF Replay
       - '.github/workflows/findpitches-v2-bounded-pdf-replay.yml'
       - 'operations/findpitches-v2/replay-legacy-pdfs.mjs'
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -31,5 +31,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Log schedule event and run identifier
+        run: |
+          echo "PDF replay trigger: ${{ github.event_name }}; run: ${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Scheduled: ${{ github.event.schedule || 'n/a' }}" >> "$GITHUB_STEP_SUMMARY"
       - name: Replay one bounded batch with D1 ledger and Worker health checks
         run: node operations/findpitches-v2/replay-legacy-pdfs.mjs
