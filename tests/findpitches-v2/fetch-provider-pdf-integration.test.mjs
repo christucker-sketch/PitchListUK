@@ -35,7 +35,6 @@ test('actual unpdf parses a genuine text-based PDF through our production fetch 
       return response;
     }
   });
-  try { const {getDocumentProxy,extractText}=await import('unpdf'); const pdf=await getDocumentProxy(bytes,{maxImageSize:16777216}); console.log('direct unpdf pages',pdf.numPages); console.log('direct unpdf extract', JSON.stringify(await extractText(pdf,{mergePages:true}))); await pdf.destroy(); } catch (error) { console.error('DIRECT_UNPDF_DIAGNOSTIC', error?.stack || String(error)); }
   const page = await provider.fetch('https://example.test/vendor.pdf');
   assert.equal(page.content_type, 'application/pdf');
   assert.match(page.body, /Vendor application/);
