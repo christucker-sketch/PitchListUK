@@ -1,6 +1,7 @@
 // Conservative, source-backed extraction for HTML and extracted PDF text.
 // Match explicit labelled statements, never infer a value from search geography.
 const ORGANISER_PATTERNS = [
+  /\b(?:organis(?:er|ation)|organiz(?:er|ation))\s*:\s*([^\n.!?;|]{3,100})/i,
   /\b(?:organis(?:ed|er|ing)|organiz(?:ed|er|ing))\s+by\s*[:\-]?\s*([^\n.!?;|]{3,100})/i,
   /\b(?:event\s+organis(?:er|er)|event\s+organiz(?:er|ation)|hosted\s+by|presented\s+by)\s*[:\-]?\s*([^\n.!?;|]{3,100})/i
 ];
