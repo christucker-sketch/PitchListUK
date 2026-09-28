@@ -31,7 +31,7 @@ Any other method on these paths is `405`. Unknown `/v1/*` paths fall through to 
 | `limit` | 1–100, default 25 |
 | `lat`, `lng`, `radius_km`, `cursor` | **Not implemented yet.** Rejected with `400 unsupported_parameter` rather than silently ignored |
 
-Response: `{ api_version, query, count, opportunities[] }`. **`count` is the number of opportunities in this response, not a total of all matches.** Results are ordered by `last_checked` descending.
+Response: `{ api_version, query, count, opportunities[] }`. `query` echoes only the parameters actually applied (`market`, `region_code`, `q`, `offering`, `cuisine`, `limit`). **`count` is the number of opportunities in this response, not a total of all matches.** Results are ordered by `last_checked` descending.
 
 ## Opportunity fields
 

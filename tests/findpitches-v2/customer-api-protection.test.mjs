@@ -181,6 +181,8 @@ test('filters and limit apply after visibility; count is the returned count, not
   const r = await call('/v1/opportunities/search?market=GB&limit=2', envWith(db));
   assert.equal(r.body.count, 2);
   assert.equal(r.body.query.limit, 2);
+  for (const k of ['lat', 'lng', 'radius_km', 'cursor']) assert.equal(k in r.body.query, false, `${k} is not advertised`);
+  assert.equal('total' in r.body, false);
 });
 
 test('responses never include internal candidate fields', async () => {

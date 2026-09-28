@@ -32,7 +32,9 @@ export function createCustomerApiService(db, options = {}) {
       const opportunities = rows.map(hydrate).filter(item => currentlyReady(item, now)).slice(0, query.limit);
       return Object.freeze({
         api_version: 'v1',
-        query,
+        // Echo only the parameters that are actually applied. Radius and cursor are not implemented,
+        // so they are not advertised in responses (the HTTP layer rejects them with 400).
+        query: Object.freeze({ market: query.market, region_code: query.region_code, q: query.q, offering: query.offering, cuisine: query.cuisine, limit: query.limit }),
         // Number of opportunities in THIS response, not a total of all matches.
         count: opportunities.length,
         opportunities: Object.freeze(opportunities)
