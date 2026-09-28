@@ -7,7 +7,8 @@ const account = process.env.CLOUDFLARE_ACCOUNT_ID;
 const batch = String(process.env.GITHUB_RUN_ID || '') + '-' + String(process.env.GITHUB_RUN_ATTEMPT || '1');
 const LIMIT = 25;
 // Avoid D1's SQLITE_ERROR for complex LIKE/GLOB patterns. Match only the
-// legacy unsupported-content-type error prefix containing PDF, not new parse failures.\nconst LEGACY_PDF_CONDITION = "instr(q.last_error, 'findpitches_v2_fetch_content_type_unsupported:') = 1 AND instr(lower(q.last_error), 'pdf') > 0";
+// legacy unsupported-content-type error prefix containing PDF, not new parse failures.
+const LEGACY_PDF_CONDITION = "instr(q.last_error, 'findpitches_v2_fetch_content_type_unsupported:') = 1 AND instr(lower(q.last_error), 'pdf') > 0";
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 if (!token || !account || !process.env.GITHUB_RUN_ID) {
