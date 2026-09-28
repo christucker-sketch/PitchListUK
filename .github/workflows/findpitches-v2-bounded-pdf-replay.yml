@@ -1,11 +1,6 @@
 name: FindPitches v2 Bounded PDF Replay
 
 "on":
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/findpitches-v2-bounded-pdf-replay.yml'
-      - 'operations/findpitches-v2/replay-legacy-pdfs.mjs'
   workflow_dispatch:
 
 permissions:
