@@ -131,7 +131,8 @@ async function status(env) {
          SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) AS ready,
          SUM(CASE WHEN status = 'leased' THEN 1 ELSE 0 END) AS leased,
          SUM(CASE WHEN status = 'complete' THEN 1 ELSE 0 END) AS complete,
-         SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
+         SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired,
+         SUM(CASE WHEN status = 'dead' THEN 1 ELSE 0 END) AS dead
        FROM classification_queue`
     ).bind(now).first(),
     env.FINDPITCHES_DB.prepare(
@@ -148,7 +149,8 @@ async function status(env) {
          SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) AS ready,
          SUM(CASE WHEN status = 'leased' THEN 1 ELSE 0 END) AS leased,
          SUM(CASE WHEN status = 'complete' THEN 1 ELSE 0 END) AS complete,
-         SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
+         SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired,
+         SUM(CASE WHEN status = 'dead' THEN 1 ELSE 0 END) AS dead
        FROM enrichment_queue`
     ).bind(now).first(),
     env.FINDPITCHES_DB.prepare('SELECT COUNT(*) AS count FROM candidate_enrichment').first()
