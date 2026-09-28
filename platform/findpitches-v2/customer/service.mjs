@@ -1,8 +1,12 @@
 import { normalizeOpportunitySearch, customerMarketCatalog, customerRegionCatalog } from './api-contract.mjs';
 import { getCustomerOpportunity, searchCustomerOpportunities } from './store.mjs';
+import { assessCustomerReadiness } from './readiness.mjs';
 
-export function createCustomerApiService(db) {
+// options.now / options.maxAgeDays drive the read-time visibility policy (see store.mjs).
+export function createCustomerApiService(db, options = {}) {
   if (!db?.prepare) throw new Error('findpitches_customer_api_db_missing');
+  const clock = () => (typeof options.now === 'function' ? options.now() : options.now instanceof Date ? options.now : new Date());
+  const visibility = () => ({ now: clock(), maxAgeDays: options.maxAgeDays });
 
   return Object.freeze({
     async markets() {
@@ -10,26 +14,37 @@ export function createCustomerApiService(db) {
     },
 
     async regions(market) {
-      return Object.freeze({ api_version: 'v1', market: String(market || '').toUpperCase(), regions: customerRegionCatalog(market) });
+      return Object.freeze({ api_version: 'v1', market: String(market || '').trim().toUpperCase(), regions: customerRegionCatalog(String(market || '').trim()) });
     },
 
     async opportunity(id) {
-      const row = await getCustomerOpportunity(db, id);
-      return row ? Object.freeze({ api_version: 'v1', opportunity: hydrate(row) }) : null;
+      const row = await getCustomerOpportunity(db, id, visibility());
+      if (!row) return null;
+      const opportunity = hydrate(row);
+      return currentlyReady(opportunity, clock()) ? Object.freeze({ api_version: 'v1', opportunity }) : null;
     },
 
     async search(input = {}) {
       const query = normalizeOpportunitySearch(input);
-      const result = await searchCustomerOpportunities(db, query);
+      const result = await searchCustomerOpportunities(db, query, visibility());
       const rows = Array.isArray(result?.results) ? result.results : [];
+      const now = clock();
+      const opportunities = rows.map(hydrate).filter(item => currentlyReady(item, now)).slice(0, query.limit);
       return Object.freeze({
         api_version: 'v1',
         query,
-        count: rows.length,
-        opportunities: Object.freeze(rows.map(hydrate))
+        // Number of opportunities in THIS response, not a total of all matches.
+        count: opportunities.length,
+        opportunities: Object.freeze(opportunities)
       });
     }
   });
+}
+
+// Re-applies the customer-ready contract at read time so rule changes (e.g. newly blocked URL
+// patterns) and the passage of time take effect without waiting for re-promotion.
+function currentlyReady(opportunity, now) {
+  return assessCustomerReadiness(opportunity, { now }).ready;
 }
 
 function hydrate(row) {
