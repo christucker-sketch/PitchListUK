@@ -6,7 +6,8 @@ const token = process.env.CLOUDFLARE_API_TOKEN;
 const account = process.env.CLOUDFLARE_ACCOUNT_ID;
 const batch = String(process.env.GITHUB_RUN_ID || '') + '-' + String(process.env.GITHUB_RUN_ATTEMPT || '1');
 const LIMIT = 25;
-// Avoid D1's SQLITE_ERROR for complex LIKE/GLOB patterns. Match only the\n// legacy unsupported-content-type error prefix containing PDF, not new parse failures.\nconst LEGACY_PDF_CONDITION = "instr(q.last_error, 'findpitches_v2_fetch_content_type_unsupported:') = 1 AND instr(lower(q.last_error), 'pdf') > 0";
+// Avoid D1's SQLITE_ERROR for complex LIKE/GLOB patterns. Match only the
+// legacy unsupported-content-type error prefix containing PDF, not new parse failures.\nconst LEGACY_PDF_CONDITION = "instr(q.last_error, 'findpitches_v2_fetch_content_type_unsupported:') = 1 AND instr(lower(q.last_error), 'pdf') > 0";
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 if (!token || !account || !process.env.GITHUB_RUN_ID) {
@@ -92,7 +93,7 @@ await query("INSERT OR IGNORE INTO pdf_recovery_ledger(lane,candidate_id,batch_i
 const selected = await query("SELECT candidate_id FROM pdf_recovery_ledger WHERE lane=? AND batch_id=?", [lane,batch]);
 if (!selected.length) process.exit(0);
 const placeholders = selected.map(() => '?').join(',');
-await query("UPDATE " + table + " SET status='ready',attempts=0,available_at=?,lease_until=NULL,last_error=NULL,updated_at=? WHERE status='dead' AND last_error LIKE ? AND candidate_id IN (" + placeholders + ")", [now,now,...selected.map(item => item.candidate_id)]);
+await query("UPDATE " + table + " SET status='ready',attempts=0,available_at=?,lease_until=NULL,last_error=NULL,updated_at=? WHERE status='dead' AND instr(last_error, 'findpitches_v2_fetch_content_type_unsupported:') = 1 AND instr(lower(last_error), 'pdf') > 0 AND candidate_id IN (" + placeholders + ")", [now,now,...selected.map(item => item.candidate_id)]);
 await report('Released ' + selected.length + ' ' + lane + ' PDF dead letters in batch ' + batch + ' (one replay per row).');
 // Give the dedicated Workers time to pick up the batch; never release another
 // while the ledger reports active rows or an excessive dead-letter rate.
