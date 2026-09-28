@@ -44,6 +44,12 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install PDF parser dependency
+        run: npm install --no-audit --no-fund
+
+      - name: Run PDF provider regression tests
+        run: node --test tests/findpitches-v2/fetch-provider-pdf.test.mjs
+
       - name: Run FindPitches v2 tests
         run: node --test tests/findpitches-v2/*.test.mjs
 
@@ -59,6 +65,9 @@ jobs:
 
       - name: Compile isolated FindPitches v2 Worker
         run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/findpitches-v2/wrangler.jsonc
+
+      - name: Compile isolated enrichment Worker with PDF parser
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/findpitches-v2-enrichment/wrangler.jsonc
 
       - name: Reject accidental production dataset changes
         shell: bash

@@ -30,5 +30,8 @@
     "revalidate:reviewed-additions": "node scripts/revalidate-reviewed-additions.js",
     "data:export": "node scripts/export-opportunities.js"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "dependencies": {
+    "unpdf": "1.8.1"
+  }
 }

@@ -30,14 +30,14 @@ test('Serper provider uses market configuration without market-specific code pat
 
 test('HTTP provider rejects unsupported content types', async () => {
   const provider = createHttpFetchProvider({
-    fetchImpl: async () => new Response('pdf', {
+    fetchImpl: async () => new Response('png', {
       status: 200,
-      headers: { 'content-type': 'application/pdf' }
+      headers: { 'content-type': 'image/png' }
     })
   });
 
   await assert.rejects(
-    () => provider.fetch('https://example.test/file.pdf'),
+    () => provider.fetch('https://example.test/file.png'),
     /findpitches_v2_fetch_content_type_unsupported/
   );
 });
