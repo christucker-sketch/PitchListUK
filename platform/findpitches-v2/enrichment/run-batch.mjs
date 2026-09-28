@@ -1,4 +1,5 @@
 import { normalizeEnrichment } from '../customer/enrichment.mjs';
+import { extractNamedFields } from './named-fields.mjs';
 
 const DEFAULT_LIMIT = 8;
 const LEASE_MINUTES = 5;
@@ -117,7 +118,8 @@ function extractEnrichment(row,pages){
   const docs=pages.map(p=>({url:p.final_url,text:plain(p.body)}));
   const joined=docs.map(d=>d.text).join("\n");
   const geography=parse(row.geography_json);
-  const result={organiser:evidenceField(row.organiser,docs),location:evidenceField(geography.location??geography.discovery_location,docs)};
+  const named=extractNamedFields(pages.map(p=>({url:p.final_url,body:p.body})));
+  const result={organiser:named.organiser ?? evidenceField(row.organiser,docs),location:named.location};
   const deadline=firstDate(joined,/(?:application|apply|vendor|trader)[^.!?\n]{0,80}(?:deadline|closes?|close by|due)[^.!?\n]{0,60}/i);
   if(deadline) result.application_deadline=withEvidence(deadline.value,deadline.excerpt,docs);
   const eventDate=firstDate(joined,/(?:event|festival|fair|market|show)[^.!?\n]{0,80}(?:date|takes place|held|on)[^.!?\n]{0,60}/i);
