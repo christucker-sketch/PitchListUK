@@ -11,6 +11,7 @@ on:
       - '.github/workflows/findpitches-v2-ci.yml'
       - '.github/workflows/findpitches-v2-shadow-deploy.yml'
       - '.github/workflows/findpitches-v2-status-proof.yml'
+      - '.github/workflows/findpitches-v2-bounded-pdf-replay.yml'
   pull_request:
     paths:
       - 'platform/findpitches-v2/**'
@@ -52,6 +53,9 @@ jobs:
 
       - name: Run FindPitches v2 tests
         run: node --test tests/findpitches-v2/*.test.mjs
+
+      - name: Syntax-check bounded PDF recovery operator
+        run: node --check operations/findpitches-v2/replay-legacy-pdfs.mjs
 
       - name: Validate fresh D1 migrations
         shell: bash
