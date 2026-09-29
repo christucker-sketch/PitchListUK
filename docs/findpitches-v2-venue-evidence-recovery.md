@@ -22,3 +22,12 @@ Before real recovery:
 ## Deployment isolation
 
 This PR has NO worker route, cron, Cloudflare config, D1 migration, scheduler change or production deploy. It is stacked on another draft branch deliberately. v1 remains untouched; v2 publication remains disabled.
+
+
+## Bounded known-source runner (new, still offline)
+
+\`runUsVenueRecoveryPreview(queue,{fetchProvider,limit,maxPagesPerRecord,onRecord})\` is now a separate offline operator runner. It fetches only canonical, application and location-evidence URLs already recorded by the existing pipeline; no Serper. Default 12 records per batch, maximum 25, and at most three source pages per record. Fetch failures and unsafe redirects are reason-coded and do not abort the whole preview. It invokes the shared conservative extractor and returns \`possible_event_venue_needs_independent_review\` or \`venue_not_proven\`; **never automatically verifies, writes D1, promotes or assigns a place GEOID**.
+
+Use the existing network fetch provider with DNS/IP egress blocking, redirect restrictions, per-host rate limits, request timeouts and download-size limits. The runner rejects literal private IP hosts, local suffixes, malformed URLs, credential-bearing URLs, custom ports and cross-host redirects, but URL string checks cannot replace the provider's DNS-rebinding and redirect protections. Its operator callback is for private result storage; it is not wired to any production endpoint or cron.
+
+To execute the 321-row recovery safely, a trusted operator must take a fresh private v2 D1 audit inventory, confirm that the 31 September-reviewed rows have unchanged candidate revisions (otherwise reinspect), build the unresolved queue, run bounded batches using the restricted fetch provider, and review source/venue/freshness and suspected duplicates before any promotion decision. **This code has not been executed against the user's Cloudflare D1**.
