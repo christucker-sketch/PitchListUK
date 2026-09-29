@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: 22
       - name: Install repository dependencies
-        run: npm ci --ignore-scripts
+        run: npm install --ignore-scripts --no-save --no-audit --no-fund
       - name: Assert v2 shadow publication remains disabled
         shell: bash
         run: |
