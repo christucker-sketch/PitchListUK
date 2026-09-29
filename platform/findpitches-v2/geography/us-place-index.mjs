@@ -69,26 +69,35 @@ export function buildUsPlaceIndex(gazetteerText, populationResponses, { minMajor
   const places=allPlaces.filter(p=>eligibleStates.has(p.state));
   const population=parseCensusPlacePopulations(populationResponses);
   const states=new Set(places.map(p=>p.state));
-  const missing=places.filter(p=>!population.has(p.geoid)).map(p=>p.geoid);
-  // Fail closed: don't assign 'minor' to unjoined places; input must cover the chosen gazetteer vintage.
-  if (missing.length) throw new Error('census_population_missing_geoids:'+missing.slice(0,5).join(',')+
-    (missing.length>5?'…':''));
+  const unresolved=places.filter(p=>!population.has(p.geoid));
+  // Mixed Census vintages need reconciliation. Preserve each missing place, but never
+  // classify it by population or silently count it as a smaller city.
   const rows=places.map(p=>{
-    const residents_2020=population.get(p.geoid);
-    const tier=p.classification==='incorporated' && residents_2020>=minMajorPopulation
-      ? 'major_city':p.classification==='incorporated'?'regional_or_small':'separate_review';
-    return Object.freeze({...p,residents_2020,tier});
+    const populationResolved=population.has(p.geoid);
+    const residents_2020=populationResolved?population.get(p.geoid):null;
+    const tier=!populationResolved?'population_unresolved':
+      p.classification==='incorporated' && residents_2020>=minMajorPopulation
+        ? 'major_city':p.classification==='incorporated'?'regional_or_small':'separate_review';
+    return Object.freeze({...p,residents_2020,population_resolved:populationResolved,tier});
+  });
+  return Object.freeze({...p,residents_2020,tier});
   });
   return Object.freeze({
     sources:{
       geography:'Census 2025 National Places Gazetteer',
       population:'Census 2020 P1_001N (decennial)',
-      note:'Mixed source vintages: review municipal boundary changes or renamings before declaring completeness.'
+      note:'Mixed source vintages: unmatched 2025 places retain null 2020 population and must be reconciled before declaring complete population coverage.'
     },
     scope:{states:states.size,excluded_outside_50_states:excludedOutside50,places:rows.length,incorporated:rows.filter(p=>p.classification==='incorporated').length,
       cdps:rows.filter(p=>p.classification==='census_designated').length,
       unclassified:rows.filter(p=>p.classification==='review_lsad').length,
-      major_cities:rows.filter(p=>p.tier==='major_city').length},
+      major_cities:rows.filter(p=>p.tier==='major_city').length,
+      population_resolved:rows.length-unresolved.length,population_unresolved:unresolved.length,
+      incorporated_population_unresolved:unresolved.filter(p=>p.classification==='incorporated').length},
+    reconciliation:{
+      status:unresolved.length?'population_vintage_mismatch_requires_review':'complete',
+      missing_2020_population:unresolved.map(p=>({geoid:p.geoid,state:p.state,name:p.name,lsad:p.lsad,classification:p.classification}))
+    },
     places:rows
   });
 }
