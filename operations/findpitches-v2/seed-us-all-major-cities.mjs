@@ -4,13 +4,22 @@
 // existing eight city pilot jobs, ordinary catalogue, candidates and v1 remain
 // untouched. All jobs use the existing v2 official-first profile (query_group 1).
 import {planAllMajorUsCityJobs} from '../../platform/findpitches-v2/geography/us-all-major-city-jobs.mjs';
+import {planUsSpecialGovernmentCityJobs} from '../../platform/findpitches-v2/geography/us-special-government-cities.mjs';
 
 const API='https://api.cloudflare.com/client/v4';
 const DB='6732bcc9-a172-4d38-ad4d-7660ed13392f';
 const now=new Date();
-const jobs=planAllMajorUsCityJobs({now,spacingMinutes:15});
+const majorJobs=planAllMajorUsCityJobs({now,spacingMinutes:15});
+const specialJobs=planUsSpecialGovernmentCityJobs({now,spacingMinutes:15});
+const majorIds=new Set(majorJobs.map(job=>job.id));
+// Louisville city is already in the 314-city list; its separately classified
+// metro-government place is held for geographic review, NOT a second search.
+const additionalSpecial=specialJobs.filter(job=>!majorIds.has(job.id));
+if(additionalSpecial.length!==6)throw new Error('major_city_special_overlap_changed');
+const jobs=[...majorJobs,...additionalSpecial];
 if(process.env.US_MAJOR_CITY_COMMIT!=='true'){
- console.log(JSON.stringify({mode:'DRY_RUN',census_major_cities:jobs.length,
+ console.log(JSON.stringify({mode:'DRY_RUN',census_major_cities:majorJobs.length,
+  separate_special_governments:specialJobs.length,supplemental_unique_searches:additionalSpecial.length,
   states:new Set(jobs.map(j=>j.state)).size,first:jobs[0].location,
   last:jobs.at(-1).location,first_available:jobs[0].available_at,
   last_available:jobs.at(-1).available_at}));
@@ -75,7 +84,9 @@ if(Number(baselineBefore.results?.[0]?.count)!==Number(baselineAfter.results?.[0
  throw new Error('major_city_baseline_job_count_changed');
 }
 console.log(JSON.stringify({ok:true,mode:'COMMIT',database:'isolated_v2',
- census_major_cities:jobs.length,census_states:new Set(jobs.map(j=>j.state)).size,
+ census_major_cities:majorJobs.length,special_governments:specialJobs.length,
+ supplemental_unique_searches:additionalSpecial.length,total_major_search_jobs:jobs.length,
+ census_states:new Set(jobs.map(j=>j.state)).size,
  existing_city_jobs:existing.size,inserted,city_jobs_after:rows.size,
  earliest:new Date(Math.min(...jobs.map(j=>Date.parse(j.available_at)))).toISOString(),
  latest:jobs.at(-1).available_at,baseline_jobs_unchanged:true,
