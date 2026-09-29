@@ -29,7 +29,7 @@ if(health.ok!==true||health.service!=='findpitches-v2-shadow'||health.mode!=='sh
 }
 let queryCount=0;
 async function query(sql,params=[]){
- if(++queryCount>32)throw new Error('major_city_d1_query_budget_exceeded');
+ if(++queryCount>55)throw new Error('major_city_d1_query_budget_exceeded');
  if(!/^\s*(?:SELECT|INSERT OR IGNORE)\b/i.test(sql)||/;\s*\S/.test(sql)){
   throw new Error('major_city_disallowed_d1_query');
  }
@@ -49,8 +49,10 @@ const existing=new Set((before.results||[]).map(row=>row.id));
 let inserted=0;
 const timestamp=now.toISOString();
 const missing=jobs.filter(job=>!existing.has(job.id));
-for(let i=0;i<missing.length;i+=20){
- const slice=missing.slice(i,i+20);
+// D1 HTTP query parameter limits vary; keep each INSERT safely below 100
+// bindings (8 columns x 8 rows = 64 parameters) and retain resumability.
+for(let i=0;i<missing.length;i+=8){
+ const slice=missing.slice(i,i+8);
  const values=slice.map(()=>"(?,?,?,?,?,0,'ready',?,0,?,?)").join(',');
  const params=slice.flatMap(job=>[job.id,job.market,job.region_code,
   job.location,job.query_group,job.available_at,timestamp,timestamp]);
