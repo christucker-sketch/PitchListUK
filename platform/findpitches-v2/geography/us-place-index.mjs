@@ -1,0 +1,88 @@
+// Versioned, offline US place-index builder. Input sources:
+// (1) U.S. Census 2025 Gazetteer national places .txt (tab delimited)
+// (2) Census 2020 P.L. 94-171 P1 place population responses (JSON per state).
+// Never assume discovery city == actual event venue. This is an acquisition planning index only.
+
+const INCORPORATED_LSAD = new Set(['21','25','37','43','47','53']);
+const CDP_LSAD = new Set(['55','57','62']);
+
+export function parseGazetteerPlaces(tsv) {
+  const lines = String(tsv).replace(/^\uFEFF/,'').trim().split(/\r?\n/);
+  const headers = lines.shift()?.split('\t').map(s=>s.trim()) || [];
+  for (const field of ['USPS','GEOID','NAME','LSAD','INTPTLAT','INTPTLONG']) {
+    if (!headers.includes(field)) throw new Error('census_gazetteer_missing_'+field);
+  }
+  const seen = new Set();
+  return lines.filter(Boolean).map((line, i) => {
+    const values = line.split('\t');
+    const fields=Object.fromEntries(headers.map((header,j)=>[header,String(values[j]??'').trim()]));
+    const geoid=fields.GEOID;
+    if (!/^\d{7}$/.test(geoid)) throw new Error('census_gazetteer_invalid_geoid_line_'+(i+2));
+    if (seen.has(geoid)) throw new Error('census_gazetteer_duplicate_geoid_'+geoid);
+    seen.add(geoid);
+    const lat=Number(fields.INTPTLAT), lng=Number(fields.INTPTLONG);
+    if (!fields.USPS || !fields.NAME || !Number.isFinite(lat) || !Number.isFinite(lng) ||
+        lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+      throw new Error('census_gazetteer_invalid_place_'+geoid);
+    }
+    const lsad=fields.LSAD.padStart(2,'0');
+    const classification=INCORPORATED_LSAD.has(lsad)?'incorporated':
+      CDP_LSAD.has(lsad)?'census_designated':'review_lsad';
+    return Object.freeze({
+      geoid, state_fips:geoid.slice(0,2), state:fields.USPS,
+      name:fields.NAME, lsad, classification,
+      latitude:lat, longitude:lng
+    });
+  });
+}
+
+// Accept a single Census JSON response [header, ...rows] or a collection of responses.
+// The P1_001N population count is from the 2020 Census, NOT the 2025 Gazetteer vintage.
+export function parseCensusPlacePopulations(responses) {
+  if (!Array.isArray(responses)) throw new Error('census_population_responses_required');
+  const all=Array.isArray(responses[0]) && typeof responses[0][0]==='string'
+    ? [responses] : responses;
+  const result = new Map();
+  for (const response of all) {
+    if (!Array.isArray(response) || !Array.isArray(response[0])) throw new Error('census_population_invalid_response');
+    const columns=response[0];
+    const indices=['P1_001N','state','place'].map(field=>columns.indexOf(field));
+    if (indices.some(n=>n<0)) throw new Error('census_population_missing_columns');
+    for (const row of response.slice(1)) {
+      const [count,state,place]=indices.map(index=>row[index]);
+      const geoid=String(state)+String(place);
+      if (!/^\d{7}$/.test(geoid) || !/^\d+$/.test(String(count))) throw new Error('census_population_invalid_row');
+      if (result.has(geoid)) throw new Error('census_population_duplicate_'+geoid);
+      result.set(geoid,Number(count));
+    }
+  }
+  return result;
+}
+
+export function buildUsPlaceIndex(gazetteerText, populationResponses, { minMajorPopulation=100000 }={}) {
+  const places=parseGazetteerPlaces(gazetteerText);
+  const population=parseCensusPlacePopulations(populationResponses);
+  const states=new Set(places.map(p=>p.state));
+  const missing=places.filter(p=>!population.has(p.geoid)).map(p=>p.geoid);
+  // Fail closed: don't assign 'minor' to unjoined places; input must cover the chosen gazetteer vintage.
+  if (missing.length) throw new Error('census_population_missing_geoids:'+missing.slice(0,5).join(',')+
+    (missing.length>5?'…':''));
+  const rows=places.map(p=>{
+    const residents_2020=population.get(p.geoid);
+    const tier=p.classification==='incorporated' && residents_2020>=minMajorPopulation
+      ? 'major_city':p.classification==='incorporated'?'regional_or_small':'separate_review';
+    return Object.freeze({...p,residents_2020,tier});
+  });
+  return Object.freeze({
+    sources:{
+      geography:'Census 2025 National Places Gazetteer',
+      population:'Census 2020 P1_001N (decennial)',
+      note:'Mixed source vintages: review municipal boundary changes or renamings before declaring completeness.'
+    },
+    scope:{states:states.size,places:rows.length,incorporated:rows.filter(p=>p.classification==='incorporated').length,
+      cdps:rows.filter(p=>p.classification==='census_designated').length,
+      unclassified:rows.filter(p=>p.classification==='review_lsad').length,
+      major_cities:rows.filter(p=>p.tier==='major_city').length},
+    places:rows
+  });
+}
