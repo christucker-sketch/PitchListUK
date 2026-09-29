@@ -49,7 +49,7 @@ const publicSummary={
     missing_current_enrichment:preview.missing_current_enrichment,
     invalid_enrichment_json:preview.invalid_enrichment_json
   },selected_for_batch:items.length,batch_offset:BATCH_OFFSET,
-  note:'Selections are a bounded first slice, not the complete 321-record historical recovery queue.'
+  note:'This is a bounded live snapshot slice, not the full historical 321-record recovery queue.'
 };
 // Each operator-selected batch refetches up to twelve already known URLs.
 // Restrict to public domain names and refuse HTTP redirects; the existing bounded
@@ -75,7 +75,8 @@ const report={
     outcomes:outcome.outcomes.map(x=>({
       opportunity_id:x.opportunity_id,disposition:x.disposition,
       venue_candidate:x.venue_candidate,verified_venue_geoid:null,
-      failures:x.failures.map(f=>({reason:f.reason})),review_flags:x.review_flags
+      venue_evidence:x.evidence.map(e=>({source_host:new URL(e.source).hostname,excerpt:String(e.excerpt||'').slice(0,220)})),
+      failures:x.failures.map(f=>({source_host:new URL(f.source_url).hostname,reason:f.reason})),review_flags:x.review_flags
     }))
   },limitations:['No automatic venue GEOID assignment','No D1 writes or promotion',
     'Bounded preview only; manual review required for extracted venue candidates']
