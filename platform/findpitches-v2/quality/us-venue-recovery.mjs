@@ -7,7 +7,7 @@ import { extractNamedFields } from '../enrichment/named-fields.mjs';
 // audit outcomes are NOT silently applied to new or revised candidate records.
 export function planUsVenueRecovery(audit, { reviewedIds = [], limit = 100 } = {}) {
   if (!Array.isArray(audit?.visible)) throw new Error('findpitches_venue_recovery_visible_inventory_required');
-  if (!Number.isInteger(limit) || limit < 1 || limit > 250) throw new Error('findpitches_venue_recovery_bad_limit');
+  if (!Number.isInteger(limit) || limit < 1 || limit > 500) throw new Error('findpitches_venue_recovery_bad_limit');
   const reviewed=new Set(reviewedIds.map(String)), seen=new Set();
   const urlOwner=new Map();
   const queue=[],counts={visible:0,already_reviewed:0,stored_evidence_strong:0,
