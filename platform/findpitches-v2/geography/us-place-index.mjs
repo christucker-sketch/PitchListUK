@@ -77,7 +77,9 @@ export function buildUsPlaceIndex(gazetteerText, populationResponses, { minMajor
     const residents_2020=populationResolved?population.get(p.geoid):null;
     const tier=!populationResolved?'population_unresolved':
       p.classification==='incorporated' && residents_2020>=minMajorPopulation
-        ? 'major_city':p.classification==='incorporated'?'regional_or_small':'separate_review';
+        ? 'major_city':p.classification==='incorporated'?'regional_or_small':
+      p.classification==='review_lsad' && residents_2020>=minMajorPopulation
+        ? 'large_special_government_review':'separate_review';
     return Object.freeze({...p,residents_2020,population_resolved:populationResolved,tier});
   });
   return Object.freeze({
@@ -90,6 +92,7 @@ export function buildUsPlaceIndex(gazetteerText, populationResponses, { minMajor
       cdps:rows.filter(p=>p.classification==='census_designated').length,
       unclassified:rows.filter(p=>p.classification==='review_lsad').length,
       major_cities:rows.filter(p=>p.tier==='major_city').length,
+      large_special_governments_to_review:rows.filter(p=>p.tier==='large_special_government_review').length,
       population_resolved:rows.length-unresolved.length,population_unresolved:unresolved.length,
       incorporated_population_unresolved:unresolved.filter(p=>p.classification==='incorporated').length},
     reconciliation:{
