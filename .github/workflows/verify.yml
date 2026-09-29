@@ -72,7 +72,7 @@ jobs:
           deploy=false
           while IFS= read -r changed; do
             case "$changed" in
-              operations/cloudflare-texas-acquisition/*|operations/opportunity-pipeline/lib/us-*|operations/opportunity-pipeline/config/us-*|operations/opportunity-pipeline/config/texas-*|.github/workflows/verify.yml)
+              operations/cloudflare-texas-acquisition/*|operations/opportunity-pipeline/lib/us-*|operations/opportunity-pipeline/config/us-*|operations/opportunity-pipeline/config/texas-*)
                 deploy=true
                 break
                 ;;
@@ -161,7 +161,11 @@ jobs:
           deploy=false
           while IFS= read -r changed; do
             case "$changed" in
-              src/*|platform/*|functions/_middleware.js|functions/api/*|functions/_data/opportunities.mjs|functions/_data/us-opportunities.mjs|functions/_data/ca-opportunities.mjs|scripts/build.js|scripts/generate-seo-pages.js|scripts/deploy-public-site.js|package.json|package-lock.json|.github/workflows/verify.yml)
+              platform/findpitches-v2/*)
+                # This subtree is an isolated v2 backend, never a v1 Pages trigger.
+                continue
+                ;;
+              src/*|platform/*|functions/_middleware.js|functions/api/*|functions/_data/opportunities.mjs|functions/_data/us-opportunities.mjs|functions/_data/ca-opportunities.mjs|scripts/build.js|scripts/generate-seo-pages.js|scripts/deploy-public-site.js|package.json|package-lock.json)
                 deploy=true
                 break
                 ;;
