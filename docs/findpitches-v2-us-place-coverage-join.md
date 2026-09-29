@@ -22,3 +22,12 @@ Default `completeSnapshot:false` marks non-seen places **unknown**, not zero. Se
 2. Audit and assign **actual event venue GEOIDs** using explicit source evidence and place boundary matching; avoid matching a town by the acquisition query's region or its point distance. County fairs outside incorporated limits must be tracked at county/metro level separately.
 3. Produce the first US state/metro/city baseline. Keep unverified location, incomplete snapshot and zero coverage distinct.
 4. Build targeted additional acquisition plans informed by measured gaps and cost/yield; keep broad international acquisition uninterrupted. Publication remains disabled; v1 unchanged.
+
+
+## Read-only v2 customer-visible inventory snapshot (draft implementation)
+
+`getUsCustomerVisibleSnapshot(db, {now,maxAgeDays,pageSize})` is now implemented in `platform/findpitches-v2/quality/us-customer-visible-snapshot.mjs`. It reads isolated v2 D1 in bounded, id-keyset pages; mirrors draft protected customer API #1868's SQL candidate status, projection disposition, event/deadline, freshness, and source-backed location checks; then applies the shared `assessCustomerReadiness()` check. It reports per-acquisition-region US customer-visible counts **separately** from actual event venue coverage. By default, it intentionally reports **zero verified place-level GEOIDs**, because current customer projection data has only location text, not independently assigned, boundary-checked event venue GEOIDs.
+
+**No D1 run has occurred**; module requires the isolated v2 D1 binding, not v1, and has not been wired to a public API/cron. Review its duplicated SQL against the approved #1868 visibility module and consolidate onto a single imported visibility clause once that draft is merged. Call with a controlled internal read-only execution only. Do not claim city-level zeros from missing verified venues.
+
+The next step after obtaining a real snapshot is to audit venue evidence and assign canonical 7-digit place GEOIDs with actual-event-venue verification (not proximity or search region). Until then, the 321 population-centre priority list has **unknown live venue coverage**.
