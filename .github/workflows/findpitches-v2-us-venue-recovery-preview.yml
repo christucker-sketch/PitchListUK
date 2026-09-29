@@ -1,4 +1,4 @@
-name: FindPitches v2 US Venue Recovery First Preview
+name: FindPitches v2 US Venue Recovery Bounded Preview
 
 "on":
   push:
@@ -17,13 +17,14 @@ concurrency:
 
 jobs:
   preview:
-    name: Read-only US venue recovery first batch
+    name: Read-only US venue recovery second batch
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     environment: findpitches-production
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      RECOVERY_OFFSET: '12'
     steps:
       - name: Check out reviewed recovery branch
         uses: actions/checkout@v4
@@ -39,13 +40,13 @@ jobs:
           set -euo pipefail
           body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
           jq -e '.ok == true and .service == "findpitches-v2-shadow" and .mode == "shadow" and .publication_enabled == false and .database == "isolated"' <<< "$body" >/dev/null
-      - name: Run first 12 read-only known-source reviews
+      - name: Reinspect next 12 known-source records
         run: node operations/findpitches-v2/run-us-venue-recovery-preview.mjs
       - name: Save private operator summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: us-venue-recovery-first-preview
+          name: us-venue-recovery-second-preview
           path: venue-recovery-preview-private.json
           retention-days: 3
           if-no-files-found: ignore
