@@ -16,13 +16,19 @@ const GENERIC_LOCATION = /\blocation\s*[:\-]\s*(.{3,160})/i;
 const EVENT_CONTEXT = /\b(?:festival|fair|market|event|show|concert|held|taking\s+place|takes\s+place)\b/i;
 const ABSTRACT_VALUE = /^(?:&|overnight\b|restriction\b|is\b|are\b|may\b|will\b|availability\b|rentals?\b|tour\b|map\b|noon\b|the\s+venue\b|the\s+event\b|hours\b)/i;
 const NAMED_PLACE_START = /^(?:[A-Z][A-Za-z0-9'’.-]*|[0-9]+\s+[A-Za-z])/;
+// An article-led held-at venue needs an actual physical place descriptor; a
+// truncated county/region label is not enough to prove the event's venue.
+const ARTICLE_LED_PHYSICAL_PLACE = /^the\s+[A-Z][\w'’.-]*(?:\s+[\w'’.-]+){0,24}\s+(?:fairgrounds?|showgrounds?|parks?|squares?|centers?|centres?|halls?|arenas?|stadiums?|pavilions?|gardens?|grounds?|plazas?|theatres?|theaters?)\b/i;
+const TRUNCATED_OR_POLICY = /(?:\b(?:policy|policies|information|restriction|regulations|operator|operators)\b|\b(?:or\s+the|and\s+the|the\s+|county\s*)$)/i;
 
 export function assessVenueEvidence(value, excerpt) {
   const name=String(value ?? '').replace(/\s+/g,' ').trim();
   const statement=String(excerpt ?? '').replace(/\s+/g,' ').trim();
   if (name.length < 3 || name.length > 160 || PLACEHOLDER.test(name) ||
       NON_VENUE.test(name) || NEGATIVE_CONTEXT.test(name) ||
-      ABSTRACT_VALUE.test(name) || !NAMED_PLACE_START.test(name)) {
+      ABSTRACT_VALUE.test(name) ||
+      !(NAMED_PLACE_START.test(name) || ARTICLE_LED_PHYSICAL_PLACE.test(name)) ||
+      TRUNCATED_OR_POLICY.test(name)) {
     return {accepted:false,reason:'invalid_venue_value'};
   }
   if (!statement || statement.length > 500 || !statement.toLowerCase().includes(name.toLowerCase())) {
