@@ -16,3 +16,10 @@ test('status exposes customer-ready count',()=>{
  assert.match(worker,/location_evidence_url/);
  assert.match(worker,/customer_ready: customerReady/);
 });
+
+test('status reports location and deadline coverage independently by market',()=>{
+ assert.match(worker,/customer_location_quality: await getCustomerLocationQuality\(env\)/);
+ assert.match(worker,/FROM customer_opportunities GROUP BY market ORDER BY market/);
+ assert.match(worker,/source_backed_location/);
+ assert.match(worker,/application_deadlines/);
+});

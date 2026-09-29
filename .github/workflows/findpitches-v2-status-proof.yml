@@ -80,6 +80,15 @@ jobs:
             echo "- Scheduler jobs: $jobs"
             echo "- Acquisition runs: $(jq -r '.counts.runs' <<<"$status")"
             echo "- Candidates: $(jq -r '.counts.candidates' <<<"$status")"
+            echo "- Source-backed event locations: $(jq -r '.customer_location_quality.source_backed_location // 0' <<<"$status")"
+            echo "- Projected rows missing sourced locations: $(jq -r '.customer_location_quality.missing_source_backed_location // 0' <<<"$status")"
+            echo "- Event dates: $(jq -r '.customer_location_quality.event_dates // 0' <<<"$status")"
+            echo "- Application deadlines: $(jq -r '.customer_location_quality.application_deadlines // 0' <<<"$status")"
+            echo
+            echo "### Location and date coverage by market"
+            echo '~~~json'
+            jq '.customer_location_quality.by_market' <<<"$status"
+            echo '~~~'
             echo "- Publication queue: $(jq -r '.counts.publication_queue' <<<"$status")"
             if [[ -n "$catalogue" ]]; then
               echo "- Catalogue version: $catalogue"
@@ -97,3 +106,7 @@ jobs:
             jq '.latest_run' <<<"$status"
             echo '~~~'
           } >> "$GITHUB_STEP_SUMMARY"
+
+          echo 'LOCATION_QUALITY_SNAPSHOT_BEGIN'
+          jq -c '.customer_location_quality' <<<"$status"
+          echo 'LOCATION_QUALITY_SNAPSHOT_END'
