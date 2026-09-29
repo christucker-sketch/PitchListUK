@@ -1,14 +1,16 @@
 import { assessCustomerReadiness } from './readiness.mjs';
 
 export function projectCustomerOpportunity(candidate = {}, enrichment = {}) {
-  const geography = object(candidate.geography);
+  // Only event-location evidence from an event/application source is publishable.
+  // Discovery geography and organiser addresses must never become event locations.
+  const location = sourceBackedLocation(enrichment.location);
   const projected = Object.freeze({
     id: text(candidate.id ?? candidate.candidate_id),
     market: upper(candidate.market),
     title: text(value(enrichment.title) ?? candidate.event_name),
     organiser: text(value(enrichment.organiser) ?? candidate.organiser),
     region_code: text(value(enrichment.region_code) ?? candidate.region_code ?? geography.region_code),
-    location: text(value(enrichment.location) ?? geography.location),
+    location: location?.value ?? null,
     coordinates: coordinates(value(enrichment.coordinates)),
     event_start: text(value(enrichment.event_start) ?? candidate.event_start),
     event_end: text(value(enrichment.event_end) ?? candidate.event_end),
@@ -28,10 +30,23 @@ export function projectCustomerOpportunity(candidate = {}, enrichment = {}) {
   return Object.freeze({
     opportunity: projected,
     readiness: assessCustomerReadiness(projected),
-    provenance: enrichmentProvenance(enrichment)
+    provenance: Object.freeze({ ...enrichmentProvenance(enrichment), ...(location ? {location:location.provenance} : {}) })
   });
 }
 
+function sourceBackedLocation(field) {
+  if (!field || typeof field !== 'object' || !('value' in field)) return null;
+  const name = text(field.value);
+  if (!name || /^(?:unknown|tbc|tbd|online|various|multiple locations|to be announced|the venue|the event|the location)$/i.test(name)) return null;
+  const evidence = Array.isArray(field.evidence) ? field.evidence.find(item => {
+    try {
+      const url = new URL(String(item?.source || ''));
+      return ['https:','http:'].includes(url.protocol) && text(item.excerpt) && text(item.excerpt).toLowerCase().includes(name.toLowerCase());
+    } catch { return false; }
+  }) : null;
+  if (!evidence) return null;
+  return {value:name,provenance:Object.freeze({evidence:Object.freeze([evidence]),confidence:finite(field.confidence)})};
+}
 function value(field) {
   if (field && typeof field === 'object' && !Array.isArray(field) && 'value' in field) return field.value;
   return field;
