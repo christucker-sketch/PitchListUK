@@ -16,6 +16,8 @@ if (!token || !account) throw new Error('cloudflare_account_or_token_not_configu
 const now=new Date();
 const MAX_TOTAL_VISIBLE=10000;
 const BATCH_LIMIT=12;
+const BATCH_CLASS=String(process.env.RECOVERY_CLASS||'weak');
+if(!['weak','strong'].includes(BATCH_CLASS)) throw new Error('invalid_recovery_class');
 const BATCH_OFFSET=Number(process.env.RECOVERY_OFFSET||0);
 if(!Number.isInteger(BATCH_OFFSET)||BATCH_OFFSET<0||BATCH_OFFSET>240||BATCH_OFFSET%12!==0) throw new Error('invalid_recovery_offset');
 let readQueries=0;
@@ -39,7 +41,8 @@ const db={prepare(sql){return {bind(...params){return {all:async()=>({
 const audit=await getUsCustomerVisibleAuditInventory(db,{now,pageSize:100});
 if(audit.visible.length>MAX_TOTAL_VISIBLE) throw new Error('visible_inventory_above_safe_audit_cap');
 const preview=planUsVenueRecovery(audit,{limit:250});
-const items=preview.queue.filter(x=>x.status==='needs_source_reinspection').slice(BATCH_OFFSET,BATCH_OFFSET+BATCH_LIMIT);
+const desired=BATCH_CLASS==='strong'?'stored_explicit_venue_candidate':'needs_source_reinspection';
+const items=preview.queue.filter(x=>x.status===desired).slice(BATCH_OFFSET,BATCH_OFFSET+BATCH_LIMIT);
 const publicSummary={
   snapshot_at:audit.snapshot_at, visible: audit.visible.length,
   readiness_rejected:audit.readiness_rejected.length,
@@ -48,7 +51,7 @@ const publicSummary={
     need_source_reinspection:preview.weak_evidence,
     missing_current_enrichment:preview.missing_current_enrichment,
     invalid_enrichment_json:preview.invalid_enrichment_json
-  },selected_for_batch:items.length,batch_offset:BATCH_OFFSET,
+  },selected_for_batch:items.length,batch_offset:BATCH_OFFSET,batch_class:BATCH_CLASS,
   note:'This is a bounded live snapshot slice, not the full historical 321-record recovery queue.'
 };
 // Each operator-selected batch refetches up to twelve already known URLs.
@@ -91,7 +94,7 @@ console.log('Private US venue recovery preview: '+JSON.stringify({
 if(process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY,
   '## FindPitches v2 private venue recovery preview\n\n'+
   '- Snapshot: '+audit.snapshot_at+'\n- US code-visible: '+audit.visible.length+
-  '\n- Batch offset: '+BATCH_OFFSET+
+  '\n- Batch offset: '+BATCH_OFFSET+'\n- Batch class: '+BATCH_CLASS+
   '\n- Batch refetched: '+outcome.attempted+'\n- Possible venues needing manual review: '+outcome.possible_venue+
   '\n- No venue confirmed: '+outcome.without_venue+
   '\n- Rows with fetch failures: '+outcome.fetch_failed_records+
