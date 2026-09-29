@@ -80,8 +80,6 @@ export function buildUsPlaceIndex(gazetteerText, populationResponses, { minMajor
         ? 'major_city':p.classification==='incorporated'?'regional_or_small':'separate_review';
     return Object.freeze({...p,residents_2020,population_resolved:populationResolved,tier});
   });
-  return Object.freeze({...p,residents_2020,tier});
-  });
   return Object.freeze({
     sources:{
       geography:'Census 2025 National Places Gazetteer',
