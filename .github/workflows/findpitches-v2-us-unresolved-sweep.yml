@@ -1,12 +1,6 @@
 name: FindPitches v2 US Unresolved Venue Full Read-only Sweep
 
 "on":
-  # One operator-authorised launch only. Remove push after run registration.
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-us-unresolved-sweep.yml
   workflow_dispatch:
 
 permissions:
