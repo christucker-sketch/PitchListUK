@@ -34,6 +34,8 @@ jobs:
           node-version: 22
       - name: Install repository dependencies
         run: npm install --ignore-scripts --no-save --no-audit --no-fund
+      - name: Check preview script syntax before using credentials
+        run: node --check operations/findpitches-v2/run-us-venue-recovery-preview.mjs
       - name: Assert v2 shadow publication remains disabled
         shell: bash
         run: |
