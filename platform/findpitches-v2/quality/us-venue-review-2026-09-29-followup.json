@@ -1,0 +1,26 @@
+{
+  "audit_date": "2026-09-29",
+  "scope": "additional independent manual source review after historic 31-case audit",
+  "records": [
+    {
+      "opportunity_id": "fpv2_cc259ee1485c162d7f029ee5",
+      "venue_name": "Blossom Heath Park",
+      "event_name": "St. Clair Shores 2026 Pumpkin Patch at the Market",
+      "event_date": "2026-10-11",
+      "venue_address": "24800 Jefferson Ave, St. Clair Shores, MI 48080",
+      "venue_geoid": "2670760",
+      "census_place": "St. Clair Shores city",
+      "state": "MI",
+      "venue_source_urls": [
+        "https://www.scsmi.net/877/Vendor-Food-Truck-Application",
+        "https://scsmi.net/307/Events",
+        "https://marketspread.com/market/30895/st-clair-shores-farmers-market/events/79229/"
+      ],
+      "review_status": "event_venue_corrobated_by_city_and_market_listing",
+      "source_reviewed_at": "2026-09-29",
+      "candidate_revision": "not_recorded_in_historical_manifest; recheck against D1 before any automatic cutover",
+      "publication_status": "no_change; v2 shadow publication disabled",
+      "note": "Newly corroborated venue in a regional city; municipal city page states Oct 11, 2026, noon-6pm at Blossom Heath Park; market listing independently names the same venue and address. The previous 31-item audit does not contain this opportunity ID."
+    }
+  ]
+}
