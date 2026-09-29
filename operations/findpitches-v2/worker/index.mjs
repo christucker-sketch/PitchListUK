@@ -554,7 +554,26 @@ async function getCustomerLocationQuality(env) {
     SUM(CASE WHEN event_start IS NOT NULL THEN 1 ELSE 0 END) AS event_dates,
     SUM(CASE WHEN application_deadline IS NOT NULL THEN 1 ELSE 0 END) AS application_deadlines
     FROM customer_opportunities`).first();
+  // Bounded read-only breakdown so we can identify where location recovery
+  // is failing without exposing candidate records or application URLs.
+  const regions=await env.FINDPITCHES_DB.prepare(`SELECT market,
+    COUNT(*) AS projected,
+    SUM(CASE WHEN NULLIF(TRIM(location),'') IS NOT NULL THEN 1 ELSE 0 END) AS location_present,
+    SUM(CASE WHEN NULLIF(TRIM(location),'') IS NOT NULL AND NULLIF(TRIM(location_evidence_url),'') IS NOT NULL THEN 1 ELSE 0 END) AS source_backed_location,
+    SUM(CASE WHEN event_start IS NOT NULL THEN 1 ELSE 0 END) AS event_dates,
+    SUM(CASE WHEN application_deadline IS NOT NULL THEN 1 ELSE 0 END) AS application_deadlines
+    FROM customer_opportunities GROUP BY market ORDER BY market`).all();
+  const by_market=Object.freeze((regions?.results || []).map(item=>Object.freeze({
+    market:item.market,
+    projected:Number(item.projected || 0),
+    location_present:Number(item.location_present || 0),
+    source_backed_location:Number(item.source_backed_location || 0),
+    missing_source_backed_location:Number(item.projected || 0)-Number(item.source_backed_location || 0),
+    event_dates:Number(item.event_dates || 0),
+    application_deadlines:Number(item.application_deadlines || 0)
+  })));
   return Object.freeze({
+    by_market,
     projected:Number(row?.projected || 0),
     location_present:Number(row?.location_present || 0),
     source_backed_location:Number(row?.source_backed_location || 0),
