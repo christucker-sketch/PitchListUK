@@ -1,0 +1,57 @@
+name: FindPitches v2 US all major city queue one-shot
+
+"on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-us-all-major-cities.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-us-all-major-cities-one-shot
+  cancel-in-progress: false
+
+jobs:
+  seed_major_cities:
+    name: Validate pinned Census list and queue major city acquisition
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      US_MAJOR_CITY_COMMIT: "true"
+    steps:
+      - name: Check out exact reviewed recovery branch
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install repository dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run complete v2 regression suite before any writes
+        run: |
+          node --test tests/findpitches-v2/*.test.mjs
+          node --check operations/findpitches-v2/seed-us-all-major-cities.mjs
+      - name: Confirm existing v2 official-first shadow runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          health="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .service == "findpitches-v2-shadow" and
+            .mode == "shadow" and .database == "isolated" and
+            .publication_enabled == false and .search_configured == true and
+            .us_city_discovery_profile == "official_first_v1"' <<< "$health" >/dev/null
+      - name: Idempotently queue all 314 major incorporated cities in isolated v2
+        run: node operations/findpitches-v2/seed-us-all-major-cities.mjs
+      - name: Verify publication stays off
+        shell: bash
+        run: |
+          set -euo pipefail
+          health="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .database == "isolated" and
+            .publication_enabled == false and .us_city_discovery_profile == "official_first_v1"' <<< "$health" >/dev/null
