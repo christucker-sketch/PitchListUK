@@ -6,7 +6,7 @@ import { projectCustomerOpportunity } from '../../platform/findpitches-v2/custom
 test('normalized evidence enrichment projects plain customer values and retains provenance',()=>{
  const enrichment=normalizeEnrichment({
   organiser:{value:'Kent Events',evidence:[{source:'https://example.test',excerpt:'Organised by Kent Events'}],confidence:.9},
-  location:{value:'Maidstone',confidence:.8},
+  location:{value:'Maidstone Market Square',evidence:[{source:'https://example.test/venue',excerpt:'Venue: Maidstone Market Square'}],confidence:.8},
   coordinates:{value:{lat:51.27,lng:.52},confidence:.95},
   offerings:{value:[{label:'Jamaican jerk',kind:'food',cuisine:'Jamaican',product:'jerk chicken'}],confidence:.85},
   recurring:{value:true,confidence:.7},
