@@ -18,7 +18,12 @@ if (!gazPath || !populationDir || !outputPath) {
     JSON.parse(await readFile(resolve(populationDir,name),'utf8'))));
   const index=buildUsPlaceIndex(await readFile(resolve(gazPath),'utf8'),responses);
   await writeFile(resolve(outputPath), JSON.stringify(index,null,2)+'\n', {flag:'wx'});
-  console.log(JSON.stringify({output:resolve(outputPath),population_files:populationFiles.length,...index.scope}));
+  const reconciliationPath=resolve(outputPath)+'.reconciliation.json';
+  await writeFile(reconciliationPath,JSON.stringify({sources:index.sources,scope:index.scope,...index.reconciliation},null,2)+'\n',{flag:'wx'});
+  console.log(JSON.stringify({output:resolve(outputPath),reconciliation:reconciliationPath,population_files:populationFiles.length,...index.scope}));
+  if(index.scope.population_unresolved>0){
+    console.warn(index.scope.population_unresolved+' places have no 2020 population match. They are preserved in the index with null population and require reconciliation; do not report major-city coverage as complete.');
+  }
   if (index.scope.unclassified>0) {
     console.warn(index.scope.unclassified+' places have unclassified LSAD values; review before declaring incorporated-place coverage complete');
   }
