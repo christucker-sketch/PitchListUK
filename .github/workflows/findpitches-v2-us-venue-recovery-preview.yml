@@ -1,12 +1,6 @@
 name: FindPitches v2 US Venue Recovery Bounded Preview
 
 "on":
-  # One-off operator-authorised launch of historical batch 0; remove after run is registered.
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-us-venue-recovery-preview.yml
   workflow_dispatch:
     inputs:
       recovery_class:
