@@ -51,3 +51,8 @@ test('DC and Puerto Rico entries do not inflate 50-state coverage denominators',
  assert.equal(index.scope.major_cities,2);
  assert.equal(index.scope.states,3);
 });
+
+test('actual 2025 Gazetteer pipe-delimited format is accepted',()=>{
+  const pipe=gaz.replaceAll('\t','|');
+  assert.deepEqual(parseGazetteerPlaces(pipe),parseGazetteerPlaces(gaz));
+});
