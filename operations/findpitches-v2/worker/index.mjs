@@ -79,6 +79,7 @@ async function health(env) {
       database: 'isolated',
       search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
       publication_enabled: false,
+      us_city_discovery_profile: 'official_first_v1',
       legacy_runtime_dependency: false,
       local_runtime_dependency: false
     });
