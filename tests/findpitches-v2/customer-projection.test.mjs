@@ -16,7 +16,9 @@ test('projects classifier data without inventing enrichment',()=>{
  assert.equal(opportunity.recurring,null);
  assert.equal(opportunity.offerings,null);
  assert.equal(opportunity.coordinates,null);
- assert.equal(readiness.ready,true);
+ assert.equal(readiness.ready,false);
+ assert.equal(opportunity.location,null);
+ assert.ok(readiness.missing.includes('location'));
 });
 
 test('enrichment overlays customer fields without mutating candidate',()=>{
