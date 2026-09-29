@@ -45,7 +45,8 @@ test('major-city threshold never includes CDPs or unknown legal status',()=>{
  const index=buildUsPlaceIndex(gaz,highPop);
  assert.equal(index.scope.major_cities,2);
  assert.equal(index.places.find(p=>p.geoid==='0667890').tier,'separate_review');
- assert.equal(index.places.find(p=>p.geoid==='4812345').tier,'separate_review');
+ assert.equal(index.places.find(p=>p.geoid==='4812345').tier,'large_special_government_review');
+ assert.equal(index.scope.large_special_governments_to_review,1);
 });
 
 test('DC and Puerto Rico entries do not inflate 50-state coverage denominators',()=>{
