@@ -1,3 +1,4 @@
+import { enabledGeographies } from './catalog.mjs';
 // Versioned, offline US place-index builder. Input sources:
 // (1) U.S. Census 2025 Gazetteer national places .txt (tab delimited)
 // (2) Census 2020 P.L. 94-171 P1 place population responses (JSON per state).
@@ -60,7 +61,10 @@ export function parseCensusPlacePopulations(responses) {
 }
 
 export function buildUsPlaceIndex(gazetteerText, populationResponses, { minMajorPopulation=100000 }={}) {
-  const places=parseGazetteerPlaces(gazetteerText);
+  const allPlaces=parseGazetteerPlaces(gazetteerText);
+  const eligibleStates=new Set(enabledGeographies('US').map(s=>s.code));
+  const excludedOutside50=allPlaces.filter(p=>!eligibleStates.has(p.state)).length;
+  const places=allPlaces.filter(p=>eligibleStates.has(p.state));
   const population=parseCensusPlacePopulations(populationResponses);
   const states=new Set(places.map(p=>p.state));
   const missing=places.filter(p=>!population.has(p.geoid)).map(p=>p.geoid);
@@ -79,7 +83,7 @@ export function buildUsPlaceIndex(gazetteerText, populationResponses, { minMajor
       population:'Census 2020 P1_001N (decennial)',
       note:'Mixed source vintages: review municipal boundary changes or renamings before declaring completeness.'
     },
-    scope:{states:states.size,places:rows.length,incorporated:rows.filter(p=>p.classification==='incorporated').length,
+    scope:{states:states.size,excluded_outside_50_states:excludedOutside50,places:rows.length,incorporated:rows.filter(p=>p.classification==='incorporated').length,
       cdps:rows.filter(p=>p.classification==='census_designated').length,
       unclassified:rows.filter(p=>p.classification==='review_lsad').length,
       major_cities:rows.filter(p=>p.tier==='major_city').length},
