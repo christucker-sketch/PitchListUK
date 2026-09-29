@@ -94,6 +94,7 @@ await writeFile('venue-recovery-preview-private.json',JSON.stringify(report,null
 console.log('Private US venue recovery preview: '+JSON.stringify({
   snapshot:publicSummary,attempted:outcome.attempted,possible_venue:outcome.possible_venue,
   no_venue:outcome.without_venue,failed_fetch_records:outcome.fetch_failed_records,
+  failures_by_reason:Object.fromEntries([...new Set(outcome.outcomes.flatMap(o=>o.failures.map(f=>f.reason)))].map(reason=>[reason,outcome.outcomes.flatMap(o=>o.failures).filter(f=>f.reason===reason).length])),
   d1_queries:readQueries
 }));
 if(process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY,
