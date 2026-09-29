@@ -13,7 +13,7 @@ const reviews=[
 ];
 const audit={snapshot_at:'2026-09-29T20:30:00Z',visible:[
   {id:'a',region_code:'MI',canonical_url:'https://countyfair.org/event',enrichment_json:evidence('Blossom Heath Park','Venue: Blossom Heath Park')},
-  {id:'b',region_code:'NV',canonical_url:'https://countyfair.org/event2',enrichment_json:evidence('Venue Tour','Venue Tour')},
+  {id:'b',candidate_revision_last_checked:'2026-09-29T20:29:00Z',region_code:'NV',canonical_url:'https://countyfair.org/event2',enrichment_json:evidence('Venue Tour','Venue Tour')},
   {id:'c',region_code:'WA',application_url:'https://countyfair.org/apply',enrichment_json:'not-json'}
 ]};
 
@@ -28,6 +28,7 @@ test('prior verified venue with weak stored evidence is requeued, not rejected o
   assert.deepEqual(result.queue.map(x=>x.opportunity_id),['b','c']);
   for(const item of result.queue){
     assert.match(item.revision_match,/unverified/);
+    assert.equal(item.current_candidate_revision,item.opportunity_id==='b'?'2026-09-29T20:29:00Z':null);
     assert.equal('verified_venue_geoid' in item,false);
     assert.equal(item.action,'refetch_known_sources_verify_current_venue_event_date_application_and_duplicate');
   }
