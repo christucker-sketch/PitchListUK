@@ -1,11 +1,6 @@
 name: FindPitches v2 US all major city queue one-shot
 
 "on":
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-us-all-major-cities.yml
   workflow_dispatch:
 
 permissions:
