@@ -97,6 +97,8 @@ const report={
   reinspection:{
     attempted:outcome.attempted,possible_venue:outcome.possible_venue,
     without_venue:outcome.without_venue,fetch_failed_records:outcome.fetch_failed_records,
+    all_sources_failed_records:outcome.all_sources_failed_records,
+    no_safe_known_source_records:outcome.no_safe_known_source_records,
     outcomes:outcome.outcomes.map(x=>({
       opportunity_id:x.opportunity_id,disposition:x.disposition,
       current_candidate_revision:selectedById.get(x.opportunity_id)?.current_candidate_revision || null,
@@ -112,6 +114,8 @@ await writeFile('venue-recovery-preview-private.json',JSON.stringify(report,null
 console.log('Private US venue recovery preview: '+JSON.stringify({
   snapshot:publicSummary,attempted:outcome.attempted,possible_venue:outcome.possible_venue,
   no_venue:outcome.without_venue,failed_fetch_records:outcome.fetch_failed_records,
+  all_sources_failed_records:outcome.all_sources_failed_records,
+  no_safe_known_source_records:outcome.no_safe_known_source_records,
   failures_by_reason:Object.fromEntries([...new Set(outcome.outcomes.flatMap(o=>o.failures.map(f=>f.reason)))].map(reason=>[reason,outcome.outcomes.flatMap(o=>o.failures).filter(f=>f.reason===reason).length])),
   d1_queries:readQueries
 }));
