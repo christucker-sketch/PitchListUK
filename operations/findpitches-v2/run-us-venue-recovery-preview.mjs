@@ -3,7 +3,7 @@
 // No D1 writes, no Serper, no promotion, no scheduler changes, no deployments.
 import { appendFile, writeFile, readFile } from 'node:fs/promises';
 import { classifyVenueEvidence } from '../../platform/findpitches-v2/enrichment/venue-evidence.mjs';
-import { assertPublicDns } from './public-source-dns.mjs';
+import { fetchPinnedPublicSource } from './pinned-public-fetch.mjs';
 import { getUsCustomerVisibleAuditInventory } from '../../platform/findpitches-v2/quality/us-customer-visible-snapshot.mjs';
 import { planUsVenueRecovery } from '../../platform/findpitches-v2/quality/us-venue-recovery.mjs';
 import { planHistoricalVenueReinspection } from '../../platform/findpitches-v2/quality/us-historical-venue-reinspection.mjs';
@@ -79,15 +79,8 @@ const publicSummary={
 // Restrict to public domain names and refuse HTTP redirects; the existing bounded
 // provider caps time/bytes/PDF text. The operator must review returned candidates.
 const provider=createHttpFetchProvider({
-  fetchImpl:async(url,options)=>{
-    const safe=allowedExistingSource(url);
-    if(!safe)throw new Error('rejected_source_url');
-    // Preflight every DNS response; a restricted outbound egress proxy is still
-    // required for complete DNS-rebinding protection.
-    await assertPublicDns(safe);
-    // No redirects (including same-host) for this first preview.
-    return fetch(safe,{...options,redirect:'manual'});
-  },timeoutMs:8000,maxBytes:400000
+  // DNS is pinned into the actual outbound socket, not merely preflighted.
+  fetchImpl:fetchPinnedPublicSource,timeoutMs:8000,maxBytes:400000
 });
 const outcome=await runUsVenueRecoveryPreview(items,{fetchProvider:provider,limit:BATCH_LIMIT,maxPagesPerRecord:2});
 const selectedById=new Map(items.map(item=>[item.opportunity_id,item]));
