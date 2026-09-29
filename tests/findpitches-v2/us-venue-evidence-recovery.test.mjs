@@ -147,3 +147,30 @@ test('regression: real specific event venue and street address remain eligible f
  assert.equal(assessVenueEvidence('Riverfront Park','Event location: Riverfront Park').accepted,true);
  assert.equal(assessVenueEvidence('Central Park','Summer festival event. Location: Central Park').accepted,true);
 });
+
+
+test('regression: batch-3 source excerpts reject venue policy text and incomplete place phrases',()=>{
+ const rejected=[
+  ["operators never check — until it's their name on the flyer",
+   "Florida DBPR orders emergency closures every week. Most venue operators never check — until it's their name on the flyer."],
+  ['with a myriad of outdoor and indoor spaces and elegant, professional services',
+   'Host your special day of any size and occasion at a peaceful, private, unique event venue with a myriad of outdoor and indoor spaces and elegant, professional services.'],
+  ['Policies','Venue Policies'],
+  ['or the','Vendor is liable for any damage caused by Vendor or any of its Representatives to the Event venue or the'],
+  ['the Bonneville County','The Bonneville County Fair is a growing, community-centered event held at the Bonneville County'],
+  ['Information','Grandstand Venue Information'],
+  ['restriction, or other reasons','Event information may change due to weather condition, construction, venue restriction, or other reasons.']
+ ];
+ for(const [value,excerpt] of rejected){
+  assert.equal(assessVenueEvidence(value,excerpt).accepted,false,excerpt);
+  assert.equal(extractNamedFields([{url:'https://example.org/vendors',body:excerpt}]).location,null,excerpt);
+ }
+});
+
+test('regression: explicit venue preceded by the still qualifies for independent verification',()=>{
+ const excerpt='The next Washington State Summer Con will be in June 2027. The event is held at the Washington State Fair and Events Center in Puyallup, WA.';
+ const value='the Washington State Fair and Events Center in Puyallup, WA';
+ assert.equal(assessVenueEvidence(value,excerpt).accepted,true);
+ const named=extractNamedFields([{url:'https://example.org/vendors',body:excerpt}]);
+ assert.equal(named.location?.value,value);
+});
