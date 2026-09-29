@@ -15,7 +15,7 @@ const pop=[
 
 test('Census place index joins by state/place GEOID, not duplicated city name',()=>{
   const index=buildUsPlaceIndex(gaz,pop);
-  assert.deepEqual(index.scope,{states:3,places:4,incorporated:2,cdps:1,unclassified:1,major_cities:2});
+  assert.deepEqual(index.scope,{states:3,excluded_outside_50_states:0,places:4,incorporated:2,cdps:1,unclassified:1,major_cities:2});
   assert.equal(index.places.find(p=>p.geoid==='0612345').residents_2020,150000);
   assert.equal(index.places.find(p=>p.geoid==='3612345').residents_2020,230000);
   assert.equal(index.places.find(p=>p.geoid==='0667890').tier,'separate_review');
@@ -41,4 +41,13 @@ test('major-city threshold never includes CDPs or unknown legal status',()=>{
  assert.equal(index.scope.major_cities,2);
  assert.equal(index.places.find(p=>p.geoid==='0667890').tier,'separate_review');
  assert.equal(index.places.find(p=>p.geoid==='4812345').tier,'separate_review');
+});
+
+test('DC and Puerto Rico entries do not inflate 50-state coverage denominators',()=>{
+ const extra='\\nDC\\t1100001\\tWashington city\\t25\\t+38.9\\t-77.0'+
+   '\\nPR\\t7200001\\tExample municipio\\t37\\t+18.4\\t-66.1';
+ const index=buildUsPlaceIndex(gaz+extra,pop);
+ assert.equal(index.scope.excluded_outside_50_states,2);
+ assert.equal(index.scope.major_cities,2);
+ assert.equal(index.scope.states,3);
 });
