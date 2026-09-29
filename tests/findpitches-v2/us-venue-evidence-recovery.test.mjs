@@ -114,3 +114,36 @@ test('recovery preview flags possible duplicate sources and old-year URLs for re
  assert.ok(report.queue[1].review_flags.some(f=>f.code==='stale_year_in_source_url'));
  assert.equal(report.queue[2].review_flags.length,0);
 });
+
+
+test('regression: real private-audit boilerplate must never masquerade as event venue',()=>{
+ const falsePositives=[
+  ['overnight','STORAGE: As this is a two-day market, vendors are permitted to leave their vending materials within the venue overnight.'],
+  ['restriction, or other reasons','Event information may change due to weather condition, construction, venue restriction, or other reasons. Please confirm details with event organizers.'],
+  ['is convenient and centrally located to the entire northern Gulf Coast','The venue is convenient and centrally located to the entire northern Gulf Coast.'],
+  ['is closely monitored by police beginning at 6PM Friday evening','The venue is closely monitored by police beginning at 6PM Friday evening.'],
+  ['& Hours','Venue & Hours'],
+  ['map to choose your space','Once your application is accepted, you will receive a link to our venue map to choose your space.'],
+  ['Tour','Schedule a Venue Tour'],
+  ['are not responsible for any lost, stolen, or damaged merchandise','The hosting venue are not responsible for any lost, stolen, or damaged merchandise.'],
+  ['availability, event planning, vendor opportunities','Ask about venue availability, event planning, vendor opportunities or anything else related to the Convention Center.'],
+  ['Rentals, &#038','Leasing, Venue Rentals, &#038; Performance Requests'],
+  ['noon each day at the market, must be present to win','Drawing will be held at noon each day at the market, must be present to win.'],
+  ['the Vineyard','Check their lineup of exciting summer events held at the Vineyard.']
+ ];
+ for(const [value,excerpt] of falsePositives){
+  assert.equal(assessVenueEvidence(value,excerpt).accepted,false,excerpt);
+  const r=extractNamedFields([{url:'https://example.org/vendor-application',body:excerpt}]);
+  assert.equal(r.location,null,excerpt);
+ }
+});
+
+test('regression: real specific event venue and street address remain eligible for independent review',()=>{
+ const excerpt='This is an outdoor event to be held at Rancho San Rafael Regional Park at 1595 North Sierra Street, in Reno.';
+ const value='Rancho San Rafael Regional Park at 1595 North Sierra Street, in Reno';
+ assert.equal(assessVenueEvidence(value,excerpt).accepted,true);
+ assert.equal(extractNamedFields([{url:'https://example.org/fair',body:excerpt}]).location.value,value);
+ assert.equal(assessVenueEvidence('Maidstone Market Square','Venue: Maidstone Market Square').accepted,true);
+ assert.equal(assessVenueEvidence('Riverfront Park','Event location: Riverfront Park').accepted,true);
+ assert.equal(assessVenueEvidence('Central Park','Summer festival event. Location: Central Park').accepted,true);
+});
