@@ -12,6 +12,7 @@ test('shadow runtime engages bounded customer promotion without publication',()=
 });
 
 test('status exposes customer-ready count',()=>{
- assert.match(worker,/count\(env, 'customer_opportunities'\)/);
+ assert.match(worker,/countVerifiedCustomerLocations\(env\)/);
+ assert.match(worker,/location_evidence_url/);
  assert.match(worker,/customer_ready: customerReady/);
 });
