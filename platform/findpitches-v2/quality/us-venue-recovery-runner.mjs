@@ -96,6 +96,7 @@ function safeFailureReason(error){
   if (message==='private_or_unknown_dns_rejected') return 'private_dns_rejected';
   if (message==='literal_ip_not_allowed'||message==='rejected_source_url') return 'unsafe_url_rejected';
   if (error?.cause?.code==='ENOTFOUND'||error?.cause?.code==='EAI_AGAIN'||['ENOTFOUND','EAI_AGAIN'].includes(error?.code)) return 'dns_unavailable';
+  if (message==='source_host_budget_exceeded') return 'source_host_budget_exceeded';
   if (message==='findpitches_v2_fetch_too_large') return 'source_exceeds_size_cap';
   if (message==='findpitches_v2_pdf_no_extractable_text') return 'pdf_no_extractable_text';
   if (/^findpitches_v2_fetch_http_(?:403|404|410|429|500|502|503|504)$/.test(message)) return message.replace('findpitches_v2_fetch_','');
