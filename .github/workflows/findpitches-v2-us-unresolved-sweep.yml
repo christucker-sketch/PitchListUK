@@ -1,0 +1,60 @@
+name: FindPitches v2 US Unresolved Venue Full Read-only Sweep
+
+"on":
+  # One operator-authorised launch only. Remove push after run registration.
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-us-unresolved-sweep.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-us-unresolved-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    name: Stable US unresolved source reinspection (private, no writes)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      RECOVERY_CLASS: unresolved
+      RECOVERY_OFFSET: '0'
+      RECOVERY_SWEEP: all
+    steps:
+      - name: Check out segregated v2 draft branch
+        uses: actions/checkout@v4
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies without package scripts
+        run: npm install --ignore-scripts --no-save --no-audit --no-fund
+      - name: Validate script and pinned outbound transport before credentials
+        run: |
+          node --check operations/findpitches-v2/run-us-venue-recovery-preview.mjs
+          node --check operations/findpitches-v2/pinned-public-fetch.mjs
+          node --test tests/findpitches-v2/pinned-public-fetch.test.mjs tests/findpitches-v2/us-venue-unresolved-sweep.test.mjs tests/findpitches-v2/us-venue-recovery-runner.test.mjs tests/findpitches-v2/us-historical-venue-reinspection.test.mjs tests/findpitches-v2/public-source-dns.test.mjs
+      - name: Verify v2 shadow publication is disabled and storage is isolated
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .service == "findpitches-v2-shadow" and .mode == "shadow" and .publication_enabled == false and .database == "isolated"' <<< "$body" >/dev/null
+      - name: Reinspect all unresolved current US source URLs in bounded serial checkpoints
+        run: node operations/findpitches-v2/run-us-venue-recovery-preview.mjs
+      - name: Save private checkpoint even if interrupted
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-unresolved-venue-sweep-private
+          path: venue-recovery-preview-private.json
+          retention-days: 7
+          if-no-files-found: ignore
