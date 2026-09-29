@@ -1,7 +1,8 @@
 // One-off, read-only private v2 D1 recovery preview. Requires the same GitHub
 // Cloudflare secret and account variable used by the bounded PDF replay workflow.
 // No D1 writes, no Serper, no promotion, no scheduler changes, no deployments.
-import { appendFile, writeFile } from 'node:fs/promises';
+import { appendFile, writeFile, readFile } from 'node:fs/promises';
+import { classifyVenueEvidence } from '../../platform/findpitches-v2/enrichment/venue-evidence.mjs';
 import { assertPublicDns } from './public-source-dns.mjs';
 import { getUsCustomerVisibleAuditInventory } from '../../platform/findpitches-v2/quality/us-customer-visible-snapshot.mjs';
 import { planUsVenueRecovery } from '../../platform/findpitches-v2/quality/us-venue-recovery.mjs';
@@ -41,10 +42,20 @@ const db={prepare(sql){return {bind(...params){return {all:async()=>({
 const audit=await getUsCustomerVisibleAuditInventory(db,{now,pageSize:100});
 if(audit.visible.length>MAX_TOTAL_VISIBLE) throw new Error('visible_inventory_above_safe_audit_cap');
 const preview=planUsVenueRecovery(audit,{limit:500});
+const historicalReviews=JSON.parse(await readFile(new URL('../../platform/findpitches-v2/quality/us-venue-review-2026-09-29.json',import.meta.url),'utf8'));
+const historicalIds=new Set(historicalReviews.map(x=>String(x.opportunity_id)));
+const currentlyVisibleHistorical=audit.visible.filter(x=>historicalIds.has(String(x.id)));
+function strictStoredVenue(row){try{return classifyVenueEvidence(JSON.parse(row.enrichment_json||'{}').location).accepted;}catch{return false;}}
+const historicOverlap={historical_review_ids:historicalIds.size,
+  visible_id_overlap:currentlyVisibleHistorical.length,
+  strict_stored_evidence_pass:currentlyVisibleHistorical.filter(strictStoredVenue).length,
+  strict_stored_evidence_fail_or_absent:currentlyVisibleHistorical.filter(x=>!strictStoredVenue(x)).length,
+  revision_match:'not_established_historic_manifest_omits_candidate_revision'};
 const desired=BATCH_CLASS==='strong'?'stored_explicit_venue_candidate':'needs_source_reinspection';
 const items=preview.queue.filter(x=>x.status===desired).slice(BATCH_OFFSET,BATCH_OFFSET+BATCH_LIMIT);
 const publicSummary={
   snapshot_at:audit.snapshot_at, visible: audit.visible.length,
+  historic_manual_review_overlap:historicOverlap,
   readiness_rejected:audit.readiness_rejected.length,
   all_visible_preliminary_text_classification: {
     stored_explicit_venue_candidate:preview.stored_evidence_strong,
