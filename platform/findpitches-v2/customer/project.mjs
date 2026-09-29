@@ -1,3 +1,4 @@
+import { classifyVenueEvidence } from '../enrichment/venue-evidence.mjs';
 import { assessCustomerReadiness } from './readiness.mjs';
 
 export function projectCustomerOpportunity(candidate = {}, enrichment = {}) {
@@ -39,14 +40,9 @@ function sourceBackedLocation(field) {
   if (!field || typeof field !== 'object' || !('value' in field)) return null;
   const name = text(field.value);
   if (!name || /^(?:unknown|tbc|tbd|online|various|multiple locations|to be announced|the venue|the event|the location)$/i.test(name)) return null;
-  const evidence = Array.isArray(field.evidence) ? field.evidence.find(item => {
-    try {
-      const url = new URL(String(item?.source || ''));
-      return ['https:','http:'].includes(url.protocol) && text(item.excerpt) && text(item.excerpt).toLowerCase().includes(name.toLowerCase());
-    } catch { return false; }
-  }) : null;
-  if (!evidence) return null;
-  return {value:name,provenance:Object.freeze({evidence:Object.freeze([evidence]),confidence:finite(field.confidence)})};
+  const check=classifyVenueEvidence(field);
+  if (!check.accepted) return null;
+  return {value:name,provenance:Object.freeze({evidence:Object.freeze([check.evidence]),confidence:finite(field.confidence)})};
 }
 function value(field) {
   if (field && typeof field === 'object' && !Array.isArray(field) && 'value' in field) return field.value;
