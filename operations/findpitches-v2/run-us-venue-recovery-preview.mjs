@@ -14,7 +14,7 @@ const token=process.env.CLOUDFLARE_API_TOKEN;
 const account=process.env.CLOUDFLARE_ACCOUNT_ID;
 if (!token || !account) throw new Error('cloudflare_account_or_token_not_configured');
 const now=new Date();
-const MAX_TOTAL_VISIBLE=10000;
+const MAX_TOTAL_VISIBLE=500;
 const BATCH_LIMIT=12;
 const BATCH_CLASS=String(process.env.RECOVERY_CLASS||'weak');
 if(!['weak','strong'].includes(BATCH_CLASS)) throw new Error('invalid_recovery_class');
@@ -40,7 +40,7 @@ const db={prepare(sql){return {bind(...params){return {all:async()=>({
 })}}}}};
 const audit=await getUsCustomerVisibleAuditInventory(db,{now,pageSize:100});
 if(audit.visible.length>MAX_TOTAL_VISIBLE) throw new Error('visible_inventory_above_safe_audit_cap');
-const preview=planUsVenueRecovery(audit,{limit:250});
+const preview=planUsVenueRecovery(audit,{limit:500});
 const desired=BATCH_CLASS==='strong'?'stored_explicit_venue_candidate':'needs_source_reinspection';
 const items=preview.queue.filter(x=>x.status===desired).slice(BATCH_OFFSET,BATCH_OFFSET+BATCH_LIMIT);
 const publicSummary={
