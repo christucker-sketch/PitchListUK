@@ -1,9 +1,13 @@
+import { TERMINAL_PDF_ERROR_CODES } from '../providers/fetch/pdf-error-policy.mjs';
 // Cloudflare-native, bounded recovery: no GitHub Actions schedule dependency.
 // This uses the same production D1 ledger as the existing operator workflow.
 const LEGACY_PDF = "instr(q.last_error, 'findpitches_v2_fetch_content_type_unsupported:') = 1 AND instr(lower(q.last_error), 'pdf') > 0";
 const TABLES = Object.freeze({enrichment:'enrichment_queue',classification:'classification_queue'});
 const BATCH_LIMIT = 25;
 const MIN_INTERVAL_MS = 15 * 60_000;
+// Explicit fixed codes only. Unknown failure reasons count towards the safety gate.
+const terminalSql = TERMINAL_PDF_ERROR_CODES.map(code => "'" + code + "'").join(',');
+const terminalCountSql = `SUM(CASE WHEN q.status='dead' AND q.last_error IN (${terminalSql}) THEN 1 ELSE 0 END) AS terminal_dead`;
 
 async function all(db, sql, ...params) {
   const result = await db.prepare(sql).bind(...params).all();
@@ -25,21 +29,24 @@ export async function runNativePdfRecovery(db, { now = new Date() } = {}) {
   // batch's dead-letter threshold remains identical to the operator workflow.
   const previous = await all(db, `SELECT l.batch_id,l.lane,MIN(l.released_at) AS released_at,
     COUNT(*) AS total, SUM(CASE WHEN q.status='dead' THEN 1 ELSE 0 END) AS dead,
-    SUM(CASE WHEN q.status IN ('ready','leased') THEN 1 ELSE 0 END) AS active
+    ${terminalCountSql}, SUM(CASE WHEN q.status IN ('ready','leased') THEN 1 ELSE 0 END) AS active
     FROM pdf_recovery_ledger l JOIN enrichment_queue q
       ON l.lane='enrichment' AND q.candidate_id=l.candidate_id
     GROUP BY l.batch_id,l.lane
     UNION ALL
     SELECT l.batch_id,l.lane,MIN(l.released_at),COUNT(*),
     SUM(CASE WHEN q.status='dead' THEN 1 ELSE 0 END),
-    SUM(CASE WHEN q.status IN ('ready','leased') THEN 1 ELSE 0 END)
+    ${terminalCountSql}, SUM(CASE WHEN q.status IN ('ready','leased') THEN 1 ELSE 0 END)
     FROM pdf_recovery_ledger l JOIN classification_queue q
       ON l.lane='classification' AND q.candidate_id=l.candidate_id
     GROUP BY l.batch_id,l.lane
     ORDER BY released_at DESC LIMIT 1`);
   if (previous.length) {
     const last = previous[0];
-    if (Number(last.dead) >= 4) return {status:'paused_failure_threshold',previous:last};
+    // Expected terminal extraction failures are quarantined and audited, not
+    // counted as signs of a broken replay engine. Timeouts/unknowns still are.
+    const unexpectedDead = Math.max(0, Number(last.dead || 0) - Number(last.terminal_dead || 0));
+    if (unexpectedDead >= 4) return {status:'paused_failure_threshold',unexpected_dead:unexpectedDead,previous:last};
     if (Number(last.active) > 0) return {status:'paused_active_batch',previous:last};
     if (now.getTime() - Date.parse(last.released_at) < MIN_INTERVAL_MS)
       return {status:'paused_cadence',previous:last};
