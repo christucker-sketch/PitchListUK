@@ -47,7 +47,7 @@ export async function runUsVenueRecoveryPreview(queue = [], {
         pages.push({url:finalUrl,body:page.body.slice(0,250000)});
       } catch (error) {
         // Never serialize raw fetch error strings; providers can include tokens.
-        failures.push({source_url:url,reason:'fetch_failed'});
+        failures.push({source_url:url,reason:safeFailureReason(error)});
       }
     }
     const inspected = inspectRefetchedVenuePages(pages);
@@ -83,4 +83,16 @@ export function allowedExistingSource(raw) {
         host.includes(':') || !host.includes('.')) return null;
     return u.toString();
   } catch {return null}
+}
+
+function safeFailureReason(error){
+  const message=String(error?.message||'');
+  if (message==='private_or_unknown_dns_rejected') return 'private_dns_rejected';
+  if (message==='literal_ip_not_allowed'||message==='rejected_source_url') return 'unsafe_url_rejected';
+  if (error?.cause?.code==='ENOTFOUND'||error?.cause?.code==='EAI_AGAIN'||['ENOTFOUND','EAI_AGAIN'].includes(error?.code)) return 'dns_unavailable';
+  if (message==='findpitches_v2_fetch_too_large') return 'source_exceeds_size_cap';
+  if (message==='findpitches_v2_pdf_no_extractable_text') return 'pdf_no_extractable_text';
+  if (/^findpitches_v2_fetch_http_(?:403|404|410|429|500|502|503|504)$/.test(message)) return message.replace('findpitches_v2_fetch_','');
+  if (error?.name==='AbortError'||error?.name==='TimeoutError') return 'fetch_timeout';
+  return 'fetch_failed';
 }
