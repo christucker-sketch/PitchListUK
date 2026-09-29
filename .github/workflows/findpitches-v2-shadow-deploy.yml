@@ -81,6 +81,12 @@ jobs:
             if [[ $rc -ne 0 ]]; then
               if grep -Fq "Not currently importing anything." <<<"$output"; then
                 echo "Wrangler reported an empty/idempotent import for $migration; continuing."
+              elif [[ "$migration" == "operations/findpitches-v2/migrations/0008_location_evidence_gate.sql" ]] &&
+                   grep -Fq "duplicate column name: location_evidence_url: SQLITE_ERROR" <<<"$output"; then
+                # 0008 has already committed its schema + one-time disposition reset.
+                # This particular SQLite ALTER has no IF NOT EXISTS form. Do not
+                # generalise this exception: unexpected migration errors fail closed.
+                echo "Location-evidence migration was applied previously; skipping the exact duplicate-column error."
               else
                 exit "$rc"
               fi
