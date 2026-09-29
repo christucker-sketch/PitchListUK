@@ -37,3 +37,11 @@ test('never use unrelated PDF pages or first page as provenance of later extract
  assert.equal(result.organiser.evidence[0].source,'https://example.org/application.pdf');
  assert.equal(result.location.evidence[0].source,'https://example.org/application.pdf');
 });
+
+test('organiser office addresses are not treated as event locations',()=>{
+ const docs=[{url:'https://example.org/vendors',body:'Office location: Company House, London\nRegistered office location: HQ Kent'}];
+ assert.equal(extractNamedFields(docs).location,null);
+ const withVenue=[{url:'https://example.org/vendors',body:'Office location: Company House, London\nEvent location: Maidstone Market Square'}];
+ const result=extractNamedFields(withVenue);
+ assert.equal(result.location.value,'Maidstone Market Square');
+});
