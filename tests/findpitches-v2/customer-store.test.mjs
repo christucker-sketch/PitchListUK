@@ -22,3 +22,20 @@ test('search combines customer market region and adaptive terms',async()=>{
  assert.ok(db.calls[0].args.includes('%jerk chicken%'));
  assert.match(db.calls[0].sql,/location_evidence_url/);
 });
+
+test('reads never expose legacy customer rows without location evidence',async()=>{
+ const db=dbSpy();
+ const {getCustomerOpportunity}=await import('../../platform/findpitches-v2/customer/store.mjs');
+ await getCustomerOpportunity(db,'legacy-id');
+ assert.match(db.calls[0].sql,/NULLIF\(TRIM\(location_evidence_url\)/);
+ await searchCustomerOpportunities(db,{market:'GB'});
+ assert.match(db.calls[1].sql,/NULLIF\(TRIM\(location_evidence_url\)/);
+});
+
+test('upsert persists the event location source URL',async()=>{
+ const db=dbSpy();
+ await upsertCustomerOpportunity(db,{id:'x',market:'GB',title:'Market',location:'Maidstone Market Square',region_code:'GB-ENG-KENT',canonical_url:'https://x.test',application_url:'https://x.test/apply',last_checked:'2026-09-29'}, {}, {locationEvidenceUrl:'https://x.test/venue'});
+ assert.equal(db.calls[0].args.length,19);
+ assert.equal(db.calls[0].args.at(-1),'https://x.test/venue');
+ assert.equal((db.calls[0].sql.match(/\?/g)||[]).length,19);
+});
