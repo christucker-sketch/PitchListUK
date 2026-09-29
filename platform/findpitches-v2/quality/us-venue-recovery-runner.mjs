@@ -51,10 +51,14 @@ export async function runUsVenueRecoveryPreview(queue = [], {
       }
     }
     const inspected = inspectRefetchedVenuePages(pages);
+    // A network failure or absence of safe known URLs is not evidence that a
+    // historically verified venue is invalid. Keep these review lanes distinct.
+    const disposition = pages.length ? inspected.status :
+      failures.length ? 'all_known_source_fetches_failed' : 'no_safe_known_sources';
     const outcome = Object.freeze({
       opportunity_id:id, fetched:pages.length, failed:failures.length,
       // Potential matches await independent human source/date/venue review.
-      disposition:inspected.status, venue_candidate:inspected.location?.value || null,
+      disposition, venue_candidate:inspected.location?.value || null,
       verified_venue_geoid:null,needs_human_review:true,
       evidence:inspected.location?.evidence || [], failures,
       review_flags:item.review_flags || []
@@ -66,6 +70,8 @@ export async function runUsVenueRecoveryPreview(queue = [], {
     attempted:outcomes.length,possible_venue:outcomes.filter(x=>x.disposition==='possible_event_venue_needs_independent_review').length,
     without_venue:outcomes.filter(x=>x.disposition!=='possible_event_venue_needs_independent_review').length,
     fetch_failed_records:outcomes.filter(x=>x.failed>0).length,
+    all_sources_failed_records:outcomes.filter(x=>x.disposition==='all_known_source_fetches_failed').length,
+    no_safe_known_source_records:outcomes.filter(x=>x.disposition==='no_safe_known_sources').length,
     remaining_queue:Math.max(0,queue.length-selected.length),outcomes,
     caveat:'Operator-only preview. Never automatically re-promote or mark a venue verified.'
   });
