@@ -6,7 +6,8 @@ test('deterministic PDF failures are terminal immediately', () => {
   for (const code of [
     'findpitches_v2_pdf_no_extractable_text',
     'findpitches_v2_pdf_too_many_pages',
-    'findpitches_v2_pdf_invalid_signature'
+    'findpitches_v2_pdf_invalid_signature',
+    'findpitches_v2_fetch_too_large'
   ]) assert.equal(isTerminalPdfError(new Error(code)), true, code);
 });
 
