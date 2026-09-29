@@ -174,3 +174,11 @@ test('regression: explicit venue preceded by the still qualifies for independent
  const named=extractNamedFields([{url:'https://example.org/vendors',body:excerpt}]);
  assert.equal(named.location?.value,value);
 });
+
+
+test('real recovery excerpt cannot accept a venue name cut off after an ampersand',()=>{
+ const excerpt='The 2027 Missouri Oral Health Policy Conference will be held at Capitol Plaza Hotel &';
+ assert.equal(assessVenueEvidence('Capitol Plaza Hotel &',excerpt).accepted,false);
+ assert.equal(extractNamedFields([{url:'https://example.org/vendors',body:excerpt}]).location,null);
+ assert.equal(assessVenueEvidence('Riverside Showground','Venue: Riverside Showground').accepted,true);
+});
