@@ -127,6 +127,7 @@ test('only current, validated, in-date, fresh records are returned', async () =>
   seed(db, { id: 'undated', event_start: null, event_end: null, application_deadline: null });
   seed(db, { id: 'too-old', last_checked: '2026-07-01T00:00:00Z' });
   seed(db, { id: 'superseded-not-ready', last_checked: '2026-09-10T00:00:00Z' }, { last_checked: '2026-09-25T00:00:00Z', disposition: 'not_ready' });
+  seed(db, { id: 'current-not-ready' }, { disposition: 'not_ready' });
   seed(db, { id: 'newer-revision-pending', last_checked: '2026-09-10T00:00:00Z' }, { last_checked: '2026-09-25T00:00:00Z' });
   seed(db, { id: 'blocked-social-url', application_url: 'https://www.facebook.com/events/123' });
   seed(db, { id: 'orphan-projection' }); db.sqlite.prepare("DELETE FROM candidates WHERE id = 'orphan-projection'").run();

@@ -1,5 +1,6 @@
 // Storage adapter for customer-ready projections.
 // Deliberately targets a separate customer_opportunities table rather than raw candidates.
+import { customerVisibilityArgs, customerVisibilityClause } from './visibility.mjs';
 
 export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocument = {}, { locationEvidenceUrl = null } = {}) {
   requireDb(db);
@@ -50,31 +51,10 @@ export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocu
 // Promotion (run-batch.mjs) is unchanged; these checks make stale projections invisible without
 // deleting anything.
 // ---------------------------------------------------------------------------------------------
-export const DEFAULT_MAX_AGE_DAYS = 60;
-
-export function visibilityClause() {
-  return `JOIN candidates c ON c.id = o.id
-    LEFT JOIN customer_promotion_disposition d ON d.candidate_id = o.id AND d.source_last_checked = c.last_checked
-    WHERE c.status IN ('validated', 'published')
-      AND NULLIF(TRIM(location),'') IS NOT NULL AND NULLIF(TRIM(location_evidence_url),'') IS NOT NULL
-      AND (COALESCE(d.disposition, '') <> 'not_ready' OR c.last_checked <= o.last_checked)
-      AND (o.application_deadline IS NULL OR date(o.application_deadline) IS NULL OR date(o.application_deadline) >= date(?))
-      AND (o.event_end IS NULL OR date(o.event_end) IS NULL OR date(o.event_end) >= date(?))
-      AND NOT (o.event_end IS NULL AND o.event_start IS NOT NULL AND date(o.event_start) < date(?) AND COALESCE(o.recurring, 0) = 0)
-      AND datetime(o.last_checked) >= datetime(?)`;
-}
-
-export function visibilityArgs({ now = new Date(), maxAgeDays = DEFAULT_MAX_AGE_DAYS } = {}) {
-  const today = now.toISOString().slice(0, 10);
-  const days = Number.isFinite(Number(maxAgeDays)) && Number(maxAgeDays) > 0 ? Number(maxAgeDays) : DEFAULT_MAX_AGE_DAYS;
-  const cutoff = new Date(now.getTime() - days * 86400000).toISOString();
-  return [today, today, today, cutoff];
-}
-
 export async function getCustomerOpportunity(db, id, visibility = {}) {
   requireDb(db);
-  return db.prepare(`SELECT o.* FROM customer_opportunities o ${visibilityClause()} AND o.id = ?`)
-    .bind(...visibilityArgs(visibility), String(id)).first();
+  return db.prepare(`SELECT o.* FROM customer_opportunities o ${customerVisibilityClause()} AND o.id = ?`)
+    .bind(...customerVisibilityArgs(visibility), String(id)).first();
 }
 
 export async function searchCustomerOpportunities(db, query = {}, visibility = {}) {
@@ -88,8 +68,8 @@ export async function searchCustomerOpportunities(db, query = {}, visibility = {
   // Over-fetch slightly: service.mjs drops rows that fail the in-code readiness check, then trims to limit.
   const limit=Math.max(1,Math.min(100,Number(query.limit)||25));
   const fetchLimit=Math.min(200, limit * 2 + 10);
-  const sql=`SELECT o.* FROM customer_opportunities o ${visibilityClause()} ${where.length?'AND '+where.join(' AND '):''} ORDER BY o.last_checked DESC, o.id ASC LIMIT ?`;
-  return db.prepare(sql).bind(...visibilityArgs(visibility), ...args, fetchLimit).all();
+  const sql=`SELECT o.* FROM customer_opportunities o ${customerVisibilityClause()} ${where.length?'AND '+where.join(' AND '):''} ORDER BY o.last_checked DESC, o.id ASC LIMIT ?`;
+  return db.prepare(sql).bind(...customerVisibilityArgs(visibility), ...args, fetchLimit).all();
 }
 
 function requireDb(db){if(!db?.prepare)throw new Error('findpitches_customer_store_db_missing');}

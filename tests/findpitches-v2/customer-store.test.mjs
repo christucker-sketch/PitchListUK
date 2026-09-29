@@ -27,9 +27,9 @@ test('reads never expose legacy customer rows without location evidence',async()
  const db=dbSpy();
  const {getCustomerOpportunity}=await import('../../platform/findpitches-v2/customer/store.mjs');
  await getCustomerOpportunity(db,'legacy-id');
- assert.match(db.calls[0].sql,/NULLIF\(TRIM\(location_evidence_url\)/);
+ assert.match(db.calls[0].sql,/NULLIF\(TRIM\(o\.location_evidence_url\)/);
  await searchCustomerOpportunities(db,{market:'GB'});
- assert.match(db.calls[1].sql,/NULLIF\(TRIM\(location_evidence_url\)/);
+ assert.match(db.calls[1].sql,/NULLIF\(TRIM\(o\.location_evidence_url\)/);
 });
 
 test('upsert persists the event location source URL',async()=>{

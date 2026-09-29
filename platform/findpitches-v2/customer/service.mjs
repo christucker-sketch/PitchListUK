@@ -1,6 +1,7 @@
 import { normalizeOpportunitySearch, customerMarketCatalog, customerRegionCatalog } from './api-contract.mjs';
 import { getCustomerOpportunity, searchCustomerOpportunities } from './store.mjs';
 import { assessCustomerReadiness } from './readiness.mjs';
+import { hydrateCustomerOpportunity } from './visibility.mjs';
 
 // options.now / options.maxAgeDays drive the read-time visibility policy (see store.mjs).
 export function createCustomerApiService(db, options = {}) {
@@ -20,7 +21,7 @@ export function createCustomerApiService(db, options = {}) {
     async opportunity(id) {
       const row = await getCustomerOpportunity(db, id, visibility());
       if (!row) return null;
-      const opportunity = hydrate(row);
+      const opportunity = hydrateCustomerOpportunity(row);
       return currentlyReady(opportunity, clock()) ? Object.freeze({ api_version: 'v1', opportunity }) : null;
     },
 
@@ -29,7 +30,7 @@ export function createCustomerApiService(db, options = {}) {
       const result = await searchCustomerOpportunities(db, query, visibility());
       const rows = Array.isArray(result?.results) ? result.results : [];
       const now = clock();
-      const opportunities = rows.map(hydrate).filter(item => currentlyReady(item, now)).slice(0, query.limit);
+      const opportunities = rows.map(hydrateCustomerOpportunity).filter(item => currentlyReady(item, now)).slice(0, query.limit);
       return Object.freeze({
         api_version: 'v1',
         // Echo only the parameters that are actually applied. Radius and cursor are not implemented,
@@ -47,30 +48,4 @@ export function createCustomerApiService(db, options = {}) {
 // patterns) and the passage of time take effect without waiting for re-promotion.
 function currentlyReady(opportunity, now) {
   return assessCustomerReadiness(opportunity, { now }).ready;
-}
-
-function hydrate(row) {
-  return Object.freeze({
-    id: row.id,
-    market: row.market,
-    region_code: row.region_code,
-    title: row.title,
-    organiser: row.organiser ?? null,
-    location: row.location ?? null,
-    coordinates: parse(row.coordinates_json),
-    event_start: row.event_start ?? null,
-    event_end: row.event_end ?? null,
-    application_deadline: row.application_deadline ?? null,
-    canonical_url: row.canonical_url,
-    application_url: row.application_url,
-    offerings: parse(row.offerings_json),
-    recurring: row.recurring == null ? null : Boolean(row.recurring),
-    description: row.description ?? null,
-    last_checked: row.last_checked
-  });
-}
-
-function parse(value) {
-  if (value == null || value === '') return null;
-  try { return JSON.parse(value); } catch { return null; }
 }
