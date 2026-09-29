@@ -68,7 +68,7 @@ export async function runUsVenueRecoveryPreview(queue = [], {
   }
   return Object.freeze({
     attempted:outcomes.length,possible_venue:outcomes.filter(x=>x.disposition==='possible_event_venue_needs_independent_review').length,
-    without_venue:outcomes.filter(x=>x.disposition!=='possible_event_venue_needs_independent_review').length,
+    without_venue:outcomes.filter(x=>x.disposition==='venue_not_proven').length,
     fetch_failed_records:outcomes.filter(x=>x.failed>0).length,
     all_sources_failed_records:outcomes.filter(x=>x.disposition==='all_known_source_fetches_failed').length,
     no_safe_known_source_records:outcomes.filter(x=>x.disposition==='no_safe_known_sources').length,
