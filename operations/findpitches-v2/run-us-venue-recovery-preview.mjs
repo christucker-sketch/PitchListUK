@@ -39,7 +39,7 @@ const items=preview.queue.filter(x=>x.status==='needs_source_reinspection').slic
 const publicSummary={
   snapshot_at:audit.snapshot_at, visible: audit.visible.length,
   readiness_rejected:audit.readiness_rejected.length,
-  first_250: {
+  all_visible_preliminary_text_classification: {
     stored_explicit_venue_candidate:preview.stored_evidence_strong,
     need_source_reinspection:preview.weak_evidence,
     missing_current_enrichment:preview.missing_current_enrichment,
