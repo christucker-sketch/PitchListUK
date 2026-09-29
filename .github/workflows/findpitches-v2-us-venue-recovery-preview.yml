@@ -45,7 +45,7 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       RECOVERY_OFFSET: ${{ inputs.recovery_offset || '0' }}
-      RECOVERY_CLASS: ${{ inputs.recovery_class || 'strong' }}
+      RECOVERY_CLASS: ${{ inputs.recovery_class || 'historical' }}
     steps:
       - name: Check out reviewed recovery branch
         uses: actions/checkout@v4
