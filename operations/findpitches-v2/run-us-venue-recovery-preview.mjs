@@ -90,6 +90,7 @@ const provider=createHttpFetchProvider({
   },timeoutMs:8000,maxBytes:400000
 });
 const outcome=await runUsVenueRecoveryPreview(items,{fetchProvider:provider,limit:BATCH_LIMIT,maxPagesPerRecord:2});
+const selectedById=new Map(items.map(item=>[item.opportunity_id,item]));
 const report={
   run_at:new Date().toISOString(),read_only:true,database:'isolated_v2',
   summary:publicSummary,
@@ -98,6 +99,8 @@ const report={
     without_venue:outcome.without_venue,fetch_failed_records:outcome.fetch_failed_records,
     outcomes:outcome.outcomes.map(x=>({
       opportunity_id:x.opportunity_id,disposition:x.disposition,
+      current_candidate_revision:selectedById.get(x.opportunity_id)?.current_candidate_revision || null,
+      historical_revision_match:selectedById.get(x.opportunity_id)?.revision_match || null,
       venue_candidate:x.venue_candidate,verified_venue_geoid:null,
       venue_evidence:x.evidence.map(e=>({source_host:new URL(e.source).hostname,excerpt:String(e.excerpt||'').slice(0,220)})),
       failures:x.failures.map(f=>({source_host:new URL(f.source_url).hostname,reason:f.reason})),review_flags:x.review_flags
