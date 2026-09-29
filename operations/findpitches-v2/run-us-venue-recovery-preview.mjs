@@ -2,8 +2,7 @@
 // Cloudflare secret and account variable used by the bounded PDF replay workflow.
 // No D1 writes, no Serper, no promotion, no scheduler changes, no deployments.
 import { appendFile, writeFile } from 'node:fs/promises';
-import { lookup } from 'node:dns/promises';
-import { BlockList, isIP } from 'node:net';
+import { assertPublicDns } from './public-source-dns.mjs';
 import { getUsCustomerVisibleAuditInventory } from '../../platform/findpitches-v2/quality/us-customer-visible-snapshot.mjs';
 import { planUsVenueRecovery } from '../../platform/findpitches-v2/quality/us-venue-recovery.mjs';
 import { runUsVenueRecoveryPreview, allowedExistingSource } from '../../platform/findpitches-v2/quality/us-venue-recovery-runner.mjs';
@@ -19,15 +18,6 @@ const MAX_TOTAL_VISIBLE=10000;
 const BATCH_LIMIT=12;
 const BATCH_OFFSET=Number(process.env.RECOVERY_OFFSET||0);
 if(!Number.isInteger(BATCH_OFFSET)||BATCH_OFFSET<0||BATCH_OFFSET>240||BATCH_OFFSET%12!==0) throw new Error('invalid_recovery_offset');
-const blocked=new BlockList();
-for(const [network,bits] of [['0.0.0.0',8],['10.0.0.0',8],['100.64.0.0',10],['127.0.0.0',8],['169.254.0.0',16],['172.16.0.0',12],['192.0.0.0',24],['192.168.0.0',16],['198.18.0.0',15],['224.0.0.0',4],['240.0.0.0',4]]) blocked.addSubnet(network,bits,'ipv4');
-for(const [network,bits] of [['::',128],['::1',128],['fc00::',7],['fe80::',10],['ff00::',8],['::ffff:0:0',96]]) blocked.addSubnet(network,bits,'ipv6');
-async function assertPublicDns(url){
-  const host=new URL(url).hostname;
-  if(isIP(host)) throw new Error('literal_ip_not_allowed');
-  const addresses=await lookup(host,{all:true,verbatim:true});
-  if(!addresses.length||addresses.some(a=>!isIP(a.address)||blocked.check(a.address,a.family===4?'ipv4':'ipv6'))) throw new Error('private_or_unknown_dns_rejected');
-}
 let readQueries=0;
 async function query(sql,params) {
   if (!/^\s*SELECT\b/i.test(sql) || /;\s*\S/.test(sql)) throw new Error('read_only_select_required');
