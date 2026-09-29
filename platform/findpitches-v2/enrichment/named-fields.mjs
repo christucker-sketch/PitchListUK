@@ -1,3 +1,4 @@
+import { assessVenueEvidence } from './venue-evidence.mjs';
 // Conservative, source-backed extraction for HTML and extracted PDF text.
 // Match explicit labelled statements, never infer a value from search geography.
 const ORGANISER_PATTERNS = [
@@ -39,6 +40,7 @@ function scan(docs, patterns) {
         }
         const value = clean(match[1]);
         if (!value) continue;
+        if (patterns === LOCATION_PATTERNS && !assessVenueEvidence(value, match[0]).accepted) continue;
         // Source and exact matched statement, not a guessed region/candidate title.
         return {value, evidence:[{source:doc.url,excerpt:match[0].slice(0,220)}],confidence:0.88};
       }
