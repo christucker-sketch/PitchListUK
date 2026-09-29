@@ -21,3 +21,17 @@ The module deliberately exposes only aggregates. It is not yet wired to public `
 4. Use those findings to implement independent US gap-fill scheduling and targeted missing-evidence recovery without reducing or pausing existing acquisition.
 
 Baseline (reported 2026-09-29 18:32 BST, **not a fresh audit result**): global current customer-ready 812; global source-backed 814/2036; US source-backed 359/843; event date 46/2036; deadline 43/2036.
+
+## US place-level indexing (offline, not yet connected to acquisition)
+
+The versioned builder `operations/findpitches-v2/scripts/build-us-place-index.mjs` combines the [2025 Census National Places Gazetteer](https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.2025.html) with Census 2020 decennial P.L. 94-171 `P1_001N` place population tables. It joins by seven-digit state+place GEOID, **not names**, to avoid collisions between states. It distinguishes incorporated LSAD types from CDPs and marks unfamiliar LSAD types for review rather than guessing. The builder is deliberately offline, has no access to D1 or search API credits, and produces an immutable JSON file and coverage summary. It excludes DC and Puerto Rico from the **50-state index denominator**, but those markets should be separately considered before production planning.
+
+1. Obtain and unzip `2025_Gaz_place_national.zip` from the official Census 2025 Gazetteer portal.
+2. Obtain Census 2020 decennial P1 responses for `get=NAME,P1_001N&for=place:*&in=state:<two-digit-state-FIPS>`, one JSON response per state. The Census API may require your own API key; never commit it or embed it in URLs saved to logs. Save the 50 responses in one private `population-json-dir`.
+3. Run:
+   `node operations/findpitches-v2/scripts/build-us-place-index.mjs /path/to/2025_gaz_place_national.txt /path/to/population-json-dir /tmp/us-places-2025-geo-2020-pop.json`
+   The output file must not exist already. Review excluded regions and unfamiliar LSAD before treating the catalogue as complete.
+
+**Important:** 2025 geography and 2020 population are different vintages. Boundary/name changes can cause missing GEOIDs; these fail closed, requiring a documented reconciliation rather than arbitrary default population. The provisional `~348` places above 100k and `19k+` incorporated-place estimates are planning figures only. The actual tier counts must be derived from the imported, scoped Census data, with the vintages disclosed. Verified event venue locations must later be matched to GEOIDs with confidence handling and administrative-boundary verification; discovery query origin is not a venue location.
+
+Next PR: add a documented, separately reviewable gap-fill planner that consumes this index and **actual customer-visible** counts. No automatic 19k-place query sweep until yield and cost are measured.
