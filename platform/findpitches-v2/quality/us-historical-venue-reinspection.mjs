@@ -37,6 +37,7 @@ export function planHistoricalVenueReinspection(audit, historicalReviews, {
     const entry = {
       opportunity_id: id,
       region_acquired: String(row.region_code || ''),
+      current_candidate_revision: row.candidate_revision_last_checked || null,
       location_evidence_url: allowedExistingSource(row.location_evidence_url),
       canonical_url: allowedExistingSource(row.canonical_url),
       application_url: allowedExistingSource(row.application_url),
