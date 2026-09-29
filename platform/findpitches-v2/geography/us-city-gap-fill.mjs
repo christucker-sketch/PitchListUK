@@ -1,7 +1,6 @@
 // Offline, v2-only nationwide city discovery plan. This does NOT schedule
 // Serper, change Cloudflare or treat an unknown venue as zero coverage.
-const POPULATION_MIN=100000;
-const VALID_GEOID=/^\\d{7}$/;
+const VALID_GEOID=/^\d{7}$/;
 export function planUsCityGapFill(index, verifiedVenueRows=[],{
   maxSeeds=100,completeVenueSnapshot=false,includeCdps=false
 }={}) {
@@ -51,7 +50,7 @@ export function planUsCityGapFill(index, verifiedVenueRows=[],{
   }
   const seedQueue=seeds.map(p=>{
     const observed=verified.get(p.geoid)||0;
-    const match=p.name.replace(/\\s+(?:city|town|village|borough|municipality)$/i,'');
+    const match=p.name.replace(/\s+(?:city|town|village|borough|municipality)$/i,'');
     return {geoid:p.geoid,place:p.name,state:p.state,
       classification:p.classification,tier:p.tier,
       population_resolved:Boolean(p.population_resolved),
