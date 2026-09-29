@@ -14,7 +14,7 @@ function mockRequest({ statusCode=200, body='Venue: Riverside Showground', heade
         if(error){req.emit('error',error);return;}
         calls.at(-1).connectedAddress=address;
         calls.at(-1).connectedFamily=family;
-        const response=Readable.from([body]);
+        const response=Readable.from([Buffer.from(body)]);
         response.statusCode=statusCode;
         response.headers={'content-type':'text/html',...headers};
         callback(response);
