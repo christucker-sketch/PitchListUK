@@ -100,3 +100,17 @@ test('refetched pages return possible venue for human review, never automatic ve
  assert.equal(inspectRefetchedVenuePages([{url:'https://example.org/contact',body:'Office location: Company HQ'}]).status,'venue_not_proven');
  assert.throws(()=>inspectRefetchedVenuePages(Array.from({length:6},()=>({}))),/page_limit/);
 });
+
+test('recovery preview flags possible duplicate sources and old-year URLs for review',()=>{
+ const source='https://example.org/vendors/event-2022';
+ const inventory={snapshot_at:'2026-09-29T19:34:16Z',visible:[
+  {id:'a',canonical_url:source},
+  {id:'b',canonical_url:source+'#apply'},
+  {id:'c',canonical_url:'https://example.org/vendors/event-2026'}
+ ]};
+ const report=planUsVenueRecovery(inventory);
+ assert.equal(report.queue[0].review_flags[0].code,'stale_year_in_source_url');
+ assert.ok(report.queue[1].review_flags.some(f=>f.code==='possible_duplicate_source'&&f.other_opportunity_id==='a'));
+ assert.ok(report.queue[1].review_flags.some(f=>f.code==='stale_year_in_source_url'));
+ assert.equal(report.queue[2].review_flags.length,0);
+});
