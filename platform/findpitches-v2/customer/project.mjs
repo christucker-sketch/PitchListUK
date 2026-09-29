@@ -4,6 +4,7 @@ export function projectCustomerOpportunity(candidate = {}, enrichment = {}) {
   // Only event-location evidence from an event/application source is publishable.
   // Discovery geography and organiser addresses must never become event locations.
   const location = sourceBackedLocation(enrichment.location);
+  const geography = object(candidate.geography);
   const projected = Object.freeze({
     id: text(candidate.id ?? candidate.candidate_id),
     market: upper(candidate.market),
