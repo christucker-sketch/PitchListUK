@@ -9,13 +9,15 @@ const CDP_LSAD = new Set(['55','57','62']);
 
 export function parseGazetteerPlaces(tsv) {
   const lines = String(tsv).replace(/^\uFEFF/,'').trim().split(/\r?\n/);
-  const headers = lines.shift()?.split('\t').map(s=>s.trim()) || [];
+  const firstLine=lines.shift() || '';
+  const delimiter=firstLine.includes('|')?'|':'\t';
+  const headers = firstLine.split(delimiter).map(s=>s.trim());
   for (const field of ['USPS','GEOID','NAME','LSAD','INTPTLAT','INTPTLONG']) {
     if (!headers.includes(field)) throw new Error('census_gazetteer_missing_'+field);
   }
   const seen = new Set();
   return lines.filter(Boolean).map((line, i) => {
-    const values = line.split('\t');
+    const values = line.split(delimiter);
     const fields=Object.fromEntries(headers.map((header,j)=>[header,String(values[j]??'').trim()]));
     const geoid=fields.GEOID;
     if (!/^\d{7}$/.test(geoid)) throw new Error('census_gazetteer_invalid_geoid_line_'+(i+2));
