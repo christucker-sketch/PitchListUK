@@ -44,8 +44,8 @@ test('major-city threshold never includes CDPs or unknown legal status',()=>{
 });
 
 test('DC and Puerto Rico entries do not inflate 50-state coverage denominators',()=>{
- const extra='\\nDC\\t1100001\\tWashington city\\t25\\t+38.9\\t-77.0'+
-   '\\nPR\\t7200001\\tExample municipio\\t37\\t+18.4\\t-66.1';
+ const extra='\nDC\t1100001\tWashington city\t25\t+38.9\t-77.0'+
+   '\nPR\t7200001\tExample municipio\t37\t+18.4\t-66.1';
  const index=buildUsPlaceIndex(gaz+extra,pop);
  assert.equal(index.scope.excluded_outside_50_states,2);
  assert.equal(index.scope.major_cities,2);
