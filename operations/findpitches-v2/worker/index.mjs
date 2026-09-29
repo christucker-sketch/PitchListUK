@@ -373,8 +373,9 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
       market: job.market,
       region_code: job.region_code,
       location: job.location,
-      query_limit: QUERY_LIMIT,
-      query_rotation: Number(job.attempts || 1) * QUERY_LIMIT
+      query_limit: Number(job.query_group)===1 && job.market==='US' ? 4 : QUERY_LIMIT,
+      discovery_profile: Number(job.query_group)===1 && job.market==='US' ? 'us_official_first' : 'baseline',
+      query_rotation: Number(job.attempts || 1) * (Number(job.query_group)===1 && job.market==='US' ? 4 : QUERY_LIMIT)
     }, {
       searchProvider
     });
