@@ -71,6 +71,7 @@ export async function getUsCustomerVisibleAuditInventory(db, {
   if (!(now instanceof Date) || !Number.isFinite(now.getTime())) throw new Error('findpitches_visible_snapshot_invalid_now');
   if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > 250) throw new Error('findpitches_visible_snapshot_bad_page_size');
   const sql = `SELECT o.*, c.source_url, c.geography_json, c.evidence_json,
+      c.last_checked AS candidate_revision_last_checked,
       (SELECT e.enrichment_json FROM candidate_enrichment e
         WHERE e.candidate_id=o.id AND e.source_last_checked >= c.last_checked
         ORDER BY e.source_last_checked DESC LIMIT 1) AS enrichment_json,
