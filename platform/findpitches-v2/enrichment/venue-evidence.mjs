@@ -4,7 +4,7 @@
 // Use the same predicate in extraction AND the customer projection gate.
 const NEGATIVE_CONTEXT = /\b(?:registered|head|corporate|business|contact|mailing|postal|billing|organiser|organizer|vendor|exhibitor)\s+(?:office|address|location|headquarters|contact)|\b(?:our\s+office|our\s+address|mail\s+to|contact\s+us|registered\s+at|terms\s+and\s+conditions)\b/i;
 const NON_VENUE = /\b(?:in\s+real[\s-]*time|booth\s+(?:placement|position|allocation|location|number)|stall\s+(?:placement|allocation|number)|your\s+(?:booth|stall)\s+(?:location|position)|subject\s+to\s+change|applicable\s+(?:regulation|law)|privacy\s+policy|cookie\s+policy|terms\s+of\s+service|where\s+applicable|location\s+services|your\s+current\s+location|click\s+here|learn\s+more|download\s+(?:the\s+)?app)\b/i;
-const PLACEHOLDER = /^(?:tba|tbc|tbd|unknown|n\/a|various|multiple|online|the\s+event|the\s+venue|the\s+location|here|there|in\s+real[\s-]*time)$/i;
+const PLACEHOLDER = /^(?:headquarters|office|head\s+office|contact\s+address|tba|tbc|tbd|unknown|n\/a|various|multiple|online|the\s+event|the\s+venue|the\s+location|here|there|in\s+real[\s-]*time)$/i;
 // The first group is the value after a label that specifically denotes the event site.
 // Generic "Location:" requires separate event context on the same bounded line.
 const VENUE_LABEL = /\b(?:event\s+venue|event\s+location|market\s+venue|festival\s+venue|show\s+venue|fair\s+venue|venue|held\s+at|taking\s+place\s+at|takes\s+place\s+at)\s*(?::|-|\s)\s*(.{3,160})/i;
