@@ -19,6 +19,7 @@ const NAMED_PLACE_START = /^(?:[A-Z][A-Za-z0-9'’.-]*|[0-9]+\s+[A-Za-z])/;
 // An article-led held-at venue needs an actual physical place descriptor; a
 // truncated county/region label is not enough to prove the event's venue.
 const ARTICLE_LED_PHYSICAL_PLACE = /^the\s+[A-Z][\w'’.-]*(?:\s+[\w'’.-]+){0,24}\s+(?:fairgrounds?|showgrounds?|parks?|squares?|centers?|centres?|halls?|arenas?|stadiums?|pavilions?|gardens?|grounds?|plazas?|theatres?|theaters?)\b/i;
+const INCOMPLETE_ENDING = /(?:&|\b(?:and|or|of|the|at|in|with|county))\s*$/i;
 const TRUNCATED_OR_POLICY = /(?:\b(?:policy|policies|information|restriction|regulations|operator|operators)\b|\b(?:or\s+the|and\s+the|the\s+|county\s*)$)/i;
 
 export function assessVenueEvidence(value, excerpt) {
@@ -28,7 +29,7 @@ export function assessVenueEvidence(value, excerpt) {
       NON_VENUE.test(name) || NEGATIVE_CONTEXT.test(name) ||
       ABSTRACT_VALUE.test(name) ||
       !(NAMED_PLACE_START.test(name) || ARTICLE_LED_PHYSICAL_PLACE.test(name)) ||
-      TRUNCATED_OR_POLICY.test(name)) {
+      TRUNCATED_OR_POLICY.test(name) || INCOMPLETE_ENDING.test(name)) {
     return {accepted:false,reason:'invalid_venue_value'};
   }
   if (!statement || statement.length > 500 || !statement.toLowerCase().includes(name.toLowerCase())) {
