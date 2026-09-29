@@ -40,9 +40,9 @@ function scan(docs, patterns) {
         }
         const value = clean(match[1]);
         if (!value) continue;
-        if (patterns === LOCATION_PATTERNS && !assessVenueEvidence(value, match[0]).accepted) continue;
+        if (patterns === LOCATION_PATTERNS && !assessVenueEvidence(value, bounded).accepted) continue;
         // Source and exact matched statement, not a guessed region/candidate title.
-        return {value, evidence:[{source:doc.url,excerpt:match[0].slice(0,220)}],confidence:0.88};
+        return {value, evidence:[{source:doc.url,excerpt:(patterns === LOCATION_PATTERNS ? bounded : match[0]).slice(0,220)}],confidence:0.88};
       }
     }
   }
