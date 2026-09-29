@@ -11,6 +11,7 @@ test('upsert writes only the customer projection table',async()=>{
  await upsertCustomerOpportunity(db,{id:'1',market:'GB',region_code:'GB-ENG-KENT',title:'Food Fair',canonical_url:'https://x.test',application_url:'https://x.test/apply',offerings:[{label:'Jerk chicken'}],last_checked:'2026-09-26T00:00:00Z'},{search_text:'Food Fair Jerk chicken'});
  assert.match(db.calls[0].sql,/customer_opportunities/);
  assert.doesNotMatch(db.calls[0].sql,/INSERT INTO candidates/);
+ assert.match(db.calls[0].sql,/location_evidence_url/);
 });
 test('search combines customer market region and adaptive terms',async()=>{
  const db=dbSpy();
@@ -19,4 +20,5 @@ test('search combines customer market region and adaptive terms',async()=>{
  assert.match(db.calls[0].sql,/region_code = \?/);
  assert.match(db.calls[0].sql,/LOWER\(search_text\) LIKE \?/);
  assert.ok(db.calls[0].args.includes('%jerk chicken%'));
+ assert.match(db.calls[0].sql,/location_evidence_url/);
 });
