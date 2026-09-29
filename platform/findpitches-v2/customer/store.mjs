@@ -1,15 +1,15 @@
 // Storage adapter for customer-ready projections.
 // Deliberately targets a separate customer_opportunities table rather than raw candidates.
 
-export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocument = {}) {
+export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocument = {}, { locationEvidenceUrl = null } = {}) {
   requireDb(db);
   if (!opportunity.id) throw new Error('findpitches_customer_store_id_missing');
 
   await db.prepare(`INSERT INTO customer_opportunities (
     id, market, region_code, title, organiser, location, coordinates_json,
     event_start, event_end, application_deadline, canonical_url, application_url,
-    offerings_json, recurring, description, search_text, last_checked, updated_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    offerings_json, recurring, description, search_text, last_checked, updated_at, location_evidence_url
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   ON CONFLICT(id) DO UPDATE SET
     market=excluded.market, region_code=excluded.region_code, title=excluded.title,
     organiser=excluded.organiser, location=excluded.location, coordinates_json=excluded.coordinates_json,
@@ -17,7 +17,8 @@ export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocu
     application_deadline=excluded.application_deadline, canonical_url=excluded.canonical_url,
     application_url=excluded.application_url, offerings_json=excluded.offerings_json,
     recurring=excluded.recurring, description=excluded.description, search_text=excluded.search_text,
-    last_checked=excluded.last_checked, updated_at=excluded.updated_at`)
+    last_checked=excluded.last_checked, updated_at=excluded.updated_at,
+    location_evidence_url=excluded.location_evidence_url`)
   .bind(
     opportunity.id, opportunity.market, opportunity.region_code, opportunity.title,
     opportunity.organiser, opportunity.location, json(opportunity.coordinates),
@@ -25,19 +26,20 @@ export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocu
     opportunity.canonical_url, opportunity.application_url, json(opportunity.offerings),
     opportunity.recurring == null ? null : opportunity.recurring ? 1 : 0,
     opportunity.description, searchDocument.search_text || '', opportunity.last_checked,
-    new Date().toISOString()
+    new Date().toISOString(), locationEvidenceUrl
   ).run();
   return opportunity.id;
 }
 
 export async function getCustomerOpportunity(db, id) {
   requireDb(db);
-  return db.prepare('SELECT * FROM customer_opportunities WHERE id = ?').bind(String(id)).first();
+  return db.prepare("SELECT * FROM customer_opportunities WHERE id = ? AND NULLIF(TRIM(location),'') IS NOT NULL AND NULLIF(TRIM(location_evidence_url),'') IS NOT NULL").bind(String(id)).first();
 }
 
 export async function searchCustomerOpportunities(db, query = {}) {
   requireDb(db);
-  const where=[], args=[];
+  // This is the read-time safety gate for legacy rows promoted before location evidence existed.
+  const where=["NULLIF(TRIM(location),'') IS NOT NULL", "NULLIF(TRIM(location_evidence_url),'') IS NOT NULL"], args=[];
   if (query.market) { where.push('market = ?'); args.push(query.market); }
   if (query.region_code) { where.push('region_code = ?'); args.push(query.region_code); }
   for (const term of [query.q, query.offering, query.cuisine].filter(Boolean)) {

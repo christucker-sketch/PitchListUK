@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { assessCustomerReadiness, CUSTOMER_READY_ENRICHMENT_FIELDS } from '../../platform/findpitches-v2/customer/readiness.mjs';
 
-const base={id:'1',market:'GB',title:'Festival',region_code:'GB-ENG-KENT',canonical_url:'https://example.test',application_url:'https://example.test/apply',last_checked:'2026-09-26T00:00:00Z'};
+const base={id:'1',market:'GB',title:'Festival',region_code:'GB-ENG-KENT',location:'Maidstone Market Square',canonical_url:'https://example.test',application_url:'https://example.test/apply',last_checked:'2026-09-26T00:00:00Z'};
 
 test('readiness names adaptive offerings, not legacy sells',()=>{
  assert.ok(CUSTOMER_READY_ENRICHMENT_FIELDS.includes('offerings'));

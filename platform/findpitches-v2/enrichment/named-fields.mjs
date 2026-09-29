@@ -32,6 +32,11 @@ function scan(docs, patterns) {
       for (const pattern of patterns) {
         const match = pattern.exec(bounded);
         if (!match) continue;
+        // An organiser's contact/registered office is not the event venue.
+        if (patterns === LOCATION_PATTERNS) {
+          const prefix = bounded.slice(Math.max(0, match.index - 35), match.index);
+          if (/(?:office|headquarters|registered|postal|mailing|contact|business)\s+$/i.test(prefix)) continue;
+        }
         const value = clean(match[1]);
         if (!value) continue;
         // Source and exact matched statement, not a guessed region/candidate title.

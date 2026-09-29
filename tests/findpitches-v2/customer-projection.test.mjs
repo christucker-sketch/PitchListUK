@@ -16,7 +16,9 @@ test('projects classifier data without inventing enrichment',()=>{
  assert.equal(opportunity.recurring,null);
  assert.equal(opportunity.offerings,null);
  assert.equal(opportunity.coordinates,null);
- assert.equal(readiness.ready,true);
+ assert.equal(readiness.ready,false);
+ assert.equal(opportunity.location,null);
+ assert.ok(readiness.missing.includes('location'));
 });
 
 test('enrichment overlays customer fields without mutating candidate',()=>{
@@ -32,4 +34,27 @@ test('projection cannot hide malformed enrichment coordinates',()=>{
  const {readiness}=projectCustomerOpportunity(candidate,{coordinates:{lat:999,lng:0}});
  assert.equal(readiness.ready,false);
  assert.ok(readiness.invalid.includes('coordinates'));
+});
+
+test('source-backed event venue is publishable, discovery region alone is not',()=>{
+ const source={location:{value:'Maidstone Market Square',evidence:[{source:'https://example.test/vendor',excerpt:'Event venue: Maidstone Market Square'}],confidence:.88}};
+ const result=projectCustomerOpportunity(candidate,source);
+ assert.equal(result.readiness.ready,true);
+ assert.equal(result.opportunity.location,'Maidstone Market Square');
+ assert.equal(result.provenance.location.evidence[0].source,'https://example.test/vendor');
+});
+
+test('unsourced or mismatched location evidence cannot be promoted',()=>{
+ for(const location of [
+  'Maidstone Market Square',
+  {value:'Maidstone Market Square',evidence:[]},
+  {value:'Maidstone Market Square',evidence:[{source:'https://example.test',excerpt:'Our headquarters are in Maidstone'}]},
+  {value:'Maidstone Market Square',evidence:[{source:'javascript:alert(1)',excerpt:'Venue: Maidstone Market Square'}]},
+  {value:'TBC',evidence:[{source:'https://example.test',excerpt:'Venue: TBC'}]}
+ ]) {
+  const result=projectCustomerOpportunity(candidate,{location});
+  assert.equal(result.readiness.ready,false);
+  assert.equal(result.opportunity.location,null);
+  assert.ok(result.readiness.missing.includes('location'));
+ }
 });

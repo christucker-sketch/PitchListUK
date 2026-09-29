@@ -5,7 +5,7 @@ import { assessCustomerReadiness } from '../../platform/findpitches-v2/customer/
 const base = {
   id:'fpv2_test', market:'GB', title:'Example Market', region_code:'GB-ENG-KENT',
   canonical_url:'https://example.test/event', application_url:'https://example.test/apply',
-  last_checked:'2026-09-26T12:00:00Z'
+  location:'Maidstone Market Square', last_checked:'2026-09-26T12:00:00Z'
 };
 const now = new Date('2026-09-27T08:00:00Z');
 
@@ -22,7 +22,7 @@ test('validated-like record without application provenance is not customer-ready
   assert.ok(r.missing.includes('application_url'));
 });
 
-test('unknown enrichment remains unknown rather than being invented',()=>{
+test('unknown optional enrichment remains unknown rather than being invented',()=>{
   const r=assessCustomerReadiness({...base,sells:null,recurring:null,coordinates:null},{now});
   assert.equal(r.ready,true);
   assert.deepEqual(r.invalid,[]);
@@ -66,4 +66,10 @@ test('missing optional dates and enrichment do not block a genuine actionable op
   const r=assessCustomerReadiness({...base,event_start:null,event_end:null,application_deadline:null,organiser:null,description:null},{now});
   assert.equal(r.ready,true);
   assert.deepEqual(r.blocked,[]);
+});
+
+test('location is mandatory even when the region is known',()=>{
+  const r=assessCustomerReadiness({...base,location:null},{now});
+  assert.equal(r.ready,false);
+  assert.ok(r.missing.includes('location'));
 });

@@ -1,14 +1,14 @@
 // Customer-facing projection contract for FindPitches v2.
 // This is deliberately separate from acquisition/classifier candidate state.
 
-export const CUSTOMER_READY_SCHEMA_VERSION = '2026-09-27.1';
+export const CUSTOMER_READY_SCHEMA_VERSION = '2026-09-29.location-v1';
 
 export const CUSTOMER_READY_REQUIRED_FIELDS = Object.freeze([
-  'id','market','title','region_code','canonical_url','application_url','last_checked'
+  'id','market','title','region_code','location','canonical_url','application_url','last_checked'
 ]);
 
 export const CUSTOMER_READY_ENRICHMENT_FIELDS = Object.freeze([
-  'organiser','location','coordinates','event_start','event_end','application_deadline',
+  'organiser','coordinates','event_start','event_end','application_deadline',
   'offerings','recurring','description'
 ]);
 

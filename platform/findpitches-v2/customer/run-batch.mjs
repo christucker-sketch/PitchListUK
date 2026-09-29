@@ -11,7 +11,7 @@ export async function runCustomerPromotionBatch(db, { limit = 12 } = {}) {
        LEFT JOIN customer_opportunities o ON o.id = c.id
        LEFT JOIN customer_promotion_disposition d ON d.candidate_id = c.id AND d.source_last_checked = c.last_checked AND d.enrichment_last_checked = e.source_last_checked
       WHERE c.status = 'validated'
-        AND (o.id IS NULL OR o.last_checked < c.last_checked)
+        AND (o.id IS NULL OR o.last_checked < c.last_checked OR o.location_evidence_url IS NULL)
         AND d.candidate_id IS NULL
       ORDER BY c.last_checked ASC, c.id ASC
       LIMIT ?`

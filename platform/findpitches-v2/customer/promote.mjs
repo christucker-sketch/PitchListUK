@@ -19,7 +19,8 @@ export async function promoteCustomerOpportunity(db, candidate = {}, enrichmentI
   }
 
   const searchDocument = buildCustomerSearchDocument(projected.opportunity);
-  await upsertCustomerOpportunity(db, projected.opportunity, searchDocument);
+  const locationEvidenceUrl = projected.provenance.location?.evidence?.[0]?.source || null;
+  await upsertCustomerOpportunity(db, projected.opportunity, searchDocument, { locationEvidenceUrl });
 
   return Object.freeze({
     promoted: true,
