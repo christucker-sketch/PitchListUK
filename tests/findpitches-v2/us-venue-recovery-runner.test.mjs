@@ -54,3 +54,18 @@ test('batch bounds, invalid IDs and fetch provider are checked before work',asyn
   fetchProvider:{fetch(){}}
  }),/duplicate/);
 });
+
+test('missing known sources and all failed fetches remain reviewable, never become negative venue findings',async()=>{
+ const queue=[
+  {opportunity_id:'no-safe-url',canonical_url:'http://127.0.0.1/private'},
+  {opportunity_id:'network-failed',canonical_url:'https://countyfair.org/vendors'}
+ ];
+ const result=await runUsVenueRecoveryPreview(queue,{fetchProvider:{async fetch(){throw new Error('unavailable');}}});
+ assert.equal(result.attempted,2);
+ assert.equal(result.possible_venue,0);
+ assert.equal(result.no_safe_known_source_records,1);
+ assert.equal(result.all_sources_failed_records,1);
+ assert.equal(result.outcomes[0].disposition,'no_safe_known_sources');
+ assert.equal(result.outcomes[1].disposition,'all_known_source_fetches_failed');
+ assert.equal(result.outcomes.every(x=>x.needs_human_review && x.verified_venue_geoid===null),true);
+});
