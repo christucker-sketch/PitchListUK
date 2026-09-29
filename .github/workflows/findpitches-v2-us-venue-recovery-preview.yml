@@ -1,0 +1,51 @@
+name: FindPitches v2 US Venue Recovery First Preview
+
+"on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-us-venue-recovery-preview.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-us-venue-recovery-preview
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    name: Read-only US venue recovery first batch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Check out reviewed recovery branch
+        uses: actions/checkout@v4
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install repository dependencies
+        run: npm ci --ignore-scripts
+      - name: Assert v2 shadow publication remains disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .service == "findpitches-v2-shadow" and .mode == "shadow" and .publication_enabled == false and .database == "isolated"' <<< "$body" >/dev/null
+      - name: Run first 12 read-only known-source reviews
+        run: node operations/findpitches-v2/run-us-venue-recovery-preview.mjs
+      - name: Save private operator summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-venue-recovery-first-preview
+          path: venue-recovery-preview-private.json
+          retention-days: 3
+          if-no-files-found: ignore
