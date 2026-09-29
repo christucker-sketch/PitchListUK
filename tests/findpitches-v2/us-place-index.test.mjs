@@ -15,7 +15,7 @@ const pop=[
 
 test('Census place index joins by state/place GEOID, not duplicated city name',()=>{
   const index=buildUsPlaceIndex(gaz,pop);
-  assert.deepEqual(index.scope,{states:3,excluded_outside_50_states:0,places:4,incorporated:2,cdps:1,unclassified:1,major_cities:2,population_resolved:4,population_unresolved:0,incorporated_population_unresolved:0});
+  assert.deepEqual(index.scope,{states:3,excluded_outside_50_states:0,places:4,incorporated:2,cdps:1,unclassified:1,major_cities:2,large_special_governments_to_review:0,population_resolved:4,population_unresolved:0,incorporated_population_unresolved:0});
   assert.equal(index.places.find(p=>p.geoid==='0612345').residents_2020,150000);
   assert.equal(index.places.find(p=>p.geoid==='3612345').residents_2020,230000);
   assert.equal(index.places.find(p=>p.geoid==='0667890').tier,'separate_review');
@@ -70,4 +70,14 @@ test('newly incorporated place with unknown population is retained but not class
   assert.equal(index.scope.major_cities,2);
   assert.equal(index.places.find(p=>p.geoid==='0618888').residents_2020,null);
   assert.equal(index.reconciliation.status,'population_vintage_mismatch_requires_review');
+});
+
+test('large consolidated government is discoverable but never counted as an incorporated major city',()=>{
+  const special='\nIN\t1836003\tIndianapolis city (balance)\t00\t+39.776664\t-86.145935';
+  const responses=[...pop,[['P1_001N','state','place'],['887642','18','36003']]];
+  const index=buildUsPlaceIndex(gaz+special,responses);
+  assert.equal(index.scope.major_cities,2);
+  assert.equal(index.scope.large_special_governments_to_review,1);
+  assert.equal(index.places.find(p=>p.geoid==='1836003').tier,'large_special_government_review');
+  assert.equal(index.places.find(p=>p.geoid==='1836003').classification,'review_lsad');
 });
