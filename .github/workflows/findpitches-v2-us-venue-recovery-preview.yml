@@ -7,6 +7,26 @@ name: FindPitches v2 US Venue Recovery Bounded Preview
     paths:
       - .github/workflows/findpitches-v2-us-venue-recovery-preview.yml
   workflow_dispatch:
+    inputs:
+      recovery_class:
+        description: 'Private source reinspection cohort (historical = missing evidence in previously verified venues)'
+        type: choice
+        required: true
+        default: historical
+        options:
+          - historical
+          - weak
+          - strong
+      recovery_offset:
+        description: 'Zero-based cohort offset in multiples of 12 (max 240)'
+        type: choice
+        required: true
+        default: '0'
+        options:
+          - '0'
+          - '12'
+          - '24'
+          - '36'
 
 permissions:
   contents: read
@@ -24,8 +44,8 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      RECOVERY_OFFSET: '0'
-      RECOVERY_CLASS: 'strong'
+      RECOVERY_OFFSET: ${{ inputs.recovery_offset || '0' }}
+      RECOVERY_CLASS: ${{ inputs.recovery_class || 'strong' }}
     steps:
       - name: Check out reviewed recovery branch
         uses: actions/checkout@v4
@@ -38,20 +58,20 @@ jobs:
       - name: Check preview script syntax before using credentials
         run: node --check operations/findpitches-v2/run-us-venue-recovery-preview.mjs
       - name: Test bounded recovery source handling
-        run: node --test tests/findpitches-v2/us-venue-recovery-runner.test.mjs tests/findpitches-v2/public-source-dns.test.mjs
+        run: node --test tests/findpitches-v2/us-venue-recovery-runner.test.mjs tests/findpitches-v2/us-historical-venue-reinspection.test.mjs tests/findpitches-v2/public-source-dns.test.mjs
       - name: Assert v2 shadow publication remains disabled
         shell: bash
         run: |
           set -euo pipefail
           body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
           jq -e '.ok == true and .service == "findpitches-v2-shadow" and .mode == "shadow" and .publication_enabled == false and .database == "isolated"' <<< "$body" >/dev/null
-      - name: Reinspect newly narrowed strong venue-candidate cohort
+      - name: Reinspect selected private venue evidence cohort
         run: node operations/findpitches-v2/run-us-venue-recovery-preview.mjs
       - name: Save private operator summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: us-venue-recovery-strict-strong-cohort
+          name: us-venue-recovery-private-cohort
           path: venue-recovery-preview-private.json
           retention-days: 3
           if-no-files-found: ignore
