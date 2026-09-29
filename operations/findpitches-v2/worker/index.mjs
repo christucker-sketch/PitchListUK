@@ -99,7 +99,7 @@ async function status(env) {
     count(env, 'scheduler_jobs'),
     count(env, 'publication_queue'),
     count(env, 'classification_queue'),
-    count(env, 'customer_opportunities'),
+    countVerifiedCustomerLocations(env),
     env.FINDPITCHES_DB.prepare(
       `SELECT run_id, market, region_code, status, query_count, search_results,
               unique_candidates, validated, duplicates, held, rejected,
@@ -147,8 +147,12 @@ async function status(env) {
     env.FINDPITCHES_DB.prepare(
       `SELECT
          COUNT(*) AS validated,
-         SUM(CASE WHEN o.id IS NOT NULL AND o.last_checked >= c.last_checked THEN 1 ELSE 0 END) AS current_ready,
-         SUM(CASE WHEN o.id IS NULL OR o.last_checked < c.last_checked THEN 1 ELSE 0 END) AS pending
+         SUM(CASE WHEN o.id IS NOT NULL AND o.last_checked >= c.last_checked
+                    AND NULLIF(TRIM(o.location),'') IS NOT NULL AND NULLIF(TRIM(o.location_evidence_url),'') IS NOT NULL
+                  THEN 1 ELSE 0 END) AS current_ready,
+         SUM(CASE WHEN o.id IS NULL OR o.last_checked < c.last_checked
+                    OR NULLIF(TRIM(o.location),'') IS NULL OR NULLIF(TRIM(o.location_evidence_url),'') IS NULL
+                  THEN 1 ELSE 0 END) AS pending
        FROM candidates c
        LEFT JOIN customer_opportunities o ON o.id = c.id
        WHERE c.status = 'validated'`
@@ -196,6 +200,7 @@ async function status(env) {
       enriched: Number(enrichedStored?.count || 0)
     },
     candidate_statuses: Array.isArray(candidateStates?.results) ? candidateStates.results : [],
+    customer_location_quality: await getCustomerLocationQuality(env),
     customer_promotion: {
       validated: Number(customerPromotionStates?.validated || 0),
       current_ready: Number(customerPromotionStates?.current_ready || 0),
@@ -248,6 +253,7 @@ async function statusText(env) {
     `scheduler_expired: ${Number(data.scheduler?.expired || 0)}`,
     `publication_queue: ${Number(data.counts?.publication_queue || 0)}`,
     `customer_ready: ${Number(data.counts?.customer_ready || 0)}`,
+    `customer_location_quality: ${JSON.stringify(data.customer_location_quality || null)}`,
     `customer_promotion_validated: ${Number(data.customer_promotion?.validated || 0)}`,
     `customer_promotion_current_ready: ${Number(data.customer_promotion?.current_ready || 0)}`,
     `customer_promotion_pending: ${Number(data.customer_promotion?.pending || 0)}`,
@@ -533,4 +539,27 @@ export async function enqueueStaleClassifications(db, { now = new Date(), limit 
   }
 
   return Object.freeze({ ruleset: CLASSIFIER_RULESET_VERSION, sweep_started_at: sweep.value, enqueued: candidates.length, complete: candidates.length === 0 });
+}
+
+async function countVerifiedCustomerLocations(env) {
+  const row=await env.FINDPITCHES_DB.prepare(`SELECT COUNT(*) AS count FROM customer_opportunities
+    WHERE NULLIF(TRIM(location),'') IS NOT NULL AND NULLIF(TRIM(location_evidence_url),'') IS NOT NULL`).first();
+  return Number(row?.count || 0);
+}
+
+async function getCustomerLocationQuality(env) {
+  const row=await env.FINDPITCHES_DB.prepare(`SELECT COUNT(*) AS projected,
+    SUM(CASE WHEN NULLIF(TRIM(location),'') IS NOT NULL THEN 1 ELSE 0 END) AS location_present,
+    SUM(CASE WHEN NULLIF(TRIM(location),'') IS NOT NULL AND NULLIF(TRIM(location_evidence_url),'') IS NOT NULL THEN 1 ELSE 0 END) AS source_backed_location,
+    SUM(CASE WHEN event_start IS NOT NULL THEN 1 ELSE 0 END) AS event_dates,
+    SUM(CASE WHEN application_deadline IS NOT NULL THEN 1 ELSE 0 END) AS application_deadlines
+    FROM customer_opportunities`).first();
+  return Object.freeze({
+    projected:Number(row?.projected || 0),
+    location_present:Number(row?.location_present || 0),
+    source_backed_location:Number(row?.source_backed_location || 0),
+    missing_source_backed_location:Number(row?.projected || 0)-Number(row?.source_backed_location || 0),
+    event_dates:Number(row?.event_dates || 0),
+    application_deadlines:Number(row?.application_deadlines || 0)
+  });
 }
