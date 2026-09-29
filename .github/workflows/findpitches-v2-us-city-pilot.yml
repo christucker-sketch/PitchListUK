@@ -1,0 +1,77 @@
+name: FindPitches v2 US city discovery one-shot pilot
+
+"on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-us-city-pilot.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-us-city-pilot-one-shot
+  cancel-in-progress: false
+
+jobs:
+  city_pilot:
+    name: Test, deploy isolated v2 only, seed eight city searches
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CITY_PILOT_COMMIT: "true"
+    steps:
+      - name: Checkout exact pilot revision
+        uses: actions/checkout@v4
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install repository dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run full v2 regression suite and check operator script
+        run: |
+          node --test tests/findpitches-v2/*.test.mjs
+          node --check operations/findpitches-v2/seed-us-city-pilot.mjs
+      - name: Dry-run dedicated v2 worker compilation
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/findpitches-v2/wrangler.jsonc
+      - name: Confirm existing isolated shadow publication is off
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .service == "findpitches-v2-shadow" and
+            .mode == "shadow" and .publication_enabled == false and
+            .database == "isolated" and .search_configured == true' <<< "$body" >/dev/null
+      - name: Deploy only FindPitches v2 shadow worker with official-first mode
+        run: npx --yes wrangler@4.127.1 deploy --config operations/findpitches-v2/wrangler.jsonc
+      - name: Confirm official-first worker and publication safety
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=false
+          for attempt in $(seq 1 12); do
+            body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health || true)"
+            if jq -e '.ok == true and .service == "findpitches-v2-shadow" and
+              .mode == "shadow" and .database == "isolated" and
+              .publication_enabled == false and .search_configured == true and
+              .us_city_discovery_profile == "official_first_v1"' <<< "$body" >/dev/null 2>&1; then
+              ok=true
+              break
+            fi
+            sleep 3
+          done
+          [[ "$ok" == "true" ]] || { echo "v2 postdeploy health assertion failed" >&2; exit 1; }
+      - name: Seed eight staggered US city jobs into isolated v2 only
+        run: node operations/findpitches-v2/seed-us-city-pilot.mjs
+      - name: Verify v2 publication is still off
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .publication_enabled == false and
+            .database == "isolated" and .us_city_discovery_profile == "official_first_v1"' <<< "$body" >/dev/null
