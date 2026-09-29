@@ -15,7 +15,7 @@ const HELD_AT = /\b(?:held\s+at|taking\s+place\s+at|takes\s+place\s+at)\s+(.{3,1
 const GENERIC_LOCATION = /\blocation\s*[:\-]\s*(.{3,160})/i;
 const EVENT_CONTEXT = /\b(?:festival|fair|market|event|show|concert|held|taking\s+place|takes\s+place)\b/i;
 const ABSTRACT_VALUE = /^(?:&|overnight\b|restriction\b|is\b|are\b|may\b|will\b|availability\b|rentals?\b|tour\b|map\b|noon\b|the\s+venue\b|the\s+event\b|hours\b)/i;
-const NAMED_PLACE_START = /^(?:[A-Z][A-Za-z0-9'’.-]*|the\s+[A-Z]|[0-9]+\s+[A-Za-z])/;
+const NAMED_PLACE_START = /^(?:[A-Z][A-Za-z0-9'’.-]*|[0-9]+\s+[A-Za-z])/;
 
 export function assessVenueEvidence(value, excerpt) {
   const name=String(value ?? '').replace(/\s+/g,' ').trim();
