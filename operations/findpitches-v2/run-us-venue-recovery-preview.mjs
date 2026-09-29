@@ -6,6 +6,7 @@ import { classifyVenueEvidence } from '../../platform/findpitches-v2/enrichment/
 import { assertPublicDns } from './public-source-dns.mjs';
 import { getUsCustomerVisibleAuditInventory } from '../../platform/findpitches-v2/quality/us-customer-visible-snapshot.mjs';
 import { planUsVenueRecovery } from '../../platform/findpitches-v2/quality/us-venue-recovery.mjs';
+import { planHistoricalVenueReinspection } from '../../platform/findpitches-v2/quality/us-historical-venue-reinspection.mjs';
 import { runUsVenueRecoveryPreview, allowedExistingSource } from '../../platform/findpitches-v2/quality/us-venue-recovery-runner.mjs';
 import { createHttpFetchProvider } from '../../platform/findpitches-v2/providers/fetch/http.mjs';
 
@@ -18,7 +19,7 @@ const now=new Date();
 const MAX_TOTAL_VISIBLE=500;
 const BATCH_LIMIT=12;
 const BATCH_CLASS=String(process.env.RECOVERY_CLASS||'weak');
-if(!['weak','strong'].includes(BATCH_CLASS)) throw new Error('invalid_recovery_class');
+if(!['weak','strong','historical'].includes(BATCH_CLASS)) throw new Error('invalid_recovery_class');
 const BATCH_OFFSET=Number(process.env.RECOVERY_OFFSET||0);
 if(!Number.isInteger(BATCH_OFFSET)||BATCH_OFFSET<0||BATCH_OFFSET>240||BATCH_OFFSET%12!==0) throw new Error('invalid_recovery_offset');
 let readQueries=0;
@@ -51,11 +52,20 @@ const historicOverlap={historical_review_ids:historicalIds.size,
   strict_stored_evidence_pass:currentlyVisibleHistorical.filter(strictStoredVenue).length,
   strict_stored_evidence_fail_or_absent:currentlyVisibleHistorical.filter(x=>!strictStoredVenue(x)).length,
   revision_match:'not_established_historic_manifest_omits_candidate_revision'};
+const historicReinspection=planHistoricalVenueReinspection(audit,historicalReviews,{offset:BATCH_OFFSET,limit:BATCH_LIMIT});
 const desired=BATCH_CLASS==='strong'?'stored_explicit_venue_candidate':'needs_source_reinspection';
-const items=preview.queue.filter(x=>x.status===desired).slice(BATCH_OFFSET,BATCH_OFFSET+BATCH_LIMIT);
+const items=BATCH_CLASS==='historical' ? historicReinspection.queue :
+  preview.queue.filter(x=>x.status===desired).slice(BATCH_OFFSET,BATCH_OFFSET+BATCH_LIMIT);
 const publicSummary={
   snapshot_at:audit.snapshot_at, visible: audit.visible.length,
   historic_manual_review_overlap:historicOverlap,
+  historical_reinspection_summary: {
+    current_visible_historical:historicReinspection.current_visible_historical,
+    missing_from_current_visible:historicReinspection.missing_from_current_visible,
+    strict_stored_pass:historicReinspection.strict_stored_pass,
+    needs_source_reinspection:historicReinspection.needs_source_reinspection,
+    revision_status:'unverified_historic_manifest_has_no_revision_stamps'
+  },
   readiness_rejected:audit.readiness_rejected.length,
   all_visible_preliminary_text_classification: {
     stored_explicit_venue_candidate:preview.stored_evidence_strong,
