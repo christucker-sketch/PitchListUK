@@ -98,7 +98,8 @@ console.log('Private US venue recovery preview: '+JSON.stringify({
 }));
 if(process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY,
   '## FindPitches v2 private venue recovery preview\n\n'+
-  '- Snapshot: '+audit.snapshot_at+'\n- US code-visible: '+audit.visible.length+\n  '\n- Batch offset: '+BATCH_OFFSET+
+  '- Snapshot: '+audit.snapshot_at+'\n- US code-visible: '+audit.visible.length+
+  '\n- Batch offset: '+BATCH_OFFSET+
   '\n- Batch refetched: '+outcome.attempted+'\n- Possible venues needing manual review: '+outcome.possible_venue+
   '\n- No venue confirmed: '+outcome.without_venue+
   '\n- Rows with fetch failures: '+outcome.fetch_failed_records+
