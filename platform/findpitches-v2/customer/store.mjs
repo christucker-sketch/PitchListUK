@@ -9,7 +9,7 @@ export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocu
     id, market, region_code, title, organiser, location, coordinates_json,
     event_start, event_end, application_deadline, canonical_url, application_url,
     offerings_json, recurring, description, search_text, last_checked, updated_at, location_evidence_url
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   ON CONFLICT(id) DO UPDATE SET
     market=excluded.market, region_code=excluded.region_code, title=excluded.title,
     organiser=excluded.organiser, location=excluded.location, coordinates_json=excluded.coordinates_json,
