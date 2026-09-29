@@ -23,7 +23,7 @@ function fakeDb({prior=[],enrichment=25,classification=569}={}) {
         },
         async run() {
           calls.push({type:'run',sql,params:this.params});
-          return {meta:{changes:sql.startsWith('UPDATE enrichment_queue')?25:1}};
+          return {meta:{changes:sql.startsWith('UPDATE enrichment_queue')||sql.startsWith('UPDATE classification_queue')?25:1}};
         }
       };
       return statement;
@@ -55,4 +55,38 @@ test('native replay respects failure threshold',async()=>{
   const result=await runNativePdfRecovery(db,{now:new Date('2026-09-28T18:37:00Z')});
   assert.equal(result.status,'paused_failure_threshold');
   assert.ok(!db.calls.some(c=>c.sql.includes('INSERT OR IGNORE')));
+});
+
+test('seven dead rows with five deterministic PDF failures do not block classifier replay',async()=>{
+  const db=fakeDb({enrichment:0,classification:519,prior:[{
+    batch_id:'cf-class-2',lane:'classification',released_at:'2026-09-29T05:37:00Z',
+    total:25,dead:7,terminal_dead:5,active:0
+  }]});
+  const result=await runNativePdfRecovery(db,{now:new Date('2026-09-29T06:07:00Z')});
+  assert.equal(result.status,'released');
+  assert.equal(result.lane,'classification');
+  assert.equal(result.released,25);
+  const sql=db.calls.find(c=>c.type==='all').sql;
+  assert.match(sql,/terminal_dead/);
+  assert.match(sql,/findpitches_v2_fetch_too_large/);
+});
+
+test('four unexpected dead rows still pause recovery even with terminal failures',async()=>{
+  const db=fakeDb({prior:[{
+    batch_id:'previous',lane:'classification',released_at:'2026-09-29T05:37:00Z',
+    total:25,dead:9,terminal_dead:5,active:0
+  }]});
+  const result=await runNativePdfRecovery(db,{now:new Date('2026-09-29T06:07:00Z')});
+  assert.equal(result.status,'paused_failure_threshold');
+  assert.equal(result.unexpected_dead,4);
+  assert.ok(!db.calls.some(c=>c.sql.includes('INSERT OR IGNORE')));
+});
+
+test('unknown failures count towards threshold instead of being silently waived',async()=>{
+  const db=fakeDb({prior:[{
+    batch_id:'previous',lane:'enrichment',released_at:'2026-09-29T05:37:00Z',
+    total:25,dead:4,terminal_dead:0,active:0
+  }]});
+  const result=await runNativePdfRecovery(db,{now:new Date('2026-09-29T06:07:00Z')});
+  assert.equal(result.status,'paused_failure_threshold');
 });
