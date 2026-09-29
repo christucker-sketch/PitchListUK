@@ -7,15 +7,22 @@ const NON_VENUE = /\b(?:in\s+real[\s-]*time|booth\s+(?:placement|position|alloca
 const PLACEHOLDER = /^(?:headquarters|office|head\s+office|contact\s+address|tba|tbc|tbd|unknown|n\/a|various|multiple|online|the\s+event|the\s+venue|the\s+location|here|there|in\s+real[\s-]*time)$/i;
 // The first group is the value after a label that specifically denotes the event site.
 // Generic "Location:" requires separate event context on the same bounded line.
-const VENUE_LABEL = /\b(?:event\s+venue|event\s+location|market\s+venue|festival\s+venue|show\s+venue|fair\s+venue|venue|held\s+at|taking\s+place\s+at|takes\s+place\s+at)\s*(?::|-|\s)\s*(.{3,160})/i;
+// A bare noun "venue" in prose (venue restriction, venue tour, venue map,
+// venue overnight) is not a location label. Require a real label delimiter,
+// or an explicit "held at" statement tied to the event.
+const VENUE_LABEL = /\b(?:event\s+venue|event\s+location|market\s+venue|festival\s+venue|show\s+venue|fair\s+venue|venue)\s*[:\-]\s*(.{3,160})/i;
+const HELD_AT = /\b(?:held\s+at|taking\s+place\s+at|takes\s+place\s+at)\s+(.{3,160})/i;
 const GENERIC_LOCATION = /\blocation\s*[:\-]\s*(.{3,160})/i;
 const EVENT_CONTEXT = /\b(?:festival|fair|market|event|show|concert|held|taking\s+place|takes\s+place)\b/i;
+const ABSTRACT_VALUE = /^(?:&|overnight\b|restriction\b|is\b|are\b|may\b|will\b|availability\b|rentals?\b|tour\b|map\b|noon\b|the\s+venue\b|the\s+event\b|hours\b)/i;
+const NAMED_PLACE_START = /^(?:[A-Z][A-Za-z0-9'’.-]*|the\s+[A-Z]|[0-9]+\s+[A-Za-z])/;
 
 export function assessVenueEvidence(value, excerpt) {
   const name=String(value ?? '').replace(/\s+/g,' ').trim();
   const statement=String(excerpt ?? '').replace(/\s+/g,' ').trim();
   if (name.length < 3 || name.length > 160 || PLACEHOLDER.test(name) ||
-      NON_VENUE.test(name) || NEGATIVE_CONTEXT.test(name)) {
+      NON_VENUE.test(name) || NEGATIVE_CONTEXT.test(name) ||
+      ABSTRACT_VALUE.test(name) || !NAMED_PLACE_START.test(name)) {
     return {accepted:false,reason:'invalid_venue_value'};
   }
   if (!statement || statement.length > 500 || !statement.toLowerCase().includes(name.toLowerCase())) {
@@ -25,11 +32,12 @@ export function assessVenueEvidence(value, excerpt) {
   if (NEGATIVE_CONTEXT.test(statement)) return {accepted:false,reason:'office_or_contact_context'};
   if (NON_VENUE.test(statement)) return {accepted:false,reason:'ui_policy_or_booth_context'};
   const venue=statement.match(VENUE_LABEL);
+  const heldAt=statement.match(HELD_AT);
   const generic=statement.match(GENERIC_LOCATION);
-  if (!venue && !(generic && EVENT_CONTEXT.test(statement.replace(GENERIC_LOCATION,'')))) {
+  if (!venue && !heldAt && !(generic && EVENT_CONTEXT.test(statement.replace(GENERIC_LOCATION,'')))) {
     return {accepted:false,reason:'missing_event_venue_context'};
   }
-  const extracted=String((venue || generic)[1] || '').trim();
+  const extracted=String((venue || heldAt || generic)[1] || '').trim();
   // Require the named venue to begin at the value of the explicit event label,
   // not appear incidentally later in a paragraph about some other venue.
   if (!extracted.toLowerCase().startsWith(name.toLowerCase())) {
