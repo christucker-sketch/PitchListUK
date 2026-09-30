@@ -131,6 +131,9 @@ jobs:
       - name: Rank remaining GB recovery candidates read-only
         run: node operations/findpitches-v2/rank-gb-recovery-candidates.mjs
 
+      - name: Preview ranked GB recovery candidates read-only
+        run: node operations/findpitches-v2/preview-gb-ranked-recovery.mjs
+
       - name: Snapshot current strict US customer-visible inventory
         env:
           FINDPITCHES_D1_DATABASE_ID: 6732bcc9-a172-4d38-ad4d-7660ed13392f
@@ -151,5 +154,6 @@ jobs:
             gb-integrated-recovery-preview.json
             gb-os-places-diagnostic.json
             gb-recovery-ranking.json
+            gb-ranked-recovery-preview.json
             us-customer-visible-audit.json
           retention-days: 14
