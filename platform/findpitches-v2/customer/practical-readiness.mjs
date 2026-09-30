@@ -109,26 +109,35 @@ function inspectEvidenceQuality(record,evidence,blocked,now){
  if(genericNonEventVendorPage(excerpt))blocked.push(reason('generic_non_event_vendor_page','location'));
 }
 function crossMarketGeography(market,location,excerpt){
- const m=upper(market),loc=String(location||''),textValue=[loc,excerpt].filter(Boolean).join(' ');
+ const m=upper(market),loc=String(location||''),ex=String(excerpt||''),textValue=[loc,ex].filter(Boolean).join(' ');
  if(!m||!textValue)return false;
- const explicitCountry={
-  GB:/\b(?:united\s+states|u\.?s\.?|u\.?s\.?a\.?|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
-  US:/\b(?:united\s+kingdom|u\.?k\.?|england|scotland|wales|northern\s+ireland|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
-  CA:/\b(?:united\s+kingdom|u\.?k\.?|england|scotland|wales|northern\s+ireland|united\s+states|u\.?s\.?|u\.?s\.?a\.?|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
-  IE:/\b(?:united\s+states|u\.?s\.?|u\.?s\.?a\.?|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i
- }[m];
- if(explicitCountry?.test(textValue))return true;
- const usStateAfterComma=/,\s*(?:alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|new\s+hampshire|new\s+jersey|new\s+mexico|new\s+york|north\s+carolina|north\s+dakota|ohio|oklahoma|oregon|pennsylvania|rhode\s+island|south\s+carolina|south\s+dakota|tennessee|texas|utah|vermont|virginia|washington|west\s+virginia|wisconsin|wyoming)\b/i;
- if(m!=='US'&&usStateAfterComma.test(loc))return true;
+ if(countryMismatch(m,textValue))return true;
+ const usStateAfterComma=/,\s*(?:alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|new\s+hampshire|new\s+jersey|new\s+mexico|new\s+york|north\s+carolina|north\s+dakota|ohio|oklahoma|oregon|pennsylvania|rhode\s+island|south\s+carolina|south\s+dakota|tennessee|texas|utah|vermont|virginia|washington|west\s+virginia|wisconsin|wyoming)\b(?!\s+(?:co\.?|county)\b)/i;
+ if(m!=='US'&&(usStateAfterComma.test(loc)||usStateAfterComma.test(ex)))return true;
  const canadaProvinceAfterComma=/,\s*(?:alberta|british\s+columbia|manitoba|new\s+brunswick|newfoundland(?:\s+and\s+labrador)?|nova\s+scotia|ontario|prince\s+edward\s+island|qu[eé]bec|saskatchewan|northwest\s+territories|nunavut|yukon)\b/i;
- if(m!=='CA'&&canadaProvinceAfterComma.test(loc))return true;
+ if(m!=='CA'&&(canadaProvinceAfterComma.test(loc)||canadaProvinceAfterComma.test(ex)))return true;
+ return false;
+}
+function countryMismatch(market,value){
+ const v=String(value||'');
+ const hasUS=/\b(?:united\s+states|usa|u\.s\.a\.?|u\.s\.)\b/i.test(v)||/\bUS\b/.test(v);
+ const hasUK=/\b(?:united\s+kingdom|england|scotland|wales|northern\s+ireland)\b/i.test(v)||/\bUK\b/.test(v);
+ const hasCA=/\bcanada\b/i.test(v);
+ const hasAU=/\baustralia\b/i.test(v);
+ const hasNZ=/\bnew\s+zealand\b/i.test(v);
+ const hasSG=/\bsingapore\b/i.test(v);
+ const hasHK=/\bhong\s+kong\b/i.test(v);
+ if(market==='GB')return hasUS||hasCA||hasAU||hasNZ||hasSG||hasHK;
+ if(market==='US')return hasUK||hasCA||hasAU||hasNZ||hasSG||hasHK;
+ if(market==='CA')return hasUK||hasUS||hasAU||hasNZ||hasSG||hasHK;
+ if(market==='IE')return hasUS||hasCA||hasAU||hasNZ||hasSG||hasHK;
  return false;
 }
 function staleEventYear(excerpt,now){
  const year=now.getUTCFullYear();
  const years=[...String(excerpt||'').matchAll(/\b((?:19|20)\d{2})\b/g)].map(m=>({year:Number(m[1]),index:m.index||0}));
  if(!years.length||years.some(x=>x.year>=year-1))return false;
- const plausibleEditionYears=years.filter(x=>x.year>=year-5&&x.year<=year-2&&!/\b(?:founded|established|formed|created|since|operating\s+since)\b/i.test(excerpt.slice(Math.max(0,x.index-28),Math.min(excerpt.length,x.index+12))));
+ const plausibleEditionYears=years.filter(x=>x.year>=year-5&&x.year<=year-2&&!/\b(?:founded|established|formed|created|since|operating\s+since)\b/i.test(excerpt.slice(Math.max(0,x.index-72),Math.min(excerpt.length,x.index+12))));
  if(!plausibleEditionYears.length)return false;
  const event=/\b(?:festival|fair|market|event|show|expo|exhibition|fete|carnival|parade|vendor|trader|stallholder|exhibitor|application|apply|deadline|held|takes?\s+place)\b/i;
  return plausibleEditionYears.some(x=>{
