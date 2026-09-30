@@ -9,6 +9,7 @@ on:
       - 'operations/findpitches-v2/preview-gb-legacy-source-locality.mjs'
       - 'operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs'
       - 'operations/findpitches-v2/preview-docx-recovery.mjs'
+      - 'operations/findpitches-v2/preview-generic-binary-recovery.mjs'
       - 'platform/findpitches-v2/providers/fetch/http.mjs'
       - 'tests/findpitches-v2/fetch-provider-docx.test.mjs'
       - 'tests/findpitches-v2/fetch-provider-docx-integration.test.mjs'
@@ -56,6 +57,8 @@ jobs:
         run: node operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs
       - name: Run DOCX recovery preview
         run: node operations/findpitches-v2/preview-docx-recovery.mjs
+      - name: Run generic binary recovery preview
+        run: node operations/findpitches-v2/preview-generic-binary-recovery.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: gb-ranked-preview-${{ github.run_id }}
@@ -65,4 +68,5 @@ jobs:
             gb-legacy-source-locality-preview.json
             unsupported-fetch-content-types.json
             docx-recovery-preview.json
+            generic-binary-recovery-preview.json
           retention-days: 14
