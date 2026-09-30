@@ -63,21 +63,49 @@ for(const row of classificationRows){
 const enrichment=[];
 for(const row of enrichmentRows){
  try{
-  const geography=parse(row.geography_json);
-  const candidate={...row,id:row.candidate_id,candidate_id:row.candidate_id,geography};
+  const oldGeography=parse(row.geography_json);
+  const location=String(oldGeography.discovery_location||oldGeography.locality||oldGeography.region||row.region_code||'').trim();
+  const evaluated=await evaluator({
+   market:getMarket(row.market),region_code:row.region_code,location,
+   result:{url:row.canonical_url,title:row.event_name}
+  });
+  const correction=(evaluated.evidence||[]).find(x=>x?.type==='region_correction')||null;
+  if(evaluated.status!=='validated'){
+   enrichment.push({
+    id:row.candidate_id,market:row.market,title:row.event_name,
+    canonical_url:row.canonical_url,application_url:row.application_url,
+    prior_status:row.status,classifier_status:evaluated.status,
+    rejection_reason:evaluated.rejection_reason,region_correction:correction,
+    practical_usable:false
+   });
+   continue;
+  }
+  const geography=evaluated.geography||oldGeography;
+  const candidate={
+   ...row,id:row.candidate_id,candidate_id:row.candidate_id,
+   region_code:geography.region_code||row.region_code,
+   canonical_url:evaluated.canonical_url||row.canonical_url,
+   application_url:evaluated.application_url||row.application_url,
+   event_name:evaluated.event_name||row.event_name,
+   organiser:evaluated.organiser||row.organiser,
+   geography,geography_json:JSON.stringify(geography),
+   evidence_json:JSON.stringify(evaluated.evidence||[])
+  };
   const preview=await previewCandidateEnrichment(candidate,{fetchProvider});
   const projected=projectPracticalOpportunity(candidate,preview.enrichment,{now:new Date()});
   enrichment.push({
    id:row.candidate_id,market:row.market,title:row.event_name,
-   canonical_url:row.canonical_url,application_url:row.application_url,
-   prior_status:row.status,recovered_location:projected.opportunity.location,
+   canonical_url:candidate.canonical_url,application_url:candidate.application_url,
+   prior_status:row.status,classifier_status:'validated',
+   corrected_region_code:candidate.region_code,region_correction:correction,
+   recovered_location:projected.opportunity.location,
    location_precision:projected.opportunity.location_precision,
    practical_usable:projected.readiness.ready,
    missing:projected.readiness.missing,blocked:projected.readiness.blocked,
    fetched_urls:preview.fetched_urls
   });
  }catch(error){
-  enrichment.push({id:row.candidate_id,market:row.market,title:row.event_name,canonical_url:row.canonical_url,application_url:row.application_url,prior_status:row.status,practical_usable:false,error:String(error?.message||error)});
+  enrichment.push({id:row.candidate_id,market:row.market,title:row.event_name,canonical_url:row.canonical_url,application_url:row.application_url,prior_status:row.status,classifier_status:'error',practical_usable:false,error:String(error?.message||error)});
  }
 }
 
@@ -93,8 +121,11 @@ const result={
  },
  enrichment:{
   sampled:enrichment.length,
-  parsed:enrichment.filter(x=>!x.error).length,
-  errors:enrichment.filter(x=>x.error).length,
+  classifier_validated:enrichment.filter(x=>x.classifier_status==='validated').length,
+  classifier_rejected:enrichment.filter(x=>x.classifier_status==='rejected').length,
+  classifier_held:enrichment.filter(x=>x.classifier_status==='held').length,
+  parsed:enrichment.filter(x=>x.classifier_status==='validated'&&!x.error).length,
+  errors:enrichment.filter(x=>x.classifier_status==='error').length,
   recovered_locations:enrichment.filter(x=>x.recovered_location).length,
   practical_usable:enrichment.filter(x=>x.practical_usable).length,
   outcomes:enrichment
@@ -104,7 +135,7 @@ fs.writeFileSync('docx-recovery-preview.json',JSON.stringify(result,null,2));
 console.log(JSON.stringify({
  at:result.at,
  classification:{sampled:result.classification.sampled,validated:result.classification.validated,held:result.classification.held,rejected:result.classification.rejected,errors:result.classification.errors},
- enrichment:{sampled:result.enrichment.sampled,parsed:result.enrichment.parsed,errors:result.enrichment.errors,recovered_locations:result.enrichment.recovered_locations,practical_usable:result.enrichment.practical_usable}
+ enrichment:{sampled:result.enrichment.sampled,classifier_validated:result.enrichment.classifier_validated,classifier_rejected:result.enrichment.classifier_rejected,classifier_held:result.enrichment.classifier_held,parsed:result.enrichment.parsed,errors:result.enrichment.errors,recovered_locations:result.enrichment.recovered_locations,practical_usable:result.enrichment.practical_usable}
 },null,2));
 
 function parse(v){try{return JSON.parse(v||'{}');}catch{return {};}}
