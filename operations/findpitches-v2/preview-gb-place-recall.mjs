@@ -31,7 +31,7 @@ WITH ranked AS (
    AND json_extract(e.enrichment_json,'$.location.value') IS NULL
    AND json_extract(e.enrichment_json,'$.location_area.value') IS NULL
 )
-SELECT * FROM ranked WHERE rn=1 ORDER BY region_code ASC LIMIT 32
+SELECT * FROM ranked WHERE rn=1 ORDER BY region_code ASC LIMIT 16
 `);
 
 const fetchProvider=createHttpFetchProvider();
