@@ -148,10 +148,19 @@ export async function runEnrichmentBatch(db, { fetchProvider, now = new Date(), 
 
 async function fetchCandidatePages(row,fetchProvider){
   const seeds=[row.canonical_url,row.application_url].filter(Boolean);
-  const pages=[],seen=new Set();
+  const pages=[],seen=new Set(),errors=[];
   for(const url of seeds){
     if(seen.has(url)) continue;
-    const page=await fetchProvider.fetch(url); seen.add(url); pages.push(page);
+    try{
+      const page=await fetchProvider.fetch(url);
+      seen.add(url);
+      pages.push(page);
+    }catch(error){
+      errors.push(error);
+    }
+  }
+  if(pages.length===0){
+    throw errors[0] || new Error('findpitches_v2_enrichment_no_fetchable_sources');
   }
   const links=[];
   for(const page of pages.slice()){
