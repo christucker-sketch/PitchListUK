@@ -10,9 +10,10 @@ const PLACEHOLDER = /^(?:headquarters|office|head\s+office|contact\s+address|tba
 // A bare noun "venue" in prose (venue restriction, venue tour, venue map,
 // venue overnight) is not a location label. Require a real label delimiter,
 // or an explicit "held at" statement tied to the event.
-const VENUE_LABEL = /\b(?:event\s+venue|event\s+location|market\s+venue|festival\s+venue|show\s+venue|fair\s+venue|venue)\s*[:\-]\s*(.{3,160})/i;
+const VENUE_LABEL = /\b(?:event\s+venue|event\s+location|event\s+address|event\s+site|market\s+venue|market\s+location|festival\s+venue|festival\s+location|festival\s+site|show\s+venue|show\s+location|fair\s+venue|fair\s+location|fair\s+site|venue)\s*[:\-]\s*(.{3,160})/i;
 const HELD_AT = /\b(?:held\s+at|taking\s+place\s+at|takes\s+place\s+at)\s+(.{3,160})/i;
 const GENERIC_LOCATION = /\blocation\s*[:\-]\s*(.{3,160})/i;
+const WHERE_LABEL = /\bwhere\s*[:\-]\s*(.{3,160})/i;
 const EVENT_CONTEXT = /\b(?:festival|fair|market|event|show|concert|held|taking\s+place|takes\s+place)\b/i;
 const ABSTRACT_VALUE = /^(?:&|overnight\b|restriction\b|is\b|are\b|may\b|will\b|availability\b|rentals?\b|tour\b|map\b|noon\b|the\s+venue\b|the\s+event\b|hours\b)/i;
 const NAMED_PLACE_START = /^(?:[A-Z][A-Za-z0-9'’.-]*|[0-9]+\s+[A-Za-z])/;
@@ -41,10 +42,13 @@ export function assessVenueEvidence(value, excerpt) {
   const venue=statement.match(VENUE_LABEL);
   const heldAt=statement.match(HELD_AT);
   const generic=statement.match(GENERIC_LOCATION);
-  if (!venue && !heldAt && !(generic && EVENT_CONTEXT.test(statement.replace(GENERIC_LOCATION,'')))) {
+  const where=statement.match(WHERE_LABEL);
+  if (!venue && !heldAt &&
+      !(generic && EVENT_CONTEXT.test(statement.replace(GENERIC_LOCATION,''))) &&
+      !(where && EVENT_CONTEXT.test(statement.replace(WHERE_LABEL,'')))) {
     return {accepted:false,reason:'missing_event_venue_context'};
   }
-  const extracted=String((venue || heldAt || generic)[1] || '').trim();
+  const extracted=String((venue || heldAt || generic || where)[1] || '').trim();
   // Require the named venue to begin at the value of the explicit event label,
   // not appear incidentally later in a paragraph about some other venue.
   if (!extracted.toLowerCase().startsWith(name.toLowerCase())) {
