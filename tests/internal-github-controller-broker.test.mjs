@@ -177,14 +177,16 @@ test('controller GitHub broker returns Canada production bases without mutation 
   const fetchImpl = async (url, options = {}) => {
     assert.equal(options?.headers?.authorization, undefined);
     const value = String(url);
-    if (value.endsWith('/git/ref/heads/main')) return Response.json({ object: { sha: mainSha } });
-    if (value.includes('/contents/functions/_data/ca-opportunities.mjs?ref=')) {
-      return Response.json({ encoding: 'base64', content: encoded(caSnapshot) });
+    if (value.includes('.git/info/refs?service=git-upload-pack')) {
+      return new Response(`001e# service=git-upload-pack\\n0000${mainSha} refs/heads/main\\n0000`);
     }
-    if (value.includes('/contents/operations/opportunity-pipeline/config/ca-approved-source-routes.json?ref=')) {
-      return Response.json({ encoding: 'base64', content: encoded(sources) });
+    if (value.includes(`raw.githubusercontent.com/christucker-sketch/PitchListUK/${mainSha}/functions/_data/ca-opportunities.mjs`)) {
+      return new Response(caSnapshot);
     }
-    return Response.json({ message: 'not found' }, { status: 404 });
+    if (value.includes(`raw.githubusercontent.com/christucker-sketch/PitchListUK/${mainSha}/operations/opportunity-pipeline/config/ca-approved-source-routes.json`)) {
+      return new Response(JSON.stringify(sources));
+    }
+    return new Response('not found', { status: 404 });
   };
   const response = await handleInternalGithubControllerRequest(
     request({ action: 'read_ca_production_bases' }),
@@ -258,4 +260,26 @@ test('controller GitHub broker still fails closed for mutation-capable actions w
   );
   assert.equal(response.status, 409);
   assert.match((await response.json()).error, /Missing required secret\/config: GITHUB_TOKEN/);
+});
+
+
+test('Canada production base read does not call api.github.com even when API quota would be exhausted', async () => {
+  const mainSha = 'e'.repeat(40);
+  const snapshot = `export const caOpportunitySnapshot = ${JSON.stringify({exported_at:'x',source:'x',total:0,rows:[]})};\n`;
+  const seen=[];
+  const response = await handleInternalGithubControllerRequest(
+    request({ action: 'read_ca_production_bases' }),
+    { GITHUB_REPO: 'christucker-sketch/PitchListUK' },
+    { fetchImpl: async url => {
+      const value=String(url); seen.push(value);
+      if (value.startsWith('https://api.github.com/')) return Response.json({message:'API rate limit exceeded'},{status:403});
+      if (value.includes('.git/info/refs?service=git-upload-pack')) return new Response(`${mainSha} refs/heads/main\n`);
+      if (value.includes('/functions/_data/ca-opportunities.mjs')) return new Response(snapshot);
+      if (value.includes('/operations/opportunity-pipeline/config/ca-approved-source-routes.json')) return new Response('[]');
+      return new Response('not found',{status:404});
+    }}
+  );
+  assert.equal(response.status,200);
+  assert.equal(seen.some(url=>url.startsWith('https://api.github.com/')),false);
+  assert.equal((await response.json()).bases.main_sha,mainSha);
 });
