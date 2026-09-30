@@ -261,3 +261,14 @@ test('search-result snippet still requires event context before practical use',(
  assert.equal(bad.readiness.ready,false);
  assert.ok(bad.readiness.missing.includes('location'));
 });
+
+
+test('policy and terms pages are not customer-usable opportunities',()=>{
+ const r=projectPracticalOpportunity({...candidate,canonical_url:'https://event.test/terms-conditions/'},{location_area:{
+  value:'Northamptonshire',precision:'area',
+  evidence:[{source:'https://event.test/terms-conditions/',excerpt:'Highclere Show: Northamptonshire Police Tel: 101',kind:'source_event_context'}],confidence:.72
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.readiness.ready,false);
+ assert.ok(r.readiness.blocked.some(x=>x.code==='policy_or_terms_url'));
+ assert.ok(r.readiness.missing.includes('location')||r.readiness.blocked.length>0);
+});
