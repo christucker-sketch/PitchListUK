@@ -2,6 +2,7 @@ import { normalizeEnrichment } from '../customer/enrichment.mjs';
 import { extractNamedFields } from './named-fields.mjs';
 import { isTerminalPdfError } from '../providers/fetch/pdf-error-policy.mjs';
 import { enabledGeographies } from '../geography/catalog.mjs';
+import { extractStructuredEventLocation } from './structured-event-location.mjs';
 
 const DEFAULT_LIMIT = 8;
 const LEASE_MINUTES = 5;
@@ -185,11 +186,13 @@ function extractEnrichment(row,pages){
   const docs=pages.map(p=>({url:p.final_url,text:plain(p.body)}));
   const joined=docs.map(d=>d.text).join("\n");
   const geography=parse(row.geography_json);
-  const named=extractNamedFields(pages.map(p=>({url:p.final_url,body:p.body})));
+  const rawDocs=pages.map(p=>({url:p.final_url,body:p.body}));
+  const named=extractNamedFields(rawDocs);
+  const structured=extractStructuredEventLocation(rawDocs);
   const result={
     organiser:named.organiser ?? evidenceField(row.organiser,docs),
-    location:named.location,
-    location_area:extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
+    location:named.location ?? structured.location,
+    location_area:structured.location_area ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
   };
   const deadline=firstDateInDocs(docs,[
     /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
