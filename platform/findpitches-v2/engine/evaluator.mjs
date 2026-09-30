@@ -52,7 +52,7 @@ export function createDefaultCandidateEvaluator({
     const effectiveLocation=geographyResolution?.region||location;
     const geographyEvidence=[];
     if(regionCorrection){
-      geographyEvidence.push({type:'region_correction',value:regionCorrection.region,from_region_code:regionCorrection.from_region_code,to_region_code:regionCorrection.region_code,locality_hint,kind:regionCorrection.kind,confidence:regionCorrection.confidence});
+      geographyEvidence.push({type:'region_correction',value:regionCorrection.region,from_region_code:regionCorrection.from_region_code,to_region_code:regionCorrection.region_code,locality_hint:localityHint,kind:regionCorrection.kind,confidence:regionCorrection.confidence});
       geographyEvidence.push({type:'geography_match',value:regionCorrection.region,confidence:regionCorrection.confidence});
     }else if(localityHint){
       geographyEvidence.push({type:'locality_hint',value:localityHint,region_code:effectiveRegionCode,kind:geographyResolution.kind,confidence:geographyResolution.confidence});
