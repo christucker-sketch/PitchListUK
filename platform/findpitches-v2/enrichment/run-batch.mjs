@@ -228,6 +228,11 @@ function firstDateInDocs(docs,patterns){
  return null;
 }
 function datedEvidence(match){return {value:match.value,evidence:[{source:match.source,excerpt:match.excerpt}],confidence:.78};}
+function withEvidence(value,excerpt,docs){
+ const source=docs.find(doc=>String(doc.text||'').includes(String(excerpt||'')))?.url||docs[0]?.url||null;
+ return {value,evidence:[{source,excerpt}],confidence:.7};
+}
+
 function descriptionExcerpt(docs){for(const d of docs){const parts=d.text.split(/(?<=[.!?])\s+/).map(x=>x.trim()).filter(x=>x.length>=80&&x.length<=400);const s=parts.find(x=>/(vendor|trader|stallholder|exhibitor|apply|application)/i.test(x));if(s)return {value:s.slice(0,400),excerpt:s.slice(0,240)};}return null;}
 function excerptAround(text,needle){const i=text.toLowerCase().indexOf(needle.toLowerCase());return i<0?null:text.slice(Math.max(0,i-80),i+needle.length+120).trim().slice(0,240);}
 function plain(html){return String(html||'').replace(/<script\b[\s\S]*?<\/script>/gi,' ').replace(/<style\b[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&#39;/g,"'").replace(/&quot;/gi,'"').replace(/\s+/g,' ').trim();}
