@@ -159,7 +159,7 @@ for (const conflict of [
   ['US city/state name','https://event.test/vendors','<h1>Santa Barbara Orchid Show</h1><p>Exhibitor application for Santa Barbara, California in 2027.</p><a href="/apply">Exhibitor application</a>']
 ]) {
   test('GB evaluator rejects '+conflict[0]+' market conflict', async () => {
-    const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(){return {final_url:conflict[1],body:'<html><body>'+conflict[2]+'</body></html>'; }},now:()=>new Date('2026-09-30T00:00:00Z')});
+    const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(){return {final_url:conflict[1],body:'<html><body>'+conflict[2]+'</body></html>'};}},now:()=>new Date('2026-09-30T00:00:00Z')});
     const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-ESSEX',location:'Essex',result:{url:conflict[1]}});
     assert.equal(candidate.status,'rejected');
     assert.equal(candidate.rejection_reason,'market_conflict');
@@ -168,7 +168,7 @@ for (const conflict of [
 }
 
 test('GB evaluator does not confuse ordinary lowercase us with US market evidence', async () => {
- const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><h1>Kent Food Festival</h1><p>Join us in Kent in 2027. Vendor application now open.</p><a href="/apply">Vendor application</a></body></html>'; }},now:()=>new Date('2026-09-30T00:00:00Z')});
+ const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><h1>Kent Food Festival</h1><p>Join us in Kent in 2027. Vendor application now open.</p><a href="/apply">Vendor application</a></body></html>'};}},now:()=>new Date('2026-09-30T00:00:00Z')});
  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://festival.test/vendors'}});
  assert.equal(candidate.status,'validated');
  assert.equal(candidate.publishable,true);
