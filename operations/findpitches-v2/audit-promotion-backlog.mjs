@@ -55,6 +55,21 @@ const totals={};
 for(const row of rows){
  totals[row.bucket]=(totals[row.bucket]||0)+Number(row.count||0);
 }
+const notReadyReasons=await query(`
+SELECT c.market,COALESCE(NULLIF(TRIM(d.reason),''),'(none)') AS reason,COUNT(*) AS count
+FROM candidates c
+JOIN candidate_enrichment e ON e.candidate_id=c.id
+JOIN customer_promotion_disposition d ON d.candidate_id=c.id
+WHERE c.status='validated'
+  AND e.source_last_checked>=c.last_checked
+  AND d.source_last_checked=c.last_checked
+  AND d.enrichment_last_checked=e.source_last_checked
+  AND d.disposition='not_ready'
+GROUP BY c.market,COALESCE(NULLIF(TRIM(d.reason),''),'(none)')
+ORDER BY count DESC,c.market,reason`);
+const notReadyTotals={};
+for(const row of notReadyReasons)notReadyTotals[row.reason]=(notReadyTotals[row.reason]||0)+Number(row.count||0);
+
 const queue=(await query(`
 SELECT
  (SELECT COUNT(*) FROM enrichment_queue WHERE status='ready') AS enrichment_ready,
@@ -63,4 +78,4 @@ SELECT
  (SELECT COUNT(*) FROM classification_queue WHERE status='dead') AS classifier_dead,
  (SELECT COUNT(*) FROM customer_promotion_disposition WHERE disposition='not_ready') AS promotion_not_ready,
  (SELECT COUNT(*) FROM customer_promotion_disposition WHERE disposition='promoted') AS promotion_promoted`))[0]||{};
-console.log(JSON.stringify({totals,by_market:rows,queues:queue},null,2));
+console.log(JSON.stringify({totals,not_ready_reasons:notReadyTotals,not_ready_by_market:notReadyReasons,by_market:rows,queues:queue},null,2));
