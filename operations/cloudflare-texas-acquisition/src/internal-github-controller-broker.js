@@ -33,6 +33,9 @@ function requireEnv(env, key) {
 function headers(env) {
   return { authorization: `Bearer ${requireEnv(env, 'GITHUB_TOKEN')}`, accept: 'application/vnd.github+json', 'content-type': 'application/json', 'x-github-api-version': '2022-11-28', 'user-agent': 'findpitches-controller-pr-broker' };
 }
+function publicReadHeaders() {
+  return { accept: 'application/vnd.github+json', 'content-type': 'application/json', 'x-github-api-version': '2022-11-28', 'user-agent': 'findpitches-controller-pr-broker-readonly' };
+}
 export function isInternalGithubControllerRequest(request) {
   let url;
   try { url = new URL(request.url); } catch { return false; }
@@ -349,10 +352,14 @@ export async function handleInternalGithubControllerRequest(request, env, option
   try { payload = validatePayload(await request.json()); } catch (error) { return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 }); }
   const repo = requireEnv(env, 'GITHUB_REPO');
   const fetchImpl = options.fetchImpl || fetch;
-  const authHeaders = headers(env);
   try {
+    if (payload.action === 'read_ca_production_bases') {
+      // This path is deliberately read-only against a public repository. Do not
+      // make Canada health depend on a long-lived mutation token.
+      return Response.json({ ok: true, bases: await readCaProductionBases(fetchImpl, repo, publicReadHeaders()) });
+    }
+    const authHeaders = headers(env);
     if (payload.action === 'publication_request') return Response.json({ ok: true, ...(await proxyPublicationRequest(fetchImpl, repo, authHeaders, payload)) });
-    if (payload.action === 'read_ca_production_bases') return Response.json({ ok: true, bases: await readCaProductionBases(fetchImpl, repo, authHeaders) });
     if (payload.action === 'inspect_replay_source_provenance') return Response.json({ ok: true, provenance: await inspectReplaySourceProvenance(fetchImpl, repo, authHeaders, payload.stateCode, payload.sourceIds) });
     if (payload.action === 'inspect_merge_checks') return Response.json({ ok: true, deployment: await inspectSourceMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
     if (payload.action === 'inspect_data_merge_checks') return Response.json({ ok: true, deployment: await inspectDataMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });

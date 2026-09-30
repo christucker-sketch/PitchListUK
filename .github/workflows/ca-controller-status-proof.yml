@@ -5,12 +5,14 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/ca-controller-status-proof.yml'
+      - 'operations/cloudflare-texas-acquisition/src/internal-github-controller-broker.js'
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: findpitches-ca-controller-status-proof
@@ -27,6 +29,30 @@ jobs:
       CONFIG: operations/cloudflare-global-acquisition/wrangler.jsonc
       WORKFLOW_NAME: findpitches-global-acquisition-shadow
     steps:
+      - name: Wait for exact-main acquisition broker deployment
+        if: github.event_name == 'push'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ready=false
+          for attempt in $(seq 1 120); do
+            runs="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${GITHUB_SHA}&event=push&per_page=50")"
+            verify_status="$(jq -r '[.workflow_runs[] | select(.name == "PitchList verification")][0].status // "missing"' <<<"$runs")"
+            verify_conclusion="$(jq -r '[.workflow_runs[] | select(.name == "PitchList verification")][0].conclusion // ""' <<<"$runs")"
+            if [[ "$verify_status" == 'completed' && "$verify_conclusion" == 'success' ]]; then
+              ready=true
+              break
+            fi
+            if [[ "$verify_status" == 'completed' && "$verify_conclusion" != 'success' ]]; then
+              echo "Exact-main PitchList verification failed: $verify_conclusion" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+          [[ "$ready" == 'true' ]] || { echo 'Timed out waiting for exact-main acquisition broker deployment.' >&2; exit 1; }
+
       - name: Check out current main
         uses: actions/checkout@v4
 
