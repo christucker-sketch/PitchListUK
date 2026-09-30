@@ -208,7 +208,7 @@ export function extractSupportedPlaceEvidence(geography,docs){
     const escaped=escapeRegex(regionName);
     const patterns=[
      new RegExp('\\b([A-Z][A-Za-z’\\\'\\.-]*(?:\\s+[A-Z][A-Za-z’\\\'\\.-]*){0,3})\\s*,\\s*'+escaped+'\\b'),
-     new RegExp('\\b([A-Z][A-Za-z’\\\'\\.-]*(?:\\s+[A-Z][A-Za-z’\\\'\\.-]*){0,3})\\s+in\\s+'+escaped+'\\b','i')
+     new RegExp('\\b([A-Z][A-Za-z’\\\'\\.-]*(?:\\s+[A-Z][A-Za-z’\\\'\\.-]*){0,3})\\s+in\\s+'+escaped+'\\b')
     ];
     for(const pattern of patterns){
      const match=sentence.match(pattern);if(!match)continue;
