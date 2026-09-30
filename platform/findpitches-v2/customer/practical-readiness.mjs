@@ -66,11 +66,22 @@ function venueLocation(field){
 function supportedArea(field){
  if(!field||typeof field!=='object'||!('value' in field)||!Array.isArray(field.evidence)||!field.evidence.length)return null;
  const name=text(field.value);if(!name)return null;
- const evidence=field.evidence.find(item=>safeHttp(item?.source)&&text(item?.excerpt)?.toLowerCase().includes(name.toLowerCase()));
+ const evidence=field.evidence.find(item=>{
+  if(!safeHttp(item?.source))return false;
+  const excerpt=text(item?.excerpt);if(!excerpt||!normalizedContains(excerpt,name))return false;
+  if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing)\s+(?:office|address|location|headquarters|contact)|\b(?:our\s+office|our\s+address|mail\s+to|contact\s+us|registered\s+at)\b/i.test(excerpt))return false;
+  return /\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(excerpt);
+ });
  if(!evidence)return null;
  const storedPrecision=['place','area'].includes(String(field.precision||''))?String(field.precision):areaPrecision(name);
  return Object.freeze({value:name,precision:storedPrecision,confidence:finite(field.confidence)??0.72,
   provenance:Object.freeze({evidence:Object.freeze([evidence]),confidence:finite(field.confidence)})});
+}
+function normalizedContains(haystack,needle){
+ const normalize=value=>String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+  .replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
+ const h=normalize(haystack),n=normalize(needle);
+ return n.length>=3&&(' '+h+' ').includes(' '+n+' ');
 }
 function areaPrecision(value){
  const v=String(value||'');
