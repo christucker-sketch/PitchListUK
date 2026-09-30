@@ -103,7 +103,7 @@ function inspectUrl(field,value,blocked,now){
  if(SOCIAL_HOSTS.has(host))blocked.push(reason('social_url',field));
  if(BLOCKED_PATH_TERMS.some(term=>path.includes(term)))blocked.push(reason('procurement_or_supplier_url',field));
  if(field==='canonical_url'&&POLICY_PATH_TERMS.some(term=>path.includes(term)))blocked.push(reason('policy_or_terms_url',field));
- const year=now.getUTCFullYear(),years=[...String(value).matchAll(/(?:19|20)\d{2}/g)].map(m=>Number(m[0]));
+ const year=now.getUTCFullYear(),years=[...String(value).matchAll(/\b(?:19|20)\d{2}\b/g)].map(m=>Number(m[0]));
  if(years.some(y=>y<year-1))blocked.push(reason('stale_year_in_url',field));
 }
 
