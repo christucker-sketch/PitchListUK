@@ -14,6 +14,8 @@ import { runObservedPdfRecovery, getPdfRecoveryTelemetry } from '../../../platfo
 const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 8;
 const CLASSIFIER_CRON = '* * * * *';
+const BASELINE_ACQUISITION_CRON = '*/5 * * * *';
+const CITY_ACQUISITION_CRON = '2-59/5 * * * *';
 const PDF_RECOVERY_CRON = '7,22,37,52 * * * *';
 const CLASSIFIER_BATCH_LIMIT = 24;
 const CLASSIFIER_RULESET_VERSION = '2026-09-26-quality-rules-v3';
@@ -60,11 +62,18 @@ export default {
       return;
     }
 
-    ctx.waitUntil(
-      runShadowTick(env, { trigger: 'cron' })
-        .then(result => console.log('findpitches_v2_acquisition_tick', JSON.stringify(result)))
-        .catch(error => console.error('findpitches_v2_acquisition_tick_failed', String(error?.stack || error)))
-    );
+    if (event?.cron === BASELINE_ACQUISITION_CRON || event?.cron === CITY_ACQUISITION_CRON) {
+      const queryGroup=event.cron===CITY_ACQUISITION_CRON?1:0;
+      const trigger=queryGroup===1?'cron_city':'cron_baseline';
+      ctx.waitUntil(
+        runShadowTick(env, { trigger, queryGroup })
+          .then(result => console.log('findpitches_v2_acquisition_tick', JSON.stringify(result)))
+          .catch(error => console.error('findpitches_v2_acquisition_tick_failed', String(error?.stack || error)))
+      );
+      return;
+    }
+
+    console.log('findpitches_v2_unhandled_cron', String(event?.cron || 'unknown'));
   }
 };
 
@@ -80,6 +89,7 @@ async function health(env) {
       search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
       publication_enabled: false,
       us_city_discovery_profile: 'official_first_v1',
+      acquisition_crons: { baseline: BASELINE_ACQUISITION_CRON, us_city: CITY_ACQUISITION_CRON },
       customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
       legacy_runtime_dependency: false,
       local_runtime_dependency: false
@@ -133,6 +143,8 @@ async function status(env) {
     env.FINDPITCHES_DB.prepare(
       `SELECT
          SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) AS ready,
+         SUM(CASE WHEN status = 'ready' AND query_group = 0 THEN 1 ELSE 0 END) AS baseline_ready,
+         SUM(CASE WHEN status = 'ready' AND query_group = 1 THEN 1 ELSE 0 END) AS city_ready,
          SUM(CASE WHEN status = 'leased' THEN 1 ELSE 0 END) AS leased,
          SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
        FROM scheduler_jobs`
@@ -184,6 +196,8 @@ async function status(env) {
     counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification, customer_ready: customerReady },
     scheduler: {
       ready: Number(schedulerStates?.ready || 0),
+      baseline_ready: Number(schedulerStates?.baseline_ready || 0),
+      city_ready: Number(schedulerStates?.city_ready || 0),
       leased: Number(schedulerStates?.leased || 0),
       expired: Number(schedulerStates?.expired || 0)
     },
@@ -252,6 +266,8 @@ async function statusText(env) {
     `enrichment_dead: ${Number(data.enrichment?.dead || 0)}`,
     `enrichment_enriched: ${Number(data.enrichment?.enriched || 0)}`,
     `scheduler_ready: ${Number(data.scheduler?.ready || 0)}`,
+    `scheduler_baseline_ready: ${Number(data.scheduler?.baseline_ready || 0)}`,
+    `scheduler_city_ready: ${Number(data.scheduler?.city_ready || 0)}`,
     `scheduler_leased: ${Number(data.scheduler?.leased || 0)}`,
     `scheduler_expired: ${Number(data.scheduler?.expired || 0)}`,
     `publication_queue: ${Number(data.counts?.publication_queue || 0)}`,
@@ -325,7 +341,7 @@ async function count(env, table) {
   return Number(row?.count || 0);
 }
 
-export async function runShadowTick(env, { trigger = 'unknown', now = new Date() } = {}) {
+export async function runShadowTick(env, { trigger = 'unknown', now = new Date(), queryGroup = null } = {}) {
   const timestamp = now.toISOString();
   const catalogue = await ensureSchedulerCatalogue(env.FINDPITCHES_DB, { now });
   const recoveredExpiredLeases = await recoverExpiredSchedulerLeases(env.FINDPITCHES_DB, { now });
@@ -344,13 +360,17 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
     };
   }
 
-  const job = await env.FINDPITCHES_DB.prepare(
+  const groupFilter=Number.isInteger(queryGroup)?' AND query_group = ?':'';
+  const statement=env.FINDPITCHES_DB.prepare(
     `SELECT id, market, region_code, location, query_group, attempts
        FROM scheduler_jobs
-      WHERE status = 'ready' AND available_at <= ?
+      WHERE status = 'ready' AND available_at <= ?${groupFilter}
       ORDER BY available_at ASC, id ASC
       LIMIT 1`
-  ).bind(timestamp).first();
+  );
+  const job = Number.isInteger(queryGroup)
+    ? await statement.bind(timestamp,queryGroup).first()
+    : await statement.bind(timestamp).first();
 
   if (!job) {
     return { ok: true, service: SERVICE, trigger, phase: 'idle', catalogue, recovered_expired_leases: recoveredExpiredLeases, at: timestamp };
