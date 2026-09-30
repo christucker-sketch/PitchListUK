@@ -1,11 +1,7 @@
 name: FindPitches v2 promotion backlog audit
 
 "on":
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-promotion-backlog-audit.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
