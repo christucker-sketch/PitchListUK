@@ -25,7 +25,7 @@ let after='';
 for(;;){
  const rows=await query(`
  SELECT c.id,c.market,c.region_code,c.canonical_url,c.application_url,c.event_name,c.organiser,
-        c.geography_json,c.event_start,c.event_end,c.deadline,c.last_checked,e.enrichment_json
+        c.geography_json,c.last_checked,e.enrichment_json
  FROM candidates c
  JOIN candidate_enrichment e ON e.candidate_id=c.id AND e.source_last_checked>=c.last_checked
  WHERE c.status='validated' AND c.id>?
