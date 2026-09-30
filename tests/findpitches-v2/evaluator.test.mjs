@@ -282,3 +282,17 @@ test('social source pages are rejected even when they contain vendor wording', a
   assert.ok(candidate.evidence.some(item=>item.type==='negative_phrase'&&item.value==='social_source_page'),url);
  }
 });
+
+
+test('social source candidates are rejected before any fetch is attempted', async () => {
+ let fetches=0;
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(){fetches++;throw new Error('should_not_fetch_social');}}
+ });
+ for(const url of ['https://x.com/example/status/1','https://www.linkedin.com/in/example/']){
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url,title:'Vendor application'}});
+  assert.equal(candidate.status,'rejected',url);
+  assert.equal(candidate.rejection_reason,'negative_page_signal',url);
+ }
+ assert.equal(fetches,0);
+});
