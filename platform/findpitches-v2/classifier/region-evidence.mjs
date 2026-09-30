@@ -78,6 +78,7 @@ function explicitUsRegionHits(body,geos,title=null){
   const state=byCode.get(match[1]);
   if(state)hits.push({code:state.code,matched:match[1]});
  }
+ if(hits.length)return hits;
  for(const line of text.split(/\n+/).map(x=>x.trim()).filter(Boolean)){
   if(line.length>600||!eventContext(line))continue;
   for(const item of geos){
@@ -126,7 +127,7 @@ function matchRegion(value,geos){
  const needle=normalize(value);
  if(!needle)return null;
  for(const item of geos){
-  for(const variant of [item.name,...(item.aliases||[])]){
+  for(const variant of [item.code,item.name,...(item.aliases||[])]){
    if(normalize(variant)===needle)return String(item.code).toUpperCase();
   }
  }
