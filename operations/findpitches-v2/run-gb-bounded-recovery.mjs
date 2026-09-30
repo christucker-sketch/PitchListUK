@@ -47,11 +47,20 @@ if(existing){
 }
 
 const rows=await read(`
-WITH current AS (
+WITH scored AS (
  SELECT c.id,c.market,c.region_code,c.canonical_url,c.application_url,c.event_name,c.organiser,
         c.geography_json,c.evidence_json,c.score,c.status,c.last_checked,
         e.enrichment_json,e.source_last_checked,
-        ROW_NUMBER() OVER (PARTITION BY c.region_code ORDER BY c.last_checked ASC,c.id ASC) AS rn
+        (
+          CASE WHEN lower(coalesce(c.event_name,'')) GLOB '*festival*' THEN 4 ELSE 0 END +
+          CASE WHEN lower(coalesce(c.event_name,'')) GLOB '*fair*' THEN 3 ELSE 0 END +
+          CASE WHEN lower(coalesce(c.event_name,'')) GLOB '*market*' THEN 3 ELSE 0 END +
+          CASE WHEN lower(coalesce(c.event_name,'')) GLOB '*show*' THEN 2 ELSE 0 END +
+          CASE WHEN lower(coalesce(c.event_name,'')) GLOB '*vendor*' OR lower(coalesce(c.event_name,'')) GLOB '*trader*' OR lower(coalesce(c.event_name,'')) GLOB '*stallholder*' OR lower(coalesce(c.event_name,'')) GLOB '*exhibit*' THEN 3 ELSE 0 END +
+          CASE WHEN lower(coalesce(c.application_url,'')) GLOB '*apply*' OR lower(coalesce(c.application_url,'')) GLOB '*application*' THEN 2 ELSE 0 END -
+          CASE WHEN lower(coalesce(c.event_name,'')) GLOB '*instagram*' OR lower(coalesce(c.event_name,'')) GLOB '*linkedin*' OR lower(coalesce(c.event_name,'')) GLOB '*directory*' OR lower(coalesce(c.event_name,'')) GLOB '*contact*' OR lower(coalesce(c.event_name,'')) GLOB '*terms*' OR lower(coalesce(c.event_name,'')) GLOB '*account*' OR lower(coalesce(c.event_name,'')) GLOB '*blog*' OR lower(coalesce(c.event_name,'')) GLOB '*news*' THEN 8 ELSE 0 END -
+          CASE WHEN lower(coalesce(c.canonical_url,'')) GLOB '*instagram.com*' OR lower(coalesce(c.canonical_url,'')) GLOB '*facebook.com*' OR lower(coalesce(c.canonical_url,'')) GLOB '*x.com/*' OR lower(coalesce(c.canonical_url,'')) GLOB '*twitter.com*' OR lower(coalesce(c.canonical_url,'')) GLOB '*linkedin.com*' THEN 12 ELSE 0 END
+        ) AS recovery_score
  FROM candidates c
  LEFT JOIN candidate_enrichment e ON e.candidate_id=c.id AND e.source_last_checked>=c.last_checked
  WHERE c.status='validated' AND c.market='GB'
@@ -60,8 +69,15 @@ WITH current AS (
      (json_extract(e.enrichment_json,'$.location.value') IS NULL
       AND json_extract(e.enrichment_json,'$.location_area.value') IS NULL)
    )
+),
+ranked AS (
+ SELECT *,ROW_NUMBER() OVER (
+   PARTITION BY region_code
+   ORDER BY recovery_score DESC,last_checked ASC,id ASC
+ ) AS rn
+ FROM scored
 )
-SELECT * FROM current WHERE rn=1 ORDER BY last_checked ASC,id ASC LIMIT ?
+SELECT * FROM ranked WHERE rn=1 ORDER BY recovery_score DESC,last_checked ASC,id ASC LIMIT ?
 `,[LIMIT]);
 
 const fetchProvider=createHttpFetchProvider();
