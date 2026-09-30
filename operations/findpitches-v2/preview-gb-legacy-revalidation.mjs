@@ -17,14 +17,17 @@ const outcomes=[];
 for(const old of selected){
  const hint=String(old.county||old.region||old.location||'').trim();
  const geo=matchGeo(hint);
- const source=firstUrl(old.canonical_url,old.source_url,old.application_url,old.url);
+ const source=firstUrl(old.application_url,old.canonical_url,old.source_url,old.url);
  if(!source||!geo){outcomes.push({legacy_title:old.title||old.event_name||null,status:'unmappable',hint,source});continue;}
  try{
   const evaluated=await evaluator({market:getMarket('GB'),region_code:geo.code,location:geo.name,result:{url:source,title:old.title||old.event_name||null}});
   let practical=null,enrichment=null;
   if(evaluated.status==='validated'){
-   enrichment=(await previewCandidateEnrichment({...evaluated,canonical_url:evaluated.canonical_url,application_url:evaluated.application_url,geography:{country_code:'GB',region_code:geo.code,region:geo.name}},{fetchProvider})).enrichment;
-   practical=projectPracticalOpportunity({...evaluated,region_code:geo.code,geography:{country_code:'GB',region_code:geo.code,region:geo.name},last_checked:new Date().toISOString()},enrichment,{now:new Date()});
+   const legacyLocation=String(old.location||'').trim();
+   const locality=legacyLocation&&norm(legacyLocation)!==norm(geo.name)?legacyLocation:null;
+   const geography={country_code:'GB',region_code:geo.code,region:geo.name,...(locality?{locality}:{})};
+   enrichment=(await previewCandidateEnrichment({...evaluated,canonical_url:evaluated.canonical_url,application_url:evaluated.application_url,geography},{fetchProvider})).enrichment;
+   practical=projectPracticalOpportunity({...evaluated,region_code:geo.code,geography,last_checked:new Date().toISOString()},enrichment,{now:new Date()});
   }
   outcomes.push({legacy_title:old.title||old.event_name||null,legacy_location:old.location||null,region_code:geo.code,source,status:evaluated.status,rejection_reason:evaluated.rejection_reason,score:evaluated.score,practical_usable:Boolean(practical?.readiness?.ready),recovered_location:practical?.opportunity?.location??null,location_precision:practical?.opportunity?.location_precision??null,blocked:practical?.readiness?.blocked??[],missing:practical?.readiness?.missing??[]});
  }catch(error){outcomes.push({legacy_title:old.title||old.event_name||null,legacy_location:old.location||null,region_code:geo.code,source,status:'error',error:String(error?.message||error).slice(0,180)});}
