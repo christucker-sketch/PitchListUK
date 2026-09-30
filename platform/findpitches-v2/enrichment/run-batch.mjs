@@ -306,9 +306,11 @@ export function extractSupportedPlaceEvidence(geography,docs){
   const docText=String(doc.text||'');
   const docHasEventContext=eventContext(docText);
   const sentences=docText.split(/(?<=[.!?])\s+|\n+/).map(x=>x.trim()).filter(Boolean);
-  for(const sentence of sentences){
+  for(const [sentenceIndex,sentence] of sentences.entries()){
    if(sentence.length>500)continue;
-   if(!eventContext(sentence)&&!(docHasEventContext&&(explicitLocationLine(sentence)||locationPageUrl(doc.url))))continue;
+   const explicitLine=explicitLocationLine(sentence);
+   const earlyLocationPageLine=docHasEventContext&&locationPageUrl(doc.url)&&sentenceIndex<=7;
+   if(!eventContext(sentence)&&!(docHasEventContext&&(explicitLine||earlyLocationPageLine)))continue;
    if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters|police|emergency|terms\s+and\s+conditions|privacy\s+policy|legal\s+notice)\b/i.test(sentence))continue;
    for(const regionName of variants){
     const escaped=escapeRegex(regionName);
