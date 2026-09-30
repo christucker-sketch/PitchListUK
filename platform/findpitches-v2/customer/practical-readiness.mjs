@@ -68,7 +68,8 @@ function supportedArea(field){
  const name=text(field.value);if(!name)return null;
  const evidence=field.evidence.find(item=>safeHttp(item?.source)&&text(item?.excerpt)?.toLowerCase().includes(name.toLowerCase()));
  if(!evidence)return null;
- return Object.freeze({value:name,precision:areaPrecision(name),confidence:finite(field.confidence)??0.72,
+ const storedPrecision=['place','area'].includes(String(field.precision||''))?String(field.precision):areaPrecision(name);
+ return Object.freeze({value:name,precision:storedPrecision,confidence:finite(field.confidence)??0.72,
   provenance:Object.freeze({evidence:Object.freeze([evidence]),confidence:finite(field.confidence)})});
 }
 function areaPrecision(value){
