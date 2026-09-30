@@ -72,7 +72,8 @@ export function extractEvidence({
   now = new Date()
 } = {}) {
   const html = String(body || '');
-  const text = htmlToText(html);
+  const contentHtml = stripSiteChrome(html);
+  const text = htmlToText(contentHtml);
   const normalized = text.toLowerCase();
   const evidence = [];
 
@@ -188,6 +189,11 @@ function applicationLinkScore(label, href) {
   if (/food[ -]?truck/.test(value)) score += 10;
   if (/login|sign in/.test(value)) score -= 5;
   return score;
+}
+
+function stripSiteChrome(html) {
+  return String(html || '')
+    .replace(/<(nav|header|footer|aside)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ');
 }
 
 function htmlToText(html) {
