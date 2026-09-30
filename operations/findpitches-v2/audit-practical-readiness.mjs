@@ -61,13 +61,23 @@ const metaRows=await query(`SELECT key,value,updated_at FROM runtime_meta
  WHERE key IN ('enrichment_ruleset_version','enrichment_ruleset_sweep_version','enrichment_ruleset_sweep_started_at')
  ORDER BY key`);
 const ruleset_meta=Object.fromEntries(metaRows.map(row=>[row.key,{value:row.value,updated_at:row.updated_at}]));
+const sweepStarted=ruleset_meta.enrichment_ruleset_sweep_started_at?.value||null;
+const refreshQueue=sweepStarted?(await query(`
+ SELECT status,COUNT(*) AS count
+ FROM enrichment_queue
+ WHERE last_error=?
+ GROUP BY status ORDER BY status`,['ruleset_refresh:2026-09-30-practical-location-v1'])):[];
+const enrichedSinceSweep=sweepStarted?(await query(`
+ SELECT COUNT(*) AS count
+ FROM candidate_enrichment
+ WHERE enriched_at>=?`,[sweepStarted])):[];
 const locationAreaStored=(await query(`SELECT
  COUNT(*) AS total,
  SUM(CASE WHEN json_extract(enrichment_json,'$.location_area.precision')='place' THEN 1 ELSE 0 END) AS place,
  SUM(CASE WHEN json_extract(enrichment_json,'$.location_area.precision')='area' THEN 1 ELSE 0 END) AS area
  FROM candidate_enrichment
  WHERE json_extract(enrichment_json,'$.location_area.value') IS NOT NULL`))[0]||{};
-console.log(JSON.stringify({at:now.toISOString(),ruleset_meta,location_area_stored:{
+console.log(JSON.stringify({at:now.toISOString(),ruleset_meta,refresh_queue:refreshQueue,enriched_since_sweep:Number(enrichedSinceSweep?.[0]?.count||0),location_area_stored:{
  total:Number(locationAreaStored.total||0),place:Number(locationAreaStored.place||0),area:Number(locationAreaStored.area||0)
 },totals,markets},null,2));
 function parse(v){try{return JSON.parse(v||'{}');}catch{return {};}}
