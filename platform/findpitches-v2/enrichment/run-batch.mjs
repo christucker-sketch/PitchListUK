@@ -192,12 +192,13 @@ function extractEnrichment(row,pages){
   const rawDocs=pages.map(p=>({url:p.final_url,body:p.body}));
   const named=extractNamedFields(rawDocs);
   const structured=extractStructuredEventLocation(rawDocs);
-  const strictLocation=verifiedLocationForGeography(named.location ?? structured.location,geography);
-  const structuredArea=verifiedLocationForGeography(structured.location_area,geography);
+  const sourceConflict=sourceGeographyConflict(geography,docs);
+  const strictLocation=sourceConflict?null:verifiedLocationForGeography(named.location ?? structured.location,geography);
+  const structuredArea=sourceConflict?null:verifiedLocationForGeography(structured.location_area,geography);
   const result={
     organiser:named.organiser ?? evidenceField(row.organiser,docs),
     location:strictLocation,
-    location_area:structuredArea ?? extractVerifiedLocalityHint(geography,docs) ?? extractHtmlHeadingPlaceEvidence(geography,rawDocs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
+    location_area:sourceConflict?null:(structuredArea ?? extractVerifiedLocalityHint(geography,docs) ?? extractHtmlHeadingPlaceEvidence(geography,rawDocs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs))
   };
   const deadline=firstDateInDocs(docs,[
     /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
@@ -212,6 +213,22 @@ function extractEnrichment(row,pages){
   const description=descriptionExcerpt(docs);
   if(description) result.description=withEvidence(description.value,description.excerpt,docs);
   return normalizeEnrichment(result);
+}
+function sourceGeographyConflict(geography,docs){
+ const market=String(geography?.country_code||'').trim().toUpperCase();
+ const expected=String(geography?.region_code||'').trim().toUpperCase();
+ if(!market||!expected)return false;
+ const textValue=docs.filter(doc=>doc.kind!=='search_result').map(doc=>String(doc.text||'')).join('\n');
+ if(!textValue)return false;
+ if(market==='GB'&&explicitForeignGbLocation(textValue))return true;
+ let geos=[];try{geos=enabledGeographies(market);}catch{return false;}
+ const mentions=new Set();
+ for(const item of geos){
+  const variants=[item.name,...(item.aliases||[])].map(v=>String(v||'').trim()).filter(v=>v.length>=4);
+  if(variants.some(v=>normalizedMention(textValue,v)))mentions.add(String(item.code).toUpperCase());
+ }
+ if(mentions.size===0||mentions.has(expected))return false;
+ return mentions.size===1;
 }
 function verifiedLocationForGeography(field,geography){
  if(!field?.value)return null;
@@ -339,13 +356,17 @@ function supportedGeographyCandidates(geography){
   const market=String(geography?.country_code||'').trim().toUpperCase();
   let item=null;
   try{item=enabledGeographies(market).find(x=>x.code===code)||null;}catch{}
-  const suffix=code&&region.toUpperCase().endsWith(' '+code)?region.slice(0,-code.length).trim():null;
-  if(suffix){
-   const variants=[suffix+' '+code,suffix+', '+code];
-   if(item?.name)variants.push(suffix+' '+item.name,suffix+', '+item.name);
-   add(region,'place',variants);
+  if(code&&region.toUpperCase()===code&&item?.name){
+   add(item.name,'area',item.aliases||[]);
   }else{
-   add(region,'area',[item?.name,...(item?.aliases||[])]);
+   const suffix=code&&region.toUpperCase().endsWith(' '+code)?region.slice(0,-code.length).trim():null;
+   if(suffix){
+    const variants=[suffix+' '+code,suffix+', '+code];
+    if(item?.name)variants.push(suffix+' '+item.name,suffix+', '+item.name);
+    add(region,'place',variants);
+   }else{
+    add(region,'area',[item?.name,...(item?.aliases||[])]);
+   }
   }
  }
  return result;
