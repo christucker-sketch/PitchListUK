@@ -126,6 +126,7 @@ export function createHttpFetchProvider({
         const pdfUrl = /\.pdf$/i.test(finalPath);
         const docxType = /application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document/.test(contentType);
         const docxUrl = /\.docx$/i.test(finalPath);
+        const genericBinaryType = /^(?:application\/octet-stream|application\/download)(?:\s*;|$)/.test(contentType);
         if (pdfType || pdfUrl) {
           // Ordinary web requests stay tightly bounded. Once headers/URL prove a
           // PDF, allow a slightly longer bounded window for download + parsing.
@@ -136,7 +137,7 @@ export function createHttpFetchProvider({
           timer = setTimeout(() => controller.abort('timeout'), Math.max(1000, Number(docxTimeoutMs) || DEFAULT_DOCX_TIMEOUT_MS));
         }
         // Reject clearly unrelated responses before downloading them.
-        if (!supportedHtml && !pdfType && !pdfUrl && !docxType && !docxUrl && contentType) {
+        if (!supportedHtml && !pdfType && !pdfUrl && !docxType && !docxUrl && !genericBinaryType && contentType) {
           throw new Error(`findpitches_v2_fetch_content_type_unsupported:${contentType}`);
         }
 
@@ -161,7 +162,7 @@ export function createHttpFetchProvider({
           });
         }
         const zipSignature = bytes.length >= 4 && bytes[0] === 0x50 && bytes[1] === 0x4b && bytes[2] === 0x03 && bytes[3] === 0x04;
-        if (docxType || (docxUrl && !supportedHtml)) {
+        if (docxType || zipSignature || (docxUrl && !supportedHtml)) {
           if (!zipSignature) throw new Error('findpitches_v2_docx_invalid_signature');
           let body;
           try {
