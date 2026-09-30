@@ -225,3 +225,14 @@ test('US state code in a non-US location statement is cross-market evidence',()=
  assert.equal(r.readiness.ready,false);
  assert.ok(r.readiness.blocked.some(x=>x.code==='cross_market_geography'));
 });
+
+
+test('freshly verified locality hint is practical but not venue-verified',()=>{
+ const enrichment={location_area:{value:'Northampton Racecourse, Northampton',precision:'place',
+  evidence:[{source:'https://event.test/apply',kind:'verified_location_hint',excerpt:'Food vendor applications are open. Northampton Racecourse, Northampton is the site for this year.'}],confidence:.84}};
+ const r=projectPracticalOpportunity({...candidate,region_code:'GB-ENG-NHANTS'},enrichment,{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.opportunity.location,'Northampton Racecourse, Northampton');
+ assert.equal(r.opportunity.location_precision,'place');
+ assert.equal(r.opportunity.venue_verified,false);
+ assert.equal(r.readiness.ready,true);
+});
