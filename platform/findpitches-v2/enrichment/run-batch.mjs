@@ -87,6 +87,15 @@ export async function enqueueValidatedForEnrichment(db, { now = new Date(), limi
   return Object.freeze({ enqueued: candidates.length });
 }
 
+export async function previewCandidateEnrichment(candidate={}, {fetchProvider}={}){
+ if(!fetchProvider?.fetch) throw new Error('findpitches_v2_enrichment_fetch_missing');
+ const pages=await fetchCandidatePages(candidate,fetchProvider);
+ return Object.freeze({
+  enrichment:extractEnrichment(candidate,pages),
+  fetched_urls:Object.freeze(pages.map(page=>page.final_url))
+ });
+}
+
 export async function runEnrichmentBatch(db, { fetchProvider, now = new Date(), limit = DEFAULT_LIMIT } = {}) {
   if (!db?.prepare) throw new Error('findpitches_v2_enrichment_db_missing');
   if (!fetchProvider?.fetch) throw new Error('findpitches_v2_enrichment_fetch_missing');
