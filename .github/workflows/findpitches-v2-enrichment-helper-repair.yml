@@ -1,11 +1,7 @@
 name: FindPitches v2 enrichment helper regression repair
 
 "on":
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-enrichment-helper-repair.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
