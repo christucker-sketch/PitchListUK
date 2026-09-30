@@ -1,5 +1,6 @@
 const DEFAULT_TIMEOUT_MS = 12_000;
 const DEFAULT_MAX_BYTES = 1_500_000;
+const DEFAULT_PDF_TIMEOUT_MS = 25_000;
 const MAX_PDF_PAGES = 12;
 const MAX_PDF_TEXT_CHARS = 50_000;
 
@@ -50,6 +51,7 @@ async function readBounded(response, maxBytes) {
 export function createHttpFetchProvider({
   fetchImpl = fetch,
   timeoutMs = DEFAULT_TIMEOUT_MS,
+  pdfTimeoutMs = DEFAULT_PDF_TIMEOUT_MS,
   maxBytes = DEFAULT_MAX_BYTES,
   pdfExtractor = extractPdfText,
   userAgent = 'FindPitchesBot/2.0 (+https://findpitches.com)'
@@ -64,7 +66,7 @@ export function createHttpFetchProvider({
         throw new Error('findpitches_v2_fetch_protocol_rejected');
       }
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort('timeout'), Math.max(1000, Number(timeoutMs) || DEFAULT_TIMEOUT_MS));
+      let timer = setTimeout(() => controller.abort('timeout'), Math.max(1000, Number(timeoutMs) || DEFAULT_TIMEOUT_MS));
       try {
         const response = await fetchImpl(target.toString(), {
           method: 'GET',
@@ -85,6 +87,12 @@ export function createHttpFetchProvider({
         const supportedHtml = /(?:text\/html|application\/xhtml\+xml|text\/plain)/.test(contentType);
         const pdfType = /application\/pdf/.test(contentType);
         const pdfUrl = /\.pdf$/i.test(new URL(response.url || target.toString()).pathname);
+        if (pdfType || pdfUrl) {
+          // Ordinary web requests stay tightly bounded. Once headers/URL prove a
+          // PDF, allow a slightly longer bounded window for download + parsing.
+          clearTimeout(timer);
+          timer = setTimeout(() => controller.abort('timeout'), Math.max(1000, Number(pdfTimeoutMs) || DEFAULT_PDF_TIMEOUT_MS));
+        }
         // Reject clearly unrelated responses before downloading them.
         if (!supportedHtml && !pdfType && !pdfUrl && contentType) {
           throw new Error(`findpitches_v2_fetch_content_type_unsupported:${contentType}`);
@@ -124,4 +132,4 @@ export function createHttpFetchProvider({
   });
 }
 
-export { DEFAULT_TIMEOUT_MS, DEFAULT_MAX_BYTES, MAX_PDF_PAGES, MAX_PDF_TEXT_CHARS };
+export { DEFAULT_TIMEOUT_MS, DEFAULT_PDF_TIMEOUT_MS, DEFAULT_MAX_BYTES, MAX_PDF_PAGES, MAX_PDF_TEXT_CHARS };
