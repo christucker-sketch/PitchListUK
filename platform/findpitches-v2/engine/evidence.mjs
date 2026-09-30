@@ -59,7 +59,13 @@ const NEGATIVE_PHRASES = Object.freeze([
   'fair trader scheme',
   'register for homechoice',
   'purchasing vendor application',
-  'purchasing vendor'
+  'purchasing vendor',
+  'deadline has passed',
+  'application deadline has passed',
+  'application is in draft mode by event organizer',
+  'applications are closed',
+  'vendor applications are closed',
+  'vendor spaces are full'
 ]);
 
 const APPLICATION_HINT = /(apply|application|vendor|trader|stallholder|exhibitor|pitch|food[ -]?truck)/i;
