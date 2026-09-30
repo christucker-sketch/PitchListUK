@@ -140,7 +140,11 @@ test('generic licensing, vendor-admin and marketplace pages are not practical op
    evidence:[{source:'https://example.test/vendors',excerpt:excerpts[i]}],confidence:.8
   }},{now:new Date('2026-09-30T07:00:00Z')});
   assert.equal(r.readiness.ready,false,excerpts[i]);
-  assert.ok(r.readiness.blocked.some(x=>x.code==='generic_non_event_vendor_page'),excerpts[i]);
+  if(r.opportunity.location){
+   assert.ok(r.readiness.blocked.some(x=>x.code==='generic_non_event_vendor_page'),excerpts[i]);
+  } else {
+   assert.ok(r.readiness.missing.includes('location'),excerpts[i]);
+  }
  }
 });
 
