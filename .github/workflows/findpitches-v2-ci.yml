@@ -157,3 +157,98 @@ jobs:
             gb-ranked-recovery-preview.json
             us-customer-visible-audit.json
           retention-days: 14
+
+
+  deploy-pr-shadow:
+    name: deploy-pr-shadow
+    needs: verify
+    if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && github.event.pull_request.number == 1872 && contains(github.event.pull_request.body || '', '[deploy-v2-shadow-once]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/findpitches-v2/wrangler.jsonc
+      ENRICHMENT_CONFIG: operations/findpitches-v2-enrichment/wrangler.jsonc
+
+    steps:
+      - name: Check out PR head exactly
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Re-run v2 tests before deploy
+        run: node --test tests/findpitches-v2/*.test.mjs
+
+      - name: Compile isolated workers
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.127.1 deploy --dry-run --config "$CONFIG"
+          npx --yes wrangler@4.127.1 deploy --dry-run --config "$ENRICHMENT_CONFIG"
+
+      - name: Apply isolated D1 migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          for migration in operations/findpitches-v2/migrations/*.sql; do
+            echo "Applying $migration"
+            set +e
+            output="$(npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file "$migration" --config "$CONFIG" 2>&1)"
+            rc=$?
+            set -e
+            printf '%s\n' "$output"
+            if [[ $rc -ne 0 ]]; then
+              if grep -Fq "Not currently importing anything." <<<"$output"; then
+                echo "Empty/idempotent import; continuing."
+              elif [[ "$migration" == "operations/findpitches-v2/migrations/0008_location_evidence_gate.sql" ]] &&
+                   grep -Fq "duplicate column name: location_evidence_url: SQLITE_ERROR" <<<"$output"; then
+                echo "Known previously-applied 0008 duplicate-column case; continuing."
+              else
+                exit "$rc"
+              fi
+            fi
+          done
+
+      - name: Deploy isolated shadow API
+        run: npx --yes wrangler@4.127.1 deploy --config "$CONFIG"
+
+      - name: Deploy isolated enrichment worker
+        run: npx --yes wrangler@4.127.1 deploy --config "$ENRICHMENT_CONFIG"
+
+      - name: Prove isolated runtimes and publication-off
+        shell: bash
+        run: |
+          set -euo pipefail
+          passed=false
+          for attempt in $(seq 1 15); do
+            api_health="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/health || true)"
+            api_status="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/status || true)"
+            enrich_health="$(curl --silent --show-error --fail-with-body https://findpitches-v2-enrichment.ctucker.workers.dev/health || true)"
+            enrich_status="$(curl --silent --show-error --fail-with-body https://findpitches-v2-enrichment.ctucker.workers.dev/status || true)"
+            if jq -e '.ok == true and .service == "findpitches-v2-shadow" and .mode == "shadow" and .database == "isolated" and .publication_enabled == false and .legacy_runtime_dependency == false and .local_runtime_dependency == false' <<<"$api_health" >/dev/null 2>&1 &&
+               jq -e '.ok == true and .publication_enabled == false' <<<"$api_status" >/dev/null 2>&1 &&
+               jq -e '.ok == true and .service == "findpitches-v2-enrichment" and .database == "isolated" and .serper_configured == false' <<<"$enrich_health" >/dev/null 2>&1 &&
+               jq -e '.ok == true and .service == "findpitches-v2-enrichment"' <<<"$enrich_status" >/dev/null 2>&1; then
+              passed=true
+              break
+            fi
+            sleep 2
+          done
+          if [[ "$passed" != "true" ]]; then
+            printf '%s\n%s\n%s\n%s\n' "$api_health" "$api_status" "$enrich_health" "$enrich_status" >&2
+            exit 1
+          fi
+          echo "API status:"
+          jq . <<<"$api_status"
+          echo "Enrichment status:"
+          jq . <<<"$enrich_status"
