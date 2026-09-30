@@ -246,7 +246,7 @@ export function extractVerifiedLocalityHint(geography,docs){
   for(const sentence of sentences){
    if(sentence.length>500||!normalizedMention(sentence,hint))continue;
    if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters|privacy|cookie|terms\s+and\s+conditions)\b/i.test(sentence))continue;
-   return {value:hint,precision:'place',evidence:[{source:doc.url,excerpt:sentence.slice(0,240),kind:'verified_location_hint'}],confidence:.84};
+   return {value:hint,precision:'place',evidence:[{source:doc.url,excerpt:sentence.slice(0,240),kind:doc.kind==='search_result'?'search_result_snippet':'verified_location_hint'}],confidence:doc.kind==='search_result'?.68:.84};
   }
  }
  return null;
@@ -276,7 +276,7 @@ export function extractSupportedPlaceEvidence(geography,docs){
     for(const pattern of patterns){
      const match=sentence.match(pattern);if(!match)continue;
      const place=cleanSupportedPlace(match[1],variants);if(!place)continue;
-     return {value:place,precision:'place',evidence:[{source:doc.url,excerpt:sentence.slice(0,240)}],confidence:.82};
+     return {value:place,precision:'place',evidence:[{source:doc.url,excerpt:sentence.slice(0,240),kind:doc.kind==='search_result'?'search_result_snippet':null}],confidence:doc.kind==='search_result'?.66:.82};
     }
    }
   }
@@ -293,7 +293,7 @@ export function extractSupportedAreaEvidence(geography,docs){
     if(sentence.length>500||!candidate.variants.some(variant=>normalizedMention(sentence,variant)))continue;
     if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\b/i.test(sentence))continue;
     if(!/\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(sentence))continue;
-    return {value:candidate.value,precision:candidate.precision,evidence:[{source:doc.url,excerpt:sentence.slice(0,240)}],confidence:candidate.precision==='place'?.8:.72};
+    return {value:candidate.value,precision:candidate.precision,evidence:[{source:doc.url,excerpt:sentence.slice(0,240),kind:doc.kind==='search_result'?'search_result_snippet':null}],confidence:doc.kind==='search_result'?.62:(candidate.precision==='place'?.8:.72)};
    }
   }
  }
