@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 
 import { discoverBatch } from '../../platform/findpitches-v2/acquisition/discover-batch.mjs';
+import { persistDiscoveryBatch } from '../../platform/findpitches-v2/acquisition/storage.mjs';
 
 test('acquisition discovery does not require or invoke classification', async () => {
   let searches = 0;
@@ -60,4 +61,26 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
   assert.match(config, /"\*\/5 \* \* \* \*"/);
   assert.doesNotMatch(config, /2-59\/5/);
   assert.match(config, /"\* \* \* \* \*"/);
+});
+
+
+test('acquisition storage preserves search snippet and query evidence', async () => {
+ const writes=[];
+ const db={prepare(sql){return {args:[],bind(...args){this.args=args;return this;},async run(){writes.push({sql,args:this.args});return {meta:{changes:1}};}};}};
+ await persistDiscoveryBatch(db,{run_id:'r1'},{
+  market:'GB',region:'GB-ENG-KENT',started_at:'2026-09-30T10:00:00Z',completed_at:'2026-09-30T10:01:00Z',
+  metrics:{queries:1,search_results:1,unique_urls:1},
+  candidates:[{
+   candidate_id:'fpv2_test',discovery_market:'GB',discovery_region_code:'GB-ENG-KENT',discovery_location:'Kent',
+   source_url:'https://example.test/vendors',canonical_url:'https://example.test/vendors',
+   search_title:'Maidstone Autumn Fair vendors',search_snippet:'Apply to trade at our Maidstone, Kent autumn fair.',
+   query_id:'vendor-1',query:'Kent vendor applications'
+  }]
+ });
+ const insert=writes.find(x=>/INSERT OR IGNORE INTO candidates/.test(x.sql));
+ assert.ok(insert);
+ const evidence=JSON.parse(insert.args[8]);
+ assert.equal(evidence[0].kind,'search_result');
+ assert.equal(evidence[0].snippet,'Apply to trade at our Maidstone, Kent autumn fair.');
+ assert.equal(evidence[0].query,'Kent vendor applications');
 });
