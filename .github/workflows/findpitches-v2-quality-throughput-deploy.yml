@@ -1,6 +1,11 @@
 name: FindPitches v2 quality throughput one-shot deploy
 
 "on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-quality-throughput-deploy.yml
   workflow_dispatch:
 
 permissions:
