@@ -53,6 +53,14 @@ export function assessVenueEvidence(value, excerpt) {
   return {accepted:true,reason:'explicit_venue_statement'};
 }
 
+function structuredEventEvidence(value,item){
+ if(String(item?.kind||'')!=='schema_event_location')return false;
+ const name=String(value??'').replace(/\s+/g,' ').trim();
+ const excerpt=String(item?.excerpt||'').replace(/\s+/g,' ').trim();
+ if(!name||!excerpt||NEGATIVE_CONTEXT.test(excerpt)||NON_VENUE.test(excerpt))return false;
+ if(!excerpt.toLowerCase().includes(name.toLowerCase()))return false;
+ return /["']location["']\s*:/i.test(excerpt)&&(/["']name["']\s*:/i.test(excerpt)||/["']addressLocality["']\s*:/i.test(excerpt));
+}
 export function classifyVenueEvidence(field) {
   if (!field || typeof field !== 'object' || !('value' in field)) {
     return {accepted:false,reason:'no_source_backed_field'};
@@ -68,6 +76,7 @@ export function classifyVenueEvidence(field) {
         last='invalid_evidence_url';continue;
       }
     } catch {last='invalid_evidence_url';continue;}
+    if(structuredEventEvidence(field.value,item)) return {accepted:true,reason:'structured_event_location',evidence:item};
     const result=assessVenueEvidence(field.value,item.excerpt);
     if (result.accepted) return {...result,evidence:item};
     last=result.reason;
