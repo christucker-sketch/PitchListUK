@@ -234,15 +234,17 @@ test('GB evaluator corrects discovery region from structured Event addressRegion
  assert.ok(candidate.evidence.some(item=>item.type==='region_correction'&&item.from_region_code==='GB-ENG-DURHAM'&&item.to_region_code==='GB-ENG-LEICS'));
 });
 
-test('GB evaluator corrects discovery region from unambiguous event-context county text', async () => {
+test('GB evaluator corrects region and preserves a strong city alias as locality', async () => {
  const evaluator=createDefaultCandidateEvaluator({
-  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><h1>Temple Newsam Food Festival</h1><p>Trader applications are open for our food festival in West Yorkshire in 2027.</p><a href="/apply">Trader application</a></main></body></html>'};}},
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><h1>Temple Newsam Food Festival</h1><p>Trader applications are open for our food festival in Leeds in 2027.</p><a href="/apply">Trader application</a></main></body></html>'};}},
   now:()=>new Date('2026-09-30T00:00:00Z')
  });
  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-NOTTS',location:'Nottinghamshire',result:{url:'https://foodfest.test/traders'}});
  assert.equal(candidate.status,'validated');
  assert.equal(candidate.geography.region_code,'GB-ENG-WEST-YORKS');
  assert.equal(candidate.geography.region,'West Yorkshire');
+ assert.equal(candidate.geography.locality,'Leeds');
+ assert.ok(candidate.evidence.some(item=>item.type==='region_correction'&&item.locality_hint==='Leeds'));
 });
 
 test('GB evaluator does not auto-correct a multi-region event page', async () => {
@@ -254,4 +256,16 @@ test('GB evaluator does not auto-correct a multi-region event page', async () =>
  assert.equal(candidate.status,'validated');
  assert.equal(candidate.geography.region_code,'GB-ENG-KENT');
  assert.ok(!candidate.evidence.some(item=>item.type==='region_correction'));
+});
+
+
+test('GB evaluator does not persist region correction on a rejected non-opportunity', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><h1>Find a supplier</h1><p>Read our directory coverage for businesses in Leeds.</p></main></body></html>'};}}
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-CUMB',location:'Cumbria',result:{url:'https://directory.test/leeds'}});
+ assert.equal(candidate.status,'rejected');
+ assert.equal(candidate.geography.region_code,'GB-ENG-CUMB');
+ assert.equal(candidate.geography.region,'Cumbria');
+ assert.equal(candidate.geography.locality,null);
 });
