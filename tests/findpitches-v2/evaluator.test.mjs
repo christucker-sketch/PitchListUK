@@ -372,3 +372,47 @@ test('news and press article paths are rejected despite exhibitor wording', asyn
   assert.ok(candidate.evidence.some(item=>item.type==='negative_phrase'&&item.value==='news_or_press_path'),url);
  }
 });
+
+
+test('US evaluator corrects a wrong acquisition state from explicit city-state evidence', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><head><title>Washington County Fair</title></head><body><main><p>Vendor applications are open for the Washington County Fair.</p><p>Fairgrounds: 12300 40th St N, Stillwater, MN 55082.</p><a href="/vendors">Vendor application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('US'),region_code:'WA',location:'Washington',result:{url:'https://washingtoncountyfair.test/vendors',title:'Washington County Fair'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'MN');
+ assert.equal(candidate.geography.region,'Minnesota');
+ assert.ok(candidate.evidence.some(item=>item.type==='region_correction'&&item.from_region_code==='WA'&&item.to_region_code==='MN'));
+});
+
+test('US evaluator corrects state from structured Event addressRegion code', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><head><script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","location":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":"Montclair","addressRegion":"NJ"}}}</script></head><body><main><p>Vendor application is open for the 2027 food festival.</p><a href="/apply">Vendor application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('US'),region_code:'NY',location:'New York',result:{url:'https://festival.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'NJ');
+ assert.equal(candidate.geography.region,'New Jersey');
+});
+
+test('US evaluator leaves multi-state event pages uncorrected', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><p>Vendor applications are open for our touring fair with dates in Austin, TX and Tulsa, OK.</p><a href="/apply">Vendor application</a></main></body></html>'};}}
+ });
+ const candidate=await evaluator({market:getMarket('US'),region_code:'TX',location:'Texas',result:{url:'https://tour.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'TX');
+ assert.ok(!candidate.evidence.some(item=>item.type==='region_correction'));
+});
+
+test('US evaluator keeps matching state unchanged', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><p>Vendor applications are open for the fair in Austin, TX.</p><a href="/apply">Vendor application</a></main></body></html>'};}}
+ });
+ const candidate=await evaluator({market:getMarket('US'),region_code:'TX',location:'Texas',result:{url:'https://fair.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'TX');
+ assert.ok(!candidate.evidence.some(item=>item.type==='region_correction'&&item.to_region_code!=='TX'));
+});
