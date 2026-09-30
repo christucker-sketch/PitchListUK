@@ -26,8 +26,9 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       GB_BOUNDED_RECOVERY_APPLY: '1'
-      GB_BOUNDED_RECOVERY_LIMIT: '12'
-      GB_BOUNDED_RECOVERY_BATCH_ID: '2026-09-30-gb-practical-v7'
+      GB_BOUNDED_RECOVERY_LIMIT: '4'
+      GB_BOUNDED_RECOVERY_BATCH_ID: '2026-09-30-gb-practical-v8'
+      GB_BOUNDED_RECOVERY_IDS: 'fpv2_a6f6aee898cbd8fa56d0d211,fpv2_ac40bd147f0ba954d3886e0f,fpv2_7f47b2605e7e886364cf42ff,fpv2_89e7ec98f5a32a393fad9bc2'
 
     steps:
       - name: Check out candidate
