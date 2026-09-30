@@ -44,3 +44,21 @@ test('ordinary HTML never invokes DOCX parser',async()=>{
   });
   assert.match((await provider.fetch('https://example.test/')).body,/Vendor application/);
 });
+
+
+test('fetch provider sniffs DOCX bytes behind application/download without a file extension',async()=>{
+  const provider=createHttpFetchProvider({
+    fetchImpl:async()=>response(docxBytes,'application/download','https://example.test/application.php?id=42'),
+    docxExtractor:async()=> 'Vendor application for the county fair.'
+  });
+  const page=await provider.fetch('https://example.test/application.php?id=42');
+  assert.equal(page.content_type,'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+  assert.match(page.body,/county fair/);
+});
+
+test('generic binary non-PDF non-DOCX still fails closed',async()=>{
+  const provider=createHttpFetchProvider({
+    fetchImpl:async()=>response(new Uint8Array([1,2,3,4,5]),'application/download','https://example.test/download?id=7')
+  });
+  await assert.rejects(()=>provider.fetch('https://example.test/download?id=7'),/fetch_content_type_unsupported:application\/download/);
+});
