@@ -8,6 +8,52 @@ const RETRY_MINUTES = 30;
 const MAX_LINKS = 3;
 const MAX_ATTEMPTS = 5;
 
+export async function enqueueEnrichmentRulesetRefresh(db,{now=new Date(),limit=8,ruleset}={}){
+  if(!db?.prepare) throw new Error('findpitches_v2_enrichment_db_missing');
+  const version=String(ruleset||'').trim();
+  if(!version) throw new Error('findpitches_v2_enrichment_ruleset_missing');
+  const timestamp=now.toISOString();
+  const metaKey='enrichment_ruleset_version';
+  const sweepKey='enrichment_ruleset_sweep_started_at';
+  const current=await db.prepare('SELECT value FROM runtime_meta WHERE key=?').bind(metaKey).first();
+  if(current?.value===version) return Object.freeze({ruleset:version,enqueued:0,complete:true});
+  let sweep=await db.prepare('SELECT value FROM runtime_meta WHERE key=?').bind(sweepKey).first();
+  if(!sweep?.value){
+    await db.prepare("INSERT INTO runtime_meta (key,value,updated_at) VALUES (?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at")
+      .bind(sweepKey,timestamp,timestamp).run();
+    sweep={value:timestamp};
+  }
+  const cap=Math.max(0,Math.min(Number(limit)||0,24));
+  if(cap===0) return Object.freeze({ruleset:version,sweep_started_at:sweep.value,enqueued:0,complete:false});
+  const rows=await db.prepare(`
+    SELECT c.id,c.last_checked
+      FROM candidates c
+      LEFT JOIN candidate_enrichment e ON e.candidate_id=c.id
+      LEFT JOIN enrichment_queue q ON q.candidate_id=c.id
+     WHERE c.status='validated'
+       AND c.last_checked<=?
+       AND (e.candidate_id IS NULL OR e.enriched_at<?)
+       AND (q.candidate_id IS NULL OR q.status!='leased' OR q.lease_until<=?)
+     ORDER BY c.last_checked ASC,c.id ASC
+     LIMIT ?`).bind(sweep.value,sweep.value,timestamp,cap).all();
+  const candidates=Array.isArray(rows?.results)?rows.results:[];
+  for(const row of candidates){
+    await db.prepare(`
+      INSERT INTO enrichment_queue
+      (candidate_id,status,attempts,available_at,lease_until,last_error,source_last_checked,created_at,updated_at)
+      VALUES (?,'ready',0,?,NULL,?,?,?,?)
+      ON CONFLICT(candidate_id) DO UPDATE SET
+        status='ready',attempts=0,available_at=excluded.available_at,lease_until=NULL,
+        last_error=excluded.last_error,source_last_checked=excluded.source_last_checked,updated_at=excluded.updated_at`)
+      .bind(row.id,timestamp,'ruleset_refresh:'+version,row.last_checked,timestamp,timestamp).run();
+  }
+  if(candidates.length===0){
+    await db.prepare("INSERT INTO runtime_meta (key,value,updated_at) VALUES (?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at")
+      .bind(metaKey,version,timestamp).run();
+  }
+  return Object.freeze({ruleset:version,sweep_started_at:sweep.value,enqueued:candidates.length,complete:candidates.length===0});
+}
+
 export async function enqueueValidatedForEnrichment(db, { now = new Date(), limit = 50 } = {}) {
   const timestamp = now.toISOString();
   const rows = await db.prepare(
