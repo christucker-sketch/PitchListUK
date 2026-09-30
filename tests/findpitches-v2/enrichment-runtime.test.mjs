@@ -209,3 +209,28 @@ test('non-Event JSON-LD addresses never become event locations',async()=>{
  assert.equal(enrichment.location,null);
  assert.equal(enrichment.location_area,null);
 });
+
+
+test('trusted locality hint must be freshly present in non-contact source text',async()=>{
+ const store=db({candidate_id:'legacy-hint',source_last_checked:'2026-09-30T08:00:00Z',
+  canonical_url:'https://event.test/apply',application_url:null,event_name:'Fireworks',
+  organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-NHANTS","region":"Northamptonshire","locality":"Northampton Racecourse, Northampton"}'});
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<p>Food vendor applications are open. Northampton Racecourse, Northampton is the site for this year.</p>'};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T08:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area.value,'Northampton Racecourse, Northampton');
+ assert.equal(enrichment.location_area.precision,'place');
+ assert.equal(enrichment.location_area.evidence[0].kind,'verified_location_hint');
+});
+
+test('trusted locality hint is not accepted from office or contact context',async()=>{
+ const store=db({candidate_id:'legacy-hint-office',source_last_checked:'2026-09-30T08:00:00Z',
+  canonical_url:'https://event.test/apply',application_url:null,event_name:'Fair',
+  organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-NHANTS","region":"Northamptonshire","locality":"Northampton Racecourse, Northampton"}'});
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<p>Vendor applications are open.</p><p>Contact office: Northampton Racecourse, Northampton.</p>'};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T08:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.notEqual(enrichment.location_area?.evidence?.[0]?.kind,'verified_location_hint');
+});
