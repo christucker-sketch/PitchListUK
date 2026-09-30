@@ -316,3 +316,15 @@ test('GB evaluator preserves a same-region city alias as locality evidence', asy
   assert.ok(!candidate.evidence.some(e=>e.type==='region_correction'),item.title);
  }
 });
+
+
+test('GB evaluator may derive same-region locality from the fetched page title alone', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><head><title>Newcastle Food Festival</title></head><body><main><p>Trader application is open for the 2027 festival.</p><a href="/apply">Trader application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-TYNE',location:'Tyne and Wear',result:{url:'https://festival.test/traders',title:'Generic result title'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.locality,'Newcastle upon Tyne');
+ assert.ok(candidate.evidence.some(e=>e.type==='locality_hint'&&e.value==='Newcastle upon Tyne'));
+});
