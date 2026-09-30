@@ -18,7 +18,7 @@ export async function runClassificationBatch(db, {
 
   const ready = await db.prepare(
     `SELECT q.candidate_id, c.market, c.region_code, c.canonical_url, c.event_name,
-            c.geography_json
+            c.geography_json, c.evidence_json
        FROM classification_queue q
        JOIN candidates c ON c.id = q.candidate_id
       WHERE (q.status = 'ready' AND q.available_at <= ?)
@@ -50,6 +50,8 @@ export async function runClassificationBatch(db, {
         result: { url: row.canonical_url, title: row.event_name }
       });
 
+      const priorEvidence=parseJsonArray(row.evidence_json);
+      const mergedEvidence=mergeEvidence(priorEvidence,evaluated.evidence || []);
       await db.prepare(
         `UPDATE candidates
             SET application_url = ?, event_name = ?, organiser = ?,
@@ -61,7 +63,7 @@ export async function runClassificationBatch(db, {
         evaluated.event_name,
         evaluated.organiser,
         JSON.stringify(evaluated.geography || {}),
-        JSON.stringify(evaluated.evidence || []),
+        JSON.stringify(mergedEvidence),
         Number(evaluated.score || 0),
         evaluated.status,
         evaluated.rejection_reason,
@@ -106,4 +108,27 @@ function parseJson(value) {
   } catch {
     return {};
   }
+}
+
+
+function parseJsonArray(value) {
+  try {
+    const parsed=JSON.parse(value || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+function mergeEvidence(prior,next) {
+  const out=[],seen=new Set();
+  for(const item of [...(Array.isArray(prior)?prior:[]),...(Array.isArray(next)?next:[])]){
+    if(!item||typeof item!=='object')continue;
+    const key=JSON.stringify([
+      item.kind||null,item.source||item.url||null,item.title||null,
+      item.snippet||item.excerpt||null,item.query_id||null,item.query||null
+    ]);
+    if(seen.has(key))continue;
+    seen.add(key);out.push(item);
+  }
+  return out;
 }
