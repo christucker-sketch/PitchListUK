@@ -296,3 +296,23 @@ test('social source candidates are rejected before any fetch is attempted', asyn
  }
  assert.equal(fetches,0);
 });
+
+
+test('GB evaluator preserves a same-region city alias as locality evidence', async () => {
+ const cases=[
+  {region_code:'GB-ENG-SOUTH-YORKS',location:'South Yorkshire',city:'Sheffield',title:'Graves Park Food Festival | Sheffield'},
+  {region_code:'GB-ENG-TYNE',location:'Tyne and Wear',city:'Newcastle upon Tyne',title:'Newcastle Food Festival'}
+ ];
+ for(const item of cases){
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(url){return {final_url:url,body:`<html><head><title>${item.title}</title></head><body><main><p>Trader application is open for the 2027 festival.</p><a href="/apply">Trader application</a></main></body></html>`};}},
+   now:()=>new Date('2026-09-30T00:00:00Z')
+  });
+  const candidate=await evaluator({market:getMarket('GB'),region_code:item.region_code,location:item.location,result:{url:'https://festival.test/traders'}});
+  assert.equal(candidate.status,'validated',item.title);
+  assert.equal(candidate.geography.region_code,item.region_code,item.title);
+  assert.equal(candidate.geography.locality,item.city,item.title);
+  assert.ok(candidate.evidence.some(e=>e.type==='locality_hint'&&e.value===item.city),item.title);
+  assert.ok(!candidate.evidence.some(e=>e.type==='region_correction'),item.title);
+ }
+});
