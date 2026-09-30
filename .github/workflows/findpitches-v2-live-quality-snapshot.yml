@@ -1,0 +1,42 @@
+name: FindPitches v2 live quality snapshot
+
+"on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-live-quality-snapshot.yml
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Read aggregate v2 status
+        shell: bash
+        run: |
+          set -euo pipefail
+          health="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          status="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/status)"
+          jq -e '.ok == true and .service == "findpitches-v2-shadow" and
+            .mode == "shadow" and .database == "isolated" and
+            .publication_enabled == false and
+            .us_city_discovery_profile == "official_first_v1" and
+            .customer_promotion_batch_limit == 48' <<< "$health" >/dev/null
+          jq -e '.ok == true and .publication_enabled == false and
+            .counts.scheduler_jobs == 483 and
+            .customer_promotion_batch_limit == 48' <<< "$status" >/dev/null
+          jq '{
+            at: now,
+            counts,
+            scheduler,
+            classifier,
+            enrichment,
+            customer_promotion,
+            customer_location_quality,
+            pdf_recovery,
+            latest_run
+          }' <<< "$status"
