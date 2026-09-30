@@ -5,6 +5,9 @@ on:
     types: [ready_for_review]
     paths:
       - 'operations/findpitches-v2/preview-gb-ranked-recovery.mjs'
+      - 'platform/findpitches-v2/enrichment/run-batch.mjs'
+      - 'platform/findpitches-v2/customer/practical-readiness.mjs'
+      - 'tests/findpitches-v2/enrichment-runtime.test.mjs'
       - '.github/workflows/findpitches-v2-gb-ranked-preview.yml'
 
 permissions:
