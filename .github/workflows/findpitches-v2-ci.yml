@@ -157,3 +157,57 @@ jobs:
             gb-ranked-recovery-preview.json
             us-customer-visible-audit.json
           retention-days: 14
+
+
+  requeue-docx-dead:
+    name: requeue-docx-dead
+    needs: verify
+    if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && github.event.pull_request.number == 1872 && contains(github.event.pull_request.body || '', '[requeue-docx-dead-once]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      DOCX_DEAD_REQUEUE_BATCH_ID: '2026-09-30-docx-dead-v1'
+      DOCX_DEAD_REQUEUE_LIMIT: '20'
+
+    steps:
+      - name: Check out PR head exactly
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prove DOCX-capable isolated enrichment runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          health="$(curl --silent --show-error --fail-with-body --max-time 15 https://findpitches-v2-enrichment.ctucker.workers.dev/health)"
+          jq -e '.ok == true and .service == "findpitches-v2-enrichment" and .database == "isolated" and .serper_configured == false' <<< "$health" >/dev/null
+
+      - name: Requeue only dead DOCX enrichment failures
+        run: node operations/findpitches-v2/requeue-docx-enrichment-dead.mjs | tee docx-dead-requeue-result.json
+
+      - name: Allow live enrichment worker to consume released rows
+        run: sleep 75
+
+      - name: Audit unsupported content types after DOCX requeue
+        run: node operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs | tee unsupported-fetch-after-docx-requeue.json
+
+      - name: Audit practical readiness after DOCX requeue
+        run: node operations/findpitches-v2/audit-practical-readiness.mjs | tee practical-readiness-after-docx-requeue.json
+
+      - name: Upload DOCX requeue evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: docx-dead-requeue-${{ github.run_id }}
+          path: |
+            docx-dead-requeue-result.json
+            unsupported-fetch-after-docx-requeue.json
+            practical-readiness-after-docx-requeue.json
+          retention-days: 14
