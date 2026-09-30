@@ -35,7 +35,7 @@ WITH ranked AS (
  LEFT JOIN candidate_enrichment e ON e.candidate_id=c.id AND e.source_last_checked>=c.last_checked
  WHERE c.status='validated' AND c.market='GB'
 )
-SELECT * FROM ranked WHERE rn<=2 ORDER BY region_code ASC,rn ASC LIMIT 64
+SELECT * FROM ranked WHERE rn<=2 ORDER BY region_code ASC,rn ASC LIMIT 24
 `);
 
 const evaluator=createDefaultCandidateEvaluator({fetchProvider:createHttpFetchProvider(),now:()=>new Date()});
