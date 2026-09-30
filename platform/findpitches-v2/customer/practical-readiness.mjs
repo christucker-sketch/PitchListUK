@@ -104,31 +104,31 @@ function inspectEvidenceQuality(record,evidence,blocked,now){
  const excerpt=text(evidence?.excerpt);
  if(!excerpt)return;
  const context=[record.location,excerpt].filter(Boolean).join(' ');
- if(crossMarketGeography(record.market,context))blocked.push(reason('cross_market_geography','location'));
+ if(crossMarketGeography(record.market,record.location,excerpt))blocked.push(reason('cross_market_geography','location'));
  if(staleEventYear(excerpt,now))blocked.push(reason('stale_event_year','location'));
  if(genericNonEventVendorPage(excerpt))blocked.push(reason('generic_non_event_vendor_page','location'));
 }
-function crossMarketGeography(market,value){
- const m=upper(market),v=String(value||'');
- if(!m||!v)return false;
+function crossMarketGeography(market,location,excerpt){
+ const m=upper(market),loc=String(location||''),textValue=[loc,excerpt].filter(Boolean).join(' ');
+ if(!m||!textValue)return false;
  const explicitCountry={
-  GB:/\b(?:united\s+states|u\.?s\.?a?\.?|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
+  GB:/\b(?:united\s+states|u\.?s\.?|u\.?s\.?a\.?|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
   US:/\b(?:united\s+kingdom|u\.?k\.?|england|scotland|wales|northern\s+ireland|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
-  CA:/\b(?:united\s+kingdom|u\.?k\.?|england|scotland|wales|northern\s+ireland|united\s+states|u\.?s\.?a?\.?|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
-  IE:/\b(?:united\s+states|u\.?s\.?a?\.?|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i
+  CA:/\b(?:united\s+kingdom|u\.?k\.?|england|scotland|wales|northern\s+ireland|united\s+states|u\.?s\.?|u\.?s\.?a\.?|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
+  IE:/\b(?:united\s+states|u\.?s\.?|u\.?s\.?a\.?|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i
  }[m];
- if(explicitCountry?.test(v))return true;
+ if(explicitCountry?.test(textValue))return true;
  const usStateAfterComma=/,\s*(?:alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|new\s+hampshire|new\s+jersey|new\s+mexico|new\s+york|north\s+carolina|north\s+dakota|ohio|oklahoma|oregon|pennsylvania|rhode\s+island|south\s+carolina|south\s+dakota|tennessee|texas|utah|vermont|virginia|washington|west\s+virginia|wisconsin|wyoming)\b/i;
- if(m!=='US'&&usStateAfterComma.test(v))return true;
+ if(m!=='US'&&usStateAfterComma.test(loc))return true;
  const canadaProvinceAfterComma=/,\s*(?:alberta|british\s+columbia|manitoba|new\s+brunswick|newfoundland(?:\s+and\s+labrador)?|nova\s+scotia|ontario|prince\s+edward\s+island|qu[eé]bec|saskatchewan|northwest\s+territories|nunavut|yukon)\b/i;
- if(m!=='CA'&&canadaProvinceAfterComma.test(v))return true;
+ if(m!=='CA'&&canadaProvinceAfterComma.test(loc))return true;
  return false;
 }
 function staleEventYear(excerpt,now){
  const year=now.getUTCFullYear();
  const years=[...String(excerpt||'').matchAll(/\b((?:19|20)\d{2})\b/g)].map(m=>({year:Number(m[1]),index:m.index||0}));
  if(!years.length||years.some(x=>x.year>=year-1))return false;
- const plausibleEditionYears=years.filter(x=>x.year>=year-5&&x.year<=year-2);
+ const plausibleEditionYears=years.filter(x=>x.year>=year-5&&x.year<=year-2&&!/\b(?:founded|established|formed|created|since|operating\s+since)\b/i.test(excerpt.slice(Math.max(0,x.index-28),Math.min(excerpt.length,x.index+12))));
  if(!plausibleEditionYears.length)return false;
  const event=/\b(?:festival|fair|market|event|show|expo|exhibition|fete|carnival|parade|vendor|trader|stallholder|exhibitor|application|apply|deadline|held|takes?\s+place)\b/i;
  return plausibleEditionYears.some(x=>{
