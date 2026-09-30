@@ -6,6 +6,7 @@ export const PRODUCT_READINESS_SCHEMA_VERSION='2026-09-30.practical-v2';
 const WRAPPER_HOSTS=new Set(['google.com','www.google.com','google.co.uk','www.google.co.uk','google.com.hk','www.google.com.hk']);
 const SOCIAL_HOSTS=new Set(['instagram.com','www.instagram.com','facebook.com','www.facebook.com','x.com','www.x.com','twitter.com','www.twitter.com']);
 const BLOCKED_PATH_TERMS=Object.freeze(['procurement','supplier','vendor-registration','vendor_registration','rfp','tender']);
+const POLICY_PATH_TERMS=Object.freeze(['terms','terms-and-conditions','terms_conditions','privacy','privacy-policy','privacy_policy','cookie-policy','cookie_policy','legal']);
 
 export function projectPracticalOpportunity(candidate={},enrichment={}, {now=new Date()}={}){
  const venue=venueLocation(enrichment.location);
@@ -71,7 +72,7 @@ function supportedArea(field){
  const evidence=field.evidence.find(item=>{
   if(!safeHttp(item?.source))return false;
   const excerpt=text(item?.excerpt);if(!excerpt||!normalizedContains(excerpt,name))return false;
-  if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing)\s+(?:office|address|location|headquarters|contact)|\b(?:our\s+office|our\s+address|mail\s+to|contact\s+us|registered\s+at)\b/i.test(excerpt))return false;
+  if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing)\s+(?:office|address|location|headquarters|contact)|\b(?:our\s+office|our\s+address|mail\s+to|contact\s+us|registered\s+at|police|emergency|terms\s+and\s+conditions|privacy\s+policy|legal\s+notice)\b/i.test(excerpt))return false;
   const kind=String(item?.kind||'');
   if(kind==='schema_event_location')return /["']location["']\s*:/i.test(excerpt);
   if(kind==='verified_location_hint'||kind==='event_page_location_heading'||kind==='event_location_page')return true;
@@ -101,6 +102,7 @@ function inspectUrl(field,value,blocked,now){
  if(WRAPPER_HOSTS.has(host)&&(path==='/url'||url.searchParams.has('url')||url.searchParams.has('q')))blocked.push(reason('search_wrapper_url',field));
  if(SOCIAL_HOSTS.has(host))blocked.push(reason('social_url',field));
  if(BLOCKED_PATH_TERMS.some(term=>path.includes(term)))blocked.push(reason('procurement_or_supplier_url',field));
+ if(field==='canonical_url'&&POLICY_PATH_TERMS.some(term=>path.includes(term)))blocked.push(reason('policy_or_terms_url',field));
  const year=now.getUTCFullYear(),years=[...String(value).matchAll(/(?:19|20)\d{2}/g)].map(m=>Number(m[0]));
  if(years.some(y=>y<year-1))blocked.push(reason('stale_year_in_url',field));
 }
