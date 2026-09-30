@@ -366,3 +366,16 @@ test('search query geography alone is never accepted as enrichment evidence',asy
  const enrichment=JSON.parse(stored.args[2]);
  assert.equal(enrichment.location_area,null);
 });
+
+
+test('footer location text is not accepted as event location evidence',async()=>{
+ const store=db({candidate_id:'footer-location',source_last_checked:'2026-09-30T11:30:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Festival',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const body='<html><body><main><p>Vendor applications are open for our annual festival.</p></main><footer><p>Maidstone, Kent</p></footer></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T11:31:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area,null);
+});
