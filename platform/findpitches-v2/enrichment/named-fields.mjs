@@ -7,7 +7,7 @@ const ORGANISER_PATTERNS = [
   /\b(?:event\s+organis(?:er|er)|event\s+organiz(?:er|ation)|hosted\s+by|presented\s+by)\s*[:\-]?\s*([^\n.!?;|]{3,100})/i
 ];
 const LOCATION_PATTERNS = [
-  /\b(?:event\s+venue|festival\s+venue|fair\s+venue|market\s+venue|show\s+venue|venue|event\s+location|festival\s+location|fair\s+location|market\s+location|show\s+location|event\s+address|event\s+site|festival\s+site|fair\s+site|held\s+at|taking\s+place\s+at|takes\s+place\s+at)\s*[:\-]?\s*([^\n.!?;|]{3,160})/i,
+  /\b(?:event\s+venue|festival\s+venue|fair\s+venue|market\s+venue|show\s+venue|venue|event\s+location|location|festival\s+location|fair\s+location|market\s+location|show\s+location|event\s+address|event\s+site|festival\s+site|fair\s+site|held\s+at|taking\s+place\s+at|takes\s+place\s+at)\s*[:\-]?\s*([^\n.!?;|]{3,160})/i,
   /\bwhere\s*[:\-]\s*([^\n.!?;|]{3,160})/i
 ];
 const STOP = /\s+(?:application\s+deadline|deadline|apply\s+now|register\s+now|book\s+now|terms\s+and\s+conditions|contact\s+us|phone|telephone|tel\.?|email|click\s+here)\b.*$/i;
