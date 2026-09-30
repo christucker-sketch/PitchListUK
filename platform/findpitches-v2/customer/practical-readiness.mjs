@@ -46,6 +46,7 @@ export function assessPracticalReadiness(record={}, {now=new Date(),locationEvid
  if(present(record.canonical_url))inspectUrl('canonical_url',record.canonical_url,blocked,now);
  if(present(record.application_url))inspectUrl('application_url',record.application_url,blocked,now);
  if(record.event_end&&past(record.event_end,now))blocked.push(reason('event_ended','event_end'));
+ else if(record.event_start&&past(record.event_start,now))blocked.push(reason('event_started','event_start'));
  if(record.application_deadline&&past(record.application_deadline,now))blocked.push(reason('application_deadline_passed','application_deadline'));
  inspectEvidenceQuality(record,locationEvidence,blocked,now);
  return Object.freeze({
