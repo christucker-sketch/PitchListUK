@@ -197,7 +197,7 @@ function extractEnrichment(row,pages){
   const result={
     organiser:named.organiser ?? evidenceField(row.organiser,docs),
     location:strictLocation,
-    location_area:structuredArea ?? extractVerifiedLocalityHint(geography,docs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
+    location_area:structuredArea ?? extractVerifiedLocalityHint(geography,docs) ?? extractHtmlHeadingPlaceEvidence(geography,rawDocs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
   };
   const deadline=firstDateInDocs(docs,[
     /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
@@ -251,6 +251,31 @@ export function extractVerifiedLocalityHint(geography,docs){
  }
  return null;
 }
+export function extractHtmlHeadingPlaceEvidence(geography,docs){
+ const market=String(geography?.country_code||'').trim().toUpperCase();
+ if(market!=='GB')return null;
+ const expected=String(geography?.region_code||'').trim().toUpperCase();
+ const variants=gbRegionVariants(geography);
+ if(!variants.length)return null;
+ for(const doc of docs){
+  const body=String(doc?.body||'').replace(/<(nav|header|footer|aside)\b[^>]*>[\s\S]*?<\/\1>/gi,' ');
+  if(!eventContext(plain(body)))continue;
+  const re=/<h[1-4]\b[^>]*>([\s\S]*?)<\/h[1-4]>/gi;
+  let match;
+  while((match=re.exec(body))){
+   const heading=plain(match[1]);
+   if(!heading||heading.length>180)continue;
+   for(const regionName of variants){
+    const escaped=escapeRegex(regionName);
+    const pattern=new RegExp('\\b([A-Z][A-Za-z’\\\'\\.-]*(?:\\s+[A-Z][A-Za-z’\\\'\\.-]*){0,3})\\s*,\\s*'+escaped+'\\b');
+    const found=heading.match(pattern);if(!found)continue;
+    const place=cleanSupportedPlace(found[1],variants);if(!place||isOtherGbRegionName(place,expected))continue;
+    return {value:place,precision:'place',evidence:[{source:doc.url,excerpt:heading.slice(0,240),kind:'event_page_location_heading'}],confidence:.78};
+   }
+  }
+ }
+ return null;
+}
 export function extractSupportedPlaceEvidence(geography,docs){
  const market=String(geography?.country_code||'').trim().toUpperCase();
  if(market!=='GB')return null;
@@ -265,7 +290,7 @@ export function extractSupportedPlaceEvidence(geography,docs){
   const sentences=docText.split(/(?<=[.!?])\s+|\n+/).map(x=>x.trim()).filter(Boolean);
   for(const sentence of sentences){
    if(sentence.length>500)continue;
-   if(!eventContext(sentence)&&!(docHasEventContext&&sentence.length<=160))continue;
+   if(!eventContext(sentence)&&!(docHasEventContext&&(explicitLocationLine(sentence)||locationPageUrl(doc.url))))continue;
    if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\b/i.test(sentence))continue;
    for(const regionName of variants){
     const escaped=escapeRegex(regionName);
@@ -275,8 +300,9 @@ export function extractSupportedPlaceEvidence(geography,docs){
     ];
     for(const pattern of patterns){
      const match=sentence.match(pattern);if(!match)continue;
-     const place=cleanSupportedPlace(match[1],variants);if(!place)continue;
-     return {value:place,precision:'place',evidence:[{source:doc.url,excerpt:sentence.slice(0,240),kind:doc.kind==='search_result'?'search_result_snippet':null}],confidence:doc.kind==='search_result'?.66:.82};
+     const place=cleanSupportedPlace(match[1],variants);if(!place||isOtherGbRegionName(place,code))continue;
+     const kind=doc.kind==='search_result'?'search_result_snippet':(eventContext(sentence)?'source_event_context':'event_location_page');
+     return {value:place,precision:'place',evidence:[{source:doc.url,excerpt:sentence.slice(0,240),kind}],confidence:doc.kind==='search_result'?.66:(kind==='event_location_page'?.76:.82)};
     }
    }
   }
@@ -323,6 +349,28 @@ function supportedGeographyCandidates(geography){
   }
  }
  return result;
+}
+function gbRegionVariants(geography){
+ const region=String(geography?.region||'').trim();
+ const code=String(geography?.region_code||'').trim().toUpperCase();
+ let item=null;try{item=enabledGeographies('GB').find(x=>x.code===code)||null;}catch{}
+ return [region,item?.name,...(item?.aliases||[])].map(x=>String(x||'').trim()).filter(x=>x.length>=3);
+}
+function isOtherGbRegionName(value,expectedCode){
+ const needle=normalizePlaceText(value);
+ if(!needle)return false;
+ try{
+  for(const item of enabledGeographies('GB')){
+   if(String(item.code).toUpperCase()===String(expectedCode||'').toUpperCase())continue;
+   if([item.name,...(item.aliases||[])].some(v=>normalizePlaceText(v)===needle))return true;
+  }
+ }catch{}
+ return false;
+}
+function explicitLocationLine(value){return /^\s*(?:where|venue|location|event\s+venue|event\s+location)\s*[:\-]/i.test(String(value||''));}
+function locationPageUrl(value){
+ try{return /\/(?:where(?:-to-find-us)?|location|venue|visit|directions|getting-here|find-us|show-info)(?:\/|$)/i.test(new URL(String(value)).pathname);}
+ catch{return false;}
 }
 function cleanSupportedPlace(value,regions){
  const name=String(value||'').replace(/\s+/g,' ').trim().replace(/^[,;:\-\s]+|[,;:\-\s]+$/g,'');
