@@ -104,7 +104,7 @@ export async function runEnrichmentBatch(db, { fetchProvider, now = new Date(), 
   const leaseUntil=new Date(now.getTime()+LEASE_MINUTES*60000).toISOString();
   await db.prepare("UPDATE enrichment_queue SET status='dead',lease_until=NULL,updated_at=? WHERE attempts>=? AND status IN ('ready','leased')").bind(timestamp,MAX_ATTEMPTS).run();
   const rows=await db.prepare(
-    `SELECT q.candidate_id,q.attempts,q.source_last_checked,c.canonical_url,c.application_url,c.event_name,c.organiser,c.geography_json
+    `SELECT q.candidate_id,q.attempts,q.source_last_checked,c.canonical_url,c.application_url,c.event_name,c.organiser,c.geography_json,c.evidence_json
        FROM enrichment_queue q JOIN candidates c ON c.id=q.candidate_id
       WHERE c.status='validated' AND ((q.status='ready' AND q.available_at<=?) OR (q.status='leased' AND q.lease_until<=?))
       ORDER BY q.available_at ASC,q.candidate_id ASC LIMIT ?`
@@ -183,7 +183,10 @@ function usefulLinks(page){
 function sameSite(a,b){try{const x=new URL(a).hostname.replace(/^www\./,''),y=new URL(b).hostname.replace(/^www\./,'');return x===y;}catch{return false;}}
 
 function extractEnrichment(row,pages){
-  const docs=pages.map(p=>({url:p.final_url,text:plainWithLines(p.body)}));
+  const docs=[
+    ...pages.map(p=>({url:p.final_url,text:plainWithLines(p.body),kind:'source_page'})),
+    ...candidateSearchEvidenceDocs(row)
+  ];
   const joined=docs.map(d=>d.text).join("\n");
   const geography=parse(row.geography_json);
   const rawDocs=pages.map(p=>({url:p.final_url,body:p.body}));
@@ -342,6 +345,23 @@ function normalizePlaceText(value){
  return String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
   .replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
 }
+function candidateSearchEvidenceDocs(row){
+ const evidence=parseArray(row?.evidence_json);
+ const docs=[];
+ for(const item of evidence){
+  if(item?.kind!=='search_result')continue;
+  const source=String(item?.source||'').trim();
+  if(!safeHttp(source))continue;
+  const title=String(item?.title||'').trim();
+  const snippet=String(item?.snippet||'').trim();
+  const text=[title,snippet].filter(Boolean).join('\n').trim();
+  if(!text)continue;
+  docs.push({url:source,text,kind:'search_result'});
+ }
+ return docs;
+}
+function safeHttp(value){try{const u=new URL(String(value||''));return u.protocol==='http:'||u.protocol==='https:';}catch{return false;}}
+function parseArray(value){try{const parsed=JSON.parse(value||'[]');return Array.isArray(parsed)?parsed:[];}catch{return [];}}
 function evidenceField(value,docs){if(!value)return null;const doc=docs.find(d=>d.text.toLowerCase().includes(String(value).toLowerCase()));return doc?{value,evidence:[{source:doc.url,excerpt:excerptAround(doc.text,String(value))}],confidence:.9}:value;}
 const DATE_VALUE=/\b(?:\d{1,2}[\/\-.]\d{1,2}[\/\-.](?:20)?\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+20\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+20\d{2})\b/i;
 function firstDateInDocs(docs,patterns){
