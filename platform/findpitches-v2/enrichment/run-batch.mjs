@@ -121,17 +121,33 @@ function extractEnrichment(row,pages){
   const geography=parse(row.geography_json);
   const named=extractNamedFields(pages.map(p=>({url:p.final_url,body:p.body})));
   const result={organiser:named.organiser ?? evidenceField(row.organiser,docs),location:named.location};
-  const deadline=firstDate(joined,/(?:application|apply|vendor|trader)[^.!?\n]{0,80}(?:deadline|closes?|close by|due)[^.!?\n]{0,60}/i);
-  if(deadline) result.application_deadline=withEvidence(deadline.value,deadline.excerpt,docs);
-  const eventDate=firstDate(joined,/(?:event|festival|fair|market|show)[^.!?\n]{0,80}(?:date|takes place|held|on)[^.!?\n]{0,60}/i);
-  if(eventDate) result.event_start=withEvidence(eventDate.value,eventDate.excerpt,docs);
+  const deadline=firstDateInDocs(docs,[
+    /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
+    /(?:application\s+deadline|closing\s+date|applications?\s+close|apply\s+by|vendor\s+applications?\s+due)\s*[:\-]?\s*[^.!?\n]{0,100}/i
+  ]);
+  if(deadline) result.application_deadline=datedEvidence(deadline);
+  const eventDate=firstDateInDocs(docs,[
+    /(?:event|festival|fair|market|show)[^.!?\n]{0,100}(?:date|takes\s+place|held|on|runs?\s+from)[^.!?\n]{0,80}/i,
+    /(?:event\s+date|festival\s+date|fair\s+date|market\s+date)\s*[:\-]?\s*[^.!?\n]{0,100}/i
+  ]);
+  if(eventDate) result.event_start=datedEvidence(eventDate);
   const description=descriptionExcerpt(docs);
   if(description) result.description=withEvidence(description.value,description.excerpt,docs);
   return normalizeEnrichment(result);
 }
 function evidenceField(value,docs){if(!value)return null;const doc=docs.find(d=>d.text.toLowerCase().includes(String(value).toLowerCase()));return doc?{value,evidence:[{source:doc.url,excerpt:excerptAround(doc.text,String(value))}],confidence:.9}:value;}
-function withEvidence(value,excerpt,docs){return {value,evidence:[{source:docs[0]?.url||null,excerpt}],confidence:.7};}
-function firstDate(text,re){const m=text.match(re);if(!m)return null;const excerpt=m[0].slice(0,240);const dm=excerpt.match(/\b(?:\d{1,2}[\/\-.]\d{1,2}[\/\-.](?:20)?\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+20\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+20\d{2})\b/i);return dm?{value:dm[0],excerpt}:null;}
+const DATE_VALUE=/\b(?:\d{1,2}[\/\-.]\d{1,2}[\/\-.](?:20)?\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+20\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+20\d{2})\b/i;
+function firstDateInDocs(docs,patterns){
+ for(const doc of docs){
+  for(const pattern of patterns){
+   const m=doc.text.match(pattern); if(!m)continue;
+   const excerpt=m[0].slice(0,240); const dm=excerpt.match(DATE_VALUE);
+   if(dm)return {value:dm[0],excerpt,source:doc.url};
+  }
+ }
+ return null;
+}
+function datedEvidence(match){return {value:match.value,evidence:[{source:match.source,excerpt:match.excerpt}],confidence:.78};}
 function descriptionExcerpt(docs){for(const d of docs){const parts=d.text.split(/(?<=[.!?])\s+/).map(x=>x.trim()).filter(x=>x.length>=80&&x.length<=400);const s=parts.find(x=>/(vendor|trader|stallholder|exhibitor|apply|application)/i.test(x));if(s)return {value:s.slice(0,400),excerpt:s.slice(0,240)};}return null;}
 function excerptAround(text,needle){const i=text.toLowerCase().indexOf(needle.toLowerCase());return i<0?null:text.slice(Math.max(0,i-80),i+needle.length+120).trim().slice(0,240);}
 function plain(html){return String(html||'').replace(/<script\b[\s\S]*?<\/script>/gi,' ').replace(/<style\b[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&#39;/g,"'").replace(/&quot;/gi,'"').replace(/\s+/g,' ').trim();}
