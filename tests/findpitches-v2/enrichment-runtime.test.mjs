@@ -179,3 +179,33 @@ test('location-bearing same-site links are prioritized ahead of generic contact 
  const enrichment=JSON.parse(stored.args[2]);
  assert.equal(enrichment.location.value,'Maidstone Market Square');
 });
+
+
+test('JSON-LD Event location is retained as structured evidence',async()=>{
+ const store=db({candidate_id:'jsonld',source_last_checked:'2026-09-30T08:00:00Z',
+  canonical_url:'https://event.test/',application_url:null,event_name:'Autumn Fair',
+  organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const body='<html><head><script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"Autumn Fair","location":{"@type":"Place","name":"Mote Park","address":{"@type":"PostalAddress","addressLocality":"Maidstone","addressRegion":"Kent"}}}</script></head><body><p>Vendor applications are open.</p></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T08:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location.value,'Mote Park');
+ assert.equal(enrichment.location.evidence[0].kind,'schema_event_location');
+ assert.equal(enrichment.location_area.value,'Maidstone');
+ assert.equal(enrichment.location_area.precision,'place');
+ assert.equal(enrichment.location_area.evidence[0].kind,'schema_event_location');
+});
+
+test('non-Event JSON-LD addresses never become event locations',async()=>{
+ const store=db({candidate_id:'org',source_last_checked:'2026-09-30T08:00:00Z',
+  canonical_url:'https://event.test/',application_url:null,event_name:'Fair',
+  organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const body='<html><head><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Example Ltd","location":{"@type":"Place","name":"Head Office","address":{"addressLocality":"Maidstone","addressRegion":"Kent"}}}</script></head><body><p>Vendor applications are open.</p></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T08:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location,null);
+ assert.equal(enrichment.location_area,null);
+});
