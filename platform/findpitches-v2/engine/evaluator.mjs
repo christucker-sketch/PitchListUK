@@ -15,6 +15,23 @@ export function createDefaultCandidateEvaluator({
     const sourceUrl = canonicalUrl(result?.url);
     if (!sourceUrl) throw new Error('findpitches_v2_candidate_search_url_missing');
 
+    if (socialSourceUrl(sourceUrl)) {
+      const candidate=normalizeCandidate({
+        candidate_id:await stableCandidateId(market.code,sourceUrl),
+        market:market.code,
+        source_url:sourceUrl,
+        canonical_url:sourceUrl,
+        application_url:null,
+        event_name:result?.title||null,
+        organiser:null,
+        geography:{country_code:market.code,region_code,region:location},
+        categories:[],
+        evidence:[{type:'negative_phrase',value:'social_source_page',confidence:1},{type:'score_reason',value:'social_source_page',confidence:1}],
+        score:-100,status:'rejected',rejection_reason:'negative_page_signal'
+      });
+      return Object.freeze({...candidate,publishable:false});
+    }
+
     const page = await fetchProvider.fetch(sourceUrl);
     const finalUrl = canonicalUrl(page.final_url || sourceUrl) || sourceUrl;
     const extracted = extractEvidence({
@@ -92,6 +109,15 @@ export function createDefaultCandidateEvaluator({
 
     return Object.freeze({ ...candidate, publishable });
   };
+}
+
+function socialSourceUrl(value) {
+  try {
+    const host=new URL(String(value||'')).hostname.toLowerCase().replace(/^www\./,'');
+    return ['instagram.com','facebook.com','x.com','twitter.com','tiktok.com','linkedin.com','threads.net'].includes(host);
+  } catch {
+    return false;
+  }
 }
 
 async function stableCandidateId(market, canonical) {
