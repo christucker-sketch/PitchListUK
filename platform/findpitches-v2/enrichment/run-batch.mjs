@@ -384,6 +384,7 @@ function descriptionExcerpt(docs){for(const d of docs){const parts=d.text.split(
 function excerptAround(text,needle){const i=text.toLowerCase().indexOf(needle.toLowerCase());return i<0?null:text.slice(Math.max(0,i-80),i+needle.length+120).trim().slice(0,240);}
 function plainWithLines(html){
  return String(html||'')
+  .replace(/<(nav|header|footer|aside)\b[^>]*>[\s\S]*?<\/\1>/gi,' ')
   .replace(/<script\b[\s\S]*?<\/script>/gi,' ')
   .replace(/<style\b[\s\S]*?<\/style>/gi,' ')
   .replace(/<\/(?:p|div|h[1-6]|li|section|article|tr|td|th)>/gi,'\n')
