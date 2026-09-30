@@ -24,7 +24,7 @@ async function query(sql,params=[]){
 const rows=await query(`
 WITH ranked AS (
  SELECT c.id,c.market,c.region_code,c.canonical_url,c.application_url,c.event_name,c.organiser,
-        c.geography_json,c.last_checked,e.enrichment_json,
+        c.geography_json,c.evidence_json,c.last_checked,e.enrichment_json,
         ROW_NUMBER() OVER (PARTITION BY c.region_code ORDER BY c.last_checked DESC,c.id ASC) AS rn
  FROM candidates c
  JOIN candidate_enrichment e ON e.candidate_id=c.id AND e.source_last_checked>=c.last_checked
