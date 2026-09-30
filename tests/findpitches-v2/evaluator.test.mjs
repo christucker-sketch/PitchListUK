@@ -328,3 +328,19 @@ test('GB evaluator may derive same-region locality from the fetched page title a
  assert.equal(candidate.geography.locality,'Newcastle upon Tyne');
  assert.ok(candidate.evidence.some(e=>e.type==='locality_hint'&&e.value==='Newcastle upon Tyne'));
 });
+
+
+test('GB evaluator rejects foreign market conflicts expressed without comma state syntax', async () => {
+ const cases=[
+  {title:"Become a Vendor - SUFFOLK VA FARMERS' MARKET",body:"<html><body><main><p>Vendor application for SUFFOLK VA FARMERS' MARKET.</p></main></body></html>"},
+  {title:'North Canterbury Wine & Food Festival',body:'<html><body><main><p>Vendor applications are open for the North Canterbury Wine & Food Festival.</p></main></body></html>'}
+ ];
+ for(const item of cases){
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(url){return {final_url:url,body:item.body};}}
+  });
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-IOW',location:'Isle of Wight',result:{url:'https://example.test/vendors',title:item.title}});
+  assert.equal(candidate.status,'rejected',item.title);
+  assert.equal(candidate.rejection_reason,'market_conflict',item.title);
+ }
+});
