@@ -518,3 +518,17 @@ test('GB enrichment can recover a place from event metadata description',async()
  assert.equal(enrichment.location_area.precision,'place');
  assert.match(enrichment.location_area.evidence[0].excerpt,/Mold, Wales/);
 });
+
+
+test('location-page fallback ignores late organiser contact addresses',async()=>{
+ const store=db({candidate_id:'hylands-contact-address',source_last_checked:'2026-09-30T15:00:00Z',
+  canonical_url:'https://dogshow.test/location/hylands-park/',application_url:null,event_name:'All About Dogs Show',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-ESSEX","region":"Essex"}'});
+ const filler=Array.from({length:12},(_,i)=>'<p>Event information section '+i+' for visitors and exhibitors.</p>').join('');
+ const body='<html><body><main><h1>Hylands Park</h1><p>Vendor applications are open for the dog show.</p>'+filler+'<p>98 Hornchurch Rd, Hornchurch, Essex, RM11 1JS</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T15:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.notEqual(enrichment.location_area?.value,'Hornchurch');
+});
