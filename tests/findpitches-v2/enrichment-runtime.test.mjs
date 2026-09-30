@@ -594,3 +594,47 @@ test('enrichment captures standalone multi-day event date headings',async()=>{
  const enrichment=JSON.parse(stored.args[2]);
  assert.equal(enrichment.event_start.value,'August 31, 2026');
 });
+
+
+test('enrichment still succeeds when canonical page works but application asset fails',async()=>{
+ const store=db({
+  candidate_id:'partial-seed-success',
+  source_last_checked:'2026-09-30T22:00:00Z',
+  canonical_url:'https://festival.test/vendors',
+  application_url:'https://festival.test/vendor-form.jpg',
+  event_name:'Kent Autumn Festival',
+  organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'
+ });
+ const fetchProvider={async fetch(url){
+  if(url.endsWith('.jpg')) throw new Error('findpitches_v2_fetch_content_type_unsupported:image/jpeg');
+  return {final_url:url,body:'<html><body><main><h1>Kent Autumn Festival</h1><p>Vendor applications are open for the festival in Maidstone, Kent.</p></main></body></html>'};
+ }};
+ const result=await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T22:01:00Z')});
+ assert.equal(result.complete,1);
+ assert.equal(result.failed,0);
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ assert.ok(stored);
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area.value,'Maidstone');
+});
+
+test('enrichment still fails and retries when every supplied seed source fails',async()=>{
+ const store=db({
+  candidate_id:'all-seeds-fail',
+  source_last_checked:'2026-09-30T22:00:00Z',
+  canonical_url:'https://broken.test/vendors',
+  application_url:'https://broken.test/form.ics',
+  event_name:'Broken Festival',
+  organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'
+ });
+ const fetchProvider={async fetch(){throw new Error('findpitches_v2_fetch_http_503');}};
+ const result=await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T22:01:00Z')});
+ assert.equal(result.complete,0);
+ assert.equal(result.failed,1);
+ assert.ok(!store.writes.some(x=>/INSERT INTO candidate_enrichment/.test(x.sql)));
+ const queueWrite=[...store.writes].reverse().find(x=>/UPDATE enrichment_queue SET status=\?/.test(x.sql));
+ assert.ok(queueWrite);
+ assert.match(String(queueWrite.args[2]),/findpitches_v2_fetch_http_503/);
+});
