@@ -2,7 +2,9 @@ import { createHttpFetchProvider } from '../../../platform/findpitches-v2/provid
 import { enqueueValidatedForEnrichment, enqueueEnrichmentRulesetRefresh, runEnrichmentBatch } from '../../../platform/findpitches-v2/enrichment/run-batch.mjs';
 
 const SERVICE='findpitches-v2-enrichment';
-const BATCH_LIMIT=8;
+const FRESH_ENQUEUE_LIMIT=8;
+const RULESET_REFRESH_LIMIT=4;
+const BATCH_LIMIT=12;
 const ENRICHMENT_RULESET_VERSION='2026-09-30-practical-location-v1';
 
 export default {
@@ -19,14 +21,13 @@ export default {
 };
 
 export async function runTick(env,{now=new Date()}={}){
-  const queued=await enqueueValidatedForEnrichment(env.FINDPITCHES_DB,{now,limit:BATCH_LIMIT});
-  const spare=Math.max(0,BATCH_LIMIT-Number(queued.enqueued||0));
-  const ruleset=await enqueueEnrichmentRulesetRefresh(env.FINDPITCHES_DB,{now,limit:spare,ruleset:ENRICHMENT_RULESET_VERSION});
+  const queued=await enqueueValidatedForEnrichment(env.FINDPITCHES_DB,{now,limit:FRESH_ENQUEUE_LIMIT});
+  const ruleset=await enqueueEnrichmentRulesetRefresh(env.FINDPITCHES_DB,{now,limit:RULESET_REFRESH_LIMIT,ruleset:ENRICHMENT_RULESET_VERSION});
   const enrichment=await runEnrichmentBatch(env.FINDPITCHES_DB,{fetchProvider:createHttpFetchProvider(),limit:BATCH_LIMIT,now});
   return Object.freeze({ok:true,service:SERVICE,queued,ruleset,enrichment,serper_configured:false,at:now.toISOString()});
 }
 async function health(env){
-  try{const row=await env.FINDPITCHES_DB.prepare('SELECT 1 AS ok').first();return Response.json({ok:row?.ok===1,service:SERVICE,database:'isolated',serper_configured:false,enrichment_ruleset:ENRICHMENT_RULESET_VERSION,batch_limit:BATCH_LIMIT});}
+  try{const row=await env.FINDPITCHES_DB.prepare('SELECT 1 AS ok').first();return Response.json({ok:row?.ok===1,service:SERVICE,database:'isolated',serper_configured:false,enrichment_ruleset:ENRICHMENT_RULESET_VERSION,batch_limit:BATCH_LIMIT,fresh_enqueue_limit:FRESH_ENQUEUE_LIMIT,ruleset_refresh_limit:RULESET_REFRESH_LIMIT});}
   catch(e){return Response.json({ok:false,service:SERVICE,error:String(e?.message||e)},{status:503});}
 }
 async function status(env){
