@@ -202,20 +202,38 @@ jobs:
           set -euo pipefail
           for migration in operations/findpitches-v2/migrations/*.sql; do
             echo "Applying $migration"
-            set +e
-            output="$(npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file "$migration" --config "$CONFIG" 2>&1)"
-            rc=$?
-            set -e
-            printf '%s\n' "$output"
-            if [[ $rc -ne 0 ]]; then
+            applied=false
+            for attempt in 1 2 3; do
+              set +e
+              output="$(npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file "$migration" --config "$CONFIG" 2>&1)"
+              rc=$?
+              set -e
+              printf '%s\n' "$output"
+              if [[ $rc -eq 0 ]]; then
+                applied=true
+                break
+              fi
               if grep -Fq "Not currently importing anything." <<<"$output"; then
                 echo "Empty/idempotent import; continuing."
-              elif [[ "$migration" == "operations/findpitches-v2/migrations/0008_location_evidence_gate.sql" ]] &&
-                   grep -Fq "duplicate column name: location_evidence_url: SQLITE_ERROR" <<<"$output"; then
-                echo "Known previously-applied 0008 duplicate-column case; continuing."
-              else
-                exit "$rc"
+                applied=true
+                break
               fi
+              if [[ "$migration" == "operations/findpitches-v2/migrations/0008_location_evidence_gate.sql" ]] &&
+                 grep -Fq "duplicate column name: location_evidence_url: SQLITE_ERROR" <<<"$output"; then
+                echo "Known previously-applied 0008 duplicate-column case; continuing."
+                applied=true
+                break
+              fi
+              if grep -Fq "code: 7500" <<<"$output"; then
+                echo "Transient Cloudflare D1 internal error on attempt $attempt; retrying."
+                sleep $((attempt * 3))
+                continue
+              fi
+              exit "$rc"
+            done
+            if [[ "$applied" != "true" ]]; then
+              echo "Migration failed after bounded retries: $migration" >&2
+              exit 1
             fi
           done
 
