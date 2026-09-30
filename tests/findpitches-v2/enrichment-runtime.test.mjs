@@ -477,3 +477,16 @@ test('police or authority contact lines are never used as event area evidence',a
  const enrichment=JSON.parse(stored.args[2]);
  assert.equal(enrichment.location_area,null);
 });
+
+
+test('police and policy contact context is not accepted as GB location evidence',async()=>{
+ const store=db({candidate_id:'policy-police',source_last_checked:'2026-09-30T13:00:00Z',
+  canonical_url:'https://highclereshow.test/terms-conditions/',application_url:null,event_name:'Highclere Show',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-NHANTS","region":"Northamptonshire"}'});
+ const body='<html><body><main><h1>Terms & Conditions</h1><p>Highclere Show: Northamptonshire Police Tel: 101, Ext:341035</p><p>Trader applications are subject to these terms and conditions.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T13:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area,null);
+});
