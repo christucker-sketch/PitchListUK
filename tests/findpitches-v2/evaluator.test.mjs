@@ -151,3 +151,38 @@ test('shared evaluator rejects financial-product trader news false positive', as
   assert.equal(candidate.rejection_reason, 'negative_page_signal');
   assert.equal(candidate.publishable, false);
 });
+
+
+for (const conflict of [
+  ['US government host','https://www.essexvt.gov/1567/Vendor-Market-Community-Organizations','<h1>Vendor Market & Community Organizations</h1><p>Vendor application for Essex, VT 2027.</p><a href="/apply">Vendor application</a>'],
+  ['US city/state code','https://event.test/vendors','<h1>Devon Horse Show</h1><p>Vendor application for Devon, PA in 2027.</p><a href="/apply">Vendor application</a>'],
+  ['US city/state name','https://event.test/vendors','<h1>Santa Barbara Orchid Show</h1><p>Exhibitor application for Santa Barbara, California in 2027.</p><a href="/apply">Exhibitor application</a>']
+]) {
+  test('GB evaluator rejects '+conflict[0]+' market conflict', async () => {
+    const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(){return {final_url:conflict[1],body:'<html><body>'+conflict[2]+'</body></html>'; }},now:()=>new Date('2026-09-30T00:00:00Z')});
+    const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-ESSEX',location:'Essex',result:{url:conflict[1]}});
+    assert.equal(candidate.status,'rejected');
+    assert.equal(candidate.rejection_reason,'market_conflict');
+    assert.equal(candidate.publishable,false);
+  });
+}
+
+test('GB evaluator does not confuse ordinary lowercase us with US market evidence', async () => {
+ const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><h1>Kent Food Festival</h1><p>Join us in Kent in 2027. Vendor application now open.</p><a href="/apply">Vendor application</a></body></html>'; }},now:()=>new Date('2026-09-30T00:00:00Z')});
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://festival.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.publishable,true);
+});
+
+for (const nonEvent of [
+ ['fair trader scheme','<h1>Medway Fair Trader Scheme</h1><p>Vendor application for the Fair Trader Scheme.</p><a href="/apply">Vendor application</a>'],
+ ['homechoice','<h1>Register for HomeChoice</h1><p>Vendor application assistance.</p><a href="/apply">Vendor application</a>'],
+ ['purchasing vendor','<h1>Purchasing Vendor Application</h1><p>Vendor application for purchasing suppliers.</p><a href="/apply">Vendor application</a>']
+]) {
+ test('shared evaluator rejects '+nonEvent[0]+' non-event false positive', async()=>{
+  const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body>'+nonEvent[1]+'</body></html>';}}}});
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://example.test/vendors'}});
+  assert.equal(candidate.status,'rejected');
+  assert.equal(candidate.rejection_reason,'negative_page_signal');
+ });
+}
