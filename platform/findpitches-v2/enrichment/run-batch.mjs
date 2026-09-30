@@ -230,7 +230,9 @@ function verifiedLocationForGeography(field,geography){
 function explicitForeignGbLocation(value){
  const v=String(value||'');
  if(/\b(?:united\s+states|usa|u\.s\.a\.?|u\.s\.)\b/i.test(v)||/\bUS\b/.test(v))return true;
- if(/,\s*(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)\b/.test(v))return true;
+ const usCode='(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)';
+ if(new RegExp(',\\s*'+usCode+'\\b').test(v))return true;
+ if(new RegExp('["\\\']addressRegion["\\\']\\s*:\\s*["\\\']'+usCode+'["\\\']','i').test(v))return true;
  return false;
 }
 export function extractVerifiedLocalityHint(geography,docs){
