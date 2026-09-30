@@ -1,4 +1,5 @@
 name: FindPitches v2 practical location yield preview
+# rapid cohort: 10 US + 10 GB
 
 "on":
   push:
