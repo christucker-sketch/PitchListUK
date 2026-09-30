@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {enqueueEnrichmentRulesetRefresh} from '../../platform/findpitches-v2/enrichment/run-batch.mjs';
 
-function mockDb({currentVersion=null,sweepValue=null,candidates=[]}={}){
+function mockDb({currentVersion=null,sweepValue=null,sweepVersion=null,candidates=[]}={}){
  const calls=[];
  return {
   calls,
@@ -16,6 +16,7 @@ function mockDb({currentVersion=null,sweepValue=null,candidates=[]}={}){
      if(/FROM runtime_meta WHERE key=\?/.test(sql)){
       if(this.args[0]==='enrichment_ruleset_version') return currentVersion?{value:currentVersion}:null;
       if(this.args[0]==='enrichment_ruleset_sweep_started_at') return sweepValue?{value:sweepValue}:null;
+      if(this.args[0]==='enrichment_ruleset_sweep_version') return sweepVersion?{value:sweepVersion}:null;
      }
      return null;
     },
@@ -72,4 +73,21 @@ test('enrichment worker reserves bounded capacity for practical-location refresh
  assert.match(worker,/BATCH_LIMIT=12/);
  assert.match(worker,/enqueueValidatedForEnrichment\(env\.FINDPITCHES_DB,\{now,limit:FRESH_ENQUEUE_LIMIT/);
  assert.match(worker,/enqueueEnrichmentRulesetRefresh\(env\.FINDPITCHES_DB,\{now,limit:RULESET_REFRESH_LIMIT/);
+});
+
+
+test('new ruleset version resets the historical sweep cursor once',async()=>{
+ const db=mockDb({currentVersion:'old-v1',sweepValue:'2026-09-29T06:00:00Z',sweepVersion:'old-v1',candidates:[]});
+ const now=new Date('2026-09-30T07:00:00Z');
+ const result=await enqueueEnrichmentRulesetRefresh(db,{now,limit:4,ruleset:'new-v2'});
+ assert.equal(result.complete,true);
+ const sweepVersionWrite=db.calls.find(x=>x.kind==='run'&&x.args[0]==='enrichment_ruleset_sweep_version');
+ const sweepTimeWrite=db.calls.find(x=>x.kind==='run'&&x.args[0]==='enrichment_ruleset_sweep_started_at');
+ assert.ok(sweepVersionWrite);
+ assert.ok(sweepTimeWrite);
+ assert.equal(sweepVersionWrite.args[1],'new-v2');
+ assert.equal(sweepTimeWrite.args[1],'2026-09-30T07:00:00.000Z');
+ const completed=db.calls.find(x=>x.kind==='run'&&x.args[0]==='enrichment_ruleset_version');
+ assert.ok(completed);
+ assert.equal(completed.args[1],'new-v2');
 });
