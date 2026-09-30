@@ -4,6 +4,13 @@ on:
   push:
     branches: [main]
   pull_request:
+    paths-ignore:
+      - 'platform/findpitches-v2/**'
+      - 'operations/findpitches-v2/**'
+      - 'operations/findpitches-v2-enrichment/**'
+      - 'tests/findpitches-v2/**'
+      - 'docs/findpitches-v2-*.md'
+      - '.github/workflows/findpitches-v2-*.yml'
   workflow_dispatch:
 
 permissions:
