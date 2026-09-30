@@ -58,7 +58,22 @@ jobs:
           endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"
           completed=false
           for attempt in $(seq 1 90); do
-            body="$(curl --silent --show-error --fail-with-body "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")"
+            response_file="$(mktemp)"
+            http_code="$(curl --silent --show-error --output "$response_file" --write-out '%{http_code}'               "$endpoint" -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" || echo 000)"
+            body="$(cat "$response_file")"
+            rm -f "$response_file"
+
+            if [[ "$http_code" == "429" || "$http_code" =~ ^5[0-9][0-9]$ || "$http_code" == "000" ]]; then
+              echo "Canada controller read transient HTTP $http_code on poll $attempt/90; retrying." >&2
+              sleep 2
+              continue
+            fi
+            if [[ ! "$http_code" =~ ^2[0-9][0-9]$ ]]; then
+              echo "Canada controller read failed with HTTP $http_code" >&2
+              printf '%s\n' "$body" >&2
+              exit 1
+            fi
+
             status="$(jq -r '.result.status // empty' <<<"$body")"
             if [[ "$status" == 'complete' ]]; then
               printf '%s\n' "$body" > ca-controller-status.json
