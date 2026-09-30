@@ -1,4 +1,5 @@
 name: FindPitches v2 location recall preview
+# rerun marker: aggregate structured-location diagnostics
 
 "on":
   push:
