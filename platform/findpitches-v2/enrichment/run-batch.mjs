@@ -192,7 +192,7 @@ function extractEnrichment(row,pages){
   const result={
     organiser:named.organiser ?? evidenceField(row.organiser,docs),
     location:named.location ?? structured.location,
-    location_area:structured.location_area ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
+    location_area:structured.location_area ?? extractVerifiedLocalityHint(geography,docs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
   };
   const deadline=firstDateInDocs(docs,[
     /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
@@ -207,6 +207,19 @@ function extractEnrichment(row,pages){
   const description=descriptionExcerpt(docs);
   if(description) result.description=withEvidence(description.value,description.excerpt,docs);
   return normalizeEnrichment(result);
+}
+export function extractVerifiedLocalityHint(geography,docs){
+ const hint=String(geography?.locality||'').replace(/\s+/g,' ').trim();
+ if(hint.length<3||hint.length>120)return null;
+ for(const doc of docs){
+  const sentences=String(doc.text||'').split(/(?<=[.!?])\s+|\n+/).map(x=>x.trim()).filter(Boolean);
+  for(const sentence of sentences){
+   if(sentence.length>500||!normalizedMention(sentence,hint))continue;
+   if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters|privacy|cookie|terms\s+and\s+conditions)\b/i.test(sentence))continue;
+   return {value:hint,precision:'place',evidence:[{source:doc.url,excerpt:sentence.slice(0,240),kind:'verified_location_hint'}],confidence:.84};
+  }
+ }
+ return null;
 }
 export function extractSupportedPlaceEvidence(geography,docs){
  const market=String(geography?.country_code||'').trim().toUpperCase();
