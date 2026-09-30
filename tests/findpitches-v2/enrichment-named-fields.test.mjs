@@ -45,3 +45,24 @@ test('organiser office addresses are not treated as event locations',()=>{
  const result=extractNamedFields(withVenue);
  assert.equal(result.location.value,'Maidstone Market Square');
 });
+
+
+test('explicit US event address keeps a five-digit ZIP code',()=>{
+ const result=extractNamedFields([{url:'https://example.org/fair',body:'<p>Event address: 123 Main Street, Austin, TX 78701</p>'}]);
+ assert.equal(result.location?.value,'123 Main Street, Austin, TX 78701');
+ assert.match(result.location?.evidence[0].excerpt,/78701/);
+});
+
+test('Where label is accepted only with bounded event context',()=>{
+ const good=extractNamedFields([{url:'https://example.org/festival',body:'<p>Summer Festival — Where: Riverfront Park</p>'}]);
+ assert.equal(good.location?.value,'Riverfront Park');
+ const ambiguous=extractNamedFields([{url:'https://example.org/contact',body:'<p>Where: Company House</p>'}]);
+ assert.equal(ambiguous.location,null);
+});
+
+test('event site and festival location labels are explicit venue evidence',()=>{
+ const site=extractNamedFields([{url:'https://example.org/event',body:'<p>Event site: Civic Center Plaza</p>'}]);
+ assert.equal(site.location?.value,'Civic Center Plaza');
+ const festival=extractNamedFields([{url:'https://example.org/festival',body:'<p>Festival location: Central Park</p>'}]);
+ assert.equal(festival.location?.value,'Central Park');
+});
