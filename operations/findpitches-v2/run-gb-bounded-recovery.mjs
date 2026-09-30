@@ -104,15 +104,19 @@ for(const row of rows){
   }
 
   if(APPLY){
-   await write(`
+   const updated=await write(`
      UPDATE candidates SET region_code=?,application_url=?,event_name=?,organiser=?,
        geography_json=?,evidence_json=?,score=?,status=?,rejection_reason=?,last_checked=?
-     WHERE id=? AND market='GB' AND status='validated'
+     WHERE id=? AND market='GB' AND status='validated' AND last_checked=?
    `,[
      correctedRegion,evaluated.application_url,evaluated.event_name,evaluated.organiser,
      JSON.stringify(evaluated.geography||{}),JSON.stringify(mergedEvidence),Number(evaluated.score||0),
-     evaluated.status,evaluated.rejection_reason,timestamp,row.id
+     evaluated.status,evaluated.rejection_reason,timestamp,row.id,row.last_checked
    ]);
+   if(Number(updated?.meta?.changes||0)!==1){
+    outcomes.push({id:row.id,title:row.event_name,classifier_status:'skipped_concurrent_update',practical_usable:false});
+    continue;
+   }
    if(evaluated.status==='validated'&&enrichment){
     const provenance=Object.fromEntries(Object.entries(enrichment).filter(([,v])=>v?.evidence?.length).map(([k,v])=>[k,{evidence:v.evidence,confidence:v.confidence}]));
     await write(`
@@ -152,6 +156,7 @@ const summary={
  classifier_rejected:outcomes.filter(x=>x.classifier_status==='rejected').length,
  classifier_held:outcomes.filter(x=>x.classifier_status==='held').length,
  errors:outcomes.filter(x=>x.classifier_status==='error').length,
+ concurrent_skips:outcomes.filter(x=>x.classifier_status==='skipped_concurrent_update').length,
  region_corrections:outcomes.filter(x=>x.region_correction).length,
  recovered_locations:outcomes.filter(x=>x.recovered_location).length,
  practical_usable:outcomes.filter(x=>x.practical_usable).length,
@@ -161,7 +166,7 @@ if(APPLY){
  await write(`
    INSERT INTO runtime_meta (key,value,updated_at) VALUES (?,?,?)
    ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at
- `,[markerKey,JSON.stringify({selected:summary.selected,validated:summary.classifier_validated,rejected:summary.classifier_rejected,errors:summary.errors,recovered:summary.recovered_locations,usable:summary.practical_usable}),new Date().toISOString()]);
+ `,[markerKey,JSON.stringify({selected:summary.selected,validated:summary.classifier_validated,rejected:summary.classifier_rejected,errors:summary.errors,concurrent_skips:summary.concurrent_skips,recovered:summary.recovered_locations,usable:summary.practical_usable}),new Date().toISOString()]);
 }
 fs.writeFileSync('gb-bounded-recovery-result.json',JSON.stringify(summary,null,2));
 console.log(JSON.stringify({...summary,outcomes:undefined},null,2));
