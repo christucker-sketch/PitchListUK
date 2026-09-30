@@ -1,3 +1,4 @@
+import { extractHtmlMetadataText } from '../engine/html-metadata.mjs';
 import { enabledGeographies } from '../geography/catalog.mjs';
 
 export function resolveEvidenceRegion({
@@ -63,7 +64,7 @@ function structuredEventRegions(body,geos){
 
 function contextualEventRegions(body,geos,title=null){
  const titleText=String(title||'').trim();
- const text=[titleText,htmlToLines(stripSiteChrome(body))].filter(Boolean).join('\n');
+ const text=[titleText,extractHtmlMetadataText(body),htmlToLines(stripSiteChrome(body))].filter(Boolean).join('\n');
  const result=[];
  for(const line of text.split(/\n+/).map(x=>x.trim()).filter(Boolean)){
   if(line.length>600||!eventContext(line))continue;
