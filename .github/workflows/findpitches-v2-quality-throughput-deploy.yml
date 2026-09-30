@@ -1,0 +1,88 @@
+name: FindPitches v2 quality throughput one-shot deploy
+
+"on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-quality-throughput-deploy.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-shadow-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Restore reviewed city runtime and deploy quality throughput fixes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: findpitches-production
+    steps:
+      - name: Check out exact reviewed branch
+        uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run complete v2 regression suite
+        run: node --test tests/findpitches-v2/*.test.mjs
+      - name: Compile both isolated v2 workers
+        run: |
+          npx --yes wrangler@4.127.1 deploy --dry-run --config operations/findpitches-v2/wrangler.jsonc
+          npx --yes wrangler@4.127.1 deploy --dry-run --config operations/findpitches-v2-enrichment/wrangler.jsonc
+      - name: Confirm fail-closed live runtime before replacement
+        shell: bash
+        run: |
+          set -euo pipefail
+          health="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .service == "findpitches-v2-shadow" and
+            .mode == "shadow" and .database == "isolated" and
+            .publication_enabled == false and .search_configured == true' <<< "$health" >/dev/null
+      - name: Deploy reviewed v2 shadow worker only
+        run: npx --yes wrangler@4.127.1 deploy --config operations/findpitches-v2/wrangler.jsonc
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Deploy reviewed enrichment worker only
+        run: npx --yes wrangler@4.127.1 deploy --config operations/findpitches-v2-enrichment/wrangler.jsonc
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Prove reviewed city and projection runtime is live and fail-closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=false
+          for attempt in $(seq 1 15); do
+            health="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health || true)"
+            status="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/status || true)"
+            enrichment="$(curl --silent --show-error --fail-with-body --max-time 15 https://findpitches-v2-enrichment.ctucker.workers.dev/health || true)"
+            if jq -e '.ok == true and .service == "findpitches-v2-shadow" and
+              .mode == "shadow" and .database == "isolated" and
+              .publication_enabled == false and .search_configured == true and
+              .us_city_discovery_profile == "official_first_v1" and
+              .customer_promotion_batch_limit == 48' <<< "$health" >/dev/null 2>&1 &&
+              jq -e '.ok == true and .publication_enabled == false and
+                .counts.scheduler_jobs == 483 and
+                .customer_promotion_batch_limit == 48' <<< "$status" >/dev/null 2>&1 &&
+              jq -e '.ok == true and .service == "findpitches-v2-enrichment" and
+                .database == "isolated" and .serper_configured == false' <<< "$enrichment" >/dev/null 2>&1; then
+              ok=true
+              break
+            fi
+            sleep 3
+          done
+          [[ "$ok" == "true" ]] || {
+            echo "Final v2 health:" >&2; printf '%s\n' "$health" >&2
+            echo "Final v2 status:" >&2; printf '%s\n' "$status" >&2
+            echo "Final enrichment health:" >&2; printf '%s\n' "$enrichment" >&2
+            exit 1
+          }
+          echo "QUALITY_DEPLOY_STATUS_BEGIN"
+          jq -c '{scheduler_jobs:.counts.scheduler_jobs,customer_promotion:.customer_promotion,customer_promotion_batch_limit,customer_location_quality,pdf_recovery}' <<< "$status"
+          echo "QUALITY_DEPLOY_STATUS_END"
