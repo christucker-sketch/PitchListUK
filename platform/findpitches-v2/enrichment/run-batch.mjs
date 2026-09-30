@@ -169,10 +169,15 @@ function usefulLinks(page){
   let m;
   while((m=re.exec(page.body||''))){
     const label=plain(m[2]).toLowerCase();
-    if(!/(apply|application|vendor|trader|stall|exhibit|market|event info|contact)/.test(label+" "+m[1])) continue;
-    try{out.push(new URL(m[1],base).toString());}catch{}
+    const signal=(label+" "+m[1]).toLowerCase();
+    let priority=null;
+    if(/(venue|location|where\b|visit\b|plan your visit|getting here|get here|directions|find us|show info|event info|event details|visitor info)/.test(signal)) priority=0;
+    else if(/(apply|application|vendor|trader|stall|exhibit|market)/.test(signal)) priority=1;
+    else if(/contact/.test(signal)) priority=2;
+    if(priority===null) continue;
+    try{out.push({url:new URL(m[1],base).toString(),priority});}catch{}
   }
-  return out;
+  return out.sort((a,b)=>a.priority-b.priority||a.url.localeCompare(b.url)).map(item=>item.url);
 }
 function sameSite(a,b){try{const x=new URL(a).hostname.replace(/^www\./,''),y=new URL(b).hostname.replace(/^www\./,'');return x===y;}catch{return false;}}
 
