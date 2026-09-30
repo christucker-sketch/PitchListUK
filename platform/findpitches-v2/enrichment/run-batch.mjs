@@ -202,7 +202,7 @@ function extractEnrichment(row,pages){
     location_area:sourceConflict?null:(structuredArea ?? extractVerifiedLocalityHint(geography,docs) ?? extractHtmlHeadingPlaceEvidence(geography,rawDocs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs))
   };
   const deadline=firstDateInDocs(docs,[
-    /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,120}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by|not\s+accepted\s+after|accepted\s+until|accepted\s+through|must\s+be\s+received\s+by)[^.!?\n]{0,100}/i,
+    /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,120}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by|not\s+(?:be\s+)?accepted\s+after|accepted\s+until|accepted\s+through|must\s+be\s+received\s+by)[^.!?\n]{0,100}/i,
     /(?:application\s+deadline|closing\s+date|applications?\s+close|apply\s+by|vendor\s+applications?\s+due|deadline)\s*[:\-]?\s*[^.!?\n]{0,140}/i
   ]);
   if(deadline) result.application_deadline=datedEvidence(deadline);
