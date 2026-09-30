@@ -3,6 +3,11 @@ name: FindPitches v2 Shadow Deploy
 "on":
   push:
     branches: [main]
+    paths:
+      - 'operations/findpitches-v2/**'
+      - 'operations/findpitches-v2-enrichment/**'
+      - 'platform/findpitches-v2/**'
+      - 'tests/findpitches-v2/**'
   workflow_dispatch:
 
 permissions:
@@ -144,7 +149,9 @@ jobs:
         run: |
           set -euo pipefail
 
-          expected_jobs="$(node --input-type=module -e "import { roundRobinSchedule } from './platform/findpitches-v2/scheduler/catalogue.mjs'; process.stdout.write(String(roundRobinSchedule().length))")"
+          expected_base_jobs="$(node --input-type=module -e "import { roundRobinSchedule } from './platform/findpitches-v2/scheduler/catalogue.mjs'; process.stdout.write(String(roundRobinSchedule().length))")"
+          expected_city_jobs=320
+          expected_jobs="$((expected_base_jobs + expected_city_jobs))"
           expected_catalogue="$(node --input-type=module -e "import { GEOGRAPHY_CATALOG_VERSION } from './platform/findpitches-v2/geography/catalog.mjs'; process.stdout.write(GEOGRAPHY_CATALOG_VERSION)")"
 
           passed=false
