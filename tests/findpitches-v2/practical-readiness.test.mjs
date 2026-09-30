@@ -236,3 +236,28 @@ test('freshly verified locality hint is practical but not venue-verified',()=>{
  assert.equal(r.opportunity.venue_verified,false);
  assert.equal(r.readiness.ready,true);
 });
+
+
+test('event-page location heading is accepted as source-backed practical place evidence',()=>{
+ const r=projectPracticalOpportunity(candidate,{location_area:{
+  value:'Stroud',precision:'place',
+  evidence:[{source:'https://event.test/',excerpt:'Stroud, Gloucestershire',kind:'event_page_location_heading'}],confidence:.78
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.readiness.ready,true);
+ assert.equal(r.opportunity.location,'Stroud');
+ assert.equal(r.opportunity.location_precision,'place');
+});
+
+test('search-result snippet still requires event context before practical use',()=>{
+ const good=projectPracticalOpportunity(candidate,{location_area:{
+  value:'Maidstone',precision:'place',
+  evidence:[{source:'https://event.test/vendors',excerpt:'Vendor applications are open for the Autumn Fair in Maidstone, Kent.',kind:'search_result_snippet'}],confidence:.66
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ const bad=projectPracticalOpportunity(candidate,{location_area:{
+  value:'Maidstone',precision:'place',
+  evidence:[{source:'https://event.test/vendors',excerpt:'Maidstone, Kent',kind:'search_result_snippet'}],confidence:.66
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(good.readiness.ready,true);
+ assert.equal(bad.readiness.ready,false);
+ assert.ok(bad.readiness.missing.includes('location'));
+});
