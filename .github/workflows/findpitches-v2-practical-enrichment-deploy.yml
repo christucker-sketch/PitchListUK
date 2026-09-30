@@ -1,11 +1,7 @@
 name: FindPitches v2 practical enrichment one-shot deploy
 
 "on":
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-practical-enrichment-deploy.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
