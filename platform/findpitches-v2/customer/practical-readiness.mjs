@@ -1,4 +1,5 @@
 import { classifyVenueEvidence } from '../enrichment/venue-evidence.mjs';
+import { enabledGeographies } from '../geography/catalog.mjs';
 
 export const PRODUCT_READINESS_SCHEMA_VERSION='2026-09-30.practical-v2';
 
@@ -106,6 +107,7 @@ function inspectEvidenceQuality(record,evidence,blocked,now){
  if(!excerpt)return;
  const context=[record.location,excerpt].filter(Boolean).join(' ');
  if(crossMarketGeography(record.market,record.location,excerpt))blocked.push(reason('cross_market_geography','location'));
+ if(regionEvidenceConflict(record,excerpt))blocked.push(reason('region_evidence_conflict','location'));
  if(staleEventYear(excerpt,now))blocked.push(reason('stale_event_year','location'));
  if(genericNonEventVendorPage(excerpt))blocked.push(reason('generic_non_event_vendor_page','location'));
 }
@@ -114,7 +116,8 @@ function crossMarketGeography(market,location,excerpt){
  if(!m||!textValue)return false;
  if(countryMismatch(m,textValue))return true;
  const usStateAfterComma=/,\s*(?:alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|new\s+hampshire|new\s+jersey|new\s+mexico|new\s+york|north\s+carolina|north\s+dakota|ohio|oklahoma|oregon|pennsylvania|rhode\s+island|south\s+carolina|south\s+dakota|tennessee|texas|utah|vermont|virginia|washington|west\s+virginia|wisconsin|wyoming)\b(?!\s+(?:co\.?|county)\b)/i;
- if(m!=='US'&&(usStateAfterComma.test(loc)||usStateAfterComma.test(ex)))return true;
+ const usStateCodeAfterComma=/,\s*(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)\b/;
+ if(m!=='US'&&(usStateAfterComma.test(loc)||usStateAfterComma.test(ex)||usStateCodeAfterComma.test(loc)||usStateCodeAfterComma.test(ex)))return true;
  const canadaProvinceAfterComma=/,\s*(?:alberta|british\s+columbia|manitoba|new\s+brunswick|newfoundland(?:\s+and\s+labrador)?|nova\s+scotia|ontario|prince\s+edward\s+island|qu[eé]bec|saskatchewan|northwest\s+territories|nunavut|yukon)\b/i;
  if(m!=='CA'&&(canadaProvinceAfterComma.test(loc)||canadaProvinceAfterComma.test(ex)))return true;
  return false;
@@ -134,6 +137,24 @@ function countryMismatch(market,value){
  if(market==='IE')return hasUS||hasCA||hasAU||hasNZ||hasSG||hasHK;
  return false;
 }
+function regionEvidenceConflict(record,excerpt){
+ const market=upper(record?.market),expected=upper(record?.region_code);
+ if(!market||!expected||!excerpt)return false;
+ let geos=[];try{geos=enabledGeographies(market);}catch{return false;}
+ const textValue=String(excerpt||'');
+ const mentions=new Set();
+ for(const item of geos){
+  const variants=[item.name,...(item.aliases||[])].map(v=>String(v||'').trim()).filter(v=>v.length>=4);
+  if(variants.some(v=>phraseMention(textValue,v)))mentions.add(String(item.code).toUpperCase());
+ }
+ if(mentions.size===0||mentions.has(expected))return false;
+ return true;
+}
+function phraseMention(textValue,phrase){
+ const h=normalizeGeoText(textValue),n=normalizeGeoText(phrase);
+ return n.length>=4&&(' '+h+' ').includes(' '+n+' ');
+}
+function normalizeGeoText(value){return String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();}
 function staleEventYear(excerpt,now){
  const year=now.getUTCFullYear();
  const years=[...String(excerpt||'').matchAll(/\b((?:19|20)\d{2})\b/g)].map(m=>({year:Number(m[1]),index:m.index||0}));
