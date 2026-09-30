@@ -35,3 +35,30 @@ test('enrichment only follows useful same-site links',async()=>{
  assert.equal(r.complete,1);
  assert.deepEqual(fetched,['https://event.test/','https://event.test/vendors']);
 });
+
+
+test('enrichment stores source-corroborated area separately from strict venue',async()=>{
+ const store=db({candidate_id:'k',source_last_checked:'2026-09-30T06:00:00Z',
+  canonical_url:'https://event.test/kent-fair',application_url:null,event_name:'Autumn Fair',
+  organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<html><body><p>Applications are open for vendors at our Autumn Fair in Kent.</p><p>Contact office: London.</p></body></html>'};}};
+ const r=await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T06:01:00Z')});
+ assert.equal(r.complete,1);
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location,null);
+ assert.equal(enrichment.location_area.value,'Kent');
+ assert.equal(enrichment.location_area.evidence[0].source,'https://event.test/kent-fair');
+ assert.match(enrichment.location_area.evidence[0].excerpt,/Autumn Fair in Kent/);
+});
+
+test('discovery geography alone never becomes a source-backed area',async()=>{
+ const store=db({candidate_id:'k',source_last_checked:'2026-09-30T06:00:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Fair',
+  organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<html><body><p>Vendor applications are now open for our annual fair.</p><p>Registered office: Kent House, London.</p></body></html>'};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T06:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area,null);
+});
