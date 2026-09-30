@@ -217,3 +217,41 @@ test('real vendor application content still validates when site chrome is ignore
  assert.equal(candidate.status,'validated');
  assert.equal(candidate.publishable,true);
 });
+
+
+test('GB evaluator corrects discovery region from structured Event addressRegion', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:`
+   <html><head><title>Beef Expo Exhibitor Application</title>
+   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"Beef Expo","location":{"@type":"Place","name":"Melton Mowbray Market","address":{"@type":"PostalAddress","addressLocality":"Melton Mowbray","addressRegion":"Leicestershire"}}}</script>
+   </head><body><main><p>Exhibitor application is open for the 2027 Beef Expo.</p><a href="/apply">Exhibitor application</a></main></body></html>`};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-DURHAM',location:'County Durham',result:{url:'https://beef.test/exhibit'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'GB-ENG-LEICS');
+ assert.equal(candidate.geography.region,'Leicestershire');
+ assert.ok(candidate.evidence.some(item=>item.type==='region_correction'&&item.from_region_code==='GB-ENG-DURHAM'&&item.to_region_code==='GB-ENG-LEICS'));
+});
+
+test('GB evaluator corrects discovery region from unambiguous event-context county text', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><h1>Temple Newsam Food Festival</h1><p>Trader applications are open for our food festival in West Yorkshire in 2027.</p><a href="/apply">Trader application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-NOTTS',location:'Nottinghamshire',result:{url:'https://foodfest.test/traders'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'GB-ENG-WEST-YORKS');
+ assert.equal(candidate.geography.region,'West Yorkshire');
+});
+
+test('GB evaluator does not auto-correct a multi-region event page', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><h1>Touring Craft Fair</h1><p>Vendor applications are open for events in Kent and Essex in 2027.</p><a href="/apply">Vendor application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://tour.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'GB-ENG-KENT');
+ assert.ok(!candidate.evidence.some(item=>item.type==='region_correction'));
+});
