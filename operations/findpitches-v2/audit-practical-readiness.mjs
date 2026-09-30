@@ -19,7 +19,7 @@ async function query(sql,params=[]){
 }
 
 const now=new Date();
-const totals={current_enrichment:0,usable:0,partial:0,hard_blocked:0,location:{venue:0,place:0,area:0,none:0},missing:{},blocked:{}};
+const totals={current_enrichment:0,usable:0,usable_partial:0,enhanced:0,hard_blocked:0,location:{venue:0,place:0,area:0,none:0},missing:{},blocked:{}};
 const markets={};
 let after='';
 for(;;){
@@ -37,15 +37,17 @@ for(;;){
   const result=projectPracticalOpportunity(candidate,parse(row.enrichment_json),{now});
   const ready=result.readiness.ready;
   const precision=result.opportunity.location_precision||'none';
-  const hasPartial=Boolean(result.opportunity.location)&&!ready;
   const market=String(row.market||'unknown');
-  if(!markets[market])markets[market]={current_enrichment:0,usable:0,partial:0,hard_blocked:0,location:{venue:0,place:0,area:0,none:0},missing:{},blocked:{}};
+  if(!markets[market])markets[market]={current_enrichment:0,usable:0,usable_partial:0,enhanced:0,hard_blocked:0,location:{venue:0,place:0,area:0,none:0},missing:{},blocked:{}};
   for(const target of [totals,markets[market]]){
    target.current_enrichment++;
    target.location[precision]=(target.location[precision]||0)+1;
-   if(ready)target.usable++;
-   else if(hasPartial)target.partial++;
-   else target.hard_blocked++;
+   if(ready){
+    target.usable++;
+    const complete=result.readiness.completeness||{};
+    if(complete.venue&&complete.event_date&&complete.application_deadline)target.enhanced++;
+    else target.usable_partial++;
+   }else target.hard_blocked++;
    for(const field of result.readiness.missing)target.missing[field]=(target.missing[field]||0)+1;
    for(const item of result.readiness.blocked){
     const key=String(item.code||'unknown')+':'+String(item.field||'unknown');
