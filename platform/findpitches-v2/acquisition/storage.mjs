@@ -32,7 +32,7 @@ export async function persistDiscoveryBatch(db, job, result) {
         event_name, organiser, geography_json, evidence_json, score, status,
         rejection_reason, first_seen, last_checked, retry_count, run_id,
         opportunity_fingerprint
-      ) VALUES (?, ?, ?, ?, ?, NULL, ?, NULL, ?, '[]', 0, 'discovered',
+      ) VALUES (?, ?, ?, ?, ?, NULL, ?, NULL, ?, ?, 0, 'discovered',
                 NULL, ?, ?, 0, ?, NULL)`
     ).bind(
       candidate.candidate_id,
@@ -47,6 +47,14 @@ export async function persistDiscoveryBatch(db, job, result) {
         discovery_location: candidate.discovery_location,
         asserted: false
       }),
+      JSON.stringify([{
+        kind: 'search_result',
+        source: candidate.source_url,
+        title: candidate.search_title || null,
+        snippet: candidate.search_snippet || null,
+        query_id: candidate.query_id || null,
+        query: candidate.query || null
+      }]),
       startedAt,
       completedAt,
       runId
