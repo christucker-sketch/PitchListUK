@@ -490,3 +490,16 @@ test('police and policy contact context is not accepted as GB location evidence'
  const enrichment=JSON.parse(stored.args[2]);
  assert.equal(enrichment.location_area,null);
 });
+
+
+test('GB place extraction never promotes label words like Where as a place',async()=>{
+ const store=db({candidate_id:'where-label',source_last_checked:'2026-09-30T14:00:00Z',
+  canonical_url:'https://event.test/where',application_url:null,event_name:'Market',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-NOTTS","region":"Nottinghamshire"}'});
+ const body='<html><body><main><p>Vendor applications are open.</p><p>Where: Nottinghamshire</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T14:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.notEqual(enrichment.location_area?.value,'Where');
+});
