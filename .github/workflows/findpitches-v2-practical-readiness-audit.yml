@@ -1,4 +1,5 @@
 name: FindPitches v2 practical readiness live audit
+# rerun marker: post-dynamic-refresh baseline
 
 "on":
   workflow_dispatch:
