@@ -156,3 +156,31 @@ test('real event vendor pages remain usable despite ordinary permit wording',()=
  assert.equal(r.readiness.ready,true);
  assert.ok(!r.readiness.blocked.some(x=>x.code==='generic_non_event_vendor_page'));
 });
+
+
+test('ordinary pronoun us is not treated as United States evidence',()=>{
+ const r=projectPracticalOpportunity({...candidate,market:'GB',region_code:'GB-ENG-LONDON'},{location_area:{
+  value:'London',precision:'area',
+  evidence:[{source:'https://event.test/vendors',excerpt:"A huge thank you to everyone who joined us for the London Jamaican Jerk Festival."}],confidence:.8
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.readiness.ready,true);
+ assert.ok(!r.readiness.blocked.some(x=>x.code==='cross_market_geography'));
+});
+
+test('recent founding year near an event name is not treated as a stale event edition',()=>{
+ const r=projectPracticalOpportunity({...candidate,market:'US',region_code:'WI'},{location_area:{
+  value:'Wisconsin',precision:'area',
+  evidence:[{source:'https://event.test/about',excerpt:'Founded by Ava Winstin in May of 2021, the Green Bay Vintage Market was created to bring together a community of small businesses and vintage lovers local to Green Bay, Wisconsin.'}],confidence:.8
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.readiness.ready,true);
+ assert.ok(!r.readiness.blocked.some(x=>x.code==='stale_event_year'));
+});
+
+test('US state names in an overseas town name do not contradict market unless the projected location is US-shaped',()=>{
+ const r=projectPracticalOpportunity({...candidate,market:'IE',region_code:'CN'},{location_area:{
+  value:'Cavan',precision:'area',
+  evidence:[{source:'https://event.test/show',excerpt:'The show takes place at Showgrounds, Virginia Co. Cavan.'}],confidence:.8
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.readiness.ready,true);
+ assert.ok(!r.readiness.blocked.some(x=>x.code==='cross_market_geography'));
+});
