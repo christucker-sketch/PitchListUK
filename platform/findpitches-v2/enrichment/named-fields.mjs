@@ -7,16 +7,15 @@ const ORGANISER_PATTERNS = [
   /\b(?:event\s+organis(?:er|er)|event\s+organiz(?:er|ation)|hosted\s+by|presented\s+by)\s*[:\-]?\s*([^\n.!?;|]{3,100})/i
 ];
 const LOCATION_PATTERNS = [
-  /\b(?:event\s+venue|festival\s+venue|fair\s+venue|market\s+venue|show\s+venue|venue|event\s+location|location|festival\s+location|fair\s+location|market\s+location|show\s+location|event\s+address|event\s+site|festival\s+site|fair\s+site|held\s+at|taking\s+place\s+at|takes\s+place\s+at)\s*[:\-]?\s*([^\n.!?;|]{3,160})/i,
-  /\bwhere\s*[:\-]\s*([^\n.!?;|]{3,160})/i
+  /\b(?:event\s+venue|venue|event\s+location|location|held\s+at|taking\s+place\s+at)\s*[:\-]?\s*([^\n.!?;|]{3,130})/i
 ];
-const STOP = /\s+(?:application\s+deadline|deadline|apply\s+now|register\s+now|book\s+now|terms\s+and\s+conditions|contact\s+us|phone|telephone|tel\.?|email|click\s+here)\b.*$/i;
+const STOP = /\s+(?:application\s+deadline|deadline|apply\s+now|register\s+now|book\s+now|terms\s+and\s+conditions|contact\s+us|click\s+here)\b.*$/i;
 
 function clean(raw) {
   const text = String(raw ?? '').replace(/\s+/g, ' ').replace(STOP, '').trim()
     .replace(/^[\s:;,\-]+|[\s:;,\-]+$/g, '');
   if (!text || text.length < 3 || /^(?:tbc|tbd|unknown|n\/a|here|us|you|the event|the organiser|the organizer|the venue)$/i.test(text)) return null;
-  if (/https?:\/\/|www\.|@|<|>|\b\d{7,}\b/i.test(text)) return null;
+  if (/https?:\/\/|www\.|@|<|>|\d{5,}/i.test(text)) return null;
   // Do not swallow an entire paragraph or a neighbouring labelled field.
   if (/\b(?:organis(?:ed|er)|organiz(?:ed|er)|venue|location|deadline)\s*:/i.test(text)) return null;
   return text;
@@ -25,7 +24,7 @@ function clean(raw) {
 function scan(docs, patterns) {
   for (const doc of docs) {
     // Preserve line boundaries from extracted PDF text and HTML tag breaks.
-    const source = String(doc.body ?? doc.text ?? '').replace(/<\/(?:p|div|h[1-6]|li|section|tr|td|th|dt|dd)>/gi, '\n').replace(/<br\s*\/?>/gi, '\n')
+    const source = String(doc.body ?? doc.text ?? '').replace(/<\/(?:p|div|h[1-6]|li|section|tr)>/gi, '\n').replace(/<br\s*\/?>/gi, '\n')
       .replace(/<script\b[\s\S]*?<\/script>/gi, ' ').replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
       .replace(/<[^>]+>/g, ' ').replace(/&(?:nbsp|amp|quot|apos);/gi, match => ({'&nbsp;':' ','&amp;':'&','&quot;':'"','&apos;':"'"})[match.toLowerCase()] || match);
     for (const line of source.split(/\r?\n/)) {
