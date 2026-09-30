@@ -26,8 +26,8 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       DOCX_BOUNDED_RECOVERY_APPLY: '1'
-      DOCX_BOUNDED_RECOVERY_BATCH_ID: '2026-09-30-docx-practical-v1'
-      DOCX_BOUNDED_RECOVERY_IDS: 'fpv2_24af3d6278473a6d84331cec'
+      DOCX_BOUNDED_RECOVERY_BATCH_ID: '2026-09-30-docx-practical-v2'
+      DOCX_BOUNDED_RECOVERY_IDS: 'fpv2_5a8d6a8ae79a614c42c9b5ba'
 
     steps:
       - uses: actions/checkout@v4
