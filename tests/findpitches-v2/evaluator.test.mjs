@@ -269,3 +269,16 @@ test('GB evaluator does not persist region correction on a rejected non-opportun
  assert.equal(candidate.geography.region,'Cumbria');
  assert.equal(candidate.geography.locality,null);
 });
+
+
+test('social source pages are rejected even when they contain vendor wording', async () => {
+ for (const url of ['https://www.instagram.com/example/','https://x.com/example/status/123']) {
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(){return {final_url:url,body:'<html><body><main><p>Vendor application is open for our market.</p></main></body></html>'};}}
+  });
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url}});
+  assert.equal(candidate.status,'rejected',url);
+  assert.equal(candidate.rejection_reason,'negative_page_signal',url);
+  assert.ok(candidate.evidence.some(item=>item.type==='negative_phrase'&&item.value==='social_source_page'),url);
+ }
+});
