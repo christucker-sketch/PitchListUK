@@ -18,17 +18,20 @@ export function resolveEvidenceRegion({
   return decision(contextual,expected,geos,'event_context_region',.9);
 }
 
-function decision(codes,expected,geos,kind,confidence){
- const unique=[...new Set(codes)].filter(Boolean);
+function decision(hits,expected,geos,kind,confidence){
+ const normalized=(Array.isArray(hits)?hits:[]).map(hit=>typeof hit==='string'?{code:hit,matched:null}:hit).filter(hit=>hit?.code);
+ const unique=[...new Set(normalized.map(hit=>String(hit.code).toUpperCase()))];
  if(unique.length!==1)return null;
  const regionCode=unique[0];
  if(!regionCode||regionCode===expected)return null;
  const region=geos.find(item=>String(item.code).toUpperCase()===regionCode);
  if(!region)return null;
+ const matched=normalized.find(hit=>String(hit.code).toUpperCase()===regionCode&&hit.matched)?.matched||null;
  return Object.freeze({
   from_region_code:expected||null,
   region_code:regionCode,
   region:region.name,
+  locality_hint:isCityAlias(matched)?matched:null,
   kind,
   confidence
  });
@@ -47,7 +50,7 @@ function structuredEventRegions(body,geos){
     if(!loc||typeof loc!=='object')continue;
     const address=loc.address&&typeof loc.address==='object'?loc.address:{};
     const mapped=matchRegion(address.addressRegion,geos);
-    if(mapped)result.push(mapped);
+    if(mapped)result.push({code:mapped,matched:null});
    }
   }
  }
@@ -64,12 +67,21 @@ function contextualEventRegions(body,geos){
    const variants=[item.name,...(item.aliases||[])]
     .map(value=>String(value||'').trim())
     .filter(value=>value.length>=4);
-   if(variants.some(value=>phraseMention(line,value)))hits.push(String(item.code).toUpperCase());
+   for(const variant of variants){
+    if(phraseMention(line,variant))hits.push({code:String(item.code).toUpperCase(),matched:variant});
+   }
   }
-  const unique=[...new Set(hits)];
-  if(unique.length===1)result.push(unique[0]);
+  const unique=[...new Set(hits.map(hit=>hit.code))];
+  if(unique.length===1){
+   const preferred=hits.find(hit=>isCityAlias(hit.matched))||hits[0];
+   result.push(preferred);
+  }
  }
  return result;
+}
+
+function isCityAlias(value){
+ return /^(?:Leeds|Bradford|Sheffield|Manchester|Liverpool|Birmingham|Newcastle upon Tyne)$/i.test(String(value||'').trim());
 }
 
 function matchRegion(value,geos){
