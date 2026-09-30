@@ -163,7 +163,7 @@ test('merge-check inspection refuses an unmerged source PR', async () => {
   assert.match((await response.json()).error, /source_pr_not_merged/);
 });
 
-test('controller GitHub broker returns authenticated Canada production bases', async () => {
+test('controller GitHub broker returns Canada production bases without mutation credentials', async () => {
   const mainSha = 'd'.repeat(40);
   const caSnapshot = `export const caOpportunitySnapshot = ${JSON.stringify({
     exported_at: '2026-09-18T00:00:00Z',
@@ -175,7 +175,7 @@ test('controller GitHub broker returns authenticated Canada production bases', a
     { id: 'ca-on-1' }, { id: 'ca-bc-1' }, { id: 'ca-qc-1' }, { id: 'ca-ab-1' }, { id: 'ca-ns-1' }
   ];
   const fetchImpl = async (url, options = {}) => {
-    assert.match(String(options?.headers?.authorization || ''), /^Bearer /);
+    assert.equal(options?.headers?.authorization, undefined);
     const value = String(url);
     if (value.endsWith('/git/ref/heads/main')) return Response.json({ object: { sha: mainSha } });
     if (value.includes('/contents/functions/_data/ca-opportunities.mjs?ref=')) {
@@ -188,7 +188,7 @@ test('controller GitHub broker returns authenticated Canada production bases', a
   };
   const response = await handleInternalGithubControllerRequest(
     request({ action: 'read_ca_production_bases' }),
-    env(),
+    { GITHUB_REPO: 'christucker-sketch/PitchListUK' },
     { fetchImpl }
   );
   assert.equal(response.status, 200);
@@ -247,4 +247,15 @@ test('controller GitHub broker proxies an authenticated bounded publication read
     github_status: 200,
     github_body: { object: { sha: mainSha } }
   });
+});
+
+
+test('controller GitHub broker still fails closed for mutation-capable actions without GitHub credentials', async () => {
+  const response = await handleInternalGithubControllerRequest(
+    request({ action: 'publication_request', method: 'GET', path: '/git/ref/heads/main' }),
+    { GITHUB_REPO: 'christucker-sketch/PitchListUK' },
+    { fetchImpl: async () => Response.json({ object: { sha: 'd'.repeat(40) } }) }
+  );
+  assert.equal(response.status, 409);
+  assert.match((await response.json()).error, /Missing required secret\/config: GITHUB_TOKEN/);
 });
