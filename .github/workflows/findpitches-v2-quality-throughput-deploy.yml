@@ -1,6 +1,11 @@
 name: FindPitches v2 quality throughput one-shot deploy
 
 "on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-quality-throughput-deploy.yml
   workflow_dispatch:
 
 permissions:
@@ -62,12 +67,17 @@ jobs:
               .mode == "shadow" and .database == "isolated" and
               .publication_enabled == false and .search_configured == true and
               .us_city_discovery_profile == "official_first_v1" and
+              .acquisition_crons.baseline == "*/5 * * * *" and
+              .acquisition_crons.us_city == "2-59/5 * * * *" and
               .customer_promotion_batch_limit == 48' <<< "$health" >/dev/null 2>&1 &&
               jq -e '.ok == true and .publication_enabled == false and
                 .counts.scheduler_jobs == 483 and
                 .customer_promotion_batch_limit == 48' <<< "$status" >/dev/null 2>&1 &&
               jq -e '.ok == true and .service == "findpitches-v2-enrichment" and
-                .database == "isolated" and .serper_configured == false' <<< "$enrichment" >/dev/null 2>&1; then
+                .database == "isolated" and .serper_configured == false and
+                .enrichment_ruleset == "2026-09-30-practical-location-v2" and
+                .batch_limit == 12 and .fresh_enqueue_limit == 8 and
+                .minimum_ruleset_refresh_limit == 4' <<< "$enrichment" >/dev/null 2>&1; then
               ok=true
               break
             fi
@@ -80,5 +90,5 @@ jobs:
             exit 1
           }
           echo "QUALITY_DEPLOY_STATUS_BEGIN"
-          jq -c '{scheduler_jobs:.counts.scheduler_jobs,customer_promotion:.customer_promotion,customer_promotion_batch_limit,customer_location_quality,pdf_recovery}' <<< "$status"
+          jq -c '{scheduler_jobs:.counts.scheduler_jobs,scheduler:.scheduler,customer_promotion:.customer_promotion,customer_promotion_batch_limit,customer_location_quality,pdf_recovery}' <<< "$status"
           echo "QUALITY_DEPLOY_STATUS_END"
