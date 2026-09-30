@@ -1,6 +1,11 @@
 name: FindPitches v2 practical readiness live audit
 
 "on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-practical-readiness-audit.yml
   workflow_dispatch:
 
 permissions:
