@@ -41,18 +41,23 @@ export function createDefaultCandidateEvaluator({
       market: market.code,
       now: now()
     });
-    const regionCorrection=extracted.evidence.some(item=>item?.type==='market_conflict')?null:resolveEvidenceRegion({
+    const geographyResolution=extracted.evidence.some(item=>item?.type==='market_conflict')?null:resolveEvidenceRegion({
       market:market.code,
       expectedRegionCode:region_code,
       body:page.body
     });
-    const effectiveRegionCode=regionCorrection?.region_code||region_code;
-    const effectiveLocation=regionCorrection?.region||location;
-    const evidence=regionCorrection
-      ? [...extracted.evidence,
-         {type:'region_correction',value:regionCorrection.region,from_region_code:regionCorrection.from_region_code,to_region_code:regionCorrection.region_code,locality_hint:regionCorrection.locality_hint||null,kind:regionCorrection.kind,confidence:regionCorrection.confidence},
-         {type:'geography_match',value:regionCorrection.region,confidence:regionCorrection.confidence}]
-      : [...extracted.evidence];
+    const regionCorrection=geographyResolution?.region_changed?geographyResolution:null;
+    const localityHint=geographyResolution?.locality_hint||null;
+    const effectiveRegionCode=geographyResolution?.region_code||region_code;
+    const effectiveLocation=geographyResolution?.region||location;
+    const geographyEvidence=[];
+    if(regionCorrection){
+      geographyEvidence.push({type:'region_correction',value:regionCorrection.region,from_region_code:regionCorrection.from_region_code,to_region_code:regionCorrection.region_code,locality_hint,kind:regionCorrection.kind,confidence:regionCorrection.confidence});
+      geographyEvidence.push({type:'geography_match',value:regionCorrection.region,confidence:regionCorrection.confidence});
+    }else if(localityHint){
+      geographyEvidence.push({type:'locality_hint',value:localityHint,region_code:effectiveRegionCode,kind:geographyResolution.kind,confidence:geographyResolution.confidence});
+    }
+    const evidence=[...extracted.evidence,...geographyEvidence];
 
     const score = scoreCandidate({
       evidence,
@@ -93,9 +98,9 @@ export function createDefaultCandidateEvaluator({
       organiser: null,
       geography: {
         country_code: market.code,
-        region_code: appliedRegionCorrection?.region_code||region_code,
-        region: appliedRegionCorrection?.region||location,
-        locality: appliedRegionCorrection?.locality_hint||null
+        region_code: appliedRegionCorrection?.region_code||effectiveRegionCode,
+        region: appliedRegionCorrection?.region||effectiveLocation,
+        locality:(status==='validated'||status==='held')?localityHint:null
       },
       categories: [],
       evidence: [
