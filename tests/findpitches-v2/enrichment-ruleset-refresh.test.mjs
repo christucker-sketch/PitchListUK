@@ -67,7 +67,7 @@ test('completed ruleset and zero spare capacity do not enqueue refresh work',asy
 
 test('enrichment worker reserves bounded capacity for practical-location refreshes',async()=>{
  const worker=await fs.readFile(new URL('../../operations/findpitches-v2-enrichment/worker/index.mjs',import.meta.url),'utf8');
- assert.match(worker,/ENRICHMENT_RULESET_VERSION='2026-09-30-practical-location-v1'/);
+ assert.match(worker,/ENRICHMENT_RULESET_VERSION='2026-09-30-practical-location-v2'/);
  assert.match(worker,/FRESH_ENQUEUE_LIMIT=8/);
  assert.match(worker,/MIN_RULESET_REFRESH_LIMIT=4/);
  assert.match(worker,/BATCH_LIMIT=12/);
