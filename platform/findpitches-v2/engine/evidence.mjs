@@ -52,8 +52,6 @@ const NEGATIVE_PHRASES = Object.freeze([
   'probate bond',
   'multistate lawsuit',
   'challenging tariffs',
-  'press release',
-  'news release',
   'available to traders in',
   'pre-qualify for financing',
   'prequalify for financing',
@@ -95,6 +93,13 @@ export function extractEvidence({
     if (normalized.includes(phrase)) {
       evidence.push(Object.freeze({ type: 'negative_phrase', value: phrase, confidence: 1 }));
     }
+  }
+
+  // Treat news/press-release wording as negative only when it describes the
+  // page itself, not when it appears in navigation/footer text on a real event page.
+  const leadText=text.slice(0,320);
+  if (/\b(?:press|news)\s+release\b/i.test(leadText)) {
+    evidence.push(Object.freeze({ type: 'negative_phrase', value: 'news_or_press_release_page', confidence: 1 }));
   }
 
   const applicationUrl = findApplicationUrl(html, sourceUrl);
@@ -142,7 +147,8 @@ function detectMarketConflict({market,text,sourceUrl}={}) {
   try{host=new URL(String(sourceUrl||'')).hostname.toLowerCase();}catch{}
   if(host.endsWith('.gov')&&!host.endsWith('.gov.uk')) return 'gb_candidate_non_uk_government_host';
   const value=String(text||'');
-  if(/\b(?:united\s+states|u\.s\.a?\.?|usa)\b/i.test(value)) return 'gb_candidate_explicit_us_reference';
+  const explicitUS=/\b(?:united\s+states|usa|u\.s\.a\.?|u\.s\.)\b/i.test(value)||/\bUS\b/.test(value);
+  if(explicitUS) return 'gb_candidate_explicit_us_reference';
   const stateCodes='AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY';
   const stateNames='Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|New Hampshire|New Jersey|New Mexico|New York|North Carolina|North Dakota|Ohio|Oklahoma|Oregon|Pennsylvania|Rhode Island|South Carolina|South Dakota|Tennessee|Texas|Utah|Vermont|Virginia|Washington|West Virginia|Wisconsin|Wyoming';
   if(new RegExp("\\b[A-Z][A-Za-z .’'-]{1,60},\\s*(?:"+stateCodes+")\\b").test(value)) return 'gb_candidate_us_city_state_code';
