@@ -2,11 +2,6 @@ name: FindPitches v2 US city conversion audit
 # rerun-v2
 
 "on":
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-us-city-conversion-audit.yml
   workflow_dispatch:
 
 permissions:
