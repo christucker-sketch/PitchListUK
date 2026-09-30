@@ -86,6 +86,9 @@ export function extractEvidence({
   if (socialSource(sourceUrl)) {
     evidence.push(Object.freeze({ type: 'negative_phrase', value: 'social_source_page', confidence: 1 }));
   }
+  if (newsOrPressSource(sourceUrl)) {
+    evidence.push(Object.freeze({ type: 'negative_phrase', value: 'news_or_press_path', confidence: 1 }));
+  }
 
   for (const phrase of POSITIVE_PHRASES) {
     if (normalized.includes(phrase)) {
@@ -143,6 +146,15 @@ export function hasStrongNegativeEvidence(evidence) {
   return evidence.some(item => item?.type === 'negative_phrase' || item?.type === 'market_conflict');
 }
 
+
+function newsOrPressSource(value) {
+  try {
+    const path=new URL(String(value||'')).pathname.toLowerCase();
+    return /\/(?:news|press|news-press|press-release|press-releases)(?:\/|$)/.test(path);
+  } catch {
+    return false;
+  }
+}
 
 function socialSource(value) {
   try {
