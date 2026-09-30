@@ -416,3 +416,20 @@ test('US evaluator keeps matching state unchanged', async () => {
  assert.equal(candidate.geography.region_code,'TX');
  assert.ok(!candidate.evidence.some(item=>item.type==='region_correction'&&item.to_region_code!=='TX'));
 });
+
+
+test('closed or draft vendor application pages are rejected', async () => {
+ for (const body of [
+  '<html><body><main><p>Vendor application</p><p>Deadline has passed</p></main></body></html>',
+  '<html><body><main><p>Vendor application is open</p><p>Application is in draft mode by event organizer</p></main></body></html>',
+  '<html><body><main><p>Vendor application</p><p>Vendor applications are closed</p></main></body></html>'
+ ]) {
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(url){return {final_url:url,body};}},
+   now:()=>new Date('2026-09-30T00:00:00Z')
+  });
+  const candidate=await evaluator({market:getMarket('US'),region_code:'NJ',location:'New Jersey',result:{url:'https://event.test/vendors'}});
+  assert.equal(candidate.status,'rejected');
+  assert.equal(candidate.rejection_reason,'negative_page_signal');
+ }
+});
