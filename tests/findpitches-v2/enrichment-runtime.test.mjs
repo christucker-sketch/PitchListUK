@@ -424,3 +424,43 @@ test('GB location page may use a short place line, ordinary exhibitor pages may 
  assert.equal(goodEnrichment.location_area.evidence[0].kind,'event_location_page');
  assert.equal(badEnrichment.location_area,null);
 });
+
+
+test('GB enrichment fails closed when fetched source proves a US city/state despite matching county name',async()=>{
+ const store=db({candidate_id:'lincolnshire-il',source_last_checked:'2026-09-30T12:30:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Lincolnshire Art Festival',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-LINCS","region":"Lincolnshire"}'});
+ const body='<html><body><main><h1>Lincolnshire Art Festival</h1><p>Food vendor applications are open.</p><p>Join us at the Marriott Resort in Lincolnshire, IL.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T12:31:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location,null);
+ assert.equal(enrichment.location_area,null);
+});
+
+test('GB enrichment fails closed when source only supports a different UK region',async()=>{
+ const store=db({candidate_id:'wrong-uk-region',source_last_checked:'2026-09-30T12:30:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Beef Expo',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-DURHAM","region":"County Durham"}'});
+ const body='<html><body><main><h1>Beef Expo</h1><p>Exhibitor applications are open for the event at Melton Mowbray in Leicestershire.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T12:31:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location,null);
+ assert.equal(enrichment.location_area,null);
+});
+
+test('legacy geography region code is normalized to canonical region name before area evidence is stored',async()=>{
+ const store=db({candidate_id:'legacy-region-code',source_last_checked:'2026-09-30T12:30:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'London Festival',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-LONDON","region":"GB-ENG-LONDON"}'});
+ const body='<html><body><main><p>Vendor applications are open for the London Festival.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T12:31:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area.value,'London');
+ assert.equal(enrichment.location_area.precision,'area');
+});
