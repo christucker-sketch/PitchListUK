@@ -201,58 +201,50 @@ function parseCaSnapshotModule(source) {
   try { return JSON.parse(match[1]); } catch { throw new Error('controller_github_ca_snapshot_json_invalid'); }
 }
 async function publicText(fetchImpl, url, errorPrefix) {
-  const response = await fetchImpl(url, { headers: { 'user-agent': 'findpitches-controller-pr-broker-readonly' } });
+  const response = await fetchImpl(url, {
+    headers: {
+      'user-agent': 'findpitches-controller-pr-broker-readonly',
+      'cache-control': 'no-cache'
+    }
+  });
   const text = await response.text();
   if (!response.ok) throw new Error(`${errorPrefix}_http_${response.status}`);
   return text;
 }
-async function readPublicMainSha(fetchImpl, repo) {
-  const refsUrl=`https://github.com/${repo}.git/info/refs?service=git-upload-pack`;
-  const refsResponse=await fetchImpl(refsUrl,{
-    headers:{'user-agent':'findpitches-controller-pr-broker-readonly','Git-Protocol':'version=1'}
-  });
-  const advertised=await refsResponse.text();
-  if(refsResponse.ok){
-    const match=advertised.match(/([a-f0-9]{40}) refs\/heads\/main(?:\\0|[\\r\\n]|$)/i);
-    const sha=String(match?.[1]||'').toLowerCase();
-    if(/^[a-f0-9]{40}$/.test(sha))return sha;
-  }
-
-  // GitHub may negotiate protocol v2 and omit literal refs from the initial
-  // advertisement. Fall back to the public commits page, still avoiding the API.
-  const html=await publicText(fetchImpl,`https://github.com/${repo}/commits/main`,'controller_github_ca_main_html');
-  const patterns=[
-    /"currentOid":"([a-f0-9]{40})"/i,
-    /\/commit\/([a-f0-9]{40})(?:["'?/#]|$)/i
-  ];
-  for(const pattern of patterns){
-    const match=html.match(pattern);
-    const sha=String(match?.[1]||'').toLowerCase();
-    if(/^[a-f0-9]{40}$/.test(sha))return sha;
-  }
-  throw new Error('controller_github_ca_main_sha_invalid');
-}
-async function readRawAtSha(fetchImpl, repo, sha, path) {
+async function readRawMain(fetchImpl, repo, path, pass) {
   return publicText(
     fetchImpl,
-    `https://raw.githubusercontent.com/${repo}/${sha}/${path}`,
-    'controller_github_ca_raw'
+    `https://raw.githubusercontent.com/${repo}/main/${path}?findpitches-read=${pass}`,
+    'controller_github_ca_raw_main'
   );
 }
 async function readCaProductionBasesPublic(fetchImpl, repo) {
-  const mainSha = await readPublicMainSha(fetchImpl, repo);
-  const [snapshotSource, sourceJson] = await Promise.all([
-    readRawAtSha(fetchImpl, repo, mainSha, CA_SNAPSHOT_PATH),
-    readRawAtSha(fetchImpl, repo, mainSha, CA_SOURCE_REGISTRY_PATH)
+  const [snapshotA, sourcesA] = await Promise.all([
+    readRawMain(fetchImpl, repo, CA_SNAPSHOT_PATH, 'a'),
+    readRawMain(fetchImpl, repo, CA_SOURCE_REGISTRY_PATH, 'a')
   ]);
-  const snapshot = parseCaSnapshotModule(snapshotSource);
+  const [snapshotB, sourcesB] = await Promise.all([
+    readRawMain(fetchImpl, repo, CA_SNAPSHOT_PATH, 'b'),
+    readRawMain(fetchImpl, repo, CA_SOURCE_REGISTRY_PATH, 'b')
+  ]);
+  if (snapshotA !== snapshotB || sourcesA !== sourcesB) {
+    throw new Error('controller_github_ca_raw_main_changed_during_read');
+  }
+  const snapshot = parseCaSnapshotModule(snapshotA);
   let sources;
-  try { sources = JSON.parse(sourceJson); } catch { throw new Error('controller_github_ca_source_registry_json_invalid'); }
+  try { sources = JSON.parse(sourcesA); }
+  catch { throw new Error('controller_github_ca_source_registry_json_invalid'); }
   const rows = Array.isArray(snapshot?.rows) ? snapshot.rows : null;
   if (!rows || Number(snapshot?.total) !== rows.length) throw new Error('controller_github_ca_snapshot_invalid');
   if (!Array.isArray(sources)) throw new Error('controller_github_ca_source_registry_invalid');
-  return { main_sha: mainSha, production_count: rows.length, source_count: sources.length };
+  return {
+    main_sha: null,
+    stable_snapshot: true,
+    production_count: rows.length,
+    source_count: sources.length
+  };
 }
+
 async function sourceRegistryProof(fetchImpl, repo, authHeaders, inspection) {
   if (!String(inspection.head_ref || '').startsWith('sources/cloud-us-')) return null;
   if (inspection.files.length !== 1 || inspection.files[0]?.path !== SOURCE_REGISTRY_PATH) return null;
