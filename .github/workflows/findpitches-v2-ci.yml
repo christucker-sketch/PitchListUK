@@ -113,6 +113,9 @@ jobs:
       - name: Preview GB place recall read-only
         run: node operations/findpitches-v2/preview-gb-place-recall.mjs
 
+      - name: Preview GB classifier recheck read-only
+        run: node operations/findpitches-v2/preview-gb-classifier-recheck.mjs
+
       - name: Snapshot current strict US customer-visible inventory
         env:
           FINDPITCHES_D1_DATABASE_ID: 6732bcc9-a172-4d38-ad4d-7660ed13392f
@@ -127,5 +130,6 @@ jobs:
             legacy-uk-benchmark.json
             practical-readiness-audit.json
             gb-place-recall-preview.json
+            gb-classifier-recheck-preview.json
             us-customer-visible-audit.json
           retention-days: 14
