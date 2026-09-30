@@ -33,7 +33,7 @@ export function createDefaultCandidateEvaluator({
     const effectiveLocation=regionCorrection?.region||location;
     const evidence=regionCorrection
       ? [...extracted.evidence,
-         {type:'region_correction',value:regionCorrection.region,from_region_code:regionCorrection.from_region_code,to_region_code:regionCorrection.region_code,kind:regionCorrection.kind,confidence:regionCorrection.confidence},
+         {type:'region_correction',value:regionCorrection.region,from_region_code:regionCorrection.from_region_code,to_region_code:regionCorrection.region_code,locality_hint:regionCorrection.locality_hint||null,kind:regionCorrection.kind,confidence:regionCorrection.confidence},
          {type:'geography_match',value:regionCorrection.region,confidence:regionCorrection.confidence}]
       : [...extracted.evidence];
 
@@ -64,6 +64,8 @@ export function createDefaultCandidateEvaluator({
       rejectionReason = 'score_below_threshold';
     }
 
+    const appliedRegionCorrection=(status==='validated'||status==='held')?regionCorrection:null;
+
     const candidate = normalizeCandidate({
       candidate_id: await stableCandidateId(market.code, finalUrl),
       market: market.code,
@@ -74,8 +76,9 @@ export function createDefaultCandidateEvaluator({
       organiser: null,
       geography: {
         country_code: market.code,
-        region_code: effectiveRegionCode,
-        region: effectiveLocation
+        region_code: appliedRegionCorrection?.region_code||region_code,
+        region: appliedRegionCorrection?.region||location,
+        locality: appliedRegionCorrection?.locality_hint||null
       },
       categories: [],
       evidence: [
