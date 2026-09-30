@@ -356,3 +356,19 @@ test('GB evaluator can correct region from source metadata description',async()=
  assert.equal(candidate.geography.region_code,'GB-ENG-WORCS');
  assert.ok(candidate.evidence.some(e=>e.type==='region_correction'&&e.to_region_code==='GB-ENG-WORCS'));
 });
+
+
+test('news and press article paths are rejected despite exhibitor wording', async () => {
+ for (const url of [
+  'https://event.test/news/exhibitor-announcement/',
+  'https://event.test/news-press/1234/exhibitor-focus/'
+ ]) {
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(){return {final_url:url,body:'<html><body><main><h1>Exhibitor Focus</h1><p>Exhibitor application details are discussed in this news story.</p></main></body></html>'};}}
+  });
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url}});
+  assert.equal(candidate.status,'rejected',url);
+  assert.equal(candidate.rejection_reason,'negative_page_signal',url);
+  assert.ok(candidate.evidence.some(item=>item.type==='negative_phrase'&&item.value==='news_or_press_path'),url);
+ }
+});
