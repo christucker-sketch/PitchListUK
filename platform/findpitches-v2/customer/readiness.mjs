@@ -1,10 +1,10 @@
 // Customer-facing projection contract for FindPitches v2.
 // This is deliberately separate from acquisition/classifier candidate state.
 
-export const CUSTOMER_READY_SCHEMA_VERSION = '2026-09-29.location-v1';
+export const CUSTOMER_READY_SCHEMA_VERSION = '2026-09-30.practical-location-v1';
 
 export const CUSTOMER_READY_REQUIRED_FIELDS = Object.freeze([
-  'id','market','title','region_code','location','canonical_url','application_url','last_checked'
+  'id','market','title','region_code','location','location_precision','canonical_url','application_url','last_checked'
 ]);
 
 export const CUSTOMER_READY_ENRICHMENT_FIELDS = Object.freeze([
@@ -28,6 +28,14 @@ export function assessCustomerReadiness(record = {}, { now = new Date() } = {}) 
   const missing = [], invalid = [], blocked = [];
   for (const field of CUSTOMER_READY_REQUIRED_FIELDS) if (!present(record[field])) missing.push(field);
   for (const field of ['canonical_url','application_url']) if (present(record[field]) && !httpUrl(record[field])) invalid.push(field);
+
+  if (present(record.location_precision) && !['venue','place','area'].includes(String(record.location_precision).trim().toLowerCase())) {
+    invalid.push('location_precision');
+  }
+  if (record.location_confidence != null) {
+    const confidence=Number(record.location_confidence);
+    if (!Number.isFinite(confidence) || confidence<0 || confidence>1) invalid.push('location_confidence');
+  }
 
   if (record.coordinates != null) {
     const lat=Number(record.coordinates?.lat), lng=Number(record.coordinates?.lng);
