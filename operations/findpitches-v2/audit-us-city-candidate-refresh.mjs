@@ -39,4 +39,16 @@ SELECT
  SUM(CASE WHEN looks_city_job=1 AND status='validated' AND (enrichment_checked IS NULL OR enrichment_checked<last_checked) THEN 1 ELSE 0 END) AS city_needs_current_enrichment,
  SUM(CASE WHEN looks_city_job=0 THEN 1 ELSE 0 END) AS non_city_candidates
 FROM labelled`);
-console.log(JSON.stringify(rows[0]||{},null,2));
+const scheduler=(await query(`
+SELECT
+ COUNT(*) AS total_jobs,
+ SUM(CASE WHEN query_group=0 THEN 1 ELSE 0 END) AS baseline_jobs,
+ SUM(CASE WHEN query_group=1 THEN 1 ELSE 0 END) AS city_jobs,
+ SUM(CASE WHEN query_group=0 AND attempts>0 THEN 1 ELSE 0 END) AS baseline_attempted,
+ SUM(CASE WHEN query_group=1 AND attempts>0 THEN 1 ELSE 0 END) AS city_attempted,
+ SUM(CASE WHEN query_group=1 THEN attempts ELSE 0 END) AS city_attempts_total,
+ MAX(CASE WHEN query_group=1 THEN attempts ELSE NULL END) AS city_max_attempts,
+ SUM(CASE WHEN query_group=1 AND status='ready' THEN 1 ELSE 0 END) AS city_ready,
+ SUM(CASE WHEN query_group=1 AND status='leased' THEN 1 ELSE 0 END) AS city_leased
+FROM scheduler_jobs`))[0]||{};
+console.log(JSON.stringify({scheduler,candidates:rows[0]||{}},null,2));
