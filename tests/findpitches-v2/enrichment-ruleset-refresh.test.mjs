@@ -66,7 +66,7 @@ test('completed ruleset and zero spare capacity do not enqueue refresh work',asy
 
 test('enrichment worker uses only spare batch capacity for historical refreshes',async()=>{
  const worker=await fs.readFile(new URL('../../operations/findpitches-v2-enrichment/worker/index.mjs',import.meta.url),'utf8');
- assert.match(worker,/ENRICHMENT_RULESET_VERSION='2026-09-30-evidence-v2'/);
+ assert.match(worker,/ENRICHMENT_RULESET_VERSION='2026-09-30-practical-location-v1'/);
  assert.match(worker,/const spare=Math\.max\(0,BATCH_LIMIT-Number\(queued\.enqueued\|\|0\)\)/);
  assert.match(worker,/enqueueEnrichmentRulesetRefresh\(env\.FINDPITCHES_DB,\{now,limit:spare/);
  assert.match(worker,/BATCH_LIMIT=8/);
