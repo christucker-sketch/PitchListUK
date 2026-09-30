@@ -1,12 +1,7 @@
 name: FindPitches v2 location recall preview
-# rerun marker: aggregate structured-location diagnostics
 
 "on":
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-location-recall-preview.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
