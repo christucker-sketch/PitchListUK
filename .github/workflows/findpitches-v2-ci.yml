@@ -104,9 +104,20 @@ jobs:
       - name: Measure practical-v2 impact read-only
         run: node operations/findpitches-v2/measure-practical-v2-impact.mjs
 
+      - name: Benchmark legacy UK customer-ready catalogue
+        run: node operations/findpitches-v2/benchmark-legacy-uk-product.mjs | tee legacy-uk-benchmark.json
+
+      - name: Snapshot current strict US customer-visible inventory
+        env:
+          FINDPITCHES_D1_DATABASE_ID: 6732bcc9-a172-4d38-ad4d-7660ed13392f
+        run: node operations/findpitches-v2/scripts/run-us-customer-visible-audit.mjs us-customer-visible-audit.json
+
       - name: Upload practical-v2 impact
         uses: actions/upload-artifact@v4
         with:
           name: practical-v2-impact-${{ github.run_id }}
-          path: practical-v2-impact.json
+          path: |
+            practical-v2-impact.json
+            legacy-uk-benchmark.json
+            us-customer-visible-audit.json
           retention-days: 14
