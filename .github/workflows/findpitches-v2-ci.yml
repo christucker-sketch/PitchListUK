@@ -110,6 +110,9 @@ jobs:
       - name: Audit legacy UK overlap with v2
         run: node operations/findpitches-v2/audit-gb-legacy-overlap.mjs
 
+      - name: Preview legacy UK seed revalidation
+        run: node operations/findpitches-v2/preview-gb-legacy-revalidation.mjs
+
       - name: Audit current practical readiness by market
         run: node operations/findpitches-v2/audit-practical-readiness.mjs | tee practical-readiness-audit.json
 
@@ -132,6 +135,7 @@ jobs:
             practical-v2-impact.json
             legacy-uk-benchmark.json
             gb-legacy-overlap.json
+            gb-legacy-revalidation-preview.json
             practical-readiness-audit.json
             gb-place-recall-preview.json
             gb-classifier-recheck-preview.json
