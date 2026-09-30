@@ -23,15 +23,18 @@ function decision(hits,expected,geos,kind,confidence){
  const unique=[...new Set(normalized.map(hit=>String(hit.code).toUpperCase()))];
  if(unique.length!==1)return null;
  const regionCode=unique[0];
- if(!regionCode||regionCode===expected)return null;
+ if(!regionCode)return null;
  const region=geos.find(item=>String(item.code).toUpperCase()===regionCode);
  if(!region)return null;
  const matched=normalized.find(hit=>String(hit.code).toUpperCase()===regionCode&&hit.matched)?.matched||null;
+ const localityHint=canonicalCityAlias(matched);
+ if(regionCode===expected&&!localityHint)return null;
  return Object.freeze({
   from_region_code:expected||null,
   region_code:regionCode,
   region:region.name,
-  locality_hint:isCityAlias(matched)?matched:null,
+  locality_hint:localityHint,
+  region_changed:regionCode!==expected,
   kind,
   confidence
  });
@@ -80,8 +83,15 @@ function contextualEventRegions(body,geos){
  return result;
 }
 
-function isCityAlias(value){
- return /^(?:Leeds|Bradford|Sheffield|Manchester|Liverpool|Birmingham|Newcastle upon Tyne)$/i.test(String(value||'').trim());
+function isCityAlias(value){return Boolean(canonicalCityAlias(value));}
+function canonicalCityAlias(value){
+ const text=String(value||'').trim();
+ const aliases={
+  'leeds':'Leeds','bradford':'Bradford','sheffield':'Sheffield','manchester':'Manchester',
+  'liverpool':'Liverpool','birmingham':'Birmingham','newcastle upon tyne':'Newcastle upon Tyne',
+  'newcastle':'Newcastle upon Tyne'
+ };
+ return aliases[text.toLowerCase()]||null;
 }
 
 function matchRegion(value,geos){
