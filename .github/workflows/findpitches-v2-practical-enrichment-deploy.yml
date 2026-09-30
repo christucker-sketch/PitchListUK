@@ -46,7 +46,7 @@ jobs:
               .database == "isolated" and .serper_configured == false and
               .enrichment_ruleset == "2026-09-30-practical-location-v1" and
               .batch_limit == 12 and
-              .fresh_enqueue_limit == 8 and .ruleset_refresh_limit == 4' <<< "$body" >/dev/null 2>&1; then
+              .fresh_enqueue_limit == 8 and .minimum_ruleset_refresh_limit == 4' <<< "$body" >/dev/null 2>&1; then
               ok=true
               break
             fi
