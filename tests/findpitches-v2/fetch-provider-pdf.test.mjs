@@ -69,3 +69,14 @@ test('malformed PDFs receive a dedicated recoverable error', async () => {
   });
   await assert.rejects(() => provider.fetch('https://example.test/apply.pdf'), /pdf_invalid_signature/);
 });
+
+
+test('fetch provider sniffs PDF bytes behind application/download without a PDF URL', async () => {
+  const provider = createHttpFetchProvider({
+    fetchImpl: async () => response(pdfBytes, 'application/download', 'https://example.test/application.php?id=99'),
+    pdfExtractor: mockPdf
+  });
+  const page = await provider.fetch('https://example.test/application.php?id=99');
+  assert.equal(page.content_type, 'application/pdf');
+  assert.match(page.body, /Applications close/);
+});
