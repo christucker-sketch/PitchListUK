@@ -234,3 +234,45 @@ test('trusted locality hint is not accepted from office or contact context',asyn
  const enrichment=JSON.parse(stored.args[2]);
  assert.notEqual(enrichment.location_area?.evidence?.[0]?.kind,'verified_location_hint');
 });
+
+
+test('GB enrichment rejects structured locations that contradict the discovery county',async()=>{
+ const cases=[
+  {
+   id:'gb-us',
+   region_code:'GB-ENG-DEVON',
+   region:'Devon',
+   body:'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","location":{"@type":"Place","name":"Devon Horse Show","address":{"addressLocality":"Devon","addressRegion":"PA"}}}</script><p>Vendor applications are open.</p>'
+  },
+  {
+   id:'gb-wrong-county',
+   region_code:'GB-ENG-DURHAM',
+   region:'County Durham',
+   body:'<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","location":{"@type":"Place","name":"Melton Mowbray Market","address":{"addressLocality":"Melton Mowbray","addressRegion":"Leicestershire"}}}</script><p>Exhibitor applications are open.</p>'
+  }
+ ];
+ for(const item of cases){
+  const store=db({candidate_id:item.id,source_last_checked:'2026-09-30T09:00:00Z',
+   canonical_url:'https://event.test/vendors',application_url:null,event_name:'Fair',organiser:null,
+   geography_json:JSON.stringify({country_code:'GB',region_code:item.region_code,region:item.region})});
+  const fetchProvider={async fetch(url){return {final_url:url,body:item.body};}};
+  await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T09:01:00Z')});
+  const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+  const enrichment=JSON.parse(stored.args[2]);
+  assert.equal(enrichment.location,null,item.id);
+  assert.equal(enrichment.location_area,null,item.id);
+ }
+});
+
+test('GB enrichment retains structured locations that agree with the discovery county',async()=>{
+ const store=db({candidate_id:'gb-kent-jsonld',source_last_checked:'2026-09-30T09:00:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Fair',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const body='<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","location":{"@type":"Place","name":"Mote Park","address":{"addressLocality":"Maidstone","addressRegion":"Kent"}}}</script><p>Vendor applications are open.</p>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T09:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location.value,'Mote Park');
+ assert.equal(enrichment.location_area.value,'Maidstone');
+});
