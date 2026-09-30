@@ -45,6 +45,9 @@ test('missing dates are partial information but expired deadlines still hard-blo
  const r=assessPracticalReadiness(expired,{now:new Date('2026-09-30T07:00:00Z')});
  assert.equal(r.ready,false);
  assert.ok(r.blocked.some(x=>x.code==='application_deadline_passed'));
+ const started=assessPracticalReadiness({...base,event_start:'28 September 2026'},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(started.ready,false);
+ assert.ok(started.blocked.some(x=>x.code==='event_started'));
 });
 
 test('unsafe promotion URLs remain hard blockers',()=>{
