@@ -5,6 +5,7 @@ on:
     types: [ready_for_review]
     paths:
       - 'operations/findpitches-v2/preview-gb-ranked-recovery.mjs'
+      - 'operations/findpitches-v2/preview-gb-title-locality-recovery.mjs'
       - 'platform/findpitches-v2/enrichment/run-batch.mjs'
       - 'platform/findpitches-v2/customer/practical-readiness.mjs'
       - 'tests/findpitches-v2/enrichment-runtime.test.mjs'
@@ -40,8 +41,12 @@ jobs:
           jq -e '.ok == true and .database == "isolated" and .mode == "shadow" and .publication_enabled == false' <<< "$health" >/dev/null
       - name: Run ranked GB recovery preview
         run: node operations/findpitches-v2/preview-gb-ranked-recovery.mjs
+      - name: Run OS-verified title locality preview
+        run: node operations/findpitches-v2/preview-gb-title-locality-recovery.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: gb-ranked-preview-${{ github.run_id }}
-          path: gb-ranked-recovery-preview.json
+          path: |
+            gb-ranked-recovery-preview.json
+            gb-title-locality-recovery-preview.json
           retention-days: 14
