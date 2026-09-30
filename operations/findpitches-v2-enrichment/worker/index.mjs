@@ -3,8 +3,8 @@ import { enqueueValidatedForEnrichment, enqueueEnrichmentRulesetRefresh, runEnri
 
 const SERVICE='findpitches-v2-enrichment';
 const FRESH_ENQUEUE_LIMIT=8;
-const MIN_RULESET_REFRESH_LIMIT=4;
-const BATCH_LIMIT=12;
+const MIN_RULESET_REFRESH_LIMIT=12;
+const BATCH_LIMIT=20;
 const ENRICHMENT_RULESET_VERSION='2026-09-30-practical-location-v2';
 
 export default {
