@@ -264,3 +264,32 @@ test('controller GitHub broker still fails closed for mutation-capable actions w
 });
 
 
+
+
+test('Canada readiness resolves main SHA from public commits HTML when Git advertises protocol v2', async () => {
+  const mainSha='f'.repeat(40);
+  const snapshot=`export const caOpportunitySnapshot = ${JSON.stringify({exported_at:'x',source:'x',total:1,rows:[{stable_id:'ca1'}]})};\n`;
+  const seen=[];
+  const response=await handleInternalGithubControllerRequest(
+    request({action:'read_ca_production_bases'}),
+    {GITHUB_REPO:'christucker-sketch/PitchListUK'},
+    {fetchImpl:async (url,options={})=>{
+      const value=String(url);seen.push(value);
+      assert.equal(value.startsWith('https://api.github.com/'),false);
+      if(value.includes('.git/info/refs?service=git-upload-pack')){
+        assert.equal(options?.headers?.['Git-Protocol'],'version=1');
+        return new Response('001eversion 2\n0000');
+      }
+      if(value.endsWith('/commits/main')) return new Response(`<html><script>{"currentOid":"${mainSha}"}</script></html>`);
+      if(value.includes('/functions/_data/ca-opportunities.mjs')) return new Response(snapshot);
+      if(value.includes('/operations/opportunity-pipeline/config/ca-approved-source-routes.json')) return new Response('[{"id":"ca-on-1"}]');
+      return new Response('not found',{status:404});
+    }}
+  );
+  assert.equal(response.status,200);
+  const body=await response.json();
+  assert.equal(body.bases.main_sha,mainSha);
+  assert.equal(body.bases.production_count,1);
+  assert.equal(body.bases.source_count,1);
+  assert.ok(seen.some(url=>url.endsWith('/commits/main')));
+});
