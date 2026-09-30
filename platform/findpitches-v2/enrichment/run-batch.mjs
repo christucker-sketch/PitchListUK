@@ -169,7 +169,7 @@ function extractEnrichment(row,pages){
   const result={
     organiser:named.organiser ?? evidenceField(row.organiser,docs),
     location:named.location,
-    location_area:supportedAreaEvidence(geography,docs)
+    location_area:extractSupportedAreaEvidence(geography,docs)
   };
   const deadline=firstDateInDocs(docs,[
     /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
@@ -185,7 +185,7 @@ function extractEnrichment(row,pages){
   if(description) result.description=withEvidence(description.value,description.excerpt,docs);
   return normalizeEnrichment(result);
 }
-function supportedAreaEvidence(geography,docs){
+export function extractSupportedAreaEvidence(geography,docs){
  const candidates=[geography?.locality,geography?.subregion,geography?.region].map(x=>String(x||'').trim()).filter(Boolean);
  for(const name of candidates){
   if(name.length<3)continue;
