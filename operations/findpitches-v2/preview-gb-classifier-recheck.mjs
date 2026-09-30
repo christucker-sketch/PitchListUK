@@ -35,7 +35,7 @@ WITH ranked AS (
  LEFT JOIN candidate_enrichment e ON e.candidate_id=c.id AND e.source_last_checked>=c.last_checked
  WHERE c.status='validated' AND c.market='GB'
 )
-SELECT * FROM ranked WHERE rn<=2 ORDER BY region_code ASC,rn ASC LIMIT 24
+SELECT * FROM ranked WHERE rn<=3 ORDER BY rn ASC,region_code ASC,id ASC LIMIT 48
 `);
 
 const evaluator=createDefaultCandidateEvaluator({fetchProvider:createHttpFetchProvider(),now:()=>new Date()});
@@ -51,11 +51,15 @@ for(const row of rows){
    result:{url:row.canonical_url,title:row.event_name}
   });
   const negative=(evaluated.evidence||[]).filter(x=>x?.type==='market_conflict'||x?.type==='negative_phrase');
+  const correction=(evaluated.evidence||[]).find(x=>x?.type==='region_correction')||null;
   outcomes.push({
    id:row.id,region_code:row.region_code,current_status:'validated',
    title:row.event_name,canonical_url:row.canonical_url,
    preview_status:evaluated.status,rejection_reason:evaluated.rejection_reason,
    score:evaluated.score,location_input:location,
+   evaluated_region_code:evaluated.geography?.region_code||null,
+   evaluated_region:evaluated.geography?.region||null,
+   region_correction:correction,
    negative_evidence:negative
   });
  }catch(error){
@@ -73,7 +77,9 @@ const result={
  preview_held:outcomes.filter(x=>x.preview_status==='held').length,
  preview_rejected:outcomes.filter(x=>x.preview_status==='rejected').length,
  preview_errors:outcomes.filter(x=>x.preview_status==='error').length,
+ region_corrections:outcomes.filter(x=>x.region_correction).length,
  rejection_reasons:countBy(outcomes.filter(x=>x.preview_status==='rejected'),'rejection_reason'),
+ corrected_regions:countBy(outcomes.filter(x=>x.region_correction),'evaluated_region_code'),
  negative_evidence:countEvidence(outcomes),
  outcomes
 };
