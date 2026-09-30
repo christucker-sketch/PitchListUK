@@ -157,3 +157,61 @@ jobs:
             gb-ranked-recovery-preview.json
             us-customer-visible-audit.json
           retention-days: 14
+
+
+  deploy-enrichment-head:
+    name: deploy-enrichment-head
+    needs: verify
+    if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && github.event.pull_request.number == 1872 && contains(github.event.pull_request.body || '', '[deploy-enrichment-head-once]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      ENRICHMENT_CONFIG: operations/findpitches-v2-enrichment/wrangler.jsonc
+
+    steps:
+      - name: Check out PR head exactly
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Compile enrichment worker
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config "$ENRICHMENT_CONFIG"
+
+      - name: Prove API remains isolated and publication-off
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .database == "isolated" and .mode == "shadow" and .publication_enabled == false' <<< "$body" >/dev/null
+
+      - name: Deploy enrichment worker only
+        run: npx --yes wrangler@4.127.1 deploy --config "$ENRICHMENT_CONFIG"
+
+      - name: Prove enrichment runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=false
+          for attempt in $(seq 1 12); do
+            health="$(curl --silent --show-error --fail-with-body --max-time 15 https://findpitches-v2-enrichment.ctucker.workers.dev/health || true)"
+            status="$(curl --silent --show-error --fail-with-body --max-time 15 https://findpitches-v2-enrichment.ctucker.workers.dev/status || true)"
+            if jq -e '.ok == true and .service == "findpitches-v2-enrichment" and .database == "isolated" and .serper_configured == false and .enrichment_ruleset == "2026-09-30-practical-location-v3" and .batch_limit == 20 and .minimum_ruleset_refresh_limit == 12' <<< "$health" >/dev/null 2>&1 &&
+               jq -e '.ok == true and .service == "findpitches-v2-enrichment"' <<< "$status" >/dev/null 2>&1; then
+              ok=true
+              break
+            fi
+            sleep 3
+          done
+          [[ "$ok" == "true" ]] || { printf '%s\n%s\n' "$health" "$status" >&2; exit 1; }
+          jq '{enrichment_ruleset,queue,enriched,practical_location,ruleset_meta}' <<< "$status"
