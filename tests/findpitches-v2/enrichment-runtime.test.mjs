@@ -78,3 +78,41 @@ test('description enrichment retains source evidence without crashing',async()=>
  assert.match(enrichment.description.value,/Vendor applications are open/);
  assert.equal(enrichment.description.evidence[0].source,'https://event.test/vendors');
 });
+
+
+test('GB enrichment recovers a source-backed town when text anchors it to the known county',async()=>{
+ const store=db({candidate_id:'gb-place',source_last_checked:'2026-09-30T08:00:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Autumn Fair',
+  organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<html><body><p>Vendor applications are open for our Autumn Fair in Maidstone, Kent.</p></body></html>'};}};
+ const r=await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T08:01:00Z')});
+ assert.equal(r.complete,1);
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area.value,'Maidstone');
+ assert.equal(enrichment.location_area.precision,'place');
+ assert.match(enrichment.location_area.evidence[0].excerpt,/Maidstone, Kent/);
+});
+
+test('GB place extractor ignores contact-office county addresses',async()=>{
+ const store=db({candidate_id:'gb-office',source_last_checked:'2026-09-30T08:00:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Autumn Fair',
+  organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<html><body><p>Vendor applications are open for our Autumn Fair.</p><p>Contact office: Maidstone, Kent.</p></body></html>'};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T08:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area,null);
+});
+
+test('GB place extractor does not run for non-GB markets',async()=>{
+ const store=db({candidate_id:'us-place',source_last_checked:'2026-09-30T08:00:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Autumn Fair',
+  organiser:null,geography_json:'{"country_code":"US","region_code":"CA","region":"California"}'});
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<html><body><p>Vendor applications are open for our Autumn Fair in Riverside, California.</p></body></html>'};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T08:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area.value,'California');
+ assert.equal(enrichment.location_area.precision,'area');
+});
