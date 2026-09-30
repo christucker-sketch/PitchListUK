@@ -62,6 +62,19 @@ const metaRows=await query(`SELECT key,value,updated_at FROM runtime_meta
  ORDER BY key`);
 const ruleset_meta=Object.fromEntries(metaRows.map(row=>[row.key,{value:row.value,updated_at:row.updated_at}]));
 const sweepStarted=ruleset_meta.enrichment_ruleset_sweep_started_at?.value||null;
+const refreshEligibility=sweepStarted?(await query(`
+ SELECT
+  SUM(CASE WHEN c.status='validated' THEN 1 ELSE 0 END) AS validated,
+  SUM(CASE WHEN c.status='validated' AND c.last_checked<=? THEN 1 ELSE 0 END) AS candidate_before_sweep,
+  SUM(CASE WHEN c.status='validated' AND e.candidate_id IS NOT NULL AND e.enriched_at<? THEN 1 ELSE 0 END) AS enrichment_before_sweep,
+  SUM(CASE WHEN c.status='validated' AND c.last_checked<=? AND e.candidate_id IS NOT NULL AND e.enriched_at<? THEN 1 ELSE 0 END) AS both_before_sweep,
+  SUM(CASE WHEN c.status='validated' AND c.last_checked<=? AND (e.candidate_id IS NULL OR e.enriched_at<?)
+            AND (q.candidate_id IS NULL OR q.status!='leased' OR q.lease_until<=?) THEN 1 ELSE 0 END) AS selector_eligible
+ FROM candidates c
+ LEFT JOIN candidate_enrichment e ON e.candidate_id=c.id
+ LEFT JOIN enrichment_queue q ON q.candidate_id=c.id`,[
+ sweepStarted,sweepStarted,sweepStarted,sweepStarted,sweepStarted,sweepStarted,now.toISOString()
+]))[0]:null;
 const refreshQueue=sweepStarted?(await query(`
  SELECT status,COUNT(*) AS count
  FROM enrichment_queue
@@ -77,7 +90,7 @@ const locationAreaStored=(await query(`SELECT
  SUM(CASE WHEN json_extract(enrichment_json,'$.location_area.precision')='area' THEN 1 ELSE 0 END) AS area
  FROM candidate_enrichment
  WHERE json_extract(enrichment_json,'$.location_area.value') IS NOT NULL`))[0]||{};
-console.log(JSON.stringify({at:now.toISOString(),ruleset_meta,refresh_queue:refreshQueue,enriched_since_sweep:Number(enrichedSinceSweep?.[0]?.count||0),location_area_stored:{
+console.log(JSON.stringify({at:now.toISOString(),ruleset_meta,refresh_eligibility:refreshEligibility,refresh_queue:refreshQueue,enriched_since_sweep:Number(enrichedSinceSweep?.[0]?.count||0),location_area_stored:{
  total:Number(locationAreaStored.total||0),place:Number(locationAreaStored.place||0),area:Number(locationAreaStored.area||0)
 },totals,markets},null,2));
 function parse(v){try{return JSON.parse(v||'{}');}catch{return {};}}
