@@ -6,6 +6,7 @@ on:
     paths:
       - 'operations/findpitches-v2/preview-gb-ranked-recovery.mjs'
       - 'operations/findpitches-v2/preview-gb-title-locality-recovery.mjs'
+      - 'operations/findpitches-v2/preview-gb-legacy-source-locality.mjs'
       - 'operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs'
       - 'operations/findpitches-v2/preview-docx-recovery.mjs'
       - 'platform/findpitches-v2/providers/fetch/http.mjs'
@@ -49,6 +50,8 @@ jobs:
         run: node operations/findpitches-v2/preview-gb-ranked-recovery.mjs
       - name: Run OS-verified title locality preview
         run: node operations/findpitches-v2/preview-gb-title-locality-recovery.mjs
+      - name: Preview legacy-overlap current-source localities
+        run: node operations/findpitches-v2/preview-gb-legacy-source-locality.mjs
       - name: Audit unsupported fetch content types
         run: node operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs
       - name: Run DOCX recovery preview
@@ -59,6 +62,7 @@ jobs:
           path: |
             gb-ranked-recovery-preview.json
             gb-title-locality-recovery-preview.json
+            gb-legacy-source-locality-preview.json
             unsupported-fetch-content-types.json
             docx-recovery-preview.json
           retention-days: 14
