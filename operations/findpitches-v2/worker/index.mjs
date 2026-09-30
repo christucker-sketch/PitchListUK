@@ -2,7 +2,7 @@ import { enabledMarkets } from '../../../platform/findpitches-v2/markets/registr
 import { discoverBatch } from '../../../platform/findpitches-v2/acquisition/discover-batch.mjs';
 import { persistDiscoveryBatch } from '../../../platform/findpitches-v2/acquisition/storage.mjs';
 import { runClassificationBatch } from '../../../platform/findpitches-v2/classifier/run-batch.mjs';
-import { createHttpFetchProvider } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
+import { createHttpFetchProvider, DEFAULT_PDF_TIMEOUT_MS } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
 import { createRevalidator } from '../../../platform/findpitches-v2/revalidation/index.mjs';
 import { createSerperSearchProvider } from '../../../platform/findpitches-v2/providers/search/serper.mjs';
 import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
@@ -88,6 +88,7 @@ async function health(env) {
       us_city_discovery_profile: 'official_first_v1',
       acquisition_crons: { baseline: BASELINE_ACQUISITION_CRON, us_city: BASELINE_ACQUISITION_CRON, mode: 'paired_baseline_then_city' },
       customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
+      pdf_fetch_timeout_ms: DEFAULT_PDF_TIMEOUT_MS,
       legacy_runtime_dependency: false,
       local_runtime_dependency: false
     });
