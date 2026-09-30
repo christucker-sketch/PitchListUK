@@ -1,11 +1,7 @@
 name: FindPitches v2 legacy UK product benchmark
 
 "on":
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-legacy-uk-benchmark.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
