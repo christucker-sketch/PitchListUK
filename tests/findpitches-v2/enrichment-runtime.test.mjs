@@ -157,3 +157,25 @@ test('GB place extraction does not turn county-only or office text into a town',
   }
  }
 });
+
+
+test('location-bearing same-site links are prioritized ahead of generic contact links',async()=>{
+ const store=db({candidate_id:'x',source_last_checked:'2026-09-30T08:00:00Z',canonical_url:'https://event.test/',application_url:null,event_name:'Fair',organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+ const fetched=[];
+ const fetchProvider={async fetch(url){
+  fetched.push(url);
+  if(url==='https://event.test/')return {final_url:url,body:'<a href="/contact">Contact</a><a href="/vendors">Vendor application</a><a href="/visit">Plan your visit</a><a href="/venue">Venue & directions</a>'};
+  if(url==='https://event.test/venue')return {final_url:url,body:'<p>Event venue: Maidstone Market Square</p>'};
+  return {final_url:url,body:'<p>Vendor information</p>'};
+ }};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T08:01:00Z')});
+ assert.deepEqual(fetched.slice(0,4),[
+  'https://event.test/',
+  'https://event.test/venue',
+  'https://event.test/visit',
+  'https://event.test/vendors'
+ ]);
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location.value,'Maidstone Market Square');
+});
