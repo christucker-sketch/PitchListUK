@@ -19,16 +19,17 @@ async function query(sql,params=[]){
  return payload.result[0].results||[];
 }
 
-const rows=await query(`
- SELECT c.id,c.market,c.canonical_url,c.application_url,c.geography_json
- FROM candidates c
- JOIN candidate_enrichment e ON e.candidate_id=c.id AND e.source_last_checked>=c.last_checked
- WHERE c.status='validated'
-   AND c.market IN ('US','GB')
-   AND (json_extract(e.enrichment_json,'$.location') IS NULL
-        OR NULLIF(TRIM(json_extract(e.enrichment_json,'$.location.value')),'') IS NULL)
- ORDER BY c.market,c.id
- LIMIT 80`);
+const rows=[];
+for(const market of ['US','GB']){
+ rows.push(...await query(`
+  SELECT c.id,c.market,c.canonical_url,c.application_url,c.geography_json
+  FROM candidates c
+  JOIN candidate_enrichment e ON e.candidate_id=c.id AND e.source_last_checked>=c.last_checked
+  WHERE c.status='validated' AND c.market=?
+    AND (json_extract(e.enrichment_json,'$.location') IS NULL
+         OR NULLIF(TRIM(json_extract(e.enrichment_json,'$.location.value')),'') IS NULL)
+  ORDER BY c.id LIMIT 40`,[market]));
+}
 
 const provider=createHttpFetchProvider({timeoutMs:12000});
 const summary={selected:rows.length,by_market:{},recovered:0,place:0,area:0,no_match:0,fetch_failure_records:0,pages_fetched:0};
