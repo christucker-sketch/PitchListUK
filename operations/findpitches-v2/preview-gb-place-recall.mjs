@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import {createHttpFetchProvider} from '../../platform/findpitches-v2/providers/fetch/http.mjs';
 import {previewCandidateEnrichment} from '../../platform/findpitches-v2/enrichment/run-batch.mjs';
+import {projectPracticalOpportunity} from '../../platform/findpitches-v2/customer/practical-readiness.mjs';
 
 const API='https://api.cloudflare.com/client/v4';
 const DB='6732bcc9-a172-4d38-ad4d-7660ed13392f';
@@ -31,7 +32,10 @@ WITH ranked AS (
    AND json_extract(e.enrichment_json,'$.location.value') IS NULL
    AND json_extract(e.enrichment_json,'$.location_area.value') IS NULL
 )
-SELECT * FROM ranked WHERE rn=1 ORDER BY region_code ASC LIMIT 16
+SELECT * FROM ranked
+WHERE rn<=3
+ORDER BY rn ASC, region_code ASC, id ASC
+LIMIT 48
 `);
 
 const fetchProvider=createHttpFetchProvider();
@@ -40,11 +44,14 @@ for(const row of rows){
  const candidate={...row,geography:parse(row.geography_json),candidate_id:row.id};
  try{
   const preview=await previewCandidateEnrichment(candidate,{fetchProvider});
+  const projected=projectPracticalOpportunity(candidate,preview.enrichment,{now:new Date()});
   const loc=preview.enrichment?.location_area||preview.enrichment?.location||null;
   outcomes.push({
    id:row.id,region_code:row.region_code,title:row.event_name,
-   recovered:Boolean(loc?.value),value:loc?.value??null,
+   recovered:Boolean(loc?.value),practical_usable:Boolean(projected.readiness.ready),
+   value:loc?.value??null,
    precision:loc?.precision??(preview.enrichment?.location?.value?'venue':null),
+   blocked:projected.readiness.blocked,missing:projected.readiness.missing,
    evidence:loc?.evidence?.[0]??null,
    fetched_urls:preview.fetched_urls
   });
@@ -53,11 +60,14 @@ for(const row of rows){
  }
 }
 const recovered=outcomes.filter(x=>x.recovered);
+const usable=outcomes.filter(x=>x.practical_usable);
 const result={
  at:new Date().toISOString(),
  sampled:outcomes.length,
  recovered:recovered.length,
+ practical_usable:usable.length,
  recovery_rate:outcomes.length?Number((recovered.length/outcomes.length).toFixed(4)):0,
+ practical_usable_rate:outcomes.length?Number((usable.length/outcomes.length).toFixed(4)):0,
  by_precision:countBy(recovered,'precision'),
  regions_sampled:[...new Set(outcomes.map(x=>x.region_code))],
  outcomes
