@@ -65,3 +65,22 @@ test('stored place precision is preserved rather than guessed from the label tex
  assert.equal(r.opportunity.location_precision,'place');
  assert.equal(r.readiness.ready,true);
 });
+
+
+test('source-backed place matching tolerates punctuation but still rejects contact context',()=>{
+ const candidateUs={...candidate,market:'US',region_code:'CA'};
+ const good=projectPracticalOpportunity(candidateUs,{location_area:{
+  value:'Los Angeles CA',precision:'place',
+  evidence:[{source:'https://event.test/fair',excerpt:'Vendor applications are open for our festival in Los Angeles, CA.'}],confidence:.8
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(good.opportunity.location,'Los Angeles CA');
+ assert.equal(good.opportunity.location_precision,'place');
+ assert.equal(good.readiness.ready,true);
+
+ const bad=projectPracticalOpportunity(candidateUs,{location_area:{
+  value:'Los Angeles CA',precision:'place',
+  evidence:[{source:'https://event.test/contact',excerpt:'Our registered office address is Los Angeles, CA. Vendor enquiries welcome.'}],confidence:.8
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(bad.opportunity.location,null);
+ assert.equal(bad.readiness.ready,false);
+});
