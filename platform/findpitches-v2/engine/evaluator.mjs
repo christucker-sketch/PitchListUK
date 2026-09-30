@@ -44,7 +44,8 @@ export function createDefaultCandidateEvaluator({
     const geographyResolution=extracted.evidence.some(item=>item?.type==='market_conflict')?null:resolveEvidenceRegion({
       market:market.code,
       expectedRegionCode:region_code,
-      body:page.body
+      body:page.body,
+      title:extracted.title||result?.title||null
     });
     const regionCorrection=geographyResolution?.region_changed?geographyResolution:null;
     const localityHint=geographyResolution?.locality_hint||null;
