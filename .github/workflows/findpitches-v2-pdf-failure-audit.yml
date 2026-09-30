@@ -1,0 +1,35 @@
+name: FindPitches v2 PDF recovery failure audit
+
+"on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-pdf-failure-audit.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Confirm isolated v2 remains fail-closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .service == "findpitches-v2-shadow" and
+            .mode == "shadow" and .database == "isolated" and
+            .publication_enabled == false' <<< "$body" >/dev/null
+      - name: Audit most recent PDF recovery batch read-only
+        run: node operations/findpitches-v2/audit-pdf-recovery-failures.mjs
