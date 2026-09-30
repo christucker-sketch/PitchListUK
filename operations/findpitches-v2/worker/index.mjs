@@ -19,7 +19,7 @@ const CLASSIFIER_BATCH_LIMIT = 24;
 const CLASSIFIER_RULESET_VERSION = '2026-09-26-quality-rules-v3';
 const RECLASSIFY_BATCH_LIMIT = 24;
 const REVALIDATOR_BATCH_LIMIT = 6;
-const CUSTOMER_PROMOTION_BATCH_LIMIT = 12;
+const CUSTOMER_PROMOTION_BATCH_LIMIT = 48;
 
 export default {
   async fetch(request, env) {
@@ -80,6 +80,7 @@ async function health(env) {
       search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
       publication_enabled: false,
       us_city_discovery_profile: 'official_first_v1',
+      customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
       legacy_runtime_dependency: false,
       local_runtime_dependency: false
     });
@@ -177,6 +178,7 @@ async function status(env) {
     mode: env.FINDPITCHES_V2_MODE || 'unknown',
     search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
     publication_enabled: false,
+    customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
     pdf_recovery: pdfRecoveryTick,
     catalogue: catalogueMeta || null,
     counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification, customer_ready: customerReady },
