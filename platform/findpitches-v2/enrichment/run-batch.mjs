@@ -183,7 +183,7 @@ function usefulLinks(page){
 function sameSite(a,b){try{const x=new URL(a).hostname.replace(/^www\./,''),y=new URL(b).hostname.replace(/^www\./,'');return x===y;}catch{return false;}}
 
 function extractEnrichment(row,pages){
-  const docs=pages.map(p=>({url:p.final_url,text:plain(p.body)}));
+  const docs=pages.map(p=>({url:p.final_url,text:plainWithLines(p.body)}));
   const joined=docs.map(d=>d.text).join("\n");
   const geography=parse(row.geography_json);
   const rawDocs=pages.map(p=>({url:p.final_url,body:p.body}));
@@ -257,9 +257,12 @@ export function extractSupportedPlaceEvidence(geography,docs){
  const variants=[region,item?.name,...(item?.aliases||[])].map(x=>String(x||'').trim()).filter(x=>x.length>=3);
  if(!variants.length)return null;
  for(const doc of docs){
-  const sentences=String(doc.text||'').split(/(?<=[.!?])\s+|\n+/).map(x=>x.trim()).filter(Boolean);
+  const docText=String(doc.text||'');
+  const docHasEventContext=eventContext(docText);
+  const sentences=docText.split(/(?<=[.!?])\s+|\n+/).map(x=>x.trim()).filter(Boolean);
   for(const sentence of sentences){
-   if(sentence.length>500||!eventContext(sentence))continue;
+   if(sentence.length>500)continue;
+   if(!eventContext(sentence)&&!(docHasEventContext&&sentence.length<=160))continue;
    if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\b/i.test(sentence))continue;
    for(const regionName of variants){
     const escaped=escapeRegex(regionName);
@@ -359,5 +362,15 @@ function withEvidence(value,excerpt,docs){
 
 function descriptionExcerpt(docs){for(const d of docs){const parts=d.text.split(/(?<=[.!?])\s+/).map(x=>x.trim()).filter(x=>x.length>=80&&x.length<=400);const s=parts.find(x=>/(vendor|trader|stallholder|exhibitor|apply|application)/i.test(x));if(s)return {value:s.slice(0,400),excerpt:s.slice(0,240)};}return null;}
 function excerptAround(text,needle){const i=text.toLowerCase().indexOf(needle.toLowerCase());return i<0?null:text.slice(Math.max(0,i-80),i+needle.length+120).trim().slice(0,240);}
+function plainWithLines(html){
+ return String(html||'')
+  .replace(/<script\b[\s\S]*?<\/script>/gi,' ')
+  .replace(/<style\b[\s\S]*?<\/style>/gi,' ')
+  .replace(/<\/(?:p|div|h[1-6]|li|section|article|tr|td|th)>/gi,'\n')
+  .replace(/<br\s*\/?>/gi,'\n')
+  .replace(/<[^>]+>/g,' ')
+  .replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&#39;|&apos;/gi,"'").replace(/&quot;/gi,'"')
+  .split(/\r?\n/).map(line=>line.replace(/[\t ]+/g,' ').trim()).filter(Boolean).join('\n');
+}
 function plain(html){return String(html||'').replace(/<script\b[\s\S]*?<\/script>/gi,' ').replace(/<style\b[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&#39;/g,"'").replace(/&quot;/gi,'"').replace(/\s+/g,' ').trim();}
 function parse(v){try{return JSON.parse(v||'{}');}catch{return {};}}
