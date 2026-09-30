@@ -37,6 +37,10 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
     new URL('../../operations/findpitches-v2/wrangler.jsonc', import.meta.url),
     'utf8'
   );
+  const classifierBatch = await fs.readFile(
+    new URL('../../platform/findpitches-v2/classifier/run-batch.mjs', import.meta.url),
+    'utf8'
+  );
 
   assert.match(worker, /runClassifierTick/);
   assert.match(worker, /enqueueStaleClassifications/);
@@ -46,6 +50,7 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
   assert.match(worker, /CLASSIFIER_BATCH_LIMIT = 24/);
   assert.match(worker, /CUSTOMER_PROMOTION_BATCH_LIMIT = 48/);
   assert.match(worker, /runShadowTick/);
+  assert.match(classifierBatch, /geography\.discovery_location \\|\\| geography\.region \\|\\| row\.region_code/);
   assert.match(worker, /event\?\.cron === CLASSIFIER_CRON/);
   assert.match(worker, /BASELINE_ACQUISITION_CRON = '\*\/5 \* \* \* \*'/);
   assert.match(worker, /runPairedAcquisitionTick/);
