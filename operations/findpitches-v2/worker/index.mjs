@@ -15,7 +15,6 @@ const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 8;
 const CLASSIFIER_CRON = '* * * * *';
 const BASELINE_ACQUISITION_CRON = '*/5 * * * *';
-const CITY_ACQUISITION_CRON = '2-59/5 * * * *';
 const PDF_RECOVERY_CRON = '7,22,37,52 * * * *';
 const CLASSIFIER_BATCH_LIMIT = 24;
 const CLASSIFIER_RULESET_VERSION = '2026-09-26-quality-rules-v3';
@@ -62,11 +61,9 @@ export default {
       return;
     }
 
-    if (event?.cron === BASELINE_ACQUISITION_CRON || event?.cron === CITY_ACQUISITION_CRON) {
-      const queryGroup=event.cron===CITY_ACQUISITION_CRON?1:0;
-      const trigger=queryGroup===1?'cron_city':'cron_baseline';
+    if (event?.cron === BASELINE_ACQUISITION_CRON) {
       ctx.waitUntil(
-        runShadowTick(env, { trigger, queryGroup })
+        runPairedAcquisitionTick(env)
           .then(result => console.log('findpitches_v2_acquisition_tick', JSON.stringify(result)))
           .catch(error => console.error('findpitches_v2_acquisition_tick_failed', String(error?.stack || error)))
       );
@@ -89,7 +86,7 @@ async function health(env) {
       search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
       publication_enabled: false,
       us_city_discovery_profile: 'official_first_v1',
-      acquisition_crons: { baseline: BASELINE_ACQUISITION_CRON, us_city: CITY_ACQUISITION_CRON },
+      acquisition_crons: { baseline: BASELINE_ACQUISITION_CRON, us_city: BASELINE_ACQUISITION_CRON, mode: 'paired_baseline_then_city' },
       customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
       legacy_runtime_dependency: false,
       local_runtime_dependency: false
@@ -339,6 +336,14 @@ async function count(env, table) {
   if (!allowed.has(table)) throw new Error('findpitches_v2_status_table_rejected');
   const row = await env.FINDPITCHES_DB.prepare(`SELECT COUNT(*) AS count FROM ${table}`).first();
   return Number(row?.count || 0);
+}
+
+export async function runPairedAcquisitionTick(env,{now=new Date()}={}){
+  const baseline=await runShadowTick(env,{trigger:'cron_baseline',queryGroup:0,now})
+    .catch(error=>({ok:false,phase:'baseline_tick_failed',error:String(error?.message||error)}));
+  const city=await runShadowTick(env,{trigger:'cron_city',queryGroup:1,now:new Date()})
+    .catch(error=>({ok:false,phase:'city_tick_failed',error:String(error?.message||error)}));
+  return Object.freeze({ok:Boolean(baseline?.ok||city?.ok),service:SERVICE,mode:'paired_acquisition',baseline,city,publication_attempted:false});
 }
 
 export async function runShadowTick(env, { trigger = 'unknown', now = new Date(), queryGroup = null } = {}) {
