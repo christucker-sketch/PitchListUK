@@ -85,7 +85,7 @@ const refreshQueue=sweepStarted?(await query(`
  SELECT status,COUNT(*) AS count
  FROM enrichment_queue
  WHERE last_error=?
- GROUP BY status ORDER BY status`,['ruleset_refresh:2026-09-30-practical-location-v1'])):[];
+ GROUP BY status ORDER BY status`,['ruleset_refresh:2026-09-30-practical-location-v2'])):[];
 const enrichedSinceSweep=sweepStarted?(await query(`
  SELECT COUNT(*) AS count
  FROM candidate_enrichment
