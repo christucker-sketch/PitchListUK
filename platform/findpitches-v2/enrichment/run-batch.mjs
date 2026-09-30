@@ -468,9 +468,13 @@ function dateValueInExcerpt(excerpt){
 function firstDateInDocs(docs,patterns){
  for(const doc of docs){
   for(const pattern of patterns){
-   const m=doc.text.match(pattern); if(!m)continue;
-   const excerpt=m[0].slice(0,240); const value=dateValueInExcerpt(excerpt);
-   if(value)return {value,excerpt,source:doc.url};
+   const flags=pattern.flags.includes('g')?pattern.flags:pattern.flags+'g';
+   const globalPattern=new RegExp(pattern.source,flags);
+   for(const match of String(doc.text||'').matchAll(globalPattern)){
+    const excerpt=String(match[0]||'').slice(0,240);
+    const value=dateValueInExcerpt(excerpt);
+    if(value)return {value,excerpt,source:doc.url};
+   }
   }
  }
  return null;
