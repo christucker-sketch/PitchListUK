@@ -175,7 +175,7 @@ function extractEnrichment(row,pages){
   const result={
     organiser:named.organiser ?? evidenceField(row.organiser,docs),
     location:named.location,
-    location_area:extractSupportedAreaEvidence(geography,docs)
+    location_area:extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
   };
   const deadline=firstDateInDocs(docs,[
     /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
@@ -190,6 +190,35 @@ function extractEnrichment(row,pages){
   const description=descriptionExcerpt(docs);
   if(description) result.description=withEvidence(description.value,description.excerpt,docs);
   return normalizeEnrichment(result);
+}
+export function extractSupportedPlaceEvidence(geography,docs){
+ const market=String(geography?.country_code||'').trim().toUpperCase();
+ if(market!=='GB')return null;
+ const region=String(geography?.region||'').trim();
+ const code=String(geography?.region_code||'').trim().toUpperCase();
+ let item=null;try{item=enabledGeographies('GB').find(x=>x.code===code)||null;}catch{}
+ const variants=[region,item?.name,...(item?.aliases||[])].map(x=>String(x||'').trim()).filter(x=>x.length>=3);
+ if(!variants.length)return null;
+ for(const doc of docs){
+  const sentences=String(doc.text||'').split(/(?<=[.!?])\s+|\n+/).map(x=>x.trim()).filter(Boolean);
+  for(const sentence of sentences){
+   if(sentence.length>500||!eventContext(sentence))continue;
+   if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\b/i.test(sentence))continue;
+   for(const regionName of variants){
+    const escaped=escapeRegex(regionName);
+    const patterns=[
+     new RegExp('\\b([A-Z][A-Za-z’\\\'\\.-]*(?:\\s+[A-Z][A-Za-z’\\\'\\.-]*){0,3})\\s*,\\s*'+escaped+'\\b'),
+     new RegExp('\\b([A-Z][A-Za-z’\\\'\\.-]*(?:\\s+[A-Z][A-Za-z’\\\'\\.-]*){0,3})\\s+in\\s+'+escaped+'\\b','i')
+    ];
+    for(const pattern of patterns){
+     const match=sentence.match(pattern);if(!match)continue;
+     const place=cleanSupportedPlace(match[1],variants);if(!place)continue;
+     return {value:place,precision:'place',evidence:[{source:doc.url,excerpt:sentence.slice(0,240)}],confidence:.82};
+    }
+   }
+  }
+ }
+ return null;
 }
 export function extractSupportedAreaEvidence(geography,docs){
  const candidates=supportedGeographyCandidates(geography);
@@ -232,6 +261,18 @@ function supportedGeographyCandidates(geography){
  }
  return result;
 }
+function cleanSupportedPlace(value,regions){
+ const name=String(value||'').replace(/\s+/g,' ').trim().replace(/^[,;:\-\s]+|[,;:\-\s]+$/g,'');
+ if(name.length<3||name.length>60)return null;
+ if(regions.some(r=>normalizePlaceText(r)===normalizePlaceText(name)))return null;
+ if(/^(?:the|this|our|your|vendor|vendors|trader|traders|stallholder|stallholders|exhibitor|exhibitors|festival|fair|market|event|show|county|region|area|online|tbc|tbd)$/i.test(name))return null;
+ if(/\b(?:january|february|march|april|may|june|july|august|september|october|november|december|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i.test(name))return null;
+ return name;
+}
+function eventContext(sentence){
+ return /\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(sentence);
+}
+function escapeRegex(value){return String(value||'').replace(/[.*+?^\${}()|[\]\\]/g,'\\function normalizedMention(sentence,variant){');}
 function normalizedMention(sentence,variant){
  const haystack=normalizePlaceText(sentence),needle=normalizePlaceText(variant);
  return needle.length>=3 && (' '+haystack+' ').includes(' '+needle+' ');
