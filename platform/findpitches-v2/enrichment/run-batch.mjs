@@ -166,7 +166,11 @@ function extractEnrichment(row,pages){
   const joined=docs.map(d=>d.text).join("\n");
   const geography=parse(row.geography_json);
   const named=extractNamedFields(pages.map(p=>({url:p.final_url,body:p.body})));
-  const result={organiser:named.organiser ?? evidenceField(row.organiser,docs),location:named.location};
+  const result={
+    organiser:named.organiser ?? evidenceField(row.organiser,docs),
+    location:named.location,
+    location_area:supportedAreaEvidence(geography,docs)
+  };
   const deadline=firstDateInDocs(docs,[
     /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
     /(?:application\s+deadline|closing\s+date|applications?\s+close|apply\s+by|vendor\s+applications?\s+due)\s*[:\-]?\s*[^.!?\n]{0,100}/i
@@ -180,6 +184,24 @@ function extractEnrichment(row,pages){
   const description=descriptionExcerpt(docs);
   if(description) result.description=withEvidence(description.value,description.excerpt,docs);
   return normalizeEnrichment(result);
+}
+function supportedAreaEvidence(geography,docs){
+ const candidates=[geography?.locality,geography?.subregion,geography?.region].map(x=>String(x||'').trim()).filter(Boolean);
+ for(const name of candidates){
+  if(name.length<3)continue;
+  const escaped=name.replace(/[.*+?^$()|[\]\\{}]/g,'\\function evidenceField(value,docs){if(!value)return null;const doc=docs.find(d=>d.text.toLowerCase().includes(String(value).toLowerCase()));return doc?{value,evidence:[{source:doc.url,excerpt:excerptAround(doc.text,String(value))}],confidence:.9}:value;}');
+  const mention=new RegExp('\\b'+escaped+'\\b','i');
+  for(const doc of docs){
+   const sentences=String(doc.text||'').split(/(?<=[.!?])\\s+|\\n+/).map(x=>x.trim()).filter(Boolean);
+   for(const sentence of sentences){
+    if(sentence.length>500||!mention.test(sentence))continue;
+    if(/\\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\\b/i.test(sentence))continue;
+    if(!/\\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\\s+place|taking\\s+place)\\b/i.test(sentence))continue;
+    return {value:name,evidence:[{source:doc.url,excerpt:sentence.slice(0,240)}],confidence:.72};
+   }
+  }
+ }
+ return null;
 }
 function evidenceField(value,docs){if(!value)return null;const doc=docs.find(d=>d.text.toLowerCase().includes(String(value).toLowerCase()));return doc?{value,evidence:[{source:doc.url,excerpt:excerptAround(doc.text,String(value))}],confidence:.9}:value;}
 const DATE_VALUE=/\b(?:\d{1,2}[\/\-.]\d{1,2}[\/\-.](?:20)?\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+20\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+20\d{2})\b/i;
