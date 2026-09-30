@@ -464,3 +464,16 @@ test('legacy geography region code is normalized to canonical region name before
  assert.equal(enrichment.location_area.value,'London');
  assert.equal(enrichment.location_area.precision,'area');
 });
+
+
+test('police or authority contact lines are never used as event area evidence',async()=>{
+ const store=db({candidate_id:'police-contact',source_last_checked:'2026-09-30T13:00:00Z',
+  canonical_url:'https://event.test/terms',application_url:null,event_name:'Highclere Show',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-NHANTS","region":"GB-ENG-NHANTS"}'});
+ const body='<html><body><main><p>Highclere Show: Northamptonshire Police Tel: 101, Ext:341035</p><p>Trader applications are managed separately.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T13:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area,null);
+});
