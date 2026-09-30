@@ -74,3 +74,39 @@ jobs:
             echo "FindPitches v2 must not modify production datasets or homepage during shadow development." >&2
             exit 1
           fi
+
+
+  practical-v2-impact:
+    name: practical-v2-impact
+    if: github.event_name == 'workflow_dispatch' || github.event.action == 'ready_for_review'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Check out candidate
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prove live v2 remains isolated and publication-off
+        shell: bash
+        run: |
+          set -euo pipefail
+          health="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .database == "isolated" and .mode == "shadow" and .publication_enabled == false' <<< "$health" >/dev/null
+
+      - name: Measure practical-v2 impact read-only
+        run: node operations/findpitches-v2/measure-practical-v2-impact.mjs
+
+      - name: Upload practical-v2 impact
+        uses: actions/upload-artifact@v4
+        with:
+          name: practical-v2-impact-${{ github.run_id }}
+          path: practical-v2-impact.json
+          retention-days: 14
