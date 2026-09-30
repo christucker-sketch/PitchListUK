@@ -581,3 +581,16 @@ test('enrichment captures applications not accepted after and compact multi-day 
  assert.equal(enrichment.application_deadline.value,'June 10, 2026');
  assert.equal(enrichment.event_start.value,'June 28, 2026');
 });
+
+
+test('enrichment captures standalone multi-day event date headings',async()=>{
+ const store=db({candidate_id:'standalone-date-heading',source_last_checked:'2026-09-30T20:40:00Z',
+  canonical_url:'https://event.test/trader-application',application_url:null,event_name:'Graves Park Food Festival',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-SOUTH-YORKS","region":"South Yorkshire"}'});
+ const body='<html><body><main><h1>The Graves Park Food Festival | Sheffield</h1><h2>August 29th-31st, 2026</h2><h2>Trader Application</h2><p>Vendor and trader applications are open.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T20:41:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.event_start.value,'August 31, 2026');
+});
