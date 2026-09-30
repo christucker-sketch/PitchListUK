@@ -308,7 +308,7 @@ export function extractSupportedPlaceEvidence(geography,docs){
   for(const sentence of sentences){
    if(sentence.length>500)continue;
    if(!eventContext(sentence)&&!(docHasEventContext&&(explicitLocationLine(sentence)||locationPageUrl(doc.url))))continue;
-   if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\b/i.test(sentence))continue;
+   if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters|police|emergency|terms\s+and\s+conditions|privacy\s+policy|legal\s+notice)\b/i.test(sentence))continue;
    for(const regionName of variants){
     const escaped=escapeRegex(regionName);
     const patterns=[
