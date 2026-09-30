@@ -47,6 +47,11 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
   assert.match(worker, /CUSTOMER_PROMOTION_BATCH_LIMIT = 48/);
   assert.match(worker, /runShadowTick/);
   assert.match(worker, /event\?\.cron === CLASSIFIER_CRON/);
+  assert.match(worker, /BASELINE_ACQUISITION_CRON = '\*\/5 \* \* \* \*'/);
+  assert.match(worker, /CITY_ACQUISITION_CRON = '2-59\/5 \* \* \* \*'/);
+  assert.match(worker, /queryGroup=event\.cron===CITY_ACQUISITION_CRON\?1:0/);
+  assert.match(worker, /runShadowTick\(env, \{ trigger, queryGroup \}\)/);
   assert.match(config, /"\*\/5 \* \* \* \*"/);
+  assert.match(config, /"2-59\/5 \* \* \* \*"/);
   assert.match(config, /"\* \* \* \* \*"/);
 });
