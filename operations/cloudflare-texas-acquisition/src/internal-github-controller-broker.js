@@ -207,15 +207,30 @@ async function publicText(fetchImpl, url, errorPrefix) {
   return text;
 }
 async function readPublicMainSha(fetchImpl, repo) {
-  const advertised = await publicText(
-    fetchImpl,
-    `https://github.com/${repo}.git/info/refs?service=git-upload-pack`,
-    'controller_github_ca_git_refs'
-  );
-  const match = advertised.match(/([a-f0-9]{40}) refs\/heads\/main(?:\\0|[\\r\\n]|$)/i);
-  const mainSha = String(match?.[1] || '').toLowerCase();
-  if (!/^[a-f0-9]{40}$/.test(mainSha)) throw new Error('controller_github_ca_main_sha_invalid');
-  return mainSha;
+  const refsUrl=`https://github.com/${repo}.git/info/refs?service=git-upload-pack`;
+  const refsResponse=await fetchImpl(refsUrl,{
+    headers:{'user-agent':'findpitches-controller-pr-broker-readonly','Git-Protocol':'version=1'}
+  });
+  const advertised=await refsResponse.text();
+  if(refsResponse.ok){
+    const match=advertised.match(/([a-f0-9]{40}) refs\/heads\/main(?:\\0|[\\r\\n]|$)/i);
+    const sha=String(match?.[1]||'').toLowerCase();
+    if(/^[a-f0-9]{40}$/.test(sha))return sha;
+  }
+
+  // GitHub may negotiate protocol v2 and omit literal refs from the initial
+  // advertisement. Fall back to the public commits page, still avoiding the API.
+  const html=await publicText(fetchImpl,`https://github.com/${repo}/commits/main`,'controller_github_ca_main_html');
+  const patterns=[
+    /"currentOid":"([a-f0-9]{40})"/i,
+    /\/commit\/([a-f0-9]{40})(?:["'?/#]|$)/i
+  ];
+  for(const pattern of patterns){
+    const match=html.match(pattern);
+    const sha=String(match?.[1]||'').toLowerCase();
+    if(/^[a-f0-9]{40}$/.test(sha))return sha;
+  }
+  throw new Error('controller_github_ca_main_sha_invalid');
 }
 async function readRawAtSha(fetchImpl, repo, sha, path) {
   return publicText(
