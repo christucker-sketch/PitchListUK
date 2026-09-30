@@ -83,6 +83,9 @@ export function extractEvidence({
   if (/^https?:\/\/(?:www\.)?instagram\.com\/explore\/tags\//i.test(String(sourceUrl || ''))) {
     evidence.push(Object.freeze({ type: 'negative_phrase', value: 'generic social hashtag page', confidence: 1 }));
   }
+  if (socialSource(sourceUrl)) {
+    evidence.push(Object.freeze({ type: 'negative_phrase', value: 'social_source_page', confidence: 1 }));
+  }
 
   for (const phrase of POSITIVE_PHRASES) {
     if (normalized.includes(phrase)) {
@@ -140,6 +143,15 @@ export function hasStrongNegativeEvidence(evidence) {
   return evidence.some(item => item?.type === 'negative_phrase' || item?.type === 'market_conflict');
 }
 
+
+function socialSource(value) {
+  try {
+    const host=new URL(String(value||'')).hostname.toLowerCase().replace(/^www\./,'');
+    return ['instagram.com','facebook.com','x.com','twitter.com','tiktok.com'].includes(host);
+  } catch {
+    return false;
+  }
+}
 
 function detectMarketConflict({market,text,sourceUrl}={}) {
   const code=String(market||'').trim().toUpperCase();
