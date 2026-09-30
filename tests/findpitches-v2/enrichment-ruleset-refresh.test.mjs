@@ -69,8 +69,8 @@ test('enrichment worker reserves bounded capacity for practical-location refresh
  const worker=await fs.readFile(new URL('../../operations/findpitches-v2-enrichment/worker/index.mjs',import.meta.url),'utf8');
  assert.match(worker,/ENRICHMENT_RULESET_VERSION='2026-09-30-practical-location-v2'/);
  assert.match(worker,/FRESH_ENQUEUE_LIMIT=8/);
- assert.match(worker,/MIN_RULESET_REFRESH_LIMIT=4/);
- assert.match(worker,/BATCH_LIMIT=12/);
+ assert.match(worker,/MIN_RULESET_REFRESH_LIMIT=12/);
+ assert.match(worker,/BATCH_LIMIT=20/);
  assert.match(worker,/enqueueValidatedForEnrichment\(env\.FINDPITCHES_DB,\{now,limit:FRESH_ENQUEUE_LIMIT/);
  assert.match(worker,/const refreshLimit=Math\.max\(MIN_RULESET_REFRESH_LIMIT,BATCH_LIMIT-Math\.min\(FRESH_ENQUEUE_LIMIT,Number\(queued\.enqueued\|\|0\)\)\)/);
  assert.match(worker,/enqueueEnrichmentRulesetRefresh\(env\.FINDPITCHES_DB,\{now,limit:refreshLimit/);
