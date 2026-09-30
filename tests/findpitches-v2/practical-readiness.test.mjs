@@ -272,3 +272,28 @@ test('policy and terms pages are not customer-usable opportunities',()=>{
  assert.ok(r.readiness.blocked.some(x=>x.code==='policy_or_terms_url'));
  assert.ok(r.readiness.missing.includes('location')||r.readiness.blocked.length>0);
 });
+
+
+test('long numeric URL ids are not mistaken for stale event years',()=>{
+ const r=projectPracticalOpportunity({
+  ...candidate,
+  canonical_url:'https://www.eventbrite.co.uk/e/festival-of-tomorrow-2027-exhibitor-application-tickets-1998422369102',
+  application_url:'https://www.eventbrite.co.uk/e/festival-of-tomorrow-2027-exhibitor-application-tickets-1998422369102'
+ },{location_area:{
+  value:'Wiltshire',precision:'area',
+  evidence:[{source:'https://event.test',excerpt:'Festival of Tomorrow exhibitor application in Wiltshire for 2027.',kind:'source_event_context'}],confidence:.8
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.ok(!r.readiness.blocked.some(x=>x.code==='stale_year_in_url'));
+});
+
+test('real standalone stale years in URL are still blocked',()=>{
+ const r=projectPracticalOpportunity({
+  ...candidate,
+  canonical_url:'https://event.test/fair/2023/vendors',
+  application_url:'https://event.test/fair/2023/vendors'
+ },{location_area:{
+  value:'Kent',precision:'area',
+  evidence:[{source:'https://event.test/fair/2023/vendors',excerpt:'Vendor applications for the Kent Fair.',kind:'source_event_context'}],confidence:.8
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.ok(r.readiness.blocked.some(x=>x.code==='stale_year_in_url'));
+});
