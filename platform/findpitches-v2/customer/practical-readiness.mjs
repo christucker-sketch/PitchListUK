@@ -1,6 +1,6 @@
 import { classifyVenueEvidence } from '../enrichment/venue-evidence.mjs';
 
-export const PRODUCT_READINESS_SCHEMA_VERSION='2026-09-30.practical-v1';
+export const PRODUCT_READINESS_SCHEMA_VERSION='2026-09-30.practical-v2';
 
 const WRAPPER_HOSTS=new Set(['google.com','www.google.com','google.co.uk','www.google.co.uk','google.com.hk','www.google.com.hk']);
 const SOCIAL_HOSTS=new Set(['instagram.com','www.instagram.com','facebook.com','www.facebook.com','x.com','www.x.com','twitter.com','www.twitter.com']);
@@ -29,12 +29,12 @@ export function projectPracticalOpportunity(candidate={},enrichment={}, {now=new
  });
  return Object.freeze({
   opportunity:record,
-  readiness:assessPracticalReadiness(record,{now}),
+  readiness:assessPracticalReadiness(record,{now,locationEvidence:location?.provenance?.evidence?.[0]||null}),
   provenance:Object.freeze(location?{location:location.provenance}:{})
  });
 }
 
-export function assessPracticalReadiness(record={}, {now=new Date()}={}){
+export function assessPracticalReadiness(record={}, {now=new Date(),locationEvidence=null}={}){
  const missing=[],invalid=[],blocked=[];
  for(const field of ['id','market','title','region_code','canonical_url','application_url','last_checked']){
   if(!present(record[field]))missing.push(field);
@@ -45,6 +45,7 @@ export function assessPracticalReadiness(record={}, {now=new Date()}={}){
  if(present(record.application_url))inspectUrl('application_url',record.application_url,blocked,now);
  if(record.event_end&&past(record.event_end,now))blocked.push(reason('event_ended','event_end'));
  if(record.application_deadline&&past(record.application_deadline,now))blocked.push(reason('application_deadline_passed','application_deadline'));
+ inspectEvidenceQuality(record,locationEvidence,blocked,now);
  return Object.freeze({
   schema_version:PRODUCT_READINESS_SCHEMA_VERSION,
   ready:missing.length===0&&invalid.length===0&&blocked.length===0,
@@ -98,6 +99,48 @@ function inspectUrl(field,value,blocked,now){
  const year=now.getUTCFullYear(),years=[...String(value).matchAll(/(?:19|20)\d{2}/g)].map(m=>Number(m[0]));
  if(years.some(y=>y<year-1))blocked.push(reason('stale_year_in_url',field));
 }
+
+function inspectEvidenceQuality(record,evidence,blocked,now){
+ const excerpt=text(evidence?.excerpt);
+ if(!excerpt)return;
+ const context=[record.location,excerpt].filter(Boolean).join(' ');
+ if(crossMarketGeography(record.market,context))blocked.push(reason('cross_market_geography','location'));
+ if(staleEventYear(excerpt,now))blocked.push(reason('stale_event_year','location'));
+ if(genericNonEventVendorPage(excerpt))blocked.push(reason('generic_non_event_vendor_page','location'));
+}
+function crossMarketGeography(market,value){
+ const m=upper(market),v=String(value||'');
+ if(!m||!v)return false;
+ const explicitCountry={
+  GB:/\b(?:united\s+states|u\.?s\.?a?\.?|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
+  US:/\b(?:united\s+kingdom|u\.?k\.?|england|scotland|wales|northern\s+ireland|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
+  CA:/\b(?:united\s+kingdom|u\.?k\.?|england|scotland|wales|northern\s+ireland|united\s+states|u\.?s\.?a?\.?|australia|new\s+zealand|singapore|hong\s+kong)\b/i,
+  IE:/\b(?:united\s+states|u\.?s\.?a?\.?|canada|australia|new\s+zealand|singapore|hong\s+kong)\b/i
+ }[m];
+ if(explicitCountry?.test(v))return true;
+ const usStateAfterComma=/,\s*(?:alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|new\s+hampshire|new\s+jersey|new\s+mexico|new\s+york|north\s+carolina|north\s+dakota|ohio|oklahoma|oregon|pennsylvania|rhode\s+island|south\s+carolina|south\s+dakota|tennessee|texas|utah|vermont|virginia|washington|west\s+virginia|wisconsin|wyoming)\b/i;
+ if(m!=='US'&&usStateAfterComma.test(v))return true;
+ const canadaProvinceAfterComma=/,\s*(?:alberta|british\s+columbia|manitoba|new\s+brunswick|newfoundland(?:\s+and\s+labrador)?|nova\s+scotia|ontario|prince\s+edward\s+island|qu[eé]bec|saskatchewan|northwest\s+territories|nunavut|yukon)\b/i;
+ if(m!=='CA'&&canadaProvinceAfterComma.test(v))return true;
+ return false;
+}
+function staleEventYear(excerpt,now){
+ const year=now.getUTCFullYear();
+ const years=[...String(excerpt||'').matchAll(/\b((?:19|20)\d{2})\b/g)].map(m=>({year:Number(m[1]),index:m.index||0}));
+ if(!years.length||years.some(x=>x.year>=year-1))return false;
+ const event=/\b(?:festival|fair|market|event|show|expo|exhibition|fete|carnival|parade|vendor|trader|stallholder|exhibitor|application|apply|deadline|held|takes?\s+place)\b/i;
+ return years.some(x=>{
+  const start=Math.max(0,x.index-60),end=Math.min(excerpt.length,x.index+64);
+  return event.test(excerpt.slice(start,end));
+ });
+}
+function genericNonEventVendorPage(excerpt){
+ const v=String(excerpt||'');
+ const strongEvent=/\b(?:festival|fair|farmers?\s+market|street\s+market|craft\s+market|event|show|expo|exhibition|fete|carnival|parade|concert)\b/i;
+ if(strongEvent.test(v))return false;
+ return /\b(?:vendor\s+licen[cs](?:e|ing)|business\s+licen[cs](?:e|ing)|food\s+truck\s+licen[cs](?:e|ing)|permit\s+(?:guide|application|form)|supplier\s+registration|vendor\s+registration|procurement|state\s+employee\s+discount|employee\s+discount\s+program|alcohol(?:ic)?\s+beverage\s+(?:control|services)|\bdabs\b|business\s+directory|vendor\s+directory|beauty\s+salon|salon\s+marketplace|book\s+an?\s+appointment)\b/i.test(v);
+}
+
 function reason(code,field){return Object.freeze({code,field});}
 function past(value,now){const t=Date.parse(value);return Number.isFinite(t)&&t<now.getTime();}
 function value(field){return field&&typeof field==='object'&&!Array.isArray(field)&&'value' in field?field.value:field;}
