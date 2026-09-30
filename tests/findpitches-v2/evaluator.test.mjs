@@ -186,3 +186,34 @@ for (const nonEvent of [
   assert.equal(candidate.rejection_reason,'negative_page_signal');
  });
 }
+
+
+test('site-wide vendor navigation does not validate an unrelated content page', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:`
+   <html><head><title>Results Breed - The Westminster Kennel Club</title></head>
+   <body>
+    <nav><a href="/vendor-application/">Vendor Application</a></nav>
+    <main><h1>Lancashire Heeler Results</h1><p>Breed results and judging information.</p></main>
+    <footer><a href="/vendors">Become a Vendor</a></footer>
+   </body></html>`};}}
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-LANCS',location:'Lancashire',result:{url:'https://dogshow.test/results'}});
+ assert.equal(candidate.status,'rejected');
+ assert.equal(candidate.rejection_reason,'explicit_application_intent_missing');
+});
+
+test('real vendor application content still validates when site chrome is ignored', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:`
+   <html><head><title>Trader Application</title></head><body>
+    <nav><a href="/home">Home</a></nav>
+    <main><h1>Trader Application</h1><p>Vendor application is open for our Kent food festival in 2027.</p><a href="/apply">Apply to trade</a></main>
+    <footer>Privacy</footer>
+   </body></html>`};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://festival.test/traders'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.publishable,true);
+});
