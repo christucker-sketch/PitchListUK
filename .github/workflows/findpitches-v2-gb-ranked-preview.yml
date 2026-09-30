@@ -6,6 +6,7 @@ on:
     paths:
       - 'operations/findpitches-v2/preview-gb-ranked-recovery.mjs'
       - 'operations/findpitches-v2/preview-gb-title-locality-recovery.mjs'
+      - 'operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs'
       - 'platform/findpitches-v2/enrichment/run-batch.mjs'
       - 'platform/findpitches-v2/customer/practical-readiness.mjs'
       - 'tests/findpitches-v2/enrichment-runtime.test.mjs'
@@ -43,10 +44,13 @@ jobs:
         run: node operations/findpitches-v2/preview-gb-ranked-recovery.mjs
       - name: Run OS-verified title locality preview
         run: node operations/findpitches-v2/preview-gb-title-locality-recovery.mjs
+      - name: Audit unsupported fetch content types
+        run: node operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: gb-ranked-preview-${{ github.run_id }}
           path: |
             gb-ranked-recovery-preview.json
             gb-title-locality-recovery-preview.json
+            unsupported-fetch-content-types.json
           retention-days: 14
