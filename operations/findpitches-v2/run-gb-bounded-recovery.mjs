@@ -11,6 +11,7 @@ const DB='6732bcc9-a172-4d38-ad4d-7660ed13392f';
 const BATCH_ID=String(process.env.GB_BOUNDED_RECOVERY_BATCH_ID||'2026-09-30-gb-practical-v1').trim();
 const LIMIT=Math.max(1,Math.min(Number(process.env.GB_BOUNDED_RECOVERY_LIMIT||12),12));
 const APPLY=String(process.env.GB_BOUNDED_RECOVERY_APPLY||'').trim()==='1';
+const TARGET_IDS=String(process.env.GB_BOUNDED_RECOVERY_IDS||'').split(',').map(x=>x.trim()).filter(Boolean).slice(0,12);
 const account=String(process.env.CLOUDFLARE_ACCOUNT_ID||'').trim();
 const token=String(process.env.CLOUDFLARE_API_TOKEN||'').trim();
 if(!account||!token)throw new Error('gb_bounded_recovery_credentials_missing');
@@ -46,7 +47,23 @@ if(existing){
  process.exit(0);
 }
 
-const rows=await read(`
+const rows=TARGET_IDS.length
+ ? await read(`
+   SELECT c.id,c.market,c.region_code,c.canonical_url,c.application_url,c.event_name,c.organiser,
+          c.geography_json,c.evidence_json,c.score,c.status,c.last_checked,
+          e.enrichment_json,e.source_last_checked
+   FROM candidates c
+   LEFT JOIN candidate_enrichment e ON e.candidate_id=c.id AND e.source_last_checked>=c.last_checked
+   WHERE c.status='validated' AND c.market='GB'
+     AND c.id IN (${TARGET_IDS.map(()=>'?').join(',')})
+     AND (
+       e.candidate_id IS NULL OR
+       (json_extract(e.enrichment_json,'$.location.value') IS NULL
+        AND json_extract(e.enrichment_json,'$.location_area.value') IS NULL)
+     )
+   ORDER BY c.id ASC
+ `,TARGET_IDS)
+ : await read(`
 WITH scored AS (
  SELECT c.id,c.market,c.region_code,c.canonical_url,c.application_url,c.event_name,c.organiser,
         c.geography_json,c.evidence_json,c.score,c.status,c.last_checked,
@@ -166,7 +183,7 @@ for(const row of rows){
 }
 
 const summary={
- ok:true,applied:APPLY,already_complete:false,batch_id:BATCH_ID,limit:LIMIT,
+ ok:true,applied:APPLY,already_complete:false,batch_id:BATCH_ID,limit:LIMIT,targeted:Boolean(TARGET_IDS.length),
  selected:rows.length,
  classifier_validated:outcomes.filter(x=>x.classifier_status==='validated').length,
  classifier_rejected:outcomes.filter(x=>x.classifier_status==='rejected').length,
