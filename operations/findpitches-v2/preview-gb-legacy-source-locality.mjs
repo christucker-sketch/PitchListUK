@@ -116,6 +116,9 @@ for(let i=0;i<overlap.length;i+=4){
     verified_locality:chosen.locality,os_place:chosen.place,
     recovered_location:projected.opportunity.location,
     location_precision:projected.opportunity.location_precision,
+    event_start:projected.opportunity.event_start||null,
+    application_deadline:projected.opportunity.application_deadline||null,
+    date_lines:String(sourceText.body||'').split(/\n+/).map(x=>x.trim()).filter(x=>/\b(?:20\d{2}|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i.test(x)).slice(0,20),
     practical_usable:projected.readiness.ready,
     missing:projected.readiness.missing,blocked:projected.readiness.blocked,
     evidence:projected.provenance?.location?.evidence?.[0]||null
