@@ -5,7 +5,7 @@ import { assessCustomerReadiness } from '../../platform/findpitches-v2/customer/
 const base = {
   id:'fpv2_test', market:'GB', title:'Example Market', region_code:'GB-ENG-KENT',
   canonical_url:'https://example.test/event', application_url:'https://example.test/apply',
-  location:'Maidstone Market Square', location_precision:'venue', location_confidence:.9, last_checked:'2026-09-26T12:00:00Z'
+  location:'Maidstone Market Square', last_checked:'2026-09-26T12:00:00Z'
 };
 const now = new Date('2026-09-27T08:00:00Z');
 
@@ -72,19 +72,4 @@ test('location is mandatory even when the region is known',()=>{
   const r=assessCustomerReadiness({...base,location:null},{now});
   assert.equal(r.ready,false);
   assert.ok(r.missing.includes('location'));
-});
-
-
-test('source-backed place and area precision are valid customer locations',()=>{
-  for(const precision of ['venue','place','area']){
-    const r=assessCustomerReadiness({...base,location_precision:precision},{now});
-    assert.equal(r.ready,true,precision);
-  }
-});
-
-test('discovery-only or malformed precision cannot pass the customer boundary',()=>{
-  for(const precision of ['discovery_only','cityish','']){
-    const r=assessCustomerReadiness({...base,location_precision:precision},{now});
-    assert.equal(r.ready,false,precision);
-  }
 });
