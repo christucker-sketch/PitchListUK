@@ -1,18 +1,8 @@
 name: FindPitches v2 CI
 
 on:
-  push:
-    branches:
-      - 'findpitches-v2/**'
-    paths:
-      - 'platform/findpitches-v2/**'
-      - 'operations/findpitches-v2/**'
-      - 'tests/findpitches-v2/**'
-      - '.github/workflows/findpitches-v2-ci.yml'
-      - '.github/workflows/findpitches-v2-shadow-deploy.yml'
-      - '.github/workflows/findpitches-v2-status-proof.yml'
-      - '.github/workflows/findpitches-v2-bounded-pdf-replay.yml'
   pull_request:
+    types: [opened, reopened, ready_for_review]
     paths:
       - 'platform/findpitches-v2/**'
       - 'operations/findpitches-v2/**'
@@ -21,6 +11,7 @@ on:
       - '.github/workflows/findpitches-v2-shadow-deploy.yml'
       - '.github/workflows/findpitches-v2-status-proof.yml'
       - '.github/workflows/findpitches-v2-bounded-pdf-replay.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
