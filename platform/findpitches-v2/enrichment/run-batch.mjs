@@ -1,6 +1,7 @@
 import { normalizeEnrichment } from '../customer/enrichment.mjs';
 import { extractNamedFields } from './named-fields.mjs';
 import { isTerminalPdfError } from '../providers/fetch/pdf-error-policy.mjs';
+import { enabledGeographies } from '../geography/catalog.mjs';
 
 const DEFAULT_LIMIT = 8;
 const LEASE_MINUTES = 5;
@@ -191,29 +192,53 @@ function extractEnrichment(row,pages){
   return normalizeEnrichment(result);
 }
 export function extractSupportedAreaEvidence(geography,docs){
- const candidates=[geography?.locality,geography?.subregion,geography?.region].map(x=>String(x||'').trim()).filter(Boolean);
- for(const name of candidates){
-  if(name.length<3)continue;
-  const mentionText=name.toLowerCase();
+ const candidates=supportedGeographyCandidates(geography);
+ for(const candidate of candidates){
+  if(candidate.value.length<3)continue;
   for(const doc of docs){
    const sentences=String(doc.text||'').split(/(?<=[.!?])\s+|\n+/).map(x=>x.trim()).filter(Boolean);
    for(const sentence of sentences){
-    if(sentence.length>500||!sentence.toLowerCase().includes(mentionText))continue;
+    if(sentence.length>500||!candidate.variants.some(variant=>normalizedMention(sentence,variant)))continue;
     if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\b/i.test(sentence))continue;
     if(!/\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(sentence))continue;
-    return {value:name,precision:supportedAreaPrecision(name,geography),evidence:[{source:doc.url,excerpt:sentence.slice(0,240)}],confidence:.72};
+    return {value:candidate.value,precision:candidate.precision,evidence:[{source:doc.url,excerpt:sentence.slice(0,240)}],confidence:candidate.precision==='place'?.8:.72};
    }
   }
  }
  return null;
 }
-function supportedAreaPrecision(name,geography){
- const value=String(name||'').trim();
- if(geography?.locality && value.toLowerCase()===String(geography.locality).trim().toLowerCase())return 'place';
- if(geography?.subregion && value.toLowerCase()===String(geography.subregion).trim().toLowerCase())return 'area';
- if(/\b(?:county|shire|province|territory|region|district|state)\b/i.test(value))return 'area';
- if(/\s+[A-Z]{2}$/.test(value))return 'place';
- return 'area';
+function supportedGeographyCandidates(geography){
+ const result=[];
+ const add=(value,precision,variants=[])=>{
+  const name=String(value||'').trim();if(!name)return;
+  result.push({value:name,precision,variants:[name,...variants].map(x=>String(x||'').trim()).filter(Boolean)});
+ };
+ add(geography?.locality,'place');
+ add(geography?.subregion,'area');
+ const region=String(geography?.region||'').trim();
+ if(region){
+  const code=String(geography?.region_code||'').trim().toUpperCase();
+  const market=String(geography?.country_code||'').trim().toUpperCase();
+  let item=null;
+  try{item=enabledGeographies(market).find(x=>x.code===code)||null;}catch{}
+  const suffix=code&&region.toUpperCase().endsWith(' '+code)?region.slice(0,-code.length).trim():null;
+  if(suffix){
+   const variants=[suffix+' '+code,suffix+', '+code];
+   if(item?.name)variants.push(suffix+' '+item.name,suffix+', '+item.name);
+   add(region,'place',variants);
+  }else{
+   add(region,'area',[item?.name,...(item?.aliases||[])]);
+  }
+ }
+ return result;
+}
+function normalizedMention(sentence,variant){
+ const haystack=normalizePlaceText(sentence),needle=normalizePlaceText(variant);
+ return needle.length>=3 && (' '+haystack+' ').includes(' '+needle+' ');
+}
+function normalizePlaceText(value){
+ return String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+  .replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
 }
 function evidenceField(value,docs){if(!value)return null;const doc=docs.find(d=>d.text.toLowerCase().includes(String(value).toLowerCase()));return doc?{value,evidence:[{source:doc.url,excerpt:excerptAround(doc.text,String(value))}],confidence:.9}:value;}
 const DATE_VALUE=/\b(?:\d{1,2}[\/\-.]\d{1,2}[\/\-.](?:20)?\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+20\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+20\d{2})\b/i;
