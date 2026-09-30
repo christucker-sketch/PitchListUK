@@ -8,13 +8,19 @@ export function resolveEvidenceRegion({
   title = null
 } = {}) {
   const code=String(market||'').trim().toUpperCase();
-  if(code!=='GB')return null;
+  if(!['GB','US'].includes(code))return null;
   const expected=String(expectedRegionCode||'').trim().toUpperCase();
-  const geos=enabledGeographies('GB');
+  const geos=enabledGeographies(code);
 
   const structured=structuredEventRegions(body,geos);
   const structuredDecision=decision(structured,expected,geos,'schema_event_region',.97);
   if(structuredDecision)return structuredDecision;
+
+  if(code==='US'){
+    const explicit=explicitUsRegionHits(body,geos,title);
+    const explicitDecision=decision(explicit,expected,geos,'explicit_us_state_address',.95);
+    if(explicitDecision)return explicitDecision;
+  }
 
   const contextual=contextualEventRegions(body,geos,title);
   return decision(contextual,expected,geos,'event_context_region',.9);
@@ -60,6 +66,25 @@ function structuredEventRegions(body,geos){
   }
  }
  return result;
+}
+
+function explicitUsRegionHits(body,geos,title=null){
+ const text=[String(title||''),extractHtmlMetadataText(body),htmlToLines(stripSiteChrome(body))].filter(Boolean).join('\n');
+ const byCode=new Map(geos.map(item=>[String(item.code).toUpperCase(),item]));
+ const hits=[];
+ const codePattern=/,\s*(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)\b/g;
+ let match;
+ while((match=codePattern.exec(text))){
+  const state=byCode.get(match[1]);
+  if(state)hits.push({code:state.code,matched:match[1]});
+ }
+ for(const line of text.split(/\n+/).map(x=>x.trim()).filter(Boolean)){
+  if(line.length>600||!eventContext(line))continue;
+  for(const item of geos){
+   if(phraseMention(line,item.name))hits.push({code:item.code,matched:item.name});
+  }
+ }
+ return hits;
 }
 
 function contextualEventRegions(body,geos,title=null){
