@@ -116,3 +116,44 @@ test('GB place extractor does not run for non-GB markets',async()=>{
  assert.equal(enrichment.location_area.value,'California');
  assert.equal(enrichment.location_area.precision,'area');
 });
+
+
+test('GB place extraction recovers county-anchored towns from strong event context',async()=>{
+ const cases=[
+  {body:'<p>Vendor applications are now open for our Christmas Market in Maidstone, Kent.</p>',expected:'Maidstone'},
+  {body:'<p>The food festival takes place in Royal Tunbridge Wells in Kent this autumn.</p>',expected:'Royal Tunbridge Wells'}
+ ];
+ for(const item of cases){
+  const store=db({candidate_id:'gb',source_last_checked:'2026-09-30T06:00:00Z',
+   canonical_url:'https://event.test/vendors',application_url:null,event_name:'Market',
+   organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+  const fetchProvider={async fetch(url){return {final_url:url,body:item.body};}};
+  await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T06:01:00Z')});
+  const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+  const enrichment=JSON.parse(stored.args[2]);
+  assert.equal(enrichment.location_area.value,item.expected);
+  assert.equal(enrichment.location_area.precision,'place');
+  assert.match(enrichment.location_area.evidence[0].excerpt,/Kent/i);
+ }
+});
+
+test('GB place extraction does not turn county-only or office text into a town',async()=>{
+ const bodies=[
+  '<p>Vendor applications are open for our annual fair in Kent.</p>',
+  '<p>Contact office: Maidstone, Kent. Vendor enquiries welcome.</p>'
+ ];
+ for(const body of bodies){
+  const store=db({candidate_id:'gb',source_last_checked:'2026-09-30T06:00:00Z',
+   canonical_url:'https://event.test/vendors',application_url:null,event_name:'Fair',
+   organiser:null,geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}'});
+  const fetchProvider={async fetch(url){return {final_url:url,body};}};
+  await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T06:01:00Z')});
+  const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+  const enrichment=JSON.parse(stored.args[2]);
+  if(/Contact office/i.test(body)) assert.equal(enrichment.location_area,null);
+  else {
+   assert.equal(enrichment.location_area.value,'Kent');
+   assert.equal(enrichment.location_area.precision,'area');
+  }
+ }
+});
