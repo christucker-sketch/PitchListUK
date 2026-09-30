@@ -1,12 +1,7 @@
 name: FindPitches v2 practical location yield preview
-# rapid cohort: 10 US + 10 GB
 
 "on":
-  push:
-    branches:
-      - findpitches-v2/venue-evidence-recovery
-    paths:
-      - .github/workflows/findpitches-v2-practical-location-preview.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
