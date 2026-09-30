@@ -222,6 +222,10 @@ function sourceGeographyConflict(geography,docs){
  const textValue=docs.filter(doc=>doc.kind!=='search_result').map(doc=>String(doc.text||'')).join('\n');
  if(!textValue)return false;
  if(market==='GB'&&explicitForeignGbLocation(textValue))return true;
+ if(market==='US'){
+  const explicitCodes=explicitUsStateCodes(textValue);
+  if(explicitCodes.size===1&&!explicitCodes.has(expected))return true;
+ }
  let geos=[];try{geos=enabledGeographies(market);}catch{return false;}
  const mentions=new Set();
  for(const item of geos){
@@ -238,6 +242,10 @@ function verifiedLocationForGeography(field,geography){
  const evidence=field?.evidence?.[0]?.excerpt||'';
  const combined=[field.value,evidence].filter(Boolean).join(' ');
  if(market==='GB'&&explicitForeignGbLocation(combined))return null;
+ if(market==='US'){
+  const explicitCodes=explicitUsStateCodes(combined);
+  if(explicitCodes.size===1&&!explicitCodes.has(expected))return null;
+ }
  if(!market||!expected||!evidence)return field;
  let geos=[];try{geos=enabledGeographies(market);}catch{return field;}
  const mentions=new Set();
@@ -247,6 +255,14 @@ function verifiedLocationForGeography(field,geography){
  }
  if(mentions.size&& !mentions.has(expected))return null;
  return field;
+}
+function explicitUsStateCodes(value){
+ const v=String(value||'');
+ const codes=new Set();
+ const pattern=/,\s*(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)\b/g;
+ let match;
+ while((match=pattern.exec(v)))codes.add(match[1]);
+ return codes;
 }
 function explicitForeignGbLocation(value){
  const v=String(value||'');
