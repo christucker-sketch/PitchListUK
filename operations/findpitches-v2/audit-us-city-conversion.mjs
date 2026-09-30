@@ -43,7 +43,11 @@ for(;;){
  for(const row of rows){
   after=row.id;
   const geography=parse(row.geography_json);
-  const item=byKey.get(key(row.region_code,geography.discovery_location));
+  // Before classification the scheduler target is discovery_location; after
+  // classification the evaluator preserves that acquisition label as region.
+  // This is attribution only and never event-location evidence.
+  const acquisitionLocation=geography.discovery_location||geography.region||null;
+  const item=byKey.get(key(row.region_code,acquisitionLocation));
   if(!item)continue;
   item.candidates++;
   if(row.status in item)item[row.status]++;
