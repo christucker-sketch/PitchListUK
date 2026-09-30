@@ -3,6 +3,7 @@ import { extractNamedFields } from './named-fields.mjs';
 import { isTerminalPdfError } from '../providers/fetch/pdf-error-policy.mjs';
 import { enabledGeographies } from '../geography/catalog.mjs';
 import { extractStructuredEventLocation } from './structured-event-location.mjs';
+import { extractHtmlMetadataText } from '../engine/html-metadata.mjs';
 
 const DEFAULT_LIMIT = 8;
 const LEASE_MINUTES = 5;
@@ -184,7 +185,7 @@ function sameSite(a,b){try{const x=new URL(a).hostname.replace(/^www\./,''),y=ne
 
 function extractEnrichment(row,pages){
   const docs=[
-    ...pages.map(p=>({url:p.final_url,text:plainWithLines(p.body),kind:'source_page'})),
+    ...pages.map(p=>({url:p.final_url,text:[extractHtmlMetadataText(p.body),plainWithLines(p.body)].filter(Boolean).join('\n'),kind:'source_page'})),
     ...candidateSearchEvidenceDocs(row)
   ];
   const joined=docs.map(d=>d.text).join("\n");
