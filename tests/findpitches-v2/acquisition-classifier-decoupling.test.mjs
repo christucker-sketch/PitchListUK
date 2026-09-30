@@ -81,7 +81,9 @@ test('acquisition storage preserves search snippet and query evidence', async ()
  });
  const insert=writes.find(x=>/INSERT OR IGNORE INTO candidates/.test(x.sql));
  assert.ok(insert);
- const evidence=JSON.parse(insert.args[8]);
+ const evidenceArg=insert.args.find(value=>typeof value==='string'&&value.startsWith('[{"kind":"search_result"'));
+ assert.ok(evidenceArg);
+ const evidence=JSON.parse(evidenceArg);
  assert.equal(evidence[0].kind,'search_result');
  assert.equal(evidence[0].snippet,'Apply to trade at our Maidstone, Kent autumn fair.');
  assert.equal(evidence[0].query,'Kent vendor applications');
