@@ -276,3 +276,40 @@ test('GB enrichment retains structured locations that agree with the discovery c
  assert.equal(enrichment.location.value,'Mote Park');
  assert.equal(enrichment.location_area.value,'Maidstone');
 });
+
+
+test('GB place extraction preserves standalone location headings beside event content',async()=>{
+ const cases=[
+  {
+   id:'stroud-heading',region_code:'GB-ENG-GLOS',region:'Gloucestershire',expected:'Stroud',
+   body:'<html><body><h2>Stroud, Gloucestershire</h2><p>Apply to trade at the Stroud Festival of Food & Drink. Vendor applications are open.</p>'+('<p>Festival information and trader details for visitors and exhibitors.</p>'.repeat(20))+'</body></html>'
+  },
+  {
+   id:'blenheim-heading',region_code:'GB-ENG-OXON',region:'Oxfordshire',expected:'Blenheim Palace',
+   body:'<html><body><h2>Blenheim Palace, Oxfordshire, OX20 1UL</h2><p>Exhibitor application information for the annual flower show.</p>'+('<p>Show information for exhibitors and visitors.</p>'.repeat(20))+'</body></html>'
+  }
+ ];
+ for(const item of cases){
+  const store=db({candidate_id:item.id,source_last_checked:'2026-09-30T10:00:00Z',
+   canonical_url:'https://event.test/vendors',application_url:null,event_name:'Festival',organiser:null,
+   geography_json:JSON.stringify({country_code:'GB',region_code:item.region_code,region:item.region})});
+  const fetchProvider={async fetch(url){return {final_url:url,body:item.body};}};
+  await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T10:01:00Z')});
+  const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+  const enrichment=JSON.parse(stored.args[2]);
+  assert.equal(enrichment.location_area.value,item.expected,item.id);
+  assert.equal(enrichment.location_area.precision,'place',item.id);
+ }
+});
+
+test('line-preserving extraction still rejects registered-office place headings',async()=>{
+ const store=db({candidate_id:'office-heading',source_last_checked:'2026-09-30T10:00:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Festival',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-ESSEX","region":"Essex"}'});
+ const body='<html><body><p>Vendor applications are open for our annual festival.</p><div>Registered Office: Hornchurch, Essex, RM11 1JS</div></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T10:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area,null);
+});
