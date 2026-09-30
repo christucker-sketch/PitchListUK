@@ -62,3 +62,19 @@ test('discovery geography alone never becomes a source-backed area',async()=>{
  const enrichment=JSON.parse(stored.args[2]);
  assert.equal(enrichment.location_area,null);
 });
+
+
+test('description enrichment retains source evidence without crashing',async()=>{
+ const store=db({candidate_id:'d',source_last_checked:'2026-09-30T07:00:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Fair',
+  organiser:null,geography_json:'{"country_code":"GB","region":"Kent"}'});
+ const body='<html><body><p>Vendor applications are open for independent traders who want to join our annual community fair with food, crafts and entertainment across the weekend.</p></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ const r=await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T07:01:00Z')});
+ assert.equal(r.complete,1);
+ assert.equal(r.failed,0);
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.match(enrichment.description.value,/Vendor applications are open/);
+ assert.equal(enrichment.description.evidence[0].source,'https://event.test/vendors');
+});
