@@ -72,8 +72,10 @@ function supportedArea(field){
   if(!safeHttp(item?.source))return false;
   const excerpt=text(item?.excerpt);if(!excerpt||!normalizedContains(excerpt,name))return false;
   if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing)\s+(?:office|address|location|headquarters|contact)|\b(?:our\s+office|our\s+address|mail\s+to|contact\s+us|registered\s+at)\b/i.test(excerpt))return false;
-  if(String(item?.kind||'')==='schema_event_location')return /["']location["']\s*:/i.test(excerpt);
-  if(String(item?.kind||'')==='verified_location_hint')return true;
+  const kind=String(item?.kind||'');
+  if(kind==='schema_event_location')return /["']location["']\s*:/i.test(excerpt);
+  if(kind==='verified_location_hint'||kind==='event_page_location_heading'||kind==='event_location_page')return true;
+  if(kind==='search_result_snippet')return /\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(excerpt);
   return /\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(excerpt);
  });
  if(!evidence)return null;
