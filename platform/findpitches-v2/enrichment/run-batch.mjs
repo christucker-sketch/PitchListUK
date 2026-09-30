@@ -15,13 +15,18 @@ export async function enqueueEnrichmentRulesetRefresh(db,{now=new Date(),limit=8
   const timestamp=now.toISOString();
   const metaKey='enrichment_ruleset_version';
   const sweepKey='enrichment_ruleset_sweep_started_at';
+  const sweepVersionKey='enrichment_ruleset_sweep_version';
   const current=await db.prepare('SELECT value FROM runtime_meta WHERE key=?').bind(metaKey).first();
   if(current?.value===version) return Object.freeze({ruleset:version,enqueued:0,complete:true});
   let sweep=await db.prepare('SELECT value FROM runtime_meta WHERE key=?').bind(sweepKey).first();
-  if(!sweep?.value){
+  let sweepVersion=await db.prepare('SELECT value FROM runtime_meta WHERE key=?').bind(sweepVersionKey).first();
+  if(sweepVersion?.value!==version || !sweep?.value){
+    await db.prepare("INSERT INTO runtime_meta (key,value,updated_at) VALUES (?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at")
+      .bind(sweepVersionKey,version,timestamp).run();
     await db.prepare("INSERT INTO runtime_meta (key,value,updated_at) VALUES (?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at")
       .bind(sweepKey,timestamp,timestamp).run();
     sweep={value:timestamp};
+    sweepVersion={value:version};
   }
   const cap=Math.max(0,Math.min(Number(limit)||0,24));
   if(cap===0) return Object.freeze({ruleset:version,sweep_started_at:sweep.value,enqueued:0,complete:false});
