@@ -20,6 +20,7 @@ export function createDefaultCandidateEvaluator({
       body: page.body,
       sourceUrl: finalUrl,
       location,
+      market: market.code,
       now: now()
     });
 
@@ -30,6 +31,7 @@ export function createDefaultCandidateEvaluator({
     });
 
     const negative = hasStrongNegativeEvidence(extracted.evidence);
+    const marketConflict = extracted.evidence.some(item => item?.type === 'market_conflict');
     const positive = hasPositiveApplicationEvidence(extracted.evidence);
 
     let status = 'rejected';
@@ -37,7 +39,7 @@ export function createDefaultCandidateEvaluator({
     let publishable = false;
 
     if (negative) {
-      rejectionReason = 'negative_page_signal';
+      rejectionReason = marketConflict ? 'market_conflict' : 'negative_page_signal';
     } else if (!positive) {
       rejectionReason = 'explicit_application_intent_missing';
     } else if (score.score >= publishThreshold) {
