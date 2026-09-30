@@ -180,7 +180,7 @@ for (const nonEvent of [
  ['purchasing vendor','<h1>Purchasing Vendor Application</h1><p>Vendor application for purchasing suppliers.</p><a href="/apply">Vendor application</a>']
 ]) {
  test('shared evaluator rejects '+nonEvent[0]+' non-event false positive', async()=>{
-  const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body>'+nonEvent[1]+'</body></html>';}}}});
+  const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body>'+nonEvent[1]+'</body></html>'};}}});
   const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://example.test/vendors'}});
   assert.equal(candidate.status,'rejected');
   assert.equal(candidate.rejection_reason,'negative_page_signal');
