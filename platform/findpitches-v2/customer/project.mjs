@@ -2,9 +2,9 @@ import { classifyVenueEvidence } from '../enrichment/venue-evidence.mjs';
 import { assessCustomerReadiness } from './readiness.mjs';
 
 export function projectCustomerOpportunity(candidate = {}, enrichment = {}) {
-  // Prefer exact event-venue evidence, then source-backed place/area evidence.
-  // Discovery geography and organiser/contact addresses are never customer location evidence.
-  const location = sourceBackedLocation(enrichment.location) ?? sourceBackedArea(enrichment.location_area);
+  // Only event-location evidence from an event/application source is publishable.
+  // Discovery geography and organiser addresses must never become event locations.
+  const location = sourceBackedLocation(enrichment.location);
   const geography = object(candidate.geography);
   const projected = Object.freeze({
     id: text(candidate.id ?? candidate.candidate_id),
@@ -13,8 +13,6 @@ export function projectCustomerOpportunity(candidate = {}, enrichment = {}) {
     organiser: text(value(enrichment.organiser) ?? candidate.organiser),
     region_code: text(value(enrichment.region_code) ?? candidate.region_code ?? geography.region_code),
     location: location?.value ?? null,
-    location_precision: location?.precision ?? null,
-    location_confidence: location?.confidence ?? null,
     coordinates: coordinates(value(enrichment.coordinates)),
     event_start: text(value(enrichment.event_start) ?? candidate.event_start),
     event_end: text(value(enrichment.event_end) ?? candidate.event_end),
@@ -44,45 +42,7 @@ function sourceBackedLocation(field) {
   if (!name || /^(?:unknown|tbc|tbd|online|various|multiple locations|to be announced|the venue|the event|the location)$/i.test(name)) return null;
   const check=classifyVenueEvidence(field);
   if (!check.accepted) return null;
-  const confidence=finite(field.confidence);
-  return {
-    value:name,
-    precision:'venue',
-    confidence,
-    provenance:Object.freeze({precision:'venue',evidence:Object.freeze([check.evidence]),confidence})
-  };
-}
-function sourceBackedArea(field) {
-  if (!field || typeof field !== 'object' || !('value' in field)) return null;
-  const name=text(field.value), precision=String(field.precision||'').trim().toLowerCase();
-  if (!name || !['place','area'].includes(precision) ||
-      /^(?:unknown|tbc|tbd|online|various|multiple locations|to be announced|the location)$/i.test(name)) return null;
-  if (!Array.isArray(field.evidence) || !field.evidence.length) return null;
-  for (const item of field.evidence) {
-    let url;
-    try { url=new URL(String(item?.source||'')); }
-    catch { continue; }
-    if (!['http:','https:'].includes(url.protocol)) continue;
-    const excerpt=String(item?.excerpt||'').replace(/\s+/g,' ').trim();
-    if (!excerpt || excerpt.length>500 || !normalizedContains(excerpt,name)) continue;
-    if (/\b(?:registered|head|corporate|business|contact|mailing|postal|billing)\s+(?:office|address|location|headquarters|contact)|\b(?:our\s+office|our\s+address|mail\s+to|contact\s+us|registered\s+at)\b/i.test(excerpt)) continue;
-    if (!/\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(excerpt)) continue;
-    const confidence=finite(field.confidence);
-    const evidence=Object.freeze({source:url.toString(),excerpt});
-    return {
-      value:name,
-      precision,
-      confidence,
-      provenance:Object.freeze({precision,evidence:Object.freeze([evidence]),confidence})
-    };
-  }
-  return null;
-}
-function normalizedContains(haystack,needle) {
-  const normalize=value=>String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
-    .replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
-  const h=normalize(haystack), n=normalize(needle);
-  return n.length>=3 && (' '+h+' ').includes(' '+n+' ');
+  return {value:name,provenance:Object.freeze({evidence:Object.freeze([check.evidence]),confidence:finite(field.confidence)})};
 }
 function value(field) {
   if (field && typeof field === 'object' && !Array.isArray(field) && 'value' in field) return field.value;
