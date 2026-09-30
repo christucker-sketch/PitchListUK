@@ -184,3 +184,16 @@ test('US state names in an overseas town name do not contradict market unless th
  assert.equal(r.readiness.ready,true);
  assert.ok(!r.readiness.blocked.some(x=>x.code==='cross_market_geography'));
 });
+
+
+test('structured Event venue evidence remains customer-usable',()=>{
+ const enrichment={location:{value:'Mote Park',
+  evidence:[{source:'https://event.test/',kind:'schema_event_location',excerpt:'"location":{"@type":"Place","name":"Mote Park","address":{"addressLocality":"Maidstone"}}'}],confidence:.94},
+  location_area:{value:'Maidstone',precision:'place',
+  evidence:[{source:'https://event.test/',kind:'schema_event_location',excerpt:'"location":{"@type":"Place","name":"Mote Park","address":{"addressLocality":"Maidstone"}}'}],confidence:.9}};
+ const r=projectPracticalOpportunity(candidate,enrichment,{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.opportunity.location,'Mote Park');
+ assert.equal(r.opportunity.location_precision,'venue');
+ assert.equal(r.opportunity.venue_verified,true);
+ assert.equal(r.readiness.ready,true);
+});
