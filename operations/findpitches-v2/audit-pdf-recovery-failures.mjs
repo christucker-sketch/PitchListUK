@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { TERMINAL_PDF_ERROR_CODES } from '../../platform/findpitches-v2/providers/fetch/pdf-error-policy.mjs';
 // Read-only audit of the most recent PDF recovery ledger batch.
 // Emits only aggregate error categories/counts: no candidate IDs, URLs or customer data.
 const API='https://api.cloudflare.com/client/v4';
@@ -44,12 +45,7 @@ const rows=await query(`
  GROUP BY q.status,COALESCE(NULLIF(TRIM(q.last_error),''),'(none)')
  ORDER BY q.status,last_error`,[batch.batch_id,batch.lane]);
 
-const terminal=new Set([
- 'findpitches_v2_pdf_empty_text',
- 'findpitches_v2_pdf_scanned_or_image_only',
- 'findpitches_v2_pdf_encrypted',
- 'findpitches_v2_pdf_malformed'
-]);
+const terminal=new Set(TERMINAL_PDF_ERROR_CODES);
 const summary={batch_id:batch.batch_id,lane:batch.lane,released_at:batch.released_at,total:Number(batch.total||0),
  statuses:{},dead:{terminal:0,unexpected:0,categories:[]}};
 for(const row of rows){
