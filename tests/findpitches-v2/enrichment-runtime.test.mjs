@@ -379,3 +379,48 @@ test('footer location text is not accepted as event location evidence',async()=>
  const enrichment=JSON.parse(stored.args[2]);
  assert.equal(enrichment.location_area,null);
 });
+
+
+test('GB place extraction rejects another county name as a place on a multi-county page',async()=>{
+ const store=db({candidate_id:'multi-county',source_last_checked:'2026-09-30T12:00:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Wedding Shows',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-BUCKS","region":"Buckinghamshire"}'});
+ const body='<html><body><main><p>Vendor applications are open for wedding fairs across Hertfordshire, Buckinghamshire and surrounding areas.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T12:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.notEqual(enrichment.location_area?.value,'Hertfordshire');
+});
+
+test('GB event location heading becomes source-backed place evidence',async()=>{
+ const store=db({candidate_id:'heading-place',source_last_checked:'2026-09-30T12:00:00Z',
+  canonical_url:'https://event.test/',application_url:null,event_name:'Stroud Festival of Food & Drink',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-GLOS","region":"Gloucestershire"}'});
+ const body='<html><body><main><h2>Stroud, Gloucestershire</h2><p>Vendor applications are open for the annual food festival.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T12:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area.value,'Stroud');
+ assert.equal(enrichment.location_area.precision,'place');
+ assert.equal(enrichment.location_area.evidence[0].kind,'event_page_location_heading');
+});
+
+test('GB location page may use a short place line, ordinary exhibitor pages may not',async()=>{
+ const good=db({candidate_id:'where-page',source_last_checked:'2026-09-30T12:00:00Z',
+  canonical_url:'https://market.test/where-to-find-us',application_url:null,event_name:'Meanwood Market',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-WEST-YORKS","region":"West Yorkshire"}'});
+ const bad=db({candidate_id:'exhibitor-address',source_last_checked:'2026-09-30T12:00:00Z',
+  canonical_url:'https://expo.test/exhibitor-list',application_url:null,event_name:'Beef Expo',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-STAFFS","region":"Staffordshire"}'});
+ const providerGood={async fetch(url){return {final_url:url,body:'<html><body><main><h1>Meanwood Market</h1><p>Vendor applications are open.</p><p>Meanwood, Leeds, West Yorkshire</p></main></body></html>'};}};
+ const providerBad={async fetch(url){return {final_url:url,body:'<html><body><main><h1>Exhibitor List</h1><p>Exhibitor applications are open.</p><p>AgriWebb, Stafford, Staffordshire</p></main></body></html>'};}};
+ await runEnrichmentBatch(good,{fetchProvider:providerGood,limit:1,now:new Date('2026-09-30T12:01:00Z')});
+ await runEnrichmentBatch(bad,{fetchProvider:providerBad,limit:1,now:new Date('2026-09-30T12:01:00Z')});
+ const goodEnrichment=JSON.parse(good.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql)).args[2]);
+ const badEnrichment=JSON.parse(bad.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql)).args[2]);
+ assert.equal(goodEnrichment.location_area.value,'Meanwood');
+ assert.equal(goodEnrichment.location_area.evidence[0].kind,'event_location_page');
+ assert.equal(badEnrichment.location_area,null);
+});
