@@ -189,10 +189,12 @@ function extractEnrichment(row,pages){
   const rawDocs=pages.map(p=>({url:p.final_url,body:p.body}));
   const named=extractNamedFields(rawDocs);
   const structured=extractStructuredEventLocation(rawDocs);
+  const strictLocation=verifiedLocationForGeography(named.location ?? structured.location,geography);
+  const structuredArea=verifiedLocationForGeography(structured.location_area,geography);
   const result={
     organiser:named.organiser ?? evidenceField(row.organiser,docs),
-    location:named.location ?? structured.location,
-    location_area:structured.location_area ?? extractVerifiedLocalityHint(geography,docs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
+    location:strictLocation,
+    location_area:structuredArea ?? extractVerifiedLocalityHint(geography,docs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs)
   };
   const deadline=firstDateInDocs(docs,[
     /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
@@ -207,6 +209,29 @@ function extractEnrichment(row,pages){
   const description=descriptionExcerpt(docs);
   if(description) result.description=withEvidence(description.value,description.excerpt,docs);
   return normalizeEnrichment(result);
+}
+function verifiedLocationForGeography(field,geography){
+ if(!field?.value)return null;
+ const market=String(geography?.country_code||'').trim().toUpperCase();
+ const expected=String(geography?.region_code||'').trim().toUpperCase();
+ const evidence=field?.evidence?.[0]?.excerpt||'';
+ const combined=[field.value,evidence].filter(Boolean).join(' ');
+ if(market==='GB'&&explicitForeignGbLocation(combined))return null;
+ if(!market||!expected||!evidence)return field;
+ let geos=[];try{geos=enabledGeographies(market);}catch{return field;}
+ const mentions=new Set();
+ for(const item of geos){
+  const variants=[item.name,...(item.aliases||[])].map(v=>String(v||'').trim()).filter(v=>v.length>=4);
+  if(variants.some(v=>normalizedMention(evidence,v)))mentions.add(String(item.code).toUpperCase());
+ }
+ if(mentions.size&& !mentions.has(expected))return null;
+ return field;
+}
+function explicitForeignGbLocation(value){
+ const v=String(value||'');
+ if(/\b(?:united\s+states|usa|u\.s\.a\.?|u\.s\.)\b/i.test(v)||/\bUS\b/.test(v))return true;
+ if(/,\s*(?:AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY)\b/.test(v))return true;
+ return false;
 }
 export function extractVerifiedLocalityHint(geography,docs){
  const hint=String(geography?.locality||'').replace(/\s+/g,' ').trim();
