@@ -189,19 +189,26 @@ function supportedAreaEvidence(geography,docs){
  const candidates=[geography?.locality,geography?.subregion,geography?.region].map(x=>String(x||'').trim()).filter(Boolean);
  for(const name of candidates){
   if(name.length<3)continue;
-  const escaped=name.replace(/[.*+?^$()|[\]\\{}]/g,'\\function evidenceField(value,docs){if(!value)return null;const doc=docs.find(d=>d.text.toLowerCase().includes(String(value).toLowerCase()));return doc?{value,evidence:[{source:doc.url,excerpt:excerptAround(doc.text,String(value))}],confidence:.9}:value;}');
-  const mention=new RegExp('\\b'+escaped+'\\b','i');
+  const mentionText=name.toLowerCase();
   for(const doc of docs){
-   const sentences=String(doc.text||'').split(/(?<=[.!?])\\s+|\\n+/).map(x=>x.trim()).filter(Boolean);
+   const sentences=String(doc.text||'').split(/(?<=[.!?])\s+|\n+/).map(x=>x.trim()).filter(Boolean);
    for(const sentence of sentences){
-    if(sentence.length>500||!mention.test(sentence))continue;
-    if(/\\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\\b/i.test(sentence))continue;
-    if(!/\\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\\s+place|taking\\s+place)\\b/i.test(sentence))continue;
-    return {value:name,evidence:[{source:doc.url,excerpt:sentence.slice(0,240)}],confidence:.72};
+    if(sentence.length>500||!sentence.toLowerCase().includes(mentionText))continue;
+    if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\b/i.test(sentence))continue;
+    if(!/\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(sentence))continue;
+    return {value:name,precision:supportedAreaPrecision(name,geography),evidence:[{source:doc.url,excerpt:sentence.slice(0,240)}],confidence:.72};
    }
   }
  }
  return null;
+}
+function supportedAreaPrecision(name,geography){
+ const value=String(name||'').trim();
+ if(geography?.locality && value.toLowerCase()===String(geography.locality).trim().toLowerCase())return 'place';
+ if(geography?.subregion && value.toLowerCase()===String(geography.subregion).trim().toLowerCase())return 'area';
+ if(/\b(?:county|shire|province|territory|region|district|state)\b/i.test(value))return 'area';
+ if(/\s+[A-Z]{2}$/.test(value))return 'place';
+ return 'area';
 }
 function evidenceField(value,docs){if(!value)return null;const doc=docs.find(d=>d.text.toLowerCase().includes(String(value).toLowerCase()));return doc?{value,evidence:[{source:doc.url,excerpt:excerptAround(doc.text,String(value))}],confidence:.9}:value;}
 const DATE_VALUE=/\b(?:\d{1,2}[\/\-.]\d{1,2}[\/\-.](?:20)?\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+20\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+20\d{2})\b/i;
