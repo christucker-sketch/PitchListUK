@@ -3,7 +3,7 @@ import { enqueueValidatedForEnrichment, enqueueEnrichmentRulesetRefresh, runEnri
 
 const SERVICE='findpitches-v2-enrichment';
 const BATCH_LIMIT=8;
-const ENRICHMENT_RULESET_VERSION='2026-09-30-evidence-v2';
+const ENRICHMENT_RULESET_VERSION='2026-09-30-practical-location-v1';
 
 export default {
   async fetch(request,env){
