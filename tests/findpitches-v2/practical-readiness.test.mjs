@@ -239,7 +239,7 @@ test('freshly verified locality hint is practical but not venue-verified',()=>{
 
 
 test('event-page location heading is accepted as source-backed practical place evidence',()=>{
- const r=projectPracticalOpportunity(candidate,{location_area:{
+ const r=projectPracticalOpportunity({...candidate,region_code:'GB-ENG-GLOS'},{location_area:{
   value:'Stroud',precision:'place',
   evidence:[{source:'https://event.test/',excerpt:'Stroud, Gloucestershire',kind:'event_page_location_heading'}],confidence:.78
  }},{now:new Date('2026-09-30T07:00:00Z')});
