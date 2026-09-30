@@ -45,7 +45,8 @@ jobs:
             if jq -e '.ok == true and .service == "findpitches-v2-enrichment" and
               .database == "isolated" and .serper_configured == false and
               .enrichment_ruleset == "2026-09-30-practical-location-v1" and
-              .batch_limit == 8' <<< "$body" >/dev/null 2>&1; then
+              .batch_limit == 12 and
+              .fresh_enqueue_limit == 8 and .ruleset_refresh_limit == 4' <<< "$body" >/dev/null 2>&1; then
               ok=true
               break
             fi
