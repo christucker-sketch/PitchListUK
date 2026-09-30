@@ -107,6 +107,9 @@ jobs:
       - name: Benchmark legacy UK customer-ready catalogue
         run: node operations/findpitches-v2/benchmark-legacy-uk-product.mjs | tee legacy-uk-benchmark.json
 
+      - name: Audit legacy UK overlap with v2
+        run: node operations/findpitches-v2/audit-gb-legacy-overlap.mjs
+
       - name: Audit current practical readiness by market
         run: node operations/findpitches-v2/audit-practical-readiness.mjs | tee practical-readiness-audit.json
 
@@ -128,6 +131,7 @@ jobs:
           path: |
             practical-v2-impact.json
             legacy-uk-benchmark.json
+            gb-legacy-overlap.json
             practical-readiness-audit.json
             gb-place-recall-preview.json
             gb-classifier-recheck-preview.json
