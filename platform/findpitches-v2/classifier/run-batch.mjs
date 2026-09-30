@@ -46,7 +46,7 @@ export async function runClassificationBatch(db, {
       const evaluated = await evaluator({
         market: getMarket(row.market),
         region_code: row.region_code,
-        location: geography.discovery_location || row.region_code,
+        location: geography.discovery_location || geography.region || row.region_code,
         result: { url: row.canonical_url, title: row.event_name }
       });
 
