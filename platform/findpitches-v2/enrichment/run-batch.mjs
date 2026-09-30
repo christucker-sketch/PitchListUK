@@ -335,6 +335,8 @@ export function extractSupportedAreaEvidence(geography,docs){
    for(const sentence of sentences){
     if(sentence.length>500||!candidate.variants.some(variant=>normalizedMention(sentence,variant)))continue;
     if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing|office|headquarters)\b/i.test(sentence))continue;
+    if(/\b(?:police|council|authority|service)\b.{0,40}\b(?:tel(?:ephone)?|phone|email|contact)\b\s*[:\-]?/i.test(sentence))continue;
+    if(/\b(?:tel(?:ephone)?|phone|email)\s*[:\-]/i.test(sentence))continue;
     if(!/\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(sentence))continue;
     return {value:candidate.value,precision:candidate.precision,evidence:[{source:doc.url,excerpt:sentence.slice(0,240),kind:doc.kind==='search_result'?'search_result_snippet':null}],confidence:doc.kind==='search_result'?.62:(candidate.precision==='place'?.8:.72)};
    }
