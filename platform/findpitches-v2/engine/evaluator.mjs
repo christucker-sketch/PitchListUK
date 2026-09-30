@@ -1,6 +1,7 @@
 import { normalizeCandidate, canonicalUrl } from './candidate.mjs';
 import { extractEvidence, hasPositiveApplicationEvidence, hasStrongNegativeEvidence } from './evidence.mjs';
 import { scoreCandidate } from './scoring.mjs';
+import { resolveEvidenceRegion } from '../classifier/region-evidence.mjs';
 
 export function createDefaultCandidateEvaluator({
   fetchProvider,
@@ -23,16 +24,28 @@ export function createDefaultCandidateEvaluator({
       market: market.code,
       now: now()
     });
+    const regionCorrection=extracted.evidence.some(item=>item?.type==='market_conflict')?null:resolveEvidenceRegion({
+      market:market.code,
+      expectedRegionCode:region_code,
+      body:page.body
+    });
+    const effectiveRegionCode=regionCorrection?.region_code||region_code;
+    const effectiveLocation=regionCorrection?.region||location;
+    const evidence=regionCorrection
+      ? [...extracted.evidence,
+         {type:'region_correction',value:regionCorrection.region,from_region_code:regionCorrection.from_region_code,to_region_code:regionCorrection.region_code,kind:regionCorrection.kind,confidence:regionCorrection.confidence},
+         {type:'geography_match',value:regionCorrection.region,confidence:regionCorrection.confidence}]
+      : [...extracted.evidence];
 
     const score = scoreCandidate({
-      evidence: extracted.evidence,
+      evidence,
       sourceUrl: finalUrl,
       applicationUrl: extracted.application_url
     });
 
-    const negative = hasStrongNegativeEvidence(extracted.evidence);
-    const marketConflict = extracted.evidence.some(item => item?.type === 'market_conflict');
-    const positive = hasPositiveApplicationEvidence(extracted.evidence);
+    const negative = hasStrongNegativeEvidence(evidence);
+    const marketConflict = evidence.some(item => item?.type === 'market_conflict');
+    const positive = hasPositiveApplicationEvidence(evidence);
 
     let status = 'rejected';
     let rejectionReason = null;
@@ -61,12 +74,12 @@ export function createDefaultCandidateEvaluator({
       organiser: null,
       geography: {
         country_code: market.code,
-        region_code,
-        region: location
+        region_code: effectiveRegionCode,
+        region: effectiveLocation
       },
       categories: [],
       evidence: [
-        ...extracted.evidence,
+        ...evidence,
         { type: 'score_reason', value: score.reasons.join(';'), confidence: 1 }
       ],
       score: score.score,
