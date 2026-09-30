@@ -3,7 +3,8 @@ import { enabledGeographies } from '../geography/catalog.mjs';
 export function resolveEvidenceRegion({
   market,
   expectedRegionCode,
-  body
+  body,
+  title = null
 } = {}) {
   const code=String(market||'').trim().toUpperCase();
   if(code!=='GB')return null;
@@ -14,7 +15,7 @@ export function resolveEvidenceRegion({
   const structuredDecision=decision(structured,expected,geos,'schema_event_region',.97);
   if(structuredDecision)return structuredDecision;
 
-  const contextual=contextualEventRegions(body,geos);
+  const contextual=contextualEventRegions(body,geos,title);
   return decision(contextual,expected,geos,'event_context_region',.9);
 }
 
@@ -60,8 +61,9 @@ function structuredEventRegions(body,geos){
  return result;
 }
 
-function contextualEventRegions(body,geos){
- const text=htmlToLines(stripSiteChrome(body));
+function contextualEventRegions(body,geos,title=null){
+ const titleText=String(title||'').trim();
+ const text=[titleText,htmlToLines(stripSiteChrome(body))].filter(Boolean).join('\n');
  const result=[];
  for(const line of text.split(/\n+/).map(x=>x.trim()).filter(Boolean)){
   if(line.length>600||!eventContext(line))continue;
