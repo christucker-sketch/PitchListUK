@@ -23,7 +23,7 @@ test('source-backed area is usable when exact venue is absent',()=>{
   evidence:[{source:'https://event.test/fair',excerpt:'Applications are open for vendors at our Autumn Fair in Kent.'}],confidence:.72}};
  const r=projectPracticalOpportunity(candidate,enrichment,{now:new Date('2026-09-30T07:00:00Z')});
  assert.equal(r.opportunity.location,'Kent');
- assert.equal(r.opportunity.location_precision,'place');
+ assert.equal(r.opportunity.location_precision,'area');
  assert.equal(r.opportunity.venue_verified,false);
  assert.equal(r.readiness.ready,true);
  assert.equal(r.readiness.completeness.event_date,false);
@@ -54,4 +54,14 @@ test('unsafe promotion URLs remain hard blockers',()=>{
  },{now:new Date('2026-09-30T07:00:00Z')});
  assert.equal(r.ready,false);
  assert.ok(r.blocked.some(x=>x.code==='social_url'));
+});
+
+
+test('stored place precision is preserved rather than guessed from the label text',()=>{
+ const enrichment={location_area:{value:'Rochester',precision:'place',
+  evidence:[{source:'https://event.test/fair',excerpt:'Applications are open for our Rochester market.'}],confidence:.8}};
+ const r=projectPracticalOpportunity(candidate,enrichment,{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.opportunity.location,'Rochester');
+ assert.equal(r.opportunity.location_precision,'place');
+ assert.equal(r.readiness.ready,true);
 });
