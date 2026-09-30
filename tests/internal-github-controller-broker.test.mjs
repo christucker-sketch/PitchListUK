@@ -273,7 +273,7 @@ test('Canada production base read does not call api.github.com even when API quo
     { fetchImpl: async url => {
       const value=String(url); seen.push(value);
       if (value.startsWith('https://api.github.com/')) return Response.json({message:'API rate limit exceeded'},{status:403});
-      if (value.includes('.git/info/refs?service=git-upload-pack')) return new Response(`${mainSha} refs/heads/main\n`);
+      if (value.includes('.git/info/refs?service=git-upload-pack')) return new Response(`001e# service=git-upload-pack\n0000${mainSha} refs/heads/main\n0000`);
       if (value.includes('/functions/_data/ca-opportunities.mjs')) return new Response(snapshot);
       if (value.includes('/operations/opportunity-pipeline/config/ca-approved-source-routes.json')) return new Response('[]');
       return new Response('not found',{status:404});
