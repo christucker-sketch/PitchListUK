@@ -272,7 +272,7 @@ function cleanSupportedPlace(value,regions){
 function eventContext(sentence){
  return /\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(sentence);
 }
-function escapeRegex(value){return String(value||'').replace(/[.*+?^\${}()|[\]\\]/g,'\\function normalizedMention(sentence,variant){');}
+function escapeRegex(value){return String(value||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
 function normalizedMention(sentence,variant){
  const haystack=normalizePlaceText(sentence),needle=normalizePlaceText(variant);
  return needle.length>=3 && (' '+haystack+' ').includes(' '+needle+' ');
