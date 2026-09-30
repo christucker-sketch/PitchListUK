@@ -33,9 +33,6 @@ function requireEnv(env, key) {
 function headers(env) {
   return { authorization: `Bearer ${requireEnv(env, 'GITHUB_TOKEN')}`, accept: 'application/vnd.github+json', 'content-type': 'application/json', 'x-github-api-version': '2022-11-28', 'user-agent': 'findpitches-controller-pr-broker' };
 }
-function publicReadHeaders() {
-  return { accept: 'application/vnd.github+json', 'content-type': 'application/json', 'x-github-api-version': '2022-11-28', 'user-agent': 'findpitches-controller-pr-broker-readonly' };
-}
 export function isInternalGithubControllerRequest(request) {
   let url;
   try { url = new URL(request.url); } catch { return false; }
@@ -203,16 +200,39 @@ function parseCaSnapshotModule(source) {
   if (!match) throw new Error('controller_github_ca_snapshot_module_invalid');
   try { return JSON.parse(match[1]); } catch { throw new Error('controller_github_ca_snapshot_json_invalid'); }
 }
-async function readCaProductionBases(fetchImpl, repo, authHeaders) {
-  const baseUrl = `https://api.github.com/repos/${repo}`;
-  const ref = await githubJson(fetchImpl, `${baseUrl}/git/ref/heads/main`, { headers: authHeaders });
-  const mainSha = String(ref?.object?.sha || '').toLowerCase();
+async function publicText(fetchImpl, url, errorPrefix) {
+  const response = await fetchImpl(url, { headers: { 'user-agent': 'findpitches-controller-pr-broker-readonly' } });
+  const text = await response.text();
+  if (!response.ok) throw new Error(`${errorPrefix}_http_${response.status}`);
+  return text;
+}
+async function readPublicMainSha(fetchImpl, repo) {
+  const advertised = await publicText(
+    fetchImpl,
+    `https://github.com/${repo}.git/info/refs?service=git-upload-pack`,
+    'controller_github_ca_git_refs'
+  );
+  const match = advertised.match(/([a-f0-9]{40}) refs\/heads\/main(?:\\0|[\\r\\n]|$)/i);
+  const mainSha = String(match?.[1] || '').toLowerCase();
   if (!/^[a-f0-9]{40}$/.test(mainSha)) throw new Error('controller_github_ca_main_sha_invalid');
-  const [snapshotSource, sources] = await Promise.all([
-    fetchFileTextAtRef(fetchImpl, repo, authHeaders, CA_SNAPSHOT_PATH, mainSha),
-    fetchJsonFileAtRef(fetchImpl, repo, authHeaders, CA_SOURCE_REGISTRY_PATH, mainSha)
+  return mainSha;
+}
+async function readRawAtSha(fetchImpl, repo, sha, path) {
+  return publicText(
+    fetchImpl,
+    `https://raw.githubusercontent.com/${repo}/${sha}/${path}`,
+    'controller_github_ca_raw'
+  );
+}
+async function readCaProductionBasesPublic(fetchImpl, repo) {
+  const mainSha = await readPublicMainSha(fetchImpl, repo);
+  const [snapshotSource, sourceJson] = await Promise.all([
+    readRawAtSha(fetchImpl, repo, mainSha, CA_SNAPSHOT_PATH),
+    readRawAtSha(fetchImpl, repo, mainSha, CA_SOURCE_REGISTRY_PATH)
   ]);
   const snapshot = parseCaSnapshotModule(snapshotSource);
+  let sources;
+  try { sources = JSON.parse(sourceJson); } catch { throw new Error('controller_github_ca_source_registry_json_invalid'); }
   const rows = Array.isArray(snapshot?.rows) ? snapshot.rows : null;
   if (!rows || Number(snapshot?.total) !== rows.length) throw new Error('controller_github_ca_snapshot_invalid');
   if (!Array.isArray(sources)) throw new Error('controller_github_ca_source_registry_invalid');
@@ -356,7 +376,7 @@ export async function handleInternalGithubControllerRequest(request, env, option
     if (payload.action === 'read_ca_production_bases') {
       // This path is deliberately read-only against a public repository. Do not
       // make Canada health depend on a long-lived mutation token.
-      return Response.json({ ok: true, bases: await readCaProductionBases(fetchImpl, repo, publicReadHeaders()) });
+      return Response.json({ ok: true, bases: await readCaProductionBasesPublic(fetchImpl, repo) });
     }
     const authHeaders = headers(env);
     if (payload.action === 'publication_request') return Response.json({ ok: true, ...(await proxyPublicationRequest(fetchImpl, repo, authHeaders, payload)) });
