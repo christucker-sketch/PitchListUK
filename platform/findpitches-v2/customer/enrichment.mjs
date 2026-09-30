@@ -7,6 +7,7 @@ export function normalizeEnrichment(input = {}) {
   return Object.freeze({
     organiser: field(input.organiser),
     location: field(input.location),
+    location_area: field(input.location_area),
     coordinates: coordinateField(input.coordinates),
     event_start: field(input.event_start),
     event_end: field(input.event_end),
