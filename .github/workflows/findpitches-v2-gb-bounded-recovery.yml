@@ -27,7 +27,7 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       GB_BOUNDED_RECOVERY_APPLY: '1'
       GB_BOUNDED_RECOVERY_LIMIT: '12'
-      GB_BOUNDED_RECOVERY_BATCH_ID: '2026-09-30-gb-practical-v3'
+      GB_BOUNDED_RECOVERY_BATCH_ID: '2026-09-30-gb-practical-v4'
 
     steps:
       - name: Check out candidate
