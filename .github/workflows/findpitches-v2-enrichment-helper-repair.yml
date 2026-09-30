@@ -1,0 +1,36 @@
+name: FindPitches v2 enrichment helper regression repair
+
+"on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-enrichment-helper-repair.yml
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prove practical enrichment fix is live before requeue
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body --max-time 15 https://findpitches-v2-enrichment.ctucker.workers.dev/health)"
+          jq -e '.ok == true and .service == "findpitches-v2-enrichment" and
+            .database == "isolated" and
+            .enrichment_ruleset == "2026-09-30-practical-location-v1" and
+            .batch_limit == 12 and .ruleset_refresh_limit == 4' <<< "$body" >/dev/null
+      - name: Requeue only rows hit by removed helper regression
+        run: node operations/findpitches-v2/requeue-enrichment-helper-regression.mjs
