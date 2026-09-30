@@ -40,24 +40,28 @@ LIMIT 48
 
 const fetchProvider=createHttpFetchProvider();
 const outcomes=[];
-for(const row of rows){
- const candidate={...row,geography:parse(row.geography_json),candidate_id:row.id};
- try{
-  const preview=await previewCandidateEnrichment(candidate,{fetchProvider});
-  const projected=projectPracticalOpportunity(candidate,preview.enrichment,{now:new Date()});
-  const loc=preview.enrichment?.location_area||preview.enrichment?.location||null;
-  outcomes.push({
-   id:row.id,region_code:row.region_code,title:row.event_name,
-   recovered:Boolean(loc?.value),practical_usable:Boolean(projected.readiness.ready),
-   value:loc?.value??null,
-   precision:loc?.precision??(preview.enrichment?.location?.value?'venue':null),
-   blocked:projected.readiness.blocked,missing:projected.readiness.missing,
-   evidence:loc?.evidence?.[0]??null,
-   fetched_urls:preview.fetched_urls
-  });
- }catch(error){
-  outcomes.push({id:row.id,region_code:row.region_code,title:row.event_name,recovered:false,error:String(error?.message||error)});
- }
+for(let i=0;i<rows.length;i+=6){
+ const chunk=rows.slice(i,i+6);
+ const chunkResults=await Promise.all(chunk.map(async row=>{
+  const candidate={...row,geography:parse(row.geography_json),candidate_id:row.id};
+  try{
+   const preview=await previewCandidateEnrichment(candidate,{fetchProvider});
+   const projected=projectPracticalOpportunity(candidate,preview.enrichment,{now:new Date()});
+   const loc=preview.enrichment?.location_area||preview.enrichment?.location||null;
+   return {
+    id:row.id,region_code:row.region_code,title:row.event_name,
+    recovered:Boolean(loc?.value),practical_usable:Boolean(projected.readiness.ready),
+    value:loc?.value??null,
+    precision:loc?.precision??(preview.enrichment?.location?.value?'venue':null),
+    blocked:projected.readiness.blocked,missing:projected.readiness.missing,
+    evidence:loc?.evidence?.[0]??null,
+    fetched_urls:preview.fetched_urls
+   };
+  }catch(error){
+   return {id:row.id,region_code:row.region_code,title:row.event_name,recovered:false,practical_usable:false,error:String(error?.message||error)};
+  }
+ }));
+ outcomes.push(...chunkResults);
 }
 const recovered=outcomes.filter(x=>x.recovered);
 const usable=outcomes.filter(x=>x.practical_usable);
