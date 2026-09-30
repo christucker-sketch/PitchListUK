@@ -197,3 +197,31 @@ test('structured Event venue evidence remains customer-usable',()=>{
  assert.equal(r.opportunity.venue_verified,true);
  assert.equal(r.readiness.ready,true);
 });
+
+
+test('explicit GB county mismatch blocks practical visibility',()=>{
+ const r=projectPracticalOpportunity({...candidate,region_code:'GB-ENG-DURHAM'},{location:{
+  value:'Melton Mowbray Market',
+  evidence:[{source:'https://event.test/location',excerpt:'The Beef Expo will be held at Melton Mowbray Market, Scalford Road, Melton Mowbray, Leicestershire.'}],confidence:.9
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.readiness.ready,false);
+ assert.ok(r.readiness.blocked.some(x=>x.code==='region_evidence_conflict'));
+});
+
+test('matching GB county evidence remains usable',()=>{
+ const r=projectPracticalOpportunity(candidate,{location:{
+  value:'Maidstone Market Square',
+  evidence:[{source:'https://event.test/location',excerpt:'Event venue: Maidstone Market Square, Kent.'}],confidence:.9
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.readiness.ready,true);
+ assert.ok(!r.readiness.blocked.some(x=>x.code==='region_evidence_conflict'));
+});
+
+test('US state code in a non-US location statement is cross-market evidence',()=>{
+ const r=projectPracticalOpportunity({...candidate,market:'GB',region_code:'GB-ENG-DEVON'},{location_area:{
+  value:'Dorset Road',precision:'place',
+  evidence:[{source:'https://event.test/visit',excerpt:'The show grounds are at 23 Dorset Road in Devon, PA.'}],confidence:.8
+ }},{now:new Date('2026-09-30T07:00:00Z')});
+ assert.equal(r.readiness.ready,false);
+ assert.ok(r.readiness.blocked.some(x=>x.code==='cross_market_geography'));
+});
