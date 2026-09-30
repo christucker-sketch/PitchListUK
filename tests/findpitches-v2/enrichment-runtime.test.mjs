@@ -503,3 +503,18 @@ test('GB place extraction never promotes label words like Where as a place',asyn
  const enrichment=JSON.parse(stored.args[2]);
  assert.notEqual(enrichment.location_area?.value,'Where');
 });
+
+
+test('GB enrichment can recover a place from event metadata description',async()=>{
+ const store=db({candidate_id:'mold-meta',source_last_checked:'2026-09-30T15:00:00Z',
+  canonical_url:'https://festival.test/vendors',application_url:null,event_name:'Mold Food Festival',organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-WLS","region":"Wales"}'});
+ const body='<html><head><meta name="description" content="Trader applications are open for Mold Food Festival in Mold, Wales."></head><body><main><p>Apply to exhibit at the festival.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T15:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area.value,'Mold');
+ assert.equal(enrichment.location_area.precision,'place');
+ assert.match(enrichment.location_area.evidence[0].excerpt,/Mold, Wales/);
+});
