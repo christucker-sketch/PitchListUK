@@ -28,7 +28,7 @@ const rows=await query(`
         OR NULLIF(TRIM(json_extract(e.enrichment_json,'$.location.value')),'') IS NULL)
  ORDER BY c.id ASC LIMIT 12`);
 const provider=createHttpFetchProvider({timeoutMs:12000});
-const summary={selected:rows.length,records_with_pages:0,recovered_explicit_location:0,no_location:0,records_with_fetch_failure:0,label_classes:{}};
+const summary={selected:rows.length,records_with_pages:0,recovered_explicit_location:0,no_location:0,records_with_fetch_failure:0,label_classes:{},source_markers:{}};
 for(const row of rows){
  const pages=[];let failed=false;
  for(const url of [...new Set([row.canonical_url,row.application_url].filter(Boolean))].slice(0,2)){
@@ -37,6 +37,22 @@ for(const row of rows){
  }
  if(failed)summary.records_with_fetch_failure++;
  if(pages.length)summary.records_with_pages++;
+ const combined=pages.map(p=>String(p.body||'')).join('\n');
+ const markerTests={
+  jsonld_event_location:/<script[^>]+type=["']application\/ld\+json["'][^>]*>[\s\S]*?["@]?type["']?\s*:\s*["']Event["'][\s\S]*?["']location["']\s*:/i,
+  schema_location:/["']location["']\s*:\s*\{[\s\S]{0,1200}?["'](?:name|address)["']\s*:/i,
+  microdata_event:/itemtype=["'][^"']*schema\.org\/Event/i,
+  microdata_location:/itemprop=["'](?:location|address)["']/i,
+  map_link:/https?:\/\/(?:www\.)?(?:google\.[^/"']+\/maps|maps\.google\.[^/"']+|maps\.apple\.com)/i,
+  venue_word:/\bvenue\b/i,
+  location_word:/\blocation\b/i,
+  address_word:/\baddress\b/i,
+  where_label:/\bwhere\s*[:\-]/i,
+  held_at:/\b(?:held\s+at|takes?\s+place\s+at|taking\s+place\s+at)\b/i
+ };
+ for(const [key,re] of Object.entries(markerTests)){
+  if(re.test(combined))summary.source_markers[key]=(summary.source_markers[key]||0)+1;
+ }
  const location=extractNamedFields(pages).location;
  if(!location){summary.no_location++;continue;}
  summary.recovered_explicit_location++;
