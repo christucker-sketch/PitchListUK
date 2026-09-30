@@ -54,11 +54,12 @@ export async function runClassificationBatch(db, {
       const mergedEvidence=mergeEvidence(priorEvidence,evaluated.evidence || []);
       await db.prepare(
         `UPDATE candidates
-            SET application_url = ?, event_name = ?, organiser = ?,
+            SET region_code = ?, application_url = ?, event_name = ?, organiser = ?,
                 geography_json = ?, evidence_json = ?, score = ?, status = ?,
                 rejection_reason = ?, last_checked = ?
           WHERE id = ?`
       ).bind(
+        evaluated.geography?.region_code || row.region_code,
         evaluated.application_url,
         evaluated.event_name,
         evaluated.organiser,
