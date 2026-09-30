@@ -19,7 +19,7 @@ test('exact venue remains highest precision and is customer-usable',()=>{
 });
 
 test('source-backed area is usable when exact venue is absent',()=>{
- const enrichment={location_area:{value:'Kent',
+ const enrichment={location_area:{value:'Kent',precision:'area',
   evidence:[{source:'https://event.test/fair',excerpt:'Applications are open for vendors at our Autumn Fair in Kent.'}],confidence:.72}};
  const r=projectPracticalOpportunity(candidate,enrichment,{now:new Date('2026-09-30T07:00:00Z')});
  assert.equal(r.opportunity.location,'Kent');
