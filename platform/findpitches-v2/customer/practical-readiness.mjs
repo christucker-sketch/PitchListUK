@@ -128,8 +128,10 @@ function staleEventYear(excerpt,now){
  const year=now.getUTCFullYear();
  const years=[...String(excerpt||'').matchAll(/\b((?:19|20)\d{2})\b/g)].map(m=>({year:Number(m[1]),index:m.index||0}));
  if(!years.length||years.some(x=>x.year>=year-1))return false;
+ const plausibleEditionYears=years.filter(x=>x.year>=year-5&&x.year<=year-2);
+ if(!plausibleEditionYears.length)return false;
  const event=/\b(?:festival|fair|market|event|show|expo|exhibition|fete|carnival|parade|vendor|trader|stallholder|exhibitor|application|apply|deadline|held|takes?\s+place)\b/i;
- return years.some(x=>{
+ return plausibleEditionYears.some(x=>{
   const start=Math.max(0,x.index-60),end=Math.min(excerpt.length,x.index+64);
   return event.test(excerpt.slice(start,end));
  });
