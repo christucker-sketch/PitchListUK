@@ -52,13 +52,15 @@ export async function boundedGithubJson(env, path, timeoutMs = 15000) {
 export async function readCaProductionBases(env) {
   const bases = await readCaProductionBasesViaBroker(env);
   const mainSha = gitSha(bases?.main_sha);
+  const stableSnapshot = bases?.stable_snapshot === true;
   const productionCount = Number(bases?.production_count);
   const sourceCount = Number(bases?.source_count);
-  if (!mainSha) throw new Error('ca_cutover_main_sha_invalid');
+  if (!mainSha && !stableSnapshot) throw new Error('ca_cutover_current_snapshot_unproven');
   if (!Number.isInteger(productionCount) || productionCount < 0) throw new Error('ca_cutover_snapshot_invalid');
   if (!Number.isInteger(sourceCount) || sourceCount < 0) throw new Error('ca_cutover_source_registry_invalid');
   return Object.freeze({
     main_sha: mainSha,
+    stable_snapshot: stableSnapshot,
     production_count: productionCount,
     source_count: sourceCount
   });
@@ -71,6 +73,7 @@ export function buildCaControllerCutoverReadinessReport(state, meta = {}, bases 
   const stateVersion = Number(meta.version || 0);
   const stateSha256 = sha256(meta.sha256);
   const mainSha = gitSha(bases.main_sha);
+  const stableCurrentSnapshot = bases.stable_snapshot === true;
   const stateBaseMainSha = gitSha(state.base_main_sha);
   const productionCount = Number(state.production_count);
   const sourceCount = Number(state.source_count);
@@ -89,7 +92,7 @@ export function buildCaControllerCutoverReadinessReport(state, meta = {}, bases 
   const sourceCountMatches = Number.isInteger(sourceCount)
     && Number.isInteger(currentSourceCount)
     && sourceCount === currentSourceCount;
-  const liveMainReady = Boolean(mainSha);
+  const currentSnapshotReady = Boolean(mainSha) || stableCurrentSnapshot;
   const exactStateIdentityReady = Number.isInteger(stateVersion) && stateVersion > 0 && Boolean(stateSha256);
 
   const commonBlockers = [
@@ -99,7 +102,7 @@ export function buildCaControllerCutoverReadinessReport(state, meta = {}, bases 
     ...(statusReady ? [] : [`status:${status}`]),
     ...(productionCountMatches ? [] : [`production_count:${productionCount}->${currentProductionCount}`]),
     ...(sourceCountMatches ? [] : [`source_count:${sourceCount}->${currentSourceCount}`]),
-    ...(liveMainReady ? [] : ['main_sha']),
+    ...(currentSnapshotReady ? [] : ['current_production_snapshot']),
     ...(exactStateIdentityReady ? [] : ['state_identity']),
     ...(cutoverEnabled ? ['cutover_already_enabled'] : [])
   ];
@@ -122,8 +125,9 @@ export function buildCaControllerCutoverReadinessReport(state, meta = {}, bases 
     expected_plan_size: CA_DISCOVERY_PLAN_SIZE,
     clean_checkpoint: checkpointClean,
     current_main_sha: mainSha,
+    current_snapshot_stable: stableCurrentSnapshot,
     state_base_main_sha: stateBaseMainSha,
-    state_base_matches_current_main: Boolean(mainSha && stateBaseMainSha && mainSha === stateBaseMainSha),
+    state_base_matches_current_main: mainSha && stateBaseMainSha ? mainSha === stateBaseMainSha : null,
     state_production_count: Number.isInteger(productionCount) ? productionCount : null,
     current_production_count: Number.isInteger(currentProductionCount) ? currentProductionCount : null,
     production_count_matches: productionCountMatches,

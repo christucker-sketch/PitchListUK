@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/ca-controller-status-proof.yml'
       - 'operations/cloudflare-texas-acquisition/src/internal-github-controller-broker.js'
+      - 'operations/cloudflare-global-acquisition/lib/ca-controller-cutover-readiness.mjs'
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
@@ -41,13 +42,23 @@ jobs:
             runs="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${GITHUB_SHA}&event=push&per_page=50")"
             verify_status="$(jq -r '[.workflow_runs[] | select(.name == "PitchList verification")][0].status // "missing"' <<<"$runs")"
             verify_conclusion="$(jq -r '[.workflow_runs[] | select(.name == "PitchList verification")][0].conclusion // ""' <<<"$runs")"
-            if [[ "$verify_status" == 'completed' && "$verify_conclusion" == 'success' ]]; then
-              ready=true
-              break
-            fi
+            global_status="$(jq -r '[.workflow_runs[] | select(.name == "Global acquisition shadow proof")][0].status // "missing"' <<<"$runs")"
+            global_conclusion="$(jq -r '[.workflow_runs[] | select(.name == "Global acquisition shadow proof")][0].conclusion // ""' <<<"$runs")"
+
             if [[ "$verify_status" == 'completed' && "$verify_conclusion" != 'success' ]]; then
               echo "Exact-main PitchList verification failed: $verify_conclusion" >&2
               exit 1
+            fi
+            if [[ "$global_status" == 'completed' && "$global_conclusion" != 'success' ]]; then
+              echo "Exact-main global acquisition deployment failed: $global_conclusion" >&2
+              exit 1
+            fi
+            global_ready=false
+            [[ "$global_status" == 'missing' ]] && global_ready=true
+            [[ "$global_status" == 'completed' && "$global_conclusion" == 'success' ]] && global_ready=true
+            if [[ "$verify_status" == 'completed' && "$verify_conclusion" == 'success' && "$global_ready" == 'true' ]]; then
+              ready=true
+              break
             fi
             sleep 5
           done
@@ -125,7 +136,7 @@ jobs:
 
           jq -r '
             .result.output |
-            "Canada controller: status=\(.state_status) version=\(.state_version) production=\(.state_production_count)/\(.current_production_count) sources=\(.state_source_count)/\(.current_source_count) clean=\(.clean_checkpoint) main=\(.current_main_sha)"
+            "Canada controller: status=\(.state_status) version=\(.state_version) production=\(.state_production_count)/\(.current_production_count) sources=\(.state_source_count)/\(.current_source_count) clean=\(.clean_checkpoint) snapshot_stable=\(.current_snapshot_stable) main=\(.current_main_sha)"
           ' ca-controller-status.json | tee ca-controller-summary.txt
 
           {

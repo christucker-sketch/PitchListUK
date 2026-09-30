@@ -163,8 +163,7 @@ test('merge-check inspection refuses an unmerged source PR', async () => {
   assert.match((await response.json()).error, /source_pr_not_merged/);
 });
 
-test('controller GitHub broker returns Canada production bases without mutation credentials', async () => {
-  const mainSha = 'd'.repeat(40);
+test('controller GitHub broker returns stable Canada production bases without mutation credentials', async () => {
   const caSnapshot = `export const caOpportunitySnapshot = ${JSON.stringify({
     exported_at: '2026-09-18T00:00:00Z',
     source: 'fixture',
@@ -174,17 +173,14 @@ test('controller GitHub broker returns Canada production bases without mutation 
   const sources = [
     { id: 'ca-on-1' }, { id: 'ca-bc-1' }, { id: 'ca-qc-1' }, { id: 'ca-ab-1' }, { id: 'ca-ns-1' }
   ];
+  const seen=[];
   const fetchImpl = async (url, options = {}) => {
     assert.equal(options?.headers?.authorization, undefined);
-    const value = String(url);
+    const value = String(url); seen.push(value);
     assert.equal(value.startsWith('https://api.github.com/'), false);
-    if (value.includes('.git/info/refs?service=git-upload-pack')) {
-      return new Response(`001e# service=git-upload-pack\\n0000${mainSha} refs/heads/main\\n0000`);
-    }
-    if (value.includes(`raw.githubusercontent.com/christucker-sketch/PitchListUK/${mainSha}/functions/_data/ca-opportunities.mjs`)) {
-      return new Response(caSnapshot);
-    }
-    if (value.includes(`raw.githubusercontent.com/christucker-sketch/PitchListUK/${mainSha}/operations/opportunity-pipeline/config/ca-approved-source-routes.json`)) {
+    assert.equal(value.startsWith('https://github.com/'), false);
+    if (value.includes('/functions/_data/ca-opportunities.mjs?')) return new Response(caSnapshot);
+    if (value.includes('/operations/opportunity-pipeline/config/ca-approved-source-routes.json?')) {
       return new Response(JSON.stringify(sources));
     }
     return new Response('not found', { status: 404 });
@@ -196,10 +192,34 @@ test('controller GitHub broker returns Canada production bases without mutation 
   );
   assert.equal(response.status, 200);
   assert.deepEqual((await response.json()).bases, {
-    main_sha: mainSha,
+    main_sha: null,
+    stable_snapshot: true,
     production_count: 3,
     source_count: 5
   });
+  assert.equal(seen.length,4);
+  assert.ok(seen.every(url=>url.startsWith('https://raw.githubusercontent.com/')));
+});
+
+test('controller GitHub broker fails closed if raw main changes during Canada readiness read', async () => {
+  let snapshotReads=0;
+  const source='[]';
+  const response=await handleInternalGithubControllerRequest(
+    request({action:'read_ca_production_bases'}),
+    {GITHUB_REPO:'christucker-sketch/PitchListUK'},
+    {fetchImpl:async url=>{
+      const value=String(url);
+      if(value.includes('/functions/_data/ca-opportunities.mjs?')){
+        snapshotReads++;
+        const total=snapshotReads===1?0:1;
+        return new Response(`export const caOpportunitySnapshot = ${JSON.stringify({exported_at:'x',source:'x',total,rows:total?[{stable_id:'ca1'}]:[]})};\n`);
+      }
+      if(value.includes('/operations/opportunity-pipeline/config/ca-approved-source-routes.json?')) return new Response(source);
+      return new Response('not found',{status:404});
+    }}
+  );
+  assert.equal(response.status,409);
+  assert.match((await response.json()).error,/controller_github_ca_raw_main_changed_during_read/);
 });
 
 test('controller GitHub broker permits only bounded UK and Canada publication requests', () => {
@@ -266,30 +286,3 @@ test('controller GitHub broker still fails closed for mutation-capable actions w
 
 
 
-test('Canada readiness resolves main SHA from public commits HTML when Git advertises protocol v2', async () => {
-  const mainSha='f'.repeat(40);
-  const snapshot=`export const caOpportunitySnapshot = ${JSON.stringify({exported_at:'x',source:'x',total:1,rows:[{stable_id:'ca1'}]})};\n`;
-  const seen=[];
-  const response=await handleInternalGithubControllerRequest(
-    request({action:'read_ca_production_bases'}),
-    {GITHUB_REPO:'christucker-sketch/PitchListUK'},
-    {fetchImpl:async (url,options={})=>{
-      const value=String(url);seen.push(value);
-      assert.equal(value.startsWith('https://api.github.com/'),false);
-      if(value.includes('.git/info/refs?service=git-upload-pack')){
-        assert.equal(options?.headers?.['Git-Protocol'],'version=1');
-        return new Response('001eversion 2\n0000');
-      }
-      if(value.endsWith('/commits/main')) return new Response(`<html><script>{"currentOid":"${mainSha}"}</script></html>`);
-      if(value.includes('/functions/_data/ca-opportunities.mjs')) return new Response(snapshot);
-      if(value.includes('/operations/opportunity-pipeline/config/ca-approved-source-routes.json')) return new Response('[{"id":"ca-on-1"}]');
-      return new Response('not found',{status:404});
-    }}
-  );
-  assert.equal(response.status,200);
-  const body=await response.json();
-  assert.equal(body.bases.main_sha,mainSha);
-  assert.equal(body.bases.production_count,1);
-  assert.equal(body.bases.source_count,1);
-  assert.ok(seen.some(url=>url.endsWith('/commits/main')));
-});
