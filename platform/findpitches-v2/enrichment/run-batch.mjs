@@ -399,7 +399,7 @@ function cleanSupportedPlace(value,regions){
  const name=String(value||'').replace(/\s+/g,' ').trim().replace(/^[,;:\-\s]+|[,;:\-\s]+$/g,'');
  if(name.length<3||name.length>60)return null;
  if(regions.some(r=>normalizePlaceText(r)===normalizePlaceText(name)))return null;
- if(/^(?:the|this|our|your|vendor|vendors|trader|traders|stallholder|stallholders|exhibitor|exhibitors|festival|fair|market|event|show|county|region|area|online|tbc|tbd)$/i.test(name))return null;
+ if(/^(?:the|this|our|your|where|venue|location|address|vendor|vendors|trader|traders|stallholder|stallholders|exhibitor|exhibitors|festival|fair|market|event|show|county|region|area|online|tbc|tbd)$/i.test(name))return null;
  if(/\b(?:festival|fair|event|show|market|concert)$/i.test(name))return null;
  if(/\b(?:january|february|march|april|may|june|july|august|september|october|november|december|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i.test(name))return null;
  return name;
