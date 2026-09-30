@@ -50,6 +50,8 @@ const ranked=rows.map(row=>{
  if(/\b(?:instagram|facebook|twitter|x\.com|tiktok)\b/i.test([row.canonical_url,row.application_url].filter(Boolean).join(' '))){score-=40;reasons.push('social_source');}
  if(/\b(?:terms|privacy|cookie|legal|procurement|supplier|tender|rfp)\b/i.test([row.canonical_url,row.application_url].filter(Boolean).join(' '))){score-=35;reasons.push('policy_or_procurement');}
  if(/\b(?:fair trader scheme|purchasing vendor|homechoice|business directory|trade account|wholesale account)\b/i.test(haystack)){score-=30;reasons.push('known_non_event_pattern');}
+ if(/\b(?:united\s+states|usa|new\s+jersey|massachusetts|michigan|florida|california|texas|pennsylvania|ohio|oregon|ocala)\b/i.test(haystack)||/\bNJ\b/.test(haystack)){score-=60;reasons.push('strong_us_hint');}
+ if(/\/(?:news|press|news-press|press-release|press-releases)(?:\/|$)/i.test(String(row.canonical_url||''))){score-=30;reasons.push('news_or_press_path');}
  return {
   id:row.id,region_code:row.region_code,title:row.event_name,canonical_url:row.canonical_url,
   score,reasons:[...new Set(reasons)],locality:geo?.locality||null
