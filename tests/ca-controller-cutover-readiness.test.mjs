@@ -139,7 +139,7 @@ test('Canada readiness public GitHub reads do not require a write token', async 
   }
 });
 
-test('Canada readiness reads live production bases through the internal GitHub broker', async () => {
+test('Canada readiness reads a stable production snapshot through the internal GitHub broker', async () => {
   const env = {
     GITHUB_PR_BROKER: {
       fetch: async request => {
@@ -148,7 +148,8 @@ test('Canada readiness reads live production bases through the internal GitHub b
         return Response.json({
           ok: true,
           bases: {
-            main_sha: 'a'.repeat(40),
+            main_sha: null,
+            stable_snapshot: true,
             production_count: 3,
             source_count: 5
           }
@@ -157,8 +158,31 @@ test('Canada readiness reads live production bases through the internal GitHub b
     }
   };
   assert.deepEqual(await readCaProductionBases(env), {
-    main_sha: 'a'.repeat(40),
+    main_sha: null,
+    stable_snapshot: true,
     production_count: 3,
     source_count: 5
   });
+});
+
+
+test('stable raw-main snapshot satisfies readiness without pretending an exact main SHA is known', () => {
+  const state = buildInitialCaControllerState({productionCount:3,sourceCount:5,mainSha:'b'.repeat(40)});
+  const report=buildCaControllerCutoverReadinessReport(state,{...meta,authority:'authoritative'},{
+    main_sha:null,stable_snapshot:true,production_count:3,source_count:5
+  },{});
+  assert.equal(report.launch_ready,true);
+  assert.equal(report.current_main_sha,null);
+  assert.equal(report.current_snapshot_stable,true);
+  assert.equal(report.state_base_matches_current_main,null);
+  assert.equal(report.launch_blockers.includes('current_production_snapshot'),false);
+});
+
+test('Canada readiness still fails closed when neither SHA nor stable snapshot proves current production state', () => {
+  const state = buildInitialCaControllerState({productionCount:0,sourceCount:0,mainSha:'b'.repeat(40)});
+  const report=buildCaControllerCutoverReadinessReport(state,meta,{
+    main_sha:null,stable_snapshot:false,production_count:0,source_count:0
+  },{});
+  assert.equal(report.promotion_ready,false);
+  assert.ok(report.promotion_blockers.includes('current_production_snapshot'));
 });
