@@ -1,0 +1,23 @@
+name: FindPitches v2 legacy UK product benchmark
+
+"on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-legacy-uk-benchmark.yml
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Benchmark old UK customer-ready catalogue completeness
+        run: node operations/findpitches-v2/benchmark-legacy-uk-product.mjs
