@@ -202,13 +202,13 @@ function extractEnrichment(row,pages){
     location_area:sourceConflict?null:(structuredArea ?? extractVerifiedLocalityHint(geography,docs) ?? extractHtmlHeadingPlaceEvidence(geography,rawDocs) ?? extractSupportedPlaceEvidence(geography,docs) ?? extractSupportedAreaEvidence(geography,docs))
   };
   const deadline=firstDateInDocs(docs,[
-    /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,100}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by)[^.!?\n]{0,80}/i,
-    /(?:application\s+deadline|closing\s+date|applications?\s+close|apply\s+by|vendor\s+applications?\s+due)\s*[:\-]?\s*[^.!?\n]{0,100}/i
+    /(?:application|applications|apply|vendor|trader|stallholder|exhibitor)[^.!?\n]{0,120}(?:deadline|closes?|closing\s+date|close\s+by|due|apply\s+by|not\s+accepted\s+after|accepted\s+until|accepted\s+through|must\s+be\s+received\s+by)[^.!?\n]{0,100}/i,
+    /(?:application\s+deadline|closing\s+date|applications?\s+close|apply\s+by|vendor\s+applications?\s+due|deadline)\s*[:\-]?\s*[^.!?\n]{0,140}/i
   ]);
   if(deadline) result.application_deadline=datedEvidence(deadline);
   const eventDate=firstDateInDocs(docs,[
-    /(?:event|festival|fair|market|show)[^.!?\n]{0,100}(?:date|takes\s+place|held|on|runs?\s+from)[^.!?\n]{0,80}/i,
-    /(?:event\s+date|festival\s+date|fair\s+date|market\s+date)\s*[:\-]?\s*[^.!?\n]{0,100}/i
+    /(?:event|festival|fair|market|show|balloonfest)[^.!?\n]{0,140}(?:date|dates|takes\s+place|held|on|runs?\s+from)?[^.!?\n]{0,120}/i,
+    /(?:event\s+date|festival\s+date|fair\s+date|market\s+date|show\s+date|dates?|date)\s*[:\-]?\s*[^.!?\n]{0,180}/i
   ]);
   if(eventDate) result.event_start=datedEvidence(eventDate);
   const description=descriptionExcerpt(docs);
@@ -453,13 +453,24 @@ function candidateSearchEvidenceDocs(row){
 function safeHttp(value){try{const u=new URL(String(value||''));return u.protocol==='http:'||u.protocol==='https:';}catch{return false;}}
 function parseArray(value){try{const parsed=JSON.parse(value||'[]');return Array.isArray(parsed)?parsed:[];}catch{return [];}}
 function evidenceField(value,docs){if(!value)return null;const doc=docs.find(d=>d.text.toLowerCase().includes(String(value).toLowerCase()));return doc?{value,evidence:[{source:doc.url,excerpt:excerptAround(doc.text,String(value))}],confidence:.9}:value;}
-const DATE_VALUE=/\b(?:\d{1,2}[\/\-.]\d{1,2}[\/\-.](?:20)?\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+20\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+20\d{2})\b/i;
+const DATE_VALUE=/\b(?:\d{1,2}[\/\-.]\d{1,2}[\/\-.](?:20)?\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+20\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+20\d{2})\b/gi;
+const MONTH_RANGE_FIRST=/\b((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?))\s+(\d{1,2})(?:st|nd|rd|th)?\s*[-–—]\s*(\d{1,2})(?:st|nd|rd|th)?(?:,)?\s+(20\d{2})\b/i;
+const DAY_RANGE_FIRST=/\b(\d{1,2})(?:st|nd|rd|th)?\s*[-–—]\s*(\d{1,2})(?:st|nd|rd|th)?\s+((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?))\s+(20\d{2})\b/i;
+function dateValueInExcerpt(excerpt){
+ const text=String(excerpt||'');
+ const monthRange=text.match(MONTH_RANGE_FIRST);
+ if(monthRange)return `${monthRange[1]} ${monthRange[3]}, ${monthRange[4]}`;
+ const dayRange=text.match(DAY_RANGE_FIRST);
+ if(dayRange)return `${dayRange[2]} ${dayRange[3]} ${dayRange[4]}`;
+ const matches=[...text.matchAll(DATE_VALUE)];
+ return matches.length?matches[matches.length-1][0]:null;
+}
 function firstDateInDocs(docs,patterns){
  for(const doc of docs){
   for(const pattern of patterns){
    const m=doc.text.match(pattern); if(!m)continue;
-   const excerpt=m[0].slice(0,240); const dm=excerpt.match(DATE_VALUE);
-   if(dm)return {value:dm[0],excerpt,source:doc.url};
+   const excerpt=m[0].slice(0,240); const value=dateValueInExcerpt(excerpt);
+   if(value)return {value,excerpt,source:doc.url};
   }
  }
  return null;
