@@ -209,7 +209,7 @@ function extractEnrichment(row,pages){
   const eventDate=firstDateInDocs(docs,[
     /(?:event|festival|fair|market|show|balloonfest)[^.!?\n]{0,140}(?:date|dates|takes\s+place|held|on|runs?\s+from)?[^.!?\n]{0,120}/i,
     /(?:event\s+date|festival\s+date|fair\s+date|market\s+date|show\s+date|dates?|date)\s*[:\-]?\s*[^.!?\n]{0,180}/i
-  ]);
+  ]) ?? standaloneEventDateInDocs(docs);
   if(eventDate) result.event_start=datedEvidence(eventDate);
   const description=descriptionExcerpt(docs);
   if(description) result.description=withEvidence(description.value,description.excerpt,docs);
@@ -474,6 +474,22 @@ function firstDateInDocs(docs,patterns){
     const excerpt=String(match[0]||'').slice(0,240);
     const value=dateValueInExcerpt(excerpt);
     if(value)return {value,excerpt,source:doc.url};
+   }
+  }
+ }
+ return null;
+}
+function standaloneEventDateInDocs(docs){
+ for(const doc of docs){
+  const text=String(doc?.text||'');
+  if(!eventContext(text)||!/\b(?:vendor|trader|stallholder|exhibitor|apply|application)\b/i.test(text))continue;
+  for(const line of text.split(/\n+/).map(x=>x.trim()).filter(Boolean)){
+   if(line.length>180)continue;
+   if(/\b(?:deadline|closing|apply\s+by|posted|published|updated|copyright|registered|founded|established)\b/i.test(line))continue;
+   const value=dateValueInExcerpt(line);
+   if(!value)continue;
+   if(MONTH_RANGE_FIRST.test(line)||DAY_RANGE_FIRST.test(line)||/\b(?:20\d{2})\b/.test(line)){
+    return {value,excerpt:line.slice(0,240),source:doc.url};
    }
   }
  }
