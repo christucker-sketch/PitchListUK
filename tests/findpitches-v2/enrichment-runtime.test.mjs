@@ -532,3 +532,25 @@ test('location-page fallback ignores late organiser contact addresses',async()=>
  const enrichment=JSON.parse(stored.args[2]);
  assert.notEqual(enrichment.location_area?.value,'Hornchurch');
 });
+
+
+test('US enrichment fails closed when source proves a different state code',async()=>{
+ const store=db({
+  candidate_id:'us-wrong-state-docx',
+  source_last_checked:'2026-09-30T20:20:00Z',
+  canonical_url:'https://washingtoncountyfair.test/vendors',
+  application_url:'https://washingtoncountyfair.test/2026-vendor.docx',
+  event_name:'Washington County Fair',
+  organiser:null,
+  geography_json:'{"country_code":"US","region_code":"WA","region":"Washington"}'
+ });
+ const fetchProvider={async fetch(url){
+  if(url.endsWith('.docx')) return {final_url:url,body:'Commercial Vendor Application\nFairgrounds: 12300 40th St N, Stillwater, MN 55082\nVendor applications are open.'};
+  return {final_url:url,body:'<html><body><main><p>Vendor applications are open.</p></main></body></html>'};
+ }};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T20:21:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location,null);
+ assert.equal(enrichment.location_area,null);
+});
