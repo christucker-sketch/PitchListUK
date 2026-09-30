@@ -63,7 +63,8 @@ jobs:
               .publication_enabled == false and .search_configured == true and
               .us_city_discovery_profile == "official_first_v1" and
               .acquisition_crons.baseline == "*/5 * * * *" and
-              .acquisition_crons.us_city == "2-59/5 * * * *" and
+              .acquisition_crons.us_city == "*/5 * * * *" and
+              .acquisition_crons.mode == "paired_baseline_then_city" and
               .customer_promotion_batch_limit == 48' <<< "$health" >/dev/null 2>&1 &&
               jq -e '.ok == true and .publication_enabled == false and
                 .counts.scheduler_jobs == 483 and
