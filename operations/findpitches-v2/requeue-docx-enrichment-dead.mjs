@@ -57,7 +57,7 @@ for(const row of selected){
 await query(`
  INSERT INTO runtime_meta (key,value,updated_at) VALUES (?,?,?)
  ON CONFLICT(key) DO UPDATE SET value=excluded.value,updated_at=excluded.updated_at
-`,[markerKey,JSON.stringify({selected:selected.length,requeued,available_at:now}),now]);
+`,[markerKey,JSON.stringify({selected:selected.length,requeued,available_at:now,candidate_ids:selected.map(row=>row.candidate_id)}),now]);
 
 console.log(JSON.stringify({
  ok:true,already_complete:false,batch_id:batch,selected:selected.length,requeued,available_at:now,outcomes
