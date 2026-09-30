@@ -52,6 +52,8 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
   assert.match(worker, /CUSTOMER_PROMOTION_BATCH_LIMIT = 48/);
   assert.match(worker, /runShadowTick/);
   assert.match(classifierBatch, /geography\.discovery_location \\|\\| geography\.region \\|\\| row\.region_code/);
+  assert.match(classifierBatch, /c\.evidence_json/);
+  assert.match(classifierBatch, /mergeEvidence\(priorEvidence,evaluated\.evidence/);
   assert.match(worker, /event\?\.cron === CLASSIFIER_CRON/);
   assert.match(worker, /BASELINE_ACQUISITION_CRON = '\*\/5 \* \* \* \*'/);
   assert.match(worker, /runPairedAcquisitionTick/);
