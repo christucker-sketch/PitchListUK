@@ -28,7 +28,7 @@ for(const market of ['US','GB']){
   WHERE c.status='validated' AND c.market=?
     AND (json_extract(e.enrichment_json,'$.location') IS NULL
          OR NULLIF(TRIM(json_extract(e.enrichment_json,'$.location.value')),'') IS NULL)
-  ORDER BY c.id LIMIT 40`,[market]));
+  ORDER BY c.id LIMIT 10`,[market]));
 }
 
 const provider=createHttpFetchProvider({timeoutMs:12000});
