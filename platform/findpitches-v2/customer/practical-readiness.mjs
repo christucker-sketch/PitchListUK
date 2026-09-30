@@ -73,6 +73,7 @@ function supportedArea(field){
   const excerpt=text(item?.excerpt);if(!excerpt||!normalizedContains(excerpt,name))return false;
   if(/\b(?:registered|head|corporate|business|contact|mailing|postal|billing)\s+(?:office|address|location|headquarters|contact)|\b(?:our\s+office|our\s+address|mail\s+to|contact\s+us|registered\s+at)\b/i.test(excerpt))return false;
   if(String(item?.kind||'')==='schema_event_location')return /["']location["']\s*:/i.test(excerpt);
+  if(String(item?.kind||'')==='verified_location_hint')return true;
   return /\b(?:festival|fair|market|event|show|concert|vendor|trader|stallholder|exhibitor|apply|application|held|takes?\s+place|taking\s+place)\b/i.test(excerpt);
  });
  if(!evidence)return null;
