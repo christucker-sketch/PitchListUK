@@ -86,7 +86,7 @@ function evidenceArray(value) {
   return Object.freeze(value.map(item => {
     if (typeof item === 'string') return Object.freeze({ source: item, excerpt: null });
     if (!item || typeof item !== 'object') return null;
-    return Object.freeze({ source: scalar(item.source ?? item.url), excerpt: scalar(item.excerpt) });
+    return Object.freeze({ source: scalar(item.source ?? item.url), excerpt: scalar(item.excerpt), kind: scalar(item.kind) });
   }).filter(Boolean));
 }
 
