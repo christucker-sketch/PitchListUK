@@ -2,7 +2,6 @@ name: FindPitches v2 practical readiness live audit
 
 "on":
   workflow_dispatch:
-  workflow_dispatch:
 
 permissions:
   contents: read
