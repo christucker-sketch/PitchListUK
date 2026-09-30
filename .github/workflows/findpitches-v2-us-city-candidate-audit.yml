@@ -1,6 +1,11 @@
 name: FindPitches v2 US city candidate refresh audit
 
 "on":
+  push:
+    branches:
+      - findpitches-v2/venue-evidence-recovery
+    paths:
+      - .github/workflows/findpitches-v2-us-city-candidate-audit.yml
   workflow_dispatch:
 
 permissions:
