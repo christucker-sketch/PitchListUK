@@ -554,3 +554,30 @@ test('US enrichment fails closed when source proves a different state code',asyn
  assert.equal(enrichment.location,null);
  assert.equal(enrichment.location_area,null);
 });
+
+
+test('enrichment captures plain Deadline labels and uses final event date in a date span',async()=>{
+ const store=db({candidate_id:'eventeny-dates',source_last_checked:'2026-09-30T20:30:00Z',
+  canonical_url:'https://event.test/vendor',application_url:null,event_name:'County Fair',organiser:null,
+  geography_json:'{"country_code":"US","region_code":"ID","region":"Idaho"}'});
+ const body='<html><body><main><h1>2026 County Fair</h1><p>Vendor applications are open.</p><p>Deadline: Apr 15, 2026 11:59 pm</p><p>Date: Sep 24, 2026 10:00 am - Sep 27, 2026 3:00 pm</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T20:31:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.application_deadline.value,'Apr 15, 2026');
+ assert.equal(enrichment.event_start.value,'Sep 27, 2026');
+});
+
+test('enrichment captures applications not accepted after and compact multi-day ranges',async()=>{
+ const store=db({candidate_id:'compact-range',source_last_checked:'2026-09-30T20:30:00Z',
+  canonical_url:'https://event.test/vendors',application_url:null,event_name:'Balloonfest',organiser:null,
+  geography_json:'{"country_code":"US","region_code":"MI","region":"Michigan"}'});
+ const body='<html><body><main><h1>2026 Balloonfest</h1><p>Vendor applications will not be accepted after June 10, 2026.</p><p>Michigan Challenge Balloonfest June 26-28, 2026.</p></main></body></html>';
+ const fetchProvider={async fetch(url){return {final_url:url,body};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T20:31:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.application_deadline.value,'June 10, 2026');
+ assert.equal(enrichment.event_start.value,'June 28, 2026');
+});
