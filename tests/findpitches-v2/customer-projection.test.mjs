@@ -41,6 +41,8 @@ test('source-backed event venue is publishable, discovery region alone is not',(
  const result=projectCustomerOpportunity(candidate,source);
  assert.equal(result.readiness.ready,true);
  assert.equal(result.opportunity.location,'Maidstone Market Square');
+ assert.equal(result.opportunity.location_precision,'venue');
+ assert.equal(result.provenance.location.precision,'venue');
  assert.equal(result.provenance.location.evidence[0].source,'https://example.test/vendor');
 });
 
@@ -57,4 +59,37 @@ test('unsourced or mismatched location evidence cannot be promoted',()=>{
   assert.equal(result.opportunity.location,null);
   assert.ok(result.readiness.missing.includes('location'));
  }
+});
+
+
+test('source-backed place or area can satisfy customer location without pretending it is a venue',()=>{
+ const place=projectCustomerOpportunity(candidate,{location_area:{
+  value:'Maidstone',precision:'place',confidence:.8,
+  evidence:[{source:'https://example.test/vendor',excerpt:'Summer Market vendor applications are open for our event in Maidstone.'}]
+ }});
+ assert.equal(place.readiness.ready,true);
+ assert.equal(place.opportunity.location,'Maidstone');
+ assert.equal(place.opportunity.location_precision,'place');
+ assert.equal(place.provenance.location.precision,'place');
+
+ const area=projectCustomerOpportunity(candidate,{location_area:{
+  value:'Kent',precision:'area',confidence:.72,
+  evidence:[{source:'https://example.test/vendor',excerpt:'Kent festival trader applications are now open for this event.'}]
+ }});
+ assert.equal(area.readiness.ready,true);
+ assert.equal(area.opportunity.location,'Kent');
+ assert.equal(area.opportunity.location_precision,'area');
+});
+
+test('discovery geography or contact-address area evidence still cannot satisfy location',()=>{
+ const discoveryOnly=projectCustomerOpportunity(candidate,{});
+ assert.equal(discoveryOnly.opportunity.location,null);
+ assert.equal(discoveryOnly.opportunity.location_precision,null);
+
+ const contact=projectCustomerOpportunity(candidate,{location_area:{
+  value:'Kent',precision:'area',confidence:.72,
+  evidence:[{source:'https://example.test/contact',excerpt:'Our registered office address is in Kent. Contact us for vendor applications.'}]
+ }});
+ assert.equal(contact.readiness.ready,false);
+ assert.equal(contact.opportunity.location,null);
 });
