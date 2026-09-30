@@ -313,3 +313,56 @@ test('line-preserving extraction still rejects registered-office place headings'
  const enrichment=JSON.parse(stored.args[2]);
  assert.equal(enrichment.location_area,null);
 });
+
+
+test('preserved search snippet can corroborate GB location without using the search query itself',async()=>{
+ const store=db({
+  candidate_id:'gb-search-evidence',
+  source_last_checked:'2026-09-30T11:00:00Z',
+  canonical_url:'https://event.test/vendors',
+  application_url:null,
+  event_name:'Autumn Fair',
+  organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}',
+  evidence_json:JSON.stringify([{
+   kind:'search_result',
+   source:'https://event.test/vendors',
+   title:'Maidstone Autumn Fair',
+   snippet:'Vendor applications are open for the Autumn Fair in Maidstone, Kent.',
+   query:'Essex vendor applications'
+  }])
+ });
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<html><body><p>Vendor applications are open.</p></body></html>'};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T11:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area.value,'Maidstone');
+ assert.equal(enrichment.location_area.precision,'place');
+ assert.equal(enrichment.location_area.evidence[0].source,'https://event.test/vendors');
+ assert.match(enrichment.location_area.evidence[0].excerpt,/Maidstone, Kent/);
+ assert.doesNotMatch(enrichment.location_area.evidence[0].excerpt,/Essex vendor applications/);
+});
+
+test('search query geography alone is never accepted as enrichment evidence',async()=>{
+ const store=db({
+  candidate_id:'gb-search-query-only',
+  source_last_checked:'2026-09-30T11:00:00Z',
+  canonical_url:'https://event.test/vendors',
+  application_url:null,
+  event_name:'Autumn Fair',
+  organiser:null,
+  geography_json:'{"country_code":"GB","region_code":"GB-ENG-KENT","region":"Kent"}',
+  evidence_json:JSON.stringify([{
+   kind:'search_result',
+   source:'https://event.test/vendors',
+   title:'Autumn Fair vendor application',
+   snippet:'Applications are open now.',
+   query:'Maidstone Kent vendor applications'
+  }])
+ });
+ const fetchProvider={async fetch(url){return {final_url:url,body:'<html><body><p>Vendor applications are open.</p></body></html>'};}};
+ await runEnrichmentBatch(store,{fetchProvider,limit:1,now:new Date('2026-09-30T11:01:00Z')});
+ const stored=store.writes.find(x=>/INSERT INTO candidate_enrichment/.test(x.sql));
+ const enrichment=JSON.parse(stored.args[2]);
+ assert.equal(enrichment.location_area,null);
+});
