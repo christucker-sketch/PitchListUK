@@ -344,3 +344,15 @@ test('GB evaluator rejects foreign market conflicts expressed without comma stat
   assert.equal(candidate.rejection_reason,'market_conflict',item.title);
  }
 });
+
+
+test('GB evaluator can correct region from source metadata description',async()=>{
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><head><meta property="og:description" content="Trader applications are open for Evesham Charter Market in Evesham, Worcestershire."></head><body><main><p>Trader application is open for the market.</p><a href="/apply">Trader application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-WEST-MIDS',location:'West Midlands',result:{url:'https://market.test/traders',title:'Evesham Charter Market'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'GB-ENG-WORCS');
+ assert.ok(candidate.evidence.some(e=>e.type==='region_correction'&&e.to_region_code==='GB-ENG-WORCS'));
+});
