@@ -366,6 +366,41 @@ async function reservePrMerge(env, stub, snapshot, decision, kind) {
   const result = kind === 'source' ? snapshot.state.last_discovery?.result : snapshot.state.last_acquisition?.result;
   if (!result) throw new Error(`uk_controller_${kind}_result_missing`);
   const pr = await inspectUkControllerPr(env, decision.pr_number);
+
+  // A human/operator may have safely narrowed and merged a controller-generated PR
+  // before the controller checkpoints its merge intent. In that case the merged
+  // main branch is authoritative; do not keep validating stale pre-review counts.
+  if (pr.merged === true && kind === 'data') {
+    const market = await readMainMarketSnapshot(env, 'UK');
+    const next = structuredClone(snapshot.state);
+    next.cloud_controller_intent = null;
+    next.pending_data_pr = null;
+    next.pending_deployment = null;
+    next.production_count = market.snapshot.rows.length;
+    next.base_main_sha = market.mainSha;
+    next.status = 'ready_discovery';
+    appendResult(next, {
+      pr_number: Number(pr.number),
+      merge_sha: pr.merge_commit_sha,
+      reconciled_at: new Date().toISOString(),
+      reconciliation_reason: 'operator_reviewed_pr_already_merged',
+      production_count: market.snapshot.rows.length
+    });
+    next.updated_at = new Date().toISOString();
+    const written = await checkpoint(stub, snapshot, next);
+    return {
+      ok: true,
+      executed: true,
+      phase: 'data_pr_already_merged_reconciled',
+      pr_number: Number(pr.number),
+      merge_sha: pr.merge_commit_sha,
+      production_count: market.snapshot.rows.length,
+      next_status: next.status,
+      state_version: written.version,
+      state_sha256: written.sha256,
+      decision
+    };
+  }
   const failureReason = ukControllerPrFailureReason(pr);
   if (failureReason) return checkpointRejectedPr(stub, snapshot, decision, kind, failureReason);
   const validated = kind === 'source' ? validateUkSourcePr(result, pr) : validateUkDataPr(result, pr);
