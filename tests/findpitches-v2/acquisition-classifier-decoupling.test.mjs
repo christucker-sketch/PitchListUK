@@ -64,6 +64,10 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
   assert.match(config, /"\*\/5 \* \* \* \*"/);
   assert.doesNotMatch(config, /2-59\/5/);
   assert.match(config, /"\* \* \* \* \*"/);
+  assert.match(worker, /SOURCE_FIRST_CRON = '11,41 \* \* \* \*'/);
+  assert.match(worker, /runSourceFirstTick/);
+  assert.match(worker, /search_api_used:false/);
+  assert.match(config, /"11,41 \* \* \* \*"/);
 });
 
 
