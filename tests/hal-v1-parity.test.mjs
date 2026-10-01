@@ -1,3 +1,4 @@
+// Runs only against the isolated historical Hal V1 harness base.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -11,9 +12,7 @@ test('Hal V1 does not silently promote the three cloud #1891 routes', () => {
     'https://buckinghamshire.gov.uk/business/street-use-and-trading-licences/become-a-market-trader',
     'https://wearemiddlesbrough.com/venue/orange-pip-market'
   ];
-  for (const route of routes) {
-    assert.equal(sourceRuleFor(route).approved, false, route);
-  }
+  for (const route of routes) assert.equal(sourceRuleFor(route).approved, false, route);
 });
 
 test('Hal V1 approves only the reviewed Buckinghamshire route and pins its geography', () => {
