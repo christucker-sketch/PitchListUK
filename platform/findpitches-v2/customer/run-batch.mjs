@@ -28,7 +28,7 @@ export async function runCustomerPromotionBatch(db, { limit = 12 } = {}) {
     outcomes.inspected += 1;
     if (result.promoted) {
       outcomes.promoted += 1;
-      await recordSourceRouteUsable(db, row.id, new Date().toISOString());
+      await recordSourceRouteUsable(db, row.id, new Date().toISOString()).catch(() => {});
     } else outcomes.not_ready += 1;
     await db.prepare(`INSERT INTO customer_promotion_disposition (candidate_id,source_last_checked,enrichment_last_checked,disposition,reason,inspected_at)
       VALUES (?,?,?,?,?,?) ON CONFLICT(candidate_id) DO UPDATE SET source_last_checked=excluded.source_last_checked,
