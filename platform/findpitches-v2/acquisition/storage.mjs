@@ -12,18 +12,16 @@ export async function persistDiscoveryBatch(db, job, result) {
       published, started_at, completed_at
     ) VALUES (?, ?, ?, 'complete', ?, ?, ?, 0, 0, 0, 0, 0, 0, ?, ?)`
   ).bind(
-    runId,
-    result.market,
-    result.region,
+    runId, result.market, result.region,
     Number(result.metrics?.queries || 0),
     Number(result.metrics?.search_results || 0),
     Number(result.metrics?.unique_urls || 0),
-    startedAt,
-    completedAt
+    startedAt, completedAt
   ).run();
 
   let stored = 0;
   let enqueued = 0;
+  let sourceDomainsObserved = 0;
 
   for (const candidate of result.candidates || []) {
     const inserted = await db.prepare(
@@ -55,12 +53,32 @@ export async function persistDiscoveryBatch(db, job, result) {
         query_id: candidate.query_id || null,
         query: candidate.query || null
       }]),
-      startedAt,
-      completedAt,
-      runId
+      startedAt, completedAt, runId
     ).run();
 
-    if (Number(inserted?.meta?.changes || 0) === 1) stored += 1;
+    const isNew = Number(inserted?.meta?.changes || 0) === 1;
+    if (isNew) stored += 1;
+
+    const domain = sourceDomain(candidate.canonical_url || candidate.source_url);
+    if (domain) {
+      await db.prepare(
+        `INSERT INTO source_reputation (
+          market, domain, organisation, source_type, first_seen, last_seen,
+          last_success, candidate_count, published_count, rejection_count,
+          reputation_score
+        ) VALUES (?, ?, NULL, 'search_discovered', ?, ?, NULL, ?, 0, 0, 0)
+        ON CONFLICT(market, domain) DO UPDATE SET
+          last_seen = excluded.last_seen,
+          candidate_count = source_reputation.candidate_count + excluded.candidate_count`
+      ).bind(
+        candidate.discovery_market,
+        domain,
+        startedAt,
+        completedAt,
+        isNew ? 1 : 0
+      ).run();
+      sourceDomainsObserved += 1;
+    }
 
     const queued = await db.prepare(
       `INSERT OR IGNORE INTO classification_queue (
@@ -75,6 +93,16 @@ export async function persistDiscoveryBatch(db, job, result) {
   return Object.freeze({
     run_id: runId,
     stored_candidates: stored,
-    classification_enqueued: enqueued
+    classification_enqueued: enqueued,
+    source_domains_observed: sourceDomainsObserved
   });
+}
+
+export function sourceDomain(value) {
+  try {
+    const host = new URL(String(value || '')).hostname.toLowerCase().replace(/^www\./, '');
+    return host && host.includes('.') ? host : null;
+  } catch {
+    return null;
+  }
 }
