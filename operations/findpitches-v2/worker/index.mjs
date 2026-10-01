@@ -114,7 +114,7 @@ async function health(env) {
 
 async function status(env) {
   const now = new Date().toISOString();
-  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates, enrichmentStates, enrichedStored, pdfRecoveryTick] = await Promise.all([
+  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates, enrichmentStates, enrichedStored, pdfRecoveryTick, sourceFirstTelemetry] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
@@ -190,7 +190,8 @@ async function status(env) {
        FROM enrichment_queue`
     ).bind(now).first(),
     env.FINDPITCHES_DB.prepare('SELECT COUNT(*) AS count FROM candidate_enrichment').first(),
-    getPdfRecoveryTelemetry(env.FINDPITCHES_DB)
+    getPdfRecoveryTelemetry(env.FINDPITCHES_DB),
+    getSourceFirstTelemetry(env.FINDPITCHES_DB, now)
   ]);
 
   return Response.json({
@@ -201,6 +202,7 @@ async function status(env) {
     publication_enabled: false,
     customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
     pdf_recovery: pdfRecoveryTick,
+    source_first: sourceFirstTelemetry,
     catalogue: catalogueMeta || null,
     counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification, customer_ready: customerReady },
     scheduler: {
@@ -653,5 +655,59 @@ export async function runSourceFirstTick(env, { now = new Date() } = {}) {
     search_api_used:false,
     publication_attempted:false,
     at:now.toISOString()
+  });
+}
+
+
+async function getSourceFirstTelemetry(db, now) {
+  const routes=await db.prepare(
+    `SELECT
+       COUNT(*) AS total,
+       SUM(CASE WHEN market='US' THEN 1 ELSE 0 END) AS us_total,
+       SUM(CASE WHEN market='US' AND status='discovered' THEN 1 ELSE 0 END) AS us_discovered,
+       SUM(CASE WHEN market='US' AND status='approved' THEN 1 ELSE 0 END) AS us_approved,
+       SUM(CASE WHEN market='US' AND status='productive' THEN 1 ELSE 0 END) AS us_productive,
+       SUM(CASE WHEN market='US' AND status IN ('approved','productive') AND (next_check IS NULL OR next_check<=?) THEN 1 ELSE 0 END) AS us_due,
+       SUM(CASE WHEN market='US' AND last_checked IS NOT NULL THEN 1 ELSE 0 END) AS us_checked,
+       SUM(CASE WHEN market='US' THEN candidate_count ELSE 0 END) AS route_candidates,
+       SUM(CASE WHEN market='US' THEN usable_count ELSE 0 END) AS route_usable,
+       SUM(CASE WHEN market='US' THEN rejection_count ELSE 0 END) AS route_rejected
+     FROM source_routes`
+  ).bind(now).first();
+  const reputation=await db.prepare(
+    `SELECT COUNT(*) AS domains,
+       SUM(CASE WHEN candidate_count>=2 AND reputation_score>=50 THEN 1 ELSE 0 END) AS qualifying_domains,
+       ROUND(AVG(CASE WHEN candidate_count>=2 THEN reputation_score END),1) AS avg_established_score
+     FROM source_reputation WHERE market='US'`
+  ).first();
+  const sourceCandidates=await db.prepare(
+    `SELECT COUNT(*) AS discovered,
+       SUM(CASE WHEN status='validated' THEN 1 ELSE 0 END) AS validated,
+       SUM(CASE WHEN status='rejected' THEN 1 ELSE 0 END) AS rejected,
+       SUM(CASE WHEN status='held' THEN 1 ELSE 0 END) AS held
+     FROM candidates
+     WHERE market='US' AND geography_json LIKE '%"source_route":%'`
+  ).first();
+  return Object.freeze({
+    enabled:true, market:'US', search_api_used:false,
+    routes:{
+      total:Number(routes?.us_total||0),
+      discovered:Number(routes?.us_discovered||0),
+      approved:Number(routes?.us_approved||0),
+      productive:Number(routes?.us_productive||0),
+      due:Number(routes?.us_due||0),
+      checked:Number(routes?.us_checked||0)
+    },
+    reputation:{
+      domains:Number(reputation?.domains||0),
+      qualifying_domains:Number(reputation?.qualifying_domains||0),
+      avg_established_score:Number(reputation?.avg_established_score||0)
+    },
+    candidates:{
+      discovered:Number(sourceCandidates?.discovered||0),
+      validated:Number(sourceCandidates?.validated||0),
+      held:Number(sourceCandidates?.held||0),
+      rejected:Number(sourceCandidates?.rejected||0)
+    }
   });
 }
