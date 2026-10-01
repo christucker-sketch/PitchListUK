@@ -175,25 +175,19 @@ test('UK discovery prefers page-backed geography over the search query region', 
 });
 
 
-test('UK source geography uses route identity instead of unrelated page or query noise', async () => {
+test('UK source discovery holds conflicting UK and Ireland geography instead of guessing from the first match', async () => {
   const discovery = await runUkSourceDiscovery({ SERPER_API_KEY: 'fixture' }, {
-    query_limit: 1, results_per_query: 3, candidate_limit: 3, as_of: '2026-10-01T20:42:00.000Z'
+    query_limit: 1, results_per_query: 1, candidate_limit: 1, as_of: '2026-10-01T20:42:00.000Z'
   }, {
     directDiscovery: async () => ({ seed_count: 0, candidates: [] }),
-    search: async (_env, query) => [
-      { query, rank: 1, title: 'Bedford markets apply to trade 2026', url: 'https://bedford.gov.uk/markets/apply', snippet: 'Bedford trader applications 2026' },
-      { query, rank: 2, title: 'Become a market trader', url: 'https://buckinghamshire.gov.uk/business/become-a-market-trader', snippet: 'Market trader applications' },
-      { query, rank: 3, title: 'Orange Pip Market Middlesbrough', url: 'https://wearemiddlesbrough.com/venue/orange-pip-market', snippet: 'Middlesbrough trader applications' }
-    ],
+    search: async (_env, query) => [{ query, rank: 1, title: 'Bedford markets apply to trade 2026', url: 'https://bedford.gov.uk/markets/apply', snippet: 'Bedford trader applications 2026' }],
     fetchCandidate: async (result, plan) => ({
       result, plan, fetch_status: 'fetched', final_url: result.url,
-      page_text: 'Apply to trade as a market trader. Applications are open for pitches in 2026. Footer links mention London Manchester Galway.'
+      page_text: 'Apply to trade as a market trader. Applications are open for pitches in 2026. Unrelated footer content: Galway.'
     })
   });
-  const all = [...discovery.approved_candidates, ...discovery.review_queue];
-  assert.equal(all.find(item => item.canonical_host === 'bedford.gov.uk').geographic_coverage, 'Bedfordshire');
-  assert.equal(all.find(item => item.canonical_host === 'buckinghamshire.gov.uk').geographic_coverage, 'Buckinghamshire');
-  assert.equal(all.find(item => item.canonical_host === 'wearemiddlesbrough.com').geographic_coverage, 'North Yorkshire');
+  assert.equal(discovery.auto_approved_count, 0);
+  assert.equal(discovery.approved_candidates.length, 0);
 });
 
 test('UK discovery holds an otherwise actionable source whose evidence is only from a past event year', async () => {
