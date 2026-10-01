@@ -2,7 +2,7 @@ name: FindPitches v2 CI
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, synchronize]
     paths:
       - 'platform/findpitches-v2/**'
       - 'operations/findpitches-v2/**'
