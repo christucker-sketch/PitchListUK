@@ -149,13 +149,13 @@ function candidateInput(outcome, now) {
   const route = canonicalUrl(outcome.final_url || result.url);
   let host = '';
   try { host = new URL(route).hostname.replace(/^www\./, ''); } catch {}
-  const inferredGeography = inferKnownCounty(result.title, result.snippet, route);
+  const inferredGeography = inferKnownCounty(result.title, result.snippet, pageText, route);
   const staleDated = onlyPastDatedEvidence(`${result.title || ''} ${result.snippet || ''} ${pageText}`, now);
   return {
     url: route, title: result.title, snippet: result.snippet, page_text: pageText,
     organisation: inferOrganisation(result.title, host),
     organiser_type: /\.gov\.uk$/i.test(host) ? 'local-authority' : 'event-organiser',
-    geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : '',
+    geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : (outcome.plan?.region || ''),
     opportunity_type: inferOpportunityType(`${outcome.plan?.query || ''} ${result.title || ''} ${result.snippet || ''}`),
     discovery_query: outcome.plan?.query || result.query || '', discovered_at: now,
     first_party_evidence: /\.gov\.uk$/i.test(host) ? `Official public-service host ${host}` : `Retrieved canonical host ${host}`,
