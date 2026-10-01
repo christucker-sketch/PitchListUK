@@ -111,6 +111,6 @@ test('US read-only source selection is bounded and exact', () => {
 
 
 test('scheduled UK controller tick preserves the GitHub PR broker binding', async () => {
-  const source = await readFile(new URL('../operations/cloudflare-global-acquisition/src/index.js', import.meta.url), 'utf8');
+  const source = await fs.readFile(new URL('../operations/cloudflare-global-acquisition/src/index.js', import.meta.url), 'utf8');
   assert.match(source, /runUkCloudControllerTick\(\{ \.\.\.env, CONTROLLER_STATE: env\.UK_CONTROLLER_STATE, GITHUB_PR_BROKER: env\.GITHUB_PR_BROKER \}, \{ execute: true \}\)/);
 });
