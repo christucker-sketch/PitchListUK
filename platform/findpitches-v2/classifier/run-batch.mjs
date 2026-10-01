@@ -80,6 +80,7 @@ export async function runClassificationBatch(db, {
       ).bind(new Date().toISOString(), row.candidate_id).run();
 
       await recordSourceOutcome(db, row.market, row.canonical_url, evaluated.status, new Date().toISOString());
+      await recordSourceRouteOutcome(db, row.candidate_id, evaluated.status, new Date().toISOString());
 
       outcomes.processed += 1;
       if (evaluated.status === 'validated') outcomes.validated += 1;
@@ -166,4 +167,32 @@ async function recordSourceOutcome(db, market, sourceUrl, status, timestamp) {
     market,
     domain
   ).run();
+}
+
+
+async function recordSourceRouteOutcome(db, candidateId, status, timestamp) {
+  const row=await db.prepare('SELECT geography_json FROM candidates WHERE id=?').bind(candidateId).first();
+  let geography={};
+  try { geography=JSON.parse(row?.geography_json||'{}'); } catch {}
+  const route=String(geography?.source_route||'').trim();
+  if(!route)return;
+  const usable=status==='validated';
+  const rejected=status==='rejected';
+  if(!usable&&!rejected)return;
+  await db.prepare(
+    `UPDATE source_routes
+        SET last_seen=?,
+            candidate_count=candidate_count+1,
+            usable_count=usable_count+?,
+            rejection_count=rejection_count+?,
+            reputation_score=CASE
+              WHEN candidate_count+1<=0 THEN 0
+              ELSE 100.0*(usable_count+?)/(candidate_count+1)
+            END,
+            status=CASE
+              WHEN usable_count+? >= 2 THEN 'productive'
+              ELSE status
+            END
+      WHERE market=(SELECT market FROM candidates WHERE id=?) AND route_url=?`
+  ).bind(timestamp,usable?1:0,rejected?1:0,usable?1:0,usable?1:0,candidateId,route).run();
 }
