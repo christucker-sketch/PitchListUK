@@ -176,23 +176,18 @@ async function recordSourceRouteOutcome(db, candidateId, status, timestamp) {
   try { geography=JSON.parse(row?.geography_json||'{}'); } catch {}
   const route=String(geography?.source_route||'').trim();
   if(!route)return;
-  const usable=status==='validated';
+  const validated=status==='validated';
   const rejected=status==='rejected';
-  if(!usable&&!rejected)return;
+  if(!validated&&!rejected)return;
   await db.prepare(
     `UPDATE source_routes
         SET last_seen=?,
             candidate_count=candidate_count+1,
-            usable_count=usable_count+?,
             rejection_count=rejection_count+?,
             reputation_score=CASE
               WHEN candidate_count+1<=0 THEN 0
-              ELSE 100.0*(usable_count+?)/(candidate_count+1)
-            END,
-            status=CASE
-              WHEN usable_count+? >= 2 THEN 'productive'
-              ELSE status
+              ELSE 100.0*(candidate_count+1-(rejection_count+?))/(candidate_count+1)
             END
       WHERE market=(SELECT market FROM candidates WHERE id=?) AND route_url=?`
-  ).bind(timestamp,usable?1:0,rejected?1:0,usable?1:0,usable?1:0,candidateId,route).run();
+  ).bind(timestamp,rejected?1:0,rejected?1:0,candidateId,route).run();
 }
