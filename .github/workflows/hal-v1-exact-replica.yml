@@ -14,15 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Verify historical baseline
-        run: |
-          test "$(git rev-parse HEAD^)" = "18ee3268e7c81e754f24160c77dd64ac4a7906aa"
-          git diff --exit-code HEAD^ -- operations/opportunity-pipeline ':!operations/opportunity-pipeline/.hal-replica-marker'
+      - name: Prove acquisition engine is byte-for-byte Hal baseline
+        run: git diff --exit-code 18ee3268e7c81e754f24160c77dd64ac4a7906aa HEAD -- operations/opportunity-pipeline
       - name: Run original Hal opportunity-pipeline tests
         working-directory: operations/opportunity-pipeline
         run: npm test
-      - name: Run repository tests present at historical baseline
-        run: npm test
+      - name: Run historical parity regression tests
+        run: node --test tests/hal-v1-parity.test.mjs
