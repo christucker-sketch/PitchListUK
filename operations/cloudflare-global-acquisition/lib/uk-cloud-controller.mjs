@@ -466,6 +466,40 @@ async function verifyDeployment(env, stub, snapshot, decision, kind) {
   return { ok: true, executed: true, phase: `${kind}_deployment_verified`, merge_sha: pending.merge_sha, next_status: next.status, state_version: written.version, state_sha256: written.sha256, decision };
 }
 
+const FROZEN_UK_V2338_SHA256 = '5dac0dcae90e77dba9ed1374eb9efcd5a108762b838b4b4fb794c2e2750dd59d';
+const FROZEN_UK_V2338_PR = 1780;
+const FROZEN_UK_V2338_MERGE_SHA = 'b1bf7451d67e7b9a568e33c6d883b4b826083400';
+
+async function reconcileExactFrozenUkV2338(stub, snapshot) {
+  if (snapshot.version !== 2338 || snapshot.sha256 !== FROZEN_UK_V2338_SHA256) return null;
+  const state = snapshot.state;
+  if (state.status !== 'reviewing_data_pr' || Number(state.pending_data_pr?.pr_number) !== FROZEN_UK_V2338_PR || state.active_instance || state.cloud_controller_intent || state.pending_deployment) {
+    throw new Error('uk_controller_v2338_recovery_precondition_failed');
+  }
+  const next = structuredClone(state);
+  next.pending_data_pr = null;
+  next.production_count = 290;
+  next.base_main_sha = FROZEN_UK_V2338_MERGE_SHA;
+  next.status = 'ready_discovery';
+  next.totals.data_prs_merged = Number(next.totals?.data_prs_merged || 0) + 1;
+  appendResult(next, {
+    pr_number: FROZEN_UK_V2338_PR,
+    merge_sha: FROZEN_UK_V2338_MERGE_SHA,
+    reconciled_at: new Date().toISOString(),
+    reconciliation_reason: 'exact_frozen_v2338_operator_reviewed_merge',
+    production_count: 290
+  });
+  next.updated_at = new Date().toISOString();
+  const written = await checkpoint(stub, snapshot, next);
+  return {
+    ok: true, executed: true, phase: 'data_pr_already_merged_reconciled',
+    pr_number: FROZEN_UK_V2338_PR, merge_sha: FROZEN_UK_V2338_MERGE_SHA,
+    production_count: 290, next_status: next.status,
+    state_version: written.version, state_sha256: written.sha256,
+    recovery: 'exact_v2338_no_github_dependency'
+  };
+}
+
 export async function runUkCloudControllerTick(env, { execute = false } = {}) {
   const stub = ukControllerStateStub(env);
   let snapshot = await readSnapshot(stub);
@@ -474,6 +508,8 @@ export async function runUkCloudControllerTick(env, { execute = false } = {}) {
     snapshot = await initializeShadowState(env, stub);
     initialized = true;
   }
+  const exactRecovery = execute && snapshot.authority === 'authoritative' && globalUkControllerCutoverEnabled(env) ? await reconcileExactFrozenUkV2338(stub, snapshot) : null;
+  if (exactRecovery) return exactRecovery;
   const decision = ukControllerDecision(snapshot.state);
   const cutoverEnabled = globalUkControllerCutoverEnabled(env);
   if (!execute || snapshot.authority !== 'authoritative' || !cutoverEnabled) {
