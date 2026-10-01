@@ -21,3 +21,12 @@ test('source-first extraction ignores ordinary navigation', () => {
   const rows=extractSourceRouteLinks('<a href="/about">About</a><a href="/tickets">Tickets</a>','https://market.example/');
   assert.equal(rows.length,0);
 });
+
+
+test('source-first module remains search-provider independent', async () => {
+  const fs=await import('node:fs/promises');
+  const source=await fs.readFile(new URL('../../platform/findpitches-v2/acquisition/source-first.mjs', import.meta.url),'utf8');
+  assert.doesNotMatch(source,/Serper|searchProvider|FINDPITCHES_SEARCH_API_KEY/);
+  assert.match(source,/classification_queue/);
+  assert.match(source,/source_route_link/);
+});
