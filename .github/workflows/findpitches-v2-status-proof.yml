@@ -27,7 +27,11 @@ jobs:
         run: |
           set -euo pipefail
 
-          expected_jobs="$(node --input-type=module -e "import { roundRobinSchedule } from './platform/findpitches-v2/scheduler/catalogue.mjs'; process.stdout.write(String(roundRobinSchedule().length))")"
+          expected_base_jobs="$(node --input-type=module -e "import { roundRobinSchedule } from './platform/findpitches-v2/scheduler/catalogue.mjs'; process.stdout.write(String(roundRobinSchedule().length))")"
+          expected_base_us_jobs="$(node --input-type=module -e "import { enabledGeographies } from './platform/findpitches-v2/geography/catalog.mjs'; process.stdout.write(String(enabledGeographies('US').length))")"
+          expected_city_jobs=320
+          expected_jobs="$((expected_base_jobs + expected_city_jobs))"
+          expected_us_jobs="$((expected_base_us_jobs + expected_city_jobs))"
           expected_catalogue="$(node --input-type=module -e "import { GEOGRAPHY_CATALOG_VERSION } from './platform/findpitches-v2/geography/catalog.mjs'; process.stdout.write(GEOGRAPHY_CATALOG_VERSION)")"
           health="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/health)"
           status="$(curl --silent --show-error --fail-with-body https://api.findpitches.com/status)"
@@ -39,7 +43,8 @@ jobs:
             .database == "isolated" and
             .publication_enabled == false and
             .legacy_runtime_dependency == false and
-            .local_runtime_dependency == false
+            .local_runtime_dependency == false and
+            .us_city_discovery_profile == "official_first_v1"
           ' <<<"$health" >/dev/null
 
           jq -e '
@@ -52,6 +57,7 @@ jobs:
 
           catalogue="$(jq -r '.catalogue.value // empty' <<<"$status")"
           jobs="$(jq -r '.counts.scheduler_jobs // 0' <<<"$status")"
+          us_jobs="$(jq -r '[.markets[]? | select(.market == "US") | .jobs][0] // 0' <<<"$status")"
           search_configured="$(jq -r '.search_configured // false' <<<"$status")"
 
           if [[ -n "$catalogue" ]]; then
@@ -61,7 +67,12 @@ jobs:
             fi
 
             if [[ "$jobs" -ne "$expected_jobs" ]]; then
-              echo "::error title=FindPitches v2 scheduler mismatch::Current enabled geography catalogue should contain $expected_jobs jobs, got $jobs"
+              echo "::error title=FindPitches v2 scheduler mismatch::Expected $expected_base_jobs base jobs + $expected_city_jobs deliberate US city jobs = $expected_jobs, got $jobs"
+              exit 1
+            fi
+
+            if [[ "$us_jobs" -ne "$expected_us_jobs" ]]; then
+              echo "::error title=FindPitches v2 US scheduler mismatch::Expected $expected_base_us_jobs base US jobs + $expected_city_jobs deliberate city jobs = $expected_us_jobs, got $us_jobs"
               exit 1
             fi
           fi
@@ -77,7 +88,8 @@ jobs:
             echo "- Mode: $(jq -r '.mode' <<<"$status")"
             echo "- Search configured: $search_configured"
             echo "- Publication enabled: $(jq -r '.publication_enabled' <<<"$status")"
-            echo "- Scheduler jobs: $jobs"
+            echo "- Scheduler jobs: $jobs ($expected_base_jobs base + $expected_city_jobs deliberate US city jobs)"
+            echo "- US scheduler jobs: $us_jobs (expected $expected_us_jobs)"
             echo "- Acquisition runs: $(jq -r '.counts.runs' <<<"$status")"
             echo "- Candidates: $(jq -r '.counts.candidates' <<<"$status")"
             echo "- Source-backed event locations: $(jq -r '.customer_location_quality.source_backed_location // 0' <<<"$status")"

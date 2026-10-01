@@ -200,21 +200,51 @@ function parseCaSnapshotModule(source) {
   if (!match) throw new Error('controller_github_ca_snapshot_module_invalid');
   try { return JSON.parse(match[1]); } catch { throw new Error('controller_github_ca_snapshot_json_invalid'); }
 }
-async function readCaProductionBases(fetchImpl, repo, authHeaders) {
-  const baseUrl = `https://api.github.com/repos/${repo}`;
-  const ref = await githubJson(fetchImpl, `${baseUrl}/git/ref/heads/main`, { headers: authHeaders });
-  const mainSha = String(ref?.object?.sha || '').toLowerCase();
-  if (!/^[a-f0-9]{40}$/.test(mainSha)) throw new Error('controller_github_ca_main_sha_invalid');
-  const [snapshotSource, sources] = await Promise.all([
-    fetchFileTextAtRef(fetchImpl, repo, authHeaders, CA_SNAPSHOT_PATH, mainSha),
-    fetchJsonFileAtRef(fetchImpl, repo, authHeaders, CA_SOURCE_REGISTRY_PATH, mainSha)
+async function publicText(fetchImpl, url, errorPrefix) {
+  const response = await fetchImpl(url, {
+    headers: {
+      'user-agent': 'findpitches-controller-pr-broker-readonly',
+      'cache-control': 'no-cache'
+    }
+  });
+  const text = await response.text();
+  if (!response.ok) throw new Error(`${errorPrefix}_http_${response.status}`);
+  return text;
+}
+async function readRawMain(fetchImpl, repo, path, pass) {
+  return publicText(
+    fetchImpl,
+    `https://raw.githubusercontent.com/${repo}/main/${path}?findpitches-read=${pass}`,
+    'controller_github_ca_raw_main'
+  );
+}
+async function readCaProductionBasesPublic(fetchImpl, repo) {
+  const [snapshotA, sourcesA] = await Promise.all([
+    readRawMain(fetchImpl, repo, CA_SNAPSHOT_PATH, 'a'),
+    readRawMain(fetchImpl, repo, CA_SOURCE_REGISTRY_PATH, 'a')
   ]);
-  const snapshot = parseCaSnapshotModule(snapshotSource);
+  const [snapshotB, sourcesB] = await Promise.all([
+    readRawMain(fetchImpl, repo, CA_SNAPSHOT_PATH, 'b'),
+    readRawMain(fetchImpl, repo, CA_SOURCE_REGISTRY_PATH, 'b')
+  ]);
+  if (snapshotA !== snapshotB || sourcesA !== sourcesB) {
+    throw new Error('controller_github_ca_raw_main_changed_during_read');
+  }
+  const snapshot = parseCaSnapshotModule(snapshotA);
+  let sources;
+  try { sources = JSON.parse(sourcesA); }
+  catch { throw new Error('controller_github_ca_source_registry_json_invalid'); }
   const rows = Array.isArray(snapshot?.rows) ? snapshot.rows : null;
   if (!rows || Number(snapshot?.total) !== rows.length) throw new Error('controller_github_ca_snapshot_invalid');
   if (!Array.isArray(sources)) throw new Error('controller_github_ca_source_registry_invalid');
-  return { main_sha: mainSha, production_count: rows.length, source_count: sources.length };
+  return {
+    main_sha: null,
+    stable_snapshot: true,
+    production_count: rows.length,
+    source_count: sources.length
+  };
 }
+
 async function sourceRegistryProof(fetchImpl, repo, authHeaders, inspection) {
   if (!String(inspection.head_ref || '').startsWith('sources/cloud-us-')) return null;
   if (inspection.files.length !== 1 || inspection.files[0]?.path !== SOURCE_REGISTRY_PATH) return null;
@@ -349,10 +379,14 @@ export async function handleInternalGithubControllerRequest(request, env, option
   try { payload = validatePayload(await request.json()); } catch (error) { return Response.json({ ok: false, error: String(error?.message || error) }, { status: 400 }); }
   const repo = requireEnv(env, 'GITHUB_REPO');
   const fetchImpl = options.fetchImpl || fetch;
-  const authHeaders = headers(env);
   try {
+    if (payload.action === 'read_ca_production_bases') {
+      // This path is deliberately read-only against a public repository. Do not
+      // make Canada health depend on a long-lived mutation token.
+      return Response.json({ ok: true, bases: await readCaProductionBasesPublic(fetchImpl, repo) });
+    }
+    const authHeaders = headers(env);
     if (payload.action === 'publication_request') return Response.json({ ok: true, ...(await proxyPublicationRequest(fetchImpl, repo, authHeaders, payload)) });
-    if (payload.action === 'read_ca_production_bases') return Response.json({ ok: true, bases: await readCaProductionBases(fetchImpl, repo, authHeaders) });
     if (payload.action === 'inspect_replay_source_provenance') return Response.json({ ok: true, provenance: await inspectReplaySourceProvenance(fetchImpl, repo, authHeaders, payload.stateCode, payload.sourceIds) });
     if (payload.action === 'inspect_merge_checks') return Response.json({ ok: true, deployment: await inspectSourceMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });
     if (payload.action === 'inspect_data_merge_checks') return Response.json({ ok: true, deployment: await inspectDataMergeChecks(fetchImpl, repo, authHeaders, payload.prNumber) });

@@ -163,8 +163,7 @@ test('merge-check inspection refuses an unmerged source PR', async () => {
   assert.match((await response.json()).error, /source_pr_not_merged/);
 });
 
-test('controller GitHub broker returns authenticated Canada production bases', async () => {
-  const mainSha = 'd'.repeat(40);
+test('controller GitHub broker returns stable Canada production bases without mutation credentials', async () => {
   const caSnapshot = `export const caOpportunitySnapshot = ${JSON.stringify({
     exported_at: '2026-09-18T00:00:00Z',
     source: 'fixture',
@@ -174,29 +173,53 @@ test('controller GitHub broker returns authenticated Canada production bases', a
   const sources = [
     { id: 'ca-on-1' }, { id: 'ca-bc-1' }, { id: 'ca-qc-1' }, { id: 'ca-ab-1' }, { id: 'ca-ns-1' }
   ];
+  const seen=[];
   const fetchImpl = async (url, options = {}) => {
-    assert.match(String(options?.headers?.authorization || ''), /^Bearer /);
-    const value = String(url);
-    if (value.endsWith('/git/ref/heads/main')) return Response.json({ object: { sha: mainSha } });
-    if (value.includes('/contents/functions/_data/ca-opportunities.mjs?ref=')) {
-      return Response.json({ encoding: 'base64', content: encoded(caSnapshot) });
+    assert.equal(options?.headers?.authorization, undefined);
+    const value = String(url); seen.push(value);
+    assert.equal(value.startsWith('https://api.github.com/'), false);
+    assert.equal(value.startsWith('https://github.com/'), false);
+    if (value.includes('/functions/_data/ca-opportunities.mjs?')) return new Response(caSnapshot);
+    if (value.includes('/operations/opportunity-pipeline/config/ca-approved-source-routes.json?')) {
+      return new Response(JSON.stringify(sources));
     }
-    if (value.includes('/contents/operations/opportunity-pipeline/config/ca-approved-source-routes.json?ref=')) {
-      return Response.json({ encoding: 'base64', content: encoded(sources) });
-    }
-    return Response.json({ message: 'not found' }, { status: 404 });
+    return new Response('not found', { status: 404 });
   };
   const response = await handleInternalGithubControllerRequest(
     request({ action: 'read_ca_production_bases' }),
-    env(),
+    { GITHUB_REPO: 'christucker-sketch/PitchListUK' },
     { fetchImpl }
   );
   assert.equal(response.status, 200);
   assert.deepEqual((await response.json()).bases, {
-    main_sha: mainSha,
+    main_sha: null,
+    stable_snapshot: true,
     production_count: 3,
     source_count: 5
   });
+  assert.equal(seen.length,4);
+  assert.ok(seen.every(url=>url.startsWith('https://raw.githubusercontent.com/')));
+});
+
+test('controller GitHub broker fails closed if raw main changes during Canada readiness read', async () => {
+  let snapshotReads=0;
+  const source='[]';
+  const response=await handleInternalGithubControllerRequest(
+    request({action:'read_ca_production_bases'}),
+    {GITHUB_REPO:'christucker-sketch/PitchListUK'},
+    {fetchImpl:async url=>{
+      const value=String(url);
+      if(value.includes('/functions/_data/ca-opportunities.mjs?')){
+        snapshotReads++;
+        const total=snapshotReads===1?0:1;
+        return new Response(`export const caOpportunitySnapshot = ${JSON.stringify({exported_at:'x',source:'x',total,rows:total?[{stable_id:'ca1'}]:[]})};\n`);
+      }
+      if(value.includes('/operations/opportunity-pipeline/config/ca-approved-source-routes.json?')) return new Response(source);
+      return new Response('not found',{status:404});
+    }}
+  );
+  assert.equal(response.status,409);
+  assert.match((await response.json()).error,/controller_github_ca_raw_main_changed_during_read/);
 });
 
 test('controller GitHub broker permits only bounded UK and Canada publication requests', () => {
@@ -248,3 +271,18 @@ test('controller GitHub broker proxies an authenticated bounded publication read
     github_body: { object: { sha: mainSha } }
   });
 });
+
+
+test('controller GitHub broker still fails closed for mutation-capable actions without GitHub credentials', async () => {
+  const response = await handleInternalGithubControllerRequest(
+    request({ action: 'publication_request', method: 'GET', path: '/git/ref/heads/main' }),
+    { GITHUB_REPO: 'christucker-sketch/PitchListUK' },
+    { fetchImpl: async () => Response.json({ object: { sha: 'd'.repeat(40) } }) }
+  );
+  assert.equal(response.status, 409);
+  assert.match((await response.json()).error, /Missing required secret\/config: GITHUB_TOKEN/);
+});
+
+
+
+
