@@ -208,7 +208,7 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
       held.push(Object.freeze({ route: page.url || item.result.url, query_id: item.plan.id, reason: 'non_actionable_or_informational_result' }));
       continue;
     }
-    const inferredGeography = inferKnownCounty(item.result.title, item.result.snippet, page.text, page.url || item.result.url);
+    const inferredGeography = inferKnownCounty(item.result.title, item.result.snippet, page.url || item.result.url);
     const classified = promoteCandidate(classifySourceCandidate({
       url: page.url || item.result.url,
       title: item.result.title,
@@ -216,7 +216,7 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
       page_text: page.text,
       organisation: organisation(item.result, page.url || item.result.url),
       organiser_type: /\.gov\.uk$/i.test(host) ? 'local-authority' : 'event-organiser',
-      geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : item.plan.region,
+      geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : '',
       opportunity_type: inferOpportunityType(`${item.plan.query} ${item.result.title || ''} ${item.result.snippet || ''} ${page.text || ''}`),
       discovery_query: item.plan.query,
       discovered_at: now,
