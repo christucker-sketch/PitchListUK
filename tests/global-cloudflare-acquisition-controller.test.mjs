@@ -108,3 +108,9 @@ test('US read-only source selection is bounded and exact', () => {
   assert.deepEqual(exact.map(source => source.id), [state.sources[0].id]);
   assert.throws(() => selectUsReadOnlySources(state, { source_ids: ['not-a-real-source'] }), /unknown source id/);
 });
+
+
+test('scheduled UK controller tick preserves the GitHub PR broker binding', async () => {
+  const source = await readFile(new URL('../operations/cloudflare-global-acquisition/src/index.js', import.meta.url), 'utf8');
+  assert.match(source, /runUkCloudControllerTick\(\{ \.\.\.env, CONTROLLER_STATE: env\.UK_CONTROLLER_STATE, GITHUB_PR_BROKER: env\.GITHUB_PR_BROKER \}, \{ execute: true \}\)/);
+});
