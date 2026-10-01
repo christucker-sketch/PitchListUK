@@ -7,7 +7,7 @@ import { searchViaSerperBroker } from './service-serper-search.mjs';
 const { STATUS, PLATFORM_HOST, NON_SOURCE_HOST, classifySourceCandidate } = sourceOnboardingLib;
 const { LANES } = lanesLib;
 const { canonicalUrl } = safetyLib;
-const { inferKnownCounty } = geoNormaliseLib;
+const { inferKnownCounty, hasConflictingUkGeography } = geoNormaliseLib;
 
 const MAX_BODY_BYTES = 240000;
 const MAX_REDIRECTS = 3;
@@ -205,6 +205,10 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
     }
     let host = '';
     try { host = new URL(page.url || item.result.url).hostname.replace(/^www\./, ''); } catch {}
+    if (hasConflictingUkGeography(item.result.title, item.result.snippet, page.text, page.url || item.result.url)) {
+      held.push(Object.freeze({ route: page.url || item.result.url, query_id: item.plan.id, reason: 'conflicting_geography_evidence' }));
+      continue;
+    }
     if (onlyPastDatedEvidence(`${item.result.title || ''} ${item.result.snippet || ''} ${page.text || ''}`, now)) {
       held.push(Object.freeze({ route: page.url || item.result.url, query_id: item.plan.id, reason: 'stale_event_year' }));
       continue;
