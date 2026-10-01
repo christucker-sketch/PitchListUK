@@ -27,7 +27,7 @@ function stateStub(env) {
 }
 
 function tickEnv(env) {
-  return { ...env, CONTROLLER_STATE: env.UK_CONTROLLER_STATE };
+  return { ...env, CONTROLLER_STATE: env.UK_CONTROLLER_STATE, GITHUB_PR_BROKER: env.GITHUB_PR_BROKER };
 }
 
 async function transition(request, env, target) {
