@@ -226,24 +226,25 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
   }
 }
 
-async function runScheduledControllers(env) {
-  const results = await Promise.allSettled([
-    runCloudControllerTick(env, { execute: true }),
-    runUkCloudControllerTick({ ...env, CONTROLLER_STATE: env.UK_CONTROLLER_STATE, GITHUB_PR_BROKER: env.GITHUB_PR_BROKER }, { execute: true }),
-    runCaCloudControllerTick(env, { execute: true })
-  ]);
-  const [us, uk, ca] = results;
-  if (us.status === 'fulfilled') console.log('autonomous_cloud_controller_tick', JSON.stringify(us.value));
-  else console.error('autonomous_cloud_controller_tick_failed', String(us.reason?.message || us.reason));
-  if (uk.status === 'fulfilled') console.log('autonomous_uk_cloud_controller_tick', JSON.stringify(uk.value));
-  else console.error('autonomous_uk_cloud_controller_tick_failed', String(uk.reason?.message || uk.reason));
-  if (ca.status === 'fulfilled') console.log('autonomous_ca_cloud_controller_tick', JSON.stringify(ca.value));
-  else console.error('autonomous_ca_cloud_controller_tick_failed', String(ca.reason?.message || ca.reason));
+async function runScheduledController(label, tick) {
+  try {
+    const value = await tick();
+    console.log(label, JSON.stringify(value));
+  } catch (error) {
+    console.error(`${label}_failed`, String(error?.message || error));
+  }
 }
 
 export default {
   async scheduled(_event, env, ctx) {
-    ctx.waitUntil(runScheduledControllers(env));
+    // Keep each market in its own waitUntil lifetime. A slow or wedged controller
+    // must not hold the UK tick hostage behind Promise.allSettled().
+    ctx.waitUntil(runScheduledController('autonomous_cloud_controller_tick', () =>
+      runCloudControllerTick(env, { execute: true })));
+    ctx.waitUntil(runScheduledController('autonomous_uk_cloud_controller_tick', () =>
+      runUkCloudControllerTick({ ...env, CONTROLLER_STATE: env.UK_CONTROLLER_STATE, GITHUB_PR_BROKER: env.GITHUB_PR_BROKER }, { execute: true })));
+    ctx.waitUntil(runScheduledController('autonomous_ca_cloud_controller_tick', () =>
+      runCaCloudControllerTick(env, { execute: true })));
   },
 
   async fetch(request, env) {
