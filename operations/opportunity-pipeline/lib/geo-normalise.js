@@ -85,6 +85,22 @@ function inferKnownCounty(...values) {
   return 'Unknown';
 }
 
+function inferUkGeographyEvidence(...values) {
+  const matches = [];
+  for (const value of values.filter(Boolean)) {
+    const match = inferKnownCounty(value);
+    if (match !== 'Unknown' && !matches.includes(match)) matches.push(match);
+  }
+  return Object.freeze(matches);
+}
+
+function hasConflictingUkGeography(...values) {
+  const matches = inferUkGeographyEvidence(...values);
+  const ireland = matches.filter(value => /^Ireland -/.test(value));
+  const uk = matches.filter(value => !/^Ireland -/.test(value));
+  return ireland.length > 0 && uk.length > 0;
+}
+
 function normaliseCounty(...values) {
   const known = inferKnownCounty(...values);
   if (known !== 'Unknown') return known;
@@ -105,4 +121,4 @@ function matchLabel(score) {
   return 'not local match';
 }
 
-module.exports = { inferKnownCounty, normaliseCounty, matchScore, matchLabel, NEIGHBOURS };
+module.exports = { inferKnownCounty, inferUkGeographyEvidence, hasConflictingUkGeography, normaliseCounty, matchScore, matchLabel, NEIGHBOURS };
