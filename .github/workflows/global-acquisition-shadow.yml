@@ -193,6 +193,19 @@ jobs:
           echo 'UK controller readiness workflow timed out.' >&2
           exit 1
 
+      - name: Execute one bounded UK controller recovery tick
+        shell: bash
+        run: |
+          set -euo pipefail
+          endpoint='https://findpitches-global-acquisition-shadow.ctucker.workers.dev/uk-controller-state/tick'
+          response="$(curl --silent --show-error --fail-with-body -X POST "$endpoint" \
+            -H "Authorization: Bearer ${CONTROLLER_STATE_IMPORT_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            --data '{"execute":true}')"
+          jq -e '.ok == true and .executed == true and .phase == "data_pr_already_merged_reconciled" and .next_status == "ready_discovery" and (.state_version > 2338)' <<<"$response" >/dev/null
+        env:
+          CONTROLLER_STATE_IMPORT_TOKEN: ${{ secrets.CONTROLLER_STATE_IMPORT_TOKEN }}
+
       - name: Prove UK authoritative controller has advanced after deployment
         shell: bash
         run: |
