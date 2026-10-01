@@ -198,6 +198,7 @@ jobs:
         run: |
           set -euo pipefail
           endpoint='https://findpitches-global-acquisition-shadow.ctucker.workers.dev/uk-controller-state/tick'
+          [[ -n "${CONTROLLER_STATE_IMPORT_TOKEN:-}" ]] || { echo 'CONTROLLER_STATE_IMPORT_TOKEN is unavailable to the production workflow.' >&2; exit 1; }
           response="$(curl --silent --show-error --fail-with-body -X POST "$endpoint" \
             -H "Authorization: Bearer ${CONTROLLER_STATE_IMPORT_TOKEN}" \
             -H 'Content-Type: application/json' \
