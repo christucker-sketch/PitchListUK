@@ -197,6 +197,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          current_version="$(jq -r '.result.output.state_version // 0' global-uk-controller-readiness.json)"
+          if [[ "$current_version" -gt 2338 ]]; then
+            echo "UK controller already advanced beyond frozen v2338 (v${current_version}); exact recovery is no longer applicable."
+            exit 0
+          fi
           instance_id="global-uk-recovery-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           npx --yes wrangler@4.127.1 workflows trigger "$WORKFLOW_NAME" '{"country":"UK","mode":"controller_recovery_tick"}' --id "$instance_id" --config "$CONFIG" >/dev/null
           endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workflows/${WORKFLOW_NAME}/instances/${instance_id}"

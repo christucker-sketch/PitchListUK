@@ -75,6 +75,16 @@ export async function readUkControllerReadonlyReceipt(env = {}) {
       production_count_after_planned: Number(state.last_acquisition.result?.production_count_after_planned || 0) || null,
       generated_at: state.last_acquisition.result?.generated_at || null
     } : null,
+    recent_results: Object.freeze((Array.isArray(state.results) ? state.results : []).slice(-6).map(item => Object.freeze({
+      workflow_id: item?.workflow_id || null,
+      mode: item?.mode || null,
+      completed_at: item?.completed_at || null,
+      recovered_at: item?.recovered_at || null,
+      recovery_reason: item?.recovery_reason || null,
+      result_mode: item?.result?.mode || null,
+      source_additions: Number(item?.result?.source_additions || 0),
+      manifest_additions: Number(item?.result?.manifest_additions || 0)
+    }))),
     decision: safeDecision(state),
     updated_at: state.updated_at || null
   });
