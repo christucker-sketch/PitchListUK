@@ -1,0 +1,28 @@
+name: Hal V1 exact replica verification
+
+on:
+  push:
+    branches:
+      - test/hal-v1-exact-replica
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-hal-v1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verify historical baseline
+        run: |
+          test "$(git rev-parse HEAD^)" = "18ee3268e7c81e754f24160c77dd64ac4a7906aa"
+          git diff --exit-code HEAD^ -- operations/opportunity-pipeline ':!operations/opportunity-pipeline/.hal-replica-marker'
+      - name: Run original Hal opportunity-pipeline tests
+        working-directory: operations/opportunity-pipeline
+        run: npm test
+      - name: Run repository tests present at historical baseline
+        run: npm test
