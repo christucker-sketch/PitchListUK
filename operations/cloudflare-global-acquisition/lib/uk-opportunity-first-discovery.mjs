@@ -7,7 +7,7 @@ import { searchViaSerperBroker } from './service-serper-search.mjs';
 const { STATUS, PLATFORM_HOST, NON_SOURCE_HOST, classifySourceCandidate } = sourceOnboardingLib;
 const { LANES } = lanesLib;
 const { canonicalUrl } = safetyLib;
-const { inferKnownCounty } = geoNormaliseLib;
+const { inferKnownCounty, hasConflictingUkGeography } = geoNormaliseLib;
 
 const MAX_BODY_BYTES = 240000;
 const MAX_REDIRECTS = 3;
@@ -148,6 +148,12 @@ export function hasUkActionableOpportunityEvidence({ route = '', title = '', sni
   return ACTIONABLE_TRADER_APPLICATION.test(text);
 }
 
+function onlyPastDatedEvidence(text, now) {
+  const currentYear = new Date(now).getUTCFullYear();
+  const years = [...String(text || '').matchAll(/\b20\d{2}\b/g)].map(match => Number(match[0]));
+  return years.length > 0 && Math.max(...years) < currentYear;
+}
+
 function promoteCandidate(candidate, now) {
   if (candidate.classification === STATUS.AUTO && candidate.approval_status === 'pending') {
     return Object.freeze({ ...candidate, approval_status: 'approved', reviewer_decision: 'approved_public_service_opportunity', reviewer: 'FindPitches Cloudflare deterministic opportunity evidence', decision_timestamp: now });
@@ -199,6 +205,14 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
     }
     let host = '';
     try { host = new URL(page.url || item.result.url).hostname.replace(/^www\./, ''); } catch {}
+    if (hasConflictingUkGeography(item.result.title, item.result.snippet, page.text, page.url || item.result.url)) {
+      held.push(Object.freeze({ route: page.url || item.result.url, query_id: item.plan.id, reason: 'conflicting_geography_evidence' }));
+      continue;
+    }
+    if (onlyPastDatedEvidence(`${item.result.title || ''} ${item.result.snippet || ''} ${page.text || ''}`, now)) {
+      held.push(Object.freeze({ route: page.url || item.result.url, query_id: item.plan.id, reason: 'stale_event_year' }));
+      continue;
+    }
     if (!hasUkActionableOpportunityEvidence({
       route: page.url || item.result.url,
       title: item.result.title,

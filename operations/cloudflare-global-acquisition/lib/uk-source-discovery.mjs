@@ -7,7 +7,7 @@ import { discoverUkDirectSourceGraph } from './uk-direct-source-graph.mjs';
 const { discoveryQueries } = sourceDiscoveryLib;
 const { STATUS, PLATFORM_HOST, NON_SOURCE_HOST, classifySourceCandidate } = sourceOnboardingLib;
 const { canonicalUrl } = safetyLib;
-const { inferKnownCounty } = geoNormaliseLib;
+const { inferKnownCounty, hasConflictingUkGeography } = geoNormaliseLib;
 
 const DEFAULT_QUERY_LIMIT = 8;
 const MAX_QUERY_LIMIT = 12;
@@ -137,6 +137,12 @@ async function fetchCandidate(result, plan, options = {}) {
   }
 }
 
+function onlyPastDatedEvidence(text, now) {
+  const currentYear = new Date(now).getUTCFullYear();
+  const years = [...String(text || '').matchAll(/\b20\d{2}\b/g)].map(match => Number(match[0]));
+  return years.length > 0 && Math.max(...years) < currentYear;
+}
+
 function candidateInput(outcome, now) {
   const result = outcome.result || {};
   const pageText = String(outcome.page_text || '');
@@ -144,6 +150,8 @@ function candidateInput(outcome, now) {
   let host = '';
   try { host = new URL(route).hostname.replace(/^www\./, ''); } catch {}
   const inferredGeography = inferKnownCounty(result.title, result.snippet, pageText, route);
+  const staleDated = onlyPastDatedEvidence(`${result.title || ''} ${result.snippet || ''} ${pageText}`, now);
+  const conflictingGeography = hasConflictingUkGeography(result.title, result.snippet, pageText, route);
   return {
     url: route, title: result.title, snippet: result.snippet, page_text: pageText,
     organisation: inferOrganisation(result.title, host),
@@ -155,7 +163,7 @@ function candidateInput(outcome, now) {
     trader_application_evidence: pageText.slice(0, 6000),
     robots_result: outcome.fetch_status === 'fetched' ? 'allowed' : outcome.fetch_status,
     terms_review_status: /\.gov\.uk$/i.test(host) ? 'public-service' : 'manual-review-required',
-    fetch_status: outcome.fetch_status,
+    fetch_status: staleDated ? 'stale_event_year' : (conflictingGeography ? 'conflicting_geography_evidence' : outcome.fetch_status),
     recommended_polling_days: /market/i.test(pageText) ? 14 : 30
   };
 }

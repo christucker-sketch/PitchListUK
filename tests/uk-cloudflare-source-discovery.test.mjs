@@ -173,3 +173,31 @@ test('UK discovery prefers page-backed geography over the search query region', 
   });
   assert.equal(discovery.approved_candidates[0].geographic_coverage, 'Hampshire');
 });
+
+
+test('UK source discovery holds conflicting UK and Ireland geography instead of guessing from the first match', async () => {
+  const discovery = await runUkSourceDiscovery({ SERPER_API_KEY: 'fixture' }, {
+    query_limit: 1, results_per_query: 1, candidate_limit: 1, as_of: '2026-10-01T20:42:00.000Z'
+  }, {
+    directDiscovery: async () => ({ seed_count: 0, candidates: [] }),
+    search: async (_env, query) => [{ query, rank: 1, title: 'Bedford markets apply to trade 2026', url: 'https://bedford.gov.uk/markets/apply', snippet: 'Bedford trader applications 2026' }],
+    fetchCandidate: async (result, plan) => ({
+      result, plan, fetch_status: 'fetched', final_url: result.url,
+      page_text: 'Apply to trade as a market trader. Applications are open for pitches in 2026. Unrelated footer content: Galway.'
+    })
+  });
+  assert.equal(discovery.auto_approved_count, 0);
+  assert.equal(discovery.approved_candidates.length, 0);
+});
+
+test('UK discovery holds an otherwise actionable source whose evidence is only from a past event year', async () => {
+  const discovery = await runUkSourceDiscovery({ SERPER_API_KEY: 'fixture' }, {
+    query_limit: 1, results_per_query: 1, candidate_limit: 1, as_of: '2026-10-01T20:42:00.000Z'
+  }, {
+    directDiscovery: async () => ({ seed_count: 0, candidates: [] }),
+    search: async (_env, query) => [{ query, rank: 1, title: 'Bedford Kite Festival 2025 trade pitches', url: 'https://bedford.gov.uk', snippet: 'Apply for a trader pitch at the 2025 festival' }],
+    fetchCandidate: async (result, plan) => ({ result, plan, fetch_status: 'fetched', final_url: result.url, page_text: 'Bedford Kite Festival 2025. Trader applications and pitches.' })
+  });
+  assert.equal(discovery.auto_approved_count, 0);
+  assert.equal(discovery.approved_candidates.length, 0);
+});
