@@ -21,6 +21,9 @@ jobs:
           node-version: 20
       - name: Prove acquisition engine is byte-for-byte Hal baseline
         run: git diff --exit-code 18ee3268e7c81e754f24160c77dd64ac4a7906aa HEAD -- operations/opportunity-pipeline
+      - name: Exercise original Hal growth entry point without network or writes
+        working-directory: operations/opportunity-pipeline
+        run: node scripts/grow-database.js --dry-run --all
       - name: Run original Hal opportunity-pipeline tests
         working-directory: operations/opportunity-pipeline
         run: npm test
