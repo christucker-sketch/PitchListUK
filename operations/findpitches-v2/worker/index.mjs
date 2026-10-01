@@ -1,6 +1,8 @@
 import { enabledMarkets } from '../../../platform/findpitches-v2/markets/registry.mjs';
 import { discoverBatch } from '../../../platform/findpitches-v2/acquisition/discover-batch.mjs';
 import { persistDiscoveryBatch } from '../../../platform/findpitches-v2/acquisition/storage.mjs';
+import { runSourceFirstBatch } from '../../../platform/findpitches-v2/acquisition/source-first.mjs';
+import { seedSourceRoutesFromValidated } from '../../../platform/findpitches-v2/acquisition/source-registry.mjs';
 import { runClassificationBatch } from '../../../platform/findpitches-v2/classifier/run-batch.mjs';
 import { createHttpFetchProvider, DEFAULT_PDF_TIMEOUT_MS } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
 import { createRevalidator } from '../../../platform/findpitches-v2/revalidation/index.mjs';
@@ -16,6 +18,8 @@ const QUERY_LIMIT = 8;
 const CLASSIFIER_CRON = '* * * * *';
 const BASELINE_ACQUISITION_CRON = '*/5 * * * *';
 const PDF_RECOVERY_CRON = '7,22,37,52 * * * *';
+const SOURCE_FIRST_CRON = '11,41 * * * *';
+const SOURCE_FIRST_BATCH_LIMIT = 4;
 const CLASSIFIER_BATCH_LIMIT = 24;
 const CLASSIFIER_RULESET_VERSION = '2026-09-30-quality-rules-v4';
 const RECLASSIFY_BATCH_LIMIT = 24;
@@ -46,6 +50,12 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
+    if (event?.cron === SOURCE_FIRST_CRON) {
+      ctx.waitUntil(runSourceFirstTick(env)
+        .then(result => console.log('findpitches_v2_source_first_tick', JSON.stringify(result)))
+        .catch(error => console.error('findpitches_v2_source_first_tick_failed', String(error?.stack || error))));
+      return;
+    }
     if (event?.cron === PDF_RECOVERY_CRON) {
       ctx.waitUntil(runObservedPdfRecovery(env.FINDPITCHES_DB, runNativePdfRecovery, {cron:event.cron})
         .then(result => console.log('findpitches_v2_pdf_recovery_tick', JSON.stringify(result)))
@@ -86,6 +96,7 @@ async function health(env) {
       search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
       publication_enabled: false,
       us_city_discovery_profile: 'official_first_v1',
+      source_first: { enabled: true, market: 'US', cron: SOURCE_FIRST_CRON, batch_limit: SOURCE_FIRST_BATCH_LIMIT, search_api_used: false },
       acquisition_crons: { baseline: BASELINE_ACQUISITION_CRON, us_city: BASELINE_ACQUISITION_CRON, mode: 'paired_baseline_then_city' },
       customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
       pdf_fetch_timeout_ms: DEFAULT_PDF_TIMEOUT_MS,
@@ -610,5 +621,37 @@ async function getCustomerLocationQuality(env) {
     missing_source_backed_location:Number(row?.projected || 0)-Number(row?.source_backed_location || 0),
     event_dates:Number(row?.event_dates || 0),
     application_deadlines:Number(row?.application_deadlines || 0)
+  });
+}
+
+
+export async function runSourceFirstTick(env, { now = new Date() } = {}) {
+  const seeded = await seedSourceRoutesFromValidated(env.FINDPITCHES_DB, { market:'US', limit:250, now });
+  const promoted = await env.FINDPITCHES_DB.prepare(
+    `UPDATE source_routes
+        SET status='approved'
+      WHERE market='US' AND status='discovered'
+        AND domain IN (
+          SELECT domain FROM source_reputation
+           WHERE market='US' AND candidate_count >= 2
+             AND reputation_score >= 50
+        )`
+  ).run();
+  const acquisition = await runSourceFirstBatch(env.FINDPITCHES_DB, {
+    fetchProvider:createHttpFetchProvider(),
+    market:'US',
+    limit:SOURCE_FIRST_BATCH_LIMIT,
+    now
+  });
+  return Object.freeze({
+    ok:true,
+    service:SERVICE,
+    engine:'findpitches-v2-source-first',
+    seeded,
+    routes_promoted:Number(promoted?.meta?.changes||0),
+    acquisition,
+    search_api_used:false,
+    publication_attempted:false,
+    at:now.toISOString()
   });
 }
