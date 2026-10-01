@@ -124,6 +124,13 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
         ...(await promoteCanadaShadowAuthority(this.env, payload))
       }));
     }
+    if (payload.country === 'UK' && payload.mode === 'controller_recovery_tick') {
+      return step.do('execute one bounded UK controller recovery tick', async () => ({
+        country: 'UK',
+        mode: 'controller_recovery_tick',
+        ...(await runUkCloudControllerTick({ ...this.env, CONTROLLER_STATE: this.env.UK_CONTROLLER_STATE, GITHUB_PR_BROKER: this.env.GITHUB_PR_BROKER }, { execute: true }))
+      }));
+    }
     if (payload.country === 'CA' && payload.mode === CA_PR_BROKER_RECOVERY_MODE) {
       return step.do('recover only the exact failed Canada PR broker workflow checkpoint', async () => ({
         country: 'CA',
