@@ -271,6 +271,7 @@ export default {
     }
 
     if (request.method === 'GET' && url.pathname === '/health') {
+      const uk_controller = await readUkControllerReadonlyReceipt(env);
       return Response.json({
         ok: true,
         service: 'findpitches-global-acquisition-shadow',
@@ -281,6 +282,7 @@ export default {
         ca_controller_cutover_enabled: globalCaControllerCutoverEnabled(env),
         controller_state_store: Boolean(env.CONTROLLER_STATE),
         uk_controller_state_store: Boolean(env.UK_CONTROLLER_STATE),
+        uk_controller,
         ca_controller_state_store: Boolean(env.CA_CONTROLLER_STATE),
         controller_state_maintenance_enabled: Boolean(env.CONTROLLER_STATE_IMPORT_TOKEN),
         controller_cutover_readiness_workflow: true,
