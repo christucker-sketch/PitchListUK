@@ -30,3 +30,14 @@ test('source-first module remains search-provider independent', async () => {
   assert.match(source,/classification_queue/);
   assert.match(source,/source_route_link/);
 });
+
+
+test('source-first telemetry distinguishes classifier validation from practical usability', async () => {
+  const fs=await import('node:fs/promises');
+  const classifier=await fs.readFile(new URL('../../platform/findpitches-v2/classifier/run-batch.mjs', import.meta.url),'utf8');
+  const customer=await fs.readFile(new URL('../../platform/findpitches-v2/customer/run-batch.mjs', import.meta.url),'utf8');
+  assert.doesNotMatch(classifier,/usable_count=usable_count\+\?/);
+  assert.match(customer,/recordSourceRouteUsable/);
+  assert.match(customer,/usable_count=usable_count\+1/);
+  assert.match(customer,/result\.promoted/);
+});
