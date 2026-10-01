@@ -222,7 +222,7 @@ export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
 async function runScheduledControllers(env) {
   const results = await Promise.allSettled([
     runCloudControllerTick(env, { execute: true }),
-    runUkCloudControllerTick({ ...env, CONTROLLER_STATE: env.UK_CONTROLLER_STATE }, { execute: true }),
+    runUkCloudControllerTick({ ...env, CONTROLLER_STATE: env.UK_CONTROLLER_STATE, GITHUB_PR_BROKER: env.GITHUB_PR_BROKER }, { execute: true }),
     runCaCloudControllerTick(env, { execute: true })
   ]);
   const [us, uk, ca] = results;
