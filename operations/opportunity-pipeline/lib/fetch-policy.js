@@ -31,6 +31,7 @@ function robotsAllows(url, disallow) {
 
 function createPolicyFetcher(options = {}) {
   const fetchImpl = options.fetchImpl || fetch;
+  const allowUnapprovedDiscovery = options.allowUnapprovedDiscovery === true;
   const sleep = options.sleep || (ms => new Promise(resolve => setTimeout(resolve, ms)));
   const now = options.now || Date.now;
   const timeoutMs = Math.max(1, Number(options.timeoutMs || 25000));
@@ -51,8 +52,8 @@ function createPolicyFetcher(options = {}) {
   async function fetchUnlocked(url, requestOptions = {}) {
     const parsed = new URL(url);
     const rule = sourceRuleFor(url);
-    if (!rule.approved) return { ok: false, classification: 'source_not_approved', attempts: 0 };
-    if (!termsReviewed(rule)) return { ok: false, classification: 'terms_not_reviewed', attempts: 0 };
+    if (!rule.approved && !allowUnapprovedDiscovery) return { ok: false, classification: 'source_not_approved', attempts: 0 };
+    if (rule.approved && !termsReviewed(rule)) return { ok: false, classification: 'terms_not_reviewed', attempts: 0 };
 
     if (!robotsByOrigin.has(parsed.origin)) {
       try {
