@@ -46,7 +46,9 @@ function isGeneric(name, town) {
   return tokens(name).filter(token => !GENERIC_WORDS.has(token) && !townTokens.has(token)).length === 0;
 }
 
-function buildHop2Queries(event, { year = 2027, excludeDomains = [] } = {}) {
+const DEFAULT_EXCLUDES = ['wikipedia.org','facebook.com','tiktok.com','tradefest.io','pedddle.com','festivalflyer.com','festfinder.co.uk'];
+
+function buildHop2Queries(event, { year = 2027, excludeDomains = DEFAULT_EXCLUDES } = {}) {
   const raw = String(event.name || event.event_name || '').trim();
   const town = String(event.town || event.location || '').trim();
   const county = String(event.county || '').trim();
@@ -57,7 +59,7 @@ function buildHop2Queries(event, { year = 2027, excludeDomains = [] } = {}) {
   if (generic && !place) return [];
 
   const quoted = `"${name}"${generic && place ? ` ${place}` : ''}`;
-  const exclude = excludeDomains.slice(0, 5).map(domain => `-site:${domain}`).join(' ');
+  const exclude = excludeDomains.slice(0, 8).map(domain => `-site:${domain}`).join(' ');
   const rows = [];
   for (const tier of [1,2,3]) {
     for (const [templateId, build] of TIERS[tier]) {
@@ -127,4 +129,4 @@ if (require.main === module) {
   try { main(); } catch (error) { console.error(error.message); process.exit(1); }
 }
 
-module.exports={cleanName,isGeneric,buildHop2Queries,parseCsv,toCsv};
+module.exports={cleanName,isGeneric,buildHop2Queries,parseCsv,toCsv,DEFAULT_EXCLUDES};
