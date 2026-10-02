@@ -64,3 +64,14 @@ test('two-hop pilot only spends tier-one queries on a bounded seed set',()=>{
   assert.equal(plan.queries.length,6);
   assert.ok(plan.queries.every(q=>!/filetype:pdf|2027 traders OR/.test(q)));
 });
+
+
+test('two-hop selection round-robins across towns instead of exhausting the first area',()=>{
+  const plan=selectTierOne([
+    {name:'Bakewell Event One',town:'Bakewell'},
+    {name:'Bakewell Event Two',town:'Bakewell'},
+    {name:'Bakewell Event Three',town:'Bakewell'},
+    {name:'Ludlow Event One',town:'Ludlow'}
+  ],2);
+  assert.deepEqual(plan.selected.map(x=>x.town),['Bakewell','Ludlow']);
+});
