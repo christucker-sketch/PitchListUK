@@ -845,13 +845,115 @@ function countyLane(area, index) {
   };
 }
 
+const UK_CITIES = [
+  ['Bath', 'England'],
+  ['Birmingham', 'England'],
+  ['Bradford', 'England'],
+  ['Brighton & Hove', 'England'],
+  ['Bristol', 'England'],
+  ['Cambridge', 'England'],
+  ['Canterbury', 'England'],
+  ['Carlisle', 'England'],
+  ['Chelmsford', 'England'],
+  ['Chester', 'England'],
+  ['Chichester', 'England'],
+  ['Colchester', 'England'],
+  ['Coventry', 'England'],
+  ['Derby', 'England'],
+  ['Doncaster', 'England'],
+  ['Durham', 'England'],
+  ['Ely', 'England'],
+  ['Exeter', 'England'],
+  ['Gloucester', 'England'],
+  ['Hereford', 'England'],
+  ['Kingston-upon-Hull', 'England'],
+  ['Lancaster', 'England'],
+  ['Leeds', 'England'],
+  ['Leicester', 'England'],
+  ['Lichfield', 'England'],
+  ['Lincoln', 'England'],
+  ['Liverpool', 'England'],
+  ['London', 'England'],
+  ['Manchester', 'England'],
+  ['Milton Keynes', 'England'],
+  ['Newcastle-upon-Tyne', 'England'],
+  ['Norwich', 'England'],
+  ['Nottingham', 'England'],
+  ['Oxford', 'England'],
+  ['Peterborough', 'England'],
+  ['Plymouth', 'England'],
+  ['Portsmouth', 'England'],
+  ['Preston', 'England'],
+  ['Ripon', 'England'],
+  ['Salford', 'England'],
+  ['Salisbury', 'England'],
+  ['Sheffield', 'England'],
+  ['Southampton', 'England'],
+  ['Southend-on-Sea', 'England'],
+  ['St Albans', 'England'],
+  ['Stoke on Trent', 'England'],
+  ['Sunderland', 'England'],
+  ['Truro', 'England'],
+  ['Wakefield', 'England'],
+  ['Wells', 'England'],
+  ['Westminster', 'England'],
+  ['Winchester', 'England'],
+  ['Wolverhampton', 'England'],
+  ['Worcester', 'England'],
+  ['York', 'England'],
+  ['Aberdeen', 'Scotland'],
+  ['Dundee', 'Scotland'],
+  ['Dunfermline', 'Scotland'],
+  ['Edinburgh', 'Scotland'],
+  ['Glasgow', 'Scotland'],
+  ['Inverness', 'Scotland'],
+  ['Perth', 'Scotland'],
+  ['Stirling', 'Scotland'],
+  ['Bangor', 'Wales'],
+  ['Cardiff', 'Wales'],
+  ['Newport', 'Wales'],
+  ['St Asaph', 'Wales'],
+  ['St Davids', 'Wales'],
+  ['Swansea', 'Wales'],
+  ['Wrexham', 'Wales'],
+  ['Armagh', 'Northern Ireland'],
+  ['Bangor', 'Northern Ireland'],
+  ['Belfast', 'Northern Ireland'],
+  ['Lisburn', 'Northern Ireland'],
+  ['Londonderry', 'Northern Ireland'],
+  ['Newry', 'Northern Ireland']
+];
+
+function cityLane([city, nation], index) {
+  const searchArea = city === 'Bangor' ? `${city} ${nation}` : city;
+  return {
+    id: `city-${slugify(nation)}-${slugify(city)}`,
+    title: `${city} city trader opportunities`,
+    category: 'food_and_craft',
+    priority: 200 - index,
+    area: city,
+    country: 'United Kingdom',
+    lane_type: 'city',
+    queries: [
+      `${searchArea} market trader application 2026`,
+      `${searchArea} food festival trader application 2026`,
+      `${searchArea} street food vendor application 2026`,
+      `${searchArea} Christmas market trader application 2026`,
+      `${searchArea} event stallholder application 2026`,
+      `${searchArea} craft market stallholder application 2026`
+    ]
+  };
+}
+
+const CITY_LANES = UK_CITIES.map(cityLane);
+
 const COUNTY_LANES = COUNTY_AREAS.map(countyLane);
 const IRELAND_REGION_LANES = IRELAND_REGION_GROUPS.map(irelandRegionLane);
 const IRELAND_LANES = [...IRELAND_ROUTE_LANES, ...IRELAND_REGION_LANES];
 // PitchListUK is a UK product. Republic-of-Ireland lanes remain exported only so
 // historical reports can be interpreted, but they are deliberately excluded
 // from every selectable/scheduled lane set.
-const LANES = [...CORE_LANES, ...FIRST_PARTY_WEAK_REGION_LANES, ...APPROVED_SOURCE_NETWORK_LANES, ...EXPANSION_LANES, ...COUNTY_LANES];
+const LANES = [...CORE_LANES, ...FIRST_PARTY_WEAK_REGION_LANES, ...APPROVED_SOURCE_NETWORK_LANES, ...EXPANSION_LANES, ...CITY_LANES, ...COUNTY_LANES];
 
 function allLaneIds() {
   return LANES.map(lane => lane.id);
@@ -880,6 +982,8 @@ module.exports = {
   IRELAND_ROUTE_LANES,
   IRELAND_REGION_LANES,
   IRELAND_LANES,
+  UK_CITIES,
+  CITY_LANES,
   COUNTY_AREAS,
   COUNTY_LANES,
   allLaneIds,
