@@ -25,16 +25,32 @@ function jsonOut(stdout){
 }
 
 function selectTierOne(events,maxEvents=20){
-  const seen=new Set(), queries=[], selected=[];
+  const seen=new Set(), byTown=new Map();
   for(const event of events){
-    const key=`${String(event.name||'').toLowerCase()}|${String(event.town||'').toLowerCase()}`;
+    const town=String(event.town||event.location||'').trim() || 'unknown';
+    const key=`${String(event.name||'').toLowerCase()}|${town.toLowerCase()}`;
     if(seen.has(key)) continue;
     seen.add(key);
-    const tier1=buildHop2Queries(event).filter(row=>row.tier===1);
-    if(!tier1.length) continue;
-    selected.push(event);
-    queries.push(...tier1.map(row=>row.query));
-    if(selected.length>=maxEvents) break;
+    if(!byTown.has(town)) byTown.set(town,[]);
+    byTown.get(town).push(event);
+  }
+  const towns=[...byTown.keys()];
+  const selected=[], queries=[];
+  let depth=0;
+  while(selected.length<maxEvents){
+    let added=false;
+    for(const town of towns){
+      const event=byTown.get(town)[depth];
+      if(!event) continue;
+      const tier1=buildHop2Queries(event).filter(row=>row.tier===1);
+      if(!tier1.length) continue;
+      selected.push(event);
+      queries.push(...tier1.map(row=>row.query));
+      added=true;
+      if(selected.length>=maxEvents) break;
+    }
+    if(!added) break;
+    depth++;
   }
   return {selected,queries};
 }
