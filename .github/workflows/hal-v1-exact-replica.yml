@@ -45,7 +45,7 @@ jobs:
           const { ACTIVE_FIELDNAMES } = require('./acquisition/config');
           const { toCsv } = require('./acquisition/csv');
           (async () => {
-            const source = new URL('../../../functions/_data/opportunities.mjs', 'file://' + process.cwd() + '/');
+            const source = new URL('../../functions/_data/opportunities.mjs', 'file://' + process.cwd() + '/');
             const mod = await import(source.href + '?seed=' + Date.now());
             const rows = mod.opportunitySnapshot.rows.map(row => ({
               ...Object.fromEntries(ACTIVE_FIELDNAMES.map(k => [k, ''])),
