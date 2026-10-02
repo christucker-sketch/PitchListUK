@@ -7,6 +7,11 @@ const { REGIONS } = require('./config');
 const RELEVANT = /(trader|stallholder|vendor|exhibitor|caterer|street food|food trader|food vendor|trade stand|concession|mobile catering|apply|application|pitch|booking|public event|car boot|fireworks|bonfire|car show|classic car|motorsport|sports event|marathon|running event|community event|council event)/i;
 const NEGATIVE = /(ticket|visitor|spectator|sponsor|volunteer|job|careers|race results|parking)/i;
 const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/ig;
+const ORGANISER_PATTERNS = [
+  /\b([A-Z][A-Za-z0-9&'.’ -]{2,90}?(?:City Council|County Council|Borough Council|District Council|Town Council|Parish Council))\b/,
+  /\b([A-Z][A-Za-z0-9&'.’ -]{2,90}?(?:Show Society|Agricultural Society|Market(?:s)?|Market Operator|Events?|Event Company|Festival|Festival Committee|Business Improvement District|BID|Trust|Association|Chamber of Commerce|Rotary Club|Round Table|Lions Club|Community Association|Town Team))\b/
+];
+const GENERIC_ORGANISER = /^(?:the )?(?:market|markets|festival|event|events|association|trust|council|bid|show society)$/i;
 
 function guessRegion(text) {
   return REGIONS.find(region => new RegExp(`\\b${region.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text)) || '';
@@ -26,6 +31,14 @@ function nextFutureDate(text, today) {
     dates.push(`${match[3]}-${months[match[2].toLowerCase()]}-${String(match[1]).padStart(2, '0')}`);
   }
   return [...new Set(dates)].filter(date => date >= today).sort()[0] || '';
+}
+function guessOrganiser(text, candidate = {}) {
+  const hay = `${candidate.title || ''}. ${candidate.snippet || ''}. ${String(text || '').slice(0, 9000)}`;
+  for (const pattern of ORGANISER_PATTERNS) {
+    const match = hay.match(pattern);
+    if (match && match[1] && !GENERIC_ORGANISER.test(match[1].trim())) return match[1].trim();
+  }
+  return '';
 }
 function titleFromPage(text, url) {
   const title = text.match(/\b([A-Z][A-Za-z&'’\- ]{3,80}(Festival|Market|Show|Fair|Fiesta|Feast|Food & Drink|Car Boot|Fireworks|Bonfire|Marathon|Run|Race|Rally|Motorsport|Classic Car|Public Event|Community Event)[A-Za-z&'’\- ]*)\b/);
@@ -61,7 +74,7 @@ function sourceCandidateToRow(candidate, html, today) {
   return {
     stable_id: '',
     event_name: sourceRule.opportunity_title || titleFromPage(`${candidate.title}. ${text.slice(0,1200)}`, candidate.url),
-    organiser: sourceRule.approved ? sourceRule.organisation : '',
+    organiser: sourceRule.approved ? sourceRule.organisation : guessOrganiser(text, candidate),
     source_url: sourceUrl,
     application_url: sourceRule.official_application_route || appLink || sourceUrl,
     contact_email: emails[0] || '',
@@ -83,4 +96,4 @@ function sourceCandidateToRow(candidate, html, today) {
     publishable: false,
   };
 }
-module.exports = { sourceCandidateToRow, nextFutureDate };
+module.exports = { sourceCandidateToRow, nextFutureDate, guessOrganiser, findApplicationLink };
