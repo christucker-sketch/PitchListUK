@@ -1,0 +1,118 @@
+name: Hal V1 next-discovery pilot
+# Isolated discovery experiment. Never deploys or publishes.
+
+on:
+  push:
+    branches:
+      - test/hal-v1-unapproved-discovery
+    paths:
+      - .github/workflows/hal-v1-next-discovery.yml
+
+permissions:
+  contents: read
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate opportunity pipeline
+        working-directory: operations/opportunity-pipeline
+        run: npm test
+
+      - name: Seed isolated runtime from current production snapshot
+        working-directory: operations/opportunity-pipeline
+        env:
+          PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-next-discovery
+          CURRENT_UK_SNAPSHOT: ${{ runner.temp }}/current-opportunities.mjs
+        run: |
+          set -euo pipefail
+          mkdir -p "$PITCHLIST_PIPELINE_RUNTIME_DIR/data"
+          git show origin/main:functions/_data/opportunities.mjs > "$CURRENT_UK_SNAPSHOT"
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const { pathToFileURL } = require('url');
+          const { ACTIVE_FIELDNAMES } = require('./acquisition/config');
+          const { toCsv } = require('./acquisition/csv');
+          (async () => {
+            const mod = await import(pathToFileURL(process.env.CURRENT_UK_SNAPSHOT).href + '?seed=' + Date.now());
+            const rows = mod.opportunitySnapshot.rows.map(row => ({
+              ...Object.fromEntries(ACTIVE_FIELDNAMES.map(k => [k, ''])),
+              ...row,
+              publishable: row.publishable === true ? 'true' : String(row.publishable || ''),
+              quality_reasons: Array.isArray(row.quality_reasons) ? row.quality_reasons.join(';') : String(row.quality_reasons || ''),
+              first_seen: row.first_seen || row.last_checked || '',
+              last_seen: row.last_seen || row.last_checked || '',
+              lifecycle_status: row.lifecycle_status || 'active'
+            }));
+            const out = path.join(process.env.PITCHLIST_PIPELINE_RUNTIME_DIR, 'data/events-active.csv');
+            fs.writeFileSync(out, toCsv(rows, ACTIVE_FIELDNAMES), { mode: 0o600 });
+            console.log(JSON.stringify({seed_rows: rows.length, output: out}));
+          })().catch(err => { console.error(err); process.exit(1); });
+          NODE
+
+      - name: Run yearless 2027 artefact and organiser lanes
+        working-directory: operations/opportunity-pipeline
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-next-discovery
+          PITCHLIST_SERPER_RUN_BUDGET: '200'
+          PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY: 'true'
+        run: |
+          set -euo pipefail
+          node scripts/grow-database.js --apply             --lane future-yearless-trader-language             --lane future-2027-trader-routes             --lane future-application-artifacts             --lane future-form-hosts             --lane future-organiser-networks             --max-lanes 5 --query-limit 8 --freshness-limit 0
+
+      - name: Run two-hop market-town pilot
+        working-directory: operations/opportunity-pipeline
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-next-discovery
+          PITCHLIST_SERPER_RUN_BUDGET: '200'
+          PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY: 'true'
+          PITCHLIST_HOP1_YEAR: '2027'
+          PITCHLIST_HOP1_MAX_AREAS: '12'
+          PITCHLIST_HOP1_SEARCH_NUM: '6'
+          PITCHLIST_HOP2_MAX_EVENTS: '20'
+          PITCHLIST_HOP2_SEARCH_NUM: '8'
+          PITCHLIST_HOP2_MAX_FETCH: '200'
+        run: |
+          set -euo pipefail
+          cat > "${{ runner.temp }}/areas.txt" <<'EOF'
+          Bakewell
+          Beverley
+          Harrogate
+          Skipton
+          Keswick
+          Ludlow
+          Totnes
+          Falmouth
+          Bury St Edmunds
+          Stratford-upon-Avon
+          Cirencester
+          Hexham
+          EOF
+          node scripts/run-two-hop-pilot.js "${{ runner.temp }}/areas.txt"
+
+      - name: Summarise pilot
+        if: always()
+        working-directory: operations/opportunity-pipeline
+        env:
+          PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-next-discovery
+        run: |
+          echo "### Hal next-discovery pilot" >> "$GITHUB_STEP_SUMMARY"
+          find "$PITCHLIST_PIPELINE_RUNTIME_DIR" -maxdepth 4 -type f -printf '%P\n' | sort >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Upload pilot runtime
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hal-next-discovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hal-next-discovery
+          if-no-files-found: warn
+          retention-days: 7
