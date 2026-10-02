@@ -35,9 +35,12 @@ function nextFutureDate(text, today) {
 }
 function guessOrganiser(text, candidate = {}) {
   const hay = `${candidate.title || ''}. ${candidate.snippet || ''}. ${String(text || '').slice(0, 9000)}`;
-  for (const pattern of ORGANISER_PATTERNS) {
-    const match = hay.match(pattern);
-    if (match && match[1] && !GENERIC_ORGANISER.test(match[1].trim())) return match[1].trim();
+  const segments = hay.split(/[.!?\n]+/).map(value => value.trim()).filter(Boolean);
+  for (const segment of segments) {
+    for (const pattern of ORGANISER_PATTERNS) {
+      const match = segment.match(pattern);
+      if (match && match[1] && !GENERIC_ORGANISER.test(match[1].trim())) return match[1].trim();
+    }
   }
   return '';
 }
