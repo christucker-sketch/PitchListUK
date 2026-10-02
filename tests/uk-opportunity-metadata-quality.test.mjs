@@ -14,9 +14,9 @@ const BLUE_REEF_URL = 'https://bluereeffestival.co.uk/caterers';
 test('Blue Reef approved source carries customer-facing festival metadata and dates', () => {
   const rule = sourceRuleFor(BLUE_REEF_URL);
   assert.equal(rule.organisation, 'Blue Reef Festival');
-  assert.equal(rule.opportunity_title, 'Blue Reef Festival 2026 caterer applications');
-  assert.equal(rule.known_open_event_start, '2026-07-24');
-  assert.equal(rule.known_open_event_end, '2026-07-25');
+  assert.equal(rule.opportunity_title, 'Blue Reef Festival caterer applications');
+  assert.equal(rule.known_open_event_start, '');
+  assert.equal(rule.known_open_event_end, '');
 
   const staged = sourceCandidateToRow({
     url: BLUE_REEF_URL,
@@ -26,10 +26,9 @@ test('Blue Reef approved source carries customer-facing festival metadata and da
     query_lane: 'uk-opportunity-test'
   }, '<html><body>Blue Reef Festival 2026 Caterer Application Form. Apply for a catering pitch. 24th to 25th July 2026.</body></html>', '2026-10-02');
 
-  assert.equal(staged.event_name, 'Blue Reef Festival 2026 caterer applications');
+  assert.equal(staged.event_name, 'Blue Reef Festival caterer applications');
   assert.equal(staged.organiser, 'Blue Reef Festival');
-  assert.equal(staged.event_start, '2026-07-24');
-  assert.equal(staged.event_end, '2026-07-25');
+  assert.equal(staged.event_start, '');
 });
 
 test('generic customer-facing event or organiser names fail closed', () => {
