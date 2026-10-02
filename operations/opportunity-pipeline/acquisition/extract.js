@@ -8,10 +8,11 @@ const RELEVANT = /(trader|stallholder|vendor|exhibitor|caterer|street food|food 
 const NEGATIVE = /(ticket|visitor|spectator|sponsor|volunteer|job|careers|race results|parking)/i;
 const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/ig;
 const ORGANISER_PATTERNS = [
-  /\b([A-Z][A-Za-z0-9&'.’ -]{2,90}?(?:City Council|County Council|Borough Council|District Council|Town Council|Parish Council))\b/,
-  /\b([A-Z][A-Za-z0-9&'.’ -]{2,90}?(?:Show Society|Agricultural Society|Market(?:s)?|Market Operator|Events?|Event Company|Festival|Festival Committee|Business Improvement District|BID|Trust|Association|Chamber of Commerce|Rotary Club|Round Table|Lions Club|Community Association|Town Team))\b/
+  /\b([A-Z][A-Za-z0-9&'.’]*(?:\s+[A-Z][A-Za-z0-9&'.’]*){0,5}\s+(?:City Council|County Council|Borough Council|District Council|Town Council|Parish Council))\b/,
+  /\b([A-Z][A-Za-z0-9&'.’]*(?:\s+[A-Z][A-Za-z0-9&'.’]*){0,5}\s+(?:Show Society|Agricultural Society|Festival Committee|Business Improvement District|Market Operator|Event Company|Community Association|Chamber of Commerce|Rotary Club|Round Table|Lions Club|Town Team|Trust|Association))\b/,
+  /\b([A-Z][A-Za-z0-9&'.’]*(?:\s+[A-Z][A-Za-z0-9&'.’]*){0,4}\s+BID)\b/
 ];
-const GENERIC_ORGANISER = /^(?:the )?(?:market|markets|festival|event|events|association|trust|council|bid|show society)$/i;
+const GENERIC_ORGANISER = /^(?:the )?(?:association|trust|council|bid|show society|agricultural society|market operator|event company)$/i;
 
 function guessRegion(text) {
   return REGIONS.find(region => new RegExp(`\\b${region.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text)) || '';
