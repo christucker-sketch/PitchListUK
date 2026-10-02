@@ -29,3 +29,32 @@ jobs:
         run: npm test
       - name: Run historical parity regression tests
         run: node --test tests/hal-v1-parity.test.mjs
+
+      - name: Run bounded live Hal acquisition
+        working-directory: operations/opportunity-pipeline
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-v1-live-runtime
+          PITCHLIST_SERPER_RUN_BUDGET: '8'
+        run: |
+          set -euo pipefail
+          mkdir -p "$PITCHLIST_PIPELINE_RUNTIME_DIR"
+          node scripts/grow-database.js --apply --max-lanes 8 --query-limit 1
+
+      - name: Summarise isolated Hal runtime
+        if: always()
+        working-directory: operations/opportunity-pipeline
+        env:
+          PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-v1-live-runtime
+        run: |
+          echo "### Isolated Hal V1 live acquisition" >> "$GITHUB_STEP_SUMMARY"
+          find "$PITCHLIST_PIPELINE_RUNTIME_DIR" -maxdepth 3 -type f -printf '%P\n' | sort >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Upload isolated Hal runtime
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hal-v1-live-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hal-v1-live-runtime
+          if-no-files-found: warn
+          retention-days: 7
