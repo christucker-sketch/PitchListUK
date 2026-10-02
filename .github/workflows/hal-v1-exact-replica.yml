@@ -40,7 +40,7 @@ jobs:
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-v1-live-runtime
-          PITCHLIST_SERPER_RUN_BUDGET: '144'
+          PITCHLIST_SERPER_RUN_BUDGET: '251'
           PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY: 'true'
           CURRENT_UK_SNAPSHOT: ${{ runner.temp }}/current-opportunities.mjs
         run: |
@@ -70,7 +70,7 @@ jobs:
             console.log(JSON.stringify({seed_rows: rows.length, seed_source: 'origin/main:functions/_data/opportunities.mjs', output: out}));
           })().catch(err => { console.error(err); process.exit(1); });
           NODE
-          node scripts/grow-database.js --apply --max-lanes 36 --query-limit 4
+          node scripts/grow-database.js --apply --max-lanes 36 --query-limit 31
 
       - name: Summarise isolated Hal runtime
         if: always()
