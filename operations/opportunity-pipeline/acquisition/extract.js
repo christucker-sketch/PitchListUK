@@ -9,7 +9,7 @@ const NEGATIVE = /(ticket|visitor|spectator|sponsor|volunteer|job|careers|race r
 const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/ig;
 const ORGANISER_PATTERNS = [
   /\b([A-Z][A-Za-z0-9&'.’]*(?:\s+[A-Z][A-Za-z0-9&'.’]*){0,5}\s+(?:City Council|County Council|Borough Council|District Council|Town Council|Parish Council))\b/,
-  /\b([A-Z][A-Za-z0-9&'.’]*(?:\s+[A-Z][A-Za-z0-9&'.’]*){0,5}\s+(?:Show Society|Agricultural Society|Festival Committee|Business Improvement District|Market Operator|Event Company|Community Association|Chamber of Commerce|Rotary Club|Round Table|Lions Club|Town Team|Trust|Association))\b/,
+  /\b([A-Z][A-Za-z0-9&'.’]*(?:\s+(?:[A-Z][A-Za-z0-9&'.’]*|&)){0,6}\s+(?:Society|Festival Committee|Business Improvement District|Market Operator|Events? Company|Community Association|Chamber of Commerce|Rotary Club|Round Table|Lions Club|Town Team|Trust|Association))\b/,
   /\b([A-Z][A-Za-z0-9&'.’]*(?:\s+[A-Z][A-Za-z0-9&'.’]*){0,4}\s+BID)\b/
 ];
 const GENERIC_ORGANISER = /^(?:the )?(?:association|trust|council|bid|show society|agricultural society|market operator|event company)$/i;
