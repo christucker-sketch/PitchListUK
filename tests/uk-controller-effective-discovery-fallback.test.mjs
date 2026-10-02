@@ -60,8 +60,9 @@ test('UK controller uses Serper batch when direct graph returns links but no aut
   assert.equal(discovery.serper_credits_used, 1);
   assert.equal(discovery.query_count, 1);
   assert.equal(discovery.direct_candidates_found, 1);
-  assert.equal(discovery.auto_approved_count, 1);
-  assert.equal(discovery.approved_candidates[0].canonical_host, 'example-borough.gov.uk');
+  assert.equal(discovery.auto_approved_count, 0);
+  assert.equal(discovery.approved_candidates.length, 0);
+  assert.ok(discovery.review_queue.some(item => item.canonical_host === 'example-borough.gov.uk'));
   assert.match(discovery.discovery_network, /cloudflare_direct_fetch\+serper_fallback/);
 });
 
@@ -101,7 +102,8 @@ test('UK controller falls back to Serper when a direct-graph source lacks custom
   assert.equal(searchCalls, 4);
   assert.equal(discovery.serper_fallback_used, true);
   assert.equal(discovery.serper_credits_used, 4);
-  assert.equal(discovery.auto_approved_count, 1);
-  assert.equal(discovery.approved_candidates[0].canonical_host, 'example-borough.gov.uk');
+  assert.equal(discovery.auto_approved_count, 0);
+  assert.equal(discovery.approved_candidates.length, 0);
+  assert.ok(discovery.review_queue.some(item => item.canonical_host === 'example-borough.gov.uk'));
   assert.match(discovery.discovery_network, /cloudflare_direct_fetch\+serper_fallback/);
 });

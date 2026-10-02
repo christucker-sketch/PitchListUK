@@ -148,7 +148,7 @@ function candidateInput(outcome, now) {
     url: route, title: result.title, snippet: result.snippet, page_text: pageText,
     organisation: inferOrganisation(result.title, host),
     organiser_type: /\.gov\.uk$/i.test(host) ? 'local-authority' : 'event-organiser',
-    geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : (outcome.plan?.region || ''),
+    geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : '',
     opportunity_type: inferOpportunityType(`${outcome.plan?.query || ''} ${result.title || ''} ${result.snippet || ''}`),
     discovery_query: outcome.plan?.query || result.query || '', discovered_at: now,
     first_party_evidence: /\.gov\.uk$/i.test(host) ? `Official public-service host ${host}` : `Retrieved canonical host ${host}`,
@@ -170,13 +170,9 @@ export function isUkLiveSourceRouteCandidate(value) {
 }
 
 export function autoApprovePublicServiceCandidates(candidates = [], options = {}) {
-  const now = options.now || new Date().toISOString();
-  return candidates.map(item => item.classification === STATUS.AUTO
-    && item.approval_status === 'pending'
-    && !/trusted-source graph/i.test(String(item.geographic_coverage || ''))
-    && isUkLiveSourceRouteCandidate(item.canonical_route)
-    ? Object.freeze({ ...item, approval_status: 'approved', reviewer_decision: 'approved_unambiguous_public_service_first_party', reviewer: 'FindPitches Cloudflare deterministic source automation', decision_timestamp: now })
-    : item);
+  // Hal parity: discovery is evidence collection, never approval authority.
+  // New routes remain pending until they are explicitly reviewed and added to the approved registry.
+  return candidates;
 }
 
 async function fetchAndClassify(items, payload, options, generatedAt) {
@@ -231,7 +227,7 @@ export async function runUkSourceDiscovery(env, payload = {}, options = {}) {
 
   const { outcomes, reviewed } = await fetchAndClassify(items, payload, options, generatedAt);
   const approved = reviewed.filter(item => item.approval_status === 'approved');
-  const reviewQueue = reviewed.filter(item => item.classification === STATUS.REVIEW && item.approval_status === 'pending');
+  const reviewQueue = reviewed.filter(item => item.approval_status === 'pending' && (item.classification === STATUS.REVIEW || item.classification === STATUS.AUTO));
   const classifications = reviewed.reduce((counts, item) => ({ ...counts, [item.classification]: (counts[item.classification] || 0) + 1 }), {});
 
   return Object.freeze({

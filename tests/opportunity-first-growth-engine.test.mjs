@@ -43,7 +43,7 @@ test('Canada cross-host application routes remain review-gated', () => {
   assert.equal(result.reason, 'canada_cross_host_application_requires_review');
 });
 
-test('UK deterministic first-party review candidates are promoted without weakening rejected classes', () => {
+test('UK cloud orchestration leaves new private first-party routes pending review', () => {
   const candidate = {
     classification: 'manual-review-required',
     rejection_reason: 'private_or_non_public_service_source_requires_review',
@@ -58,9 +58,9 @@ test('UK deterministic first-party review candidates are promoted without weaken
     robots_result: 'allowed'
   };
   const result = promoteUkOpportunityFirstCandidates({ approved_candidates: [], review_queue: [candidate], auto_approved_count: 0 });
-  assert.equal(result.approved_candidates.length, 1);
-  assert.equal(result.review_queue.length, 0);
-  assert.equal(result.approved_candidates[0].reviewer_decision, 'approved_deterministic_first_party_live_trader_route');
+  assert.equal(result.approved_candidates.length, 0);
+  assert.equal(result.review_queue.length, 1);
+  assert.equal(result.review_queue[0].approval_status, 'pending');
 });
 
 test('UK direct-graph private promotion refuses placeholder geography', () => {
@@ -97,7 +97,7 @@ test('UK opportunity evidence rejects careers information but accepts actionable
   }), true);
 });
 
-test('UK opportunity-first lane accepts a private first-party market application page', async () => {
+test('UK opportunity-first lane discovers but does not approve a new private first-party market application page', async () => {
   const search = async () => [{
     rank: 1,
     title: 'Example Market Trader Applications',
@@ -115,9 +115,9 @@ test('UK opportunity-first lane accepts a private first-party market application
     candidate_limit: 1,
     as_of: '2026-09-17T20:00:00.000Z'
   }, { search, fetchPage });
-  assert.equal(result.approved_count, 1);
-  assert.equal(result.review_count, 0);
-  assert.equal(result.approved_candidates[0].approval_status, 'approved');
+  assert.equal(result.approved_count, 0);
+  assert.equal(result.review_count, 1);
+  assert.equal(result.review_queue[0].approval_status, 'pending');
 });
 
 test('US growth plan cannot starve a state merely because it has no seed sources', () => {

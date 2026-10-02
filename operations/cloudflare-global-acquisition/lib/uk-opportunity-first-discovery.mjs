@@ -149,12 +149,8 @@ export function hasUkActionableOpportunityEvidence({ route = '', title = '', sni
 }
 
 function promoteCandidate(candidate, now) {
-  if (candidate.classification === STATUS.AUTO && candidate.approval_status === 'pending') {
-    return Object.freeze({ ...candidate, approval_status: 'approved', reviewer_decision: 'approved_public_service_opportunity', reviewer: 'FindPitches Cloudflare deterministic opportunity evidence', decision_timestamp: now });
-  }
-  if (candidate.classification === STATUS.REVIEW && candidate.rejection_reason === 'private_or_non_public_service_source_requires_review' && candidate.approval_status === 'pending') {
-    return Object.freeze({ ...candidate, approval_status: 'approved', reviewer_decision: 'approved_deterministic_first_party_live_trader_route', reviewer: 'FindPitches Cloudflare deterministic opportunity evidence', decision_timestamp: now });
-  }
+  // Hal parity: a fetched search result is still only a candidate.
+  // Approval belongs to the reviewed exact-route registry, not cloud inference.
   return candidate;
 }
 
@@ -216,7 +212,7 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
       page_text: page.text,
       organisation: organisation(item.result, page.url || item.result.url),
       organiser_type: /\.gov\.uk$/i.test(host) ? 'local-authority' : 'event-organiser',
-      geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : item.plan.region,
+      geographic_coverage: inferredGeography !== 'Unknown' ? inferredGeography : '',
       opportunity_type: inferOpportunityType(`${item.plan.query} ${item.result.title || ''} ${item.result.snippet || ''} ${page.text || ''}`),
       discovery_query: item.plan.query,
       discovered_at: now,

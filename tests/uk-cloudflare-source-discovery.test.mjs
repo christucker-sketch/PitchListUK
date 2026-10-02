@@ -53,7 +53,7 @@ test('UK rapid discovery plan targets eight high-yield public-service applicatio
   assert.ok(plans.some(item => /concession pitch/i.test(item.query)));
 });
 
-test('UK discovery is bounded and auto-approves only deterministic public-service sources', async () => {
+test('UK discovery is bounded and leaves all newly discovered sources pending review', async () => {
   const discovery = await runUkSourceDiscovery({ SERPER_API_KEY: 'fixture' }, {
     query_limit: 1,
     results_per_query: 2,
@@ -68,11 +68,10 @@ test('UK discovery is bounded and auto-approves only deterministic public-servic
   assert.equal(discovery.serper_credits_used, 1);
   assert.equal(discovery.serper_fallback_used, true);
   assert.equal(discovery.candidates_classified, 2);
-  assert.equal(discovery.auto_approved_count, 1);
-  assert.equal(discovery.manual_review_count, 1);
-  assert.equal(discovery.approved_candidates[0].canonical_host, 'example-borough.gov.uk');
-  assert.equal(discovery.approved_candidates[0].approval_status, 'approved');
-  assert.equal(discovery.review_queue[0].canonical_host, 'example-artisan-market.co.uk');
+  assert.equal(discovery.auto_approved_count, 0);
+  assert.equal(discovery.approved_candidates.length, 0);
+  assert.equal(discovery.manual_review_count, 2);
+  assert.deepEqual(discovery.review_queue.map(item => item.canonical_host).sort(), ['example-artisan-market.co.uk', 'example-borough.gov.uk']);
   assert.equal(discovery.review_queue[0].approval_status, 'pending');
   assert.equal(discovery.production_opportunity_write_attempted, false);
   assert.equal(discovery.source_registry_write_attempted, false);
@@ -113,7 +112,7 @@ test('UK direct graph keeps placeholder-geography candidates unapproved without 
   assert.equal(discovery.auto_approved_count, 0);
 });
 
-test('UK source promotion plan is additions-only and deterministic', async () => {
+test('UK source promotion plan cannot publish an unreviewed discovery', async () => {
   const discovery = await runUkSourceDiscovery({ SERPER_API_KEY: 'fixture' }, {
     query_limit: 1,
     results_per_query: 2,
@@ -131,13 +130,8 @@ test('UK source promotion plan is additions-only and deterministic', async () =>
   };
   const plan = planUkSourceRegistry(base, discovery.approved_candidates, { generated_at: NOW });
   assert.equal(plan.summary.before_count, 0);
-  assert.equal(plan.summary.additions, 1);
-  assert.equal(plan.summary.after_count, 1);
-  assert.equal(plan.summary.removals, 0);
-  assert.equal(plan.registry[0].host, 'example-borough.gov.uk');
-  assert.equal(plan.registry[0].terms_policy, 'public-service');
-  assert.equal(plan.registry[0].approval_decision, 'approved_unambiguous_public_service_first_party');
-  assert.match(ukSourceBranchName(plan, base.mainSha), /^sources\/cloud-uk-growth-[a-f0-9]{16}-base-a{16}$/);
+  assert.equal(plan.summary.additions, 0);
+  assert.equal(plan.summary.after_count, 0);
 });
 
 test('UK source promotion returns clean zero growth with no approved candidates', () => {
@@ -171,5 +165,18 @@ test('UK discovery prefers page-backed geography over the search query region', 
     search: async (_env, query) => [{ query, rank: 1, title: 'Winchester City Council markets - apply to trade', url: 'https://new-winchester.gov.uk/business/street-market-trading', snippet: 'Apply to trade at Winchester market in England.' }],
     fetchCandidate: async (result, plan) => ({ result, plan, fetch_status: 'fetched', final_url: result.url, page_text: 'England market. Apply to trade at Winchester market. Trader applications are open and pitches are available.' })
   });
-  assert.equal(discovery.approved_candidates[0].geographic_coverage, 'Hampshire');
+  assert.equal(discovery.approved_candidates.length, 0);
+  assert.equal(discovery.review_queue.length, 1);
+  assert.equal(discovery.review_queue[0].geographic_coverage, 'Hampshire');
+});
+
+
+test('UK cloud discovery cannot auto-approve the three routes admitted by regression #1891', () => {
+  const candidates = [
+    { classification: 'auto-approvable-first-party', approval_status: 'pending', geographic_coverage: 'Ireland - West', canonical_route: 'https://bedford.gov.uk' },
+    { classification: 'auto-approvable-first-party', approval_status: 'pending', geographic_coverage: 'Greater Manchester', canonical_route: 'https://buckinghamshire.gov.uk/business/street-use-and-trading-licences/become-a-market-trader' },
+    { classification: 'manual-review-required', approval_status: 'pending', geographic_coverage: 'London', canonical_route: 'https://wearemiddlesbrough.com/venue/orange-pip-market' }
+  ];
+  const reviewed = autoApprovePublicServiceCandidates(candidates, { now: NOW });
+  assert.deepEqual(reviewed.map(item => item.approval_status), ['pending', 'pending', 'pending']);
 });
