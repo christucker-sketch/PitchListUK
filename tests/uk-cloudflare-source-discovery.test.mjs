@@ -70,8 +70,8 @@ test('UK discovery is bounded and leaves all newly discovered sources pending re
   assert.equal(discovery.candidates_classified, 2);
   assert.equal(discovery.auto_approved_count, 0);
   assert.equal(discovery.approved_candidates.length, 0);
-  assert.equal(discovery.manual_review_count, 1);
-  assert.equal(discovery.review_queue[0].canonical_host, 'example-artisan-market.co.uk');
+  assert.equal(discovery.manual_review_count, 2);
+  assert.deepEqual(discovery.review_queue.map(item => item.canonical_host).sort(), ['example-artisan-market.co.uk', 'example-borough.gov.uk']);
   assert.equal(discovery.review_queue[0].approval_status, 'pending');
   assert.equal(discovery.production_opportunity_write_attempted, false);
   assert.equal(discovery.source_registry_write_attempted, false);
@@ -167,7 +167,8 @@ test('UK discovery prefers page-backed geography over the search query region', 
     search: async (_env, query) => [{ query, rank: 1, title: 'Winchester City Council markets - apply to trade', url: 'https://new-winchester.gov.uk/business/street-market-trading', snippet: 'Apply to trade at Winchester market in England.' }],
     fetchCandidate: async (result, plan) => ({ result, plan, fetch_status: 'fetched', final_url: result.url, page_text: 'England market. Apply to trade at Winchester market. Trader applications are open and pitches are available.' })
   });
-  assert.equal(discovery.approved_candidates[0].geographic_coverage, 'Hampshire');
+  assert.equal(discovery.approved_candidates.length, 0);
+  assert.equal(discovery.review_queue[0].geographic_coverage, 'Hampshire');
 });
 
 
