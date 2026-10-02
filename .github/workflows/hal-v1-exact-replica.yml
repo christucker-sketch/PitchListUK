@@ -6,6 +6,12 @@ on:
     branches:
       - test/hal-v1-unapproved-discovery
   workflow_dispatch:
+    inputs:
+      run_acquisition:
+        description: 'Run the paid isolated acquisition sweep'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -36,6 +42,7 @@ jobs:
         run: node --test tests/hal-v1-parity.test.mjs
 
       - name: Run 76-city Hal discovery against current production snapshot
+        if: github.event_name == 'workflow_dispatch' && inputs.run_acquisition == true
         working-directory: operations/opportunity-pipeline
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
