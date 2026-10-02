@@ -77,7 +77,7 @@ jobs:
           )
           args=()
           for lane in "${CITY_LANES[@]}"; do args+=(--lane "$lane"); done
-          node scripts/grow-database.js --apply "${args[@]}" --query-limit 6
+          node scripts/grow-database.js --apply "${args[@]}" --max-lanes 76 --query-limit 6
 
       - name: Summarise isolated Hal runtime
         if: always()
