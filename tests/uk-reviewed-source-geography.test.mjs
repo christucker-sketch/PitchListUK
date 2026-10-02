@@ -22,3 +22,11 @@ test('approved UK source routes exclude informational careers job-profile pages'
   const bad = APPROVED_SOURCES.filter(source => /\/job-profiles?\//i.test(String(source.official_application_route || '')));
   assert.deepEqual(bad.map(source => source.host), []);
 });
+
+
+test('approved UK source registry excludes the three incorrectly auto-approved #1891 routes', () => {
+  const routes = new Set(APPROVED_SOURCES.map(source => source.official_application_route));
+  assert.equal(routes.has('https://bedford.gov.uk'), false);
+  assert.equal(routes.has('https://buckinghamshire.gov.uk/business/street-use-and-trading-licences/become-a-market-trader'), false);
+  assert.equal(routes.has('https://wearemiddlesbrough.com/venue/orange-pip-market'), false);
+});
