@@ -50,6 +50,25 @@ test('unapproved sources and robot exclusions fail closed', async () => {
   assert.equal((await robot.fetchWithPolicy('https://bristol.gov.uk/private/vendor')).classification, 'robots_disallowed');
 });
 
+test('discovery mode fetches unapproved sources while normal policy still fails closed', async () => {
+  const calls = [];
+  const fetchImpl = async url => {
+    calls.push(url);
+    if (url.endsWith('/robots.txt')) return response(200, 'User-agent: *\nDisallow:');
+    return response(200, '<html><body>Apply for a trader pitch</body></html>', url);
+  };
+
+  const normal = createPolicyFetcher({ fetchImpl });
+  const denied = await normal.fetchWithPolicy('https://unknown.example/vendors');
+  assert.equal(denied.classification, 'source_not_approved');
+
+  const discovery = createPolicyFetcher({ fetchImpl, allowUnapprovedDiscovery: true, sleep: async () => {} });
+  const fetched = await discovery.fetchWithPolicy('https://unknown.example/vendors');
+  assert.equal(fetched.ok, true);
+  assert.equal(fetched.final_url, 'https://unknown.example/vendors');
+  assert.deepEqual(calls.slice(-2), ['https://unknown.example/robots.txt', 'https://unknown.example/vendors']);
+});
+
 test('approved weak-region sources retain operational ownership and polling metadata', () => {
   for (const url of [
     'https://durhammarkets.co.uk/become-a-trader/',
