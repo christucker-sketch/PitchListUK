@@ -3,6 +3,7 @@ const assert=require('node:assert/strict');
 const { cleanTitle, hop1Queries, seedsFromResults, dedupeSeeds }=require('../scripts/discover-event-seeds');
 const { cleanName, isGeneric, buildHop2Queries }=require('../scripts/generate-hop2-queries');
 const { analyse }=require('../scripts/audit-rejects');
+const { selectTierOne }=require('../scripts/run-two-hop-pilot');
 
 test('hop one uses event discovery language without vendor terms',()=>{
   const q=hop1Queries('York',2027);
@@ -50,4 +51,16 @@ test('reject audit flags recurring and opening-later trader routes',()=>{
   assert.ok(row.audit_flags.includes('recurring'));
   assert.ok(row.audit_flags.includes('trader_terms'));
   assert.ok(row.audit_score>=5);
+});
+
+
+test('two-hop pilot only spends tier-one queries on a bounded seed set',()=>{
+  const plan=selectTierOne([
+    {name:'York Food Festival 2027',town:'York'},
+    {name:'Skipton Christmas Market 2027',town:'Skipton'},
+    {name:'York Food Festival 2027',town:'York'}
+  ],2);
+  assert.equal(plan.selected.length,2);
+  assert.equal(plan.queries.length,6);
+  assert.ok(plan.queries.every(q=>!/filetype:pdf|2027 traders OR/.test(q)));
 });
