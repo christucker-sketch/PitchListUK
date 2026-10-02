@@ -147,7 +147,8 @@ function evaluateOpportunity(raw, options = {}) {
   if (ONE_OFF_EVENT.test(row.event_name || '') && !row.event_start && !row.application_deadline) reasons.push('undated_one_off_event');
   if (!row.query_lane || !row.query_text) reasons.push('provenance_missing');
 
-  const hasDirectRoute = DIRECT_EVIDENCE.test(directText) || Boolean(row.contact_email);
+  const hasDistinctApplicationRoute = Boolean(row.application_url && canonicalUrl(row.application_url) !== canonicalUrl(row.source_url));
+  const hasDirectRoute = DIRECT_EVIDENCE.test(directText) || Boolean(row.contact_email) || hasDistinctApplicationRoute;
   const openingLater = OPENING_LATER.test(sourceText);
   const recurring = RECURRING_SIGNAL.test(sourceText) || rule.recurring === true || rule.opportunity_type === 'recurring_market';
   const timeClosed = reasons.includes('event_expired') || reasons.includes('application_closed');
