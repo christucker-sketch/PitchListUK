@@ -24,7 +24,7 @@ jobs:
         run: |
           set -euo pipefail
           changed="$(git diff --name-only 18ee3268e7c81e754f24160c77dd64ac4a7906aa HEAD -- operations/opportunity-pipeline | sort)"
-          expected="$(printf '%s\n'             operations/opportunity-pipeline/lib/fetch-policy.js             operations/opportunity-pipeline/scripts/acquire-events.js             operations/opportunity-pipeline/tests/fetch-policy.test.js | sort)"
+          expected="$(printf '%s\n' operations/opportunity-pipeline/lib/fetch-policy.js operations/opportunity-pipeline/lib/opportunity-safety.js operations/opportunity-pipeline/scripts/acquire-events.js operations/opportunity-pipeline/scripts/clean-staged-events.js operations/opportunity-pipeline/tests/fetch-policy.test.js operations/opportunity-pipeline/tests/opportunity-safety.test.js | sort)"
           test "$changed" = "$expected"
       - name: Exercise original Hal growth entry point without network or writes
         working-directory: operations/opportunity-pipeline
