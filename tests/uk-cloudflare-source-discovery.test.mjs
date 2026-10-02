@@ -168,6 +168,7 @@ test('UK discovery prefers page-backed geography over the search query region', 
     fetchCandidate: async (result, plan) => ({ result, plan, fetch_status: 'fetched', final_url: result.url, page_text: 'England market. Apply to trade at Winchester market. Trader applications are open and pitches are available.' })
   });
   assert.equal(discovery.approved_candidates.length, 0);
+  assert.equal(discovery.review_queue.length, 1);
   assert.equal(discovery.review_queue[0].geographic_coverage, 'Hampshire');
 });
 
