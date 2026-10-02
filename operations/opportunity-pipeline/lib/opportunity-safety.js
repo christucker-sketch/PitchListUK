@@ -152,11 +152,13 @@ function evaluateOpportunity(raw, options = {}) {
   const openingLater = OPENING_LATER.test(sourceText);
   const recurring = RECURRING_SIGNAL.test(sourceText) || rule.recurring === true || rule.opportunity_type === 'recurring_market';
   const timeClosed = reasons.includes('event_expired') || reasons.includes('application_closed');
-  const watchable = hasDirectRoute && (openingLater || (recurring && timeClosed));
+  const undatedDirectRoute = hasDirectRoute && reasons.includes('undated_one_off_event');
+  const watchable = hasDirectRoute && (openingLater || (recurring && timeClosed) || undatedDirectRoute);
   const hardRejected = reasons.includes('non_uk_evidence');
   const needsWork = reasons.some(reason => ['uk_evidence_missing', 'named_organiser_missing', 'direct_application_or_contact_missing', 'provenance_missing', 'available_pitch_evidence_missing'].includes(reason));
   const review = reasons.some(reason => ['source_not_approved', 'undated_one_off_event'].includes(reason));
-  if (watchable) reasons.push('opening_soon_or_recurring');
+  if (openingLater || (recurring && timeClosed)) reasons.push('opening_soon_or_recurring');
+  if (undatedDirectRoute) reasons.push('undated_trader_route_watch');
   row.quality_status = hardRejected ? 'rejected' : watchable ? 'watch' : timeClosed ? 'rejected' : needsWork ? 'needs_work' : review ? 'review' : 'customer_ready';
   row.quality_reasons = [...new Set(reasons)];
   row.publishable = row.quality_status === 'customer_ready';
