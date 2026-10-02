@@ -64,6 +64,34 @@ jobs:
           NODE
           node scripts/grow-database.js --apply --max-lanes 36 --query-limit 4
 
+      - name: Run exact Hal approved-source growth loop in isolated canonical clone
+        env:
+          HAL_REPLICA_RUNTIME: ${{ runner.temp }}/hal-v1-approved-source-runtime
+        run: |
+          set -euo pipefail
+          origin="${RUNNER_TEMP}/hal-v1-origin.git"
+          checkout="${RUNNER_TEMP}/hal-v1-main"
+          rm -rf "$origin" "$checkout" "$HAL_REPLICA_RUNTIME"
+          git clone --bare . "$origin"
+          git --git-dir="$origin" update-ref refs/heads/main "$GITHUB_SHA"
+          git clone "$origin" "$checkout"
+          cd "$checkout"
+          git checkout main
+          PITCHLIST_PIPELINE_RUNTIME_DIR="$HAL_REPLICA_RUNTIME" \
+          PITCHLIST_AUTOMATIC_ADDITIONS_ENABLED=false \
+          node scripts/run-approved-source-growth.js --force | tee "$RUNNER_TEMP/hal-v1-approved-source-growth.json"
+
+      - name: Upload exact Hal approved-source growth evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hal-v1-approved-source-growth-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/hal-v1-approved-source-runtime
+            ${{ runner.temp }}/hal-v1-approved-source-growth.json
+          if-no-files-found: warn
+          retention-days: 7
+
       - name: Summarise isolated Hal runtime
         if: always()
         working-directory: operations/opportunity-pipeline
