@@ -75,7 +75,7 @@ async function main() {
     await sleep(350);
   }
   const deduped = Array.from(new Map(candidates.map(candidate => [canonicalUrl(candidate.url), candidate])).values()).filter(candidate => candidate.url).slice(0, maxFetch);
-  const { fetchWithPolicy } = createPolicyFetcher();
+  const { fetchWithPolicy } = createPolicyFetcher({ allowUnapprovedDiscovery: true });
   const outcomes = await mapBounded(deduped, concurrency, async candidate => {
     const result = await fetchWithPolicy(candidate.url);
     if (!result.ok) return { candidate, failure: result.classification, attempts: result.attempts };
