@@ -1,0 +1,70 @@
+name: UK authoritative status snapshot
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/uk-authoritative-status-snapshot.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-uk-authoritative-status-snapshot
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Fetch authoritative UK controller receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --silent --show-error --fail-with-body \
+            --retry 3 --retry-all-errors \
+            https://findpitches-global-acquisition-shadow.ctucker.workers.dev/ops/uk-status.json \
+            -o uk-status.json
+          jq -e '
+            .ok == true and
+            .available == true and
+            .authority == "authoritative" and
+            (.state_version | type == "number") and
+            (.production_count | type == "number") and
+            (.source_count | type == "number") and
+            (.totals.discovery_runs | type == "number") and
+            (.totals.acquisition_runs | type == "number")
+          ' uk-status.json >/dev/null
+
+      - name: Print safe status summary
+        shell: bash
+        run: |
+          jq '{
+            generated_at,
+            status,
+            state_version,
+            production_count,
+            source_count,
+            totals,
+            cycle,
+            query_offset,
+            query_limit,
+            last_discovery,
+            last_acquisition,
+            recent_results,
+            decision,
+            blocker,
+            updated_at
+          }' uk-status.json
+
+      - name: Upload authoritative status snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: uk-authoritative-status-${{ github.run_id }}-${{ github.run_attempt }}
+          path: uk-status.json
+          retention-days: 2
+          if-no-files-found: error
