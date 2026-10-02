@@ -118,6 +118,32 @@ test('duplicate-only eligible UK rows become a safe zero-addition manifest', () 
   assert.equal(manifest.automation.held_existing_routes[0].reason, 'duplicate_identity_already_in_production');
 });
 
+test('high duplicate rate does not abort a batch when duplicates are individually filtered', () => {
+  const sources = approvedSources(5);
+  const existingRows = sources.slice(0, 4).map((source, index) => stagedRow(source, { id: `existing-${index}` }));
+  const candidateRows = [
+    ...sources.slice(0, 4).map(source => stagedRow(source)),
+    stagedRow(sources[4], { event_name: 'Net New Approved Opportunity' })
+  ];
+  const snapshot = { exported_at: '2026-09-01T00:00:00.000Z', source: 'baseline', total: existingRows.length, rows: existingRows };
+  const manifest = buildAutomaticAdditionManifest({
+    snapshot,
+    rows: candidateRows,
+    directReport: {
+      mode: 'direct-approved-source-fetch',
+      generated_at: '2026-09-08T16:10:00.000Z',
+      serper_credits_used: 0,
+      fetched_urls: candidateRows.map(row => row.source_url)
+    },
+    reviewedCommit: 'e'.repeat(40),
+    today: '2026-09-08',
+    maxDuplicateRate: 60
+  });
+  assert.equal(manifest.changes.additions.length, 1);
+  assert.equal(manifest.automation.observed_duplicate_rate, 80);
+  assert.equal(manifest.automation.duplicate_rate_exceeded, true);
+});
+
 test('UK automatic publication requires direct zero-Serper attestation', () => {
   const source = approvedSource();
   const snapshot = { exported_at: '2026-09-01T00:00:00.000Z', source: 'baseline', total: 0, rows: [] };
