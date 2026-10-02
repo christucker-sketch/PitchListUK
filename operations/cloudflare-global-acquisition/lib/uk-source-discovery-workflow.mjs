@@ -34,19 +34,8 @@ function addClassificationCounts(left = {}, right = {}) {
 }
 
 function deterministicPrivateFirstParty(candidate, now) {
-  if (!candidate || candidate.classification !== 'manual-review-required') return null;
-  if (candidate.rejection_reason !== 'private_or_non_public_service_source_requires_review') return null;
-  if (!candidate.canonical_route || !candidate.canonical_host || !candidate.organisation || !candidate.geographic_coverage || !candidate.opportunity_type) return null;
-  if (!isUkLiveSourceRouteCandidate(candidate.canonical_route)) return null;
-  if (/trusted-source graph/i.test(String(candidate.geographic_coverage || ''))) return null;
-  if (!candidate.trader_application_evidence || candidate.fetch_status !== 'fetched' || candidate.robots_result !== 'allowed') return null;
-  return Object.freeze({
-    ...candidate,
-    approval_status: 'approved',
-    reviewer_decision: 'approved_deterministic_first_party_live_trader_route',
-    reviewer: 'FindPitches Cloudflare deterministic opportunity evidence',
-    decision_timestamp: now
-  });
+  // Hal parity: cloud orchestration cannot grant approval to a newly discovered route.
+  return null;
 }
 
 export function promoteUkOpportunityFirstCandidates(discovery, { now = new Date().toISOString() } = {}) {
