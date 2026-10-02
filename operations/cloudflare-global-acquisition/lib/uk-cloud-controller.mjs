@@ -508,6 +508,44 @@ async function reconcileExactFrozenUkV2338(stub, snapshot) {
   };
 }
 
+
+export function migrateLegacyUkPlanState(state, { now = new Date().toISOString() } = {}) {
+  if (!state || state.controller_kind !== 'uk') return null;
+  if (Number(state.plan_size || 0) !== 96 || UK_PLAN_SIZE <= 96) return null;
+  if (Number(state.cycle || 0) < 1) return null;
+  if (state.status !== 'ready_discovery' || state.active_instance || state.cloud_controller_intent || state.pending_source_pr || state.pending_data_pr || state.pending_deployment) return null;
+  const next = structuredClone(state);
+  next.plan_size = UK_PLAN_SIZE;
+  next.query_offset = Math.max(96, Number(next.query_offset || 0));
+  appendResult(next, {
+    mode: 'controller_migration',
+    migrated_at: String(now),
+    migration_reason: 'expand_legacy_96_query_window',
+    previous_plan_size: 96,
+    plan_size: UK_PLAN_SIZE,
+    query_offset: next.query_offset
+  });
+  next.updated_at = String(now);
+  return next;
+}
+
+async function migrateLegacyUkPlanCheckpoint(stub, snapshot) {
+  const next = migrateLegacyUkPlanState(snapshot.state);
+  if (!next) return null;
+  const written = await checkpoint(stub, snapshot, next);
+  return {
+    ok: true,
+    executed: true,
+    phase: 'legacy_query_window_migrated',
+    previous_plan_size: 96,
+    plan_size: UK_PLAN_SIZE,
+    query_offset: next.query_offset,
+    state_version: written.version,
+    state_sha256: written.sha256,
+    next_status: next.status
+  };
+}
+
 export async function runUkCloudControllerTick(env, { execute = false } = {}) {
   const stub = ukControllerStateStub(env);
   let snapshot = await readSnapshot(stub);
@@ -518,8 +556,10 @@ export async function runUkCloudControllerTick(env, { execute = false } = {}) {
   }
   const exactRecovery = execute && snapshot.authority === 'authoritative' && globalUkControllerCutoverEnabled(env) ? await reconcileExactFrozenUkV2338(stub, snapshot) : null;
   if (exactRecovery) return exactRecovery;
-  const decision = ukControllerDecision(snapshot.state);
   const cutoverEnabled = globalUkControllerCutoverEnabled(env);
+  const planMigration = execute && snapshot.authority === 'authoritative' && cutoverEnabled ? await migrateLegacyUkPlanCheckpoint(stub, snapshot) : null;
+  if (planMigration) return planMigration;
+  const decision = ukControllerDecision(snapshot.state);
   if (!execute || snapshot.authority !== 'authoritative' || !cutoverEnabled) {
     return {
       ok: true,

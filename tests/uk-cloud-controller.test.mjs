@@ -4,6 +4,7 @@ import test from 'node:test';
 import {
   buildInitialUkControllerState,
   globalUkControllerCutoverEnabled,
+  migrateLegacyUkPlanState,
   recoverUkActiveWorkflowState,
   UK_ACTIVE_WORKFLOW_STALE_MS,
   ukActiveWorkflowIsStale,
@@ -25,6 +26,24 @@ test('UK controller starts in discovery-ready shadow-compatible state', () => {
   assert.equal(state.source_count, 64);
   assert.equal(ukControllerDecision(state).action, 'start_discovery');
   assert.equal(validateControllerStateText(`${JSON.stringify(state)}\n`).controller_kind, 'uk');
+});
+
+test('UK controller migrates a completed legacy 96-query cycle into the unreached expansion window', () => {
+  const state = buildInitialUkControllerState({ productionCount: 290, sourceCount: 22, mainSha: 'a'.repeat(40), now: '2026-10-02T12:00:00.000Z' });
+  state.plan_size = 96;
+  state.query_offset = 48;
+  state.cycle = 11;
+  state.status = 'ready_discovery';
+  const migrated = migrateLegacyUkPlanState(state, { now: '2026-10-02T13:00:00.000Z' });
+  assert.ok(migrated);
+  assert.equal(migrated.plan_size, UK_OPPORTUNITY_PLAN_SIZE);
+  assert.equal(migrated.query_offset, 96);
+  assert.equal(migrated.cycle, 11);
+  assert.equal(migrated.status, 'ready_discovery');
+  assert.equal(migrated.results.at(-1).migration_reason, 'expand_legacy_96_query_window');
+
+  state.active_instance = { id: 'busy', mode: 'discovery' };
+  assert.equal(migrateLegacyUkPlanState(state), null);
 });
 
 test('UK controller decisions preserve reserved two-phase execution', () => {
