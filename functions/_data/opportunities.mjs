@@ -1,7 +1,7 @@
 export const opportunitySnapshot = {
-  "exported_at": "2026-09-19T08:55:59Z",
-  "source": "operator-reviewed:uk-growth-repair-2026-09-19",
-  "total": 290,
+  "exported_at": "2026-10-02T14:49:13.284Z",
+  "source": "global-uk-approved-additions:ac0ec7e777a693b5bed12e3cb98c94aa11654fb5134779bc5f6cf2e2fbb801a6",
+  "total": 291,
   "rows": [
     {
       "id": "OPP-00495",
@@ -10145,6 +10145,42 @@ export const opportunitySnapshot = {
       "coordinate_source": "area-centroid",
       "coordinate_precision": "area",
       "coordinate_label": "Essex"
+    },
+    {
+      "id": "opp_d6c8c9ab53b62bff0e99",
+      "event_name": "Caterers",
+      "organiser": "Caterers",
+      "location": "Kent",
+      "county": "Kent",
+      "region": "Kent",
+      "event_start": "",
+      "event_end": "",
+      "application_deadline": "",
+      "stall_fee": "",
+      "vendor_categories": "street food; mobile catering; food traders",
+      "last_checked": "2026-10-02",
+      "freshness_status": "fresh",
+      "freshness_age_days": 0,
+      "confidence": "low",
+      "quality_status": "customer_ready",
+      "publishable": true,
+      "area_confidence": "region",
+      "route_type": "festival_trader_application",
+      "organiser_type": "market_operator",
+      "country": "United Kingdom",
+      "jurisdiction": "GB",
+      "currency": "GBP",
+      "market_domain": "pitchlist.uk",
+      "tax_region": "UK",
+      "buyer_fit_tags": "street food;mobile catering;food traders",
+      "notes": "Automatically staged from a directly fetched, approved first-party source on 2026-10-02.",
+      "application_url": "https://bluereeffestival.co.uk/caterers",
+      "source_url": "https://bluereeffestival.co.uk/caterers",
+      "latitude": 51.2787,
+      "longitude": 0.5217,
+      "coordinate_source": "area-centroid",
+      "coordinate_precision": "area",
+      "coordinate_label": "Kent"
     }
   ]
 };
