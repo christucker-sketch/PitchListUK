@@ -1,21 +1,5 @@
 [
   {
-    "host": "bedford.gov.uk",
-    "organisation": "Bedford Kite and Motoring Festival 2025 Trade Pitch Pack",
-    "type": "local-authority",
-    "terms_policy": "public-service",
-    "geographic_coverage": "Ireland - West",
-    "opportunity_type": "festival_trader_application",
-    "official_application_route": "https://bedford.gov.uk",
-    "recurring": false,
-    "recommended_polling_days": 30,
-    "opportunity_title": "Bedford Kite and Motoring Festival 2025 Trade Pitch Pack",
-    "source_path_prefix": "/",
-    "approval_evidence_hash": "c27d095cb4ede1d9d2def0bf2f68483dea44082e5439d63d22796fd2a5d0a89e",
-    "approval_decision": "approved_unambiguous_public_service_first_party",
-    "approval_manifest_hash": "cf684ec3f176b7ac9034ceb6561556647a9269ca4838e2dc160a5ea13c1c91fc"
-  },
-  {
     "host": "biglovefestival.co.uk",
     "organisation": "Food Trader Pitches at Big Love",
     "type": "event-organiser",
@@ -78,22 +62,6 @@
     "approval_evidence_hash": "4cac9f61f92637622d4753d0432bbe5897decbfc0eee173b1a601376a0aa7faa",
     "approval_decision": "approved_deterministic_first_party_live_trader_route",
     "approval_manifest_hash": "3e2cae681ffed2619cc612898011957869d1428a02ee5bc2bf5fc03e70b778d1"
-  },
-  {
-    "host": "buckinghamshire.gov.uk",
-    "organisation": "Become a market trader",
-    "type": "local-authority",
-    "terms_policy": "public-service",
-    "geographic_coverage": "Greater Manchester",
-    "opportunity_type": "recurring_market",
-    "official_application_route": "https://buckinghamshire.gov.uk/business/street-use-and-trading-licences/become-a-market-trader",
-    "recurring": false,
-    "recommended_polling_days": 14,
-    "opportunity_title": "Become a market trader",
-    "source_path_prefix": "/business/street-use-and-trading-licences/become-a-market-trader",
-    "approval_evidence_hash": "77bc702e63ecda7eeb3c7fc4ecef51544063efe2d3308b2d375c818f9834c02f",
-    "approval_decision": "approved_unambiguous_public_service_first_party",
-    "approval_manifest_hash": "cf684ec3f176b7ac9034ceb6561556647a9269ca4838e2dc160a5ea13c1c91fc"
   },
   {
     "host": "eastherts.gov.uk",
@@ -334,22 +302,6 @@
     "approval_evidence_hash": "aed3389fa1c0f4f70f6896298b9b3421ab4f640df391ccce3c3430f674791ab0",
     "approval_decision": "approved_ai_review_exact_2026_first_party_stallholder_route",
     "approval_manifest_hash": "6796416eeba63bf826e68527777a620df4433aaeff43d35bb7ef2f826afaa643"
-  },
-  {
-    "host": "wearemiddlesbrough.com",
-    "organisation": "Orange Pip Market",
-    "type": "event-organiser",
-    "terms_policy": "manual-reviewed",
-    "geographic_coverage": "London",
-    "opportunity_type": "food_trader_application",
-    "official_application_route": "https://wearemiddlesbrough.com/venue/orange-pip-market",
-    "recurring": false,
-    "recommended_polling_days": 14,
-    "opportunity_title": "Orange Pip Market",
-    "source_path_prefix": "/venue/orange-pip-market",
-    "approval_evidence_hash": "57ef23fbac60d98b6f136e3bb8e64e26f249dbb39a56ff5604a267ac6f17c3d2",
-    "approval_decision": "approved_deterministic_first_party_live_trader_route",
-    "approval_manifest_hash": "cf684ec3f176b7ac9034ceb6561556647a9269ca4838e2dc160a5ea13c1c91fc"
   },
   {
     "host": "winchester.gov.uk",
