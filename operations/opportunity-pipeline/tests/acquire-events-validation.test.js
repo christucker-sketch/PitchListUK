@@ -71,6 +71,33 @@ test('extractor uses a reviewed source organisation and never trusts a search ti
   assert.equal(unknown.organiser, '');
 });
 
+
+
+test('extractor infers strong organiser names from newly discovered pages', () => {
+  const council = sourceCandidateToRow(
+    { url: 'https://exampletown.gov.uk/events/market', title: 'Trader information - Example Town Council', snippet: 'Example Town Council invites traders', query_lane: 'two-hop-event-name', query: 'test' },
+    '<h1>Trader information</h1><p>Example Town Council is accepting applications.</p><a href="/apply">Apply to trade</a>',
+    '2026-10-02'
+  );
+  assert.equal(council.organiser, 'Example Town Council');
+
+  const society = sourceCandidateToRow(
+    { url: 'https://exampleshow.co.uk/trade', title: 'Trade stands - Example Agricultural Society', snippet: 'Trade stand bookings', query_lane: 'two-hop-event-name', query: 'test' },
+    '<p>Example Agricultural Society welcomes trade stand applications.</p><a href="/trade-form">Trade stand form</a>',
+    '2026-10-02'
+  );
+  assert.equal(society.organiser, 'Example Agricultural Society');
+});
+
+test('extractor does not invent an organiser from generic SEO text', () => {
+  const row = sourceCandidateToRow(
+    { url: 'https://unknown.example/traders', title: 'Best Festival Trader Applications', snippet: 'Find trader applications', query_lane: 'two-hop-event-name', query: 'test' },
+    '<p>Apply for trader pitches.</p><a href="/apply">Apply</a>',
+    '2026-10-02'
+  );
+  assert.equal(row.organiser, '');
+});
+
 test('extractor uses the versioned complete UK region list', () => {
   const row = sourceCandidateToRow({ url: 'https://durham.gov.uk/markets', title: 'Durham market', snippet: 'County Durham trader applications', query_lane: 'county-county-durham', query: 'test' }, '<p>Market traders in County Durham can apply.</p><a href="/apply">Apply</a>', '2026-08-21');
   assert.equal(row.region, 'County Durham');
