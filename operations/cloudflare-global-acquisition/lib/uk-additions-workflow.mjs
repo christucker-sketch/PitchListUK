@@ -69,9 +69,17 @@ export async function runUkAdditionsOnlyWorkflow(env, event, step) {
     generated_at: generatedAt,
     approved_registry_count: APPROVED_SOURCES.length
   });
-  const reviewedRows = pollSummary.results
+  const directReviewedRows = pollSummary.results
     .filter(result => result.quality_status === 'customer_ready' && result.publishable === true && result.reviewed_row)
     .map(result => result.reviewed_row);
+  const discoveredRows = (Array.isArray(payload.discovered_rows) ? payload.discovered_rows : [])
+    .filter(row => row?.quality_status === 'customer_ready' && row?.publishable === true);
+  const reviewedRowsByRoute = new Map();
+  for (const row of [...directReviewedRows, ...discoveredRows]) {
+    const route = String(row?.source_url || '').trim();
+    if (route && !reviewedRowsByRoute.has(route)) reviewedRowsByRoute.set(route, row);
+  }
+  const reviewedRows = [...reviewedRowsByRoute.values()];
 
   const base = await step.do('read current UK production snapshot from GitHub main', {
     retries: { limit: 3, delay: '15 seconds', backoff: 'exponential' },
@@ -121,6 +129,9 @@ export async function runUkAdditionsOnlyWorkflow(env, event, step) {
     mode: 'uk_additions_only_pr',
     generated_at: generatedAt,
     poll: compactPollSummary(pollSummary),
+    direct_customer_ready_rows: directReviewedRows.length,
+    discovery_customer_ready_rows: discoveredRows.length,
+    combined_customer_ready_rows: reviewedRows.length,
     production_count_before: base.snapshot.rows.length,
     production_count_after_planned: nextSnapshot.rows.length,
     manifest_additions: additions,
