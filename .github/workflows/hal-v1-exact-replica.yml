@@ -35,12 +35,12 @@ jobs:
       - name: Run historical parity regression tests
         run: node --test tests/hal-v1-parity.test.mjs
 
-      - name: Run full corrected Hal discovery against current production snapshot
+      - name: Run 76-city Hal discovery against current production snapshot
         working-directory: operations/opportunity-pipeline
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-v1-live-runtime
-          PITCHLIST_SERPER_RUN_BUDGET: '251'
+          PITCHLIST_SERPER_RUN_BUDGET: '456'
           PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY: 'true'
           CURRENT_UK_SNAPSHOT: ${{ runner.temp }}/current-opportunities.mjs
         run: |
@@ -70,7 +70,14 @@ jobs:
             console.log(JSON.stringify({seed_rows: rows.length, seed_source: 'origin/main:functions/_data/opportunities.mjs', output: out}));
           })().catch(err => { console.error(err); process.exit(1); });
           NODE
-          node scripts/grow-database.js --apply --max-lanes 36 --query-limit 31
+          mapfile -t CITY_LANES < <(node - <<'NODE'
+          const { CITY_LANES } = require('./acquisition/lanes');
+          for (const lane of CITY_LANES) console.log(lane.id);
+          NODE
+          )
+          args=()
+          for lane in "${CITY_LANES[@]}"; do args+=(--lane "$lane"); done
+          node scripts/grow-database.js --apply "${args[@]}" --query-limit 6
 
       - name: Summarise isolated Hal runtime
         if: always()
