@@ -513,7 +513,7 @@ export function migrateLegacyUkPlanState(state, { now = new Date().toISOString()
   if (!state || state.controller_kind !== 'uk') return null;
   if (Number(state.plan_size || 0) !== 96 || UK_PLAN_SIZE <= 96) return null;
   if (Number(state.cycle || 0) < 1) return null;
-  if (state.status !== 'ready_discovery' || state.active_instance || state.cloud_controller_intent || state.pending_source_pr || state.pending_data_pr || state.pending_deployment) return null;
+  if (!['ready_discovery', 'ready_acquisition'].includes(state.status) || state.active_instance || state.cloud_controller_intent || state.pending_source_pr || state.pending_data_pr || state.pending_deployment) return null;
   const next = structuredClone(state);
   next.plan_size = UK_PLAN_SIZE;
   next.query_offset = Math.max(96, Number(next.query_offset || 0));

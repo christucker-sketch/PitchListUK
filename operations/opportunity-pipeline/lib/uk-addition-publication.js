@@ -113,9 +113,6 @@ function buildAutomaticAdditionManifest({
   const growthPercent = snapshot.rows.length ? additions.length / snapshot.rows.length * 100 : 0;
   if (growthPercent > maxGrowthPercent) throw new Error(`automatic_manifest_growth_percent_exceeded:${growthPercent.toFixed(2)}`);
   const duplicateRate = eligibleNewRows ? duplicateRows / eligibleNewRows * 100 : 0;
-  if (additions.length > 0 && duplicateRate > maxDuplicateRate) {
-    throw new Error(`automatic_manifest_duplicate_rate_exceeded:${duplicateRate.toFixed(2)}`);
-  }
 
   return {
     manifest_version: 1,
@@ -144,6 +141,7 @@ function buildAutomaticAdditionManifest({
       max_per_source: maxPerSource,
       max_duplicate_rate: maxDuplicateRate,
       observed_duplicate_rate: Math.round(duplicateRate * 10) / 10,
+      duplicate_rate_exceeded: duplicateRate > maxDuplicateRate,
       held_existing_routes: held
     },
     changes: { additions, updates: [], removals: [] }

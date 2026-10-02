@@ -51,6 +51,17 @@ test('UK controller migrates a completed legacy 96-query cycle into the unreache
   assert.equal(migrated.status, 'ready_discovery');
   assert.equal(migrated.results.at(-1).migration_reason, 'expand_legacy_96_query_window');
 
+  const acquisitionReady = buildInitialUkControllerState({ productionCount: 290, sourceCount: 22 });
+  acquisitionReady.plan_size = 96;
+  acquisitionReady.query_offset = 0;
+  acquisitionReady.cycle = 12;
+  acquisitionReady.status = 'ready_acquisition';
+  const migratedAcquisition = migrateLegacyUkPlanState(acquisitionReady, { now: '2026-10-02T13:10:00.000Z' });
+  assert.ok(migratedAcquisition);
+  assert.equal(migratedAcquisition.plan_size, UK_OPPORTUNITY_PLAN_SIZE);
+  assert.equal(migratedAcquisition.query_offset, 96);
+  assert.equal(migratedAcquisition.status, 'ready_acquisition');
+
   state.active_instance = { id: 'busy', mode: 'discovery' };
   assert.equal(migrateLegacyUkPlanState(state), null);
 });
