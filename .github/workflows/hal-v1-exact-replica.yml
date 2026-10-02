@@ -36,7 +36,7 @@ jobs:
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-v1-live-runtime
-          PITCHLIST_SERPER_RUN_BUDGET: '8'
+          PITCHLIST_SERPER_RUN_BUDGET: '36'
         run: |
           set -euo pipefail
           mkdir -p "$PITCHLIST_PIPELINE_RUNTIME_DIR/data"
@@ -62,7 +62,7 @@ jobs:
             console.log(JSON.stringify({seed_rows: rows.length, seed_source: 'functions/_data/opportunities.mjs', output: out}));
           })().catch(err => { console.error(err); process.exit(1); });
           NODE
-          node scripts/grow-database.js --apply --max-lanes 8 --query-limit 1
+          node scripts/grow-database.js --apply --max-lanes 36 --query-limit 1
 
       - name: Summarise isolated Hal runtime
         if: always()
