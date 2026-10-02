@@ -67,11 +67,13 @@ function main(){
   const cleanSummary=jsonOut(clean.stdout);
   const reviewed=JSON.parse(fs.readFileSync(cleanSummary.output_json,'utf8')).records||[];
   const statuses=reviewed.reduce((m,row)=>(m[row.quality_status]=(m[row.quality_status]||0)+1,m),{});
+  const refresh=run('refresh-active-events.js',[cleanSummary.output_csv]);
+  const refreshSummary=jsonOut(refresh.stdout);
 
   const report={
     generated_at:new Date().toISOString(),
     hop1:hop1Summary,
-    hop2:{events_considered:selected.length,queries:queries.length,candidate_rows:acquireSummary.rows,statuses,customer_ready:statuses.customer_ready||0,watch:statuses.watch||0,needs_work:statuses.needs_work||0,review:statuses.review||0,rejected:statuses.rejected||0},
+    hop2:{events_considered:selected.length,queries:queries.length,candidate_rows:acquireSummary.rows,statuses,customer_ready:statuses.customer_ready||0,watch:statuses.watch||0,needs_work:statuses.needs_work||0,review:statuses.review||0,rejected:statuses.rejected||0,added:refreshSummary.added||0,updated:refreshSummary.updated||0},
     selected_events:selected,
     reviewed_manifest:cleanSummary.output_json,
     production_write_enabled:false
