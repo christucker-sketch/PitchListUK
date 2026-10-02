@@ -196,6 +196,8 @@ export async function runUkSourceDiscoveryWorkflow(env, event, step) {
     deterministic_first_party_promotions: Number(discovery.deterministic_first_party_promotions || 0) + Number(opportunityDiscovery.approved_count || 0),
     opportunity_first_approved_count: Number(opportunityDiscovery.approved_count || 0),
     opportunity_first_held_count: Number(opportunityDiscovery.held_count || 0),
+    opportunity_search_customer_ready_count: Number(opportunityDiscovery.customer_ready_row_count || 0),
+    customer_ready_rows: Object.freeze([...(opportunityDiscovery.customer_ready_rows || [])]),
     manual_review_count: totalReview,
     classifications: discovery.classifications,
     source_count_before: base.registry.length,
