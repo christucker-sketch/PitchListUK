@@ -28,6 +28,15 @@ test('UK controller starts in discovery-ready shadow-compatible state', () => {
   assert.equal(validateControllerStateText(`${JSON.stringify(state)}\n`).controller_kind, 'uk');
 });
 
+test('UK controller state codec accepts the legacy 96-query checkpoint only as a migration-compatible shape', () => {
+  const state = buildInitialUkControllerState({ productionCount: 290, sourceCount: 22 });
+  state.plan_size = 96;
+  state.query_offset = 95;
+  assert.equal(validateControllerStateText(`${JSON.stringify(state)}\n`).plan_size, 96);
+  state.query_offset = 96;
+  assert.throws(() => validateControllerStateText(`${JSON.stringify(state)}\n`), /query_offset is invalid/);
+});
+
 test('UK controller migrates a completed legacy 96-query cycle into the unreached expansion window', () => {
   const state = buildInitialUkControllerState({ productionCount: 290, sourceCount: 22, mainSha: 'a'.repeat(40), now: '2026-10-02T12:00:00.000Z' });
   state.plan_size = 96;
