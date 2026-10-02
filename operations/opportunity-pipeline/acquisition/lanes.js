@@ -930,7 +930,7 @@ function cityLane([city, nation], index) {
     id: `city-${slugify(nation)}-${slugify(city)}`,
     title: `${city} city trader opportunities`,
     category: 'food_and_craft',
-    priority: 200 - index,
+    priority: -100 - index,
     area: city,
     country: 'United Kingdom',
     lane_type: 'city',
