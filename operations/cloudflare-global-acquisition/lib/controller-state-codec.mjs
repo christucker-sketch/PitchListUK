@@ -1,7 +1,9 @@
+import { UK_OPPORTUNITY_PLAN_SIZE } from './uk-opportunity-first-discovery.mjs';
+
 const DEFAULT_CONTROLLER_STATE_CHUNK_BYTES = 384 * 1024;
 const BASE64_CHUNK_PREFIX = 'b64:';
 
-function validateRegionalControllerState(parsed, { kind, label, planSize }) {
+function validateRegionalControllerState(parsed, { kind, label, planSize, legacyPlanSizes = [] }) {
   const allowedStatuses = new Set([
     'ready_discovery',
     'running_discovery',
@@ -18,9 +20,10 @@ function validateRegionalControllerState(parsed, { kind, label, planSize }) {
   const offset = Number(parsed.query_offset);
   const limit = Number(parsed.query_limit);
   const actualPlanSize = Number(parsed.plan_size);
-  if (!Number.isInteger(offset) || offset < 0 || offset >= planSize) throw new Error(`${label} controller state query_offset is invalid`);
+  const acceptedPlanSizes = new Set([planSize, ...legacyPlanSizes].map(Number));
+  if (!Number.isInteger(actualPlanSize) || !acceptedPlanSizes.has(actualPlanSize)) throw new Error(`${label} controller state plan_size is invalid`);
+  if (!Number.isInteger(offset) || offset < 0 || offset >= actualPlanSize) throw new Error(`${label} controller state query_offset is invalid`);
   if (!Number.isInteger(limit) || limit < 1 || limit > 12) throw new Error(`${label} controller state query_limit is invalid`);
-  if (!Number.isInteger(actualPlanSize) || actualPlanSize !== planSize) throw new Error(`${label} controller state plan_size must be ${planSize}`);
   if (!Number.isInteger(Number(parsed.cycle || 0)) || Number(parsed.cycle || 0) < 0) throw new Error(`${label} controller state cycle is invalid`);
   if (parsed.active_instance !== null && (typeof parsed.active_instance !== 'object' || Array.isArray(parsed.active_instance))) {
     throw new Error(`${label} controller state active_instance is invalid`);
@@ -45,7 +48,7 @@ export function validateControllerStateText(text) {
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error('Controller state snapshot must be a JSON object');
   }
-  if (parsed.controller_kind === 'uk') return validateRegionalControllerState(parsed, { kind: 'uk', label: 'UK', planSize: 96 });
+  if (parsed.controller_kind === 'uk') return validateRegionalControllerState(parsed, { kind: 'uk', label: 'UK', planSize: UK_OPPORTUNITY_PLAN_SIZE, legacyPlanSizes: [96] });
   if (parsed.controller_kind === 'ca') return validateRegionalControllerState(parsed, { kind: 'ca', label: 'Canada', planSize: 104 });
   if (!Array.isArray(parsed.priority_order) || parsed.priority_order.length !== 50) {
     throw new Error('Controller state snapshot must contain the 50-state priority_order');
