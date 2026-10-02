@@ -119,11 +119,18 @@ test('duplicate-only eligible UK rows become a safe zero-addition manifest', () 
 });
 
 test('high duplicate rate does not abort a batch when duplicates are individually filtered', () => {
-  const sources = approvedSources(5);
-  const existingRows = sources.slice(0, 4).map((source, index) => stagedRow(source, { id: `existing-${index}` }));
+  const sources = approvedSources(9);
+  const identities = Array.from({ length: 4 }, (_, index) => ({
+    event_name: `Duplicate Identity ${index + 1}`,
+    organiser: `Duplicate Organiser ${index + 1}`,
+    location: 'Kent',
+    region: 'Kent',
+    event_start: '2027-06-01'
+  }));
+  const existingRows = sources.slice(0, 4).map((source, index) => stagedRow(source, { id: `existing-${index}`, ...identities[index] }));
   const candidateRows = [
-    ...sources.slice(0, 4).map(source => stagedRow(source)),
-    stagedRow(sources[4], { event_name: 'Net New Approved Opportunity' })
+    ...sources.slice(4, 8).map((source, index) => stagedRow(source, identities[index])),
+    stagedRow(sources[8], { event_name: 'Net New Approved Opportunity', event_start: '2027-07-01' })
   ];
   const snapshot = { exported_at: '2026-09-01T00:00:00.000Z', source: 'baseline', total: existingRows.length, rows: existingRows };
   const manifest = buildAutomaticAdditionManifest({
