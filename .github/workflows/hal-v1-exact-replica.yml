@@ -41,6 +41,7 @@ jobs:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-v1-live-runtime
           PITCHLIST_SERPER_RUN_BUDGET: '12'
+          PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY: 'true'
           CURRENT_UK_SNAPSHOT: ${{ runner.temp }}/current-opportunities.mjs
         run: |
           set -euo pipefail
