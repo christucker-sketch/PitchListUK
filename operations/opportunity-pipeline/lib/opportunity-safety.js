@@ -152,7 +152,7 @@ function evaluateOpportunity(raw, options = {}) {
   const openingLater = OPENING_LATER.test(sourceText);
   const recurring = RECURRING_SIGNAL.test(sourceText) || rule.recurring === true || rule.opportunity_type === 'recurring_market';
   const timeClosed = reasons.includes('event_expired') || reasons.includes('application_closed');
-  const undatedDirectRoute = hasDirectRoute && reasons.includes('undated_one_off_event');
+  const undatedDirectRoute = hasDirectRoute && reasons.includes('undated_one_off_event') && row.query_lane === 'two-hop-event-name';
   const watchable = hasDirectRoute && (openingLater || (recurring && timeClosed) || undatedDirectRoute);
   const hardRejected = reasons.includes('non_uk_evidence');
   const needsWork = reasons.some(reason => ['uk_evidence_missing', 'named_organiser_missing', 'direct_application_or_contact_missing', 'provenance_missing', 'available_pitch_evidence_missing'].includes(reason));
