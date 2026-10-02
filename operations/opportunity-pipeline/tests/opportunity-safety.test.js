@@ -105,6 +105,23 @@ test('organiser, approved source, direct evidence and provenance are mandatory',
   assert.equal(customerReadyOnly([evaluateOpportunity(ready(), { now }), evaluateOpportunity(ready({ organiser: '' }), { now })]).length, 1);
 });
 
+test('discovery review can assess an unapproved source without source_not_approved blocking it', () => {
+  const now = new Date('2026-08-21T00:00:00Z');
+  const candidate = ready({
+    event_name: 'Independent Makers Market',
+    organiser: 'Independent Makers',
+    source_url: 'https://independentmakers.example.co.uk/traders',
+    application_url: 'https://independentmakers.example.co.uk/traders/apply',
+    location: 'Leeds, England',
+    source_evidence: 'Trader applications are open for Independent Makers Market in Leeds, England on 10 October 2026.'
+  });
+  const normal = evaluateOpportunity(candidate, { now });
+  assert.ok(normal.quality_reasons.includes('source_not_approved'));
+
+  const discovery = evaluateOpportunity(candidate, { now, allowUnapprovedDiscovery: true });
+  assert.ok(!discovery.quality_reasons.includes('source_not_approved'));
+});
+
 test('general council licence guidance is not treated as an available trading pitch', () => {
   const row = evaluateOpportunity(ready({
     event_name: 'Street trading licence',
