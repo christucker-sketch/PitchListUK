@@ -10,10 +10,13 @@ const NON_UK_HOST = /(?:\.gov|\.us|\.ca|\.com\.au|\.co\.nz)$/i;
 const UK_POSTCODE = /\b(?:GIR\s?0AA|(?:[A-PR-UWYZ][A-HK-Y]?\d[A-Z\d]?\s?\d[ABD-HJLNP-UW-Z]{2}))\b/i;
 const NON_UK_EVIDENCE = /\b(?:Alabama|Connecticut|Delaware|Kentucky|Maryland|Massachusetts|Nebraska|New Hampshire|New Jersey|New York|Ohio|Pennsylvania|Rhode Island|Tennessee|Texas|Vermont|Virginia|Wisconsin|Ontario|Nova Scotia|Canada|Manchester,?\s*TN|Bristol,?\s*(?:CT|RI|TN|VA)|Norfolk,?\s*VA|New London,?\s*CT|Cheshire,?\s*(?:CT|NH)|Suffolk,?\s*VA|Birmingham,?\s*AL|Newark,?\s*DE|Cornwall,?\s*NY|Essex,?\s*MD|Cardiff,?\s*CA|Wylie,?\s*Texas)\b/i;
 const FOREIGN_FIXTURES = /(?:berkshireyogafestival|vendorsmap\.com\/cities\/manchester-tn|cheshirefair\.org|cheshirefestival\.com|cardiff101\.com|bristolmerchantsassociation|bristolfarmersmarket\.com|berkshirepride\.org|birminghamal\.gov|hbwinefest\.com|norfolkagsociety\.com|essexdayfestival\.com|newcastlede\.gov|ngfarmmarket\.com|norfolk\.gov|newlondonct\.gov|vtfarmersmarket\.org|norfolkvafarmersmarket\.com|cornwallchamber\.org|amptrunning\.com|lctourism\.com|suffolkpeanutfest\.com)/i;
-const DIRECT_EVIDENCE = /\b(apply|application|register|registration|booking|become a trader|trade with us|vendor form|stallholder form|exhibitor form|caterer form|street trading consent|street trader licence|pitch enquiry)\b/i;
+const DIRECT_EVIDENCE = /\b(apply|application|register|registration|booking|become a trader|trade with us|vendor form|stallholder form|exhibitor form|caterer form|street trading consent|street trader licence|pitch enquiry|traders? wanted|call for traders?|book a (?:pitch|stall)|apply to trade|trade enquiries|trader information|trader pack|exhibitor pack|trade stands?|pitch fees?|stall fees?|food and drink exhibitors?|catering concession|refreshment concession|expressions? of interest)\b/i;
+const OPENING_LATER = /\b(?:applications?|bookings?|registrations?)\s+(?:will\s+)?(?:re-?)?open\b|\bopening soon\b|\bcoming soon\b|\bregister (?:your )?interest\b|\bcheck (?:this page )?again for future opportunities\b|\bnot currently accepting applications?\b/i;
+const RECURRING_SIGNAL = /\bannual\b|\bevery year\b|\byearly\b|\breturns?\b|\bback (?:again|for)\b|\bweekly\b|\bmonthly\b|\bevery (?:week|month|summer|winter|christmas)\b/i;
+const ORGANISER_IN_EVIDENCE = /\b([A-Z][A-Za-z0-9&'.’ -]{2,80}?(?:City Council|County Council|Borough Council|District Council|Town Council|Parish Council|Council))\b/;
 const ONE_OFF_EVENT = /\b(festival|fair|show|christmas market|winter wonderland|carnival|feast|fireworks|bonfire|race|marathon)\b/i;
 const GENERIC_TITLE = /^(street trading|street trading licence|street trader licence|apply to trade|vendor application|caterers|market)$/i;
-const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)? available|vacant pitch(?:es)?|traders? wanted|seeking (?:food |market )?traders?|new (?:traders|faces) (?:are )?always welcome(?:d)?|apply to trade at|apply for (?:a )?(?:market )?stall|apply to sell at (?:one of )?(?:our |the )?markets?|market stall application|how to apply for (?:a )?stall|book (?:a )?pitch at|trader applications? (?:are )?open|stallholder applications? (?:are )?open|vendor applications? (?:are )?open)\b/i;
+const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)? available|vacant pitch(?:es)?|traders? wanted|call for traders?|seeking (?:food |market )?traders?|new (?:traders|faces) (?:are )?always welcome(?:d)?|apply to trade at|apply to trade|apply for (?:a )?(?:market )?stall|apply to sell at (?:one of )?(?:our |the )?markets?|market stall application|how to apply for (?:a )?stall|book (?:a )?(?:pitch|stall)(?: at)?|trader applications? (?:are )?open|stallholder applications? (?:are )?open|vendor applications? (?:are )?open|trade enquiries|trader information|trader pack|exhibitor pack|trade stands?|pitch fees?|stall fees?|food and drink exhibitors?|catering concession|refreshment concession|expressions? of interest)\b/i;
 
 function canonicalUrl(value) {
   try {
@@ -110,8 +113,12 @@ function evaluateOpportunity(raw, options = {}) {
   const parsedDates = rule.opportunity_type === 'recurring_market'
     ? { event_start: '', event_end: '', application_deadline: '', closed_signal: false }
     : extractDateFields(sourceText, now);
+  const inferredOrganiser = !raw.organiser && /\.gov\.uk$/i.test(hostname(raw.source_url))
+    ? ((String(raw.source_evidence || '').match(ORGANISER_IN_EVIDENCE) || [])[1] || '')
+    : '';
   const row = {
     ...raw,
+    organiser: raw.organiser || inferredOrganiser,
     source_url: canonicalUrl(raw.source_url),
     application_url: canonicalUrl(raw.application_url) || canonicalUrl(raw.source_url),
     event_start: raw.event_start || parsedDates.event_start,
@@ -140,12 +147,19 @@ function evaluateOpportunity(raw, options = {}) {
   if (ONE_OFF_EVENT.test(row.event_name || '') && !row.event_start && !row.application_deadline) reasons.push('undated_one_off_event');
   if (!row.query_lane || !row.query_text) reasons.push('provenance_missing');
 
-  const rejected = reasons.some(reason => ['non_uk_evidence', 'event_expired', 'application_closed'].includes(reason));
+  const hasDirectRoute = DIRECT_EVIDENCE.test(directText) || Boolean(row.contact_email);
+  const openingLater = OPENING_LATER.test(sourceText);
+  const recurring = RECURRING_SIGNAL.test(sourceText) || rule.recurring === true || rule.opportunity_type === 'recurring_market';
+  const timeClosed = reasons.includes('event_expired') || reasons.includes('application_closed');
+  const watchable = hasDirectRoute && (openingLater || (recurring && timeClosed));
+  const hardRejected = reasons.includes('non_uk_evidence');
   const needsWork = reasons.some(reason => ['uk_evidence_missing', 'named_organiser_missing', 'direct_application_or_contact_missing', 'provenance_missing', 'available_pitch_evidence_missing'].includes(reason));
   const review = reasons.some(reason => ['source_not_approved', 'undated_one_off_event'].includes(reason));
-  row.quality_status = rejected ? 'rejected' : needsWork ? 'needs_work' : review ? 'review' : 'customer_ready';
+  if (watchable) reasons.push('opening_soon_or_recurring');
+  row.quality_status = hardRejected ? 'rejected' : watchable ? 'watch' : timeClosed ? 'rejected' : needsWork ? 'needs_work' : review ? 'review' : 'customer_ready';
   row.quality_reasons = [...new Set(reasons)];
   row.publishable = row.quality_status === 'customer_ready';
+  row.watchlist = row.quality_status === 'watch';
   return row;
 }
 
