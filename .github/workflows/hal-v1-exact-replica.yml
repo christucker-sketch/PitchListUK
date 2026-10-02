@@ -1,4 +1,5 @@
 name: Hal V1 exact replica verification
+# Isolated historical replica; never deploy or publish.
 
 on:
   push:
