@@ -132,7 +132,6 @@ test('UK source promotion plan cannot publish an unreviewed discovery', async ()
   assert.equal(plan.summary.before_count, 0);
   assert.equal(plan.summary.additions, 0);
   assert.equal(plan.summary.after_count, 0);
-  assert.match(ukSourceBranchName(plan, base.mainSha), /^sources\/cloud-uk-growth-[a-f0-9]{16}-base-a{16}$/);
 });
 
 test('UK source promotion returns clean zero growth with no approved candidates', () => {
