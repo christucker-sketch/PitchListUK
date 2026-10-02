@@ -340,8 +340,9 @@ export function ukControllerPrFailureReason(pr) {
   return failed.length ? `terminal_ci_failure:${failed.map(run => run.name || 'unknown').join(',')}` : null;
 }
 
-async function checkpointRejectedPr(stub, snapshot, decision, kind, reason) {
-  const next = structuredClone(snapshot.state);
+export function recoverRejectedUkPrState(state, decision, kind, reason, { now = new Date().toISOString() } = {}) {
+  const next = structuredClone(state);
+  next.cloud_controller_intent = null;
   if (kind === 'source') {
     next.pending_source_pr = null;
     next.status = 'ready_discovery';
@@ -352,10 +353,15 @@ async function checkpointRejectedPr(stub, snapshot, decision, kind, reason) {
   appendResult(next, {
     pr_number: Number(decision.pr_number),
     mode: kind === 'source' ? 'source_pr' : 'data_pr',
-    recovered_at: new Date().toISOString(),
+    recovered_at: String(now),
     recovery_reason: String(reason)
   });
-  next.updated_at = new Date().toISOString();
+  next.updated_at = String(now);
+  return next;
+}
+
+async function checkpointRejectedPr(stub, snapshot, decision, kind, reason) {
+  const next = recoverRejectedUkPrState(snapshot.state, decision, kind, reason);
   const written = await checkpoint(stub, snapshot, next);
   return {
     ok: true,
@@ -433,6 +439,14 @@ async function mergeReservedPr(env, stub, snapshot, decision, kind) {
   if (!intent || intent.phase !== 'reserved' || intent.action !== expectedAction || Number(intent.pr_number) !== Number(decision.pr_number)) {
     throw new Error(`uk_controller_reserved_${kind}_pr_changed`);
   }
+
+  // A generated PR can be closed by an operator after merge intent was reserved.
+  // Re-inspect immediately before merge so a closed/unmerged PR cannot freeze the
+  // controller in a permanent reserved-merge loop.
+  const currentPr = await inspectUkControllerPr(env, intent.pr_number);
+  const failureReason = ukControllerPrFailureReason(currentPr);
+  if (failureReason) return checkpointRejectedPr(stub, snapshot, decision, kind, failureReason);
+
   const merged = await mergeUkControllerPr(env, { pr_number: intent.pr_number, head_sha: intent.head_sha, base_sha: intent.base_sha });
   const next = structuredClone(snapshot.state);
   next.cloud_controller_intent = null;

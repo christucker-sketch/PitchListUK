@@ -5,6 +5,7 @@ import {
   buildInitialUkControllerState,
   globalUkControllerCutoverEnabled,
   migrateLegacyUkPlanState,
+  recoverRejectedUkPrState,
   recoverUkActiveWorkflowState,
   UK_ACTIVE_WORKFLOW_STALE_MS,
   ukActiveWorkflowIsStale,
@@ -128,6 +129,37 @@ test('UK stale acquisition recovery returns to acquisition without inventing add
   assert.equal(recovered.status, 'ready_acquisition');
   assert.equal(recovered.active_instance, null);
   assert.equal(recovered.totals.opportunity_additions, 7);
+});
+
+test('UK controller clears a reserved merge when the generated data PR is closed by an operator', () => {
+  const state = buildInitialUkControllerState({ productionCount: 290, sourceCount: 22 });
+  state.status = 'reviewing_data_pr';
+  state.pending_data_pr = { pr_number: 1903, workflow_id: 'ukctl-v2946-acquire-c12' };
+  state.cloud_controller_intent = {
+    phase: 'reserved',
+    action: 'merge_data_pr',
+    pr_number: 1903,
+    head_sha: 'a'.repeat(40),
+    base_sha: 'b'.repeat(40),
+    additions: 1,
+    before: 290,
+    after: 291
+  };
+
+  const recovered = recoverRejectedUkPrState(
+    state,
+    { pr_number: 1903 },
+    'data',
+    'closed_unmerged:closed',
+    { now: '2026-10-02T16:20:00.000Z' }
+  );
+
+  assert.equal(recovered.cloud_controller_intent, null);
+  assert.equal(recovered.pending_data_pr, null);
+  assert.equal(recovered.status, 'ready_acquisition');
+  assert.equal(recovered.production_count, 290);
+  assert.equal(recovered.results.at(-1).pr_number, 1903);
+  assert.equal(recovered.results.at(-1).recovery_reason, 'closed_unmerged:closed');
 });
 
 test('UK controller recognises terminal generated PR failure without treating pending CI as failed', () => {
