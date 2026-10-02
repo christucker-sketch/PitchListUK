@@ -3,6 +3,7 @@ const MAX_ATTEMPTS = 5;
 import { getMarket } from '../markets/registry.mjs';
 import { createDefaultCandidateEvaluator } from '../engine/evaluator.mjs';
 import { isTerminalPdfError } from '../providers/fetch/pdf-error-policy.mjs';
+import { sourceDomain } from '../acquisition/storage.mjs';
 
 export async function runClassificationBatch(db, {
   fetchProvider,
@@ -18,7 +19,7 @@ export async function runClassificationBatch(db, {
 
   const ready = await db.prepare(
     `SELECT q.candidate_id, c.market, c.region_code, c.canonical_url, c.event_name,
-            c.geography_json
+            c.geography_json, c.evidence_json
        FROM classification_queue q
        JOIN candidates c ON c.id = q.candidate_id
       WHERE (q.status = 'ready' AND q.available_at <= ?)
@@ -46,22 +47,25 @@ export async function runClassificationBatch(db, {
       const evaluated = await evaluator({
         market: getMarket(row.market),
         region_code: row.region_code,
-        location: geography.discovery_location || row.region_code,
+        location: geography.discovery_location || geography.region || row.region_code,
         result: { url: row.canonical_url, title: row.event_name }
       });
 
+      const priorEvidence=parseJsonArray(row.evidence_json);
+      const mergedEvidence=mergeEvidence(priorEvidence,evaluated.evidence || []);
       await db.prepare(
         `UPDATE candidates
-            SET application_url = ?, event_name = ?, organiser = ?,
+            SET region_code = ?, application_url = ?, event_name = ?, organiser = ?,
                 geography_json = ?, evidence_json = ?, score = ?, status = ?,
                 rejection_reason = ?, last_checked = ?
           WHERE id = ?`
       ).bind(
+        evaluated.geography?.region_code || row.region_code,
         evaluated.application_url,
         evaluated.event_name,
         evaluated.organiser,
         JSON.stringify(evaluated.geography || {}),
-        JSON.stringify(evaluated.evidence || []),
+        JSON.stringify(mergedEvidence),
         Number(evaluated.score || 0),
         evaluated.status,
         evaluated.rejection_reason,
@@ -74,6 +78,9 @@ export async function runClassificationBatch(db, {
             SET status = 'complete', lease_until = NULL, last_error = NULL, updated_at = ?
           WHERE candidate_id = ?`
       ).bind(new Date().toISOString(), row.candidate_id).run();
+
+      await recordSourceOutcome(db, row.market, row.canonical_url, evaluated.status, new Date().toISOString());
+      await recordSourceRouteOutcome(db, row.candidate_id, evaluated.status, new Date().toISOString());
 
       outcomes.processed += 1;
       if (evaluated.status === 'validated') outcomes.validated += 1;
@@ -106,4 +113,81 @@ function parseJson(value) {
   } catch {
     return {};
   }
+}
+
+
+function parseJsonArray(value) {
+  try {
+    const parsed=JSON.parse(value || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+function mergeEvidence(prior,next) {
+  const out=[],seen=new Set();
+  for(const item of [...(Array.isArray(prior)?prior:[]),...(Array.isArray(next)?next:[])]){
+    if(!item||typeof item!=='object')continue;
+    const key=JSON.stringify([
+      item.kind||null,item.source||item.url||null,item.title||null,
+      item.snippet||item.excerpt||null,item.query_id||null,item.query||null
+    ]);
+    if(seen.has(key))continue;
+    seen.add(key);out.push(item);
+  }
+  return out;
+}
+
+
+async function recordSourceOutcome(db, market, sourceUrl, status, timestamp) {
+  const domain = sourceDomain(sourceUrl);
+  if (!domain) return;
+  const validated = status === 'validated';
+  const rejected = status === 'rejected';
+  if (!validated && !rejected) return;
+
+  await db.prepare(
+    `UPDATE source_reputation
+        SET last_seen = ?,
+            last_success = CASE WHEN ? = 1 THEN ? ELSE last_success END,
+            rejection_count = rejection_count + ?,
+            reputation_score = CASE
+              WHEN candidate_count <= 0 THEN 0
+              ELSE MAX(0, MIN(100,
+                100.0 * (candidate_count - rejection_count - ?) / candidate_count
+              ))
+            END
+      WHERE market = ? AND domain = ?`
+  ).bind(
+    timestamp,
+    validated ? 1 : 0,
+    timestamp,
+    rejected ? 1 : 0,
+    rejected ? 1 : 0,
+    market,
+    domain
+  ).run();
+}
+
+
+async function recordSourceRouteOutcome(db, candidateId, status, timestamp) {
+  const row=await db.prepare('SELECT geography_json FROM candidates WHERE id=?').bind(candidateId).first();
+  let geography={};
+  try { geography=JSON.parse(row?.geography_json||'{}'); } catch {}
+  const route=String(geography?.source_route||'').trim();
+  if(!route)return;
+  const validated=status==='validated';
+  const rejected=status==='rejected';
+  if(!validated&&!rejected)return;
+  await db.prepare(
+    `UPDATE source_routes
+        SET last_seen=?,
+            candidate_count=candidate_count+1,
+            rejection_count=rejection_count+?,
+            reputation_score=CASE
+              WHEN candidate_count+1<=0 THEN 0
+              ELSE 100.0*(candidate_count+1-(rejection_count+?))/(candidate_count+1)
+            END
+      WHERE market=(SELECT market FROM candidates WHERE id=?) AND route_url=?`
+  ).bind(timestamp,rejected?1:0,rejected?1:0,candidateId,route).run();
 }

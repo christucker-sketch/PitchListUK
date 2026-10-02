@@ -1,7 +1,11 @@
 const DEFAULT_TIMEOUT_MS = 12_000;
 const DEFAULT_MAX_BYTES = 1_500_000;
+const DEFAULT_PDF_TIMEOUT_MS = 25_000;
+const DEFAULT_DOCX_TIMEOUT_MS = 20_000;
 const MAX_PDF_PAGES = 12;
 const MAX_PDF_TEXT_CHARS = 50_000;
+const MAX_DOCX_XML_BYTES = 2_000_000;
+const MAX_DOCX_TEXT_CHARS = 50_000;
 
 // Load the parser only when a PDF is encountered; ordinary HTML is unaffected.
 async function extractPdfText(bytes) {
@@ -15,6 +19,36 @@ async function extractPdfText(bytes) {
     // unpdf's serverless proxy may omit destroy(); do not turn a successful extraction into a failure.
     if (typeof pdf.destroy === 'function') await pdf.destroy();
   }
+}
+
+async function extractDocxText(bytes) {
+  const { unzipSync, strFromU8 } = await import('fflate');
+  let files;
+  try {
+    files = unzipSync(bytes, { filter: file => file.name === 'word/document.xml' });
+  } catch {
+    throw new Error('findpitches_v2_docx_parse_failed');
+  }
+  const documentXml = files?.['word/document.xml'];
+  if (!documentXml) throw new Error('findpitches_v2_docx_missing_document_xml');
+  if (documentXml.byteLength > MAX_DOCX_XML_BYTES) throw new Error('findpitches_v2_docx_xml_too_large');
+  const xml = strFromU8(documentXml);
+  return decodeXmlEntities(
+    xml
+      .replace(/<w:tab\b[^>]*\/>/gi, '\t')
+      .replace(/<w:br\b[^>]*\/>/gi, '\n')
+      .replace(/<\/w:p>/gi, '\n')
+      .replace(/<[^>]+>/g, ' ')
+  ).replace(/[ \t]+/g, ' ').replace(/\n\s+/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function decodeXmlEntities(value) {
+  return String(value || '')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>');
 }
 
 async function readBounded(response, maxBytes) {
@@ -50,12 +84,16 @@ async function readBounded(response, maxBytes) {
 export function createHttpFetchProvider({
   fetchImpl = fetch,
   timeoutMs = DEFAULT_TIMEOUT_MS,
+  pdfTimeoutMs = DEFAULT_PDF_TIMEOUT_MS,
+  docxTimeoutMs = DEFAULT_DOCX_TIMEOUT_MS,
   maxBytes = DEFAULT_MAX_BYTES,
   pdfExtractor = extractPdfText,
+  docxExtractor = extractDocxText,
   userAgent = 'FindPitchesBot/2.0 (+https://findpitches.com)'
 } = {}) {
   if (typeof fetchImpl !== 'function') throw new Error('findpitches_v2_fetch_impl_invalid');
   if (typeof pdfExtractor !== 'function') throw new Error('findpitches_v2_pdf_extractor_invalid');
+  if (typeof docxExtractor !== 'function') throw new Error('findpitches_v2_docx_extractor_invalid');
 
   return Object.freeze({
     async fetch(url) {
@@ -64,14 +102,14 @@ export function createHttpFetchProvider({
         throw new Error('findpitches_v2_fetch_protocol_rejected');
       }
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort('timeout'), Math.max(1000, Number(timeoutMs) || DEFAULT_TIMEOUT_MS));
+      let timer = setTimeout(() => controller.abort('timeout'), Math.max(1000, Number(timeoutMs) || DEFAULT_TIMEOUT_MS));
       try {
         const response = await fetchImpl(target.toString(), {
           method: 'GET',
           redirect: 'follow',
           signal: controller.signal,
           headers: {
-            accept: 'text/html,application/xhtml+xml;q=0.9,application/pdf;q=0.8,text/plain;q=0.7,*/*;q=0.1',
+            accept: 'text/html,application/xhtml+xml;q=0.9,application/pdf;q=0.8,application/vnd.openxmlformats-officedocument.wordprocessingml.document;q=0.8,text/plain;q=0.7,*/*;q=0.1',
             'user-agent': userAgent
           }
         });
@@ -84,9 +122,22 @@ export function createHttpFetchProvider({
         const contentType = String(response.headers.get('content-type') || '').toLowerCase();
         const supportedHtml = /(?:text\/html|application\/xhtml\+xml|text\/plain)/.test(contentType);
         const pdfType = /application\/pdf/.test(contentType);
-        const pdfUrl = /\.pdf$/i.test(new URL(response.url || target.toString()).pathname);
+        const finalPath = new URL(response.url || target.toString()).pathname;
+        const pdfUrl = /\.pdf$/i.test(finalPath);
+        const docxType = /application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document/.test(contentType);
+        const docxUrl = /\.docx$/i.test(finalPath);
+        const genericBinaryType = /^(?:application\/octet-stream|application\/download)(?:\s*;|$)/.test(contentType);
+        if (pdfType || pdfUrl) {
+          // Ordinary web requests stay tightly bounded. Once headers/URL prove a
+          // PDF, allow a slightly longer bounded window for download + parsing.
+          clearTimeout(timer);
+          timer = setTimeout(() => controller.abort('timeout'), Math.max(1000, Number(pdfTimeoutMs) || DEFAULT_PDF_TIMEOUT_MS));
+        } else if (docxType || docxUrl) {
+          clearTimeout(timer);
+          timer = setTimeout(() => controller.abort('timeout'), Math.max(1000, Number(docxTimeoutMs) || DEFAULT_DOCX_TIMEOUT_MS));
+        }
         // Reject clearly unrelated responses before downloading them.
-        if (!supportedHtml && !pdfType && !pdfUrl && contentType) {
+        if (!supportedHtml && !pdfType && !pdfUrl && !docxType && !docxUrl && !genericBinaryType && contentType) {
           throw new Error(`findpitches_v2_fetch_content_type_unsupported:${contentType}`);
         }
 
@@ -110,6 +161,24 @@ export function createHttpFetchProvider({
             body: String(body).slice(0, MAX_PDF_TEXT_CHARS)
           });
         }
+        const zipSignature = bytes.length >= 4 && bytes[0] === 0x50 && bytes[1] === 0x4b && bytes[2] === 0x03 && bytes[3] === 0x04;
+        if (docxType || zipSignature || (docxUrl && !supportedHtml)) {
+          if (!zipSignature) throw new Error('findpitches_v2_docx_invalid_signature');
+          let body;
+          try {
+            body = await docxExtractor(bytes);
+          } catch (error) {
+            if (String(error?.message || '').startsWith('findpitches_v2_docx_')) throw error;
+            throw new Error('findpitches_v2_docx_parse_failed');
+          }
+          if (!String(body).trim()) throw new Error('findpitches_v2_docx_no_extractable_text');
+          return Object.freeze({
+            requested_url: target.toString(),
+            final_url: response.url || target.toString(),
+            content_type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            body: String(body).slice(0, MAX_DOCX_TEXT_CHARS)
+          });
+        }
         if (!supportedHtml) throw new Error(`findpitches_v2_fetch_content_type_unsupported:${contentType || 'unknown'}`);
         return Object.freeze({
           requested_url: target.toString(),
@@ -124,4 +193,4 @@ export function createHttpFetchProvider({
   });
 }
 
-export { DEFAULT_TIMEOUT_MS, DEFAULT_MAX_BYTES, MAX_PDF_PAGES, MAX_PDF_TEXT_CHARS };
+export { DEFAULT_TIMEOUT_MS, DEFAULT_PDF_TIMEOUT_MS, DEFAULT_DOCX_TIMEOUT_MS, DEFAULT_MAX_BYTES, MAX_PDF_PAGES, MAX_PDF_TEXT_CHARS, MAX_DOCX_XML_BYTES, MAX_DOCX_TEXT_CHARS };

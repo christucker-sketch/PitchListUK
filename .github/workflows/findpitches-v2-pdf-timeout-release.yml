@@ -1,0 +1,29 @@
+name: FindPitches v2 PDF timeout cohort release
+
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Release exact proven timeout cohort
+        run: node operations/findpitches-v2/release-pdf-timeout-cohort.mjs
+      - name: Verify publication remains disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          status="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/status)"
+          jq -e '.ok == true and .publication_enabled == false and .counts.publication_queue == 0' <<<"$status" >/dev/null

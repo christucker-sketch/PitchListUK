@@ -46,7 +46,7 @@ const GB = Object.freeze([
   geography('GB','GB-ENG-STAFFS','Staffordshire',360,['Staffs']),
   geography('GB','GB-ENG-SUFF','Suffolk',370),
   geography('GB','GB-ENG-SURREY','Surrey',380),
-  geography('GB','GB-ENG-TYNE','Tyne and Wear',390,['Tyneside','Newcastle upon Tyne']),
+  geography('GB','GB-ENG-TYNE','Tyne and Wear',390,['Tyneside','Newcastle upon Tyne','Newcastle']),
   geography('GB','GB-ENG-WARW','Warwickshire',400,['Warks']),
   geography('GB','GB-ENG-WEST-MIDS','West Midlands',410,['Birmingham']),
   geography('GB','GB-ENG-WEST-SUSSEX','West Sussex',420),

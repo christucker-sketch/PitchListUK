@@ -151,3 +151,285 @@ test('shared evaluator rejects financial-product trader news false positive', as
   assert.equal(candidate.rejection_reason, 'negative_page_signal');
   assert.equal(candidate.publishable, false);
 });
+
+
+for (const conflict of [
+  ['US government host','https://www.essexvt.gov/1567/Vendor-Market-Community-Organizations','<h1>Vendor Market & Community Organizations</h1><p>Vendor application for Essex, VT 2027.</p><a href="/apply">Vendor application</a>'],
+  ['US city/state code','https://event.test/vendors','<h1>Devon Horse Show</h1><p>Vendor application for Devon, PA in 2027.</p><a href="/apply">Vendor application</a>'],
+  ['US city/state name','https://event.test/vendors','<h1>Santa Barbara Orchid Show</h1><p>Exhibitor application for Santa Barbara, California in 2027.</p><a href="/apply">Exhibitor application</a>']
+]) {
+  test('GB evaluator rejects '+conflict[0]+' market conflict', async () => {
+    const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(){return {final_url:conflict[1],body:'<html><body>'+conflict[2]+'</body></html>'};}},now:()=>new Date('2026-09-30T00:00:00Z')});
+    const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-ESSEX',location:'Essex',result:{url:conflict[1]}});
+    assert.equal(candidate.status,'rejected');
+    assert.equal(candidate.rejection_reason,'market_conflict');
+    assert.equal(candidate.publishable,false);
+  });
+}
+
+test('GB evaluator does not confuse ordinary lowercase us with US market evidence', async () => {
+ const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><h1>Kent Food Festival</h1><p>Join us in Kent in 2027. Vendor application now open.</p><a href="/apply">Vendor application</a></body></html>'};}},now:()=>new Date('2026-09-30T00:00:00Z')});
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://festival.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.publishable,true);
+});
+
+for (const nonEvent of [
+ ['fair trader scheme','<h1>Medway Fair Trader Scheme</h1><p>Vendor application for the Fair Trader Scheme.</p><a href="/apply">Vendor application</a>'],
+ ['homechoice','<h1>Register for HomeChoice</h1><p>Vendor application assistance.</p><a href="/apply">Vendor application</a>'],
+ ['purchasing vendor','<h1>Purchasing Vendor Application</h1><p>Vendor application for purchasing suppliers.</p><a href="/apply">Vendor application</a>']
+]) {
+ test('shared evaluator rejects '+nonEvent[0]+' non-event false positive', async()=>{
+  const evaluator=createDefaultCandidateEvaluator({fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body>'+nonEvent[1]+'</body></html>'};}}});
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://example.test/vendors'}});
+  assert.equal(candidate.status,'rejected');
+  assert.equal(candidate.rejection_reason,'negative_page_signal');
+ });
+}
+
+
+test('site-wide vendor navigation does not validate an unrelated content page', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:`
+   <html><head><title>Results Breed - The Westminster Kennel Club</title></head>
+   <body>
+    <nav><a href="/vendor-application/">Vendor Application</a></nav>
+    <main><h1>Lancashire Heeler Results</h1><p>Breed results and judging information.</p></main>
+    <footer><a href="/vendors">Become a Vendor</a></footer>
+   </body></html>`};}}
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-LANCS',location:'Lancashire',result:{url:'https://dogshow.test/results'}});
+ assert.equal(candidate.status,'rejected');
+ assert.equal(candidate.rejection_reason,'explicit_application_intent_missing');
+});
+
+test('real vendor application content still validates when site chrome is ignored', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:`
+   <html><head><title>Trader Application</title></head><body>
+    <nav><a href="/home">Home</a></nav>
+    <main><h1>Trader Application</h1><p>Vendor application is open for our Kent food festival in 2027.</p><a href="/apply">Apply to trade</a></main>
+    <footer>Privacy</footer>
+   </body></html>`};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://festival.test/traders'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.publishable,true);
+});
+
+
+test('GB evaluator corrects discovery region from structured Event addressRegion', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:`
+   <html><head><title>Beef Expo Exhibitor Application</title>
+   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"Beef Expo","location":{"@type":"Place","name":"Melton Mowbray Market","address":{"@type":"PostalAddress","addressLocality":"Melton Mowbray","addressRegion":"Leicestershire"}}}</script>
+   </head><body><main><p>Exhibitor application is open for the 2027 Beef Expo.</p><a href="/apply">Exhibitor application</a></main></body></html>`};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-DURHAM',location:'County Durham',result:{url:'https://beef.test/exhibit'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'GB-ENG-LEICS');
+ assert.equal(candidate.geography.region,'Leicestershire');
+ assert.ok(candidate.evidence.some(item=>item.type==='region_correction'&&item.from_region_code==='GB-ENG-DURHAM'&&item.to_region_code==='GB-ENG-LEICS'));
+});
+
+test('GB evaluator corrects region and preserves a strong city alias as locality', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><h1>Temple Newsam Food Festival</h1><p>Trader applications are open for our food festival in Leeds in 2027.</p><a href="/apply">Trader application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-NOTTS',location:'Nottinghamshire',result:{url:'https://foodfest.test/traders'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'GB-ENG-WEST-YORKS');
+ assert.equal(candidate.geography.region,'West Yorkshire');
+ assert.equal(candidate.geography.locality,'Leeds');
+ assert.ok(candidate.evidence.some(item=>item.type==='region_correction'&&item.locality_hint==='Leeds'));
+});
+
+test('GB evaluator does not auto-correct a multi-region event page', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><h1>Touring Craft Fair</h1><p>Vendor applications are open for events in Kent and Essex in 2027.</p><a href="/apply">Vendor application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url:'https://tour.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'GB-ENG-KENT');
+ assert.ok(!candidate.evidence.some(item=>item.type==='region_correction'));
+});
+
+
+test('GB evaluator does not persist region correction on a rejected non-opportunity', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><h1>Find a supplier</h1><p>Read our directory coverage for businesses in Leeds.</p></main></body></html>'};}}
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-CUMB',location:'Cumbria',result:{url:'https://directory.test/leeds'}});
+ assert.equal(candidate.status,'rejected');
+ assert.equal(candidate.geography.region_code,'GB-ENG-CUMB');
+ assert.equal(candidate.geography.region,'Cumbria');
+ assert.equal(candidate.geography.locality,null);
+});
+
+
+test('social source pages are rejected even when they contain vendor wording', async () => {
+ for (const url of ['https://www.instagram.com/example/','https://x.com/example/status/123']) {
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(){return {final_url:url,body:'<html><body><main><p>Vendor application is open for our market.</p></main></body></html>'};}}
+  });
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url}});
+  assert.equal(candidate.status,'rejected',url);
+  assert.equal(candidate.rejection_reason,'negative_page_signal',url);
+  assert.ok(candidate.evidence.some(item=>item.type==='negative_phrase'&&item.value==='social_source_page'),url);
+ }
+});
+
+
+test('social source candidates are rejected before any fetch is attempted', async () => {
+ let fetches=0;
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(){fetches++;throw new Error('should_not_fetch_social');}}
+ });
+ for(const url of ['https://x.com/example/status/1','https://www.linkedin.com/in/example/']){
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url,title:'Vendor application'}});
+  assert.equal(candidate.status,'rejected',url);
+  assert.equal(candidate.rejection_reason,'negative_page_signal',url);
+ }
+ assert.equal(fetches,0);
+});
+
+
+test('GB evaluator preserves a same-region city alias as locality evidence', async () => {
+ const cases=[
+  {region_code:'GB-ENG-SOUTH-YORKS',location:'South Yorkshire',city:'Sheffield',title:'Graves Park Food Festival | Sheffield'},
+  {region_code:'GB-ENG-TYNE',location:'Tyne and Wear',city:'Newcastle upon Tyne',title:'Newcastle Food Festival'}
+ ];
+ for(const item of cases){
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(url){return {final_url:url,body:`<html><head><title>${item.title}</title></head><body><main><p>Trader application is open for the 2027 festival.</p><a href="/apply">Trader application</a></main></body></html>`};}},
+   now:()=>new Date('2026-09-30T00:00:00Z')
+  });
+  const candidate=await evaluator({market:getMarket('GB'),region_code:item.region_code,location:item.location,result:{url:'https://festival.test/traders'}});
+  assert.equal(candidate.status,'validated',item.title);
+  assert.equal(candidate.geography.region_code,item.region_code,item.title);
+  assert.equal(candidate.geography.locality,item.city,item.title);
+  assert.ok(candidate.evidence.some(e=>e.type==='locality_hint'&&e.value===item.city),item.title);
+  assert.ok(!candidate.evidence.some(e=>e.type==='region_correction'),item.title);
+ }
+});
+
+
+test('GB evaluator may derive same-region locality from the fetched page title alone', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><head><title>Newcastle Food Festival</title></head><body><main><p>Trader application is open for the 2027 festival.</p><a href="/apply">Trader application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-TYNE',location:'Tyne and Wear',result:{url:'https://festival.test/traders',title:'Generic result title'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.locality,'Newcastle upon Tyne');
+ assert.ok(candidate.evidence.some(e=>e.type==='locality_hint'&&e.value==='Newcastle upon Tyne'));
+});
+
+
+test('GB evaluator rejects foreign market conflicts expressed without comma state syntax', async () => {
+ const cases=[
+  {title:"Become a Vendor - SUFFOLK VA FARMERS' MARKET",body:"<html><body><main><p>Vendor application for SUFFOLK VA FARMERS' MARKET.</p></main></body></html>"},
+  {title:'North Canterbury Wine & Food Festival',body:'<html><body><main><p>Vendor applications are open for the North Canterbury Wine & Food Festival.</p></main></body></html>'}
+ ];
+ for(const item of cases){
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(url){return {final_url:url,body:item.body};}}
+  });
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-IOW',location:'Isle of Wight',result:{url:'https://example.test/vendors',title:item.title}});
+  assert.equal(candidate.status,'rejected',item.title);
+  assert.equal(candidate.rejection_reason,'market_conflict',item.title);
+ }
+});
+
+
+test('GB evaluator can correct region from source metadata description',async()=>{
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><head><meta property="og:description" content="Trader applications are open for Evesham Charter Market in Evesham, Worcestershire."></head><body><main><p>Trader application is open for the market.</p><a href="/apply">Trader application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-WEST-MIDS',location:'West Midlands',result:{url:'https://market.test/traders',title:'Evesham Charter Market'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'GB-ENG-WORCS');
+ assert.ok(candidate.evidence.some(e=>e.type==='region_correction'&&e.to_region_code==='GB-ENG-WORCS'));
+});
+
+
+test('news and press article paths are rejected despite exhibitor wording', async () => {
+ for (const url of [
+  'https://event.test/news/exhibitor-announcement/',
+  'https://event.test/news-press/1234/exhibitor-focus/'
+ ]) {
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(){return {final_url:url,body:'<html><body><main><h1>Exhibitor Focus</h1><p>Exhibitor application details are discussed in this news story.</p></main></body></html>'};}}
+  });
+  const candidate=await evaluator({market:getMarket('GB'),region_code:'GB-ENG-KENT',location:'Kent',result:{url}});
+  assert.equal(candidate.status,'rejected',url);
+  assert.equal(candidate.rejection_reason,'negative_page_signal',url);
+  assert.ok(candidate.evidence.some(item=>item.type==='negative_phrase'&&item.value==='news_or_press_path'),url);
+ }
+});
+
+
+test('US evaluator corrects a wrong acquisition state from explicit city-state evidence', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><head><title>Washington County Fair</title></head><body><main><p>Vendor applications are open for the Washington County Fair.</p><p>Fairgrounds: 12300 40th St N, Stillwater, MN 55082.</p><a href="/vendors">Vendor application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('US'),region_code:'WA',location:'Washington',result:{url:'https://washingtoncountyfair.test/vendors',title:'Washington County Fair'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'MN');
+ assert.equal(candidate.geography.region,'Minnesota');
+ assert.ok(candidate.evidence.some(item=>item.type==='region_correction'&&item.from_region_code==='WA'&&item.to_region_code==='MN'));
+});
+
+test('US evaluator corrects state from structured Event addressRegion code', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><head><script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","location":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":"Montclair","addressRegion":"NJ"}}}</script></head><body><main><p>Vendor application is open for the 2027 food festival.</p><a href="/apply">Vendor application</a></main></body></html>'};}},
+  now:()=>new Date('2026-09-30T00:00:00Z')
+ });
+ const candidate=await evaluator({market:getMarket('US'),region_code:'NY',location:'New York',result:{url:'https://festival.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'NJ');
+ assert.equal(candidate.geography.region,'New Jersey');
+});
+
+test('US evaluator leaves multi-state event pages uncorrected', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><p>Vendor applications are open for our touring fair with dates in Austin, TX and Tulsa, OK.</p><a href="/apply">Vendor application</a></main></body></html>'};}}
+ });
+ const candidate=await evaluator({market:getMarket('US'),region_code:'TX',location:'Texas',result:{url:'https://tour.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'TX');
+ assert.ok(!candidate.evidence.some(item=>item.type==='region_correction'));
+});
+
+test('US evaluator keeps matching state unchanged', async () => {
+ const evaluator=createDefaultCandidateEvaluator({
+  fetchProvider:{async fetch(url){return {final_url:url,body:'<html><body><main><p>Vendor applications are open for the fair in Austin, TX.</p><a href="/apply">Vendor application</a></main></body></html>'};}}
+ });
+ const candidate=await evaluator({market:getMarket('US'),region_code:'TX',location:'Texas',result:{url:'https://fair.test/vendors'}});
+ assert.equal(candidate.status,'validated');
+ assert.equal(candidate.geography.region_code,'TX');
+ assert.ok(!candidate.evidence.some(item=>item.type==='region_correction'&&item.to_region_code!=='TX'));
+});
+
+
+test('closed or draft vendor application pages are rejected', async () => {
+ for (const body of [
+  '<html><body><main><p>Vendor application</p><p>Deadline has passed</p></main></body></html>',
+  '<html><body><main><p>Vendor application is open</p><p>Application is in draft mode by event organizer</p></main></body></html>',
+  '<html><body><main><p>Vendor application</p><p>Vendor applications are closed</p></main></body></html>'
+ ]) {
+  const evaluator=createDefaultCandidateEvaluator({
+   fetchProvider:{async fetch(url){return {final_url:url,body};}},
+   now:()=>new Date('2026-09-30T00:00:00Z')
+  });
+  const candidate=await evaluator({market:getMarket('US'),region_code:'NJ',location:'New Jersey',result:{url:'https://event.test/vendors'}});
+  assert.equal(candidate.status,'rejected');
+  assert.equal(candidate.rejection_reason,'negative_page_signal');
+ }
+});

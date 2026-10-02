@@ -32,6 +32,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "unpdf": "1.8.1"
+    "unpdf": "1.8.1",
+    "fflate": "0.8.2"
   }
 }

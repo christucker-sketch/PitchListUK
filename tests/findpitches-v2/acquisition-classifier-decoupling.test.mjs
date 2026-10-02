@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 
 import { discoverBatch } from '../../platform/findpitches-v2/acquisition/discover-batch.mjs';
+import { persistDiscoveryBatch } from '../../platform/findpitches-v2/acquisition/storage.mjs';
 
 test('acquisition discovery does not require or invoke classification', async () => {
   let searches = 0;
@@ -37,6 +38,10 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
     new URL('../../operations/findpitches-v2/wrangler.jsonc', import.meta.url),
     'utf8'
   );
+  const classifierBatch = await fs.readFile(
+    new URL('../../platform/findpitches-v2/classifier/run-batch.mjs', import.meta.url),
+    'utf8'
+  );
 
   assert.match(worker, /runClassifierTick/);
   assert.match(worker, /enqueueStaleClassifications/);
@@ -44,8 +49,47 @@ test('runtime schedules acquisition and classifier as independent lanes', async 
   assert.match(worker, /c\.status IN \('validated', 'held'\)/);
   assert.match(worker, /RECLASSIFY_BATCH_LIMIT = 24/);
   assert.match(worker, /CLASSIFIER_BATCH_LIMIT = 24/);
+  assert.match(worker, /CUSTOMER_PROMOTION_BATCH_LIMIT = 48/);
   assert.match(worker, /runShadowTick/);
+  assert.match(classifierBatch, /geography\.discovery_location \\|\\| geography\.region \\|\\| row\.region_code/);
+  assert.match(classifierBatch, /c\.evidence_json/);
+  assert.match(classifierBatch, /mergeEvidence\(priorEvidence,evaluated\.evidence/);
+  assert.match(classifierBatch, /SET region_code = \?/);
   assert.match(worker, /event\?\.cron === CLASSIFIER_CRON/);
+  assert.match(worker, /BASELINE_ACQUISITION_CRON = '\*\/5 \* \* \* \*'/);
+  assert.match(worker, /runPairedAcquisitionTick/);
+  assert.match(worker, /queryGroup:0/);
+  assert.match(worker, /queryGroup:1/);
+  assert.match(worker, /paired_baseline_then_city/);
   assert.match(config, /"\*\/5 \* \* \* \*"/);
+  assert.doesNotMatch(config, /2-59\/5/);
   assert.match(config, /"\* \* \* \* \*"/);
+  assert.match(worker, /SOURCE_FIRST_CRON = '11,41 \* \* \* \*'/);
+  assert.match(worker, /runSourceFirstTick/);
+  assert.match(worker, /search_api_used:false/);
+  assert.match(config, /"11,41 \* \* \* \*"/);
+});
+
+
+test('acquisition storage preserves search snippet and query evidence', async () => {
+ const writes=[];
+ const db={prepare(sql){return {args:[],bind(...args){this.args=args;return this;},async run(){writes.push({sql,args:this.args});return {meta:{changes:1}};}};}};
+ await persistDiscoveryBatch(db,{run_id:'r1'},{
+  market:'GB',region:'GB-ENG-KENT',started_at:'2026-09-30T10:00:00Z',completed_at:'2026-09-30T10:01:00Z',
+  metrics:{queries:1,search_results:1,unique_urls:1},
+  candidates:[{
+   candidate_id:'fpv2_test',discovery_market:'GB',discovery_region_code:'GB-ENG-KENT',discovery_location:'Kent',
+   source_url:'https://example.test/vendors',canonical_url:'https://example.test/vendors',
+   search_title:'Maidstone Autumn Fair vendors',search_snippet:'Apply to trade at our Maidstone, Kent autumn fair.',
+   query_id:'vendor-1',query:'Kent vendor applications'
+  }]
+ });
+ const insert=writes.find(x=>/INSERT OR IGNORE INTO candidates/.test(x.sql));
+ assert.ok(insert);
+ const evidenceArg=insert.args.find(value=>typeof value==='string'&&value.startsWith('[{"kind":"search_result"'));
+ assert.ok(evidenceArg);
+ const evidence=JSON.parse(evidenceArg);
+ assert.equal(evidence[0].kind,'search_result');
+ assert.equal(evidence[0].snippet,'Apply to trade at our Maidstone, Kent autumn fair.');
+ assert.equal(evidence[0].query,'Kent vendor applications');
 });

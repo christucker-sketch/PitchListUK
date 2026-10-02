@@ -7,6 +7,7 @@ export function normalizeEnrichment(input = {}) {
   return Object.freeze({
     organiser: field(input.organiser),
     location: field(input.location),
+    location_area: locationAreaField(input.location_area),
     coordinates: coordinateField(input.coordinates),
     event_start: field(input.event_start),
     event_end: field(input.event_end),
@@ -29,6 +30,14 @@ function field(value) {
   }
   const normalized = scalar(value);
   return normalized == null ? null : Object.freeze({ value: normalized, evidence: Object.freeze([]), confidence: null });
+}
+
+function locationAreaField(value) {
+  const base=field(value);
+  if(!base)return null;
+  const precision=String(value?.precision||'').trim().toLowerCase();
+  if(!['place','area'].includes(precision))return null;
+  return Object.freeze({...base,precision});
 }
 
 function coordinateField(value) {
@@ -77,7 +86,7 @@ function evidenceArray(value) {
   return Object.freeze(value.map(item => {
     if (typeof item === 'string') return Object.freeze({ source: item, excerpt: null });
     if (!item || typeof item !== 'object') return null;
-    return Object.freeze({ source: scalar(item.source ?? item.url), excerpt: scalar(item.excerpt) });
+    const base={ source: scalar(item.source ?? item.url), excerpt: scalar(item.excerpt) }; const kind=scalar(item.kind); return Object.freeze(kind?{...base,kind}:base);
   }).filter(Boolean));
 }
 

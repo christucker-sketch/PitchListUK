@@ -52,12 +52,20 @@ const NEGATIVE_PHRASES = Object.freeze([
   'probate bond',
   'multistate lawsuit',
   'challenging tariffs',
-  'press release',
-  'news release',
   'available to traders in',
   'pre-qualify for financing',
   'prequalify for financing',
-  'vehicle specials'
+  'vehicle specials',
+  'fair trader scheme',
+  'register for homechoice',
+  'purchasing vendor application',
+  'purchasing vendor',
+  'deadline has passed',
+  'application deadline has passed',
+  'application is in draft mode by event organizer',
+  'applications are closed',
+  'vendor applications are closed',
+  'vendor spaces are full'
 ]);
 
 const APPLICATION_HINT = /(apply|application|vendor|trader|stallholder|exhibitor|pitch|food[ -]?truck)/i;
@@ -66,15 +74,26 @@ export function extractEvidence({
   body,
   sourceUrl,
   location,
+  market = null,
   now = new Date()
 } = {}) {
   const html = String(body || '');
-  const text = htmlToText(html);
+  const contentHtml = stripSiteChrome(html);
+  const text = htmlToText(contentHtml);
   const normalized = text.toLowerCase();
   const evidence = [];
 
+  const marketConflict = detectMarketConflict({ market, text, sourceUrl });
+  if (marketConflict) evidence.push(Object.freeze({ type: 'market_conflict', value: marketConflict, confidence: 1 }));
+
   if (/^https?:\/\/(?:www\.)?instagram\.com\/explore\/tags\//i.test(String(sourceUrl || ''))) {
     evidence.push(Object.freeze({ type: 'negative_phrase', value: 'generic social hashtag page', confidence: 1 }));
+  }
+  if (socialSource(sourceUrl)) {
+    evidence.push(Object.freeze({ type: 'negative_phrase', value: 'social_source_page', confidence: 1 }));
+  }
+  if (newsOrPressSource(sourceUrl)) {
+    evidence.push(Object.freeze({ type: 'negative_phrase', value: 'news_or_press_path', confidence: 1 }));
   }
 
   for (const phrase of POSITIVE_PHRASES) {
@@ -87,6 +106,13 @@ export function extractEvidence({
     if (normalized.includes(phrase)) {
       evidence.push(Object.freeze({ type: 'negative_phrase', value: phrase, confidence: 1 }));
     }
+  }
+
+  // Treat news/press-release wording as negative only when it describes the
+  // page itself, not when it appears in navigation/footer text on a real event page.
+  const leadText=text.slice(0,320);
+  if (/\b(?:press|news)\s+release\b/i.test(leadText)) {
+    evidence.push(Object.freeze({ type: 'negative_phrase', value: 'news_or_press_release_page', confidence: 1 }));
   }
 
   const applicationUrl = findApplicationUrl(html, sourceUrl);
@@ -123,7 +149,44 @@ export function hasPositiveApplicationEvidence(evidence) {
 }
 
 export function hasStrongNegativeEvidence(evidence) {
-  return evidence.some(item => item?.type === 'negative_phrase');
+  return evidence.some(item => item?.type === 'negative_phrase' || item?.type === 'market_conflict');
+}
+
+
+function newsOrPressSource(value) {
+  try {
+    const path=new URL(String(value||'')).pathname.toLowerCase();
+    return /\/(?:news|press|news-press|press-release|press-releases)(?:\/|$)/.test(path);
+  } catch {
+    return false;
+  }
+}
+
+function socialSource(value) {
+  try {
+    const host=new URL(String(value||'')).hostname.toLowerCase().replace(/^www\./,'');
+    return ['instagram.com','facebook.com','x.com','twitter.com','tiktok.com'].includes(host);
+  } catch {
+    return false;
+  }
+}
+
+function detectMarketConflict({market,text,sourceUrl}={}) {
+  const code=String(market||'').trim().toUpperCase();
+  if(code!=='GB') return null;
+  let host='';
+  try{host=new URL(String(sourceUrl||'')).hostname.toLowerCase();}catch{}
+  if(host.endsWith('.gov')&&!host.endsWith('.gov.uk')) return 'gb_candidate_non_uk_government_host';
+  const value=String(text||'');
+  const explicitUS=/\b(?:united\s+states|usa|u\.s\.a\.?|u\.s\.)\b/i.test(value)||/\bUS\b/.test(value);
+  if(explicitUS) return 'gb_candidate_explicit_us_reference';
+  const stateCodes='AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY';
+  const stateNames='Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|New Hampshire|New Jersey|New Mexico|New York|North Carolina|North Dakota|Ohio|Oklahoma|Oregon|Pennsylvania|Rhode Island|South Carolina|South Dakota|Tennessee|Texas|Utah|Vermont|Virginia|Washington|West Virginia|Wisconsin|Wyoming';
+  if(new RegExp("\\b[A-Z][A-Za-z .’'-]{1,60},\\s*(?:"+stateCodes+")\\b").test(value)) return 'gb_candidate_us_city_state_code';
+  if(new RegExp("\\b[A-Z][A-Za-z .’'-]{1,60}\\s+(?:"+stateCodes+")\\b").test(value)) return 'gb_candidate_us_city_state_code';
+  if(new RegExp("\\b[A-Z][A-Za-z .’'-]{1,60},\\s*(?:"+stateNames+")\\b",'i').test(value)) return 'gb_candidate_us_city_state_name';
+  if(/\bnorth\s+canterbury\b/i.test(value)) return 'gb_candidate_explicit_nz_region';
+  return null;
 }
 
 function findApplicationUrl(html, sourceUrl) {
@@ -158,6 +221,11 @@ function applicationLinkScore(label, href) {
   if (/food[ -]?truck/.test(value)) score += 10;
   if (/login|sign in/.test(value)) score -= 5;
   return score;
+}
+
+function stripSiteChrome(html) {
+  return String(html || '')
+    .replace(/<(nav|header|footer|aside)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ');
 }
 
 function htmlToText(html) {

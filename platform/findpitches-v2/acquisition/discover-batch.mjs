@@ -1,5 +1,6 @@
 import { getMarket } from '../markets/registry.mjs';
 import { buildQueries } from '../queries/templates.mjs';
+import { buildOfficialFirstUsQueries } from '../queries/us-official-first.mjs';
 import { canonicalUrl } from '../engine/candidate.mjs';
 
 export async function discoverBatch(job = {}, dependencies = {}) {
@@ -13,7 +14,13 @@ export async function discoverBatch(job = {}, dependencies = {}) {
   }
 
   const queryLimit = Math.max(1, Number(job.query_limit ?? job.queryLimit ?? 8) || 8);
-  const queries = buildQueries({ market, location, limit: queryLimit, rotation: job.query_rotation ?? job.queryRotation ?? 0 });
+  const profile=String(job.discovery_profile||'baseline');
+  if(profile!=='baseline' && !(profile==='us_official_first' && market.code==='US')){
+    throw new Error('findpitches_v2_discovery_profile_invalid');
+  }
+  const queries=profile==='us_official_first'
+    ? buildOfficialFirstUsQueries({location,limit:Math.min(queryLimit,4),rotation:job.query_rotation ?? job.queryRotation ?? 0})
+    : buildQueries({ market, location, limit: queryLimit, rotation: job.query_rotation ?? job.queryRotation ?? 0 });
   const startedAt = new Date().toISOString();
   const searchResults = [];
   const searchErrors = [];
@@ -69,6 +76,7 @@ export async function discoverBatch(job = {}, dependencies = {}) {
 
   return Object.freeze({
     engine: 'findpitches-v2-acquisition',
+    discovery_profile:profile,
     market: market.code,
     region: regionCode,
     location,

@@ -1,0 +1,72 @@
+name: FindPitches v2 GB Ranked Preview
+
+on:
+  pull_request:
+    types: [ready_for_review]
+    paths:
+      - 'operations/findpitches-v2/preview-gb-ranked-recovery.mjs'
+      - 'operations/findpitches-v2/preview-gb-title-locality-recovery.mjs'
+      - 'operations/findpitches-v2/preview-gb-legacy-source-locality.mjs'
+      - 'operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs'
+      - 'operations/findpitches-v2/preview-docx-recovery.mjs'
+      - 'operations/findpitches-v2/preview-generic-binary-recovery.mjs'
+      - 'platform/findpitches-v2/providers/fetch/http.mjs'
+      - 'tests/findpitches-v2/fetch-provider-docx.test.mjs'
+      - 'tests/findpitches-v2/fetch-provider-docx-integration.test.mjs'
+      - 'package.json'
+      - 'platform/findpitches-v2/enrichment/run-batch.mjs'
+      - 'platform/findpitches-v2/customer/practical-readiness.mjs'
+      - 'tests/findpitches-v2/enrichment-runtime.test.mjs'
+      - '.github/workflows/findpitches-v2-gb-ranked-preview.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-gb-ranked-preview
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    if: github.event.pull_request.number == 1872
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Prove isolated shadow target
+        shell: bash
+        run: |
+          set -euo pipefail
+          health="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .database == "isolated" and .mode == "shadow" and .publication_enabled == false' <<< "$health" >/dev/null
+      - name: Run ranked GB recovery preview
+        run: node operations/findpitches-v2/preview-gb-ranked-recovery.mjs
+      - name: Run OS-verified title locality preview
+        run: node operations/findpitches-v2/preview-gb-title-locality-recovery.mjs
+      - name: Preview legacy-overlap current-source localities
+        run: node operations/findpitches-v2/preview-gb-legacy-source-locality.mjs
+      - name: Audit unsupported fetch content types
+        run: node operations/findpitches-v2/audit-unsupported-fetch-content-types.mjs
+      - name: Run DOCX recovery preview
+        run: node operations/findpitches-v2/preview-docx-recovery.mjs
+      - name: Run generic binary recovery preview
+        run: node operations/findpitches-v2/preview-generic-binary-recovery.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gb-ranked-preview-${{ github.run_id }}
+          path: |
+            gb-ranked-recovery-preview.json
+            gb-title-locality-recovery-preview.json
+            gb-legacy-source-locality-preview.json
+            unsupported-fetch-content-types.json
+            docx-recovery-preview.json
+            generic-binary-recovery-preview.json
+          retention-days: 14
