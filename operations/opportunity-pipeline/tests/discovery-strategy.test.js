@@ -1,9 +1,10 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const { cleanTitle, hop1Queries, seedsFromResults, dedupeSeeds }=require('../scripts/discover-event-seeds');
+const { cleanTitle, hop1Queries, seedsFromResults, dedupeSeeds, seedScore }=require('../scripts/discover-event-seeds');
 const { cleanName, isGeneric, buildHop2Queries }=require('../scripts/generate-hop2-queries');
 const { analyse }=require('../scripts/audit-rejects');
 const { selectTierOne }=require('../scripts/run-two-hop-pilot');
+const { evaluateOpportunity }=require('../lib/opportunity-safety');
 
 test('hop one uses event discovery language without vendor terms',()=>{
   const q=hop1Queries('York',2027);
@@ -16,13 +17,28 @@ test('hop one uses event discovery language without vendor terms',()=>{
 
 test('hop one extracts and dedupes event-like result names',()=>{
   const rows=seedsFromResults('York','q',[
-    {title:'York Food Festival 2027 - Visit York',url:'https://a.test/york-food',snippet:'Food festival'},
-    {title:'York Food Festival 2027 | Official Site',url:'https://b.test/york-food',snippet:'Food festival'},
-    {title:'York Parking',url:'https://c.test/parking',snippet:'Parking information'}
+    {title:'York Food Festival 2027 - Visit York',url:'https://visityork.org/york-food',snippet:'York food festival in England'},
+    {title:'York Food Festival 2027 | Official Site',url:'https://yorkfoodfestival.co.uk/york-food',snippet:'York food festival'},
+    {title:'York Parking',url:'https://york.gov.uk/parking',snippet:'York parking information'}
   ]);
   assert.equal(rows.length,2);
   assert.equal(dedupeSeeds(rows).length,1);
   assert.equal(cleanTitle(rows[0].name),'York Food Festival 2027');
+});
+
+test('hop one rejects foreign lookalikes and low-value social noise',()=>{
+  const rows=seedsFromResults('Falmouth','q',[
+    {title:'Calendar • Special Events',url:'https://www.falmouthma.gov/calendar.aspx',snippet:'Falmouth Massachusetts special events and farmers market'},
+    {title:'Falmouth Food Festival 2027',url:'https://falmouthfoodfestival.co.uk/',snippet:'Falmouth food festival in Cornwall'},
+    {title:'Falmouth festival post',url:'https://facebook.com/example',snippet:'Falmouth festival photos'}
+  ]);
+  assert.deepEqual(rows.map(row=>row.source_url),['https://falmouthfoodfestival.co.uk/']);
+});
+
+test('hop one scores UK first-party event pages above generic directories',()=>{
+  const official={name:'Ludlow Spring Festival',town:'Ludlow',source_url:'https://ludlowspringfestival.co.uk/',snippet:'Ludlow Spring Festival 2027'};
+  const directory={name:'Upcoming Holidays and Festivals',town:'Ludlow',source_url:'https://ricksteves.com/europe/england/festivals',snippet:'Ludlow festivals'};
+  assert.ok(seedScore('Ludlow',official)>seedScore('Ludlow',directory));
 });
 
 test('hop two creates tiered event-name searches including 2027 and artefacts',()=>{
@@ -53,25 +69,36 @@ test('reject audit flags recurring and opening-later trader routes',()=>{
   assert.ok(row.audit_score>=5);
 });
 
-
 test('two-hop pilot only spends tier-one queries on a bounded seed set',()=>{
   const plan=selectTierOne([
-    {name:'York Food Festival 2027',town:'York'},
-    {name:'Skipton Christmas Market 2027',town:'Skipton'},
-    {name:'York Food Festival 2027',town:'York'}
+    {name:'York Food Festival 2027',town:'York',seed_score:10},
+    {name:'Skipton Christmas Market 2027',town:'Skipton',seed_score:10},
+    {name:'York Food Festival 2027',town:'York',seed_score:5}
   ],2);
   assert.equal(plan.selected.length,2);
   assert.equal(plan.queries.length,6);
   assert.ok(plan.queries.every(q=>!/filetype:pdf|2027 traders OR/.test(q)));
 });
 
-
-test('two-hop selection round-robins across towns instead of exhausting the first area',()=>{
+test('two-hop selection round-robins across towns and prefers stronger seeds',()=>{
   const plan=selectTierOne([
-    {name:'Bakewell Event One',town:'Bakewell'},
-    {name:'Bakewell Event Two',town:'Bakewell'},
-    {name:'Bakewell Event Three',town:'Bakewell'},
-    {name:'Ludlow Event One',town:'Ludlow'}
+    {name:'Bakewell Weak Event',town:'Bakewell',seed_score:4},
+    {name:'Bakewell Strong Event',town:'Bakewell',seed_score:10},
+    {name:'Ludlow Event One',town:'Ludlow',seed_score:8}
   ],2);
-  assert.deepEqual(plan.selected.map(x=>x.town),['Bakewell','Ludlow']);
+  assert.deepEqual(plan.selected.map(x=>x.name),['Bakewell Strong Event','Ludlow Event One']);
+});
+
+test('strong undated trader routes found by two-hop are watched, never published',()=>{
+  const row=evaluateOpportunity({
+    event_name:'Bakewell Country Festival',organiser:'Bakewell Agricultural & Horticultural Society',
+    source_url:'https://bakewellahs.co.uk/trade-at-bakewell-country-festival',
+    application_url:'https://bakewellahs.co.uk/trade-at-bakewell-country-festival',
+    location:'Derbyshire, England',region:'Derbyshire',event_start:'',event_end:'',application_deadline:'',
+    contact_email:'',query_lane:'two-hop-event-name',query_text:'"Bakewell Country Festival" traders OR stallholders',
+    source_evidence:'Trade at Bakewell Country Festival. Trader applications and trade stand information for England.'
+  },{now:new Date('2026-10-02T00:00:00Z'),allowUnapprovedDiscovery:true});
+  assert.equal(row.quality_status,'watch');
+  assert.equal(row.publishable,false);
+  assert.ok(row.quality_reasons.includes('undated_trader_route_watch'));
 });
