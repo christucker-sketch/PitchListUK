@@ -34,6 +34,7 @@ function selectTierOne(events,maxEvents=20){
     if(!byTown.has(town)) byTown.set(town,[]);
     byTown.get(town).push(event);
   }
+  for(const rows of byTown.values()) rows.sort((a,b)=>Number(b.seed_score||0)-Number(a.seed_score||0));
   const towns=[...byTown.keys()];
   const selected=[], queries=[];
   let depth=0;
