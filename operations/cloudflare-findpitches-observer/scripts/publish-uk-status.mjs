@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { buildUkObserverStatus } from './uk-observer-status.mjs';
+import { fetchAuthoritativeUkObserverStatus } from './uk-observer-status.mjs';
 
 const threeMinApiUrl = String(process.env.FINDPITCHES_3MIN_API_URL || '').replace(/\/$/, '');
 const threeMinApiKey = String(process.env.FINDPITCHES_3MIN_API_KEY || '');
@@ -56,7 +56,7 @@ async function main() {
   }
 
   try {
-    const status = buildUkObserverStatus(now);
+    const status = await fetchAuthoritativeUkObserverStatus({ now });
     const payload = {
       source,
       observed_at: now.toISOString(),
