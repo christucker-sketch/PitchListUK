@@ -1,12 +1,16 @@
 import sourceOnboardingLib from '../../opportunity-pipeline/lib/source-onboarding.js';
+import sourcesLib from '../../opportunity-pipeline/config/sources.js';
+import extractLib from '../../opportunity-pipeline/acquisition/extract.js';
 import lanesLib from '../../opportunity-pipeline/acquisition/lanes.js';
 import safetyLib from '../../opportunity-pipeline/lib/opportunity-safety.js';
 import geoNormaliseLib from '../../opportunity-pipeline/lib/geo-normalise.js';
 import { searchViaSerperBroker } from './service-serper-search.mjs';
 
 const { STATUS, PLATFORM_HOST, NON_SOURCE_HOST, classifySourceCandidate } = sourceOnboardingLib;
+const { sourceRuleFor, termsReviewed } = sourcesLib;
+const { sourceCandidateToRow } = extractLib;
 const { LANES } = lanesLib;
-const { canonicalUrl } = safetyLib;
+const { canonicalUrl, evaluateOpportunity } = safetyLib;
 const { inferKnownCounty } = geoNormaliseLib;
 
 const MAX_BODY_BYTES = 240000;
@@ -185,6 +189,7 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
   const approved = [];
   const review = [];
   const held = [];
+  const customerReadyRows = [];
   for (const item of candidates) {
     let page;
     try {
@@ -204,6 +209,22 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
       held.push(Object.freeze({ route: page.url || item.result.url, query_id: item.plan.id, reason: 'non_actionable_or_informational_result' }));
       continue;
     }
+    const finalRoute = canonicalUrl(page.url || item.result.url);
+    const approvedRule = sourceRuleFor(finalRoute);
+    if (approvedRule?.approved === true && termsReviewed(approvedRule)) {
+      const extracted = sourceCandidateToRow({
+        url: finalRoute,
+        title: item.result.title || approvedRule.opportunity_title || approvedRule.organisation,
+        snippet: item.result.snippet || '',
+        query: item.plan.query,
+        query_lane: item.plan.lane_id || 'uk-cloud-opportunity-search'
+      }, page.text, now.slice(0, 10));
+      const reviewedOpportunity = evaluateOpportunity(extracted, { now: new Date(now) });
+      if (reviewedOpportunity.quality_status === 'customer_ready' && reviewedOpportunity.publishable === true) {
+        customerReadyRows.push(Object.freeze({ ...reviewedOpportunity }));
+      }
+    }
+
     const inferredGeography = inferKnownCounty(item.result.title, item.result.snippet, page.text, page.url || item.result.url);
     const classified = promoteCandidate(classifySourceCandidate({
       url: page.url || item.result.url,
@@ -245,6 +266,8 @@ export async function runUkOpportunityFirstDiscovery(env, payload = {}, options 
     held_count: held.length,
     approved_candidates: Object.freeze(approved),
     review_queue: Object.freeze(review),
-    held: Object.freeze(held)
+    held: Object.freeze(held),
+    customer_ready_row_count: customerReadyRows.length,
+    customer_ready_rows: Object.freeze(customerReadyRows.slice(0, 12))
   });
 }
