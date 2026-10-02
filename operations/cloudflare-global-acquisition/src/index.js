@@ -82,8 +82,8 @@ function ukOpsHtml(receipt) {
   const totals = receipt?.totals || {};
   const lastDiscovery = receipt?.last_discovery || {};
   const lastAcquisition = receipt?.last_acquisition || {};
-  const rows = (receipt?.recent_results || []).slice().reverse().map(item => \`
-    <tr><td>\${escapeHtml(item.completed_at || item.recovered_at || '')}</td><td>\${escapeHtml(item.mode || item.result_mode || '')}</td><td>\${Number(item.source_additions || 0)}</td><td>\${Number(item.manifest_additions || 0)}</td><td>\${escapeHtml(item.recovery_reason || '')}</td></tr>\`).join('');
+  const rows = (receipt?.recent_results || []).slice().reverse().map(item => `
+    <tr><td>\${escapeHtml(item.completed_at || item.recovered_at || '')}</td><td>\${escapeHtml(item.mode || item.result_mode || '')}</td><td>\${Number(item.source_additions || 0)}</td><td>\${Number(item.manifest_additions || 0)}</td><td>\${escapeHtml(item.recovery_reason || '')}</td></tr>`).join('');
   const updated = escapeHtml(receipt?.updated_at || '');
   return \`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="60"><title>FindPitches UK Ops</title><style>
   body{font:15px system-ui,sans-serif;max-width:1100px;margin:32px auto;padding:0 18px;color:#202124;background:#fafafa}h1{margin-bottom:4px}.muted{color:#666}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:24px 0}.card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px}.value{font-size:25px;font-weight:700;margin-top:5px}.ok{color:#137333}.bad{color:#b3261e}table{width:100%;border-collapse:collapse;background:#fff}th,td{text-align:left;padding:9px;border-bottom:1px solid #e5e5e5}code{font-size:12px}.links a{margin-right:16px}</style></head><body>
