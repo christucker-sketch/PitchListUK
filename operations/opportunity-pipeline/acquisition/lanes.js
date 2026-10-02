@@ -945,6 +945,97 @@ function cityLane([city, nation], index) {
   };
 }
 
+const FUTURE_DISCOVERY_LANES = [
+  {
+    id: 'future-yearless-trader-language',
+    title: 'Yearless trader language and open calls',
+    category: 'food_and_craft',
+    priority: 2,
+    country: 'United Kingdom',
+    lane_type: 'future_discovery',
+    queries: [
+      'UK "traders wanted" festival market',
+      'UK "call for traders" festival market',
+      'UK "book a pitch" festival market',
+      'UK "apply to trade" festival market',
+      'UK "trade enquiries" festival market',
+      'UK "food and drink exhibitors" festival',
+      'UK "catering concession" event',
+      'UK "expression of interest" traders event'
+    ]
+  },
+  {
+    id: 'future-2027-trader-routes',
+    title: '2027 trader and exhibitor applications',
+    category: 'food_and_craft',
+    priority: 2,
+    country: 'United Kingdom',
+    lane_type: 'future_discovery',
+    queries: [
+      'UK 2027 trader application festival',
+      'UK 2027 stallholder application market',
+      'UK 2027 trade stand booking show',
+      'UK 2027 exhibitor application fair',
+      'UK 2027 food trader application event',
+      'UK 2027 caterer application festival',
+      'UK 2027 Christmas market trader application',
+      'UK 2027 street food vendor application'
+    ]
+  },
+  {
+    id: 'future-application-artifacts',
+    title: 'Trader application packs, PDFs and booking artefacts',
+    category: 'food_and_craft',
+    priority: 2,
+    country: 'United Kingdom',
+    lane_type: 'artifact_discovery',
+    queries: [
+      'filetype:pdf "trader application form" UK',
+      'filetype:pdf "stallholder application" UK',
+      'filetype:pdf "trader information pack" UK',
+      'filetype:pdf "trade stand" booking UK',
+      'filetype:docx "trade stand booking" UK',
+      'inurl:traders "apply" UK festival',
+      'inurl:trade-stands UK show',
+      'intitle:traders application UK festival'
+    ]
+  },
+  {
+    id: 'future-form-hosts',
+    title: 'Trader forms on hosted form platforms',
+    category: 'food_and_craft',
+    priority: 2,
+    country: 'United Kingdom',
+    lane_type: 'artifact_discovery',
+    queries: [
+      'site:docs.google.com/forms trader festival UK',
+      'site:forms.gle stallholder UK market',
+      'site:forms.office.com trader application UK festival',
+      'site:jotform.com trader application UK festival',
+      'site:jotform.com stallholder application UK market',
+      'site:typeform.com trader application UK event'
+    ]
+  },
+  {
+    id: 'future-organiser-networks',
+    title: 'Organiser-network opportunity discovery',
+    category: 'food_and_craft',
+    priority: 2,
+    country: 'United Kingdom',
+    lane_type: 'organiser_discovery',
+    queries: [
+      'site:gov.uk markets team traders wanted event',
+      '"Business Improvement District" traders wanted market UK',
+      '"Town Council" Christmas market traders wanted',
+      '"agricultural show" "trade stands" UK 2027',
+      'Rotary club festival traders wanted UK',
+      '"Round Table" bonfire traders wanted UK',
+      'Pride festival trader application UK 2027',
+      'CAMRA beer festival trade stand caterer application'
+    ]
+  }
+];
+
 const CITY_LANES = UK_CITIES.map(cityLane);
 
 const COUNTY_LANES = COUNTY_AREAS.map(countyLane);
@@ -953,7 +1044,7 @@ const IRELAND_LANES = [...IRELAND_ROUTE_LANES, ...IRELAND_REGION_LANES];
 // PitchListUK is a UK product. Republic-of-Ireland lanes remain exported only so
 // historical reports can be interpreted, but they are deliberately excluded
 // from every selectable/scheduled lane set.
-const LANES = [...CORE_LANES, ...FIRST_PARTY_WEAK_REGION_LANES, ...APPROVED_SOURCE_NETWORK_LANES, ...EXPANSION_LANES, ...CITY_LANES, ...COUNTY_LANES];
+const LANES = [...CORE_LANES, ...FIRST_PARTY_WEAK_REGION_LANES, ...APPROVED_SOURCE_NETWORK_LANES, ...EXPANSION_LANES, ...FUTURE_DISCOVERY_LANES, ...CITY_LANES, ...COUNTY_LANES];
 
 function allLaneIds() {
   return LANES.map(lane => lane.id);
@@ -984,6 +1075,7 @@ module.exports = {
   IRELAND_LANES,
   UK_CITIES,
   CITY_LANES,
+  FUTURE_DISCOVERY_LANES,
   COUNTY_AREAS,
   COUNTY_LANES,
   allLaneIds,
