@@ -227,7 +227,7 @@ export async function runUkSourceDiscovery(env, payload = {}, options = {}) {
 
   const { outcomes, reviewed } = await fetchAndClassify(items, payload, options, generatedAt);
   const approved = reviewed.filter(item => item.approval_status === 'approved');
-  const reviewQueue = reviewed.filter(item => item.classification === STATUS.REVIEW && item.approval_status === 'pending');
+  const reviewQueue = reviewed.filter(item => item.approval_status === 'pending' && (item.classification === STATUS.REVIEW || item.classification === STATUS.AUTO));
   const classifications = reviewed.reduce((counts, item) => ({ ...counts, [item.classification]: (counts[item.classification] || 0) + 1 }), {});
 
   return Object.freeze({
