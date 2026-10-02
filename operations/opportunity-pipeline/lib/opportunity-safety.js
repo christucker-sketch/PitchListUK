@@ -145,7 +145,9 @@ function evaluateOpportunity(raw, options = {}) {
   else if (!row.event_end && row.event_start && row.event_start < today) reasons.push('event_expired');
   if (row.application_deadline && row.application_deadline < today) reasons.push('application_closed');
   if (parsedDates.closed_signal || raw.closed_signal) reasons.push('application_closed');
-  if (!row.organiser || GENERIC_TITLE.test(String(row.event_name || '').trim()) && !row.organiser) reasons.push('named_organiser_missing');
+  const genericEventName = GENERIC_TITLE.test(String(row.event_name || '').trim());
+  const genericOrganiser = GENERIC_TITLE.test(String(row.organiser || '').trim());
+  if (!row.organiser || genericEventName || genericOrganiser) reasons.push('named_organiser_missing');
   const directText = [row.event_name, row.organiser, row.application_url, raw.source_evidence].join(' ');
   if (!DIRECT_EVIDENCE.test(directText) && !row.contact_email) reasons.push('direct_application_or_contact_missing');
   if (!rule.approved) reasons.push('source_not_approved');
