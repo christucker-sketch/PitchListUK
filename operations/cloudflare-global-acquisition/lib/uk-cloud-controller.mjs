@@ -227,6 +227,9 @@ async function bindReservedWorkflow(env, stub, snapshot, decision) {
         country: 'UK', mode: 'uk_additions_only_pr', as_of: new Date().toISOString(),
         batch_size: 8, concurrency: 3, timeout_ms: 12000, max_attempts: 1,
         max_additions: 50, max_growth_percent: 25, max_per_source: 1, max_duplicate_rate: 60,
+        discovered_rows: Array.isArray(snapshot.state.last_discovery?.result?.customer_ready_rows)
+          ? snapshot.state.last_discovery.result.customer_ready_rows.slice(0, 12)
+          : [],
         trigger: 'uk-cloud-controller'
       };
   const dispatch = resolveGlobalAcquisitionDispatch(payload);
@@ -283,7 +286,10 @@ async function inspectActiveWorkflow(env, stub, snapshot, decision) {
   if (result.country !== 'UK') throw new Error('uk_controller_workflow_country_mismatch');
   const next = structuredClone(snapshot.state);
   next.active_instance = null;
-  appendResult(next, { workflow_id: active.id, mode: active.mode, completed_at: new Date().toISOString(), result });
+  const resultForHistory = active.mode === 'discovery' && Array.isArray(result.customer_ready_rows)
+    ? { ...result, customer_ready_rows: undefined }
+    : result;
+  appendResult(next, { workflow_id: active.id, mode: active.mode, completed_at: new Date().toISOString(), result: resultForHistory });
 
   if (active.mode === 'discovery') {
     if (result.mode !== 'uk_source_discovery_pr') throw new Error('uk_controller_discovery_mode_mismatch');
@@ -307,6 +313,7 @@ async function inspectActiveWorkflow(env, stub, snapshot, decision) {
     next.totals.acquisition_runs = Number(next.totals?.acquisition_runs || 0) + 1;
     next.totals.opportunity_additions = Number(next.totals?.opportunity_additions || 0) + Number(result.manifest_additions || 0);
     next.last_acquisition = { workflow_id: active.id, result };
+    if (next.last_discovery?.result?.customer_ready_rows) delete next.last_discovery.result.customer_ready_rows;
     const prNumber = Number(result?.opportunity_pr?.pr_number || 0);
     if (Number(result.manifest_additions || 0) > 0 && prNumber > 0) {
       next.pending_data_pr = { pr_number: prNumber, workflow_id: active.id };
