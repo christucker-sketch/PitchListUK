@@ -72,6 +72,45 @@ import { CaControllerStateDurableObject } from './ca-controller-state.js';
 
 export { ControllerStateDurableObject, UkControllerStateDurableObject, CaControllerStateDurableObject };
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+}
+
+function ukOpsHtml(receipt) {
+  const totals = receipt?.totals || {};
+  const lastDiscovery = receipt?.last_discovery || {};
+  const lastAcquisition = receipt?.last_acquisition || {};
+  const rows = (receipt?.recent_results || []).slice().reverse().map(item => `
+    <tr><td>${escapeHtml(item.completed_at || item.recovered_at || '')}</td><td>${escapeHtml(item.mode || item.result_mode || '')}</td><td>${Number(item.source_additions || 0)}</td><td>${Number(item.manifest_additions || 0)}</td><td>${escapeHtml(item.recovery_reason || '')}</td></tr>`).join('');
+  const updated = escapeHtml(receipt?.updated_at || '');
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="60"><title>FindPitches UK Ops</title><style>
+  body{font:15px system-ui,sans-serif;max-width:1100px;margin:32px auto;padding:0 18px;color:#202124;background:#fafafa}h1{margin-bottom:4px}.muted{color:#666}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:24px 0}.card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px}.value{font-size:25px;font-weight:700;margin-top:5px}.ok{color:#137333}.bad{color:#b3261e}table{width:100%;border-collapse:collapse;background:#fff}th,td{text-align:left;padding:9px;border-bottom:1px solid #e5e5e5}code{font-size:12px}.links a{margin-right:16px}</style></head><body>
+  <h1>FindPitches UK acquisition</h1><div class="muted">Read-only cloud controller telemetry · auto-refreshes every 60 seconds · updated ${updated}</div>
+  <div class="links"><a href="/ops/uk-status.json">JSON</a><a href="/health">Worker health</a></div>
+  <div class="grid">
+    <div class="card">Controller<div class="value ${receipt?.blocker ? 'bad':'ok'}">${escapeHtml(receipt?.status || 'unknown')}</div></div>
+    <div class="card">Production opportunities<div class="value">${receipt?.production_count ?? '—'}</div></div>
+    <div class="card">Approved sources<div class="value">${receipt?.source_count ?? '—'}</div></div>
+    <div class="card">Discovery runs<div class="value">${Number(totals.discovery_runs || 0)}</div></div>
+    <div class="card">Acquisition runs<div class="value">${Number(totals.acquisition_runs || 0)}</div></div>
+    <div class="card">Opportunity additions<div class="value">${Number(totals.opportunity_additions || 0)}</div></div>
+    <div class="card">Source additions<div class="value">${Number(totals.source_additions || 0)}</div></div>
+    <div class="card">Cycle / query<div class="value">${receipt?.cycle ?? '—'} / ${receipt?.query_offset ?? '—'}</div></div>
+  </div>
+  <h2>Latest activity</h2><table><tbody>
+    <tr><th>Last discovery</th><td>${escapeHtml(lastDiscovery.generated_at || '—')}</td><th>Source additions</th><td>${Number(lastDiscovery.source_additions || 0)}</td></tr>
+    <tr><th>Last acquisition</th><td>${escapeHtml(lastAcquisition.generated_at || '—')}</td><th>Opportunity additions</th><td>${Number(lastAcquisition.manifest_additions || 0)}</td></tr>
+    <tr><th>Production before → planned</th><td colspan="3">${lastAcquisition.production_count_before ?? '—'} → ${lastAcquisition.production_count_after_planned ?? '—'}</td></tr>
+    <tr><th>Next decision</th><td colspan="3"><code>${escapeHtml(JSON.stringify(receipt?.decision || {}))}</code></td></tr>
+    <tr><th>Blocker</th><td colspan="3" class="${receipt?.blocker ? 'bad':''}">${escapeHtml(receipt?.blocker || 'none')}</td></tr>
+  </tbody></table>
+  <h2>Recent controller results</h2><table><thead><tr><th>Time</th><th>Mode</th><th>Sources +</th><th>Opportunities +</th><th>Recovery/error</th></tr></thead><tbody>${rows || '<tr><td colspan="5">No recent results recorded.</td></tr>'}</tbody></table>
+  <p class="muted">Authority: ${escapeHtml(receipt?.authority || 'unknown')} · state v${receipt?.state_version ?? '—'} · base <code>${escapeHtml(receipt?.base_main_sha || '')}</code></p>
+  </body></html>`;
+}
+
 export class GlobalAcquisitionWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
     const payload = event?.payload || {};
@@ -276,6 +315,16 @@ export default {
 
     if (url.pathname.startsWith('/controller-state/')) {
       return handleControllerStateMaintenance(request, env);
+    }
+
+    if (request.method === 'GET' && url.pathname === '/ops/uk-status.json') {
+      const receipt = await readUkControllerReadonlyReceipt(env);
+      return Response.json({ ok: receipt.available === true, service: 'findpitches-uk-ops', generated_at: new Date().toISOString(), ...receipt }, { headers: { 'cache-control': 'no-store' } });
+    }
+
+    if (request.method === 'GET' && url.pathname === '/ops/uk-status') {
+      const receipt = await readUkControllerReadonlyReceipt(env);
+      return new Response(ukOpsHtml(receipt), { status: receipt.available === true ? 200 : 503, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' } });
     }
 
     if (request.method === 'GET' && url.pathname === '/health') {
