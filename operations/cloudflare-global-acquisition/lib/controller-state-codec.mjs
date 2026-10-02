@@ -21,7 +21,7 @@ function validateRegionalControllerState(parsed, { kind, label, planSize, legacy
   const limit = Number(parsed.query_limit);
   const actualPlanSize = Number(parsed.plan_size);
   const acceptedPlanSizes = new Set([planSize, ...legacyPlanSizes].map(Number));
-  if (!Number.isInteger(actualPlanSize) || !acceptedPlanSizes.has(actualPlanSize)) throw new Error(`${label} controller state plan_size is invalid`);
+  if (!Number.isInteger(actualPlanSize) || !acceptedPlanSizes.has(actualPlanSize)) throw new Error(`${label} controller state plan_size must be ${planSize}`);
   if (!Number.isInteger(offset) || offset < 0 || offset >= actualPlanSize) throw new Error(`${label} controller state query_offset is invalid`);
   if (!Number.isInteger(limit) || limit < 1 || limit > 12) throw new Error(`${label} controller state query_limit is invalid`);
   if (!Number.isInteger(Number(parsed.cycle || 0)) || Number(parsed.cycle || 0) < 0) throw new Error(`${label} controller state cycle is invalid`);
