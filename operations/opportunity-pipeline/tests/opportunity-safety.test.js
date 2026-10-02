@@ -174,6 +174,66 @@ test('official recurring-market application wording is direct opportunity eviden
   }
 });
 
+
+test('official council evidence can supply the named organiser', () => {
+  const row = evaluateOpportunity(ready({
+    organiser: '',
+    source_url: 'https://cambridge.gov.uk/market-trading-licences',
+    application_url: 'https://cambridge.gov.uk/market-trading-licences',
+    location: 'Cambridge, England',
+    event_start: '',
+    event_end: '',
+    application_deadline: '',
+    event_name: 'Market trading licences',
+    source_evidence: 'Cambridge City Council market trading licences. Traders wanted. Apply for a market stall in Cambridge, England.',
+  }), { now: new Date('2026-10-02T00:00:00Z'), allowUnapprovedDiscovery: true });
+  assert.equal(row.organiser, 'Cambridge City Council');
+  assert.ok(!row.quality_reasons.includes('named_organiser_missing'));
+});
+
+test('recurring or opening-soon trader routes are retained on a watchlist instead of rejected', () => {
+  const openingSoon = evaluateOpportunity(ready({
+    organiser: 'Cambridge City Council',
+    source_url: 'https://cambridge.gov.uk/market-trading-licences',
+    application_url: 'https://cambridge.gov.uk/market-trading-licences',
+    location: 'Cambridge, England',
+    event_start: '2026-09-01',
+    event_end: '2026-09-01',
+    application_deadline: '',
+    event_name: 'Cambridge Market',
+    source_evidence: 'Cambridge City Council. We are not currently accepting applications to trade. Please check this page again for future opportunities. Market traders can apply for a stall.',
+  }), { now: new Date('2026-10-02T00:00:00Z'), allowUnapprovedDiscovery: true });
+  assert.equal(openingSoon.quality_status, 'watch');
+  assert.equal(openingSoon.watchlist, true);
+  assert.equal(openingSoon.publishable, false);
+  assert.ok(openingSoon.quality_reasons.includes('opening_soon_or_recurring'));
+
+  const annual = evaluateOpportunity(ready({
+    organiser: 'Example Show Society',
+    source_url: 'https://exampleshow.co.uk/traders',
+    application_url: 'https://exampleshow.co.uk/traders',
+    location: 'Yorkshire, England',
+    event_start: '2026-07-01',
+    event_end: '2026-07-02',
+    application_deadline: '2026-06-01',
+    event_name: 'Example Annual Show',
+    source_evidence: 'Annual show in Yorkshire, England. Trade stands and trader information are published here every year.',
+  }), { now: new Date('2026-10-02T00:00:00Z'), allowUnapprovedDiscovery: true });
+  assert.equal(annual.quality_status, 'watch');
+  assert.equal(annual.publishable, false);
+});
+
+test('broader real-world trader terminology counts as direct opportunity evidence', () => {
+  for (const phrase of ['Traders wanted', 'Call for traders', 'Book a pitch', 'Trade enquiries', 'Trader information pack', 'Food and drink exhibitors', 'Catering concession', 'Expression of interest']) {
+    const row = evaluateOpportunity(ready({
+      source_url: 'https://examplemarket.co.uk/trade',
+      application_url: 'https://examplemarket.co.uk/trade',
+      source_evidence: `${phrase}. Official opportunity in England for 10 October 2026.`,
+    }), { now: new Date('2026-08-21T00:00:00Z'), allowUnapprovedDiscovery: true });
+    assert.ok(!row.quality_reasons.includes('direct_application_or_contact_missing'), phrase);
+  }
+});
+
 test('approved source registry has explicit robots, terms and throttle policies', () => {
   assert.ok(APPROVED_SOURCES.length >= 23);
   for (const source of APPROVED_SOURCES) {
