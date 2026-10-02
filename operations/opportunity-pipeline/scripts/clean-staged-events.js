@@ -44,7 +44,8 @@ function main() {
   const csvPath = process.argv[2] ? path.resolve(process.argv[2]) : fs.readdirSync(staging).filter(name => /^events-.*\.csv$/.test(name)).map(name => path.join(staging, name)).sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs)[0];
   if (!csvPath) throw new Error('No staged events CSV files found');
   const inputRows = parseCsv(fs.readFileSync(csvPath, 'utf8'));
-  const result = reviewRows(inputRows);
+  const allowUnapprovedDiscovery = ['1', 'true', 'yes'].includes(String(process.env.PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY || '').toLowerCase());
+  const result = reviewRows(inputRows, { allowUnapprovedDiscovery });
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
   const reviewPath = path.join(staging, `reviewed-events-${stamp}.json`);
   const customerReadyPath = path.join(staging, `customer-ready-events-${stamp}.csv`);
