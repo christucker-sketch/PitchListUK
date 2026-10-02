@@ -133,7 +133,7 @@ function evaluateOpportunity(raw, options = {}) {
   if (!row.organiser || GENERIC_TITLE.test(String(row.event_name || '').trim()) && !row.organiser) reasons.push('named_organiser_missing');
   const directText = [row.event_name, row.organiser, row.application_url, raw.source_evidence].join(' ');
   if (!DIRECT_EVIDENCE.test(directText) && !row.contact_email) reasons.push('direct_application_or_contact_missing');
-  if (!rule.approved) reasons.push('source_not_approved');
+  if (!rule.approved && options.allowUnapprovedDiscovery !== true) reasons.push('source_not_approved');
   if (rule.type === 'local-authority' && !AVAILABLE_PITCH.test(sourceText)) {
     reasons.push('available_pitch_evidence_missing');
   }
