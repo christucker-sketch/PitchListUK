@@ -1,6 +1,7 @@
 import { assertGlobalControllerDispatchAllowed, resolveGlobalAcquisitionDispatch } from './dispatch.mjs';
 import { readMainMarketSnapshot } from './github-publication.mjs';
 import { readMainUkSourceRegistry } from './uk-source-publication.mjs';
+import { UK_OPPORTUNITY_PLAN_SIZE } from './uk-opportunity-first-discovery.mjs';
 import {
   inspectUkControllerPr,
   inspectUkMergeChecks,
@@ -9,7 +10,7 @@ import {
   validateUkSourcePr
 } from './uk-controller-github-client.mjs';
 
-const UK_PLAN_SIZE = 96;
+const UK_PLAN_SIZE = UK_OPPORTUNITY_PLAN_SIZE;
 const UK_QUERY_LIMIT = 4;
 const UK_ACTIVE_WORKFLOW_STALE_MS = 30 * 60 * 1000;
 const SOURCE_DEPLOY_CHECKS = Object.freeze(['verify', 'deploy_and_prove']);

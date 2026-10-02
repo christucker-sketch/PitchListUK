@@ -11,6 +11,7 @@ import {
   ukControllerPrFailureReason
 } from '../operations/cloudflare-global-acquisition/lib/uk-cloud-controller.mjs';
 import { validateControllerStateText } from '../operations/cloudflare-global-acquisition/lib/controller-state-codec.mjs';
+import { UK_OPPORTUNITY_PLAN_SIZE } from '../operations/cloudflare-global-acquisition/lib/uk-opportunity-first-discovery.mjs';
 
 test('UK controller starts in discovery-ready shadow-compatible state', () => {
   const state = buildInitialUkControllerState({ productionCount: 289, sourceCount: 64, mainSha: 'a'.repeat(40), now: '2026-09-13T12:00:00.000Z' });
@@ -18,7 +19,8 @@ test('UK controller starts in discovery-ready shadow-compatible state', () => {
   assert.equal(state.status, 'ready_discovery');
   assert.equal(state.query_offset, 0);
   assert.equal(state.query_limit, 4);
-  assert.equal(state.plan_size, 96);
+  assert.equal(state.plan_size, UK_OPPORTUNITY_PLAN_SIZE);
+  assert.ok(UK_OPPORTUNITY_PLAN_SIZE > 96, 'controller must cover expansion queries beyond the legacy 96-query source plan');
   assert.equal(state.production_count, 289);
   assert.equal(state.source_count, 64);
   assert.equal(ukControllerDecision(state).action, 'start_discovery');
