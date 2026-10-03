@@ -1,6 +1,6 @@
 name: Hal V1 next-discovery pilot
 # Isolated discovery experiment. Never deploys or publishes.
-# Pilot revision: 48-town UK seed filtering, stronger organiser extraction, undated trader-route watch. Resubmitted after safety-gate fix.
+# Pilot revision: fresh 48-town validation after event-quality, commercial-priority and watch/noise refinements.
 
 on:
   push:
@@ -85,54 +85,54 @@ jobs:
         run: |
           set -euo pipefail
           cat > "${{ runner.temp }}/areas.txt" <<'EOF'
-          Bakewell
-          Beverley
-          Harrogate
-          Skipton
-          Keswick
-          Ludlow
-          Totnes
-          Falmouth
-          Bury St Edmunds
-          Stratford-upon-Avon
-          Cirencester
-          Hexham
-          Canterbury
-          Chichester
-          Winchester
-          Salisbury
-          Wells
-          Sherborne
-          Dorchester
-          Bridport
-          Frome
-          Glastonbury
-          Devizes
-          Marlborough
-          Abingdon
-          Henley-on-Thames
-          Saffron Walden
-          Ely
-          Stamford
-          Oakham
-          Newark-on-Trent
-          Louth
-          Richmond
-          Ripon
-          Knaresborough
-          Ilkley
-          Settle
-          Penrith
-          Kendal
-          Alnwick
-          Morpeth
-          Berwick-upon-Tweed
-          Shrewsbury
-          Bridgnorth
-          Leominster
-          Monmouth
-          Abergavenny
-          Hay-on-Wye
+          Ashford
+          Deal
+          Faversham
+          Folkestone
+          Hythe
+          Lewes
+          Rye
+          Horsham
+          Arundel
+          Petworth
+          Haslemere
+          Farnham
+          Petersfield
+          Romsey
+          Lymington
+          Christchurch
+          Shaftesbury
+          Wimborne Minster
+          Warminster
+          Chippenham
+          Stroud
+          Tewkesbury
+          Ross-on-Wye
+          Ledbury
+          Evesham
+          Pershore
+          Alcester
+          Warwick
+          Market Harborough
+          Melton Mowbray
+          Grantham
+          Sleaford
+          Boston
+          Spalding
+          King's Lynn
+          Thetford
+          Diss
+          Beccles
+          Southwold
+          Woodbridge
+          Sudbury
+          Colchester
+          Maldon
+          Hitchin
+          St Albans
+          Buckingham
+          Banbury
+          Witney
           EOF
           node scripts/run-two-hop-pilot.js "${{ runner.temp }}/areas.txt"
 
