@@ -18,6 +18,8 @@ const ONE_OFF_EVENT = /\b(festival|fair|show|christmas market|winter wonderland|
 const GENERIC_TITLE = /^(street trading|street trading licence|street trader licence|apply to trade|vendor application|caterers|market)$/i;
 const DISCOVERY_NOISE_HOST = /(?:youtube\.com|youtu\.be|dailymail\.co\.uk|find-tender\.service\.gov\.uk|contracts-finder\.service\.gov\.uk|find-and-update\.company-information\.service\.gov\.uk)$/i;
 const DISCOVERY_NOISE_TEXT = /\b(?:companies house|company information|procurement|contract notice|tender notice|award notice)\b/i;
+const ROUTE_URL_EVIDENCE = /(?:apply|application|trader|trade(?:-|_)stand|stallholder|stall|vendor|exhibitor|exhibit|pitch|concession|booking|register|registration|form)/i;
+const ROUTE_URL_NOISE = /(?:accommodation|hotel|stay|guide|planning|contact(?:-us)?|news|blog|gallery|parking|directions|terms|privacy|accessibility)/i;
 const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)? available|vacant pitch(?:es)?|traders? wanted|call for traders?|seeking (?:food |market )?traders?|new (?:traders|faces) (?:are )?always welcome(?:d)?|apply to trade at|apply to trade|apply for (?:a )?(?:market )?stall|apply to sell at (?:one of )?(?:our |the )?markets?|market stall application|how to apply for (?:a )?stall|book (?:a )?(?:pitch|stall)(?: at)?|trader applications? (?:are )?open|stallholder applications? (?:are )?open|vendor applications? (?:are )?open|trade enquiries|trader information|trader pack|exhibitor pack|trade stands?|pitch fees?|stall fees?|food and drink exhibitors?|catering concession|refreshment concession|expressions? of interest)\b/i;
 
 function canonicalUrl(value) {
@@ -151,15 +153,20 @@ function evaluateOpportunity(raw, options = {}) {
   if (ONE_OFF_EVENT.test(row.event_name || '') && !row.event_start && !row.application_deadline) reasons.push('undated_one_off_event');
   if (!row.query_lane || !row.query_text) reasons.push('provenance_missing');
 
-  const hasDistinctApplicationRoute = Boolean(row.application_url && canonicalUrl(row.application_url) !== canonicalUrl(row.source_url));
-  const hasDirectRoute = DIRECT_EVIDENCE.test(directText) || Boolean(row.contact_email) || hasDistinctApplicationRoute;
+  const applicationUrl = canonicalUrl(row.application_url);
+  const hasDistinctApplicationRoute = Boolean(applicationUrl && applicationUrl !== canonicalUrl(row.source_url));
+  const applicationPath = (()=>{ try { const u=new URL(applicationUrl); return u.pathname + u.search; } catch { return ''; } })();
+  const hasCredibleApplicationUrl = hasDistinctApplicationRoute && ROUTE_URL_EVIDENCE.test(applicationPath) && !ROUTE_URL_NOISE.test(applicationPath);
+  const hasTextualDirectEvidence = DIRECT_EVIDENCE.test([row.event_name,row.organiser,raw.source_evidence].join(' '));
+  const hasDirectRoute = hasTextualDirectEvidence || Boolean(row.contact_email) || hasCredibleApplicationUrl;
+  if (row.query_lane === 'two-hop-event-name' && hasDistinctApplicationRoute && !hasCredibleApplicationUrl && !hasTextualDirectEvidence && !row.contact_email) reasons.push('application_route_unproven');
   const openingLater = OPENING_LATER.test(sourceText);
   const recurring = RECURRING_SIGNAL.test(sourceText) || rule.recurring === true || rule.opportunity_type === 'recurring_market';
   const timeClosed = reasons.includes('event_expired') || reasons.includes('application_closed');
   const undatedDirectRoute = hasDirectRoute && reasons.includes('undated_one_off_event') && row.query_lane === 'two-hop-event-name';
   const watchable = hasDirectRoute && (openingLater || (recurring && timeClosed) || undatedDirectRoute);
   const hardRejected = reasons.includes('non_uk_evidence') || reasons.includes('discovery_noise');
-  const needsWork = reasons.some(reason => ['uk_evidence_missing', 'named_organiser_missing', 'direct_application_or_contact_missing', 'provenance_missing', 'available_pitch_evidence_missing'].includes(reason));
+  const needsWork = reasons.some(reason => ['uk_evidence_missing', 'named_organiser_missing', 'direct_application_or_contact_missing', 'application_route_unproven', 'provenance_missing', 'available_pitch_evidence_missing'].includes(reason));
   const review = reasons.some(reason => ['source_not_approved', 'undated_one_off_event'].includes(reason));
   if (openingLater || (recurring && timeClosed)) reasons.push('opening_soon_or_recurring');
   if (undatedDirectRoute) reasons.push('undated_trader_route_watch');
