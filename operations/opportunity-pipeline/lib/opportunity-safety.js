@@ -16,6 +16,8 @@ const RECURRING_SIGNAL = /\bannual\b|\bevery year\b|\byearly\b|\breturns?\b|\bba
 const ORGANISER_IN_EVIDENCE = /\b([A-Z][A-Za-z0-9&'.’ -]{2,80}?(?:City Council|County Council|Borough Council|District Council|Town Council|Parish Council|Council))\b/;
 const ONE_OFF_EVENT = /\b(festival|fair|show|christmas market|winter wonderland|carnival|feast|fireworks|bonfire|race|marathon)\b/i;
 const GENERIC_TITLE = /^(street trading|street trading licence|street trader licence|apply to trade|vendor application|caterers|market)$/i;
+const DISCOVERY_NOISE_HOST = /(?:youtube\.com|youtu\.be|dailymail\.co\.uk|find-tender\.service\.gov\.uk|contracts-finder\.service\.gov\.uk|find-and-update\.company-information\.service\.gov\.uk)$/i;
+const DISCOVERY_NOISE_TEXT = /\b(?:companies house|company information|procurement|contract notice|tender notice|award notice)\b/i;
 const AVAILABLE_PITCH = /\b(?:available (?:trading )?pitch(?:es)?|pitch(?:es)? available|vacant pitch(?:es)?|traders? wanted|call for traders?|seeking (?:food |market )?traders?|new (?:traders|faces) (?:are )?always welcome(?:d)?|apply to trade at|apply to trade|apply for (?:a )?(?:market )?stall|apply to sell at (?:one of )?(?:our |the )?markets?|market stall application|how to apply for (?:a )?stall|book (?:a )?(?:pitch|stall)(?: at)?|trader applications? (?:are )?open|stallholder applications? (?:are )?open|vendor applications? (?:are )?open|trade enquiries|trader information|trader pack|exhibitor pack|trade stands?|pitch fees?|stall fees?|food and drink exhibitors?|catering concession|refreshment concession|expressions? of interest)\b/i;
 
 function canonicalUrl(value) {
@@ -130,6 +132,8 @@ function evaluateOpportunity(raw, options = {}) {
   row.query_lane = String(raw.query_lane || '');
   row.query_text = String(raw.query_text || '');
   const reasons = [];
+  const discoveryNoise = row.query_lane === 'two-hop-event-name' && (DISCOVERY_NOISE_HOST.test(hostname(row.source_url)) || DISCOVERY_NOISE_TEXT.test(sourceText));
+  if (discoveryNoise) reasons.push('discovery_noise');
   const geo = geographicEvidence(row);
   if (!geo.valid) reasons.push(geo.reason);
   const today = now.toISOString().slice(0, 10);
@@ -154,7 +158,7 @@ function evaluateOpportunity(raw, options = {}) {
   const timeClosed = reasons.includes('event_expired') || reasons.includes('application_closed');
   const undatedDirectRoute = hasDirectRoute && reasons.includes('undated_one_off_event') && row.query_lane === 'two-hop-event-name';
   const watchable = hasDirectRoute && (openingLater || (recurring && timeClosed) || undatedDirectRoute);
-  const hardRejected = reasons.includes('non_uk_evidence');
+  const hardRejected = reasons.includes('non_uk_evidence') || reasons.includes('discovery_noise');
   const needsWork = reasons.some(reason => ['uk_evidence_missing', 'named_organiser_missing', 'direct_application_or_contact_missing', 'provenance_missing', 'available_pitch_evidence_missing'].includes(reason));
   const review = reasons.some(reason => ['source_not_approved', 'undated_one_off_event'].includes(reason));
   if (openingLater || (recurring && timeClosed)) reasons.push('opening_soon_or_recurring');
@@ -180,4 +184,5 @@ module.exports = {
   evaluateOpportunity,
   customerReadyOnly,
   FOREIGN_FIXTURES,
+  DISCOVERY_NOISE_HOST,
 };
