@@ -51,7 +51,7 @@ function seedScore(area,row){
   if(/\b2027\b/.test(hay)) score+=1;
   if(LOW_VALUE_HOST.test(host)) score-=5;
   if(DIRECTORY_HOST.test(host)) score-=4;
-  if(/\b202[0-6]/\b/.test(hay) && !/\b2027\b/.test(hay)) score-=2;
+  if(/\b202[0-6]\b/.test(hay) && !/\b2027\b/.test(hay)) score-=2;
   if(GENERIC_TITLE.test(row.name)) score-=3;
   if(FOREIGN_TEXT.test(hay)) score-=8;
   if(FOREIGN_HOST.test(host) && !UK_HOST.test(host)) score-=10;
