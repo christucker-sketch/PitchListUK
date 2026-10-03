@@ -1,6 +1,6 @@
 name: Hal V1 next-discovery pilot
 # Isolated discovery experiment. Never deploys or publishes.
-# Pilot revision: UK seed filtering, stronger organiser extraction, undated trader-route watch.
+# Pilot revision: 48-town UK seed filtering, stronger organiser extraction, undated trader-route watch. Resubmitted after safety-gate fix.
 
 on:
   push:
