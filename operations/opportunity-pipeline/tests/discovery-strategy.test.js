@@ -106,6 +106,41 @@ test('two-hop selection round-robins across towns and prefers stronger seeds',()
   assert.deepEqual(plan.selected.map(x=>x.name),['Bakewell Strong Event','Ludlow Event One']);
 });
 
+
+test('two-hop administrative and media noise is rejected early',()=>{
+  for (const source_url of [
+    'https://www.youtube.com/watch?v=abc',
+    'https://www.dailymail.co.uk/news/article/example',
+    'https://www.find-tender.service.gov.uk/procurement/example',
+    'https://find-and-update.company-information.service.gov.uk/company/04230963'
+  ]) {
+    const row=evaluateOpportunity({
+      event_name:'Ludlow Food Festival',organiser:'Ludlow Festival',
+      source_url,application_url:source_url,location:'Ludlow, England',region:'Shropshire',
+      event_start:'2027-09-10',application_deadline:'',contact_email:'',
+      query_lane:'two-hop-event-name',query_text:'"Ludlow Food Festival" traders',
+      source_evidence:'Ludlow Food Festival trader information 2027'
+    },{now:new Date('2026-10-03T00:00:00Z'),allowUnapprovedDiscovery:true});
+    assert.equal(row.quality_status,'rejected');
+    assert.ok(row.quality_reasons.includes('discovery_noise'));
+  }
+});
+
+test('recurring two-hop trader route stays on watch when its old cycle is closed',()=>{
+  const row=evaluateOpportunity({
+    event_name:'Keswick Show',organiser:'Keswick Agricultural Society',
+    source_url:'https://keswickshow.co.uk/trade-exhibitors',
+    application_url:'https://keswickshow.co.uk/trade-exhibitors',
+    location:'Keswick, England',region:'Cumbria',event_start:'2026-08-31',
+    application_deadline:'2026-07-01',contact_email:'',
+    query_lane:'two-hop-event-name',query_text:'"Keswick Show" traders OR exhibitors',
+    source_evidence:'Annual Keswick Show. Trade exhibitors and trade stand information. Applications reopen for the next show.'
+  },{now:new Date('2026-10-03T00:00:00Z'),allowUnapprovedDiscovery:true});
+  assert.equal(row.quality_status,'watch');
+  assert.equal(row.publishable,false);
+  assert.ok(row.quality_reasons.includes('opening_soon_or_recurring'));
+});
+
 test('strong undated trader routes found by two-hop are watched, never published',()=>{
   const row=evaluateOpportunity({
     event_name:'Bakewell Country Festival',organiser:'Bakewell Agricultural & Horticultural Society',
