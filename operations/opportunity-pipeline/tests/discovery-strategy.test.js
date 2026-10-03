@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const { cleanTitle, hop1Queries, seedsFromResults, dedupeSeeds, seedScore }=require('../scripts/discover-event-seeds');
 const { cleanName, isGeneric, buildHop2Queries }=require('../scripts/generate-hop2-queries');
 const { analyse }=require('../scripts/audit-rejects');
-const { selectTierOne }=require('../scripts/run-two-hop-pilot');
+const { selectTierOne, commercialPriority }=require('../scripts/run-two-hop-pilot');
 const { evaluateOpportunity }=require('../lib/opportunity-safety');
 
 test('hop one uses event discovery language without vendor terms',()=>{
@@ -39,6 +39,23 @@ test('hop one scores UK first-party event pages above generic directories',()=>{
   const official={name:'Ludlow Spring Festival',town:'Ludlow',source_url:'https://ludlowspringfestival.co.uk/',snippet:'Ludlow Spring Festival 2027'};
   const directory={name:'Upcoming Holidays and Festivals',town:'Ludlow',source_url:'https://ricksteves.com/europe/england/festivals',snippet:'Ludlow festivals'};
   assert.ok(seedScore('Ludlow',official)>seedScore('Ludlow',directory));
+});
+
+
+test('hop one demotes administrative pages that merely mention an event',()=>{
+  const event={name:'Ludlow Food Festival 2027',town:'Ludlow',source_url:'https://ludlowfoodfestival.co.uk/',snippet:'Ludlow Food Festival takes place in September 2027. Venue and trader information.'};
+  const company={name:'Ludlow Marches Food and Drink Festival - Companies House',town:'Ludlow',source_url:'https://find-and-update.company-information.service.gov.uk/company/04230963',snippet:'LUDLOW MARCHES FOOD AND DRINK FESTIVAL. Accounts due June 2027.'};
+  const tender={name:'Cirencester Christmas Lights 2027-2031',town:'Cirencester',source_url:'https://www.find-tender.service.gov.uk/procurement/example',snippet:'Procurement contract notice for festive light displays starting November 2027.'};
+  assert.ok(seedScore('Ludlow',event)>seedScore('Ludlow',company));
+  assert.ok(seedScore('Cirencester',{...event,name:'Cirencester Christmas Market 2027',town:'Cirencester',source_url:'https://cirencester.gov.uk/events/christmas-market',snippet:'Christmas Market takes place in Market Square in 2027 with stalls.'})>seedScore('Cirencester',tender));
+});
+
+test('hop two prioritises trader-friendly events over administrative and news pages',()=>{
+  const food={name:'Louth Food & Drink Festival 2027',town:'Louth',seed_score:10,snippet:'Town centre food festival with stalls and traders'};
+  const admin={name:'Louth Food Festival - Companies House',town:'Louth',seed_score:14,snippet:'Company information filing due 2027'};
+  assert.ok(commercialPriority(food)>commercialPriority(admin));
+  const plan=selectTierOne([admin,food],1);
+  assert.equal(plan.selected[0].name,food.name);
 });
 
 test('hop two creates tiered event-name searches including 2027 and artefacts',()=>{
