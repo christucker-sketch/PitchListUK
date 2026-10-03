@@ -63,7 +63,7 @@ jobs:
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-next-discovery
-          PITCHLIST_SERPER_RUN_BUDGET: '200'
+          PITCHLIST_SERPER_RUN_BUDGET: '450'
           PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY: 'true'
         run: |
           set -euo pipefail
@@ -77,9 +77,9 @@ jobs:
           PITCHLIST_SERPER_RUN_BUDGET: '200'
           PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY: 'true'
           PITCHLIST_HOP1_YEAR: '2027'
-          PITCHLIST_HOP1_MAX_AREAS: '12'
+          PITCHLIST_HOP1_MAX_AREAS: '48'
           PITCHLIST_HOP1_SEARCH_NUM: '6'
-          PITCHLIST_HOP2_MAX_EVENTS: '20'
+          PITCHLIST_HOP2_MAX_EVENTS: '72'
           PITCHLIST_HOP2_SEARCH_NUM: '8'
           PITCHLIST_HOP2_MAX_FETCH: '200'
         run: |
@@ -97,6 +97,43 @@ jobs:
           Stratford-upon-Avon
           Cirencester
           Hexham
+          Canterbury
+          Chichester
+          Winchester
+          Salisbury
+          Wells
+          Sherborne
+          Dorchester
+          Bridport
+          Frome
+          Glastonbury
+          Devizes
+          Marlborough
+          Abingdon
+          Henley-on-Thames
+          Saffron Walden
+          Ely
+          Stamford
+          Oakham
+          Newark-on-Trent
+          Louth
+          Beverley
+          Richmond
+          Ripon
+          Knaresborough
+          Ilkley
+          Settle
+          Penrith
+          Kendal
+          Alnwick
+          Morpeth
+          Berwick-upon-Tweed
+          Shrewsbury
+          Bridgnorth
+          Leominster
+          Monmouth
+          Abergavenny
+          Hay-on-Wye
           EOF
           node scripts/run-two-hop-pilot.js "${{ runner.temp }}/areas.txt"
 
