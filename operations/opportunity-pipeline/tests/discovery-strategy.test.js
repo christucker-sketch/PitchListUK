@@ -141,6 +141,40 @@ test('recurring two-hop trader route stays on watch when its old cycle is closed
   assert.ok(row.quality_reasons.includes('opening_soon_or_recurring'));
 });
 
+
+test('random distinct URLs do not count as two-hop application routes',()=>{
+  for (const application_url of [
+    'https://example.co.uk/accommodation',
+    'https://example.co.uk/contact-us',
+    'https://example.co.uk/planning/events',
+    'https://example.co.uk/visitor-guide.pdf'
+  ]) {
+    const row=evaluateOpportunity({
+      event_name:'Example Christmas Market',organiser:'Example Events',
+      source_url:'https://example.co.uk/events/christmas-market',application_url,
+      location:'Example, England',region:'England',event_start:'2027-12-01',
+      application_deadline:'',contact_email:'',query_lane:'two-hop-event-name',
+      query_text:'"Example Christmas Market" traders',
+      source_evidence:'Example Christmas Market takes place in England in December 2027.'
+    },{now:new Date('2026-10-03T00:00:00Z'),allowUnapprovedDiscovery:true});
+    assert.notEqual(row.quality_status,'customer_ready');
+    assert.ok(row.quality_reasons.includes('application_route_unproven'));
+  }
+});
+
+test('credible trader application URL can establish a two-hop route',()=>{
+  const row=evaluateOpportunity({
+    event_name:'Example Food Festival',organiser:'Example Events',
+    source_url:'https://example.co.uk/events/food-festival',
+    application_url:'https://example.co.uk/traders/application-form',
+    location:'Example, England',region:'England',event_start:'2027-07-10',
+    application_deadline:'',contact_email:'',query_lane:'two-hop-event-name',
+    query_text:'"Example Food Festival" traders',
+    source_evidence:'Example Food Festival takes place in England in July 2027.'
+  },{now:new Date('2026-10-03T00:00:00Z'),allowUnapprovedDiscovery:true});
+  assert.equal(row.quality_status,'customer_ready');
+});
+
 test('strong undated trader routes found by two-hop are watched, never published',()=>{
   const row=evaluateOpportunity({
     event_name:'Bakewell Country Festival',organiser:'Bakewell Agricultural & Horticultural Society',
