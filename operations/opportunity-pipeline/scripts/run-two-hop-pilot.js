@@ -24,6 +24,16 @@ function jsonOut(stdout){
   throw new Error('No JSON result found');
 }
 
+function commercialPriority(event){
+  const hay=`${event.name||''} ${event.snippet||''}`;
+  let score=Number(event.seed_score||0);
+  if(/\b(?:christmas market|food (?:&|and)? ?drink festival|food festival|agricultural show|county show|country show|craft fair|street fair|fayre|fete|carnival|beer festival)\b/i.test(hay)) score+=5;
+  if(/\b(?:stall|trader|vendor|exhibitor|trade stand|market square|showground)\b/i.test(hay)) score+=3;
+  if(/\b(?:companies house|company information|procurement|contract notice|tender notice|award notice)\b/i.test(hay)) score-=12;
+  if(/\b(?:news story|returns on monday|guide to|for info)\b/i.test(event.name||'')) score-=3;
+  return score;
+}
+
 function selectTierOne(events,maxEvents=20){
   const seen=new Set(), byTown=new Map();
   for(const event of events){
@@ -34,7 +44,7 @@ function selectTierOne(events,maxEvents=20){
     if(!byTown.has(town)) byTown.set(town,[]);
     byTown.get(town).push(event);
   }
-  for(const rows of byTown.values()) rows.sort((a,b)=>Number(b.seed_score||0)-Number(a.seed_score||0));
+  for(const rows of byTown.values()) rows.sort((a,b)=>commercialPriority(b)-commercialPriority(a));
   const towns=[...byTown.keys()];
   const selected=[], queries=[];
   let depth=0;
@@ -101,4 +111,4 @@ function main(){
 }
 
 if(require.main===module){try{main();}catch(error){console.error(error.stack||error.message);process.exit(1);}}
-module.exports={selectTierOne};
+module.exports={selectTierOne,commercialPriority};
