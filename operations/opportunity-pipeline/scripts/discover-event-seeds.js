@@ -11,6 +11,10 @@ const FOREIGN_HOST=/(?:\.gov|\.us|\.ca|\.com\.au|\.co\.nz)$/i;
 const FOREIGN_TEXT=/\b(?:Massachusetts|New York|Connecticut|Rhode Island|Virginia|Texas|California|Florida|Ohio|Pennsylvania|New Hampshire|New Jersey|Ontario|Canada|United States|USA|New England)\b/i;
 const LOW_VALUE_HOST=/(?:facebook\.com|instagram\.com|youtube\.com|tiktok\.com|pinterest\.|ricksteves\.com|concoursio\.com|festable\.live|meetmeatthefair\.com|marketplaceevents\.com)$/i;
 const DIRECTORY_HOST=/(?:eventbrite\.|allevents\.in|skiddle\.com|whatson\.|ents24\.com|findfestival\.com|festivalflyer\.com|festfinder\.co\.uk)$/i;
+const NON_EVENT_HOST=/(?:find-and-update\.company-information\.service\.gov\.uk|find-tender\.service\.gov\.uk|contracts-finder\.service\.gov\.uk)$/i;
+const NON_EVENT_TEXT=/\b(?:companies house|company information|procurement|contract notice|tender notice|award notice|supplier contract)\b/i;
+const EVENT_PAGE_TEXT=/\b(?:date|time|venue|tickets?|admission|programme|stallholders?|traders?|exhibitors?|showground|town centre|market square|returns? to|takes? place|held (?:at|on|in))\b/i;
+const COMMERCIAL_EVENT=/\b(?:christmas market|food (?:&|and)? ?drink festival|food festival|agricultural show|county show|country show|craft fair|street fair|fayre|fete|carnival|beer festival|market|show)\b/i;
 const GENERIC_TITLE=/^(?:calendar|special events?|upcoming holidays and festivals|all upcoming events|events and activities|our consumer shows|september \d+|join in for a day|just \d+ days? to go)/i;
 
 function cleanTitle(value){
@@ -51,6 +55,10 @@ function seedScore(area,row){
   if(/\b2027\b/.test(hay)) score+=1;
   if(LOW_VALUE_HOST.test(host)) score-=5;
   if(DIRECTORY_HOST.test(host)) score-=4;
+  if(NON_EVENT_HOST.test(host)) score-=10;
+  if(NON_EVENT_TEXT.test(hay)) score-=6;
+  if(EVENT_PAGE_TEXT.test(hay)) score+=2;
+  if(COMMERCIAL_EVENT.test(hay)) score+=2;
   if(/\b202[0-6]\b/.test(hay) && !/\b2027\b/.test(hay)) score-=2;
   if(GENERIC_TITLE.test(row.name)) score-=3;
   if(FOREIGN_TEXT.test(hay)) score-=8;
