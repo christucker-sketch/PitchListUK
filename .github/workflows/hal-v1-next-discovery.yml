@@ -74,7 +74,7 @@ jobs:
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           PITCHLIST_PIPELINE_RUNTIME_DIR: ${{ runner.temp }}/hal-next-discovery
-          PITCHLIST_SERPER_RUN_BUDGET: '200'
+          PITCHLIST_SERPER_RUN_BUDGET: '450'
           PITCHLIST_ALLOW_UNAPPROVED_DISCOVERY: 'true'
           PITCHLIST_HOP1_YEAR: '2027'
           PITCHLIST_HOP1_MAX_AREAS: '48'
@@ -117,7 +117,6 @@ jobs:
           Oakham
           Newark-on-Trent
           Louth
-          Beverley
           Richmond
           Ripon
           Knaresborough
