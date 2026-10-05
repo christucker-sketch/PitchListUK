@@ -1,0 +1,84 @@
+name: FindPitches v2 Structured Feed Pilot Quarantine
+
+on:
+  push:
+    branches:
+      - findpitches-v2/structured-feed-importer
+    paths:
+      - .github/workflows/findpitches-v2-structured-feed-shadow-stage.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: findpitches-v2-structured-feed-pilot-quarantine
+  cancel-in-progress: false
+
+jobs:
+  quarantine:
+    name: quarantine_structured_feed_pilot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CONFIG: operations/findpitches-v2/wrangler.jsonc
+      PILOT_BATCH: structured_source_pilot_100_v1
+
+    steps:
+      - name: Check out importer branch
+        uses: actions/checkout@v4
+
+      - name: Record pilot downstream state before quarantine
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
+            --command "SELECT COUNT(*) AS pilot_candidates FROM candidates WHERE run_id='$PILOT_BATCH'; SELECT COUNT(*) AS pilot_customer_rows FROM customer_opportunities WHERE id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH'); SELECT COUNT(*) AS pilot_publication_rows FROM publication_queue WHERE candidate_id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH'); SELECT q.status,COUNT(*) AS count FROM classification_queue q JOIN candidates c ON c.id=q.candidate_id WHERE c.run_id='$PILOT_BATCH' GROUP BY q.status ORDER BY q.status;" \
+            --config "$CONFIG" | tee pilot-pre-quarantine.txt
+
+      - name: Quarantine pilot and remove downstream projections
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > pilot-quarantine.sql <<SQL
+          UPDATE candidates
+             SET status='held', rejection_reason='structured_pilot:quarantined_after_audit'
+           WHERE run_id='$PILOT_BATCH'
+             AND status IN ('validated','discovered');
+
+          UPDATE classification_queue
+             SET status='dead', lease_until=NULL, last_error='structured_pilot_quarantined', updated_at=datetime('now')
+           WHERE candidate_id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH')
+             AND status IN ('ready','leased');
+
+          UPDATE enrichment_queue
+             SET status='dead', lease_until=NULL, last_error='structured_pilot_quarantined', updated_at=datetime('now')
+           WHERE candidate_id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH')
+             AND status IN ('ready','leased');
+
+          DELETE FROM customer_promotion_disposition
+           WHERE candidate_id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH');
+
+          DELETE FROM publication_queue
+           WHERE candidate_id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH');
+
+          DELETE FROM customer_opportunities
+           WHERE id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH');
+          SQL
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
+            --file pilot-quarantine.sql --config "$CONFIG"
+
+      - name: Prove pilot isolation after quarantine
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
+            --command "SELECT status,COUNT(*) AS count FROM candidates WHERE run_id='$PILOT_BATCH' GROUP BY status ORDER BY status; SELECT COUNT(*) AS pilot_customer_rows FROM customer_opportunities WHERE id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH'); SELECT COUNT(*) AS pilot_publication_rows FROM publication_queue WHERE candidate_id IN (SELECT id FROM candidates WHERE run_id='$PILOT_BATCH'); SELECT COUNT(*) AS pilot_active_classifier_rows FROM classification_queue q JOIN candidates c ON c.id=q.candidate_id WHERE c.run_id='$PILOT_BATCH' AND q.status IN ('ready','leased'); SELECT COUNT(*) AS pilot_active_enrichment_rows FROM enrichment_queue q JOIN candidates c ON c.id=q.candidate_id WHERE c.run_id='$PILOT_BATCH' AND q.status IN ('ready','leased');" \
+            --config "$CONFIG" | tee pilot-post-quarantine.txt
+
+          grep -Eq '"pilot_customer_rows"[[:space:]]*:[[:space:]]*0' pilot-post-quarantine.txt
+          grep -Eq '"pilot_publication_rows"[[:space:]]*:[[:space:]]*0' pilot-post-quarantine.txt
+          grep -Eq '"pilot_active_classifier_rows"[[:space:]]*:[[:space:]]*0' pilot-post-quarantine.txt
+          grep -Eq '"pilot_active_enrichment_rows"[[:space:]]*:[[:space:]]*0' pilot-post-quarantine.txt
