@@ -1,23 +1,22 @@
-name: FindPitches v2 Structured Feed Shadow Stage
+name: FindPitches v2 Structured Feed Live Reconciliation
 
 on:
   push:
     branches:
       - findpitches-v2/structured-feed-importer
     paths:
-      - operations/findpitches-v2/importer/payloads/structured-feed-stage.sql
       - .github/workflows/findpitches-v2-structured-feed-shadow-stage.yml
 
 permissions:
   contents: read
 
 concurrency:
-  group: findpitches-v2-structured-feed-shadow-stage
+  group: findpitches-v2-structured-feed-live-reconciliation
   cancel-in-progress: false
 
 jobs:
-  stage:
-    name: stage_structured_feed_shadow_only
+  reconcile:
+    name: reconcile_structured_feed_live_d1
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     environment: findpitches-production
@@ -25,122 +24,173 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       CONFIG: operations/findpitches-v2/wrangler.jsonc
-      MIGRATION: operations/findpitches-v2/migrations/0009_structured_feed_staging.sql
-      PAYLOAD: operations/findpitches-v2/importer/payloads/structured-feed-stage.sql
-      EXEC_PAYLOAD: structured-feed-stage-exec.sql
-      EXPECTED_SHA256: 836eac33e65d3951acb422d2e4b1579f97b12fa74a12d1498a7dd96285cd501f
+      OUT: live-d1-reconciliation
 
     steps:
       - name: Check out importer branch
         uses: actions/checkout@v4
 
-      - name: Verify exact staged SQL payload
+      - name: Run importer tests
         shell: bash
         run: |
           set -euo pipefail
-          test -f "$PAYLOAD"
-          actual="$(sha256sum "$PAYLOAD" | awk '{print $1}')"
-          echo "payload sha256=$actual"
-          [[ "$actual" == "$EXPECTED_SHA256" ]]
+          node operations/findpitches-v2/importer/dry-run-import.test.mjs
+          node operations/findpitches-v2/importer/stage-structured-feed.test.mjs
 
-          first="$(head -n 1 "$PAYLOAD" | tr -d '\r')"
-          last="$(tail -n 1 "$PAYLOAD" | tr -d '\r')"
-          [[ "$first" == "BEGIN TRANSACTION;" ]]
-          [[ "$last" == "COMMIT;" ]]
+      - name: Create Wrangler JSON parser
+        shell: bash
+        run: |
+          cat > parse-wrangler.py <<'PY'
+          import json, pathlib, re, sys
 
-          if grep -Eiq '(INSERT[[:space:]]+INTO|REPLACE[[:space:]]+INTO|UPDATE|DELETE[[:space:]]+FROM)[[:space:]]+(customer_opportunities|publication_queue|candidates|customer_promotion_disposition)\b' "$PAYLOAD"; then
-            echo "Payload attempts to write a forbidden downstream table." >&2
-            exit 1
-          fi
+          mode, raw_path = sys.argv[1], sys.argv[2]
+          text = pathlib.Path(raw_path).read_text(errors='replace')
+          text = re.sub(r'\x1b\[[0-9;]*[A-Za-z]', '', text)
+          decoder = json.JSONDecoder()
+          payload = None
+          for m in re.finditer(r'\[', text):
+              try:
+                  value, _ = decoder.raw_decode(text[m.start():])
+              except Exception:
+                  continue
+              if isinstance(value, list) and value and isinstance(value[0], dict) and 'results' in value[0]:
+                  payload = value
+                  break
+          if payload is None:
+              print(text, file=sys.stderr)
+              raise SystemExit('Could not locate Wrangler JSON result')
+          rows = payload[0].get('results') or []
+          if mode == 'scalar':
+              key = sys.argv[3]
+              if not rows or key not in rows[0]:
+                  raise SystemExit(f'Missing scalar {key}')
+              print(rows[0][key])
+          elif mode == 'append':
+              dest = pathlib.Path(sys.argv[3])
+              existing = json.loads(dest.read_text()) if dest.exists() else []
+              existing.extend(rows)
+              dest.write_text(json.dumps(existing, separators=(',',':')))
+              print(len(rows))
+          else:
+              raise SystemExit(f'Unknown mode {mode}')
+          PY
 
-          grep -Eq 'INSERT[[:space:]]+INTO[[:space:]]+structured_feed_records\b' "$PAYLOAD"
-          grep -Eq 'INSERT[[:space:]]+INTO[[:space:]]+structured_feed_imports\b' "$PAYLOAD"
-
-      - name: Prepare D1 execution payload
+      - name: Export staged feed and live D1 corpus
         shell: bash
         run: |
           set -euo pipefail
-          # D1 remote import rejects embedded BEGIN/COMMIT statements. Preserve the
-          # checksum-verified source file unchanged and strip only its wrapper lines
-          # into a temporary execution file. Wrangler remote file imports are atomic.
-          sed '1d;$d' "$PAYLOAD" > "$EXEC_PAYLOAD"
-          test -s "$EXEC_PAYLOAD"
-          if grep -Eiq '^[[:space:]]*(BEGIN[[:space:]]+TRANSACTION|COMMIT|SAVEPOINT|RELEASE)[[:space:]]*;' "$EXEC_PAYLOAD"; then
-            echo "Unexpected transaction statement remains in execution payload." >&2
+          export NO_COLOR=1
+
+          run_raw() {
+            local sql="$1" raw="$2"
+            if ! npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "$sql" --config "$CONFIG" >"$raw" 2>&1; then
+              cat "$raw" >&2
+              return 1
+            fi
+          }
+
+          scalar() {
+            local sql="$1" key="$2" raw
+            raw="$(mktemp)"
+            run_raw "$sql" "$raw"
+            python3 parse-wrangler.py scalar "$raw" "$key"
+            rm -f "$raw"
+          }
+
+          append_query() {
+            local sql="$1" dest="$2" raw
+            raw="$(mktemp)"
+            run_raw "$sql" "$raw"
+            python3 parse-wrangler.py append "$raw" "$dest" >/dev/null
+            rm -f "$raw"
+          }
+
+          staged_total="$(scalar 'SELECT COUNT(*) AS count FROM structured_feed_records' count)"
+          candidate_total="$(scalar "SELECT COUNT(*) AS count FROM candidates WHERE status <> 'rejected'" count)"
+          customer_total="$(scalar 'SELECT COUNT(*) AS count FROM customer_opportunities' count)"
+
+          echo "staged_total=$staged_total"
+          echo "candidate_total=$candidate_total"
+          echo "customer_total=$customer_total"
+          [[ "$staged_total" -eq 1599 ]]
+
+          printf '[]' > staged.json
+          printf '[]' > candidates.json
+          printf '[]' > customers.json
+
+          for ((offset=0; offset<staged_total; offset+=1000)); do
+            append_query "SELECT producer_id AS opportunity_id, producer_id, market, region_code, event_name, organiser, location, event_start, event_end, application_deadline, canonical_url, application_url, application_state, lifecycle_event, recurring FROM structured_feed_records ORDER BY producer_id LIMIT 1000 OFFSET $offset" staged.json
+          done
+
+          for ((offset=0; offset<candidate_total; offset+=1000)); do
+            append_query "SELECT id, market, region_code, event_name, organiser, canonical_url, application_url, status, first_seen, last_checked FROM candidates WHERE status <> 'rejected' ORDER BY id LIMIT 1000 OFFSET $offset" candidates.json
+          done
+
+          for ((offset=0; offset<customer_total; offset+=1000)); do
+            append_query "SELECT id, market, region_code, title, organiser, location, event_start, event_end, canonical_url, application_url, last_checked FROM customer_opportunities ORDER BY id LIMIT 1000 OFFSET $offset" customers.json
+          done
+
+          python3 - <<'PY'
+          import json
+          for name, expected in [('staged.json',1599)]:
+              rows=json.load(open(name))
+              print(name, len(rows))
+              if len(rows) != expected: raise SystemExit(f'{name}: expected {expected}, got {len(rows)}')
+          print('candidates.json',len(json.load(open('candidates.json'))))
+          print('customers.json',len(json.load(open('customers.json'))))
+          PY
+
+      - name: Build matcher-v5 live reconciliation plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          node operations/findpitches-v2/importer/reconcile-current-d1.mjs \
+            --staged staged.json \
+            --candidates candidates.json \
+            --customers customers.json \
+            --out "$OUT" | tee live-d1-plan-summary.txt
+
+          plan="$OUT/live-d1-reconciliation-plan.sql"
+          [[ "$(grep -c '^UPDATE structured_feed_records SET ' "$plan")" -eq 1599 ]]
+          if grep -Eiq '(INSERT[[:space:]]+INTO|REPLACE[[:space:]]+INTO|UPDATE|DELETE[[:space:]]+FROM)[[:space:]]+(customer_opportunities|publication_queue|candidates|customer_promotion_disposition)\b' "$plan"; then
+            echo 'Reconciliation plan attempts to write a downstream table.' >&2
+            exit 1
+          fi
+          if grep -Eiq '^[[:space:]]*(BEGIN|COMMIT|SAVEPOINT|RELEASE)\b' "$plan"; then
+            echo 'Unexpected transaction statement in reconciliation plan.' >&2
             exit 1
           fi
 
-      - name: Run staging writer tests
-        run: node operations/findpitches-v2/importer/stage-structured-feed.test.mjs
-
-      - name: Record pre-write downstream counts
+      - name: Record downstream counts before staging-metadata update
         shell: bash
         run: |
           set -euo pipefail
           npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
             --command "SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count, (SELECT COUNT(*) FROM publication_queue) AS publication_count;" \
-            --config "$CONFIG" | tee pre-counts.txt
+            --config "$CONFIG" | tee pre-reconciliation-counts.txt
 
-          python3 - <<'PY'
-          import json, re, pathlib
-          t=pathlib.Path('pre-counts.txt').read_text()
-          m=re.search(r'\[\s*\{.*\}\s*\]', t, re.S)
-          if not m: raise SystemExit('Could not parse pre-write counts')
-          obj=json.loads(m.group(0))[0]['results'][0]
-          pathlib.Path('pre-customer.txt').write_text(str(obj['customer_count']))
-          pathlib.Path('pre-publication.txt').write_text(str(obj['publication_count']))
-          print('pre customer=',obj['customer_count'],'publication=',obj['publication_count'])
-          PY
-
-      - name: Apply staging-only migration 0009
-        shell: bash
-        run: |
-          set -euo pipefail
-          set +e
-          out="$(npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file "$MIGRATION" --config "$CONFIG" 2>&1)"
-          rc=$?
-          set -e
-          printf '%s\n' "$out"
-          if [[ $rc -ne 0 ]] && ! grep -Eq 'already exists|Not currently importing anything' <<<"$out"; then
-            exit "$rc"
-          fi
-
-      - name: Stage producer feed into isolated tables
+      - name: Apply staging-only reconciliation metadata
         shell: bash
         run: |
           set -euo pipefail
           npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --file "$EXEC_PAYLOAD" --config "$CONFIG"
+            --file "$OUT/live-d1-reconciliation-plan.sql" --config "$CONFIG"
 
-      - name: Prove staging count and downstream isolation
+      - name: Prove live reconciliation results
         shell: bash
         run: |
           set -euo pipefail
           npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --command "SELECT (SELECT COUNT(*) FROM structured_feed_records) AS structured_feed_count, (SELECT COUNT(*) FROM structured_feed_imports) AS structured_import_count, (SELECT COUNT(*) FROM customer_opportunities) AS customer_count, (SELECT COUNT(*) FROM publication_queue) AS publication_count;" \
-            --config "$CONFIG" | tee post-counts.txt
+            --command "SELECT reconciliation_status, COUNT(*) AS count FROM structured_feed_records GROUP BY reconciliation_status ORDER BY reconciliation_status;" \
+            --config "$CONFIG" | tee live-d1-reconciliation-counts.txt
 
-          python3 - <<'PY'
-          import json, re, pathlib
-          t=pathlib.Path('post-counts.txt').read_text()
-          m=re.search(r'\[\s*\{.*\}\s*\]', t, re.S)
-          if not m: raise SystemExit('Could not parse post-write counts')
-          obj=json.loads(m.group(0))[0]['results'][0]
-          pre_customer=int(pathlib.Path('pre-customer.txt').read_text())
-          pre_publication=int(pathlib.Path('pre-publication.txt').read_text())
-          print('post structured=',obj['structured_feed_count'],'imports=',obj['structured_import_count'],'customer=',obj['customer_count'],'publication=',obj['publication_count'])
-          if obj['structured_feed_count'] != 1599:
-              raise SystemExit(f"Expected 1599 staged rows, got {obj['structured_feed_count']}")
-          if obj['customer_count'] != pre_customer:
-              raise SystemExit('customer_opportunities count changed')
-          if obj['publication_count'] != pre_publication:
-              raise SystemExit('publication_queue count changed')
-          PY
-
-      - name: Show latest structured-feed import
-        shell: bash
-        run: |
-          set -euo pipefail
           npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --command "SELECT import_id,status,total_records,rejected_records,started_at,completed_at FROM structured_feed_imports ORDER BY started_at DESC LIMIT 3;" \
+            --command "SELECT COUNT(*) AS structured_feed_count, SUM(CASE WHEN matched_candidate_id IS NOT NULL THEN 1 ELSE 0 END) AS matched_candidate_rows, SUM(CASE WHEN matched_customer_id IS NOT NULL THEN 1 ELSE 0 END) AS matched_customer_rows FROM structured_feed_records;" \
             --config "$CONFIG"
+
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
+            --command "SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count, (SELECT COUNT(*) FROM publication_queue) AS publication_count;" \
+            --config "$CONFIG" | tee post-reconciliation-counts.txt
+
+      - name: Show local reconciliation summary
+        run: cat "$OUT/live-d1-reconciliation-summary.json"
