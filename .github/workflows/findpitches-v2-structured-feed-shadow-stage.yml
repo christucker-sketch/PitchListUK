@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: findpitches-v2-structured-feed-live-reconciliation
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   reconcile:
