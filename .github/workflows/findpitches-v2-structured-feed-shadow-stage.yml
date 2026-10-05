@@ -6,6 +6,7 @@ on:
       - findpitches-v2/structured-feed-importer
     paths:
       - .github/workflows/findpitches-v2-structured-feed-shadow-stage.yml
+      - operations/findpitches-v2/importer/reconcile-current-d1.mjs
 
 permissions:
   contents: read
