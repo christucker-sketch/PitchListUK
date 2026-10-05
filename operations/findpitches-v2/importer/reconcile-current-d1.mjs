@@ -90,9 +90,6 @@ function plausiblePool(incoming,idx){
     for(const record of idx.byUrl.get(url)||[]) selected.add(record);
   }
 
-  // Matcher v5 requires >=2 meaningful shared event-name tokens for every
-  // non-exact match path. Count those cheaply first, then run the unchanged
-  // classifier only on plausible pairs. Exact route matches are always included.
   const overlap=new Map();
   for(const token of tokens(nameOf(incoming))){
     for(const record of idx.byNameToken.get(token)||[]){
@@ -116,7 +113,7 @@ function plan(staged,candidates,customers){
     const pool=plausiblePool(incoming,indexes.get(marketOf(incoming)));
     comparedPairs+=pool.length;
     const result=classify(incoming,pool);
-    const match=result.match?.record||null;
+    const best=result.match?.record||null;
     const action=result.action;
     const reason=(result.reason ?? (result.reasons||[]).join(';')) || null;
     const keepMatch=action==='existing_match'||action==='probable_match'||action==='conflict';
@@ -125,12 +122,17 @@ function plan(staged,candidates,customers){
       producer_id:incoming.producer_id??incoming.opportunity_id,
       action,
       reason,
-      matched_id:keepMatch?(match?.id||null):null,
-      matched_candidate_id:keepMatch&&match?.__has_candidate?match.id:null,
-      matched_customer_id:keepMatch&&match?.__has_customer?match.id:null,
+      matched_id:keepMatch?(best?.id||null):null,
+      matched_candidate_id:keepMatch&&best?.__has_candidate?best.id:null,
+      matched_customer_id:keepMatch&&best?.__has_customer?best.id:null,
       score:result.match?.match?.score??null,
       event_name:incoming.event_name??'',
-      matched_name:keepMatch?(match?.event_name??match?.title??''):''
+      matched_name:keepMatch?(best?.event_name??best?.title??''):'',
+      audit_best_id:best?.id||null,
+      audit_best_name:best?.event_name??best?.title??'',
+      audit_best_score:result.match?.match?.score??null,
+      audit_best_candidate:Boolean(best?.__has_candidate),
+      audit_best_customer:Boolean(best?.__has_customer)
     });
   }
   return {rows,counts,existing_records:existing.length,compared_pairs:comparedPairs};
