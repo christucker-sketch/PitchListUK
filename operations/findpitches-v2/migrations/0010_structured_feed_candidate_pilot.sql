@@ -1,6 +1,7 @@
 -- Structured-feed protected pilot ledger.
 -- Keeps an immutable copy of producer-backed fields before normal classification.
 -- This is an experimental shadow-only table. It may be recreated while PR #1907 remains unmerged.
+-- candidate_id deliberately has no FK so the immutable baseline can be captured before candidate creation.
 -- Does not publish anything and does not write customer_opportunities/publication_queue.
 
 DROP TABLE IF EXISTS structured_feed_candidate_pilot;
