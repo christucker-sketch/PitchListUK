@@ -64,11 +64,12 @@ function plan(staged,candidates,customers){
     const result=classify(incoming,existing);
     const match=result.match?.record||null;
     const action=result.action;
+    const reason=(result.reason ?? (result.reasons||[]).join(';')) || null;
     counts[action]=(counts[action]||0)+1;
     rows.push({
       producer_id:incoming.producer_id??incoming.opportunity_id,
       action,
-      reason:result.reason??(result.reasons||[]).join(';')||null,
+      reason,
       matched_id:match?.id||null,
       matched_candidate_id:match?.__has_candidate?match.id:null,
       matched_customer_id:match?.__has_customer?match.id:null,
