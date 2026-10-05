@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { classify } from './dry-run-import.mjs';
+import { classify, canonicalUrl, tokens } from './dry-run-import.mjs';
 
 function args(argv){
   const out={};
@@ -27,6 +27,11 @@ function sql(v){
 
 function marketOf(r){
   return String(r?.country_code??r?.market??'').trim().toUpperCase().slice(0,2);
+}
+
+function nameOf(r){ return r?.event_name??r?.title??''; }
+function urlsOf(r){
+  return [r?.application_url,r?.canonical_url,r?.source_url].map(canonicalUrl).filter(Boolean);
 }
 
 function buildExisting(candidates, customers){
@@ -59,41 +64,76 @@ function buildExisting(candidates, customers){
   return [...byId.values()];
 }
 
-function groupExistingByMarket(existing){
-  const grouped=new Map();
+function buildIndexes(existing){
+  const byMarket=new Map();
   for(const record of existing){
     const market=marketOf(record);
-    if(!grouped.has(market)) grouped.set(market,[]);
-    grouped.get(market).push(record);
+    if(!byMarket.has(market)) byMarket.set(market,{records:[],byUrl:new Map(),byNameToken:new Map()});
+    const idx=byMarket.get(market);
+    idx.records.push(record);
+    for(const url of urlsOf(record)){
+      if(!idx.byUrl.has(url)) idx.byUrl.set(url,new Set());
+      idx.byUrl.get(url).add(record);
+    }
+    for(const token of tokens(nameOf(record))){
+      if(!idx.byNameToken.has(token)) idx.byNameToken.set(token,new Set());
+      idx.byNameToken.get(token).add(record);
+    }
   }
-  return grouped;
+  return byMarket;
+}
+
+function plausiblePool(incoming,idx){
+  if(!idx) return [];
+  const selected=new Set();
+  for(const url of urlsOf(incoming)){
+    for(const record of idx.byUrl.get(url)||[]) selected.add(record);
+  }
+
+  // Matcher v5 requires >=2 meaningful shared event-name tokens for every
+  // non-exact match path. Count those cheaply first, then run the unchanged
+  // classifier only on plausible pairs. Exact route matches are always included.
+  const overlap=new Map();
+  for(const token of tokens(nameOf(incoming))){
+    for(const record of idx.byNameToken.get(token)||[]){
+      overlap.set(record,(overlap.get(record)||0)+1);
+    }
+  }
+  for(const [record,count] of overlap){
+    if(count>=2) selected.add(record);
+  }
+  return [...selected];
 }
 
 function plan(staged,candidates,customers){
   const existing=buildExisting(candidates,customers);
-  const byMarket=groupExistingByMarket(existing);
+  const indexes=buildIndexes(existing);
   const rows=[];
   const counts={};
+  let comparedPairs=0;
 
   for(const incoming of staged){
-    const result=classify(incoming,byMarket.get(marketOf(incoming))||[]);
+    const pool=plausiblePool(incoming,indexes.get(marketOf(incoming)));
+    comparedPairs+=pool.length;
+    const result=classify(incoming,pool);
     const match=result.match?.record||null;
     const action=result.action;
     const reason=(result.reason ?? (result.reasons||[]).join(';')) || null;
+    const keepMatch=action==='existing_match'||action==='probable_match'||action==='conflict';
     counts[action]=(counts[action]||0)+1;
     rows.push({
       producer_id:incoming.producer_id??incoming.opportunity_id,
       action,
       reason,
-      matched_id:match?.id||null,
-      matched_candidate_id:match?.__has_candidate?match.id:null,
-      matched_customer_id:match?.__has_customer?match.id:null,
+      matched_id:keepMatch?(match?.id||null):null,
+      matched_candidate_id:keepMatch&&match?.__has_candidate?match.id:null,
+      matched_customer_id:keepMatch&&match?.__has_customer?match.id:null,
       score:result.match?.match?.score??null,
       event_name:incoming.event_name??'',
-      matched_name:match?.event_name??match?.title??''
+      matched_name:keepMatch?(match?.event_name??match?.title??''):''
     });
   }
-  return {rows,counts,existing_records:existing.length};
+  return {rows,counts,existing_records:existing.length,compared_pairs:comparedPairs};
 }
 
 function renderSql(rows){
@@ -119,6 +159,7 @@ async function main(){
     candidate_records:candidates.length,
     customer_records:customers.length,
     existing_records:result.existing_records,
+    compared_pairs:result.compared_pairs,
     counts:result.counts,
     writes_target:'structured_feed_records_reconciliation_metadata_only',
     downstream_writes:0,
@@ -131,4 +172,4 @@ async function main(){
 }
 
 if(import.meta.url===pathToFileURL(process.argv[1]).href) main().catch(e=>{console.error(e.stack||e);process.exit(1)});
-export {buildExisting,groupExistingByMarket,plan,renderSql};
+export {buildExisting,buildIndexes,plausiblePool,plan,renderSql};
