@@ -1,8 +1,11 @@
 -- Structured-feed protected pilot ledger.
 -- Keeps an immutable copy of producer-backed fields before normal classification.
+-- This is an experimental shadow-only table. It may be recreated while PR #1907 remains unmerged.
 -- Does not publish anything and does not write customer_opportunities/publication_queue.
 
-CREATE TABLE IF NOT EXISTS structured_feed_candidate_pilot (
+DROP TABLE IF EXISTS structured_feed_candidate_pilot;
+
+CREATE TABLE structured_feed_candidate_pilot (
   producer_id TEXT PRIMARY KEY,
   candidate_id TEXT NOT NULL UNIQUE,
   pilot_batch TEXT NOT NULL,
@@ -29,12 +32,11 @@ CREATE TABLE IF NOT EXISTS structured_feed_candidate_pilot (
   after_score REAL,
   after_rejection_reason TEXT,
   audited_at TEXT,
-  FOREIGN KEY (producer_id) REFERENCES structured_feed_records(producer_id),
-  FOREIGN KEY (candidate_id) REFERENCES candidates(id)
+  FOREIGN KEY (producer_id) REFERENCES structured_feed_records(producer_id)
 );
 
-CREATE INDEX IF NOT EXISTS structured_feed_candidate_pilot_batch
+CREATE INDEX structured_feed_candidate_pilot_batch
   ON structured_feed_candidate_pilot (pilot_batch, market);
 
-CREATE INDEX IF NOT EXISTS structured_feed_candidate_pilot_status
+CREATE INDEX structured_feed_candidate_pilot_status
   ON structured_feed_candidate_pilot (after_status, pilot_batch);
