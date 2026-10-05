@@ -25,6 +25,10 @@ function sql(v){
   return `'${String(v).replaceAll("'","''")}'`;
 }
 
+function marketOf(r){
+  return String(r?.country_code??r?.market??'').trim().toUpperCase().slice(0,2);
+}
+
 function buildExisting(candidates, customers){
   const byId=new Map();
   for(const c of candidates){
@@ -55,13 +59,24 @@ function buildExisting(candidates, customers){
   return [...byId.values()];
 }
 
+function groupExistingByMarket(existing){
+  const grouped=new Map();
+  for(const record of existing){
+    const market=marketOf(record);
+    if(!grouped.has(market)) grouped.set(market,[]);
+    grouped.get(market).push(record);
+  }
+  return grouped;
+}
+
 function plan(staged,candidates,customers){
   const existing=buildExisting(candidates,customers);
+  const byMarket=groupExistingByMarket(existing);
   const rows=[];
   const counts={};
 
   for(const incoming of staged){
-    const result=classify(incoming,existing);
+    const result=classify(incoming,byMarket.get(marketOf(incoming))||[]);
     const match=result.match?.record||null;
     const action=result.action;
     const reason=(result.reason ?? (result.reasons||[]).join(';')) || null;
@@ -116,4 +131,4 @@ async function main(){
 }
 
 if(import.meta.url===pathToFileURL(process.argv[1]).href) main().catch(e=>{console.error(e.stack||e);process.exit(1)});
-export {buildExisting,plan,renderSql};
+export {buildExisting,groupExistingByMarket,plan,renderSql};
