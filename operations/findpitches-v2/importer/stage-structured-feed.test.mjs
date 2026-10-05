@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {validateRecord,normalizeRecord} from './stage-structured-feed.mjs';
+const base={schema_version:'findpitches-discovery-export-v1',opportunity_id:'fpd_123',country_code:'US',event_name:'Test Market',application_state:'OPEN_NOW',source_url:'https://example.com/x',application_url:'https://example.com/app',recurring:false};
+assert.deepEqual(validateRecord(base),[]);
+assert.ok(validateRecord({...base,opportunity_id:''}).includes('missing_opportunity_id'));
+assert.ok(validateRecord({...base,country_code:'FR'}).includes('unsupported_country'));
+const n=normalizeRecord(base,'imp1','2026-10-05T12:00:00Z');
+assert.equal(n.producer_id,'fpd_123');
+assert.equal(n.market,'US');
+assert.match(n.content_hash,/^[a-f0-9]{64}$/);
+const n2=normalizeRecord(base,'imp2','2026-10-06T12:00:00Z');
+assert.equal(n.content_hash,n2.content_hash,'content hash must ignore import metadata');
+console.log('Structured feed staging tests passed');
