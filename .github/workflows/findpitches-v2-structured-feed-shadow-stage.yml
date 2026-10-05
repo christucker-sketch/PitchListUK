@@ -193,5 +193,13 @@ jobs:
             --command "SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count, (SELECT COUNT(*) FROM publication_queue) AS publication_count;" \
             --config "$CONFIG" | tee post-reconciliation-counts.txt
 
+      - name: Show non-new live reconciliation audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
+            --command "SELECT s.reconciliation_status, s.producer_id, s.market, s.event_name AS incoming_name, s.organiser AS incoming_organiser, s.location AS incoming_location, s.event_start AS incoming_date, s.application_url AS incoming_url, s.reconciliation_reason, s.matched_candidate_id, c.event_name AS matched_candidate_name, c.organiser AS matched_candidate_organiser, c.application_url AS matched_candidate_url, s.matched_customer_id, o.title AS matched_customer_title, o.location AS matched_customer_location, o.event_start AS matched_customer_date, o.application_url AS matched_customer_url FROM structured_feed_records s LEFT JOIN candidates c ON c.id=s.matched_candidate_id LEFT JOIN customer_opportunities o ON o.id=s.matched_customer_id WHERE s.reconciliation_status IN ('existing_match','probable_match','conflict') ORDER BY s.reconciliation_status, s.event_name, s.producer_id;" \
+            --config "$CONFIG"
+
       - name: Show local reconciliation summary
         run: cat "$OUT/live-d1-reconciliation-summary.json"
