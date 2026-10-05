@@ -80,7 +80,6 @@ function classify(incoming,existing){
     return {action:'conflict',match:best,reason:'shared_route_conflicting_identity'};
   }
 
-  // Separately actionable dated instances must not collapse into another date.
   if(m.differentKnownDate && yi && ye && yi===ye && !m.exactUrl && !m.samePlatformApplication){
     return {action:'new_candidate',match:best,reason:'distinct_known_event_date'};
   }
@@ -96,12 +95,10 @@ function classify(incoming,existing){
     return {action:'existing_match',match:best};
   }
 
-  // Non-exact matches need a genuinely distinctive shared name plus independent corroboration.
   if(distinctiveName && m.yearCompat && (locationBacked||organiserBacked)){
     return {action:'existing_match',match:best};
   }
 
-  // Probable is reserved for strong event-family evidence, not generic titles or URL shapes.
   if(meaningfulName && ((locationBacked&&m.orgContain>=0.35)||(organiserBacked&&m.locContain>=0.40))){
     return {action:'probable_match',match:best,reason:(!m.yearCompat?'same_event_family_different_edition':'strong_identity_partial_corroboration')};
   }
