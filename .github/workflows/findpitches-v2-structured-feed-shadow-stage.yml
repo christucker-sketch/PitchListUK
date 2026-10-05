@@ -6,6 +6,7 @@ on:
       - findpitches-v2/structured-feed-importer
     paths:
       - operations/findpitches-v2/importer/payloads/structured-feed-stage.sql
+      - .github/workflows/findpitches-v2-structured-feed-shadow-stage.yml
 
 permissions:
   contents: read
@@ -26,6 +27,7 @@ jobs:
       CONFIG: operations/findpitches-v2/wrangler.jsonc
       MIGRATION: operations/findpitches-v2/migrations/0009_structured_feed_staging.sql
       PAYLOAD: operations/findpitches-v2/importer/payloads/structured-feed-stage.sql
+      EXEC_PAYLOAD: structured-feed-stage-exec.sql
       EXPECTED_SHA256: 836eac33e65d3951acb422d2e4b1579f97b12fa74a12d1498a7dd96285cd501f
 
     steps:
@@ -53,6 +55,20 @@ jobs:
 
           grep -Eq 'INSERT[[:space:]]+INTO[[:space:]]+structured_feed_records\b' "$PAYLOAD"
           grep -Eq 'INSERT[[:space:]]+INTO[[:space:]]+structured_feed_imports\b' "$PAYLOAD"
+
+      - name: Prepare D1 execution payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          # D1 remote import rejects embedded BEGIN/COMMIT statements. Preserve the
+          # checksum-verified source file unchanged and strip only its wrapper lines
+          # into a temporary execution file. Wrangler remote file imports are atomic.
+          sed '1d;$d' "$PAYLOAD" > "$EXEC_PAYLOAD"
+          test -s "$EXEC_PAYLOAD"
+          if grep -Eiq '^[[:space:]]*(BEGIN[[:space:]]+TRANSACTION|COMMIT|SAVEPOINT|RELEASE)[[:space:]]*;' "$EXEC_PAYLOAD"; then
+            echo "Unexpected transaction statement remains in execution payload." >&2
+            exit 1
+          fi
 
       - name: Run staging writer tests
         run: node operations/findpitches-v2/importer/stage-structured-feed.test.mjs
@@ -94,7 +110,7 @@ jobs:
         run: |
           set -euo pipefail
           npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --file "$PAYLOAD" --config "$CONFIG"
+            --file "$EXEC_PAYLOAD" --config "$CONFIG"
 
       - name: Prove staging count and downstream isolation
         shell: bash
