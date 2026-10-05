@@ -33,9 +33,12 @@ function scorePair(a,b){
   const au=canonicalUrl(getApp(a)),bu=canonicalUrl(getApp(b)),as=canonicalUrl(getSource(a)),bs=canonicalUrl(getSource(b));
   const ah=host(aPrimary),bh=host(bPrimary);
   const at=tokens(getName(a)),bt=tokens(getName(b));
+  const sharedNameTokens=intersection(at,bt), minNameTokens=Math.min(at.size,bt.size);
   const name=jaccard(at,bt),nameContain=containment(at,bt);
-  const org=jaccard(tokens(a.organiser),tokens(b.organiser)),orgContain=containment(tokens(a.organiser),tokens(b.organiser));
-  const loc=jaccard(tokens(getLoc(a)),tokens(getLoc(b))),locContain=containment(tokens(getLoc(a)),tokens(getLoc(b)));
+  const orgTokensA=tokens(a.organiser),orgTokensB=tokens(b.organiser);
+  const org=jaccard(orgTokensA,orgTokensB),orgContain=containment(orgTokensA,orgTokensB);
+  const locTokensA=tokens(getLoc(a)),locTokensB=tokens(getLoc(b));
+  const loc=jaccard(locTokensA,locTokensB),locContain=containment(locTokensA,locTokensB);
   const region=(norm(getRegion(a))&&norm(getRegion(a))===norm(getRegion(b)))?1:0;
   const exactUrl=(au&&bu&&au===bu)||(as&&bs&&as===bs)||(au&&bs&&au===bs)||(as&&bu&&as===bu);
   const evA=eventenyVendorId(aPrimary),evB=eventenyVendorId(bPrimary);
@@ -47,6 +50,7 @@ function scorePair(a,b){
   }
   const sameHost=ah&&bh&&ah===bh;
   const date=sameDate(a.event_start,b.event_start)?1:0;
+  const differentKnownDate=!!(a.event_start&&b.event_start&&!date);
   const ya=yearOf(a),yb=yearOf(b),yearCompat=!ya||!yb||ya===yb,countrySame=getCountry(a)===getCountry(b);
   let score=0;
   if(exactUrl)score+=0.64;
@@ -57,7 +61,7 @@ function scorePair(a,b){
   if(differentPlatformApplication)score-=0.18;
   if(!countrySame)score-=0.75;
   if(!yearCompat&&!date)score-=0.20;
-  return {score:Math.max(0,Math.min(1,score)),exactUrl,sameHost,name,nameContain,org,orgContain,loc,locContain,pathSim,date,yearCompat,countrySame,samePlatformApplication,differentPlatformApplication,eventenyVendorIdA:evA,eventenyVendorIdB:evB};
+  return {score:Math.max(0,Math.min(1,score)),exactUrl,sameHost,name,nameContain,sharedNameTokens,minNameTokens,org,orgContain,loc,locContain,pathSim,date,differentKnownDate,yearCompat,countrySame,samePlatformApplication,differentPlatformApplication,eventenyVendorIdA:evA,eventenyVendorIdB:evB};
 }
 
 function classify(incoming,existing){
@@ -67,19 +71,41 @@ function classify(incoming,existing){
   for(const ex of existing){if(getCountry(ex)!==getCountry(incoming))continue;const m=scorePair(incoming,ex);if(!best||m.score>best.match.score)best={record:ex,match:m};}
   if(!best)return {action:'new_candidate',match:null};
   const m=best.match,yi=yearOf(incoming),ye=yearOf(best.record);
-  const strongName=m.nameContain>=0.78||m.name>=0.68;
-  const strongCorroboration=!!(m.date||(m.locContain>=0.65&&m.orgContain>=0.55)||(m.locContain>=0.8&&m.region)||(m.orgContain>=0.8&&m.region));
+  const meaningfulName=m.sharedNameTokens>=2 && (m.nameContain>=0.72||m.name>=0.60);
+  const distinctiveName=m.sharedNameTokens>=3 && m.nameContain>=0.75;
+  const locationBacked=m.locContain>=0.70;
+  const organiserBacked=m.orgContain>=0.65;
+
   if(m.exactUrl && m.nameContain<0.45 && m.locContain<0.25 && m.orgContain<0.25){
     return {action:'conflict',match:best,reason:'shared_route_conflicting_identity'};
   }
+
+  // Separately actionable dated instances must not collapse into another date.
+  if(m.differentKnownDate && yi && ye && yi===ye && !m.exactUrl && !m.samePlatformApplication){
+    return {action:'new_candidate',match:best,reason:'distinct_known_event_date'};
+  }
+
   if(m.differentPlatformApplication){
-    if(strongName && strongCorroboration) return {action:'probable_match',match:best,reason:'same_event_distinct_platform_application'};
+    if(distinctiveName && locationBacked && organiserBacked) return {action:'probable_match',match:best,reason:'same_event_distinct_platform_application'};
     return {action:'new_candidate',match:best,reason:'distinct_platform_application'};
   }
+
   if(m.exactUrl&&yi&&ye&&yi!==ye&&!m.date)return {action:'probable_match',match:best,reason:'same_route_different_edition'};
-  if((m.samePlatformApplication||m.exactUrl) && m.yearCompat && (m.nameContain>=0.55||m.locContain>=0.6||m.orgContain>=0.6)) return {action:'existing_match',match:best};
-  if(strongName && strongCorroboration && m.yearCompat) return {action:'existing_match',match:best};
-  if((strongName&&(m.locContain>=0.55||m.orgContain>=0.6||m.date)) || (m.pathSim>=0.8&&m.nameContain>=0.75&&!m.differentPlatformApplication)) return {action:'probable_match',match:best,reason:(!m.yearCompat?'same_event_family_different_edition':undefined)};
+
+  if((m.samePlatformApplication||m.exactUrl) && m.yearCompat && (meaningfulName||locationBacked||organiserBacked)){
+    return {action:'existing_match',match:best};
+  }
+
+  // Non-exact matches need a genuinely distinctive shared name plus independent corroboration.
+  if(distinctiveName && m.yearCompat && (locationBacked||organiserBacked)){
+    return {action:'existing_match',match:best};
+  }
+
+  // Probable is reserved for strong event-family evidence, not generic titles or URL shapes.
+  if(meaningfulName && ((locationBacked&&m.orgContain>=0.35)||(organiserBacked&&m.locContain>=0.40))){
+    return {action:'probable_match',match:best,reason:(!m.yearCompat?'same_event_family_different_edition':'strong_identity_partial_corroboration')};
+  }
+
   return {action:'new_candidate',match:best};
 }
 
@@ -93,11 +119,11 @@ async function main(){
  const incoming=readJsonl(args.feed),existing=await loadExisting(args),results=incoming.map(r=>({incoming:r,...classify(r,existing)}));
  const counts={};for(const r of results)counts[r.action]=(counts[r.action]||0)+1;
  fs.mkdirSync(args.out,{recursive:true});
- const report={generated_at:new Date().toISOString(),mode:'dry_run',feed:path.resolve(args.feed),incoming_records:incoming.length,existing_records:existing.length,counts,writes_performed:0,matcher_version:4,note:'No database, API, Cloudflare or publication writes are performed.'};
+ const report={generated_at:new Date().toISOString(),mode:'dry_run',feed:path.resolve(args.feed),incoming_records:incoming.length,existing_records:existing.length,counts,writes_performed:0,matcher_version:5,note:'No database, API, Cloudflare or publication writes are performed.'};
  fs.writeFileSync(path.join(args.out,'dry-run-summary.json'),JSON.stringify(report,null,2)+'\n');
- const detail=results.map(r=>({opportunity_id:r.incoming.opportunity_id??'',country:getCountry(r.incoming),event_name:getName(r.incoming),application_state:getState(r.incoming),action:r.action,reason:r.reason??(r.reasons??[]).join(';'),matched_id:r.match?.record?.id??r.match?.record?.stable_id??'',matched_name:r.match?getName(r.match.record):'',score:r.match?Number(r.match.match.score.toFixed(4)):'',exact_url:r.match?String(r.match.match.exactUrl):'',same_platform_application:r.match?String(r.match.match.samePlatformApplication):'',different_platform_application:r.match?String(r.match.match.differentPlatformApplication):'',name_similarity:r.match?Number(r.match.match.name.toFixed(4)):'',name_containment:r.match?Number(r.match.match.nameContain.toFixed(4)):'',organiser_containment:r.match?Number(r.match.match.orgContain.toFixed(4)):'',location_containment:r.match?Number(r.match.match.locContain.toFixed(4)):'',path_similarity:r.match?Number(r.match.match.pathSim.toFixed(4)):'',incoming_url:getApp(r.incoming)||getSource(r.incoming),matched_url:r.match?(getApp(r.match.record)||getSource(r.match.record)):''}));
+ const detail=results.map(r=>({opportunity_id:r.incoming.opportunity_id??'',country:getCountry(r.incoming),event_name:getName(r.incoming),application_state:getState(r.incoming),action:r.action,reason:r.reason??(r.reasons??[]).join(';'),matched_id:r.match?.record?.id??r.match?.record?.stable_id??'',matched_name:r.match?getName(r.match.record):'',score:r.match?Number(r.match.match.score.toFixed(4)):'',exact_url:r.match?String(r.match.match.exactUrl):'',same_platform_application:r.match?String(r.match.match.samePlatformApplication):'',different_platform_application:r.match?String(r.match.match.differentPlatformApplication):'',shared_name_tokens:r.match?r.match.match.sharedNameTokens:'',name_similarity:r.match?Number(r.match.match.name.toFixed(4)):'',name_containment:r.match?Number(r.match.match.nameContain.toFixed(4)):'',organiser_containment:r.match?Number(r.match.match.orgContain.toFixed(4)):'',location_containment:r.match?Number(r.match.match.locContain.toFixed(4)):'',path_similarity:r.match?Number(r.match.match.pathSim.toFixed(4)):'',incoming_url:getApp(r.incoming)||getSource(r.incoming),matched_url:r.match?(getApp(r.match.record)||getSource(r.match.record)):''}));
  const cols=Object.keys(detail[0]??{});fs.writeFileSync(path.join(args.out,'dry-run-actions.csv'),[cols.join(','),...detail.map(x=>cols.map(k=>csvEscape(x[k])).join(','))].join('\r\n')+'\r\n');
- fs.writeFileSync(path.join(args.out,'dry-run-actions.jsonl'),results.map(r=>JSON.stringify({opportunity_id:r.incoming.opportunity_id,action:r.action,reason:r.reason??r.reasons??null,match:r.match?{existing_id:r.match.record.id??r.match.record.stable_id??null,score:r.match.match.score,exact_url:r.match.match.exactUrl,same_platform_application:r.match.match.samePlatformApplication,different_platform_application:r.match.match.differentPlatformApplication,name_similarity:r.match.match.name,name_containment:r.match.match.nameContain}:null})).join('\n')+'\n');
+ fs.writeFileSync(path.join(args.out,'dry-run-actions.jsonl'),results.map(r=>JSON.stringify({opportunity_id:r.incoming.opportunity_id,action:r.action,reason:r.reason??r.reasons??null,match:r.match?{existing_id:r.match.record.id??r.match.record.stable_id??null,score:r.match.match.score,exact_url:r.match.match.exactUrl,same_platform_application:r.match.match.samePlatformApplication,different_platform_application:r.match.match.differentPlatformApplication,shared_name_tokens:r.match.match.sharedNameTokens,name_similarity:r.match.match.name,name_containment:r.match.match.nameContain}:null})).join('\n')+'\n');
  console.log(JSON.stringify(report,null,2));
 }
 if(import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(e=>{console.error(e.stack||e);process.exit(1);});
