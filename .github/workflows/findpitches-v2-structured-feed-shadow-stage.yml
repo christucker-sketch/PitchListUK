@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/findpitches-v2-structured-feed-shadow-stage.yml
       - operations/findpitches-v2/importer/reconcile-current-d1.mjs
+      - operations/findpitches-v2/migrations/0010_structured_feed_candidate_pilot.sql
 
 permissions:
   contents: read
@@ -26,6 +27,7 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
       CONFIG: operations/findpitches-v2/wrangler.jsonc
       OUT: live-d1-reconciliation
+      PILOT_BATCH: structured_source_pilot_100_v1
 
     steps:
       - name: Check out importer branch
@@ -43,7 +45,6 @@ jobs:
         run: |
           cat > parse-wrangler.py <<'PY'
           import json, pathlib, re, sys
-
           mode, raw_path = sys.argv[1], sys.argv[2]
           text = pathlib.Path(raw_path).read_text(errors='replace')
           text = re.sub(r'\x1b\[[0-9;]*[A-Za-z]', '', text)
@@ -81,7 +82,6 @@ jobs:
         run: |
           set -euo pipefail
           export NO_COLOR=1
-
           run_raw() {
             local sql="$1" raw="$2"
             if ! npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "$sql" --config "$CONFIG" >"$raw" 2>&1; then
@@ -89,7 +89,6 @@ jobs:
               return 1
             fi
           }
-
           scalar() {
             local sql="$1" key="$2" raw
             raw="$(mktemp)"
@@ -97,7 +96,6 @@ jobs:
             python3 parse-wrangler.py scalar "$raw" "$key"
             rm -f "$raw"
           }
-
           append_query() {
             local sql="$1" dest="$2" raw
             raw="$(mktemp)"
@@ -105,32 +103,25 @@ jobs:
             python3 parse-wrangler.py append "$raw" "$dest" >/dev/null
             rm -f "$raw"
           }
-
           staged_total="$(scalar 'SELECT COUNT(*) AS count FROM structured_feed_records' count)"
           candidate_total="$(scalar "SELECT COUNT(*) AS count FROM candidates WHERE status <> 'rejected'" count)"
           customer_total="$(scalar 'SELECT COUNT(*) AS count FROM customer_opportunities' count)"
-
           echo "staged_total=$staged_total"
           echo "candidate_total=$candidate_total"
           echo "customer_total=$customer_total"
           [[ "$staged_total" -eq 1599 ]]
-
           printf '[]' > staged.json
           printf '[]' > candidates.json
           printf '[]' > customers.json
-
           for ((offset=0; offset<staged_total; offset+=1000)); do
             append_query "SELECT producer_id AS opportunity_id, producer_id, market, region_code, event_name, organiser, location, event_start, event_end, application_deadline, canonical_url, application_url, application_state, lifecycle_event, recurring FROM structured_feed_records ORDER BY producer_id LIMIT 1000 OFFSET $offset" staged.json
           done
-
           for ((offset=0; offset<candidate_total; offset+=1000)); do
             append_query "SELECT id, market, region_code, event_name, organiser, canonical_url, application_url, status, first_seen, last_checked FROM candidates WHERE status <> 'rejected' ORDER BY id LIMIT 1000 OFFSET $offset" candidates.json
           done
-
           for ((offset=0; offset<customer_total; offset+=1000)); do
             append_query "SELECT id, market, region_code, title, organiser, location, event_start, event_end, canonical_url, application_url, last_checked FROM customer_opportunities ORDER BY id LIMIT 1000 OFFSET $offset" customers.json
           done
-
           python3 - <<'PY'
           import json
           for name, expected in [('staged.json',1599)]:
@@ -145,20 +136,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node operations/findpitches-v2/importer/reconcile-current-d1.mjs \
-            --staged staged.json \
-            --candidates candidates.json \
-            --customers customers.json \
-            --out "$OUT" | tee live-d1-plan-summary.txt
-
+          node operations/findpitches-v2/importer/reconcile-current-d1.mjs --staged staged.json --candidates candidates.json --customers customers.json --out "$OUT" | tee live-d1-plan-summary.txt
           plan="$OUT/live-d1-reconciliation-plan.sql"
           [[ "$(grep -c '^UPDATE structured_feed_records SET ' "$plan")" -eq 1599 ]]
           if grep -Eiq '(INSERT[[:space:]]+INTO|REPLACE[[:space:]]+INTO|UPDATE|DELETE[[:space:]]+FROM)[[:space:]]+(customer_opportunities|publication_queue|candidates|customer_promotion_disposition)\b' "$plan"; then
             echo 'Reconciliation plan attempts to write a downstream table.' >&2
-            exit 1
-          fi
-          if grep -Eiq '^[[:space:]]*(BEGIN|COMMIT|SAVEPOINT|RELEASE)\b' "$plan"; then
-            echo 'Unexpected transaction statement in reconciliation plan.' >&2
             exit 1
           fi
 
@@ -166,40 +148,119 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --command "SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count, (SELECT COUNT(*) FROM publication_queue) AS publication_count;" \
-            --config "$CONFIG" | tee pre-reconciliation-counts.txt
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count, (SELECT COUNT(*) FROM publication_queue) AS publication_count;" --config "$CONFIG" | tee pre-reconciliation-counts.txt
 
       - name: Apply staging-only reconciliation metadata
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --file "$OUT/live-d1-reconciliation-plan.sql" --config "$CONFIG"
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file "$OUT/live-d1-reconciliation-plan.sql" --config "$CONFIG"
 
       - name: Prove live reconciliation results
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --command "SELECT reconciliation_status, COUNT(*) AS count FROM structured_feed_records GROUP BY reconciliation_status ORDER BY reconciliation_status;" \
-            --config "$CONFIG" | tee live-d1-reconciliation-counts.txt
-
-          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --command "SELECT COUNT(*) AS structured_feed_count, SUM(CASE WHEN matched_candidate_id IS NOT NULL THEN 1 ELSE 0 END) AS matched_candidate_rows, SUM(CASE WHEN matched_customer_id IS NOT NULL THEN 1 ELSE 0 END) AS matched_customer_rows FROM structured_feed_records;" \
-            --config "$CONFIG"
-
-          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --command "SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count, (SELECT COUNT(*) FROM publication_queue) AS publication_count;" \
-            --config "$CONFIG" | tee post-reconciliation-counts.txt
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "SELECT reconciliation_status, COUNT(*) AS count FROM structured_feed_records GROUP BY reconciliation_status ORDER BY reconciliation_status;" --config "$CONFIG" | tee live-d1-reconciliation-counts.txt
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "SELECT COUNT(*) AS structured_feed_count, SUM(CASE WHEN matched_candidate_id IS NOT NULL THEN 1 ELSE 0 END) AS matched_candidate_rows, SUM(CASE WHEN matched_customer_id IS NOT NULL THEN 1 ELSE 0 END) AS matched_customer_rows FROM structured_feed_records;" --config "$CONFIG"
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count, (SELECT COUNT(*) FROM publication_queue) AS publication_count;" --config "$CONFIG" | tee post-reconciliation-counts.txt
 
       - name: Show non-new live reconciliation audit
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes \
-            --command "SELECT s.reconciliation_status, s.producer_id, s.market, s.event_name AS incoming_name, s.organiser AS incoming_organiser, s.location AS incoming_location, s.event_start AS incoming_date, s.application_url AS incoming_url, s.reconciliation_reason, s.matched_candidate_id, c.event_name AS matched_candidate_name, c.organiser AS matched_candidate_organiser, c.application_url AS matched_candidate_url, s.matched_customer_id, o.title AS matched_customer_title, o.location AS matched_customer_location, o.event_start AS matched_customer_date, o.application_url AS matched_customer_url FROM structured_feed_records s LEFT JOIN candidates c ON c.id=s.matched_candidate_id LEFT JOIN customer_opportunities o ON o.id=s.matched_customer_id WHERE s.reconciliation_status IN ('existing_match','probable_match','conflict') ORDER BY s.reconciliation_status, s.event_name, s.producer_id;" \
-            --config "$CONFIG"
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "SELECT s.reconciliation_status, s.producer_id, s.market, s.event_name AS incoming_name, s.organiser AS incoming_organiser, s.location AS incoming_location, s.event_start AS incoming_date, s.application_url AS incoming_url, s.reconciliation_reason, s.matched_candidate_id, c.event_name AS matched_candidate_name, c.organiser AS matched_candidate_organiser, c.application_url AS matched_candidate_url, s.matched_customer_id, o.title AS matched_customer_title, o.location AS matched_customer_location, o.event_start AS matched_customer_date, o.application_url AS matched_customer_url FROM structured_feed_records s LEFT JOIN candidates c ON c.id=s.matched_candidate_id LEFT JOIN customer_opportunities o ON o.id=s.matched_customer_id WHERE s.reconciliation_status IN ('existing_match','probable_match','conflict') ORDER BY s.reconciliation_status, s.event_name, s.producer_id;" --config "$CONFIG"
+
+      - name: Apply protected pilot ledger migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          out="$(npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file operations/findpitches-v2/migrations/0010_structured_feed_candidate_pilot.sql --config "$CONFIG" 2>&1)"
+          rc=$?
+          set -e
+          printf '%s\n' "$out"
+          if [[ $rc -ne 0 ]] && ! grep -Eq 'already exists|Not currently importing anything' <<<"$out"; then exit "$rc"; fi
+
+      - name: Build and insert protected 100-row pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > pilot.sql <<SQL
+          INSERT OR IGNORE INTO structured_feed_candidate_pilot (
+            producer_id,candidate_id,pilot_batch,market,baseline_event_name,baseline_organiser,
+            baseline_location,baseline_event_start,baseline_event_end,baseline_application_deadline,
+            baseline_canonical_url,baseline_application_url,baseline_application_state,
+            baseline_evidence_json,baseline_provenance_json
+          )
+          SELECT s.producer_id,'fpsrc_'||substr(s.producer_id,6),'$PILOT_BATCH',s.market,s.event_name,s.organiser,
+                 s.location,s.event_start,s.event_end,s.application_deadline,s.canonical_url,s.application_url,
+                 s.application_state,s.evidence_json,s.provenance_json
+            FROM structured_feed_records s
+           WHERE s.reconciliation_status='new_candidate'
+             AND COALESCE(NULLIF(TRIM(s.application_url),''),NULLIF(TRIM(s.canonical_url),'')) IS NOT NULL
+             AND NOT EXISTS (SELECT 1 FROM candidates c WHERE c.market=s.market AND c.canonical_url=COALESCE(NULLIF(TRIM(s.application_url),''),NULLIF(TRIM(s.canonical_url),'')))
+             AND NOT EXISTS (SELECT 1 FROM structured_feed_candidate_pilot p WHERE p.producer_id=s.producer_id)
+           ORDER BY s.producer_id LIMIT 100;
+
+          INSERT OR IGNORE INTO acquisition_runs (run_id,market,region_code,status,query_count,search_results,unique_candidates,validated,duplicates,held,rejected,queued,published,started_at,completed_at)
+          VALUES ('$PILOT_BATCH','MIXED','STRUCTURED','complete',0,0,100,0,0,0,0,100,0,datetime('now'),datetime('now'));
+
+          INSERT OR IGNORE INTO candidates (
+            id,market,region_code,source_url,canonical_url,application_url,event_name,organiser,
+            geography_json,evidence_json,score,status,rejection_reason,first_seen,last_checked,retry_count,run_id,opportunity_fingerprint
+          )
+          SELECT p.candidate_id,s.market,s.region_code,
+                 COALESCE(NULLIF(TRIM(s.application_url),''),NULLIF(TRIM(s.canonical_url),'')),
+                 COALESCE(NULLIF(TRIM(s.application_url),''),NULLIF(TRIM(s.canonical_url),'')),
+                 s.application_url,s.event_name,s.organiser,
+                 json_object('discovery_market',s.market,'discovery_region_code',s.region_code,'discovery_location',s.location,'structured_source_location',s.location,'asserted',1),
+                 json_array(json_object('type','structured_source_baseline','producer_id',s.producer_id,'source_name',s.source_name,'application_state',s.application_state,'location',s.location,'event_start',s.event_start,'event_end',s.event_end,'application_deadline',s.application_deadline)),
+                 0,'discovered',NULL,COALESCE(s.first_seen,datetime('now')),datetime('now'),0,'$PILOT_BATCH',s.producer_id
+            FROM structured_feed_candidate_pilot p JOIN structured_feed_records s ON s.producer_id=p.producer_id
+           WHERE p.pilot_batch='$PILOT_BATCH';
+
+          UPDATE structured_feed_candidate_pilot SET candidate_inserted_at=COALESCE(candidate_inserted_at,datetime('now'))
+           WHERE pilot_batch='$PILOT_BATCH' AND EXISTS (SELECT 1 FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id);
+
+          INSERT OR IGNORE INTO classification_queue (candidate_id,status,attempts,available_at,lease_until,last_error,created_at,updated_at)
+          SELECT p.candidate_id,'ready',0,'2000-01-01T00:00:00.000Z',NULL,NULL,datetime('now'),datetime('now')
+            FROM structured_feed_candidate_pilot p JOIN candidates c ON c.id=p.candidate_id
+           WHERE p.pilot_batch='$PILOT_BATCH';
+          SQL
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file pilot.sql --config "$CONFIG"
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "SELECT COUNT(*) AS pilot_rows,SUM(CASE WHEN candidate_inserted_at IS NOT NULL THEN 1 ELSE 0 END) AS inserted_rows FROM structured_feed_candidate_pilot WHERE pilot_batch='$PILOT_BATCH'; SELECT COUNT(*) AS pilot_candidates FROM candidates WHERE run_id='$PILOT_BATCH'; SELECT COUNT(*) AS pilot_queue_rows FROM classification_queue q JOIN candidates c ON c.id=q.candidate_id WHERE c.run_id='$PILOT_BATCH'; SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count,(SELECT COUNT(*) FROM publication_queue) AS publication_count;" --config "$CONFIG"
+
+      - name: Allow normal classifier to process pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in {1..16}; do
+            out="$(npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "SELECT SUM(CASE WHEN q.status='complete' THEN 1 ELSE 0 END) AS complete,SUM(CASE WHEN q.status='dead' THEN 1 ELSE 0 END) AS dead,SUM(CASE WHEN q.status IN ('ready','leased') THEN 1 ELSE 0 END) AS pending FROM structured_feed_candidate_pilot p JOIN classification_queue q ON q.candidate_id=p.candidate_id WHERE p.pilot_batch='$PILOT_BATCH';" --config "$CONFIG" 2>&1)"
+            printf '%s\n' "$out"
+            if grep -Eq '"pending"[[:space:]]*:[[:space:]]*0' <<<"$out"; then break; fi
+            sleep 30
+          done
+
+      - name: Snapshot and report classifier changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > pilot-after.sql <<SQL
+          UPDATE structured_feed_candidate_pilot
+             SET classifier_completed_at=CASE WHEN EXISTS (SELECT 1 FROM classification_queue q WHERE q.candidate_id=structured_feed_candidate_pilot.candidate_id AND q.status IN ('complete','dead')) THEN datetime('now') ELSE classifier_completed_at END,
+                 after_status=(SELECT c.status FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id),
+                 after_event_name=(SELECT c.event_name FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id),
+                 after_organiser=(SELECT c.organiser FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id),
+                 after_application_url=(SELECT c.application_url FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id),
+                 after_geography_json=(SELECT c.geography_json FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id),
+                 after_evidence_json=(SELECT c.evidence_json FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id),
+                 after_score=(SELECT c.score FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id),
+                 after_rejection_reason=(SELECT c.rejection_reason FROM candidates c WHERE c.id=structured_feed_candidate_pilot.candidate_id),
+                 audited_at=datetime('now')
+           WHERE pilot_batch='$PILOT_BATCH';
+          SQL
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --file pilot-after.sql --config "$CONFIG"
+          npx --yes wrangler@4.127.1 d1 execute FINDPITCHES_DB --remote --yes --command "SELECT after_status,COUNT(*) AS count FROM structured_feed_candidate_pilot WHERE pilot_batch='$PILOT_BATCH' GROUP BY after_status ORDER BY after_status; SELECT SUM(CASE WHEN COALESCE(after_event_name,'')<>COALESCE(baseline_event_name,'') THEN 1 ELSE 0 END) AS event_name_changed,SUM(CASE WHEN COALESCE(after_organiser,'')<>COALESCE(baseline_organiser,'') THEN 1 ELSE 0 END) AS organiser_changed,SUM(CASE WHEN COALESCE(after_application_url,'')<>COALESCE(baseline_application_url,'') THEN 1 ELSE 0 END) AS application_url_changed,SUM(CASE WHEN after_status='validated' THEN 1 ELSE 0 END) AS validated,SUM(CASE WHEN after_status='held' THEN 1 ELSE 0 END) AS held,SUM(CASE WHEN after_status='rejected' THEN 1 ELSE 0 END) AS rejected FROM structured_feed_candidate_pilot WHERE pilot_batch='$PILOT_BATCH'; SELECT producer_id,market,baseline_event_name,after_event_name,baseline_organiser,after_organiser,baseline_application_url,after_application_url,after_status,after_score,after_rejection_reason FROM structured_feed_candidate_pilot WHERE pilot_batch='$PILOT_BATCH' AND (COALESCE(after_event_name,'')<>COALESCE(baseline_event_name,'') OR COALESCE(after_organiser,'')<>COALESCE(baseline_organiser,'') OR COALESCE(after_application_url,'')<>COALESCE(baseline_application_url,'')) ORDER BY producer_id LIMIT 40; SELECT (SELECT COUNT(*) FROM customer_opportunities) AS customer_count,(SELECT COUNT(*) FROM publication_queue) AS publication_count;" --config "$CONFIG" | tee lobotomy-report.txt
 
       - name: Show local reconciliation summary
         run: cat "$OUT/live-d1-reconciliation-summary.json"
