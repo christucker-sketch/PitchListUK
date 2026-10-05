@@ -32,10 +32,10 @@ function scorePair(a,b){
   const ah=host(getApp(a)||getSource(a)),bh=host(getApp(b)||getSource(b));
   const at=tokens(getName(a)),bt=tokens(getName(b));
   const name=jaccard(at,bt),nameContain=containment(at,bt);
-  const org=jaccard(tokens(a.organiser),tokens(b.organiser));
-  const orgContain=containment(tokens(a.organiser),tokens(b.organiser));
-  const loc=jaccard(tokens(getLoc(a)),tokens(getLoc(b)));
-  const locContain=containment(tokens(getLoc(a)),tokens(getLoc(b)));
+  const orgTokensA=tokens(a.organiser),orgTokensB=tokens(b.organiser);
+  const org=jaccard(orgTokensA,orgTokensB),orgContain=containment(orgTokensA,orgTokensB);
+  const locTokensA=tokens(getLoc(a)),locTokensB=tokens(getLoc(b));
+  const loc=jaccard(locTokensA,locTokensB),locContain=containment(locTokensA,locTokensB);
   const region=(norm(getRegion(a))&&norm(getRegion(a))===norm(getRegion(b)))?1:0;
   const exactUrl=(au&&bu&&au===bu)||(as&&bs&&as===bs)||(au&&bs&&au===bs)||(as&&bu&&as===bu);
   const sameHost=ah&&bh&&ah===bh;
@@ -47,14 +47,14 @@ function scorePair(a,b){
   const ya=yearOf(a),yb=yearOf(b),yearCompat=!ya||!yb||ya===yb,countrySame=getCountry(a)===getCountry(b);
   let score=0;
   if(exactUrl)score+=0.64;
-  score+=0.10*Math.max(name,nameContain);
+  score+=0.11*Math.max(name,nameContain);
   score+=0.05*Math.max(org,orgContain);
   score+=0.04*Math.max(loc,locContain);
   score+=0.02*region+0.08*date;
-  if(sameHost)score+=Math.min(0.05,0.05*pathSim);
-  score+=0.07*pathSim;
+  if(sameHost)score+=Math.min(0.04,0.04*pathSim);
+  score+=0.06*pathSim;
   if(!countrySame)score-=0.75;
-  if(!yearCompat&&!date)score-=0.20;
+  if(!yearCompat&&!date)score-=0.22;
   return {score:Math.max(0,Math.min(1,score)),exactUrl,sameHost,name,nameContain,org,orgContain,loc,locContain,pathSim,date,yearCompat,countrySame};
 }
 
@@ -65,13 +65,39 @@ function classify(incoming,existing){
   for(const ex of existing){if(getCountry(ex)!==getCountry(incoming))continue;const m=scorePair(incoming,ex);if(!best||m.score>best.match.score)best={record:ex,match:m};}
   if(!best)return {action:'new_candidate',match:null};
   const m=best.match,yi=yearOf(incoming),ye=yearOf(best.record);
-  const strongName=m.nameContain>=0.72||m.name>=0.62;
-  const corroborated=!!(m.date||m.locContain>=0.45||m.orgContain>=0.55||(m.region&&m.pathSim>=0.35));
-  const sameIdentitySignals=m.exactUrl||(strongName&&corroborated)||(m.pathSim>=0.72&&strongName);
-  if(m.exactUrl&&yi&&ye&&yi!==ye&&!m.date)return {action:'probable_match',match:best,reason:'same_route_different_edition'};
-  if(sameIdentitySignals&&m.yearCompat&&(m.exactUrl||m.score>=0.58||(strongName&&corroborated)))return {action:'existing_match',match:best};
-  if((strongName&&corroborated)||m.score>=0.52||(m.pathSim>=0.65&&m.nameContain>=0.5))return {action:'probable_match',match:best,reason:(!m.yearCompat?'same_event_family_different_edition':undefined)};
-  if(m.exactUrl&&m.nameContain<0.2&&m.locContain<0.15)return {action:'conflict',match:best,reason:'shared_route_conflicting_identity'};
+  const strongName=m.nameContain>=0.82||m.name>=0.72;
+  const veryStrongName=m.nameContain>=0.92||m.name>=0.82;
+  const strongOrg=m.orgContain>=0.68||m.org>=0.62;
+  const strongLoc=m.locContain>=0.62||m.loc>=0.55;
+  const strongPath=m.pathSim>=0.72;
+  const independentSignals=[m.date?1:0,strongOrg?1:0,strongLoc?1:0,m.region?1:0,strongPath?1:0].reduce((a,b)=>a+b,0);
+
+  if(m.exactUrl&&yi&&ye&&yi!==ye&&!m.date){
+    return {action:'probable_match',match:best,reason:'same_route_different_edition'};
+  }
+  if(m.exactUrl&&m.yearCompat){
+    if(m.nameContain<0.18&&m.locContain<0.15&&m.orgContain<0.15){
+      return {action:'conflict',match:best,reason:'shared_route_conflicting_identity'};
+    }
+    return {action:'existing_match',match:best};
+  }
+
+  if(m.yearCompat&&veryStrongName&&independentSignals>=2){
+    return {action:'existing_match',match:best};
+  }
+  if(m.yearCompat&&strongName&&m.date&&(strongLoc||strongOrg||m.region)){
+    return {action:'existing_match',match:best};
+  }
+
+  if(!m.yearCompat&&strongName&&independentSignals>=2){
+    return {action:'probable_match',match:best,reason:'same_event_family_different_edition'};
+  }
+  if(strongName&&independentSignals>=2){
+    return {action:'probable_match',match:best};
+  }
+  if(veryStrongName&&independentSignals>=1&&(strongPath||m.date)){
+    return {action:'probable_match',match:best};
+  }
   return {action:'new_candidate',match:best};
 }
 
@@ -85,7 +111,7 @@ async function main(){
  const incoming=readJsonl(args.feed),existing=await loadExisting(args),results=incoming.map(r=>({incoming:r,...classify(r,existing)}));
  const counts={};for(const r of results)counts[r.action]=(counts[r.action]||0)+1;
  fs.mkdirSync(args.out,{recursive:true});
- const report={generated_at:new Date().toISOString(),mode:'dry_run',feed:path.resolve(args.feed),incoming_records:incoming.length,existing_records:existing.length,counts,writes_performed:0,matcher_version:2,note:'No database, API, Cloudflare or publication writes are performed.'};
+ const report={generated_at:new Date().toISOString(),mode:'dry_run',feed:path.resolve(args.feed),incoming_records:incoming.length,existing_records:existing.length,counts,writes_performed:0,matcher_version:3,note:'No database, API, Cloudflare or publication writes are performed.'};
  fs.writeFileSync(path.join(args.out,'dry-run-summary.json'),JSON.stringify(report,null,2)+'\n');
  const detail=results.map(r=>({opportunity_id:r.incoming.opportunity_id??'',country:getCountry(r.incoming),event_name:getName(r.incoming),application_state:getState(r.incoming),action:r.action,reason:r.reason??(r.reasons??[]).join(';'),matched_id:r.match?.record?.id??r.match?.record?.stable_id??'',matched_name:r.match?getName(r.match.record):'',score:r.match?Number(r.match.match.score.toFixed(4)):'',exact_url:r.match?String(r.match.match.exactUrl):'',name_similarity:r.match?Number(r.match.match.name.toFixed(4)):'',name_containment:r.match?Number(r.match.match.nameContain.toFixed(4)):'',organiser_containment:r.match?Number(r.match.match.orgContain.toFixed(4)):'',location_containment:r.match?Number(r.match.match.locContain.toFixed(4)):'',path_similarity:r.match?Number(r.match.match.pathSim.toFixed(4)):'',incoming_url:getApp(r.incoming)||getSource(r.incoming),matched_url:r.match?(getApp(r.match.record)||getSource(r.match.record)):''}));
  const cols=Object.keys(detail[0]??{});fs.writeFileSync(path.join(args.out,'dry-run-actions.csv'),[cols.join(','),...detail.map(x=>cols.map(k=>csvEscape(x[k])).join(','))].join('\r\n')+'\r\n');
