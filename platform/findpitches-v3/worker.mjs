@@ -3,7 +3,7 @@ import { ingestRecords,sql,loadEntity } from './store.mjs';
 import { runStage,enrichEntity } from './pipeline.mjs';
 import { enqueue,requeueDead } from './jobs.mjs';
 import { verifyStructuredControl } from './control.mjs';
-import { acquireCity,CITY } from './acquisition.mjs';
+import { acquireCity,CITY,canaryApproved } from './acquisition.mjs';
 
 const STAGES=['reconcile','eligibility','enrichment','readiness','acquisition','watch'];
 const NEXT={ingest:'reconcile',acquisition:'reconcile',reconcile:'eligibility',eligibility:'enrichment',enrichment:'readiness',readiness:'watch',watch:'eligibility'};
@@ -104,6 +104,12 @@ export default {
       if(request.method==='POST'&&path==='/jobs/requeue'&&STAGES.includes(role)) {
         const body=await bodyJson(request),job=await sql(db,'SELECT stage FROM jobs WHERE id=?',body.job_id).first();if(job?.stage!==role)throw new Error('job_stage_mismatch');
         const result=await requeueDead(db,body.job_id);return json({requeued:Number(result.meta?.changes)===1});
+      }
+      if(request.method==='POST'&&path==='/acquisition/canary'&&role==='acquisition') {
+        const body=await bodyJson(request);
+        if(!canaryApproved(env,body.run_id))throw new Error('one_shot_canary_not_authorized');
+        await enqueue(db,'acquisition',body.run_id,{city:CITY.id,query_limit:1,run_id:body.run_id,canary:true});
+        return json({run_id:body.run_id,query_limit:1,city:CITY.id},202);
       }
       if(request.method==='POST'&&path==='/acquisition'&&role==='acquisition') {
         const body=await bodyJson(request);

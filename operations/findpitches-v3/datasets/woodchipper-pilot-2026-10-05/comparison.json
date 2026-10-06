@@ -1,0 +1,2202 @@
+{
+  "schema": "findpitches-v3-comparison-v2",
+  "inputs": 100,
+  "input_hash": "0d7dddd5aaa78e4d21158856e6201c904d4a471ae3be1e79a2ae2e5762a3caf9",
+  "as_of": "2026-10-05T19:36:44.000Z",
+  "comparable": true,
+  "alignment_issues": [],
+  "limitations": [
+    "Gold labels unavailable; false rejection rate unavailable",
+    "Source inputs are reconstructed from verified staged revisions and preserved pilot baselines; original export-file bytes are unavailable",
+    "Only audited title, organiser and application URL are measured; other historical selected fields are unobserved",
+    "Historical readiness, replay and costs were not captured",
+    "V2 shadow isolation was implicit; this capture makes no claim of successful customer isolation",
+    "Observed field coverage differs; compare matched per-field scores, not aggregate retention"
+  ],
+  "v2": {
+    "observed_records": 100,
+    "missing_input_records": 0,
+    "unexpected_records": 0,
+    "duplicate_input_ids": 0,
+    "states": {
+      "validation": {
+        "accepted": 100
+      },
+      "eligibility": {
+        "rejected": 69,
+        "discovered": 7,
+        "eligible": 23,
+        "held": 1
+      },
+      "readiness": {
+        "unavailable": 100
+      },
+      "identity": {
+        "pilot_candidate_inserted": 100
+      }
+    },
+    "unique_entities": 100,
+    "linked_records": 100,
+    "source_fields_provided": 1250,
+    "source_fields_evaluated": 290,
+    "source_fields_retained": 23,
+    "source_field_retention": 0.07931034482758621,
+    "source_field_mutations": [
+      {
+        "producer_record_id": "fdx1_0081290d4e31d457620c",
+        "field": "event_name",
+        "source_value": "Magical Meetups - Be Our Guest Holiday Market",
+        "selected_value": "Magical Meetups -  Be Our Guest Holiday Market -  Pin Seller Application - Magical Meetups - Be Our Guest Holiday Market - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0081290d4e31d457620c",
+        "field": "organiser",
+        "source_value": "New Row Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0081290d4e31d457620c",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=52126",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_00b4fcbe08802d2c4756",
+        "field": "event_name",
+        "source_value": "Laidley Christmas Carnival",
+        "selected_value": "Laidley Christmas Carnival - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_00b4fcbe08802d2c4756",
+        "field": "organiser",
+        "source_value": "Valley Events QLD Annually",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_00b4fcbe08802d2c4756",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/laidley/laidley-christmas-carnival",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_00c25dde7af506b28c7f",
+        "field": "application_url",
+        "source_value": "https://www.froglegfestival.com/s/FrogLegFestival-Crafter-Vendor-Contract-2027.pdf",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0121885e3e1f0e9a1f05",
+        "field": "event_name",
+        "source_value": "Anime Weekend Atlanta 2026",
+        "selected_value": "V-Mura Dealers Room - Anime Weekend Atlanta 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0121885e3e1f0e9a1f05",
+        "field": "organiser",
+        "source_value": "Anime Weekend Atlanta",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0121885e3e1f0e9a1f05",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=47040",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_016f08d57bcb4033a655",
+        "field": "event_name",
+        "source_value": "Manatee County Food Fest & Craft Fair 2027",
+        "selected_value": "Beverage Vendors (Lemonade/Coffee/Specialty Drinks/Beverage Only Vendors) - Manatee County Food Fest & Craft Fair 2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_016f08d57bcb4033a655",
+        "field": "organiser",
+        "source_value": "Battle Bros Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_016f08d57bcb4033a655",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=56034",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0177ed8261908004f5cd",
+        "field": "event_name",
+        "source_value": "Stockland Wendouree – Pop Up Collective",
+        "selected_value": "Stockland Wendouree – Pop Up Collective - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0177ed8261908004f5cd",
+        "field": "organiser",
+        "source_value": "Melbourne Cheeky Monkey Market",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0177ed8261908004f5cd",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/wendouree/stockland-wendouree-pop-up-collective",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_018e04274254f72167da",
+        "field": "event_name",
+        "source_value": "2026 Spooktacular Saturday",
+        "selected_value": "Trick-or-Treat Trail Vendor - 2026 Spooktacular Saturday - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_018e04274254f72167da",
+        "field": "organiser",
+        "source_value": "Huntley Park District",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_018e04274254f72167da",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=56220",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_01b3968b4b754eb4e54a",
+        "field": "event_name",
+        "source_value": "Prosper Christmas Festival 2026",
+        "selected_value": "Nonprofit Exhibitors - Prosper Christmas Festival 2026 - Prosper Christmas Festival 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_01b3968b4b754eb4e54a",
+        "field": "organiser",
+        "source_value": "Town of Prosper",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_01b3968b4b754eb4e54a",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=51120",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0209acc7b4ad20696ed7",
+        "field": "event_name",
+        "source_value": "The Pop Culture Popup: The Anime Night - Ann Arbor Market",
+        "selected_value": "The Pop Culture Popup: The Anime Night Market - Jan 22,2027 - Vendor App - The Pop Culture Popup: The Anime Night - Ann Arbor Market - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0209acc7b4ad20696ed7",
+        "field": "organiser",
+        "source_value": "New Row Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0209acc7b4ad20696ed7",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=52378",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_02239da5199a10ea941a",
+        "field": "event_name",
+        "source_value": "Bratwurst Festival 2027",
+        "selected_value": "Food ONLY - Bratwurst Festival  2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_02239da5199a10ea941a",
+        "field": "organiser",
+        "source_value": "Bratwurst Festival Inc.",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_02239da5199a10ea941a",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=51805",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_024ae79bc0943e3db275",
+        "field": "event_name",
+        "source_value": "Ball Ground Rocks Festival 2026",
+        "selected_value": "Meal Vendors - Ball Ground Rocks Festival 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_024ae79bc0943e3db275",
+        "field": "organiser",
+        "source_value": "Black Sheep Promotions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_024ae79bc0943e3db275",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=46964",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_027422c5d80adaa17eb7",
+        "field": "event_name",
+        "source_value": "Books Breath: Troy 2027",
+        "selected_value": "Books Breath: Troy, MI - Jun 12, 2027 - Vendor App - Books Breath: Troy 2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_027422c5d80adaa17eb7",
+        "field": "organiser",
+        "source_value": "New Row Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_027422c5d80adaa17eb7",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53058",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_028c4bda0d8776c00c4b",
+        "field": "event_name",
+        "source_value": "Food & Drink Market (2nd Saturday of the Month)",
+        "selected_value": "Food & Drink Market (2nd Saturday of the Month) - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_028c4bda0d8776c00c4b",
+        "field": "organiser",
+        "source_value": "Brighton Open Market",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_028c4bda0d8776c00c4b",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/uk/event/brighton-and-hove/food-drink-market-2nd-saturday-of-the-month",
+        "selected_value": "https://localstalls.com/uk/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_028cc0eddef6bf1d1e2c",
+        "field": "event_name",
+        "source_value": "Exeter Village Market",
+        "selected_value": "Exeter Village Market - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_028cc0eddef6bf1d1e2c",
+        "field": "organiser",
+        "source_value": "Exeter Village Association",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_028cc0eddef6bf1d1e2c",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/exeter/exeter-village-market",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_029d8da88569701d0398",
+        "field": "event_name",
+        "source_value": "Stove Works Supply- A Vintage and Handmade Market - October 10th, 2026",
+        "selected_value": "Stove Works Supply - A Vintage and Handmade Market- 10/10/26 - Stove Works Supply- A Vintage and Handmade Market - October 10th, 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_029d8da88569701d0398",
+        "field": "organiser",
+        "source_value": "GVG Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_029d8da88569701d0398",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=54108",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_02b02d0852afe93656f2",
+        "field": "event_name",
+        "source_value": "Shop Downtown Fall 2026",
+        "selected_value": "Fall 26 Shop Downtown Outdoor Saturday Market - Shop Downtown Fall 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_02b02d0852afe93656f2",
+        "field": "organiser",
+        "source_value": "LaBelle Downtown Revitalization Corporation",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_02b02d0852afe93656f2",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=55154",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_02cda076063dba777095",
+        "field": "event_name",
+        "source_value": "Pink Friday",
+        "selected_value": "Vendors - Pink Friday - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_02cda076063dba777095",
+        "field": "organiser",
+        "source_value": "City of Crown Point",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_02cda076063dba777095",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=55840",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_02eaf61f6b19ce985b1e",
+        "field": "event_name",
+        "source_value": "2027 ENC Renaissance Faire",
+        "selected_value": "FAIRY TRAIL OUTDOOR Artist Application - 2027  ENC Renaissance Faire - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_02eaf61f6b19ce985b1e",
+        "field": "organiser",
+        "source_value": "ENC REN FAIRE",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_02eaf61f6b19ce985b1e",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=57061",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0340f88640a13b1bf4d9",
+        "field": "event_name",
+        "source_value": "Feast & Found - Market Stalls only for bookings",
+        "selected_value": "Feast & Found - Market Stalls only for bookings - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0340f88640a13b1bf4d9",
+        "field": "organiser",
+        "source_value": "Urban Markets",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0340f88640a13b1bf4d9",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/moorabbin-airport/feast-found",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_038aeec909bdca6caeaf",
+        "field": "event_name",
+        "source_value": "Nottinghamshire Community Markets at The Welly, Rainworth",
+        "selected_value": "Nottinghamshire Community Markets at The Welly, Rainworth - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_038aeec909bdca6caeaf",
+        "field": "organiser",
+        "source_value": "Cutting Your Costs",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_038aeec909bdca6caeaf",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/uk/event/rainworth/nottinghamshire-community-markets-at-the-welly-rainworth",
+        "selected_value": "https://localstalls.com/uk/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_038c7488801be9534f18",
+        "field": "event_name",
+        "source_value": "Ellesmere Winter Festival",
+        "selected_value": "Local Charity  Exhibitors - Ellesmere Winter Festival - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_038c7488801be9534f18",
+        "field": "organiser",
+        "source_value": "Discover Ellesmere",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_038c7488801be9534f18",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=56132",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_03bca33c6d7446c6e127",
+        "field": "event_name",
+        "source_value": "SilverLeaf's Candy Cane Forest Market",
+        "selected_value": "Vendor Booth Application - SilverLeaf&#039;s Candy Cane Forest Market - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_03bca33c6d7446c6e127",
+        "field": "organiser",
+        "source_value": "SilverLeaf Amenity Center",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_03bca33c6d7446c6e127",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=52021",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_03f9e781987bad12ceec",
+        "field": "event_name",
+        "source_value": "Permian Basin Comic Con X Holiday Edition - 2026",
+        "selected_value": "Trading Card Tables - Permian Basin Comic Con X Holiday Edition - 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_03f9e781987bad12ceec",
+        "field": "organiser",
+        "source_value": "ConLive",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_03f9e781987bad12ceec",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=54875",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_04106d95a3accb001492",
+        "field": "event_name",
+        "source_value": "World Ag Expo",
+        "selected_value": "Exhibitor Resource Center | Map Your Show"
+      },
+      {
+        "producer_record_id": "fdx1_04106d95a3accb001492",
+        "field": "application_url",
+        "source_value": "https://wae27.exh.mapyourshow.com/7_0/boothsales",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_041a0de1017fa58999c1",
+        "field": "event_name",
+        "source_value": "Avondale Winter Wanderland @ Little Cottage Brewery",
+        "selected_value": "(12.12.26) - Avondale Winter Wanderland @ Little Cottage Brewery - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_041a0de1017fa58999c1",
+        "field": "organiser",
+        "source_value": "Sudnat Studios",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_041a0de1017fa58999c1",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=55243",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_04ba6f8855971827fa2d",
+        "field": "event_name",
+        "source_value": "Of Moss and Majesty - The Lakeland Renaissance Faire",
+        "selected_value": "Food Truck - Of Moss and Majesty - The Lakeland Renaissance Faire - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_04ba6f8855971827fa2d",
+        "field": "organiser",
+        "source_value": "Lanier County Band Boosters",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_04ba6f8855971827fa2d",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=54440",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_04cc948a3e21dc347c59",
+        "field": "event_name",
+        "source_value": "City Farmers' Market at Britomart",
+        "selected_value": "City Farmers&#x27; Market at Britomart | ClueMart"
+      },
+      {
+        "producer_record_id": "fdx1_04cc948a3e21dc347c59",
+        "field": "organiser",
+        "source_value": "ClueMart",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_04cc948a3e21dc347c59",
+        "field": "application_url",
+        "source_value": "https://cluemart.co.nz/application/city-farmers-market-at-britomart",
+        "selected_value": "https://cluemart.co.nz/stallholders"
+      },
+      {
+        "producer_record_id": "fdx1_04d4473713900df5371c",
+        "field": "event_name",
+        "source_value": "Sebring's Gobble Wobble- A Celebration of Spirits, Beer and Wine!",
+        "selected_value": "Wobble Into Christmas Market Vendor - Sebring&#039;s Gobble Wobble- A Celebration of Spirits, Beer and Wine! - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_04d4473713900df5371c",
+        "field": "organiser",
+        "source_value": "The Greater Sebring Chamber of Commerce",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_04d4473713900df5371c",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=54539",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_050152c98e12a8376e76",
+        "field": "event_name",
+        "source_value": "Hawke’s Bay Farmers’ Market",
+        "selected_value": "Hawkes Bay Farmers Market | ClueMart"
+      },
+      {
+        "producer_record_id": "fdx1_050152c98e12a8376e76",
+        "field": "organiser",
+        "source_value": "ClueMart",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_050152c98e12a8376e76",
+        "field": "application_url",
+        "source_value": "https://cluemart.co.nz/application/hawkes-bay-farmers-market",
+        "selected_value": "https://cluemart.co.nz/stallholders"
+      },
+      {
+        "producer_record_id": "fdx1_05545942617d1a81b83e",
+        "field": "event_name",
+        "source_value": "Echuca Farmers Market",
+        "selected_value": "Echuca Farmers Market - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_05545942617d1a81b83e",
+        "field": "organiser",
+        "source_value": "ECHUCA FARMERS MARKET INC.",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_05545942617d1a81b83e",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/echuca/echuca-farmers-market",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_055d33509e87260cd5f3",
+        "field": "event_name",
+        "source_value": "Books Breath: Cary 2027",
+        "selected_value": "Books Breath: Cary, NC - Aug 14, 2027 - Vendor App - Books Breath: Cary 2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_055d33509e87260cd5f3",
+        "field": "organiser",
+        "source_value": "New Row Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_055d33509e87260cd5f3",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53072",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0577e0f691570617663d",
+        "field": "event_name",
+        "source_value": "Tauranga Farmers' Market",
+        "selected_value": "Tauranga Farmers Market | ClueMart"
+      },
+      {
+        "producer_record_id": "fdx1_0577e0f691570617663d",
+        "field": "organiser",
+        "source_value": "ClueMart",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0577e0f691570617663d",
+        "field": "application_url",
+        "source_value": "https://cluemart.co.nz/application/tauranga-farmers-market",
+        "selected_value": "https://cluemart.co.nz/stallholders"
+      },
+      {
+        "producer_record_id": "fdx1_05842f24d668bfb99dc9",
+        "field": "event_name",
+        "source_value": "A Dickens Holiday 2026",
+        "selected_value": "Pre-Packaged Food Tent -  Maxwell St - A Dickens Holiday 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_05842f24d668bfb99dc9",
+        "field": "organiser",
+        "source_value": "A Dickens Holiday/Spark Downtown",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_05842f24d668bfb99dc9",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=54041",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0591593798362cd18f8c",
+        "field": "event_name",
+        "source_value": "2026 Tuesday/Thursday Kalamazoo Farmer's Market",
+        "selected_value": "Tuesday Thursday Weekday Market - 2026 Tuesday/Thursday Kalamazoo Farmer&#039;s Market - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0591593798362cd18f8c",
+        "field": "organiser",
+        "source_value": "Kalamazoo Farmers Market",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0591593798362cd18f8c",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=48305",
+        "selected_value": "https://www.eventeny.com/files/30154-vendor-application-2z46xmnhdrp41777923666-1200.pdf"
+      },
+      {
+        "producer_record_id": "fdx1_0621706009629b807829",
+        "field": "event_name",
+        "source_value": "Orewa Beach Farmer's Market",
+        "selected_value": "Orewa Beach Farmer&#x27;s Market | ClueMart"
+      },
+      {
+        "producer_record_id": "fdx1_0621706009629b807829",
+        "field": "organiser",
+        "source_value": "ClueMart",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0621706009629b807829",
+        "field": "application_url",
+        "source_value": "https://cluemart.co.nz/application/orewa-beach-farmers-market",
+        "selected_value": "https://cluemart.co.nz/stallholders"
+      },
+      {
+        "producer_record_id": "fdx1_062614dcd06993d1680b",
+        "field": "event_name",
+        "source_value": "Orlando Fire & Flavor Festival",
+        "selected_value": "Hot Sauce Vendors (Artists/Crafters/Home Based Businesses etc) - Orlando Fire & Flavor Festival - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_062614dcd06993d1680b",
+        "field": "organiser",
+        "source_value": "Battle Bros Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_062614dcd06993d1680b",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=48452",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_062b58f58831ab701600",
+        "field": "event_name",
+        "source_value": "Royals Matchday Market",
+        "selected_value": "Baked Goods - Royals Matchday Market - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_062b58f58831ab701600",
+        "field": "organiser",
+        "source_value": "Empowered Community Markets",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_062b58f58831ab701600",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=48013",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_063327722cc181490760",
+        "field": "event_name",
+        "source_value": "Books Breath: Alpharetta -Winter 2027",
+        "selected_value": "Books Breath: Alpharetta, GA - Feb 6, 2027 - Vendor App - Books Breath: Alpharetta -Winter 2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_063327722cc181490760",
+        "field": "organiser",
+        "source_value": "New Row Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_063327722cc181490760",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53012",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0633ad2a37e39e100778",
+        "field": "event_name",
+        "source_value": "Ballycastle Indoor Makers Market (Marine Hotel)",
+        "selected_value": "Ballycastle Indoor  Makers Market (Marine Hotel) - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0633ad2a37e39e100778",
+        "field": "organiser",
+        "source_value": "NNCG",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0633ad2a37e39e100778",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/uk/event/ballycastle/ballycastle-indoor-makers-market-marine-hotel",
+        "selected_value": "https://localstalls.com/uk/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_063faed4eda0bb17b99e",
+        "field": "event_name",
+        "source_value": "Culture Bites Orlando",
+        "selected_value": "Dec 12th - Culture Bites Orlando - Culture Bites Orlando - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_063faed4eda0bb17b99e",
+        "field": "organiser",
+        "source_value": "The Local Habit",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_063faed4eda0bb17b99e",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=56030",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0670a771d314c1af3fbf",
+        "field": "event_name",
+        "source_value": "Holiday Lights and Flight Fest 11-21-26",
+        "selected_value": "Entertainment Application for Holiday Light and Flight Fest - Holiday Lights and Flight Fest 11-21-26 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0670a771d314c1af3fbf",
+        "field": "organiser",
+        "source_value": "City of Lilburn",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0670a771d314c1af3fbf",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=52570",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_07145c9f9a87f62667f2",
+        "field": "event_name",
+        "source_value": "Electronic and Biomedical Engineering Expo",
+        "selected_value": "Electronic and Biomedical Engineering Expo | EBME"
+      },
+      {
+        "producer_record_id": "fdx1_07145c9f9a87f62667f2",
+        "field": "organiser",
+        "source_value": "Electronic and Biomedical Engineering Conference | EBME",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_07145c9f9a87f62667f2",
+        "field": "application_url",
+        "source_value": "https://www.ebme-expo.com/pre-registration",
+        "selected_value": "https://exhibitors.ebme-expo.com/"
+      },
+      {
+        "producer_record_id": "fdx1_0718014b00987759630c",
+        "field": "event_name",
+        "source_value": "2026 End of Year Super Collectorfest",
+        "selected_value": "Vendor Application: End of Year Super Collectorfest - 2026 End of Year Super Collectorfest - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0718014b00987759630c",
+        "field": "organiser",
+        "source_value": "Florida Toy Shows & Expos",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0718014b00987759630c",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=56101",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_07202168b2c4b601f32d",
+        "field": "event_name",
+        "source_value": "Lake Nona Farmers Market Oct 21 2026",
+        "selected_value": "Lake Nona Farmers Market Oct 21 2026 - Lake Nona Farmers Market Oct 21 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_07202168b2c4b601f32d",
+        "field": "organiser",
+        "source_value": "Orlando Local Makers",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_07202168b2c4b601f32d",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=54727",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_078ca2329069807825b0",
+        "field": "organiser",
+        "source_value": "Arts Projects Australia and WOMAD Ltd. Presented",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_078ca2329069807825b0",
+        "field": "application_url",
+        "source_value": "https://account.stallmanager.com.au/apply/122914225366b0baf306a9a9.44525147",
+        "selected_value": "https://www.womadelaide.com.au/info/apply/stallholder-applications"
+      },
+      {
+        "producer_record_id": "fdx1_07bb0c3c834ddee70acd",
+        "field": "event_name",
+        "source_value": "Britomart Saturday Market",
+        "selected_value": "Britomart Saturday Market | ClueMart"
+      },
+      {
+        "producer_record_id": "fdx1_07bb0c3c834ddee70acd",
+        "field": "organiser",
+        "source_value": "ClueMart",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_07bb0c3c834ddee70acd",
+        "field": "application_url",
+        "source_value": "https://cluemart.co.nz/application/britomart-saturday-market",
+        "selected_value": "https://cluemart.co.nz/stallholders"
+      },
+      {
+        "producer_record_id": "fdx1_07bfeb375a80bd7c6c88",
+        "field": "event_name",
+        "source_value": "Books Breath: Pittsford 2027",
+        "selected_value": "Books Breath: Rochester, NY - Jun 26, 2027 - Vendor App - Books Breath: Pittsford 2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_07bfeb375a80bd7c6c88",
+        "field": "organiser",
+        "source_value": "New Row Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_07bfeb375a80bd7c6c88",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=51699",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_07f0711f8abfa55b586b",
+        "field": "event_name",
+        "source_value": "Mcity Shopping Centre – Pop Up Collective",
+        "selected_value": "Mcity Shopping Centre – Pop Up Collective - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_07f0711f8abfa55b586b",
+        "field": "organiser",
+        "source_value": "Melbourne Cheeky Monkey Market",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_07f0711f8abfa55b586b",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/clayton/mcity-shopping-centre-pop-up-collective",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_081d44fc874195e912e0",
+        "field": "event_name",
+        "source_value": "Krampusnacht Bremerton 2026",
+        "selected_value": "Krampus Kraft Market Indoor Booth - Krampusnacht Bremerton 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_081d44fc874195e912e0",
+        "field": "organiser",
+        "source_value": "Krampus Bremerton",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_081d44fc874195e912e0",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=48537",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_082712e715ae61f536f3",
+        "field": "event_name",
+        "source_value": "3rd Annual Space Coast Holiday Food Fest & Craft Fair 2026",
+        "selected_value": "Beverage Vendors (Lemonade/Coffee/Specialty Drinks/Beverage Only Vendors) - 3rd Annual Space Coast Holiday Food Fest & Craft Fair 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_082712e715ae61f536f3",
+        "field": "organiser",
+        "source_value": "Battle Bros Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_082712e715ae61f536f3",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=51171",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_082eef3214a596bdccaa",
+        "field": "event_name",
+        "source_value": "South Riding's Movie Nights",
+        "selected_value": "December 18 / Food Vendors - South Riding&#039;s  Movie Nights - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_082eef3214a596bdccaa",
+        "field": "organiser",
+        "source_value": "South Riding Proprietary",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_082eef3214a596bdccaa",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=46165",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_083a5e9a9888dd43ce8f",
+        "field": "event_name",
+        "source_value": "2027 House & Garden Show",
+        "selected_value": "Community Organization Fair - 2027 House & Garden Show - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_083a5e9a9888dd43ce8f",
+        "field": "organiser",
+        "source_value": "Dogwood Arts",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_083a5e9a9888dd43ce8f",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=55734",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_087beb2720b809d48a4d",
+        "field": "event_name",
+        "source_value": "Fall Adult League Hockey (PHA)",
+        "selected_value": "Adult Hockey League (PHA) Fall Season - Fall Adult League Hockey (PHA) - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_087beb2720b809d48a4d",
+        "field": "organiser",
+        "source_value": "WS Fairgrounds",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_087beb2720b809d48a4d",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=56187",
+        "selected_value": "https://www.eventeny.com/files/34407-vendor-application-sh9tlnfxrlpv1789383273-1200.pdf"
+      },
+      {
+        "producer_record_id": "fdx1_08a9e73d673fde861833",
+        "field": "event_name",
+        "source_value": "Haig Park Village Markets",
+        "selected_value": "Haig Park Village Markets - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_08a9e73d673fde861833",
+        "field": "organiser",
+        "source_value": "Local Village Markets",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_08a9e73d673fde861833",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/braddon/haig-park-village-markets",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_08d048a8f7b90748c74b",
+        "field": "event_name",
+        "source_value": "Sled Island",
+        "selected_value": "Airtable"
+      },
+      {
+        "producer_record_id": "fdx1_08d048a8f7b90748c74b",
+        "field": "application_url",
+        "source_value": "https://airtable.com/appxN5xTUAYMp4sQj/shracYvxMr4pOd2m8",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_08e099e0e1d1b7b1177b",
+        "field": "application_url",
+        "source_value": "https://cdn.saffire.com/files.ashx?cb=376f75a6&f=tff-application-english.pdf&rid=StancoFair&t=fg",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_08ef74c1f4c6cfb6d17c",
+        "field": "event_name",
+        "source_value": "American Royal",
+        "selected_value": "2025 Volunteer Award Nomination - Formstack"
+      },
+      {
+        "producer_record_id": "fdx1_08ef74c1f4c6cfb6d17c",
+        "field": "application_url",
+        "source_value": "https://americanroyal.formstack.com/forms/marketplacevendor_interestform",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_090b14cc58829a0846b3",
+        "field": "event_name",
+        "source_value": "2026 Chesapeake Rotary Christmas Parade",
+        "selected_value": "Food Vendor Parade Participant - 2026 Chesapeake Rotary Christmas Parade - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_090b14cc58829a0846b3",
+        "field": "organiser",
+        "source_value": "Rotary Club of Chesapeake",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_090b14cc58829a0846b3",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53239",
+        "selected_value": "https://www.eventeny.com/files/32786-vendor-application-b8r4bwd40zh81784764898-1200.docx"
+      },
+      {
+        "producer_record_id": "fdx1_093a7f12cd59352d1d19",
+        "field": "event_name",
+        "source_value": "2026 Holiday Market on Main",
+        "selected_value": "Artisan Application - 2026 Holiday Market on Main - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_093a7f12cd59352d1d19",
+        "field": "organiser",
+        "source_value": "Art Spark Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_093a7f12cd59352d1d19",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=51901",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_096e1af643901f9f4677",
+        "field": "event_name",
+        "source_value": "October - Sunny's Market Charlotte",
+        "selected_value": "10x10 Vendor Spot - October - Sunny&#039;s Market Charlotte - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_096e1af643901f9f4677",
+        "field": "organiser",
+        "source_value": "Sunny's Markets Charlotte",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_096e1af643901f9f4677",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=51006",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_09ae59c430eefe3d8be0",
+        "field": "event_name",
+        "source_value": "Trackside Cinema at Twilight",
+        "selected_value": "November 21 Twilight | Food Vendor Registration - Trackside Cinema at Twilight - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_09ae59c430eefe3d8be0",
+        "field": "organiser",
+        "source_value": "City of Temple",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_09ae59c430eefe3d8be0",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=56326",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_09c19b2e396ce7af1dbc",
+        "field": "event_name",
+        "source_value": "Totally 80's Vendor Market",
+        "selected_value": "Vendor Application - Totally 80&#039;s Vendor Market - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_09c19b2e396ce7af1dbc",
+        "field": "organiser",
+        "source_value": "For the Love of Shopping, LLC",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_09c19b2e396ce7af1dbc",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53534",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_09cd34997fd066f94bd4",
+        "field": "event_name",
+        "source_value": "Books Breath: Charlotte 2027",
+        "selected_value": "Books Breath: Charlotte, NC - Jun 5, 2027 - Vendor App - Books Breath: Charlotte 2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_09cd34997fd066f94bd4",
+        "field": "organiser",
+        "source_value": "New Row Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_09cd34997fd066f94bd4",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53048",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_09fb6370a2e7ed55e1a6",
+        "field": "event_name",
+        "source_value": "Shine Bright Holiday",
+        "selected_value": "Shine Bright - Shine Bright Holiday - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_09fb6370a2e7ed55e1a6",
+        "field": "organiser",
+        "source_value": "Shine Bright Market",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_09fb6370a2e7ed55e1a6",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=52814",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0a6f5a8ed8c160fa73ef",
+        "field": "event_name",
+        "source_value": "ShowFest Event Innovators Conference 2027",
+        "selected_value": "ShowFest Exhibitors - ShowFest Event Innovators Conference 2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0a6f5a8ed8c160fa73ef",
+        "field": "organiser",
+        "source_value": "North Carolina Association of Festivals & Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0a6f5a8ed8c160fa73ef",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=50976",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0b0616b49bea053c9f58",
+        "field": "event_name",
+        "source_value": "The 915 Rumble Market - Get Fit Fitness",
+        "selected_value": "Food Truck - The 915 Rumble Market - The 915 Rumble Market - Get Fit Fitness - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0b0616b49bea053c9f58",
+        "field": "organiser",
+        "source_value": "Desert Sun Market",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0b0616b49bea053c9f58",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=56911",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0b3ecc5d2a0d79bd0f84",
+        "field": "event_name",
+        "source_value": "2nd Annual Lexington Sip & Savor Wine Fest(Nov 21st)",
+        "selected_value": "2nd Annual Lexington Sip & Savor Wine Festival  (Nov 21st) - 2nd Annual Lexington Sip & Savor Wine Fest(Nov 21st) - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0b3ecc5d2a0d79bd0f84",
+        "field": "organiser",
+        "source_value": "Sunny Day Markets",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0b3ecc5d2a0d79bd0f84",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=48998",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0b8722c7136cf7eef844",
+        "field": "event_name",
+        "source_value": "LeMoyne Arts 63rd Annual Holiday Show",
+        "selected_value": "Holiday Shop Artist Application - LeMoyne Arts 63rd Annual Holiday Show - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0b8722c7136cf7eef844",
+        "field": "organiser",
+        "source_value": "NONE",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0b8722c7136cf7eef844",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=49991",
+        "selected_value": "https://www.eventeny.com/files/31044-vendor-application-1p60hk1nl4mg1788531215-1200.docx"
+      },
+      {
+        "producer_record_id": "fdx1_0bc6ed919c79cdd4857d",
+        "field": "event_name",
+        "source_value": "Mt Pleasant Farmers Market",
+        "selected_value": "Mt Pleasant Farmers Market - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0bc6ed919c79cdd4857d",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/nz/event/christchurch/mt-pleasant-farmers-market",
+        "selected_value": "https://localstalls.com/nz/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_0be80619a2fe3803517e",
+        "field": "event_name",
+        "source_value": "Florida Leather Week",
+        "selected_value": "Marketplace @  Boundless Block Party 11-14-26 - Florida Leather Week - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0be80619a2fe3803517e",
+        "field": "organiser",
+        "source_value": "Rainbow Sidekick Inc",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0be80619a2fe3803517e",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=48132",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0c0cf068e541ec0f58ce",
+        "field": "event_name",
+        "source_value": "Terrigal Beach Markets",
+        "selected_value": "Terrigal Beach Markets - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0c0cf068e541ec0f58ce",
+        "field": "organiser",
+        "source_value": "Browse Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0c0cf068e541ec0f58ce",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/terrigal/terrigal-beach-markets",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_0c371c38a9037bd04cb1",
+        "field": "event_name",
+        "source_value": "MomoCon 2027",
+        "selected_value": "Wonder Festival US 2027 - Company & Industry Exhibitor - MomoCon 2027 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0c371c38a9037bd04cb1",
+        "field": "organiser",
+        "source_value": "MomoCon",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0c371c38a9037bd04cb1",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53773",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0c5ec9b0bfd23e064b21",
+        "field": "event_name",
+        "source_value": "Festival of the Arts, Downtown Calhoun, Ga",
+        "selected_value": "Artist Application Festival of the Arts Downtown Calhoun, Ga - Festival of the Arts, Downtown Calhoun, Ga - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0c5ec9b0bfd23e064b21",
+        "field": "organiser",
+        "source_value": "Georgia Art Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0c5ec9b0bfd23e064b21",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=50485",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0c83cf5513c281617531",
+        "field": "event_name",
+        "source_value": "2026 Jamestown Halloween Party",
+        "selected_value": "Artist Application - 2026 Jamestown Halloween Party - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0c83cf5513c281617531",
+        "field": "organiser",
+        "source_value": "Cakes by B's Blue House Bakery",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0c83cf5513c281617531",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53301",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0c8ce7d0b48c8e33dd17",
+        "field": "event_name",
+        "source_value": "2027 Spring Bling Fine Arts & Crafts Show",
+        "selected_value": "Artist Application - 2027 Spring Bling Fine Arts & Crafts Show - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0c8ce7d0b48c8e33dd17",
+        "field": "organiser",
+        "source_value": "Town of Leesburg - Parks and Recreation",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0c8ce7d0b48c8e33dd17",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=57152",
+        "selected_value": "https://www.eventeny.com/files/34876-vendor-application-xtr2rssx48h41790872832-1200.pdf"
+      },
+      {
+        "producer_record_id": "fdx1_0cb30404aeb95b06e03e",
+        "field": "event_name",
+        "source_value": "Christmas In Ball Ground 2026",
+        "selected_value": "Retail Vendors - Christmas In Ball Ground 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0cb30404aeb95b06e03e",
+        "field": "organiser",
+        "source_value": "Black Sheep Promotions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0cb30404aeb95b06e03e",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=52995",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0cb30f1ebb01e8270afa",
+        "field": "event_name",
+        "source_value": "The Pink Bride - Chattanooga - 02/28/27",
+        "selected_value": "Standard Chattanooga Vendor Registration Application - The Pink Bride - Chattanooga - 02/28/27 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0cb30f1ebb01e8270afa",
+        "field": "organiser",
+        "source_value": "The Pink Bride",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0cb30f1ebb01e8270afa",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=55947",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0cd11af549a3510c0e08",
+        "field": "event_name",
+        "source_value": "Miles for Hope Vendor Market",
+        "selected_value": "Miles for Hope Vendor Market - Miles for Hope Vendor Market - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0cd11af549a3510c0e08",
+        "field": "organiser",
+        "source_value": "Hope Mommies - Miles for Hope, Roseville",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0cd11af549a3510c0e08",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=55850",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0cfb1310b2d16e5f5cfb",
+        "field": "event_name",
+        "source_value": "Booo Bash 2026!",
+        "selected_value": "Vendor Booth  - New Vendors - Booo Bash 2026! - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0cfb1310b2d16e5f5cfb",
+        "field": "organiser",
+        "source_value": "The Funky Forest",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0cfb1310b2d16e5f5cfb",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=46977",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0d081e6c5ab91e54d3a9",
+        "field": "event_name",
+        "source_value": "Prado at Champion Gate",
+        "selected_value": "Prado Apartment Event - Prado at Champion Gate - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0d081e6c5ab91e54d3a9",
+        "field": "organiser",
+        "source_value": "Fnlcraftsrus",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0d081e6c5ab91e54d3a9",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=57228",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0d2d56e63c9790e9f15f",
+        "field": "organiser",
+        "source_value": "Shire of Kondinin",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0d2d56e63c9790e9f15f",
+        "field": "application_url",
+        "source_value": "https://www.kondinin.wa.gov.au/Profiles/kondinin/Assets/ClientData/Kondinin_Twilight_Markets_Stall_Holder_Form.pdf",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0d4ec2b008d8598c74a1",
+        "field": "event_name",
+        "source_value": "Elwood Market",
+        "selected_value": "Elwood Market - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0d4ec2b008d8598c74a1",
+        "field": "organiser",
+        "source_value": "Bourne Local",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0d4ec2b008d8598c74a1",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/elwood/elwood-market",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_0d561ccee124f893f939",
+        "field": "event_name",
+        "source_value": "6th Annual Once Upon a Christmas Gift Show!",
+        "selected_value": "Artisan Application - 6th Annual Once Upon a Christmas Gift Show! - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0d561ccee124f893f939",
+        "field": "organiser",
+        "source_value": "Art Spark Productions",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0d561ccee124f893f939",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=50554",
+        "selected_value": "https://www.eventeny.com/files/31326-vendor-application-cjjj04jmx90x1785692313-1200.pdf"
+      },
+      {
+        "producer_record_id": "fdx1_0d8dd638f520c613c822",
+        "field": "event_name",
+        "source_value": "Springfield Markets - Robelle Parklands",
+        "selected_value": "Springfield Markets - Robelle Parklands - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0d8dd638f520c613c822",
+        "field": "organiser",
+        "source_value": "EventCo QLD - Springfield Markets & Ripley Markets",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0d8dd638f520c613c822",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/springfield-central/springfield-markets-robelle-parklands",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_0dddd9aa57d8b28bceab",
+        "field": "event_name",
+        "source_value": "Beach Home for the Holidays 2026",
+        "selected_value": "Retail or Craft Vendor Application - Beach Home for the Holidays 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0dddd9aa57d8b28bceab",
+        "field": "organiser",
+        "source_value": "Visit Panama City Beach",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0dddd9aa57d8b28bceab",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=51442",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0e0e9a89620deab16cd4",
+        "field": "event_name",
+        "source_value": "Moreton Bay Christmas Village Twilight Markets",
+        "selected_value": "Moreton Bay Christmas Village Twilight Markets - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0e0e9a89620deab16cd4",
+        "field": "organiser",
+        "source_value": "Kallangur Twilight Markets Annually",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0e0e9a89620deab16cd4",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/kallangur/moreton-bay-christmas-village-twilight-markets",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_0e40deea3ef904c7517d",
+        "field": "event_name",
+        "source_value": "The Market LHTX: Food Truck Christmas Market Application 2026",
+        "selected_value": "The Market LHTX: Food Truck Christmas Market  Application 2026 - The Market LHTX: Christmas Market Application - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0e40deea3ef904c7517d",
+        "field": "organiser",
+        "source_value": "The Market LHTX",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0e40deea3ef904c7517d",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=53808",
+        "selected_value": "https://www.eventeny.com/files/33069-vendor-application-03s980yz5v8t1785540515-1200.pdf"
+      },
+      {
+        "producer_record_id": "fdx1_0e614ab936364fcfdb8b",
+        "field": "event_name",
+        "source_value": "Southwest Florida Pickle Festival 2026",
+        "selected_value": "Beverage Vendors (Lemonade/Coffee/Specialty Drinks/Beverage Only Vendors) - Southwest Florida Pickle Festival 2026 - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0e614ab936364fcfdb8b",
+        "field": "organiser",
+        "source_value": "Battle Bros Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0e614ab936364fcfdb8b",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=51163",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0e83f08b714b573a9cc5",
+        "field": "event_name",
+        "source_value": "Temora Town Markets",
+        "selected_value": "Temora Town Markets - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0e83f08b714b573a9cc5",
+        "field": "organiser",
+        "source_value": "Temora Town Markets",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0e83f08b714b573a9cc5",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/temora/temora-town-markets",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_0ea44e2e5000005db62b",
+        "field": "event_name",
+        "source_value": "Canungra Village Markets",
+        "selected_value": "Canungra Village Markets - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0ea44e2e5000005db62b",
+        "field": "organiser",
+        "source_value": "Urban Markets and Events",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0ea44e2e5000005db62b",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/canungra/canungra-village-markets",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_0eafa9609247b40b3c5e",
+        "field": "event_name",
+        "source_value": "The BIG 1-5-0: City of Taylor - Sesquicentennial Celebration",
+        "selected_value": "Arts and Crafts Vendors - The BIG 1-5-0: City of Taylor - Sesquicentennial Celebration - Eventeny"
+      },
+      {
+        "producer_record_id": "fdx1_0eafa9609247b40b3c5e",
+        "field": "organiser",
+        "source_value": "Taylor - Main Street",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0eafa9609247b40b3c5e",
+        "field": "application_url",
+        "source_value": "https://www.eventeny.com/events/vendor/?id=57221",
+        "selected_value": "https://www.eventeny.com/events/applications/"
+      },
+      {
+        "producer_record_id": "fdx1_0f95c1be6b2237fb1d43",
+        "field": "event_name",
+        "source_value": "Christmas Market - In The Park 2026",
+        "selected_value": "Christmas Market - In The Park 2026 - LocalStalls"
+      },
+      {
+        "producer_record_id": "fdx1_0f95c1be6b2237fb1d43",
+        "field": "organiser",
+        "source_value": "Bardon Markets One-off / Irregular",
+        "selected_value": null
+      },
+      {
+        "producer_record_id": "fdx1_0f95c1be6b2237fb1d43",
+        "field": "application_url",
+        "source_value": "https://localstalls.com/au/event/bardon/picnic-in-the-park-market",
+        "selected_value": "https://localstalls.com/au/solutions/free-vendor-applications-management/"
+      },
+      {
+        "producer_record_id": "fdx1_0fa15fd08bac25f9bf58",
+        "field": "application_url",
+        "source_value": "https://heho.ca/wp-content/uploads/2026/09/FDV2027_FoodVendorApplicationForm.pdf",
+        "selected_value": null
+      }
+    ],
+    "field_completeness": 0.6566666666666666,
+    "field_observation_coverage": 0.21428571428571427,
+    "source_usable_records": 100,
+    "source_usable_rejected_records": 69,
+    "source_relative_rejection_rate": 0.69,
+    "fields": {
+      "event_name": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 12,
+        "available": 100,
+        "changed": 88,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 0.12,
+        "gold_accuracy": null
+      },
+      "organiser": {
+        "provided": 90,
+        "evaluated_provided": 90,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 4,
+        "available": 4,
+        "changed": 0,
+        "missing": 86,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 0.044444444444444446,
+        "gold_accuracy": null
+      },
+      "location": {
+        "provided": 90,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "region_code": {
+        "provided": 74,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "event_start": {
+        "provided": 98,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "event_end": {
+        "provided": 72,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "application_deadline": {
+        "provided": 65,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "canonical_url": {
+        "provided": 100,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "application_url": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 7,
+        "available": 93,
+        "changed": 86,
+        "missing": 7,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 0.07,
+        "gold_accuracy": null
+      },
+      "application_state": {
+        "provided": 100,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "lifecycle_state": {
+        "provided": 100,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "recurring": {
+        "provided": 100,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "source_platform": {
+        "provided": 100,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      },
+      "source_identifier": {
+        "provided": 61,
+        "evaluated_provided": 0,
+        "observed": 0,
+        "unobserved": 100,
+        "retained": 0,
+        "available": 0,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": null,
+        "gold_accuracy": null
+      }
+    },
+    "field_quality_evaluated": 0,
+    "field_quality_accuracy": null,
+    "advisory_quality_flags": [],
+    "eligible_gold_records": 0,
+    "assessed_eligible_gold_records": 0,
+    "unassessed_eligible_gold_records": 0,
+    "false_rejections": null,
+    "false_rejection_rate": null,
+    "eligible_gold_lost_rate": null,
+    "duplicate_pairs_evaluated": 0,
+    "duplicate_pairs_missing": 0,
+    "duplicate_pair_accuracy": null,
+    "false_merges": 0,
+    "false_splits": 0,
+    "replay_entity_growth": null,
+    "replay_duplicate_receipt_rate": null,
+    "readiness_yield": null,
+    "metrics": {
+      "elapsed_ms": null,
+      "total_cost_usd": null,
+      "replay": null
+    }
+  },
+  "v3": {
+    "observed_records": 100,
+    "missing_input_records": 0,
+    "unexpected_records": 0,
+    "duplicate_input_ids": 0,
+    "states": {
+      "validation": {
+        "accepted": 100
+      },
+      "eligibility": {
+        "eligible": 100
+      },
+      "readiness": {
+        "ready": 80,
+        "blocked": 20
+      },
+      "identity": {
+        "NEW_ENTITY": 100
+      }
+    },
+    "unique_entities": 100,
+    "linked_records": 100,
+    "source_fields_provided": 1250,
+    "source_fields_evaluated": 1250,
+    "source_fields_retained": 1250,
+    "source_field_retention": 1,
+    "source_field_mutations": [],
+    "field_completeness": 0.8928571428571429,
+    "field_observation_coverage": 1,
+    "source_usable_records": 100,
+    "source_usable_rejected_records": 0,
+    "source_relative_rejection_rate": 0,
+    "fields": {
+      "event_name": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 100,
+        "available": 100,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "organiser": {
+        "provided": 90,
+        "evaluated_provided": 90,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 90,
+        "available": 90,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "location": {
+        "provided": 90,
+        "evaluated_provided": 90,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 90,
+        "available": 90,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "region_code": {
+        "provided": 74,
+        "evaluated_provided": 74,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 74,
+        "available": 74,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "event_start": {
+        "provided": 98,
+        "evaluated_provided": 98,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 98,
+        "available": 98,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "event_end": {
+        "provided": 72,
+        "evaluated_provided": 72,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 72,
+        "available": 72,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "application_deadline": {
+        "provided": 65,
+        "evaluated_provided": 65,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 65,
+        "available": 65,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "canonical_url": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 100,
+        "available": 100,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "application_url": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 100,
+        "available": 100,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "application_state": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 100,
+        "available": 100,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "lifecycle_state": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 100,
+        "available": 100,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "recurring": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 100,
+        "available": 100,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "source_platform": {
+        "provided": 100,
+        "evaluated_provided": 100,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 100,
+        "available": 100,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      },
+      "source_identifier": {
+        "provided": 61,
+        "evaluated_provided": 61,
+        "observed": 100,
+        "unobserved": 0,
+        "retained": 61,
+        "available": 61,
+        "changed": 0,
+        "missing": 0,
+        "gold_evaluated": 0,
+        "gold_correct": 0,
+        "source_retention": 1,
+        "gold_accuracy": null
+      }
+    },
+    "field_quality_evaluated": 0,
+    "field_quality_accuracy": null,
+    "advisory_quality_flags": [],
+    "eligible_gold_records": 0,
+    "assessed_eligible_gold_records": 0,
+    "unassessed_eligible_gold_records": 0,
+    "false_rejections": null,
+    "false_rejection_rate": null,
+    "eligible_gold_lost_rate": null,
+    "duplicate_pairs_evaluated": 0,
+    "duplicate_pairs_missing": 0,
+    "duplicate_pair_accuracy": null,
+    "false_merges": 0,
+    "false_splits": 0,
+    "replay_entity_growth": 0,
+    "replay_duplicate_receipt_rate": 1,
+    "readiness_yield": 0.8,
+    "metrics": {
+      "elapsed_ms": 1412,
+      "provider_queries_reserved": 0,
+      "provider_queries_completed": 0,
+      "total_cost_usd": null,
+      "replay": {
+        "initial_entities": 100,
+        "after_replay_entities": 100,
+        "replay_inputs": 100,
+        "inserted": 0,
+        "duplicates": 100
+      }
+    }
+  },
+  "deltas": {
+    "source_field_retention": null,
+    "false_rejection_rate": null,
+    "field_quality_accuracy": null,
+    "readiness_yield": null,
+    "duplicate_pair_accuracy": null,
+    "replay_entity_growth": null
+  },
+  "field_deltas": {
+    "event_name": {
+      "source_retention": 0.88,
+      "gold_accuracy": null
+    },
+    "organiser": {
+      "source_retention": 0.9555555555555556,
+      "gold_accuracy": null
+    },
+    "location": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "region_code": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "event_start": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "event_end": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "application_deadline": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "canonical_url": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "application_url": {
+      "source_retention": 0.9299999999999999,
+      "gold_accuracy": null
+    },
+    "application_state": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "lifecycle_state": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "recurring": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "source_platform": {
+      "source_retention": null,
+      "gold_accuracy": null
+    },
+    "source_identifier": {
+      "source_retention": null,
+      "gold_accuracy": null
+    }
+  },
+  "superiority_claim": null
+}

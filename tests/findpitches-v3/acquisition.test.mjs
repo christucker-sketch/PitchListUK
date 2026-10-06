@@ -31,3 +31,14 @@ test('uncertain provider failure is retained and never automatically rebilled on
   await assert.rejects(acquireCity(db,{city:'austin-tx',query_limit:1},ENV,options),/review_required/);
   await assert.rejects(acquireCity(db,{city:'austin-tx',query_limit:1},ENV,options),/outcome_requires_operator_review/);assert.equal(calls,1);
 });
+test('one-shot canary needs an exact unexpired grant and stays within one paid query with bulk acquisition disabled',async t=>{
+  const db=database(t);await sql(db,"INSERT INTO quality_gates VALUES ('structured-100-preservation',100,0,'{}','unit-gate',?)",NOW).run();
+  const runId='canary_12345678-1234-1234-1234-123456789abc',payload={city:'austin-tx',query_limit:1,run_id:runId,canary:true};
+  const env={...ENV,V3_CITY_ENABLED:'false',V3_DAILY_QUERY_LIMIT:'0',V3_CANARY_RUN_ID:runId,V3_CANARY_EXPIRES_AT:'2026-10-06T12:05:00.000Z'};
+  let calls=0;const options={runId,now:NOW,fetcher:async()=>{calls++;return Response.json({organic:[]});}};
+  await assert.rejects(acquireCity(db,payload,{...env,V3_CANARY_RUN_ID:''},options),/not_authorized/);
+  await assert.rejects(acquireCity(db,payload,{...env,V3_CANARY_EXPIRES_AT:'2026-10-05T12:00:00.000Z'},options),/not_authorized/);
+  await assert.rejects(acquireCity(db,{...payload,query_limit:2},env,options),/not_authorized/);
+  await acquireCity(db,payload,env,options);await acquireCity(db,payload,env,options);assert.equal(calls,1);
+  await assert.rejects(acquireCity(db,{city:'austin-tx',query_limit:1},env,{...options,runId:'bulk'}),/disabled/);assert.equal(calls,1);
+});

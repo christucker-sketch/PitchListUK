@@ -13,8 +13,9 @@ export async function auditResources({credentialsFile,stateDirectory}) {
     const health=await response.json(),bindings=settings.bindings??[],databases=bindings.filter(b=>b.type==='d1');
     if(response.status!==200||health.role!==role||health.mode!=='shadow'||health.publication_enabled!==false)throw new Error('worker_health_failed_'+role);
     if(databases.length!==1||databases[0].name!=='FINDPITCHES_V3_DB'||databases[0].id!==state.database_id)throw new Error('worker_database_boundary_failed_'+role);
-    const variables=Object.fromEntries(bindings.filter(b=>b.type==='plain_text'&&['V3_ROLE','V3_CITY_ENABLED','V3_DAILY_QUERY_LIMIT'].includes(b.name)).map(b=>[b.name,b.text]));
+    const variables=Object.fromEntries(bindings.filter(b=>b.type==='plain_text'&&['V3_ROLE','V3_CITY_ENABLED','V3_DAILY_QUERY_LIMIT','V3_CANARY_RUN_ID','V3_CANARY_EXPIRES_AT'].includes(b.name)).map(b=>[b.name,b.text]));
     if(variables.V3_ROLE!==role||variables.V3_CITY_ENABLED!=='false'||variables.V3_DAILY_QUERY_LIMIT!=='0')throw new Error('worker_safe_defaults_failed_'+role);
+    if(variables.V3_CANARY_RUN_ID||variables.V3_CANARY_EXPIRES_AT)throw new Error('active_canary_grant_'+role);
     const queueBindings=bindings.filter(b=>b.type==='queue');
     if(queueBindings.some(b=>!b.queue_name?.startsWith('findpitches-v3-')||b.queue_name.includes('publication')))throw new Error('worker_queue_boundary_failed_'+role);
     const expected=JSON.parse(fs.readFileSync(new URL('./cloudflare/'+role+'.jsonc',import.meta.url),'utf8'));

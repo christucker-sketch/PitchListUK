@@ -1,0 +1,11 @@
+{
+  "tested_records": 100,
+  "entities": 100,
+  "destructive_mutations": 0,
+  "mutations": [],
+  "customer_projection_rows": 0,
+  "publication_rows": 0,
+  "input_hash": "339cb4e72897b3c09d3851d6bafb9fb5db6ec9217005147c05a00ae40c22260d",
+  "scope": "real_structured_artifact_control_not_exact_historical_pilot",
+  "checked_at": "2026-10-06T11:40:43.018Z"
+}

@@ -38,3 +38,14 @@ test('producer recheck acknowledgment requires newer linked evidence and the exa
   assert.equal((await ack('2026-10-06T12:00:00.000Z')).acknowledged,false);
   assert.equal((await ack(requested_at)).acknowledged,true);
 });
+test('canary API rejects undelegated runs and schedules one fixed query without enabling the bulk route',async t=>{
+  const db=database(t),run_id='canary_12345678-1234-1234-1234-123456789abc';
+  const env={FINDPITCHES_V3_DB:db,V3_ROLE:'acquisition',V3_OPERATOR_TOKEN:TOKEN,V3_CITY_ENABLED:'false',V3_DAILY_QUERY_LIMIT:'0'};
+  const post=path=>worker.fetch(request(path,{method:'POST',body:{run_id,query_limit:4,city:'not-approved'}}),env);
+  assert.equal((await post('/acquisition/canary')).status,400);
+  env.V3_CANARY_RUN_ID=run_id;env.V3_CANARY_EXPIRES_AT=new Date(Date.now()+60000).toISOString();
+  assert.equal((await post('/acquisition/canary')).status,202);
+  const job=await sql(db,"SELECT payload_json FROM jobs WHERE stage='acquisition'").first(),payload=JSON.parse(job.payload_json);
+  assert.equal(payload.query_limit,1);assert.equal(payload.city,'austin-tx');assert.equal(payload.canary,true);
+  assert.equal((await post('/acquisition')).status,400);
+});

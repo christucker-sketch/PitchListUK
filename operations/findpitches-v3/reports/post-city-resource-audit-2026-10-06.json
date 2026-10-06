@@ -1,0 +1,292 @@
+{
+  "checked_at": "2026-10-06T11:40:42.508Z",
+  "database": {
+    "id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+    "name": "findpitches-v3-shadow"
+  },
+  "workers": [
+    {
+      "name": "findpitches-v3-ingest-shadow",
+      "url": "https://findpitches-v3-ingest-shadow.ctucker.workers.dev",
+      "database_id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "queue_bindings": [
+        {
+          "name": "NEXT_QUEUE",
+          "queue_name": "findpitches-v3-reconcile-shadow"
+        }
+      ],
+      "crons": [],
+      "health": {
+        "service": "findpitches-v3",
+        "role": "ingest",
+        "ok": true,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    },
+    {
+      "name": "findpitches-v3-reconcile-shadow",
+      "url": "https://findpitches-v3-reconcile-shadow.ctucker.workers.dev",
+      "database_id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "queue_bindings": [
+        {
+          "name": "NEXT_QUEUE",
+          "queue_name": "findpitches-v3-eligibility-shadow"
+        }
+      ],
+      "crons": [
+        "* * * * *"
+      ],
+      "health": {
+        "service": "findpitches-v3",
+        "role": "reconcile",
+        "ok": true,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    },
+    {
+      "name": "findpitches-v3-eligibility-shadow",
+      "url": "https://findpitches-v3-eligibility-shadow.ctucker.workers.dev",
+      "database_id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "queue_bindings": [
+        {
+          "name": "NEXT_QUEUE",
+          "queue_name": "findpitches-v3-enrichment-shadow"
+        }
+      ],
+      "crons": [
+        "* * * * *"
+      ],
+      "health": {
+        "service": "findpitches-v3",
+        "role": "eligibility",
+        "ok": true,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    },
+    {
+      "name": "findpitches-v3-enrichment-shadow",
+      "url": "https://findpitches-v3-enrichment-shadow.ctucker.workers.dev",
+      "database_id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "queue_bindings": [
+        {
+          "name": "NEXT_QUEUE",
+          "queue_name": "findpitches-v3-readiness-shadow"
+        }
+      ],
+      "crons": [
+        "* * * * *"
+      ],
+      "health": {
+        "service": "findpitches-v3",
+        "role": "enrichment",
+        "ok": true,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    },
+    {
+      "name": "findpitches-v3-readiness-shadow",
+      "url": "https://findpitches-v3-readiness-shadow.ctucker.workers.dev",
+      "database_id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "queue_bindings": [
+        {
+          "name": "NEXT_QUEUE",
+          "queue_name": "findpitches-v3-watch-shadow"
+        }
+      ],
+      "crons": [
+        "* * * * *"
+      ],
+      "health": {
+        "service": "findpitches-v3",
+        "role": "readiness",
+        "ok": true,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    },
+    {
+      "name": "findpitches-v3-acquisition-shadow",
+      "url": "https://findpitches-v3-acquisition-shadow.ctucker.workers.dev",
+      "database_id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "queue_bindings": [
+        {
+          "name": "NEXT_QUEUE",
+          "queue_name": "findpitches-v3-reconcile-shadow"
+        }
+      ],
+      "crons": [
+        "*/15 * * * *"
+      ],
+      "health": {
+        "service": "findpitches-v3",
+        "role": "acquisition",
+        "ok": true,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    },
+    {
+      "name": "findpitches-v3-watch-shadow",
+      "url": "https://findpitches-v3-watch-shadow.ctucker.workers.dev",
+      "database_id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "queue_bindings": [
+        {
+          "name": "NEXT_QUEUE",
+          "queue_name": "findpitches-v3-eligibility-shadow"
+        }
+      ],
+      "crons": [
+        "0 * * * *"
+      ],
+      "health": {
+        "service": "findpitches-v3",
+        "role": "watch",
+        "ok": true,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    },
+    {
+      "name": "findpitches-v3-api-shadow",
+      "url": "https://findpitches-v3-api-shadow.ctucker.workers.dev",
+      "database_id": "75ccfd1a-f136-4598-8cfb-9a4489d174b9",
+      "queue_bindings": [],
+      "crons": [],
+      "health": {
+        "service": "findpitches-v3",
+        "role": "api",
+        "ok": true,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    }
+  ],
+  "queues": [
+    {
+      "name": "findpitches-v3-reconcile-shadow",
+      "id": "8cec7658d7184d0592d6730bc898cb68",
+      "consumers": [
+        {
+          "type": "worker",
+          "script": "findpitches-v3-reconcile-shadow",
+          "dead_letter_queue": "findpitches-v3-dead-shadow",
+          "settings": {
+            "batch_size": 10,
+            "max_retries": 3,
+            "max_wait_time_ms": 5000,
+            "retry_delay": 0
+          }
+        }
+      ],
+      "producer_count": 2
+    },
+    {
+      "name": "findpitches-v3-eligibility-shadow",
+      "id": "62da0856cfce40baaa9ac156d2833148",
+      "consumers": [
+        {
+          "type": "worker",
+          "script": "findpitches-v3-eligibility-shadow",
+          "dead_letter_queue": "findpitches-v3-dead-shadow",
+          "settings": {
+            "batch_size": 10,
+            "max_retries": 3,
+            "max_wait_time_ms": 5000,
+            "retry_delay": 0
+          }
+        }
+      ],
+      "producer_count": 2
+    },
+    {
+      "name": "findpitches-v3-enrichment-shadow",
+      "id": "340589c28d0e44d28f9993ba74330aa4",
+      "consumers": [
+        {
+          "type": "worker",
+          "script": "findpitches-v3-enrichment-shadow",
+          "dead_letter_queue": "findpitches-v3-dead-shadow",
+          "settings": {
+            "batch_size": 10,
+            "max_retries": 3,
+            "max_wait_time_ms": 5000,
+            "retry_delay": 0
+          }
+        }
+      ],
+      "producer_count": 1
+    },
+    {
+      "name": "findpitches-v3-readiness-shadow",
+      "id": "6a935cd92f444326a647c93dcfe7836b",
+      "consumers": [
+        {
+          "type": "worker",
+          "script": "findpitches-v3-readiness-shadow",
+          "dead_letter_queue": "findpitches-v3-dead-shadow",
+          "settings": {
+            "batch_size": 10,
+            "max_retries": 3,
+            "max_wait_time_ms": 5000,
+            "retry_delay": 0
+          }
+        }
+      ],
+      "producer_count": 1
+    },
+    {
+      "name": "findpitches-v3-acquisition-shadow",
+      "id": "1cf514c66c564300aff9a2bd71ecc296",
+      "consumers": [
+        {
+          "type": "worker",
+          "script": "findpitches-v3-acquisition-shadow",
+          "dead_letter_queue": "findpitches-v3-dead-shadow",
+          "settings": {
+            "batch_size": 10,
+            "max_retries": 3,
+            "max_wait_time_ms": 5000,
+            "retry_delay": 0
+          }
+        }
+      ],
+      "producer_count": 0
+    },
+    {
+      "name": "findpitches-v3-watch-shadow",
+      "id": "7bf2d2bdd5674d8e9ae976b663a4f528",
+      "consumers": [
+        {
+          "type": "worker",
+          "script": "findpitches-v3-watch-shadow",
+          "dead_letter_queue": "findpitches-v3-dead-shadow",
+          "settings": {
+            "batch_size": 10,
+            "max_retries": 3,
+            "max_wait_time_ms": 5000,
+            "retry_delay": 0
+          }
+        }
+      ],
+      "producer_count": 1
+    },
+    {
+      "name": "findpitches-v3-dead-shadow",
+      "id": "cce970383abe45609614a1c4d832b02c",
+      "consumers": [],
+      "producer_count": 0
+    },
+    {
+      "name": "findpitches-v3-publication-shadow",
+      "id": "46f85bdb25f54a6c88b149fe6375e11f",
+      "consumers": [],
+      "producer_count": 0
+    }
+  ],
+  "publication_enabled": false,
+  "city_enabled": false
+}

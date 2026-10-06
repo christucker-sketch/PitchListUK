@@ -33,3 +33,9 @@ test('rechecks are acknowledged only after accepted delivery in the matching env
   const delivery={ingest_origin:'https://ingest.example.org',environment:'shadow',results:[{rejected:0,producer_record_ids:['ok','old'],last_checked_by_producer:{ok:'2026-10-06T12:01:00.000Z',old:'2026-10-05T12:00:00.000Z'}},{rejected:1,producer_record_ids:['rejected']}]};
   assert.equal((await acknowledgeDeliveredRechecks({requests,delivery,token:TOKEN,fetcher})).acknowledged,1);assert.equal(calls,1);
 });
+test('multiple export files containing old and fresh versions of the same producer ID retain the newest acknowledgment timestamp',async t=>{
+  const d=temporary(t),inputFile=path.join(d,'multiple.json');
+  const fresh='2026-10-08T12:00:00.000Z';fs.writeFileSync(inputFile,JSON.stringify([record({last_checked:fresh}),record({last_checked:'2026-10-05T12:00:00.000Z'})]));
+  const result=await deliverExport({inputFile,checkpointFile:path.join(d,'state.json'),ingestUrl:'https://ingest.example.org',token:TOKEN,fetcher:async()=>Response.json({accepted:2,rejected:0,inserted:2,duplicates:0,record_ids:['a','b'],errors:[]})});
+  assert.equal(result.results[0].last_checked_by_producer['fixture-1'],fresh);
+});

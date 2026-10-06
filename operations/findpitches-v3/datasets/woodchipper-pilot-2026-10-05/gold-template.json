@@ -1,0 +1,809 @@
+{
+  "schema": "findpitches-evaluation-gold-v1",
+  "as_of": "2026-10-05T19:36:44.000Z",
+  "inputs_hash": "0d7dddd5aaa78e4d21158856e6201c904d4a471ae3be1e79a2ae2e5762a3caf9",
+  "instructions": "Fill eligible and fields only after independent review. Fields use {value,alternatives?}. Every labelled record/pair needs reviewed_by, reviewed_at and references. Do not infer gold labels from V3 outcomes or source states.",
+  "records": [
+    {
+      "producer_record_id": "fdx1_0081290d4e31d457620c",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0089b683573022c6f7cb",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_00b4fcbe08802d2c4756",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_00c25dde7af506b28c7f",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_00de8824319e56d3be42",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0121885e3e1f0e9a1f05",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_016f08d57bcb4033a655",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0177ed8261908004f5cd",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_018e04274254f72167da",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_01b3968b4b754eb4e54a",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0209acc7b4ad20696ed7",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_02239da5199a10ea941a",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_024ae79bc0943e3db275",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_027422c5d80adaa17eb7",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_028c4bda0d8776c00c4b",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_028cc0eddef6bf1d1e2c",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_029d8da88569701d0398",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_02b02d0852afe93656f2",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_02cda076063dba777095",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_02eaf61f6b19ce985b1e",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0340f88640a13b1bf4d9",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_038aeec909bdca6caeaf",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_038c7488801be9534f18",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_03bca33c6d7446c6e127",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_03f9e781987bad12ceec",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_04106d95a3accb001492",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_041a0de1017fa58999c1",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_046592dcff0237168f4c",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_04ba6f8855971827fa2d",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_04cc948a3e21dc347c59",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_04d4473713900df5371c",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_050152c98e12a8376e76",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_05545942617d1a81b83e",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_055d33509e87260cd5f3",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0577e0f691570617663d",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_05842f24d668bfb99dc9",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0591593798362cd18f8c",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0621706009629b807829",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_062614dcd06993d1680b",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_062b58f58831ab701600",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_063327722cc181490760",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0633ad2a37e39e100778",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_063faed4eda0bb17b99e",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0670a771d314c1af3fbf",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_06bfbacddd7544ce350d",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_07145c9f9a87f62667f2",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0718014b00987759630c",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_07202168b2c4b601f32d",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_078ca2329069807825b0",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_07bb0c3c834ddee70acd",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_07bfeb375a80bd7c6c88",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_07f0711f8abfa55b586b",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_081d44fc874195e912e0",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_082712e715ae61f536f3",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_082eef3214a596bdccaa",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_083a5e9a9888dd43ce8f",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_087beb2720b809d48a4d",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_08a9e73d673fde861833",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_08d048a8f7b90748c74b",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_08e099e0e1d1b7b1177b",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_08ef74c1f4c6cfb6d17c",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_090b14cc58829a0846b3",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_093a7f12cd59352d1d19",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_096e1af643901f9f4677",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_09ae59c430eefe3d8be0",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_09c19b2e396ce7af1dbc",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_09cd34997fd066f94bd4",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_09fb6370a2e7ed55e1a6",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0a6f5a8ed8c160fa73ef",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0b03a7498df2935ee944",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0b0616b49bea053c9f58",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0b3ecc5d2a0d79bd0f84",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0b8722c7136cf7eef844",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0bc6ed919c79cdd4857d",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0be80619a2fe3803517e",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0c06ef34eb51c446579a",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0c0cf068e541ec0f58ce",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0c371c38a9037bd04cb1",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0c5ec9b0bfd23e064b21",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0c83cf5513c281617531",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0c8ce7d0b48c8e33dd17",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0cb30404aeb95b06e03e",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0cb30f1ebb01e8270afa",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0cb40c602eb58cae1740",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0cd11af549a3510c0e08",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0cfb1310b2d16e5f5cfb",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0d081e6c5ab91e54d3a9",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0d2d56e63c9790e9f15f",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0d4ec2b008d8598c74a1",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0d561ccee124f893f939",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0d8dd638f520c613c822",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0dddd9aa57d8b28bceab",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0e0e9a89620deab16cd4",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0e40deea3ef904c7517d",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0e614ab936364fcfdb8b",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0e83f08b714b573a9cc5",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0ea44e2e5000005db62b",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0eafa9609247b40b3c5e",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0f95c1be6b2237fb1d43",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    },
+    {
+      "producer_record_id": "fdx1_0fa15fd08bac25f9bf58",
+      "eligible": null,
+      "fields": {},
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "references": []
+    }
+  ],
+  "duplicate_pairs": []
+}

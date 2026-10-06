@@ -1,0 +1,8 @@
+{
+  "input_file": "/secure/independent-producer/latest-export.jsonl",
+  "ingest_url": "https://findpitches-v3-ingest-shadow.ctucker.workers.dev",
+  "token_file": "/secure/independent-producer/v3-ingest.env",
+  "state_dir": "/secure/independent-producer/v3-delivery-state",
+  "environment": "shadow",
+  "interval_seconds": 900
+}

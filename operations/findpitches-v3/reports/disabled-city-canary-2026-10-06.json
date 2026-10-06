@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-10-06T11:33:47.490Z",
+  "canary_route": {
+    "http": 400,
+    "error": "one_shot_canary_not_authorized"
+  },
+  "bulk_route": {
+    "http": 400,
+    "error": "city_acquisition_disabled"
+  },
+  "publication_http": 403,
+  "provider_queries_reserved": 0,
+  "provider_queries_completed": 0,
+  "customer_rows": 0,
+  "publication_rows": 0,
+  "live_city_canary_run": false,
+  "reason": "Serper secret is not configured; the one-shot grant is disabled",
+  "passed": true
+}

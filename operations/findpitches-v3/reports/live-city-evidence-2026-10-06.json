@@ -1,0 +1,463 @@
+{
+  "schema": "findpitches-city-evidence-audit-v1",
+  "checked_at": "2026-10-06T11:42:46.483Z",
+  "run_id": "canary_5d8535bb-3a6a-401f-a1d8-3dd17180f616",
+  "records": [
+    {
+      "record_id": "rec_089e0925da0f2c2451af885193fed29b0777b2b8",
+      "entity_id": "ent_f61ebd23c35701fd3031a9c9737adb57",
+      "content_hash": "18dc54205cab695149fa7ef9ae5e390dfa6df5b62a43c551bf67ca8179b1e97b",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://www.facebook.com/downtownportaustin/posts/fill-out-your-2023-application-here-please-feel-free-to-contact-the-market-maste/592349916256569/",
+        "country_code": "US",
+        "event_name": "Port Austin Farmers Market 2023 vendor application",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "Fill out your 2023 application here! https://portaustinarea.com/information-for-vendors\nPlease feel free to contact the Market Master, Lisa Marie, ...",
+            "source": "https://www.facebook.com/downtownportaustin/posts/fill-out-your-2023-application-here-please-feel-free-to-contact-the-market-maste/592349916256569/"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_701027424d35082cbcd5f7fdf7e950d3",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://www.facebook.com/downtownportaustin/posts/fill-out-your-2023-application-here-please-feel-free-to-contact-the-market-maste/592349916256569/",
+        "event_name": "Port Austin Farmers Market 2023 vendor application",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_1404407c131c1fab51d5a7c770d501d0297e8511",
+      "entity_id": "ent_19968e2615daab7b58372416f4f1332e",
+      "content_hash": "3d79d744a305a9347152e36aaf4cc13b7fc244301a99b4677742ea6206777471",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://form.jotform.com/253378446365164",
+        "country_code": "US",
+        "event_name": "2026 Arboretum Food and Art Market Vendor Application",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "I understand that I am choosing to participate in the 2026 Arboretum Food and Artisan Market ... Austin Food and Artisan Market website. In the event that my tent ...",
+            "source": "https://form.jotform.com/253378446365164"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_4d61b199f7d979689761eff60747ba3c",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://form.jotform.com/253378446365164",
+        "event_name": "2026 Arboretum Food and Art Market Vendor Application",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_15b8f8c81bb47499eded5b35e565f92ef07dd034",
+      "entity_id": "ent_eecd68bb912ecaebe2378892eb271794",
+      "content_hash": "78bedf4957ec26b5279604372496b7eeb8853b115c9f5a45c0fa05e1007c9581",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://www.eventeny.com/events/vendor/?id=47344&srsltid=AU7gw4VpiDJtjXUNEgnag2vaDZOaK7J-whav2LAABepav_w48iKumQ2x",
+        "country_code": "US",
+        "event_name": "Vendor Application | 2026 - Green Republic | Austin Market",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "... Market in the heart of downtown Austin. This prime location attracts a ... Picture requirements. Minimum pictures required: 0. Vendor Application ...",
+            "source": "https://www.eventeny.com/events/vendor/?id=47344&srsltid=AU7gw4VpiDJtjXUNEgnag2vaDZOaK7J-whav2LAABepav_w48iKumQ2x"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_4505976a00fe2637da19f59e1469c0df",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://www.eventeny.com/events/vendor/?id=47344&srsltid=AU7gw4VpiDJtjXUNEgnag2vaDZOaK7J-whav2LAABepav_w48iKumQ2x",
+        "event_name": "Vendor Application | 2026 - Green Republic | Austin Market",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_2450097fbeaedb1a57da9d7f702c3a647778623f",
+      "entity_id": "ent_6ec894bf8d94fbe20159bb9d72c45102",
+      "content_hash": "48e9687ee26563882e5d1b5a4d548c41549c8e567f928c705f554a93e1008160",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://amld.org/vendors",
+        "country_code": "US",
+        "event_name": "Vendors | Austin, TX",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "Anderson Mill · Limited District. 11500 El Salido Parkway, Austin, Texas 78750 ... Vendor Application. Apply to be a vendor for future AMLD events here! This ...",
+            "source": "https://amld.org/vendors"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_555780bd7cbb4b470a6533a3da80d679",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://amld.org/vendors",
+        "event_name": "Vendors | Austin, TX",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_536195c55384582cd8b82e0a013decda3569023a",
+      "entity_id": "ent_be33539bbb71c908f217ec41517d66ad",
+      "content_hash": "7ec51778f087771f8f39672be571366e2d306dd279b5fa4bb3ac683ad4649eab",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://austinfarmersmarket.com/pages/apply-to-be-a-vendor?srsltid=AU7gw4Xgxf2fFSYj9BmQd30cWegz3YV0wKa24mJ1SW0QrIt_XrS5ZPdT",
+        "country_code": "US",
+        "event_name": "Apply To Be A Vendor - Austin Farmers Market",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "To be considered as a vendor at Austin Farmers Market, please complete both steps below: 1. Submit the Vendor Application Form → Tell us about your ...",
+            "source": "https://austinfarmersmarket.com/pages/apply-to-be-a-vendor?srsltid=AU7gw4Xgxf2fFSYj9BmQd30cWegz3YV0wKa24mJ1SW0QrIt_XrS5ZPdT"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_6566aa229ecc3e1a7c4746180b915597",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://austinfarmersmarket.com/pages/apply-to-be-a-vendor?srsltid=AU7gw4Xgxf2fFSYj9BmQd30cWegz3YV0wKa24mJ1SW0QrIt_XrS5ZPdT",
+        "event_name": "Apply To Be A Vendor - Austin Farmers Market",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_910e83236f4845069208abfcf43d13f42d99ade8",
+      "entity_id": "ent_32b1d80ce604da45161a79999abfd194",
+      "content_hash": "f838551817f4090fa3fb6636d41917eec5ee0dc41d5b0495d7d030e1455b4b7a",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://texasfarmersmarket.org/apply-to-be-a-vendor",
+        "country_code": "US",
+        "event_name": "Apply to be a Vendor | Join Our Vendor Community",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "Texas Farmers' Market 2026 vendor application forms and general information: We are not currently accepting applications from beef or chicken, CBD ...",
+            "source": "https://texasfarmersmarket.org/apply-to-be-a-vendor"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_f4bf322206f4b6dd13228a2455665075",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://texasfarmersmarket.org/apply-to-be-a-vendor",
+        "event_name": "Apply to be a Vendor | Join Our Vendor Community",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_a607e04bcd7fd3f799207cbc225740b1a09dd4f3",
+      "entity_id": "ent_b82c58a9526e3dc489b770d7a66a831d",
+      "content_hash": "84d08e11fbf7136fceb140043e94e3dc659407c617e77a687c7eb862a2b9fcd3",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://www.portaustinarea.com/become-a-vendor",
+        "country_code": "US",
+        "event_name": "Become a Vendor",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "The Port Austin Farmers Market stands out as one of Michigan's premier markets. ... The Market Master reserves the right to reject a vendor application if ...",
+            "source": "https://www.portaustinarea.com/become-a-vendor"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_797035387492512e8de5d9d68fb11a10",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://www.portaustinarea.com/become-a-vendor",
+        "event_name": "Become a Vendor",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_d16667844c3a502c9c00bc94edd49cb28aa292e6",
+      "entity_id": "ent_b99ed6103a555511e3809364d3ce11e9",
+      "content_hash": "d986bf62f4a4c81db043d9bdc5d92b93b1ef8da90b73cedfaf46166df56e34a9",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://www.austinflea.net/vendor-application",
+        "country_code": "US",
+        "event_name": "APPLY NOW | austinflea",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "A local artisan market featuring Austin's best makers and crafters. apply to be a vendor. For vendors new to our market, please see Vendor FAQ page. For all ...",
+            "source": "https://www.austinflea.net/vendor-application"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_f6c3738e68fa16d0e24a575f1ec66e1c",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://www.austinflea.net/vendor-application",
+        "event_name": "APPLY NOW | austinflea",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_d3a43febd91d878fef68a7a23efdba2682b981d0",
+      "entity_id": "ent_507caacf7d3e96f6ce15520de1d2b7d5",
+      "content_hash": "0dc6fe191ddddc0fec3ad4b6b2e1a619f7063e319f644fc382c471a58c9baeef",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://sustainablefoodcenter.org/farmers-market-vendor-portal/",
+        "country_code": "US",
+        "event_name": "Farmers' Market Vendor Portal",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "Use the form below to apply to bring a new product not originally listed on your Become a Vendor Application or Annual Vendor Reapplication. ... Austin, TX 78702.",
+            "source": "https://sustainablefoodcenter.org/farmers-market-vendor-portal/"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_4446d17fd86a07869fc411bfce74babd",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://sustainablefoodcenter.org/farmers-market-vendor-portal/",
+        "event_name": "Farmers' Market Vendor Portal",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    },
+    {
+      "record_id": "rec_e9c8f5cc4d46211fc638caae160f8b8f2dfdc180",
+      "entity_id": "ent_af5ff63de25beee950b9db9065d2d0c5",
+      "content_hash": "f3fd50b1b5cefdd08f12e33d98d850a20116cfda89fa1b6601a7d42c846c4a01",
+      "source": {
+        "application_state": "UNKNOWN",
+        "application_url": null,
+        "canonical_url": "https://www.eastatxmarket.com/",
+        "country_code": "US",
+        "event_name": "East Austin Market",
+        "evidence": [
+          {
+            "kind": "search_snippet",
+            "query": "\"Austin\" \"vendor application\" market",
+            "snippet": "East Austin Market. Home · Upcoming Markets · Vendor Application · FAQ's · Apply to Vend. Open Menu Close Menu. East Austin Market · Home · Upcoming Markets.",
+            "source": "https://www.eastatxmarket.com/"
+          }
+        ],
+        "first_seen": "2026-10-06T11:38:51.616Z",
+        "last_checked": "2026-10-06T11:38:51.616Z",
+        "last_seen": "2026-10-06T11:38:51.616Z",
+        "lifecycle_event": "NEW",
+        "location": "Austin",
+        "opportunity_id": "city_c67a541e64982757e46d66988780f3ee",
+        "provenance": [
+          {
+            "city": "austin-tx",
+            "producer": "city-search",
+            "query": "\"Austin\" \"vendor application\" market"
+          }
+        ],
+        "region_code": "TX",
+        "schema_version": "findpitches-discovery-export-v1",
+        "source_platform": "serper"
+      },
+      "selected_fields": {
+        "application_state": "UNKNOWN",
+        "canonical_url": "https://www.eastatxmarket.com/",
+        "event_name": "East Austin Market",
+        "lifecycle_state": "NEW",
+        "location": "Austin",
+        "region_code": "TX",
+        "source_platform": "serper"
+      }
+    }
+  ],
+  "authority": 50,
+  "source_fields_retained": 70,
+  "destructive_mutations": 0,
+  "application_state": "UNKNOWN",
+  "readiness": "watch",
+  "passed": true
+}

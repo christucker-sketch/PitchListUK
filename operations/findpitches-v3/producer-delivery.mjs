@@ -8,9 +8,9 @@ import { createRequire } from 'node:module';
 const digest=text=>createHash('sha256').update(text).digest('hex');
 export function readExport(file) {
   if(fs.statSync(file).size>134217728)throw new Error('export_file_size_limit');
-  const text=fs.readFileSync(file,'utf8');let parsed;
-  try {parsed=JSON.parse(text);}catch {
-    parsed=text.split(/\r?\n/).filter(line=>line.trim()).map((line,index)=>{
+  const text=fs.readFileSync(file,'utf8'),data=text.replace(/^\uFEFF/,'');let parsed;
+  try {parsed=JSON.parse(data);}catch {
+    parsed=data.split(/\r?\n/).filter(line=>line.trim()).map((line,index)=>{
       try{return JSON.parse(line);}catch{throw new Error('invalid_export_jsonl_line_'+(index+1));}
     });
   }
@@ -64,7 +64,12 @@ export async function deliverExport({inputFile,ingestUrl,token,checkpointFile,en
       const result=await response.json();
       if(result.accepted+result.rejected!==batches[index].length||result.inserted+result.duplicates!==batches[index].length||!Array.isArray(result.record_ids)||!Array.isArray(result.errors))throw new Error('ingest_receipt_invalid');
       for(const field of ['accepted','rejected','inserted','duplicates'])state[field]+=result[field];
-      state.results.push({batch:index,producer_record_ids:batches[index].map(r=>r.opportunity_id??r.producer_record_id),last_checked_by_producer:Object.fromEntries(batches[index].map(r=>[r.opportunity_id??r.producer_record_id,r.last_checked??null])),...result});
+      const lastChecked={};
+      for(const record of batches[index]) {
+        const id=record.opportunity_id??record.producer_record_id,time=Date.parse(record.last_checked);
+        if(Number.isFinite(time)&&(!lastChecked[id]||time>Date.parse(lastChecked[id])))lastChecked[id]=record.last_checked;
+      }
+      state.results.push({batch:index,producer_record_ids:batches[index].map(r=>r.opportunity_id??r.producer_record_id),last_checked_by_producer:lastChecked,...result});
       state.next_batch=index+1;state.updated_at=new Date().toISOString();writeState(checkpointFile,state);
     }
     state.complete=true;writeState(checkpointFile,state);return state;

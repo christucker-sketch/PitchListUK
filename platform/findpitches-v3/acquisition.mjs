@@ -7,6 +7,10 @@ export function cityQueries(city=CITY.id) {
   if(city!==CITY.id)throw new Error('city_not_approved');
   return ['"Austin" "vendor application" market','"Austin" "craft fair" vendors apply','"Austin" "festival" "vendor registration"','"Austin" "farmers market" "vendor application"'];
 }
+export function canaryApproved(env,runId,now=new Date().toISOString()) {
+  return /^canary_[a-f0-9-]{36}$/.test(runId??'')&&env.V3_CANARY_RUN_ID===runId
+    && Number.isFinite(Date.parse(env.V3_CANARY_EXPIRES_AT))&&Date.parse(now)<=Date.parse(env.V3_CANARY_EXPIRES_AT);
+}
 export async function normalizeCityResults(results,{query,now=new Date().toISOString()}={}) {
   const records=[];
   for(const item of results.slice(0,10)) {
@@ -26,8 +30,10 @@ export async function acquireCity(db,payload,env,{fetcher=fetch,now=new Date().t
     // Never automatically repeat a provider request whose billing outcome is uncertain.
     throw new Error('acquisition_outcome_requires_operator_review');
   }
-  const queries=cityQueries(payload.city),budget=Number(env.V3_DAILY_QUERY_LIMIT),count=Number(payload.query_limit);
-  if(env.V3_CITY_ENABLED!=='true')throw new Error('city_acquisition_disabled');
+  const canary=payload.canary===true;
+  if(canary&&(!canaryApproved(env,runId,now)||payload.run_id!==runId||payload.query_limit!==1))throw new Error('one_shot_canary_not_authorized');
+  const queries=cityQueries(payload.city),budget=canary?1:Number(env.V3_DAILY_QUERY_LIMIT),count=Number(payload.query_limit);
+  if(!canary&&env.V3_CITY_ENABLED!=='true')throw new Error('city_acquisition_disabled');
   if(!env.SERPER_API_KEY)throw new Error('search_credential_required');
   if(!Number.isInteger(budget)||budget<1||budget>100||!Number.isInteger(count)||count<1||count>queries.length)throw new Error('explicit_bounded_query_budget_required');
   const gate=await sql(db,"SELECT name FROM quality_gates WHERE name='structured-100-preservation' AND tested_records=100 AND destructive_mutations=0").first();

@@ -1,0 +1,114 @@
+{
+  "schema": "findpitches-city-canary-v1",
+  "run_id": "canary_5d8535bb-3a6a-401f-a1d8-3dd17180f616",
+  "city": "austin-tx",
+  "query_limit": 1,
+  "started_at": "2026-10-06T11:38:43.280Z",
+  "status": "complete",
+  "bulk_enabled": false,
+  "publication_enabled": false,
+  "result": {
+    "city": "austin-tx",
+    "discovered": 10,
+    "imported": {
+      "accepted": 10,
+      "duplicates": 0,
+      "errors": [],
+      "inserted": 10,
+      "record_ids": [
+        "rec_536195c55384582cd8b82e0a013decda3569023a",
+        "rec_d3a43febd91d878fef68a7a23efdba2682b981d0",
+        "rec_e9c8f5cc4d46211fc638caae160f8b8f2dfdc180",
+        "rec_1404407c131c1fab51d5a7c770d501d0297e8511",
+        "rec_910e83236f4845069208abfcf43d13f42d99ade8",
+        "rec_089e0925da0f2c2451af885193fed29b0777b2b8",
+        "rec_d16667844c3a502c9c00bc94edd49cb28aa292e6",
+        "rec_a607e04bcd7fd3f799207cbc225740b1a09dd4f3",
+        "rec_15b8f8c81bb47499eded5b35e565f92ef07dd034",
+        "rec_2450097fbeaedb1a57da9d7f702c3a647778623f"
+      ],
+      "rejected": 0
+    },
+    "queries": 1,
+    "run_id": "canary_5d8535bb-3a6a-401f-a1d8-3dd17180f616"
+  },
+  "completed_at": "2026-10-06T11:39:35.121Z",
+  "pipeline": [
+    {
+      "id": "rec_089e0925da0f2c2451af885193fed29b0777b2b8",
+      "validation_status": "accepted",
+      "entity_id": "ent_f61ebd23c35701fd3031a9c9737adb57",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_1404407c131c1fab51d5a7c770d501d0297e8511",
+      "validation_status": "accepted",
+      "entity_id": "ent_19968e2615daab7b58372416f4f1332e",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_15b8f8c81bb47499eded5b35e565f92ef07dd034",
+      "validation_status": "accepted",
+      "entity_id": "ent_eecd68bb912ecaebe2378892eb271794",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_2450097fbeaedb1a57da9d7f702c3a647778623f",
+      "validation_status": "accepted",
+      "entity_id": "ent_6ec894bf8d94fbe20159bb9d72c45102",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_536195c55384582cd8b82e0a013decda3569023a",
+      "validation_status": "accepted",
+      "entity_id": "ent_be33539bbb71c908f217ec41517d66ad",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_910e83236f4845069208abfcf43d13f42d99ade8",
+      "validation_status": "accepted",
+      "entity_id": "ent_32b1d80ce604da45161a79999abfd194",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_a607e04bcd7fd3f799207cbc225740b1a09dd4f3",
+      "validation_status": "accepted",
+      "entity_id": "ent_b82c58a9526e3dc489b770d7a66a831d",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_d16667844c3a502c9c00bc94edd49cb28aa292e6",
+      "validation_status": "accepted",
+      "entity_id": "ent_b99ed6103a555511e3809364d3ce11e9",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_d3a43febd91d878fef68a7a23efdba2682b981d0",
+      "validation_status": "accepted",
+      "entity_id": "ent_507caacf7d3e96f6ce15520de1d2b7d5",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    },
+    {
+      "id": "rec_e9c8f5cc4d46211fc638caae160f8b8f2dfdc180",
+      "validation_status": "accepted",
+      "entity_id": "ent_af5ff63de25beee950b9db9065d2d0c5",
+      "identity": "NEW_ENTITY",
+      "readiness": "watch"
+    }
+  ],
+  "leakage": {
+    "customer_rows": 0,
+    "publication_rows": 0
+  },
+  "evidence_note": "Search snippets retain UNKNOWN application state; readiness is measured, never inferred from a search title.",
+  "grant_revoked_at": "2026-10-06T11:39:41.787Z"
+}

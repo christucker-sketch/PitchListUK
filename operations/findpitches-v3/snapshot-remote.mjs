@@ -29,11 +29,11 @@ export async function remoteSnapshot({credentialsFile,stateDirectory,inputFile,e
   const byId=new Map(receipts.map(r=>[r.producer_record_id,r]));
   const records=inputs.map(raw=>{
     const id=raw.opportunity_id??raw.producer_record_id,row=byId.get(id);
-    return row?{producer_record_id:id,validation:row.validation_status,entity_id:row.entity_id,identity:row.identity,eligibility:row.eligibility,readiness:row.readiness,fields:fields.get(row.entity_id)??{}}:{producer_record_id:id,validation:'not_processed'};
+    return row?{producer_record_id:id,input_hash:expected.get(id),validation:row.validation_status,entity_id:row.entity_id,identity:row.identity,eligibility:row.eligibility,readiness:row.readiness,fields:fields.get(row.entity_id)??{}}:{producer_record_id:id,input_hash:expected.get(id),validation:'not_processed'};
   });
   const queryCounts=await sql('SELECT COALESCE(SUM(queries_reserved),0) AS reserved,COALESCE(SUM(queries_completed),0) AS completed FROM acquisition_runs').first();
   const result={schema:'findpitches-shadow-evaluation-v1',implementation:'v3',runtime:'cloudflare',environment,as_of:new Date().toISOString(),inputs_hash:await hash(inputs),records,
-    metrics:{elapsed_ms:null,provider_queries_reserved:queryCounts.reserved,provider_queries_completed:queryCounts.completed,total_cost_usd:null}};
+    metrics:{elapsed_ms:null,provider_queries_reserved:queryCounts.reserved,provider_queries_completed:queryCounts.completed,provider_query_scope:'V3 database totals; not attributable to this dataset',total_cost_usd:null}};
   fs.writeFileSync(path.join(stateDirectory,'remote-snapshot-'+environment+'.json'),JSON.stringify(result,null,2)+'\n',{mode:0o600});return result;
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {

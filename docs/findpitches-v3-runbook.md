@@ -15,7 +15,7 @@ npm test --prefix operations/findpitches-v3
 
 In the onboarded environment, set `V3_TOOLING_ROOT=/workspace/.pitchlist-cloud/tooling` for the runtime test or Cloudflare scripts instead of installing duplicate tooling. The runtime test uses real workerd D1 and native queue delivery, takes several minutes, and destroys only its own ephemeral test runtime on completion.
 
-The early control is 100 real reconstructed structured exports from the immutable 1,599-row artifact at `d111f9493300b3f4b94075cca46f99583fa8f7b9`, including Eventeny vendor 52126. Its ID manifest and source checksum are in the fixture. The original historical 100-row pilot ledger and after-snapshot were not available; this is a deterministic reconstruction of the failure categories. Verify every fixture field against the reference with `python3 operations/findpitches-v3/verify-control-fixture.py` after fetching that read-only Git ref.
+The early control is 100 real reconstructed structured exports from the immutable 1,599-row artifact at `d111f9493300b3f4b94075cca46f99583fa8f7b9`, including Eventeny vendor 52126. Its ID manifest and source checksum are in the fixture. The historical ledger was unavailable for that first control; it reconstructed failure categories. The actual pilot was subsequently recovered for a separate aligned evaluation, described in the comparison guide. Verify every fixture field against the reference with `python3 operations/findpitches-v3/verify-control-fixture.py` after fetching that read-only Git ref.
 
 To persist local evidence and generate a reviewable comparison snapshot:
 
@@ -60,6 +60,8 @@ Deployment runs the preservation suite, boundary checks and all Worker bundles b
 
 ## APIs and producer integration
 
+The [continuous delivery guide](findpitches-v3-continuous-delivery.md) supplies the independent Windows producer's 15-minute push schedule, private token/state setup and portable runner. OneDrive remains local source material; the authenticated ingest endpoint is the permanent cloud boundary.
+
 | Role | Route | Authentication / behavior |
 | --- | --- | --- |
 | Every Worker | `GET /health`, `GET /status` | Public service/aggregate health, stage backlogs, leases, retries/dead jobs, throughput, producer activity, readiness, conflicts, gate and query counts. No raw records or secrets. |
@@ -75,7 +77,7 @@ Deployment runs the preservation suite, boundary checks and all Worker bundles b
 | Acquisition | `POST /acquisition` | Operator token; approved `{city:"austin-tx",query_limit:1}` only when enabled and budgeted. |
 | Every Worker | `GET /v1/opportunities` | Always HTTP 403, independent of environment flags. |
 
-The independent producer continues its own acquisition, classification, lifecycle and export implementation. `producer-delivery.mjs` reads its JSON/JSONL output, preserves each record's fields, and bounds requests by both 100 rows and UTF-8 body size. It uses only the ingest URL/token; it has no V3 runtime, D1 or Cloudflare credential dependency. A checkpoint resumes completed batches and relies on server idempotency for an uncertain request outcome. A single-run file lock prevents overlapping deliveries. Inspect the recorded PID before removing a stale local lock after a terminated process. V3 consumes the existing export contract; it does not replace the producer. Export path and cadence are still needed for continuous live operation.
+The independent producer continues its own acquisition, classification, lifecycle and export implementation. `producer-delivery.mjs` reads its JSON/JSONL output, preserves each record's fields, and bounds requests by both 100 rows and UTF-8 body size. It uses only the ingest URL/token; it has no V3 runtime, D1 or Cloudflare credential dependency. A checkpoint resumes completed batches and relies on server idempotency for an uncertain request outcome. A single-run file lock prevents overlapping deliveries. Inspect the recorded PID before removing a stale local lock after a terminated process. V3 consumes the existing export contract; it does not replace the producer. The supplied Windows directory and 15-minute cadence are supported by the producer-host installer; installation on that host remains necessary.
 
 Provide the producer only a secure file containing `V3_INGEST_TOKEN`; operator and Cloudflare tokens remain with operators. Example delivery, using a checkpoint outside the checkout:
 
@@ -100,7 +102,11 @@ WATCH, CLOSED and ready records are rechecked over time. The watch stage asks th
 
 ## City lane and comparison
 
-The Austin lane contains four narrow vendor/craft/festival/farmers-market query families. It requires a passing stored 100-row gate, `SERPER_API_KEY`, `V3_CITY_ENABLED=true`, and `V3_DAILY_QUERY_LIMIT` between 1 and 100. Each run reserves 1–4 queries atomically against the daily limit before contacting the provider. Search results enter the common envelope at snippet authority 50 with UNKNOWN state; a snippet alone does not claim an open application. Recorded responses validate integration; no paid queries have been run.
+`city-canary.mjs --credentials <secure-CF-file> --state-dir /workspace/.pitchlist-cloud/v3-remote` accepts a separately configured `SERPER_API_KEY` environment secret, an existing acquisition-Worker secret, or optional `--serper-file <secure-file>`. A locally supplied key is installed only on V3 acquisition. The tool grants one run ID for five minutes, schedules one Austin query, validates reconciliation/readiness and revokes the grant even after failure. Normal city enablement remains false and budget zero; the canary's daily budget is one. Existing reports block automatic repetition; uncertain billing outcomes require review. The Serper secret is installed only on V3 acquisition. The live canary completed one query with 10 accepted results; its grant is revoked and bulk acquisition remains disabled.
+
+The [comparison guide](findpitches-v3-comparison.md) documents the recovered actual historical pilot. Fixed SELECT-only capture recovered 100 IDs and their frozen audit without changing V2. The strict dataset harness checks hashes/clock/coverage, scores independent labels, measures replay and distinguishes absent output from unobserved historical fields. V2 historical readiness/cost/replay and reviewed truth remain unavailable.
+
+The Austin lane contains four narrow vendor/craft/festival/farmers-market query families. It requires a passing stored 100-row gate, `SERPER_API_KEY`, `V3_CITY_ENABLED=true`, and `V3_DAILY_QUERY_LIMIT` between 1 and 100. Each run reserves 1–4 queries atomically against the daily limit before contacting the provider. Search results enter the common envelope at snippet authority 50 with UNKNOWN state; a snippet alone does not claim an open application. Recorded responses validated offline integration. The one-query live Austin canary subsequently returned 10 accepted results through reconciliation/readiness; its temporary grant was revoked. Bulk acquisition remains disabled.
 
 V2 comparison is file-based and read-only. Provide a snapshot with `schema:"findpitches-shadow-evaluation-v1"`, exact `inputs_hash`, aligned `as_of`, `records` keyed by `producer_record_id` (validation, identity, entity_id, eligibility, readiness, fields), and optional measured cost/timing metrics. Add `--v2 file.json` and optionally `--gold labels.json` to the comparison command. Gold labels need the same input hash/time and `{producer_record_id,eligible}` records. Mismatched hashes/times, missing fields, missing labels and costs are reported explicitly. The report makes no automatic superiority claim.
 

@@ -1,0 +1,18 @@
+[Unit]
+Description=Independent structured producer delivery to FindPitches V3 shadow
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=findpitches-producer
+ExecStart=/usr/bin/node /opt/findpitches/operations/findpitches-v3/producer-runner.mjs --config /secure/independent-producer/v3-runner.json --loop
+Restart=on-failure
+RestartSec=60
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/secure/independent-producer/v3-delivery-state
+
+[Install]
+WantedBy=multi-user.target
