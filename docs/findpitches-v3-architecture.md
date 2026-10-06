@@ -27,6 +27,7 @@ No V3 runtime imports V2 code, uses V2 schema, binds V2 D1, calls V2 services, o
 flowchart TD
   S[Independent structured producer] --> I[Authenticated V3 ingestion]
   C[Bounded city search producer] --> I
+  L[Read-only V2 evidence capture and original-source recovery] --> I
   F[Future PDF and watch producers] --> I
   I --> E[Immutable producer revisions and source facts]
   E --> R[Reconciliation: entity identity and conflicts]
@@ -63,14 +64,20 @@ All tables below belong exclusively to `findpitches-v3-shadow` / `FINDPITCHES_V3
 | `shadow_projections` | Rebuildable analysis view for test/shadow records, segregated from customer projection. |
 | `customer_projections` | Production-only derived view; INSERT/UPDATE triggers require non-shadow production provenance, explicit promotion permission, current readiness, and no conflict. |
 | `jobs` | Stage + idempotency key, payload, ready/leased/complete/dead, attempts, available_at, lease_until, lease_token, last_error, timestamps. |
+| `queue_dispatches` | Coalesced wake-up timestamp per durable job; duplicate pointers cannot create another write/fan-out cycle. |
 | `quality_gates` | Audited structured 100-record preservation result and hash. Required before city acquisition. |
 | `recheck_requests` | Due producer rechecks with an exact request timestamp for safe acknowledgment. |
-| `acquisition_runs` | Atomic daily query reservations, completed query counts, retained uncertain billing outcomes and import results. |
+| `acquisition_runs` | Planned bounded query count, run outcome, completed queries and import results. |
+| `serper_policy` | Bulk disabled; hard query/credit ceilings per run, rolling hour and London calendar day; automatic/manual pause and optional unit credit price. |
+| `serper_usage`, `serper_run_records` | Atomic reservation before every paid request, observed credits where returned, timestamps and producer/lane/market/region; immutable receipt attribution for yield/cost. |
+| `legacy_recovery_runs` | Read-only snapshot manifest, rule revision, expected count, completion and explicit supersession. |
+| `legacy_recovery_records`, `legacy_recovery_claims` | Immutable per-unit hash, reference IDs, recovery category/reason, reconstructed receipt link and field repair audit; atomic replay claims. |
+| `legacy_quality_holds` | Append-only source-qualification holds; retained evidence remains intact, while held selected facts block readiness. |
 | `publication_queue` | Reserved separately gated outbox. In this phase SQL rejects all publication inserts/updates. |
 
 Immutable-record/fact UPDATE and DELETE triggers and INSERT OR REPLACE guards protect evidence even if a downstream developer accidentally issues destructive SQL. Fact selection requires entity membership, never replaces a higher-authority fact, and records all alternatives. Equal-authority static disagreement raises an explicit conflict. A newer explicit lifecycle transition from the same producer record can select updated application/lifecycle state, retaining the prior facts. Equal values provide corroboration. Missing fields can be filled; stronger supported facts can replace lower-authority selections while both facts remain retained.
 
-Authority comes from the server-owned producer registry, not client-supplied scores: structured platform 100, direct form 95, official page 90, official PDF 85, trusted directory 75, extracted page 60, search snippet 50, inference 40. Low-authority form fragments cannot replace a structured location or application URL. Correcting a strong structured fact requires stronger authorized evidence or a future explicit human resolution; no silent tie-breaking.
+Authority comes from the server-owned producer registry, not client-supplied scores: structured platform 100, direct form 95, official page 90, official PDF 85, trusted directory 75, extracted page 60, search snippet 50, inference 40. Low-authority form fragments cannot replace a structured location or application URL. Stronger evidence with the same value upgrades its selected authority, preventing a later medium-authority disagreement from replacing that value. Correcting a strong structured fact requires stronger authorized evidence or a future explicit human resolution; no silent tie-breaking.
 
 Identity rules separate different known event years/editions and different platform identifiers. Distinct same-year dates remain separate unless a specific exact route/ID establishes identity; contradicting facts then require review. Generic titles, shared organisers, and platform landing paths alone do not merge events. Probable matches require meaningful shared name tokens and organiser/location corroboration and remain reviewable. Market and test/shadow environment are part of the identity namespace.
 
@@ -91,6 +98,8 @@ All Worker names and queues start with `findpitches-v3-`; no live custom domain 
 
 One new dead-letter queue `findpitches-v3-dead-shadow` receives exhausted transport deliveries. A separate reserved `findpitches-v3-publication-shadow` queue has no publisher or consumer in this phase. D1 jobs, not transport messages, are the source of truth; cron sweeps recover a missing wakeup. Jobs use atomic conditional claims, lease tokens, expiry recovery, bounded retry/backoff, and explicit dead-job requeue. Stage writes are deterministic/idempotent, so repeated delivery and a crash between work and acknowledgment are safe. Queue consumers reject messages for another stage.
 
+Each consumer has maximum concurrency one. Wake-ups are atomically coalesced for five minutes, and completed/leased duplicate pointers are acknowledged without another claim or fan-out. Source-field selection is a bounded atomic batch of at most 14 distinct fields; each field retains its authority, conflict, lifecycle and concurrent-update checks. This preserves immutable facts and selection audit while avoiding a database round trip for every field.
+
 Mutation endpoints require role-specific ingest/operator secrets; health/status expose only aggregates. Raw evidence and shadow projections require operator authorization. `/v1/opportunities` fails closed while publication is disabled, even if an environment variable is accidentally set to true. Initial runtime accepts only shadow/test input and sets promotion/publication eligibility false independently of client input.
 
 ## Implementation and acceptance sequence
@@ -105,7 +114,7 @@ Mutation endpoints require role-specific ingest/operator secrets; health/status 
 
 The controls use real producer-backed records. The first control reconstructed failure categories from a deterministic reference sample. The actual 100 pilot IDs and frozen audit were subsequently recovered with SELECT-only reference queries and verified against the pinned source artifact; both samples pass V3 adverse extraction. See the comparison guide for observed field coverage and remaining truth/cost limitations. Preservation remains a prerequisite for broader acquisition.
 
-Cloudflare credentials are configured. Continuous feed operation needs producer-host delivery installation; the one-query city canary awaits the separate Serper secret. Local validation and historical comparison proceed independently.
+Cloudflare resources and the Serper binding are configured. The producer-host installer was transferred and its first live delivery reached V3. The single-query city canary completed; its grant is revoked. Publication and paid bulk acquisition remain disabled.
 
 ## Implementation status
 
@@ -113,4 +122,6 @@ The greenfield shadow implementation now includes all eight role configurations,
 
 Remote provisioning completed on 6 October 2026 after the environment policy was published. The new database is `findpitches-v3-shadow` (`75ccfd1a-f136-4598-8cfb-9a4489d174b9`); all eight Workers and eight queues are deployed. The [resource audit](../operations/findpitches-v3/reports/remote-resource-audit-2026-10-06.json) records actual bindings, consumers, retry/dead-letter settings, schedules and URLs. The deployed real 100-record control and final re-audit passed with zero mutations/customer/publication rows. No V2 mutation, production cutover or publication has been performed.
 
-The standalone delivery client and runner support JSON/JSONL, directory exports, bounded batches, checkpoint resume and producer-addressable rechecks with freshness guards. The [delivery guide](findpitches-v3-continuous-delivery.md) supplies a 15-minute Windows schedule for the current local producer and a portable service template. Installation on that producer host remains necessary. The [comparison guide](findpitches-v3-comparison.md) records the recovered actual pilot at its historical clock. Serper is stored only on the V3 acquisition Worker. One live Austin query produced 10 accepted records through reconciliation/readiness; its temporary grant is revoked and bulk acquisition remains disabled. Independent truth, historical V2 readiness/replay and equivalent cost measurements remain incomplete.
+The standalone delivery client and runner support JSON/JSONL, directory exports, bounded batches, checkpoint resume and producer-addressable rechecks with freshness guards. The [delivery guide](findpitches-v3-continuous-delivery.md) supplies the installed host's 15-minute Windows schedule and a portable service template. The first 887 live records were verified against an immutable pre-recovery receipt/fact baseline. Unchanged-file delivery is idempotent; it does not create new receipt arrival timestamps. The [comparison guide](findpitches-v3-comparison.md) records the recovered actual pilot at its historical clock. Serper is stored only on the V3 acquisition Worker. One live Austin query produced 10 accepted records through reconciliation/readiness; its temporary grant is revoked and bulk acquisition remains disabled. Independent truth, historical V2 readiness/replay and equivalent cost measurements remain incomplete.
+
+The [Serper safeguards](findpitches-v3-serper-usage.md) apply to every future paid request: four queries/credits per run, 100 per rolling hour and 1,000 per London calendar day, including canaries. These are ceilings; bulk remains disabled. The [legacy recovery lane](findpitches-v3-legacy-recovery.md) reconstructs `legacy_v2` evidence from retained source material or direct original URLs. V2 customer fields are comparison material only. Retained structured authority 85 and direct Event authority 90 cannot override independent structured authority 100. Unsupported sources and uncertain identity remain quarantined, and all recovery is shadow-only pending audit.

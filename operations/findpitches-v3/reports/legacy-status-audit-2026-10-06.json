@@ -1,0 +1,61 @@
+{
+  "as_of": "2026-10-06T19:18:25.780Z",
+  "held_selected_entity_readiness": [
+    {
+      "status": "blocked",
+      "entities": 95
+    }
+  ],
+  "public_status_http": 200,
+  "recovery": {
+    "runs": [
+      {
+        "id": "legacy_7f89cf2114b9983cc290268d2631e0ad5d40a06f9e4533b4f4a8c145c3a5c06a",
+        "total_opportunities": 31203,
+        "status": "complete",
+        "superseded_by": null,
+        "created_at": "2026-10-06T16:56:48.286Z",
+        "updated_at": "2026-10-06T18:30:51.418Z",
+        "inspected": 31203,
+        "recovered_from_retained": 2062,
+        "recovered_by_refetch": 3578,
+        "quarantined": 25563,
+        "exact_matches": 1239,
+        "probable_matches": 14,
+        "new_entity_decisions": 4459,
+        "reconciliation_pending": 0,
+        "source_qualification_holds": 148,
+        "reconciliation_quarantined": 76
+      },
+      {
+        "id": "legacy_55d99b78d115f189af1c35106476877477d038937c5d23a9b5aaed8b1eec9bcc",
+        "total_opportunities": 31203,
+        "status": "running",
+        "superseded_by": "legacy_7f89cf2114b9983cc290268d2631e0ad5d40a06f9e4533b4f4a8c145c3a5c06a",
+        "created_at": "2026-10-06T16:29:19.457Z",
+        "updated_at": "2026-10-06T16:34:49.772Z",
+        "inspected": 1037,
+        "recovered_from_retained": 957,
+        "recovered_by_refetch": 19,
+        "quarantined": 61,
+        "exact_matches": 876,
+        "probable_matches": 1,
+        "new_entity_decisions": 98,
+        "reconciliation_pending": 0,
+        "source_qualification_holds": 0,
+        "reconciliation_quarantined": 1
+      }
+    ]
+  },
+  "serper": {
+    "bulk_enabled": false,
+    "limits": {
+      "queries_per_run": 4,
+      "queries_per_hour": 100,
+      "queries_per_day": 1000,
+      "credits_per_run": 4,
+      "credits_per_hour": 100,
+      "credits_per_day": 1000
+    }
+  }
+}

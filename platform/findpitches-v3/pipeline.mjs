@@ -1,27 +1,48 @@
-import { FIELDS,hash,stableJson } from './contract.mjs';
-import { identityKeys,identityAnchor,reconcileIdentity,edition } from './identity.mjs';
+import { FIELDS,hash,stableJson,platformId } from './contract.mjs';
+import { identityKeys,identityCandidateKeys,identityAnchor,reconcileIdentity,edition } from './identity.mjs';
 import { sql,loadEntity } from './store.mjs';
-import { selectFact,proposeFact } from './evidence.mjs';
+import { selectRecordFacts,proposeFact } from './evidence.mjs';
 import { enqueue,jobStatement,claimJob,finishJob,failJob } from './jobs.mjs';
 
 export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}={}) {
   const existing=await sql(db,'SELECT * FROM reconciliation_decisions WHERE record_id=?',recordId).first();
   if(existing)return existing;
+  if(await sql(db,'SELECT record_id FROM legacy_quality_holds WHERE record_id=?',recordId).first()) {
+    const decision={outcome:'REVIEW_REQUIRED',entity_id:null,candidates:[],reason:'legacy_source_qualification_requires_review'};
+    await sql(db,'INSERT OR IGNORE INTO reconciliation_decisions(record_id,outcome,entity_id,candidates_json,reason,created_at) VALUES (?,?,NULL,?,?,?)',recordId,decision.outcome,'[]',decision.reason,now).run();
+    return decision;
+  }
   const record=await sql(db,"SELECT * FROM producer_records WHERE id=? AND validation_status='accepted'",recordId).first();
   if(!record)throw new Error('accepted_record_required');
   const incoming=JSON.parse(record.normalized_json),keys=identityKeys(incoming);
-  const candidates=new Map();
-  for(const key of keys) {
-    const rows=(await sql(db,'SELECT entity_id FROM identity_keys WHERE environment=? AND market=? AND identity_key=? LIMIT 101',incoming.environment,incoming.market,key).all()).results??[];
-    if(rows.length>100)throw new Error('identity_pool_requires_review');
-    for(const row of rows)candidates.set(row.entity_id,null);
+  const candidateKeys=identityCandidateKeys(incoming),sourceId=incoming.source_identifier??platformId(incoming.application_url);
+  // Apply only necessary conditions from reconcileIdentity before bounding the pool:
+  // an exact route/ID or three shared name tokens. A year token alone is insufficient.
+  // Known distinct IDs on the same platform cannot match and need not be loaded.
+  const excludeDistinctIds=Boolean(incoming.source_platform&&sourceId);
+  const rows=(await sql(db,`SELECT k.entity_id FROM identity_keys k
+    JOIN json_each(?) wanted ON wanted.value=k.identity_key
+    LEFT JOIN selected_facts p ON p.entity_id=k.entity_id AND p.field_name='source_platform'
+    LEFT JOIN selected_facts i ON i.entity_id=k.entity_id AND i.field_name='source_identifier'
+    WHERE k.environment=? AND k.market=?
+    ${excludeDistinctIds?"AND NOT (COALESCE(p.value_json=?,0) AND i.value_json IS NOT NULL AND i.value_json<>'null' AND i.value_json<>?)":''}
+    GROUP BY k.entity_id
+    HAVING SUM(CASE WHEN k.identity_key LIKE 'name:%' THEN 0 ELSE 1 END)>0
+      OR SUM(CASE WHEN k.identity_key LIKE 'name:%' THEN 1 ELSE 0 END)>=3
+    ORDER BY k.entity_id LIMIT 101`,stableJson(candidateKeys),incoming.environment,incoming.market,
+    ...(excludeDistinctIds?[stableJson(incoming.source_platform),stableJson(sourceId)]:[])).all()).results??[];
+  let decision;
+  if(rows.length>100)decision={outcome:'REVIEW_REQUIRED',entity_id:null,candidates:[],reason:'identity_pool_requires_review'};
+  else {
+    const candidates=[];
+    for(const row of rows)candidates.push(await loadEntity(db,row.entity_id));
+    decision=reconcileIdentity(incoming,candidates);
   }
-  for(const id of candidates.keys())candidates.set(id,await loadEntity(db,id));
-  const decision=reconcileIdentity(incoming,[...candidates.values()]);
   if(['CONFLICT','PROBABLE_MATCH','REVIEW_REQUIRED'].includes(decision.outcome)) {
     await db.batch([
       sql(db,'INSERT OR IGNORE INTO reconciliation_decisions(record_id,outcome,entity_id,candidates_json,reason,created_at) VALUES (?,?,?,?,?,?)',recordId,decision.outcome,null,stableJson(decision.candidates),decision.reason,now),
       ...decision.candidates.map(id=>sql(db,'INSERT OR IGNORE INTO conflicts(id,entity_id,record_id,reason,created_at) VALUES (?,?,?,?,?)',recordId+':'+id,id,recordId,decision.reason,now)),
+      ...(decision.outcome==='REVIEW_REQUIRED'?[sql(db,'INSERT OR IGNORE INTO conflicts(id,entity_id,record_id,reason,created_at) VALUES (?,NULL,?,?,?)',recordId+':review',recordId,decision.reason,now)]:[]),
     ]);
     return decision;
   }
@@ -35,10 +56,7 @@ export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}
   ]);
   const facts=(await sql(db,'SELECT * FROM source_facts WHERE record_id=? ORDER BY field_name',recordId).all()).results??[];
   const snapshot=await loadEntity(db,id);
-  for(const fact of facts) {
-    const selected=await selectFact(db,id,fact,{now,snapshot});
-    if(selected.decision==='accepted')snapshot.selections[fact.field_name]={...fact,fact_id:fact.id};
-  }
+  await selectRecordFacts(db,id,facts,{now,snapshot});
   const entity=await loadEntity(db,id);
   await db.batch([
     sql(db,'INSERT OR IGNORE INTO reconciliation_decisions(record_id,outcome,entity_id,candidates_json,reason,created_at) VALUES (?,?,?,?,?,?)',recordId,decision.outcome,id,stableJson(decision.candidates),decision.reason,now),
@@ -46,9 +64,10 @@ export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}
   ]);
   return {...decision,entity_id:id};
 }
-export function assessEligibility(entity,{now=new Date().toISOString(),conflicts=0}={}) {
+export function assessEligibility(entity,{now=new Date().toISOString(),conflicts=0,qualityHolds=0}={}) {
   let status='eligible',reasons=[];
-  if(conflicts) { status='review';reasons=['unresolved_evidence_conflict']; }
+  if(qualityHolds) { status='review';reasons=['source_qualification_requires_review']; }
+  else if(conflicts) { status='review';reasons=['unresolved_evidence_conflict']; }
   else if(entity.lifecycle_state==='WITHDRAWN'||entity.application_state==='CLOSED') { status='closed';reasons=['source_declared_closed']; }
   else if(entity.event_end&&Number.isFinite(Date.parse(entity.event_end))&&Date.parse(entity.event_end)<Date.parse(now)) { status='closed';reasons=['past_event_end']; }
   else if(['WATCH','UNKNOWN'].includes(entity.application_state)||!entity.application_state) { status='watch';reasons=['application_state_requires_recheck']; }
@@ -59,9 +78,10 @@ export async function classifyEntity(db,id,{now=new Date().toISOString()}={}) {
   const entity=await loadEntity(db,id);
   if(!entity)throw new Error('entity_missing');
   const conflicts=await sql(db,'SELECT COUNT(*) AS n FROM conflicts WHERE entity_id=? AND resolved=0',id).first();
-  const result=assessEligibility(entity,{now,conflicts:conflicts.n});
+  const quality=await sql(db,'SELECT COUNT(*) AS n FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=?',id).first();
+  const result=assessEligibility(entity,{now,conflicts:conflicts.n,qualityHolds:quality.n});
   const revision=entity.revision;
-  const ruleset='eligibility-v1:'+now.slice(0,10);
+  const ruleset='eligibility-v2:'+now.slice(0,10);
   await db.batch([
     sql(db,'INSERT OR IGNORE INTO assessments(id,entity_id,entity_revision,ruleset,status,reasons_json,score,assessed_at) VALUES (?,?,?,?,?,?,?,?)',id+':'+revision+':'+ruleset,id,revision,ruleset,result.status,stableJson(result.reasons),result.score,now),
     await jobStatement(db,'enrichment',id+':'+revision+':'+now.slice(0,10),{entity_id:id},now),
@@ -80,7 +100,8 @@ export async function evaluateReadiness(db,id,{now=new Date().toISOString()}={})
   const entity=await loadEntity(db,id);
   if(!entity)throw new Error('entity_missing');
   const conflict=await sql(db,'SELECT COUNT(*) AS n FROM conflicts WHERE entity_id=? AND resolved=0',id).first();
-  const eligibility=assessEligibility(entity,{now,conflicts:conflict.n});
+  const quality=await sql(db,'SELECT COUNT(*) AS n FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=?',id).first();
+  const eligibility=assessEligibility(entity,{now,conflicts:conflict.n,qualityHolds:quality.n});
   const reasons=[...eligibility.reasons];
   if(!entity.location)reasons.push('source_backed_location_missing');
   if(!entity.organiser)reasons.push('organiser_missing');

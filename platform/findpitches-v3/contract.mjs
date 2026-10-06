@@ -4,6 +4,7 @@ export const FIELDS = Object.freeze(['event_name','organiser','location','region
 export const PRODUCERS = Object.freeze({
   'independent-structured': Object.freeze({ type: 'structured', authority: 100 }),
   'city-search': Object.freeze({ type: 'search', authority: 50 }),
+  'legacy_v2': Object.freeze({ type: 'legacy_recovery', authority: 40 }),
 });
 export const AUTHORITIES = Object.freeze({ direct_form:95, official_page:90, official_pdf:85, trusted_directory:75, extracted_page:60, search_snippet:50, inferred:40 });
 export function validFieldValue(field,value) {
@@ -55,6 +56,16 @@ export function normalizeExport(raw, { producer='independent-structured', enviro
     confidence:raw.confidence??null,evidence:raw.evidence??[],provenance:raw.provenance??[],
     first_seen:raw.first_seen??null,last_seen:raw.last_seen??null,last_checked:raw.last_checked??null,source_fingerprint:raw.source_fingerprint??raw.content_fingerprint??null,
   };
+  if(producer==='legacy_v2') {
+    normalized.legacy_v2=raw.legacy_v2;
+    normalized.field_evidence=raw.field_evidence;
+    if(raw.legacy_v2?.audit_status!=='pending'||raw.legacy_v2?.shadow_only!==true)errors.push('legacy_shadow_audit_required');
+    for(const field of FIELDS)if(normalized[field]!==null&&normalized[field]!==undefined&&normalized[field]!=='') {
+      const proof=raw.field_evidence?.[field];
+      if(!proof||!['retained_structured','retained_excerpt','direct_event','direct_heading','source_route','historical_state'].includes(proof.kind)
+        ||!publicHttps(proof.source)||typeof proof.excerpt!=='string'||!proof.excerpt.trim()||proof.excerpt.length>4000)errors.push('legacy_field_evidence_required_'+field);
+    }
+  }
   if (typeof normalized.event_name!=='string' || !normalized.event_name.trim()) errors.push('event_name_required');
   for(const field of FIELDS) if(!validFieldValue(field,normalized[field]))errors.push('invalid_'+field);
   for(const field of ['first_seen','last_seen','last_checked'])if(normalized[field]!==null&&(typeof normalized[field]!=='string'||!Number.isFinite(Date.parse(normalized[field]))))errors.push('invalid_'+field);

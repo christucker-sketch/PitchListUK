@@ -1,0 +1,13 @@
+{
+  "schema": "findpitches-legacy-source-qualification-v1",
+  "as_of": "2026-10-06T18:45:20.215Z",
+  "run_id": "legacy_7f89cf2114b9983cc290268d2631e0ad5d40a06f9e4533b4f4a8c145c3a5c06a",
+  "records_checked": 5788,
+  "quality_holds": 148,
+  "linked_entities_scheduled_for_review": 96,
+  "evidence_deleted": 0,
+  "source_field_mutations": 0,
+  "rules_version": "heading-qualification-v2",
+  "strong_structured_and_direct_event_evidence_excluded": true,
+  "paid_search_queries_issued": 0
+}

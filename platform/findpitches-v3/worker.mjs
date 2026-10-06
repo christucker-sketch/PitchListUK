@@ -4,6 +4,10 @@ import { runStage,enrichEntity } from './pipeline.mjs';
 import { enqueue,requeueDead } from './jobs.mjs';
 import { verifyStructuredControl } from './control.mjs';
 import { acquireCity,CITY,canaryApproved } from './acquisition.mjs';
+import {serperStatus,serperPolicy,budgetDay} from './serper-usage.mjs';
+import {fetchLegacySource} from './legacy.mjs';
+import {selectRecordFacts} from './evidence.mjs';
+import {importLegacyBatch,completeLegacyRecovery,legacyRecoveryStatus} from './legacy-store.mjs';
 
 const STAGES=['reconcile','eligibility','enrichment','readiness','acquisition','watch'];
 const NEXT={ingest:'reconcile',acquisition:'reconcile',reconcile:'eligibility',eligibility:'enrichment',enrichment:'readiness',readiness:'watch',watch:'eligibility'};
@@ -34,21 +38,30 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
     "SELECT stage,COUNT(*) AS completed_last_hour FROM jobs WHERE status='complete' AND updated_at>=? GROUP BY stage",
     "SELECT COUNT(*) AS stale_leases FROM jobs WHERE status='leased' AND lease_until<=?",
     'SELECT COUNT(*) AS unresolved_conflicts FROM conflicts WHERE resolved=0',
-    'SELECT COALESCE(SUM(queries_reserved),0) AS provider_queries_reserved,COALESCE(SUM(queries_completed),0) AS provider_queries_completed FROM acquisition_runs WHERE day=?',
+    'SELECT COALESCE(SUM(queries_reserved),0) AS provider_queries_reserved,COALESCE(SUM(queries_completed),0) AS provider_queries_completed FROM serper_usage WHERE budget_day=?',
     'SELECT (SELECT COUNT(*) FROM customer_projections) AS customer_rows,(SELECT COUNT(*) FROM publication_queue) AS publication_rows',
   ];
-  const values=[[],[],[],[],[],[new Date(Date.parse(now)-3600000).toISOString()],[now],[],[now.slice(0,10)],[]];
+  const values=[[],[],[],[],[],[new Date(Date.parse(now)-3600000).toISOString()],[now],[],[budgetDay(now)],[]];
   const results=await Promise.all(queries.map((q,i)=>sql(db,q,...values[i]).all()));
   const [producers,jobs,entities,readiness,gates,throughput,leases,conflicts,cost,leakage]=results.map(r=>r.results);
-  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0]};
+  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),legacy_recovery:await legacyRecoveryStatus(db)};
 }
-export async function wakeStage(env,stage) {
-  if(!stage||!env.NEXT_QUEUE)return;
-  const jobs=(await sql(env.FINDPITCHES_V3_DB,"SELECT id FROM jobs WHERE stage=? AND status='ready' AND available_at<=? ORDER BY available_at LIMIT 100",stage,new Date().toISOString()).all()).results;
-  if(jobs.length)await env.NEXT_QUEUE.sendBatch(jobs.map(j=>({body:{stage,job_id:j.id}})));
+export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
+  if(!stage||!queue)return;
+  const now=new Date().toISOString(),retryBefore=new Date(Date.parse(now)-300000).toISOString();
+  const jobs=(await sql(env.FINDPITCHES_V3_DB,`INSERT INTO queue_dispatches(job_id,last_sent_at)
+    SELECT j.id,? FROM jobs j LEFT JOIN queue_dispatches d ON d.job_id=j.id
+    WHERE j.stage=? AND j.status='ready' AND j.available_at<=?
+      AND (d.job_id IS NULL OR d.last_sent_at<=?) ORDER BY j.available_at LIMIT 100
+    ON CONFLICT(job_id) DO UPDATE SET last_sent_at=excluded.last_sent_at
+      WHERE queue_dispatches.last_sent_at<=? RETURNING job_id AS id`,now,stage,now,retryBefore,retryBefore).all()).results;
+  if(jobs.length)await queue.sendBatch(jobs.map(j=>({body:{stage,job_id:j.id}})));
 }
 async function tick(env,{jobId=null,limit=10}={}) {
   const stage=env.V3_ROLE;if(!STAGES.includes(stage))throw new Error('stage_worker_required');
+  // Candidate loading and source-field selection are bounded per record, but costly
+  // across many records in one invocation. Reconciliation uses one queue message.
+  if(['reconcile','acquisition'].includes(stage))limit=1;
   const results=[];
   for(let i=0;i<limit;i++) {
     const result=await runStage(env.FINDPITCHES_V3_DB,stage,{jobId,clock:()=>new Date(),handlers:stage==='acquisition'?{acquisition:p=>acquireCity(env.FINDPITCHES_V3_DB,p,env,{runId:p.run_id})}:{}});
@@ -73,6 +86,16 @@ export default {
         // Durable jobs survive a missing transport wakeup; the role cron recovers them.
         ctx?.waitUntil(wakeStage(env,'reconcile').catch(()=>{}));return json(result,202);
       }
+      if(request.method==='POST'&&path==='/legacy/import'&&role==='ingest') {
+        const result=await importLegacyBatch(db,await bodyJson(request));
+        ctx?.waitUntil(wakeStage(env,'reconcile').catch(()=>{}));return json(result,202);
+      }
+      if(request.method==='POST'&&path==='/legacy/complete'&&role==='ingest')return json(await completeLegacyRecovery(db,(await bodyJson(request)).run_id));
+      if(request.method==='POST'&&path==='/legacy/refetch'&&role==='ingest') {
+        const body=await bodyJson(request);
+        if(typeof body.url!=='string')throw Error('legacy_original_source_url_required');
+        return json(await fetchLegacySource(body.url));
+      }
       if(request.method==='GET'&&path==='/rechecks'&&role==='ingest')return json({requests:(await sql(db,`SELECT q.entity_id,q.requested_at,q.reason,r.producer_record_id,r.market,r.environment
         FROM recheck_requests q JOIN entity_records er ON er.entity_id=q.entity_id JOIN producer_records r ON r.id=er.record_id
         WHERE r.producer_name='independent-structured' AND r.environment='shadow'
@@ -93,12 +116,26 @@ export default {
       if(request.method==='GET'&&path.startsWith('/entities/')&&role==='api') {
         const entity=await loadEntity(db,decodeURIComponent(path.slice(10)));if(!entity)return json({error:'entity_missing'},404);
         const audit=(await sql(db,'SELECT * FROM selection_audit WHERE entity_id=? ORDER BY created_at,id LIMIT 250',entity.id).all()).results;
-        return json({entity,audit});
+        const quality_holds=(await sql(db,'SELECT h.* FROM legacy_quality_holds h JOIN selected_facts f ON f.record_id=h.record_id WHERE f.entity_id=? GROUP BY h.record_id',entity.id).all()).results;
+        return json({entity,audit,quality_holds});
       }
       if(request.method==='POST'&&path==='/tick'&&STAGES.includes(role)) {const body=await bodyJson(request);return json({results:await tick(env,{limit:Math.min(25,Math.max(1,Number(body.limit)||10))})});}
       if(request.method==='POST'&&path==='/proposals'&&role==='enrichment') {
         const body=await bodyJson(request);if(!Array.isArray(body.proposals)||body.proposals.length<1||body.proposals.length>10)throw new Error('proposal_batch_1_to_10_required');
         const result=await enrichEntity(db,body.entity_id,{proposals:body.proposals});ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result,202);
+      }
+      if(request.method==='POST'&&path==='/corroboration/reselect'&&role==='enrichment') {
+        const body=await bodyJson(request),ids=body.fact_ids;
+        if(!Array.isArray(ids)||ids.length<1||ids.length>14||new Set(ids).size!==ids.length)throw Error('bounded_corroborating_fact_ids_required');
+        const entity=await loadEntity(db,body.entity_id);if(!entity||!['test','shadow'].includes(entity.environment))throw Error('shadow_entity_required');
+        const facts=(await sql(db,`SELECT f.* FROM source_facts f JOIN entity_facts ef ON ef.fact_id=f.id
+          WHERE ef.entity_id=? AND f.id IN (SELECT value FROM json_each(?))
+          AND NOT EXISTS(SELECT 1 FROM legacy_quality_holds h WHERE h.record_id=f.record_id)`,entity.id,JSON.stringify(ids)).all()).results;
+        if(facts.length!==ids.length||facts.some(f=>!entity.selections[f.field_name]||f.value_json!==entity.selections[f.field_name].value_json||f.authority<entity.selections[f.field_name].authority))throw Error('same_value_stronger_membership_required');
+        const results=await selectRecordFacts(db,entity.id,facts,{snapshot:entity});
+        const current=await loadEntity(db,entity.id),key=current.id+':'+current.revision+':corroboration';
+        await enqueue(db,'eligibility',key,{entity_id:current.id});await enqueue(db,'readiness',key,{entity_id:current.id});
+        return json({entity_id:entity.id,results,source_value_mutations:0});
       }
       if(request.method==='POST'&&path==='/control'&&role==='api') {const body=await bodyJson(request);return json(await verifyStructuredControl(db,body.records,body.record_ids));}
       if(request.method==='POST'&&path==='/jobs/requeue'&&STAGES.includes(role)) {
@@ -113,7 +150,7 @@ export default {
       }
       if(request.method==='POST'&&path==='/acquisition'&&role==='acquisition') {
         const body=await bodyJson(request);
-        if(env.V3_CITY_ENABLED!=='true')throw new Error('city_acquisition_disabled');
+        if(env.V3_CITY_ENABLED!=='true'||(await serperPolicy(db)).bulk_enabled!==1)throw new Error('city_acquisition_disabled');
         if(body.city!==CITY.id||!Number.isInteger(body.query_limit)||body.query_limit<1||body.query_limit>4)throw new Error('bounded_approved_city_required');
         const runId=crypto.randomUUID();await enqueue(db,'acquisition',runId,{city:body.city,query_limit:body.query_limit,run_id:runId});return json({run_id:runId},202);
       }
@@ -123,11 +160,21 @@ export default {
       return json({error:known},known==='request_size_limit'?413:400);
     }
   },
-  async scheduled(_event,env,ctx) {ctx.waitUntil(tick(env,{limit:25}));},
+  async scheduled(_event,env,ctx) {
+    ctx.waitUntil((async()=>{
+      if(env.V3_ROLE==='reconcile'&&env.SELF_QUEUE)await wakeStage(env,'reconcile',env.SELF_QUEUE).catch(()=>{});
+      return tick(env,{limit:25});
+    })());
+  },
   async queue(batch,env) {
     for(const message of batch.messages) {
       if(message.body?.stage!==env.V3_ROLE||typeof message.body?.job_id!=='string') {message.retry();continue;}
       try {
+        const job=await sql(env.FINDPITCHES_V3_DB,'SELECT status,available_at,lease_until FROM jobs WHERE id=? AND stage=?',message.body.job_id,env.V3_ROLE).first();
+        const now=new Date().toISOString();
+        // A duplicate pointer must not create another claim/write/fan-out cycle.
+        if(!job||['complete','dead'].includes(job.status)||job.status==='leased'&&job.lease_until>now){message.ack();continue;}
+        if(job.status==='ready'&&job.available_at>now){message.retry({delaySeconds:Math.min(3600,Math.max(1,Math.ceil((Date.parse(job.available_at)-Date.now())/1000)))});continue;}
         const results=await tick(env,{jobId:message.body.job_id,limit:1});
         if(results.some(r=>r.phase==='failed'))message.retry({delaySeconds:120});else message.ack();
       } catch {message.retry({delaySeconds:120});}

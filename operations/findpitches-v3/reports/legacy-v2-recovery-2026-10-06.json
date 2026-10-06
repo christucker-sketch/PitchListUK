@@ -1,0 +1,255 @@
+{
+  "schema": "findpitches-legacy-v2-recovery-report-v1",
+  "as_of": "2026-10-06T19:18:59.592Z",
+  "run_id": "legacy_7f89cf2114b9983cc290268d2631e0ad5d40a06f9e4533b4f4a8c145c3a5c06a",
+  "snapshot_hash": "55d99b78d115f189af1c35106476877477d038937c5d23a9b5aaed8b1eec9bcc",
+  "evidence_rules_version": "evidence-v2",
+  "superseded_attempt": "legacy_55d99b78d115f189af1c35106476877477d038937c5d23a9b5aaed8b1eec9bcc",
+  "capture_window": {
+    "started_at": "2026-10-06T16:07:52.509Z",
+    "completed_at": "2026-10-06T16:09:29.113Z",
+    "consistency": "Pinned identity sets; field values read during capture, not a transactional V2 snapshot."
+  },
+  "source_table_counts": {
+    "candidates": 29747,
+    "customer_opportunities": 3161,
+    "candidate_enrichment": 4377,
+    "structured_feed_records": 1599,
+    "structured_feed_candidate_pilot": 100
+  },
+  "total_reference_rows_read": 38984,
+  "total_v2_records_inspected": 34507,
+  "total_v2_opportunities_inspected": 31203,
+  "planned_recovery_units": 31203,
+  "recovery_unit_definition": "A candidate and its customer row are one unit; an explicitly or uniquely source-linked structured baseline joins that unit. Remaining baselines are separate units until reconciliation.",
+  "complete": true,
+  "recovered_from_retained_evidence": 2062,
+  "recovered_by_source_refetch": 3578,
+  "final_categories": {
+    "retained_evidence": 2053,
+    "source_refetch": 3544,
+    "quarantine": 25606
+  },
+  "identity_holds_by_source_category": {
+    "retained_evidence": 9,
+    "source_refetch": 34
+  },
+  "final_category_definition": "Mutually exclusive disposition per recovery unit. Source-qualified records still awaiting identity review are counted only in quarantine here; evidence reconstruction totals above include those holds.",
+  "matched_to_existing_v3": 878,
+  "distinct_existing_v3_entities": 878,
+  "genuinely_new_v3_entities": 4458,
+  "matched_within_recovery": 261,
+  "within_recovery_match_definition": "Additional qualified recovery units linked to an already counted new entity; counted independently of earlier held receipts and reconciliation outcome labels.",
+  "quarantined_unrecoverable": 25606,
+  "quarantined_at_source": 25415,
+  "quarantined_after_source_qualification": 148,
+  "quarantined_after_reconciliation": 43,
+  "source_evidence_receipts_retained_including_quality_holds": 5788,
+  "category_definition": "Retained/re-fetch counts exclude source-qualification holds. Identity holds overlap reconstructed-evidence counts and are included in total quarantine; overlapping quality/identity holds are counted once.",
+  "existing_entity_definition": "Initial V3 population plus entities first created by other producers while recovery ran.",
+  "entity_definition": "Distinct source-linked entity IDs under conservative market/edition identity rules; real-world uniqueness has not been independently labelled.",
+  "reconciliation_review_required": 43,
+  "reconciliation_pending": 0,
+  "reconciliation_outcomes": {
+    "NEW_ENTITY": 4459,
+    "EXACT_MATCH": 1239,
+    "PROBABLE_MATCH": 14,
+    "CONFLICT": 25,
+    "REVIEW_REQUIRED": 51
+  },
+  "quarantine_and_recovery_reasons": {
+    "source_does_not_establish_specific_trading_event": 16560,
+    "source_format_requires_review": 2387,
+    "source_http_406": 159,
+    "source_http_999": 133,
+    "source_http_403": 1851,
+    "source_response_size_limit": 797,
+    "direct_source_established_event_identity": 3578,
+    "source_fetch_failed": 86,
+    "source_http_429": 117,
+    "source_heading_requires_trading_event_qualification": 148,
+    "source_http_404": 313,
+    "no_safe_original_source_route": 246,
+    "source_http_401": 142,
+    "retained_fetched_excerpt_corroborates_identity": 483,
+    "source_http_530": 17,
+    "source_http_500": 16,
+    "source_redirect_loop": 42,
+    "source_http_410": 33,
+    "source_http_520": 41,
+    "multiple_source_events_require_review": 100,
+    "unsafe_original_source_url": 18,
+    "source_http_402": 13,
+    "source_http_525": 8,
+    "source_http_526": 28,
+    "source_http_511": 2,
+    "source_http_405": 12,
+    "source_http_451": 2,
+    "source_http_432": 1,
+    "source_redirect_limit": 13,
+    "source_host_rate_limited_requires_review": 2265,
+    "source_http_502": 4,
+    "source_http_503": 5,
+    "source_http_400": 3,
+    "source_http_409": 1,
+    "retained_structured_source_with_hash_and_provenance": 1579
+  },
+  "field_statistics": {
+    "source_fields": 38300,
+    "historical_preserved": 5196,
+    "historical_repaired": 4514,
+    "historical_withheld": 65728,
+    "retained_source_preserved": 19059,
+    "retained_source_changed": 59,
+    "historical_market_repaired": 28,
+    "selection_decisions": [
+      {
+        "decision": "accepted",
+        "reason": "missing_field",
+        "fields": 24887
+      },
+      {
+        "decision": "accepted",
+        "reason": "stronger_corroboration",
+        "fields": 26
+      },
+      {
+        "decision": "accepted",
+        "reason": "stronger_evidence",
+        "fields": 16
+      },
+      {
+        "decision": "conflict",
+        "reason": "equal_authority_disagreement",
+        "fields": 185
+      },
+      {
+        "decision": "corroborated",
+        "reason": "same_value",
+        "fields": 12975
+      },
+      {
+        "decision": "rejected",
+        "reason": "weaker_evidence",
+        "fields": 395
+      }
+    ],
+    "per_field": {
+      "application_deadline": {
+        "reconstructed_present": 1086,
+        "reconstructed_absent": 30117,
+        "not_previously_present": 31028,
+        "withheld": 141,
+        "repaired": 34
+      },
+      "application_state": {
+        "reconstructed_present": 5640,
+        "reconstructed_absent": 25563,
+        "not_previously_present": 31203
+      },
+      "application_url": {
+        "reconstructed_present": 2385,
+        "reconstructed_absent": 28818,
+        "not_previously_present": 21378,
+        "withheld": 8895,
+        "preserved": 545,
+        "repaired": 385
+      },
+      "canonical_url": {
+        "reconstructed_present": 5640,
+        "reconstructed_absent": 25563,
+        "withheld": 25553,
+        "repaired": 1044,
+        "preserved": 3150,
+        "not_previously_present": 1456
+      },
+      "event_end": {
+        "reconstructed_present": 1460,
+        "reconstructed_absent": 29743,
+        "not_previously_present": 31203
+      },
+      "event_name": {
+        "reconstructed_present": 5640,
+        "reconstructed_absent": 25563,
+        "withheld": 25553,
+        "repaired": 2750,
+        "preserved": 1444,
+        "not_previously_present": 1456
+      },
+      "event_start": {
+        "reconstructed_present": 1854,
+        "reconstructed_absent": 29349,
+        "not_previously_present": 31074,
+        "repaired": 19,
+        "withheld": 110
+      },
+      "lifecycle_state": {
+        "reconstructed_present": 5640,
+        "reconstructed_absent": 25563,
+        "not_previously_present": 31203
+      },
+      "location": {
+        "reconstructed_present": 1733,
+        "reconstructed_absent": 29470,
+        "not_previously_present": 29188,
+        "withheld": 1869,
+        "repaired": 145,
+        "preserved": 1
+      },
+      "organiser": {
+        "reconstructed_present": 1772,
+        "reconstructed_absent": 29431,
+        "not_previously_present": 30564,
+        "withheld": 489,
+        "preserved": 40,
+        "repaired": 110
+      },
+      "recurring": {
+        "reconstructed_present": 1579,
+        "reconstructed_absent": 29624,
+        "not_previously_present": 31203
+      },
+      "region_code": {
+        "reconstructed_present": 1208,
+        "reconstructed_absent": 29995,
+        "not_previously_present": 28042,
+        "withheld": 3118,
+        "preserved": 16,
+        "repaired": 27
+      },
+      "source_identifier": {
+        "reconstructed_present": 1084,
+        "reconstructed_absent": 30119,
+        "not_previously_present": 31203
+      },
+      "source_platform": {
+        "reconstructed_present": 1579,
+        "reconstructed_absent": 29624,
+        "not_previously_present": 31203
+      }
+    },
+    "immutable_raw_receipts_verified": 5788,
+    "immutable_source_fields_verified": 38926,
+    "destructive_source_mutations": 0,
+    "source_preservation_verified": true,
+    "unsupported_customer_values_imported": 0,
+    "definition": "Historical repaired/withheld counts compare customer fields when present, otherwise candidate fields; quality-held reconstructions are treated as withheld. Source preservation compares retained structured baselines with qualified reconstructed values. Immutable receipt/fact verification includes held evidence. Reconstructed fields include UNKNOWN/WATCH defaults; not_previously_present does not imply a new populated value."
+  },
+  "direct_source_refetch": {
+    "opportunity_route_attempts": 35126,
+    "unique_cached_urls": 33200,
+    "max_original_routes_per_opportunity": 2,
+    "max_redirects": 3,
+    "max_response_bytes": 1048576,
+    "search_queries_issued": 0
+  },
+  "source_reference_read_only": true,
+  "customer_records_bulk_copied": false,
+  "all_recovered_evidence_shadow_only": true,
+  "audit_status": "pending",
+  "customer_rows": 0,
+  "publication_rows": 0,
+  "publication_enabled": 0,
+  "bulk_enabled": 0,
+  "total_v3_serper_queries_completed": 1
+}

@@ -1,0 +1,82 @@
+{
+  "checked_at": "2026-10-06T15:51:28.179Z",
+  "scope": "V3 live structured feed received after home-PC transfer; historical test receipts excluded",
+  "first_live_records": 887,
+  "records_rejected": 0,
+  "recovered_jobs": 90,
+  "source_fields_verified": 10743,
+  "raw_hashes_verified": 887,
+  "destructive_source_mutations": 0,
+  "reconciliation": [
+    {
+      "outcome": "EXACT_MATCH",
+      "records": 1
+    },
+    {
+      "outcome": "NEW_ENTITY",
+      "records": 885
+    },
+    {
+      "outcome": "PROBABLE_MATCH",
+      "records": 1
+    }
+  ],
+  "linked_unique_entities": 886,
+  "pending_readiness": 0,
+  "duplicate_probe": {
+    "records": 2,
+    "duplicates": 2,
+    "inserted": 0
+  },
+  "control": {
+    "tested_records": 100,
+    "entities": 100,
+    "destructive_mutations": 0,
+    "mutations": [],
+    "customer_projection_rows": 0,
+    "publication_rows": 0,
+    "input_hash": "339cb4e72897b3c09d3851d6bafb9fb5db6ec9217005147c05a00ae40c22260d",
+    "scope": "real_structured_artifact_control_not_exact_historical_pilot",
+    "checked_at": "2026-10-06T15:51:27.868Z"
+  },
+  "provider_queries_completed": 1,
+  "customer_rows": 0,
+  "publication_rows": 0,
+  "publication_enabled": false,
+  "stale_leases": 0,
+  "readiness": [
+    {
+      "status": "blocked",
+      "entities": 162
+    },
+    {
+      "status": "ready",
+      "entities": 824
+    },
+    {
+      "status": "watch",
+      "entities": 9
+    }
+  ],
+  "source_baseline_hash": "dd4754d577eb9f65d8a4b121d522e17de4d33fff6c7ba529365cc538ffd6745b",
+  "reconciliation_deployment_id": "cf893a3d-d068-47e6-8636-76054f1f9e67",
+  "reconciliation_version_id": "90880557-8821-48f8-9b03-2b26727c05ac",
+  "ticks": [
+    {
+      "stage": "reconcile",
+      "complete": 0
+    },
+    {
+      "stage": "eligibility",
+      "complete": 0
+    },
+    {
+      "stage": "enrichment",
+      "complete": 0
+    },
+    {
+      "stage": "readiness",
+      "complete": 0
+    }
+  ]
+}

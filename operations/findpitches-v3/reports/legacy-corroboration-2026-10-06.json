@@ -1,0 +1,9 @@
+{
+  "schema": "findpitches-corroboration-reselection-v1",
+  "as_of": "2026-10-06T19:03:56.918Z",
+  "fields_upgraded": 11,
+  "entities_checked": 6,
+  "source_value_mutations": 0,
+  "evidence_deleted": 0,
+  "paid_search_queries_issued": 0
+}

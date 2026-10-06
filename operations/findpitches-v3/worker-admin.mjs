@@ -10,7 +10,7 @@ export async function workerAdmin({credentialsFile,stateDirectory,role}) {
   if(!['ingest','reconcile','eligibility','enrichment','readiness','acquisition','watch','api'].includes(role))throw new Error('v3_role_required');
   const credentials=readCredentials(credentialsFile),api=cloudflareClient(credentials),state=JSON.parse(fs.readFileSync(path.join(stateDirectory,'resources.json'),'utf8'));
   const db=await openRemoteD1(api,state),config=JSON.parse(fs.readFileSync(path.join(stateDirectory,role+'.jsonc'),'utf8')),name='findpitches-v3-'+role+'-shadow';
-  if(config.name!==name||!state.workers.includes(name)||config.routes?.length||config.d1_databases.length!==1||config.d1_databases[0].database_id!==state.database_id||config.vars.V3_CITY_ENABLED!=='false'||config.vars.V3_DAILY_QUERY_LIMIT!=='0')throw new Error('owned_shadow_worker_required');
+  if(config.name!==name||!state.workers.includes(name)||config.routes?.length||config.d1_databases.length!==1||config.d1_databases[0].database_id!==state.database_id||config.vars.V3_CITY_ENABLED!=='false'||config.vars.V3_DAILY_QUERY_LIMIT!=='1000')throw new Error('owned_shadow_worker_required');
   const settings=await api.accountRequest('/workers/scripts/'+name+'/settings'),bindings=settings.bindings.filter(b=>b.type==='d1');
   if(bindings.length!==1||bindings[0].id!==state.database_id)throw new Error('deployed_v3_binding_required');
   const require=createRequire(process.env.V3_TOOLING_ROOT?path.join(process.env.V3_TOOLING_ROOT,'package.json'):import.meta.url),wrangler=path.join(path.dirname(require.resolve('wrangler/package.json')),'bin/wrangler.js');

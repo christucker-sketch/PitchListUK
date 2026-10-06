@@ -1,5 +1,6 @@
 import { EXPORT_SCHEMA,hash,stableJson,publicHttps } from './contract.mjs';
 import { ingestRecords,sql } from './store.mjs';
+import {budgetDay,serperPolicy,reserveSerperQuery,observeSerperCredits,attributeSerperRecords} from './serper-usage.mjs';
 
 // One independent producer boundary. No V2 runtime imports or generic national sweep.
 export const CITY = Object.freeze({ id:'austin-tx',name:'Austin',region:'TX',market:'US' });
@@ -23,42 +24,58 @@ export async function normalizeCityResults(results,{query,now=new Date().toISOSt
   }
   return records;
 }
-export async function acquireCity(db,payload,env,{fetcher=fetch,now=new Date().toISOString(),runId=crypto.randomUUID()}={}) {
+export async function acquireCity(db,payload,env,{fetcher=fetch,now,clock=()=>new Date(),runId=crypto.randomUUID()}={}) {
+  const timestamp=()=>now??clock().toISOString(),started=timestamp();
   const prior=await sql(db,'SELECT * FROM acquisition_runs WHERE id=?',runId).first();
   if(prior) {
     if(prior.status==='complete')return JSON.parse(prior.result_json);
-    // Never automatically repeat a provider request whose billing outcome is uncertain.
     throw new Error('acquisition_outcome_requires_operator_review');
   }
   const canary=payload.canary===true;
-  if(canary&&(!canaryApproved(env,runId,now)||payload.run_id!==runId||payload.query_limit!==1))throw new Error('one_shot_canary_not_authorized');
-  const queries=cityQueries(payload.city),budget=canary?1:Number(env.V3_DAILY_QUERY_LIMIT),count=Number(payload.query_limit);
-  if(!canary&&env.V3_CITY_ENABLED!=='true')throw new Error('city_acquisition_disabled');
+  if(canary&&(!canaryApproved(env,runId,started)||payload.run_id!==runId||payload.query_limit!==1))throw new Error('one_shot_canary_not_authorized');
+  const queries=cityQueries(payload.city),count=Number(payload.query_limit),policy=await serperPolicy(db);
+  if(!canary&&(env.V3_CITY_ENABLED!=='true'||policy.bulk_enabled!==1))throw new Error('city_acquisition_disabled');
   if(!env.SERPER_API_KEY)throw new Error('search_credential_required');
-  if(!Number.isInteger(budget)||budget<1||budget>100||!Number.isInteger(count)||count<1||count>queries.length)throw new Error('explicit_bounded_query_budget_required');
+  if(Number(env.V3_DAILY_QUERY_LIMIT)!==1000||!Number.isInteger(count)||count<1||count>queries.length)throw new Error('explicit_bounded_query_budget_required');
+  if(count>policy.max_queries_per_run||count>policy.max_credits_per_run)throw Error('serper_run_query_limit_exceeded');
   const gate=await sql(db,"SELECT name FROM quality_gates WHERE name='structured-100-preservation' AND tested_records=100 AND destructive_mutations=0").first();
   if(!gate)throw new Error('structured_preservation_gate_required');
-  const reserved=await sql(db,`INSERT INTO acquisition_runs(id,city,day,queries_reserved,status,created_at,updated_at)
-    SELECT ?,?,?,?,'reserved',?,? WHERE COALESCE((SELECT SUM(queries_reserved) FROM acquisition_runs WHERE day=?),0)+?<=?`,runId,CITY.id,now.slice(0,10),count,now,now,now.slice(0,10),count,budget).run();
-  if(Number(reserved.meta?.changes)!==1)throw new Error('daily_query_budget_exhausted');
-  let completed=0;const records=[];
+  await sql(db,`INSERT INTO acquisition_runs(id,city,day,queries_reserved,status,created_at,updated_at)
+    VALUES (?,?,?,?,'reserved',?,?)`,runId,CITY.id,budgetDay(started),count,started,started).run();
+  let completed=0,discovered=0,usageId=null;
+  const imported={accepted:0,inserted:0,rejected:0,duplicates:0,record_ids:[],new_record_ids:[],errors:[]};
+  const result=()=>({run_id:runId,city:CITY.id,queries:completed,discovered,imported});
   try {
-    for(const query of queries.slice(0,count)) {
+    for(let index=0;index<count;index++) {
+      const query=queries[index],at=timestamp();
+      usageId=await reserveSerperQuery(db,{runId,index,query,market:CITY.market,region:CITY.region,now:at});
+      await sql(db,"UPDATE serper_usage SET status='dispatched',queries_attempted=1,dispatched_at=? WHERE id=?",timestamp(),usageId).run();
       const response=await fetcher('https://google.serper.dev/search',{method:'POST',headers:{'X-API-KEY':env.SERPER_API_KEY,'Content-Type':'application/json'},body:JSON.stringify({q:query,gl:'us',num:10}),signal:AbortSignal.timeout(20000)});
-      if(!response.ok)throw new Error('search_provider_http_'+response.status);
+      await sql(db,'UPDATE serper_usage SET http_status=? WHERE id=?',response.status,usageId).run();
       const raw=await response.text();if(raw.length>1048576)throw new Error('search_response_size_limit');
-      const body=JSON.parse(raw);
-      records.push(...await normalizeCityResults(Array.isArray(body.organic)?body.organic:[],{query,now}));
-      completed++;
-      await sql(db,'UPDATE acquisition_runs SET queries_completed=?,updated_at=? WHERE id=?',completed,now,runId).run();
+      let body;try{body=JSON.parse(raw);}catch{throw Error(response.ok?'search_response_invalid':'search_provider_http_'+response.status);}
+      const excessCharge=await observeSerperCredits(db,usageId,body.credits,timestamp());
+      if(!response.ok)throw new Error('search_provider_http_'+response.status);
+      const records=await normalizeCityResults(Array.isArray(body.organic)?body.organic:[],{query,now:at});
+      completed++;discovered+=records.length;
+      // Persist each successful query before making another paid request.
+      const receipt=records.length?await ingestRecords(db,records,{producer:'city-search',environment:'shadow',now:timestamp()}):null;
+      if(receipt) {
+        for(const key of ['accepted','inserted','rejected','duplicates'])imported[key]+=receipt[key];
+        for(const key of ['record_ids','new_record_ids','errors'])imported[key].push(...receipt[key]);
+        await attributeSerperRecords(db,{runId,usageId,recordIds:receipt.record_ids,newRecordIds:receipt.new_record_ids,now:timestamp()});
+      }
+      await sql(db,"UPDATE serper_usage SET status='complete',queries_completed=1,candidates_produced=?,candidates_imported=?,completed_at=? WHERE id=?",records.length,receipt?.accepted??0,timestamp(),usageId).run();
+      await sql(db,'UPDATE acquisition_runs SET queries_completed=?,result_json=?,updated_at=? WHERE id=?',completed,stableJson(result()),timestamp(),runId).run();
+      usageId=null;
+      if(excessCharge)throw Error('serper_credit_charge_requires_operator_review');
     }
-    const imported=records.length?await ingestRecords(db,records,{producer:'city-search',environment:'shadow',now}):{accepted:0,inserted:0,rejected:0};
-    const result={run_id:runId,city:CITY.id,queries:completed,discovered:records.length,imported};
-    await sql(db,"UPDATE acquisition_runs SET status='complete',result_json=?,updated_at=? WHERE id=?",stableJson(result),now,runId).run();
-    return result;
+    await sql(db,"UPDATE acquisition_runs SET status='complete',result_json=?,updated_at=? WHERE id=?",stableJson(result()),timestamp(),runId).run();
+    return result();
   } catch(error) {
-    await sql(db,"UPDATE acquisition_runs SET status='failed',queries_completed=?,updated_at=? WHERE id=?",completed,now,runId).run();
-    // Provider errors might echo API keys. Retain only our controlled error labels.
-    throw new Error(/^search_provider_http_\d+$/.test(error.message)?error.message:'city_acquisition_failed_review_required');
+    const label=/^(search_provider_http_\d+|serper_[a-z_]+)$/.test(error.message)?error.message:'city_acquisition_failed_review_required';
+    if(usageId)await sql(db,"UPDATE serper_usage SET status='failed',error_code=?,completed_at=? WHERE id=?",label,timestamp(),usageId).run();
+    await sql(db,"UPDATE acquisition_runs SET status='failed',queries_completed=?,result_json=?,updated_at=? WHERE id=?",completed,stableJson(result()),timestamp(),runId).run();
+    throw new Error(label);
   }
 }

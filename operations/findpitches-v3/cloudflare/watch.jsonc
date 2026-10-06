@@ -7,7 +7,7 @@
   "vars": {
     "V3_ROLE": "watch",
     "V3_CITY_ENABLED": "false",
-    "V3_DAILY_QUERY_LIMIT": "0"
+    "V3_DAILY_QUERY_LIMIT": "1000"
   },
   "d1_databases": [
     {
@@ -38,7 +38,8 @@
         "max_batch_size": 10,
         "max_batch_timeout": 5,
         "max_retries": 3,
-        "dead_letter_queue": "findpitches-v3-dead-shadow"
+        "dead_letter_queue": "findpitches-v3-dead-shadow",
+        "max_concurrency": 1
       }
     ]
   }

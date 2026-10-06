@@ -1,0 +1,57 @@
+{
+  "schema": "findpitches-legacy-final-work-state-v1",
+  "as_of": "2026-10-06T19:17:32.309Z",
+  "jobs": [
+    {
+      "stage": "acquisition",
+      "status": "complete",
+      "count": 3
+    },
+    {
+      "stage": "eligibility",
+      "status": "complete",
+      "count": 6185
+    },
+    {
+      "stage": "enrichment",
+      "status": "complete",
+      "count": 6088
+    },
+    {
+      "stage": "readiness",
+      "status": "complete",
+      "count": 6190
+    },
+    {
+      "stage": "reconcile",
+      "status": "complete",
+      "count": 7763
+    },
+    {
+      "stage": "watch",
+      "status": "complete",
+      "count": 1
+    },
+    {
+      "stage": "watch",
+      "status": "ready",
+      "count": 6086
+    }
+  ],
+  "stronger_identical_facts_not_selected": 0,
+  "legacy_linked_entity_readiness": [
+    {
+      "status": "blocked",
+      "entities": 388
+    },
+    {
+      "status": "ready",
+      "entities": 1375
+    },
+    {
+      "status": "watch",
+      "entities": 3609
+    }
+  ],
+  "paid_search_queries_issued": 0
+}

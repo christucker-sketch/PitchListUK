@@ -1,0 +1,882 @@
+{
+  "schema": "findpitches-serper-attribution-v1",
+  "as_of": "2026-10-06T19:17:10.595Z",
+  "day": "2026-10-06",
+  "timezone": "Etc/UTC",
+  "from_utc": "2026-10-06T00:00:00.000Z",
+  "to_utc": "2026-10-07T00:00:00.000Z",
+  "v2": {
+    "read_only": true,
+    "runs": 188,
+    "query_attempts": 1504,
+    "search_results": 3045,
+    "sum_per_run_unique_candidates": 2856,
+    "first_run": "2026-10-06T00:00:14.159Z",
+    "latest_run": "2026-10-06T15:35:42.574Z",
+    "lanes": [
+      {
+        "market": "US",
+        "region_code": "CA",
+        "status": "complete",
+        "runs": 44,
+        "query_attempts": 352,
+        "search_results": 309,
+        "sum_per_run_unique_candidates": 280
+      },
+      {
+        "market": "US",
+        "region_code": "AZ",
+        "status": "complete",
+        "runs": 8,
+        "query_attempts": 64,
+        "search_results": 126,
+        "sum_per_run_unique_candidates": 117
+      },
+      {
+        "market": "US",
+        "region_code": "CO",
+        "status": "complete",
+        "runs": 8,
+        "query_attempts": 64,
+        "search_results": 311,
+        "sum_per_run_unique_candidates": 299
+      },
+      {
+        "market": "US",
+        "region_code": "NC",
+        "status": "complete",
+        "runs": 7,
+        "query_attempts": 56,
+        "search_results": 247,
+        "sum_per_run_unique_candidates": 233
+      },
+      {
+        "market": "US",
+        "region_code": "TX",
+        "status": "complete",
+        "runs": 7,
+        "query_attempts": 56,
+        "search_results": 127,
+        "sum_per_run_unique_candidates": 121
+      },
+      {
+        "market": "US",
+        "region_code": "FL",
+        "status": "complete",
+        "runs": 6,
+        "query_attempts": 48,
+        "search_results": 184,
+        "sum_per_run_unique_candidates": 174
+      },
+      {
+        "market": "US",
+        "region_code": "WA",
+        "status": "complete",
+        "runs": 6,
+        "query_attempts": 48,
+        "search_results": 191,
+        "sum_per_run_unique_candidates": 184
+      },
+      {
+        "market": "US",
+        "region_code": "MA",
+        "status": "complete",
+        "runs": 4,
+        "query_attempts": 32,
+        "search_results": 61,
+        "sum_per_run_unique_candidates": 60
+      },
+      {
+        "market": "US",
+        "region_code": "VA",
+        "status": "complete",
+        "runs": 4,
+        "query_attempts": 32,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 61
+      },
+      {
+        "market": "US",
+        "region_code": "CT",
+        "status": "complete",
+        "runs": 3,
+        "query_attempts": 24,
+        "search_results": 127,
+        "sum_per_run_unique_candidates": 115
+      },
+      {
+        "market": "US",
+        "region_code": "OH",
+        "status": "complete",
+        "runs": 3,
+        "query_attempts": 24,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "OK",
+        "status": "complete",
+        "runs": 3,
+        "query_attempts": 24,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "OR",
+        "status": "complete",
+        "runs": 3,
+        "query_attempts": 24,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "TN",
+        "status": "complete",
+        "runs": 3,
+        "query_attempts": 24,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "AL",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "AR",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "GA",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 128,
+        "sum_per_run_unique_candidates": 120
+      },
+      {
+        "market": "US",
+        "region_code": "IL",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "MI",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "NJ",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 54
+      },
+      {
+        "market": "US",
+        "region_code": "NV",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 56
+      },
+      {
+        "market": "US",
+        "region_code": "NY",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "PA",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 63,
+        "sum_per_run_unique_candidates": 60
+      },
+      {
+        "market": "US",
+        "region_code": "SC",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 63,
+        "sum_per_run_unique_candidates": 57
+      },
+      {
+        "market": "US",
+        "region_code": "UT",
+        "status": "complete",
+        "runs": 2,
+        "query_attempts": 16,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 60
+      },
+      {
+        "market": "AU",
+        "region_code": "ACT",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "AU",
+        "region_code": "NSW",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "AU",
+        "region_code": "NT",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 56,
+        "sum_per_run_unique_candidates": 56
+      },
+      {
+        "market": "AU",
+        "region_code": "QLD",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 61
+      },
+      {
+        "market": "AU",
+        "region_code": "SA",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 64
+      },
+      {
+        "market": "CA",
+        "region_code": "AB",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "CA",
+        "region_code": "BC",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "CA",
+        "region_code": "MB",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "CA",
+        "region_code": "NB",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "CA",
+        "region_code": "NL",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "CA",
+        "region_code": "NS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 60,
+        "sum_per_run_unique_candidates": 50
+      },
+      {
+        "market": "CA",
+        "region_code": "ON",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 56,
+        "sum_per_run_unique_candidates": 48
+      },
+      {
+        "market": "CA",
+        "region_code": "PE",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 58,
+        "sum_per_run_unique_candidates": 50
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-BEDS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-BERKS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-BRISTOL",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-BUCKS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-CAMBS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-CHESH",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-CORN",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 63,
+        "sum_per_run_unique_candidates": 63
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-CUMB",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 60,
+        "sum_per_run_unique_candidates": 59
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-SUFF",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-SURREY",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-TYNE",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-WARW",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-WEST-MIDS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-WEST-SUSSEX",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-WEST-YORKS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-WILTS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-ENG-WORCS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-NIR",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-SCT",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "GB",
+        "region_code": "GB-WLS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "HK",
+        "region_code": "HK",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "IE",
+        "region_code": "CE",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 62
+      },
+      {
+        "market": "IE",
+        "region_code": "CN",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "IE",
+        "region_code": "CO",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 62
+      },
+      {
+        "market": "IE",
+        "region_code": "CW",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "NZ",
+        "region_code": "AUK",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 59,
+        "sum_per_run_unique_candidates": 57
+      },
+      {
+        "market": "NZ",
+        "region_code": "BOP",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 64,
+        "sum_per_run_unique_candidates": 61
+      },
+      {
+        "market": "NZ",
+        "region_code": "NTL",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "NZ",
+        "region_code": "WKO",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 61,
+        "sum_per_run_unique_candidates": 59
+      },
+      {
+        "market": "SG",
+        "region_code": "SG",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "AK",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "IN",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "KS",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "KY",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "LA",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "MN",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "MO",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "NM",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 59,
+        "sum_per_run_unique_candidates": 53
+      },
+      {
+        "market": "US",
+        "region_code": "RI",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "SD",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "VT",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "WI",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "WV",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      },
+      {
+        "market": "US",
+        "region_code": "WY",
+        "status": "complete",
+        "runs": 1,
+        "query_attempts": 8,
+        "search_results": 0,
+        "sum_per_run_unique_candidates": 0
+      }
+    ],
+    "candidate_statuses": [
+      {
+        "status": "discovered",
+        "candidate_rows_first_attributed_to_today": 48
+      },
+      {
+        "status": "held",
+        "candidate_rows_first_attributed_to_today": 10
+      },
+      {
+        "status": "rejected",
+        "candidate_rows_first_attributed_to_today": 283
+      },
+      {
+        "status": "validated",
+        "candidate_rows_first_attributed_to_today": 49
+      }
+    ],
+    "credits_consumed": null,
+    "measurement": "Retained V2 query counts match query-loop attempts, including unsuccessful requests; not observed billed credits."
+  },
+  "v3": {
+    "provider": "serper",
+    "timezone": "Europe/London",
+    "day": "2026-10-06",
+    "as_of": "2026-10-06T19:17:10.595Z",
+    "bulk_enabled": false,
+    "paused": false,
+    "pause_reason": null,
+    "pause_until": null,
+    "limits": {
+      "queries_per_run": 4,
+      "queries_per_hour": 100,
+      "queries_per_day": 1000,
+      "credits_per_run": 4,
+      "credits_per_hour": 100,
+      "credits_per_day": 1000
+    },
+    "usage": {
+      "day_queries_reserved": 1,
+      "day_queries_attempted": 1,
+      "day_queries_completed": 1,
+      "day_credit_budget_units": 1,
+      "day_credits_observed": null,
+      "day_queries_without_credit_observation": 1,
+      "hour_queries_reserved": 0,
+      "hour_credit_budget_units": 0,
+      "credits_consumed": null
+    },
+    "remaining": {
+      "daily_queries": 999,
+      "daily_credit_units": 999,
+      "hourly_queries": 100,
+      "hourly_credit_units": 100
+    },
+    "credit_unit_cost_usd": null,
+    "pricing_status": "unit_credit_price_unavailable",
+    "yield_definition": "Current shared-entity eligibility/readiness; later evidence may contribute. Ready cost denominator includes newly sourced entities only.",
+    "runs": [
+      {
+        "run_id": "canary_5d8535bb-3a6a-401f-a1d8-3dd17180f616",
+        "city": "austin-tx",
+        "timestamp": "2026-10-06T11:38:51.616Z",
+        "updated_at": "2026-10-06T11:38:51.616Z",
+        "status": "complete",
+        "producer": "city-search",
+        "lane": "city-acquisition",
+        "market": "US",
+        "region": "TX",
+        "queries_reserved": 1,
+        "query_count": 1,
+        "queries_completed": 1,
+        "observed_credit_subtotal": null,
+        "queries_without_credit_observation": 1,
+        "credit_budget_units": 1,
+        "candidates_produced": 10,
+        "candidates_accepted": 10,
+        "attributed_receipts": 10,
+        "unique_candidates": 10,
+        "usable_opportunities": 0,
+        "ready_opportunities": 0,
+        "new_ready_opportunities": 0,
+        "credits_consumed": null,
+        "cost_usd": null,
+        "duplicate_candidate_occurrences": 0,
+        "queries_per_candidate": 0.1,
+        "credits_per_candidate": null,
+        "cost_per_candidate_usd": null,
+        "cost_per_candidate_occurrence_usd": null,
+        "queries_per_ready_opportunity": null,
+        "credits_per_ready_opportunity": null,
+        "cost_per_ready_opportunity_usd": null
+      }
+    ],
+    "audit_usage": {
+      "query_attempts": 1,
+      "queries_completed": 1,
+      "observed_credit_subtotal": null,
+      "queries_without_credit_observation": 1
+    }
+  },
+  "account": {
+    "checked_at": "2026-10-06T19:17:13.947Z",
+    "balance": 48937,
+    "rate_limit": 50,
+    "search_queries_issued": 0
+  },
+  "balance_interval": {
+    "from": "2026-10-06T18:50:40.570Z",
+    "to": "2026-10-06T19:17:13.947Z",
+    "previous_balance": 48973,
+    "current_balance": 48937,
+    "net_balance_decrease": 36,
+    "retained_v2_query_attempts_change": 0,
+    "v3_query_attempts_change": 0,
+    "billed_credits_attributable_to_v2": null,
+    "billed_credits_attributable_to_v3": null,
+    "interpretation": "Net balance change is an account observation, not a billed-credit split. Retained counters, delayed billing and other clients cannot be distinguished."
+  },
+  "limitations": [
+    "No start-of-day account balance or V2 per-request credit ledger survives; exact billed attribution is unavailable.",
+    "V2 and V3 secret bindings cannot establish account-key equality without exposing credentials; other account clients may contribute usage.",
+    "Per-run V2 candidate counts can include duplicates across runs; candidate statuses reflect current downstream state.",
+    "V3 limits govern V3 only. The independent V2 scheduler is unchanged."
+  ],
+  "paid_search_queries_issued_by_audit": 0
+}

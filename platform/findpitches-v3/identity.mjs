@@ -16,6 +16,10 @@ export function identityKeys(record) {
   for(const token of tokens(record.event_name))keys.push('name:'+token);
   return [...new Set(keys)];
 }
+export function identityCandidateKeys(record) {
+  // Generic portal routes cannot satisfy the exact-route rule in reconcileIdentity.
+  return identityKeys(record).filter(key=>!key.startsWith('url:')||specific(key.slice(4)));
+}
 export function identityAnchor(record) {
   if(record.source_identifier&&record.source_platform)return 'platform:'+record.source_platform+':'+record.source_identifier;
   for(const url of [record.application_url,record.canonical_url])if(specific(url))return 'url:'+canonicalUrl(url);

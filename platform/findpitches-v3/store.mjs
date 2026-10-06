@@ -1,16 +1,17 @@
 import { FIELDS,PRODUCERS,normalizeExport,hash,stableJson } from './contract.mjs';
 import { jobStatement } from './jobs.mjs';
+import {LEGACY_AUTHORITIES} from './legacy.mjs';
 
 export const sql=(db,text,...values)=>db.prepare(text).bind(...values);
 export async function ingestRecords(db,records,{producer='independent-structured',environment='shadow',now=new Date().toISOString()}={}) {
   if(!['shadow','test'].includes(environment))throw new Error('shadow_or_test_required');
   if(!PRODUCERS[producer])throw new Error('unknown_producer');
   if(!Array.isArray(records)||records.length<1||records.length>100)throw new Error('batch_size_1_to_100_required');
-  if(producer==='city-search') {
+  if(['city-search','legacy_v2'].includes(producer)) {
     const gate=await sql(db,"SELECT name FROM quality_gates WHERE name='structured-100-preservation' AND tested_records=100 AND destructive_mutations=0").first();
     if(!gate)throw new Error('structured_preservation_gate_required');
   }
-  const result={accepted:0,rejected:0,inserted:0,duplicates:0,record_ids:[],errors:[]};
+  const result={accepted:0,rejected:0,inserted:0,duplicates:0,record_ids:[],new_record_ids:[],errors:[]};
   for(const raw of records) {
     const rawJson=stableJson(raw), contentHash=await hash(rawJson);
     if(rawJson.length>131072)throw new Error('record_size_limit');
@@ -21,15 +22,16 @@ export async function ingestRecords(db,records,{producer='independent-structured
       recordId,producer,PRODUCERS[producer].type,String(raw?.opportunity_id??raw?.producer_record_id??'rejected:'+contentHash),environment,normalized?.market??null,contentHash,rawJson,normalized?stableJson(normalized):null,normalized?'accepted':'rejected',stableJson(validated.errors),now)];
     if(normalized) {
       for(const field of FIELDS) if(normalized[field]!==null && normalized[field]!==undefined && normalized[field]!=='') {
+        const proof=producer==='legacy_v2'?normalized.field_evidence[field]:null;
         statements.push(sql(db,`INSERT OR IGNORE INTO source_facts(id,record_id,field_name,value_json,authority,source_url,evidence_json,provenance_json,created_at) VALUES (?,?,?,?,?,?,?,?,?)`,
-          recordId+':'+field,recordId,field,stableJson(normalized[field]),PRODUCERS[producer].authority,normalized.application_url??normalized.canonical_url,stableJson(normalized.evidence),stableJson(normalized.provenance),now));
+          recordId+':'+field,recordId,field,stableJson(normalized[field]),proof?LEGACY_AUTHORITIES[proof.kind]:PRODUCERS[producer].authority,proof?.source??normalized.application_url??normalized.canonical_url,stableJson(proof?[proof]:normalized.evidence),stableJson(normalized.provenance),now));
       }
       statements.push(await jobStatement(db,'reconcile',recordId,{record_id:recordId},now));
     }
     const committed=await db.batch(statements);
     const inserted=Number(committed[0]?.meta?.changes||0);
     result.inserted+=inserted;result.duplicates+=inserted?0:1;
-    if(normalized) { result.accepted++;result.record_ids.push(recordId); } else { result.rejected++;result.errors.push({record_id:recordId,reasons:validated.errors}); }
+    if(normalized) { result.accepted++;result.record_ids.push(recordId);if(inserted)result.new_record_ids.push(recordId); } else { result.rejected++;result.errors.push({record_id:recordId,reasons:validated.errors}); }
   }
   return result;
 }

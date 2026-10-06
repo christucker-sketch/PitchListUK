@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { database,record,seed,NOW } from './helpers.mjs';
 import { sql,loadEntity,ingestRecords } from '../../platform/findpitches-v3/store.mjs';
-import { proposeFact } from '../../platform/findpitches-v3/evidence.mjs';
+import { proposeFact,selectRecordFacts } from '../../platform/findpitches-v3/evidence.mjs';
 import { reconcileIdentity,canonicalUrl } from '../../platform/findpitches-v3/identity.mjs';
 import { assessEligibility,evaluateReadiness,drainPipeline } from '../../platform/findpitches-v3/pipeline.mjs';
 import { normalizeExport } from '../../platform/findpitches-v3/contract.mjs';
@@ -31,6 +31,23 @@ test('lower-authority replacement and customer/publication leakage are blocked b
   await assert.rejects(sql(db,'INSERT OR REPLACE INTO field_selections VALUES (?,?,?)',entity.id,'event_name',proposal.fact_id).run(),/replace_forbidden/);
   await assert.rejects(sql(db,'INSERT INTO customer_projections VALUES (?,?,?,?)',entity.id,entity.revision,'{}',NOW).run(),/blocked/);
   await assert.rejects(sql(db,'INSERT INTO publication_queue VALUES (?,?,?,?)','pub',entity.id,'ready',NOW).run(),/disabled/);
+});
+test('stronger identical evidence upgrades authority and prevents a later medium-authority overwrite',async t=>{
+  const db=database(t);await sql(db,"INSERT INTO quality_gates VALUES ('structured-100-preservation',100,0,'{}','gate',?)",NOW).run();
+  const weak=await seed(db,record(),{producer:'city-search'});assert.equal(weak.entity.selections.event_name.authority,50);
+  await seed(db,record());const strong=await loadEntity(db,weak.entity.id);assert.equal(strong.selections.event_name.authority,100);
+  const proposal=await proposeFact(db,strong.id,{field:'event_name',value:'Different medium-authority title',kind:'official_page',source_url:'https://example.org/form',excerpt:'Different title'},{now:NOW});
+  assert.equal(proposal.decision,'rejected');assert.equal((await loadEntity(db,strong.id)).event_name,record().event_name);
+});
+test('initial batched selection rejects invalid locations and a stale empty snapshot cannot overwrite existing evidence',async t=>{
+  const db=database(t),{entity}=await seed(db,record({location:'Submit form with your email'}));
+  assert.equal(entity.location,undefined);
+  assert.equal((await sql(db,"SELECT decision FROM selection_audit WHERE entity_id=? AND field_name='location'",entity.id).first()).decision,'rejected');
+  const imported=await ingestRecords(db,[record({opportunity_id:'raced-initial',event_name:'Different title',location:'Elsewhere'})],{environment:'test',now:NOW});
+  const facts=(await sql(db,'SELECT * FROM source_facts WHERE record_id=?',imported.record_ids[0]).all()).results;
+  await assert.rejects(selectRecordFacts(db,entity.id,facts,{now:NOW,snapshot:{...entity,selections:{}}}),/selection_raced_retry/);
+  assert.equal((await loadEntity(db,entity.id)).event_name,record().event_name);
+  assert.equal((await sql(db,"SELECT COUNT(*) AS count FROM selection_audit WHERE proposed_fact_id=? AND decision='accepted'",imported.record_ids[0]+':event_name').first()).count,0);
 });
 test('additive supported evidence fills a missing field and invalidates stale readiness',async t=>{
   const db=database(t),{entity}=await seed(db,record({organiser:null}));

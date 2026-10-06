@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { database,record,seed,NOW } from './helpers.mjs';
-import worker from '../../platform/findpitches-v3/worker.mjs';
+import worker,{wakeStage} from '../../platform/findpitches-v3/worker.mjs';
 import { verifyStructuredControl } from '../../platform/findpitches-v3/control.mjs';
 import { sql,ingestRecords } from '../../platform/findpitches-v3/store.mjs';
 import { drainPipeline } from '../../platform/findpitches-v3/pipeline.mjs';
@@ -23,6 +23,54 @@ test('stage queue deliveries are idempotent and wrong-stage messages fail transp
   const db=database(t);await seed(db);let acks=0,retries=0;
   const messages=[{body:{stage:'readiness',job_id:'unknown'},ack:()=>acks++,retry:()=>retries++},{body:{stage:'reconcile',job_id:'wrong'},ack:()=>acks++,retry:()=>retries++}];
   await worker.queue({messages},{FINDPITCHES_V3_DB:db,V3_ROLE:'readiness'});assert.equal(acks,1);assert.equal(retries,1);
+});
+test('operator corroboration reselection upgrades retained stronger facts without changing values and refuses unrelated or differing facts',async t=>{
+  const db=database(t);await sql(db,"INSERT INTO quality_gates VALUES ('structured-100-preservation',100,0,'{}','gate',?)",NOW).run();
+  const weak=await seed(db,record(),{producer:'city-search',environment:'shadow'});
+  const strong=await ingestRecords(db,[record()],{environment:'shadow',now:NOW}),id=strong.record_ids[0];
+  await sql(db,'INSERT INTO entity_records VALUES (?,?)',id,weak.entity.id).run();
+  await sql(db,'INSERT INTO entity_facts SELECT ?,id FROM source_facts WHERE record_id=?',weak.entity.id,id).run();
+  const env={FINDPITCHES_V3_DB:db,V3_ROLE:'enrichment',V3_OPERATOR_TOKEN:TOKEN};
+  const body={entity_id:weak.entity.id,fact_ids:[id+':event_name']};
+  assert.equal((await worker.fetch(request('/corroboration/reselect',{method:'POST',body,token:'invalid'}),env)).status,401);
+  const response=await worker.fetch(request('/corroboration/reselect',{method:'POST',body}),env);assert.equal(response.status,200);
+  assert.equal((await response.json()).source_value_mutations,0);
+  const selected=await sql(db,"SELECT authority,value_json FROM selected_facts WHERE entity_id=? AND field_name='event_name'",weak.entity.id).first();
+  assert.equal(selected.authority,100);assert.equal(JSON.parse(selected.value_json),record().event_name);
+  const different=await ingestRecords(db,[record({opportunity_id:'different-value',event_name:'Different source title'})],{environment:'shadow',now:NOW});
+  const otherId=different.record_ids[0];
+  assert.equal((await worker.fetch(request('/corroboration/reselect',{method:'POST',body:{...body,fact_ids:[otherId+':event_name']}}),env)).status,400);
+  await sql(db,'INSERT INTO entity_records VALUES (?,?)',otherId,weak.entity.id).run();await sql(db,'INSERT INTO entity_facts SELECT ?,id FROM source_facts WHERE record_id=?',weak.entity.id,otherId).run();
+  assert.equal((await worker.fetch(request('/corroboration/reselect',{method:'POST',body:{...body,fact_ids:[otherId+':event_name']}}),env)).status,400);
+});
+test('concurrent transport wake-ups coalesce each durable job and completed duplicate pointers do not fan out',async t=>{
+  const db=database(t),sent=[];
+  await ingestRecords(db,[record()],{environment:'shadow',now:NOW});
+  const env={FINDPITCHES_V3_DB:db,V3_ROLE:'reconcile',NEXT_QUEUE:{sendBatch:async messages=>sent.push(...messages)}};
+  await Promise.all(Array.from({length:5},()=>wakeStage(env,'reconcile')));
+  assert.equal(sent.length,1);assert.equal((await sql(db,'SELECT COUNT(*) AS count FROM queue_dispatches').first()).count,1);
+  await sql(db,"UPDATE jobs SET status='complete' WHERE id=?",sent[0].body.job_id).run();
+  let acks=0;await worker.queue({messages:[{body:sent[0].body,ack:()=>acks++,retry:()=>assert.fail('completed pointer should be acknowledged')}]},env);
+  assert.equal(acks,1);assert.equal(sent.length,1);
+});
+test('reconciliation ticks process one record and cron fans pending work into the existing self queue',async t=>{
+  const db=database(t),sent=[],pending=[];
+  const records=Array.from({length:3},(_,i)=>record({opportunity_id:'tick-'+i,application_url:`https://www.eventeny.com/events/vendor/?id=${90000+i}`,canonical_url:`https://www.eventeny.com/events/vendor/?id=${90000+i}`}));
+  await ingestRecords(db,records,{environment:'shadow',now:NOW});
+  const env={FINDPITCHES_V3_DB:db,V3_ROLE:'reconcile',V3_OPERATOR_TOKEN:TOKEN,SELF_QUEUE:{sendBatch:async messages=>sent.push(...messages)}};
+  const response=await worker.fetch(request('/tick',{method:'POST',body:{limit:25}}),env);
+  assert.equal(response.status,200);
+  const result=await response.json();
+  assert.equal(result.results.length,1);
+  assert.equal(result.results[0].phase,'complete');
+  assert.equal((await sql(db,"SELECT COUNT(*) AS n FROM jobs WHERE stage='reconcile' AND status='ready'").first()).n,2);
+  await worker.scheduled({},env,{waitUntil:p=>pending.push(p)});
+  await Promise.all(pending);
+  assert.equal(sent.length,2);
+  assert.ok(sent.every(message=>message.body.stage==='reconcile'));
+  assert.equal(new Set(sent.map(message=>message.body.job_id)).size,2);
+  assert.equal((await sql(db,"SELECT COUNT(*) AS n FROM jobs WHERE stage='reconcile' AND status='complete'").first()).n,2);
+  assert.equal((await sql(db,"SELECT COUNT(*) AS n FROM jobs WHERE stage='reconcile' AND status='ready'").first()).n,1);
 });
 test('preservation gate cannot be declared from unprocessed records or client counts',async t=>{
   const db=database(t);

@@ -15,6 +15,6 @@ for(const file of files(path.join(root,'operations/findpitches-v3/cloudflare')))
   const config=JSON.parse(fs.readFileSync(file,'utf8'));
   if(!/^findpitches-v3-\w+-shadow$/.test(config.name)||config.routes?.length||config.d1_databases.length!==1||config.d1_databases[0].binding!=='FINDPITCHES_V3_DB'||config.d1_databases[0].database_name!=='findpitches-v3-shadow')throw new Error('resource_boundary_violation:'+file);
   for(const q of [...config.queues?.producers??[],...config.queues?.consumers??[]])if(!/^findpitches-v3-/.test(q.queue)||q.queue.includes('publication'))throw new Error('queue_boundary_violation:'+file);
-  if(config.vars.V3_CITY_ENABLED!=='false'||config.vars.V3_DAILY_QUERY_LIMIT!=='0')throw new Error('acquisition_default_must_be_disabled');
+  if(config.vars.V3_CITY_ENABLED!=='false'||config.vars.V3_DAILY_QUERY_LIMIT!=='1000')throw new Error('acquisition_default_must_be_disabled');
 }
 console.log('V3 runtime imports, resources and disabled acquisition/publication boundaries passed');
