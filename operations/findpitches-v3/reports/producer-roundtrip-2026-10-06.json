@@ -1,0 +1,23 @@
+{
+  "checked_at": "2026-10-06T10:01:30.811Z",
+  "producer_record_id": "fdx1_0081290d4e31d457620c",
+  "entity_id": "ent_bf7cd88dd5f41340430656687fdc8931",
+  "environment": "shadow",
+  "readiness": "ready",
+  "delivery": {
+    "accepted": 1,
+    "inserted": 1,
+    "duplicates": 0
+  },
+  "automatic_pipeline_without_operator_ticks": true,
+  "pipeline_elapsed_ms": 28453,
+  "destructive_mutations": 0,
+  "recheck": {
+    "producer_addressable": true,
+    "client_rejects_stale_ack": true,
+    "server_rejects_stale_ack": true,
+    "pending_fresh_producer_export": true
+  },
+  "customer_rows": 0,
+  "publication_rows": 0
+}

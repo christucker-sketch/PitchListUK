@@ -38,23 +38,25 @@ The [architecture](findpitches-v3-architecture.md) specifies the resource map. C
 
 The token needs Workers Scripts edit, D1 edit, Queues edit, and sufficient account visibility for inventory. Supply `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in a secure credential file outside the checkout. Scripts parse the file as data and never source it, print its values or write them into tracked configs. Generated ingest/operator tokens and state are stored with restricted permissions outside the repository. The structured producer receives only the ingest token and Worker URL, never D1 or Cloudflare credentials.
 
-Outbound environment access must allow `api.cloudflare.com` and the newly assigned `workers.dev` hosts. `google.serper.dev` is needed only for deliberately enabled city acquisition. The environment proxy currently rejects Cloudflare access before authentication. A configuration draft adds these domains while retaining existing access; review/save and publish the environment to activate it. A saved draft alone does not alter the running proxy. No remote resources have been created while this block remains.
+Outbound environment access allows `api.cloudflare.com` and the newly assigned `workers.dev` hosts following the published environment change. `google.serper.dev` is needed only for deliberately enabled city acquisition. Deployment and end-to-end validation completed on 6 October 2026. The actual state/configs/secret files are in `/workspace/.pitchlist-cloud/v3-remote`; retain this ownership manifest securely for resumption. Public resource metadata and verification evidence are archived in `operations/findpitches-v3/reports/remote-*.json`.
 
-After access is active, inventory first, then deploy and validate only shadow resources:
+For subsequent isolated shadow deployment/validation, use the existing ownership state, inventory first, then validate:
 
 ```bash
 node operations/findpitches-v3/provision.mjs \
   --credentials /tmp/findpitches-codex-cloudflare.env \
-  --state-dir /tmp/findpitches-v3-remote
+  --state-dir /workspace/.pitchlist-cloud/v3-remote
 node operations/findpitches-v3/deploy-shadow.mjs \
   --credentials /tmp/findpitches-codex-cloudflare.env \
-  --state-dir /tmp/findpitches-v3-remote
+  --state-dir /workspace/.pitchlist-cloud/v3-remote
 node operations/findpitches-v3/validate-remote.mjs \
   --credentials /tmp/findpitches-codex-cloudflare.env \
-  --state-dir /tmp/findpitches-v3-remote
+  --state-dir /workspace/.pitchlist-cloud/v3-remote
 ```
 
 Deployment runs the preservation suite, boundary checks and all Worker bundles before creating infrastructure. It refuses an existing same-name resource without its locally retained ownership manifest. Keep that manifest for resumption. It applies migrations only to the new V3 database, deploys the role Workers, installs separate ingest/operator secrets, and records their URLs. The remote validation imports the real 100 into **test** scope, runs adverse extraction proposals, audits preservation, replays the import and checks publication HTTP 403. It makes no search-provider requests.
+
+`audit-remote-resources.mjs` verifies all actual Worker database/queue bindings, consumer scripts, dead-letter/retry configuration, cron schedules and disabled publication/acquisition defaults. `validate-remote-operations.mjs` checks authentication, no-op evidence guards, lease ownership/heartbeat/expiry, dead-job requeue and bounded failure on the disabled acquisition handler. It retains two named diagnostic job rows after completing them; these are not provider acquisition runs. `validate-producer-roundtrip.mjs` delivers one unchanged real source record in shadow scope, waits for automatic readiness without core-stage operator ticks, then verifies producer-addressable watch requests and stale acknowledgment rejection. Its pending canary recheck requires an actual fresh producer export.
 
 ## APIs and producer integration
 
@@ -63,7 +65,7 @@ Deployment runs the preservation suite, boundary checks and all Worker bundles b
 | Every Worker | `GET /health`, `GET /status` | Public service/aggregate health, stage backlogs, leases, retries/dead jobs, throughput, producer activity, readiness, conflicts, gate and query counts. No raw records or secrets. |
 | Ingest | `POST /imports` | Bearer ingest token. JSON `{environment:"shadow",records:[...]}`; 1–100 export records and 1 MiB body maximum. Only shadow/test accepted. Invalid receipts are retained. |
 | Ingest | `GET /rechecks` | Ingest token. Producer IDs for shadow entities due for an independent producer recheck. |
-| Ingest | `POST /rechecks/ack` | Ingest token. Exact `{entity_id,requested_at}` acknowledgment cannot clear a newer recheck request. Import updated evidence before acknowledging. |
+| Ingest | `POST /rechecks/ack` | Ingest token. Exact `{entity_id,requested_at}` acknowledgment requires linked producer evidence whose `last_checked` is at least the request timestamp. A stale export or old request cannot clear it. |
 | Stage Workers | `POST /tick` | Operator token; bounded `{limit:10}` sweep of that role's durable jobs. |
 | Stage Workers | `POST /jobs/requeue` | Operator token; `{job_id}` for a dead job belonging to that stage. |
 | Enrichment | `POST /proposals` | Operator token; `{entity_id,proposals:[{field,value,kind,source_url,excerpt}]}` with at most 10. Fixed server authority; exact alternatives and decisions retained. |
@@ -73,7 +75,20 @@ Deployment runs the preservation suite, boundary checks and all Worker bundles b
 | Acquisition | `POST /acquisition` | Operator token; approved `{city:"austin-tx",query_limit:1}` only when enabled and budgeted. |
 | Every Worker | `GET /v1/opportunities` | Always HTTP 403, independent of environment flags. |
 
-The independent producer continues its own acquisition, classification, lifecycle and export implementation. A feed delivery agent reads its JSONL output and sends at most 100 rows per import. V3 consumes the existing export contract; it does not replace the producer. Endpoint, export cadence and the producer's delivery agent are external integration inputs, still needed for continuous live operation. The real artifact proves this importer boundary without assuming a nonexistent live feed.
+The independent producer continues its own acquisition, classification, lifecycle and export implementation. `producer-delivery.mjs` reads its JSON/JSONL output, preserves each record's fields, and bounds requests by both 100 rows and UTF-8 body size. It uses only the ingest URL/token; it has no V3 runtime, D1 or Cloudflare credential dependency. A checkpoint resumes completed batches and relies on server idempotency for an uncertain request outcome. A single-run file lock prevents overlapping deliveries. Inspect the recorded PID before removing a stale local lock after a terminated process. V3 consumes the existing export contract; it does not replace the producer. Export path and cadence are still needed for continuous live operation.
+
+Provide the producer only a secure file containing `V3_INGEST_TOKEN`; operator and Cloudflare tokens remain with operators. Example delivery, using a checkpoint outside the checkout:
+
+```bash
+node operations/findpitches-v3/producer-delivery.mjs \
+  --input /secure/producer/latest-export.jsonl \
+  --ingest-url https://findpitches-v3-ingest-shadow.ctucker.workers.dev \
+  --token-file /secure/producer/v3-ingest.env \
+  --checkpoint /secure/producer/v3-delivery.json \
+  --rechecks-out /secure/producer/v3-rechecks.json
+```
+
+The standalone engine processes the producer IDs in the recheck file, performs its own source fetches and exports fresh `last_checked` evidence. Deliver that updated export with `--ack-rechecks /secure/producer/v3-rechecks.json`. The client skips stale, rejected and wrong-environment evidence; the server waits until fresh receipts are reconciled/linked. A request that is not acknowledged remains available for the next delivery cycle. The CLI returns failure if any records are rejected and preserves their receipts in its checkpoint. The fixture canary proves transport, not a fresh platform crawl.
 
 ## Evidence and job recovery
 
@@ -88,5 +103,7 @@ WATCH, CLOSED and ready records are rechecked over time. The watch stage asks th
 The Austin lane contains four narrow vendor/craft/festival/farmers-market query families. It requires a passing stored 100-row gate, `SERPER_API_KEY`, `V3_CITY_ENABLED=true`, and `V3_DAILY_QUERY_LIMIT` between 1 and 100. Each run reserves 1–4 queries atomically against the daily limit before contacting the provider. Search results enter the common envelope at snippet authority 50 with UNKNOWN state; a snippet alone does not claim an open application. Recorded responses validate integration; no paid queries have been run.
 
 V2 comparison is file-based and read-only. Provide a snapshot with `schema:"findpitches-shadow-evaluation-v1"`, exact `inputs_hash`, aligned `as_of`, `records` keyed by `producer_record_id` (validation, identity, entity_id, eligibility, readiness, fields), and optional measured cost/timing metrics. Add `--v2 file.json` and optionally `--gold labels.json` to the comparison command. Gold labels need the same input hash/time and `{producer_record_id,eligible}` records. Mismatched hashes/times, missing fields, missing labels and costs are reported explicitly. The report makes no automatic superiority claim.
+
+`snapshot-remote.mjs --credentials <secure-file> --state-dir /workspace/.pitchlist-cloud/v3-remote --input <input-json> --environment test` exports deployed V3 results for the exact input hashes without touching V2. Its remote adapter verifies the target database name before querying it and bounds parameter batches. The archived deployed 100-record comparison has 100% source-field retention and the same 64 ready / 36 blocked result; V2/gold/cost figures remain unavailable.
 
 Before requesting production cutover, obtain equivalent V2/V3 shadow snapshots, labelled false rejection checks, current provider/infra costs and throughput, continuing producer delivery, a passed remote preservation control, operational recovery proof, and a separately designed publication/customer migration plan. Stop for user authorization at that point.

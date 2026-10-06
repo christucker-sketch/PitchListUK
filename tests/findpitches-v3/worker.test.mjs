@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { database,record,seed,NOW } from './helpers.mjs';
 import worker from '../../platform/findpitches-v3/worker.mjs';
 import { verifyStructuredControl } from '../../platform/findpitches-v3/control.mjs';
+import { sql,ingestRecords } from '../../platform/findpitches-v3/store.mjs';
+import { drainPipeline } from '../../platform/findpitches-v3/pipeline.mjs';
 const TOKEN='local-test-token-with-at-least-24-characters';
 const request=(path,{method='GET',body,token=TOKEN}={})=>new Request('https://v3.example'+path,{method,headers:{authorization:'Bearer '+token,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});
 test('Worker APIs enforce authentication, role ownership, payload limits and hard publication disablement',async t=>{
@@ -25,4 +27,14 @@ test('stage queue deliveries are idempotent and wrong-stage messages fail transp
 test('preservation gate cannot be declared from unprocessed records or client counts',async t=>{
   const db=database(t);
   await assert.rejects(verifyStructuredControl(db,[record()],['invented']),/exactly_100/);
+});
+test('producer recheck acknowledgment requires newer linked evidence and the exact request timestamp',async t=>{
+  const db=database(t),{entity}=await seed(db,record(),{environment:'shadow'});
+  const requested_at='2026-10-07T12:00:00.000Z',env={FINDPITCHES_V3_DB:db,V3_ROLE:'ingest',V3_INGEST_TOKEN:TOKEN};
+  await sql(db,"INSERT INTO recheck_requests VALUES (?,?,'watch_recheck_due')",entity.id,requested_at).run();
+  const ack=async time=>(await worker.fetch(request('/rechecks/ack',{method:'POST',body:{entity_id:entity.id,requested_at:time}}),env)).json();
+  assert.equal((await ack(requested_at)).acknowledged,false);
+  await ingestRecords(db,[record({last_checked:'2026-10-08T12:00:00.000Z'})],{environment:'shadow',now:'2026-10-08T12:00:00.000Z'});await drainPipeline(db,{now:'2026-10-08T12:00:00.000Z'});
+  assert.equal((await ack('2026-10-06T12:00:00.000Z')).acknowledged,false);
+  assert.equal((await ack(requested_at)).acknowledged,true);
 });

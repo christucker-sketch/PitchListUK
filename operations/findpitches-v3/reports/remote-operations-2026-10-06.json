@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-10-06T09:52:42.255Z",
+  "checks": [
+    "shadow_requires_operator_auth",
+    "import_requires_ingest_auth",
+    "api_role_cannot_import",
+    "publication_api_disabled",
+    "city_acquisition_disabled",
+    "source_fact_guard",
+    "source_receipt_guard",
+    "atomic_claim",
+    "leased_job_not_claimed_twice",
+    "lease_heartbeat",
+    "stale_owner_completion_rejected",
+    "owned_completion",
+    "expired_lease_dead_letter",
+    "operator_dead_job_requeue",
+    "deployed_stage_tick",
+    "bounded_failure_dead_letter",
+    "no_customer_publication_leakage",
+    "no_provider_queries"
+  ],
+  "diagnostic_job_ids": [
+    "v3_probe_8e9288a4-d4d6-401e-a19d-dc03a02f3a80:lease",
+    "v3_probe_8e9288a4-d4d6-401e-a19d-dc03a02f3a80:expiry"
+  ],
+  "customer_rows": 0,
+  "publication_rows": 0,
+  "provider_queries": 0
+}

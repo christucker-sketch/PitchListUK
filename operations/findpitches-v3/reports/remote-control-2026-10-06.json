@@ -1,0 +1,119 @@
+{
+  "tested_records": 100,
+  "entities": 100,
+  "destructive_mutations": 0,
+  "mutations": [],
+  "customer_projection_rows": 0,
+  "publication_rows": 0,
+  "input_hash": "339cb4e72897b3c09d3851d6bafb9fb5db6ec9217005147c05a00ae40c22260d",
+  "scope": "real_structured_artifact_control_not_exact_historical_pilot",
+  "checked_at": "2026-10-06T09:49:30.391Z",
+  "replay_duplicates": 100,
+  "status": {
+    "service": "findpitches-v3",
+    "role": "api",
+    "mode": "shadow",
+    "publication_enabled": false,
+    "now": "2026-10-06T09:49:33.869Z",
+    "producers": [
+      {
+        "producer_name": "enrichment:extracted_page",
+        "validation_status": "accepted",
+        "records": 363,
+        "last_received_at": "2026-10-06T09:49:29.859Z"
+      },
+      {
+        "producer_name": "independent-structured",
+        "validation_status": "accepted",
+        "records": 100,
+        "last_received_at": "2026-10-06T09:41:06.043Z"
+      }
+    ],
+    "jobs": [
+      {
+        "stage": "eligibility",
+        "status": "complete",
+        "jobs": 100,
+        "oldest_available_at": "2026-10-06T09:41:06.751Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "enrichment",
+        "status": "complete",
+        "jobs": 100,
+        "oldest_available_at": "2026-10-06T09:41:11.589Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "readiness",
+        "status": "complete",
+        "jobs": 100,
+        "oldest_available_at": "2026-10-06T09:41:13.308Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "reconcile",
+        "status": "complete",
+        "jobs": 100,
+        "oldest_available_at": "2026-10-06T09:41:03.178Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "watch",
+        "status": "ready",
+        "jobs": 100,
+        "oldest_available_at": "2026-10-08T00:00:00.000Z",
+        "first_lease_expiry": null
+      }
+    ],
+    "entities": [
+      {
+        "environment": "test",
+        "entities": 100
+      }
+    ],
+    "readiness": [
+      {
+        "status": "blocked",
+        "entities": 36
+      },
+      {
+        "status": "ready",
+        "entities": 64
+      }
+    ],
+    "gates": [
+      {
+        "name": "structured-100-preservation",
+        "tested_records": 100,
+        "destructive_mutations": 0,
+        "passed_at": "2026-10-06T09:49:30.391Z",
+        "report_hash": "7e8be6987bac94858f28a32670a7b2cd68e94c3f567f79e17bf577d72f90e8b8"
+      }
+    ],
+    "throughput": [
+      {
+        "stage": "eligibility",
+        "completed_last_hour": 100
+      },
+      {
+        "stage": "enrichment",
+        "completed_last_hour": 100
+      },
+      {
+        "stage": "readiness",
+        "completed_last_hour": 100
+      },
+      {
+        "stage": "reconcile",
+        "completed_last_hour": 100
+      }
+    ],
+    "stale_leases": 0,
+    "unresolved_conflicts": 0,
+    "provider_queries_reserved": 0,
+    "provider_queries_completed": 0,
+    "customer_rows": 0,
+    "publication_rows": 0
+  }
+}

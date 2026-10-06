@@ -80,7 +80,8 @@ export default {
       if(request.method==='POST'&&path==='/rechecks/ack'&&role==='ingest') {
         const body=await bodyJson(request);
         const result=await sql(db,`DELETE FROM recheck_requests WHERE entity_id=? AND requested_at=? AND EXISTS(
-          SELECT 1 FROM entity_records er JOIN producer_records r ON r.id=er.record_id WHERE er.entity_id=? AND r.producer_name='independent-structured' AND r.environment='shadow')`,body.entity_id,body.requested_at,body.entity_id).run();
+          SELECT 1 FROM entity_records er JOIN producer_records r ON r.id=er.record_id WHERE er.entity_id=? AND r.producer_name='independent-structured' AND r.environment='shadow'
+          AND julianday(json_extract(r.normalized_json,'$.last_checked'))>=julianday(recheck_requests.requested_at))`,body.entity_id,body.requested_at,body.entity_id).run();
         return json({acknowledged:Number(result.meta?.changes)===1});
       }
       if(request.method==='GET'&&path==='/shadow'&&role==='api') {
