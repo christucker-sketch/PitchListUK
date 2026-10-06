@@ -1,0 +1,45 @@
+{
+  "name": "findpitches-v3-enrichment-shadow",
+  "main": "../../../platform/findpitches-v3/worker.mjs",
+  "compatibility_date": "2026-06-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "V3_ROLE": "enrichment",
+    "V3_CITY_ENABLED": "false",
+    "V3_DAILY_QUERY_LIMIT": "0"
+  },
+  "d1_databases": [
+    {
+      "binding": "FINDPITCHES_V3_DB",
+      "database_name": "findpitches-v3-shadow",
+      "database_id": "00000000-0000-0000-0000-000000000003",
+      "migrations_dir": "../migrations"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": [
+      "* * * * *"
+    ]
+  },
+  "queues": {
+    "producers": [
+      {
+        "binding": "NEXT_QUEUE",
+        "queue": "findpitches-v3-readiness-shadow"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "findpitches-v3-enrichment-shadow",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5,
+        "max_retries": 3,
+        "dead_letter_queue": "findpitches-v3-dead-shadow"
+      }
+    ]
+  }
+}

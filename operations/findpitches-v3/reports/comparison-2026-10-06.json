@@ -1,0 +1,50 @@
+{
+  "schema": "findpitches-v3-comparison-v1",
+  "inputs": 100,
+  "input_hash": "339cb4e72897b3c09d3851d6bafb9fb5db6ec9217005147c05a00ae40c22260d",
+  "comparable": false,
+  "limitations": [
+    "V2 snapshot unavailable",
+    "Gold labels unavailable; false rejection rate unavailable"
+  ],
+  "v2": null,
+  "v3": {
+    "observed_records": 100,
+    "missing_input_records": 0,
+    "unexpected_records": 0,
+    "duplicate_input_ids": 0,
+    "states": {
+      "validation": {
+        "accepted": 100
+      },
+      "eligibility": {
+        "eligible": 95,
+        "closed": 5
+      },
+      "readiness": {
+        "ready": 64,
+        "blocked": 36
+      },
+      "identity": {
+        "NEW_ENTITY": 100
+      }
+    },
+    "unique_entities": 100,
+    "linked_records": 100,
+    "source_fields_evaluated": 1106,
+    "source_fields_retained": 1106,
+    "source_field_retention": 1,
+    "source_field_mutations": [],
+    "field_completeness": 0.79,
+    "false_rejections": null,
+    "false_rejection_rate": null,
+    "readiness_yield": 0.64,
+    "metrics": {
+      "elapsed_ms": 5587,
+      "provider_queries_reserved": 0,
+      "provider_queries_completed": 0,
+      "total_cost_usd": null
+    }
+  },
+  "superiority_claim": null
+}

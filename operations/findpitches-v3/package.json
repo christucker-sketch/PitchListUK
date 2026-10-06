@@ -1,0 +1,20 @@
+{
+  "name": "findpitches-v3",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test ../../tests/findpitches-v3/*.test.mjs",
+    "control": "node control.mjs",
+    "compare": "node compare.mjs",
+    "check": "node verify-boundaries.mjs"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "devDependencies": {
+    "wrangler": "4.127.1",
+    "miniflare": "5.20260828.0-alpha",
+    "esbuild": "0.28.1",
+    "undici": "7.29.0"
+  }
+}

@@ -1,0 +1,29 @@
+name: FindPitches V3 shadow verification
+on:
+  pull_request:
+    paths: ['platform/findpitches-v3/**', 'operations/findpitches-v3/**', 'tests/findpitches-v3/**', 'docs/findpitches-v3*.md', '.github/workflows/findpitches-v3-ci.yml']
+  push:
+    branches: ['findpitches-v3/**']
+    paths: ['platform/findpitches-v3/**', 'operations/findpitches-v3/**', 'tests/findpitches-v3/**', '.github/workflows/findpitches-v3-ci.yml']
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: operations/findpitches-v3/package-lock.json
+      - run: npm ci --prefix operations/findpitches-v3 --no-audit --no-fund
+      - name: Require early zero-mutation structured control
+        run: node --test tests/findpitches-v3/woodchipper-control.test.mjs
+      - run: npm run check --prefix operations/findpitches-v3
+      - run: npm test --prefix operations/findpitches-v3
+      - name: Bundle every isolated Worker
+        env:
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          for role in ingest reconcile eligibility enrichment readiness acquisition watch api; do
+            operations/findpitches-v3/node_modules/.bin/wrangler deploy --dry-run --config operations/findpitches-v3/cloudflare/$role.jsonc --outdir "$RUNNER_TEMP/v3-bundles/$role"
+          done
