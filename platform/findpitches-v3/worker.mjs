@@ -8,6 +8,8 @@ import {serperStatus,serperPolicy,budgetDay} from './serper-usage.mjs';
 import {fetchLegacySource} from './legacy.mjs';
 import {selectRecordFacts} from './evidence.mjs';
 import {importLegacyBatch,completeLegacyRecovery,legacyRecoveryStatus} from './legacy-store.mjs';
+import {noteDeliveryContact,structuredDeliveryStatus} from './delivery-health.mjs';
+import {startPilot,schedulePilotRun,stopPilot,pilotStatus} from './pilot.mjs';
 
 const STAGES=['reconcile','eligibility','enrichment','readiness','acquisition','watch'];
 const NEXT={ingest:'reconcile',acquisition:'reconcile',reconcile:'eligibility',eligibility:'enrichment',enrichment:'readiness',readiness:'watch',watch:'eligibility'};
@@ -44,7 +46,7 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
   const values=[[],[],[],[],[],[new Date(Date.parse(now)-3600000).toISOString()],[now],[],[budgetDay(now)],[]];
   const results=await Promise.all(queries.map((q,i)=>sql(db,q,...values[i]).all()));
   const [producers,jobs,entities,readiness,gates,throughput,leases,conflicts,cost,leakage]=results.map(r=>r.results);
-  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),legacy_recovery:await legacyRecoveryStatus(db)};
+  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now)};
 }
 export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
   if(!stage||!queue)return;
@@ -83,6 +85,7 @@ export default {
       if(request.method==='POST'&&path==='/imports'&&role==='ingest') {
         const body=await bodyJson(request);
         const result=await ingestRecords(db,body.records,{producer:'independent-structured',environment:body.environment??'shadow'});
+        await noteDeliveryContact(db,{kind:'import',environment:body.environment??'shadow',records:body.records,receipt:result});
         // Durable jobs survive a missing transport wakeup; the role cron recovers them.
         ctx?.waitUntil(wakeStage(env,'reconcile').catch(()=>{}));return json(result,202);
       }
@@ -96,10 +99,13 @@ export default {
         if(typeof body.url!=='string')throw Error('legacy_original_source_url_required');
         return json(await fetchLegacySource(body.url));
       }
-      if(request.method==='GET'&&path==='/rechecks'&&role==='ingest')return json({requests:(await sql(db,`SELECT q.entity_id,q.requested_at,q.reason,r.producer_record_id,r.market,r.environment
+      if(request.method==='GET'&&path==='/rechecks'&&role==='ingest') {
+        if(url.searchParams.get('probe')!=='1')await noteDeliveryContact(db,{kind:'rechecks'});
+        return json({requests:(await sql(db,`SELECT q.entity_id,q.requested_at,q.reason,r.producer_record_id,r.market,r.environment
         FROM recheck_requests q JOIN entity_records er ON er.entity_id=q.entity_id JOIN producer_records r ON r.id=er.record_id
         WHERE r.producer_name='independent-structured' AND r.environment='shadow'
         GROUP BY q.entity_id,r.producer_record_id ORDER BY q.requested_at LIMIT 100`).all()).results});
+      }
       if(request.method==='POST'&&path==='/rechecks/ack'&&role==='ingest') {
         const body=await bodyJson(request);
         const result=await sql(db,`DELETE FROM recheck_requests WHERE entity_id=? AND requested_at=? AND EXISTS(
@@ -148,6 +154,9 @@ export default {
         await enqueue(db,'acquisition',body.run_id,{city:CITY.id,query_limit:1,run_id:body.run_id,canary:true});
         return json({run_id:body.run_id,query_limit:1,city:CITY.id},202);
       }
+      if(request.method==='POST'&&path==='/acquisition/pilot/start'&&role==='acquisition')return json(await startPilot(db,await bodyJson(request)),201);
+      if(request.method==='POST'&&path==='/acquisition/pilot/next'&&role==='acquisition')return json(await schedulePilotRun(db,(await bodyJson(request)).pilot_id),202);
+      if(request.method==='POST'&&path==='/acquisition/pilot/stop'&&role==='acquisition') {const body=await bodyJson(request);const reason=body.reason??'operator_stop';if(!/^[a-z][a-z0-9_]{0,79}$/.test(reason))throw Error('pilot_stop_reason_invalid');await stopPilot(db,body.pilot_id,reason);return json({paused:true});}
       if(request.method==='POST'&&path==='/acquisition'&&role==='acquisition') {
         const body=await bodyJson(request);
         if(env.V3_CITY_ENABLED!=='true'||(await serperPolicy(db)).bulk_enabled!==1)throw new Error('city_acquisition_disabled');

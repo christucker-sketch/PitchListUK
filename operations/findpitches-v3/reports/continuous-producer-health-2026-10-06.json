@@ -1,0 +1,42 @@
+{
+  "schema": "findpitches-continuous-producer-health-v1",
+  "as_of": "2026-10-06T22:46:26.007Z",
+  "source_scope": "Synthetic diagnostic records exist only in test scope; real original producer receipts are audited separately.",
+  "unchanged_server_replay": {
+    "inserted": 0,
+    "duplicates": 1,
+    "entity_growth": 0
+  },
+  "unchanged_checkpoint_replay": true,
+  "changed_record_advanced": true,
+  "new_record_advanced": true,
+  "automatic_pipeline_elapsed_ms": 206001,
+  "source_mutations": 0,
+  "stale_recheck": {
+    "client_acknowledged": 0,
+    "server_acknowledged": false,
+    "pending": true
+  },
+  "cloud_delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": null,
+    "recent_poll_intervals_seconds": [],
+    "host_recently_contacting": false,
+    "cadence_verified": false,
+    "freshness_warning": true,
+    "immutable_receipts": 888,
+    "producer_ids": 887,
+    "last_new_receipt_at": "2026-10-06T13:44:51.925Z",
+    "source_last_checked": "2026-10-05T11:49:36Z",
+    "interpretation": "Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls are excluded."
+  },
+  "queue": {
+    "due_jobs": 0,
+    "oldest_due": null
+  },
+  "customer_rows": 0,
+  "publication_rows": 0,
+  "bulk_enabled": false
+}

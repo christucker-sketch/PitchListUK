@@ -1,0 +1,42 @@
+{
+  "schema": "findpitches-pilot-source-audit-v1",
+  "as_of": "2026-10-06T23:13:32.675Z",
+  "pilot_id": "pilot_017b109a-f5dd-4179-a030-cf5177f294d4",
+  "original_routes_checked": 10,
+  "maximum_routes": 40,
+  "paid_queries": 0,
+  "kinds": {},
+  "reasons": {
+    "source_does_not_establish_specific_trading_event": 9,
+    "source_http_429": 1
+  },
+  "field_coverage": {
+    "event_name": {
+      "present": 0,
+      "missing": 10
+    },
+    "organiser": {
+      "present": 0,
+      "missing": 10
+    },
+    "location": {
+      "present": 0,
+      "missing": 10
+    },
+    "event_start": {
+      "present": 0,
+      "missing": 10
+    },
+    "application_url": {
+      "present": 0,
+      "missing": 10
+    },
+    "source_country": {
+      "present": 0,
+      "missing": 10
+    }
+  },
+  "source_fields_overwritten": 0,
+  "readiness_promotions": 0,
+  "interpretation": "Direct original-source checks only. Parsed evidence does not independently prove event identity, source country, current edition or open applications. No source fields are changed or records promoted from these observations."
+}

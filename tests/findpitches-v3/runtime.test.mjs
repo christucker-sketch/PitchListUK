@@ -7,6 +7,8 @@ import { runPreservationControl } from '../../operations/findpitches-v3/control.
 import { record,NOW } from './helpers.mjs';
 import {acquireCity} from '../../platform/findpitches-v3/acquisition.mjs';
 import {legacyRecord,fieldEvidence} from '../../platform/findpitches-v3/legacy.mjs';
+import {startPilot,schedulePilotRun} from '../../platform/findpitches-v3/pilot.mjs';
+import {reserveSerperQuery,budgetDay} from '../../platform/findpitches-v3/serper-usage.mjs';
 
 const require=createRequire(process.env.V3_TOOLING_ROOT?path.join(process.env.V3_TOOLING_ROOT,'package.json'):new URL('../../operations/findpitches-v3/package.json',import.meta.url));
 test('real workerd D1 executes all migrations, preservation control and native queue stage chain',{timeout:360000},async t=>{
@@ -43,13 +45,24 @@ test('real workerd D1 executes all migrations, preservation control and native q
   assert.equal(legacyResponse.status,202,await legacyResponse.clone().text());
   assert.equal((await db.prepare('SELECT COUNT(*) AS count FROM legacy_recovery_claims').first()).count,1);
   await db.prepare('UPDATE serper_policy SET bulk_enabled=1,max_queries_per_day=2,max_credits_per_day=2 WHERE id=1').run();
+  // Native HTTP status uses the live Worker clock; reserve against that same day.
+  const budgetNow=new Date().toISOString();
   let calls=0;const fetcher=async()=>{calls++;return Response.json({credits:1,organic:[]});};
-  const budgetResults=await Promise.allSettled(Array.from({length:4},(_,i)=>acquireCity(db,{city:'austin-tx',query_limit:1},{V3_CITY_ENABLED:'true',V3_DAILY_QUERY_LIMIT:'1000',SERPER_API_KEY:'local-recorded-provider-test-key'},{fetcher,now:NOW,runId:'native-budget-'+i})));
-  assert.equal(budgetResults.filter(r=>r.status==='fulfilled').length,2);assert.equal(calls,2);
+  const budgetResults=await Promise.allSettled(Array.from({length:4},(_,i)=>acquireCity(db,{city:'austin-tx',query_limit:1},{V3_CITY_ENABLED:'true',V3_DAILY_QUERY_LIMIT:'1000',SERPER_API_KEY:'local-recorded-provider-test-key'},{fetcher,now:budgetNow,runId:'native-budget-'+i})));
+  assert.equal(budgetResults.filter(r=>r.status==='fulfilled').length,2,JSON.stringify(budgetResults.map(r=>r.status==='rejected'?r.reason.message:r.status)));assert.equal(calls,2);
   const stateResponse=await api.fetch('https://example.test/status');assert.equal(stateResponse.status,200);
   const budgetState=(await stateResponse.json()).serper;
   assert.equal(budgetState.usage.day_queries_attempted,2);assert.equal(budgetState.paused,true);assert.equal(budgetState.remaining.daily_queries,0);
   await db.prepare('UPDATE serper_policy SET bulk_enabled=0 WHERE id=1').run();
+  await db.prepare('UPDATE serper_policy SET max_queries_per_day=1000,max_credits_per_day=1000,pause_until=NULL,pause_reason=NULL WHERE id=1').run();
+  const pilot=await startPilot(db,{max_queries:2,daily_ceiling:4},budgetNow),grant=await schedulePilotRun(db,pilot.id,budgetNow);
+  await db.prepare("UPDATE pilot_run_grants SET status='running' WHERE run_id=?").bind(grant.run_id).run();
+  await db.prepare("INSERT INTO acquisition_runs(id,city,day,queries_reserved,status,created_at,updated_at) VALUES (?,?,?,2,'reserved',?,?)").bind(grant.run_id,grant.city,budgetDay(budgetNow),budgetNow,budgetNow).run();
+  const pilotReservations=await Promise.allSettled(Array.from({length:6},(_,index)=>reserveSerperQuery(db,{runId:grant.run_id,index,query:'native-pilot-'+index,market:'GB',region:'GB-ENG',now:budgetNow,pilotId:pilot.id})));
+  assert.equal(pilotReservations.filter(r=>r.status==='fulfilled').length,2,'Native D1 must enforce the lower pilot ceiling atomically');
+  const nativeState=await api.fetch('https://example.test/status');
+  assert.equal((await nativeState.json()).controlled_pilot.sessions[0].metrics.reserved,2);
+  assert.equal(calls,2,'Pilot budget verification does not make provider calls');
   console.log('Native D1 budget reservations: two recorded calls, concurrent overflow blocked.');
   console.log('Real D1/workerd control:' ,JSON.stringify({...control,record_ids:undefined}));
 });

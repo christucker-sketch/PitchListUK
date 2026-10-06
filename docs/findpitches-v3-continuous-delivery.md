@@ -38,3 +38,11 @@ node operations/findpitches-v3/producer-runner.mjs --config /secure/producer/v3-
 Use `--loop` under a service manager for continuous delivery. `findpitches-v3-producer.service.example` supplies a template; update its user and paths. Normal cadence is 900 seconds, with bounded failure backoff. The runner remains separate from the discovery engine and V3 runtime.
 
 The deployed endpoint has been tested using the historical control export. That proves transport/replay, not continuous fresh acquisition. The Windows schedule becomes live when installed on the producer host with its ingest-only credential.
+
+## Cloud observation and health checks
+
+`/status.structured_delivery` exposes the expected 900-second cadence, the last authenticated runner poll, recent poll intervals, receipt counts and source freshness. Every runner cycle already polls `/rechecks`, including when unchanged checkpointed exports skip `/imports`. The cloud records these contacts as append-only telemetry. Diagnostic `/rechecks?probe=1` requests and test imports are excluded from host cadence. Three contacts with two intervals between 10 and 20 minutes are required before the observed cadence is marked verified. Contact within 30 minutes is reported separately from export freshness; successful transport cannot make old source checks fresh.
+
+`verify-producer-health.mjs` tests unchanged server replay and checkpoint replay, changed/new test records through the deployed queue pipeline, retained immutable facts, and refusal of stale recheck acknowledgment. It uses clearly synthetic test-scope fixtures and diagnostic polls, which cannot establish the Windows host is active. Live-source preservation is verified independently against the original receipt/fact baseline.
+
+If cloud contacts remain absent, inspect the existing `FindPitches-V3-Structured-Delivery` scheduled task on the designated PC, its last run result, the signed-in task user, export-directory access and local `state/status.json`. The installer runs under that user's limited privileges while signed in; the cloud cannot start the Windows task. No cloud or provider credentials are required by the runner.

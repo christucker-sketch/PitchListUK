@@ -1,0 +1,13 @@
+{
+  "as_of": "2026-10-06T23:00:48.587Z",
+  "immutable_raw_receipts_verified": 5788,
+  "immutable_source_fields_verified": 38926,
+  "destructive_source_mutations": 0,
+  "source_preservation_verified": true,
+  "source_reference_read_only": true,
+  "customer_records_bulk_copied": false,
+  "customer_rows": 0,
+  "publication_rows": 0,
+  "bulk_enabled": 0,
+  "interpretation": "Later practical quality holds do not change the historical completed recovery accounting."
+}

@@ -75,8 +75,8 @@ export async function deliverExport({inputFile,ingestUrl,token,checkpointFile,en
     state.complete=true;writeState(checkpointFile,state);return state;
   } finally {fs.closeSync(fd);fs.unlinkSync(lock);}
 }
-export async function fetchRechecks({ingestUrl,token,fetcher=fetch}) {
-  const response=await fetcher(endpoint(ingestUrl)+'/rechecks',{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
+export async function fetchRechecks({ingestUrl,token,fetcher=fetch,probe=false}) {
+  const response=await fetcher(endpoint(ingestUrl)+'/rechecks'+(probe?'?probe=1':''),{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
   if(!response.ok)throw new Error('recheck_http_'+response.status);
   const body=await response.json();if(!Array.isArray(body.requests))throw new Error('recheck_receipt_invalid');return body.requests;
 }

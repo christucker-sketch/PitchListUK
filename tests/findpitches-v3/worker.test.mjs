@@ -7,6 +7,18 @@ import { sql,ingestRecords } from '../../platform/findpitches-v3/store.mjs';
 import { drainPipeline } from '../../platform/findpitches-v3/pipeline.mjs';
 const TOKEN='local-test-token-with-at-least-24-characters';
 const request=(path,{method='GET',body,token=TOKEN}={})=>new Request('https://v3.example'+path,{method,headers:{authorization:'Bearer '+token,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});
+test('pilot routes require the operator credential and acquisition role, and retain stop reasons',async t=>{
+  const db=database(t),ingestToken='ingest-only-local-test-token';
+  await sql(db,"INSERT INTO quality_gates VALUES ('structured-100-preservation',100,0,'{}','gate',?)",NOW).run();
+  const env={FINDPITCHES_V3_DB:db,V3_ROLE:'acquisition',V3_OPERATOR_TOKEN:TOKEN,V3_INGEST_TOKEN:ingestToken};
+  const body={max_queries:12,daily_ceiling:250},route='/acquisition/pilot/start';
+  assert.equal((await worker.fetch(request(route,{method:'POST',body,token:ingestToken}),env)).status,401);
+  assert.equal((await worker.fetch(request(route,{method:'POST',body}),{...env,V3_ROLE:'ingest'})).status,404);
+  const response=await worker.fetch(request(route,{method:'POST',body}),env);assert.equal(response.status,201);
+  const pilot=await response.json();
+  assert.equal((await worker.fetch(request('/acquisition/pilot/stop',{method:'POST',body:{pilot_id:pilot.id,reason:'source_preservation_failed'}}),env)).status,200);
+  assert.equal((await sql(db,'SELECT stop_reason FROM acquisition_pilots WHERE id=?',pilot.id).first()).stop_reason,'source_preservation_failed');
+});
 test('Worker APIs enforce authentication, role ownership, payload limits and hard publication disablement',async t=>{
   const db=database(t),env={FINDPITCHES_V3_DB:db,V3_ROLE:'ingest',V3_INGEST_TOKEN:TOKEN,V3_OPERATOR_TOKEN:TOKEN,PUBLICATION_ENABLED:'true'};
   assert.equal((await worker.fetch(request('/health'),env)).status,200);

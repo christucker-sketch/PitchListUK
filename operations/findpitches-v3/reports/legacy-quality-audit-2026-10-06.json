@@ -1,0 +1,2999 @@
+{
+  "schema": "findpitches-legacy-quality-audit-v1",
+  "as_of": "2026-10-06T19:44:14.504Z",
+  "sample_hash": "bc26f42a93503d28a61b95e6835494844bb82ebe897389d7e169c93fef087ab0",
+  "sample_size": 120,
+  "population_records": 5597,
+  "population_entities": 5336,
+  "method": "Seeded record ordering; minimum 12 per recovery-route/identity cell and three per available country/platform, then seeded fill; one canonical entity per sample row. Diversity quotas oversample rare strata; percentages describe the sample, not an unbiased population estimate.",
+  "reviewer": "Codex evidence-based practical-usefulness review; not independent human ground truth",
+  "counts": {
+    "clearly_usable": 10,
+    "usable_minor_missing": 8,
+    "questionable": 77,
+    "wrong_unsafe": 25
+  },
+  "percentages": {
+    "clearly_usable": 8.33,
+    "usable_minor_missing": 6.67,
+    "questionable": 64.17,
+    "wrong_unsafe": 20.83
+  },
+  "sample_strata": {
+    "category": {
+      "retained_evidence": 29,
+      "source_refetch": 91
+    },
+    "identity_group": {
+      "existing": 15,
+      "new": 105
+    },
+    "market": {
+      "US": 76,
+      "AU": 5,
+      "NZ": 4,
+      "CA": 6,
+      "GB": 16,
+      "HK": 3,
+      "IE": 7,
+      "SG": 3
+    },
+    "platform": {
+      "eventeny.com": 20,
+      "direct-site": 67,
+      "forms.gle": 3,
+      "jotform.com": 3,
+      "facebook.com": 21,
+      "eventbrite.com": 3,
+      "google.com": 3
+    }
+  },
+  "by_stratum": {
+    "category": {
+      "retained_evidence": {
+        "sampled": 29,
+        "clearly_usable": 10,
+        "usable_minor_missing": 5,
+        "questionable": 10,
+        "wrong_unsafe": 4
+      },
+      "source_refetch": {
+        "sampled": 91,
+        "clearly_usable": 0,
+        "usable_minor_missing": 3,
+        "questionable": 67,
+        "wrong_unsafe": 21
+      }
+    },
+    "identity_group": {
+      "existing": {
+        "sampled": 15,
+        "clearly_usable": 5,
+        "usable_minor_missing": 3,
+        "questionable": 6,
+        "wrong_unsafe": 1
+      },
+      "new": {
+        "sampled": 105,
+        "clearly_usable": 5,
+        "usable_minor_missing": 5,
+        "questionable": 71,
+        "wrong_unsafe": 24
+      }
+    },
+    "market": {
+      "US": {
+        "sampled": 76,
+        "clearly_usable": 10,
+        "usable_minor_missing": 5,
+        "questionable": 47,
+        "wrong_unsafe": 14
+      },
+      "AU": {
+        "sampled": 5,
+        "clearly_usable": 0,
+        "usable_minor_missing": 0,
+        "questionable": 5,
+        "wrong_unsafe": 0
+      },
+      "NZ": {
+        "sampled": 4,
+        "clearly_usable": 0,
+        "usable_minor_missing": 1,
+        "questionable": 3,
+        "wrong_unsafe": 0
+      },
+      "CA": {
+        "sampled": 6,
+        "clearly_usable": 0,
+        "usable_minor_missing": 1,
+        "questionable": 4,
+        "wrong_unsafe": 1
+      },
+      "GB": {
+        "sampled": 16,
+        "clearly_usable": 0,
+        "usable_minor_missing": 1,
+        "questionable": 10,
+        "wrong_unsafe": 5
+      },
+      "HK": {
+        "sampled": 3,
+        "clearly_usable": 0,
+        "usable_minor_missing": 0,
+        "questionable": 2,
+        "wrong_unsafe": 1
+      },
+      "IE": {
+        "sampled": 7,
+        "clearly_usable": 0,
+        "usable_minor_missing": 0,
+        "questionable": 4,
+        "wrong_unsafe": 3
+      },
+      "SG": {
+        "sampled": 3,
+        "clearly_usable": 0,
+        "usable_minor_missing": 0,
+        "questionable": 2,
+        "wrong_unsafe": 1
+      }
+    },
+    "platform": {
+      "eventeny.com": {
+        "sampled": 20,
+        "clearly_usable": 10,
+        "usable_minor_missing": 1,
+        "questionable": 3,
+        "wrong_unsafe": 6
+      },
+      "direct-site": {
+        "sampled": 67,
+        "clearly_usable": 0,
+        "usable_minor_missing": 6,
+        "questionable": 44,
+        "wrong_unsafe": 17
+      },
+      "forms.gle": {
+        "sampled": 3,
+        "clearly_usable": 0,
+        "usable_minor_missing": 0,
+        "questionable": 3,
+        "wrong_unsafe": 0
+      },
+      "jotform.com": {
+        "sampled": 3,
+        "clearly_usable": 0,
+        "usable_minor_missing": 0,
+        "questionable": 3,
+        "wrong_unsafe": 0
+      },
+      "facebook.com": {
+        "sampled": 21,
+        "clearly_usable": 0,
+        "usable_minor_missing": 0,
+        "questionable": 20,
+        "wrong_unsafe": 1
+      },
+      "eventbrite.com": {
+        "sampled": 3,
+        "clearly_usable": 0,
+        "usable_minor_missing": 1,
+        "questionable": 1,
+        "wrong_unsafe": 1
+      },
+      "google.com": {
+        "sampled": 3,
+        "clearly_usable": 0,
+        "usable_minor_missing": 0,
+        "questionable": 3,
+        "wrong_unsafe": 0
+      }
+    }
+  },
+  "field_coverage": {
+    "event_name": {
+      "present": 120,
+      "missing": 0
+    },
+    "organiser": {
+      "present": 26,
+      "missing": 94
+    },
+    "location": {
+      "present": 30,
+      "missing": 90
+    },
+    "event_start": {
+      "present": 30,
+      "missing": 90
+    },
+    "application_url": {
+      "present": 41,
+      "missing": 79
+    },
+    "application_state": {
+      "present": 120,
+      "missing": 0
+    },
+    "application_deadline": {
+      "present": 15,
+      "missing": 105
+    }
+  },
+  "recurring_patterns": {
+    "venue_location_missing": 69,
+    "organiser_missing": 73,
+    "source_country_conflicts_with_market": 8,
+    "vendor_route_requires_review": 59,
+    "past_application_deadline": 1,
+    "open_state_after_deadline": 1,
+    "directory_not_specific_opportunity": 9,
+    "waitlist_not_open_stall_availability": 2,
+    "event_timing_unestablished": 68,
+    "application_availability_unknown": 73,
+    "editorial_not_opportunity": 3,
+    "country_from_historical_search_scope": 84,
+    "social_post_not_normalized_event": 21,
+    "unrelated_vendor_link_and_event": 2,
+    "test_form_not_live_opportunity": 1,
+    "past_event_requires_current_edition": 2,
+    "expected_date_not_confirmed": 1,
+    "source_date_and_state_contradiction": 1,
+    "employment_not_vendor_opportunity": 1
+  },
+  "reviews": [
+    {
+      "record_id": "rec_9676d7bf25433e182f7b061e968cce96e80b8ed4",
+      "entity_id": "ent_a939b5e59eda60743f3410eded38c9bd",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "usable_minor_missing",
+      "reason": "Named future event, organiser, venue and exact vendor route are supported; retained booth evidence includes a sold-out option, so availability of the relevant booth still needs checking.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "3d6e4afbf87e8361bb4ac9aea0fd244c75c0c88dc5c2c43fd9449512835b827f"
+      }
+    },
+    {
+      "record_id": "rec_e5ff6241c2fee46733aec19e9961513eae78cdd5",
+      "entity_id": "ent_e8dec828fff6abdbf363a1b0426e5ca6",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "AU",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: venue_location_missing, organiser_missing.",
+      "patterns": [
+        "venue_location_missing",
+        "organiser_missing"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 8,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "068810eab0927c9891811198411ae29582805b61afc8a7fdee47072135c3da72"
+      }
+    },
+    {
+      "record_id": "rec_04d93129fb9d41bbc476fba5526d5624787181fe",
+      "entity_id": "ent_bb143b9c1cf63d4b8a10e66063576f27",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Selected location says Gimpo, South Korea, while market is US; evidence also describes a closed film/video artist call and unrelated date snippets.",
+      "patterns": [
+        "source_country_conflicts_with_market"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 12,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_does_not_establish_specific_trading_event",
+        "content_hash": "69743384f26dc88025220e9ec7d0bcf086323b627f48121efe6f1c0380ead065"
+      }
+    },
+    {
+      "record_id": "rec_a1565607faa71031665d74b4a270ba8c88d19a94",
+      "entity_id": "ent_898dec834764bb71d3cb2305a3382d74",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "AU",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: venue_location_missing.",
+      "patterns": [
+        "venue_location_missing"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 9,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "cdb6f94adebd6cc91ba8a4b9d06c4f973f0041f8f4e92f422e6bcfac69a83f2c"
+      }
+    },
+    {
+      "record_id": "rec_3d2128cf306459f43d6714f1f5268b0e11f436fa",
+      "entity_id": "ent_7905b141eeb5d843dbee40f7a11610c8",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "usable_minor_missing",
+      "reason": "Named future fair and food-concession application are corroborated; organiser is missing and the location is city-level.",
+      "patterns": [
+        "organiser_missing",
+        "vendor_route_requires_review"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 10,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_does_not_establish_specific_trading_event",
+        "content_hash": "6dfc1ac939a7e6cff725a76a4c2ae349ffd70b95d1094578d591cdcd58e27a26"
+      }
+    },
+    {
+      "record_id": "rec_d62d5f6d9cc620d8dfdf49e989d585f40beef2e6",
+      "entity_id": "ent_2c5aab034b010d1703c51ec9fc368515",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "AU",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: venue_location_missing.",
+      "patterns": [
+        "venue_location_missing"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 9,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "58f0059226fd896329df105617f2eb3286a4dd78732cf8a393a634c654cc36cc"
+      }
+    },
+    {
+      "record_id": "rec_327752ad75ec78a6c7f56d348e4c6c14253f9e27",
+      "entity_id": "ent_0750bf369d4895b8c3384efaefb8f155",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "d4f846606782a9aeb9445e3e1262e193938a397615156d23076400cab2f58818"
+      }
+    },
+    {
+      "record_id": "rec_c91135a7e4a108667321456cd50d7996a990a8ec",
+      "entity_id": "ent_ecbff1b4ea6833895c553f218ba23e4d",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "b2b4169597cbe30253b9a43f3e9c08d5337f8203c415591605a5eb9c51844f1a"
+      }
+    },
+    {
+      "record_id": "rec_9cbf750463b4c79ff61c0bd46e03794cfcb78c5b",
+      "entity_id": "ent_1eb9a9d6e47307332bbe98625522cd42",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "7567e85278ba5c9b007a4d0a8ce34890d5e91a08356487e65807525cfb143a98"
+      }
+    },
+    {
+      "record_id": "rec_3b710989b89ae676275e7d3086a8f62dce20d436",
+      "entity_id": "ent_8c9812f700e87367271684ddf8945a4d",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "9464b427c885854a80d06bfeaac2becf424354be6fba63ec6c32a07a81302b77"
+      }
+    },
+    {
+      "record_id": "rec_509005f7ef6a15a540e0b4ae080b21103d971c33",
+      "entity_id": "ent_da57ad9a90e06654b706e04d64a10a3d",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "8c649057d00b7aeedb6b80e5fc514710149ef3e4b0386a699cecf3c881a8c1f0"
+      }
+    },
+    {
+      "record_id": "rec_b38ea540da6830e97ee3dfc39c98e8dffafd64a5",
+      "entity_id": "ent_bb09a755db58fb3b95189bab95a33bc4",
+      "category": "retained_evidence",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: past_application_deadline.",
+      "patterns": [
+        "past_application_deadline",
+        "open_state_after_deadline"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "d39419bb54322c97060c45f9b853aa1e98184308bbcde8180ef08e3cad0e34e6"
+      }
+    },
+    {
+      "record_id": "rec_54d97e13c4b0eecf5129162aec9f7902e9619eaf",
+      "entity_id": "ent_0e48289dc7ccde9bda408090197d56be",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "NZ",
+      "platform": "direct-site",
+      "classification": "usable_minor_missing",
+      "reason": "Future market date and New Plymouth venue are corroborated by current Event markup; ClueMart is the platform-level organiser label and availability needs checking.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 11,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_event",
+        "content_hash": "3fa48228b4ceaa88d56776c8a700b0c93dbdd57e5dcc6162d235e52f9cfdb769"
+      }
+    },
+    {
+      "record_id": "rec_5219aeb7fc6be66cdaf384ccdbe342eebd434b2e",
+      "entity_id": "ent_41577590a5aee1295ad7b5fedb23f580",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "e762f765456eaa5a7af60550e1271688dd97040dabfeb39681f3f91413dba034"
+      }
+    },
+    {
+      "record_id": "rec_b907f8802e3f0582fbdb90906fdcd7de1ca1792d",
+      "entity_id": "ent_12cc8e269a2328eb22366439f376a04d",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "The source describes many Tennessee food-truck events and rotations, rather than one canonical event.",
+      "patterns": [
+        "directory_not_specific_opportunity"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "f208b794170e6784a53c940c2d48a5eab7c0928f06627e0e5288f28abe25f6e7"
+      }
+    },
+    {
+      "record_id": "rec_d021e0983c5641bc7597f5296c91d6f01de04918",
+      "entity_id": "ent_219ad3cb0b77604fe2173139f1224345",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "CA",
+      "platform": "forms.gle",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: organiser_missing. Source is a waitlist rather than confirmed booth availability.",
+      "patterns": [
+        "organiser_missing",
+        "waitlist_not_open_stall_availability"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 9,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_does_not_establish_specific_trading_event",
+        "content_hash": "488ed6d3cad579be6be77b4b08ca500a16f85d5e832b335f3684ae7f910224fa"
+      }
+    },
+    {
+      "record_id": "rec_f7572fc90038ed7a1721e89ee498395ea46d29c6",
+      "entity_id": "ent_24eaabb121a9b2deb02eedc822080b09",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "cd5dd52a4c7f2f7d89f19aa78f2704734fe16d646725aa775443dd832445ec46"
+      }
+    },
+    {
+      "record_id": "rec_b8e962901bf9e188a16f7b9bfae98dd29f2acf93",
+      "entity_id": "ent_afcaa1b917a649639cac1bcd2440d33e",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "0342d8170f4919ebd87a7ebdbc4e67084265712831da39330ba5cee92cfba91d"
+      }
+    },
+    {
+      "record_id": "rec_9b77636a75e986edcfd713d1fa64bb55ebbb3ef3",
+      "entity_id": "ent_2fa8577e89745de302b00138ce1d68c8",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "usable_minor_missing",
+      "reason": "Named future fair, date, hall and enquiry route are retained; organiser is a directory label and the current route returned HTTP 520.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 10,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_http_520",
+        "content_hash": null
+      }
+    },
+    {
+      "record_id": "rec_37bdb229c81f12a12b937aabb7e98a04529d071b",
+      "entity_id": "ent_b25ddd8f502dae9fe54f0f1b7b279c7e",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "0366f204c571f11adba365abc06c9193e391dfccb316e9e2c17bcf13b6284578"
+      }
+    },
+    {
+      "record_id": "rec_7b3ada27583f52ee6195aab66e616c1afb2d08a9",
+      "entity_id": "ent_e7580e7176e88cbffdf6a01fbf75ee3c",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "HK",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_does_not_establish_specific_trading_event",
+        "content_hash": "d989cb425302d711c08e6144a9964f31c9f9219bd2b6d8152274d5c714ee52c2"
+      }
+    },
+    {
+      "record_id": "rec_6c0bff8e6be10b1c6779030eb760dc52cc08d5d7",
+      "entity_id": "ent_a9d4c0a199f66637671f2adad0b6ab2c",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_http_403",
+        "content_hash": null
+      }
+    },
+    {
+      "record_id": "rec_8ad6397c937c23a954119053c73e8bbe07fc87d9",
+      "entity_id": "ent_078551d851349db3bb83197d10c1f357",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "The retained source is a vendor permit guide, not a named trading opportunity.",
+      "patterns": [
+        "editorial_not_opportunity"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "df02ddcf504b94b30ab635daebb775e16b4fcb3a06f903a6171a29f977c65832"
+      }
+    },
+    {
+      "record_id": "rec_54592388191cf2725488eda4fc3333c973e860e9",
+      "entity_id": "ent_1367a326df2b5c97f8a3fb01b336a9ca",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "clearly_usable",
+      "reason": "Retained exact vendor-route evidence supports a named future trading event, organiser, venue, dates and application deadline; current availability still requires normal recheck.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "816750015cf60b74b4f5391a438d3d12bd74090dbc3f7cf706f26cdfcfa68956"
+      }
+    },
+    {
+      "record_id": "rec_ce32ab5a1aa8b709730db9307207c4d337bd1575",
+      "entity_id": "ent_32b1d80ce604da45161a79999abfd194",
+      "category": "source_refetch",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 7,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "fcc1b7bbf707737be64a6889fc8db12e5e482809ea6934b61399d6b1be9974bc"
+      }
+    },
+    {
+      "record_id": "rec_0d98cbeb4e0ced6cfe98821d0e4e4151fb8b83ad",
+      "entity_id": "ent_507caacf7d3e96f6ce15520de1d2b7d5",
+      "category": "source_refetch",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 7,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "9f06ed1d7144b6aa7f95807f08a538c213e3c44aa06fb2f4bb478e81beeec379"
+      }
+    },
+    {
+      "record_id": "rec_496be9d2a6d7ccadf92565cb38c4be9e362764ec",
+      "entity_id": "ent_03d5bb6f69f773403b3ce2ec3411b703",
+      "category": "source_refetch",
+      "identity_group": "existing",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "usable_minor_missing",
+      "reason": "Named current-season market, Indiana locality and dated vendor route are retained; organiser and account-gated availability need confirmation.",
+      "patterns": [
+        "organiser_missing",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 9,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "098a5a44e6f765d90de59fa76922e204a5a238912b9048a3f1f46a1643a7d5dc"
+      }
+    },
+    {
+      "record_id": "rec_cf81c3ad2313f4690dcc64d5d3c02675fcb2c97d",
+      "entity_id": "ent_45753db4278dddeb4f9fe4b310a9d7db",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "jotform.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "bbe3491c7c232133ce3c13ad1c9f731b2fa6c974b5bef9ce9847fdf0f1dc51cb"
+      }
+    },
+    {
+      "record_id": "rec_e46341b23d7f1d3aab3dfc67a6335742ffd4cfd2",
+      "entity_id": "ent_9718af6a08ba109b90027fdf5b180c2d",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "NZ",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "0db5e11b69837814ce9adbe564dbe70dbb73c8b6170462fd0956ab2e800b15f4"
+      }
+    },
+    {
+      "record_id": "rec_1ab9bd2823bf5264d26abf006a286675eeebdd6b",
+      "entity_id": "ent_14912d82d02c30389fe000a8f55f5e62",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "IE",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Milwaukee Irish Fest is assigned to IE; the retained form explicitly closed on 31 July 2026.",
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "bcd73e867672c952622862d0e561b82cf15323284dea7e318477dce5914ba953"
+      }
+    },
+    {
+      "record_id": "rec_b33d05993d730d5dc235ab05e9a655473fe49650",
+      "entity_id": "ent_5dfc02f5b2f5b798a53c82909b971247",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "usable_minor_missing",
+      "reason": "Specific Rochester market, venue, organiser and season dates are corroborated by directory Event evidence; current application availability remains UNKNOWN.",
+      "patterns": [
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 8,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_event",
+        "content_hash": "52a4bb49a745fdb09bb5ca14947b5fa6e9feb672348f2715bb0070b24e7a4b7b"
+      }
+    },
+    {
+      "record_id": "rec_a5d198d08b4d752e8edfcb4d24fdf9500925357a",
+      "entity_id": "ent_a1ff4025ef367c75b5d9422433b96699",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "IE",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "5b2f57c9b4e8a09b0bd4a4c2e4e0a1aa77eb8c7d3f9471914ef0c308ac64d4a6"
+      }
+    },
+    {
+      "record_id": "rec_edc11a5ff67cf5f4b3a27b1f07abed9d802908c7",
+      "entity_id": "ent_3ed0ff2fcc7e61275ea337cad2b6836c",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "1fd0555d7b864000db650f74c29a4f4a4a217f4b50fa7eec808cd3f766063b46"
+      }
+    },
+    {
+      "record_id": "rec_085cd9cb7c0b8c34aee26c3bd8f60f2fd129ae08",
+      "entity_id": "ent_dac94f77d3456db20d032f53208b9aa3",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "IE",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Original source explicitly locates The Food Trust market in Philadelphia, PA, USA, while the record is assigned to IE.",
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "c042da598f59fc6d7b6fbc39e12d647c9ce397cdabc66c60b5496cb13f4abaad"
+      }
+    },
+    {
+      "record_id": "rec_a473ef6648dcef58a434cf6bf36c757ce6ba2278",
+      "entity_id": "ent_b53268820708af6332b79fad11d74623",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "6f1986a0e0dc112842bbc07b5f59b4b0e92facf44a9747d667cf97bba55e5993"
+      }
+    },
+    {
+      "record_id": "rec_f4d0c44155b605868c9636e1cdeddf6d8c702ccd",
+      "entity_id": "ent_a8f55efe9a8c3a110933e8b048565e51",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "d8ec8f387a98f8e198fec3f249d9b4e6326e30f76c7f1aa89223402476a50bc5"
+      }
+    },
+    {
+      "record_id": "rec_b0fc8bb70b4b25f8d29835b64521ff53ace65ee6",
+      "entity_id": "ent_a2770a0b8f7138d04a05c7cb72899354",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "The record is the Anastasia musical; its vendor URL belongs to Juab County Fair in a recommendations section, and schema dates contradict the visible edition.",
+      "patterns": [
+        "unrelated_vendor_link_and_event"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 8,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_event",
+        "content_hash": "27c9ec921697da74b1651c74715720b07df3f611db948bedd5dd1ec036aad1d3"
+      }
+    },
+    {
+      "record_id": "rec_f404a31a2ba61e06e8630b2efaefb9abc9674196",
+      "entity_id": "ent_867285c61cd4643ad1aa8876302ee4d3",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "IE",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "bc2fe9630667179893ffc914fa298540386f8020c1374edcc4ff8a09538a4f59"
+      }
+    },
+    {
+      "record_id": "rec_5a7a1d2bdae07c5c44a1a8765bd0bc3a9680acc7",
+      "entity_id": "ent_9e5c1346ba9bd357a79630430968f784",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "wrong_unsafe",
+      "reason": "Eventeny applications-list page has become a canonical event; it is a generic search/account directory.",
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "41a83a5bcf1f17435d1eaab660cc65dd63d85ba475cee2bdb647a26a99ad77b1"
+      }
+    },
+    {
+      "record_id": "rec_9ec1886753d4afaf676d1e7aedd8345fab0b7c68",
+      "entity_id": "ent_5a0ffe2b26e474602ea99cad34448777",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "CA",
+      "platform": "jotform.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "9d75097612212293e662f64dbec5c3067fab505f15135114f0efffb433317bf4"
+      }
+    },
+    {
+      "record_id": "rec_0f561d10b2779be1844348c44a9077d48d7e2bf7",
+      "entity_id": "ent_646c4d9c02b652934f4a443fff5c6ff6",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "CA",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Source is a 2023 article about vendor verification membership, not a trading event.",
+      "patterns": [
+        "editorial_not_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "297bee0e4e359309eff7bb714759f769f6236a28d7ac9da8c0ddf65c11c8c965"
+      }
+    },
+    {
+      "record_id": "rec_0b69f15d7c1ea5fc51c0db60f58232653cfc2984",
+      "entity_id": "ent_03f0192d5d80c3f41d11d65ab1fd0be3",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "1ffc6e7ab90d42a40ec419118c24cdd58a05024608519d3d4b5da346ebd2dfc5"
+      }
+    },
+    {
+      "record_id": "rec_39bcbfcd88817c7d8c1c0080b960eccd1d5a81fb",
+      "entity_id": "ent_55d6f0ff78ceb88b0b381a4e4e424474",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "HK",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Canonical route is an exhibitor form explicitly marked Test and contains 2025 bookings/payment options; it is unsuitable as a current customer opportunity.",
+      "patterns": [
+        "test_form_not_live_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "ef2331bb972d03cdf45d6a1afbc72ab882dddbe5fe93f25d6b614fb369057f16"
+      }
+    },
+    {
+      "record_id": "rec_721e8ab9394b140ac14946ba5e36456d3123018d",
+      "entity_id": "ent_26de31cc009884218d4de4bee3327d0c",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "HK",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "d2718aa52518a893d9ec8ce2e117ba3dc9017a7b7e219d66974dd3a3dc4be1ba"
+      }
+    },
+    {
+      "record_id": "rec_0084a9f422f94d32406c0b58a4ec4fcd0136e470",
+      "entity_id": "ent_a484286c160b8e64541f3dfd8c3cb0ee",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "NZ",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "1d0532a88b545a311de18b239770b663596da9801d15dd96341d8542a3c8777b"
+      }
+    },
+    {
+      "record_id": "rec_587a415cce73ac703da0fb9e99c1634ee7539e5d",
+      "entity_id": "ent_d251f8bec83dd17f16aea3287fd54e47",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "SG",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "f658a1a8e551d66d2d56997de5a4212d874f8278683c2b1d714fdad7091b4186"
+      }
+    },
+    {
+      "record_id": "rec_f7b6942e83ef410f5e34f2a1654fed33597ba2b8",
+      "entity_id": "ent_9d5a87a8fbaa428ca12dede65e4f26e4",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "SG",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "d5e07152e010247eb9e271e3600db611d1b4a38e6796cc68a384645ec50ee88e"
+      }
+    },
+    {
+      "record_id": "rec_31963289e5eb0dc0910c0aab1a6241ba11ec3182",
+      "entity_id": "ent_b275e8391ada309e4733bd114297febe",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "SG",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Current source gives Suquamish, WA 98392 and a US casino venue, while the record is assigned to SG.",
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "e55ebcc9c4b68ebb81c9585be73581baad8874211d5fe38670a58948f271e581"
+      }
+    },
+    {
+      "record_id": "rec_af6806083f85320f0d9946e9b824d94ab73513a2",
+      "entity_id": "ent_a8ac51409fa3d0460cf06e45a1ee6fa6",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "eventbrite.com",
+      "classification": "wrong_unsafe",
+      "reason": "Current source gives Union Square, New York, NY 10003, while the record is assigned to GB.",
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "8be8048f45b2a42032bc7333c88ebd14c2578787ba5482923830758b9dbdd27b"
+      }
+    },
+    {
+      "record_id": "rec_4951e81c9fcc09ef804b98d8c329dd58e1f1aaae",
+      "entity_id": "ent_618769e92f250ccfa6d022fc09bef9a2",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventbrite.com",
+      "classification": "usable_minor_missing",
+      "reason": "Named future market vendor-application listing has matching dates, venue and organiser; current stall acceptance remains UNKNOWN.",
+      "patterns": [
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 8,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_event",
+        "content_hash": "9e23ebf19f47565f2933e1eb897cd83d18008d61f28c5451230bdd86506ca32c"
+      }
+    },
+    {
+      "record_id": "rec_7dccd13368f078fbad8a856c73a6756d1fbf374b",
+      "entity_id": "ent_6e10213abd8fb1bb2fdca73aa1b7c521",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventbrite.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "7b76ce72dbe1f0346d36c30ee43da6a59103ba07ddc51476040aaec5435c4929"
+      }
+    },
+    {
+      "record_id": "rec_68cbd425f8871be1e4ebe20f0034c8c4daedbf3e",
+      "entity_id": "ent_c99cd0acfe0b121f825e0399f3e0ed4b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "forms.gle",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "cb4bc3215e4bea7d1bdd0766ec33834abcb2d11e01a8ac9abb742c6b5c184151"
+      }
+    },
+    {
+      "record_id": "rec_67541084dd6603101b10b2465424158872c08fd3",
+      "entity_id": "ent_e2aab2d79351b05d45b5e0132814c111",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "forms.gle",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "d5e0e53108e82aefae07597162d90635782590b7668eb28480deb1090dc935b2"
+      }
+    },
+    {
+      "record_id": "rec_7916c5650df9cf1ad50ec06c300c1768c48f8464",
+      "entity_id": "ent_84ad697703d37080ea582904836fc201",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "google.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "ccff05422dd7150b0583f713942ca1260b43cba47552829754632305bdd98839"
+      }
+    },
+    {
+      "record_id": "rec_9a998e53e962457b3e3ddfa6e1254ebd048c9359",
+      "entity_id": "ent_8e7200fec8710394046f261f5f6d2326",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "google.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "3df14dbb8d7e955bd3ac539d0ff94da32c5597fe4696bba71156b446371acbf0"
+      }
+    },
+    {
+      "record_id": "rec_6921ff78fa8ffabfda6cdc867f3d335a7e15861d",
+      "entity_id": "ent_148aa22fb286a274ee1186a1b75b9437",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "google.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "ca29babc2ed5bedea65c244b2327b1d86199dbf324d44be9a66816e2e7cf9a51"
+      }
+    },
+    {
+      "record_id": "rec_e758b9fa52341b563a4d518fcaca8bbce71312e4",
+      "entity_id": "ent_92be8fee73fc8d85df26b6894b6e96d5",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "jotform.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "b2bd438ec7f9df7e2d034dcd2deaed49b3c6cc10d7512fb3b79c4a89868911b4"
+      }
+    },
+    {
+      "record_id": "rec_d7a07e14154561f73980059636a0402047cfdfda",
+      "entity_id": "ent_6175f139555833cb1c4701fb53868cdc",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "05d18b61a808aa65c4d11c2612ac7384e1d4b3d6c73f0a88f7ffe63e832f2a88"
+      }
+    },
+    {
+      "record_id": "rec_487edf287fff0cc02781a2d79bf737009cf97685",
+      "entity_id": "ent_dbd5b838a3641b6f0a135cbdfe7132e7",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: past_event_requires_current_edition, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "past_event_requires_current_edition",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 8,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_event",
+        "content_hash": "7446127902682d69a169fcedf13d42d1c5a8f4e5a54c0da07603981a340f7099"
+      }
+    },
+    {
+      "record_id": "rec_4aee2cc915f6d8b6f4ad3dbc9dc6abf8b51e18a9",
+      "entity_id": "ent_c0ef0c711e927a29b931cdd111f183b5",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "VendorsMap homepage contains many opportunities; its slogan is used as a single event title.",
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "ae2562fa92446bafe00cdf016d11efa09e71fe3462550ff25135ed7d489ec5ce"
+      }
+    },
+    {
+      "record_id": "rec_2c3f53f3cc7e66f8633551c0e2f8c20e3943aff2",
+      "entity_id": "ent_2b10da73e8aa80ceb1da1bf1e9c2f2bf",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "14c91c8754bb6fc91261e51f30106bc83924ad18b67269dffd91b35592089f10"
+      }
+    },
+    {
+      "record_id": "rec_685a12dad1e21cae04ad59b3e8cff4bf686bdf83",
+      "entity_id": "ent_835f8444b0f91046b07e2669d8e7adc2",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "wrong_unsafe",
+      "reason": "Eventeny applications-list page has become a canonical event.",
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "41a83a5bcf1f17435d1eaab660cc65dd63d85ba475cee2bdb647a26a99ad77b1"
+      }
+    },
+    {
+      "record_id": "rec_b1dc3512a958f8813afe79365b0faa374c077c4d",
+      "entity_id": "ent_41c8b078011391ef311798f485b60da5",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "f672abb13e4836a979f134114576edabfed9c318c32e42119c5cfe6f3ecfd1a1"
+      }
+    },
+    {
+      "record_id": "rec_da84cedaea23392688939e74af0393d80a894d9d",
+      "entity_id": "ent_bbbf5841ea54a8ad6dbf2a6d8c37a383",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "508dd8319219975b3665117ff5cc4c04d4a5e38936a3430de954a1b9d139d913"
+      }
+    },
+    {
+      "record_id": "rec_46a0c2a4611046ee687e22d13ed7acceabb235b2",
+      "entity_id": "ent_f2cb29494e381084211f4b024815a828",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_does_not_establish_specific_trading_event",
+        "content_hash": "ab0b665a32d4e8a79889cedb6feb2f309da58c11c4143fa06a2c697f9c97dbd7"
+      }
+    },
+    {
+      "record_id": "rec_b938524c73ec02cfa651ef04cc3222c17c188ae5",
+      "entity_id": "ent_2fb87112f351c869e8335575e38c711a",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "ab2afc132ef46d4a1919ad4ebbaeb3bca1326a4588c90a267f4af6dfb7b1cbc8"
+      }
+    },
+    {
+      "record_id": "rec_676ed84e340e986e66c5629710162d44cb5fb144",
+      "entity_id": "ent_4336191dcf37475b8b3a7276859c058d",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "9e7a564fa7a7e8afa664847efcbc42e3fbe23afe32f7172ebec218e3880c2e45"
+      }
+    },
+    {
+      "record_id": "rec_e4d028d387cd667bc20901b9b1be62c00cf44fa0",
+      "entity_id": "ent_c42539ac0bc6cc3c149d043700421625",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "87063951b97442114bb79aacf7d7d04876150dff10461ca7c1bf73002f920273"
+      }
+    },
+    {
+      "record_id": "rec_68f76cebff5903b8b7f9beb2de0bb00395282358",
+      "entity_id": "ent_c0b20e086ff865d055669e325e6cac71",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Source lists 62 Virginia events; the selected application URL belongs to one arbitrarily selected item.",
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "cc9e17b9a2cfb620f39a91134af40ec5b1b73719ea2b7547f0ca1e478d0c13d0"
+      }
+    },
+    {
+      "record_id": "rec_b5926bb95f6a356c9a3388b3b7f6967da2b11488",
+      "entity_id": "ent_f3e4060ea62c08c83324652a6039195d",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "10b8715458d8f06b48ecc2b1a7fd2b63a8cded916ce6c5d1b736dadfc6e3649d"
+      }
+    },
+    {
+      "record_id": "rec_8c90f7255132c006f29181bde745851eea1a319f",
+      "entity_id": "ent_32a9ae941511d829d6d5e224d5ec1068",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "4b18b4942cb6d34db712aaab8aa7e3c93136607ca56f90a3d4ea15372bc672f0"
+      }
+    },
+    {
+      "record_id": "rec_7cb9ef27062a8c85cd1d6f0a96142954bebf54e0",
+      "entity_id": "ent_1c25741f25315f88008290f1fc34d59b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "3a74b200a770dccddd5689b7ab080da3d644fef36d1161f697194b10b2591b4a"
+      }
+    },
+    {
+      "record_id": "rec_36ecb245c997a5d328e2509154b7b27a85501cce",
+      "entity_id": "ent_10817723f79eef51f5ba527355bad5a6",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Current source explicitly gives Greenwood Lake, NY 10925, while the record is assigned to GB.",
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "a1761ff7b428fa3be8b1a59c1e9f63588acd0b5e427085feba5a280cb9bc91db"
+      }
+    },
+    {
+      "record_id": "rec_85aaf3f798ce0781468b6d7f6df131d65c4be316",
+      "entity_id": "ent_a515d0e1d821c95a06775fce59e5df8b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "3f3b90a914782d85ae931e415180bdb2d5dd119232866484dfa4aa484af5e8b9"
+      }
+    },
+    {
+      "record_id": "rec_4db28a1a7e9a6ecba573007ebe063c794afa4166",
+      "entity_id": "ent_a1d29476c971ff847c215d6e27e48e1f",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "5260bf68207d919cd5f3f8a536e742b0c6e0ad28ecf8c98c4578880c682e27cd"
+      }
+    },
+    {
+      "record_id": "rec_b87b0abf672cf3a2ec4f4bba097ab860ce5433fe",
+      "entity_id": "ent_0633d6f9c476e0069f9a01e25d4ae365",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "wrong_unsafe",
+      "reason": "Eventeny applications-list page has become a canonical event.",
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "41a83a5bcf1f17435d1eaab660cc65dd63d85ba475cee2bdb647a26a99ad77b1"
+      }
+    },
+    {
+      "record_id": "rec_e5e05ece6dfd73b6dd9bba86abb1aed9d70da256",
+      "entity_id": "ent_2237680cf39dd4a9d93bd922b5302abf",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "wrong_unsafe",
+      "reason": "Eventeny applications-list page has become a canonical event.",
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "41a83a5bcf1f17435d1eaab660cc65dd63d85ba475cee2bdb647a26a99ad77b1"
+      }
+    },
+    {
+      "record_id": "rec_f447b3d97aa539490aa1ed1b0258e5d419afab12",
+      "entity_id": "ent_f7a0296287079d09a1b709ad69b558bc",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "e25850e88a0d743c1da4f514e72a9a37bae519792677b5aebe278c498932afdc"
+      }
+    },
+    {
+      "record_id": "rec_21228260dc21633c21dcd36caa31c879ee9a4b8b",
+      "entity_id": "ent_528bb3364c543d7596a3564edf977100",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "IE",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "6d83e0d56ef62bf453f25fa0205d1f4fc3a8e6de86240079b730f3bc0576c8f2"
+      }
+    },
+    {
+      "record_id": "rec_d358217925483f7fe50f243d916010640208e1dc",
+      "entity_id": "ent_42d72ba69eb0e1918f59848594a12aaa",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "ac976b7d43c9658c6791efdb86eefe7bbcd40eaa701e3e8842b7c3a3f6bf5aa3"
+      }
+    },
+    {
+      "record_id": "rec_51027b19fd182bb16682d880a456ea6fe90aea98",
+      "entity_id": "ent_bbe10df80d50d682f4ec8050d141389c",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "03201b6da6c7eb707561ead310e54cc043e9e67cdaaf2af2249acf8cbc2e8a9a"
+      }
+    },
+    {
+      "record_id": "rec_c5efd00b230af109d421b6e08674da9772270817",
+      "entity_id": "ent_55d80837362e9ad92d6bc84462d66e1e",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "NZ",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "f0ef6fa09067298716d7c4737d5d599a3bf7bf310b0e56fcfd881a88f0b2e095"
+      }
+    },
+    {
+      "record_id": "rec_d21b7c355852f5edc88a2d63877c6e000ed1d782",
+      "entity_id": "ent_3fe4b84a74fbba658b230d7e7ad27c60",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "84a56e17c451112437cb0b0388ef7b695a91a643e235450dd476566eb18d28bb"
+      }
+    },
+    {
+      "record_id": "rec_fc43fe846b982f6dba8ed1f2b791345ac43de82a",
+      "entity_id": "ent_86fbba46b52ddfd79cc16b217fe2836b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: application_availability_unknown. Source explicitly marks the 2027 dates expected and also describes 2026.",
+      "patterns": [
+        "application_availability_unknown",
+        "expected_date_not_confirmed"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 9,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_event",
+        "content_hash": "8804c86ff6f0b9791add6cb4c167a8b2d4c7d6d1d99c43c48e95df633cd63eae"
+      }
+    },
+    {
+      "record_id": "rec_20304e862f9b5bf30f782bd1c074520fa4ea2fb7",
+      "entity_id": "ent_28160eddcd4e5091df72c6bf59202dc6",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "0f8cf5663caacf24a6d80b1f9ff076590ee4490f0158df36448f65bcc745bdb9"
+      }
+    },
+    {
+      "record_id": "rec_5b65b9925d637a7b75c4bdd5c742c1b33fa7f0e6",
+      "entity_id": "ent_dfb15d7af86218f0e170aa1c065cc239",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "wrong_unsafe",
+      "reason": "Eventeny applications-list page has become a canonical event.",
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "41a83a5bcf1f17435d1eaab660cc65dd63d85ba475cee2bdb647a26a99ad77b1"
+      }
+    },
+    {
+      "record_id": "rec_f1424c40183e53caf84740c817143f5c569684ee",
+      "entity_id": "ent_3d93188abfe7cdc170745bbdc86ce07c",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "A past Bob Crawford author conversation is linked to the separate Portland Book Festival exhibitor application from site navigation.",
+      "patterns": [
+        "unrelated_vendor_link_and_event"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 9,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_event",
+        "content_hash": "a6038554806d1adeb84ad8ec49aecc3c8264a2ef256b41394dfc2f55cb5c08dd"
+      }
+    },
+    {
+      "record_id": "rec_b25e13fd032d645d1d578574c672da4c663864e5",
+      "entity_id": "ent_653f9946a656f13a9425dea32fb23edf",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "8e97ace63bcb29d075209e992f2b69f2f16fda045605251144fec9cb16ad7148"
+      }
+    },
+    {
+      "record_id": "rec_aee5ce6949de80666146483eafe201adc32bd067",
+      "entity_id": "ent_e5d7264aa02f9984375b3237cade8f58",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "284472d2f98d6af24971115904b5f855924901cb78833b3802c918921b13c767"
+      }
+    },
+    {
+      "record_id": "rec_d629eb296489dae3912f34c9759611527116ee67",
+      "entity_id": "ent_cfcdcdd5d6d02f06a122848e9cfd2fcd",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "dac6f1105f403498ef3427da39dc9461439842b66ce54e61330d16c3e1afae2a"
+      }
+    },
+    {
+      "record_id": "rec_046eb2bed08a948aef94e7e64d8b1783e0bbb93f",
+      "entity_id": "ent_b359c36bde7554fb0fe9912ec4a2f98f",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "b553bfdc53b236d1e6548ed1c7ced63bd44cc5e37cc007cadf23eaecb0956fcc"
+      }
+    },
+    {
+      "record_id": "rec_7e8b641024e08ce12460105fb80d07b27f2d89da",
+      "entity_id": "ent_09a53eae8f928ff2688d763888701bc4",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "f44662494aeba16628b2e684a614949cd2456177e696255b5c575af59c9e837b"
+      }
+    },
+    {
+      "record_id": "rec_c9a4820614a16d87a767a6b5b427cbe8595e3c16",
+      "entity_id": "ent_678b3f14fa54adf1a112e3f319d2206b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "IE",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "5283a92c6186ed8cd557026bbe544b8303a27f444c0225a932143d7d6509d304"
+      }
+    },
+    {
+      "record_id": "rec_4be37bf1e8cddbf6f58a028c8d6fc80ac2fad9c4",
+      "entity_id": "ent_e4aeabf3e747376d36924b5270077f4b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "CA",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "6484ebd7258512b6c8f096e6216bb6f49788e1324c21faacd2833dd43693ab29"
+      }
+    },
+    {
+      "record_id": "rec_bf67eca99f55686b359e3404b02aa24ad452a1c3",
+      "entity_id": "ent_19b6319c8e586d79c43e641236dcb119",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "1da7fe14f0691a3a41af92891f02a06e1a523736c79bbc8cc39b97f7e7cda6f0"
+      }
+    },
+    {
+      "record_id": "rec_2449eaf5c0f7808b01867ef4aa4e0032f4e40eea",
+      "entity_id": "ent_a333c153be3f4fdb8f7d240fe2cca7a8",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "AU",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "2fab57d423f0ae8d2931f35cc42edc0a0e5afb253e8406f3620e5245228c8403"
+      }
+    },
+    {
+      "record_id": "rec_4b083a5bd7117888f628a0d2d3d298e6ed544327",
+      "entity_id": "ent_fb12422595994487964b741662a996db",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "6cb36f2dddb42b96c83fd45ac9dd7e7e305c4f5062990d336a5a8b21ed30b4c7"
+      }
+    },
+    {
+      "record_id": "rec_47052ff78f31bcd8dbc478b48cd1c564f57f7f02",
+      "entity_id": "ent_ba598338c78a7789f5273dece15c06a2",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "CA",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "3605b8067dd6f680da6ee994d4ad35ae74f00246c51bb375411ad9b72c58d236"
+      }
+    },
+    {
+      "record_id": "rec_a7a406f2fbf636bfe837df07c00cb6e5d3e8d5e2",
+      "entity_id": "ent_a07241cc847ef29f1cc899dbb6feb4be",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_does_not_establish_specific_trading_event",
+        "content_hash": "21296293ee231f6bf14b432f7d102ced7cb8718d5e4f0a4c93fa6cf8b8bfd4f7"
+      }
+    },
+    {
+      "record_id": "rec_edd72a843b9cad3869ede577ceec85c7b5011c90",
+      "entity_id": "ent_f95f7344bb41d01a9ed453b6ba6c7530",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "21ad930018931d12c67b541272f57d5de146d5a239cc3c8d76515afe649edd93"
+      }
+    },
+    {
+      "record_id": "rec_efe2443ec07b04f9d78dd52e9f34f3d9d0decf4a",
+      "entity_id": "ent_e04d16925302b279bf7da3ec40c0fa3d",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "3c84cc601500495739061f1e7ff2aa6e477b221e0c0de448b97531cbb9bfbad6"
+      }
+    },
+    {
+      "record_id": "rec_101fcb2d3c59c39fc2abd325bf2c596c90866ee7",
+      "entity_id": "ent_7add52c0440f8f9bb8565a5fe91de62b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "40b677a1a6ced5a1fa8e1e42aa1f3d49e6dbf8003d2e86373685f7d53bb5a3be"
+      }
+    },
+    {
+      "record_id": "rec_f8eeee56f0b591b2d5587d068bb77e495e4406f2",
+      "entity_id": "ent_b13e9e2ff6e614cebf25474dac40b7b0",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "7c0e58cbba5ddf44746897fbd75ee4605f2f6edf5c35a7f94aa850623e92b653"
+      }
+    },
+    {
+      "record_id": "rec_8d60c741aefec40bc968fc787984956b590f3006",
+      "entity_id": "ent_9c029b6f3257403894046d03dec7a70b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "ef9ffc2c5f03db3c5885d745f369b746f04fa85ad32742a3afbf03d979c02b39"
+      }
+    },
+    {
+      "record_id": "rec_60ba1ba67d98c6815a6caed43966f1ec893ad665",
+      "entity_id": "ent_85812cce8245fbbfd3a5da980e071c15",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "1258d64887be850b56638eb354ed53dd9207960bf70d37dc48be830d9986dffc"
+      }
+    },
+    {
+      "record_id": "rec_f8fb815eec2668ab20a099baf3fccf71bc885235",
+      "entity_id": "ent_6a2006aaad6ae392b0d2f060d77a2f61",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "IE",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Original source explicitly gives San Jose, California and California seller-permit rules, while the record is assigned to IE.",
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "c128b0da3a29ad74d99f4249e47b2c2f87b0340ce6c04dbb96202fef0fb1a4dc"
+      }
+    },
+    {
+      "record_id": "rec_03632a839436457217f4d872ef8b76e1028ed323",
+      "entity_id": "ent_8b937cdc1f70d8b0d7d8f99ddb0e40f1",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "BBC article about AI complaints is presented as an event, with no vendor application route.",
+      "patterns": [
+        "editorial_not_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "3c7bf96546ab7ce5e22e3454a6bee4b11e287bce5f21dfa62f5ecf825efb1179"
+      }
+    },
+    {
+      "record_id": "rec_3b103e867191061dc47c636d3357d73886235892",
+      "entity_id": "ent_39330e7e38717cd7cd36d0aa3385cd71",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "debe5a55a356f0863b24aad66d15b62e2ef380fe7c9c7d3b2945787f00191afe"
+      }
+    },
+    {
+      "record_id": "rec_654d47bc2423694b9fe059f5d647d5d15041b55d",
+      "entity_id": "ent_6c08b3f298a3f5b0fe656b330ce6e146",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "8eafb109052397ba07a3af1cb5be1636bfee889d6a3034f2eb7d6486876b536a"
+      }
+    },
+    {
+      "record_id": "rec_ab6888386d2da980b0f23730ece39f91c5d53d08",
+      "entity_id": "ent_82872cb7e5f34dd087983ff7daccfa0c",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "wrong_unsafe",
+      "reason": "Title and retained text say 12 September 2026 and 29 August deadline passed; selected start/deadline are 9 December and state OPEN_NOW.",
+      "patterns": [
+        "source_date_and_state_contradiction"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 13,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "3f52ca69ee9324bafdeb7b8a4eb70c25b8b79fc393463116fd44f8146dee7dff"
+      }
+    },
+    {
+      "record_id": "rec_b150605eb44fc4c232651704424a1798a2fe731a",
+      "entity_id": "ent_180031a253381c74ed3de0ff316bb866",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "8b61c598233b246b4a88ac7cccdc1cfb6534d0a1ab119ff50290fcdbfb4a4d8f"
+      }
+    },
+    {
+      "record_id": "rec_1092d7fe75d4a300ce5db6720dfe1ae8008c6db8",
+      "entity_id": "ent_236ef9c4a47622047bcd87ece57aee37",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "facebook.com",
+      "classification": "wrong_unsafe",
+      "reason": "Source explicitly links westernfair.ca commercial exhibitors for London, Canada, while record market is GB.",
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "652deea640ed9213943b799851e31747221b56ca59e9334d6ca74abbc39643c1"
+      }
+    },
+    {
+      "record_id": "rec_176876686a8aa733a46558af6ba8cf6a50583933",
+      "entity_id": "ent_3ff67bb3f224431725cd7fed2b9b05a5",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "source_does_not_establish_specific_trading_event",
+        "content_hash": "5833647a10b47ccf57f0bdc6b2d56810ab02a319572b26c17afc8b94e3ddeb4e"
+      }
+    },
+    {
+      "record_id": "rec_65be81119050bc07a51b961296b5d38dbb479970",
+      "entity_id": "ent_b9f40c864792f848ff4198eae6969c5c",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "AU",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: past_event_requires_current_edition, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "past_event_requires_current_edition",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 7,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_event",
+        "content_hash": "782e5f5e56f9d5bb4ae40e1876f6bb206633d370758b2967e27ab80e5f6365b7"
+      }
+    },
+    {
+      "record_id": "rec_9e9466fe1e7906a944718f519c7f845f116c7149",
+      "entity_id": "ent_77c12c9f2f8ee5f81f940e7c01e0e711",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 5,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "521448bafec71fc4641ce8f8b84e044ecd7710f50e2daf3108fecd91cc4ef5af"
+      }
+    },
+    {
+      "record_id": "rec_4f01a3b8375eee262181ee9b0908b89946d3f67e",
+      "entity_id": "ent_543550542a8db83d251326ba8e199ba1",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "eventeny.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: . Retained application explicitly says WAITLIST despite OPEN_NOW state.",
+      "patterns": [
+        "waitlist_not_open_stall_availability"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 14,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "multiple_source_events_require_review",
+        "content_hash": "12647646ceb6feb5cdac6e3e19787309c1391768fa3aeaaba8278381b0ca6ee2"
+      }
+    },
+    {
+      "record_id": "rec_0a6b14fd03ee1bba5e470acd1cbc1446f277bad3",
+      "entity_id": "ent_1586fd74492ba0d846087d8b6f9455e2",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "GB",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "An event-management homepage slogan is used as a single canonical event despite many unrelated events on the page.",
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "afacf77e6cab5e71b32039977ef348fd31bf32483420def9899fd99bfb7865f5"
+      }
+    },
+    {
+      "record_id": "rec_05d9471555bf5b91ff3d9eef1d64d77967a67dc7",
+      "entity_id": "ent_60860ed9b326dc1e7dee3ab03060da8b",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "direct-site",
+      "classification": "wrong_unsafe",
+      "reason": "Original source is news about paid fair employment positions, not stall/vendor acquisition.",
+      "patterns": [
+        "employment_not_vendor_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "6bc4dc474d06441c62b02689d007ab468c30960d394f149362651fc394f2f7dc"
+      }
+    },
+    {
+      "record_id": "rec_d6ab08484362a3cb038dc1a3c70347a9dcd7312e",
+      "entity_id": "ent_55710a493dacc802ecae19f2595bece6",
+      "category": "retained_evidence",
+      "identity_group": "new",
+      "market": "CA",
+      "platform": "direct-site",
+      "classification": "usable_minor_missing",
+      "reason": "Current source corroborates the November 20/27 special-event dates and vendor form; the title combines the regular market with a special event, and availability is unverified.",
+      "patterns": [],
+      "evidence_checked": {
+        "selected_field_proofs": 11,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "1ea85efdfc36eec6a83efa14d98a4c6c575ffb7e0fedc8099b69f5d358ebf8d2"
+      }
+    },
+    {
+      "record_id": "rec_17cc537d52723956864f0a8ef17a032a741fab66",
+      "entity_id": "ent_0f905f1eae862f6425cac79d903a1239",
+      "category": "source_refetch",
+      "identity_group": "new",
+      "market": "US",
+      "platform": "facebook.com",
+      "classification": "questionable",
+      "reason": "Customer usefulness remains unproven: event_timing_unestablished, venue_location_missing, organiser_missing, vendor_route_requires_review, application_availability_unknown.",
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "evidence_checked": {
+        "selected_field_proofs": 4,
+        "retained_evidence": true,
+        "fresh_original_source_attempted": true,
+        "fresh_result": "direct_heading",
+        "content_hash": "e2324754b64172f2359ddbb997a7559fb04ebe8220736568ea5fc1e0c27ad15c"
+      }
+    }
+  ],
+  "source_fields_overwritten": 0,
+  "paid_search_queries": 0,
+  "limitations": [
+    "Sample percentages are descriptive; diversity quotas and limited sample sizes prevent unbiased population estimates.",
+    "Retained excerpts/structured provenance and fresh original-source responses were checked where available; blocked fetches remain uncertainty.",
+    "Ready state and an accurate record do not independently establish current applications are open."
+  ]
+}

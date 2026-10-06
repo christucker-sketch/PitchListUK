@@ -19,7 +19,7 @@ export async function serperPolicy(db) {
   return policy;
 }
 const CREDITS='MAX(credit_units_reserved,COALESCE(credits_observed,0))';
-export async function reserveSerperQuery(db,{runId,index,query,producer='city-search',lane='city-acquisition',market,region,now}) {
+export async function reserveSerperQuery(db,{runId,index,query,producer='city-search',lane='city-acquisition',market,region,now,pilotId=null}) {
   const day=budgetDay(now),hour=new Date(Date.parse(now)-3600000).toISOString();
   const id='serper_'+(await hash([runId,index])).slice(0,40);
   // One atomic INSERT ... SELECT serializes concurrent reservations in D1.
@@ -33,7 +33,12 @@ export async function reserveSerperQuery(db,{runId,index,query,producer='city-se
       AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE reserved_at>?),0)+1<=p.max_credits_per_hour
       AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=?),0)+1<=p.max_queries_per_day
       AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE budget_day=?),0)+1<=p.max_credits_per_day
-    RETURNING id`,id,runId,index,producer,lane,market,region,await hash(query),day,now,now,runId,runId,hour,hour,day,day).all();
+      AND (? IS NULL OR EXISTS(SELECT 1 FROM acquisition_pilots s JOIN pilot_run_grants g ON g.pilot_id=s.id
+        WHERE s.id=? AND s.status='active' AND s.expires_at>? AND s.budget_day=? AND s.active_run_id=g.run_id AND g.run_id=? AND g.status='running'
+        AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=?),0)+1<=s.daily_ceiling
+        AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE budget_day=?),0)+1<=s.daily_ceiling
+        AND COALESCE((SELECT SUM(u.queries_reserved) FROM serper_usage u JOIN pilot_run_grants z ON z.run_id=u.run_id WHERE z.pilot_id=s.id),0)+1<=s.max_queries))
+    RETURNING id`,id,runId,index,producer,lane,market,region,await hash(query),day,now,now,runId,runId,hour,hour,day,day,pilotId,pilotId,now,day,runId,day,day).all();
   await refreshSerperPause(db,now);
   if(inserted.results.length!==1)throw new Error('serper_query_budget_exhausted_or_paused');
   return id;
@@ -95,6 +100,9 @@ export async function serperStatus(db,now) {
   const yields=(await sql(db,`SELECT x.run_id,COUNT(DISTINCT x.record_id) AS attributed_receipts,
       COUNT(DISTINCT p.producer_record_id) AS unique_candidates,
       COUNT(DISTINCT CASE WHEN a.status='eligible' THEN e.id END) AS usable_opportunities,
+      COUNT(DISTINCT CASE WHEN d.outcome='NEW_ENTITY' AND x.new_receipt=1 THEN e.id END) AS entities_created,
+      COUNT(DISTINCT CASE WHEN d.outcome='EXACT_MATCH' THEN x.record_id END) AS matched_records,
+      COUNT(DISTINCT CASE WHEN d.record_id IS NOT NULL THEN x.record_id END) AS reconciled_records,
       COUNT(DISTINCT CASE WHEN r.status='ready' AND r.entity_revision=e.revision THEN e.id END) AS ready_opportunities,
       COUNT(DISTINCT CASE WHEN r.status='ready' AND r.entity_revision=e.revision AND d.outcome='NEW_ENTITY' AND x.new_receipt=1 THEN e.id END) AS new_ready_opportunities
       FROM serper_run_records x JOIN producer_records p ON p.id=x.record_id
@@ -104,11 +112,13 @@ export async function serperStatus(db,now) {
       WHERE x.run_id IN (SELECT value FROM json_each(?)) GROUP BY x.run_id`,JSON.stringify(rows.map(r=>r.run_id))).all()).results;
   const runs=[];
   for(const row of rows) {
-    const yieldRow=yields.find(y=>y.run_id===row.run_id)??{attributed_receipts:0,unique_candidates:0,usable_opportunities:0,ready_opportunities:0,new_ready_opportunities:0};
+    const yieldRow=yields.find(y=>y.run_id===row.run_id)??{attributed_receipts:0,unique_candidates:0,usable_opportunities:0,ready_opportunities:0,new_ready_opportunities:0,entities_created:0,matched_records:0,reconciled_records:0};
     const credits=row.queries_without_credit_observation===0?row.observed_credit_subtotal:null;
     const cost=credits!==null&&policy.credit_unit_cost_usd!==null?credits*policy.credit_unit_cost_usd:null;
     runs.push({...row,...yieldRow,credits_consumed:credits,cost_usd:cost,
       duplicate_candidate_occurrences:Math.max(0,row.candidates_produced-yieldRow.unique_candidates),
+      candidate_duplicate_rate:row.candidates_produced?Math.max(0,row.candidates_produced-yieldRow.unique_candidates)/row.candidates_produced:0,
+      entity_duplicate_rate:yieldRow.reconciled_records?yieldRow.matched_records/yieldRow.reconciled_records:null,
       queries_per_candidate:yieldRow.unique_candidates?row.query_count/yieldRow.unique_candidates:null,
       credits_per_candidate:credits!==null&&yieldRow.unique_candidates?credits/yieldRow.unique_candidates:null,
       cost_per_candidate_usd:cost!==null&&yieldRow.unique_candidates?cost/yieldRow.unique_candidates:null,
