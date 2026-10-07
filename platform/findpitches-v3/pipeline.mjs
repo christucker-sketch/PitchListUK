@@ -3,6 +3,7 @@ import { identityKeys,identityCandidateKeys,identityAnchor,reconcileIdentity,edi
 import { sql,loadEntity } from './store.mjs';
 import { selectRecordFacts,proposeFact } from './evidence.mjs';
 import { enqueue,jobStatement,claimJob,finishJob,failJob } from './jobs.mjs';
+import {verificationGate} from './verification-store.mjs';
 
 export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}={}) {
   const existing=await sql(db,'SELECT * FROM reconciliation_decisions WHERE record_id=?',recordId).first();
@@ -70,7 +71,7 @@ export function assessEligibility(entity,{now=new Date().toISOString(),conflicts
   else if(conflicts) { status='review';reasons=['unresolved_evidence_conflict']; }
   else if(entity.lifecycle_state==='WITHDRAWN'||entity.application_state==='CLOSED') { status='closed';reasons=['source_declared_closed']; }
   else if(entity.event_end&&Number.isFinite(Date.parse(entity.event_end))&&Date.parse(entity.event_end)<Date.parse(now)) { status='closed';reasons=['past_event_end']; }
-  else if(['WATCH','UNKNOWN'].includes(entity.application_state)||!entity.application_state) { status='watch';reasons=['application_state_requires_recheck']; }
+  else if(['WATCH','UNKNOWN','ENQUIRY_AVAILABLE'].includes(entity.application_state)||!entity.application_state) { status='watch';reasons=['application_state_requires_recheck']; }
   else if(!entity.event_name||!(entity.application_url||entity.canonical_url)) { status='review';reasons=['insufficient_source_evidence']; }
   return {status,reasons,score:status==='eligible'?1:status==='watch'?.5:0};
 }
@@ -102,18 +103,19 @@ export async function evaluateReadiness(db,id,{now=new Date().toISOString()}={})
   const conflict=await sql(db,'SELECT COUNT(*) AS n FROM conflicts WHERE entity_id=? AND resolved=0',id).first();
   const quality=await sql(db,'SELECT COUNT(*) AS n FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=?',id).first();
   const eligibility=assessEligibility(entity,{now,conflicts:conflict.n,qualityHolds:quality.n});
-  const reasons=[...eligibility.reasons];
+  const verification=await verificationGate(db,entity,{now});
+  const reasons=[...new Set([...eligibility.reasons,...verification.reasons])];
   if(!entity.location)reasons.push('source_backed_location_missing');
   if(!entity.organiser)reasons.push('organiser_missing');
-  const status=eligibility.status==='watch'?'watch':eligibility.status==='eligible'&&reasons.length===0?'ready':'blocked';
+  const status=verification.status==='quarantine'||['review','closed'].includes(eligibility.status)||!entity.location||!entity.organiser?'blocked':eligibility.status==='watch'||verification.status!=='verified'?'watch':reasons.length===0?'ready':'blocked';
   const snapshotHash=await hash(entity.fields);
-  const payload={id,market:entity.market,region_code:null,environment:entity.environment,shadow_only:true,promotion_eligible:false,publication_eligible:false,readiness:status,...entity.fields};
+  const payload={id,market:entity.market,region_code:null,environment:entity.environment,shadow_only:true,promotion_eligible:false,publication_eligible:false,readiness:status,verification,...entity.fields};
   const statements=[sql(db,`INSERT INTO readiness(entity_id,entity_revision,status,reasons_json,snapshot_hash,evaluated_at) SELECT ?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM entities WHERE id=? AND revision=?)
     ON CONFLICT(entity_id) DO UPDATE SET entity_revision=excluded.entity_revision,status=excluded.status,reasons_json=excluded.reasons_json,snapshot_hash=excluded.snapshot_hash,evaluated_at=excluded.evaluated_at RETURNING entity_revision`,id,entity.revision,status,stableJson(reasons),snapshotHash,now,id,entity.revision)];
   if(['shadow','test'].includes(entity.environment))statements.push(sql(db,`INSERT INTO shadow_projections(entity_id,entity_revision,payload_json,updated_at) SELECT ?,?,?,? WHERE EXISTS(SELECT 1 FROM entities WHERE id=? AND revision=?)
     ON CONFLICT(entity_id) DO UPDATE SET entity_revision=excluded.entity_revision,payload_json=excluded.payload_json,updated_at=excluded.updated_at`,id,entity.revision,stableJson(payload),now,id,entity.revision));
   // Ready events also need time-based rechecks: eligibility can expire without a fact revision.
-  const future=Number.isFinite(Date.parse(entity.event_end))&&Date.parse(entity.event_end)>Date.parse(now)?Math.min(Date.parse(now)+7*86400000,Date.parse(entity.event_end)+86400000):Date.parse(now)+7*86400000;
+  const future=Number.isFinite(Date.parse(entity.event_end))&&Date.parse(entity.event_end)>Date.parse(now)?Math.min(Date.parse(now)+86400000,Date.parse(entity.event_end)+86400000):Date.parse(now)+86400000;
   statements.push(await jobStatement(db,'watch',id+':'+entity.revision+':'+now.slice(0,10),{entity_id:id},now,new Date(future).toISOString()));
   const result=await db.batch(statements);
   if(result[0]?.results?.length!==1)throw new Error('readiness_revision_raced');

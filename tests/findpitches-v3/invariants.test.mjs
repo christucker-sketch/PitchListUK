@@ -1,4 +1,6 @@
 import test from 'node:test';
+import {documentFixture} from './verification-fixture.mjs';
+import {recordVerification} from '../../platform/findpitches-v3/verification-store.mjs';
 import assert from 'node:assert/strict';
 import { database,record,seed,NOW } from './helpers.mjs';
 import { sql,loadEntity,ingestRecords } from '../../platform/findpitches-v3/store.mjs';
@@ -54,6 +56,8 @@ test('additive supported evidence fills a missing field and invalidates stale re
   assert.equal((await sql(db,'SELECT status FROM readiness WHERE entity_id=?',entity.id).first()).status,'blocked');
   const p=await proposeFact(db,entity.id,{field:'organiser',value:'River Arts Association',kind:'official_page',source_url:'https://example.org/organiser',excerpt:'Organised by River Arts Association'},{now:NOW});
   assert.equal(p.decision,'accepted');assert.equal(await sql(db,'SELECT * FROM readiness WHERE entity_id=?',entity.id).first(),null);
+  assert.notEqual((await evaluateReadiness(db,entity.id,{now:NOW})).status,'ready','Discovery enrichment alone is insufficient');
+  await recordVerification(db,entity.id,documentFixture(),{now:NOW});
   assert.equal((await evaluateReadiness(db,entity.id,{now:NOW})).status,'ready');
   await assert.rejects(proposeFact(db,entity.id,{field:'organiser',value:{name:'invalid'},kind:'official_page',source_url:'https://example.org/',excerpt:'Invalid shape'}),/invalid_proposed/);
 });

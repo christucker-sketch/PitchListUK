@@ -1,0 +1,2952 @@
+{
+  "schema": "findpitches-source-verification-quality-v1",
+  "as_of": "2026-10-07T08:14:30.694Z",
+  "verifier_version": "source-proof-v1",
+  "direct_sources_checked": 150,
+  "additional_serper_queries": 0,
+  "legacy": {
+    "sample_size": 120,
+    "before": {
+      "wrong_unsafe": 25,
+      "questionable": 77,
+      "usable_minor_missing": 8,
+      "clearly_usable": 10
+    },
+    "after": {
+      "wrong_unsafe": 25,
+      "questionable": 84,
+      "clearly_usable": 11
+    },
+    "clearly_usable_or_minor_percent": 9.17,
+    "wrong_unsafe_percent": 20.83,
+    "ready": 11,
+    "proof_status": {
+      "quarantine": 46,
+      "unverified": 61,
+      "verified": 11,
+      "partial": 2
+    },
+    "repaired_fields": {
+      "application_state": 2,
+      "location": 7,
+      "event_end": 1,
+      "event_start": 1,
+      "organiser": 1
+    },
+    "before_clearly_usable_or_minor_percent": 15.0,
+    "before_wrong_unsafe_percent": 20.83
+  },
+  "paid_pilot": {
+    "sample_size": 10,
+    "before": {
+      "questionable": 10
+    },
+    "after": {
+      "questionable": 10
+    },
+    "clearly_usable_or_minor_percent": 0,
+    "wrong_unsafe_percent": 0,
+    "ready": 0,
+    "proof_status": {
+      "quarantine": 10
+    },
+    "repaired_fields": {}
+  },
+  "source_family_controls": {
+    "sample_size": 20,
+    "before": {
+      "not_previously_scored": 20
+    },
+    "after": {
+      "clearly_usable": 5,
+      "questionable": 15
+    },
+    "clearly_usable_or_minor_percent": 25,
+    "wrong_unsafe_percent": 0,
+    "ready": 5,
+    "proof_status": {
+      "verified": 5,
+      "quarantine": 4,
+      "unverified": 9,
+      "partial": 2
+    },
+    "repaired_fields": {
+      "location": 7,
+      "event_end": 5,
+      "application_state": 1,
+      "application_url": 1,
+      "event_start": 2,
+      "organiser": 2
+    }
+  },
+  "known_unsafe": {
+    "sample_size": 25,
+    "promoted_ready": 0,
+    "false_promotion_percent": 0
+  },
+  "legacy_risk_patterns": {
+    "sample_size": 50,
+    "promoted_ready": 0,
+    "false_promotion_percent": 0
+  },
+  "repaired_fields": {
+    "application_state": 3,
+    "location": 14,
+    "event_end": 6,
+    "event_start": 3,
+    "organiser": 3,
+    "application_url": 1
+  },
+  "source_mutations": 0,
+  "original_receipts_checked": 8143,
+  "original_facts_checked": 63662,
+  "customer_leakage": 0,
+  "publication_leakage": 0,
+  "paid_acquisition_enabled": false,
+  "publication_enabled": false,
+  "queries_before": 12,
+  "queries_after": 12,
+  "queue_health": [
+    {
+      "stage": "acquisition",
+      "status": "complete",
+      "jobs": 9,
+      "oldest_available_at": "2026-10-06T10:02:39.425Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "eligibility",
+      "status": "complete",
+      "jobs": 6226,
+      "oldest_available_at": "2026-10-06T09:41:06.751Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "enrichment",
+      "status": "complete",
+      "jobs": 6104,
+      "oldest_available_at": "2026-10-06T09:41:11.589Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "readiness",
+      "status": "complete",
+      "jobs": 6382,
+      "oldest_available_at": "2026-10-06T09:41:13.308Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "reconcile",
+      "status": "complete",
+      "jobs": 7780,
+      "oldest_available_at": "2026-10-06T09:41:03.178Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "watch",
+      "status": "complete",
+      "jobs": 1,
+      "oldest_available_at": "2026-10-06T10:01:30.030Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "watch",
+      "status": "ready",
+      "jobs": 6252,
+      "oldest_available_at": "2026-10-08T00:00:00.000Z",
+      "first_lease_expiry": null
+    }
+  ],
+  "verification_state": {
+    "version": "source-proof-v1",
+    "required_for_readiness": true,
+    "refresh_hours": 24,
+    "unverified_entities": 5415,
+    "latest": [
+      {
+        "status": "expired_or_changed",
+        "entities": 2
+      },
+      {
+        "status": "partial",
+        "entities": 4
+      },
+      {
+        "status": "quarantine",
+        "entities": 60
+      },
+      {
+        "status": "unverified",
+        "entities": 68
+      },
+      {
+        "status": "verified",
+        "entities": 16
+      }
+    ]
+  },
+  "method": "Re-score the same 120-entity diversity audit, all 10 original paid-pilot entities, and four additional existing entities per source family. Original URLs are fetched directly. No paid search. Earlier human-readable Codex audit labels are retained for unsafe discoveries unless repaired by source proof; withholding a record is not scored as repairing it. Source-family controls have no prior practical-quality score.",
+  "limitations": [
+    "Descriptive sample results, not population estimates or independent human gold labels.",
+    "Unavailable pages remain unverified. Generic visitor ticket and enquiry routes remain unproved vendor applications.",
+    "Immutable identity and higher-authority disagreements are held, not rewritten."
+  ],
+  "details": [
+    {
+      "entity_id": "ent_bb143b9c1cf63d4b8a10e66063576f27",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "verified_venue_missing",
+        "contradictory_heading_edition",
+        "event_cancelled_or_postponed",
+        "stale_edition",
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof"
+      ],
+      "patterns": [
+        "source_country_conflicts_with_market"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_e8dec828fff6abdbf363a1b0426e5ca6",
+      "cohort": "legacy",
+      "family": "localstalls",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "venue_location_missing",
+        "organiser_missing"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a939b5e59eda60743f3410eded38c9bd",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "usable_minor_missing",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_7905b141eeb5d843dbee40f7a11610c8",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "usable_minor_missing",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "organiser_missing",
+        "vendor_route_requires_review"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_898dec834764bb71d3cb2305a3382d74",
+      "cohort": "legacy",
+      "family": "localstalls",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "venue_location_missing"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0750bf369d4895b8c3384efaefb8f155",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_2c5aab034b010d1703c51ec9fc368515",
+      "cohort": "legacy",
+      "family": "localstalls",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "venue_location_missing"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_ecbff1b4ea6833895c553f218ba23e4d",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_1eb9a9d6e47307332bbe98625522cd42",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_8c9812f700e87367271684ddf8945a4d",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_da57ad9a90e06654b706e04d64a10a3d",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0e48289dc7ccde9bda408090197d56be",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "usable_minor_missing",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "event_identity_not_bound_to_page"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_12cc8e269a2328eb22366439f376a04d",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_bb09a755db58fb3b95189bab95a33bc4",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "watch",
+      "reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "patterns": [
+        "past_application_deadline",
+        "open_state_after_deadline"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_219ad3cb0b77604fe2173139f1224345",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "organiser_missing",
+        "waitlist_not_open_stall_availability"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_41577590a5aee1295ad7b5fedb23f580",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "application_state",
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_2fa8577e89745de302b00138ce1d68c8",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "usable_minor_missing",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "watch",
+      "reasons": [
+        "source_http_520"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_24eaabb121a9b2deb02eedc822080b09",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_e7580e7176e88cbffdf6a01fbf75ee3c",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "source_http_409"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a9d4c0a199f66637671f2adad0b6ab2c",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "source_http_403"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_afcaa1b917a649639cac1bcd2440d33e",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_078551d851349db3bb83197d10c1f357",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "editorial_page_is_discovery_only"
+      ],
+      "patterns": [
+        "editorial_not_opportunity"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_b25ddd8f502dae9fe54f0f1b7b279c7e",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "application_state",
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_32b1d80ce604da45161a79999abfd194",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_507caacf7d3e96f6ce15520de1d2b7d5",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_03d5bb6f69f773403b3ce2ec3411b703",
+      "cohort": "legacy",
+      "family": "marketspread",
+      "prior_classification": "usable_minor_missing",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "organiser_missing",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_1367a326df2b5c97f8a3fb01b336a9ca",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "clearly_usable",
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_45753db4278dddeb4f9fe4b310a9d7db",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_9718af6a08ba109b90027fdf5b180c2d",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_5dfc02f5b2f5b798a53c82909b971247",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "usable_minor_missing",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "event_identity_not_bound_to_page"
+      ],
+      "patterns": [
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_14912d82d02c30389fe000a8f55f5e62",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a1ff4025ef367c75b5d9422433b96699",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_dac94f77d3456db20d032f53208b9aa3",
+      "cohort": "legacy",
+      "family": "marketspread",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_b53268820708af6332b79fad11d74623",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_3ed0ff2fcc7e61275ea337cad2b6836c",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a8f55efe9a8c3a110933e8b048565e51",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a2770a0b8f7138d04a05c7cb72899354",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "unrelated_vendor_link_and_event"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_5a0ffe2b26e474602ea99cad34448777",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_867285c61cd4643ad1aa8876302ee4d3",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_9e5c1346ba9bd357a79630430968f784",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_03f0192d5d80c3f41d11d65ab1fd0be3",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_26de31cc009884218d4de4bee3327d0c",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_646c4d9c02b652934f4a443fff5c6ff6",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "editorial_not_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_55d6f0ff78ceb88b0b381a4e4e424474",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "test_form_not_live_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_9d5a87a8fbaa428ca12dede65e4f26e4",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a484286c160b8e64541f3dfd8c3cb0ee",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_b275e8391ada309e4733bd114297febe",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a8ac51409fa3d0460cf06e45a1ee6fa6",
+      "cohort": "legacy",
+      "family": "eventbrite",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved",
+        "source_country_market_mismatch"
+      ],
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_d251f8bec83dd17f16aea3287fd54e47",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_618769e92f250ccfa6d022fc09bef9a2",
+      "cohort": "legacy",
+      "family": "eventbrite",
+      "prior_classification": "usable_minor_missing",
+      "classification": "questionable",
+      "proof_status": "partial",
+      "readiness": "watch",
+      "reasons": [
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved"
+      ],
+      "patterns": [
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_c99cd0acfe0b121f825e0399f3e0ed4b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_e2aab2d79351b05d45b5e0132814c111",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "editorial_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_8e7200fec8710394046f261f5f6d2326",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_148aa22fb286a274ee1186a1b75b9437",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "editorial_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_84ad697703d37080ea582904836fc201",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_92be8fee73fc8d85df26b6894b6e96d5",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_6175f139555833cb1c4701fb53868cdc",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "editorial_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_6e10213abd8fb1bb2fdca73aa1b7c521",
+      "cohort": "legacy",
+      "family": "eventbrite",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "partial",
+      "readiness": "watch",
+      "reasons": [
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": [
+        "event_end",
+        "event_start",
+        "location",
+        "organiser"
+      ]
+    },
+    {
+      "entity_id": "ent_dbd5b838a3641b6f0a135cbdfe7132e7",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "past_event_requires_current_edition",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_c0ef0c711e927a29b931cdd111f183b5",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_2b10da73e8aa80ceb1da1bf1e9c2f2bf",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_41c8b078011391ef311798f485b60da5",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_835f8444b0f91046b07e2669d8e7adc2",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_2fb87112f351c869e8335575e38c711a",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_bbbf5841ea54a8ad6dbf2a6d8c37a383",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_4336191dcf37475b8b3a7276859c058d",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_c42539ac0bc6cc3c149d043700421625",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_c0b20e086ff865d055669e325e6cac71",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_32a9ae941511d829d6d5e224d5ec1068",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_f2cb29494e381084211f4b024815a828",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_f3e4060ea62c08c83324652a6039195d",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_10817723f79eef51f5ba527355bad5a6",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_1c25741f25315f88008290f1fc34d59b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0633d6f9c476e0069f9a01e25d4ae365",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a1d29476c971ff847c215d6e27e48e1f",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_f7a0296287079d09a1b709ad69b558bc",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_2237680cf39dd4a9d93bd922b5302abf",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a515d0e1d821c95a06775fce59e5df8b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_528bb3364c543d7596a3564edf977100",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_bbe10df80d50d682f4ec8050d141389c",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_42d72ba69eb0e1918f59848594a12aaa",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "editorial_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_86fbba46b52ddfd79cc16b217fe2836b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "application_availability_unknown",
+        "expected_date_not_confirmed"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_55d80837362e9ad92d6bc84462d66e1e",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_dfb15d7af86218f0e170aa1c065cc239",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_3d93188abfe7cdc170745bbdc86ce07c",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "stale_edition",
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved"
+      ],
+      "patterns": [
+        "unrelated_vendor_link_and_event"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_653f9946a656f13a9425dea32fb23edf",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_3fe4b84a74fbba658b230d7e7ad27c60",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_28160eddcd4e5091df72c6bf59202dc6",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_e5d7264aa02f9984375b3237cade8f58",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_09a53eae8f928ff2688d763888701bc4",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_b359c36bde7554fb0fe9912ec4a2f98f",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_cfcdcdd5d6d02f06a122848e9cfd2fcd",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_678b3f14fa54adf1a112e3f319d2206b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a333c153be3f4fdb8f7d240fe2cca7a8",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_e4aeabf3e747376d36924b5270077f4b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_fb12422595994487964b741662a996db",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_19b6319c8e586d79c43e641236dcb119",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_f95f7344bb41d01a9ed453b6ba6c7530",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_ba598338c78a7789f5273dece15c06a2",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_7add52c0440f8f9bb8565a5fe91de62b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_b13e9e2ff6e614cebf25474dac40b7b0",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_e04d16925302b279bf7da3ec40c0fa3d",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_9c029b6f3257403894046d03dec7a70b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_a07241cc847ef29f1cc899dbb6feb4be",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_6a2006aaad6ae392b0d2f060d77a2f61",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_85812cce8245fbbfd3a5da980e071c15",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_8b937cdc1f70d8b0d7d8f99ddb0e40f1",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "editorial_page_is_discovery_only"
+      ],
+      "patterns": [
+        "editorial_not_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_6c08b3f298a3f5b0fe656b330ce6e146",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_39330e7e38717cd7cd36d0aa3385cd71",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_82872cb7e5f34dd087983ff7daccfa0c",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "patterns": [
+        "source_date_and_state_contradiction"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_180031a253381c74ed3de0ff316bb866",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_3ff67bb3f224431725cd7fed2b9b05a5",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "event_content_scope_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_77c12c9f2f8ee5f81f940e7c01e0e711",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "application_availability_unknown",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_236ef9c4a47622047bcd87ece57aee37",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "source_country_conflicts_with_market",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_b9f40c864792f848ff4198eae6969c5c",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "verified_organiser_missing",
+        "stale_edition",
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved"
+      ],
+      "patterns": [
+        "past_event_requires_current_edition",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_1586fd74492ba0d846087d8b6f9455e2",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "platform_index_is_not_an_opportunity"
+      ],
+      "patterns": [
+        "directory_not_specific_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_60860ed9b326dc1e7dee3ab03060da8b",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "wrong_unsafe",
+      "classification": "wrong_unsafe",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "editorial_page_is_discovery_only"
+      ],
+      "patterns": [
+        "employment_not_vendor_opportunity",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_543550542a8db83d251326ba8e199ba1",
+      "cohort": "legacy",
+      "family": "eventeny",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "waitlist_only",
+        "selected_application_state_disagrees_with_proof"
+      ],
+      "patterns": [
+        "waitlist_not_open_stall_availability"
+      ],
+      "repaired_fields": [
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_55710a493dacc802ecae19f2595bece6",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "usable_minor_missing",
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_2307bd3a96c6cebe76e04a3fd9996929",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0f905f1eae862f6425cac79d903a1239",
+      "cohort": "legacy",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [
+        "event_timing_unestablished",
+        "venue_location_missing",
+        "organiser_missing",
+        "vendor_route_requires_review",
+        "application_availability_unknown",
+        "social_post_not_normalized_event",
+        "country_from_historical_search_scope"
+      ],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_743196ec9257d1eb480fa4adf9efac2e",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_164a8b64ff5c00469d8645ed8007b104",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_2f565d5640623ad31ae0902d01955121",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_c4a46e0509ecc1d2bc6b5fb3b4d932d2",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_8fa34eff1fbd4fcf66cf7c2925755676",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_1d595f98f593b452b702efd7bcab3044",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_9799e778f92259f5b12a76dc5c4a8823",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_38722e0d01768c1579472b3aef6d80c3",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0017ba59e4a2726e95f4702123632506",
+      "cohort": "source_family_control",
+      "family": "eventeny.com",
+      "prior_classification": null,
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_0053aeed8be86ff097f8a45beaf7d150",
+      "cohort": "source_family_control",
+      "family": "eventeny.com",
+      "prior_classification": null,
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_820c507fc15d885774dc8b7cc5fc938f",
+      "cohort": "paid_pilot",
+      "family": "generic",
+      "prior_classification": "questionable",
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "social_page_is_discovery_only"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_007236c333d17238199e43a3f92c0346",
+      "cohort": "source_family_control",
+      "family": "eventeny.com",
+      "prior_classification": null,
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0123a03bb1e93d7b612acb48ba93bbc1",
+      "cohort": "source_family_control",
+      "family": "localstalls.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof"
+      ],
+      "patterns": [],
+      "repaired_fields": [
+        "event_end"
+      ]
+    },
+    {
+      "entity_id": "ent_00784b323d687b79eae4089970ca790c",
+      "cohort": "source_family_control",
+      "family": "eventeny.com",
+      "prior_classification": null,
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_021f35231f7e07872757176ba66df4af",
+      "cohort": "source_family_control",
+      "family": "localstalls.com",
+      "prior_classification": null,
+      "classification": "clearly_usable",
+      "proof_status": "verified",
+      "readiness": "ready",
+      "reasons": [],
+      "patterns": [],
+      "repaired_fields": [
+        "application_state",
+        "application_url",
+        "event_end",
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_02d4fed204f10d020a6cc47afe75747f",
+      "cohort": "source_family_control",
+      "family": "localstalls.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "watch",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_019ff33352c3f62f0c225abba722c3c0",
+      "cohort": "source_family_control",
+      "family": "ukcraftfairs.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "watch",
+      "reasons": [
+        "source_http_520"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0408f937cc279281a79d12bf798e9b37",
+      "cohort": "source_family_control",
+      "family": "localstalls.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof"
+      ],
+      "patterns": [],
+      "repaired_fields": [
+        "event_end",
+        "location"
+      ]
+    },
+    {
+      "entity_id": "ent_043a6a644d632298370d0fe19e433397",
+      "cohort": "source_family_control",
+      "family": "ukcraftfairs.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "watch",
+      "reasons": [
+        "source_http_520"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0564bfde5d685cc52121403ade882b56",
+      "cohort": "source_family_control",
+      "family": "eventbrite.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "partial",
+      "readiness": "watch",
+      "reasons": [
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved"
+      ],
+      "patterns": [],
+      "repaired_fields": [
+        "event_end",
+        "event_start",
+        "location",
+        "organiser"
+      ]
+    },
+    {
+      "entity_id": "ent_04e88b40549f9ab167c26f712e941c2b",
+      "cohort": "source_family_control",
+      "family": "ukcraftfairs.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "watch",
+      "reasons": [
+        "source_http_520"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_06284b69aa7ed44e68961f04ef9de47d",
+      "cohort": "source_family_control",
+      "family": "eventbrite.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "partial",
+      "readiness": "watch",
+      "reasons": [
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved"
+      ],
+      "patterns": [],
+      "repaired_fields": [
+        "event_end",
+        "event_start",
+        "location",
+        "organiser"
+      ]
+    },
+    {
+      "entity_id": "ent_0516952e4c184ae2bcf49f1d87922716",
+      "cohort": "source_family_control",
+      "family": "ukcraftfairs.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "watch",
+      "reasons": [
+        "source_http_520"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0837498495f51cb23506eead5479aa3c",
+      "cohort": "source_family_control",
+      "family": "eventbrite.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "stale_edition",
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved",
+        "source_country_market_mismatch"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_00ffb38cb87ece02537a12c4cb40d081",
+      "cohort": "source_family_control",
+      "family": "marketspread.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0ffbe72327f6062161d001a90526b3eb",
+      "cohort": "source_family_control",
+      "family": "marketspread.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_0ac7a5b1019edf244c674b236d96ed2d",
+      "cohort": "source_family_control",
+      "family": "eventbrite.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "quarantine",
+      "readiness": "blocked",
+      "reasons": [
+        "event_cancelled_or_postponed",
+        "vendor_application_not_proved",
+        "open_vendor_application_not_proved",
+        "source_country_market_mismatch"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_2641987d0d1f627ba3bf03ab60f32b7a",
+      "cohort": "source_family_control",
+      "family": "marketspread.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    },
+    {
+      "entity_id": "ent_26cfcb7f3ecf2fac1f5a767c6b1e7f86",
+      "cohort": "source_family_control",
+      "family": "marketspread.com",
+      "prior_classification": null,
+      "classification": "questionable",
+      "proof_status": "unverified",
+      "readiness": "blocked",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "patterns": [],
+      "repaired_fields": []
+    }
+  ],
+  "direct_verification_fetch_receipts": 151,
+  "false_promotion_correction": {
+    "pattern": "Eventeny WAITLIST application heading with InStock offer and Start Application control",
+    "detected_during_shadow_audit": 1,
+    "final_ready_promotions": 0,
+    "customer_or_publication_leakage": 0,
+    "supporting_source_snapshots_reinspected": 21
+  },
+  "quality_standard": "Unproved current vendor routes are material gaps, not minor missing fields. Quarantine does not repair retained discovery quality.",
+  "validation": {
+    "full_v3_tests": 92,
+    "passed": 92,
+    "failed": 0,
+    "native_workerd_d1_and_queue": true,
+    "structured_100_control_destructive_mutations": 0,
+    "all_owned_shadow_workers_healthy": 8,
+    "verification_operator_auth_passed": true,
+    "ingest_token_refused": true,
+    "publication_endpoint_refused": true
+  },
+  "operating_state": {
+    "due_core_jobs": 0,
+    "dead_jobs": 0,
+    "stale_leases": 0,
+    "customer_rows": 0,
+    "publication_rows": 0
+  },
+  "historical_ready_claims_before_proof_gate": 1445,
+  "verified_ready_after_proof_gate": 16,
+  "recommendation": "Keep paid acquisition disabled. Improve free structured verification, blocked source retrieval and verified vendor routes before another source-targeted paid pilot."
+}

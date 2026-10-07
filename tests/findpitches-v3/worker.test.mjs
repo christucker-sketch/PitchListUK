@@ -7,6 +7,15 @@ import { sql,ingestRecords } from '../../platform/findpitches-v3/store.mjs';
 import { drainPipeline } from '../../platform/findpitches-v3/pipeline.mjs';
 const TOKEN='local-test-token-with-at-least-24-characters';
 const request=(path,{method='GET',body,token=TOKEN}={})=>new Request('https://v3.example'+path,{method,headers:{authorization:'Bearer '+token,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});
+test('verification endpoints require operator credentials and the enrichment role',async t=>{
+  const db=database(t),env={FINDPITCHES_V3_DB:db,V3_ROLE:'enrichment',V3_OPERATOR_TOKEN:TOKEN,V3_INGEST_TOKEN:'ingest-only-local-test-token'};
+  for(const route of ['/verification/document','/verification/verify']){
+    const body={entity_id:'missing',url:'https://example.org/event'};
+    assert.equal((await worker.fetch(request(route,{method:'POST',body,token:env.V3_INGEST_TOKEN}),env)).status,401);
+    assert.equal((await worker.fetch(request(route,{method:'POST',body}),{...env,V3_ROLE:'api'})).status,404);
+  }
+  assert.equal((await worker.fetch(request('/verification/verify',{method:'POST',body:{status:'verified',facts:{country:'US'}}}),env)).status,400,'Caller-supplied proof is not accepted');
+});
 test('pilot routes require the operator credential and acquisition role, and retain stop reasons',async t=>{
   const db=database(t),ingestToken='ingest-only-local-test-token';
   await sql(db,"INSERT INTO quality_gates VALUES ('structured-100-preservation',100,0,'{}','gate',?)",NOW).run();

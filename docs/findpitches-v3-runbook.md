@@ -13,7 +13,7 @@ node --test tests/findpitches-v3/woodchipper-control.test.mjs
 npm test --prefix operations/findpitches-v3
 ```
 
-In the onboarded environment, set `V3_TOOLING_ROOT=/workspace/.pitchlist-cloud/tooling` for the runtime test or Cloudflare scripts instead of installing duplicate tooling. The runtime test uses real workerd D1 and native queue delivery, takes several minutes, and destroys only its own ephemeral test runtime on completion.
+If `/workspace/.pitchlist-cloud/tooling/package.json` exists, set `V3_TOOLING_ROOT=/workspace/.pitchlist-cloud/tooling` to use that shared toolchain. Otherwise leave the variable unset and use the pinned dependencies in `operations/findpitches-v3/node_modules` installed by the command above. The runtime test uses real workerd D1 and native queue delivery, takes several minutes, and destroys only its own ephemeral test runtime on completion.
 
 The early control is 100 real reconstructed structured exports from the immutable 1,599-row artifact at `d111f9493300b3f4b94075cca46f99583fa8f7b9`, including Eventeny vendor 52126. Its ID manifest and source checksum are in the fixture. The historical ledger was unavailable for that first control; it reconstructed failure categories. The actual pilot was subsequently recovered for a separate aligned evaluation, described in the comparison guide. Verify every fixture field against the reference with `python3 operations/findpitches-v3/verify-control-fixture.py` after fetching that read-only Git ref.
 
@@ -121,3 +121,7 @@ The [Serper safeguards guide](findpitches-v3-serper-usage.md) describes the appe
 The [legacy recovery guide](findpitches-v3-legacy-recovery.md) describes the SELECT-only V2 snapshot, source-backed reconstruction, direct re-fetch, quarantine and per-field repair/preservation audit. Its operator-only routes cannot be used by the home-PC ingest token. Every recovered `legacy_v2` receipt stays shadow-only and pending audit.
 
 Transport wake-ups are coalesced per durable job for five minutes and consumers run with maximum concurrency one. Completed or currently leased duplicate pointers are acknowledged without another claim/fan-out cycle. Cron and durable jobs recover failed transport.
+
+## Source verification
+
+Use the [verification guide](findpitches-v3-source-verification.md) for operator rechecks and the direct-source quality harness. READY requires fresh source proof; historical ready counts in earlier comparison reports predate this gate. Do not restore those old counts by bypassing proof. Blocked original sources and unsupported vendor routes remain uncertainty, and paid acquisition stays disabled.

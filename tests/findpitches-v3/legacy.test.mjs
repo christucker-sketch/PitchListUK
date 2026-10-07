@@ -1,4 +1,6 @@
 import test from 'node:test';
+import {documentFixture} from './verification-fixture.mjs';
+import {recordVerification} from '../../platform/findpitches-v3/verification-store.mjs';
 import assert from 'node:assert/strict';
 import {database,NOW,record,seed} from './helpers.mjs';
 import {sql,loadEntity} from '../../platform/findpitches-v3/store.mjs';
@@ -62,6 +64,7 @@ test('quality holds retain raw evidence, block readiness and quarantine unreconc
   assert.equal((await reconcileRecord(db,imported.record_ids[0],{now:NOW})).outcome,'REVIEW_REQUIRED');
   assert.equal((await sql(db,'SELECT COUNT(*) AS count FROM entities').first()).count,1);
   await seed(db,record(),{environment:'shadow'});
+  await recordVerification(db,first.entity.id,documentFixture(),{now:NOW});
   assert.equal((await evaluateReadiness(db,first.entity.id,{now:NOW})).status,'ready','Stronger unheld source evidence can qualify the same canonical entity');
 });
 test('direct re-fetch blocks unsafe redirects and bounds response size without exposing provider errors',async()=>{

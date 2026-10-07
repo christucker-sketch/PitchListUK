@@ -5,6 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { runPreservationControl } from '../../operations/findpitches-v3/control.mjs';
 import { record,NOW } from './helpers.mjs';
+import {documentFixture} from './verification-fixture.mjs';
 import {acquireCity} from '../../platform/findpitches-v3/acquisition.mjs';
 import {legacyRecord,fieldEvidence} from '../../platform/findpitches-v3/legacy.mjs';
 import {startPilot,schedulePilotRun} from '../../platform/findpitches-v3/pilot.mjs';
@@ -19,6 +20,7 @@ test('real workerd D1 executes all migrations, preservation control and native q
   const workers=roles.map(role=>{
     const c=JSON.parse(fs.readFileSync(path.join(root,'operations/findpitches-v3/cloudflare',role+'.jsonc'),'utf8'));
     return {name:role,modules:true,script,compatibilityDate:c.compatibility_date,bindings:{...c.vars,V3_INGEST_TOKEN:token,V3_OPERATOR_TOKEN:token},d1Databases:{FINDPITCHES_V3_DB:'v3-runtime-test'},
+      outboundService:async request=>new Response(documentFixture({url:request.url}).html,{headers:{'Content-Type':'text/html'}}),
       queueProducers:Object.fromEntries((c.queues?.producers??[]).map(q=>[q.binding,q.queue])),
       queueConsumers:Object.fromEntries((c.queues?.consumers??[]).map(q=>[q.queue,{maxBatchSize:q.max_batch_size,maxBatchTimeout:0,maxRetries:1,deadLetterQueue:q.dead_letter_queue}]))};
   });
@@ -36,6 +38,7 @@ test('real workerd D1 executes all migrations, preservation control and native q
   const deadline=Date.now()+20000;let row;
   do {row=await db.prepare("SELECT e.id FROM entities e JOIN readiness r ON r.entity_id=e.id WHERE e.environment='shadow'").first();if(!row)await new Promise(resolve=>setTimeout(resolve,100));}while(!row&&Date.now()<deadline);
   assert.ok(row,'Native queue delivery must finish the shadow pipeline');
+  assert.equal((await db.prepare('SELECT status FROM source_verifications WHERE entity_id=? ORDER BY sequence DESC LIMIT 1').bind(row.id).first()).status,'verified','Native enrichment must verify the recorded source before readiness');
   const response=await api.fetch('https://example.test/shadow',{headers:{authorization:'Bearer '+token}});assert.equal(response.status,200);assert.ok((await response.json()).items.some(r=>r.id===row.id));
   assert.equal((await api.fetch('https://example.test/v1/opportunities')).status,403);
   const legacyFields={event_name:'Native River Arts Festival',canonical_url:'https://example.org/native-festival',application_state:'UNKNOWN',lifecycle_state:'WATCH'};

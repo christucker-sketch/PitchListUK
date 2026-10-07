@@ -1,3 +1,4 @@
+import {verifyEntitySource,verificationGate,verificationStatus} from './verification-store.mjs';
 import { hash } from './contract.mjs';
 import { ingestRecords,sql,loadEntity } from './store.mjs';
 import { runStage,enrichEntity } from './pipeline.mjs';
@@ -10,6 +11,7 @@ import {selectRecordFacts} from './evidence.mjs';
 import {importLegacyBatch,completeLegacyRecovery,legacyRecoveryStatus} from './legacy-store.mjs';
 import {noteDeliveryContact,structuredDeliveryStatus} from './delivery-health.mjs';
 import {startPilot,schedulePilotRun,stopPilot,pilotStatus} from './pilot.mjs';
+import {fetchSourceDocument} from './source-document.mjs';
 
 const STAGES=['reconcile','eligibility','enrichment','readiness','acquisition','watch'];
 const NEXT={ingest:'reconcile',acquisition:'reconcile',reconcile:'eligibility',eligibility:'enrichment',enrichment:'readiness',readiness:'watch',watch:'eligibility'};
@@ -46,7 +48,7 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
   const values=[[],[],[],[],[],[new Date(Date.parse(now)-3600000).toISOString()],[now],[],[budgetDay(now)],[]];
   const results=await Promise.all(queries.map((q,i)=>sql(db,q,...values[i]).all()));
   const [producers,jobs,entities,readiness,gates,throughput,leases,conflicts,cost,leakage]=results.map(r=>r.results);
-  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now)};
+  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now)};
 }
 export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
   if(!stage||!queue)return;
@@ -63,10 +65,16 @@ async function tick(env,{jobId=null,limit=10}={}) {
   const stage=env.V3_ROLE;if(!STAGES.includes(stage))throw new Error('stage_worker_required');
   // Candidate loading and source-field selection are bounded per record, but costly
   // across many records in one invocation. Reconciliation uses one queue message.
-  if(['reconcile','acquisition'].includes(stage))limit=1;
+  if(['reconcile','acquisition','enrichment'].includes(stage))limit=1;
   const results=[];
   for(let i=0;i<limit;i++) {
-    const result=await runStage(env.FINDPITCHES_V3_DB,stage,{jobId,clock:()=>new Date(),handlers:stage==='acquisition'?{acquisition:p=>acquireCity(env.FINDPITCHES_V3_DB,p,env,{runId:p.run_id})}:{}});
+    const handlers=stage==='acquisition'?{acquisition:p=>acquireCity(env.FINDPITCHES_V3_DB,p,env,{runId:p.run_id})}:stage==='enrichment'?{enrichment:async p=>{
+      const entity=await loadEntity(env.FINDPITCHES_V3_DB,p.entity_id),gate=await verificationGate(env.FINDPITCHES_V3_DB,entity);
+      // Unchanged exports cannot extend proof freshness. Missing/expired proof is fetched directly.
+      if(gate.status==='unverified'&&entity.environment==='shadow')await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id);
+      return enrichEntity(env.FINDPITCHES_V3_DB,p.entity_id,{proposals:p.proposals??[]});
+    }}:{};
+    const result=await runStage(env.FINDPITCHES_V3_DB,stage,{jobId,clock:()=>new Date(),handlers});
     results.push(result);if(result.phase!=='complete'||jobId)break;
   }
   await wakeStage(env,NEXT[stage]);
@@ -99,6 +107,16 @@ export default {
         if(typeof body.url!=='string')throw Error('legacy_original_source_url_required');
         return json(await fetchLegacySource(body.url));
       }
+      if(request.method==='POST'&&path==='/verification/verify'&&role==='enrichment') {
+        const body=await bodyJson(request);if(typeof body.entity_id!=='string')throw Error('entity_id_required');
+        const result=await verifyEntitySource(db,body.entity_id);
+        await enqueue(db,'readiness',result.verification_id,{entity_id:body.entity_id});
+        ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result);
+      }
+      if(request.method==='POST'&&path==='/verification/document'&&role==='enrichment') {
+        const body=await bodyJson(request);if(typeof body.url!=='string')throw Error('original_source_url_required');
+        return json(await fetchSourceDocument(body.url));
+      }
       if(request.method==='GET'&&path==='/rechecks'&&role==='ingest') {
         if(url.searchParams.get('probe')!=='1')await noteDeliveryContact(db,{kind:'rechecks'});
         return json({requests:(await sql(db,`SELECT q.entity_id,q.requested_at,q.reason,r.producer_record_id,r.market,r.environment
@@ -117,13 +135,15 @@ export default {
         const limit=Math.min(100,Math.max(1,Number(url.searchParams.get('limit'))||25)),after=url.searchParams.get('after')??'';
         const environment=url.searchParams.get('environment')??'shadow';if(!['shadow','test'].includes(environment))throw new Error('shadow_or_test_required');
         const rows=(await sql(db,'SELECT p.entity_id,p.entity_revision,p.payload_json FROM shadow_projections p JOIN entities e ON e.id=p.entity_id WHERE e.environment=? AND p.entity_id>? ORDER BY p.entity_id LIMIT ?',environment,after,limit).all()).results;
-        return json({items:rows.map(r=>JSON.parse(r.payload_json)),next:rows.length===limit?rows.at(-1).entity_id:null});
+        const items=rows.map(r=>JSON.parse(r.payload_json));
+        for(const item of items)if(item.readiness==='ready'&&Date.parse(item.verification?.expires_at??'')<=Date.now()){item.readiness='watch';item.verification={...item.verification,status:'unverified',reasons:['source_verification_expired']};}
+        return json({items,next:rows.length===limit?rows.at(-1).entity_id:null});
       }
       if(request.method==='GET'&&path.startsWith('/entities/')&&role==='api') {
         const entity=await loadEntity(db,decodeURIComponent(path.slice(10)));if(!entity)return json({error:'entity_missing'},404);
         const audit=(await sql(db,'SELECT * FROM selection_audit WHERE entity_id=? ORDER BY created_at,id LIMIT 250',entity.id).all()).results;
         const quality_holds=(await sql(db,'SELECT h.* FROM legacy_quality_holds h JOIN selected_facts f ON f.record_id=h.record_id WHERE f.entity_id=? GROUP BY h.record_id',entity.id).all()).results;
-        return json({entity,audit,quality_holds});
+        return json({entity,audit,quality_holds,verification:await verificationGate(db,entity)});
       }
       if(request.method==='POST'&&path==='/tick'&&STAGES.includes(role)) {const body=await bodyJson(request);return json({results:await tick(env,{limit:Math.min(25,Math.max(1,Number(body.limit)||10))})});}
       if(request.method==='POST'&&path==='/proposals'&&role==='enrichment') {
