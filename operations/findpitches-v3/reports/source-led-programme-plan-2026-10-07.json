@@ -1,0 +1,143 @@
+{
+  "schema": "findpitches-source-led-programme-plan-v2",
+  "daily_total_paid_cap": 25,
+  "queries_per_country": 5,
+  "markets": [
+    "GB",
+    "CA",
+    "AU",
+    "NZ",
+    "US"
+  ],
+  "paid_scheduler_enabled": false,
+  "paid_paused": true,
+  "publication_enabled": false,
+  "query_design": [
+    {
+      "market": "GB",
+      "family": "localstalls",
+      "query": "site:localstalls.com/uk/event/ \"Stallholder applications open\" 2026 -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "CA",
+      "family": "official_organiser",
+      "query": "\"vendor applications\" \"applications open\" \"2027\" site:ca -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "AU",
+      "family": "localstalls",
+      "query": "site:localstalls.com/au/event/ \"Stallholder applications open\" 2026 -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "NZ",
+      "family": "localstalls",
+      "query": "site:localstalls.com/nz/event/ \"Stallholder applications open\" 2026 -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "US",
+      "family": "eventeny",
+      "query": "site:eventeny.com/events/vendor/ \"Start Application\" \"2027\" \"United States\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "GB",
+      "family": "official_organiser",
+      "query": "\"trader applications\" \"applications open\" \"2027\" \"United Kingdom\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "CA",
+      "family": "municipal",
+      "query": "\"festival\" \"vendor application\" \"2027\" \"Canada\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "AU",
+      "family": "official_organiser",
+      "query": "\"stallholder applications\" \"applications open\" \"2027\" site:com.au -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "NZ",
+      "family": "official_organiser",
+      "query": "\"stallholder applications\" \"applications open\" \"2027\" site:co.nz -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "US",
+      "family": "official_organiser",
+      "query": "\"vendor applications\" \"applications open\" \"2027\" \"United States\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "GB",
+      "family": "municipal",
+      "query": "site:gov.uk \"stallholder application\" \"2027\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "CA",
+      "family": "eventeny",
+      "query": "site:eventeny.com/events/vendor/ \"Canada\" \"2026\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "AU",
+      "family": "municipal",
+      "query": "site:gov.au \"stallholder application\" \"2027\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "NZ",
+      "family": "municipal",
+      "query": "site:govt.nz \"vendor application\" \"2027\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "US",
+      "family": "municipal",
+      "query": "site:gov \"festival\" \"vendor application\" \"2027\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "GB",
+      "family": "fair_operator",
+      "query": "\"Christmas fair\" \"stallholder application\" \"2026\" site:co.uk -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "CA",
+      "family": "fair_operator",
+      "query": "\"craft fair\" \"vendor application\" \"2027\" site:ca -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "AU",
+      "family": "fair_operator",
+      "query": "\"festival\" \"stallholder application\" \"2027\" site:com.au -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "NZ",
+      "family": "fair_operator",
+      "query": "\"festival\" \"stallholder application\" \"2027\" site:co.nz -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "US",
+      "family": "eventeny",
+      "query": "site:eventeny.com/events/vendor/ \"Arts and Crafts\" \"2027\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "GB",
+      "family": "localstalls",
+      "query": "site:localstalls.com/uk/event/ \"Stallholder applications open\" 2027 -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "CA",
+      "family": "official_organiser",
+      "query": "\"vendor applications\" \"business name\" \"2027\" site:ca -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "AU",
+      "family": "localstalls",
+      "query": "site:localstalls.com/au/event/ \"Stallholder applications open\" 2027 -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "NZ",
+      "family": "localstalls",
+      "query": "site:localstalls.com/nz/event/ \"Stallholder applications open\" 2027 -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    },
+    {
+      "market": "US",
+      "family": "eventeny",
+      "query": "site:eventeny.com/events/vendor/ \"Food Vendors\" \"2027\" -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com"
+    }
+  ],
+  "unsupported_pdf_paid_search_enabled": false
+}

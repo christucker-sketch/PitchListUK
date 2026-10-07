@@ -4,6 +4,7 @@ export const FIELDS = Object.freeze(['event_name','organiser','location','region
 export const PRODUCERS = Object.freeze({
   'independent-structured': Object.freeze({ type: 'structured', authority: 100 }),
   'city-search': Object.freeze({ type: 'search', authority: 50 }),
+  'source-led-search': Object.freeze({ type: 'search', authority: 50 }),
   'legacy_v2': Object.freeze({ type: 'legacy_recovery', authority: 40 }),
 });
 export const AUTHORITIES = Object.freeze({ direct_form:95, official_page:90, official_pdf:85, trusted_directory:75, extracted_page:60, search_snippet:50, inferred:40 });

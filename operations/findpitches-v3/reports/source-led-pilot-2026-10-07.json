@@ -1,0 +1,3407 @@
+{
+  "schema": "findpitches-v3-source-led-pilot-report-v1",
+  "as_of": "2026-10-07T16:20:46.482Z",
+  "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+  "budget_timezone": "Europe/London",
+  "budget_day": "2026-10-07",
+  "daily_total_paid_cap": 25,
+  "queries_per_market": 5,
+  "prior_queries_today": 12,
+  "paid_queries_used_this_pilot": 12,
+  "total_paid_queries_today": 24,
+  "observed_credits": 12,
+  "metrics": {
+    "queries": 12,
+    "reserved": 12,
+    "observed_credits": 12,
+    "candidates": 70,
+    "distinct_candidate_urls": 70,
+    "distinct_entities": 7,
+    "entities_created": 7,
+    "verified_entities": 4,
+    "ready_opportunities": 4,
+    "ready_gained": 4,
+    "ready_by_country": {
+      "AU": 1,
+      "US": 3
+    },
+    "ready_by_source_family": {
+      "localstalls": 1,
+      "eventeny": 3
+    },
+    "duplicate_candidates": 15,
+    "duplicate_rate": 0.21428571428571427,
+    "watch_quarantine_candidates": 44,
+    "watch_quarantine_rate": 0.6285714285714286,
+    "watch_entities": 3,
+    "quarantined_entities": 0,
+    "blocked_entities": 0,
+    "out_of_market_candidates": 8,
+    "excluded_candidates": 9,
+    "excluded_mix": 0.12857142857142856,
+    "pending_candidates": 0,
+    "ready_per_100_queries": 33.333333333333336,
+    "queries_per_ready": 3,
+    "credits_per_ready": 3,
+    "cost_usd_per_ready": null,
+    "false_ready_promotions_detected": 1,
+    "unlinked_identity_review_candidates": 0,
+    "failed_runs": 0,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "publication_enabled": 0,
+    "bulk_enabled": 0,
+    "preservation_gate": 1,
+    "source_mutations": 0,
+    "due_jobs": 0,
+    "oldest_due": null,
+    "structured_pending": 0,
+    "oldest_due_seconds": 0,
+    "by_target_country": {
+      "GB": {
+        "queries": 3,
+        "candidates": 11,
+        "ready_gained": 0
+      },
+      "CA": {
+        "queries": 3,
+        "candidates": 23,
+        "ready_gained": 0
+      },
+      "AU": {
+        "queries": 2,
+        "candidates": 20,
+        "ready_gained": 1
+      },
+      "NZ": {
+        "queries": 2,
+        "candidates": 5,
+        "ready_gained": 0
+      },
+      "US": {
+        "queries": 2,
+        "candidates": 11,
+        "ready_gained": 3
+      }
+    },
+    "by_discovered_source_family": {
+      "editorial": {
+        "queries": 0,
+        "candidates": 3,
+        "ready_gained": 0
+      },
+      "directory_login": {
+        "queries": 0,
+        "candidates": 3,
+        "ready_gained": 0
+      },
+      "official_organiser": {
+        "queries": 5,
+        "candidates": 19,
+        "ready_gained": 0
+      },
+      "localstalls": {
+        "queries": 3,
+        "candidates": 11,
+        "ready_gained": 1
+      },
+      "eventeny": {
+        "queries": 2,
+        "candidates": 21,
+        "ready_gained": 3
+      },
+      "unsafe": {
+        "queries": 0,
+        "candidates": 1,
+        "ready_gained": 0
+      },
+      "direct_form_pdf": {
+        "queries": 0,
+        "candidates": 5,
+        "ready_gained": 0
+      },
+      "municipal": {
+        "queries": 2,
+        "candidates": 7,
+        "ready_gained": 0
+      }
+    },
+    "run_telemetry": [
+      {
+        "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 0,
+        "market": "GB",
+        "family": "localstalls",
+        "status": "complete",
+        "created_at": "2026-10-07T15:49:54.092Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 0,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 1,
+        "market": "CA",
+        "family": "official_organiser",
+        "status": "complete",
+        "created_at": "2026-10-07T15:50:59.471Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 10,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 2,
+        "market": "AU",
+        "family": "localstalls",
+        "status": "complete",
+        "created_at": "2026-10-07T15:52:16.969Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 10,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 3,
+        "market": "NZ",
+        "family": "localstalls",
+        "status": "complete",
+        "created_at": "2026-10-07T15:53:33.946Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 1,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 4,
+        "market": "US",
+        "family": "eventeny",
+        "status": "complete",
+        "created_at": "2026-10-07T15:54:31.952Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 10,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 5,
+        "market": "GB",
+        "family": "official_organiser",
+        "status": "complete",
+        "created_at": "2026-10-07T15:56:16.444Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 1,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_64679f7d-9abf-494e-8fc9-a84c82aebbd5",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 6,
+        "market": "CA",
+        "family": "municipal",
+        "status": "complete",
+        "created_at": "2026-10-07T15:57:15.757Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 3,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_c4b51756-73c5-435e-8002-af3b3ba7028e",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 7,
+        "market": "AU",
+        "family": "official_organiser",
+        "status": "complete",
+        "created_at": "2026-10-07T15:58:15.609Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 10,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_22665a8f-910a-4bed-a4f5-356e2f6e129e",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 8,
+        "market": "NZ",
+        "family": "official_organiser",
+        "status": "complete",
+        "created_at": "2026-10-07T15:59:33.828Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 4,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_533b9c12-5dc9-4c25-ac83-34a945a17ddd",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 9,
+        "market": "US",
+        "family": "official_organiser",
+        "status": "complete",
+        "created_at": "2026-10-07T16:00:56.073Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 1,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_dc60717e-1eec-4e0a-a289-5d81585f5504",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 10,
+        "market": "GB",
+        "family": "municipal",
+        "status": "complete",
+        "created_at": "2026-10-07T16:02:07.007Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 10,
+        "usage_status": "complete"
+      },
+      {
+        "run_id": "sourceledrun_7b477b0e-7f6d-4241-b6d1-cd51a2b170c5",
+        "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+        "query_index": 11,
+        "market": "CA",
+        "family": "eventeny",
+        "status": "complete",
+        "created_at": "2026-10-07T16:03:20.820Z",
+        "queries_reserved": 1,
+        "queries_attempted": 1,
+        "credits_observed": 1,
+        "candidates_produced": 10,
+        "usage_status": "complete"
+      }
+    ],
+    "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+  },
+  "stop_status": "paused",
+  "stop_reason": "restricted_application_false_promotion",
+  "policy": {
+    "id": 1,
+    "daily_query_limit": 25,
+    "queries_per_market": 5,
+    "manual_paused": 1,
+    "pause_reason": "shadow_http_400_source_led_programme_not_active",
+    "updated_at": "2026-10-07T16:03:30.241Z"
+  },
+  "global_limits": {
+    "queries_per_run": 4,
+    "queries_per_hour": 100,
+    "queries_per_day": 1000,
+    "credits_per_run": 4,
+    "credits_per_hour": 100,
+    "credits_per_day": 1000
+  },
+  "source_mutations": 0,
+  "identity_changes": 0,
+  "customer_leakage": 0,
+  "publication_leakage": 0,
+  "publication_enabled": false,
+  "bulk_enabled": false,
+  "commercial_inventory": {
+    "schema": "findpitches-v3-commercial-inventory-v1",
+    "as_of": "2026-10-07T16:20:46.482Z",
+    "timezone": "Europe/London",
+    "ready_definition": "Shadow entities with current version/revision-matched source proof, current READY assessment, supported vendor application and no identity/evidence/legacy hold. Publication remains disabled.",
+    "scope": {
+      "commercial_entities": 5468,
+      "test_control_excluded": 104,
+      "other_noncommercial_excluded": 0
+    },
+    "totals": {
+      "total_distinct_entities": 5468,
+      "verified": 457,
+      "ready": 454,
+      "watch": 903,
+      "quarantined": 413,
+      "blocked": 3698,
+      "awaiting_verification": 4724,
+      "missing_application_proof": 4915,
+      "stale_expired": 130,
+      "verification_checked": 1026
+    },
+    "by_origin": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 444,
+        "ready": 441,
+        "watch": 168,
+        "quarantined": 176,
+        "blocked": 101,
+        "awaiting_verification": 220,
+        "missing_application_proof": 346,
+        "stale_expired": 40,
+        "verification_checked": 886
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 4555,
+        "verified": 9,
+        "ready": 9,
+        "watch": 732,
+        "quarantined": 226,
+        "blocked": 3588,
+        "awaiting_verification": 4494,
+        "missing_application_proof": 4546,
+        "stale_expired": 90,
+        "verification_checked": 121
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 4,
+        "ready": 4,
+        "watch": 3,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      }
+    },
+    "by_source_membership": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 444,
+        "ready": 441,
+        "watch": 168,
+        "quarantined": 176,
+        "blocked": 101,
+        "awaiting_verification": 220,
+        "missing_application_proof": 346,
+        "stale_expired": 40,
+        "verification_checked": 886
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 5433,
+        "verified": 452,
+        "ready": 449,
+        "watch": 898,
+        "quarantined": 398,
+        "blocked": 3688,
+        "awaiting_verification": 4711,
+        "missing_application_proof": 4885,
+        "stale_expired": 130,
+        "verification_checked": 998
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 4,
+        "ready": 4,
+        "watch": 3,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      }
+    },
+    "attribution": "Origin is the earliest accepted non-diagnostic producer receipt linked to the entity. Origin rows are exclusive and sum to the commercial total. Source membership overlaps and must not be summed.",
+    "status_counts": "READY/WATCH/quarantined/blocked are exclusive current dispositions. Verified, awaiting verification, missing application proof and stale/expired are overlapping flags. Old cached READY alone never qualifies.",
+    "ready_by_country": {
+      "US": 446,
+      "AU": 4,
+      "NZ": 2,
+      "GB": 2
+    },
+    "ready_by_source_domain": {
+      "eventeny.com": 446,
+      "localstalls.com": 8
+    },
+    "ready_by_source_platform": {
+      "eventeny": 446,
+      "localstalls": 8
+    },
+    "ready_by_application_state": {
+      "OPEN_NOW": 454
+    },
+    "kpis": {
+      "total_customer_ready_opportunities": 454,
+      "verification_conversion_percent": 44.25,
+      "verification_entities_checked": 1026,
+      "coverage_all_inventory_unverified_presence": {
+        "denominator": 5468,
+        "application_url_percent": 41.66,
+        "future_event_date_percent": 30.05,
+        "location_percent": 31.51,
+        "organiser_percent": 32.11
+      },
+      "coverage_ready_source_proof": {
+        "denominator": 454,
+        "application_url_percent": 100,
+        "future_event_date_percent": 94.93,
+        "location_percent": 100,
+        "organiser_percent": 100
+      },
+      "new_ready_today": 454,
+      "new_ready_day": "2026-10-07",
+      "first_proof_readiness_history_available": true,
+      "paid_acquisition_queries": 25,
+      "first_confirmed_paid_ready": 4,
+      "new_ready_per_100_acquisition_queries": 16,
+      "queries_per_new_paid_ready": 6.25,
+      "paid_credit_cost_per_ready": null,
+      "cost_per_ready_usd": null,
+      "pricing_status": "unit_credit_price_unavailable",
+      "zero_paid_ready": false,
+      "stale_expired_ready_removed": 0,
+      "previously_confirmed_ready": 454,
+      "stale_expired_removal_percent": 0,
+      "identity_duplicate_rate_by_source": {
+        "city-search": {
+          "candidate_ids": 20,
+          "linked_entities": 20,
+          "percent": 0
+        },
+        "independent-structured": {
+          "candidate_ids": 886,
+          "linked_entities": 886,
+          "percent": 0
+        },
+        "legacy_v2": {
+          "candidate_ids": 5698,
+          "linked_entities": 5433,
+          "percent": 4.65
+        },
+        "source-led-search": {
+          "candidate_ids": 7,
+          "linked_entities": 7,
+          "percent": 0
+        }
+      },
+      "definitions": "New READY/day counts first source-proved READY per entity in the London day, never renewals. Paid yield/cost uses first confirmed READY with a city-search or source-led-search origin only, including later expiries; free structured READY is not credited to paid queries. Null cost with zero READY is undefined, not zero. Duplicate rate is excess distinct linked producer candidate IDs per distinct entity; replayed receipt versions are excluded. Removal rate is previously proved READY now withheld due to stale/expired evidence."
+    },
+    "source_receipts": [
+      {
+        "producer_name": "city-search",
+        "receipts": 20,
+        "candidate_ids": 20,
+        "unlinked_receipts": 0
+      },
+      {
+        "producer_name": "independent-structured",
+        "receipts": 888,
+        "candidate_ids": 887,
+        "unlinked_receipts": 1
+      },
+      {
+        "producer_name": "legacy_v2",
+        "receipts": 6765,
+        "candidate_ids": 5788,
+        "unlinked_receipts": 92
+      },
+      {
+        "producer_name": "source-led-search",
+        "receipts": 7,
+        "candidate_ids": 7,
+        "unlinked_receipts": 0
+      }
+    ]
+  },
+  "structured_delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": null,
+    "recent_poll_intervals_seconds": [],
+    "host_recently_contacting": false,
+    "cadence_verified": false,
+    "freshness_warning": true,
+    "immutable_receipts": 888,
+    "producer_ids": 887,
+    "last_new_receipt_at": "2026-10-06T13:44:51.925Z",
+    "source_last_checked": "2026-10-05T11:49:36Z",
+    "interpretation": "Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls are excluded."
+  },
+  "structured_host": "Raspberry Pi installation/delivery remains an external dependency; structured receipts and direct verification retain priority.",
+  "pricing_status": "unit_credit_price_unavailable",
+  "queue_health": [
+    {
+      "stage": "acquisition",
+      "status": "complete",
+      "jobs": 9,
+      "oldest_available_at": "2026-10-06T10:02:39.425Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "eligibility",
+      "status": "complete",
+      "jobs": 6233,
+      "oldest_available_at": "2026-10-06T09:41:06.751Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "enrichment",
+      "status": "complete",
+      "jobs": 6111,
+      "oldest_available_at": "2026-10-06T09:41:11.589Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "readiness",
+      "status": "complete",
+      "jobs": 7840,
+      "oldest_available_at": "2026-10-06T09:41:13.308Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "reconcile",
+      "status": "complete",
+      "jobs": 7787,
+      "oldest_available_at": "2026-10-06T09:41:03.178Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "watch",
+      "status": "complete",
+      "jobs": 1,
+      "oldest_available_at": "2026-10-06T10:01:30.030Z",
+      "first_lease_expiry": null
+    },
+    {
+      "stage": "watch",
+      "status": "ready",
+      "jobs": 7599,
+      "oldest_available_at": "2026-10-07T22:00:00.000Z",
+      "first_lease_expiry": null
+    }
+  ],
+  "immutable_records_verified": 8366,
+  "immutable_fields_verified": 63960,
+  "recommendation": "Keep paid acquisition paused now. The trial proves positive source-led yield in AU/LocalStalls and US/Eventeny, but one restricted-audience false promotion required correction and GB/CA/NZ produced no READY. Audit the corrected audience rules and source-specific non-US proof adapters using direct fetches, then consider another operator-run pilot capped at 25/day; do not increase the ceiling.",
+  "stop_trigger": "supervised_practical_quality_review",
+  "automatic_stop_current_evaluation": "false_ready_promotion_detected",
+  "automatic_false_promotion_guard_verified_by_regression": true,
+  "candidate_dispositions": [
+    {
+      "status": "duplicate",
+      "candidates": 15
+    },
+    {
+      "status": "excluded",
+      "candidates": 7
+    },
+    {
+      "status": "imported",
+      "candidates": 7
+    },
+    {
+      "status": "out_of_market",
+      "candidates": 8
+    },
+    {
+      "status": "quarantine",
+      "candidates": 4
+    },
+    {
+      "status": "unsupported_pdf",
+      "candidates": 5
+    },
+    {
+      "status": "unverified",
+      "candidates": 24
+    }
+  ],
+  "dominant_blockers": [
+    {
+      "status": "unverified",
+      "reason": "single_event_source_data_missing",
+      "candidates": 14
+    },
+    {
+      "status": "out_of_market",
+      "reason": "proved_country_outside_target_quota",
+      "candidates": 8
+    },
+    {
+      "status": "excluded",
+      "reason": "excluded",
+      "candidates": 7
+    },
+    {
+      "status": "unsupported_pdf",
+      "reason": "unsupported_pdf",
+      "candidates": 5
+    },
+    {
+      "status": "unverified",
+      "reason": "source_http_403",
+      "candidates": 5
+    },
+    {
+      "status": "quarantine",
+      "reason": "editorial",
+      "candidates": 2
+    },
+    {
+      "status": "unverified",
+      "reason": "event_content_scope_missing",
+      "candidates": 2
+    },
+    {
+      "status": "unverified",
+      "reason": "source_response_size_limit",
+      "candidates": 2
+    },
+    {
+      "status": "quarantine",
+      "reason": "application_is_not_a_trader_opportunity,stale_edition,application_deadline_passed,application_closed",
+      "candidates": 1
+    },
+    {
+      "status": "quarantine",
+      "reason": "stale_edition,application_deadline_passed,application_closed",
+      "candidates": 1
+    },
+    {
+      "status": "unverified",
+      "reason": "source_http_404",
+      "candidates": 1
+    }
+  ],
+  "by_country": {
+    "GB": {
+      "queries": 3,
+      "candidates": 11,
+      "ready_gained": 0,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null
+    },
+    "CA": {
+      "queries": 3,
+      "candidates": 23,
+      "ready_gained": 0,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null
+    },
+    "AU": {
+      "queries": 2,
+      "candidates": 20,
+      "ready_gained": 1,
+      "ready_per_100_queries": 50,
+      "queries_per_ready": 2
+    },
+    "NZ": {
+      "queries": 2,
+      "candidates": 5,
+      "ready_gained": 0,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null
+    },
+    "US": {
+      "queries": 2,
+      "candidates": 11,
+      "ready_gained": 3,
+      "ready_per_100_queries": 150,
+      "queries_per_ready": 0.6666666666666666
+    }
+  },
+  "paid_entity_quality_sample": [
+    {
+      "id": "ent_23f0bc6437c5c5219adad73b3e03ffd9",
+      "market": "AU",
+      "edition": "2026",
+      "status": "ready",
+      "application_audience": "traders",
+      "application_heading": "Gatton Markets November 2026 @ Lake Apex",
+      "title": "Gatton Markets November 2026 @ Lake Apex",
+      "event_start": "2026-11-01",
+      "event_end": "2026-11-01",
+      "source_family": "localstalls"
+    },
+    {
+      "id": "ent_3496b19dd00f25f53b92e9057309ff4e",
+      "market": "US",
+      "edition": "2027",
+      "status": "ready",
+      "application_audience": "traders",
+      "application_heading": "ARTIST/CRAFTER EXHIBITOR (NO JEWELRY) (NO CLOTHES )",
+      "title": "2027 Delray Affair - 65th Annual",
+      "event_start": "2027-04-09",
+      "event_end": "2027-04-11",
+      "source_family": "eventeny"
+    },
+    {
+      "id": "ent_419c74a09e0a03f603ceb6304f5ab9ad",
+      "market": "US",
+      "edition": "2027",
+      "status": "ready",
+      "application_audience": "traders",
+      "application_heading": "Arts & Craft Application",
+      "title": "The Morgan Hill Mushroom Festival 2027",
+      "event_start": "2027-05-29",
+      "event_end": "2027-05-30",
+      "source_family": "eventeny"
+    },
+    {
+      "id": "ent_9e05b9f6ea84828a95767c0bcb26c129",
+      "market": "US",
+      "edition": "2026",
+      "status": "watch",
+      "application_audience": "traders",
+      "application_heading": "33rd Northern Virginia Christmas Market - 2026 Artist Application",
+      "title": "33rd Annual Northern Virginia Christmas Market",
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-08",
+      "source_family": "eventeny"
+    },
+    {
+      "id": "ent_b00a671d9fba905eb20b44f724537be4",
+      "market": "US",
+      "edition": "2025",
+      "status": "ready",
+      "application_audience": "traders",
+      "application_heading": "Food Vendors",
+      "title": "Jackson County Expo Food Vendor Application",
+      "event_start": "2025-01-07",
+      "event_end": "2027-08-14",
+      "source_family": "eventeny"
+    },
+    {
+      "id": "ent_dd51b2c6c73d8edfa9ca70b05b890f89",
+      "market": "US",
+      "edition": "2027",
+      "status": "watch",
+      "application_audience": "restricted_membership",
+      "application_heading": "BUSINESS EXHIBITOR - CHAMBER MEMBER",
+      "title": "2027 Delray Affair - 65th Annual",
+      "event_start": "2027-04-09",
+      "event_end": "2027-04-11",
+      "source_family": "eventeny"
+    },
+    {
+      "id": "ent_f3f4d0080e8166831a3372c894cf45a1",
+      "market": "US",
+      "edition": "2027",
+      "status": "watch",
+      "application_audience": "nonprofit_only",
+      "application_heading": "2027 Festival at CCP Non-Profit Information Booth",
+      "title": "2027 Festival at CCP Non-Profit Information Booth",
+      "event_start": "2027-03-19",
+      "event_end": "2027-03-28",
+      "source_family": "eventeny"
+    }
+  ],
+  "custody": {
+    "original_receipts_checked": 8305,
+    "original_source_fields_checked": 63824,
+    "current_receipts": 8366,
+    "current_source_fields": 63960,
+    "existing_entity_identities_checked": 5565,
+    "source_mutations": 0,
+    "identity_changes": 0
+  },
+  "quality_correction": {
+    "initial_claimed_ready": 5,
+    "qualified_ready_after_review": 4,
+    "false_ready_claims_detected": 1,
+    "remaining_false_ready_claims": 0,
+    "held_entity_id": "ent_dd51b2c6c73d8edfa9ca70b05b890f89",
+    "reason": "Application explicitly requires active Chamber membership. The original proof/READY history and all source facts remain immutable; a new source verification and audience restriction withhold the record."
+  },
+  "query_correction": {
+    "first_gb_query_used_wrong_path": "/gb/event/",
+    "corrected_future_path": "/uk/event/",
+    "spent_queries_retained": 1,
+    "repeated_paid_queries_for_fix": 0
+  },
+  "verification_scope": "All outstanding receipts from already-paid queries completed through direct fetch only after the pause; no additional Serper dispatched. Unsupported PDFs/forms and unproved geography stay discovery evidence. Dedicated paid PDF queries removed from future plans until a verifier is ready.",
+  "tests": {
+    "v3_suite_passed": 114,
+    "v3_suite_failed": 0,
+    "native_runtime_chain": true,
+    "structured_control_rows": 100,
+    "destructive_mutations": 0,
+    "boundary_check": "passed"
+  },
+  "next_daily_paid_limit_recommendation": 0,
+  "retained_commercial_hard_cap": 25,
+  "historical_run_snapshots": [
+    {
+      "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "GB",
+      "family": "localstalls",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 1,
+        "reserved": 1,
+        "observed_credits": 1,
+        "candidates": 0,
+        "distinct_candidate_urls": 0,
+        "distinct_entities": 0,
+        "entities_created": 0,
+        "verified_entities": 0,
+        "ready_opportunities": 0,
+        "ready_gained": 0,
+        "ready_by_country": {},
+        "ready_by_source_family": {},
+        "duplicate_candidates": 0,
+        "duplicate_rate": 0,
+        "watch_quarantine_candidates": 0,
+        "watch_quarantine_rate": 0,
+        "watch_entities": 0,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 0,
+        "excluded_mix": 0,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 0,
+        "queries_per_ready": null,
+        "credits_per_ready": null,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "NZ": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "by_discovered_source_family": {
+          "localstalls": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "CA",
+      "family": "official_organiser",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 2,
+        "reserved": 2,
+        "observed_credits": 2,
+        "candidates": 10,
+        "distinct_candidate_urls": 10,
+        "distinct_entities": 0,
+        "entities_created": 0,
+        "verified_entities": 0,
+        "ready_opportunities": 0,
+        "ready_gained": 0,
+        "ready_by_country": {},
+        "ready_by_source_family": {},
+        "duplicate_candidates": 0,
+        "duplicate_rate": 0,
+        "watch_quarantine_candidates": 6,
+        "watch_quarantine_rate": 0.6,
+        "watch_entities": 0,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 4,
+        "excluded_mix": 0.4,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 0,
+        "queries_per_ready": null,
+        "credits_per_ready": null,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "NZ": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 1,
+            "candidates": 6,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "AU",
+      "family": "localstalls",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 3,
+        "reserved": 3,
+        "observed_credits": 3,
+        "candidates": 20,
+        "distinct_candidate_urls": 20,
+        "distinct_entities": 1,
+        "entities_created": 1,
+        "verified_entities": 1,
+        "ready_opportunities": 1,
+        "ready_gained": 1,
+        "ready_by_country": {
+          "AU": 1
+        },
+        "ready_by_source_family": {
+          "localstalls": 1
+        },
+        "duplicate_candidates": 8,
+        "duplicate_rate": 0.4,
+        "watch_quarantine_candidates": 7,
+        "watch_quarantine_rate": 0.35,
+        "watch_entities": 0,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 4,
+        "excluded_mix": 0.2,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 33.333333333333336,
+        "queries_per_ready": 3,
+        "credits_per_ready": 3,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 1,
+            "candidates": 6,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 2,
+            "candidates": 10,
+            "ready_gained": 1
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "NZ",
+      "family": "localstalls",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 4,
+        "reserved": 4,
+        "observed_credits": 4,
+        "candidates": 21,
+        "distinct_candidate_urls": 21,
+        "distinct_entities": 1,
+        "entities_created": 1,
+        "verified_entities": 1,
+        "ready_opportunities": 1,
+        "ready_gained": 1,
+        "ready_by_country": {
+          "AU": 1
+        },
+        "ready_by_source_family": {
+          "localstalls": 1
+        },
+        "duplicate_candidates": 9,
+        "duplicate_rate": 0.42857142857142855,
+        "watch_quarantine_candidates": 7,
+        "watch_quarantine_rate": 0.3333333333333333,
+        "watch_entities": 0,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 4,
+        "excluded_mix": 0.19047619047619047,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 25,
+        "queries_per_ready": 4,
+        "credits_per_ready": 4,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 1,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 0,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 1,
+            "candidates": 6,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 1
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 3,
+            "market": "NZ",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:53:33.946Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "US",
+      "family": "eventeny",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 5,
+        "reserved": 5,
+        "observed_credits": 5,
+        "candidates": 31,
+        "distinct_candidate_urls": 31,
+        "distinct_entities": 7,
+        "entities_created": 7,
+        "verified_entities": 5,
+        "ready_opportunities": 5,
+        "ready_gained": 5,
+        "ready_by_country": {
+          "AU": 1,
+          "US": 4
+        },
+        "ready_by_source_family": {
+          "localstalls": 1,
+          "eventeny": 4
+        },
+        "duplicate_candidates": 12,
+        "duplicate_rate": 0.3870967741935484,
+        "watch_quarantine_candidates": 10,
+        "watch_quarantine_rate": 0.3225806451612903,
+        "watch_entities": 2,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 4,
+        "excluded_mix": 0.12903225806451613,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 100,
+        "queries_per_ready": 1,
+        "credits_per_ready": 1,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 1,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 4
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 1,
+            "candidates": 6,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 1
+          },
+          "eventeny": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 4
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 3,
+            "market": "NZ",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:53:33.946Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 4,
+            "market": "US",
+            "family": "eventeny",
+            "status": "complete",
+            "created_at": "2026-10-07T15:54:31.952Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "GB",
+      "family": "official_organiser",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 6,
+        "reserved": 6,
+        "observed_credits": 6,
+        "candidates": 32,
+        "distinct_candidate_urls": 32,
+        "distinct_entities": 7,
+        "entities_created": 7,
+        "verified_entities": 5,
+        "ready_opportunities": 5,
+        "ready_gained": 5,
+        "ready_by_country": {
+          "AU": 1,
+          "US": 4
+        },
+        "ready_by_source_family": {
+          "localstalls": 1,
+          "eventeny": 4
+        },
+        "duplicate_candidates": 12,
+        "duplicate_rate": 0.375,
+        "watch_quarantine_candidates": 11,
+        "watch_quarantine_rate": 0.34375,
+        "watch_entities": 2,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 4,
+        "excluded_mix": 0.125,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 83.33333333333333,
+        "queries_per_ready": 1.2,
+        "credits_per_ready": 1.2,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 2,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 1,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 4
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 2,
+            "candidates": 7,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 1
+          },
+          "eventeny": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 4
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 3,
+            "market": "NZ",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:53:33.946Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 4,
+            "market": "US",
+            "family": "eventeny",
+            "status": "complete",
+            "created_at": "2026-10-07T15:54:31.952Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 5,
+            "market": "GB",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:56:16.444Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_64679f7d-9abf-494e-8fc9-a84c82aebbd5",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "CA",
+      "family": "municipal",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 7,
+        "reserved": 7,
+        "observed_credits": 7,
+        "candidates": 35,
+        "distinct_candidate_urls": 35,
+        "distinct_entities": 7,
+        "entities_created": 7,
+        "verified_entities": 5,
+        "ready_opportunities": 5,
+        "ready_gained": 5,
+        "ready_by_country": {
+          "AU": 1,
+          "US": 4
+        },
+        "ready_by_source_family": {
+          "localstalls": 1,
+          "eventeny": 4
+        },
+        "duplicate_candidates": 13,
+        "duplicate_rate": 0.37142857142857144,
+        "watch_quarantine_candidates": 12,
+        "watch_quarantine_rate": 0.34285714285714286,
+        "watch_entities": 2,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 5,
+        "excluded_mix": 0.14285714285714285,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 71.42857142857143,
+        "queries_per_ready": 1.4,
+        "credits_per_ready": 1.4,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 2,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 2,
+            "candidates": 13,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 1,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 4
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 2,
+            "candidates": 8,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 1
+          },
+          "eventeny": {
+            "queries": 1,
+            "candidates": 11,
+            "ready_gained": 4
+          },
+          "unsafe": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "municipal": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 3,
+            "market": "NZ",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:53:33.946Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 4,
+            "market": "US",
+            "family": "eventeny",
+            "status": "complete",
+            "created_at": "2026-10-07T15:54:31.952Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 5,
+            "market": "GB",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:56:16.444Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_64679f7d-9abf-494e-8fc9-a84c82aebbd5",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 6,
+            "market": "CA",
+            "family": "municipal",
+            "status": "complete",
+            "created_at": "2026-10-07T15:57:15.757Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 3,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_c4b51756-73c5-435e-8002-af3b3ba7028e",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "AU",
+      "family": "official_organiser",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 8,
+        "reserved": 8,
+        "observed_credits": 8,
+        "candidates": 45,
+        "distinct_candidate_urls": 45,
+        "distinct_entities": 7,
+        "entities_created": 7,
+        "verified_entities": 5,
+        "ready_opportunities": 5,
+        "ready_gained": 5,
+        "ready_by_country": {
+          "AU": 1,
+          "US": 4
+        },
+        "ready_by_source_family": {
+          "localstalls": 1,
+          "eventeny": 4
+        },
+        "duplicate_candidates": 13,
+        "duplicate_rate": 0.28888888888888886,
+        "watch_quarantine_candidates": 21,
+        "watch_quarantine_rate": 0.4666666666666667,
+        "watch_entities": 2,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 8,
+        "excluded_mix": 0.17777777777777778,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 62.5,
+        "queries_per_ready": 1.6,
+        "credits_per_ready": 1.6,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 2,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 2,
+            "candidates": 13,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 2,
+            "candidates": 20,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 1,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 4
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 2,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 3,
+            "candidates": 15,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 1
+          },
+          "eventeny": {
+            "queries": 1,
+            "candidates": 11,
+            "ready_gained": 4
+          },
+          "unsafe": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "direct_form_pdf": {
+            "queries": 0,
+            "candidates": 2,
+            "ready_gained": 0
+          },
+          "municipal": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 3,
+            "market": "NZ",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:53:33.946Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 4,
+            "market": "US",
+            "family": "eventeny",
+            "status": "complete",
+            "created_at": "2026-10-07T15:54:31.952Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 5,
+            "market": "GB",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:56:16.444Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_64679f7d-9abf-494e-8fc9-a84c82aebbd5",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 6,
+            "market": "CA",
+            "family": "municipal",
+            "status": "complete",
+            "created_at": "2026-10-07T15:57:15.757Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 3,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_c4b51756-73c5-435e-8002-af3b3ba7028e",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 7,
+            "market": "AU",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:58:15.609Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_22665a8f-910a-4bed-a4f5-356e2f6e129e",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "NZ",
+      "family": "official_organiser",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 9,
+        "reserved": 9,
+        "observed_credits": 9,
+        "candidates": 49,
+        "distinct_candidate_urls": 49,
+        "distinct_entities": 7,
+        "entities_created": 7,
+        "verified_entities": 5,
+        "ready_opportunities": 5,
+        "ready_gained": 5,
+        "ready_by_country": {
+          "AU": 1,
+          "US": 4
+        },
+        "ready_by_source_family": {
+          "localstalls": 1,
+          "eventeny": 4
+        },
+        "duplicate_candidates": 13,
+        "duplicate_rate": 0.2653061224489796,
+        "watch_quarantine_candidates": 24,
+        "watch_quarantine_rate": 0.4897959183673469,
+        "watch_entities": 2,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 9,
+        "excluded_mix": 0.1836734693877551,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 55.55555555555556,
+        "queries_per_ready": 1.8,
+        "credits_per_ready": 1.8,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 2,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 2,
+            "candidates": 13,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 2,
+            "candidates": 20,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 2,
+            "candidates": 5,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 1,
+            "candidates": 10,
+            "ready_gained": 4
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 4,
+            "candidates": 18,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 1
+          },
+          "eventeny": {
+            "queries": 1,
+            "candidates": 11,
+            "ready_gained": 4
+          },
+          "unsafe": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "direct_form_pdf": {
+            "queries": 0,
+            "candidates": 2,
+            "ready_gained": 0
+          },
+          "municipal": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 3,
+            "market": "NZ",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:53:33.946Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 4,
+            "market": "US",
+            "family": "eventeny",
+            "status": "complete",
+            "created_at": "2026-10-07T15:54:31.952Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 5,
+            "market": "GB",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:56:16.444Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_64679f7d-9abf-494e-8fc9-a84c82aebbd5",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 6,
+            "market": "CA",
+            "family": "municipal",
+            "status": "complete",
+            "created_at": "2026-10-07T15:57:15.757Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 3,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_c4b51756-73c5-435e-8002-af3b3ba7028e",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 7,
+            "market": "AU",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:58:15.609Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_22665a8f-910a-4bed-a4f5-356e2f6e129e",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 8,
+            "market": "NZ",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:59:33.828Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 4,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_533b9c12-5dc9-4c25-ac83-34a945a17ddd",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "US",
+      "family": "official_organiser",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 10,
+        "reserved": 10,
+        "observed_credits": 10,
+        "candidates": 50,
+        "distinct_candidate_urls": 50,
+        "distinct_entities": 7,
+        "entities_created": 7,
+        "verified_entities": 5,
+        "ready_opportunities": 5,
+        "ready_gained": 5,
+        "ready_by_country": {
+          "AU": 1,
+          "US": 4
+        },
+        "ready_by_source_family": {
+          "localstalls": 1,
+          "eventeny": 4
+        },
+        "duplicate_candidates": 13,
+        "duplicate_rate": 0.26,
+        "watch_quarantine_candidates": 25,
+        "watch_quarantine_rate": 0.5,
+        "watch_entities": 2,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 9,
+        "excluded_mix": 0.18,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 50,
+        "queries_per_ready": 2,
+        "credits_per_ready": 2,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 2,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 2,
+            "candidates": 13,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 2,
+            "candidates": 20,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 2,
+            "candidates": 5,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 2,
+            "candidates": 11,
+            "ready_gained": 4
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 5,
+            "candidates": 19,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 1
+          },
+          "eventeny": {
+            "queries": 1,
+            "candidates": 11,
+            "ready_gained": 4
+          },
+          "unsafe": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "direct_form_pdf": {
+            "queries": 0,
+            "candidates": 2,
+            "ready_gained": 0
+          },
+          "municipal": {
+            "queries": 1,
+            "candidates": 0,
+            "ready_gained": 0
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 3,
+            "market": "NZ",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:53:33.946Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 4,
+            "market": "US",
+            "family": "eventeny",
+            "status": "complete",
+            "created_at": "2026-10-07T15:54:31.952Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 5,
+            "market": "GB",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:56:16.444Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_64679f7d-9abf-494e-8fc9-a84c82aebbd5",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 6,
+            "market": "CA",
+            "family": "municipal",
+            "status": "complete",
+            "created_at": "2026-10-07T15:57:15.757Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 3,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_c4b51756-73c5-435e-8002-af3b3ba7028e",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 7,
+            "market": "AU",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:58:15.609Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_22665a8f-910a-4bed-a4f5-356e2f6e129e",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 8,
+            "market": "NZ",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:59:33.828Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 4,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_533b9c12-5dc9-4c25-ac83-34a945a17ddd",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 9,
+            "market": "US",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T16:00:56.073Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    },
+    {
+      "run_id": "sourceledrun_dc60717e-1eec-4e0a-a289-5d81585f5504",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "market": "GB",
+      "family": "municipal",
+      "query_limit": 1,
+      "metrics": {
+        "queries": 11,
+        "reserved": 11,
+        "observed_credits": 11,
+        "candidates": 60,
+        "distinct_candidate_urls": 60,
+        "distinct_entities": 7,
+        "entities_created": 7,
+        "verified_entities": 5,
+        "ready_opportunities": 5,
+        "ready_gained": 5,
+        "ready_by_country": {
+          "AU": 1,
+          "US": 4
+        },
+        "ready_by_source_family": {
+          "localstalls": 1,
+          "eventeny": 4
+        },
+        "duplicate_candidates": 14,
+        "duplicate_rate": 0.23333333333333334,
+        "watch_quarantine_candidates": 34,
+        "watch_quarantine_rate": 0.5666666666666667,
+        "watch_entities": 2,
+        "quarantined_entities": 0,
+        "blocked_entities": 0,
+        "out_of_market_candidates": 0,
+        "excluded_candidates": 9,
+        "excluded_mix": 0.15,
+        "pending_candidates": 0,
+        "ready_per_100_queries": 45.45454545454545,
+        "queries_per_ready": 2.2,
+        "credits_per_ready": 2.2,
+        "cost_usd_per_ready": null,
+        "failed_runs": 0,
+        "customer_rows": 0,
+        "publication_rows": 0,
+        "publication_enabled": 0,
+        "bulk_enabled": 0,
+        "preservation_gate": 1,
+        "source_mutations": 0,
+        "due_jobs": 0,
+        "oldest_due": null,
+        "structured_pending": 0,
+        "oldest_due_seconds": 0,
+        "by_target_country": {
+          "GB": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 0
+          },
+          "CA": {
+            "queries": 2,
+            "candidates": 13,
+            "ready_gained": 0
+          },
+          "AU": {
+            "queries": 2,
+            "candidates": 20,
+            "ready_gained": 1
+          },
+          "NZ": {
+            "queries": 2,
+            "candidates": 5,
+            "ready_gained": 0
+          },
+          "US": {
+            "queries": 2,
+            "candidates": 11,
+            "ready_gained": 4
+          }
+        },
+        "by_discovered_source_family": {
+          "editorial": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "directory_login": {
+            "queries": 0,
+            "candidates": 3,
+            "ready_gained": 0
+          },
+          "official_organiser": {
+            "queries": 5,
+            "candidates": 19,
+            "ready_gained": 0
+          },
+          "localstalls": {
+            "queries": 3,
+            "candidates": 11,
+            "ready_gained": 1
+          },
+          "eventeny": {
+            "queries": 1,
+            "candidates": 11,
+            "ready_gained": 4
+          },
+          "unsafe": {
+            "queries": 0,
+            "candidates": 1,
+            "ready_gained": 0
+          },
+          "direct_form_pdf": {
+            "queries": 0,
+            "candidates": 5,
+            "ready_gained": 0
+          },
+          "municipal": {
+            "queries": 2,
+            "candidates": 7,
+            "ready_gained": 0
+          }
+        },
+        "run_telemetry": [
+          {
+            "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 0,
+            "market": "GB",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:49:54.092Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 0,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 1,
+            "market": "CA",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:50:59.471Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 2,
+            "market": "AU",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:52:16.969Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 3,
+            "market": "NZ",
+            "family": "localstalls",
+            "status": "complete",
+            "created_at": "2026-10-07T15:53:33.946Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 4,
+            "market": "US",
+            "family": "eventeny",
+            "status": "complete",
+            "created_at": "2026-10-07T15:54:31.952Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 5,
+            "market": "GB",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:56:16.444Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_64679f7d-9abf-494e-8fc9-a84c82aebbd5",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 6,
+            "market": "CA",
+            "family": "municipal",
+            "status": "complete",
+            "created_at": "2026-10-07T15:57:15.757Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 3,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_c4b51756-73c5-435e-8002-af3b3ba7028e",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 7,
+            "market": "AU",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:58:15.609Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_22665a8f-910a-4bed-a4f5-356e2f6e129e",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 8,
+            "market": "NZ",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T15:59:33.828Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 4,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_533b9c12-5dc9-4c25-ac83-34a945a17ddd",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 9,
+            "market": "US",
+            "family": "official_organiser",
+            "status": "complete",
+            "created_at": "2026-10-07T16:00:56.073Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 1,
+            "usage_status": "complete"
+          },
+          {
+            "run_id": "sourceledrun_dc60717e-1eec-4e0a-a289-5d81585f5504",
+            "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+            "query_index": 10,
+            "market": "GB",
+            "family": "municipal",
+            "status": "complete",
+            "created_at": "2026-10-07T16:02:07.007Z",
+            "queries_reserved": 1,
+            "queries_attempted": 1,
+            "credits_observed": 1,
+            "candidates_produced": 10,
+            "usage_status": "complete"
+          }
+        ],
+        "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography."
+      }
+    }
+  ],
+  "current_run_telemetry": [
+    {
+      "run_id": "sourceledrun_bc947bbd-e62b-49b7-b5c3-d4cf0fad08dc",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 0,
+      "market": "GB",
+      "family": "localstalls",
+      "status": "complete",
+      "created_at": "2026-10-07T15:49:54.092Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 0,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 0,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0,
+      "watch_quarantine_rate": 0,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_2a415504-8d38-421f-a6a9-7855910590f8",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 1,
+      "market": "CA",
+      "family": "official_organiser",
+      "status": "complete",
+      "created_at": "2026-10-07T15:50:59.471Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 10,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 10,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0,
+      "watch_quarantine_rate": 0.6,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_3122088f-6fa6-4dba-b18f-dbb33f7dad7b",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 2,
+      "market": "AU",
+      "family": "localstalls",
+      "status": "complete",
+      "created_at": "2026-10-07T15:52:16.969Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 10,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 10,
+      "distinct_entities": 1,
+      "entities_created": 1,
+      "verified_entities": 1,
+      "ready_gained": 1,
+      "duplicate_rate": 0.8,
+      "watch_quarantine_rate": 0.1,
+      "ready_per_100_queries": 100,
+      "queries_per_ready": 1,
+      "credits_per_ready": 1,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_4335a6d1-7dd5-4f09-af7b-c6558e1d3303",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 3,
+      "market": "NZ",
+      "family": "localstalls",
+      "status": "complete",
+      "created_at": "2026-10-07T15:53:33.946Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 1,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 1,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 1,
+      "watch_quarantine_rate": 0,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_7ac81814-7b62-4daf-9944-a1b231742eb8",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 4,
+      "market": "US",
+      "family": "eventeny",
+      "status": "complete",
+      "created_at": "2026-10-07T15:54:31.952Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 10,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 10,
+      "distinct_entities": 6,
+      "entities_created": 6,
+      "verified_entities": 3,
+      "ready_gained": 3,
+      "duplicate_rate": 0.3,
+      "watch_quarantine_rate": 0.4,
+      "ready_per_100_queries": 300,
+      "queries_per_ready": 0.3333333333333333,
+      "credits_per_ready": 0.3333333333333333,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_ea51afe3-f483-42c7-8b5e-3e75cc452801",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 5,
+      "market": "GB",
+      "family": "official_organiser",
+      "status": "complete",
+      "created_at": "2026-10-07T15:56:16.444Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 1,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 1,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0,
+      "watch_quarantine_rate": 1,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_64679f7d-9abf-494e-8fc9-a84c82aebbd5",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 6,
+      "market": "CA",
+      "family": "municipal",
+      "status": "complete",
+      "created_at": "2026-10-07T15:57:15.757Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 3,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 3,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0.3333333333333333,
+      "watch_quarantine_rate": 0.3333333333333333,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_c4b51756-73c5-435e-8002-af3b3ba7028e",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 7,
+      "market": "AU",
+      "family": "official_organiser",
+      "status": "complete",
+      "created_at": "2026-10-07T15:58:15.609Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 10,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 10,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0,
+      "watch_quarantine_rate": 0.9,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_22665a8f-910a-4bed-a4f5-356e2f6e129e",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 8,
+      "market": "NZ",
+      "family": "official_organiser",
+      "status": "complete",
+      "created_at": "2026-10-07T15:59:33.828Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 4,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 4,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0,
+      "watch_quarantine_rate": 0.75,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_533b9c12-5dc9-4c25-ac83-34a945a17ddd",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 9,
+      "market": "US",
+      "family": "official_organiser",
+      "status": "complete",
+      "created_at": "2026-10-07T16:00:56.073Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 1,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 1,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0,
+      "watch_quarantine_rate": 1,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_dc60717e-1eec-4e0a-a289-5d81585f5504",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 10,
+      "market": "GB",
+      "family": "municipal",
+      "status": "complete",
+      "created_at": "2026-10-07T16:02:07.007Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 10,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 10,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0.1,
+      "watch_quarantine_rate": 0.9,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    },
+    {
+      "run_id": "sourceledrun_7b477b0e-7f6d-4241-b6d1-cd51a2b170c5",
+      "programme_id": "sourceled_90fb2d95-4893-4d60-90a6-467da99e6544",
+      "query_index": 11,
+      "market": "CA",
+      "family": "eventeny",
+      "status": "complete",
+      "created_at": "2026-10-07T16:03:20.820Z",
+      "queries_reserved": 1,
+      "queries_attempted": 1,
+      "credits_observed": 1,
+      "candidates_produced": 10,
+      "usage_status": "complete",
+      "lane": "source-led-paid",
+      "producer": "source-led-search",
+      "region": null,
+      "candidates": 10,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "duplicate_rate": 0.1,
+      "watch_quarantine_rate": 0.9,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null
+    }
+  ],
+  "by_query_source_family": {
+    "localstalls": {
+      "queries": 3,
+      "observed_credits": 3,
+      "candidates": 11,
+      "entities_created": 1,
+      "verified_entities": 1,
+      "ready_gained": 1,
+      "ready_per_100_queries": 33.333333333333336,
+      "queries_per_ready": 3,
+      "credits_per_ready": 3
+    },
+    "official_organiser": {
+      "queries": 5,
+      "observed_credits": 5,
+      "candidates": 26,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null
+    },
+    "eventeny": {
+      "queries": 2,
+      "observed_credits": 2,
+      "candidates": 20,
+      "entities_created": 6,
+      "verified_entities": 3,
+      "ready_gained": 3,
+      "ready_per_100_queries": 150,
+      "queries_per_ready": 0.6666666666666666,
+      "credits_per_ready": 0.6666666666666666
+    },
+    "municipal": {
+      "queries": 2,
+      "observed_credits": 2,
+      "candidates": 13,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_gained": 0,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null
+    }
+  },
+  "telemetry_definitions": "Current per-run telemetry rescored under application policy v1.2; historical snapshots preserve the earlier v1.1 counts, including the subsequently withheld Chamber-member claim. Query family allocates full query credits to its reviewed query pattern; actual READY source family is reported separately. No monetary unit price is configured."
+}

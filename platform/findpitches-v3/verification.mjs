@@ -3,7 +3,7 @@ import {parseHtml,nodes,first,text,hasClass,decode} from './source-dom.mjs';
 import {safeSourceUrl} from './source-document.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
-export const APPLICATION_POLICY_VERSION='current-application-v1.1';
+export const APPLICATION_POLICY_VERSION='current-application-v1.2';
 const COUNTRIES={us:'US',usa:'US','united states':'US','united states of america':'US',gb:'GB',uk:'GB','united kingdom':'GB',au:'AU',australia:'AU',ca:'CA',canada:'CA',nz:'NZ','new zealand':'NZ',ie:'IE',ireland:'IE',fr:'FR',france:'FR',de:'DE',germany:'DE',kr:'KR','south korea':'KR'};
 const TYPES=new Set(['Event','Festival','BusinessEvent','ExhibitionEvent','SaleEvent']);
 const clean=v=>decode(String(v??'')).replace(/\s+/g,' ').trim();
@@ -28,6 +28,8 @@ export function applicationScope(report) {
   const heading=report.application_heading??report.evidence?.find(e=>e.kind==='main_heading')?.excerpt??'';
   if(report.profile!=='eventeny')return {heading,audience:'traders',reasons:[]};
   if(/\b(?:performer|entertainer|entertainment|volunteer)\b/i.test(heading)||/^rental application\b/i.test(heading)||/\bparade application\b/i.test(heading)||/\bstop registration\b/i.test(heading))return {heading,audience:'non_trader',reasons:['application_is_not_a_trader_opportunity']};
+  const members=/\bchamber (?:of commerce )?members?\b|\bmembers? only\b|\b(?:invitation|invite) only\b|\b(?:returning|existing) vendors? only\b/i.test(heading);
+  if(members&&!/\bnon[ -]?members?\b|\bdiscount\b/i.test(heading))return {heading,audience:'restricted_membership',reasons:['application_restricted_audience_requires_review']};
   const nonprofit=/\b(?:non[ -]?profits?|charit(?:y|ies|able))\b/i.test(heading),mixed=/\bcommercial\b|\bbusiness(?:es)?\s*\/\s*non[ -]?profits?\b/i.test(heading);
   if(nonprofit&&!mixed)return {heading,audience:'nonprofit_only',reasons:['application_restricted_audience_requires_review']};
   return {heading,audience:nonprofit?'commercial_and_nonprofit':'traders',reasons:[]};
@@ -94,6 +96,30 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
       const open=first(main,n=>hasClass(n,'ls-ev-openline'),{scoped:true});
       if(apps.length===1){facts.application_url=apps[0];report.application_landing_url=document.url;if(!state&&/^stallholder applications open$/i.test(text(open)))facts.application_state='OPEN_NOW';report.evidence.push({kind:'event_application_control',excerpt:clean(text(open)+' '+apps[0])});}
       else report.reasons.push('event_application_route_missing_or_ambiguous');
+    } else if(report.profile==='generic') {
+      // Official event + an explicit, scoped vendor application block. Visitor
+      // offers, navigation links, generic contact and form keywords are insufficient.
+      let organiserHost=null;try{organiserHost=new URL(event.organizer?.url??event.organiser?.url).hostname;}catch{}
+      const vendorBlocks=nodes(main,n=>['section','article'].includes(n.tag)&&/^(?:vendor|trader|stallholder|exhibitor) applications?$/i.test(text(first(n,x=>/^h[2-4]$/.test(x.tag),{scoped:true}))),{scoped:true});
+      const proven=new Map();
+      for(const block of vendorBlocks) {
+        const blockText=text(block),open=/\b(?:vendor|trader|stallholder|exhibitor) applications? (?:are |now )?open\b/i.test(blockText);
+        if(!open||/\b(?:closed|waitlist|sold out|volunteer|performer|non[ -]?profits? only|charit(?:y|ies) only|members? only|active chamber members?|invitation only|invite only|(?:returning|existing) vendors? only)\b/i.test(blockText))continue;
+        if([...blockText.matchAll(/\b(20\d{2})\b/g)].some(m=>m[1]!==facts.event_start?.slice(0,4)&&m[1]!==facts.event_end?.slice(0,4))){report.reasons.push('contradictory_application_edition');continue;}
+        const forms=nodes(block,n=>n.tag==='form',{scoped:true}).filter(form=>{
+          const fields=nodes(form,n=>['input','select','textarea'].includes(n.tag)&&n.attrs.type!=='hidden'&&Boolean(n.attrs.name),{scoped:true});
+          const submit=first(form,n=>n.tag==='button'&&/^(?:submit|send) (?:your )?(?:(?:vendor|trader|stallholder|exhibitor) )?application$/i.test(text(n)),{scoped:true});
+          const action=route(form.attrs.action,document.url);
+          return fields.length>=2&&fields.some(n=>/(?:business|product|stall|vendor|trader)/i.test(n.attrs.name))&&submit&&action&&new URL(action).origin===u.origin&&!/\/(?:contact|login|sign-in|register|tickets)(?:\/|$)/i.test(new URL(action).pathname);
+        });
+        // The currently fetched inline form is the proved route; a link alone
+        // cannot prove that its target is a working vendor form rather than a login shell.
+        if(forms.length===1)proven.set(document.url,blockText);
+      }
+      if(organiserHost===u.hostname&&proven.size===1&&!state) {
+        const [app,excerpt]=[...proven][0];report.profile='official_vendor';facts.application_url=app;facts.application_state='OPEN_NOW';
+        report.application_heading='Vendor application for '+facts.event_name;report.evidence.push({kind:'official_event_vendor_control',excerpt:excerpt.slice(0,14000),url:app});
+      } else report.reasons.push('vendor_application_not_proved');
     } else {
       // A visitor ticket offer, contact link or login page never proves vendor availability.
       report.reasons.push('vendor_application_not_proved');

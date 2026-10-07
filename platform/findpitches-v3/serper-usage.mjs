@@ -19,7 +19,7 @@ export async function serperPolicy(db) {
   return policy;
 }
 const CREDITS='MAX(credit_units_reserved,COALESCE(credits_observed,0))';
-export async function reserveSerperQuery(db,{runId,index,query,producer='city-search',lane='city-acquisition',market,region,now,pilotId=null}) {
+export async function reserveSerperQuery(db,{runId,index,query,producer='city-search',lane='city-acquisition',market,region,now,pilotId=null,programmeId=null}) {
   const day=budgetDay(now),hour=new Date(Date.parse(now)-3600000).toISOString();
   const id='serper_'+(await hash([runId,index])).slice(0,40);
   // One atomic INSERT ... SELECT serializes concurrent reservations in D1.
@@ -27,18 +27,26 @@ export async function reserveSerperQuery(db,{runId,index,query,producer='city-se
     queries_reserved,credit_units_reserved,status,budget_day,reserved_at)
     SELECT ?,?,?,'live',?,?,?,?,?,1,1,'reserved',?,? FROM serper_policy p
     WHERE p.id=1 AND p.manual_paused=0 AND (p.pause_until IS NULL OR p.pause_until<=?)
+      AND (SELECT manual_paused FROM commercial_acquisition_policy WHERE id=1)=0
       AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE run_id=?),0)+1<=p.max_queries_per_run
       AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE run_id=?),0)+1<=p.max_credits_per_run
       AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE reserved_at>?),0)+1<=p.max_queries_per_hour
       AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE reserved_at>?),0)+1<=p.max_credits_per_hour
       AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=?),0)+1<=p.max_queries_per_day
       AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE budget_day=?),0)+1<=p.max_credits_per_day
+      AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=?),0)+1<=(SELECT daily_query_limit FROM commercial_acquisition_policy WHERE id=1)
+      AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE budget_day=?),0)+1<=(SELECT daily_query_limit FROM commercial_acquisition_policy WHERE id=1)
+      AND (?<>'source-led-paid' OR EXISTS(SELECT 1 FROM source_led_programmes s JOIN source_led_grants g ON g.programme_id=s.id
+        JOIN commercial_acquisition_policy c ON c.id=1 WHERE s.id=? AND s.status='active' AND s.expires_at>? AND s.budget_day=?
+        AND s.active_run_id=g.run_id AND g.run_id=? AND g.status='running' AND g.market=? AND g.query_hash=? AND c.manual_paused=0
+        AND COALESCE((SELECT SUM(u.queries_reserved) FROM serper_usage u JOIN source_led_grants z ON z.run_id=u.run_id WHERE z.programme_id=s.id),0)+1<=s.max_queries
+        AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=? AND lane='source-led-paid' AND market=g.market),0)+1<=c.queries_per_market))
       AND (? IS NULL OR EXISTS(SELECT 1 FROM acquisition_pilots s JOIN pilot_run_grants g ON g.pilot_id=s.id
         WHERE s.id=? AND s.status='active' AND s.expires_at>? AND s.budget_day=? AND s.active_run_id=g.run_id AND g.run_id=? AND g.status='running'
         AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=?),0)+1<=s.daily_ceiling
         AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE budget_day=?),0)+1<=s.daily_ceiling
         AND COALESCE((SELECT SUM(u.queries_reserved) FROM serper_usage u JOIN pilot_run_grants z ON z.run_id=u.run_id WHERE z.pilot_id=s.id),0)+1<=s.max_queries))
-    RETURNING id`,id,runId,index,producer,lane,market,region,await hash(query),day,now,now,runId,runId,hour,hour,day,day,pilotId,pilotId,now,day,runId,day,day).all();
+    RETURNING id`,id,runId,index,producer,lane,market,region,await hash(query),day,now,now,runId,runId,hour,hour,day,day,day,day,lane,programmeId,now,day,runId,market,await hash(query),day,pilotId,pilotId,now,day,runId,day,day).all();
   await refreshSerperPause(db,now);
   if(inserted.results.length!==1)throw new Error('serper_query_budget_exhausted_or_paused');
   return id;
