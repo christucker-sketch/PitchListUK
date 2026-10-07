@@ -1,0 +1,1509 @@
+{
+  "schema": "findpitches-v3-commercial-readiness-v1",
+  "as_of": "2026-10-07T14:20:03.648Z",
+  "timezone": "Europe/London",
+  "starting_commit": "abf53aefe9ba73aa9602923ed95c3de3c21f68d0",
+  "mode": "shadow",
+  "inventory": {
+    "schema": "findpitches-v3-commercial-inventory-v1",
+    "as_of": "2026-10-07T14:20:03.648Z",
+    "timezone": "Europe/London",
+    "ready_definition": "Shadow entities with current version/revision-matched source proof, current READY assessment, supported vendor application and no identity/evidence/legacy hold. Publication remains disabled.",
+    "scope": {
+      "commercial_entities": 5461,
+      "test_control_excluded": 104,
+      "other_noncommercial_excluded": 0
+    },
+    "totals": {
+      "total_distinct_entities": 5461,
+      "verified": 453,
+      "ready": 450,
+      "watch": 900,
+      "quarantined": 413,
+      "blocked": 3698,
+      "awaiting_verification": 4724,
+      "missing_application_proof": 4912,
+      "stale_expired": 130,
+      "verification_checked": 1019
+    },
+    "by_origin": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 444,
+        "ready": 441,
+        "watch": 168,
+        "quarantined": 176,
+        "blocked": 101,
+        "awaiting_verification": 220,
+        "missing_application_proof": 346,
+        "stale_expired": 40,
+        "verification_checked": 886
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 4555,
+        "verified": 9,
+        "ready": 9,
+        "watch": 732,
+        "quarantined": 226,
+        "blocked": 3588,
+        "awaiting_verification": 4494,
+        "missing_application_proof": 4546,
+        "stale_expired": 90,
+        "verification_checked": 121
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      }
+    },
+    "by_source_membership": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 444,
+        "ready": 441,
+        "watch": 168,
+        "quarantined": 176,
+        "blocked": 101,
+        "awaiting_verification": 220,
+        "missing_application_proof": 346,
+        "stale_expired": 40,
+        "verification_checked": 886
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 5433,
+        "verified": 452,
+        "ready": 449,
+        "watch": 898,
+        "quarantined": 398,
+        "blocked": 3688,
+        "awaiting_verification": 4711,
+        "missing_application_proof": 4885,
+        "stale_expired": 130,
+        "verification_checked": 998
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      }
+    },
+    "attribution": "Origin is the earliest accepted non-diagnostic producer receipt linked to the entity. Origin rows are exclusive and sum to the commercial total. Source membership overlaps and must not be summed.",
+    "status_counts": "READY/WATCH/quarantined/blocked are exclusive current dispositions. Verified, awaiting verification, missing application proof and stale/expired are overlapping flags. Old cached READY alone never qualifies.",
+    "ready_by_country": {
+      "US": 443,
+      "AU": 3,
+      "NZ": 2,
+      "GB": 2
+    },
+    "ready_by_source_domain": {
+      "eventeny.com": 443,
+      "localstalls.com": 7
+    },
+    "ready_by_source_platform": {
+      "eventeny": 443,
+      "localstalls": 7
+    },
+    "ready_by_application_state": {
+      "OPEN_NOW": 450
+    },
+    "kpis": {
+      "total_customer_ready_opportunities": 450,
+      "verification_conversion_percent": 44.16,
+      "verification_entities_checked": 1019,
+      "coverage_all_inventory_unverified_presence": {
+        "denominator": 5461,
+        "application_url_percent": 41.59,
+        "future_event_date_percent": 29.98,
+        "location_percent": 31.42,
+        "organiser_percent": 32.03
+      },
+      "coverage_ready_source_proof": {
+        "denominator": 450,
+        "application_url_percent": 100,
+        "future_event_date_percent": 95.11,
+        "location_percent": 100,
+        "organiser_percent": 100
+      },
+      "new_ready_today": 450,
+      "new_ready_day": "2026-10-07",
+      "first_proof_readiness_history_available": true,
+      "paid_acquisition_queries": 13,
+      "first_confirmed_paid_ready": 0,
+      "new_ready_per_100_acquisition_queries": 0,
+      "queries_per_new_paid_ready": null,
+      "paid_credit_cost_per_ready": null,
+      "cost_per_ready_usd": null,
+      "pricing_status": "unit_credit_price_unavailable",
+      "zero_paid_ready": true,
+      "stale_expired_ready_removed": 0,
+      "previously_confirmed_ready": 450,
+      "stale_expired_removal_percent": 0,
+      "identity_duplicate_rate_by_source": {
+        "city-search": {
+          "candidate_ids": 20,
+          "linked_entities": 20,
+          "percent": 0
+        },
+        "independent-structured": {
+          "candidate_ids": 886,
+          "linked_entities": 886,
+          "percent": 0
+        },
+        "legacy_v2": {
+          "candidate_ids": 5698,
+          "linked_entities": 5433,
+          "percent": 4.65
+        }
+      },
+      "definitions": "New READY/day counts first source-proved READY per entity in the London day, never renewals. Paid yield/cost uses first confirmed READY with city-search origin only, including later expiries; free structured READY is not credited to paid queries. Null cost with zero READY is undefined, not zero. Duplicate rate is excess distinct linked producer candidate IDs per distinct entity; replayed receipt versions are excluded. Removal rate is previously proved READY now withheld due to stale/expired evidence."
+    },
+    "source_receipts": [
+      {
+        "producer_name": "city-search",
+        "receipts": 20,
+        "candidate_ids": 20,
+        "unlinked_receipts": 0
+      },
+      {
+        "producer_name": "independent-structured",
+        "receipts": 888,
+        "candidate_ids": 887,
+        "unlinked_receipts": 1
+      },
+      {
+        "producer_name": "legacy_v2",
+        "receipts": 6765,
+        "candidate_ids": 5788,
+        "unlinked_receipts": 92
+      }
+    ]
+  },
+  "before_inventory": {
+    "schema": "findpitches-v3-commercial-inventory-v1",
+    "as_of": "2026-10-07T13:10:09.160Z",
+    "timezone": "Europe/London",
+    "ready_definition": "Shadow entities with current version/revision-matched source proof, current READY assessment, supported vendor application and no identity/evidence/legacy hold. Publication remains disabled.",
+    "scope": {
+      "commercial_entities": 5461,
+      "test_control_excluded": 104,
+      "other_noncommercial_excluded": 0
+    },
+    "totals": {
+      "total_distinct_entities": 5461,
+      "verified": 16,
+      "ready": 16,
+      "watch": 1475,
+      "quarantined": 243,
+      "blocked": 3727,
+      "awaiting_verification": 5381,
+      "missing_application_proof": 5445,
+      "stale_expired": 114,
+      "verification_checked": 150
+    },
+    "by_origin": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 7,
+        "ready": 7,
+        "watch": 743,
+        "quarantined": 6,
+        "blocked": 130,
+        "awaiting_verification": 877,
+        "missing_application_proof": 879,
+        "stale_expired": 24,
+        "verification_checked": 17
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 4555,
+        "verified": 9,
+        "ready": 9,
+        "watch": 732,
+        "quarantined": 226,
+        "blocked": 3588,
+        "awaiting_verification": 4494,
+        "missing_application_proof": 4546,
+        "stale_expired": 90,
+        "verification_checked": 121
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      }
+    },
+    "by_source_membership": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 7,
+        "ready": 7,
+        "watch": 743,
+        "quarantined": 6,
+        "blocked": 130,
+        "awaiting_verification": 877,
+        "missing_application_proof": 879,
+        "stale_expired": 24,
+        "verification_checked": 17
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 5433,
+        "verified": 16,
+        "ready": 16,
+        "watch": 1470,
+        "quarantined": 232,
+        "blocked": 3715,
+        "awaiting_verification": 5363,
+        "missing_application_proof": 5417,
+        "stale_expired": 114,
+        "verification_checked": 140
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      }
+    },
+    "attribution": "Origin is the earliest accepted non-diagnostic producer receipt linked to the entity. Origin rows are exclusive and sum to the commercial total. Source membership overlaps and must not be summed.",
+    "status_counts": "READY/WATCH/quarantined/blocked are exclusive current dispositions. Verified, awaiting verification, missing application proof and stale/expired are overlapping flags. Old cached READY alone never qualifies.",
+    "ready_by_country": {
+      "US": 15,
+      "AU": 1
+    },
+    "ready_by_source_domain": {
+      "eventeny.com": 15,
+      "localstalls.com": 1
+    },
+    "ready_by_source_platform": {
+      "eventeny": 15,
+      "localstalls": 1
+    },
+    "ready_by_application_state": {
+      "OPEN_NOW": 16
+    },
+    "kpis": {
+      "total_customer_ready_opportunities": 16,
+      "verification_conversion_percent": 10.67,
+      "verification_entities_checked": 150,
+      "coverage_all_inventory_unverified_presence": {
+        "denominator": 5461,
+        "application_url_percent": 41.59,
+        "future_event_date_percent": 29.98,
+        "location_percent": 31.42,
+        "organiser_percent": 31.94
+      },
+      "coverage_ready_source_proof": {
+        "denominator": 16,
+        "application_url_percent": 100,
+        "future_event_date_percent": 100,
+        "location_percent": 100,
+        "organiser_percent": 100
+      }
+    }
+  },
+  "structured_verification": {
+    "distinct_entities": 886,
+    "records_checked": 886,
+    "verified": 444,
+    "newly_promoted_ready": 434,
+    "ready_lost": 0,
+    "net_ready_gain": 434,
+    "verification_success_percent": 50.11,
+    "ready_conversion_percent": 49.77,
+    "new_ready_conversion_percent": 48.98,
+    "watch": 168,
+    "quarantined": 176,
+    "blocked": 101,
+    "dominant_blockers": {
+      "event_application_route_missing_or_ambiguous": 28,
+      "open_vendor_application_not_proved": 36,
+      "selected_application_state_disagrees_with_proof": 64,
+      "selected_application_deadline_disagrees_with_proof": 27,
+      "event_identity_not_bound_to_page": 39,
+      "single_event_source_data_missing": 113,
+      "editorial_page_is_discovery_only": 5,
+      "source_http_520": 55,
+      "application_deadline_passed": 21,
+      "application_closed": 21,
+      "waitlist_only": 6,
+      "application_is_not_a_trader_opportunity": 7,
+      "platform_index_is_not_an_opportunity": 5,
+      "verified_venue_missing": 58,
+      "event_content_scope_missing": 18,
+      "selected_event_name_disagrees_with_proof": 11,
+      "selected_organiser_disagrees_with_proof": 31,
+      "selected_location_disagrees_with_proof": 7,
+      "application_restricted_audience_requires_review": 12,
+      "invalid_structured_source_data": 2,
+      "stale_edition": 7,
+      "selected_event_start_disagrees_with_proof": 10,
+      "contradictory_heading_edition": 7,
+      "verified_organiser_missing": 3,
+      "source_http_403": 1,
+      "verified_country_missing": 1,
+      "selected_event_end_disagrees_with_proof": 2,
+      "source_response_size_limit": 1,
+      "source_fetch_failed": 2,
+      "event_cancelled_or_postponed": 3,
+      "vendor_application_not_proved": 3,
+      "source_redirect_loop": 1,
+      "source_edition_identity_mismatch": 1
+    },
+    "by_source_family": {
+      "eventeny.com": {
+        "entities": 588,
+        "checked": 588,
+        "verified": 438,
+        "ready": 435,
+        "new_ready": 428,
+        "watch": 79,
+        "quarantined": 74,
+        "blocked": 0,
+        "blockers": {
+          "selected_application_deadline_disagrees_with_proof": 27,
+          "application_deadline_passed": 21,
+          "application_closed": 21,
+          "selected_application_state_disagrees_with_proof": 32,
+          "waitlist_only": 6,
+          "application_is_not_a_trader_opportunity": 7,
+          "verified_venue_missing": 55,
+          "event_content_scope_missing": 1,
+          "application_restricted_audience_requires_review": 12,
+          "stale_edition": 4,
+          "selected_organiser_disagrees_with_proof": 9,
+          "selected_location_disagrees_with_proof": 5,
+          "open_vendor_application_not_proved": 5,
+          "selected_event_name_disagrees_with_proof": 9,
+          "contradictory_heading_edition": 6,
+          "selected_event_start_disagrees_with_proof": 4,
+          "selected_event_end_disagrees_with_proof": 1,
+          "source_edition_identity_mismatch": 1
+        }
+      },
+      "localstalls.com": {
+        "entities": 135,
+        "checked": 135,
+        "verified": 6,
+        "ready": 6,
+        "new_ready": 6,
+        "watch": 15,
+        "quarantined": 50,
+        "blocked": 64,
+        "blockers": {
+          "event_application_route_missing_or_ambiguous": 28,
+          "open_vendor_application_not_proved": 28,
+          "selected_application_state_disagrees_with_proof": 29,
+          "single_event_source_data_missing": 79,
+          "selected_event_name_disagrees_with_proof": 2,
+          "selected_organiser_disagrees_with_proof": 22,
+          "selected_location_disagrees_with_proof": 1,
+          "selected_event_start_disagrees_with_proof": 6,
+          "verified_organiser_missing": 3,
+          "verified_country_missing": 1,
+          "selected_event_end_disagrees_with_proof": 1
+        }
+      },
+      "cluemart.co.nz": {
+        "entities": 39,
+        "checked": 39,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 39,
+        "blocked": 0,
+        "blockers": {
+          "event_identity_not_bound_to_page": 39
+        }
+      },
+      "marketspread.com": {
+        "entities": 2,
+        "checked": 2,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 2,
+        "blockers": {
+          "single_event_source_data_missing": 2
+        }
+      },
+      "heho.ca": {
+        "entities": 2,
+        "checked": 2,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 2,
+        "blocked": 0,
+        "blockers": {
+          "editorial_page_is_discovery_only": 2
+        }
+      },
+      "ukcraftfairs.com": {
+        "entities": 55,
+        "checked": 55,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 54,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "source_http_520": 55
+        }
+      },
+      "rhythmandalps.co.nz": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 1,
+        "blocked": 0,
+        "blockers": {
+          "platform_index_is_not_an_opportunity": 1
+        }
+      },
+      "mfdays.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 1,
+        "blocked": 0,
+        "blockers": {
+          "platform_index_is_not_an_opportunity": 1
+        }
+      },
+      "kitchenermarket.ca": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "carpfarmersmarket.ca": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "docsireland.ie": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "docs.google.com": {
+        "entities": 2,
+        "checked": 2,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "event_content_scope_missing": 2
+        }
+      },
+      "sefd.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "newarkvintagetractorshow.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "invalid_structured_source_data": 1,
+          "single_event_source_data_missing": 1
+        }
+      },
+      "glastonburyfestivalstraders.glastonburyfestivals.co.uk": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 1,
+        "blocked": 0,
+        "blockers": {
+          "platform_index_is_not_an_opportunity": 1
+        }
+      },
+      "partyinthepaddockfestival.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "lardnerpark.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "stkildafestival.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "winterfair.org.uk": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "froglegfestival.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "originsgamefair.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "njfair.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "norwichfilmfestival.co.uk": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 1,
+        "blocked": 0,
+        "blockers": {
+          "editorial_page_is_discovery_only": 1
+        }
+      },
+      "statefair.illinois.gov": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "greatblueheron.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 1,
+        "blocked": 0,
+        "blockers": {
+          "platform_index_is_not_an_opportunity": 1
+        }
+      },
+      "calgaryfarmersmarket.ca": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "englandsmedievalfestival.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "appleblossom.org": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "kingston.vic.gov.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "source_http_403": 1
+        }
+      },
+      "gencon.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "agfest.co.nz": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "houstonhorrorfilmfest.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "ajax.ca": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "a2gov.org": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "ebme-expo.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "invalid_structured_source_data": 1,
+          "event_content_scope_missing": 1
+        }
+      },
+      "leslievillemarket.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "bigfairfun.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "stancofair.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "lowcarbonagricultureshow.co.uk": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "southdownsfoodfestival.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "source_response_size_limit": 1
+        }
+      },
+      "elbertonfair.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "source_fetch_failed": 1
+        }
+      },
+      "aggrow.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "kondinin.wa.gov.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "fiestasanantonio.org": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "flstrawberryfestival.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 1,
+        "blocked": 0,
+        "blockers": {
+          "editorial_page_is_discovery_only": 1
+        }
+      },
+      "app.entrythingy.com": {
+        "entities": 3,
+        "checked": 3,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 3,
+        "blocked": 0,
+        "blockers": {
+          "verified_venue_missing": 3,
+          "event_cancelled_or_postponed": 3,
+          "stale_edition": 3,
+          "vendor_application_not_proved": 3,
+          "open_vendor_application_not_proved": 3,
+          "selected_application_state_disagrees_with_proof": 3,
+          "selected_location_disagrees_with_proof": 1,
+          "contradictory_heading_edition": 1
+        }
+      },
+      "londonbookfair.co.uk": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "agfest.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "626nightmarket.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "form.jotform.com": {
+        "entities": 2,
+        "checked": 2,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 2,
+        "blockers": {
+          "event_content_scope_missing": 2
+        }
+      },
+      "nelsonvillefest.org": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "farmersmarketpeterborough.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "qvm.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "corksummershow.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "source_redirect_loop": 1
+        }
+      },
+      "womadelaide.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "acmruralevents.com.au": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "worldagexpo.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "cambridgefolkfestival.co.uk": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "witchcraftcon.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 1,
+        "blocked": 0,
+        "blockers": {
+          "platform_index_is_not_an_opportunity": 1
+        }
+      },
+      "squamishfarmersmarket.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "worldofconcrete.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "okstatefair.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 1,
+        "blocked": 0,
+        "blockers": {
+          "editorial_page_is_discovery_only": 1
+        }
+      },
+      "broadstreetmarket.org": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "garenfest.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "single_event_source_data_missing": 1
+        }
+      },
+      "sledisland.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "source_fetch_failed": 1
+        }
+      },
+      "americanroyal.com": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      },
+      "abbfest.org": {
+        "entities": 1,
+        "checked": 1,
+        "verified": 0,
+        "ready": 0,
+        "new_ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 1,
+        "blockers": {
+          "event_content_scope_missing": 1
+        }
+      }
+    }
+  },
+  "direct_verification_attempts": 980,
+  "unique_claude_entities_checked": 886,
+  "additional_read_only_document_inspections": 5,
+  "additional_serper_queries": 0,
+  "blocker_priorities": [
+    {
+      "rank": 1,
+      "source_family": "Eventeny",
+      "blocker": "Retained field disagreements",
+      "affected_claude_entities": 65,
+      "fully_evidenced_open_candidates": 32,
+      "estimated_ready_upside": {
+        "low": 18,
+        "high": 32
+      },
+      "effort": "Medium: 2–3 engineering days",
+      "action": "Build a source-bound additive adjudication workflow. Preserve every original fact and identity anchor; hold edition/country conflicts. Audit current vendor-ID-scoped deadline, organiser, title and location corrections before selecting stronger evidence."
+    },
+    {
+      "rank": 2,
+      "source_family": "LocalStalls",
+      "blocker": "Missing source JSON-LD (79) and retained-fact disagreements (50)",
+      "affected_claude_entities": 129,
+      "fully_evidenced_open_candidates": 22,
+      "additional_unproved_open_or_rolling_candidates": 38,
+      "estimated_ready_upside": {
+        "low": 10,
+        "high": 22
+      },
+      "effort": "Medium/high: 2–4 engineering days",
+      "action": "Verify event-UUID-bound application forms for explicit full-year dates, country and organiser. Adjudicate the 22 otherwise complete OPEN candidates. Contact-only forms and inferred calendar years stay withheld."
+    },
+    {
+      "rank": 3,
+      "source_family": "Eventeny",
+      "blocker": "Venue not announced/proved",
+      "affected_claude_entities": 55,
+      "fully_evidenced_open_candidates": 55,
+      "estimated_ready_upside": null,
+      "currently_proved_ready_upside": 0,
+      "effort": "Small verifier integration; primarily dependent on organiser evidence",
+      "action": "Fetch same-event organiser/event detail URLs for a published venue. All 55 have this as their sole proof blocker. Three inspected examples declare TBA street addresses; engineering cannot invent a venue."
+    },
+    {
+      "rank": 4,
+      "source_family": "UKCraftFairs",
+      "blocker": "HTTP 520; current vendor route unverified",
+      "affected_claude_entities": 55,
+      "fully_evidenced_open_candidates": 0,
+      "estimated_ready_upside": null,
+      "currently_proved_ready_upside": 0,
+      "effort": "Medium: supported export/retrieval and organiser route checks",
+      "action": "Arrange a supported source export or verify original organiser application pages. All retained states are ENQUIRY_AVAILABLE. Restoring page retrieval alone does not prove an open application."
+    },
+    {
+      "rank": 5,
+      "source_family": "ClueMart",
+      "blocker": "Event identity/control scope, organiser and current application proof",
+      "affected_claude_entities": 39,
+      "fully_evidenced_open_candidates": 0,
+      "estimated_ready_upside": null,
+      "currently_proved_ready_upside": 0,
+      "effort": "Medium/high: event/application view and organiser binding",
+      "action": "Build an application-view verifier backed by an event-specific form/API or official organiser page. Three inspected HTML examples have event JSON-LD but no application form/control in the event article; their organiser is the platform placeholder ClueMart. Do not promote from the /application/ pathname."
+    }
+  ],
+  "upside_interpretation": "Planning ranges are conditional estimates, not measured promotions or population forecasts. The strongest bounded opportunity is 54 otherwise complete OPEN candidates across Eventeny and LocalStalls; a cautious planning range is 28–54 READY after source-bound adjudication. Unknown retrieval/venue/organiser groups are excluded from that range. Reason-level counts overlap and must not be summed.",
+  "safety": {
+    "as_of": "2026-10-07T14:28:29.266Z",
+    "original_records_checked": 8240,
+    "original_source_facts_checked": 63759,
+    "destructive_source_mutations": 0,
+    "new_additive_receipts": 65,
+    "new_additive_source_facts": 65,
+    "identity_mutations": 0,
+    "entity_count_changed": 0,
+    "customer_leakage": 0,
+    "publication_leakage": 0,
+    "publication_enabled": false,
+    "paid_bulk_enabled": false,
+    "paid_queries_today": 12,
+    "paid_queries_all_time": 13,
+    "limits": {
+      "queries_per_run": 4,
+      "queries_per_hour": 100,
+      "queries_per_day": 1000,
+      "credits_per_run": 4,
+      "credits_per_hour": 100,
+      "credits_per_day": 1000
+    },
+    "control": {
+      "tested_records": 100,
+      "entities": 100,
+      "destructive_mutations": 0,
+      "mutations": [],
+      "customer_projection_rows": 0,
+      "publication_rows": 0,
+      "input_hash": "339cb4e72897b3c09d3851d6bafb9fb5db6ec9217005147c05a00ae40c22260d",
+      "scope": "real_structured_artifact_control_not_exact_historical_pilot",
+      "checked_at": "2026-10-07T13:53:02.064Z"
+    },
+    "api_boundaries": {
+      "publication_http": 403,
+      "unauthenticated_commercial_http": 401,
+      "ingest_only_commercial_http": 401,
+      "bulk_rejection": "shadow_http_400_city_acquisition_disabled",
+      "canary_rejection": "shadow_http_400_one_shot_canary_not_authorized"
+    }
+  },
+  "retention": {
+    "as_of": "2026-10-07T13:54:15.670Z",
+    "ready": 450,
+    "scheduled": {
+      "entities_with_current_refresh": 450,
+      "earliest_refresh": "2026-10-07T22:00:00.000Z",
+      "latest_refresh": "2026-10-08T11:40:20.700Z"
+    },
+    "queue_health": [
+      {
+        "stage": "acquisition",
+        "status": "complete",
+        "jobs": 9,
+        "oldest_available_at": "2026-10-06T10:02:39.425Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "eligibility",
+        "status": "complete",
+        "jobs": 6226,
+        "oldest_available_at": "2026-10-06T09:41:06.751Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "enrichment",
+        "status": "complete",
+        "jobs": 6104,
+        "oldest_available_at": "2026-10-06T09:41:11.589Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "readiness",
+        "status": "complete",
+        "jobs": 7831,
+        "oldest_available_at": "2026-10-06T09:41:13.308Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "reconcile",
+        "status": "complete",
+        "jobs": 7780,
+        "oldest_available_at": "2026-10-06T09:41:03.178Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "watch",
+        "status": "complete",
+        "jobs": 1,
+        "oldest_available_at": "2026-10-06T10:01:30.030Z",
+        "first_lease_expiry": null
+      },
+      {
+        "stage": "watch",
+        "status": "ready",
+        "jobs": 7590,
+        "oldest_available_at": "2026-10-07T22:00:00.000Z",
+        "first_lease_expiry": null
+      }
+    ],
+    "stale_leases": 0
+  },
+  "queue_health": {
+    "due_core_or_acquisition_jobs": 0,
+    "dead_jobs": 0,
+    "stale_leases": 0,
+    "future_watch_jobs": 7590
+  },
+  "structured_delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": null,
+    "recent_poll_intervals_seconds": [],
+    "host_recently_contacting": false,
+    "cadence_verified": false,
+    "freshness_warning": true,
+    "immutable_receipts": 888,
+    "producer_ids": 887,
+    "last_new_receipt_at": "2026-10-06T13:44:51.925Z",
+    "source_last_checked": "2026-10-05T11:49:36Z",
+    "interpretation": "Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls are excluded."
+  },
+  "recommendation": "Keep paid acquisition disabled. The highest-value inventory task is source-bound additive adjudication of the 32 Eventeny OPEN candidates held only by retained-field disagreements. Verify home-PC producer polling for continuing delivery; the cloud is ready but cadence is not observed.",
+  "scope_audit": {
+    "previous_automatic_ready": 469,
+    "final_commercial_ready": 450,
+    "withheld_non_trader_routes": 7,
+    "withheld_nonprofit_only_routes": 12,
+    "source_fields_overwritten": 0,
+    "old_proof_receipts_overwritten": 0,
+    "historical_growth": "First-READY KPIs re-evaluate source-backed application headings; scope-blind older cache claims do not count as growth. The original history remains immutable."
+  },
+  "validation": {
+    "full_v3_tests": 105,
+    "passed": 105,
+    "failed": 0,
+    "owned_shadow_workers_deployed": 8,
+    "migrations": [
+      11,
+      12
+    ],
+    "boundary_checks_passed": true,
+    "deployed_resource_checks_completed": true
+  },
+  "event_grouping": {
+    "ready_application_opportunity_entities": 450,
+    "strict_equal_source_field_event_groups": 450,
+    "multi_application_event_groups": 0,
+    "additional_application_routes": 0,
+    "method": "Advisory equality of proved country, event title, start/end dates, organiser and location. Multiple event-specific application IDs can represent different trading categories. This is not an identity merge or a definitive unique-event count."
+  }
+}

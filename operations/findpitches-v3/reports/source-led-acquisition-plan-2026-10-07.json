@@ -1,0 +1,112 @@
+{
+  "schema": "findpitches-v3-source-led-pilot-plan-v1",
+  "status": "draft_disabled",
+  "serper_spend_authorized_by_this_plan": false,
+  "continuous_bulk_enabled": false,
+  "maximum_queries": 24,
+  "maximum_queries_per_run": 4,
+  "maximum_queries_per_hour": 100,
+  "daily_hard_ceiling": 1000,
+  "markets": [
+    "US",
+    "GB",
+    "AU",
+    "NZ"
+  ],
+  "planned_query_allocation": {
+    "eventeny_vendor_applications": 16,
+    "localstalls_event_application_forms": 4,
+    "preverified_official_organiser_or_council_forms": 4
+  },
+  "source_requirements": [
+    "Eventeny exact /events/vendor/?id= route and bound event data.",
+    "LocalStalls event detail plus unique application UUID/event UUID, current OPEN control and source-proved full date/country/organiser.",
+    "Official organiser/council form or PDF must have a tested verifier and a source-bound dated event/application relationship.",
+    "Store query geography as targeting metadata only. Derive verified country from the source before committing a canonical identity.",
+    "Suppress already-known vendor/event identifiers before full fetch; report query/candidate/entity/READY/duplicate attribution separately.",
+    "Reject performer, volunteer, rental and parade registrations. Nonprofit-only applications remain WATCH until commercial eligibility is proved. Retain exact application headings/audience as proof metadata."
+  ],
+  "prerequisites": {
+    "free_unseen_source_holdout_entities": 30,
+    "holdout_mix": {
+      "eventeny": 20,
+      "localstalls": 6,
+      "official_forms": 4
+    },
+    "minimum_ready_in_holdout": 20,
+    "minimum_source_supported_application_urls_percent": 80,
+    "minimum_verified_countries": 2,
+    "minimum_non_us_ready": 3,
+    "destructive_mutations": 0,
+    "false_promotions": 0,
+    "customer_publication_leakage": 0,
+    "core_queue_backlog": 0,
+    "holdout_not_used_to_tune_verifiers": true,
+    "source_led_adapter_required": true,
+    "existing_broad_city_runner_remains_disabled": true
+  },
+  "example_query_templates": [
+    {
+      "family": "Eventeny",
+      "query": "site:eventeny.com/events/vendor/ \"Start Application\" \"2027\" \"United Kingdom\""
+    },
+    {
+      "family": "Eventeny",
+      "query": "site:eventeny.com/events/vendor/ \"Start Application\" \"2027\" \"United States\""
+    },
+    {
+      "family": "LocalStalls",
+      "query": "site:localstalls.com/au/event/ \"Stallholder applications open\" \"2026\""
+    },
+    {
+      "family": "Official organiser",
+      "query": "site:<preverified-organiser-domain> \"2027\" \"vendor application\""
+    },
+    {
+      "family": "Council",
+      "query": "site:<preverified-council-domain> \"2027\" \"stallholder application\""
+    },
+    {
+      "family": "PDF",
+      "query": "site:<preverified-organiser-domain> filetype:pdf \"2027\" \"trader application\""
+    }
+  ],
+  "deny_or_deprioritise": [
+    "Social posts/accounts",
+    "Generic platform indexes/directories",
+    "Editorial and blog pages",
+    "Visitor tickets",
+    "Generic contact/demo/register links",
+    "Waitlists, closed applications and stale editions",
+    "PDFs/forms without a working proof parser"
+  ],
+  "evaluation_checkpoints": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24
+  ],
+  "automatic_stop_conditions": {
+    "zero_new_ready_after_queries": 8,
+    "minimum_new_ready_per_query_after_queries": {
+      "after": 12,
+      "rate": 0.2
+    },
+    "maximum_duplicate_percent_after_candidates": {
+      "after": 20,
+      "percent": 70
+    },
+    "maximum_due_core_jobs": 50,
+    "maximum_oldest_due_seconds": 120,
+    "maximum_pending_verifications": 20,
+    "source_mutations": 0,
+    "identity_mutations": 0,
+    "customer_leakage": 0,
+    "publication_leakage": 0
+  },
+  "pricing": "Report observed credits and configured unit price; cost per READY is undefined with zero READY. No price is currently configured.",
+  "expected_yield": "Not forecast until the independent free holdout passes. Current Claude Eventeny conversion is 435/588 (73.98%); this does not predict novel paid-search yield or duplicate rates. The previous city pilot produced 0 READY from 12 queries.",
+  "execution_gate": "This draft grants no paid work. Implement and validate the source-led adapter and holdout first; keep paid acquisition disabled until measured source mix meets these gates."
+}

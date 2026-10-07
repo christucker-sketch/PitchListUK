@@ -3,6 +3,7 @@ import {parseHtml,nodes,first,text,hasClass,decode} from './source-dom.mjs';
 import {safeSourceUrl} from './source-document.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
+export const APPLICATION_POLICY_VERSION='current-application-v1.1';
 const COUNTRIES={us:'US',usa:'US','united states':'US','united states of america':'US',gb:'GB',uk:'GB','united kingdom':'GB',au:'AU',australia:'AU',ca:'CA',canada:'CA',nz:'NZ','new zealand':'NZ',ie:'IE',ireland:'IE',fr:'FR',france:'FR',de:'DE',germany:'DE',kr:'KR','south korea':'KR'};
 const TYPES=new Set(['Event','Festival','BusinessEvent','ExhibitionEvent','SaleEvent']);
 const clean=v=>decode(String(v??'')).replace(/\s+/g,' ').trim();
@@ -23,10 +24,18 @@ function eventShape(e) {
     street:clean(address.streetAddress),locality:clean(address.addressLocality),event_url:e.url??null};
 }
 const explicitState=s=>/^(?:join (?:the )?waitlist|waitlist(?: only)?|applications? (?:are )?waitlist only)$/i.test(clean(s))?'WAITLIST':/^(?:applications? (?:are )?closed|sold out|fully booked|applications? (?:are )?not open)$/i.test(clean(s))?'CLOSED':null;
+export function applicationScope(report) {
+  const heading=report.application_heading??report.evidence?.find(e=>e.kind==='main_heading')?.excerpt??'';
+  if(report.profile!=='eventeny')return {heading,audience:'traders',reasons:[]};
+  if(/\b(?:performer|entertainer|entertainment|volunteer)\b/i.test(heading)||/^rental application\b/i.test(heading)||/\bparade application\b/i.test(heading)||/\bstop registration\b/i.test(heading))return {heading,audience:'non_trader',reasons:['application_is_not_a_trader_opportunity']};
+  const nonprofit=/\b(?:non[ -]?profits?|charit(?:y|ies|able))\b/i.test(heading),mixed=/\bcommercial\b|\bbusiness(?:es)?\s*\/\s*non[ -]?profits?\b/i.test(heading);
+  if(nonprofit&&!mixed)return {heading,audience:'nonprofit_only',reasons:['application_restricted_audience_requires_review']};
+  return {heading,audience:nonprofit?'commercial_and_nonprofit':'traders',reasons:[]};
+}
 
 // Discovery metadata (including search market/city) is deliberately absent from parsing.
 export function verifyDocument(document,{now=new Date().toISOString()}={}) {
-  const report={version:VERIFIER_VERSION,source_url:document.url??document.requested_url,checked_at:document.fetched_at??now,profile:'generic',status:'unverified',page_kind:'unproved',facts:{},reasons:[],evidence:[]};
+  const report={version:VERIFIER_VERSION,application_policy:APPLICATION_POLICY_VERSION,source_url:document.url??document.requested_url,checked_at:document.fetched_at??now,profile:'generic',status:'unverified',page_kind:'unproved',facts:{},reasons:[],evidence:[]};
   if(document.reason||!document.html){report.reasons.push(document.reason??'source_document_missing');return report;}
   try {
     const u=new URL(document.url),host=u.hostname.replace(/^www\./,''),root=parseHtml(document.html);
@@ -54,6 +63,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
     else identity=Boolean(heading&&token(heading)===token(event.name)&&sameRoute(event.url??document.url,document.url));
     if(!identity){report.status='quarantine';report.page_kind='unrelated_event';report.reasons.push('event_identity_not_bound_to_page');return report;}
     report.page_kind='event';report.facts=facts;report.evidence.push({kind:'event_json_ld',excerpt:stableJson(event).slice(0,14000)},{kind:'main_heading',excerpt:heading});
+    const scope=applicationScope(report);report.application_heading=scope.heading;report.application_audience=scope.audience;report.reasons.push(...scope.reasons);
     const address=event.location?.address??{};
     if(!facts.country)report.reasons.push('verified_country_missing');
     if(!clean(address.addressLocality)||!clean(address.streetAddress)||/^(?:tba|tbd|to be (?:announced|confirmed))\b/i.test(clean(address.streetAddress)))report.reasons.push('verified_venue_missing');
@@ -82,7 +92,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
       const links=controls.filter(n=>n.tag==='a'&&/^submit application$/i.test(text(n))).map(n=>route(n.attrs.href,document.url)).filter(Boolean);
       const apps=[...new Set(links)].filter(v=>{const a=new URL(v);return a.hostname===u.hostname&&/^\/[a-z]{2}\/application\/[a-f\d-]{36}$/i.test(a.pathname)&&/^[a-f\d-]{36}$/i.test(a.searchParams.get('event')??'');});
       const open=first(main,n=>hasClass(n,'ls-ev-openline'),{scoped:true});
-      if(apps.length===1){facts.application_url=apps[0];if(!state&&/^stallholder applications open$/i.test(text(open)))facts.application_state='OPEN_NOW';report.evidence.push({kind:'event_application_control',excerpt:clean(text(open)+' '+apps[0])});}
+      if(apps.length===1){facts.application_url=apps[0];report.application_landing_url=document.url;if(!state&&/^stallholder applications open$/i.test(text(open)))facts.application_state='OPEN_NOW';report.evidence.push({kind:'event_application_control',excerpt:clean(text(open)+' '+apps[0])});}
       else report.reasons.push('event_application_route_missing_or_ambiguous');
     } else {
       // A visitor ticket offer, contact link or login page never proves vendor availability.
@@ -104,7 +114,12 @@ export function compareProof(entity,report) {
   for(const key of ['event_name','organiser','event_start','event_end'])if(f[key]&&entity[key]&&(key.startsWith('event_')&&key!=='event_name'?calendarDate(f[key])!==calendarDate(entity[key]):token(f[key])!==token(entity[key])))reasons.push('selected_'+key+'_disagrees_with_proof');
   if(f.location&&entity.location){const verified=new Set(token(f.location).split(' '));if(token(entity.location).split(' ').some(t=>!verified.has(t)))reasons.push('selected_location_disagrees_with_proof');}
   if(f.application_deadline&&entity.application_deadline&&calendarDate(f.application_deadline)!==calendarDate(entity.application_deadline))reasons.push('selected_application_deadline_disagrees_with_proof');
-  if(f.application_url&&entity.application_url&&!sameRoute(f.application_url,entity.application_url))reasons.push('selected_application_url_disagrees_with_proof');
-  if(f.application_state&&entity.application_state&&f.application_state!==entity.application_state)reasons.push('selected_application_state_disagrees_with_proof');
+  const provedLanding=report.profile==='localstalls'&&report.application_landing_url&&sameRoute(entity.application_url,report.application_landing_url)&&report.evidence?.some(e=>e.kind==='event_application_control');
+  if(f.application_url&&entity.application_url&&!sameRoute(f.application_url,entity.application_url)&&!provedLanding)reasons.push('selected_application_url_disagrees_with_proof');
+  // A source-confirmed open application corroborates the current availability of a
+  // discovery labelled ROLLING. It does not prove perpetual/rolling availability;
+  // the commercial state is the proved OPEN_NOW value, with the original retained.
+  const currentlyOpen=entity.application_state==='ROLLING'&&f.application_state==='OPEN_NOW';
+  if(f.application_state&&entity.application_state&&f.application_state!==entity.application_state&&!currentlyOpen)reasons.push('selected_application_state_disagrees_with_proof');
   return reasons;
 }

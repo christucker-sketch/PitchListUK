@@ -1,3 +1,4 @@
+import {commercialStatus} from './commercial.mjs';
 import {verifyEntitySource,verificationGate,verificationStatus} from './verification-store.mjs';
 import { hash } from './contract.mjs';
 import { ingestRecords,sql,loadEntity } from './store.mjs';
@@ -48,7 +49,7 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
   const values=[[],[],[],[],[],[new Date(Date.parse(now)-3600000).toISOString()],[now],[],[budgetDay(now)],[]];
   const results=await Promise.all(queries.map((q,i)=>sql(db,q,...values[i]).all()));
   const [producers,jobs,entities,readiness,gates,throughput,leases,conflicts,cost,leakage]=results.map(r=>r.results);
-  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now)};
+  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial:await commercialStatus(db,now)};
 }
 export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
   if(!stage||!queue)return;
@@ -56,7 +57,7 @@ export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
   const jobs=(await sql(env.FINDPITCHES_V3_DB,`INSERT INTO queue_dispatches(job_id,last_sent_at)
     SELECT j.id,? FROM jobs j LEFT JOIN queue_dispatches d ON d.job_id=j.id
     WHERE j.stage=? AND j.status='ready' AND j.available_at<=?
-      AND (d.job_id IS NULL OR d.last_sent_at<=?) ORDER BY j.available_at LIMIT 100
+      AND (d.job_id IS NULL OR d.last_sent_at<=?) ORDER BY (json_extract(j.payload_json,'$.refresh_verification_id') IS NOT NULL) DESC,j.available_at LIMIT 100
     ON CONFLICT(job_id) DO UPDATE SET last_sent_at=excluded.last_sent_at
       WHERE queue_dispatches.last_sent_at<=? RETURNING job_id AS id`,now,stage,now,retryBefore,retryBefore).all()).results;
   if(jobs.length)await queue.sendBatch(jobs.map(j=>({body:{stage,job_id:j.id}})));
@@ -71,7 +72,7 @@ async function tick(env,{jobId=null,limit=10}={}) {
     const handlers=stage==='acquisition'?{acquisition:p=>acquireCity(env.FINDPITCHES_V3_DB,p,env,{runId:p.run_id})}:stage==='enrichment'?{enrichment:async p=>{
       const entity=await loadEntity(env.FINDPITCHES_V3_DB,p.entity_id),gate=await verificationGate(env.FINDPITCHES_V3_DB,entity);
       // Unchanged exports cannot extend proof freshness. Missing/expired proof is fetched directly.
-      if(gate.status==='unverified'&&entity.environment==='shadow')await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id);
+      if(entity.environment==='shadow'&&(gate.status==='unverified'||p.refresh_verification_id&&p.refresh_verification_id===gate.verification_id))await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id);
       return enrichEntity(env.FINDPITCHES_V3_DB,p.entity_id,{proposals:p.proposals??[]});
     }}:{};
     const result=await runStage(env.FINDPITCHES_V3_DB,stage,{jobId,clock:()=>new Date(),handlers});
@@ -90,6 +91,7 @@ export default {
       if(request.method==='GET'&&path==='/status')return json(await status(db,{role}));
       const ingest=path==='/imports'||path==='/rechecks'||path==='/rechecks/ack';
       if(!await authorized(request,ingest?env.V3_INGEST_TOKEN:env.V3_OPERATOR_TOKEN))return json({error:'authorization_required'},401);
+      if(request.method==='GET'&&path==='/commercial'&&role==='api')return json(await commercialStatus(db));
       if(request.method==='POST'&&path==='/imports'&&role==='ingest') {
         const body=await bodyJson(request);
         const result=await ingestRecords(db,body.records,{producer:'independent-structured',environment:body.environment??'shadow'});

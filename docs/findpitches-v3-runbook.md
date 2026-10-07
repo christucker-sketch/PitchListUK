@@ -125,3 +125,13 @@ Transport wake-ups are coalesced per durable job for five minutes and consumers 
 ## Source verification
 
 Use the [verification guide](findpitches-v3-source-verification.md) for operator rechecks and the direct-source quality harness. READY requires fresh source proof; historical ready counts in earlier comparison reports predate this gate. Do not restore those old counts by bypassing proof. Blocked original sources and unsupported vendor routes remain uncertainty, and paid acquisition stays disabled.
+
+## Commercial inventory and growth
+
+`/status.commercial` reports unique producer origins, overlapping source memberships, proof-gated READY inventory, country/domain/state totals, coverage and commercial yield/cost metrics. Operator-only `GET /commercial` returns the same report. Synthetic test entities and diagnostic receipts are excluded. First-READY history is immutable; renewals, older scope-blind performer/rental/nonprofit-only claims and unverified caches cannot inflate new READY/day. Undefined paid cost/yield denominators remain null.
+
+Use `commercial-growth.mjs --mode snapshot --credentials <secure-file> --state-dir <owned-shadow-state> --out-dir <private-output-directory>` to capture an inventory and immutable baseline. Then run the same command with `--mode verify --limit 1000` to check the Claude corpus, ordered by commercial potential. The tool uses direct original-source verification, bounded concurrency and per-host pacing, preserves private evidence locally, validates disabled acquisition/publication and checks source/identity preservation. Existing results allow an interrupted run to resume; take a new snapshot/output directory for a later fresh run. Concurrent entity growth causes the verification-only integrity check to stop for attribution rather than silently credit acquisition to verification.
+
+READY renewals run before proof expiry and take priority over legacy backlog. Queue pointers can wake a due priority renewal; the older job remains durable and is recovered by subsequent transport/cron dispatch. Superseded renewal generations are skipped, and fixed near-term deadlines do not trigger a fetch loop. The independent producer still owns source rechecks: a cloud verification renewal never clears its requests or rewrites its export.
+
+See the [commercial readiness report](findpitches-v3-commercial-readiness-2026-10-07.md) and [disabled source-led pilot plan](../operations/findpitches-v3/reports/source-led-acquisition-plan-2026-10-07.json). Current READY publication remains disabled.

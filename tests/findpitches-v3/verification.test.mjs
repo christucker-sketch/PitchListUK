@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {database,record,seed,NOW} from './helpers.mjs';
 import {documentFixture} from './verification-fixture.mjs';
-import {verifyDocument,compareProof} from '../../platform/findpitches-v3/verification.mjs';
+import {verifyDocument,compareProof,applicationScope} from '../../platform/findpitches-v3/verification.mjs';
 import {recordVerification,verificationGate} from '../../platform/findpitches-v3/verification-store.mjs';
 import {fetchSourceDocument} from '../../platform/findpitches-v3/source-document.mjs';
 import {evaluateReadiness} from '../../platform/findpitches-v3/pipeline.mjs';
@@ -12,6 +12,21 @@ import {parseHtml,nodes,text} from '../../platform/findpitches-v3/source-dom.mjs
 test('Eventeny proof binds vendor ID, dates, geography, organiser and offer window',()=>{
   const report=verifyDocument(documentFixture(),{now:NOW});assert.equal(report.status,'verified');assert.equal(report.facts.country,'US');assert.equal(report.facts.application_state,'OPEN_NOW');
   assert.equal(compareProof({...record(),market:'CA'},report).includes('source_country_market_mismatch'),true);
+});
+test('an Eventeny vendor endpoint never proves performer/rental/nonprofit-only commercial eligibility',()=>{
+  for(const heading of ['Christkindl Market Performer','Entertainer Application','Entertainment Application','Volunteer Registration','Rental Application for Farmers Market','Commercial / Retail Businesses - PARADE APPLICATION','Trick-or-Treat Stop Registration (Non-Profit Organizations)','Non-Profit Organizations','Nonprofit Exhibitors','Local Charity Exhibitors','Non-Profit Fundraising Vendor']) {
+    const doc=documentFixture();doc.html=doc.html.replace('Vendor Application | 2026',heading);
+    const report=verifyDocument(doc,{now:NOW});assert.equal(report.status,'partial',heading);assert.equal(report.facts.application_state,'OPEN_NOW','Source availability remains factual');assert.ok(applicationScope(report).reasons.length);
+  }
+  for(const heading of ['Food Vendor Parade Participant','Sponsor Vendor Application','Business/Non Profits','Commercial Booth/Non-Profit Application','Vendor Application'])assert.equal(applicationScope({profile:'eventeny',application_heading:heading}).reasons.length,0,heading);
+});
+test('old scope-blind verified receipts are withheld without rewriting their proof or source facts',async t=>{
+  const db=database(t),{entity}=await seed(db,record(),{environment:'shadow'}),doc=documentFixture();doc.html=doc.html.replace('Vendor Application | 2026','Entertainment Application');
+  const report=verifyDocument(doc,{now:NOW});report.status='verified';report.reasons=[];delete report.application_heading;delete report.application_audience;
+  const original=JSON.stringify(report);await sql(db,"INSERT INTO source_documents VALUES ('old-doc',?,NULL,?,?)",entity.application_url,NOW,JSON.stringify(doc)).run();
+  await sql(db,"INSERT INTO source_verifications(id,entity_id,entity_revision,document_id,verifier_version,status,report_json,checked_at,expires_at) VALUES ('old-proof',?,?,'old-doc','source-proof-v1','verified',?,?,'2026-10-07T12:00:00.000Z')",entity.id,entity.revision,original,NOW).run();
+  assert.equal((await verificationGate(db,entity,{now:NOW})).status,'partial');assert.equal((await evaluateReadiness(db,entity.id,{now:NOW})).status,'watch');
+  assert.equal((await sql(db,"SELECT report_json FROM source_verifications WHERE id='old-proof'").first()).report_json,original);
 });
 test('search market cannot supply absent source country',()=>{
   const d=documentFixture({event:{location:{name:'River Hall',address:{streetAddress:'1 River Street',addressLocality:'Austin'}}}});
@@ -85,4 +100,19 @@ test('inert bounded HTML reader excludes navigation, footer and executable data'
 });
 test('visible application deadline disagreement remains quarantined',()=>{
   const r=verifyDocument(documentFixture({body:'<p>Deadline: Nov 19, 2026 11:59pm</p>'}),{now:NOW});assert.equal(r.status,'quarantine');assert.ok(r.reasons.includes('contradictory_visible_application_deadline'));
+});
+test('proved LocalStalls application landing is valid; footer/unrelated routes remain held',()=>{
+  const url='https://localstalls.com/au/event/laidley/river-market',d=documentFixture({profile:'localstalls',url,event:{location:{name:'River Hall',address:{streetAddress:'1 River Street',addressLocality:'Laidley',addressCountry:'AU'}}}}),r=verifyDocument(d,{now:NOW});
+  const e={market:'AU',application_url:url,application_state:'OPEN_NOW'};
+  assert.equal(r.status,'verified');assert.equal(compareProof(e,r).length,0);
+  assert.ok(compareProof({...e,application_url:'https://localstalls.com/au/vendor-registration'},r).includes('selected_application_url_disagrees_with_proof'));
+});
+test('rolling discovery can be ready on proved current OPEN_NOW without changing original facts or asserting perpetual availability',async t=>{
+  const db=database(t),{entity,recordId}=await seed(db,record({application_state:'ROLLING'}),{environment:'shadow'});
+  const before=await sql(db,'SELECT * FROM source_facts WHERE record_id=?',recordId).all();
+  const r=await recordVerification(db,entity.id,documentFixture(),{now:NOW});assert.equal(r.report.status,'verified');assert.equal(r.report.facts.application_state,'OPEN_NOW');
+  assert.equal((await evaluateReadiness(db,entity.id,{now:NOW})).status,'ready');assert.equal((await loadEntity(db,entity.id)).application_state,'ROLLING');
+  assert.deepEqual(await sql(db,'SELECT * FROM source_facts WHERE record_id=?',recordId).all(),before);
+  const waiting=documentFixture({body:'<button>Join waitlist</button>'});const negative=await recordVerification(db,entity.id,waiting,{now:NOW});assert.equal(negative.report.status,'quarantine');
+  assert.notEqual((await evaluateReadiness(db,entity.id,{now:NOW})).status,'ready');
 });

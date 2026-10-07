@@ -2,13 +2,13 @@ import {hash,stableJson} from './contract.mjs';
 import {sql,loadEntity} from './store.mjs';
 import {proposeFact} from './evidence.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
-import {verifyDocument,compareProof,VERIFIER_VERSION} from './verification.mjs';
+import {verifyDocument,compareProof,applicationScope,VERIFIER_VERSION} from './verification.mjs';
 
 export function verificationUrl(entity) {
   // Prefer the retained event detail over an old footer application link.
   // Eventeny's vendor ID is itself the application/event identity anchor.
   const app=entity.application_url,canonical=entity.canonical_url;
-  try {if(new URL(app).hostname.endsWith('eventeny.com')&&new URL(app).pathname==='/events/vendor/')return app;}catch{}
+  try {if(/(?:^|\.)eventeny\.com$/.test(new URL(app).hostname)&&new URL(app).pathname==='/events/vendor/')return app;}catch{}
   return canonical??app;
 }
 
@@ -17,8 +17,8 @@ export async function verificationGate(db,entity,{now=new Date().toISOString()}=
   if(!row)return {status:'unverified',reasons:['source_verification_required']};
   const report=JSON.parse(row.report_json);
   if(row.entity_revision!==entity.revision||row.verifier_version!==VERIFIER_VERSION||Date.parse(row.checked_at)>Date.parse(now)||Date.parse(row.expires_at)<=Date.parse(now))return {status:'unverified',reasons:['source_verification_stale_or_revision_changed'],verification_id:row.id};
-  const reasons=[...new Set([...report.reasons,...compareProof(entity,report)])];
-  return {status:reasons.length&&row.status==='verified'?'quarantine':row.status,reasons,verification_id:row.id,profile:report.profile,facts:report.facts,checked_at:row.checked_at,expires_at:row.expires_at};
+  const comparison=compareProof(entity,report),scope=applicationScope(report),reasons=[...new Set([...report.reasons,...comparison,...scope.reasons])];
+  return {status:comparison.length&&row.status==='verified'?'quarantine':scope.reasons.length&&row.status==='verified'?'partial':row.status,reasons,verification_id:row.id,profile:report.profile,facts:report.facts,application_heading:scope.heading,application_audience:scope.audience,checked_at:row.checked_at,expires_at:row.expires_at};
 }
 export async function recordVerification(db,entityId,document,{now=new Date().toISOString(),addEvidence=true}={}) {
   let entity=await loadEntity(db,entityId);if(!entity||!['test','shadow'].includes(entity.environment))throw Error('shadow_entity_required');

@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import { database,NOW,seed } from './helpers.mjs';
 import { sql } from '../../platform/findpitches-v3/store.mjs';
 import { enqueue,claimJob,finishJob,failJob,heartbeat,requeueDead } from '../../platform/findpitches-v3/jobs.mjs';
-import { runStage,drainPipeline } from '../../platform/findpitches-v3/pipeline.mjs';
+import { runStage,drainPipeline,evaluateReadiness,enrichEntity } from '../../platform/findpitches-v3/pipeline.mjs';
+import {recordVerification} from '../../platform/findpitches-v3/verification-store.mjs';
+import {documentFixture} from './verification-fixture.mjs';
 test('atomic claims, expiry recovery and lease tokens prevent stale completion',async t=>{
   const db=database(t);await enqueue(db,'eligibility','unique',{entity_id:'missing'},NOW);await enqueue(db,'eligibility','unique',{entity_id:'missing'},NOW);
   const first=await claimJob(db,'eligibility',{now:NOW,leaseMs:1000});assert.ok(first);
@@ -27,4 +29,43 @@ test('watch requests producer rechecks and reassesses time-dependent closure wit
   assert.equal((await sql(db,'SELECT status FROM readiness WHERE entity_id=?',entity.id).first()).status,'blocked');
   assert.ok(await sql(db,'SELECT * FROM recheck_requests WHERE entity_id=?',entity.id).first());
   assert.equal((await sql(db,"SELECT COUNT(*) AS n FROM source_facts WHERE field_name='event_name'").first()).n,1);
+});
+test('READY proof refresh runs before expiry, crosses completed daily jobs and skips superseded refreshes',async t=>{
+  const db=database(t),{entity}=await seed(db,undefined,{environment:'shadow'});
+  const original=(await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results;
+  const first=await recordVerification(db,entity.id,documentFixture(),{now:NOW});await evaluateReadiness(db,entity.id,{now:NOW});
+  const job=await sql(db,"SELECT * FROM jobs WHERE stage='watch' AND json_extract(payload_json,'$.refresh_verification_id')=?",first.verification_id).first();
+  assert.equal(job.available_at,'2026-10-07T10:00:00.000Z');
+  assert.equal((await runStage(db,'watch',{jobId:job.id,now:job.available_at})).phase,'complete');
+  await runStage(db,'eligibility',{now:job.available_at});
+  const enrichment=await sql(db,"SELECT payload_json FROM jobs WHERE stage='enrichment' AND status='ready'").first();
+  assert.equal(JSON.parse(enrichment.payload_json).refresh_verification_id,first.verification_id);
+  const renewed=await recordVerification(db,entity.id,{...documentFixture(),fetched_at:job.available_at},{now:job.available_at});
+  await enrichEntity(db,entity.id,{now:job.available_at});await runStage(db,'readiness',{now:job.available_at});
+  const next=await sql(db,"SELECT available_at FROM jobs WHERE stage='watch' AND json_extract(payload_json,'$.refresh_verification_id')=?",renewed.verification_id).first();
+  assert.equal(next.available_at,'2026-10-08T08:00:00.000Z');
+  await enqueue(db,'watch','obsolete',{entity_id:entity.id,refresh_verification_id:first.verification_id},job.available_at);
+  const stale=await sql(db,"SELECT id FROM jobs WHERE dedupe_key='obsolete'").first();
+  assert.equal((await runStage(db,'watch',{jobId:stale.id,now:job.available_at})).result.phase,'superseded_refresh_skipped');
+  const originalIds=new Set(original.map(r=>r.id));
+  assert.deepEqual((await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results.filter(r=>originalIds.has(r.id)),original);
+  assert.ok(await sql(db,'SELECT * FROM recheck_requests WHERE entity_id=?',entity.id).first(),'Direct proof renewal does not acknowledge the producer recheck');
+});
+test('READY refresh near a fixed application deadline does not create a fetch loop',async t=>{
+  const db=database(t),{entity}=await seed(db,undefined,{environment:'shadow'}),now='2026-10-06T22:10:00.000Z';
+  const doc=documentFixture({event:{offers:[{'@type':'Offer',url:entity.application_url,availability:'https://schema.org/InStock',availabilityStarts:'2026-09-01',availabilityEnds:'2026-10-07T23:59:00Z'}]}});
+  const proof=await recordVerification(db,entity.id,{...doc,fetched_at:now},{now});
+  assert.equal((await evaluateReadiness(db,entity.id,{now})).status,'ready');
+  const job=await sql(db,"SELECT available_at FROM jobs WHERE stage='watch' AND json_extract(payload_json,'$.refresh_verification_id')=?",proof.verification_id).first();
+  assert.equal(job.available_at,'2026-10-07T00:00:00.000Z');
+});
+test('READY renewals overtake an older low-value backlog without dropping its durable jobs',async t=>{
+  const db=database(t);
+  await enqueue(db,'enrichment','old-legacy',{entity_id:'legacy'},'2026-10-05T12:00:00.000Z');
+  await enqueue(db,'enrichment','ready-refresh',{entity_id:'ready',refresh_verification_id:'current-proof'},NOW);
+  const old=await sql(db,"SELECT id FROM jobs WHERE dedupe_key='old-legacy'").first();
+  const picked=await claimJob(db,'enrichment',{now:NOW,jobId:old.id});
+  assert.equal(picked.dedupe_key,'ready-refresh');await finishJob(db,picked,NOW);
+  assert.equal((await sql(db,'SELECT status FROM jobs WHERE id=?',old.id).first()).status,'ready');
+  assert.equal((await claimJob(db,'enrichment',{now:NOW,jobId:old.id})).dedupe_key,'old-legacy');
 });

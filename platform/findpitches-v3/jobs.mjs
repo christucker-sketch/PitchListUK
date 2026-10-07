@@ -19,7 +19,8 @@ export async function claimJob(db,stage,{now=new Date().toISOString(),leaseMs=24
   const token=crypto.randomUUID(),until=new Date(Date.parse(now)+leaseMs).toISOString();
   return db.prepare(`UPDATE jobs SET status='leased',attempts=attempts+1,lease_token=?,lease_until=?,updated_at=?
     WHERE id=(SELECT id FROM jobs WHERE stage=? AND status='ready' AND available_at<=? AND attempts<max_attempts
-      AND (? IS NULL OR id=?) ORDER BY available_at,id LIMIT 1)
+      AND (? IS NULL OR id=? OR json_extract(payload_json,'$.refresh_verification_id') IS NOT NULL)
+      ORDER BY (json_extract(payload_json,'$.refresh_verification_id') IS NOT NULL) DESC,available_at,id LIMIT 1)
     AND status='ready' AND attempts<max_attempts RETURNING *`).bind(token,until,now,stage,now,jobId,jobId).first();
 }
 export async function finishJob(db,job,now=new Date().toISOString()) {
