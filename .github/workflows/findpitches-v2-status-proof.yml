@@ -1,8 +1,6 @@
 name: FindPitches v2 Status Proof
 
 on:
-  schedule:
-    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 permissions:
