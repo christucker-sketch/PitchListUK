@@ -1,0 +1,916 @@
+{
+  "schema": "findpitches-v3-free-commercial-growth-v1",
+  "as_of": "2026-10-08T13:42:10.318Z",
+  "timezone": "Europe/London",
+  "base_commit": "4ad818f1b1675762b21e85683c3c88f3672969d5",
+  "observed_start": {
+    "as_of": "2026-10-07T16:45:33.931Z",
+    "ready": 454,
+    "ready_by_origin": {
+      "independent-structured": 441,
+      "legacy_v2": 9,
+      "city-search": 0,
+      "source-led-search": 4
+    }
+  },
+  "observed_net_ready_gain": 1204,
+  "current_policy_reassessment": {
+    "ready_before": 242,
+    "ready_after": 1658,
+    "ready_gained": 1429,
+    "ready_lost": 13,
+    "net_ready_gain": 1416,
+    "ready_gained_by_country": {
+      "US": 1408,
+      "NZ": 3,
+      "AU": 14,
+      "GB": 4
+    },
+    "ready_gained_by_origin": {
+      "platform-catalogue": 877,
+      "independent-structured": 171,
+      "legacy_v2": 380,
+      "source-led-search": 1
+    },
+    "ready_gained_by_source": {
+      "eventeny.com": 1410,
+      "localstalls.com": 19
+    },
+    "identity_mutations": 0,
+    "missing_original_entities": 0
+  },
+  "inventory": {
+    "schema": "findpitches-v3-commercial-inventory-v1",
+    "as_of": "2026-10-08T13:42:10.318Z",
+    "timezone": "Europe/London",
+    "ready_definition": "Shadow entities with current version/revision-matched source proof, current READY assessment, supported vendor application and no identity/evidence/legacy hold. Publication remains disabled.",
+    "scope": {
+      "commercial_entities": 6398,
+      "test_control_excluded": 104,
+      "other_noncommercial_excluded": 0
+    },
+    "totals": {
+      "total_distinct_entities": 6398,
+      "verified": 1662,
+      "ready": 1658,
+      "watch": 512,
+      "quarantined": 531,
+      "blocked": 3697,
+      "awaiting_verification": 4267,
+      "missing_application_proof": 4574,
+      "stale_expired": 201,
+      "verification_checked": 2543
+    },
+    "by_origin": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 393,
+        "ready": 390,
+        "watch": 194,
+        "quarantined": 200,
+        "blocked": 102,
+        "awaiting_verification": 263,
+        "missing_application_proof": 414,
+        "stale_expired": 81,
+        "verification_checked": 886
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 4555,
+        "verified": 388,
+        "ready": 387,
+        "watch": 285,
+        "quarantined": 298,
+        "blocked": 3585,
+        "awaiting_verification": 3979,
+        "missing_application_proof": 4104,
+        "stale_expired": 105,
+        "verification_checked": 708
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 4,
+        "ready": 4,
+        "watch": 3,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      },
+      "platform-catalogue": {
+        "total_distinct_entities": 930,
+        "verified": 877,
+        "ready": 877,
+        "watch": 30,
+        "quarantined": 22,
+        "blocked": 1,
+        "awaiting_verification": 15,
+        "missing_application_proof": 33,
+        "stale_expired": 15,
+        "verification_checked": 930
+      }
+    },
+    "by_source_membership": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 393,
+        "ready": 390,
+        "watch": 194,
+        "quarantined": 200,
+        "blocked": 102,
+        "awaiting_verification": 263,
+        "missing_application_proof": 414,
+        "stale_expired": 81,
+        "verification_checked": 886
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 5433,
+        "verified": 781,
+        "ready": 777,
+        "watch": 476,
+        "quarantined": 494,
+        "blocked": 3686,
+        "awaiting_verification": 4239,
+        "missing_application_proof": 4510,
+        "stale_expired": 186,
+        "verification_checked": 1585
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 4,
+        "ready": 4,
+        "watch": 3,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      },
+      "platform-catalogue": {
+        "total_distinct_entities": 930,
+        "verified": 877,
+        "ready": 877,
+        "watch": 30,
+        "quarantined": 22,
+        "blocked": 1,
+        "awaiting_verification": 15,
+        "missing_application_proof": 33,
+        "stale_expired": 15,
+        "verification_checked": 930
+      }
+    },
+    "attribution": "Origin is the earliest accepted non-diagnostic producer receipt linked to the entity. Origin rows are exclusive and sum to the commercial total. Source membership overlaps and must not be summed.",
+    "status_counts": "READY/WATCH/quarantined/blocked are exclusive current dispositions. Verified, awaiting verification, missing application proof and stale/expired are overlapping flags. Old cached READY alone never qualifies.",
+    "ready_by_country": {
+      "US": 1629,
+      "AU": 18,
+      "NZ": 5,
+      "GB": 6
+    },
+    "ready_by_source_domain": {
+      "eventeny.com": 1631,
+      "localstalls.com": 27
+    },
+    "ready_by_source_platform": {
+      "eventeny": 1630,
+      "localstalls": 27,
+      "wikidata_seed": 1
+    },
+    "ready_by_application_state": {
+      "OPEN_NOW": 1658
+    },
+    "ready_event_groups": {
+      "distinct_exact_field_groups": 1008,
+      "multiple_application_groups": 352,
+      "additional_application_entities": 650,
+      "definition": "Advisory grouping by proved country, event title, start/end dates, organiser and venue. READY counts distinct application-opportunity entities; this comparison neither merges identity nor proves semantic duplicates."
+    },
+    "kpis": {
+      "total_customer_ready_opportunities": 1658,
+      "verification_conversion_percent": 65.2,
+      "verification_entities_checked": 2543,
+      "coverage_all_inventory_unverified_presence": {
+        "denominator": 6398,
+        "application_url_percent": 50.14,
+        "future_event_date_percent": 39.47,
+        "location_percent": 41.56,
+        "organiser_percent": 42.14
+      },
+      "coverage_ready_source_proof": {
+        "denominator": 1658,
+        "application_url_percent": 100,
+        "future_event_date_percent": 95.72,
+        "location_percent": 100,
+        "organiser_percent": 100
+      }
+    }
+  },
+  "kpis": {
+    "total_customer_ready_opportunities": 1658,
+    "verification_conversion_percent": 65.2,
+    "verification_entities_checked": 2543,
+    "coverage_all_inventory_unverified_presence": {
+      "denominator": 6398,
+      "application_url_percent": 50.14,
+      "future_event_date_percent": 39.47,
+      "location_percent": 41.56,
+      "organiser_percent": 42.14
+    },
+    "coverage_ready_source_proof": {
+      "denominator": 1658,
+      "application_url_percent": 100,
+      "future_event_date_percent": 95.72,
+      "location_percent": 100,
+      "organiser_percent": 100
+    },
+    "new_ready_today": 657,
+    "new_ready_day": "2026-10-08",
+    "first_proof_readiness_history_available": true,
+    "paid_acquisition_queries": 25,
+    "first_confirmed_paid_ready": 4,
+    "new_ready_per_100_acquisition_queries": 16,
+    "queries_per_new_paid_ready": 6.25,
+    "paid_credit_cost_per_ready": null,
+    "cost_per_ready_usd": null,
+    "pricing_status": "unit_credit_price_unavailable",
+    "zero_paid_ready": false,
+    "stale_expired_ready_removed": 8,
+    "previously_confirmed_ready": 1682,
+    "stale_expired_removal_percent": 0.48,
+    "identity_duplicate_rate_by_source": {
+      "city-search": {
+        "candidate_ids": 20,
+        "linked_entities": 20,
+        "percent": 0
+      },
+      "independent-structured": {
+        "candidate_ids": 886,
+        "linked_entities": 886,
+        "percent": 0
+      },
+      "legacy_v2": {
+        "candidate_ids": 5698,
+        "linked_entities": 5433,
+        "percent": 4.65
+      },
+      "platform-catalogue": {
+        "candidate_ids": 930,
+        "linked_entities": 930,
+        "percent": 0
+      },
+      "source-led-search": {
+        "candidate_ids": 7,
+        "linked_entities": 7,
+        "percent": 0
+      }
+    },
+    "definitions": "New READY/day counts first source-proved READY per entity in the London day, never renewals. Paid yield/cost uses first confirmed READY with a city-search or source-led-search origin only, including later expiries; free structured READY is not credited to paid queries. Null cost with zero READY is undefined, not zero. Duplicate rate is excess distinct linked producer candidate IDs per distinct entity; replayed receipt versions are excluded. Removal rate is previously proved READY now withheld due to stale/expired evidence."
+  },
+  "direct_retained_routes_checked": 587,
+  "catalogue": {
+    "runs": [
+      {
+        "run_id": "catalogue_3b847714-9ecc-438c-8c1b-be5548ac6ae2",
+        "as_of": "2026-10-08T13:42:10.318Z",
+        "checked": 52,
+        "fetch_reservations": 52,
+        "maximum_candidates": 2000,
+        "status": "paused",
+        "expires_at": "2026-10-07T23:03:10.127Z",
+        "stop_reason": "zero_ready_after_free_warmup",
+        "imported": 0,
+        "held": 52,
+        "linked_distinct_entities": 0,
+        "current_ready": 0,
+        "prior_report": {
+          "run_id": "catalogue_3b847714-9ecc-438c-8c1b-be5548ac6ae2",
+          "as_of": "2026-10-07T17:04:41.695Z",
+          "checked": 52,
+          "fetch_reservations": null,
+          "maximum_candidates": 2000,
+          "stop_reason": "zero_ready_after_free_warmup",
+          "imported": 0,
+          "held": 52,
+          "linked_distinct_entities": 0,
+          "ready_at_that_report": 0,
+          "ready_by_country_at_that_report": {},
+          "source_mutations": 0,
+          "identity_mutations": 0,
+          "paid_queries_added": 0,
+          "coverage": [
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-au-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 250,
+              "offset": 0,
+              "candidates_in_page": 250
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-nz-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 45,
+              "offset": 0,
+              "candidates_in_page": 45
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-uk-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 54,
+              "offset": 0,
+              "candidates_in_page": 54
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-us-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 0,
+              "offset": 0,
+              "candidates_in_page": 0
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6726,
+              "offset": 0,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6726,
+              "offset": 500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6726,
+              "offset": 1000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6726,
+              "offset": 1500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6726,
+              "offset": 2000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6726,
+              "offset": 2500,
+              "candidates_in_page": 500
+            }
+          ]
+        }
+      },
+      {
+        "run_id": "catalogue_30f9fdcc-d7b5-4485-a8fa-7f54f39553b2",
+        "as_of": "2026-10-08T13:42:10.318Z",
+        "checked": 579,
+        "fetch_reservations": 580,
+        "maximum_candidates": 2000,
+        "status": "paused",
+        "expires_at": "2026-10-07T23:13:20.983Z",
+        "stop_reason": "verification_outcome_requires_review",
+        "imported": 256,
+        "held": 323,
+        "linked_distinct_entities": 256,
+        "current_ready": 223,
+        "prior_report": null
+      },
+      {
+        "run_id": "catalogue_7b96c115-08d8-433d-92da-3403b950b84e",
+        "as_of": "2026-10-08T13:42:10.318Z",
+        "checked": 2000,
+        "fetch_reservations": 2000,
+        "maximum_candidates": 2000,
+        "status": "paused",
+        "expires_at": "2026-10-08T15:11:04.625Z",
+        "stop_reason": "bounded_run_complete",
+        "imported": 486,
+        "held": 1514,
+        "linked_distinct_entities": 486,
+        "current_ready": 473,
+        "prior_report": {
+          "run_id": "catalogue_7b96c115-08d8-433d-92da-3403b950b84e",
+          "as_of": "2026-10-08T10:37:35.214Z",
+          "checked": 2000,
+          "fetch_reservations": 2000,
+          "maximum_candidates": 2000,
+          "stop_reason": "bounded_run_complete",
+          "imported": 486,
+          "held": 1514,
+          "linked_distinct_entities": 486,
+          "ready_at_that_report": 478,
+          "ready_by_country_at_that_report": {
+            "US": 476,
+            "GB": 2
+          },
+          "source_mutations": 0,
+          "identity_mutations": 0,
+          "paid_queries_added": 0,
+          "coverage": [
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-au-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 250,
+              "offset": 0,
+              "candidates_in_page": 250
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-nz-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 45,
+              "offset": 0,
+              "candidates_in_page": 45
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-uk-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 54,
+              "offset": 0,
+              "candidates_in_page": 54
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-us-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 0,
+              "offset": 0,
+              "candidates_in_page": 0
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 0,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 1000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 1500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 2000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 2500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 3000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 3500,
+              "candidates_in_page": 500
+            }
+          ]
+        }
+      },
+      {
+        "run_id": "catalogue_91b978c9-7e33-4f39-98a5-ec5adf6f98c6",
+        "as_of": "2026-10-08T13:42:10.318Z",
+        "checked": 2000,
+        "fetch_reservations": 2000,
+        "maximum_candidates": 2000,
+        "status": "paused",
+        "expires_at": "2026-10-08T17:13:24.653Z",
+        "stop_reason": "bounded_run_complete",
+        "imported": 188,
+        "held": 1812,
+        "linked_distinct_entities": 188,
+        "current_ready": 181,
+        "prior_report": {
+          "run_id": "catalogue_91b978c9-7e33-4f39-98a5-ec5adf6f98c6",
+          "as_of": "2026-10-08T13:36:24.418Z",
+          "checked": 2000,
+          "fetch_reservations": 2000,
+          "maximum_candidates": 2000,
+          "stop_reason": "bounded_run_complete",
+          "imported": 188,
+          "held": 1812,
+          "linked_distinct_entities": 188,
+          "ready_at_that_report": 181,
+          "ready_by_country_at_that_report": {
+            "US": 181
+          },
+          "source_mutations": 0,
+          "identity_mutations": 0,
+          "paid_queries_added": 0,
+          "coverage": [
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-au-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 250,
+              "offset": 0,
+              "candidates_in_page": 250
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-nz-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 45,
+              "offset": 0,
+              "candidates_in_page": 45
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-uk-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 54,
+              "offset": 0,
+              "candidates_in_page": 54
+            },
+            {
+              "source_url": "https://localstalls.com/sitemaps/events-us-1.xml",
+              "coverage": "complete_document",
+              "routes_observed": 0,
+              "offset": 0,
+              "candidates_in_page": 0
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 0,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 1000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 1500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 2000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 2500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 3000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 3500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 4000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 4500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 5000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 5500,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 6000,
+              "candidates_in_page": 500
+            },
+            {
+              "source_url": "https://www.eventeny.com/sitemap/event_elements.xml",
+              "coverage": "bounded_prefix_only",
+              "routes_observed": 6727,
+              "offset": 6500,
+              "candidates_in_page": 227
+            }
+          ]
+        }
+      }
+    ],
+    "total_fetch_reservations": 4632,
+    "completed_outcomes": 4631,
+    "held_discoveries": 3701,
+    "imported_receipts": 930,
+    "distinct_linked_entities": 930,
+    "current_ready_linked_entities": 877,
+    "held_reason_counts": {
+      "application_deadline_passed": 3130,
+      "application_closed": 3123,
+      "stale_edition": 2658,
+      "trader_application_purpose_not_proved": 282,
+      "application_restricted_audience_requires_review": 275,
+      "verified_venue_missing": 104,
+      "application_is_not_a_trader_opportunity": 101,
+      "open_vendor_application_not_proved": 93,
+      "sponsor_trading_entitlement_not_proved": 93,
+      "contradictory_application_deadline_after_event": 93,
+      "single_event_source_data_missing": 82,
+      "event_application_route_missing_or_ambiguous": 74,
+      "contradictory_heading_edition": 40,
+      "event_cancelled_or_postponed": 31,
+      "verified_country_missing": 29,
+      "waitlist_only": 24,
+      "event_content_scope_missing": 9,
+      "verified_organiser_missing": 7,
+      "contradictory_application_description_dates": 7,
+      "contradictory_event_dates": 1
+    },
+    "unsettled_custody": []
+  },
+  "practical_review": {
+    "selection": "Convenience source review: 20 catalogue READY and eight non-US READY, followed by heading-purpose audits and replay of all fresh Eventeny READY claims; not a population error-rate estimate.",
+    "confirmed_findings": [
+      "A young-entrepreneur application explicitly limited to ages 21 and under.",
+      "A 2027 application whose own description asserted 2026 event dates.",
+      "A chalk-artist participation application without a trading pitch.",
+      "A business-relocation financial grant labelled Commercial.",
+      "A paid-musician form containing incidental food-truck words.",
+      "Candy-handout participation and shopping-centre merchant-only forms."
+    ],
+    "retained_policy_replay": 1233,
+    "identity_parent_documents_reviewed": 4,
+    "heading_purpose_replay": {
+      "documents": 20,
+      "held": 6,
+      "source_visits": 0,
+      "added_facts": 0
+    }
+  },
+  "current_nonready_reason_counts": {
+    "single_event_source_data_missing": 206,
+    "selected_application_state_disagrees_with_proof": 121,
+    "verified_venue_missing": 99,
+    "open_vendor_application_not_proved": 94,
+    "event_application_route_missing_or_ambiguous": 63,
+    "source_http_520": 58,
+    "contradictory_application_deadline_after_event": 58,
+    "trader_application_purpose_not_proved": 46,
+    "event_identity_not_bound_to_page": 41,
+    "application_deadline_passed": 37,
+    "application_closed": 37,
+    "selected_application_deadline_disagrees_with_proof": 35,
+    "event_content_scope_missing": 35,
+    "social_page_is_discovery_only": 32,
+    "application_is_not_a_trader_opportunity": 31,
+    "selected_organiser_disagrees_with_proof": 31,
+    "application_restricted_audience_requires_review": 29,
+    "source_parent_event_binding_required": 17,
+    "platform_index_is_not_an_opportunity": 16,
+    "selected_event_name_disagrees_with_proof": 16,
+    "stale_edition": 15,
+    "sponsor_trading_entitlement_not_proved": 15,
+    "selected_event_start_disagrees_with_proof": 13,
+    "editorial_page_is_discovery_only": 12,
+    "vendor_application_not_proved": 12,
+    "selected_location_disagrees_with_proof": 10,
+    "contradictory_heading_edition": 9,
+    "waitlist_only": 7,
+    "event_cancelled_or_postponed": 6,
+    "selected_event_end_disagrees_with_proof": 5,
+    "source_country_market_mismatch": 5,
+    "verified_organiser_missing": 5,
+    "contradictory_application_description_dates": 3,
+    "invalid_structured_source_data": 2,
+    "source_fetch_failed": 2,
+    "source_edition_identity_mismatch": 2,
+    "contradictory_event_name_edition": 2,
+    "source_http_403": 1,
+    "verified_country_missing": 1,
+    "source_response_size_limit": 1,
+    "source_redirect_loop": 1
+  },
+  "integrity": {
+    "original_receipts_compared": 8366,
+    "original_source_facts_compared": 63960,
+    "destructive_source_mutations": 0,
+    "identity_attribute_mutations": 0,
+    "missing_original_entities": 0,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "source_document_protection": "Update/delete rejected by immutable D1 triggers; no full pre-task raw-document digest baseline was retained.",
+    "customer_route_checks": [
+      {
+        "role": "reconcile",
+        "customer_route_status": 403
+      },
+      {
+        "role": "eligibility",
+        "customer_route_status": 403
+      },
+      {
+        "role": "enrichment",
+        "customer_route_status": 403
+      },
+      {
+        "role": "readiness",
+        "customer_route_status": 403
+      },
+      {
+        "role": "watch",
+        "customer_route_status": 403
+      },
+      {
+        "role": "acquisition",
+        "customer_route_status": 403
+      },
+      {
+        "role": "api",
+        "customer_route_status": 403
+      },
+      {
+        "role": "ingest",
+        "customer_route_status": 403
+      }
+    ],
+    "v2_accesses_this_work": 0
+  },
+  "queue": {
+    "due_by_stage": [],
+    "failed_by_stage": []
+  },
+  "controls": {
+    "mode": "shadow",
+    "publication_enabled": false,
+    "cutover_enabled": false,
+    "serper_bulk_enabled": false,
+    "additional_serper_queries": 0,
+    "serper_limits": {
+      "queries_per_run": 4,
+      "queries_per_hour": 100,
+      "queries_per_day": 1000,
+      "credits_per_run": 4,
+      "credits_per_hour": 100,
+      "credits_per_day": 1000
+    },
+    "source_led_policy": {
+      "id": 1,
+      "daily_query_limit": 25,
+      "queries_per_market": 5,
+      "manual_paused": 1,
+      "pause_reason": "shadow_http_400_source_led_programme_not_active",
+      "updated_at": "2026-10-07T16:03:30.241Z"
+    },
+    "standing_catalogue_scheduler": false,
+    "free_catalogue_max_fetch_reservations_per_run": 2000,
+    "free_catalogue_grant_hours": 6,
+    "free_source_marginal_yield_stop": {
+      "minimum_total_outcomes": 500,
+      "recent_visits": 200,
+      "minimum_ready": 2
+    }
+  },
+  "structured_delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": null,
+    "recent_poll_intervals_seconds": [],
+    "host_recently_contacting": false,
+    "cadence_verified": false,
+    "freshness_warning": true,
+    "immutable_receipts": 888,
+    "producer_ids": 887,
+    "last_new_receipt_at": "2026-10-06T13:44:51.925Z",
+    "source_last_checked": "2026-10-05T11:49:36Z",
+    "interpretation": "Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls are excluded."
+  },
+  "verification": {
+    "application_policy": "current-application-v1.10",
+    "ttl_hours": 24,
+    "limits": "Retained replay never renews freshness or replaces facts; stronger repairs use normal authority/CAS evidence selection.",
+    "final_role_policy_replay": {
+      "documents": 1557,
+      "held": 17,
+      "source_visits": 0,
+      "added_facts": 0
+    },
+    "named_event_edition_review": {
+      "candidates": 4,
+      "multi_year_ranges_retained": 3,
+      "conflicting_single_edition_held": 1
+    }
+  },
+  "recovery": {
+    "interrupted_request": "Expired uncommitted lease cleared while paused; reviewed resume retained the original cap, reservations and expiry. Exact cause of earlier generic HTTP 400 responses was not observable.",
+    "hardening": "Budget-reservation response errors clear only their own uncommitted lease and pause; uncertain committed reservations are retained. Safe diagnostic classes exclude SQL, source payloads and credentials."
+  },
+  "validation": {
+    "v3_tests_passed": 142,
+    "failed": 0,
+    "runtime": "Native workerd/D1/queues and concurrent Serper-budget protection included.",
+    "hundred_row_control_destructive_mutations": 0,
+    "owned_shadow_roles_deployed": 8,
+    "boundaries_check": "passed"
+  },
+  "recommendation": {
+    "paid_daily_limit_now": 0,
+    "commercial_hard_cap_retained": 25,
+    "next_highest_value_task": "Unlock official non-US organiser/application sources and structured-host delivery; use clean source-specific proof holdouts before another paid pilot.",
+    "caveat": "READY counts application-opportunity entities, not unique events. Exact event-field groups are advisory. International coverage is limited; large Eventeny catalogue coverage is a bounded prefix, not a full census. Zero extra Serper excludes infrastructure/source-fetch costs."
+  }
+}

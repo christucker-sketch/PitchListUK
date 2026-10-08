@@ -8,8 +8,11 @@ export async function shadowContext({credentialsFile,stateDirectory}) {
   const api=cloudflareClient(readCredentials(credentialsFile)),db=await openRemoteD1(api,state),fetcher=proxyFetch();
   async function call(role,route,body,{ingest=false}={}) {
     if(!state.urls[role]||!route.startsWith('/')||route.startsWith('//'))throw Error('owned_shadow_route_required');
-    const response=await fetcher(state.urls[role]+route,{method:body===undefined?'GET':'POST',headers:{Authorization:'Bearer '+(ingest?secrets.V3_INGEST_TOKEN:secrets.V3_OPERATOR_TOKEN),'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(90000)});
-    const data=await response.json();if(!response.ok)throw Error('shadow_http_'+response.status+'_'+(/^[a-z0-9_]+$/.test(data.error??'')?data.error:'request_failed'));return data;
+    let response;
+    try{response=await fetcher(state.urls[role]+route,{method:body===undefined?'GET':'POST',headers:{Authorization:'Bearer '+(ingest?secrets.V3_INGEST_TOKEN:secrets.V3_OPERATOR_TOKEN),'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(90000)});}
+    catch(e){throw Error(['TimeoutError','AbortError'].includes(e.name)?'shadow_fetch_timeout_'+role:'shadow_fetch_failed_'+role);}
+    let data;try{data=await response.json();}catch{throw Error('shadow_invalid_json_'+role+'_'+response.status);}
+    if(!response.ok){const error=Error('shadow_http_'+response.status+'_'+(/^[a-z0-9_]+$/.test(data.error??'')?data.error:'request_failed'));if(/^[a-z0-9_]{1,40}$/.test(data.diagnostic_code??''))error.diagnostic_code=data.diagnostic_code;throw error;}return data;
   }
   return {state,db,api,call,fetcher,ingestToken:secrets.V3_INGEST_TOKEN};
 }

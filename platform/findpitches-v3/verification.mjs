@@ -3,7 +3,7 @@ import {parseHtml,nodes,first,text,hasClass,decode} from './source-dom.mjs';
 import {safeSourceUrl} from './source-document.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
-export const APPLICATION_POLICY_VERSION='current-application-v1.2';
+export const APPLICATION_POLICY_VERSION='current-application-v1.10';
 const COUNTRIES={us:'US',usa:'US','united states':'US','united states of america':'US',gb:'GB',uk:'GB','united kingdom':'GB',au:'AU',australia:'AU',ca:'CA',canada:'CA',nz:'NZ','new zealand':'NZ',ie:'IE',ireland:'IE',fr:'FR',france:'FR',de:'DE',germany:'DE',kr:'KR','south korea':'KR'};
 const TYPES=new Set(['Event','Festival','BusinessEvent','ExhibitionEvent','SaleEvent']);
 const clean=v=>decode(String(v??'')).replace(/\s+/g,' ').trim();
@@ -16,6 +16,11 @@ export function calendarDate(v) {
 function route(v,base) {try {const u=new URL(v,base);if(!safeSourceUrl(u.href))return null;for(const k of [...u.searchParams.keys()])if(/^(?:utm_|srsltid|aff|fbclid)/i.test(k))u.searchParams.delete(k);u.hash='';return u.href;}catch{return null;}}
 function sameRoute(a,b){return route(a,a)===route(b,b)&&Boolean(route(a,a));}
 function vendorId(v){try {const u=new URL(v);return /(?:^|\.)eventeny\.com$/.test(u.hostname)&&u.pathname==='/events/vendor/'?u.searchParams.get('id'):null;}catch{return null;}}
+export function eventenyParentId(value) {try{const u=new URL(value);return /(?:^|\.)eventeny\.com$/.test(u.hostname)?u.pathname.match(/^\/events\/[^/]+-(\d+)\/?$/)?.[1]??null:null;}catch{return null;}}
+export function provedEventSourceUrl(report) {
+  if(report.event_source_url)return report.event_source_url;
+  try{return JSON.parse(report.evidence?.find(e=>e.kind==='event_json_ld')?.excerpt??'null')?.url??null;}catch{return null;}
+}
 function flatten(data,out=[]) {if(Array.isArray(data))for(const x of data)flatten(x,out);else if(data&&typeof data==='object'){out.push(data);if(data['@graph'])flatten(data['@graph'],out);}return out;}
 function eventShape(e) {
   const address=e.location?.address??{},org=e.organizer??e.organiser;
@@ -23,16 +28,75 @@ function eventShape(e) {
     organiser:clean(typeof org==='string'?org:org?.name)||null,event_start:calendarDate(e.startDate),event_end:calendarDate(e.endDate)||calendarDate(e.startDate),
     street:clean(address.streetAddress),locality:clean(address.addressLocality),event_url:e.url??null};
 }
+function eventNameEditionConflict(facts) {
+  if(!facts.event_start)return false;
+  const start=facts.event_start.slice(0,4),end=(facts.event_end??facts.event_start).slice(0,4);
+  return [...String(facts.event_name??'').matchAll(/\b(20\d{2})\b/g)].some(m=>m[1]<start||m[1]>end);
+}
 const explicitState=s=>/^(?:join (?:the )?waitlist|waitlist(?: only)?|applications? (?:are )?waitlist only)$/i.test(clean(s))?'WAITLIST':/^(?:applications? (?:are )?closed|sold out|fully booked|applications? (?:are )?not open)$/i.test(clean(s))?'CLOSED':null;
 export function applicationScope(report) {
   const heading=report.application_heading??report.evidence?.find(e=>e.kind==='main_heading')?.excerpt??'';
   if(report.profile!=='eventeny')return {heading,audience:'traders',reasons:[]};
-  if(/\b(?:performer|entertainer|entertainment|volunteer)\b/i.test(heading)||/^rental application\b/i.test(heading)||/\bparade application\b/i.test(heading)||/\bstop registration\b/i.test(heading))return {heading,audience:'non_trader',reasons:['application_is_not_a_trader_opportunity']};
-  const members=/\bchamber (?:of commerce )?members?\b|\bmembers? only\b|\b(?:invitation|invite) only\b|\b(?:returning|existing) vendors? only\b/i.test(heading);
+  const description=report.application_scope_proof?.application_description??report.application_scope_proof?.evidence?.find(e=>e.kind==='application_description')?.excerpt??'';
+  const role=report.application_scope_proof?.application_role??applicationRole(description,heading);
+  if(['performer','treat_stop'].includes(role))return {heading,audience:'non_trader',reasons:['application_is_not_a_trader_opportunity']};
+  const assertions=report.application_scope_proof?.event_date_assertions??applicationDateAssertions(description),facts=report.facts??{};
+  if(assertions.some(date=>!calendarDate(date)||facts.event_start&&date<facts.event_start||facts.event_end&&date>facts.event_end))return {heading,audience:'uncertain_edition',reasons:['contradictory_application_description_dates']};
+  if(/\byoung entrepreneurs?\b|\byouth (?:vendors?|entrepreneurs?)\b/i.test(heading)||report.application_scope_proof?.age_restricted||ageRestricted(description))return {heading,audience:'restricted_age',reasons:['application_restricted_audience_requires_review']};
+  if(/\b(?:performers?|performances?|entertainers?|entertainment|volunteers?)\b/i.test(heading)||/^rental application\b/i.test(heading)||/\bparade (?:application|registration|entry)\b/i.test(heading)||/\bstop registration\b/i.test(heading)
+    ||/\b(?:hockey|sports?|adult) league\b|\b(?:rib|cook.?off|competition) team registration\b|\b(?:radio|advertising|advertisement|ad) (?:opportunity|application|package|space|ads?)\b|\b(?:sponsor|sponsorship) (?:application|registration|package)\b|\b(?:chalk artists?|grants?|scholarships?|relocation assistance)\b/i.test(heading))return {heading,audience:'non_trader',reasons:['application_is_not_a_trader_opportunity']};
+  const members=/\bchamber (?:of commerce )?members?\b|\bmembers? only\b|\bmerchants? only\b|\b(?:invitation|invite) only\b|\b(?:returning|existing) vendors? only\b/i.test(heading);
   if(members&&!/\bnon[ -]?members?\b|\bdiscount\b/i.test(heading))return {heading,audience:'restricted_membership',reasons:['application_restricted_audience_requires_review']};
-  const nonprofit=/\b(?:non[ -]?profits?|charit(?:y|ies|able))\b/i.test(heading),mixed=/\bcommercial\b|\bbusiness(?:es)?\s*\/\s*non[ -]?profits?\b/i.test(heading);
+  const nonprofit=/\b(?:non[ -]?profits?|charit(?:y|ies|able))\b/i.test(heading),mixed=nonprofit&&/\bcommercial\b/i.test(heading)||/\bbusiness(?:es)?\s*\/\s*non[ -]?profits?\b/i.test(heading);
   if(nonprofit&&!mixed)return {heading,audience:'nonprofit_only',reasons:['application_restricted_audience_requires_review']};
+  if(report.application_scope_proof?.restricted_audience)return {heading,audience:'restricted_membership',reasons:['application_restricted_audience_requires_review']};
+  if(/\b(?:sponsors?|sponsorship|advertisers?)\b/i.test(heading)&&!report.application_scope_proof?.guaranteed_vendor_space)return {heading,audience:'conditional_sponsor',reasons:['sponsor_trading_entitlement_not_proved']};
+  // A platform vendor URL also hosts sports registration, advertising and other
+  // forms. Prove trading purpose in this application's heading/description.
+  const titleProof=/\b(?:vendors?|traders?|stallholders?|exhibitors?|artisans?|crafters?|merchants?|retail|vending|sellers?|food (?:vendors?|trucks?|booths?))\b/i.test(heading);
+  if(!titleProof&&!mixed&&!report.application_scope_proof?.trader_application)return {heading,audience:'unproved',reasons:['trader_application_purpose_not_proved']};
   return {heading,audience:nonprofit?'commercial_and_nonprofit':'traders',reasons:[]};
+}
+function ageRestricted(description) {
+  return /\b(?:aged?|ages?)\s+\d{1,2}\s+(?:and|or) (?:under|younger)\b|\b(?:applicants?|vendors?|participants?) (?:must be|are required to be) (?:under|younger than) \d{1,2}\b/i.test(description);
+}
+function applicationRole(description,heading) {
+  if(/\b(?:performers?|performances?)\b/i.test(heading))return 'performer';
+  const selling=description.split(/[.!?]/).some(s=>!/\b(?:may not|must not|cannot|do not|no selling|prohibited)\b/i.test(s)&&/\bsell(?:ing)? (?:your |their |handmade )?(?:products?|goods?|food)\b/i.test(s));
+  if(!selling&&/\bprimary role\b[^.!?]{0,80}\bhand out candy\b/i.test(description))return 'treat_stop';
+  return 'not_stated';
+}
+function applicationDateAssertions(description) {
+  const dates=[];
+  // Only explicit event-date assertions in this application's own description.
+  // Historical years, photo requirements and dates elsewhere on the page do
+  // not create a conflict. Partial dates cannot supply an inferred year.
+  for(const clause of description.matchAll(/\b(?:will (?:be held|take place)|takes? place|held on|scheduled for)\b[^.!?]{0,300}/gi)) {
+    for(const m of clause[0].matchAll(/\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\s+(\d{1,2})(?:st|nd|rd|th)?\s*,?\s+(20\d{2})\b/gi)) {
+      const date=new Date(m[1]+' '+m[2]+', '+m[3]+' 12:00:00 UTC');
+      if(Number.isFinite(date.getTime()))dates.push(date.getUTCDate()===Number(m[2])?date.toISOString().slice(0,10):'invalid_explicit_date');
+    }
+  }
+  return [...new Set(dates)].slice(0,50);
+}
+
+function eventenyScopeProof(main,heading) {
+  const section=label=>{
+    const blocks=nodes(main,n=>['div','section','article'].includes(n.tag)&&text(first(n,x=>x.tag==='h2',{scoped:true}))===label,{scoped:true});
+    const candidates=blocks.filter(n=>nodes(n,x=>x.tag==='h2',{scoped:true}).length===1).map(n=>text(n)).filter(s=>s!==label);
+    return candidates.sort((a,b)=>b.length-a.length)[0]??'';
+  };
+  const description=section('About the application'),prices=section('Prices');
+  // A contact mailbox or URL containing “vendors” is not proof of a pitch.
+  const scopeText=(description+' '+prices).replace(/\b[\w.%+-]+@[\w.-]+\.[a-z]{2,}\b/gi,' ').replace(/https?:\/\/\S+/gi,' ');
+  const restricted=/\b(?:must be (?:an? )?(?:active |current )?(?:chamber |association )?member|(?:active |current )?chamber members? only|members? only|invitation only|invite only|(?:returning|existing) vendors? only|non[ -]?profits? only|charit(?:y|ies) only)\b/i.test(description);
+  const sellingArt=scopeText.split(/[.!?]/).some(sentence=>!/\b(?:not allowed|may not|must not|cannot|do not|don't|no selling|prohibited|banned)\b/i.test(sentence)
+    &&/\bsell(?:ing)? (?:your |their |handmade |unique )*(?:art(?:work)?|work|creations)\b|\b(?:work|artwork|creations) (?:you|they|artists?) (?:(?:would|will) (?:like |want )?to |can |may )sell\b/i.test(sentence));
+  const artistTables=/\bartist'?s? alley (?:tables?|spaces?|booths?)\b/i.test(description)&&/\b(?:pricing|price|cost|fee)\b|\$\d/i.test(scopeText);
+  const trade=sellingArt||artistTables||/\b(?:vendors?|traders?|stallholders?|exhibitors?|artisans?|crafters?|merchants?|retail|vending|sellers?|booth(?:s| space)?|sell(?:ing)? (?:your |their |handmade )?(?:products?|goods?|food)|food trucks?)\b/i.test(scopeText);
+  const guaranteed=scopeText.split(/[.!?]/).some(sentence=>!/\b(?:may|might|possible|potential|optional)\b/i.test(sentence)&&/\b(?:includes?|provides?|receive|will have|are allocated)\b[^.!?]{0,200}\b(?:vendor|trader|stallholder|exhibitor|retail) (?:space|booth|stall|pitch|table)\b/i.test(sentence));
+  return {version:'eventeny-trading-purpose-v5',application_role:applicationRole(description,heading),trader_application:trade,restricted_audience:restricted,age_restricted:ageRestricted(description),event_date_assertions:applicationDateAssertions(description),guaranteed_vendor_space:guaranteed,
+    evidence:[...description?[{kind:'application_description',excerpt:description.slice(0,16000)}]:[],...prices?[{kind:'application_prices',excerpt:prices.slice(0,8000)}]:[]]};
 }
 
 // Discovery metadata (including search market/city) is deliberately absent from parsing.
@@ -65,6 +129,9 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
     else identity=Boolean(heading&&token(heading)===token(event.name)&&sameRoute(event.url??document.url,document.url));
     if(!identity){report.status='quarantine';report.page_kind='unrelated_event';report.reasons.push('event_identity_not_bound_to_page');return report;}
     report.page_kind='event';report.facts=facts;report.evidence.push({kind:'event_json_ld',excerpt:stableJson(event).slice(0,14000)},{kind:'main_heading',excerpt:heading});
+    report.event_source_url=event.url?route(event.url,document.url):null;
+    if(report.profile==='eventeny'&&vendorId(document.requested_url)!==vendorId(document.url))report.reasons.push('source_application_identity_mismatch');
+    if(report.profile==='eventeny')report.application_scope_proof=eventenyScopeProof(main,heading);
     const scope=applicationScope(report);report.application_heading=scope.heading;report.application_audience=scope.audience;report.reasons.push(...scope.reasons);
     const address=event.location?.address??{};
     if(!facts.country)report.reasons.push('verified_country_missing');
@@ -72,6 +139,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
     if(!facts.event_start)report.reasons.push('verified_event_date_missing');
     if(!facts.organiser||/^(?:eventeny|localstalls|ukcraftfairs|eventbrite|marketspread)$/i.test(facts.organiser))report.reasons.push('verified_organiser_missing');
     if(facts.event_start&&facts.event_end&&facts.event_start>facts.event_end)report.reasons.push('contradictory_event_dates');
+    if(eventNameEditionConflict(facts))report.reasons.push('contradictory_event_name_edition');
     if(facts.event_start&&[...heading.matchAll(/\b(20\d{2})\b/g)].some(m=>m[1]!==facts.event_start.slice(0,4)&&m[1]!==facts.event_end?.slice(0,4)))report.reasons.push('contradictory_heading_edition');
     if(/Event(?:Cancelled|Postponed)/.test(String(event.eventStatus??'')))report.reasons.push('event_cancelled_or_postponed');
     if(facts.event_end&&facts.event_end<now.slice(0,10))report.reasons.push('stale_edition');
@@ -125,6 +193,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
       report.reasons.push('vendor_application_not_proved');
       if(report.profile==='ukcraftfairs'&&/contact (?:the )?organiser/i.test(body))facts.application_state='ENQUIRY_AVAILABLE';
     }
+    if(facts.application_deadline&&facts.event_end&&facts.application_deadline>facts.event_end)report.reasons.push('contradictory_application_deadline_after_event');
     if(facts.application_deadline&&facts.application_deadline<now.slice(0,10)){facts.application_state='CLOSED';report.reasons.push('application_deadline_passed');}
     if(facts.application_state!=='OPEN_NOW')report.reasons.push(state==='WAITLIST'?'waitlist_only':facts.application_state==='CLOSED'?'application_closed':'open_vendor_application_not_proved');
     report.reasons=[...new Set(report.reasons)];
@@ -135,6 +204,12 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
 
 export function compareProof(entity,report) {
   const reasons=[];const f=report.facts;
+  if(eventNameEditionConflict(f))reasons.push('contradictory_event_name_edition');
+  const expected=eventenyParentId(entity.canonical_url),observed=eventenyParentId(provedEventSourceUrl(report));
+  if(expected&&expected!==observed)reasons.push(observed?'source_parent_event_identity_mismatch':'source_parent_event_binding_required');
+  // This also protects current inventory backed by an older parser report.
+  // Retain the source's anomalous date; never invent a corrected deadline.
+  if(f.application_deadline&&f.event_end&&f.application_deadline>f.event_end)reasons.push('contradictory_application_deadline_after_event');
   if(f.country&&f.country!==entity.market)reasons.push('source_country_market_mismatch');
   if(f.event_start&&entity.edition&&entity.edition!=='unknown'&&/^\d{4}$/.test(entity.edition)&&entity.edition!==f.event_start.slice(0,4))reasons.push('source_edition_identity_mismatch');
   for(const key of ['event_name','organiser','event_start','event_end'])if(f[key]&&entity[key]&&(key.startsWith('event_')&&key!=='event_name'?calendarDate(f[key])!==calendarDate(entity[key]):token(f[key])!==token(entity[key])))reasons.push('selected_'+key+'_disagrees_with_proof');

@@ -1,6 +1,17 @@
 import {commercialStatus} from './commercial.mjs';
-import {verifyEntitySource,verificationGate,verificationStatus} from './verification-store.mjs';
+import {fetchCatalogueDocument} from './source-catalogue.mjs';
+import {startCatalogueRun,resumeReviewedCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,stopCatalogueRun,catalogueStatus} from './catalogue-store.mjs';
+import {verifyEntitySource,reverifyRetainedSource,verificationGate,verificationStatus} from './verification-store.mjs';
 import { hash } from './contract.mjs';
+export function safeFailureCode(error) {
+  const message=String(error?.message??'');
+  if(/SQLITE_(?:BUSY|LOCKED)|\b(?:locked|busy|overloaded)\b/i.test(message))return 'database_busy';
+  if(/too many sql variables/i.test(message))return 'sql_parameter_limit';
+  if(/too many (?:api requests|queries|subrequests)/i.test(message))return 'worker_request_limit';
+  if(/SQLITE_CONSTRAINT/i.test(message))return 'sqlite_constraint';
+  if(/SQLITE_ERROR/i.test(message))return 'sqlite_error';
+  return {TypeError:'type_error',ReferenceError:'reference_error',SyntaxError:'syntax_error',TimeoutError:'timeout',AbortError:'aborted'}[error?.name]??'runtime_error';
+}
 import { ingestRecords,sql,loadEntity } from './store.mjs';
 import { runStage,enrichEntity } from './pipeline.mjs';
 import { enqueue,requeueDead } from './jobs.mjs';
@@ -50,7 +61,7 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
   const values=[[],[],[],[],[],[new Date(Date.parse(now)-3600000).toISOString()],[now],[],[budgetDay(now)],[]];
   const results=await Promise.all(queries.map((q,i)=>sql(db,q,...values[i]).all()));
   const [producers,jobs,entities,readiness,gates,throughput,leases,conflicts,cost,leakage]=results.map(r=>r.results);
-  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial:await commercialStatus(db,now)};
+  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),free_source_discovery:await catalogueStatus(db),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial:await commercialStatus(db,now)};
 }
 export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
   if(!stage||!queue)return;
@@ -99,6 +110,15 @@ export default {
       if(request.method==='POST'&&path==='/source-led/run'&&role==='acquisition')return json(await executeSourceLed(db,(await bodyJson(request)).run_id,env));
       if(request.method==='POST'&&path==='/source-led/stop'&&role==='acquisition') {const body=await bodyJson(request);await stopSourceLed(db,body.programme_id,body.reason??'operator_stop');return json({paused:true});}
       if(request.method==='POST'&&path==='/source-led/verify'&&role==='enrichment')return json(await verifySourceLedCandidate(db,(await bodyJson(request)).candidate_id));
+      if(request.method==='POST'&&path==='/catalogue/start'&&role==='enrichment')return json(await startCatalogueRun(db,await bodyJson(request)),201);
+      if(request.method==='POST'&&path==='/catalogue/resume'&&role==='enrichment')return json(await resumeReviewedCatalogueRun(db,await bodyJson(request)));
+      if(request.method==='POST'&&path==='/catalogue/discover'&&role==='enrichment')return json(await discoverCataloguePage(db,await bodyJson(request)));
+      if(request.method==='POST'&&path==='/catalogue/verify'&&role==='enrichment') {
+        const result=await verifyCatalogueCandidate(db,(await bodyJson(request)).candidate_id);
+        ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result);
+      }
+      if(request.method==='POST'&&path==='/catalogue/recover'&&role==='enrichment')return json(await recoverUncommittedCatalogueLease(db,(await bodyJson(request)).candidate_id));
+      if(request.method==='POST'&&path==='/catalogue/stop'&&role==='enrichment') {const body=await bodyJson(request);await stopCatalogueRun(db,body.run_id,body.reason??'operator_stopped');return json({paused:true});}
       if(request.method==='POST'&&path==='/imports'&&role==='ingest') {
         const body=await bodyJson(request);
         const result=await ingestRecords(db,body.records,{producer:'independent-structured',environment:body.environment??'shadow'});
@@ -122,9 +142,20 @@ export default {
         await enqueue(db,'readiness',result.verification_id,{entity_id:body.entity_id});
         ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result);
       }
+      if(request.method==='POST'&&path==='/verification/replay'&&role==='enrichment') {
+        const body=await bodyJson(request),result=await reverifyRetainedSource(db,body.entity_id);
+        await enqueue(db,'readiness',result.verification_id,{entity_id:body.entity_id});
+        ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result);
+      }
       if(request.method==='POST'&&path==='/verification/document'&&role==='enrichment') {
         const body=await bodyJson(request);if(typeof body.url!=='string')throw Error('original_source_url_required');
         return json(await fetchSourceDocument(body.url));
+      }
+      if(request.method==='POST'&&path==='/catalogue/document'&&role==='enrichment') {
+        return json(await fetchCatalogueDocument((await bodyJson(request)).url));
+      }
+      if(request.method==='POST'&&path==='/catalogue/settle'&&role==='enrichment') {
+        return json(await settleCommittedCatalogueReceipt(db,(await bodyJson(request)).candidate_id));
       }
       if(request.method==='GET'&&path==='/rechecks'&&role==='ingest') {
         if(url.searchParams.get('probe')!=='1')await noteDeliveryContact(db,{kind:'rechecks'});
@@ -195,7 +226,7 @@ export default {
       return json({error:'route_not_found'},404);
     } catch(error) {
       const known=/^[a-z][a-z0-9_:\-]+$/.test(error.message)?error.message:'request_failed';
-      return json({error:known},known==='request_size_limit'?413:400);
+      return json({error:known,diagnostic_code:safeFailureCode(error)},known==='request_size_limit'?413:400);
     }
   },
   async scheduled(_event,env,ctx) {

@@ -7,7 +7,7 @@ export async function ingestRecords(db,records,{producer='independent-structured
   if(!['shadow','test'].includes(environment))throw new Error('shadow_or_test_required');
   if(!PRODUCERS[producer])throw new Error('unknown_producer');
   if(!Array.isArray(records)||records.length<1||records.length>100)throw new Error('batch_size_1_to_100_required');
-  if(['city-search','legacy_v2'].includes(producer)) {
+  if(producer!=='independent-structured') {
     const gate=await sql(db,"SELECT name FROM quality_gates WHERE name='structured-100-preservation' AND tested_records=100 AND destructive_mutations=0").first();
     if(!gate)throw new Error('structured_preservation_gate_required');
   }

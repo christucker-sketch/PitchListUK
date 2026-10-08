@@ -18,7 +18,9 @@ test('an Eventeny vendor endpoint never proves performer/rental/nonprofit-only c
     const doc=documentFixture();doc.html=doc.html.replace('Vendor Application | 2026',heading);
     const report=verifyDocument(doc,{now:NOW});assert.equal(report.status,'partial',heading);assert.equal(report.facts.application_state,'OPEN_NOW','Source availability remains factual');assert.ok(applicationScope(report).reasons.length);
   }
-  for(const heading of ['Food Vendor Parade Participant','Sponsor Vendor Application','Business/Non Profits','Commercial Booth/Non-Profit Application','Vendor Application'])assert.equal(applicationScope({profile:'eventeny',application_heading:heading}).reasons.length,0,heading);
+  for(const heading of ['Food Vendor Parade Participant','Business/Non Profits','Commercial Booth/Non-Profit Application','Vendor Application'])assert.equal(applicationScope({profile:'eventeny',application_heading:heading}).reasons.length,0,heading);
+  assert.ok(applicationScope({profile:'eventeny',application_heading:'Sponsor Vendor Application'}).reasons.includes('sponsor_trading_entitlement_not_proved'));
+  assert.equal(applicationScope({profile:'eventeny',application_heading:'Sponsor Vendor Application',application_scope_proof:{guaranteed_vendor_space:true}}).reasons.length,0);
 });
 test('old scope-blind verified receipts are withheld without rewriting their proof or source facts',async t=>{
   const db=database(t),{entity}=await seed(db,record(),{environment:'shadow'}),doc=documentFixture();doc.html=doc.html.replace('Vendor Application | 2026','Entertainment Application');

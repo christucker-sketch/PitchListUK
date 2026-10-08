@@ -55,3 +55,25 @@ test('non-trader scope cannot inflate current inventory or first-READY growth fr
   await sql(db,"UPDATE readiness SET status='ready',evaluated_at=? WHERE entity_id=?",NOW,entity.id).run();
   const r=await commercialStatus(db,NOW);assert.equal(r.totals.ready,0);assert.equal(r.kpis.new_ready_today,0);assert.equal(r.kpis.previously_confirmed_ready,0);assert.equal(r.by_origin['independent-structured'].watch,1);
 });
+test('old anomalous deadline proof cannot inflate current READY or first-READY growth; historical evidence remains intact',async t=>{
+  const db=database(t),{entity}=await seed(db,record(),{environment:'shadow'});
+  const report={...JSON.parse(row({}).proof_json),profile:'eventeny',application_heading:'Vendor application',facts:{country:'US',application_url:entity.application_url,application_state:'OPEN_NOW',event_end:'2026-11-22',application_deadline:'2030-11-20'}};
+  await sql(db,"INSERT INTO source_documents VALUES ('old-dates',?,NULL,?,'{}')",entity.application_url,NOW).run();
+  await sql(db,"INSERT INTO source_verifications(id,entity_id,entity_revision,document_id,verifier_version,status,report_json,checked_at,expires_at) VALUES ('date-blind',?,?,'old-dates','source-proof-v1','verified',?,?,'2026-10-07T12:00:00.000Z')",entity.id,entity.revision,JSON.stringify(report),NOW).run();
+  await sql(db,"INSERT INTO readiness VALUES (?,?,'ready','[]','old-cache',?)",entity.id,entity.revision,NOW).run();
+  const r=await commercialStatus(db,NOW);assert.equal(r.totals.ready,0);assert.equal(r.kpis.new_ready_today,0);assert.equal(r.kpis.previously_confirmed_ready,0);assert.equal(r.by_origin['independent-structured'].quarantined,1);
+  assert.equal(JSON.parse((await sql(db,"SELECT report_json FROM source_verifications WHERE id='date-blind'").first()).report_json).facts.application_deadline,'2030-11-20');assert.equal((await sql(db,"SELECT COUNT(*) AS n FROM commercial_readiness_history WHERE verification_id='date-blind' AND status='ready'").first()).n,1);
+});
+test('commercial event grouping discloses multiple application opportunities without merging identity or origin attribution',()=>{
+  const facts={country:'US',event_name:'River Lantern Autumn Craft Market',event_start:'2026-11-21',event_end:'2026-11-22',organiser:'River Arts Association',location:'Austin, Texas',application_state:'OPEN_NOW'};
+  const a=row({proof_json:JSON.stringify({facts:{...facts,application_url:record().application_url},reasons:[]})});
+  const b=row({id:'second-route',origin:'platform-catalogue',fields_json:JSON.stringify({...record(),canonical_url:'https://www.eventeny.com/events/vendor/?id=2',application_url:'https://www.eventeny.com/events/vendor/?id=2'}),proof_json:JSON.stringify({facts:{...facts,application_url:'https://www.eventeny.com/events/vendor/?id=2'},reasons:[]})});
+  const r=inventoryFromRows([a,b],{now:NOW});assert.equal(r.totals.ready,2);assert.equal(r.ready_event_groups.distinct_exact_field_groups,1);assert.equal(r.ready_event_groups.multiple_application_groups,1);assert.equal(r.ready_event_groups.additional_application_entities,1);assert.equal(r.by_origin['platform-catalogue'].ready,1);
+});
+test('legacy scope metadata with an explicit conflicting edition in the application blocks READY and historical growth',async t=>{
+  const db=database(t),{entity}=await seed(db,record(),{environment:'shadow'}),report={profile:'eventeny',application_heading:'Vendor application',facts:{country:'US',event_start:'2026-11-21',event_end:'2026-11-22',application_url:entity.application_url,application_state:'OPEN_NOW'},reasons:[],application_scope_proof:{trader_application:true,evidence:[{kind:'application_description',excerpt:'This festival will be held November 21, 2025. Vendors may sell products.'}]}};
+  await sql(db,"INSERT INTO source_documents VALUES ('old-edition',?,NULL,?,'{}')",entity.application_url,NOW).run();
+  await sql(db,"INSERT INTO source_verifications(id,entity_id,entity_revision,document_id,verifier_version,status,report_json,checked_at,expires_at) VALUES ('edition-blind',?,?,'old-edition','source-proof-v1','verified',?,?,'2026-10-07T12:00:00.000Z')",entity.id,entity.revision,JSON.stringify(report),NOW).run();
+  await sql(db,"INSERT INTO readiness VALUES (?,?,'ready','[]','old-cache',?)",entity.id,entity.revision,NOW).run();
+  const r=await commercialStatus(db,NOW);assert.equal(r.totals.ready,0);assert.equal(r.totals.quarantined,1);assert.equal(r.kpis.new_ready_today,0);assert.equal(r.kpis.previously_confirmed_ready,0);
+});
