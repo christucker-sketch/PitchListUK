@@ -2,6 +2,7 @@ import {hash,stableJson} from './contract.mjs';
 import {sql,loadEntity} from './store.mjs';
 import {proposeFact} from './evidence.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
+import {fetchMyntBundle,myntVenueUrl} from './uk-sources.mjs';
 import {verifyDocument,compareProof,applicationScope,provedEventSourceUrl,eventenyParentId,VERIFIER_VERSION} from './verification.mjs';
 
 export function verificationUrl(entity) {
@@ -68,7 +69,9 @@ export async function recordVerification(db,entityId,document,{now=new Date().to
 export async function verifyEntitySource(db,entityId,{now=new Date().toISOString(),fetcher=fetch}={}) {
   const entity=await loadEntity(db,entityId);if(!entity||!['test','shadow'].includes(entity.environment))throw Error('shadow_entity_required');
   const original=verificationUrl(entity);if(!original)throw Error('entity_original_source_required');
-  const document=await fetchSourceDocument(original,{fetcher,now});
+  const document=entity.source_platform==='myntimage'&&myntVenueUrl(original)
+    ?await fetchMyntBundle(original,entity.source_identifier,{fetcher,now})
+    :await fetchSourceDocument(original,{fetcher,now});
   return recordVerification(db,entityId,document,{now});
 }
 export async function reverifyRetainedSource(db,entityId,{now=new Date().toISOString()}={}) {

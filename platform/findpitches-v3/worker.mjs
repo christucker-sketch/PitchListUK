@@ -1,6 +1,8 @@
 import {commercialStatus} from './commercial.mjs';
+import {startUKRun,discoverUKSource,importUKCandidate,stopUKRun,ukSourceStatus} from './uk-store.mjs';
+import {stagingReady} from './staging.mjs';
 import {fetchCatalogueDocument} from './source-catalogue.mjs';
-import {startCatalogueRun,resumeReviewedCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,stopCatalogueRun,catalogueStatus} from './catalogue-store.mjs';
+import {startCatalogueRun,resumeReviewedCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,adoptCommittedCatalogueReceipt,stopCatalogueRun,catalogueStatus} from './catalogue-store.mjs';
 import {verifyEntitySource,reverifyRetainedSource,verificationGate,verificationStatus} from './verification-store.mjs';
 import { hash } from './contract.mjs';
 export function safeFailureCode(error) {
@@ -101,9 +103,19 @@ export default {
     try {
       if(request.method==='GET'&&path==='/health') { await sql(db,'SELECT publication_enabled FROM runtime_policy WHERE id=1').first();return json({service:'findpitches-v3',role,ok:true,mode:'shadow',publication_enabled:false}); }
       if(request.method==='GET'&&path==='/status')return json(await status(db,{role}));
+      if(path==='/staging/ready') {
+        if(request.method!=='GET'||role!=='api')return json({error:'staging_read_only'},403);
+        if(!await authorized(request,env.V3_STAGING_TOKEN))return json({error:'authorization_required'},401);
+        return json(await stagingReady(db,{market:url.searchParams.get('market'),after:url.searchParams.get('after')??'',limit:Number(url.searchParams.get('limit')??50),region:url.searchParams.get('region'),location:url.searchParams.get('location')}));
+      }
       const ingest=path==='/imports'||path==='/rechecks'||path==='/rechecks/ack';
       if(!await authorized(request,ingest?env.V3_INGEST_TOKEN:env.V3_OPERATOR_TOKEN))return json({error:'authorization_required'},401);
       if(request.method==='GET'&&path==='/commercial'&&role==='api')return json(await commercialStatus(db));
+      if(request.method==='GET'&&path==='/uk/status')return json(await ukSourceStatus(db));
+      if(request.method==='POST'&&path==='/uk/start'&&role==='enrichment')return json(await startUKRun(db,await bodyJson(request)),201);
+      if(request.method==='POST'&&path==='/uk/discover'&&role==='enrichment')return json(await discoverUKSource(db,await bodyJson(request)));
+      if(request.method==='POST'&&path==='/uk/import'&&role==='enrichment')return json(await importUKCandidate(db,(await bodyJson(request)).candidate_id));
+      if(request.method==='POST'&&path==='/uk/stop'&&role==='enrichment'){const b=await bodyJson(request);await stopUKRun(db,b.run_id,b.reason??'operator_stopped');return json({paused:true});}
       if(request.method==='GET'&&path==='/source-led/status')return json(await sourceLedStatus(db));
       if(request.method==='POST'&&path==='/source-led/start'&&role==='acquisition')return json(await startSourceLed(db,await bodyJson(request)),201);
       if(request.method==='POST'&&path==='/source-led/next'&&role==='acquisition')return json(await scheduleSourceLed(db,(await bodyJson(request)).programme_id));
@@ -112,6 +124,7 @@ export default {
       if(request.method==='POST'&&path==='/source-led/verify'&&role==='enrichment')return json(await verifySourceLedCandidate(db,(await bodyJson(request)).candidate_id));
       if(request.method==='POST'&&path==='/catalogue/start'&&role==='enrichment')return json(await startCatalogueRun(db,await bodyJson(request)),201);
       if(request.method==='POST'&&path==='/catalogue/resume'&&role==='enrichment')return json(await resumeReviewedCatalogueRun(db,await bodyJson(request)));
+      if(request.method==='POST'&&path==='/catalogue/adopt-committed'&&role==='enrichment')return json(await adoptCommittedCatalogueReceipt(db,await bodyJson(request)));
       if(request.method==='POST'&&path==='/catalogue/discover'&&role==='enrichment')return json(await discoverCataloguePage(db,await bodyJson(request)));
       if(request.method==='POST'&&path==='/catalogue/verify'&&role==='enrichment') {
         const result=await verifyCatalogueCandidate(db,(await bodyJson(request)).candidate_id);

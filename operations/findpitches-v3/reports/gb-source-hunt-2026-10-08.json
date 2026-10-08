@@ -1,0 +1,118 @@
+{
+  "schema": "findpitches-v3-gb-source-hunt-v1",
+  "as_of": "2026-10-08",
+  "attempts": 162,
+  "distinct_observed_urls": 158,
+  "distinct_observed_domains": 72,
+  "outcomes": {
+    "document_retained": 108,
+    "source_response_size_limit": 2,
+    "source_http_403": 2,
+    "source_http_530": 30,
+    "source_http_404": 7,
+    "source_http_526": 1,
+    "unsafe_original_source_url": 3,
+    "source_http_520": 5,
+    "source_format_requires_review": 1,
+    "source_fetch_failed": 3
+  },
+  "definition": "Bounded research attempts, including failed and redirected requests. These are not commercial entities or certified READY; adapter HTTP visits have a separate immutable ledger.",
+  "families": [
+    {
+      "family": "Mynt Image",
+      "discovery_area": "England: cathedral/county/market towns, rural and coastal venues",
+      "domain": "myntimage.co.uk",
+      "venues_observed": 19,
+      "positive_future_capacity_rows_observed": 139,
+      "verified_ready_added": 123,
+      "disposition": "integrated source-specific dated-capacity + exact-form + venue-country adapter"
+    },
+    {
+      "family": "Folk & Bespoke",
+      "discovery_area": "England: regional arts/craft operator",
+      "domain": "folkandbespoke.com",
+      "specific_application_routes_observed": 16,
+      "verified_ready_added": 0,
+      "disposition": "highest-value next adapter; sampled real dated vendor booking forms, one explicit applications-now-open Christmas programme; forecast awaits current form/date/country checks"
+    },
+    {
+      "family": "Creative Crafts Association",
+      "discovery_area": "England with Wales/Scotland venues in retained programme",
+      "domain": "creativecrafts-online.co.uk",
+      "verified_ready_added": 0,
+      "disposition": "current public booking-checkbox programme; past and category variants must be excluded, one Arley row has reversed 2026/2025 dates"
+    },
+    {
+      "family": "CJS Events Warwickshire",
+      "discovery_area": "Warwickshire/town/county programmes",
+      "domain": "cjseventswarwickshire.co.uk",
+      "verified_ready_added": 0,
+      "disposition": "dated real events; general trader registration lacks current event-specific booking/open proof"
+    },
+    {
+      "family": "Event Owl / Dowse Events",
+      "discovery_area": "England towns/Christmas programmes",
+      "domain": "eventowl.co.uk",
+      "current_listing_routes_observed": 5,
+      "verified_ready_added": 0,
+      "disposition": "event/product application model; sampled 2026 headings conflict with 2025 schedules; do not auto-repair"
+    },
+    {
+      "family": "Vegan Market Co",
+      "discovery_area": "multi-town UK programme",
+      "domain": "veganmarkets.co.uk",
+      "booking_services_observed": 6,
+      "verified_ready_added": 0,
+      "disposition": "specific dated service descriptions and venue addresses, but booking-slot availability not yet proved; LocalBusiness country cannot become event country"
+    },
+    {
+      "family": "Craftfolk / Cardiff Christmas Market",
+      "discovery_area": "Wales",
+      "domain": "cardiffchristmasmarket.com",
+      "verified_ready_added": 0,
+      "disposition": "real 2026 event periods; request-for-application-forms/enquiry step is insufficient for OPEN application proof"
+    },
+    {
+      "family": "Urban Events NI",
+      "discovery_area": "Northern Ireland",
+      "domain": "urbaneventsni.com",
+      "verified_ready_added": 0,
+      "disposition": "official programme links to current application delivery; fetch actual dated forms and specific venue country before promotion"
+    },
+    {
+      "family": "Fine & Dandy",
+      "discovery_area": "Northern Ireland: Belfast, Portrush, Derry",
+      "domain": "fineanddandymarket.co.uk",
+      "application_leads_observed": 3,
+      "verified_ready_added": 0,
+      "disposition": "specific linked December forms and a separate reserves list; edition, availability and venue proof remain unverified"
+    },
+    {
+      "family": "Edinburgh Farmers Market",
+      "discovery_area": "Scotland",
+      "domain": "edinburghfarmersmarket.co.uk",
+      "verified_ready_added": 0,
+      "disposition": "real venue and farmer/local-produce eligibility form; conditional acceptance/waitlist and recurring schedule are not general OPEN dated opportunities"
+    },
+    {
+      "family": "Scottish council/operator checks",
+      "discovery_area": "Scotland",
+      "verified_ready_added": 0,
+      "disposition": "Glasgow council blocked direct fetch; several guessed/retired operator hosts failed. No Scottish READY claimed from those attempts"
+    }
+  ],
+  "next_milestones": {
+    "current_gb_ready": 129,
+    "targets": [
+      250,
+      500,
+      1000
+    ],
+    "additional_ready_needed": [
+      121,
+      371,
+      871
+    ],
+    "forecast_status": "No asserted 1000-row supply forecast. Validate more repeatable official booking families; discovery, generic registration and hypothetical recurrence do not count as READY."
+  }
+}

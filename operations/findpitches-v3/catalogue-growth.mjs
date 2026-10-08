@@ -25,12 +25,14 @@ export async function completedCatalogueOutcome(db,candidateId) {
     LEFT JOIN readiness r ON r.entity_id=e.id WHERE c.id=? AND p.status IN ('held','imported')`).bind(candidateId).first();
   return r?{...r,recovered_committed_response:true,source_refetches:0}:null;
 }
-export async function runCatalogueGrowth({credentialsFile,stateDirectory,outDirectory,maxCandidates=2000,cataloguePages=8}) {
+export async function runCatalogueGrowth({credentialsFile,stateDirectory,outDirectory,maxCandidates=2000,cataloguePages=8,catalogueByteOffset=0,baselineFile=null}) {
   if(!Number.isInteger(maxCandidates)||maxCandidates<1||maxCandidates>2000)throw Error('bounded_free_catalogue_limit_required');
   if(!Number.isInteger(cataloguePages)||cataloguePages<1||cataloguePages>14)throw Error('bounded_catalogue_pages_required');
   fs.mkdirSync(outDirectory,{recursive:true,mode:0o700});const {db,call}=await shadowContext({credentialsFile,stateDirectory}),initial=await call('api','/status');assertFreeGrowth(initial);
-  const baselineFile=path.join(outDirectory,'catalogue-baseline-private.json');let baseline;
-  if(fs.existsSync(baselineFile))baseline=JSON.parse(fs.readFileSync(baselineFile));else {baseline={as_of:initial.now,paid_queries:initial.commercial.kpis.paid_acquisition_queries,rows:await commercialRows(db),immutable:await immutableDigests(db)};save(outDirectory,'catalogue-baseline-private.json',baseline);}
+  if(![0,2097152,4194304,6291456].includes(catalogueByteOffset))throw Error('bounded_catalogue_byte_window_required');
+  const savedBaseline=baselineFile??path.join(outDirectory,'catalogue-baseline-private.json');let baseline;
+  if(fs.existsSync(savedBaseline))baseline=JSON.parse(fs.readFileSync(savedBaseline));else {baseline={as_of:initial.now,paid_queries:initial.commercial.kpis.paid_acquisition_queries,rows:await commercialRows(db),immutable:await immutableDigests(db)};save(outDirectory,'catalogue-baseline-private.json',baseline);}
+  baseline.paid_queries??=baseline.status?.commercial?.kpis?.paid_acquisition_queries;
   assertFreeGrowth(initial,baseline.paid_queries);
   const runFile=path.join(outDirectory,'catalogue-run-private.json');const run=fs.existsSync(runFile)?JSON.parse(fs.readFileSync(runFile)):await call('enrichment','/catalogue/start',{max_candidates:maxCandidates});save(outDirectory,'catalogue-run-private.json',run);
   if(run.expires_at<=new Date().toISOString())throw Error('expired_catalogue_run_requires_new_bounded_run');
@@ -38,7 +40,7 @@ export async function runCatalogueGrowth({credentialsFile,stateDirectory,outDire
   if(fs.existsSync(discoveriesFile))discoveries=JSON.parse(fs.readFileSync(discoveriesFile));else {
     // Complete small non-US catalogues first; large application catalogues stay
     // bounded. A prefix is never described as complete source coverage.
-    for(const url of SOURCES){for(let offset=0;offset<cataloguePages*500;offset+=500){const page=await call('enrichment','/catalogue/discover',{run_id:run.id,url,offset,limit:500});discoveries.push({source_url:url,...page});save(outDirectory,'catalogue-discovery-private.json',discoveries);if(page.next_offset===null||!page.candidates?.length)break;}}
+    for(const url of SOURCES){for(let offset=0;offset<cataloguePages*500;offset+=500){const page=await call('enrichment','/catalogue/discover',{run_id:run.id,url,offset,limit:500,byte_offset:url.includes('eventeny.com/')?catalogueByteOffset:0});discoveries.push({source_url:url,...page});save(outDirectory,'catalogue-discovery-private.json',discoveries);if(page.next_offset===null||!page.candidates?.length)break;}}
   }
   const available=[...new Map(discoveries.flatMap(p=>p.candidates??[]).filter(c=>!c.duplicate).map(c=>[c.id,c])).values()];
   const strong=available.filter(c=>c.family==='eventeny'),international=available.filter(c=>c.family!=='eventeny'),candidates=[];
@@ -91,12 +93,12 @@ export async function runCatalogueGrowth({credentialsFile,stateDirectory,outDire
   const report={schema:'findpitches-v3-free-catalogue-growth-v1',as_of:final.now,run_id:run.id,stop_reason:stopReason,checked:results.length,fetch_reservations:budget.checked,maximum_candidates:budget.max_candidates,expires_at:budget.expires_at,additional_serper_queries:0,
     discovery_route_observations:discoveries.reduce((n,p)=>n+(p.candidates?.length??0),0),registered_distinct_routes:registrations.n,discovery_skipped_by_reason:tally(discoveries.flatMap(p=>p.candidates??[]).filter(c=>c.duplicate),r=>r.duplicate_reason??'retained_route_already_present'),identity_outcomes:identity,
     linked_distinct_entities:linked.length,current_ready:ready.length,ready_by_country:tally(ready,r=>r.market),ready_by_source:tally(ready,r=>r.domain),dispositions:tally(results,r=>r.status),dominant_blockers:tally(results.filter(r=>r.reason),r=>r.reason),
-    catalogue_coverage:discoveries.map(p=>({source_url:p.source_url,coverage:p.coverage,routes_observed:p.routes,offset:p.offset,candidates_in_page:p.candidates?.length??0})),
+    catalogue_coverage:discoveries.map(p=>({source_url:p.source_url,coverage:p.coverage,byte_offset:p.byte_offset??0,routes_observed:p.routes,offset:p.offset,candidates_in_page:p.candidates?.length??0})),
     inventory_growth:outcome,inventory:inventoryFromRows(rows,{now:final.now}),source_mutations:mutations,customer_leakage:final.customer_rows,publication_leakage:final.publication_rows,paid_paused:true,structured_delivery:final.structured_delivery};
   save(outDirectory,'catalogue-growth-report.json',report);save(outDirectory,'catalogue-final-private.json',{as_of:final.now,status:final,rows});return report;
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const args=process.argv.slice(2),get=name=>args[args.indexOf(name)+1];
-  try{const r=await runCatalogueGrowth({credentialsFile:get('--credentials'),stateDirectory:get('--state-dir'),outDirectory:get('--out-dir'),maxCandidates:args.includes('--max-candidates')?Number(get('--max-candidates')):2000,cataloguePages:args.includes('--catalogue-pages')?Number(get('--catalogue-pages')):8});console.log(JSON.stringify({checked:r.checked,catalogue_ready:r.current_ready,total_ready:r.inventory.totals.ready,stop_reason:r.stop_reason}));}
+  try{const r=await runCatalogueGrowth({credentialsFile:get('--credentials'),stateDirectory:get('--state-dir'),outDirectory:get('--out-dir'),maxCandidates:args.includes('--max-candidates')?Number(get('--max-candidates')):2000,cataloguePages:args.includes('--catalogue-pages')?Number(get('--catalogue-pages')):8,catalogueByteOffset:args.includes('--catalogue-byte-offset')?Number(get('--catalogue-byte-offset')):0,baselineFile:args.includes('--baseline-file')?get('--baseline-file'):null});console.log(JSON.stringify({checked:r.checked,catalogue_ready:r.current_ready,total_ready:r.inventory.totals.ready,stop_reason:r.stop_reason}));}
   catch(e){console.error(/^[a-z0-9_]+$/.test(e.message)?e.message:'free_catalogue_growth_failed');process.exitCode=1;}
 }

@@ -8,6 +8,7 @@ export const PRODUCERS = Object.freeze({
   // This producer is internal: it imports only facts from a freshly verified
   // platform application document, at the existing direct-form authority.
   'platform-catalogue': Object.freeze({ type: 'source_catalogue', authority: 95 }),
+  'uk-official': Object.freeze({ type: 'official_programme', authority: 95 }),
   'legacy_v2': Object.freeze({ type: 'legacy_recovery', authority: 40 }),
 });
 export const AUTHORITIES = Object.freeze({ direct_form:95, official_page:90, official_pdf:85, trusted_directory:75, extracted_page:60, search_snippet:50, inferred:40 });

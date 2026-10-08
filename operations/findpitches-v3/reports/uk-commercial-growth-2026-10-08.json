@@ -1,0 +1,1975 @@
+{
+  "schema": "findpitches-v3-uk-commercial-growth-v1",
+  "as_of": "2026-10-08T16:41:30.048Z",
+  "baseline_as_of": "2026-10-08T14:03:51.484Z",
+  "baseline_ready_by_country": {
+    "US": 1629,
+    "AU": 18,
+    "NZ": 5,
+    "GB": 6
+  },
+  "inventory": {
+    "schema": "findpitches-v3-commercial-inventory-v1",
+    "as_of": "2026-10-08T16:41:30.048Z",
+    "timezone": "Europe/London",
+    "markets": {
+      "GB": {
+        "ready": 129,
+        "watch": 117,
+        "quarantined": 57,
+        "blocked": 482,
+        "exact_event_groups": 128,
+        "application_entities": 129,
+        "organiser_count": 6,
+        "source_domains": {
+          "myntimage.co.uk": 123,
+          "localstalls.com": 4,
+          "eventeny.com": 2
+        },
+        "source_families": {
+          "myntimage": 123,
+          "localstalls": 4,
+          "eventeny": 2
+        },
+        "ready_by_producer": {
+          "uk-official": 123,
+          "legacy_v2": 2,
+          "platform-catalogue": 2,
+          "independent-structured": 2
+        },
+        "held_reason_breakdown": {
+          "source_http_520": 58,
+          "single_event_source_data_missing": 21,
+          "event_cancelled_or_postponed": 1,
+          "vendor_application_not_proved": 2,
+          "open_vendor_application_not_proved": 19,
+          "source_country_market_mismatch": 2,
+          "event_content_scope_missing": 8,
+          "application_restricted_audience_requires_review": 1,
+          "platform_index_is_not_an_opportunity": 2,
+          "invalid_structured_source_data": 2,
+          "event_application_route_missing_or_ambiguous": 17,
+          "selected_application_state_disagrees_with_proof": 18,
+          "social_page_is_discovery_only": 7,
+          "editorial_page_is_discovery_only": 3,
+          "verified_country_missing": 1,
+          "selected_event_start_disagrees_with_proof": 5,
+          "selected_event_end_disagrees_with_proof": 1,
+          "source_response_size_limit": 1,
+          "selected_organiser_disagrees_with_proof": 3
+        },
+        "source_proof_freshness": {
+          "current_verified": 129,
+          "stale_expired": 18,
+          "oldest_ready_source_check": "2026-10-08T10:25:31.299Z"
+        },
+        "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+      },
+      "US": {
+        "ready": 1864,
+        "watch": 344,
+        "quarantined": 315,
+        "blocked": 2491,
+        "exact_event_groups": 1113,
+        "application_entities": 1864,
+        "organiser_count": 514,
+        "source_domains": {
+          "eventeny.com": 1864
+        },
+        "source_families": {
+          "eventeny": 1864
+        },
+        "ready_by_producer": {
+          "legacy_v2": 366,
+          "platform-catalogue": 1111,
+          "independent-structured": 384,
+          "source-led-search": 3
+        },
+        "held_reason_breakdown": {
+          "single_event_source_data_missing": 46,
+          "application_deadline_passed": 36,
+          "application_closed": 36,
+          "selected_application_deadline_disagrees_with_proof": 35,
+          "selected_application_state_disagrees_with_proof": 55,
+          "application_restricted_audience_requires_review": 28,
+          "contradictory_application_deadline_after_event": 57,
+          "stale_edition": 12,
+          "vendor_application_not_proved": 7,
+          "open_vendor_application_not_proved": 26,
+          "platform_index_is_not_an_opportunity": 10,
+          "trader_application_purpose_not_proved": 46,
+          "waitlist_only": 7,
+          "editorial_page_is_discovery_only": 7,
+          "verified_venue_missing": 99,
+          "application_is_not_a_trader_opportunity": 31,
+          "source_parent_event_binding_required": 15,
+          "social_page_is_discovery_only": 10,
+          "event_content_scope_missing": 13,
+          "sponsor_trading_entitlement_not_proved": 15,
+          "selected_organiser_disagrees_with_proof": 9,
+          "selected_location_disagrees_with_proof": 9,
+          "selected_event_name_disagrees_with_proof": 14,
+          "contradictory_heading_edition": 9,
+          "contradictory_application_description_dates": 3,
+          "event_cancelled_or_postponed": 5,
+          "event_identity_not_bound_to_page": 1,
+          "selected_event_start_disagrees_with_proof": 7,
+          "selected_event_end_disagrees_with_proof": 3,
+          "source_fetch_failed": 1,
+          "source_edition_identity_mismatch": 2,
+          "contradictory_event_name_edition": 2
+        },
+        "source_proof_freshness": {
+          "current_verified": 1868,
+          "stale_expired": 169,
+          "oldest_ready_source_check": "2026-10-07T17:21:54.046Z"
+        },
+        "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+      }
+    },
+    "gb": {
+      "ready": 129,
+      "watch": 117,
+      "quarantined": 57,
+      "blocked": 482,
+      "exact_event_groups": 128,
+      "application_entities": 129,
+      "organiser_count": 6,
+      "source_domains": {
+        "myntimage.co.uk": 123,
+        "localstalls.com": 4,
+        "eventeny.com": 2
+      },
+      "source_families": {
+        "myntimage": 123,
+        "localstalls": 4,
+        "eventeny": 2
+      },
+      "ready_by_producer": {
+        "uk-official": 123,
+        "legacy_v2": 2,
+        "platform-catalogue": 2,
+        "independent-structured": 2
+      },
+      "held_reason_breakdown": {
+        "source_http_520": 58,
+        "single_event_source_data_missing": 21,
+        "event_cancelled_or_postponed": 1,
+        "vendor_application_not_proved": 2,
+        "open_vendor_application_not_proved": 19,
+        "source_country_market_mismatch": 2,
+        "event_content_scope_missing": 8,
+        "application_restricted_audience_requires_review": 1,
+        "platform_index_is_not_an_opportunity": 2,
+        "invalid_structured_source_data": 2,
+        "event_application_route_missing_or_ambiguous": 17,
+        "selected_application_state_disagrees_with_proof": 18,
+        "social_page_is_discovery_only": 7,
+        "editorial_page_is_discovery_only": 3,
+        "verified_country_missing": 1,
+        "selected_event_start_disagrees_with_proof": 5,
+        "selected_event_end_disagrees_with_proof": 1,
+        "source_response_size_limit": 1,
+        "selected_organiser_disagrees_with_proof": 3
+      },
+      "source_proof_freshness": {
+        "current_verified": 129,
+        "stale_expired": 18,
+        "oldest_ready_source_check": "2026-10-08T10:25:31.299Z"
+      },
+      "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+    },
+    "us": {
+      "ready": 1864,
+      "watch": 344,
+      "quarantined": 315,
+      "blocked": 2491,
+      "exact_event_groups": 1113,
+      "application_entities": 1864,
+      "organiser_count": 514,
+      "source_domains": {
+        "eventeny.com": 1864
+      },
+      "source_families": {
+        "eventeny": 1864
+      },
+      "ready_by_producer": {
+        "legacy_v2": 366,
+        "platform-catalogue": 1111,
+        "independent-structured": 384,
+        "source-led-search": 3
+      },
+      "held_reason_breakdown": {
+        "single_event_source_data_missing": 46,
+        "application_deadline_passed": 36,
+        "application_closed": 36,
+        "selected_application_deadline_disagrees_with_proof": 35,
+        "selected_application_state_disagrees_with_proof": 55,
+        "application_restricted_audience_requires_review": 28,
+        "contradictory_application_deadline_after_event": 57,
+        "stale_edition": 12,
+        "vendor_application_not_proved": 7,
+        "open_vendor_application_not_proved": 26,
+        "platform_index_is_not_an_opportunity": 10,
+        "trader_application_purpose_not_proved": 46,
+        "waitlist_only": 7,
+        "editorial_page_is_discovery_only": 7,
+        "verified_venue_missing": 99,
+        "application_is_not_a_trader_opportunity": 31,
+        "source_parent_event_binding_required": 15,
+        "social_page_is_discovery_only": 10,
+        "event_content_scope_missing": 13,
+        "sponsor_trading_entitlement_not_proved": 15,
+        "selected_organiser_disagrees_with_proof": 9,
+        "selected_location_disagrees_with_proof": 9,
+        "selected_event_name_disagrees_with_proof": 14,
+        "contradictory_heading_edition": 9,
+        "contradictory_application_description_dates": 3,
+        "event_cancelled_or_postponed": 5,
+        "event_identity_not_bound_to_page": 1,
+        "selected_event_start_disagrees_with_proof": 7,
+        "selected_event_end_disagrees_with_proof": 3,
+        "source_fetch_failed": 1,
+        "source_edition_identity_mismatch": 2,
+        "contradictory_event_name_edition": 2
+      },
+      "source_proof_freshness": {
+        "current_verified": 1868,
+        "stale_expired": 169,
+        "oldest_ready_source_check": "2026-10-07T17:21:54.046Z"
+      },
+      "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+    },
+    "ready_definition": "Shadow entities with current version/revision-matched source proof, current READY assessment, supported vendor application and no identity/evidence/legacy hold. Publication remains disabled.",
+    "scope": {
+      "commercial_entities": 6762,
+      "test_control_excluded": 104,
+      "other_noncommercial_excluded": 0
+    },
+    "totals": {
+      "total_distinct_entities": 6762,
+      "verified": 2020,
+      "ready": 2016,
+      "watch": 517,
+      "quarantined": 533,
+      "blocked": 3696,
+      "awaiting_verification": 4289,
+      "missing_application_proof": 4577,
+      "stale_expired": 223,
+      "verification_checked": 2907
+    },
+    "by_origin": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 393,
+        "ready": 390,
+        "watch": 196,
+        "quarantined": 198,
+        "blocked": 102,
+        "awaiting_verification": 282,
+        "missing_application_proof": 414,
+        "stale_expired": 100,
+        "verification_checked": 886
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 4555,
+        "verified": 386,
+        "ready": 385,
+        "watch": 285,
+        "quarantined": 301,
+        "blocked": 3584,
+        "awaiting_verification": 3979,
+        "missing_application_proof": 4104,
+        "stale_expired": 105,
+        "verification_checked": 708
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 4,
+        "ready": 4,
+        "watch": 3,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      },
+      "platform-catalogue": {
+        "total_distinct_entities": 1171,
+        "verified": 1114,
+        "ready": 1114,
+        "watch": 33,
+        "quarantined": 23,
+        "blocked": 1,
+        "awaiting_verification": 18,
+        "missing_application_proof": 36,
+        "stale_expired": 18,
+        "verification_checked": 1171
+      },
+      "uk-official": {
+        "total_distinct_entities": 123,
+        "verified": 123,
+        "ready": 123,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 0,
+        "stale_expired": 0,
+        "verification_checked": 123
+      }
+    },
+    "by_source_membership": {
+      "independent-structured": {
+        "total_distinct_entities": 886,
+        "verified": 393,
+        "ready": 390,
+        "watch": 196,
+        "quarantined": 198,
+        "blocked": 102,
+        "awaiting_verification": 282,
+        "missing_application_proof": 414,
+        "stale_expired": 100,
+        "verification_checked": 886
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 5433,
+        "verified": 779,
+        "ready": 775,
+        "watch": 478,
+        "quarantined": 495,
+        "blocked": 3685,
+        "awaiting_verification": 4258,
+        "missing_application_proof": 4510,
+        "stale_expired": 205,
+        "verification_checked": 1585
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 4,
+        "ready": 4,
+        "watch": 3,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      },
+      "platform-catalogue": {
+        "total_distinct_entities": 1171,
+        "verified": 1114,
+        "ready": 1114,
+        "watch": 33,
+        "quarantined": 23,
+        "blocked": 1,
+        "awaiting_verification": 18,
+        "missing_application_proof": 36,
+        "stale_expired": 18,
+        "verification_checked": 1171
+      },
+      "uk-official": {
+        "total_distinct_entities": 123,
+        "verified": 123,
+        "ready": 123,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 0,
+        "stale_expired": 0,
+        "verification_checked": 123
+      }
+    },
+    "attribution": "Origin is the earliest accepted non-diagnostic producer receipt linked to the entity. Origin rows are exclusive and sum to the commercial total. Source membership overlaps and must not be summed.",
+    "status_counts": "READY/WATCH/quarantined/blocked are exclusive current dispositions. Verified, awaiting verification, missing application proof and stale/expired are overlapping flags. Old cached READY alone never qualifies.",
+    "ready_by_country": {
+      "US": 1864,
+      "AU": 18,
+      "GB": 129,
+      "NZ": 5
+    },
+    "ready_by_source_domain": {
+      "eventeny.com": 1866,
+      "localstalls.com": 27,
+      "myntimage.co.uk": 123
+    },
+    "ready_by_source_platform": {
+      "eventeny": 1865,
+      "localstalls": 27,
+      "myntimage": 123,
+      "wikidata_seed": 1
+    },
+    "ready_by_application_state": {
+      "OPEN_NOW": 2016
+    },
+    "ready_event_groups": {
+      "distinct_exact_field_groups": 1264,
+      "multiple_application_groups": 415,
+      "additional_application_entities": 752,
+      "definition": "Advisory grouping by proved country, event title, start/end dates, organiser and venue. READY counts distinct application-opportunity entities; this comparison neither merges identity nor proves semantic duplicates."
+    },
+    "kpis": {
+      "total_customer_ready_opportunities": 2016,
+      "verification_conversion_percent": 69.35,
+      "verification_entities_checked": 2907,
+      "coverage_all_inventory_unverified_presence": {
+        "denominator": 6762,
+        "application_url_percent": 52.82,
+        "future_event_date_percent": 41.91,
+        "location_percent": 44.71,
+        "organiser_percent": 45.25
+      },
+      "coverage_ready_source_proof": {
+        "denominator": 2016,
+        "application_url_percent": 100,
+        "future_event_date_percent": 93.75,
+        "location_percent": 100,
+        "organiser_percent": 100
+      }
+    }
+  },
+  "growth": {
+    "ready_before": 1658,
+    "ready_after": 2016,
+    "ready_gained": 361,
+    "ready_lost": 3,
+    "net_ready_gain": 358,
+    "ready_gained_by_country": {
+      "US": 238,
+      "GB": 123
+    },
+    "ready_gained_by_origin": {
+      "platform-catalogue": 238,
+      "uk-official": 123
+    },
+    "ready_gained_by_source": {
+      "eventeny.com": 238,
+      "myntimage.co.uk": 123
+    },
+    "identity_mutations": 0,
+    "missing_original_entities": 0
+  },
+  "gb": {
+    "ready": 129,
+    "watch": 117,
+    "quarantined": 57,
+    "blocked": 482,
+    "exact_event_groups": 128,
+    "application_entities": 129,
+    "organiser_count": 6,
+    "source_domains": {
+      "myntimage.co.uk": 123,
+      "localstalls.com": 4,
+      "eventeny.com": 2
+    },
+    "source_families": {
+      "myntimage": 123,
+      "localstalls": 4,
+      "eventeny": 2
+    },
+    "ready_by_producer": {
+      "uk-official": 123,
+      "legacy_v2": 2,
+      "platform-catalogue": 2,
+      "independent-structured": 2
+    },
+    "held_reason_breakdown": {
+      "source_http_520": 58,
+      "single_event_source_data_missing": 21,
+      "event_cancelled_or_postponed": 1,
+      "vendor_application_not_proved": 2,
+      "open_vendor_application_not_proved": 19,
+      "source_country_market_mismatch": 2,
+      "event_content_scope_missing": 8,
+      "application_restricted_audience_requires_review": 1,
+      "platform_index_is_not_an_opportunity": 2,
+      "invalid_structured_source_data": 2,
+      "event_application_route_missing_or_ambiguous": 17,
+      "selected_application_state_disagrees_with_proof": 18,
+      "social_page_is_discovery_only": 7,
+      "editorial_page_is_discovery_only": 3,
+      "verified_country_missing": 1,
+      "selected_event_start_disagrees_with_proof": 5,
+      "selected_event_end_disagrees_with_proof": 1,
+      "source_response_size_limit": 1,
+      "selected_organiser_disagrees_with_proof": 3
+    },
+    "source_proof_freshness": {
+      "current_verified": 129,
+      "stale_expired": 18,
+      "oldest_ready_source_check": "2026-10-08T10:25:31.299Z"
+    },
+    "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity.",
+    "new_ready_today": 125,
+    "withdrawn_ready_today": 1,
+    "withdrawal_definition": "Previously source-proved READY with a recorded non-READY assessment in this London day, currently withheld. Renewals and later same-day re-promotions are excluded; passive TTL expiry is separately reported as stale/expired.",
+    "programme": {
+      "producer": "uk-official",
+      "paid_queries": 0,
+      "standing_scheduler_enabled": false,
+      "adapter_versions": [
+        "myntimage-dated-stalls-v1"
+      ],
+      "runs": [
+        {
+          "id": "uk_cdbb8c28-7267-407d-8686-dc7486c7273a",
+          "status": "paused",
+          "max_visits": 5,
+          "visits_reserved": 4,
+          "max_candidates": 12,
+          "checked": 10,
+          "created_at": "2026-10-08T15:36:37.601Z",
+          "expires_at": "2026-10-08T17:36:37.601Z",
+          "stop_reason": "bounded_catalogue_complete"
+        },
+        {
+          "id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "status": "paused",
+          "max_visits": 100,
+          "visits_reserved": 68,
+          "max_candidates": 300,
+          "checked": 113,
+          "created_at": "2026-10-08T15:26:52.528Z",
+          "expires_at": "2026-10-08T17:26:52.528Z",
+          "stop_reason": "bounded_catalogue_complete"
+        },
+        {
+          "id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "status": "paused",
+          "max_visits": 100,
+          "visits_reserved": 17,
+          "max_candidates": 300,
+          "checked": 0,
+          "created_at": "2026-10-08T14:42:15.553Z",
+          "expires_at": "2026-10-08T16:42:15.553Z",
+          "stop_reason": "source_proof_binding_review"
+        }
+      ],
+      "outcomes": [
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "application_closed,trader_application_purpose_not_proved",
+          "identity_outcome": null,
+          "candidates": 2
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "trader_application_purpose_not_proved",
+          "identity_outcome": null,
+          "candidates": 21
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing",
+          "identity_outcome": null,
+          "candidates": 16
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,application_closed",
+          "identity_outcome": null,
+          "candidates": 2
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,application_closed,application_event_identity_mismatch",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,application_closed,application_event_identity_mismatch,trader_application_purpose_not_proved",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,application_closed,trader_application_purpose_not_proved",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,application_event_identity_mismatch",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,exact_event_date_missing_from_application,trader_application_purpose_not_proved",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,trader_application_purpose_not_proved",
+          "identity_outcome": null,
+          "candidates": 13
+        },
+        {
+          "run_id": "uk_cdbb8c28-7267-407d-8686-dc7486c7273a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "application_closed",
+          "identity_outcome": null,
+          "candidates": 2
+        },
+        {
+          "run_id": "uk_cdbb8c28-7267-407d-8686-dc7486c7273a",
+          "family": "myntimage",
+          "status": "imported",
+          "reason": "ready",
+          "identity_outcome": "NEW_ENTITY",
+          "candidates": 10
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "application_closed",
+          "identity_outcome": null,
+          "candidates": 10
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "application_closed,exact_event_date_missing_from_application",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "dated_capacity_not_proved",
+          "identity_outcome": null,
+          "candidates": 2
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "trader_application_purpose_not_proved",
+          "identity_outcome": null,
+          "candidates": 2
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing",
+          "identity_outcome": null,
+          "candidates": 23
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,application_closed",
+          "identity_outcome": null,
+          "candidates": 3
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,application_closed,application_event_identity_mismatch",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,application_closed,trader_application_purpose_not_proved",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "held",
+          "reason": "verified_country_missing,exact_event_date_missing_from_application",
+          "identity_outcome": null,
+          "candidates": 1
+        },
+        {
+          "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+          "family": "myntimage",
+          "status": "imported",
+          "reason": "ready",
+          "identity_outcome": "NEW_ENTITY",
+          "candidates": 113
+        }
+      ],
+      "direct_source_visits": 89,
+      "failed_visits": 0,
+      "visit_definition": "Actual adapter HTTP requests, including venue, embedded application, venue directions and public coordinate-country lookup. Research visits are reported separately."
+    },
+    "routes_checked": 228,
+    "direct_source_visits": 89,
+    "ready_per_100_direct_source_visits": 138.2,
+    "duplicates_reconciled_matches": 0,
+    "current_programme_ready": 123,
+    "yield_definition": "Run READY outcomes per 100 actual adapter HTTP visits; shared event/form documents can prove several distinct dated applications. Current inventory and unique first promotions are reported separately."
+  },
+  "us": {
+    "ready": 1864,
+    "watch": 344,
+    "quarantined": 315,
+    "blocked": 2491,
+    "exact_event_groups": 1113,
+    "application_entities": 1864,
+    "organiser_count": 514,
+    "source_domains": {
+      "eventeny.com": 1864
+    },
+    "source_families": {
+      "eventeny": 1864
+    },
+    "ready_by_producer": {
+      "legacy_v2": 366,
+      "platform-catalogue": 1111,
+      "independent-structured": 384,
+      "source-led-search": 3
+    },
+    "held_reason_breakdown": {
+      "single_event_source_data_missing": 46,
+      "application_deadline_passed": 36,
+      "application_closed": 36,
+      "selected_application_deadline_disagrees_with_proof": 35,
+      "selected_application_state_disagrees_with_proof": 55,
+      "application_restricted_audience_requires_review": 28,
+      "contradictory_application_deadline_after_event": 57,
+      "stale_edition": 12,
+      "vendor_application_not_proved": 7,
+      "open_vendor_application_not_proved": 26,
+      "platform_index_is_not_an_opportunity": 10,
+      "trader_application_purpose_not_proved": 46,
+      "waitlist_only": 7,
+      "editorial_page_is_discovery_only": 7,
+      "verified_venue_missing": 99,
+      "application_is_not_a_trader_opportunity": 31,
+      "source_parent_event_binding_required": 15,
+      "social_page_is_discovery_only": 10,
+      "event_content_scope_missing": 13,
+      "sponsor_trading_entitlement_not_proved": 15,
+      "selected_organiser_disagrees_with_proof": 9,
+      "selected_location_disagrees_with_proof": 9,
+      "selected_event_name_disagrees_with_proof": 14,
+      "contradictory_heading_edition": 9,
+      "contradictory_application_description_dates": 3,
+      "event_cancelled_or_postponed": 5,
+      "event_identity_not_bound_to_page": 1,
+      "selected_event_start_disagrees_with_proof": 7,
+      "selected_event_end_disagrees_with_proof": 3,
+      "source_fetch_failed": 1,
+      "source_edition_identity_mismatch": 2,
+      "contradictory_event_name_edition": 2
+    },
+    "source_proof_freshness": {
+      "current_verified": 1868,
+      "stale_expired": 169,
+      "oldest_ready_source_check": "2026-10-07T17:21:54.046Z"
+    },
+    "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity.",
+    "new_ready_today": 893,
+    "withdrawn_ready_today": 26,
+    "withdrawal_definition": "Previously source-proved READY with a recorded non-READY assessment in this London day, currently withheld. Renewals and later same-day re-promotions are excluded; passive TTL expiry is separately reported as stale/expired."
+  },
+  "uk_programme": {
+    "runs": [
+      {
+        "id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+        "status": "paused",
+        "max_visits": 100,
+        "visits_reserved": 17,
+        "max_candidates": 300,
+        "checked": 0,
+        "created_at": "2026-10-08T14:42:15.553Z",
+        "expires_at": "2026-10-08T16:42:15.553Z",
+        "stop_reason": "source_proof_binding_review"
+      },
+      {
+        "id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+        "status": "paused",
+        "max_visits": 100,
+        "visits_reserved": 68,
+        "max_candidates": 300,
+        "checked": 113,
+        "created_at": "2026-10-08T15:26:52.528Z",
+        "expires_at": "2026-10-08T17:26:52.528Z",
+        "stop_reason": "bounded_catalogue_complete"
+      },
+      {
+        "id": "uk_cdbb8c28-7267-407d-8686-dc7486c7273a",
+        "status": "paused",
+        "max_visits": 5,
+        "visits_reserved": 4,
+        "max_candidates": 12,
+        "checked": 10,
+        "created_at": "2026-10-08T15:36:37.601Z",
+        "expires_at": "2026-10-08T17:36:37.601Z",
+        "stop_reason": "bounded_catalogue_complete"
+      }
+    ],
+    "outcomes": [
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "application_closed",
+        "identity_outcome": null,
+        "n": 12
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "application_closed,exact_event_date_missing_from_application",
+        "identity_outcome": null,
+        "n": 1
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "application_closed,trader_application_purpose_not_proved",
+        "identity_outcome": null,
+        "n": 2
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "dated_capacity_not_proved",
+        "identity_outcome": null,
+        "n": 2
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved",
+        "identity_outcome": null,
+        "n": 23
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing",
+        "identity_outcome": null,
+        "n": 39
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing,application_closed",
+        "identity_outcome": null,
+        "n": 5
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing,application_closed,application_event_identity_mismatch",
+        "identity_outcome": null,
+        "n": 2
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing,application_closed,application_event_identity_mismatch,trader_application_purpose_not_proved",
+        "identity_outcome": null,
+        "n": 1
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing,application_closed,trader_application_purpose_not_proved",
+        "identity_outcome": null,
+        "n": 2
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing,application_event_identity_mismatch",
+        "identity_outcome": null,
+        "n": 1
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing,exact_event_date_missing_from_application",
+        "identity_outcome": null,
+        "n": 1
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing,exact_event_date_missing_from_application,trader_application_purpose_not_proved",
+        "identity_outcome": null,
+        "n": 1
+      },
+      {
+        "family": "myntimage",
+        "status": "held",
+        "reason": "verified_country_missing,trader_application_purpose_not_proved",
+        "identity_outcome": null,
+        "n": 13
+      },
+      {
+        "family": "myntimage",
+        "status": "imported",
+        "reason": "ready",
+        "identity_outcome": "NEW_ENTITY",
+        "n": 123
+      }
+    ],
+    "candidate_counts": {
+      "observations": 228,
+      "distinct_dated_candidates": 157,
+      "venue_urls": 17
+    },
+    "per_run": [
+      {
+        "run_id": "uk_340bca47-c09a-4e3e-a250-d57368679937",
+        "route_observations": 59,
+        "linked_entities": 0,
+        "imported": 0,
+        "held": 59
+      },
+      {
+        "run_id": "uk_cdbb8c28-7267-407d-8686-dc7486c7273a",
+        "route_observations": 12,
+        "linked_entities": 10,
+        "imported": 10,
+        "held": 2
+      },
+      {
+        "run_id": "uk_d738d6dc-7188-4bae-857a-6a2ab9f0d71a",
+        "route_observations": 157,
+        "linked_entities": 113,
+        "imported": 113,
+        "held": 44
+      }
+    ],
+    "current_ready": 123,
+    "replay": {
+      "as_of": "2026-10-08T15:50:39.303Z",
+      "unchanged_candidate_replay": true,
+      "same_entity": true,
+      "entity_count_before": 6755,
+      "entity_count_after": 6755,
+      "concurrent_us_growth": 0,
+      "source_visits_added": 0
+    },
+    "ready_by_region": {
+      "South East": 89,
+      "South West": 34
+    },
+    "latest_unique_candidate_state": {
+      "total": 157,
+      "positive_general_stall_capacity": 139,
+      "proved": 123,
+      "held": 34,
+      "held_reasons": {
+        "application_closed": 12,
+        "verified_country_missing,exact_event_date_missing_from_application": 1,
+        "verified_country_missing": 13,
+        "verified_country_missing,application_closed": 1,
+        "verified_country_missing,application_closed,application_event_identity_mismatch": 1,
+        "trader_application_purpose_not_proved": 2,
+        "application_closed,exact_event_date_missing_from_application": 1,
+        "verified_country_missing,application_closed,trader_application_purpose_not_proved": 1,
+        "dated_capacity_not_proved": 2
+      }
+    }
+  },
+  "us_programme": {
+    "runs": [
+      {
+        "id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "paused",
+        "max_candidates": 2000,
+        "checked": 1176,
+        "created_at": "2026-10-08T14:11:51.927Z",
+        "expires_at": "2026-10-08T20:11:51.927Z",
+        "stop_reason": "bounded_run_complete"
+      },
+      {
+        "id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "paused",
+        "max_candidates": 1000,
+        "checked": 1000,
+        "created_at": "2026-10-08T15:36:32.575Z",
+        "expires_at": "2026-10-08T21:36:32.575Z",
+        "stop_reason": "bounded_run_complete"
+      },
+      {
+        "id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "paused",
+        "max_candidates": 1000,
+        "checked": 1000,
+        "created_at": "2026-10-08T16:00:28.554Z",
+        "expires_at": "2026-10-08T22:00:28.554Z",
+        "stop_reason": "bounded_fetch_limit_reached"
+      }
+    ],
+    "outcomes": [
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "duplicate",
+        "reason": "recent_source_check_already_present",
+        "n": 104
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "duplicate",
+        "reason": "retained_route_already_present",
+        "n": 245
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_deadline_passed,application_closed",
+        "n": 70
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_deadline_passed,waitlist_only",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity",
+        "n": 4
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,application_deadline_passed,application_closed",
+        "n": 4
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,contradictory_heading_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,stale_edition,application_deadline_passed,application_closed",
+        "n": 16
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review",
+        "n": 5
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,application_deadline_passed,application_closed",
+        "n": 7
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,contradictory_heading_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,stale_edition,application_deadline_passed,application_closed",
+        "n": 60
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,stale_edition,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,verified_country_missing,verified_venue_missing",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "contradictory_application_deadline_after_event",
+        "n": 8
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "contradictory_application_description_dates,stale_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "contradictory_heading_edition,application_deadline_passed,application_closed",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "event_cancelled_or_postponed",
+        "n": 5
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "event_cancelled_or_postponed,stale_edition,application_deadline_passed,application_closed",
+        "n": 5
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "sponsor_trading_entitlement_not_proved,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "sponsor_trading_entitlement_not_proved,event_cancelled_or_postponed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "sponsor_trading_entitlement_not_proved,stale_edition,application_deadline_passed,application_closed",
+        "n": 5
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "stale_edition,application_deadline_passed,application_closed",
+        "n": 675
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "stale_edition,application_deadline_passed,waitlist_only",
+        "n": 3
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "stale_edition,contradictory_application_deadline_after_event",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "stale_edition,contradictory_application_deadline_after_event,application_deadline_passed,application_closed",
+        "n": 11
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,contradictory_heading_edition,stale_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,stale_edition,application_deadline_passed,application_closed",
+        "n": 41
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "held",
+        "reason": "verified_country_missing,verified_venue_missing",
+        "n": 3
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "imported",
+        "reason": "ready",
+        "n": 58
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "imported",
+        "reason": "watch",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "status": "pending",
+        "reason": null,
+        "n": 1000
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "duplicate",
+        "reason": "recent_source_check_already_present",
+        "n": 992
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "duplicate",
+        "reason": "retained_route_already_present",
+        "n": 304
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "application_deadline_passed,application_closed",
+        "n": 55
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,application_deadline_passed,application_closed",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,stale_edition,application_deadline_passed,application_closed",
+        "n": 18
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review",
+        "n": 3
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,application_deadline_passed,application_closed",
+        "n": 4
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,stale_edition,application_deadline_passed,application_closed",
+        "n": 39
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "contradictory_application_deadline_after_event",
+        "n": 4
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "contradictory_event_name_edition,contradictory_heading_edition,stale_edition,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "contradictory_event_name_edition,stale_edition,contradictory_application_deadline_after_event,application_deadline_passed,application_closed",
+        "n": 3
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "event_cancelled_or_postponed,stale_edition,application_deadline_passed,application_closed",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "event_content_scope_missing",
+        "n": 3
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "platform_index_is_not_an_opportunity",
+        "n": 4
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "sponsor_trading_entitlement_not_proved",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "sponsor_trading_entitlement_not_proved,stale_edition,application_deadline_passed,application_closed",
+        "n": 9
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "stale_edition,application_deadline_passed,application_closed",
+        "n": 686
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "stale_edition,application_deadline_passed,waitlist_only",
+        "n": 6
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "stale_edition,contradictory_application_deadline_after_event",
+        "n": 8
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "stale_edition,contradictory_application_deadline_after_event,application_deadline_passed,application_closed",
+        "n": 16
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "stale_edition,contradictory_application_deadline_after_event,application_deadline_passed,waitlist_only",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved",
+        "n": 7
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,stale_edition,application_deadline_passed,application_closed",
+        "n": 34
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,stale_edition,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,verified_country_missing,stale_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,verified_country_missing,stale_edition,contradictory_application_deadline_after_event,application_deadline_passed,application_closed",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,verified_country_missing,verified_venue_missing,stale_edition,application_deadline_passed,application_closed",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "verified_country_missing,stale_edition,application_deadline_passed,application_closed",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "verified_venue_missing,stale_edition,application_deadline_passed,application_closed",
+        "n": 4
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "held",
+        "reason": "waitlist_only",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "imported",
+        "reason": "ready",
+        "n": 75
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "imported",
+        "reason": "watch",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "status": "pending",
+        "reason": null,
+        "n": 54
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "duplicate",
+        "reason": "recent_source_check_already_present",
+        "n": 3649
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "duplicate",
+        "reason": "retained_route_already_present",
+        "n": 2251
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_deadline_passed,application_closed",
+        "n": 84
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,application_deadline_passed,application_closed",
+        "n": 4
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_is_not_a_trader_opportunity,stale_edition,application_deadline_passed,application_closed",
+        "n": 18
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review",
+        "n": 6
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,application_deadline_passed,application_closed",
+        "n": 5
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,stale_edition,application_deadline_passed,application_closed",
+        "n": 56
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "application_restricted_audience_requires_review,waitlist_only",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "contradictory_application_deadline_after_event",
+        "n": 3
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "contradictory_application_description_dates,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "contradictory_application_description_dates,stale_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "contradictory_heading_edition,stale_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "distinctive_name_and_corroboration",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "event_cancelled_or_postponed,stale_edition,application_deadline_passed,application_closed",
+        "n": 9
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "event_content_scope_missing",
+        "n": 5
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "platform_index_is_not_an_opportunity",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "sponsor_trading_entitlement_not_proved",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "sponsor_trading_entitlement_not_proved,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "sponsor_trading_entitlement_not_proved,stale_edition,application_deadline_passed,application_closed",
+        "n": 12
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "stale_edition,application_deadline_passed,application_closed",
+        "n": 746
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "stale_edition,application_deadline_passed,waitlist_only",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "stale_edition,contradictory_application_deadline_after_event",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "stale_edition,contradictory_application_deadline_after_event,application_deadline_passed,application_closed",
+        "n": 25
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved",
+        "n": 6
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,application_deadline_passed,application_closed",
+        "n": 6
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,contradictory_application_deadline_after_event",
+        "n": 2
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,stale_edition,application_deadline_passed,application_closed",
+        "n": 57
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,stale_edition,contradictory_application_deadline_after_event,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,verified_country_missing,verified_venue_missing,stale_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "trader_application_purpose_not_proved,verified_venue_missing,stale_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "verified_country_missing,verified_venue_missing",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "verified_country_missing,verified_venue_missing,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "verified_country_missing,verified_venue_missing,contradictory_application_deadline_after_event",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "verified_country_missing,verified_venue_missing,stale_edition,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "verified_country_missing,verified_venue_missing,stale_edition,contradictory_application_deadline_after_event,application_deadline_passed,application_closed",
+        "n": 1
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "held",
+        "reason": "verified_venue_missing,stale_edition,application_deadline_passed,application_closed",
+        "n": 3
+      },
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "status": "imported",
+        "reason": "ready",
+        "n": 106
+      }
+    ],
+    "checked_outcomes": 3175,
+    "fetch_reservations": 3176,
+    "linked_distinct_entities": 241,
+    "current_ready": 238,
+    "current_ready_by_country": {
+      "US": 238
+    },
+    "run_reports": [
+      {
+        "run_id": "catalogue_c771a420-e64d-4bbb-90e6-e8c35784ce80",
+        "as_of": "2026-10-08T14:46:57.037Z",
+        "checked": 1176,
+        "fetch_reservations": 1176,
+        "current_ready": 106,
+        "stop_reason": "bounded_run_complete",
+        "identity_outcomes": [
+          {
+            "outcome": "NEW_ENTITY",
+            "receipts": 106
+          },
+          {
+            "outcome": "PROBABLE_MATCH",
+            "receipts": 1
+          }
+        ]
+      },
+      {
+        "run_id": "catalogue_1e5f668a-46cb-4dd3-97bf-1fba2ec3920b",
+        "as_of": "2026-10-08T16:05:02.437Z",
+        "checked": 1000,
+        "fetch_reservations": 1000,
+        "current_ready": 58,
+        "stop_reason": "bounded_run_complete",
+        "identity_outcomes": [
+          {
+            "outcome": "EXACT_MATCH",
+            "receipts": 1
+          },
+          {
+            "outcome": "NEW_ENTITY",
+            "receipts": 59
+          }
+        ]
+      },
+      {
+        "run_id": "catalogue_200688e2-f0e2-469d-90dd-806de0539b61",
+        "as_of": "2026-10-08T16:31:59.709Z",
+        "checked": 999,
+        "fetch_reservations": 1000,
+        "current_ready": 75,
+        "stop_reason": "bounded_fetch_limit_reached",
+        "identity_outcomes": [
+          {
+            "outcome": "NEW_ENTITY",
+            "receipts": 76
+          }
+        ]
+      }
+    ]
+  },
+  "source_hunt": {
+    "attempts": 162,
+    "distinct_urls": 158,
+    "domains": 72,
+    "retained": 108,
+    "separate_from_adapter_visit_ledger": true
+  },
+  "safety": {
+    "source_mutations": 0,
+    "original_receipts_checked": 13392,
+    "original_source_facts_checked": 79214,
+    "identity_mutations": 0,
+    "missing_original_entities": 0,
+    "source_document_preservation": "Append-only database triggers; a full pre-task source-document digest was not captured.",
+    "immutable_trigger_names": [
+      "document_delete",
+      "document_replace",
+      "document_update",
+      "facts_immutable_delete",
+      "facts_immutable_update",
+      "facts_no_replace",
+      "records_immutable_delete",
+      "records_immutable_update",
+      "records_no_replace"
+    ],
+    "additional_serper_queries": 0,
+    "lifetime_v3_serper_queries": 25,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "publication_enabled": false,
+    "paid_manual_paused": 1,
+    "paid_bulk_enabled": false,
+    "global_serper_limits": {
+      "queries_per_run": 4,
+      "queries_per_hour": 100,
+      "queries_per_day": 1000,
+      "credits_per_run": 4,
+      "credits_per_hour": 100,
+      "credits_per_day": 1000
+    },
+    "due_jobs": 0,
+    "leased_due_jobs": null,
+    "dead_jobs": 0,
+    "unsettled_uk_custody": 0,
+    "unsettled_catalogue_custody": 0
+  },
+  "structured_delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": null,
+    "recent_poll_intervals_seconds": [],
+    "host_recently_contacting": false,
+    "cadence_verified": false,
+    "freshness_warning": true,
+    "immutable_receipts": 888,
+    "producer_ids": 887,
+    "last_new_receipt_at": "2026-10-06T13:44:51.925Z",
+    "source_last_checked": "2026-10-05T11:49:36Z",
+    "interpretation": "Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls are excluded."
+  },
+  "staging": {
+    "records": 129,
+    "anonymous_status": 401,
+    "write_with_preview_token_status": 403,
+    "ingest_with_preview_token_status": 401,
+    "customer_endpoint_status": 403,
+    "raw_evidence_fields": 0,
+    "credential_fields": 0,
+    "health": [
+      {
+        "role": "reconcile",
+        "status": 200,
+        "mode": "shadow",
+        "publication_enabled": false
+      },
+      {
+        "role": "eligibility",
+        "status": 200,
+        "mode": "shadow",
+        "publication_enabled": false
+      },
+      {
+        "role": "enrichment",
+        "status": 200,
+        "mode": "shadow",
+        "publication_enabled": false
+      },
+      {
+        "role": "readiness",
+        "status": 200,
+        "mode": "shadow",
+        "publication_enabled": false
+      },
+      {
+        "role": "watch",
+        "status": 200,
+        "mode": "shadow",
+        "publication_enabled": false
+      },
+      {
+        "role": "acquisition",
+        "status": 200,
+        "mode": "shadow",
+        "publication_enabled": false
+      },
+      {
+        "role": "api",
+        "status": 200,
+        "mode": "shadow",
+        "publication_enabled": false
+      },
+      {
+        "role": "ingest",
+        "status": 200,
+        "mode": "shadow",
+        "publication_enabled": false
+      }
+    ],
+    "owned_resources": [
+      {
+        "name": "findpitches-v3-reconcile-shadow",
+        "owned_v3_database": true
+      },
+      {
+        "name": "findpitches-v3-eligibility-shadow",
+        "owned_v3_database": true
+      },
+      {
+        "name": "findpitches-v3-enrichment-shadow",
+        "owned_v3_database": true
+      },
+      {
+        "name": "findpitches-v3-readiness-shadow",
+        "owned_v3_database": true
+      },
+      {
+        "name": "findpitches-v3-watch-shadow",
+        "owned_v3_database": true
+      },
+      {
+        "name": "findpitches-v3-acquisition-shadow",
+        "owned_v3_database": true
+      },
+      {
+        "name": "findpitches-v3-api-shadow",
+        "owned_v3_database": true
+      },
+      {
+        "name": "findpitches-v3-ingest-shadow",
+        "owned_v3_database": true
+      }
+    ]
+  },
+  "validation": {
+    "v3_tests_passed": 154,
+    "v3_tests_failed": 0,
+    "boundary_checks_passed": true,
+    "shadow_workers_deployed": 8
+  },
+  "next_priority": "Folk & Bespoke: implement and bound-test the 16 observed official event/venue application routes before forecasting READY yield.",
+  "gb_milestones": {
+    "achieved": 100,
+    "next": 250,
+    "ready_to_250": 121,
+    "ready_to_500": 371,
+    "ready_to_1000": 871
+  },
+  "caveats": [
+    "READY counts distinct source-proved application entities; exact event grouping is advisory.",
+    "Source-family leads are not forecast READY supply.",
+    "New Mynt Image proof is England-based; other GB nations remain expansion work.",
+    "Run outcome totals can overlap and must not be added as distinct first promotions.",
+    "Customer publication and production cutover remain disabled."
+  ]
+}

@@ -5,7 +5,7 @@ import {directGrowthPriority,assertFreeGrowth,growthOutcome} from '../../operati
 import {database,NOW,seed,record} from './helpers.mjs';
 import {sql} from '../../platform/findpitches-v3/store.mjs';
 import {documentFixture} from './verification-fixture.mjs';
-import {startCatalogueRun,resumeReviewedCatalogueRun,stopCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,catalogueStatus} from '../../platform/findpitches-v3/catalogue-store.mjs';
+import {startCatalogueRun,resumeReviewedCatalogueRun,stopCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,adoptCommittedCatalogueReceipt,catalogueStatus} from '../../platform/findpitches-v3/catalogue-store.mjs';
 import {commercialStatus} from '../../platform/findpitches-v3/commercial.mjs';
 import {verifyDocument,compareProof} from '../../platform/findpitches-v3/verification.mjs';
 import {reverifyRetainedSource,recordVerification} from '../../platform/findpitches-v3/verification-store.mjs';
@@ -33,6 +33,13 @@ test('catalogue fetch restricts domains, paths, formats, redirects and size',asy
   const bad=await fetchCatalogueDocument('https://www.eventeny.com/sitemap.xml',{now,fetcher:async()=>new Response('<html>Login</html>')});assert.equal(bad.reason,'catalogue_format_not_proved');
   const huge=await fetchCatalogueDocument('https://www.eventeny.com/sitemap.xml',{now,fetcher:async()=>new Response('<urlset>'+('x'.repeat(2097153))+'</urlset>')});assert.equal(huge.truncated,true);assert.equal(huge.coverage,'bounded_prefix_only');assert.equal(huge.retained_bytes,2097152);
 });
+test('later catalogue byte windows stay bounded and retain explicit partial coverage',async()=>{
+  const url='https://www.eventeny.com/sitemap/event_elements.xml',prefix='<urlset>'+(' '.repeat(2097152-8)),tail='<url><loc>https://www.eventeny.com/events/vendor/?id=99999</loc></url></urlset>';
+  const d=await fetchCatalogueDocument(url,{byte_offset:2097152,fetcher:async()=>new Response(prefix+tail)});
+  assert.equal(d.coverage,'bounded_window_only');assert.equal(d.byte_offset,2097152);assert.ok(d.retained_bytes<=2097152);assert.equal(catalogueLinks(d).routes[0].identity,'eventeny:vendor:99999');
+  await assert.rejects(fetchCatalogueDocument(url,{byte_offset:8388608}),/bounded_catalogue_byte_window/);
+  const bad=await fetchCatalogueDocument(url,{byte_offset:2097152,fetcher:async()=>new Response('<html>'+prefix+tail)});assert.equal(bad.reason,'catalogue_format_not_proved');
+});
 test('event detail discovery excludes navigation and never supplies READY proof',()=>{
   const links=eventApplicationLinks({url:'https://www.eventeny.com/events/summer-fair-123/',html:'<body><nav><a href="/events/vendor/?id=1">Other</a></nav><main><h1>Summer fair</h1><a href="/events/vendor/?id=2">Arts vendor application</a><a href="/events/vendor/?id=2">Apply</a><a href="https://facebook.com/a">Apply</a></main></body>'});
   assert.equal(links.length,1);assert.equal(links[0].identity,'eventeny:vendor:2');assert.equal(links[0].label,'Apply');assert.equal(platformRoute('https://www.eventeny.com/events/vendor/?id=not-a-number'),null);
@@ -44,6 +51,18 @@ test('free inventory growth targets useful unverified source routes and requires
   const out=growthOutcome([row],[{...row,market:'CA'}],{beforeAt:now,now});assert.equal(out.identity_mutations,1);
 });
 async function configured(t){const db=database(t);await sql(db,"INSERT INTO quality_gates VALUES ('structured-100-preservation',100,0,'{}','gate',?)",NOW).run();await sql(db,"UPDATE commercial_acquisition_policy SET manual_paused=1,pause_reason='quality_review' WHERE id=1").run();return db;}
+test('lost committed reconciliation response adopts only source-bound immutable custody',async t=>{
+  const db=await configured(t),run=await startCatalogueRun(db,{max_candidates:2},NOW),doc=documentFixture();
+  const page=await discoverCataloguePage(db,{run_id:run.id,url:'https://www.eventeny.com/sitemap/event_elements.xml'},{now:NOW,fetcher:async()=>new Response('<urlset><url><loc>'+doc.url+'</loc></url></urlset>')}),id=page.candidates[0].id;
+  const batch=db.batch;let lost=false;
+  db.batch=async statements=>{const result=await batch(statements);if(!lost&&(await sql(db,'SELECT COUNT(*) AS n FROM reconciliation_decisions').first()).n){lost=true;throw Error('lost_committed_identity_response');}return result;};
+  await assert.rejects(verifyCatalogueCandidate(db,id,{now:NOW,fetcher:async()=>new Response(doc.html,{headers:{'content-type':'text/html'}})}),/lost_committed_identity_response/);db.batch=batch;
+  const before=await sql(db,'SELECT COUNT(*) AS n FROM source_facts').first();
+  await assert.rejects(adoptCommittedCatalogueReceipt(db,{candidate_id:id},NOW),/operator_review/);
+  const adopted=await adoptCommittedCatalogueReceipt(db,{candidate_id:id,review:'Fault injection confirms complete immutable identity/source custody.'},NOW);
+  assert.equal(adopted.source_fetches,0);assert.equal(adopted.reservations_refunded,0);assert.equal((await sql(db,'SELECT COUNT(*) AS n FROM source_facts').first()).n,before.n);assert.equal((await sql(db,'SELECT COUNT(*) AS n FROM entities').first()).n,1);assert.equal((await sql(db,'SELECT checked FROM catalogue_runs WHERE id=?',run.id).first()).checked,1);
+  await assert.rejects(adoptCommittedCatalogueReceipt(db,{candidate_id:id,review:'Replay'},NOW),/uncheckpointed/);
+});
 test('free catalogue discoveries require fresh application proof; READY has independent attribution and replay creates nothing',async t=>{
   const db=await configured(t),run=await startCatalogueRun(db,{max_candidates:1},NOW),doc=documentFixture();
   const xml='<urlset><url><loc>'+doc.url.replaceAll('&','&amp;')+'</loc></url></urlset>',discovery=await discoverCataloguePage(db,{run_id:run.id,url:'https://www.eventeny.com/sitemap/event_elements.xml'},{now:NOW,fetcher:async()=>new Response(xml)});

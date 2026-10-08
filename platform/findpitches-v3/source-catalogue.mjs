@@ -9,8 +9,9 @@ export function catalogueUrl(value) {
       ||/^(?:www\.)?eventeny\.com$/.test(u.hostname)&&/^\/sitemap\/(?:events|event_elements)\d*\.xml$/.test(u.pathname)
       ||/^(?:www\.)?localstalls\.com$/.test(u.hostname)&&/^\/sitemaps\/events-(?:au|nz|uk|us|ca)-\d+\.xml$/.test(u.pathname));}catch{return false;}
 }
-export async function fetchCatalogueDocument(url,{fetcher=fetch,now=new Date().toISOString()}={}) {
+export async function fetchCatalogueDocument(url,{fetcher=fetch,now=new Date().toISOString(),byte_offset=0}={}) {
   if(!catalogueUrl(url))throw Error('approved_public_catalogue_required');
+  if(![0,2097152,4194304,6291456].includes(byte_offset)||byte_offset&&(!url.includes('eventeny.com/')||url.endsWith('/robots.txt')))throw Error('bounded_catalogue_byte_window_required');
   let current=url;const visited=[];
   try {for(let i=0;i<=3;i++) {
     if(!catalogueUrl(current)||visited.includes(current))return {requested_url:url,fetched_at:now,reason:'catalogue_redirect_rejected'};
@@ -18,15 +19,19 @@ export async function fetchCatalogueDocument(url,{fetcher=fetch,now=new Date().t
     if([301,302,303,307,308].includes(r.status)){current=new URL(r.headers.get('location'),current).href;continue;}
     const meta={requested_url:url,url:current,fetched_at:now,http_status:r.status,redirect_chain:visited};
     if(!r.ok)return {...meta,reason:'catalogue_http_'+r.status};
-    const reader=r.body.getReader(),parts=[];let size=0,truncated=false;
-    try {for(;;){const {done,value}=await reader.read();if(done)break;const remaining=2097152-size;
-      if(value.length>remaining){parts.push(value.slice(0,remaining));size+=remaining;truncated=true;await reader.cancel();break;}
-      size+=value.length;parts.push(value);
+    const reader=r.body.getReader(),parts=[];let size=0,truncated=false,read=0,prefix=new Uint8Array();
+    try {for(;;){const {done,value}=await reader.read();if(done)break;
+      if(!prefix.length)prefix=value.slice(0,8192);
+      const start=Math.max(0,byte_offset-read),remaining=2097152-size;read+=value.length;
+      if(start>=value.length)continue;const selected=value.subarray(start);
+      if(selected.length>remaining){parts.push(selected.slice(0,remaining));size+=remaining;truncated=true;await reader.cancel();break;}
+      size+=selected.length;parts.push(selected);
     }}finally{reader.releaseLock();}
     const bytes=new Uint8Array(size);let offset=0;for(const p of parts){bytes.set(p,offset);offset+=p.length;}
     const content=new TextDecoder().decode(bytes);
-    if(current.endsWith('/robots.txt')?/^\s*</.test(content):!/^\s*(?:<\?xml[^>]*>\s*)?<(?:urlset|sitemapindex)\b/.test(content))return {...meta,reason:'catalogue_format_not_proved'};
-    return {...meta,content,content_hash:await hash(content),truncated,retained_bytes:size,coverage:truncated?'bounded_prefix_only':'complete_document'};
+    const header=byte_offset?new TextDecoder().decode(prefix):content;
+    if(/<!DOCTYPE|<!ENTITY/i.test(header)||(current.endsWith('/robots.txt')?/^\s*</.test(header):!/^\s*(?:<\?xml[^>]*>\s*)?<(?:urlset|sitemapindex)\b/.test(header)))return {...meta,reason:'catalogue_format_not_proved'};
+    return {...meta,content,content_hash:await hash(content),truncated,retained_bytes:size,byte_offset,bytes_read:read,coverage:byte_offset?'bounded_window_only':truncated?'bounded_prefix_only':'complete_document'};
   }return {requested_url:url,fetched_at:now,reason:'catalogue_redirect_limit'};
   }catch{return {requested_url:url,fetched_at:now,reason:'catalogue_fetch_failed'};}
 }

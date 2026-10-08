@@ -55,6 +55,26 @@ export async function resumeReviewedCatalogueRun(db,{run_id,review}={},now=new D
   if(result[0].results.length!==1)throw Error('catalogue_resume_raced');return {run_id,status:'active',max_candidates:run.max_candidates,checked:run.checked,expires_at:run.expires_at,reservations_refunded:0};
 }
 const routeKey=url=>{try{const u=new URL(url);u.hostname=u.hostname.replace(/^www\./,'');u.hash='';for(const key of [...u.searchParams.keys()])if(/^(?:utm_|srsltid|aff|fbclid)/i.test(key))u.searchParams.delete(key);return u.href;}catch{return null;}};
+export async function adoptCommittedCatalogueReceipt(db,{candidate_id,review},now=new Date().toISOString()) {
+  await shadowGuard(db);if(typeof review!=='string'||!review.trim()||review.length>1000)throw Error('catalogue_operator_review_required');
+  const c=await sql(db,"SELECT c.*,p.status,p.record_id,p.document_id,p.entity_id FROM catalogue_candidates c JOIN catalogue_progress p ON p.candidate_id=c.id WHERE c.id=?",candidate_id).first();
+  if(!c||c.status!=='failed'||c.record_id||c.document_id||c.entity_id)throw Error('catalogue_uncheckpointed_committed_receipt_required');
+  const producerId=platformRoute(c.url)?.identity??'catalogue:'+routeKey(c.url);
+  const receipt=await sql(db,`SELECT p.id,p.normalized_json,d.entity_id,d.outcome FROM producer_records p JOIN reconciliation_decisions d ON d.record_id=p.id
+    JOIN entity_records l ON l.record_id=p.id AND l.entity_id=d.entity_id WHERE p.producer_name='platform-catalogue' AND p.environment='shadow'
+    AND p.producer_record_id=? AND p.received_at>=? ORDER BY p.received_at DESC LIMIT 1`,producerId,c.discovered_at).first();
+  if(!receipt)throw Error('catalogue_committed_identity_custody_required');
+  const input=JSON.parse(receipt.normalized_json),provenance=Array.isArray(input.provenance)?input.provenance[0]:input.provenance;
+  const source=await sql(db,'SELECT document_json FROM source_documents WHERE id=?',provenance?.source_document_id??'').first(),entity=await loadEntity(db,receipt.entity_id);
+  if(!source||!entity||JSON.parse(source.document_json).requested_url!==c.url||input.canonical_url!==c.url||(entity.application_url??entity.canonical_url)!==c.url||provenance.catalogue_document_id!==c.source_document_id)throw Error('catalogue_committed_source_custody_required');
+  const audit={document_kind:'catalogue_committed_receipt_adoption',candidate_id,record_id:receipt.id,entity_id:receipt.entity_id,document_id:provenance.source_document_id,review,adopted_at:now,source_refetches:0,reservations_refunded:0};
+  const result=await db.batch([
+    sql(db,"UPDATE catalogue_progress SET record_id=?,document_id=?,entity_id=? WHERE candidate_id=? AND status='failed' AND record_id IS NULL AND document_id IS NULL AND entity_id IS NULL RETURNING candidate_id",receipt.id,provenance.source_document_id,receipt.entity_id,candidate_id),
+    sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,NULL,?,?)','doc_'+(await hash(audit)).slice(0,40),c.url,now,stableJson(audit)),
+  ]);
+  if(result[0].results.length!==1)throw Error('catalogue_committed_adoption_raced');
+  return settleCommittedCatalogueReceipt(db,candidate_id,now);
+}
 export async function settleCommittedCatalogueReceipt(db,candidateId,now=new Date().toISOString()) {
   await shadowGuard(db);
   const c=await sql(db,'SELECT c.*,p.status,p.lease_until,p.record_id,p.document_id,p.entity_id FROM catalogue_candidates c JOIN catalogue_progress p ON p.candidate_id=c.id WHERE c.id=?',candidateId).first();
@@ -91,10 +111,10 @@ export async function recoverUncommittedCatalogueLease(db,candidateId,now=new Da
   ]);
   if(outcome[0].results.length!==1)throw Error('catalogue_custody_recovery_requires_review');return {candidate_id:candidateId,recovered:true,reservations_refunded:0};
 }
-export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500},{fetcher=fetch,now=new Date().toISOString()}={}) {
+export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500,byte_offset=0},{fetcher=fetch,now=new Date().toISOString()}={}) {
   await activeRun(db,run_id,now);if(!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>500)throw Error('bounded_catalogue_page_required');
   let document,links;
-  if(catalogueUrl(url)) {document=await fetchCatalogueDocument(url,{fetcher,now});links=catalogueLinks(document);}
+  if(catalogueUrl(url)) {document=await fetchCatalogueDocument(url,{fetcher,now,byte_offset});links=catalogueLinks(document);}
   else if(platformRoute(url)?.kind==='event_detail'){document=await fetchSourceDocument(url,{fetcher,now});links={catalogues:[],routes:eventApplicationLinks(document)};}
   else throw Error('approved_public_catalogue_or_event_detail_required');
   if(document.reason)return {run_id,reason:document.reason,routes:0,catalogues:[],candidates:[]};
@@ -113,7 +133,7 @@ export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500},{
     sql(db,`INSERT OR IGNORE INTO catalogue_candidates SELECT json_extract(value,'$.id'),?,?,json_extract(value,'$.url'),json_extract(value,'$.family'),? FROM json_each(?)`,run_id,documentId,now,stableJson(candidates)),
     sql(db,`INSERT OR IGNORE INTO catalogue_progress(candidate_id,status,reason) SELECT json_extract(value,'$.id'),CASE WHEN json_extract(value,'$.duplicate') THEN 'duplicate' ELSE 'pending' END,json_extract(value,'$.duplicate_reason') FROM json_each(?)`,stableJson(candidates)),
   ]);
-  return {run_id,document_id:documentId,coverage:document.coverage??'complete_document',catalogues:links.catalogues,event_details:links.routes.filter(r=>r.kind==='event_detail').slice(offset,offset+limit),routes:applications.length,offset,next_offset:offset+limit<applications.length?offset+limit:null,candidates};
+  return {run_id,document_id:documentId,coverage:document.coverage??'complete_document',byte_offset,catalogues:links.catalogues,event_details:links.routes.filter(r=>r.kind==='event_detail').slice(offset,offset+limit),routes:applications.length,offset,next_offset:offset+limit<applications.length?offset+limit:null,candidates};
 }
 export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now=new Date().toISOString()}={}) {
   const c=await sql(db,'SELECT c.*,p.status,p.entity_id,p.record_id FROM catalogue_candidates c JOIN catalogue_progress p ON p.candidate_id=c.id WHERE c.id=?',candidateId).first();
