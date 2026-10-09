@@ -1,52 +1,48 @@
-# Original Mk1 catalogue recovery — 9 October 2026
+# Pitchlist UK catalogue audit — scope correction, 9 October 2026
 
-The original Pitchlist Mk1 catalogue has not been completely represented in V3. It is a useful source of retained organiser/application leads, but historical listings do not establish current availability. A targeted, free source check recovered one genuinely new READY opportunity into shadow inventory. No Serper queries were used.
+**Pitchlist is the UK-only live product with paying customers.** Its customer catalogue must be audited independently of the international FindPitches datasets stored in the same repository.
 
-## Catalogue and coverage
+The earlier version of this report incorrectly combined 290 UK rows, 704 US rows and three Canadian rows into a supposed 997-row Mk1 catalogue. That aggregate, the international closed/stale findings and the Rockport US recovery are **not results about the UK Pitchlist customer inventory**. This report corrects that interpretation. No customer-facing catalogue, subscription, source evidence or entity identity was changed.
 
-Mk1 is the Cloudflare Pages project `pitchlistuk`, with the domains `pitchlist.uk` and `findpitches.com`. It is separate from the V2 acquisition/recovery database and from the legacy global discovery Worker.
+## Confirmed UK route and retained catalogue
 
-Read-only Pages metadata identifies production deployment `7f359dff-0702-4acb-aa69-2f28859c91ce`, created on 28 September, and its declared Git commit `325d65dde304abc6288d48e468e28299eeef7eb3`. The catalogue JSON in that commit contains 997 rows. The current `origin/main` catalogue has identical data. Public Pages/API requests failed from this environment; these counts describe the catalogue in the deployment's declared build commit, rather than an independently downloaded rendered API response.
+The UK customer frontend `src/database.js` requests `/api/customer-opportunities/search`. Its handler imports only `functions/_data/opportunities.mjs`. The US and Canadian handlers import separate datasets. `platform/routing.mjs` maps `pitchlist.uk` to the UK country surface; international host routing applies to `findpitches.com`.
 
-Coverage was measured before the new import, at **11:10 London time on 9 October**:
+Read-only Cloudflare Pages metadata identifies production deployment `7f359dff-0702-4acb-aa69-2f28859c91ce`, created on 28 September, with declared Git commit `325d65dde304abc6288d48e468e28299eeef7eb3`. The **UK catalogue in that commit contains 290 rows** and matches the inspected current-main UK snapshot. Public Pages/API fetching failed from this environment, so the actual rendered live API count and paying-customer experience have not been independently checked. The shared Pages project and repository do not make its international datasets part of the UK customer inventory.
 
-| Country | Mk1 rows | Matching V3 source/application evidence | No matching V3 evidence | Matching V2 route | Existing READY source overlap |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| GB | 290 | 31 | 259 | 50 | 0 |
-| US | 704 | 70 | 634 | 90 | 32 |
-| CA | 3 | 0 | 3 | 0 | 0 |
-| Total | **997** | **101** | **896** | **140** | **32** |
+UK coverage was compared with V3 at **11:10 London time on 9 October**:
 
-The comparison uses source/application URLs in the same country, normalising `www`, tracking parameters, fragments and trailing slashes. It establishes potential source coverage, not identity or edition equivalence. The 32 existing READY overlaps are US sources already represented in V3; they are not 32 newly verified Mk1 opportunities. Conversely, absence of a URL match does not prove that an opportunity cannot already exist under another route.
+| UK catalogue measure | Rows |
+| --- | ---: |
+| UK rows in the inspected build | **290** |
+| Matching V3 source/application evidence | **31** |
+| No matching V3 source/application evidence | **259** |
+| Matching V2 route | **50** |
+| Matching currently READY V3 source | **0** |
+| Additional unlinked catalogue discovery among uncovered rows | **1** |
+| No matching linked evidence, catalogue discovery or retained document | **258** |
 
-Of the 896 without matching linked evidence, 29 already have unlinked free-catalogue discovery and retained source documents, often with closed/stale holds. The other 867 have neither matching linked evidence, catalogue discovery nor retained source documents in the inspected V3 tables. Two duplicate Mk1 route sets were detected, without automatic identity merging.
+Matching is based on source/application URLs in the same country, with tracking parameters, fragments, `www` and trailing slashes normalised. It establishes source coverage, not entity identity, edition equivalence, customer usefulness or proof of commercial readiness. An absent route match does not prove that an equivalent entity cannot exist under another URL. The 259 uncovered routes provide a recovery investigation list; they are not 259 proven new READY opportunities.
 
-## Direct-source check and recovery
+## What the UK checks actually established
 
-We checked **43 distinct source routes**: 12 UK organiser/market pages, 28 US application/organiser routes, and all three Canadian entries. This was a targeted sample, not a random commercial-quality estimate. Recently checked catalogue routes with closed/stale results were deprioritised.
+Only **12 selected UK organiser/market sources** were fetched. All 12 returned `single_event_source_data_missing` from the generic verifier. None supplied verified source proof sufficient for V3 READY, and **no UK record was imported or promoted by this audit**.
 
-| Source-proof result | GB | US | CA | Total |
-| --- | ---: | ---: | ---: | ---: |
-| Verified | 0 | 1 | 0 | **1** |
-| Partial | 0 | 10 | 0 | **10** |
-| Unverified | 12 | 4 | 3 | **19** |
-| Quarantine | 0 | 13 | 0 | **13** |
+These were targeted routes without matching V3 evidence, not a representative sample of customer inventory. The result establishes an extraction/proof gap, not that the listings are junk. Council trading routes and recurring markets may be commercially useful without exposing the single-event data required by the current parser. A customer-usefulness percentage remains **unmeasured**.
 
-Recurring blockers included 19 closed/past-deadline applications, 12 stale editions, 15 sources without extractable single-event data, and four pages without a scoped event. Reason counts overlap. Other holds included contradictory edition/date information, cancelled/postponed events, missing venue proof and unproved vendor applications.
+The previous aggregate findings of 19 closed/past-deadline applications and 12 stale editions came entirely from the international subset. They cannot be used to judge the UK Pitchlist catalogue.
 
-UK generic-parser failures do not establish that every underlying market is unusable. They show where source-specific extraction is needed. The three Canadian rows are business/farmers-market guidance, rather than individual trading opportunities. Historical application links also included contact pages, licences and supporting documents; an application-shaped URL alone is insufficient.
+## International work excluded from Pitchlist totals
 
-The one fully proved source was **2026 December Rockport Market Days**, Texas, starting **18 December 2026**, with an **OPEN_NOW** vendor application at [Eventeny](https://www.eventeny.com/events/vendor/?id=34671). A fresh fetch inside the deployed V3 enrichment Worker confirmed the source independently of the inspection file. Normal reconciliation created one new entity and the commercial proof gate returned READY. It remains shadow-only.
+The other 31 checked routes belonged to the separate US/Canadian repository snapshots. One US Eventeny application, **2026 December Rockport Market Days**, was directly proved current and became one new V3 shadow READY entity. It remains valid international source-backed V3 inventory, but is **not a recovery from live UK Pitchlist**.
 
-The preservation audit checked all **15,395 pre-existing producer receipts** and **104,118 source facts**: zero destructive mutations, zero identity mutations and no missing original entities. The import used zero paid queries and produced zero customer or publication rows. The durable reconciliation/verification queue had no due jobs at the subsequent status check. Total shadow READY inventory then stood at **1,890**; only the one Rockport entity is attributed to this Mk1 recovery.
+The original receipt incorrectly carried a `legacy_mk1` discovery label because of the earlier scope mistake. That historical receipt is immutable. This report preserves it and records the corrected scope; it does not rewrite source facts, geography or identity. The previous aggregate source-preservation audit checked 15,395 existing receipts and 104,118 source facts with zero mutations, zero paid queries and zero customer/publication leakage. Those are V3 safety results, not UK catalogue-quality results.
 
-## Safe repeatable import
+## UK-only recovery guard
 
-The new enrichment route `POST /mk1/verify-import` requires the operator token. The producer ingest-only token is rejected, including in the live deployment check. It accepts one retained row with country, Git commit and snapshot hash, checks shadow/paused-paid/preservation/backlog guards, then fetches the original public source itself. Client-provided HTML cannot manufacture proof.
+Both `mk1ProofRecord` and operator-only `POST /mk1/verify-import` now reject markets other than **GB**, before fetching or importing a source. The bounded CLI filters inspection inputs to GB. An explicit regression check rejects US and CA admission without a fetch. This prevents international snapshots being attributed to UK Pitchlist by this recovery lane.
 
-Only a fully verified source with matching source-proved country enters the normal `platform-catalogue` producer path. All selected facts come from the fresh source proof. The original Mk1 row is retained as immutable provenance with `discovery_origin: legacy_mk1`, original-row hash, catalogue hash and Git custody. Normal entity reconciliation and revision-bound readiness remain in force. A match whose selected verification route differs is held for verification of that retained route.
-
-The bounded CLI consumes the privately captured build catalogue and inspection receipts:
+The route still fetches source proof itself, enforces paused paid acquisition, disabled publication, the preservation gate and controlled backlog, and uses normal transactional ingestion/reconciliation. Historical Mk1 fields are immutable provenance, never selected facts or readiness proof. Country comes from source evidence and must match GB. The producer ingest-only token cannot use the route.
 
 ```bash
 node operations/findpitches-v3/harvest-mk1-proof.mjs \
@@ -56,14 +52,12 @@ node operations/findpitches-v3/harvest-mk1-proof.mjs \
   --maximum 10
 ```
 
-The CLI accepts at most 40 proved records, stores a full private preservation baseline and verifies the resulting identities, readiness and disabled paid/publication state. Unverified sources remain inspection evidence rather than promoted entities. Refreshes preserve previous facts; identical inputs at the same evidence timestamp replay without new receipts or entities. The native Worker uses transactional D1 ingestion, rather than simulating a transaction through the remote query adapter.
+All 168 V3 tests pass. Live admission checks reject both US and CA inputs. Only the owned V3 shadow enrichment Worker is deployed for this guard correction. No production site, V2, publication, routing, schema or subscription changes are involved. Source evidence and previously recorded identities remain preserved.
 
-All **168 V3 tests passed**, including source-only fact selection, historical-field preservation, country conflicts, closed applications, source/Git custody, live-fetch isolation, operator access, replay and paused-shadow guards. Only the owned V3 shadow enrichment Worker was deployed. No schema, Mk1, V2, publication or production routing changes were made.
+## Next useful audit
 
-## Next useful work
+Assess a representative sample of the **UK customer catalogue** for practical trader usefulness: a real trading opportunity or recurring market, relevant organiser, location, a working and relevant application/contact route, eligibility, current availability and any advertised edition/deadline. Include council routes, recurring markets, fairs/festivals and independent organisers. Separate confirmed closed/stale/broken routes from parser uncertainty and minor missing fields.
 
-Prioritise the retained UK organiser and recurring-market application routes, distinguish actual trading opportunities from generic licensing/guidance, and add source-specific extraction where the page supports defensible venue, geography, availability and application proof. Check the strongest current editions first and reuse retained closed/stale results. Existing US platform applications are another bounded free lane, but should not displace UK coverage.
+Customer usefulness and V3's strict automatic READY gate must be reported separately. Retained source facts should support additive source-specific verification without inferred countries/dates, navigation links as applications or unsupported promotion. Keep this inspection read-only, paid acquisition paused and customer publication unchanged.
 
-There is no defensible estimate of hundreds of extra READY records from this selected sample. The catalogue provides leads and provenance; fresh source proof determines commercial recovery. Keep paid acquisition paused and publication disabled throughout.
-
-The [aggregate machine-readable report](../operations/findpitches-v3/reports/mk1-catalogue-audit-2026-10-09.json) contains the exact coverage, proof outcomes and successful import audit. Full catalogue rows, fetched documents and Cloudflare project configuration remain private and outside Git.
+The [corrected aggregate report](../operations/findpitches-v3/reports/mk1-catalogue-audit-2026-10-09.json) contains UK-only coverage and verification results, with international checks explicitly segregated as out of scope. Original private snapshots remain outside Git.

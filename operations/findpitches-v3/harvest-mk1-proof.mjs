@@ -13,7 +13,8 @@ import {commercialRows,commercialEntity} from '../../platform/findpitches-v3/com
 export async function harvestMk1Proof({credentialsFile,stateDirectory,auditDirectory,maximum=40}) {
   if(!Number.isInteger(maximum)||maximum<1||maximum>40)throw Error('mk1_harvest_limit_1_to_40_required');
   const root=path.resolve(auditDirectory),snapshot=JSON.parse(fs.readFileSync(path.join(root,'deployed-snapshots-private.json'))),snapshotHash=await hash(snapshot);
-  const inspections=['direct-sample-private.json','direct-rest-private.json'].filter(f=>fs.existsSync(path.join(root,f))).flatMap(f=>JSON.parse(fs.readFileSync(path.join(root,f))).results);
+  // The shared repository also has international snapshots: those are not Pitchlist Mk1.
+  const inspections=['direct-sample-private.json','direct-rest-private.json'].filter(f=>fs.existsSync(path.join(root,f))).flatMap(f=>JSON.parse(fs.readFileSync(path.join(root,f))).results).filter(r=>r.market==='GB');
   const {db,call}=await shadowContext({credentialsFile,stateDirectory}),initial=await call('api','/status');assertFreeGrowth(initial);
   const save=(file,value)=>fs.writeFileSync(path.join(root,file),JSON.stringify(value,null,2)+'\n',{mode:0o600});
   const inputs=[];
@@ -40,7 +41,7 @@ export async function harvestMk1Proof({credentialsFile,stateDirectory,auditDirec
   const rows=await commercialRows(db),asOf=new Date().toISOString(),growth=growthOutcome(baseline.rows,rows,{beforeAt:baseline.as_of,now:asOf}),mutations=sourceMutationCount(baseline.immutable,await immutableDigests(db));
   if(mutations||growth.identity_mutations||growth.missing_original_entities)throw Error('mk1_preservation_failure');
   const ids=new Set(results.map(r=>r.entity_id).filter(Boolean)),priorIds=new Set(baseline.rows.map(r=>r.id)),priorReady=new Set(baseline.rows.map(r=>commercialEntity(r,baseline.as_of)).filter(r=>r.ready).map(r=>r.id)),cohort=rows.map(r=>commercialEntity(r,asOf)).filter(r=>ids.has(r.id));
-  const report={schema:'findpitches-mk1-proof-harvest-v1',as_of:asOf,git_ref:snapshot.git_ref,snapshot_sha256:snapshotHash,source_routes_checked:inspections.length,verified_source_records:inputs.length,
+  const report={schema:'findpitches-mk1-proof-harvest-v1',as_of:asOf,market:'GB',customer_host:'pitchlist.uk',git_ref:snapshot.git_ref,snapshot_sha256:snapshotHash,source_routes_checked:inspections.length,verified_source_records:inputs.length,
     held_source_inspections:inspections.length-inputs.length,linked_entities:ids.size,new_entities:[...ids].filter(id=>!priorIds.has(id)).length,matched_existing:[...ids].filter(id=>priorIds.has(id)).length,
     ready:cohort.filter(r=>r.ready).length,new_ready:cohort.filter(r=>r.ready&&!priorReady.has(r.id)).length,source_mutations:mutations,identity_mutations:growth.identity_mutations,
     preserved_receipts:Object.keys(baseline.immutable.records).length,preserved_source_facts:Object.keys(baseline.immutable.facts).length,paid_queries_added:final.commercial.kpis.paid_acquisition_queries-baseline.paid_queries,

@@ -7,6 +7,7 @@ import {reconcileRecord,evaluateReadiness} from './pipeline.mjs';
 import {recordVerification,verificationUrl} from './verification-store.mjs';
 
 export async function mk1ProofRecord({market,original,document,gitRef,snapshotHash,now=new Date().toISOString()}) {
+  if(market!=='GB')throw Error('mk1_uk_only_required');
   if(!/^[a-f0-9]{40}$/.test(gitRef)||!/^[a-f0-9]{64}$/.test(snapshotHash))throw Error('mk1_git_custody_required');
   const url=platformRoute(original.application_url)?.url??original.source_url??original.application_url;
   if(document.requested_url!==url||document.html&&await hash(document.html)!==document.content_hash)throw Error('mk1_original_document_custody_required');
@@ -27,7 +28,8 @@ export async function importMk1Source(db,body,{fetcher=fetch,now=new Date().toIS
     (SELECT bulk_enabled FROM serper_policy WHERE id=1) AS bulk,(SELECT manual_paused FROM commercial_acquisition_policy WHERE id=1) AS paid_paused,
     EXISTS(SELECT 1 FROM quality_gates WHERE name='structured-100-preservation' AND tested_records=100 AND destructive_mutations=0) AS preservation_gate`).first();
   if(guard.publication||guard.leakage||guard.bulk||!guard.paid_paused||!guard.preservation_gate)throw Error('mk1_shadow_preservation_guard_required');
-  if(!['GB','US','CA'].includes(body.market)||!body.original||stableJson(body.original).length>131072||!/^[a-f0-9]{40}$/.test(body.gitRef??'')||!/^[a-f0-9]{64}$/.test(body.snapshotHash??''))throw Error('mk1_bounded_source_custody_required');
+  if(body.market!=='GB')throw Error('mk1_uk_only_required');
+  if(!body.original||stableJson(body.original).length>131072||!/^[a-f0-9]{40}$/.test(body.gitRef??'')||!/^[a-f0-9]{64}$/.test(body.snapshotHash??''))throw Error('mk1_bounded_source_custody_required');
   const url=platformRoute(body.original.application_url)?.url??body.original.source_url??body.original.application_url;
   if(!safeSourceUrl(url))throw Error('mk1_public_original_source_required');
   const due=await sql(db,"SELECT COUNT(*) AS n FROM jobs WHERE stage IN ('reconcile','eligibility','enrichment','readiness') AND status IN ('ready','leased') AND available_at<=?",now).first();
