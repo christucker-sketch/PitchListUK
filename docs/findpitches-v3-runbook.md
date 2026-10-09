@@ -120,6 +120,8 @@ The [Serper safeguards guide](findpitches-v3-serper-usage.md) describes the appe
 
 The [legacy recovery guide](findpitches-v3-legacy-recovery.md) describes the SELECT-only V2 snapshot, source-backed reconstruction, direct re-fetch, quarantine and per-field repair/preservation audit. Its operator-only routes cannot be used by the home-PC ingest token. Every recovered `legacy_v2` receipt stays shadow-only and pending audit.
 
+The separate [legacy paid-discovery recovery](findpitches-v3-legacy-paid-recovery.md) salvages archived UK workflow evidence under `legacy-global-uk`, using direct source fetches and ordinary source-proof gates. It keeps legacy spend and identity attribution separate from V3 paid discovery and independent producer delivery.
+
 Transport wake-ups are coalesced per durable job for five minutes and consumers run with maximum concurrency one. Completed or currently leased duplicate pointers are acknowledged without another claim/fan-out cycle. Cron and durable jobs recover failed transport.
 
 ## Source verification

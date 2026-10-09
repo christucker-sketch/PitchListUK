@@ -4,11 +4,11 @@ import {compareProof,applicationScope,VERIFIER_VERSION,calendarDate} from './ver
 import {budgetDay} from './serper-usage.mjs';
 import {ukSourceStatus} from './uk-store.mjs';
 
-export const COMMERCIAL_PRODUCERS=['independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official'];
+export const COMMERCIAL_PRODUCERS=['independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk'];
 export const INVENTORY_SQL=`SELECT e.*,
  (SELECT json_group_object(f.field_name,json(f.value_json)) FROM selected_facts f WHERE f.entity_id=e.id) AS fields_json,
- (SELECT json_group_array(DISTINCT p.producer_name) FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official')) AS producers_json,
- (SELECT p.producer_name FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.validation_status='accepted' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official')
+ (SELECT json_group_array(DISTINCT p.producer_name) FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk')) AS producers_json,
+ (SELECT p.producer_name FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.validation_status='accepted' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk')
   AND COALESCE(json_extract(p.normalized_json,'$.provenance.diagnostic'),0)<>1 AND COALESCE(json_extract(p.normalized_json,'$.provenance[0].diagnostic'),0)<>1
   ORDER BY p.received_at,p.id LIMIT 1) AS origin,
  (SELECT COUNT(*) FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=e.id) AS quality_holds,
@@ -99,10 +99,10 @@ export async function commercialStatus(db,now=new Date().toISOString()) {
   const price=await sql(db,'SELECT credit_unit_cost_usd,bulk_enabled FROM serper_policy WHERE id=1').first();
   const paidIds=new Set(rows.filter(r=>r.environment==='shadow'&&['city-search','source-led-search'].includes(r.origin)).map(r=>r.id));
   const paidReady=first.filter(r=>paidIds.has(r.entity_id)).length;
-  const candidates=(await sql(db,`SELECT p.producer_name,COUNT(DISTINCT p.producer_record_id) AS candidate_ids,COUNT(DISTINCT er.entity_id) AS linked_entities FROM producer_records p JOIN entity_records er ON er.record_id=p.id JOIN entities e ON e.id=er.entity_id WHERE e.environment='shadow' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official') GROUP BY p.producer_name`).all()).results;
+  const candidates=(await sql(db,`SELECT p.producer_name,COUNT(DISTINCT p.producer_record_id) AS candidate_ids,COUNT(DISTINCT er.entity_id) AS linked_entities FROM producer_records p JOIN entity_records er ON er.record_id=p.id JOIN entities e ON e.id=er.entity_id WHERE e.environment='shadow' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk') GROUP BY p.producer_name`).all()).results;
   const receipts=(await sql(db,`SELECT p.producer_name,COUNT(*) AS receipts,COUNT(DISTINCT p.producer_record_id) AS candidate_ids,
     SUM(CASE WHEN NOT EXISTS(SELECT 1 FROM entity_records er WHERE er.record_id=p.id) THEN 1 ELSE 0 END) AS unlinked_receipts
-    FROM producer_records p WHERE p.environment='shadow' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official')
+    FROM producer_records p WHERE p.environment='shadow' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk')
     AND COALESCE(json_extract(p.normalized_json,'$.provenance.diagnostic'),0)<>1 AND COALESCE(json_extract(p.normalized_json,'$.provenance[0].diagnostic'),0)<>1 GROUP BY p.producer_name`).all()).results;
   const readyHistory=new Set(first.map(r=>r.entity_id)),removed=rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&readyHistory.has(r.id)&&!r.ready&&r.stale_expired).length;
   const uk=await ukSourceStatus(db),all=rows.map(r=>commercialEntity(r,now)),current=new Map(all.map(r=>[r.id,r]));

@@ -25,6 +25,7 @@ import {selectRecordFacts} from './evidence.mjs';
 import {importLegacyBatch,completeLegacyRecovery,legacyRecoveryStatus} from './legacy-store.mjs';
 import {noteDeliveryContact,structuredDeliveryStatus} from './delivery-health.mjs';
 import {repairLifecycleObservations} from './lifecycle-repair.mjs';
+import {importLegacyGlobalRecords} from './legacy-global.mjs';
 import {schedulePilotRun,stopPilot,pilotStatus} from './pilot.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
 import {startSourceLed,scheduleSourceLed,executeSourceLed,verifySourceLedCandidate,stopSourceLed,sourceLedStatus} from './source-led.mjs';
@@ -142,6 +143,10 @@ export default {
         const result=await ingestRecords(db,body.records,{producer:'independent-structured',environment:body.environment??'shadow'});
         await noteDeliveryContact(db,{kind:'import',environment:body.environment??'shadow',records:body.records,receipt:result});
         // Durable jobs survive a missing transport wakeup; the role cron recovers them.
+        ctx?.waitUntil(wakeStage(env,'reconcile').catch(()=>{}));return json(result,202);
+      }
+      if(request.method==='POST'&&path==='/legacy-global/import'&&role==='ingest') {
+        const result=await importLegacyGlobalRecords(db,await bodyJson(request));
         ctx?.waitUntil(wakeStage(env,'reconcile').catch(()=>{}));return json(result,202);
       }
       if(request.method==='POST'&&path==='/legacy/import'&&role==='ingest') {

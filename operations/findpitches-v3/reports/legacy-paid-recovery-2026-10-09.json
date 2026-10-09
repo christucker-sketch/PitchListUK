@@ -1,0 +1,74 @@
+{
+  "schema": "findpitches-legacy-global-recovery-v1",
+  "as_of": "2026-10-09T09:55:46.075Z",
+  "source_window": {
+    "from": "2026-10-05T23:00:00.000Z",
+    "to": "2026-10-09T09:44:10.183Z"
+  },
+  "archived_workflows": 1137,
+  "archived_bytes": 18931730,
+  "archive_manifest_sha256": "40b8beb94f276800325bda7456189f349a958a610de9806f437bac4f6457e4a8",
+  "discovery_row_occurrences": 816,
+  "distinct_source_routes": 26,
+  "repeat_occurrence_percent": 96.81,
+  "legacy_published_additions": 0,
+  "recovered_current_source_receipts": 10,
+  "source_routes_quarantined_without_entity": 16,
+  "distinct_linked_entities": 10,
+  "matched_existing_entities": 3,
+  "new_shadow_entities": 7,
+  "reconciliation_outcomes": {
+    "EXACT_MATCH": 3,
+    "NEW_ENTITY": 7
+  },
+  "cohort_outcomes": {
+    "ready": 0,
+    "watch": 0,
+    "quarantined": 0,
+    "blocked": 10
+  },
+  "proof_reasons": {
+    "source_does_not_establish_specific_trading_event": 12,
+    "event_content_scope_missing": 4,
+    "editorial_page_is_discovery_only": 2,
+    "source_fetch_failed": 1,
+    "single_event_source_data_missing": 6,
+    "platform_index_is_not_an_opportunity": 1
+  },
+  "source_mutations": 0,
+  "baseline_receipts_verified": 15215,
+  "baseline_source_facts_verified": 102046,
+  "identity_mutations": 0,
+  "missing_original_entities": 0,
+  "serper_queries_added": 0,
+  "customer_rows": 0,
+  "publication_rows": 0,
+  "publication_enabled": false,
+  "inventory_status_as_of": "2026-10-09T09:55:28.815Z",
+  "inventory_ready": 1886,
+  "legacy_global_origin": {
+    "total_distinct_entities": 7,
+    "verified": 0,
+    "ready": 0,
+    "watch": 0,
+    "quarantined": 0,
+    "blocked": 7,
+    "awaiting_verification": 7,
+    "missing_application_proof": 7,
+    "stale_expired": 0,
+    "verification_checked": 7
+  },
+  "interpretation": "Legacy customer-ready flags never establish V3 readiness. Current source facts are additive evidence with archive custody. Held or quarantined recovery is not customer-ready inventory. This recovery performs no V2 or legacy writes; the separately authorized legacy UK controller pause is audited independently.",
+  "newly_ready_in_recovery_cohort": 0,
+  "remote_replay": {
+    "replayed": 10,
+    "duplicates": 10,
+    "receipts_before": 10,
+    "receipts_after": 10,
+    "linked_entities_before": 10,
+    "linked_entities_after": 10,
+    "source_mutations": 0
+  },
+  "remote_ingest_only_token_denied": true,
+  "pipeline_due_jobs": []
+}

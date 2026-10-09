@@ -22,7 +22,7 @@ export async function ingestRecords(db,records,{producer='independent-structured
       recordId,producer,PRODUCERS[producer].type,String(raw?.opportunity_id??raw?.producer_record_id??'rejected:'+contentHash),environment,normalized?.market??null,contentHash,rawJson,normalized?stableJson(normalized):null,normalized?'accepted':'rejected',stableJson(validated.errors),now)];
     if(normalized) {
       for(const field of FIELDS) if(normalized[field]!==null && normalized[field]!==undefined && normalized[field]!=='') {
-        const proof=producer==='legacy_v2'?normalized.field_evidence[field]:null;
+        const proof=['legacy_v2','legacy-global-uk'].includes(producer)?normalized.field_evidence[field]:null;
         statements.push(sql(db,`INSERT OR IGNORE INTO source_facts(id,record_id,field_name,value_json,authority,source_url,evidence_json,provenance_json,created_at) VALUES (?,?,?,?,?,?,?,?,?)`,
           recordId+':'+field,recordId,field,stableJson(normalized[field]),proof?LEGACY_AUTHORITIES[proof.kind]:PRODUCERS[producer].authority,proof?.source??normalized.application_url??normalized.canonical_url,stableJson(proof?[proof]:normalized.evidence),stableJson(normalized.provenance),now));
       }

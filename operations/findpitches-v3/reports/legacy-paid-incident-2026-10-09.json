@@ -1,0 +1,263 @@
+{
+  "schema": "findpitches-legacy-paid-incident-v1",
+  "as_of": "2026-10-09T09:54:58.223Z",
+  "timezone": "Europe/London",
+  "window": {
+    "from": "2026-10-05T23:00:00.000Z",
+    "to": "2026-10-09T09:44:10.183Z"
+  },
+  "cause": {
+    "v2_scheduler_removed_at": "2026-10-06T11:40:33.070Z",
+    "legacy_global_worker_pre_pause_deployed_at": "2026-10-02T16:23:38.507044Z",
+    "legacy_global_uk_change_events_before_this_pause": 0,
+    "conclusion": "V2 scheduler stopped; the separate legacy global UK controller remained enabled. No recent re-enable is evidenced."
+  },
+  "legacy_uk": {
+    "daily": {
+      "2026-10-06": {
+        "discovery_runs": 191,
+        "completed_discovery_runs": 84,
+        "failed_discovery_runs": 107,
+        "reported_paid_queries": 1008,
+        "acquisition_runs": 83,
+        "published_additions": 0,
+        "source_additions": 0
+      },
+      "2026-10-07": {
+        "discovery_runs": 187,
+        "completed_discovery_runs": 187,
+        "failed_discovery_runs": 0,
+        "reported_paid_queries": 2244,
+        "acquisition_runs": 185,
+        "published_additions": 0,
+        "source_additions": 0
+      },
+      "2026-10-08": {
+        "discovery_runs": 169,
+        "completed_discovery_runs": 169,
+        "failed_discovery_runs": 0,
+        "reported_paid_queries": 2028,
+        "acquisition_runs": 170,
+        "published_additions": 0,
+        "source_additions": 0
+      },
+      "2026-10-09": {
+        "discovery_runs": 76,
+        "completed_discovery_runs": 76,
+        "failed_discovery_runs": 0,
+        "reported_paid_queries": 912,
+        "acquisition_runs": 76,
+        "published_additions": 0,
+        "source_additions": 0
+      }
+    },
+    "completed": 516,
+    "failed": 107,
+    "paid_query_units": 6192,
+    "acquisition_runs": 514,
+    "published_additions": 0,
+    "approved_source_additions": 0,
+    "legacy_customer_ready_occurrences": 816,
+    "distinct_original_source_routes": 26,
+    "repeat_occurrence_percent": 96.81,
+    "archived_workflows": 1137,
+    "archived_bytes": 18931730,
+    "credits_provider_observed": false
+  },
+  "v3": {
+    "daily": [
+      {
+        "london_day": "2026-10-06",
+        "ledger_rows": 1,
+        "query_attempts": 1,
+        "completed": 1,
+        "observed_credits": null,
+        "attempts_with_unknown_credits": 1
+      },
+      {
+        "london_day": "2026-10-07",
+        "ledger_rows": 24,
+        "query_attempts": 24,
+        "completed": 24,
+        "observed_credits": 24,
+        "attempts_with_unknown_credits": 0
+      }
+    ],
+    "lanes": [
+      {
+        "producer": "city-search",
+        "lane": "controlled-pilot",
+        "market": "AU",
+        "query_attempts": 4,
+        "completed": 4,
+        "observed_credits": 4,
+        "last_reservation": "2026-10-06T23:13:05.622Z"
+      },
+      {
+        "producer": "city-search",
+        "lane": "controlled-pilot",
+        "market": "CA",
+        "query_attempts": 4,
+        "completed": 4,
+        "observed_credits": 4,
+        "last_reservation": "2026-10-06T23:09:49.554Z"
+      },
+      {
+        "producer": "city-search",
+        "lane": "controlled-pilot",
+        "market": "GB",
+        "query_attempts": 4,
+        "completed": 4,
+        "observed_credits": 4,
+        "last_reservation": "2026-10-06T23:08:15.746Z"
+      },
+      {
+        "producer": "source-led-search",
+        "lane": "source-led-paid",
+        "market": "CA",
+        "query_attempts": 3,
+        "completed": 3,
+        "observed_credits": 3,
+        "last_reservation": "2026-10-07T16:03:21.437Z"
+      },
+      {
+        "producer": "source-led-search",
+        "lane": "source-led-paid",
+        "market": "GB",
+        "query_attempts": 3,
+        "completed": 3,
+        "observed_credits": 3,
+        "last_reservation": "2026-10-07T16:02:07.549Z"
+      },
+      {
+        "producer": "source-led-search",
+        "lane": "source-led-paid",
+        "market": "AU",
+        "query_attempts": 2,
+        "completed": 2,
+        "observed_credits": 2,
+        "last_reservation": "2026-10-07T15:58:16.211Z"
+      },
+      {
+        "producer": "source-led-search",
+        "lane": "source-led-paid",
+        "market": "NZ",
+        "query_attempts": 2,
+        "completed": 2,
+        "observed_credits": 2,
+        "last_reservation": "2026-10-07T15:59:34.467Z"
+      },
+      {
+        "producer": "source-led-search",
+        "lane": "source-led-paid",
+        "market": "US",
+        "query_attempts": 2,
+        "completed": 2,
+        "observed_credits": 2,
+        "last_reservation": "2026-10-07T16:00:56.703Z"
+      },
+      {
+        "producer": "city-search",
+        "lane": "city-acquisition",
+        "market": "US",
+        "query_attempts": 1,
+        "completed": 1,
+        "observed_credits": null,
+        "last_reservation": "2026-10-06T11:38:51.616Z"
+      }
+    ],
+    "total_attempted_queries": 25,
+    "total_completed_queries": 25,
+    "observed_credit_subtotal": 24,
+    "attempts_with_unobserved_credits": 1,
+    "policy": {
+      "bulk_enabled": 0,
+      "max_queries_per_run": 4,
+      "max_queries_per_hour": 100,
+      "max_queries_per_day": 1000,
+      "manual_paused": 0,
+      "pause_reason": null,
+      "pilot_daily_cap": 25,
+      "programme_manual_paused": 1
+    }
+  },
+  "account_observation": {
+    "previous_checked_at": "2026-10-06T15:53:43.116Z",
+    "previous_balance": 49215,
+    "checked_at": "2026-10-09T08:31:05.372Z",
+    "balance": 43603,
+    "rate_limit": 50,
+    "search_queries_issued": 0,
+    "net_balance_decrease": 5612
+  },
+  "uk_pause": {
+    "operator_authorized": true,
+    "paused_at": "2026-10-09T09:44:10.183Z",
+    "verified_at": "2026-10-09T09:59:29.642Z",
+    "live_gate": false,
+    "code_etag_preserved": true,
+    "unrelated_bindings_preserved": 13,
+    "active_discovery_workflows_at_pause": 0,
+    "new_uk_instances_after_pause": 0,
+    "v2_scheduler_still_empty": true,
+    "shared_schedule_preserved": true,
+    "other_market_settings_preserved": true
+  },
+  "us_followup": {
+    "as_of": "2026-10-09T09:49:32.592Z",
+    "v2_scheduler_empty": true,
+    "v2_latest_us_paid_run": "2026-10-06T15:35:42.574Z",
+    "v2_queries_since_2026_10_06_16_utc": 0,
+    "legacy_global_us_enable_flag": true,
+    "global_us_discovery_runs_in_audited_window": 0,
+    "texas_deployed_scheduler_manual_only": true,
+    "texas_latest_retained_instance_created_at": "2026-09-13T10:31:17.520Z",
+    "legacy_us_pause_approval": "pending"
+  },
+  "actions": {
+    "additional_serper_queries": 0,
+    "v2_writes": 0,
+    "customer_publication_changes": 0,
+    "production_cutover_changes": 0
+  },
+  "limitations": [
+    "Legacy successful outputs report paid query units, not provider-observed billing. Failed workflows/retries may consume additional credits.",
+    "The user approximate four-day balance interval is not identical to this retained-workflow window.",
+    "V2 attempts, legacy estimates and V3 observed credits cannot be summed into an exact shared-account billed split.",
+    "No V3-only budget protects a separate client on the account. Pi or other external client usage is outside cloud V3 telemetry."
+  ],
+  "post_pause_account_observation": {
+    "checked_at": "2026-10-09T10:00:49.141Z",
+    "balance": 43474,
+    "search_queries_issued": 0
+  },
+  "recovery_summary": {
+    "receipts": 10,
+    "matched_existing": 3,
+    "new_shadow_entities": 7,
+    "new_ready": 0,
+    "held_source_routes_without_entity": 16,
+    "source_mutations": 0,
+    "additional_serper_queries": 0
+  },
+  "validation": {
+    "v3_tests": 164,
+    "passed": 164,
+    "failed": 0,
+    "skipped": 0,
+    "boundary_check": "passed",
+    "owned_shadow_workers_deployed": 8,
+    "remote_replay": "10 duplicates; no growth or mutations",
+    "ingest_only_token_operator_route": "401 denied",
+    "due_reconciliation_pipeline_jobs": 0
+  },
+  "post_pause_balance_interval": {
+    "from": "2026-10-09T10:00:49.141Z",
+    "to": "2026-10-09T10:02:47.091Z",
+    "balance_before": 43474,
+    "balance_after": 43474,
+    "net_balance_decrease": 0,
+    "search_queries_issued": 0,
+    "interpretation": "Observed account balance interval; does not rule out delayed billing or other clients."
+  }
+}
