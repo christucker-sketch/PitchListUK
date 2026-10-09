@@ -1,0 +1,382 @@
+{
+  "schema": "findpitches-v3-mk1-catalogue-audit-v1",
+  "date_london": "2026-10-09",
+  "catalogue_scope": {
+    "project": "pitchlistuk",
+    "production_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
+    "deployed_at": "2026-09-28T18:34:00.019451Z",
+    "declared_git_ref": "325d65dde304abc6288d48e468e28299eeef7eb3",
+    "current_main_catalogue_matches": true,
+    "inspection": "Read-only Cloudflare Pages deployment metadata and catalogue JSON in the declared build commit. Public Pages/API fetching failed in this environment; the rendered live API catalogue was not independently downloaded.",
+    "files": [
+      "functions/_data/opportunities.mjs",
+      "functions/_data/us-opportunities.mjs",
+      "functions/_data/ca-opportunities.mjs"
+    ]
+  },
+  "pre_harvest_coverage": {
+    "as_of": "2026-10-09T10:10:56.027Z",
+    "git_ref": "325d65dde304abc6288d48e468e28299eeef7eb3",
+    "by_market": {
+      "GB": {
+        "snapshot_rows": 290,
+        "distinct_routes": 436,
+        "already_in_v2_by_route": 50,
+        "represented_in_v3_by_route": 31,
+        "with_current_ready_source_overlap": 0,
+        "absent_from_v3_by_route": 259,
+        "evidence_in_v3_without_linked_entity": 0,
+        "absent_from_v2_and_v3_by_route": 231,
+        "historical_future_date": 3,
+        "with_application_route": 290,
+        "uncovered_future_date": 1,
+        "with_unlinked_catalogue_discovery": 1,
+        "with_previous_direct_source_document": 12,
+        "no_v3_linked_evidence_catalogue_or_document": 258
+      },
+      "US": {
+        "snapshot_rows": 704,
+        "distinct_routes": 709,
+        "already_in_v2_by_route": 90,
+        "represented_in_v3_by_route": 70,
+        "with_current_ready_source_overlap": 32,
+        "absent_from_v3_by_route": 634,
+        "evidence_in_v3_without_linked_entity": 0,
+        "absent_from_v2_and_v3_by_route": 578,
+        "historical_future_date": 507,
+        "with_application_route": 704,
+        "uncovered_future_date": 446,
+        "with_unlinked_catalogue_discovery": 28,
+        "with_previous_direct_source_document": 69,
+        "no_v3_linked_evidence_catalogue_or_document": 606
+      },
+      "CA": {
+        "snapshot_rows": 3,
+        "distinct_routes": 3,
+        "already_in_v2_by_route": 0,
+        "represented_in_v3_by_route": 0,
+        "with_current_ready_source_overlap": 0,
+        "absent_from_v3_by_route": 3,
+        "evidence_in_v3_without_linked_entity": 0,
+        "absent_from_v2_and_v3_by_route": 3,
+        "historical_future_date": 0,
+        "with_application_route": 3,
+        "uncovered_future_date": 0,
+        "with_unlinked_catalogue_discovery": 0,
+        "with_previous_direct_source_document": 0,
+        "no_v3_linked_evidence_catalogue_or_document": 3
+      }
+    },
+    "total_rows": 997,
+    "in_v3_by_route": 101,
+    "absent_v3_by_route": 896,
+    "current_ready_overlap": 32,
+    "duplicate_snapshot_route_sets": 2,
+    "top_uncovered_domains": [
+      [
+        "eventeny.com",
+        {
+          "rows": 56,
+          "markets": {
+            "GB": 1,
+            "US": 55
+          }
+        }
+      ],
+      [
+        "form.jotform.com",
+        {
+          "rows": 34,
+          "markets": {
+            "GB": 2,
+            "US": 32
+          }
+        }
+      ],
+      [
+        "vendorsmap.com",
+        {
+          "rows": 26,
+          "markets": {
+            "US": 26
+          }
+        }
+      ],
+      [
+        "hometownvendormarket.com",
+        {
+          "rows": 23,
+          "markets": {
+            "US": 23
+          }
+        }
+      ],
+      [
+        "allevents.in",
+        {
+          "rows": 5,
+          "markets": {
+            "US": 5
+          }
+        }
+      ],
+      [
+        "streetfoodfests.com",
+        {
+          "rows": 5,
+          "markets": {
+            "US": 5
+          }
+        }
+      ],
+      [
+        "lichfielddc.gov.uk",
+        {
+          "rows": 4,
+          "markets": {
+            "GB": 4
+          }
+        }
+      ],
+      [
+        "herefordshire.gov.uk",
+        {
+          "rows": 4,
+          "markets": {
+            "GB": 4
+          }
+        }
+      ],
+      [
+        "fairsandfestivals.net",
+        {
+          "rows": 4,
+          "markets": {
+            "US": 4
+          }
+        }
+      ],
+      [
+        "angus.gov.uk",
+        {
+          "rows": 3,
+          "markets": {
+            "GB": 3
+          }
+        }
+      ],
+      [
+        "northyorks.gov.uk",
+        {
+          "rows": 3,
+          "markets": {
+            "GB": 3
+          }
+        }
+      ],
+      [
+        "salisburycitycouncil.gov.uk",
+        {
+          "rows": 3,
+          "markets": {
+            "GB": 3
+          }
+        }
+      ],
+      [
+        "yorkfoodfestival.com",
+        {
+          "rows": 3,
+          "markets": {
+            "GB": 3
+          }
+        }
+      ],
+      [
+        "carmarthenshire.gov.wales",
+        {
+          "rows": 3,
+          "markets": {
+            "GB": 3
+          }
+        }
+      ],
+      [
+        "chiceventsdc.com",
+        {
+          "rows": 3,
+          "markets": {
+            "US": 3
+          }
+        }
+      ],
+      [
+        "newsbreak.com",
+        {
+          "rows": 3,
+          "markets": {
+            "US": 3
+          }
+        }
+      ],
+      [
+        "littlerock.com",
+        {
+          "rows": 3,
+          "markets": {
+            "US": 3
+          }
+        }
+      ],
+      [
+        "eastriding.gov.uk",
+        {
+          "rows": 2,
+          "markets": {
+            "GB": 2
+          }
+        }
+      ],
+      [
+        "northtyneside.gov.uk",
+        {
+          "rows": 2,
+          "markets": {
+            "GB": 2
+          }
+        }
+      ],
+      [
+        "sheffield.gov.uk",
+        {
+          "rows": 2,
+          "markets": {
+            "GB": 2
+          }
+        }
+      ]
+    ],
+    "route_overlap_is_not_identity_or_readiness_proof": true,
+    "matching": "Same market and route; www, fragments, tracking parameters and trailing slashes ignored. Potential coverage, not identity proof.",
+    "additional_unlinked_catalogue_discovery": 29,
+    "no_linked_evidence_catalogue_or_document": 867
+  },
+  "coverage_limits": "URL coverage in the same country, not entity identity, event edition or source-proof readiness. An absent route is not a guaranteed new opportunity. Existing READY overlap is not Mk1 readiness attribution.",
+  "direct_source_canary": {
+    "unique_source_routes": 43,
+    "selection": "Targeted, not random: UK organiser/market pages; uncovered Eventeny applications and official US organiser forms; all three CA guidance rows. Repeated catalogue sources already held as closed/stale were deprioritised.",
+    "proof_statuses": {
+      "unverified": 19,
+      "partial": 10,
+      "verified": 1,
+      "quarantine": 13
+    },
+    "by_country": {
+      "GB": {
+        "unverified": 12
+      },
+      "US": {
+        "partial": 10,
+        "verified": 1,
+        "quarantine": 13,
+        "unverified": 4
+      },
+      "CA": {
+        "unverified": 3
+      }
+    },
+    "proof_reasons": {
+      "single_event_source_data_missing": 15,
+      "application_deadline_passed": 19,
+      "application_closed": 19,
+      "sponsor_trading_entitlement_not_proved": 1,
+      "contradictory_event_name_edition": 1,
+      "contradictory_heading_edition": 1,
+      "stale_edition": 12,
+      "contradictory_application_deadline_after_event": 2,
+      "event_cancelled_or_postponed": 2,
+      "verified_venue_missing": 1,
+      "event_content_scope_missing": 4,
+      "open_vendor_application_not_proved": 1,
+      "contradictory_application_description_dates": 1
+    },
+    "reason_counts_overlap": true,
+    "interpretation": "Partial, unverified and quarantined checks are not READY. Generic UK parser failures require source-specific investigation and do not prove every underlying market is unusable. This selected sample cannot estimate total Mk1 recovery yield.",
+    "proved_opportunities": [
+      {
+        "title": "2026 December Rockport Market Days",
+        "country": "US",
+        "event_start": "2026-12-18",
+        "application_state": "OPEN_NOW",
+        "source_url": "https://www.eventeny.com/events/vendor/?id=34671",
+        "mk1_record_id": "opp_us_8867ca7468bd310a5051"
+      }
+    ]
+  },
+  "next_priority": "Direct-source verification of genuine UK organiser and recurring market application routes, with extraction scoped to actual trading opportunities. Exclude generic licensing/guidance and previously proved closed/stale editions. Retain unresolved sources for additive source-specific parsing; no paid search.",
+  "validation": {
+    "v3_tests_passed": 168,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "remote_ingest_only_token_denied": true,
+    "deployed_roles": [
+      "enrichment"
+    ],
+    "schema_changes": false
+  },
+  "guardrails": {
+    "mk1_read_only": true,
+    "v2_read_only": true,
+    "paid_queries_added": 0,
+    "publication_enabled": false,
+    "production_cutover": false
+  },
+  "harvest": {
+    "schema": "findpitches-mk1-proof-harvest-v1",
+    "as_of": "2026-10-09T10:38:20.879Z",
+    "git_ref": "325d65dde304abc6288d48e468e28299eeef7eb3",
+    "snapshot_sha256": "c125f7b4971bec3f5798f79133a76d797be023f4f347f606d23f6d457c39921f",
+    "source_routes_checked": 43,
+    "verified_source_records": 1,
+    "held_source_inspections": 42,
+    "linked_entities": 1,
+    "new_entities": 1,
+    "matched_existing": 0,
+    "ready": 1,
+    "new_ready": 1,
+    "source_mutations": 0,
+    "identity_mutations": 0,
+    "preserved_receipts": 15395,
+    "preserved_source_facts": 104118,
+    "paid_queries_added": 0,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "publication_enabled": false,
+    "results": [
+      {
+        "status": "imported",
+        "record_id": "rec_b98f308da1a957fc286de33d6a4f9fa141ca2563",
+        "entity_id": "ent_cd1afa083d2664df311dc2796a6a0bf5",
+        "identity": "NEW_ENTITY",
+        "readiness": "ready",
+        "duplicate": false,
+        "source_document_id": "doc_e136ba9f22c26f0dc3a12da7d19accb2a5b56608",
+        "id": "opp_us_8867ca7468bd310a5051",
+        "source_url": "https://www.eventeny.com/events/vendor/?id=34671",
+        "market": "US"
+      }
+    ],
+    "attribution": "Current proved facts use platform-catalogue with immutable legacy_mk1 discovery provenance. Historical Mk1 fields establish no readiness, country, dates or open-state proof."
+  },
+  "post_harvest_status": {
+    "as_of": "2026-10-09T10:38:39.870Z",
+    "ready": 1890,
+    "paid_queries_lifetime": 25,
+    "due_core_jobs": [],
+    "paid_bulk_enabled": false,
+    "paid_manual_paused": true,
+    "publication_enabled": false,
+    "customer_rows": 0,
+    "publication_rows": 0
+  }
+}
