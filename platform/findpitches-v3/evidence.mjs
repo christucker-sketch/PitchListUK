@@ -1,6 +1,11 @@
 import { AUTHORITIES,FIELDS,hash,stableJson,publicHttps,validFieldValue } from './contract.mjs';
 import { sql,loadEntity } from './store.mjs';
 
+// These describe a producer delivery, rather than a change to participation.
+// Keep every observation as source evidence without replacing a durable
+// CLOSED/WITHDRAWN/REOPENED state or invalidating proof of unchanged facts.
+export const LIFECYCLE_OBSERVATIONS=Object.freeze(['NEW','UPDATED','UNCHANGED']);
+
 export async function selectRecordFacts(db,entityId,facts,{now=new Date().toISOString(),snapshot=null}={}) {
   if(facts.length>FIELDS.length||new Set(facts.map(f=>f.field_name)).size!==facts.length)throw Error('bounded_distinct_record_fields_required');
   const entity=snapshot??await loadEntity(db,entityId);
@@ -13,6 +18,7 @@ export async function selectRecordFacts(db,entityId,facts,{now=new Date().toISOS
   if(nextValue===null||nextValue===''||fact.field_name==='location'&&/restriction|other reasons|^availability$|submit form|your email/i.test(String(nextValue))) { decision='rejected';reason='invalid_or_empty_value'; }
   else if(previous) {
     if(previous.value_json===fact.value_json) { decision=fact.authority>previous.authority?'accepted':'corroborated';reason=decision==='accepted'?'stronger_corroboration':'same_value'; }
+    else if(fact.field_name==='lifecycle_state'&&LIFECYCLE_OBSERVATIONS.includes(nextValue)) { decision='corroborated';reason='lifecycle_observation_only'; }
     else if(fact.authority<previous.authority) { decision='rejected';reason='weaker_evidence'; }
     else if(fact.authority===previous.authority) {
       let temporal=false;

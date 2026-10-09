@@ -24,6 +24,7 @@ import {fetchLegacySource} from './legacy.mjs';
 import {selectRecordFacts} from './evidence.mjs';
 import {importLegacyBatch,completeLegacyRecovery,legacyRecoveryStatus} from './legacy-store.mjs';
 import {noteDeliveryContact,structuredDeliveryStatus} from './delivery-health.mjs';
+import {repairLifecycleObservations} from './lifecycle-repair.mjs';
 import {schedulePilotRun,stopPilot,pilotStatus} from './pilot.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
 import {startSourceLed,scheduleSourceLed,executeSourceLed,verifySourceLedCandidate,stopSourceLed,sourceLedStatus} from './source-led.mjs';
@@ -87,7 +88,7 @@ async function tick(env,{jobId=null,limit=10}={}) {
       const entity=await loadEntity(env.FINDPITCHES_V3_DB,p.entity_id),gate=await verificationGate(env.FINDPITCHES_V3_DB,entity);
       // Unchanged exports cannot extend proof freshness. Missing/expired proof is fetched directly.
       if(entity.environment==='shadow'&&(gate.status==='unverified'||p.refresh_verification_id&&p.refresh_verification_id===gate.verification_id))await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id);
-      return enrichEntity(env.FINDPITCHES_V3_DB,p.entity_id,{proposals:p.proposals??[]});
+      return enrichEntity(env.FINDPITCHES_V3_DB,p.entity_id,{proposals:p.proposals??[],recheckToken:p.recheck_token});
     }}:{};
     const result=await runStage(env.FINDPITCHES_V3_DB,stage,{jobId,clock:()=>new Date(),handlers});
     results.push(result);if(result.phase!=='complete'||jobId)break;
@@ -111,6 +112,10 @@ export default {
       const ingest=path==='/imports'||path==='/rechecks'||path==='/rechecks/ack';
       if(!await authorized(request,ingest?env.V3_INGEST_TOKEN:env.V3_OPERATOR_TOKEN))return json({error:'authorization_required'},401);
       if(request.method==='GET'&&path==='/commercial'&&role==='api')return json(await commercialStatus(db));
+      if(request.method==='POST'&&path==='/lifecycle/repair'&&role==='reconcile') {
+        const result=await repairLifecycleObservations(db,(await bodyJson(request)).entity_id);
+        ctx?.waitUntil(wakeStage(env,'eligibility').catch(()=>{}));return json(result);
+      }
       if(request.method==='GET'&&path==='/uk/status')return json(await ukSourceStatus(db));
       if(request.method==='POST'&&path==='/uk/start'&&role==='enrichment')return json(await startUKRun(db,await bodyJson(request)),201);
       if(request.method==='POST'&&path==='/uk/discover'&&role==='enrichment')return json(await discoverUKSource(db,await bodyJson(request)));

@@ -1,0 +1,467 @@
+{
+  "schema": "findpitches-v3-morning-lifecycle-resolution-v1",
+  "as_of": "2026-10-09T08:20:35.765Z",
+  "initial_morning_snapshot": {
+    "as_of": "2026-10-09T07:36:06.565Z",
+    "ready": 1730,
+    "ready_by_country": {
+      "US": 1594,
+      "GB": 127,
+      "NZ": 4,
+      "AU": 5
+    },
+    "ready_by_origin": {
+      "independent-structured": 367,
+      "legacy_v2": 334,
+      "city-search": 0,
+      "source-led-search": 3,
+      "platform-catalogue": 903,
+      "uk-official": 123
+    }
+  },
+  "overnight_delivery": [
+    {
+      "kind": "import",
+      "contacts": 339,
+      "first_received": "2026-10-08T20:03:34.123Z",
+      "last_received": "2026-10-09T05:47:10.604Z",
+      "attempted_records": 8414,
+      "accepted": 8414,
+      "inserted": 511,
+      "duplicate_receipt_replays": 7903,
+      "rejected": 0,
+      "newest_source_check": "2026-10-09T05:40:01Z"
+    },
+    {
+      "kind": "rechecks",
+      "contacts": 46,
+      "first_received": "2026-10-08T19:48:23.610Z",
+      "last_received": "2026-10-09T07:32:31.832Z",
+      "attempted_records": 0,
+      "accepted": 0,
+      "inserted": 0,
+      "duplicate_receipt_replays": 0,
+      "rejected": 0,
+      "newest_source_check": null
+    }
+  ],
+  "overnight_identity": [
+    {
+      "outcome": "EXACT_MATCH",
+      "receipts": 469,
+      "entities": 260
+    },
+    {
+      "outcome": "NEW_ENTITY",
+      "receipts": 39,
+      "entities": 39
+    },
+    {
+      "outcome": "PROBABLE_MATCH",
+      "receipts": 3,
+      "entities": 0
+    }
+  ],
+  "source_freshness": {
+    "distinct_accepted_producer_ids": 1793,
+    "checked_since_last_evening": 246,
+    "checked_today": 98,
+    "checked_last_3h": 39,
+    "checked_last_6h": 70,
+    "older_than_24h": 1530,
+    "missing_check": 0
+  },
+  "rechecks_at_morning": {
+    "pending_independent_rechecks": 1488,
+    "oldest_request": "2026-10-08T08:01:18.673Z"
+  },
+  "preservation_before_repair": {
+    "as_of": "2026-10-09T07:38:55.310Z",
+    "baseline_as_of": "2026-10-08T16:41:30.048Z",
+    "growth": {
+      "ready_before": 2016,
+      "ready_after": 1731,
+      "ready_gained": 2,
+      "ready_lost": 287,
+      "net_ready_gain": -285,
+      "ready_gained_by_country": {
+        "US": 2
+      },
+      "ready_gained_by_origin": {
+        "legacy_v2": 2
+      },
+      "ready_gained_by_source": {
+        "eventeny.com": 2
+      },
+      "identity_mutations": 0,
+      "missing_original_entities": 0
+    },
+    "source_mutations": 0,
+    "baseline_receipts_verified": 13758,
+    "baseline_source_facts_verified": 83606,
+    "losses": {
+      "total": 287,
+      "by_origin": {
+        "platform-catalogue": 210,
+        "legacy_v2": 53,
+        "independent-structured": 23,
+        "source-led-search": 1
+      },
+      "by_country": {
+        "US": 271,
+        "AU": 13,
+        "GB": 2,
+        "NZ": 1
+      },
+      "current_disposition": {
+        "watch": 74,
+        "quarantined": 211,
+        "blocked": 2
+      },
+      "recorded_nonready_transition": 95,
+      "without_recorded_nonready_transition": 192,
+      "quality_holds": 0,
+      "unresolved_conflicts": 171,
+      "expired_proof": 93,
+      "revision_mismatch": 166,
+      "unverified_latest": 0,
+      "quarantine_latest": 44,
+      "partial_latest": 0,
+      "reasons": {
+        "open_vendor_application_not_proved": 11,
+        "selected_application_state_disagrees_with_proof": 11,
+        "selected_organiser_disagrees_with_proof": 14,
+        "selected_application_deadline_disagrees_with_proof": 12,
+        "selected_event_start_disagrees_with_proof": 5,
+        "selected_event_name_disagrees_with_proof": 4,
+        "selected_location_disagrees_with_proof": 2
+      }
+    },
+    "gains": {
+      "total": 2,
+      "by_origin": {
+        "legacy_v2": 2
+      },
+      "by_country": {
+        "US": 2
+      }
+    },
+    "new_independent_entities": {
+      "total": 44,
+      "ready": 0,
+      "watch": 2,
+      "quarantined": 41,
+      "blocked": 1
+    }
+  },
+  "loss_attribution": {
+    "as_of": "2026-10-09T07:38:55.310Z",
+    "previous_ready": 2016,
+    "gross_losses": 287,
+    "gains": 2,
+    "ready": 1731,
+    "exclusive_causes": {
+      "informational_lifecycle_conflicts": 170,
+      "ambiguous_identity": 1,
+      "deadline_day_boundary": 51,
+      "expired_verification_ttl": 34,
+      "source_proof_disagreement": 29,
+      "other_eligibility": 2
+    },
+    "conflict_details": {
+      "as_of": "2026-10-09T07:40:02.564Z",
+      "new_unresolved_conflicts_on_previous_ready": [
+        {
+          "field_name": "lifecycle_state",
+          "reason": "equal_authority_disagreement",
+          "producer_name": "independent-structured",
+          "conflicts": 190,
+          "entities": 170
+        },
+        {
+          "field_name": null,
+          "reason": "ambiguous_identity",
+          "producer_name": "independent-structured",
+          "conflicts": 3,
+          "entities": 1
+        }
+      ],
+      "lifecycle": [
+        {
+          "incoming_lifecycle": "UNCHANGED",
+          "selected_lifecycle": "NEW",
+          "conflicts": 133,
+          "entities": 130
+        },
+        {
+          "incoming_lifecycle": "UNCHANGED",
+          "selected_lifecycle": "REOPENED",
+          "conflicts": 11,
+          "entities": 10
+        },
+        {
+          "incoming_lifecycle": "UNCHANGED",
+          "selected_lifecycle": "STATE_CHANGED",
+          "conflicts": 2,
+          "entities": 2
+        },
+        {
+          "incoming_lifecycle": "UNCHANGED",
+          "selected_lifecycle": "UPDATED",
+          "conflicts": 8,
+          "entities": 6
+        },
+        {
+          "incoming_lifecycle": "UPDATED",
+          "selected_lifecycle": "NEW",
+          "conflicts": 12,
+          "entities": 12
+        },
+        {
+          "incoming_lifecycle": "UPDATED",
+          "selected_lifecycle": "REOPENED",
+          "conflicts": 3,
+          "entities": 3
+        },
+        {
+          "incoming_lifecycle": "UPDATED",
+          "selected_lifecycle": "UNCHANGED",
+          "conflicts": 21,
+          "entities": 20
+        }
+      ]
+    },
+    "deadline_precision": "The 51 affected retained JSON-LD extracts contained no explicit timezone-offset closing timestamps. Extending them to end-of-day would require stronger source timezone evidence."
+  },
+  "repair": {
+    "schema": "findpitches-v3-lifecycle-repair-v1",
+    "as_of": "2026-10-09T08:20:35.765Z",
+    "baseline_as_of": "2026-10-09T07:55:12.768Z",
+    "maximum": 250,
+    "entities_rechecked": 230,
+    "previously_ready_entities_rechecked": 170,
+    "false_conflicts_resolved": 255,
+    "source_mutations": 0,
+    "baseline_receipts_verified": 14995,
+    "baseline_source_facts_verified": 99169,
+    "additional_serper_queries": 0,
+    "ready_before": 1731,
+    "ready_after": 1884,
+    "ready_gained": 164,
+    "ready_lost": 11,
+    "net_ready_gain": 153,
+    "ready_gained_by_country": {
+      "US": 164
+    },
+    "ready_gained_by_origin": {
+      "legacy_v2": 12,
+      "platform-catalogue": 133,
+      "independent-structured": 19
+    },
+    "ready_gained_by_source": {
+      "eventeny.com": 164
+    },
+    "identity_mutations": 0,
+    "missing_original_entities": 0,
+    "affected_dispositions": {
+      "ready": 162,
+      "watch": 28,
+      "quarantined": 39,
+      "blocked": 1
+    },
+    "remaining_blockers": {
+      "waitlist_only": 4,
+      "selected_application_state_disagrees_with_proof": 12,
+      "application_is_not_a_trader_opportunity": 8,
+      "stale_edition": 4,
+      "application_deadline_passed": 6,
+      "application_closed": 6,
+      "selected_event_start_disagrees_with_proof": 3,
+      "selected_application_deadline_disagrees_with_proof": 7,
+      "trader_application_purpose_not_proved": 12,
+      "contradictory_application_deadline_after_event": 11,
+      "selected_organiser_disagrees_with_proof": 5,
+      "selected_location_disagrees_with_proof": 3,
+      "selected_event_name_disagrees_with_proof": 3,
+      "application_restricted_audience_requires_review": 6,
+      "event_identity_not_bound_to_page": 3,
+      "event_cancelled_or_postponed": 1,
+      "source_http_520": 1,
+      "contradictory_application_description_dates": 1,
+      "open_vendor_application_not_proved": 2,
+      "verified_venue_missing": 1,
+      "sponsor_trading_entitlement_not_proved": 1
+    },
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "publication_enabled": false,
+    "bulk_paid_enabled": false,
+    "interpretation": "Only informational lifecycle conflicts were resolved, with immutable provenance. Source facts and selected lifecycle were not rewritten. Normal eligibility, direct verification and readiness still decide every opportunity."
+  },
+  "final_inventory": {
+    "as_of": "2026-10-09T08:25:01.229Z",
+    "captured_through": "2026-10-09T08:25:10.629Z",
+    "totals": {
+      "total_distinct_entities": 6811,
+      "verified": 1891,
+      "ready": 1882,
+      "watch": 575,
+      "quarantined": 665,
+      "blocked": 3689,
+      "awaiting_verification": 4388,
+      "missing_application_proof": 4748,
+      "stale_expired": 372,
+      "verification_checked": 3063
+    },
+    "by_origin": {
+      "independent-structured": {
+        "total_distinct_entities": 935,
+        "verified": 390,
+        "ready": 386,
+        "watch": 216,
+        "quarantined": 231,
+        "blocked": 102,
+        "awaiting_verification": 295,
+        "missing_application_proof": 455,
+        "stale_expired": 119,
+        "verification_checked": 935
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 4555,
+        "verified": 349,
+        "ready": 346,
+        "watch": 262,
+        "quarantined": 372,
+        "blocked": 3575,
+        "awaiting_verification": 3966,
+        "missing_application_proof": 4129,
+        "stale_expired": 136,
+        "verification_checked": 815
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 3,
+        "ready": 3,
+        "watch": 3,
+        "quarantined": 1,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      },
+      "platform-catalogue": {
+        "total_distinct_entities": 1171,
+        "verified": 1026,
+        "ready": 1024,
+        "watch": 94,
+        "quarantined": 50,
+        "blocked": 3,
+        "awaiting_verification": 117,
+        "missing_application_proof": 141,
+        "stale_expired": 117,
+        "verification_checked": 1171
+      },
+      "uk-official": {
+        "total_distinct_entities": 123,
+        "verified": 123,
+        "ready": 123,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 0,
+        "stale_expired": 0,
+        "verification_checked": 123
+      }
+    },
+    "ready_by_country": {
+      "US": 1746,
+      "GB": 127,
+      "NZ": 4,
+      "AU": 5
+    },
+    "ready_by_source": {
+      "eventeny.com": 1748,
+      "myntimage.co.uk": 123,
+      "localstalls.com": 11
+    },
+    "ready_by_state": {
+      "OPEN_NOW": 1882
+    },
+    "gb_ready": 127,
+    "us_ready": 1746
+  },
+  "delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": "2026-10-09T08:23:49.000Z",
+    "recent_poll_intervals_seconds": [
+      1269.878,
+      903.858,
+      903.432
+    ],
+    "host_recently_contacting": true,
+    "cadence_verified": false,
+    "freshness_warning": false,
+    "immutable_receipts": 2287,
+    "producer_ids": 1822,
+    "last_new_receipt_at": "2026-10-09T08:08:26.688Z",
+    "source_last_checked": "2026-10-09T07:47:29Z",
+    "interpretation": "Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls are excluded."
+  },
+  "final_queue_and_guard_state": {
+    "audited_metadata_conflicts": 255,
+    "pending_metadata_conflicts": 0,
+    "due_core_jobs": 6,
+    "dead_jobs": 0,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "publication_enabled": 0,
+    "bulk_paid_enabled": 0,
+    "paid_manual_paused": 1
+  },
+  "previously_ready_repair_cohort": {
+    "entities": 170,
+    "ready": 158,
+    "watch": 6,
+    "quarantined": 5,
+    "blocked": 1
+  },
+  "snapshot_note": "The repair runner’s row snapshot evaluated 1,884 READY; its earlier status read evaluated 1,883. Concurrent source verification continued during those reads. The final inventory is a separate later status snapshot with its own timestamp; TTL and proof updates continue to affect qualification.",
+  "boundaries": {
+    "publication_enabled": false,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "paid_manual_paused": 1,
+    "bulk_paid_enabled": false,
+    "v3_serper_queries_today": 0,
+    "lifetime_v3_queries": 25
+  },
+  "validation": {
+    "v3_tests_passed": 160,
+    "v3_tests_failed": 0,
+    "boundary_checks_passed": true,
+    "owned_shadow_workers_deployed": 8
+  },
+  "recommendations": [
+    "Keep paid acquisition and publication disabled.",
+    "Use source-specific timezone evidence for deadline-day availability; preserve conservative expiry until proved.",
+    "Clear expired verification with actual direct-source fetches, preserving real closure/identity/field holds.",
+    "Implement the independent producer’s fetched rechecks; retain producer separation.",
+    "Continue official UK source-family expansion after inventory maintenance is reliable."
+  ]
+}

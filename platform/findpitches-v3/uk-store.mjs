@@ -104,7 +104,7 @@ export async function importUKCandidate(db,candidateId,{now=new Date().toISOStri
       const result=await runStage(db,stage,{now,jobId:j.id,handlers:stage==='enrichment'?{enrichment:async p=>{
         const target=await loadEntity(db,p.entity_id),gate=await verificationGate(db,target,{now});
         if(gate.status==='unverified'||p.refresh_verification_id&&p.refresh_verification_id===gate.verification_id)await verifyEntitySource(db,target.id,{now,fetcher});
-        return enrichEntity(db,target.id,{now});
+        return enrichEntity(db,target.id,{now,recheckToken:p.recheck_token});
       }}:{}});if(result.phase==='failed')throw Error('uk_durable_pipeline_failed');
     }
     const current=await sql(db,'SELECT r.status,r.entity_revision,e.revision FROM readiness r JOIN entities e ON e.id=r.entity_id WHERE r.entity_id=?',entity.id).first();

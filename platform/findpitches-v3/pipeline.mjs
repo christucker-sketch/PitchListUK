@@ -75,7 +75,7 @@ export function assessEligibility(entity,{now=new Date().toISOString(),conflicts
   else if(!entity.event_name||!(entity.application_url||entity.canonical_url)) { status='review';reasons=['insufficient_source_evidence']; }
   return {status,reasons,score:status==='eligible'?1:status==='watch'?.5:0};
 }
-export async function classifyEntity(db,id,{now=new Date().toISOString(),refreshVerificationId=null}={}) {
+export async function classifyEntity(db,id,{now=new Date().toISOString(),refreshVerificationId=null,recheckToken=null}={}) {
   const entity=await loadEntity(db,id);
   if(!entity)throw new Error('entity_missing');
   const conflicts=await sql(db,'SELECT COUNT(*) AS n FROM conflicts WHERE entity_id=? AND resolved=0',id).first();
@@ -85,17 +85,17 @@ export async function classifyEntity(db,id,{now=new Date().toISOString(),refresh
   const ruleset='eligibility-v2:'+now.slice(0,10);
   await db.batch([
     sql(db,'INSERT OR IGNORE INTO assessments(id,entity_id,entity_revision,ruleset,status,reasons_json,score,assessed_at) VALUES (?,?,?,?,?,?,?,?)',id+':'+revision+':'+ruleset,id,revision,ruleset,result.status,stableJson(result.reasons),result.score,now),
-    await jobStatement(db,'enrichment',id+':'+revision+':'+(refreshVerificationId??now.slice(0,10)),{entity_id:id,...(refreshVerificationId?{refresh_verification_id:refreshVerificationId}:{})},now),
+    await jobStatement(db,'enrichment',id+':'+revision+':'+(refreshVerificationId??recheckToken??now.slice(0,10)),{entity_id:id,...(refreshVerificationId?{refresh_verification_id:refreshVerificationId}:{}),...(recheckToken?{recheck_token:recheckToken}:{})},now),
   ]);
   return result;
 }
-export async function enrichEntity(db,id,{proposals=[],now=new Date().toISOString()}={}) {
+export async function enrichEntity(db,id,{proposals=[],now=new Date().toISOString(),recheckToken=null}={}) {
   const results=[];
   for(const proposal of proposals)results.push(await proposeFact(db,id,proposal,{now}));
   const entity=await loadEntity(db,id);
   if(!entity)throw new Error('entity_missing');
   const proof=await verificationGate(db,entity,{now});
-  await enqueue(db,'readiness',id+':'+entity.revision+':'+(proof.verification_id??now.slice(0,10)),{entity_id:id},now);
+  await enqueue(db,'readiness',id+':'+entity.revision+':'+(proof.verification_id??now.slice(0,10))+(recheckToken?':'+recheckToken:''),{entity_id:id},now);
   return {proposals:results};
 }
 export async function evaluateReadiness(db,id,{now=new Date().toISOString()}={}) {
@@ -135,8 +135,8 @@ export async function runStage(db,stage,{now=new Date().toISOString(),jobId=null
     let result;
     if(handlers[stage])result=await handlers[stage](payload);
     else if(stage==='reconcile')result=await reconcileRecord(db,payload.record_id,{now});
-    else if(stage==='eligibility')result=await classifyEntity(db,payload.entity_id,{now,refreshVerificationId:payload.refresh_verification_id});
-    else if(stage==='enrichment')result=await enrichEntity(db,payload.entity_id,{proposals:payload.proposals??[],now});
+    else if(stage==='eligibility')result=await classifyEntity(db,payload.entity_id,{now,refreshVerificationId:payload.refresh_verification_id,recheckToken:payload.recheck_token});
+    else if(stage==='enrichment')result=await enrichEntity(db,payload.entity_id,{proposals:payload.proposals??[],now,recheckToken:payload.recheck_token});
     else if(stage==='readiness')result=await evaluateReadiness(db,payload.entity_id,{now});
     else if(stage==='watch') {
       if(payload.refresh_verification_id) {

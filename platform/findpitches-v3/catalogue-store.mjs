@@ -197,7 +197,7 @@ export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now
         enrichment:async payload=>{
           const current=await loadEntity(db,payload.entity_id),gate=await verificationGate(db,current,{now});
           if(payload.refresh_verification_id||gate.status==='unverified')await verifyEntitySource(db,current.id,{now,fetcher});
-          return enrichEntity(db,current.id,{now});
+          return enrichEntity(db,current.id,{now,recheckToken:payload.recheck_token});
         },
       }:{}});
       if(result.phase==='failed')throw Error('catalogue_durable_pipeline_failed');
