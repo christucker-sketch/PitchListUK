@@ -30,6 +30,9 @@ export function parseHtml(html) {
   return root;
 }
 export function excluded(node) {
+  // Theme-wide "menu-inline" / "mobile-nav" classes on the document shell
+  // describe layout, not a navigation subtree. Child nav/footer still stay excluded.
+  if(['root','html','body'].includes(node.tag))return false;
   return ['nav','footer','header','script','style','noscript','template'].includes(node.tag)||/(?:^|[\s_-])(?:nav(?:bar|igation)?|footer|foot|menu|breadcrumb|related|recommendations?|cookie|modal)(?:[\s_-]|$)/i.test([node.attrs?.class,node.attrs?.id].filter(Boolean).join(' '))||String(node.attrs?.id??'')==='ls-ev-rel';
 }
 export function nodes(root,predicate,{scoped=false}={}) {

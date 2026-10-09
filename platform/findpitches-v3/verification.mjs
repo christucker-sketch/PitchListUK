@@ -2,6 +2,7 @@ import {stableJson} from './contract.mjs';
 import {parseHtml,nodes,first,text,hasClass,decode} from './source-dom.mjs';
 import {safeSourceUrl} from './source-document.mjs';
 import {verifyUKBundle} from './uk-sources.mjs';
+import {verifyUKCouncilForm} from './uk-council.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
 export const APPLICATION_POLICY_VERSION='current-application-v1.10';
@@ -37,6 +38,7 @@ function eventNameEditionConflict(facts) {
 const explicitState=s=>/^(?:join (?:the )?waitlist|waitlist(?: only)?|applications? (?:are )?waitlist only)$/i.test(clean(s))?'WAITLIST':/^(?:applications? (?:are )?closed|sold out|fully booked|applications? (?:are )?not open)$/i.test(clean(s))?'CLOSED':null;
 export function applicationScope(report) {
   const heading=report.application_heading??report.evidence?.find(e=>e.kind==='main_heading')?.excerpt??'';
+  if(report.profile==='uk_council_dated_form')return {heading,audience:'traders',reasons:report.application_scope_proof?.trader_application===true||report.application_scope_proof?.trader_application===1?[]:['specific_trader_form_not_proved']};
   if(report.profile==='myntimage')return {heading,audience:'traders',reasons:report.application_scope_proof?.trader_application===true||report.application_scope_proof?.trader_application===1?[]:['trader_application_purpose_not_proved']};
   if(report.profile!=='eventeny')return {heading,audience:'traders',reasons:[]};
   const description=report.application_scope_proof?.application_description??report.application_scope_proof?.evidence?.find(e=>e.kind==='application_description')?.excerpt??'';
@@ -104,6 +106,7 @@ function eventenyScopeProof(main,heading) {
 // Discovery metadata (including search market/city) is deliberately absent from parsing.
 export function verifyDocument(document,{now=new Date().toISOString()}={}) {
   if(document.document_kind==='uk_official_bundle')return verifyUKBundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
+  const council=verifyUKCouncilForm(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});if(council)return council;
   const report={version:VERIFIER_VERSION,application_policy:APPLICATION_POLICY_VERSION,source_url:document.url??document.requested_url,checked_at:document.fetched_at??now,profile:'generic',status:'unverified',page_kind:'unproved',facts:{},reasons:[],evidence:[]};
   if(document.reason||!document.html){report.reasons.push(document.reason??'source_document_missing');return report;}
   try {

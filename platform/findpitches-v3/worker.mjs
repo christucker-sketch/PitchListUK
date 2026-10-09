@@ -26,7 +26,7 @@ import {importLegacyBatch,completeLegacyRecovery,legacyRecoveryStatus} from './l
 import {noteDeliveryContact,structuredDeliveryStatus} from './delivery-health.mjs';
 import {repairLifecycleObservations} from './lifecycle-repair.mjs';
 import {importLegacyGlobalRecords} from './legacy-global.mjs';
-import {importMk1Source} from './mk1-source.mjs';
+import {importMk1Source,fetchLiveMk1Catalogue,fetchMk1Attachment} from './mk1-source.mjs';
 import {schedulePilotRun,stopPilot,pilotStatus} from './pilot.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
 import {startSourceLed,scheduleSourceLed,executeSourceLed,verifySourceLedCandidate,stopSourceLed,sourceLedStatus} from './source-led.mjs';
@@ -130,6 +130,8 @@ export default {
       if(request.method==='POST'&&path==='/source-led/stop'&&role==='acquisition') {const body=await bodyJson(request);await stopSourceLed(db,body.programme_id,body.reason??'operator_stop');return json({paused:true});}
       if(request.method==='POST'&&path==='/source-led/verify'&&role==='enrichment')return json(await verifySourceLedCandidate(db,(await bodyJson(request)).candidate_id));
       if(request.method==='POST'&&path==='/catalogue/start'&&role==='enrichment')return json(await startCatalogueRun(db,await bodyJson(request)),201);
+      if(request.method==='GET'&&path==='/mk1/live-catalogue'&&role==='enrichment')return json(await fetchLiveMk1Catalogue());
+      if(request.method==='POST'&&path==='/mk1/attachment'&&role==='enrichment')return json(await fetchMk1Attachment((await bodyJson(request)).url));
       if(request.method==='POST'&&path==='/mk1/verify-import'&&role==='enrichment') {
         const result=await importMk1Source(db,await bodyJson(request));
         ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result);

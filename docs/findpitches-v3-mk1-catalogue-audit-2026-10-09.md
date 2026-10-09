@@ -1,5 +1,7 @@
 # Pitchlist UK catalogue audit — scope correction, 9 October 2026
 
+**This initial scope-correction report is superseded by the [complete live UK catalogue audit](findpitches-v3-pitchlist-full-audit-2026-10-09.md).** Its twelve-source results below describe the earlier limited inspection.
+
 **Pitchlist is the UK-only live product with paying customers.** Its customer catalogue must be audited independently of the international FindPitches datasets stored in the same repository.
 
 The earlier version of this report incorrectly combined 290 UK rows, 704 US rows and three Canadian rows into a supposed 997-row Mk1 catalogue. That aggregate, the international closed/stale findings and the Rockport US recovery are **not results about the UK Pitchlist customer inventory**. This report corrects that interpretation. No customer-facing catalogue, subscription, source evidence or entity identity was changed.

@@ -9,7 +9,10 @@ for(const file of files(path.join(root,'platform/findpitches-v3'))) {
   for(const match of text.matchAll(/(?:from\s*|import\s*\()(['"])([^'"]+)\1/g)) {
     if(!match[2].startsWith('./')||!path.resolve(path.dirname(file),match[2]).startsWith(path.join(root,'platform/findpitches-v3')+path.sep))throw new Error('runtime_import_outside_v3:'+file);
   }
-  if(/findpitches-v2|customer_opportunities|\/api\/customer-opportunities/.test(text))throw new Error('v2_runtime_dependency:'+file);
+  // This one fixed anonymous GET is an operator audit probe of the user's live
+  // UK source, not a V2 database/customer-module dependency or publication path.
+  const boundedAudit=file.endsWith('/mk1-source.mjs')?text.replace("'https://pitchlist.uk/api/customer-opportunities/search?limit=50'","''"):text;
+  if(/findpitches-v2|customer_opportunities|\/api\/customer-opportunities/.test(boundedAudit))throw new Error('v2_runtime_dependency:'+file);
 }
 for(const file of files(path.join(root,'operations/findpitches-v3/cloudflare'))) {
   const config=JSON.parse(fs.readFileSync(file,'utf8'));

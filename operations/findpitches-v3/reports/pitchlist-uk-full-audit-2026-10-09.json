@@ -1,0 +1,263 @@
+{
+  "schema": "findpitches-live-uk-full-audit-v1",
+  "as_of": "2026-10-09T13:25:13.336Z",
+  "customer_host": "pitchlist.uk",
+  "market": "GB",
+  "live_api_total": 290,
+  "live_preview_rows": 50,
+  "live_preview_matches_build": true,
+  "deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
+  "git_ref": "325d65dde304abc6288d48e468e28299eeef7eb3",
+  "snapshot_sha256": "fd3083163e9563631425684358bdc984cc7962b03614d06be3cdcd30b9ea2180",
+  "production_deployment_unchanged": true,
+  "records_checked": 290,
+  "original_urls_checked": 436,
+  "additional_source_urls_checked": 0,
+  "html_documents": 359,
+  "fetch_reasons": {
+    "html_received": 359,
+    "source_http_401": 2,
+    "source_format_requires_review": 30,
+    "source_response_size_limit": 6,
+    "source_http_404": 17,
+    "source_http_403": 5,
+    "unsafe_original_source_url": 8,
+    "source_http_503": 2,
+    "source_fetch_failed": 4,
+    "source_http_406": 3
+  },
+  "pdf_attachments_reviewed": 20,
+  "application_pdf_reviews_approved": 1,
+  "negative_source_pdf_reviews": 8,
+  "other_attachment_formats_held": 10,
+  "quality_counts": {
+    "clearly_usable": 1,
+    "questionable": 217,
+    "not_current": 8,
+    "reference_only": 53,
+    "wrong_unsafe": 9,
+    "usable_minor_gaps": 2
+  },
+  "quality_percent": {
+    "clearly_usable": 0.34,
+    "questionable": 74.83,
+    "not_current": 2.76,
+    "reference_only": 18.28,
+    "wrong_unsafe": 3.1,
+    "usable_minor_gaps": 0.69
+  },
+  "dominant_review_categories": {
+    "source_verified_current": 1,
+    "geography_unproved": 88,
+    "closed_or_stale": 6,
+    "source_content_incomplete": 31,
+    "current_edition_unproved": 10,
+    "contradictory_edition": 1,
+    "no_specific_trading_offer": 64,
+    "general_permission": 13,
+    "supporting_document": 1,
+    "licensing_or_guidance": 38,
+    "source_unavailable": 18,
+    "broken_source": 8,
+    "identity_missing": 3,
+    "recurring_market": 1,
+    "dated_opportunity": 1,
+    "application_unproved": 2,
+    "directory_or_editorial": 1,
+    "past_dated_source": 1,
+    "country_conflict": 1,
+    "expired_application_document": 1
+  },
+  "field_preservation_and_repair": {
+    "event_name": {
+      "recovered_source_values": 3,
+      "literal_preserved": 2,
+      "source_backed_repairs_or_additions": 1
+    },
+    "organiser": {
+      "recovered_source_values": 3,
+      "literal_preserved": 1,
+      "source_backed_repairs_or_additions": 2
+    },
+    "location": {
+      "recovered_source_values": 3,
+      "literal_preserved": 0,
+      "source_backed_repairs_or_additions": 3
+    },
+    "event_start": {
+      "recovered_source_values": 2,
+      "literal_preserved": 2,
+      "source_backed_repairs_or_additions": 0
+    },
+    "event_end": {
+      "recovered_source_values": 2,
+      "literal_preserved": 1,
+      "source_backed_repairs_or_additions": 1
+    },
+    "application_url": {
+      "recovered_source_values": 3,
+      "literal_preserved": 2,
+      "source_backed_repairs_or_additions": 1
+    },
+    "application_deadline": {
+      "recovered_source_values": 0,
+      "literal_preserved": 0,
+      "source_backed_repairs_or_additions": 0
+    }
+  },
+  "recovered": {
+    "source_mutations": 0,
+    "identity_mutations": 0,
+    "preserved_receipts": 15652,
+    "preserved_source_facts": 106897,
+    "imported_receipts": 4,
+    "linked_entities": 3,
+    "new_entities": 2,
+    "matched_existing": 1,
+    "ready": 1,
+    "watch": 2,
+    "blocked": 0,
+    "results": [
+      {
+        "id": "OPP-00495",
+        "grade": "clearly_usable",
+        "status": "imported",
+        "record_id": "rec_f44df7bc9ebf9c1db60905857ce923064403952a",
+        "entity_id": "ent_7ff210e9d217ef4cb3bd7834234193ba",
+        "identity": "NEW_ENTITY",
+        "readiness": "ready",
+        "duplicate": false,
+        "source_document_id": "doc_ae8ae2990b54e20559e5b26fb6ee2d3e2e10dc18"
+      },
+      {
+        "id": "OPP-00726",
+        "grade": "usable_minor_gaps",
+        "status": "imported",
+        "record_id": "rec_80b358ac4abf197cb459067a9a76f7d97d543cf3",
+        "entity_id": "ent_0b5c29cf9ead75b0e0cd9721cd52cfe5",
+        "identity": "NEW_ENTITY",
+        "readiness": "watch",
+        "duplicate": false,
+        "source_document_id": "doc_f7bea1f5f70b2e39a91d3c75c66b52b25f68f255"
+      },
+      {
+        "id": "OPP-00574",
+        "grade": "usable_minor_gaps",
+        "status": "imported",
+        "record_id": "rec_c97edbee33572e0ebdc30cbd04d9218a00f47a21",
+        "entity_id": "ent_3341edb019423a6f804635ac6eeff01c",
+        "identity": "EXACT_MATCH",
+        "readiness": "watch",
+        "duplicate": false,
+        "source_document_id": "doc_1660940ad63c260d6acce9bb428f4a82c33591af"
+      }
+    ],
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "additional_paid_queries": 0,
+    "publication_enabled": false,
+    "additive_application_route_repair": {
+      "original_id": "OPP-00574",
+      "prior_selected_route": "https://www.farnham.gov.uk/gostrey-meadow-vendor-application/",
+      "prior_authority": 80,
+      "selected_route": "https://www.farnham.gov.uk/services/get-involved-in-farnham-events/christmas-market/",
+      "selected_authority": 95,
+      "older_evidence_preserved": true,
+      "readiness": "watch",
+      "result": {
+        "status": "imported",
+        "record_id": "rec_ffbd5fe884a9e5f305085fe2851b28a898327339",
+        "entity_id": "ent_3341edb019423a6f804635ac6eeff01c",
+        "identity": "EXACT_MATCH",
+        "readiness": "watch",
+        "duplicate": false,
+        "source_document_id": "doc_db7377a1782f22d43eaa083c1c048169ce1f5b3c",
+        "application_route_evidence": {
+          "decision": "accepted",
+          "reason": "stronger_evidence",
+          "fact_id": "enr_9d6cac65a53cbfaffd78c8a1cca0b0265258d046:application_url"
+        }
+      }
+    },
+    "distinct_recovered_rows": 3,
+    "additional_direct_form_evidence_receipts": 1,
+    "initial_preservation_baseline": {
+      "receipts": 15649,
+      "source_facts": 106868
+    }
+  },
+  "additional_paid_queries": 0,
+  "mk1_writes": 0,
+  "v2_writes": 0,
+  "publication_enabled": false,
+  "limitations": [
+    "Deterministic source audit, not a claim of manual scoring for every page.",
+    "Questionable includes missing source-bound geography, bot challenges, dynamic/blocked sources and missing current editions. It does not mean proved junk.",
+    "Public live API preview is matched to the declared build catalogue; subscriber login and billing were not exercised.",
+    "Reference-only material can be useful supporting information but is not a proved trading opportunity.",
+    "No unsupported geography, open state, deadline or future edition is introduced to increase yield."
+  ],
+  "audit_timezone": "Europe/London",
+  "as_of_london": "9 Oct 2026, 14:25:13 BST",
+  "deployed_shadow_roles": [
+    "ingest",
+    "reconcile",
+    "eligibility",
+    "enrichment",
+    "readiness",
+    "acquisition",
+    "watch",
+    "api"
+  ],
+  "validation": {
+    "v3_tests": 179,
+    "passed": 179,
+    "failed": 0,
+    "skipped": 0,
+    "runtime_resource_boundaries": "passed"
+  },
+  "final_guards": {
+    "as_of": "2026-10-09T13:24:49.938Z",
+    "ingest_token_access": [
+      {
+        "route": "/mk1/live-catalogue",
+        "ingest_token_http_status": 401
+      },
+      {
+        "route": "/mk1/attachment",
+        "ingest_token_http_status": 401
+      },
+      {
+        "route": "/mk1/verify-import",
+        "ingest_token_http_status": 401
+      }
+    ],
+    "paid_queries_total": 25,
+    "bulk_enabled": false,
+    "paid_manually_paused": 1,
+    "limits": {
+      "queries_per_run": 4,
+      "queries_per_hour": 100,
+      "queries_per_day": 1000,
+      "credits_per_run": 4,
+      "credits_per_hour": 100,
+      "credits_per_day": 1000
+    },
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "publication_enabled": false,
+    "due_jobs": [],
+    "legacy_mk1_origin": {
+      "total_distinct_entities": 2,
+      "verified": 1,
+      "ready": 1,
+      "watch": 1,
+      "quarantined": 0,
+      "blocked": 0,
+      "awaiting_verification": 1,
+      "missing_application_proof": 1,
+      "stale_expired": 0,
+      "verification_checked": 2
+    }
+  }
+}

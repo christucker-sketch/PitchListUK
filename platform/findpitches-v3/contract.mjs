@@ -10,6 +10,7 @@ export const PRODUCERS = Object.freeze({
   'platform-catalogue': Object.freeze({ type: 'source_catalogue', authority: 95 }),
   'uk-official': Object.freeze({ type: 'official_programme', authority: 95 }),
   'legacy_v2': Object.freeze({ type: 'legacy_recovery', authority: 40 }),
+  'legacy_mk1': Object.freeze({ type: 'legacy_recovery', authority: 40 }),
   'legacy-global-uk': Object.freeze({ type: 'legacy_paid_recovery', authority: 40 }),
 });
 export const AUTHORITIES = Object.freeze({ direct_form:95, official_page:90, official_pdf:85, trusted_directory:75, extracted_page:60, search_snippet:50, inferred:40 });
@@ -62,11 +63,13 @@ export function normalizeExport(raw, { producer='independent-structured', enviro
     confidence:raw.confidence??null,evidence:raw.evidence??[],provenance:raw.provenance??[],
     first_seen:raw.first_seen??null,last_seen:raw.last_seen??null,last_checked:raw.last_checked??null,source_fingerprint:raw.source_fingerprint??raw.content_fingerprint??null,
   };
-  if(['legacy_v2','legacy-global-uk'].includes(producer)) {
-    const metadata=producer==='legacy_v2'?raw.legacy_v2:raw.legacy_global_uk;
-    normalized[producer==='legacy_v2'?'legacy_v2':'legacy_global_uk']=metadata;
+  if(['legacy_v2','legacy-global-uk','legacy_mk1'].includes(producer)) {
+    const metadataKey=producer==='legacy_v2'?'legacy_v2':producer==='legacy_mk1'?'legacy_mk1':'legacy_global_uk';
+    const metadata=raw[metadataKey];
+    normalized[metadataKey]=metadata;
     normalized.field_evidence=raw.field_evidence;
     if(metadata?.audit_status!=='pending'||metadata?.shadow_only!==true)errors.push('legacy_shadow_audit_required');
+    if(producer==='legacy_mk1'&&(market!=='GB'||!['git_ref','snapshot_sha256','original_row_sha256'].every((k,i)=>new RegExp('^[a-f0-9]{'+(i===0?40:64)+'}$').test(metadata?.[k]??''))))errors.push('mk1_uk_source_custody_required');
     if(producer==='legacy-global-uk'&&(market!=='GB'||!/^ukctl-[a-zA-Z0-9_-]+$/.test(metadata?.workflow_id??'')
       ||!['archive_manifest_sha256','workflow_receipt_sha256','original_record_sha256'].every(k=>/^[a-f0-9]{64}$/.test(metadata?.[k]??''))))errors.push('legacy_global_archive_custody_required');
     for(const field of FIELDS)if(normalized[field]!==null&&normalized[field]!==undefined&&normalized[field]!=='') {
