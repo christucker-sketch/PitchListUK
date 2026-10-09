@@ -1,5 +1,6 @@
 import {sql} from './store.mjs';
 import {hash} from './contract.mjs';
+import {producerRecheckStatus} from './rechecks.mjs';
 
 export async function noteDeliveryContact(db,{kind,environment='shadow',records=[],receipt={},now=new Date().toISOString()}) {
   const checked=records.map(r=>r.last_checked).filter(t=>typeof t==='string'&&Number.isFinite(Date.parse(t))).sort((a,b)=>Date.parse(a)-Date.parse(b)).at(-1)??null;
@@ -17,5 +18,5 @@ export async function structuredDeliveryStatus(db,now=new Date().toISOString()) 
   return {cloud_ready:true,expected_interval_seconds:900,contact_observation_started:true,last_authenticated_recheck_poll:last,
     recent_poll_intervals_seconds:intervals,host_recently_contacting:active,cadence_verified:active&&intervals.length>=2&&intervals.slice(0,2).every(n=>n>=600&&n<=1200),
     freshness_warning:!source.source_last_checked||Date.parse(now)-Date.parse(source.source_last_checked)>3600000,
-    ...source,interpretation:'Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls are excluded.'};
+    ...source,rechecks:await producerRecheckStatus(db,now),interpretation:'Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls and subsequent pagination pages are excluded.'};
 }

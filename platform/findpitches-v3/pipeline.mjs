@@ -146,7 +146,7 @@ export async function runStage(db,stage,{now=new Date().toISOString(),jobId=null
           return {phase:'complete',stage,job_id:job.id,result:{phase:'superseded_refresh_skipped'}};
         }
       }
-      await sql(db,`INSERT INTO recheck_requests(entity_id,requested_at,reason) VALUES (?,?,'watch_recheck_due') ON CONFLICT(entity_id) DO UPDATE SET requested_at=excluded.requested_at`,payload.entity_id,now).run();
+      await sql(db,`INSERT INTO recheck_requests(entity_id,requested_at,reason) VALUES (?,?,'watch_recheck_due') ON CONFLICT(entity_id) DO NOTHING`,payload.entity_id,now).run();
       await enqueue(db,'eligibility',payload.entity_id+':watch:'+now,payload,now);
       result={phase:'producer_recheck_requested'};
     } else throw new Error('stage_handler_required');

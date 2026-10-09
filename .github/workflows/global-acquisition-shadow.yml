@@ -72,7 +72,9 @@ jobs:
         run: npx --yes wrangler@4.127.1 deploy --dry-run --config operations/cloudflare-global-acquisition/wrangler.jsonc
 
   deploy_and_prove:
-    if: github.event_name != 'pull_request'
+    # Legacy paid acquisition is stopped. Keep compile/read-only tests, but a
+    # main push or dispatch must not redeploy enabled controller policy.
+    if: ${{ false }}
     needs: compile
     runs-on: ubuntu-24.04
     timeout-minutes: 45

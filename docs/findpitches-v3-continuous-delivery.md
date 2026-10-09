@@ -23,6 +23,10 @@ Inspect `state\status.json` for delivery status, hashes, source age, rejected co
 
 The runner writes producer-addressable `rechecks.json` and acknowledges only delivered fresh evidence. The independent engine still owns fetching sources and exporting updates. If reconciliation has not linked the receipt, the next cycle retries acknowledgment. Stale exports cannot clear requests.
 
+Since 9 October, `/rechecks` includes `pending_entities` and `next_cursor`; follow the cursor until null to fetch the complete backlog, with at most 100 requests per page. The updated delivery client does this automatically, with bounded pages and loop detection. A previous runner remains compatible but reads its first page only. Pi installation of the updated client or equivalent pagination support is required; a cloud deploy does not update the host.
+
+Use the exact `entity_id`, `requested_at`, and `producer_record_id` from each request when posting `/rechecks/ack`. Accepted evidence must be linked to that entity and producer, checked on/after the request and no later than the server clock. A pending request retains its original timestamp across watch ticks. Successful acknowledgement creates an immutable receipt identifying the accepted source revision; `/status.structured_delivery.rechecks` reports pending/ack-eligible counts by country and recent completion. This proves accepted fresh delivery, independently of source verification or READY promotion.
+
 After a forced termination, inspect the lock PID and verify it has exited before removing `cycle.lock` or a checkpoint lock. Do not remove a live owner's lock. Normal failures release locks automatically.
 
 ## Always-on host

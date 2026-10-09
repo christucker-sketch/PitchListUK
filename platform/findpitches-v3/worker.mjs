@@ -1,6 +1,7 @@
 import {commercialStatus} from './commercial.mjs';
 import {startUKRun,discoverUKSource,importUKCandidate,stopUKRun,ukSourceStatus} from './uk-store.mjs';
 import {stagingReady} from './staging.mjs';
+import {producerRechecks,acknowledgeProducerRecheck} from './rechecks.mjs';
 import {fetchCatalogueDocument} from './source-catalogue.mjs';
 import {startCatalogueRun,resumeReviewedCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,adoptCommittedCatalogueReceipt,stopCatalogueRun,catalogueStatus} from './catalogue-store.mjs';
 import {verifyEntitySource,reverifyRetainedSource,verificationGate,verificationStatus} from './verification-store.mjs';
@@ -66,7 +67,13 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
   const values=[[],[],[],[],[],[new Date(Date.parse(now)-3600000).toISOString()],[now],[],[budgetDay(now)],[]];
   const results=await Promise.all(queries.map((q,i)=>sql(db,q,...values[i]).all()));
   const [producers,jobs,entities,readiness,gates,throughput,leases,conflicts,cost,leakage]=results.map(r=>r.results);
-  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),free_source_discovery:await catalogueStatus(db),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial:await commercialStatus(db,now)};
+  const commercial=await commercialStatus(db,now);
+  const customerApplication={frontend:{status:'awaiting_authoritative_build4_handoff',version:null,source_commit:null,owned_by_v3:false},
+    api:{status:'private_ready_projection_only',subscriber_api_implemented:false},auth:{status:'not_implemented'},subscriptions:{status:'not_implemented'},stripe_webhooks:{status:'not_configured_in_v3'},
+    inventory:{shadow_ready:commercial.totals.ready,customer_visible_ready:0},publication_enabled:false,controlled_subscriber_testing_ready:false,
+    legacy_dependencies:{normal_data_runtime:[],optional_operator_reference_probe:['live_uk_catalogue_audit']},
+    interpretation:'Data-platform health is not subscriber-journey readiness. This checkpoint awaits Build 4 identification and V3-native customer/auth/billing implementation.'};
+  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),free_source_discovery:await catalogueStatus(db),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial,customer_application:customerApplication};
 }
 export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
   if(!stage||!queue)return;
@@ -188,18 +195,11 @@ export default {
         return json(await settleCommittedCatalogueReceipt(db,(await bodyJson(request)).candidate_id));
       }
       if(request.method==='GET'&&path==='/rechecks'&&role==='ingest') {
-        if(url.searchParams.get('probe')!=='1')await noteDeliveryContact(db,{kind:'rechecks'});
-        return json({requests:(await sql(db,`SELECT q.entity_id,q.requested_at,q.reason,r.producer_record_id,r.market,r.environment
-        FROM recheck_requests q JOIN entity_records er ON er.entity_id=q.entity_id JOIN producer_records r ON r.id=er.record_id
-        WHERE r.producer_name='independent-structured' AND r.environment='shadow'
-        GROUP BY q.entity_id,r.producer_record_id ORDER BY q.requested_at LIMIT 100`).all()).results});
+        if(url.searchParams.get('probe')!=='1'&&!url.searchParams.get('cursor'))await noteDeliveryContact(db,{kind:'rechecks'});
+        return json(await producerRechecks(db,{cursor:url.searchParams.get('cursor')??'',limit:Number(url.searchParams.get('limit')??100)}));
       }
       if(request.method==='POST'&&path==='/rechecks/ack'&&role==='ingest') {
-        const body=await bodyJson(request);
-        const result=await sql(db,`DELETE FROM recheck_requests WHERE entity_id=? AND requested_at=? AND EXISTS(
-          SELECT 1 FROM entity_records er JOIN producer_records r ON r.id=er.record_id WHERE er.entity_id=? AND r.producer_name='independent-structured' AND r.environment='shadow'
-          AND julianday(json_extract(r.normalized_json,'$.last_checked'))>=julianday(recheck_requests.requested_at))`,body.entity_id,body.requested_at,body.entity_id).run();
-        return json({acknowledged:Number(result.meta?.changes)===1});
+        return json(await acknowledgeProducerRecheck(db,await bodyJson(request)));
       }
       if(request.method==='GET'&&path==='/shadow'&&role==='api') {
         const limit=Math.min(100,Math.max(1,Number(url.searchParams.get('limit'))||25)),after=url.searchParams.get('after')??'';

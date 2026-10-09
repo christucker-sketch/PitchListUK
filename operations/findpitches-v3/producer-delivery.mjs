@@ -76,9 +76,17 @@ export async function deliverExport({inputFile,ingestUrl,token,checkpointFile,en
   } finally {fs.closeSync(fd);fs.unlinkSync(lock);}
 }
 export async function fetchRechecks({ingestUrl,token,fetcher=fetch,probe=false}) {
-  const response=await fetcher(endpoint(ingestUrl)+'/rechecks'+(probe?'?probe=1':''),{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
-  if(!response.ok)throw new Error('recheck_http_'+response.status);
-  const body=await response.json();if(!Array.isArray(body.requests))throw new Error('recheck_receipt_invalid');return body.requests;
+  const requests=[],seen=new Set();let cursor='';
+  for(let page=0;page<100;page++) {
+    const query=new URLSearchParams();if(probe)query.set('probe','1');if(cursor)query.set('cursor',cursor);
+    const response=await fetcher(endpoint(ingestUrl)+'/rechecks'+(query.size?'?'+query:''),{headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
+    if(!response.ok)throw new Error('recheck_http_'+response.status);
+    const body=await response.json();if(!Array.isArray(body.requests)||body.requests.length>100)throw new Error('recheck_receipt_invalid');requests.push(...body.requests);
+    if(!body.next_cursor)return requests;
+    if(typeof body.next_cursor!=='string'||body.next_cursor.length>3000||seen.has(body.next_cursor))throw new Error('recheck_cursor_loop');
+    seen.add(body.next_cursor);cursor=body.next_cursor;
+  }
+  throw new Error('recheck_pagination_limit');
 }
 export async function acknowledgeDeliveredRechecks({requests,delivery,token,fetcher=fetch}) {
   const accepted=new Map();let acknowledged=0;
@@ -88,7 +96,7 @@ export async function acknowledgeDeliveredRechecks({requests,delivery,token,fetc
   }
   for(const request of requests) {
     if(request.environment!==delivery.environment||!accepted.has(request.producer_record_id)||!(accepted.get(request.producer_record_id)>=Date.parse(request.requested_at)))continue;
-    const response=await fetcher(endpoint(delivery.ingest_origin)+'/rechecks/ack',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({entity_id:request.entity_id,requested_at:request.requested_at}),signal:AbortSignal.timeout(30000)});
+    const response=await fetcher(endpoint(delivery.ingest_origin)+'/rechecks/ack',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({entity_id:request.entity_id,requested_at:request.requested_at,producer_record_id:request.producer_record_id}),signal:AbortSignal.timeout(30000)});
     if(!response.ok)throw new Error('recheck_ack_http_'+response.status);
     if((await response.json()).acknowledged)acknowledged++;
   }

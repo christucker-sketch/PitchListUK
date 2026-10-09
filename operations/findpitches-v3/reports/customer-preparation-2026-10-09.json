@@ -1,0 +1,1125 @@
+{
+  "schema": "findpitches-v3-customer-preparation-v1",
+  "as_of": "2026-10-09T15:38:06.460Z",
+  "timezone": "Europe/London",
+  "mode": "shadow",
+  "build4": {
+    "handoff_received": false,
+    "positive_identification": false,
+    "copied": false,
+    "integration_started": false
+  },
+  "customer_application": {
+    "frontend": {
+      "status": "awaiting_authoritative_build4_handoff",
+      "version": null,
+      "source_commit": null,
+      "owned_by_v3": false
+    },
+    "api": {
+      "status": "private_ready_projection_only",
+      "subscriber_api_implemented": false
+    },
+    "auth": {
+      "status": "not_implemented"
+    },
+    "subscriptions": {
+      "status": "not_implemented"
+    },
+    "stripe_webhooks": {
+      "status": "not_configured_in_v3"
+    },
+    "inventory": {
+      "shadow_ready": 1890,
+      "customer_visible_ready": 0
+    },
+    "publication_enabled": false,
+    "controlled_subscriber_testing_ready": false,
+    "legacy_dependencies": {
+      "normal_data_runtime": [],
+      "optional_operator_reference_probe": [
+        "live_uk_catalogue_audit"
+      ]
+    },
+    "interpretation": "Data-platform health is not subscriber-journey readiness. This checkpoint awaits Build 4 identification and V3-native customer/auth/billing implementation."
+  },
+  "inventory": {
+    "schema": "findpitches-v3-commercial-inventory-v1",
+    "as_of": "2026-10-09T15:38:06.460Z",
+    "timezone": "Europe/London",
+    "markets": {
+      "GB": {
+        "ready": 128,
+        "watch": 170,
+        "quarantined": 65,
+        "blocked": 494,
+        "exact_event_groups": 127,
+        "application_entities": 128,
+        "organiser_count": 5,
+        "source_domains": {
+          "myntimage.co.uk": 123,
+          "eventeny.com": 2,
+          "northamptontowncouncil.gov.uk": 1,
+          "localstalls.com": 2
+        },
+        "source_families": {
+          "myntimage": 123,
+          "eventeny": 2,
+          "uk_council_dated_form": 1,
+          "localstalls": 2
+        },
+        "ready_by_producer": {
+          "uk-official": 123,
+          "platform-catalogue": 2,
+          "legacy_mk1": 1,
+          "independent-structured": 2
+        },
+        "held_reason_breakdown": {
+          "source_http_520": 150,
+          "single_event_source_data_missing": 37,
+          "editorial_page_is_discovery_only": 6,
+          "event_cancelled_or_postponed": 1,
+          "vendor_application_not_proved": 2,
+          "open_vendor_application_not_proved": 19,
+          "source_country_market_mismatch": 2,
+          "event_content_scope_missing": 15,
+          "application_restricted_audience_requires_review": 1,
+          "platform_index_is_not_an_opportunity": 5,
+          "invalid_structured_source_data": 2,
+          "event_application_route_missing_or_ambiguous": 17,
+          "selected_application_state_disagrees_with_proof": 17,
+          "selected_event_start_disagrees_with_proof": 12,
+          "social_page_is_discovery_only": 7,
+          "selected_organiser_disagrees_with_proof": 6,
+          "selected_event_end_disagrees_with_proof": 4,
+          "verified_country_missing": 1,
+          "selected_event_name_disagrees_with_proof": 1,
+          "source_http_404": 1,
+          "source_response_size_limit": 2
+        },
+        "source_proof_freshness": {
+          "current_verified": 128,
+          "stale_expired": 15,
+          "oldest_ready_source_check": "2026-10-09T08:26:02.071Z"
+        },
+        "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+      },
+      "US": {
+        "ready": 1753,
+        "watch": 422,
+        "quarantined": 425,
+        "blocked": 2547,
+        "exact_event_groups": 1067,
+        "application_entities": 1753,
+        "organiser_count": 494,
+        "source_domains": {
+          "eventeny.com": 1753
+        },
+        "source_families": {
+          "eventeny": 1753
+        },
+        "ready_by_producer": {
+          "legacy_v2": 341,
+          "platform-catalogue": 1024,
+          "independent-structured": 385,
+          "source-led-search": 3
+        },
+        "held_reason_breakdown": {
+          "single_event_source_data_missing": 128,
+          "application_deadline_passed": 66,
+          "application_closed": 66,
+          "selected_application_deadline_disagrees_with_proof": 78,
+          "selected_application_state_disagrees_with_proof": 103,
+          "application_restricted_audience_requires_review": 32,
+          "contradictory_application_deadline_after_event": 74,
+          "selected_event_start_disagrees_with_proof": 15,
+          "open_vendor_application_not_proved": 35,
+          "stale_edition": 21,
+          "vendor_application_not_proved": 8,
+          "platform_index_is_not_an_opportunity": 13,
+          "trader_application_purpose_not_proved": 61,
+          "waitlist_only": 7,
+          "event_cancelled_or_postponed": 8,
+          "editorial_page_is_discovery_only": 7,
+          "verified_venue_missing": 100,
+          "application_is_not_a_trader_opportunity": 33,
+          "source_parent_event_binding_required": 15,
+          "social_page_is_discovery_only": 10,
+          "event_content_scope_missing": 19,
+          "sponsor_trading_entitlement_not_proved": 16,
+          "selected_organiser_disagrees_with_proof": 15,
+          "selected_location_disagrees_with_proof": 13,
+          "selected_event_name_disagrees_with_proof": 20,
+          "contradictory_heading_edition": 10,
+          "contradictory_application_description_dates": 3,
+          "selected_event_end_disagrees_with_proof": 5,
+          "event_identity_not_bound_to_page": 2,
+          "source_fetch_failed": 1,
+          "source_edition_identity_mismatch": 2,
+          "source_http_403": 1,
+          "contradictory_event_name_edition": 3
+        },
+        "source_proof_freshness": {
+          "current_verified": 1759,
+          "stale_expired": 258,
+          "oldest_ready_source_check": "2026-10-08T18:36:35.726Z"
+        },
+        "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+      }
+    },
+    "gb": {
+      "ready": 128,
+      "watch": 170,
+      "quarantined": 65,
+      "blocked": 494,
+      "exact_event_groups": 127,
+      "application_entities": 128,
+      "organiser_count": 5,
+      "source_domains": {
+        "myntimage.co.uk": 123,
+        "eventeny.com": 2,
+        "northamptontowncouncil.gov.uk": 1,
+        "localstalls.com": 2
+      },
+      "source_families": {
+        "myntimage": 123,
+        "eventeny": 2,
+        "uk_council_dated_form": 1,
+        "localstalls": 2
+      },
+      "ready_by_producer": {
+        "uk-official": 123,
+        "platform-catalogue": 2,
+        "legacy_mk1": 1,
+        "independent-structured": 2
+      },
+      "held_reason_breakdown": {
+        "source_http_520": 150,
+        "single_event_source_data_missing": 37,
+        "editorial_page_is_discovery_only": 6,
+        "event_cancelled_or_postponed": 1,
+        "vendor_application_not_proved": 2,
+        "open_vendor_application_not_proved": 19,
+        "source_country_market_mismatch": 2,
+        "event_content_scope_missing": 15,
+        "application_restricted_audience_requires_review": 1,
+        "platform_index_is_not_an_opportunity": 5,
+        "invalid_structured_source_data": 2,
+        "event_application_route_missing_or_ambiguous": 17,
+        "selected_application_state_disagrees_with_proof": 17,
+        "selected_event_start_disagrees_with_proof": 12,
+        "social_page_is_discovery_only": 7,
+        "selected_organiser_disagrees_with_proof": 6,
+        "selected_event_end_disagrees_with_proof": 4,
+        "verified_country_missing": 1,
+        "selected_event_name_disagrees_with_proof": 1,
+        "source_http_404": 1,
+        "source_response_size_limit": 2
+      },
+      "source_proof_freshness": {
+        "current_verified": 128,
+        "stale_expired": 15,
+        "oldest_ready_source_check": "2026-10-09T08:26:02.071Z"
+      },
+      "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+    },
+    "us": {
+      "ready": 1753,
+      "watch": 422,
+      "quarantined": 425,
+      "blocked": 2547,
+      "exact_event_groups": 1067,
+      "application_entities": 1753,
+      "organiser_count": 494,
+      "source_domains": {
+        "eventeny.com": 1753
+      },
+      "source_families": {
+        "eventeny": 1753
+      },
+      "ready_by_producer": {
+        "legacy_v2": 341,
+        "platform-catalogue": 1024,
+        "independent-structured": 385,
+        "source-led-search": 3
+      },
+      "held_reason_breakdown": {
+        "single_event_source_data_missing": 128,
+        "application_deadline_passed": 66,
+        "application_closed": 66,
+        "selected_application_deadline_disagrees_with_proof": 78,
+        "selected_application_state_disagrees_with_proof": 103,
+        "application_restricted_audience_requires_review": 32,
+        "contradictory_application_deadline_after_event": 74,
+        "selected_event_start_disagrees_with_proof": 15,
+        "open_vendor_application_not_proved": 35,
+        "stale_edition": 21,
+        "vendor_application_not_proved": 8,
+        "platform_index_is_not_an_opportunity": 13,
+        "trader_application_purpose_not_proved": 61,
+        "waitlist_only": 7,
+        "event_cancelled_or_postponed": 8,
+        "editorial_page_is_discovery_only": 7,
+        "verified_venue_missing": 100,
+        "application_is_not_a_trader_opportunity": 33,
+        "source_parent_event_binding_required": 15,
+        "social_page_is_discovery_only": 10,
+        "event_content_scope_missing": 19,
+        "sponsor_trading_entitlement_not_proved": 16,
+        "selected_organiser_disagrees_with_proof": 15,
+        "selected_location_disagrees_with_proof": 13,
+        "selected_event_name_disagrees_with_proof": 20,
+        "contradictory_heading_edition": 10,
+        "contradictory_application_description_dates": 3,
+        "selected_event_end_disagrees_with_proof": 5,
+        "event_identity_not_bound_to_page": 2,
+        "source_fetch_failed": 1,
+        "source_edition_identity_mismatch": 2,
+        "source_http_403": 1,
+        "contradictory_event_name_edition": 3
+      },
+      "source_proof_freshness": {
+        "current_verified": 1759,
+        "stale_expired": 258,
+        "oldest_ready_source_check": "2026-10-08T18:36:35.726Z"
+      },
+      "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+    },
+    "ready_definition": "Shadow entities with current version/revision-matched source proof, current READY assessment, supported vendor application and no identity/evidence/legacy hold. Publication remains disabled.",
+    "scope": {
+      "commercial_entities": 6973,
+      "test_control_excluded": 104,
+      "other_noncommercial_excluded": 0
+    },
+    "totals": {
+      "total_distinct_entities": 6973,
+      "verified": 1897,
+      "ready": 1890,
+      "watch": 625,
+      "quarantined": 692,
+      "blocked": 3766,
+      "awaiting_verification": 4462,
+      "missing_application_proof": 4860,
+      "stale_expired": 300,
+      "verification_checked": 3229
+    },
+    "by_origin": {
+      "independent-structured": {
+        "total_distinct_entities": 1087,
+        "verified": 395,
+        "ready": 391,
+        "watch": 276,
+        "quarantined": 245,
+        "blocked": 175,
+        "awaiting_verification": 394,
+        "missing_application_proof": 579,
+        "stale_expired": 82,
+        "verification_checked": 1087
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 4555,
+        "verified": 349,
+        "ready": 346,
+        "watch": 262,
+        "quarantined": 373,
+        "blocked": 3574,
+        "awaiting_verification": 3961,
+        "missing_application_proof": 4128,
+        "stale_expired": 128,
+        "verification_checked": 819
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 3,
+        "ready": 3,
+        "watch": 3,
+        "quarantined": 1,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      },
+      "platform-catalogue": {
+        "total_distinct_entities": 1172,
+        "verified": 1026,
+        "ready": 1026,
+        "watch": 83,
+        "quarantined": 62,
+        "blocked": 1,
+        "awaiting_verification": 89,
+        "missing_application_proof": 122,
+        "stale_expired": 90,
+        "verification_checked": 1172
+      },
+      "uk-official": {
+        "total_distinct_entities": 123,
+        "verified": 123,
+        "ready": 123,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 0,
+        "stale_expired": 0,
+        "verification_checked": 123
+      },
+      "legacy-global-uk": {
+        "total_distinct_entities": 7,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 7,
+        "awaiting_verification": 7,
+        "missing_application_proof": 7,
+        "stale_expired": 0,
+        "verification_checked": 7
+      },
+      "legacy_mk1": {
+        "total_distinct_entities": 2,
+        "verified": 1,
+        "ready": 1,
+        "watch": 1,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 1,
+        "missing_application_proof": 1,
+        "stale_expired": 0,
+        "verification_checked": 2
+      }
+    },
+    "by_source_membership": {
+      "independent-structured": {
+        "total_distinct_entities": 1977,
+        "verified": 913,
+        "ready": 907,
+        "watch": 424,
+        "quarantined": 399,
+        "blocked": 247,
+        "awaiting_verification": 569,
+        "missing_application_proof": 871,
+        "stale_expired": 135,
+        "verification_checked": 1977
+      },
+      "legacy_v2": {
+        "total_distinct_entities": 5433,
+        "verified": 731,
+        "ready": 724,
+        "watch": 456,
+        "quarantined": 579,
+        "blocked": 3674,
+        "awaiting_verification": 4207,
+        "missing_application_proof": 4524,
+        "stale_expired": 200,
+        "verification_checked": 1696
+      },
+      "city-search": {
+        "total_distinct_entities": 20,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 11,
+        "blocked": 9,
+        "awaiting_verification": 10,
+        "missing_application_proof": 20,
+        "stale_expired": 0,
+        "verification_checked": 12
+      },
+      "source-led-search": {
+        "total_distinct_entities": 7,
+        "verified": 3,
+        "ready": 3,
+        "watch": 3,
+        "quarantined": 1,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 3,
+        "stale_expired": 0,
+        "verification_checked": 7
+      },
+      "platform-catalogue": {
+        "total_distinct_entities": 1172,
+        "verified": 1026,
+        "ready": 1026,
+        "watch": 83,
+        "quarantined": 62,
+        "blocked": 1,
+        "awaiting_verification": 89,
+        "missing_application_proof": 122,
+        "stale_expired": 90,
+        "verification_checked": 1172
+      },
+      "uk-official": {
+        "total_distinct_entities": 123,
+        "verified": 123,
+        "ready": 123,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 0,
+        "missing_application_proof": 0,
+        "stale_expired": 0,
+        "verification_checked": 123
+      },
+      "legacy-global-uk": {
+        "total_distinct_entities": 10,
+        "verified": 0,
+        "ready": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 10,
+        "awaiting_verification": 10,
+        "missing_application_proof": 10,
+        "stale_expired": 0,
+        "verification_checked": 10
+      },
+      "legacy_mk1": {
+        "total_distinct_entities": 3,
+        "verified": 1,
+        "ready": 1,
+        "watch": 2,
+        "quarantined": 0,
+        "blocked": 0,
+        "awaiting_verification": 2,
+        "missing_application_proof": 2,
+        "stale_expired": 0,
+        "verification_checked": 3
+      }
+    },
+    "attribution": "Origin is the earliest accepted non-diagnostic producer receipt linked to the entity. Origin rows are exclusive and sum to the commercial total. Source membership overlaps and must not be summed.",
+    "status_counts": "READY/WATCH/quarantined/blocked are exclusive current dispositions. Verified, awaiting verification, missing application proof and stale/expired are overlapping flags. Old cached READY alone never qualifies.",
+    "ready_by_country": {
+      "US": 1753,
+      "GB": 128,
+      "NZ": 4,
+      "AU": 5
+    },
+    "ready_by_source_domain": {
+      "eventeny.com": 1755,
+      "myntimage.co.uk": 123,
+      "localstalls.com": 11,
+      "northamptontowncouncil.gov.uk": 1
+    },
+    "ready_by_source_platform": {
+      "eventeny": 1755,
+      "myntimage": 123,
+      "localstalls": 11,
+      "uk_council_dated_form": 1
+    },
+    "ready_by_application_state": {
+      "OPEN_NOW": 1890
+    },
+    "ready_event_groups": {
+      "distinct_exact_field_groups": 1203,
+      "multiple_application_groups": 376,
+      "additional_application_entities": 687,
+      "definition": "Advisory grouping by proved country, event title, start/end dates, organiser and venue. READY counts distinct application-opportunity entities; this comparison neither merges identity nor proves semantic duplicates."
+    },
+    "kpis": {
+      "total_customer_ready_opportunities": 1890,
+      "verification_conversion_percent": 58.53,
+      "verification_entities_checked": 3229,
+      "coverage_all_inventory_unverified_presence": {
+        "denominator": 6973,
+        "application_url_percent": 54.09,
+        "future_event_date_percent": 42.95,
+        "location_percent": 46.16,
+        "organiser_percent": 45.75
+      },
+      "coverage_ready_source_proof": {
+        "denominator": 1890,
+        "application_url_percent": 100,
+        "future_event_date_percent": 93.65,
+        "location_percent": 100,
+        "organiser_percent": 100
+      }
+    }
+  },
+  "producer_funnel": {
+    "latest_accepted_units_by_country": {
+      "AU": {
+        "accepted_producer_units": 199,
+        "latest_receipt_linked": 199,
+        "latest_receipt_unlinked": 0,
+        "ready_units": 5,
+        "watch_units": 16,
+        "quarantined_units": 66,
+        "blocked_units": 112,
+        "dominant_reasons": {
+          "selected_organiser_disagrees_with_proof": 32,
+          "single_event_source_data_missing": 120,
+          "platform_index_is_not_an_opportunity": 1,
+          "event_application_route_missing_or_ambiguous": 37,
+          "open_vendor_application_not_proved": 37,
+          "selected_event_start_disagrees_with_proof": 10,
+          "selected_event_end_disagrees_with_proof": 5,
+          "selected_application_state_disagrees_with_proof": 37,
+          "event_content_scope_missing": 6,
+          "selected_event_name_disagrees_with_proof": 1,
+          "source_http_404": 1
+        }
+      },
+      "CA": {
+        "accepted_producer_units": 29,
+        "latest_receipt_linked": 29,
+        "latest_receipt_unlinked": 0,
+        "ready_units": 0,
+        "watch_units": 9,
+        "quarantined_units": 6,
+        "blocked_units": 14,
+        "dominant_reasons": {
+          "single_event_source_data_missing": 16,
+          "source_fetch_failed": 2,
+          "editorial_page_is_discovery_only": 3,
+          "event_content_scope_missing": 4,
+          "source_http_500": 1,
+          "platform_index_is_not_an_opportunity": 2,
+          "source_response_size_limit": 1
+        }
+      },
+      "GB": {
+        "accepted_producer_units": 223,
+        "latest_receipt_linked": 223,
+        "latest_receipt_unlinked": 0,
+        "ready_units": 2,
+        "watch_units": 164,
+        "quarantined_units": 33,
+        "blocked_units": 24,
+        "dominant_reasons": {
+          "source_http_520": 150,
+          "single_event_source_data_missing": 25,
+          "event_application_route_missing_or_ambiguous": 17,
+          "open_vendor_application_not_proved": 17,
+          "selected_application_state_disagrees_with_proof": 17,
+          "application_restricted_audience_requires_review": 1,
+          "selected_event_start_disagrees_with_proof": 12,
+          "invalid_structured_source_data": 2,
+          "event_content_scope_missing": 9,
+          "editorial_page_is_discovery_only": 4,
+          "source_response_size_limit": 2,
+          "selected_organiser_disagrees_with_proof": 6,
+          "verified_country_missing": 1,
+          "selected_event_end_disagrees_with_proof": 4,
+          "platform_index_is_not_an_opportunity": 4,
+          "source_http_404": 1,
+          "selected_event_name_disagrees_with_proof": 1
+        }
+      },
+      "IE": {
+        "accepted_producer_units": 2,
+        "latest_receipt_linked": 2,
+        "latest_receipt_unlinked": 0,
+        "ready_units": 0,
+        "watch_units": 0,
+        "quarantined_units": 0,
+        "blocked_units": 2,
+        "dominant_reasons": {
+          "single_event_source_data_missing": 1,
+          "source_redirect_loop": 1
+        }
+      },
+      "NZ": {
+        "accepted_producer_units": 90,
+        "latest_receipt_linked": 90,
+        "latest_receipt_unlinked": 0,
+        "ready_units": 4,
+        "watch_units": 5,
+        "quarantined_units": 77,
+        "blocked_units": 4,
+        "dominant_reasons": {
+          "event_identity_not_bound_to_page": 66,
+          "verified_organiser_missing": 4,
+          "event_application_route_missing_or_ambiguous": 9,
+          "open_vendor_application_not_proved": 9,
+          "selected_application_state_disagrees_with_proof": 9,
+          "selected_event_name_disagrees_with_proof": 2,
+          "selected_organiser_disagrees_with_proof": 2,
+          "selected_event_start_disagrees_with_proof": 3,
+          "selected_event_end_disagrees_with_proof": 3,
+          "single_event_source_data_missing": 8,
+          "event_content_scope_missing": 1,
+          "selected_location_disagrees_with_proof": 1,
+          "platform_index_is_not_an_opportunity": 1
+        }
+      },
+      "US": {
+        "accepted_producer_units": 1430,
+        "latest_receipt_linked": 1427,
+        "latest_receipt_unlinked": 3,
+        "ready_units": 893,
+        "watch_units": 229,
+        "quarantined_units": 215,
+        "blocked_units": 90,
+        "dominant_reasons": {
+          "verified_venue_missing": 98,
+          "single_event_source_data_missing": 100,
+          "selected_application_deadline_disagrees_with_proof": 65,
+          "application_restricted_audience_requires_review": 26,
+          "application_deadline_passed": 53,
+          "application_closed": 53,
+          "selected_application_state_disagrees_with_proof": 82,
+          "stale_edition": 19,
+          "contradictory_application_deadline_after_event": 53,
+          "source_edition_identity_mismatch": 2,
+          "selected_event_start_disagrees_with_proof": 14,
+          "selected_event_end_disagrees_with_proof": 4,
+          "application_is_not_a_trader_opportunity": 24,
+          "event_content_scope_missing": 11,
+          "open_vendor_application_not_proved": 22,
+          "selected_location_disagrees_with_proof": 13,
+          "selected_event_name_disagrees_with_proof": 20,
+          "editorial_page_is_discovery_only": 2,
+          "sponsor_trading_entitlement_not_proved": 13,
+          "trader_application_purpose_not_proved": 54,
+          "waitlist_only": 7,
+          "selected_organiser_disagrees_with_proof": 15,
+          "event_cancelled_or_postponed": 8,
+          "vendor_application_not_proved": 4,
+          "platform_index_is_not_an_opportunity": 5,
+          "contradictory_heading_edition": 10,
+          "source_fetch_failed": 1,
+          "contradictory_application_description_dates": 2,
+          "contradictory_event_name_edition": 3
+        }
+      }
+    },
+    "receipts_by_country": [
+      {
+        "market": null,
+        "validation_status": "rejected",
+        "receipts": 2,
+        "producer_ids": 2,
+        "last_receipt_at": "2026-10-08T18:36:15.026Z",
+        "latest_source_check": null
+      },
+      {
+        "market": "AU",
+        "validation_status": "accepted",
+        "receipts": 211,
+        "producer_ids": 199,
+        "last_receipt_at": "2026-10-09T08:07:19.281Z",
+        "latest_source_check": "2026-10-09T07:37:14Z"
+      },
+      {
+        "market": "CA",
+        "validation_status": "accepted",
+        "receipts": 33,
+        "producer_ids": 29,
+        "last_receipt_at": "2026-10-09T14:36:25.258Z",
+        "latest_source_check": "2026-10-09T14:29:49Z"
+      },
+      {
+        "market": "GB",
+        "validation_status": "accepted",
+        "receipts": 313,
+        "producer_ids": 223,
+        "last_receipt_at": "2026-10-09T11:47:24.012Z",
+        "latest_source_check": "2026-10-09T11:05:03Z"
+      },
+      {
+        "market": "IE",
+        "validation_status": "accepted",
+        "receipts": 2,
+        "producer_ids": 2,
+        "last_receipt_at": "2026-10-06T13:44:51.925Z",
+        "latest_source_check": "2026-10-04T16:48:30Z"
+      },
+      {
+        "market": "NZ",
+        "validation_status": "accepted",
+        "receipts": 104,
+        "producer_ids": 90,
+        "last_receipt_at": "2026-10-09T08:06:11.176Z",
+        "latest_source_check": "2026-10-09T07:30:11Z"
+      },
+      {
+        "market": "US",
+        "validation_status": "accepted",
+        "receipts": 2258,
+        "producer_ids": 1430,
+        "last_receipt_at": "2026-10-09T14:39:49.829Z",
+        "latest_source_check": "2026-10-09T14:29:35Z"
+      }
+    ],
+    "identity_variant_producer_ids": 5,
+    "definition": "Units use the latest accepted source-check revision per country and producer ID. Unit counts are not distinct entity counts; origin attribution and producer membership are separate. Producer usable counts/export manifest are not supplied."
+  },
+  "structured_delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": "2026-10-09T15:25:27.537Z",
+    "recent_poll_intervals_seconds": [
+      903.676,
+      909.594,
+      1291.421
+    ],
+    "host_recently_contacting": true,
+    "cadence_verified": true,
+    "freshness_warning": true,
+    "immutable_receipts": 2923,
+    "producer_ids": 1975,
+    "last_new_receipt_at": "2026-10-09T14:39:49.829Z",
+    "source_last_checked": "2026-10-09T14:29:49Z",
+    "rechecks": {
+      "pending_entities": 1336,
+      "fresh_evidence_ack_eligible": 0,
+      "by_country": [
+        {
+          "market": "AU",
+          "pending_entities": 191,
+          "oldest_requested_at": "2026-10-08T15:06:23.028Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "CA",
+          "pending_entities": 13,
+          "oldest_requested_at": "2026-10-09T08:02:20.812Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "GB",
+          "pending_entities": 110,
+          "oldest_requested_at": "2026-10-08T15:06:25.841Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "IE",
+          "pending_entities": 2,
+          "oldest_requested_at": "2026-10-09T13:33:39.741Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "NZ",
+          "pending_entities": 64,
+          "oldest_requested_at": "2026-10-08T15:06:21.642Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "US",
+          "pending_entities": 956,
+          "oldest_requested_at": "2026-10-08T14:54:08.627Z",
+          "fresh_evidence_ack_eligible": 0
+        }
+      ],
+      "acknowledged_last_24h": 67,
+      "latest_acknowledgement": "2026-10-09T15:36:59.427Z",
+      "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+      "pagination_supported": true,
+      "oldest_request_preserved": true
+    },
+    "interpretation": "Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls and subsequent pagination pages are excluded."
+  },
+  "due_jobs": [],
+  "leakage": {
+    "customer_rows": 0,
+    "publication_rows": 0
+  },
+  "source_counts": {
+    "immutable_receipts": 15811,
+    "immutable_source_facts": 108819
+  },
+  "paid_queries_today": 0,
+  "spend_controls": {
+    "legacy_flags": {
+      "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "false",
+      "GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED": "false",
+      "GLOBAL_CONTROLLER_CUTOVER_ENABLED": "false",
+      "GLOBAL_UK_CONTROLLER_CUTOVER_ENABLED": "false"
+    },
+    "legacy_controllers_stopped": true,
+    "v2_schedules": [],
+    "account_wide_lock": false,
+    "external_paid_client_attribution": "Not yet supplied by the independent producer; do not re-enable paid work."
+  },
+  "live_v1": {
+    "production_deployment": "7f359dff-0702-4acb-aa69-2f28859c91ce",
+    "read_only": true
+  },
+  "blocked_waiting_for": [
+    "authoritative_build4_handoff",
+    "producer_recheck_execution_and_acknowledgement_breakdown",
+    "producer_uk_usable_count_and_manifest"
+  ],
+  "subscriber_preview_ready": false,
+  "baseline_commit": "8c1ddf73ce94b2fec220644b02d8a27f41a1874f",
+  "v3_api_target": "https://findpitches-v3-api-shadow.ctucker.workers.dev",
+  "final_guards": {
+    "as_of": "2026-10-09T15:39:52.713Z",
+    "source_mutations": 0,
+    "identity_mutations_or_missing": 0,
+    "receipts_verified": 15811,
+    "source_facts_verified": 108819,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "publication_enabled": false,
+    "paid_queries_today": 0,
+    "paid_queries_total": 25,
+    "bulk_enabled": false,
+    "commercial_paid_manually_paused": 1,
+    "disabled_publication_api_status": 403,
+    "legacy_flags": {
+      "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "false",
+      "GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED": "false",
+      "GLOBAL_CONTROLLER_CUTOVER_ENABLED": "false",
+      "GLOBAL_UK_CONTROLLER_CUTOVER_ENABLED": "false"
+    },
+    "v1_production_deployment": "7f359dff-0702-4acb-aa69-2f28859c91ce",
+    "v1_deployment_unchanged": true,
+    "ready": 1890,
+    "ready_by_country": {
+      "US": 1753,
+      "GB": 128,
+      "NZ": 4,
+      "AU": 5
+    },
+    "rechecks": {
+      "pending_entities": 1336,
+      "fresh_evidence_ack_eligible": 0,
+      "by_country": [
+        {
+          "market": "AU",
+          "pending_entities": 191,
+          "oldest_requested_at": "2026-10-08T15:06:23.028Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "CA",
+          "pending_entities": 13,
+          "oldest_requested_at": "2026-10-09T08:02:20.812Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "GB",
+          "pending_entities": 110,
+          "oldest_requested_at": "2026-10-08T15:06:25.841Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "IE",
+          "pending_entities": 2,
+          "oldest_requested_at": "2026-10-09T13:33:39.741Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "NZ",
+          "pending_entities": 64,
+          "oldest_requested_at": "2026-10-08T15:06:21.642Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "US",
+          "pending_entities": 956,
+          "oldest_requested_at": "2026-10-08T14:54:08.627Z",
+          "fresh_evidence_ack_eligible": 0
+        }
+      ],
+      "acknowledged_last_24h": 67,
+      "latest_acknowledgement": "2026-10-09T15:36:59.427Z",
+      "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+      "pagination_supported": true,
+      "oldest_request_preserved": true
+    },
+    "customer_application": {
+      "frontend": {
+        "status": "awaiting_authoritative_build4_handoff",
+        "version": null,
+        "source_commit": null,
+        "owned_by_v3": false
+      },
+      "api": {
+        "status": "private_ready_projection_only",
+        "subscriber_api_implemented": false
+      },
+      "auth": {
+        "status": "not_implemented"
+      },
+      "subscriptions": {
+        "status": "not_implemented"
+      },
+      "stripe_webhooks": {
+        "status": "not_configured_in_v3"
+      },
+      "inventory": {
+        "shadow_ready": 1890,
+        "customer_visible_ready": 0
+      },
+      "publication_enabled": false,
+      "controlled_subscriber_testing_ready": false,
+      "legacy_dependencies": {
+        "normal_data_runtime": [],
+        "optional_operator_reference_probe": [
+          "live_uk_catalogue_audit"
+        ]
+      },
+      "interpretation": "Data-platform health is not subscriber-journey readiness. This checkpoint awaits Build 4 identification and V3-native customer/auth/billing implementation."
+    }
+  },
+  "recheck_verification": {
+    "schema": "findpitches-v3-recheck-backlog-verification-v1",
+    "as_of": "2026-10-09T15:36:59.754Z",
+    "all_pages_fetched": true,
+    "requests_fetched": 1403,
+    "distinct_requested_entities": 1403,
+    "fresh_accepted_requests_eligible": 67,
+    "acknowledgements_attempted": 67,
+    "acknowledged": 67,
+    "invalid_exact_token_refused": true,
+    "before": {
+      "pending_entities": 1403,
+      "fresh_evidence_ack_eligible": 67,
+      "by_country": [
+        {
+          "market": "AU",
+          "pending_entities": 193,
+          "oldest_requested_at": "2026-10-08T15:06:23.028Z",
+          "fresh_evidence_ack_eligible": 2
+        },
+        {
+          "market": "CA",
+          "pending_entities": 13,
+          "oldest_requested_at": "2026-10-09T08:02:20.812Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "GB",
+          "pending_entities": 112,
+          "oldest_requested_at": "2026-10-08T15:06:25.841Z",
+          "fresh_evidence_ack_eligible": 2
+        },
+        {
+          "market": "IE",
+          "pending_entities": 2,
+          "oldest_requested_at": "2026-10-09T13:33:39.741Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "NZ",
+          "pending_entities": 64,
+          "oldest_requested_at": "2026-10-08T15:06:21.642Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "US",
+          "pending_entities": 1019,
+          "oldest_requested_at": "2026-10-08T14:54:08.627Z",
+          "fresh_evidence_ack_eligible": 63
+        }
+      ],
+      "acknowledged_last_24h": 0,
+      "latest_acknowledgement": null,
+      "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+      "pagination_supported": true,
+      "oldest_request_preserved": true
+    },
+    "after": {
+      "pending_entities": 1336,
+      "fresh_evidence_ack_eligible": 0,
+      "by_country": [
+        {
+          "market": "AU",
+          "pending_entities": 191,
+          "oldest_requested_at": "2026-10-08T15:06:23.028Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "CA",
+          "pending_entities": 13,
+          "oldest_requested_at": "2026-10-09T08:02:20.812Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "GB",
+          "pending_entities": 110,
+          "oldest_requested_at": "2026-10-08T15:06:25.841Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "IE",
+          "pending_entities": 2,
+          "oldest_requested_at": "2026-10-09T13:33:39.741Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "NZ",
+          "pending_entities": 64,
+          "oldest_requested_at": "2026-10-08T15:06:21.642Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "US",
+          "pending_entities": 956,
+          "oldest_requested_at": "2026-10-08T14:54:08.627Z",
+          "fresh_evidence_ack_eligible": 0
+        }
+      ],
+      "acknowledged_last_24h": 67,
+      "latest_acknowledgement": "2026-10-09T15:36:59.427Z",
+      "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+      "pagination_supported": true,
+      "oldest_request_preserved": true
+    },
+    "serper_queries_added": 0,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "interpretation": "Acknowledgements establish fresh accepted linked delivery, not that the producer explicitly consumed each request, source proof success, or customer READY. Remaining requests are retained; no timestamps fabricated."
+  },
+  "legacy_spend_stop": {
+    "requested_at": "2026-10-09T15:11:45.324Z",
+    "completed_at": "2026-10-09T15:19:03.854Z",
+    "flags": {
+      "GLOBAL_ACQUISITION_EXECUTION_ENABLED": "false",
+      "GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED": "false",
+      "GLOBAL_CONTROLLER_CUTOVER_ENABLED": "false",
+      "GLOBAL_UK_CONTROLLER_CUTOVER_ENABLED": "false"
+    },
+    "code_unchanged": true,
+    "unrelated_bindings_preserved": true,
+    "schedules_unchanged": true,
+    "workflow_history": {
+      "instances_inspected": 1987,
+      "active_workflows": [],
+      "complete": true
+    },
+    "account_wide_lock": false
+  },
+  "validation": {
+    "full_v3": {
+      "passed": 186,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "e2de6537e0e0c0cd4544394c872b1ccecca1fae3167cd3ddc91a575c46459516"
+    },
+    "legacy_safety": {
+      "passed": 54,
+      "failed": 0,
+      "skipped": 0
+    },
+    "auth_email_controller_reference": {
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0
+    },
+    "owned_shadow_workers_deployed": 8,
+    "additive_migrations_applied": [
+      "0017_producer_recheck_acknowledgements.sql"
+    ],
+    "frontend_integration_started": false,
+    "production_stripe_calls": 0,
+    "v1_v2_writes": 0,
+    "protected_merges": 0
+  }
+}
