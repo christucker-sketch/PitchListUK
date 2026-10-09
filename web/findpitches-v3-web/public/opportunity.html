@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Opportunity | FindPitches</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/fp.css">
+<style>
+.ohead .tags{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:10px}
+.ohead p.where{margin:8px 0 0;color:var(--ink-2);font-size:1.05rem}
+.ohead .wrap{padding-bottom:clamp(22px,3vw,34px)}
+.m-cta{display:none;margin-top:16px}.m-cta .btn{width:100%}
+@media (max-width:980px){.m-cta{display:block}}
+.o-main{padding-top:clamp(20px,3vw,32px)}
+.olay{display:grid;grid-template-columns:minmax(0,1fr) 360px;grid-template-areas:"facts side" "rest side";gap:24px clamp(24px,4vw,48px);align-items:start}
+.o-facts{grid-area:facts}.o-rest{grid-area:rest}.side{grid-area:side;position:sticky;top:90px;display:grid;gap:14px}
+.block{margin-top:30px}.block:first-child{margin-top:0}.block h2{font-family:var(--display);font-weight:700;font-size:1.12rem;letter-spacing:-.02em;margin-bottom:12px}
+.note{padding:14px 16px;background:var(--chalk);border-radius:12px;color:var(--ink-2);margin:0}
+.ledger{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.ledger li{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;padding:12px 0;border-bottom:1px solid var(--line)}
+.ledger .ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:800;background:var(--ok-bg);color:var(--ok)}
+.ledger .ic.lock{background:var(--chalk);color:var(--muted)}
+.ledger small{color:var(--muted);font-size:.84rem}
+.act{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:12px;box-shadow:0 20px 40px -30px rgba(12,26,19,.5)}
+.act .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.act .btn{width:100%}
+.minimap{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.minimap svg{display:block;width:100%;height:220px;background:#EEF3F6}
+.minimap .cap{padding:10px 14px;font-size:.84rem;color:var(--muted);border-top:1px solid var(--line)}
+.land{fill:#fff;stroke:#C9D3CC}.st{fill:#fff;stroke:#C9D3CC;stroke-width:.8}.st.sel{fill:#CFE5D8;stroke:var(--turf-2);stroke-width:1.6}
+.pinbig{fill:var(--flag-btn);stroke:#fff}
+.sim{display:grid;gap:8px}
+.meta{font-size:.84rem;color:var(--muted)}
+@media (max-width:980px){.olay{grid-template-columns:1fr;grid-template-areas:"facts" "side" "rest"}.side{position:static}}
+</style>
+</head>
+<body data-page="opportunity">
+<div id="fp-top"></div>
+<main id="page"><div class="wrap section"><div class="skel" style="height:60px;margin-bottom:16px"></div><div class="skel" style="height:260px"></div></div></main>
+<div id="fp-foot"></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/routes.js"></script>
+<script src="assets/js/v3-api.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/geo.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/pages/opportunity.js"></script>
+</body>
+</html>

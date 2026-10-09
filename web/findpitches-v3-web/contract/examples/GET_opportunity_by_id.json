@@ -1,0 +1,71 @@
+{
+ "ok": true,
+ "opportunity": {
+  "id": "fdx1_08ef74c1f4c6cfb6d17c",
+  "market": "US",
+  "title": "American Royal",
+  "source_title": null,
+  "type": null,
+  "type_label": "Event",
+  "organiser": {
+   "name": null,
+   "type": null,
+   "verified": false,
+   "type_label": null
+  },
+  "location": {
+   "label": "Kansas City, Kansas",
+   "lat": null,
+   "lng": null,
+   "precision": null,
+   "region_id": "us/kansas",
+   "locality": "Kansas City",
+   "region": "Kansas",
+   "region_code": "KS",
+   "postal_code": null,
+   "region_name": "Kansas"
+  },
+  "dates": {
+   "start": "2026-10-09",
+   "end": "2026-10-25",
+   "recurring": false,
+   "application_deadline": null
+  },
+  "application": {
+   "status": "open_now",
+   "deadline": null,
+   "basis": "source"
+  },
+  "fee": {
+   "text": null,
+   "currency": "USD"
+  },
+  "sells": [
+   "general"
+  ],
+  "notes": null,
+  "checked": {
+   "last_checked": "2026-10-04",
+   "freshness": null
+  },
+  "canonical_path": "/us/opportunity/fdx1_08ef74c1f4c6cfb6d17c/",
+  "access": {
+   "locked": true,
+   "source_domain_hint": ".com",
+   "source_url": null,
+   "application_url": null
+  },
+  "similar": [],
+  "is_current": true,
+  "region_path": [
+   {
+    "id": "us/kansas",
+    "name": "Kansas",
+    "slug": "kansas",
+    "level": "state",
+    "parent_id": null,
+    "code": "US-KS"
+   }
+  ]
+ }
+}

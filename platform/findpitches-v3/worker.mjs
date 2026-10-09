@@ -1,6 +1,6 @@
 import {commercialStatus} from './commercial.mjs';
 import {startUKRun,discoverUKSource,importUKCandidate,stopUKRun,ukSourceStatus} from './uk-store.mjs';
-import {stagingReady} from './staging.mjs';
+import {stagingReady,stagingCatalogue} from './staging.mjs';
 import {producerRechecks,acknowledgeProducerRecheck} from './rechecks.mjs';
 import {fetchCatalogueDocument} from './source-catalogue.mjs';
 import {startCatalogueRun,resumeReviewedCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,adoptCommittedCatalogueReceipt,stopCatalogueRun,catalogueStatus} from './catalogue-store.mjs';
@@ -68,11 +68,11 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
   const results=await Promise.all(queries.map((q,i)=>sql(db,q,...values[i]).all()));
   const [producers,jobs,entities,readiness,gates,throughput,leases,conflicts,cost,leakage]=results.map(r=>r.results);
   const commercial=await commercialStatus(db,now);
-  const customerApplication={frontend:{status:'awaiting_authoritative_build4_handoff',version:null,source_commit:null,owned_by_v3:false},
-    api:{status:'private_ready_projection_only',subscriber_api_implemented:false},auth:{status:'not_implemented'},subscriptions:{status:'not_implemented'},stripe_webhooks:{status:'not_configured_in_v3'},
+  const customerApplication={frontend:{status:'owned_standalone_build4',version:'Build 4',source_commit:null,source_archive_sha256:'24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05',owned_by_v3:true},
+    api:{status:'native_restricted_shadow_preview',subscriber_api_implemented:true},auth:{status:'native_session_implementation',email_delivery:'reported_by_customer_preview'},subscriptions:{status:'native_test_mode_implementation'},stripe_webhooks:{status:'test_signature_handler',provider_registration:'reported_in_customer_preview_verification'},
     inventory:{shadow_ready:commercial.totals.ready,customer_visible_ready:0},publication_enabled:false,controlled_subscriber_testing_ready:false,
     legacy_dependencies:{normal_data_runtime:[],optional_operator_reference_probe:['live_uk_catalogue_audit']},
-    interpretation:'Data-platform health is not subscriber-journey readiness. This checkpoint awaits Build 4 identification and V3-native customer/auth/billing implementation.'};
+    interpretation:'Build 4 is owned by V3 and the native customer service is separate. Consult its restricted /preview/status for deployed auth/billing/inventory health. No public/customer publication or subscriber migration is enabled.'};
   return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),free_source_discovery:await catalogueStatus(db),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial,customer_application:customerApplication};
 }
 export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
@@ -113,9 +113,10 @@ export default {
     try {
       if(request.method==='GET'&&path==='/health') { await sql(db,'SELECT publication_enabled FROM runtime_policy WHERE id=1').first();return json({service:'findpitches-v3',role,ok:true,mode:'shadow',publication_enabled:false}); }
       if(request.method==='GET'&&path==='/status')return json(await status(db,{role}));
-      if(path==='/staging/ready') {
+      if(path==='/staging/ready'||path==='/staging/catalogue') {
         if(request.method!=='GET'||role!=='api')return json({error:'staging_read_only'},403);
         if(!await authorized(request,env.V3_STAGING_TOKEN))return json({error:'authorization_required'},401);
+        if(path==='/staging/catalogue')return json(await stagingCatalogue(db));
         return json(await stagingReady(db,{market:url.searchParams.get('market'),after:url.searchParams.get('after')??'',limit:Number(url.searchParams.get('limit')??50),region:url.searchParams.get('region'),location:url.searchParams.get('location')}));
       }
       const ingest=path==='/imports'||path==='/rechecks'||path==='/rechecks/ack';

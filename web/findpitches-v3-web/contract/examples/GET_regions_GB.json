@@ -1,0 +1,37 @@
+{
+ "ok": true,
+ "regions": [
+  {
+   "id": "gb/south-east",
+   "name": "South East",
+   "slug": "south-east",
+   "level": "region",
+   "parent_id": null,
+   "opportunity_count": 73
+  },
+  {
+   "id": "gb/south-west",
+   "name": "South West",
+   "slug": "south-west",
+   "level": "region",
+   "parent_id": null,
+   "opportunity_count": 19
+  },
+  {
+   "id": "gb/east-of-england",
+   "name": "East of England",
+   "slug": "east-of-england",
+   "level": "region",
+   "parent_id": null,
+   "opportunity_count": 29
+  },
+  {
+   "id": "gb/east-midlands",
+   "name": "East Midlands",
+   "slug": "east-midlands",
+   "level": "region",
+   "parent_id": null,
+   "opportunity_count": 5
+  }
+ ]
+}

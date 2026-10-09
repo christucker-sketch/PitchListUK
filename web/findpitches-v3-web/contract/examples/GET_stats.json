@@ -1,0 +1,40 @@
+{
+ "ok": true,
+ "as_of": "2026-10-09",
+ "total": 1890,
+ "sports": 5,
+ "markets": {
+  "GB": {
+   "count": 216,
+   "regions": 33
+  },
+  "US": {
+   "count": 1375,
+   "regions": 50
+  },
+  "CA": {
+   "count": 27,
+   "regions": 0
+  },
+  "AU": {
+   "count": 188,
+   "regions": 0
+  },
+  "IE": {
+   "count": 2,
+   "regions": 0
+  },
+  "NZ": {
+   "count": 82,
+   "regions": 0
+  },
+  "SG": {
+   "count": 0,
+   "regions": 0
+  },
+  "HK": {
+   "count": 0,
+   "regions": 0
+  }
+ }
+}

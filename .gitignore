@@ -5,4 +5,5 @@ logs/
 .wrangler/
 public/delivery/
 src/delivery/
+web/findpitches-v3-web/dist/
 operations/opportunity-pipeline/data/

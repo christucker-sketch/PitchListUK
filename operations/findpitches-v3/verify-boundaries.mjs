@@ -4,16 +4,23 @@ import { fileURLToPath } from 'node:url';
 
 const root=fileURLToPath(new URL('../../',import.meta.url));
 function files(directory){return fs.readdirSync(directory,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(path.join(directory,e.name)):[path.join(directory,e.name)]);}
-for(const file of files(path.join(root,'platform/findpitches-v3'))) {
+const runtimeFiles=[...files(path.join(root,'platform/findpitches-v3')),...files(path.join(root,'web/findpitches-v3-web/server')),...files(path.join(root,'web/findpitches-v3-web/contract/reference'))];
+for(const file of runtimeFiles) {
   const text=fs.readFileSync(file,'utf8');
   for(const match of text.matchAll(/(?:from\s*|import\s*\()(['"])([^'"]+)\1/g)) {
-    if(!match[2].startsWith('./')||!path.resolve(path.dirname(file),match[2]).startsWith(path.join(root,'platform/findpitches-v3')+path.sep))throw new Error('runtime_import_outside_v3:'+file);
+    const target=path.resolve(path.dirname(file),match[2]);
+    const owned=target.startsWith(path.join(root,'platform/findpitches-v3')+path.sep)||[
+      'web/findpitches-v3-web/server/seo-edge.mjs','web/findpitches-v3-web/server/catalogue-registry.mjs','web/findpitches-v3-web/contract/reference/map-producer-record.mjs'
+    ].some(p=>target===path.join(root,p));
+    if(!match[2].startsWith('.')||!owned)throw new Error('runtime_import_outside_v3:'+file);
   }
   // This one fixed anonymous GET is an operator audit probe of the user's live
   // UK source, not a V2 database/customer-module dependency or publication path.
   const boundedAudit=file.endsWith('/mk1-source.mjs')?text.replace("'https://pitchlist.uk/api/customer-opportunities/search?limit=50'","''"):text;
   if(/findpitches-v2|customer_opportunities|\/api\/customer-opportunities/.test(boundedAudit))throw new Error('v2_runtime_dependency:'+file);
 }
+const customer=JSON.parse(fs.readFileSync(path.join(root,'operations/findpitches-v3/customer-wrangler.jsonc'),'utf8'));
+if(customer.name!=='findpitches-v3-customer-preview'||customer.routes.length||customer.d1_databases.length!==1||customer.d1_databases[0].binding!=='V3_CUSTOMER_DB'||customer.d1_databases[0].database_name!=='findpitches-v3-customer-preview'||customer.services.length!==1||customer.services[0].service!=='findpitches-v3-api-shadow'||customer.assets.directory!=='../../web/findpitches-v3-web/public'||customer.vars.V3_CUSTOMER_MODE!=='restricted_shadow_preview'||customer.vars.V3_CHECKOUT_ENABLED!=='disabled')throw new Error('customer_preview_boundary_violation');
 for(const file of files(path.join(root,'operations/findpitches-v3/cloudflare'))) {
   const config=JSON.parse(fs.readFileSync(file,'utf8'));
   if(!/^findpitches-v3-\w+-shadow$/.test(config.name)||config.routes?.length||config.d1_databases.length!==1||config.d1_databases[0].binding!=='FINDPITCHES_V3_DB'||config.d1_databases[0].database_name!=='findpitches-v3-shadow')throw new Error('resource_boundary_violation:'+file);

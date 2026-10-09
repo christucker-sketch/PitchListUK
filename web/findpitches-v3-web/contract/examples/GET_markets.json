@@ -1,0 +1,95 @@
+{
+ "ok": true,
+ "markets": [
+  {
+   "code": "GB",
+   "route_slug": "uk",
+   "display_code": "UK",
+   "name": "United Kingdom",
+   "the": "the UK",
+   "launch_status": "live",
+   "locale": "en-GB",
+   "currency": "GBP",
+   "date_format": "DD/MM/YYYY",
+   "distance_unit": "mi",
+   "radius_options": [
+    10,
+    25,
+    50,
+    100
+   ],
+   "postal": {
+    "label_mid": "postcode",
+    "label": "Postcode",
+    "example": "ME15 6",
+    "kind": "postcode"
+   },
+   "region_label": {
+    "singular": "county",
+    "plural": "counties and regions"
+   },
+   "vocab": {
+    "listings": "Trader pitches",
+    "trader": "stallholder",
+    "traders": "stallholders and traders",
+    "traders_short": "traders",
+    "fee": "pitch fee",
+    "apps": "trader applications",
+    "sport": "trade stands",
+    "pitch": "pitch"
+   },
+   "opportunity_count": 216,
+   "draft_has_data": true,
+   "search": {
+    "radius": false,
+    "region": true,
+    "geocoder": "none"
+   }
+  },
+  {
+   "code": "US",
+   "route_slug": "us",
+   "display_code": "US",
+   "name": "United States",
+   "the": "the US",
+   "launch_status": "live",
+   "locale": "en-US",
+   "currency": "USD",
+   "date_format": "MM/DD/YYYY",
+   "distance_unit": "mi",
+   "radius_options": [
+    10,
+    25,
+    50,
+    100
+   ],
+   "postal": {
+    "label_mid": "ZIP Code",
+    "label": "ZIP Code",
+    "example": "75201",
+    "kind": "zip"
+   },
+   "region_label": {
+    "singular": "state",
+    "plural": "states"
+   },
+   "vocab": {
+    "listings": "Vendor opportunities",
+    "trader": "vendor",
+    "traders": "vendors",
+    "traders_short": "vendors",
+    "fee": "booth fee",
+    "apps": "vendor applications",
+    "sport": "concessions",
+    "pitch": "booth"
+   },
+   "opportunity_count": 1375,
+   "draft_has_data": true,
+   "search": {
+    "radius": false,
+    "region": true,
+    "geocoder": "zip_to_state"
+   }
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+ "ok": true,
+ "signed_in": false,
+ "user": null,
+ "access": {
+  "tier": "free",
+  "status": "none"
+ }
+}

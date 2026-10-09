@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>FindPitches | Vendor &amp; Trader Opportunities at Markets, Festivals &amp; Sporting Events</title>
+<meta name="description" content="Find checked vendor opportunities, stallholder pitches and trader applications at markets, festivals, shows and sporting events, live in the UK and US, with coverage building in Canada, Australia, Ireland, New Zealand, Singapore and Hong Kong.">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/fp.css">
+<style>
+
+h1,h2,h3{margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,3.8vw,3.1rem);line-height:1.04;letter-spacing:-.03em}
+.over{display:inline-flex;align-items:center;gap:8px;margin:0 0 16px;font-weight:600;font-size:.92rem;color:var(--turf-2)}
+.over:before{content:"";width:18px;height:2px;background:currentColor}
+.sub{margin:18px 0 0;max-width:40em;color:var(--muted);font-size:1.1rem}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#fff 60%,var(--chalk) 100%)}
+.hero .wrap>*{min-width:0}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,4vw,56px);align-items:center;padding-block:clamp(40px,5vw,72px)}
+.kick{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 20px;font-weight:600;font-size:.92rem;color:var(--turf-2)}
+.kick span+span:before{content:"·";margin-right:14px;color:var(--line)}
+.hero h1{font-family:var(--display);font-weight:800;letter-spacing:-.045em;line-height:.92}
+.hero h1 .big{display:block;font-size:clamp(3.4rem,8.4vw,7.4rem);color:var(--ink)}
+.hero h1 .big em{font-style:normal;color:var(--flag)}
+.hero h1 .small{display:block;margin-top:18px;font-size:clamp(1.3rem,2.5vw,2.05rem);font-weight:600;letter-spacing:-.03em;line-height:1.12;color:var(--turf)}
+.lede{margin:24px 0 0;max-width:36em;font-size:1.12rem;color:var(--ink-2)}
+
+.console{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:0 1px 0 rgba(12,26,19,.04),0 30px 60px -34px rgba(12,26,19,.45)}
+.console .grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1.3fr) minmax(0,.8fr) auto;gap:6px;align-items:stretch}
+.console .grid.nor{grid-template-columns:minmax(0,1.5fr) minmax(0,1.3fr) auto}
+.freeline{margin:12px 0 0;font-size:.9rem;color:var(--muted)}.freeline b{color:var(--ink)}
+.fld{display:flex;flex-direction:column;justify-content:center;padding:8px 14px;border-radius:12px;min-width:0;transition:background .15s}
+.fld:hover,.fld:focus-within{background:var(--chalk)}
+.fld label{font-size:.76rem;font-weight:600;color:var(--muted)}
+.fld input,.fld select{border:0;background:transparent;font:600 1.05rem var(--body);color:var(--ink);padding:2px 0 0;min-width:0;width:100%;-webkit-appearance:none;appearance:none}
+.fld input:focus,.fld select:focus{outline:none}
+.fld+.fld{border-left:1px solid var(--line)}
+.console .btn{height:auto;min-height:62px;border-radius:12px;padding:0 26px;font-size:1.02rem}
+.hint{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:10px 14px 4px;font-size:.88rem;color:var(--muted);min-height:34px}
+.hint b{color:var(--ink)}
+.hint .sw{color:var(--flag-dark);font-weight:600}
+.pick button{font:600 .82rem var(--body);border:1px solid var(--ink);background:#fff;border-radius:6px;padding:3px 9px;margin-left:4px;cursor:pointer}
+.popular{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px;font-size:.92rem;color:var(--muted)}
+.popular a{color:var(--turf);font-weight:600;text-decoration:none;border-bottom:1.5px solid rgba(20,94,57,.25)}
+.popular a:hover{border-color:var(--turf)}
+.proof{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+.proof div{font-size:.88rem;color:var(--muted);line-height:1.3}
+.proof b{display:block;font-family:var(--board);font-weight:700;font-size:1.9rem;color:var(--ink);letter-spacing:.01em;line-height:1}
+
+/* moving columns */
+.reel{position:relative;min-width:0;max-width:100%;height:clamp(560px,64vw,720px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;overflow:hidden;
+  -webkit-mask:linear-gradient(180deg,transparent 0,#000 12%,#000 88%,transparent 100%);mask:linear-gradient(180deg,transparent 0,#000 12%,#000 88%,transparent 100%)}
+.col{display:flex;flex-direction:column;gap:12px;will-change:transform}
+.col.up{animation:up 62s linear infinite}
+.col.down{animation:down 74s linear infinite;margin-top:-40%}
+.col.up.slow{animation-duration:84s}
+.reel:hover .col{animation-play-state:paused}
+@keyframes up{to{transform:translateY(-50%)}}
+@keyframes down{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+.tile{border-radius:14px;overflow:hidden;background:var(--chalk);flex:none;position:relative}
+.tile.ph img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.tile.ph figcaption{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);color:var(--ink);font-size:.76rem;font-weight:600;padding:4px 9px;border-radius:999px}
+.tile.lt{background:#fff;border:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:4px;font-size:.84rem;color:var(--muted)}
+.tile.lt .t{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--turf-2)}
+.tile.lt b{font-size:.98rem;line-height:1.2;color:var(--ink)}
+.tile.lt .ok{margin-top:6px;color:var(--ok);font-weight:600}
+.tile.sp{background:var(--turf);color:#fff;padding:14px;min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;font-size:.84rem;isolation:isolate}
+.tile.sp svg{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.5}
+.tile.sp .t{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#FFB59E}
+.tile.sp b{font-size:1rem;line-height:1.2}
+.tile.sp span{color:#BFD8C8}
+.tile.st{background:var(--flag-btn);color:#fff;padding:16px;display:flex;flex-direction:column;gap:2px}
+.tile.st b{font-family:var(--board);font-size:3rem;line-height:.9;font-weight:700}
+.tile.st span{font-size:.86rem;font-weight:500}
+
+/* results */
+.results{grid-column:1/-1}
+.results[hidden]{display:none}
+.rhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 20px;margin-bottom:16px}
+.rhead h2{font-size:clamp(1.4rem,2.6vw,2rem)}
+.rhead span{color:var(--muted);font-size:.9rem}
+.rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.rcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.rcard .t{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--turf-2)}
+.rcard h3{font-size:1.12rem;line-height:1.25}
+.rcard p{margin:0;color:var(--muted);font-size:.93rem}
+.rcard .f{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:.86rem}
+.rcard .f span{color:var(--ok);font-weight:600}
+.rcard .f a{font-weight:600;color:var(--turf);text-decoration:none}
+.wait{background:#fff;border:1.5px dashed var(--turf-2);border-radius:14px;padding:22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.wait h3{font-family:var(--display);font-size:1.3rem;letter-spacing:-.02em;margin-bottom:4px}
+.wait p{margin:0;color:var(--muted)}
+.mini{display:flex;flex-wrap:wrap;gap:8px}
+.mini input{height:50px;min-width:0;flex:1 1 220px;border:1px solid var(--line);border-radius:10px;padding:0 14px;font:500 1rem var(--body)}
+
+/* ---------- board ---------- */
+.boardsec{background:var(--chalk);border-block:1px solid var(--line)}
+.sec{padding-block:clamp(64px,8vw,112px)}
+.bhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px 40px}
+.tabs{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.tabs button{border:0;background:none;border-radius:9px;padding:9px 16px;font:600 .92rem var(--body);color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:#fff}
+.board{margin-top:34px;background:var(--ink);border-radius:18px;padding:clamp(12px,2vw,22px);color:#fff;box-shadow:0 40px 70px -40px rgba(12,26,19,.7);overflow-x:auto}
+.board table{width:100%;border-collapse:separate;border-spacing:0 6px;font-family:var(--board);min-width:720px}
+.board th{text-align:left;font-weight:600;font-size:.84rem;letter-spacing:.14em;text-transform:uppercase;color:#7F9A8A;padding:4px 14px}
+.board td{background:#13241B;padding:12px 14px;font-size:1.28rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+.board td:first-child{border-radius:8px 0 0 8px;color:#FFC24B;font-variant-numeric:tabular-nums}
+.board td:last-child{border-radius:0 8px 8px 0}
+.board td.ev{white-space:normal;color:#fff;min-width:260px}
+.board td.wh{color:#BFD2C6}
+.board .ty{display:inline-block;font-size:.95rem;padding:3px 9px;border-radius:5px;background:#1E3528;color:#9FE0B8}
+.board .ty.sport{background:var(--flag-btn);color:#fff}
+.board tr{animation:flip .55s cubic-bezier(.2,.7,.2,1) both;transform-origin:top}
+@keyframes flip{from{transform:perspective(600px) rotateX(-70deg);opacity:.2}to{transform:none;opacity:1}}
+.bnote{margin-top:14px;font-size:.86rem;color:var(--muted)}
+
+/* ---------- sports ---------- */
+.sports{position:relative;color:#fff;overflow:hidden;isolation:isolate;
+  background:repeating-linear-gradient(90deg,#0F5230 0 80px,#0C4829 80px 160px)}
+.sports:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 55% at 8% -5%,rgba(255,250,220,.28),transparent 60%),radial-gradient(60% 55% at 92% -5%,rgba(255,250,220,.22),transparent 60%),linear-gradient(180deg,rgba(8,47,27,.2),rgba(8,47,27,.75))}
+.lines{position:absolute;left:0;top:0;width:100%;height:100%;z-index:-1;opacity:.4;pointer-events:none}
+.lines path,.lines rect,.lines circle,.lines line{fill:none;stroke:rgba(255,255,255,.55);stroke-width:2;stroke-dasharray:2400;stroke-dashoffset:2400;animation:draw 3.2s .3s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.sports .over{color:#FFB59E}
+.sports h2{font-size:clamp(2.4rem,6vw,5rem);color:#fff;max-width:12ch}
+.sports .sub{color:#CFE3D6}
+.sgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px,5vw,72px);align-items:start}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin-top:36px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.18);border-radius:16px;overflow:hidden}
+.stats div{background:rgba(8,47,27,.55);padding:18px 20px;backdrop-filter:blur(2px)}
+.stats b{display:block;font-family:var(--board);font-weight:700;font-size:clamp(2.6rem,5vw,3.6rem);line-height:.95;color:#fff}
+.stats span{font-size:.92rem;color:#CFE3D6}
+.src{margin-top:12px;font-size:.8rem;color:#9DBFAA}
+.src a{color:#CFE3D6}
+.kinds{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kinds li{border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:14px 16px;background:rgba(8,47,27,.35)}
+.kinds b{display:block;font-size:1.02rem}
+.kinds span{font-size:.88rem;color:#BFD8C8}
+.sreal{margin-top:36px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.scard{background:#fff;color:var(--ink);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.scard .t{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--flag-dark)}
+.scard b{font-size:1.02rem;line-height:1.2}
+.scard span{font-size:.88rem;color:var(--muted)}
+.scard .cc2{margin-top:auto;padding-top:8px;font-family:var(--board);font-weight:700;font-size:1rem;letter-spacing:.06em;color:var(--turf)}
+.sports .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+
+/* ---------- lens ---------- */
+.lens{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(32px,5vw,72px);align-items:start;margin-top:44px}
+.clist{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.clist button{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;width:100%;padding:16px 8px;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;cursor:pointer;font:500 1rem var(--body);color:var(--ink);transition:background .15s}
+.clist button:hover{background:var(--chalk)}
+.clist button[aria-current="true"]{background:var(--ink);color:#fff;border-radius:12px;border-color:transparent}
+.clist .code{font-family:var(--board);font-weight:700;font-size:1.7rem;letter-spacing:.02em;color:var(--turf)}
+.clist button[aria-current="true"] .code{color:#FFC24B}
+.clist small{display:block;color:var(--muted);font-size:.84rem}
+.clist button[aria-current="true"] small{color:#AFC4B7}
+.clist .st{font-size:.8rem;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--chalk);color:var(--muted)}
+.clist .st.live{background:#DDF1E4;color:var(--ok)}
+.preview{background:var(--chalk);border:1px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,30px);position:sticky;top:96px}
+.preview .bar{display:flex;gap:6px;margin-bottom:18px}
+.preview .bar i{width:10px;height:10px;border-radius:50%;background:#C9D3CC}
+.pv-search{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.pv-search small{display:block;font-size:.76rem;font-weight:600;color:var(--muted)}
+.pv-search span{font-weight:600;color:#5B6B62}
+.pv-card{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+.pv-card .t{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--turf-2)}
+.pv-card b{display:block;font-size:1.15rem;margin:4px 0 8px}
+.pv-card dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0;font-size:.92rem}
+.pv-card dt{color:var(--muted)}
+.pv-card dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
+.vocab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin-top:12px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.vocab div{background:#fff;padding:10px 14px}
+.vocab small{display:block;color:var(--muted);font-size:.76rem}
+.vocab b{font-size:.98rem}
+.pv-foot{margin-top:14px;font-size:.86rem;color:var(--muted)}
+
+/* ---------- trust ---------- */
+.trust{background:var(--chalk);border-top:1px solid var(--line)}
+.tgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:center}
+.steps{list-style:none;margin:32px 0 0;padding:0;display:grid;gap:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.steps li:before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--turf);color:#fff;font-family:var(--board);font-weight:700;font-size:1.2rem}
+.steps b{display:block;font-size:1.05rem}
+.steps span{color:var(--muted);font-size:.95rem}
+.listing{position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 40px 70px -44px rgba(12,26,19,.55)}
+.listing .t{font-size:.76rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--turf-2)}
+.listing h3{font-family:var(--display);font-weight:700;font-size:clamp(1.4rem,2.4vw,1.9rem);letter-spacing:-.03em;line-height:1.08;margin:8px 0 4px;max-width:calc(100% - 110px)}
+.listing .by{margin:0;color:var(--muted)}
+.listing dl{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;margin:18px 0 0;padding:14px 0;border-block:1px solid var(--line)}
+.listing dt{color:var(--muted)}
+.listing dd{margin:0;font-weight:600}
+.ledger{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.ledger li{display:flex;gap:10px;align-items:baseline}
+.ledger li:before{content:"✓";color:var(--ok);font-weight:800}
+.stamp{position:absolute;top:22px;right:22px;transform:rotate(8deg);color:var(--ok);border:3px double var(--ok);border-radius:8px;padding:6px 10px;text-align:center;font-family:var(--board);font-weight:700;text-transform:uppercase;letter-spacing:.08em;line-height:1}
+.stamp b{display:block;font-size:1.35rem}
+.stamp small{font-size:.66rem}
+
+/* ---------- SEO hub ---------- */
+.seo .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px;margin-top:36px;border-top:2px solid var(--ink)}
+.seo .cols a{display:flex;justify-content:space-between;gap:10px;padding:15px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-weight:500;font-size:1.02rem}
+.seo .cols a:after{content:"→";color:var(--turf-2);transition:transform .15s}
+.seo .cols a:hover{color:var(--turf)}
+.seo .cols a:hover:after{transform:translateX(4px)}
+.seo .for{margin-top:14px;font-size:.9rem;color:var(--muted)}
+
+/* ---------- organisers ---------- */
+.org{background:var(--turf-deep);color:#fff}
+.org .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:center}
+.org h2{color:#fff}
+.org .sub{color:#BFD8C8}
+.aud{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.aud div{border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:18px;background:rgba(255,255,255,.04)}
+.aud b{display:block;margin-bottom:4px}
+.aud span{font-size:.92rem;color:#BFD8C8}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,72px)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:20px 0;font-weight:600;font-size:1.08rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";font-family:var(--display);font-weight:500;color:var(--turf-2);transition:transform .2s}
+.faq details[open] summary:after{transform:rotate(45deg)}
+.faq details p{margin:0 0 20px;color:var(--ink-2);max-width:44em}
+
+/* ---------- early + footer ---------- */
+.early{background:var(--flag);color:#fff}
+.early .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.early h2{color:#fff;font-size:clamp(2rem,4.4vw,3.6rem)}
+.early p{margin:14px 0 0;color:#2A0E04;max-width:30em}
+.early .done{color:#2A0E04;font-weight:600}.early .done a{color:inherit}
+.early form{display:flex;flex-wrap:wrap;gap:10px}
+.early input,.early select{height:58px;border:0;border-radius:12px;padding:0 16px;font:500 1rem var(--body);background:#fff;color:var(--ink);min-width:0}
+.early input{flex:1 1 240px}
+.early .btn{height:58px;background:var(--ink);color:#fff}
+.early .btn:hover{background:#000}
+.done{margin-top:12px;font-weight:600;min-height:1.5em}
+
+/* ---------- responsive ---------- */
+@media (max-width:1080px){
+  .hero .wrap{grid-template-columns:1fr}
+  .reel{height:auto;grid-template-columns:none;display:block;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .col{flex-direction:row;width:max-content;margin:0 0 12px!important}
+  .col.up{animation:left 70s linear infinite}
+  .col.down{animation:right 80s linear infinite}
+  .col.slow{display:none}
+  .col .tile{width:220px}
+  .tile.ph img{aspect-ratio:1}
+  @keyframes left{to{transform:translateX(-50%)}}
+  @keyframes right{from{transform:translateX(-50%)}to{transform:none}}
+  .sgrid,.lens,.tgrid,.faq,.org .wrap,.early .wrap{grid-template-columns:1fr}
+  .sreal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .preview{position:static}
+  .seo .cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  .console .grid{grid-template-columns:1fr 1fr}
+  .fld:first-child{grid-column:1/-1}
+  .fld+.fld{border-left:0}
+  .fld:nth-child(2){border-top:1px solid var(--line)}
+  .fld:nth-child(3){border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .console .btn{grid-column:1/-1;min-height:56px}
+  .rgrid,.seo .cols,.kinds,.aud{grid-template-columns:1fr}
+  .wait{grid-template-columns:1fr}
+  .sreal{grid-template-columns:1fr}
+  .listing h3{max-width:none}
+  .stamp{position:static;display:inline-block;margin-bottom:12px;transform:rotate(-3deg)}
+}
+@media (prefers-reduced-motion:reduce){
+  .col{animation:none!important}
+  .board tr{animation:none}
+  .lines *{animation:none!important;stroke-dashoffset:0!important}
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+
+.hint{display:block!important}
+.scard{text-decoration:none} .scard:hover{box-shadow:0 10px 30px -14px rgba(0,0,0,.6)}
+</style>
+</head>
+<body data-page="home">
+<div id="fp-top"></div>
+<main id="main">
+<!-- ================= HERO ================= -->
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <p class="kick"><span>Markets</span><span>Festivals</span><span>Shows</span><span>Game day</span></p>
+      <h1 id="h1"><span class="big">Every <em>pitch.</em></span><span class="small">From the village green to the stadium gate.</span></h1>
+      <p class="lede"><b style="color:var(--ink)">Find somewhere to sell.</b> Checked <span data-l="trader">stallholder</span> opportunities at markets, festivals, shows and sporting events, each one straight from the organiser. You apply direct.</p>
+
+      <form class="console" id="search" novalidate>
+        <div class="grid">
+          <div class="fld"><label for="loc" id="locLbl">Postcode or town</label><input id="loc" autocomplete="postal-code" placeholder="e.g. ME15 6"></div>
+          <div class="fld"><label for="what">What you sell</label>
+            <select id="what">
+              <option value="all">Anything</option><option value="food">Street food &amp; catering</option><option value="craft">Crafts &amp; makers</option><option value="market">Produce &amp; market goods</option><option value="general">General retail</option><optgroup label="Or browse events"><option value="christmas">Christmas &amp; holiday markets</option><option value="sport">Sports &amp; stadiums</option></optgroup>
+            </select></div>
+          <div class="fld" id="radiusF"><label for="radius">Within</label><select id="radius"></select></div>
+          <button class="btn btn-flag" type="submit">Find pitches</button>
+        </div>
+        <div class="hint" id="hint" aria-live="polite"></div>
+      </form>
+      <p class="freeline" id="freeline"><b>Free to search.</b> No account needed.</p>
+      <div class="popular" id="popular"></div>
+
+      <div class="proof">
+        <div><b id="stTotal">—</b>checked listings</div>
+        <div><b id="stUS">—</b>US states</div>
+        <div><b id="stUK">—</b>UK areas</div>
+        <div><b>0</b>scraped lists</div>
+      </div>
+    </div>
+
+    <div class="reel" aria-hidden="true">
+      <div class="col up">
+        <figure class="tile ph" style="margin:0"><img src="assets/img/hero-food-festival.jpg" alt=""><figcaption>Food festivals</figcaption></figure>
+        <div class="tile st"><b id="reelTotal">—</b><span>checked listings</span></div>
+        <figure class="tile ph" style="margin:0"><img src="assets/img/card-night-market.jpg" alt=""><figcaption>Night markets</figcaption></figure>
+        <div class="tile lt" data-live-card hidden></div>
+        <figure class="tile ph" style="margin:0"><img src="assets/img/card-craft-market.jpg" alt=""><figcaption>Craft &amp; makers</figcaption></figure>
+      </div>
+      <div class="col down">
+        <div class="tile sp"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><rect x="10" y="10" width="180" height="180" stroke="#fff" fill="none"/><path d="M10 100h180" stroke="#fff"/><circle cx="100" cy="100" r="28" stroke="#fff" fill="none"/><rect x="60" y="10" width="80" height="34" stroke="#fff" fill="none"/><rect x="60" y="156" width="80" height="34" stroke="#fff" fill="none"/></svg><span class="t">Race expo</span><b>Bakersfield Marathon Finish Line Village</b><span>Bakersfield, CA · Apr 3, 2027</span></div>
+        <figure class="tile ph" style="margin:0"><img src="assets/img/card-street-food.jpg" alt=""><figcaption>Street food</figcaption></figure>
+        <figure class="tile ph" style="margin:0"><img src="assets/img/card-shows-festivals.jpg" alt=""><figcaption>Shows &amp; fairs</figcaption></figure>
+        <div class="tile lt" data-live-card hidden></div>
+        <figure class="tile ph" style="margin:0"><img src="assets/img/card-farmers-market.jpg" alt=""><figcaption>Farmers' markets</figcaption></figure>
+      </div>
+      <div class="col up slow">
+        <figure class="tile ph" style="margin:0"><img src="assets/img/card-christmas-market.jpg" alt=""><figcaption>Christmas markets</figcaption></figure>
+        <div class="tile lt" data-live-card hidden></div>
+        <figure class="tile ph" style="margin:0"><img src="assets/img/card-food-truck-pitches.jpg" alt=""><figcaption>Food truck spots</figcaption></figure>
+        <figure class="tile ph" style="margin:0"><img src="assets/img/card-markets.jpg" alt=""><figcaption>Town markets</figcaption></figure>
+        <div class="tile sp"><svg viewBox="0 0 200 200" preserveAspectRatio="none"><ellipse cx="100" cy="100" rx="86" ry="86" stroke="#fff" fill="none"/><ellipse cx="100" cy="100" rx="60" ry="60" stroke="#fff" fill="none"/></svg><span class="t">Rodeo</span><b>Heart O' Texas Fair &amp; Rodeo</b><span>Waco, TX · Oct 8–18</span></div>
+      </div>
+    </div>
+
+    <div class="results" id="results" hidden aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ================= BOARD ================= -->
+<section class="boardsec" id="coming-up" aria-labelledby="t-board">
+  <div class="wrap sec">
+    <div class="bhead">
+      <div>
+        <p class="over">Coming up</p>
+        <h2 id="t-board">Coming up. Get your application in.</h2>
+      </div>
+      <div class="tabs" role="group" aria-label="Show listings for"></div>
+    </div>
+    <div class="board" role="region" aria-label="Upcoming trading opportunities" tabindex="0">
+      <table><thead><tr><th>Date</th><th>Event</th><th>Where</th><th>Type</th></tr></thead><tbody id="boardBody"></tbody></table>
+    </div>
+    <p class="bnote"><a href="finder.html">See everything in the Finder →</a><span id="bDraft"></span></p>
+  </div>
+</section>
+
+<!-- ================= SPORTS ================= -->
+<section class="sports" id="sports" aria-labelledby="t-sports">
+  <svg class="lines" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect x="60" y="60" width="1280" height="780"/><line x1="700" y1="60" x2="700" y2="840"/><circle cx="700" cy="450" r="110"/>
+    <rect x="60" y="250" width="180" height="400"/><rect x="1160" y="250" width="180" height="400"/><rect x="60" y="360" width="64" height="180"/><rect x="1276" y="360" width="64" height="180"/>
+    <path d="M240 380 A 90 90 0 0 1 240 520"/><path d="M1160 380 A 90 90 0 0 0 1160 520"/>
+  </svg>
+  <div class="wrap sec">
+    <div class="sgrid">
+      <div>
+        <p class="over">Sports &amp; stadiums</p>
+        <h2 id="t-sports">Game day is trading day.</h2>
+        <p class="sub">Marathons need a finish-line village. Rodeos need food all week. Race days, tournaments and fan zones all need <span data-l="traders">stallholders and traders</span>. We're building the biggest checked list of sports <span data-l="sport">trade stands</span>, starting in the US.</p>
+        <div class="stats">
+          <div><b>339M</b><span>sports travellers in the US in 2025</span></div>
+          <div><b>$111.2B</b><span>spent directly by those travellers</span></div>
+          <div><b>$60.1B</b><span>of it at youth &amp; amateur events</span></div>
+          <div><b>124.3M</b><span>hotel room nights booked</span></div>
+        </div>
+        <p class="src">Source: <a href="https://www.sportseta.org/blog/2026/04/22/sports-eta-unveils-2026-state-of-the-industry-report-defining-a-2745-billion-sports-tourism-economy">Sports ETA, 2026 State of the Industry report</a> (2025 data).</p>
+      </div>
+      <div>
+        <ul class="kinds">
+          <li><b>Stadium &amp; arena concessions</b><span>Concourse stands and venue food</span></li>
+          <li><b>Tailgates &amp; fan zones</b><span>Pre-game villages and watch parties</span></li>
+          <li><b>Marathons &amp; race expos</b><span>Finish-line villages and packet pick-up</span></li>
+          <li><b>Youth &amp; amateur tournaments</b><span>Weekend-long crowds of families</span></li>
+          <li><b>Rodeos &amp; fairgrounds</b><span>Multi-day events with big footfall</span></li>
+          <li><b>Motorsport &amp; raceways</b><span>Drag strips, speedways and rallies</span></li>
+          <li><b>Horse racing</b><span>Racecourse trade stands and race days</span></li>
+          <li><b>Golf, tennis &amp; rugby</b><span>Tournament villages and festivals</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="sreal" data-live-sport hidden></div>
+    <div class="cta">
+      <a class="btn btn-flag" href="finder.html?type=sport" id="sportGo">Search sports pitches</a>
+      <a class="btn btn-ghost" href="organisers.html" style="color:#fff">Run a stadium or event? List it free</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COUNTRIES / LENS ================= -->
+<section id="countries" aria-labelledby="t-lens">
+  <div class="wrap sec">
+    <p class="over">One platform, eight markets</p>
+    <h2 id="t-lens">Global platform. Local every time.</h2>
+    <p class="sub">A stallholder in Kent and a vendor in Texas don't search the same way. Each country gets its own local search, with the postcodes, distances, currency and words traders there actually use.</p>
+    <div class="lens">
+      <ul class="clist" id="clist"></ul>
+      <div class="preview" aria-live="polite">
+        <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="pv-search"><small id="pvLabel">Postcode</small><span id="pvPh">e.g. ME15 6</span></div>
+        <div class="pv-card">
+          <span class="t">Christmas market</span>
+          <b>Riverside Winter Market</b>
+          <dl><dt>When</dt><dd id="pvDate"></dd><dt>Distance</dt><dd id="pvDist"></dd><dt id="pvFeeL">Pitch fee</dt><dd id="pvFee"></dd></dl>
+        </div>
+        <div class="vocab" id="pvVocab"></div>
+        <p class="pv-foot" id="pvFoot"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRUST ================= -->
+<section class="trust" id="checked" aria-labelledby="t-trust">
+  <div class="wrap sec tgrid">
+    <div>
+      <p class="over">Checked, not scraped</p>
+      <h2 id="t-trust">Your next good weekend shouldn't depend on the right Facebook post.</h2>
+      <ol class="steps">
+        <li><div><b>We go to the source</b><span>Checked against event, organiser and application sources.</span></div></li>
+        <li><div><b>We check the evidence</b><span>Dates, place and the application route, with rules set for each country.</span></div></li>
+        <li><div><b>You apply direct</b><span>Straight to the organiser's own form. No middleman, no commission.</span></div></li>
+        <li><div><b>We keep checking</b><span>Every listing shows when it was last checked, and comes down when it closes.</span></div></li>
+      </ol>
+    </div>
+    <article class="listing" aria-label="A listing on FindPitches" data-live-listing hidden>
+      <div class="stamp" aria-hidden="true"><b>Checked</b><small data-f="checked"></small></div>
+      <span class="t" data-f="type"></span>
+      <h3 data-f="title"></h3>
+      <p class="by" data-f="where"></p>
+      <dl><dt>Trading</dt><dd data-f="when"></dd><dt>Apply</dt><dd data-f="apply"></dd></dl>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px"><a class="btn btn-turf" data-f="link" href="finder.html">View this listing</a></div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= SEO HUB ================= -->
+<section class="seo" aria-labelledby="t-seo">
+  <div class="wrap sec">
+    <p class="over">Popular searches</p>
+    <h2 id="t-seo">What <span data-l="traderPl">traders</span> are searching for in <span data-l="nameThe">the UK</span></h2>
+    <div class="cols" id="seoCols"></div>
+    <p class="for" id="seoFor"></p>
+  </div>
+</section>
+
+<!-- ================= ORGANISERS ================= -->
+<section class="org" id="organisers" aria-labelledby="t-org">
+  <div class="wrap sec">
+    <div>
+      <p class="over" style="color:#FFB59E">For organisers, venues &amp; stadiums</p>
+      <h2 id="t-org">Fill every pitch with the right traders.</h2>
+      <p class="sub">Put your vendor call in front of traders searching for events like yours, near you. Listing is free and applications come straight to you.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:28px"><a class="btn btn-flag" href="organisers.html">List your event</a><a class="btn btn-ghost" href="organisers.html#partners" style="color:#fff">Talk to us about partnerships</a></div>
+    </div>
+    <div class="aud">
+      <div><b>Markets &amp; fairs</b><span>Fill stalls every week, not just the big weekends.</span></div>
+      <div><b>Festivals &amp; shows</b><span>Get the right food and trade mix, earlier.</span></div>
+      <div><b>Stadiums &amp; sports events</b><span>Concessions, fan zones and race villages.</span></div>
+      <div><b>Councils &amp; venues</b><span>Street trading pitches and civic events.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section aria-labelledby="t-faq">
+  <div class="wrap sec faq">
+    <div><p class="over">Questions</p><h2 id="t-faq">Good to know</h2></div>
+    <div>
+      <details open><summary>How do I find events to sell at?</summary><p>Search FindPitches with your postcode or ZIP Code and what you sell. You'll see markets, festivals, shows and sporting events near you that are looking for traders, with dates, location and a direct route to apply.</p></details>
+      <details><summary>Do you guarantee I'll get a pitch?</summary><p>No. Organisers choose their traders. What we promise is that every listing is real, comes from the organiser, and gets you to the right application first time.</p></details>
+      <details><summary>Where do the listings come from?</summary><p>Official organisers, councils, venues, stadiums and event operators. We don't copy aggregator lists, and every listing shows when we last checked it.</p></details>
+      <details><summary>Do you list sporting events and stadium concessions?</summary><p>Yes. Marathons and race expos, rodeos, racecourses, motorsport and tournaments are all in. Sports is a fast-growing part of FindPitches, especially in the US.</p></details>
+      <details><summary>What does it cost?</summary><p id="faqPrice">Searching and saving are free. Pro adds the organiser’s application page for every listing, plus alerts.</p></details>
+      <details><summary>Which countries do you cover?</summary><p id="faqMarkets">FindPitches is built for eight markets, each with its own local finder.</p></details>
+      <details><summary>I run events. How do I get listed?</summary><p>Listing your call for traders is free. Send us the link and we'll check it against your own page before it goes live.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EARLY ACCESS ================= -->
+<section class="early" id="early" aria-labelledby="t-early">
+  <div class="wrap sec">
+    <div>
+      <h2 id="t-early">Be first when your patch opens.</h2>
+      <p>Join early access and we'll email you when FindPitches opens where you trade. One email, no newsletter.</p>
+    </div>
+    <div>
+      <form id="earlyForm" novalidate>
+        <label class="sr" for="email">Email address</label><input id="email" type="email" placeholder="you@yourstall.com" autocomplete="email">
+        <label class="sr" for="ecountry">Country or region</label><select id="ecountry"></select>
+        <button class="btn" type="submit">Get early access</button>
+      </form>
+      <p class="done" id="done" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+</main>
+<div id="fp-foot"></div>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","name":"FindPitches","url":"https://findpitches.com/"},
+ {"@type":"WebSite","name":"FindPitches","url":"https://findpitches.com/"}
+]}
+</script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/routes.js"></script>
+<script src="assets/js/v3-api.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/seo/seo-config.js"></script>
+<script src="assets/js/seo/seo-core.js"></script>
+<script src="assets/js/pages/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "findpitches-v3-web",
+  "private": true,
+  "type": "module",
+  "description": "FindPitches V3 customer website (the Build 4 design as a self-contained V3 package). Static files + the V3 API contract.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/build-seo-module.mjs && node scripts/build.mjs",
+    "check": "node scripts/check-independence.mjs && node --test tests/*.test.mjs",
+    "fixtures": "node dev/build-fixtures.mjs",
+    "dev": "node dev/stub-server.mjs --port 8790",
+    "smoke": "python3 tests/smoke.py http://127.0.0.1:8790"
+  }
+}

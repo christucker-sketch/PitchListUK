@@ -1,10 +1,10 @@
 name: FindPitches V3 shadow verification
 on:
   pull_request:
-    paths: ['platform/findpitches-v3/**', 'operations/findpitches-v3/**', 'tests/findpitches-v3/**', 'docs/findpitches-v3*.md', '.github/workflows/findpitches-v3-ci.yml']
+    paths: ['platform/findpitches-v3/**', 'operations/findpitches-v3/**', 'tests/findpitches-v3/**', 'web/findpitches-v3-web/**', 'docs/findpitches-v3*.md', '.github/workflows/findpitches-v3-ci.yml']
   push:
     branches: ['findpitches-v3/**']
-    paths: ['platform/findpitches-v3/**', 'operations/findpitches-v3/**', 'tests/findpitches-v3/**', '.github/workflows/findpitches-v3-ci.yml']
+    paths: ['platform/findpitches-v3/**', 'operations/findpitches-v3/**', 'tests/findpitches-v3/**', 'web/findpitches-v3-web/**', '.github/workflows/findpitches-v3-ci.yml']
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -20,6 +20,10 @@ jobs:
         run: node --test tests/findpitches-v3/woodchipper-control.test.mjs
       - run: npm run check --prefix operations/findpitches-v3
       - run: npm test --prefix operations/findpitches-v3
+      - name: Verify and build owned Build 4 package
+        run: |
+          npm run check --prefix web/findpitches-v3-web
+          npm run build --prefix web/findpitches-v3-web
       - name: Bundle every isolated Worker
         env:
           WRANGLER_SEND_METRICS: 'false'
@@ -27,3 +31,4 @@ jobs:
           for role in ingest reconcile eligibility enrichment readiness acquisition watch api; do
             operations/findpitches-v3/node_modules/.bin/wrangler deploy --dry-run --config operations/findpitches-v3/cloudflare/$role.jsonc --outdir "$RUNNER_TEMP/v3-bundles/$role"
           done
+          operations/findpitches-v3/node_modules/.bin/wrangler deploy --dry-run --config operations/findpitches-v3/customer-wrangler.jsonc --outdir "$RUNNER_TEMP/v3-bundles/customer-preview"

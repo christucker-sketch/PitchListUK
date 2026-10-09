@@ -1,0 +1,37 @@
+{
+ "ok": true,
+ "plans": [
+  {
+   "id": "free",
+   "name": "Free",
+   "market": "GB",
+   "price": 0,
+   "price_label": "£0",
+   "currency": "GBP",
+   "interval": null,
+   "features": [
+    "Search every checked listing",
+    "Dates, place, organiser and map",
+    "Save pitches to your account"
+   ]
+  },
+  {
+   "id": "pro_monthly",
+   "name": "Pro",
+   "market": "GB",
+   "price": 4.99,
+   "price_label": "£4.99",
+   "currency": "GBP",
+   "interval": "month",
+   "trial_days": 7,
+   "card_required": true,
+   "features": [
+    "Everything in Free",
+    "The organiser’s application page for every listing",
+    "Email alerts for new listings that match you",
+    "Export your shortlist"
+   ],
+   "note": null
+  }
+ ]
+}

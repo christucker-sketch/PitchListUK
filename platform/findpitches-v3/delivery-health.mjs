@@ -16,7 +16,8 @@ export async function structuredDeliveryStatus(db,now=new Date().toISOString()) 
     FROM producer_records WHERE producer_name='independent-structured' AND environment='shadow'`).first();
   const active=last!==null&&Date.parse(now)-Date.parse(last)<=1800000;
   return {cloud_ready:true,expected_interval_seconds:900,contact_observation_started:true,last_authenticated_recheck_poll:last,
+    expected_discovery_interval_seconds:10800,expected_export_lag_seconds:3600,
     recent_poll_intervals_seconds:intervals,host_recently_contacting:active,cadence_verified:active&&intervals.length>=2&&intervals.slice(0,2).every(n=>n>=600&&n<=1200),
-    freshness_warning:!source.source_last_checked||Date.parse(now)-Date.parse(source.source_last_checked)>3600000,
-    ...source,rechecks:await producerRecheckStatus(db,now),interpretation:'Authenticated runner recheck polls prove contact even when checkpointed exports cause no import. They do not prove fresh source acquisition. Diagnostic probe polls and subsequent pagination pages are excluded.'};
+    freshness_warning:!source.source_last_checked||Date.parse(now)-Date.parse(source.source_last_checked)>14400000,
+    ...source,rechecks:await producerRecheckStatus(db,now),interpretation:'15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact.'};
 }

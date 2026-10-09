@@ -1,0 +1,22 @@
+{
+ "ok": true,
+ "market": "GB",
+ "generated_at": "2026-10-09",
+ "market_total": 216,
+ "intents": {
+  "christmas": 48,
+  "craft": 152
+ },
+ "regions": {
+  "gb/south-east": 73,
+  "gb/south-west": 19,
+  "gb/east-of-england": 29,
+  "gb/east-midlands": 5
+ },
+ "combos": {
+  "christmas|gb/south-east": 23,
+  "christmas|gb/south-west": 8,
+  "christmas|gb/east-of-england": 3,
+  "christmas|gb/east-midlands": 2
+ }
+}

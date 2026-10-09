@@ -1,0 +1,28 @@
+{
+  "name": "findpitches-v3-customer-preview",
+  "main": "../../platform/findpitches-v3/customer-worker.mjs",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [],
+  "assets": {
+    "directory": "../../web/findpitches-v3-web/public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "d1_databases": [{
+    "binding": "V3_CUSTOMER_DB",
+    "database_name": "findpitches-v3-customer-preview",
+    "database_id": "00000000-0000-0000-0000-000000000000",
+    "migrations_dir": "customer-migrations"
+  }],
+  "services": [{"binding": "V3_READY_API", "service": "findpitches-v3-api-shadow"}],
+  "triggers": {"crons": ["*/5 * * * *"]},
+  "vars": {
+    "V3_CUSTOMER_MODE": "restricted_shadow_preview",
+    "V3_STRIPE_MODE": "unconfigured",
+    "V3_CHECKOUT_ENABLED": "disabled"
+  }
+}

@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {shadowContext} from './shadow-context.mjs';
 import {commercialRows,commercialEntity,inventoryFromRows} from '../../platform/findpitches-v3/commercial.mjs';
 import {auditLegacyPaid,auditLegacyWorkflowHistory} from './legacy-paid-safety.mjs';
+import {customerContext} from './customer-context.mjs';
 const QUERIES={
   latest_producer_units:`WITH ranked AS (SELECT r.id,r.market,r.producer_record_id,ROW_NUMBER() OVER(PARTITION BY r.market,r.producer_record_id ORDER BY julianday(json_extract(r.normalized_json,'$.last_checked')) DESC,r.received_at DESC,r.id DESC) AS ordinal FROM producer_records r WHERE r.producer_name='independent-structured' AND r.environment='shadow' AND r.validation_status='accepted') SELECT r.market,r.producer_record_id,r.id AS latest_record_id,er.entity_id,d.outcome,d.reason FROM ranked r LEFT JOIN entity_records er ON er.record_id=r.id LEFT JOIN reconciliation_decisions d ON d.record_id=r.id WHERE r.ordinal=1`,
   receipt_funnel:`SELECT market,validation_status,COUNT(*) AS receipts,COUNT(DISTINCT producer_record_id) AS producer_ids,MAX(received_at) AS last_receipt_at,MAX(json_extract(normalized_json,'$.last_checked')) AS latest_source_check FROM producer_records WHERE producer_name='independent-structured' AND environment='shadow' GROUP BY market,validation_status`,
@@ -13,7 +14,7 @@ const QUERIES={
   leakage:`SELECT (SELECT COUNT(*) FROM customer_projections) AS customer_rows,(SELECT COUNT(*) FROM publication_queue) AS publication_rows`,
   counts:`SELECT (SELECT COUNT(*) FROM producer_records) AS immutable_receipts,(SELECT COUNT(*) FROM source_facts) AS immutable_source_facts`
 };
-export async function preparationAudit({credentialsFile,stateDirectory,includeWorkflowHistory=false}) {
+export async function preparationAudit({credentialsFile,stateDirectory,customerDirectory=null,includeWorkflowHistory=false}) {
   const ctx=await shadowContext({credentialsFile,stateDirectory}),now=new Date().toISOString(),raw={};
   for(const [name,query] of Object.entries(QUERIES))raw[name]=(await ctx.db.prepare(query).bind(...(name==='due_jobs'?[now,now]:[])).all()).results;
   const rows=await commercialRows(ctx.db),inventory=inventoryFromRows(rows,{now}),byId=new Map(rows.map(r=>[r.id,commercialEntity(r,now)]));
@@ -29,13 +30,15 @@ export async function preparationAudit({credentialsFile,stateDirectory,includeWo
   }
   const legacy=await auditLegacyPaid(ctx.api),v2Schedules=await ctx.api.accountRequest('/workers/scripts/findpitches-v2-shadow/schedules'),project=await ctx.api.accountRequest('/pages/projects/pitchlistuk');
   const liveStatus=await ctx.call('api','/status');
-  const summary={schema:'findpitches-v3-customer-preparation-v1',as_of:now,timezone:'Europe/London',mode:'shadow',build4:{handoff_received:false,positive_identification:false,copied:false,integration_started:false},
+  const custodyFile=fileURLToPath(new URL('../../web/findpitches-v3-web/source-custody.json',import.meta.url)),custody=fs.existsSync(custodyFile)?JSON.parse(fs.readFileSync(custodyFile,'utf8')):null;
+  const preview=customerDirectory?(await (await customerContext({credentialsFile,customerDirectory})).call('/preview/status',{operator:true})).data:null;
+  const summary={schema:'findpitches-v3-customer-preparation-v2',as_of:now,timezone:'Europe/London',mode:'shadow',build4:{handoff_received:Boolean(custody),positive_identification:custody?.verified_manifest_files===76,copied:Boolean(custody),integration_started:liveStatus.customer_application?.api?.subscriber_api_implemented===true,source_archive_sha256:custody?.handover_zip_sha256??null,source_commit:custody?.source_commit??null},
     customer_application:liveStatus.customer_application??{status:'preparation_status_not_deployed'},inventory,producer_funnel:{latest_accepted_units_by_country:producer,receipts_by_country:raw.receipt_funnel,
-      identity_variant_producer_ids:raw.identity_variants.length,definition:'Units use the latest accepted source-check revision per country and producer ID. Unit counts are not distinct entity counts; origin attribution and producer membership are separate. Producer usable counts/export manifest are not supplied.'},
+      identity_variant_producer_ids:raw.identity_variants.length,definition:'Units use the latest accepted source-check revision per country and producer ID. Unit counts are not distinct entity counts; origin attribution and producer membership are separate. The supplied UK manifest is reconciled separately in the customer preview report.'},
     structured_delivery:liveStatus.structured_delivery,due_jobs:raw.due_jobs,leakage:raw.leakage[0],source_counts:raw.counts[0],paid_queries_today:liveStatus.serper.usage.day_queries_attempted,
     spend_controls:{legacy_flags:legacy.flags,legacy_controllers_stopped:legacy.all_flags_disabled,v2_schedules:v2Schedules.schedules,account_wide_lock:false,external_paid_client_attribution:'Not yet supplied by the independent producer; do not re-enable paid work.',...(includeWorkflowHistory?{legacy_workflows:await auditLegacyWorkflowHistory(ctx.api)}:{})},
     live_v1:{production_deployment:project.canonical_deployment?.id,read_only:true},
-    blocked_waiting_for:['authoritative_build4_handoff','producer_recheck_execution_and_acknowledgement_breakdown','producer_uk_usable_count_and_manifest'],subscriber_preview_ready:false};
+    restricted_preview:preview,blocked_waiting_for:[...(!custody?['authoritative_build4_handoff']:[]),...(!preview?['deployed_customer_preview_check']:[]),...(!preview?.auth.email_configured?['accessible_existing_smtp2go_key_and_verified_sender']:[]),...(!preview?.alerts.email_delivery?['native_alert_email_delivery']:[]),'producer_source_custody','producer_complete_recheck_pagination_and_lifecycle_feed','existing_subscriber_recognition_and_launch_approval'],subscriber_preview_ready:false};
   fs.writeFileSync(path.join(stateDirectory,'customer-preparation-detail-private.json'),JSON.stringify({summary,raw},null,2)+'\n',{mode:0o600});
   return summary;
 }
@@ -43,7 +46,7 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   const args=process.argv.slice(2),get=n=>args[args.indexOf(n)+1];
   try {
     if(!args.includes('--credentials')||!args.includes('--state-dir'))throw Error('credentials_and_state_directory_required');
-    const summary=await preparationAudit({credentialsFile:get('--credentials'),stateDirectory:get('--state-dir'),includeWorkflowHistory:args.includes('--full-workflow-audit')});
+    const summary=await preparationAudit({credentialsFile:get('--credentials'),stateDirectory:get('--state-dir'),customerDirectory:args.includes('--customer-dir')?get('--customer-dir'):null,includeWorkflowHistory:args.includes('--full-workflow-audit')});
     if(args.includes('--out'))fs.writeFileSync(get('--out'),JSON.stringify(summary,null,2)+'\n',{mode:0o600});
     console.log(JSON.stringify({as_of:summary.as_of,commercial_ready:summary.inventory.totals.ready,ready_by_country:summary.inventory.ready_by_country,producer_funnel:summary.producer_funnel.latest_accepted_units_by_country,rechecks:summary.structured_delivery.rechecks??null,spend_controls:summary.spend_controls,subscriber_preview_ready:false},null,2));
   }catch(error){console.error(/^[a-z][a-z0-9_]+$/.test(error.message)?error.message:'customer_preparation_audit_failed');process.exitCode=1;}

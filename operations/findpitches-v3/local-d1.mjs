@@ -2,10 +2,10 @@
 import { DatabaseSync } from 'node:sqlite';
 import fs from 'node:fs';
 
-export function openLocalD1(file=':memory:') {
+export function openLocalD1(file=':memory:',{migrationsDirectory=new URL('./migrations/',import.meta.url)}={}) {
   const sqlite=new DatabaseSync(file);
   sqlite.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;');
-  const migrations=new URL('./migrations/',import.meta.url);
+  const migrations=migrationsDirectory;
   sqlite.exec('CREATE TABLE IF NOT EXISTS local_v3_migrations(name TEXT PRIMARY KEY);');
   for(const path of fs.readdirSync(migrations).filter(name=>name.endsWith('.sql')).sort()) {
     if(sqlite.prepare('SELECT name FROM local_v3_migrations WHERE name=?').get(path))continue;

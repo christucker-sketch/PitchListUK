@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Your account | FindPitches</title>
+
+<meta name="robots" content="noindex,follow">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/fp.css">
+<style>
+.agrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:start}
+.card h2{font-family:var(--display);font-size:1.15rem;letter-spacing:-.02em;margin-bottom:14px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form .full{grid-column:1/-1}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:.92rem}.chk input{width:18px;height:18px;margin-top:2px;accent-color:var(--turf)}
+.sub-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.welcome{background:var(--turf);color:#fff;border-radius:16px;padding:20px;margin-bottom:22px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+.welcome p{margin:4px 0 0;color:#CFE3D6}
+.links{display:grid;gap:8px}
+@media (max-width:900px){.agrid{grid-template-columns:1fr}.form{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="account">
+<div id="fp-top"></div>
+<main id="main">
+<section class="phead"><div class="wrap"><h1>Your account</h1><p>Your details, plan and billing.</p></div></section>
+<div class="wrap section" id="acc"><div class="skel" style="height:300px"></div></div>
+</main>
+<div id="fp-foot"></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/routes.js"></script>
+<script src="assets/js/v3-api.js"></script>
+<script src="assets/js/api.js"></script>
+
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/pages/account.js"></script>
+</body>
+</html>

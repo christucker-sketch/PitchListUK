@@ -63,6 +63,18 @@ export function normalizeExport(raw, { producer='independent-structured', enviro
     confidence:raw.confidence??null,evidence:raw.evidence??[],provenance:raw.provenance??[],
     first_seen:raw.first_seen??null,last_seen:raw.last_seen??null,last_checked:raw.last_checked??null,source_fingerprint:raw.source_fingerprint??raw.content_fingerprint??null,
   };
+  // Additive interpretation of the frozen producer v1 lifecycle vocabulary.
+  // raw_json preserves exactly what arrived; these are internal state aliases.
+  if(producer==='independent-structured') {
+    normalized.producer_channel=raw.channel??null;
+    normalized.producer_export_readiness=raw.export_readiness??null;
+    normalized.producer_lifecycle_event=normalized.lifecycle_state;
+    normalized.application_state=({CLOSED_CURRENT_CYCLE:'CLOSED',HISTORICAL:'CLOSED',UPCOMING_NOT_OPEN:'WATCH'})[normalized.application_state]??normalized.application_state;
+    if(['CLOSED_CURRENT_CYCLE','HISTORICAL'].includes(raw.application_state)&&['NEW','UPDATED','UNCHANGED'].includes(normalized.lifecycle_state))normalized.lifecycle_state='CLOSED';
+    if(raw.channel==='retired'||raw.lifecycle_event==='WITHDRAWN')normalized.lifecycle_state='WITHDRAWN';
+    if(['watch','held'].includes(raw.channel)&&['OPEN_NOW','ROLLING','ENQUIRY_AVAILABLE'].includes(normalized.application_state))normalized.application_state='WATCH';
+    if(normalized.application_state==='WATCH'&&['NEW','UPDATED','UNCHANGED'].includes(normalized.lifecycle_state))normalized.lifecycle_state='STATE_CHANGED';
+  }
   if(['legacy_v2','legacy-global-uk','legacy_mk1'].includes(producer)) {
     const metadataKey=producer==='legacy_v2'?'legacy_v2':producer==='legacy_mk1'?'legacy_mk1':'legacy_global_uk';
     const metadata=raw[metadataKey];

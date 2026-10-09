@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pricing | FindPitches</title>
+<meta name="description" content="FindPitches pricing: free to search every checked listing; Pro adds application routes and alerts.">
+<meta name="robots" content="noindex,follow">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/fp.css">
+<style>
+.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:900px}
+.plan{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:12px;position:relative}
+.plan.pro{border:2px solid var(--turf);box-shadow:0 30px 60px -40px rgba(12,26,19,.6)}
+.plan .badge{position:absolute;top:-12px;left:24px;background:var(--flag-btn);color:#fff;font-size:.76rem;font-weight:700;padding:4px 10px;border-radius:999px}
+.plan h2{font-family:var(--display);font-size:1.3rem;letter-spacing:-.02em}
+.price{font-family:var(--board);font-weight:700;font-size:3rem;line-height:1;margin:0}.price small{font-family:var(--body);font-size:.95rem;font-weight:500;color:var(--muted)}
+.plan ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}.plan li{padding-left:22px;position:relative}.plan li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+.plan .btn{margin-top:auto}
+.mrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:22px}
+.mrow label{font-weight:600}
+.compare{margin-top:40px;max-width:900px;border-collapse:collapse;width:100%;background:#fff;border-radius:14px;overflow:hidden}
+.compare th,.compare td{padding:12px 16px;border-bottom:1px solid var(--line);text-align:left}
+.compare thead th{background:var(--chalk);font-size:.84rem}.compare td:nth-child(n+2),.compare th:nth-child(n+2){text-align:center;width:110px}
+.faq{max-width:900px;margin-top:40px;display:grid;gap:10px}.faq details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}.faq summary{font-weight:600;cursor:pointer}.faq p{margin:10px 0 0;color:var(--ink-2)}
+@media (max-width:720px){.plans{grid-template-columns:1fr}.compare th,.compare td{padding:10px}}
+</style>
+</head>
+<body data-page="pricing">
+<div id="fp-top"></div>
+<main id="main">
+<section class="phead"><div class="wrap"><h1 id="pH">Free to search. Pro when you’re ready to apply.</h1><p id="pP">Every checked listing is free to browse and save. Pro shows you where to apply and tells you when new ones appear.</p></div></section>
+<div class="wrap section">
+  <div class="mrow"><label for="pcSel">Prices for</label><select class="select" id="pcSel" style="max-width:280px"></select></div>
+  <div id="note"></div>
+  <div class="plans" id="plans"><div class="skel" style="height:360px"></div><div class="skel" style="height:360px"></div></div>
+  <div style="overflow-x:auto" id="cmp"><table class="compare"><caption class="sr">What’s in Free and Pro</caption><thead><tr><th scope="col">What you get</th><th scope="col">Free</th><th scope="col">Pro</th></tr></thead><tbody>
+    <tr><th scope="row" style="font-weight:400">Search every checked listing</th><td>✓</td><td>✓</td></tr>
+    <tr><th scope="row" style="font-weight:400">Dates, place, organiser and map</th><td>✓</td><td>✓</td></tr>
+    <tr><th scope="row" style="font-weight:400">Save pitches to your account</th><td>✓</td><td>✓</td></tr>
+    <tr><th scope="row" style="font-weight:400">The organiser’s application page and source link</th><td><span aria-label="Not included">–</span></td><td>✓</td></tr>
+    <tr><th scope="row" style="font-weight:400">Email alerts for new listings that match you</th><td><span aria-label="Not included">–</span></td><td>✓</td></tr>
+    <tr><th scope="row" style="font-weight:400">Export your shortlist</th><td><span aria-label="Not included">–</span></td><td>✓</td></tr>
+  </tbody></table></div>
+  <div class="faq"><details id="fqTrial"><summary>Do I need a card for the free trial?</summary><p>Yes. You won’t be charged during the 7 days, and you can cancel before the trial ends from your account.</p></details>
+    <details><summary>Does Pro guarantee me a pitch?</summary><p>No. Organisers choose their traders. We make sure every listing is real, comes from the organiser, and shows when we last checked it.</p></details>
+    <details><summary>Can I cancel any time?</summary><p id="fqCancel">Yes. Cancel from your account and you keep Pro until the end of the period you’ve paid for.</p></details></div>
+</div>
+</main>
+<div id="fp-foot"></div>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/routes.js"></script>
+<script src="assets/js/v3-api.js"></script>
+<script src="assets/js/api.js"></script>
+
+<script src="assets/js/shell.js"></script>
+<script src="assets/js/pages/pricing.js"></script>
+</body>
+</html>

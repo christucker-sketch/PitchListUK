@@ -1,0 +1,10 @@
+{
+ "ok": true,
+ "location": {
+  "kind": "region",
+  "region_id": "gb/kent",
+  "label": "Kent",
+  "query": "kent",
+  "precision": "county"
+ }
+}

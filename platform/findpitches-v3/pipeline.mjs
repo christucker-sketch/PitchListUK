@@ -39,6 +39,13 @@ export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}
     for(const row of rows)candidates.push(await loadEntity(db,row.entity_id));
     decision=reconcileIdentity(incoming,candidates);
   }
+  if(incoming.producer_name==='independent-structured') {
+    const previous=(await sql(db,`SELECT DISTINCT er.entity_id FROM producer_records p JOIN entity_records er ON er.record_id=p.id
+      WHERE p.producer_name=? AND p.producer_record_id=? AND p.environment=? AND p.id<>?`,incoming.producer_name,incoming.producer_record_id,incoming.environment,recordId).all()).results;
+    if(previous.length&&!previous.some(p=>p.entity_id===decision.entity_id)&&['NEW_ENTITY','EXACT_MATCH'].includes(decision.outcome)) {
+      decision={outcome:'REVIEW_REQUIRED',entity_id:null,candidates:[...previous.map(p=>p.entity_id),...(decision.entity_id?[decision.entity_id]:[])],reason:'stable_producer_identity_changed_requires_review'};
+    }
+  }
   if(['CONFLICT','PROBABLE_MATCH','REVIEW_REQUIRED'].includes(decision.outcome)) {
     await db.batch([
       sql(db,'INSERT OR IGNORE INTO reconciliation_decisions(record_id,outcome,entity_id,candidates_json,reason,created_at) VALUES (?,?,?,?,?,?)',recordId,decision.outcome,null,stableJson(decision.candidates),decision.reason,now),

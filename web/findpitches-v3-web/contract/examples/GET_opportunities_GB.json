@@ -1,0 +1,210 @@
+{
+ "ok": true,
+ "market": "GB",
+ "market_status": "live",
+ "coverage": "available",
+ "location": {
+  "kind": "none",
+  "label": null
+ },
+ "sort": "soonest",
+ "page": 1,
+ "page_size": 2,
+ "total": 216,
+ "next_start": "2026-10-09",
+ "results": [
+  {
+   "id": "fdx1_0089b683573022c6f7cb",
+   "market": "GB",
+   "title": "Houghton Hall Garden Centre Craft and Gift marquee",
+   "source_title": null,
+   "type": "christmas_market",
+   "type_label": "Christmas market",
+   "organiser": {
+    "name": null,
+    "type": null,
+    "verified": false,
+    "type_label": null
+   },
+   "location": {
+    "label": "Houghton Hall Garden Centre, Carlisle, Cumbria",
+    "lat": null,
+    "lng": null,
+    "precision": null,
+    "region_id": "gb/cumbria",
+    "locality": "Carlisle",
+    "region": "Cumbria",
+    "region_code": null,
+    "postal_code": null,
+    "region_name": "Cumbria"
+   },
+   "dates": {
+    "start": "2026-10-09",
+    "end": "2026-10-11",
+    "recurring": false,
+    "application_deadline": null
+   },
+   "application": {
+    "status": "enquire",
+    "deadline": null,
+    "basis": "source"
+   },
+   "fee": {
+    "text": null,
+    "currency": "GBP"
+   },
+   "sells": [
+    "craft"
+   ],
+   "notes": null,
+   "checked": {
+    "last_checked": "2026-10-04",
+    "freshness": null
+   },
+   "canonical_path": "/uk/opportunity/fdx1_0089b683573022c6f7cb/",
+   "access": {
+    "locked": true,
+    "source_domain_hint": ".com",
+    "source_url": null,
+    "application_url": null
+   },
+   "distance_km": null
+  },
+  {
+   "id": "fdx1_71febe2b623f3bd33c66",
+   "market": "GB",
+   "title": "Dorking Friday Market",
+   "source_title": null,
+   "type": "market",
+   "type_label": "Market",
+   "organiser": {
+    "name": "Mole Valley District Council",
+    "type": null,
+    "verified": false,
+    "type_label": null
+   },
+   "location": {
+    "label": "Dorking, England",
+    "lat": null,
+    "lng": null,
+    "precision": null,
+    "region_id": null,
+    "locality": "Dorking",
+    "region": "England",
+    "region_code": null,
+    "postal_code": null,
+    "region_name": "England"
+   },
+   "dates": {
+    "start": "2026-10-09",
+    "end": null,
+    "recurring": true,
+    "application_deadline": null
+   },
+   "application": {
+    "status": "enquire",
+    "deadline": null,
+    "basis": "source"
+   },
+   "fee": {
+    "text": null,
+    "currency": "GBP"
+   },
+   "sells": [
+    "general"
+   ],
+   "notes": null,
+   "checked": {
+    "last_checked": "2026-10-04",
+    "freshness": null
+   },
+   "canonical_path": "/uk/opportunity/fdx1_71febe2b623f3bd33c66/",
+   "access": {
+    "locked": true,
+    "source_domain_hint": ".com",
+    "source_url": null,
+    "application_url": null
+   },
+   "distance_km": null
+  }
+ ],
+ "facets": {
+  "types": {
+   "christmas_market": 48,
+   "market": 145,
+   "festival": 7,
+   "show": 12,
+   "food_festival": 3,
+   "event": 1
+  },
+  "months": {
+   "2026-10": 49,
+   "2026-11": 67,
+   "2026-12": 40,
+   "2027-06": 7,
+   "2027-04": 8,
+   "2027-08": 5,
+   "2027-09": 3,
+   "2027-12": 3,
+   "2027-07": 5,
+   "2027-11": 6,
+   "2027-03": 3,
+   "2027-01": 2,
+   "2027-05": 7,
+   "2027-10": 4,
+   "2027-02": 3
+  },
+  "undated": 4,
+  "regions": {
+   "gb/cumbria": 2,
+   "gb/northern-ireland": 6,
+   "gb/devon": 5,
+   "gb/kent": 45,
+   "gb/rutland": 1,
+   "gb/suffolk": 6,
+   "gb/norfolk": 13,
+   "gb/merseyside": 6,
+   "gb/berkshire": 7,
+   "gb/cambridgeshire": 1,
+   "gb/north-yorkshire": 12,
+   "gb/east-sussex": 4,
+   "gb/essex": 5,
+   "gb/london": 2,
+   "gb/gloucestershire": 7,
+   "gb/buckinghamshire": 5,
+   "gb/wiltshire": 6,
+   "gb/west-sussex": 4,
+   "gb/hertfordshire": 3,
+   "gb/bedfordshire": 1,
+   "gb/staffordshire": 1,
+   "gb/oxfordshire": 1,
+   "gb/belfast": 1,
+   "gb/lancashire": 2,
+   "gb/nottinghamshire": 1,
+   "gb/hampshire": 7,
+   "gb/warwickshire": 2,
+   "gb/somerset": 1,
+   "gb/north-ayrshire": 1,
+   "gb/northamptonshire": 2,
+   "gb/cheshire": 1,
+   "gb/scotland": 1,
+   "gb/derbyshire": 1
+  }
+ },
+ "map_points": [
+  {
+   "id": "fdx1_0089b683573022c6f7cb",
+   "lat": null,
+   "lng": null,
+   "type": "christmas_market",
+   "title": "Houghton Hall Garden Centre Craft and Gift marquee"
+  },
+  {
+   "id": "fdx1_71febe2b623f3bd33c66",
+   "lat": null,
+   "lng": null,
+   "type": "market",
+   "title": "Dorking Friday Market"
+  }
+ ]
+}

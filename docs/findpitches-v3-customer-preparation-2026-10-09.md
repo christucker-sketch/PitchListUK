@@ -1,5 +1,7 @@
 # V3 commercial application preparation — 9 October 2026
 
+Historical 16:38 checkpoint, retained unchanged below. For the subsequently supplied handover and implemented native preview, see [the current report](findpitches-v3-customer-preview-2026-10-09.md).
+
 Management checkpoint, **16:38 Europe/London**. V3 has real shadow inventory and a working independent producer path. It is **not yet ready for controlled subscriber testing**: the authoritative Build 4 handoff is absent, and native subscriber/auth/billing services have not yet been implemented. Frontend copying or integration has not begun.
 
 ## Verified current commercial state
