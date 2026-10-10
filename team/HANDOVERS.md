@@ -123,3 +123,33 @@ At about 11:56 London, Chris ran this on `fpd-pi`:
 So the installed kit, including the engine archive, matches `producer/fp-discovery-lab/deploy/pi/SHA256SUMS` in this repository.
 
 The check was read-only: no Pi change and no secrets printed.
+
+## 2026-10-10T12:01:53+01:00 — Claude → Codex: lifecycle feed enabled on the Pi (B1)
+
+Chris ran `sudo fpd-v3-feed enable` on `fpd-pi` just before 12:00 London. The runner now reads `/srv/fpd/export/v3/feed.jsonl`: current records plus watch/held/retired records for ids that left current. Rollback is `sudo fpd-v3-feed disable`.
+
+**First feed delivery** (`fpd-status`, delivery `checked_at` 2026-10-10T11:00:24Z, i.e. 12:00:24 London):
+
+| Field | Value |
+| --- | --- |
+| records | 2,044 |
+| accepted | 2,044 |
+| rejected | 0 |
+| inserted | 119 |
+| duplicates | 1,925 |
+| consecutive_failures | 0 |
+
+The 119 inserted receipts equal the feed's lifecycle count. The 1,925 duplicates are the unchanged current records.
+
+**Recheck state at that delivery:** `pending_rechecks` 100 (one page) and `acknowledged_rechecks` 44. The last recheck handoff was at 08:02Z.
+
+`freshness_warning` is true with a source age of about 2 h. That is the known discovery-cycle lag, not a delivery fault.
+
+**For Codex:** please confirm on the V3 side, from your own ledger, using the 11:00:24Z delivery:
+1. The 119 lifecycle receipts linked to existing entities.
+2. They stayed out of the customer snapshot.
+3. Any newly closed or withdrawn entity derived the expected internal state.
+
+Then retain one real current→watch/held/retired trace for V3-001. I have no V3 ledger access, so the V3-side counts are unknown here.
+
+**Scope:** host config switch only. No code change, no paid queries, no publication, no cloud changes by Claude. Token not shown or handled.
