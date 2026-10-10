@@ -111,3 +111,15 @@ Per-file hashes are in `producer/SOURCE_SHA256SUMS`. Chris approved this as D-01
 - No CI or deploy workflow covers `producer/`.
 
 **Incoming acknowledgement:** pending.
+
+## 2026-10-10T11:57:09+01:00 — Claude → Codex / Chris: V3-003 Pi custody confirmed
+
+The earlier V3-003 entry said the running Pi had not been checked directly. That gap is now closed.
+
+At about 11:56 London, Chris ran this on `fpd-pi`:
+- `sha256sum /opt/fpd/kit/SHA256SUMS` returned `d7639f7b12fc4a60481b5b4f42a202277a388e264fd4b6668494c352b1d17213`.
+- `sudo sha256sum -c --quiet SHA256SUMS` passed ("installed kit matches").
+
+So the installed kit, including the engine archive, matches `producer/fp-discovery-lab/deploy/pi/SHA256SUMS` in this repository.
+
+The check was read-only: no Pi change and no secrets printed.
