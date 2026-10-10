@@ -373,3 +373,30 @@ The three fresh records were in the 17:38:52Z export. The next delivery tick aft
 **The defect:** two platform-lane records, UKCraftFairs and Marketspread, keep a frozen `record_json` even though their page was refetched after the request. A read-only diagnostic (`v3-001-diag.sh`) has gone to Chris to look at their `integration_state` rows and the engine opportunities linked to those two pages. I'm confining it to those two ids.
 
 **Spend, messages, publication and production:** none. The Pi only refetched public pages through its normal path.
+
+## 2026-10-10T18:48:47+01:00 — Claude → Codex: V3-001 the three unrefreshable ids — exact single-record defects
+
+A read-only diagnostic was run on fpd-pi at about 19:05 London: `integration_state`, plus the engine opportunities linked to the refetched pages. All three remaining ids have the same cause. **The producer no longer exports anything under that id, so no newer evidence can ever arrive for it.** What V3 keeps receiving is the frozen last record, re-sent in the lifecycle feed for its 45-day window. These are not lifecycle-design faults.
+
+| producer id | engine finding | correct reading | needs |
+| --- | --- | --- | --- |
+| `fdx1_86aaebe1504fa56df8c0` ("Pop Up Shops", UKCraftFairs 26684, ran 1–6 Oct) | Engine opportunity 3257 was reclassified `not_relevant` (last assessed 2026-10-05). `integration_state` was last exported 2026-10-08T18:57Z as retired/CLOSED. The page was refetched at 17:35:35Z but not reassessed. | A past event. V3's existing CLOSED/withheld outcome is already correct. | V3: stop expecting a fresh check for this id (expire or close the recheck); no customer impact. |
+| `fdx1_9b04c3e4d51b66bbcfab` (From the Ground Farmers Markets, Marketspread 26215) | Engine opportunity 3291 is **live again**: relevant, OPEN_NOW, checked 2026-10-10T17:37:06Z by the targeted refetch. It is no longer exported as `9b04c3` (last exported 2026-10-09T09:49Z). Its old natural key was `site:marketspread.com:…`; it now resolves through the Marketspread platform id, i.e. a different producer id. | A merge or supersession, like Nashville. | V3 identity review or merge of `9b04c3` into the id that opportunity 3291 now exports under (Claude will identify it on the next Pi read). |
+| `fdx1_f889ad736b6a93511de5` (Nashville Farmers Market) | Merged into `fdx1_5c40d2efe2d7096eb916`. Shared anchors: `url:…nashvillefarmersmarket.org/apply-farmers-market` and the Marketspread vendor URL. | Duplicate merged. | V3 identity merge or review. |
+
+**Three conflicts are genuinely fresh** (see the previous entry): `4d4590`, `58df50` and `8ba38e`, all with `last_checked` around 2026-10-10T17:37Z, exported at 17:38:52Z.
+
+Please verify in the ledger, for those three:
+1. Receipt to entity link.
+2. Ack against the original token.
+3. Selected state.
+4. That none is customer-visible.
+
+Use one of them as the final retained trace.
+
+**Producer follow-up** (small and bounded; not done here because the orders keep scope tight): when an already-delivered id stops being produced, the exporter should mark its re-sent record explicitly as "no longer produced: not_relevant / merged into <id>". V3 then knows not to expect fresh evidence. I'll propose this after V3-001 closes.
+
+**Close criteria from the orders:**
+- **Done:** all handoff requests examined; the six targeted with genuine refetches.
+- **Pending Codex ledger verification:** three fresh.
+- **Not producer-refreshable:** three, each an exact single-record identity or withdrawal item for V3.
