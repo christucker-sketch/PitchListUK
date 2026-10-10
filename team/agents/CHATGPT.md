@@ -1,42 +1,71 @@
 # ChatGPT status
 
-**State:** ACTIVE / V3-010 CLAIMED. **Author:** ChatGPT. **Session/update timestamp:** 2026-10-10T12:05:00+01:00. **Claimed tasks:** V3-010.
+**State:** ACTIVE / V3-010 CLAIMED. **Author:** ChatGPT. **Session/update timestamp:** 2026-10-10T19:20:00+01:00. **Claimed tasks:** V3-010.
 
 I have direct GitHub access to `christucker-sketch/PitchListUK` and treat the shared V3 hub on branch `findpitches-v3/greenfield` as the cross-agent source of truth.
 
 ## Current role
 
-Commercial priorities, launch acceptance, coordination/reconciliation across Codex and Claude, and review of whether technical work is genuinely blocking revenue. I own V3-010: the evidence-based commercial launch acceptance and concrete domain/billing/publication/cutover/rollback plan. This is review/coordination only; it does not authorize production, billing, publication, spend or destructive legacy changes.
+Commercial launch acceptance, cutover/rollback planning and reconciliation of Claude/Codex evidence. I own V3-010. This remains review/planning only; it does not authorize production, live billing, migration, publication, spend, customer messages or destructive legacy changes.
 
-## Latest shared picture acknowledged
+## Work completed this checkpoint
 
-- V3 has a working private customer preview using the standalone approved Build 4 frontend and V3-native customer API; the old mixed V2 frontend is not a runtime dependency.
-- V3 remains private/shadow-only. Live billing, public publication, domain cutover and paid acquisition remain disabled.
-- Producer source custody is now complete under `producer/` and the running Pi kit hash has been verified against the repository source (V3-003 DONE).
-- Chris enabled the producer lifecycle feed just before 12:00 London. The first feed delivery reported 2,044 accepted, 0 rejected and 119 lifecycle receipts inserted. V3-side linkage/customer-snapshot behaviour still needs Codex verification for V3-001.
-- Claude owns V3-001 (full recheck paging + retained real lifecycle trace) and V3-002 (UKCraftFairs access/evidence path).
-- The highest-value unclaimed customer/commercial tasks are V3-004 (existing-subscriber recognition) and V3-005 (hosted Stripe TEST browser checkout/cancellation/expiry journey).
-- UK commercial breadth remains concentrated and should improve, but I do not currently treat raw inventory growth as the primary launch blocker.
+Published [`docs/findpitches-v3-launch-readiness-2026-10-10.md`](../../docs/findpitches-v3-launch-readiness-2026-10-10.md), which now contains:
 
-## Launch path I am using for V3-010
+- a launch acceptance matrix;
+- separate approval gates for controlled V3 launch, real-subscriber migration/LIVE billing and paid acquisition;
+- a concrete staged cutover sequence;
+- a concrete rollback sequence;
+- current launch recommendation and exact remaining evidence.
 
-1. **Prove freshness/lifecycle:** Claude completes all-page recheck handling; Codex proves at least one real current → watch/held/retired → V3 state → customer-preview removal/change trace.
-2. **Prove existing-customer safety:** implement/test V3 recognition of existing subscribers without duplicate charges or runtime dependency on V1.
-3. **Prove the payment journey:** complete the hosted Stripe TEST browser flow for signup/checkout/entitlement/cancellation/paid-through/expiry.
-4. **Prove operational safety:** performance/security review, paid-client attribution, monitoring and whole-product independence/rollback checks.
-5. **Formal launch review:** produce GO / NO-GO / remaining-blockers recommendation for domain, billing, publication and cutover. Execution remains an explicit Chris approval gate.
+The review uses the completed V3-004 subscriber-recognition acceptance package and V3-005 genuine hosted Stripe TEST journey, plus the latest V3-001 producer outcomes from the shared task board.
 
-## Priority recommendation to the team
+## Current V3-010 assessment
 
-- Claude continues V3-001 and V3-002.
-- Codex should claim V3-004 and V3-005 as the next launch-critical customer tasks.
-- V3-006 alerts, broad speculative acquisition and non-critical frontend redesign should not displace those tasks.
-- V3-007 UK source expansion should continue after/alongside launch-critical work, without weakening source-proof rules.
+### Controlled V3 launch
 
-## Working rule
+**CONDITIONAL-GO candidate, not executable yet.** V3-004 and V3-005 have removed the major customer/payment engineering blockers. Remaining Gate-1 conditions are:
 
-Before making FindPitches V3 recommendations or accepting/rejecting launch work, I will read the latest hub status first. I will update this file after meaningful review work. Recommendations are not approvals; I will not authorize production, live billing, spend, publication or destructive legacy changes.
+1. V3-001 final Codex cloud verification/closure for all six targeted lifecycle/identity outcomes;
+2. bounded V3-008 real-origin operational/browser checks;
+3. exact production domain/routing change set and rollback runbook;
+4. launch monitoring thresholds/baselines;
+5. explicit Chris approval for the exact controlled-launch scope.
 
-## Next checkpoint
+### Real-subscriber migration / LIVE billing
 
-Re-review V3-010 when V3-001 has a V3-side lifecycle trace and Codex has evidence for V3-004/V3-005. At that point I will publish a concise launch acceptance matrix and GO / NO-GO / remaining-blockers recommendation.
+**NO-GO today.** The V3 recognition implementation is not the blocker. The real UK cohort still lacks canonical LIVE provider coverage: the read-only registry measured 57 rows, and all 57 still need authoritative mode/product/price/period-end verification; eight lack exact vendor-profile binding. This requires authorized read-only canonical provider evidence, an approved legacy product/price policy, reviewed exceptions, cohort reconciliation and explicit migration approval.
+
+### Paid acquisition
+
+**NO-GO today.** Keep held until V3-009 external/Pi paid-client attribution/account protection is complete, launch monitoring is operating and Chris separately authorizes spend.
+
+## V3-001 interpretation
+
+Do not treat the latest six as six failed retries. The shared board now records:
+
+- three genuinely refreshed items with newer producer/source evidence;
+- one original id correctly reclassified as past/not relevant;
+- one continuing OPEN_NOW opportunity under a replacement producer/platform id;
+- one original id merged into a surviving canonical identity.
+
+For launch acceptance, the latter three are identity/lifecycle resolution cases. What matters now is Codex proving their V3-side withdrawal/replacement/merge semantics without duplicate customer-visible identity or leakage.
+
+## Evidence already accepted for V3-010
+
+- V3-005: genuine hosted browser flow passed 22/22 from native sign-in through hosted Checkout, trial, active Pro, hosted portal cancellation, paid-through access and ended Free/redaction; no API-created substitute subscription.
+- V3-004: exact canonical association model, no email-only matching, replay/concurrency protection, duplicate Checkout/trial guards and rollback/review design are implemented/tested in synthetic scope.
+- V1/V2 protection: preservation audits show live UK Pitchlist/V2 unchanged during this work; no paid queries, publication leakage or destructive source/identity changes from the customer work.
+- UKCraftFairs Option B and V3-006 alerts are not treated as controlled-launch blockers while they remain disabled.
+
+## Next action
+
+1. Fold in Codex's final V3-001 six-item cloud checkpoint when published.
+2. Review V3-008 real-origin report when Codex claims/completes it.
+3. Fold in the read-only real-subscriber migration-readiness inventory/exception counts.
+4. Tighten the draft cutover plan to the exact production route/domain change and monitoring thresholds.
+5. Then publish the final concise V3-010 **GO / CONDITIONAL-GO / NO-GO** recommendation with operator approvals required.
+
+## Standing rule
+
+Recommendations are not approvals. I will not authorize or execute production routing, live billing, real subscriber migration, paid acquisition, customer publication/messages, destructive V1/V2 actions or protected/live merges without Chris explicitly approving that exact gate.
