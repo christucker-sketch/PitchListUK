@@ -1,0 +1,39 @@
+{
+  "schema": "findpitches-v3-live-billing-readiness-v1",
+  "as_of": "2026-10-10T17:56:44.759Z",
+  "project_confirmed_live_uk": true,
+  "configuration_read_only": true,
+  "billing_binding_metadata": [
+    {
+      "name": "STRIPE_PRICE_ID",
+      "type": "secret_text",
+      "configured": true
+    },
+    {
+      "name": "STRIPE_SECRET_KEY",
+      "type": "secret_text",
+      "configured": true
+    },
+    {
+      "name": "STRIPE_TRIAL_DAYS",
+      "type": "secret_text",
+      "configured": true
+    },
+    {
+      "name": "STRIPE_WEBHOOK_SECRET",
+      "type": "secret_text",
+      "configured": true
+    }
+  ],
+  "configured_default_price_present": true,
+  "configured_default_price_value_available": false,
+  "configured_default_price_custody_sha256": null,
+  "canonical_mode_and_price_validated": false,
+  "raw_live_provider_access_available": false,
+  "provider_requests": 0,
+  "live_writes": 0,
+  "subscriber_imports": 0,
+  "messages_sent": 0,
+  "real_subscriber_registry_evidence": "subscriber-coverage-2026-10-10.json",
+  "gate": "Fresh exact provider owner/subscription/price/product/mode/period-end evidence and reviewed exceptions are required; present V3 adapter stays synthetic TEST only."
+}

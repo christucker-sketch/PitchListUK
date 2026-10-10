@@ -1,0 +1,637 @@
+{
+  "schema": "findpitches-v3-lifecycle-final-cloud-v1",
+  "as_of": "2026-10-10T18:02:45.129Z",
+  "records": [
+    {
+      "id": "rec_cd9a734dcb7ac4fdc3efeba2429c6a52f5814f8c",
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "received_at": "2026-10-10T10:56:27.720Z",
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "outcome": "EXACT_MATCH",
+      "reason": "specific_route_and_corroboration",
+      "source_last_checked": "2026-10-04T20:06:19Z",
+      "channel": "retired",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "WITHDRAWN",
+      "source_url": "https://www.ukcraftfairs.com/craft-events/26684/x",
+      "application_url": "https://www.ukcraftfairs.com/craft-events/26684/x",
+      "event_start": "2026-10-01",
+      "event_end": "2026-10-06"
+    },
+    {
+      "id": "rec_f4edfe8685feab07f8cb5f3f61cca1251fe93c27",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "received_at": "2026-10-10T10:56:27.720Z",
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "outcome": "EXACT_MATCH",
+      "reason": "specific_route_and_corroboration",
+      "source_last_checked": "2026-10-04T19:36:07Z",
+      "channel": "retired",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "WITHDRAWN",
+      "source_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/",
+      "application_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/",
+      "event_start": "2026-10-06",
+      "event_end": null
+    },
+    {
+      "id": "rec_38e605e6b997c33fbaf041132fe6b94127519687",
+      "producer_record_id": "fdx1_f889ad736b6a93511de5",
+      "received_at": "2026-10-10T10:56:38.204Z",
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "outcome": "EXACT_MATCH",
+      "reason": "specific_route_and_corroboration",
+      "source_last_checked": "2026-10-04T16:19:06Z",
+      "channel": "retired",
+      "incoming_application": "ROLLING",
+      "incoming_lifecycle": "WITHDRAWN",
+      "source_url": "https://www.nashvillefarmersmarket.org/apply-farmers-market",
+      "application_url": "https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/vendor/",
+      "event_start": "2026-10-10",
+      "event_end": null
+    },
+    {
+      "id": "rec_a5d4e28b92c0748a2911544af4c9186fd9dc864e",
+      "producer_record_id": "fdx1_5c40d2efe2d7096eb916",
+      "received_at": "2026-10-10T17:53:38.865Z",
+      "entity_id": "ent_93d86b9d0147d8aa91ea8eea541d86b8",
+      "outcome": "EXACT_MATCH",
+      "reason": "specific_route_and_corroboration",
+      "source_last_checked": "2026-10-04T16:20:59Z",
+      "channel": "current",
+      "incoming_application": "OPEN_NOW",
+      "incoming_lifecycle": "UNCHANGED",
+      "source_url": "https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/login/",
+      "application_url": "https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/login/",
+      "event_start": "2027-02-28",
+      "event_end": null
+    },
+    {
+      "id": "rec_aad4d1f8e3e9b90d76126cefbacd57907d140ae4",
+      "producer_record_id": "fdx1_4d4590cdbd191713c317",
+      "received_at": "2026-10-10T17:57:51.162Z",
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "outcome": "EXACT_MATCH",
+      "reason": "specific_route_and_corroboration",
+      "source_last_checked": "2026-10-10T17:37:14Z",
+      "channel": "retired",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "WITHDRAWN",
+      "source_url": "https://fiestasanantonio.org/fiesta-san-antonio-vendor/",
+      "application_url": null,
+      "event_start": "2026-10-08",
+      "event_end": null
+    },
+    {
+      "id": "rec_7dfcc73436c03484c34a72b5c636a49edf3b53fa",
+      "producer_record_id": "fdx1_58df50276bd7933d3ade",
+      "received_at": "2026-10-10T17:57:51.162Z",
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "outcome": "EXACT_MATCH",
+      "reason": "specific_route_and_corroboration",
+      "source_last_checked": "2026-10-10T17:37:21Z",
+      "channel": "watch",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "CLOSED",
+      "source_url": "https://626nightmarket.com/join-us",
+      "application_url": "https://626nightmarket.com/contact-us",
+      "event_start": "2026-10-09",
+      "event_end": null
+    },
+    {
+      "id": "rec_8c2b3a0a1c433c2a1cb44fb6b9ccaa620f1efb14",
+      "producer_record_id": "fdx1_8ba38ecf08fb5cc324d9",
+      "received_at": "2026-10-10T17:57:56.072Z",
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "outcome": "EXACT_MATCH",
+      "reason": "specific_route_and_corroboration",
+      "source_last_checked": "2026-10-10T17:37:26Z",
+      "channel": "watch",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "CLOSED",
+      "source_url": "https://qvm.com.au/become-a-trader/",
+      "application_url": "https://www.tfaforms.com/5229678",
+      "event_start": null,
+      "event_end": null
+    }
+  ],
+  "selected": [
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "field_name": "application_state",
+      "fact_id": "rec_58ed37d67ab77b14393dd9731c7392000091a00a:application_state",
+      "value_json": "\"ENQUIRY_AVAILABLE\"",
+      "authority": 100,
+      "source_url": "https://www.ukcraftfairs.com/craft-events/26684/x",
+      "record_id": "rec_58ed37d67ab77b14393dd9731c7392000091a00a",
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "source_last_checked": "2026-10-04T20:06:19Z"
+    },
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "field_name": "event_end",
+      "fact_id": "rec_58ed37d67ab77b14393dd9731c7392000091a00a:event_end",
+      "value_json": "\"2026-10-06\"",
+      "authority": 100,
+      "source_url": "https://www.ukcraftfairs.com/craft-events/26684/x",
+      "record_id": "rec_58ed37d67ab77b14393dd9731c7392000091a00a",
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "source_last_checked": "2026-10-04T20:06:19Z"
+    },
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "field_name": "event_start",
+      "fact_id": "rec_58ed37d67ab77b14393dd9731c7392000091a00a:event_start",
+      "value_json": "\"2026-10-01\"",
+      "authority": 100,
+      "source_url": "https://www.ukcraftfairs.com/craft-events/26684/x",
+      "record_id": "rec_58ed37d67ab77b14393dd9731c7392000091a00a",
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "source_last_checked": "2026-10-04T20:06:19Z"
+    },
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "field_name": "lifecycle_state",
+      "fact_id": "rec_58ed37d67ab77b14393dd9731c7392000091a00a:lifecycle_state",
+      "value_json": "\"UNCHANGED\"",
+      "authority": 100,
+      "source_url": "https://www.ukcraftfairs.com/craft-events/26684/x",
+      "record_id": "rec_58ed37d67ab77b14393dd9731c7392000091a00a",
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "source_last_checked": "2026-10-04T20:06:19Z"
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "field_name": "application_state",
+      "fact_id": "rec_aad4d1f8e3e9b90d76126cefbacd57907d140ae4:application_state",
+      "value_json": "\"CLOSED\"",
+      "authority": 100,
+      "source_url": "https://fiestasanantonio.org/fiesta-san-antonio-vendor/",
+      "record_id": "rec_aad4d1f8e3e9b90d76126cefbacd57907d140ae4",
+      "producer_record_id": "fdx1_4d4590cdbd191713c317",
+      "source_last_checked": "2026-10-10T17:37:14Z"
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "field_name": "event_start",
+      "fact_id": "rec_c1a269ff8979ae2818a2ade0be925722bb71be9f:event_start",
+      "value_json": "\"2026-10-08\"",
+      "authority": 100,
+      "source_url": "https://fiestasanantonio.org/fiesta-san-antonio-vendor/",
+      "record_id": "rec_c1a269ff8979ae2818a2ade0be925722bb71be9f",
+      "producer_record_id": "fdx1_4d4590cdbd191713c317",
+      "source_last_checked": "2026-10-04T16:10:45Z"
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "field_name": "lifecycle_state",
+      "fact_id": "rec_aad4d1f8e3e9b90d76126cefbacd57907d140ae4:lifecycle_state",
+      "value_json": "\"WITHDRAWN\"",
+      "authority": 100,
+      "source_url": "https://fiestasanantonio.org/fiesta-san-antonio-vendor/",
+      "record_id": "rec_aad4d1f8e3e9b90d76126cefbacd57907d140ae4",
+      "producer_record_id": "fdx1_4d4590cdbd191713c317",
+      "source_last_checked": "2026-10-10T17:37:14Z"
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "field_name": "application_state",
+      "fact_id": "rec_7dfcc73436c03484c34a72b5c636a49edf3b53fa:application_state",
+      "value_json": "\"CLOSED\"",
+      "authority": 100,
+      "source_url": "https://626nightmarket.com/contact-us",
+      "record_id": "rec_7dfcc73436c03484c34a72b5c636a49edf3b53fa",
+      "producer_record_id": "fdx1_58df50276bd7933d3ade",
+      "source_last_checked": "2026-10-10T17:37:21Z"
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "field_name": "event_start",
+      "fact_id": "rec_719f7b4a852d1441528327940aff3ae86999ea2f:event_start",
+      "value_json": "\"2026-10-09\"",
+      "authority": 100,
+      "source_url": "https://626nightmarket.com/contact-us",
+      "record_id": "rec_719f7b4a852d1441528327940aff3ae86999ea2f",
+      "producer_record_id": "fdx1_58df50276bd7933d3ade",
+      "source_last_checked": "2026-10-04T16:51:54Z"
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "field_name": "lifecycle_state",
+      "fact_id": "rec_7dfcc73436c03484c34a72b5c636a49edf3b53fa:lifecycle_state",
+      "value_json": "\"CLOSED\"",
+      "authority": 100,
+      "source_url": "https://626nightmarket.com/contact-us",
+      "record_id": "rec_7dfcc73436c03484c34a72b5c636a49edf3b53fa",
+      "producer_record_id": "fdx1_58df50276bd7933d3ade",
+      "source_last_checked": "2026-10-10T17:37:21Z"
+    },
+    {
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "field_name": "application_state",
+      "fact_id": "rec_8c2b3a0a1c433c2a1cb44fb6b9ccaa620f1efb14:application_state",
+      "value_json": "\"CLOSED\"",
+      "authority": 100,
+      "source_url": "https://www.tfaforms.com/5229678",
+      "record_id": "rec_8c2b3a0a1c433c2a1cb44fb6b9ccaa620f1efb14",
+      "producer_record_id": "fdx1_8ba38ecf08fb5cc324d9",
+      "source_last_checked": "2026-10-10T17:37:26Z"
+    },
+    {
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "field_name": "lifecycle_state",
+      "fact_id": "rec_8c2b3a0a1c433c2a1cb44fb6b9ccaa620f1efb14:lifecycle_state",
+      "value_json": "\"CLOSED\"",
+      "authority": 100,
+      "source_url": "https://www.tfaforms.com/5229678",
+      "record_id": "rec_8c2b3a0a1c433c2a1cb44fb6b9ccaa620f1efb14",
+      "producer_record_id": "fdx1_8ba38ecf08fb5cc324d9",
+      "source_last_checked": "2026-10-10T17:37:26Z"
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "field_name": "application_state",
+      "fact_id": "rec_dc52e0f4b1989f7391bdbaa6defa974b0890d394:application_state",
+      "value_json": "\"ROLLING\"",
+      "authority": 100,
+      "source_url": "https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/vendor/",
+      "record_id": "rec_dc52e0f4b1989f7391bdbaa6defa974b0890d394",
+      "producer_record_id": "fdx1_f889ad736b6a93511de5",
+      "source_last_checked": "2026-10-04T16:19:06Z"
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "field_name": "event_start",
+      "fact_id": "rec_dc52e0f4b1989f7391bdbaa6defa974b0890d394:event_start",
+      "value_json": "\"2026-10-10\"",
+      "authority": 100,
+      "source_url": "https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/vendor/",
+      "record_id": "rec_dc52e0f4b1989f7391bdbaa6defa974b0890d394",
+      "producer_record_id": "fdx1_f889ad736b6a93511de5",
+      "source_last_checked": "2026-10-04T16:19:06Z"
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "field_name": "lifecycle_state",
+      "fact_id": "rec_dc52e0f4b1989f7391bdbaa6defa974b0890d394:lifecycle_state",
+      "value_json": "\"UNCHANGED\"",
+      "authority": 100,
+      "source_url": "https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/vendor/",
+      "record_id": "rec_dc52e0f4b1989f7391bdbaa6defa974b0890d394",
+      "producer_record_id": "fdx1_f889ad736b6a93511de5",
+      "source_last_checked": "2026-10-04T16:19:06Z"
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "field_name": "application_state",
+      "fact_id": "rec_8beddf076d327ce4d875dab334ae7e503f87b8ff:application_state",
+      "value_json": "\"OPEN_NOW\"",
+      "authority": 100,
+      "source_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/",
+      "record_id": "rec_8beddf076d327ce4d875dab334ae7e503f87b8ff",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "source_last_checked": "2026-10-04T19:36:07Z"
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "field_name": "event_start",
+      "fact_id": "rec_8beddf076d327ce4d875dab334ae7e503f87b8ff:event_start",
+      "value_json": "\"2026-10-06\"",
+      "authority": 100,
+      "source_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/",
+      "record_id": "rec_8beddf076d327ce4d875dab334ae7e503f87b8ff",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "source_last_checked": "2026-10-04T19:36:07Z"
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "field_name": "lifecycle_state",
+      "fact_id": "rec_8beddf076d327ce4d875dab334ae7e503f87b8ff:lifecycle_state",
+      "value_json": "\"UNCHANGED\"",
+      "authority": 100,
+      "source_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/",
+      "record_id": "rec_8beddf076d327ce4d875dab334ae7e503f87b8ff",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "source_last_checked": "2026-10-04T19:36:07Z"
+    }
+  ],
+  "requests": [
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "requested_at": "2026-10-09T13:33:05.718Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "requested_at": "2026-10-09T13:33:34.663Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "requested_at": "2026-10-09T13:32:36.818Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "requested_at": "2026-10-09T13:33:18.601Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "requested_at": "2026-10-09T18:47:53.640Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "requested_at": "2026-10-09T19:03:18.609Z",
+      "reason": "watch_recheck_due"
+    }
+  ],
+  "acks": [],
+  "entities": [
+    {
+      "id": "ent_610f9171a285d58e114a847995de559e",
+      "market": "GB",
+      "edition": "2026",
+      "revision": 11,
+      "status": "blocked",
+      "reasons_json": "[\"unresolved_evidence_conflict\",\"source_http_520\"]",
+      "conflicts": 2
+    },
+    {
+      "id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "market": "US",
+      "edition": "2026",
+      "revision": 10,
+      "status": "blocked",
+      "reasons_json": "[\"unresolved_evidence_conflict\",\"single_event_source_data_missing\",\"organiser_missing\"]",
+      "conflicts": 2
+    },
+    {
+      "id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "market": "US",
+      "edition": "2026",
+      "revision": 12,
+      "status": "blocked",
+      "reasons_json": "[\"unresolved_evidence_conflict\",\"single_event_source_data_missing\",\"organiser_missing\"]",
+      "conflicts": 2
+    },
+    {
+      "id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "market": "AU",
+      "edition": null,
+      "revision": 11,
+      "status": "blocked",
+      "reasons_json": "[\"unresolved_evidence_conflict\",\"single_event_source_data_missing\",\"organiser_missing\"]",
+      "conflicts": 2
+    },
+    {
+      "id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "market": "US",
+      "edition": "2026",
+      "revision": 20,
+      "status": null,
+      "reasons_json": null,
+      "conflicts": 1
+    },
+    {
+      "id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "market": "US",
+      "edition": "2026",
+      "revision": 19,
+      "status": null,
+      "reasons_json": null,
+      "conflicts": 2
+    },
+    {
+      "id": "ent_93d86b9d0147d8aa91ea8eea541d86b8",
+      "market": "US",
+      "edition": "2027",
+      "revision": 9,
+      "status": "blocked",
+      "reasons_json": "[\"single_event_source_data_missing\",\"organiser_missing\"]",
+      "conflicts": 0
+    }
+  ],
+  "replacement_candidates": [
+    {
+      "id": "rec_f4edfe8685feab07f8cb5f3f61cca1251fe93c27",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "received_at": "2026-10-10T10:56:27.720Z",
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "edition": "2026",
+      "outcome": "EXACT_MATCH",
+      "source_last_checked": "2026-10-04T19:36:07Z",
+      "application_state": "CLOSED",
+      "source_platform": "marketspread",
+      "source_identifier": null,
+      "event_start": "2026-10-06",
+      "canonical_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/"
+    },
+    {
+      "id": "rec_8beddf076d327ce4d875dab334ae7e503f87b8ff",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "received_at": "2026-10-08T18:36:26.858Z",
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "edition": "2026",
+      "outcome": "EXACT_MATCH",
+      "source_last_checked": "2026-10-04T19:36:07Z",
+      "application_state": "OPEN_NOW",
+      "source_platform": "marketspread",
+      "source_identifier": null,
+      "event_start": "2026-10-06",
+      "canonical_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/"
+    },
+    {
+      "id": "rec_d9d077745eba23111343d0d527b865587dadee4e",
+      "producer_record_id": "legacy_structured_fdx1_9b04c3e4d51b66bbcfab",
+      "received_at": "2026-10-06T16:59:21.985Z",
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "edition": "2026",
+      "outcome": "NEW_ENTITY",
+      "source_last_checked": "2026-10-04T19:36:07Z",
+      "application_state": "OPEN_NOW",
+      "source_platform": "marketspread",
+      "source_identifier": null,
+      "event_start": "2026-10-06",
+      "canonical_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/"
+    },
+    {
+      "id": "rec_a1c3f28859d7bcc6a0aafdd3432b705ce1cd9218",
+      "producer_record_id": "legacy_structured_fdx1_9b04c3e4d51b66bbcfab",
+      "received_at": "2026-10-06T16:31:23.429Z",
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "edition": "2026",
+      "outcome": "EXACT_MATCH",
+      "source_last_checked": "2026-10-04T19:36:07Z",
+      "application_state": "OPEN_NOW",
+      "source_platform": "marketspread",
+      "source_identifier": null,
+      "event_start": "2026-10-06",
+      "canonical_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/"
+    },
+    {
+      "id": "rec_a1a4c43857a325c0f4e93922fdca3d175171f80c",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "received_at": "2026-10-06T09:41:03.633Z",
+      "entity_id": "ent_7b3cfdf71980a473343f8554b9295400",
+      "edition": "2026",
+      "outcome": "NEW_ENTITY",
+      "source_last_checked": "2026-10-04T19:36:07Z",
+      "application_state": "OPEN_NOW",
+      "source_platform": "marketspread",
+      "source_identifier": null,
+      "event_start": "2026-10-06",
+      "canonical_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/"
+    }
+  ],
+  "delivery": [
+    {
+      "latest": "2026-10-10T17:58:00.862Z",
+      "n": 342
+    }
+  ],
+  "selection_audit": [
+    {
+      "id": "sel_92df9aafbed4da3289140e3dc2850b5c",
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "field_name": "application_state",
+      "proposed_fact_id": "rec_aad4d1f8e3e9b90d76126cefbacd57907d140ae4:application_state",
+      "previous_fact_id": "rec_c1a269ff8979ae2818a2ade0be925722bb71be9f:application_state",
+      "decision": "accepted",
+      "reason": "newer_lifecycle_evidence",
+      "created_at": "2026-10-10T17:59:22.037Z"
+    },
+    {
+      "id": "sel_7ff347e6c76cccf2534016cf98c6325e",
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "field_name": "lifecycle_state",
+      "proposed_fact_id": "rec_aad4d1f8e3e9b90d76126cefbacd57907d140ae4:lifecycle_state",
+      "previous_fact_id": "rec_c1a269ff8979ae2818a2ade0be925722bb71be9f:lifecycle_state",
+      "decision": "accepted",
+      "reason": "newer_lifecycle_evidence",
+      "created_at": "2026-10-10T17:59:22.037Z"
+    },
+    {
+      "id": "sel_4a71e6ad916444cedc9f5b05bbea2432",
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "field_name": "application_state",
+      "proposed_fact_id": "rec_7dfcc73436c03484c34a72b5c636a49edf3b53fa:application_state",
+      "previous_fact_id": "rec_719f7b4a852d1441528327940aff3ae86999ea2f:application_state",
+      "decision": "accepted",
+      "reason": "newer_lifecycle_evidence",
+      "created_at": "2026-10-10T17:59:32.108Z"
+    },
+    {
+      "id": "sel_8e2e770d0bc0ac9e442843304150f0ad",
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "field_name": "lifecycle_state",
+      "proposed_fact_id": "rec_7dfcc73436c03484c34a72b5c636a49edf3b53fa:lifecycle_state",
+      "previous_fact_id": "rec_719f7b4a852d1441528327940aff3ae86999ea2f:lifecycle_state",
+      "decision": "accepted",
+      "reason": "newer_lifecycle_evidence",
+      "created_at": "2026-10-10T17:59:32.108Z"
+    },
+    {
+      "id": "sel_2dcd4a3ef13bbe262eb197dee4bd3e06",
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "field_name": "application_state",
+      "proposed_fact_id": "rec_8c2b3a0a1c433c2a1cb44fb6b9ccaa620f1efb14:application_state",
+      "previous_fact_id": "rec_86b929df89ab2ad9a7e72f3c6af447c4a7ee738f:application_state",
+      "decision": "accepted",
+      "reason": "newer_lifecycle_evidence",
+      "created_at": "2026-10-10T17:59:50.636Z"
+    },
+    {
+      "id": "sel_65ea0eaa16dcb889eb6bf4d82603ab2d",
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "field_name": "lifecycle_state",
+      "proposed_fact_id": "rec_8c2b3a0a1c433c2a1cb44fb6b9ccaa620f1efb14:lifecycle_state",
+      "previous_fact_id": "rec_86b929df89ab2ad9a7e72f3c6af447c4a7ee738f:lifecycle_state",
+      "decision": "accepted",
+      "reason": "newer_lifecycle_evidence",
+      "created_at": "2026-10-10T17:59:50.636Z"
+    }
+  ],
+  "customer_snapshot": {
+    "as_of": "2026-10-10T18:02:49.557Z",
+    "keys": [
+      "schema",
+      "as_of",
+      "publication_enabled",
+      "production_cutover_enabled",
+      "shadow_ready",
+      "producer_policy_withheld",
+      "items"
+    ],
+    "all_count": 1841,
+    "cohort_visible": []
+  },
+  "original_requests": [
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "requested_at": "2026-10-09T13:33:05.718Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "market": "GB",
+      "latest_accepted_source_check": "2026-10-04T20:06:19Z",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "requested_at": "2026-10-09T13:33:34.663Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_4d4590cdbd191713c317",
+      "market": "US",
+      "latest_accepted_source_check": "2026-10-04T16:10:45Z",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "requested_at": "2026-10-09T13:32:36.818Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_58df50276bd7933d3ade",
+      "market": "US",
+      "latest_accepted_source_check": "2026-10-04T16:51:54Z",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "requested_at": "2026-10-09T13:33:18.601Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_8ba38ecf08fb5cc324d9",
+      "market": "AU",
+      "latest_accepted_source_check": "2026-10-04T16:45:58Z",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "requested_at": "2026-10-09T18:47:53.640Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_f889ad736b6a93511de5",
+      "market": "US",
+      "latest_accepted_source_check": "2026-10-04T16:19:06Z",
+      "unresolved_conflicts": 1
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "requested_at": "2026-10-09T19:03:18.609Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "market": "US",
+      "latest_accepted_source_check": "2026-10-04T19:36:07Z",
+      "unresolved_conflicts": 2
+    }
+  ],
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "operator_source_writes": 0,
+  "operator_acknowledgement_writes": 0,
+  "closure_verified": false,
+  "remaining": [
+    "Three fresh receipts are exact-linked and selected by newer source clocks; original-token producer acknowledgements not yet observed in this snapshot.",
+    "UKCF 26684 past event correctly withheld; stale recheck has no designed obsolete-id resolution, not a fabricated fresh acknowledgement.",
+    "Marketspread 26215 replacement producer ID not yet supplied by producer evidence or identified in the received corpus.",
+    "Nashville proposed survivor belongs to V3 edition 2027; old entity is edition 2026. Reviewed identity/supersession evidence is required; no silent cross-edition merge."
+  ]
+}

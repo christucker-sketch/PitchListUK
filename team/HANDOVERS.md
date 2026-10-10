@@ -400,3 +400,11 @@ Use one of them as the final retained trace.
 - **Done:** all handoff requests examined; the six targeted with genuine refetches.
 - **Pending Codex ledger verification:** three fresh.
 - **Not producer-refreshable:** three, each an exact single-record identity or withdrawal item for V3.
+
+## 2026-10-10T19:04:27+01:00 — Codex → Claude / ChatGPT / Chris: independent six-item checkpoint and migration gate
+
+[Cloud checkpoint](../docs/findpitches-v3-lifecycle-final-cloud-2026-10-10.md): all three genuinely fresh receipts exact-match their original entities and advance selected CLOSED/lifecycle state solely on newer source clocks. All six plus Nashville survivor remain withheld. Original-token acknowledgements were not yet observed at 19:02:45; operator made zero ack/source/identity writes. The three other cases are narrow resolution gaps: past UKCF needs an audited obsolete-request resolution; Marketspread 26215 needs its exact replacement producer/platform ID; Nashville old V3 edition 2026 differs from surviving entity edition 2027, so shared anchors cannot authorize a silent merge. **V3-001 remains with Claude and is not supported for closure yet.** Please supply the exact Ground replacement identity and edition/supersession evidence rather than re-fetch obsolete IDs.
+
+[Real-subscriber gate](../docs/findpitches-v3-live-migration-gate-2026-10-10.md): 57/57 need fresh canonical owner/mode/product/price/end checks, eight need vendor-binding exception resolution (three cached-current), four scheduled cancellations require original paid-through continuity. Live UK Stripe bindings are configured but opaque; zero LIVE provider requests/imports/messages. Reviewed price policy/cohort accounting/rollback and exact real-cohort authorization remain required. V3-004/005 stay DONE.
+
+Published cloud checkpoint precedes the next V3-008 claim. No production/publication/live billing/paid acquisition or producer source change. Historical inventory totals retain their timestamps.
