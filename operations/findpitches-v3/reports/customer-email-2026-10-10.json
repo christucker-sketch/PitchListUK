@@ -1,6 +1,6 @@
 {
   "schema": "findpitches-v3-customer-mail-checkpoint-v1",
-  "as_of": "2026-10-10T08:57:00.219Z",
+  "as_of": "2026-10-10T09:13:14.590Z",
   "worker": "findpitches-v3-customer-preview",
   "sender": "hello@findpitches.com",
   "provider": {
@@ -23,19 +23,24 @@
     "native_delivery_tested": false
   },
   "native_provider_check": {
-    "status": 503,
-    "diagnostic": "proxy_reference_is_not_worker_credential",
-    "credential_validated": false
+    "status": 200,
+    "ok": true,
+    "provider": "smtp2go",
+    "sender": "hello@findpitches.com",
+    "credential_validated": true,
+    "sender_domain_verified": true,
+    "emails_sent": 0,
+    "as_of": "2026-10-10T09:10:08.009Z"
   },
-  "native_mail_configured": false,
+  "native_mail_configured": true,
   "alerts_email_delivery": false,
   "publication_enabled": false,
   "production_cutover_enabled": false,
   "billing_mode": "test",
-  "emails_sent": 0,
-  "real_delivery_verified": false,
+  "emails_sent": 1,
+  "real_delivery_verified": true,
   "authorised_test_recipient_present": true,
-  "test_message_pending": true,
+  "test_message_pending": false,
   "checks": {
     "full_v3_suite": {
       "passed": 210,
@@ -76,6 +81,16 @@
       "live_v1_deployment_unchanged": true,
       "v2_schedules": [],
       "v2_schedules_unchanged": true
+    },
+    "native_status_after_test": {
+      "as_of": "2026-10-10T09:12:16.506Z",
+      "email_configured": true,
+      "uninvited_session_http_status": 401,
+      "customer_visible_ready": 0,
+      "publication_enabled": false,
+      "production_cutover_enabled": false,
+      "alerts_email_delivery": false,
+      "billing_mode": "test"
     }
   },
   "guardrails": {
@@ -91,5 +106,31 @@
     "saved": true,
     "requires_publish_for_future_environment_version": true,
     "current_worker_key_fix_does_not_require_environment_restart": true
+  },
+  "native_credential_source": "user_installed_cloudflare_worker_secret",
+  "environment_proxy_is_exportable_raw_key": false,
+  "emails_provider_accepted": 1,
+  "recipient_sign_in_verified": true,
+  "recipient_confirmation_pending": false,
+  "authorised_test": {
+    "as_of": "2026-10-10T09:10:12.053Z",
+    "provider": "smtp2go",
+    "sender": "hello@findpitches.com",
+    "emails_attempted": 1,
+    "provider_accepted": true,
+    "actual_inbox_delivery_confirmed": true,
+    "sign_in_confirmed": true,
+    "single_authorised_recipient": true,
+    "no_auto_retry": true,
+    "link_validity_minutes": 15,
+    "native_auth_link_sent_events_added": 1,
+    "recipient_confirmation_received_at": "2026-10-10T09:13:14.590Z",
+    "confirmation_source": "user_report_and_native_session_evidence",
+    "native_session_evidence": {
+      "as_of": "2026-10-10T09:13:14.590Z",
+      "native_customer_exists": true,
+      "active_native_session_confirmed": true,
+      "one_test_challenge_consumed": true
+    }
   }
 }

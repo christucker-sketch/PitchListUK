@@ -15,7 +15,7 @@ flowchart LR
   Customer --> Customers[(Separate customer-preview D1)]
   Customer --> Stripe[Existing Stripe account: TEST only]
   Stripe -->|Independent V3 signed TEST webhook| Customer
-  Customer -. verified sender; direct Worker key required .-> Email[Existing SMTP2GO account]
+  Customer -->|Native credential and verified sender; restricted sign-in| Email[Existing SMTP2GO account]
 ```
 
 | Resource | Implemented responsibility | Isolation |
@@ -26,7 +26,7 @@ flowchart LR
 | `V3_READY_API` service binding | Private `/staging/catalogue` source-proof snapshot | V3 API only; separate server-only staging credential |
 | Own session/operator secrets | Signed CSRF, opaque native sessions and restricted preview grants | Dedicated V3 bindings; never browser assets or local storage |
 | Existing Stripe TEST key/approved GBP £4.99 monthly price | Seven-day trial Checkout, canonical entitlement, separate test portal and test webhook | No live key/customer/subscription/price changes or production endpoint redirection |
-| Existing SMTP2GO account, V3-owned key/sender bindings | Native passwordless email service | Sender domain verified; environment proxy reference cannot become a Worker key. Direct native key installation and real delivery proof remain pending; no V1 lookup |
+| Existing SMTP2GO account, V3-owned key/sender bindings | Native passwordless email service | Deployed credential and sender domain verified; one authorised message delivered and native sign-in confirmed; no V1 lookup |
 
 Only `public/` is deployed. Supplied `dev/` fixtures and stub server are retained as local contract/UI test material. The fixture's 1,903 rows are never imported as customer inventory. Server taxonomy and SEO are physically owned copies; no runtime import from the dev stub is allowed. CI bundles all nine owned Workers and checks runtime boundaries.
 
@@ -85,6 +85,6 @@ Pi delivery is active; the cloud supports all-page recheck pagination and fresh,
 
 The frontend/API/auth/test-billing runtime has no required V1/V2/old frontend dependency. Browser tests see only V3, and canonical subscription reads go directly to Stripe. Original-source verification uses external event/application sources, not legacy customer databases. V1 remains live and unchanged; V2 is read-only.
 
-The supplied archive does not contain the producer discovery engine or `deploy/pi` source. Its delivery is not proof of full producer source custody. Remaining launch work includes that source copy, active lifecycle/recheck completion, native email and alert delivery, existing-subscriber recognition/migration proof, stronger UK source breadth, supported facets, final performance/security review and explicit production/domain/publication approval. An unconditional whole-product “delete V1/V2 tomorrow” claim is not yet supported.
+The supplied archive does not contain the producer discovery engine or `deploy/pi` source. Its delivery is not proof of full producer source custody. Native sign-in mail has passed one authorised end-to-end test. Remaining launch work includes that source copy, active lifecycle/recheck completion, alert delivery, existing-subscriber recognition/migration proof, stronger UK source breadth, supported facets, final performance/security review and explicit production/domain/publication approval. An unconditional whole-product “delete V1/V2 tomorrow” claim is not yet supported.
 
 Rollback revokes/disables only owned preview grants/sessions and restores the prior owned Worker version while retaining D1 and all evidence. Do not delete infrastructure, change V1/Stripe production delivery, restore paid flags, merge protected branches or route production during preview work.
