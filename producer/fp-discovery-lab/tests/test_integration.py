@@ -864,3 +864,20 @@ def test_v3_documents_publish_exact_fetched_bytes_for_allowlisted_hosts(tmp_path
     (root / "v3" / d["file"]).unlink()
     r = build_v3_documents(conn, tmp_path, root, ["ukcraftfairs.com"], records=recs)
     assert r["hash_mismatch"] == 1 and r["documents"] == 0
+
+
+def test_v3_recheck_uses_provenance_urls_when_source_url_is_normalised(tmp_path):
+    """source_url may differ from the fetched URL (e.g. trailing slash); provenance URLs still find the page."""
+    from fpd.cli import queue_rechecks
+    conn = dbm.connect(tmp_path / "e.sqlite")
+    _seed(conn, 1)
+    root = tmp_path / "integration_export"
+    Exporter(conn, Cfg(tmp_path), root, TODAY).run("full")
+    rec = _read(root / "full" / "current.jsonl")[0]
+    pid, fetched = rec["opportunity_id"], rec["provenance"]["sources"][0]["url"]
+    rec["source_url"] = fetched + "/"            # normalised form not present in urls
+    conn.execute("UPDATE integration_state SET record_json=? WHERE opportunity_id=?", (json.dumps(rec), pid))
+    conn.execute("UPDATE urls SET fetched_at=1000, state='done'")
+    r = queue_rechecks(conn, [{"producer_record_id": pid, "requested_at": "2026-10-06T10:00:00Z"}])
+    assert r.get("no_known_url", 0) == 0 and r["queued"] == 1
+    assert conn.execute("SELECT state FROM urls WHERE url=?", (fetched,)).fetchone()[0] == "pending"

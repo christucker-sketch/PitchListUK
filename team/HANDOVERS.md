@@ -318,3 +318,26 @@ Followed the 14:38 [orders](ORDERS.md), preserving all producer changes/other ag
 **For ChatGPT / V3-010:** V3-004 acceptance and V3-005 proof are ready for launch review. Real canonical subscriber/product/price coverage, migration/exception/rollback policy and producer closure proof remain open. No GO or launch authorization inferred from TEST success.
 
 **Safety at 17:42:31:** [preservation](../operations/findpitches-v3/reports/customer-hosted-preservation-2026-10-10.json) passes against 15,811 receipts, 108,819 source facts, 7,077 identities; zero source mutations/identity changes/customer projection/publication rows/paid queries; bulk off, live UK Pitchlist and V2 unchanged. Zero real imports/charges/messages; no domain/publication/cutover/protected merge. Inventory totals retain their earlier observation times. Source commit and Cloudflare runtime custody remain distinct.
+## 2026-10-10T17:46:59+01:00 — Claude → Codex / Chris: V3-001 first full-handoff cycle evidence; six conflicts targeted
+
+**First discovery cycle on the all-page runner.** Source: Pi `fpd-status` and journal, pasted by Chris at about 17:44 London.
+- Handoff at 14:15Z: **1,382 requests** (polled 14:05:51Z), against 100 before V3-001.
+- **Every request was examined:** queued 300 + deferred 1,020 + already_rechecked 3 + no_known_url 59 = 1,382.
+- The cycle ended rc=0 at 14:37:53Z. Export at 14:36Z: 1,921 current, 142 lifecycle.
+- Delivery at 16:31:12Z: 2,063 accepted, **0 rejected**, 605 inserted, 1,458 duplicates.
+- `pending_rechecks` fell from 1,390 to 1,315. The `acknowledged_rechecks` field shows only the latest tick (0, because the export was unchanged), so per-tick ack counts after 14:37Z were not captured.
+
+**The six conflict ids:** these are Codex's [exact requests](../operations/findpitches-v3/reports/lifecycle-conflict-rechecks-2026-10-10.json). They sit at handoff positions 621–1,029, and the 300-page budget had been used on older requests, so **none was refetched in this cycle**. All still carry `last_checked` from 4 Oct.
+
+**Defect found and fixed** (commit below; kit `SHA256SUMS` `ec1238ba…`):
+- `queue_rechecks` looked pages up only by `source_url` and `revisit_url`. `source_url` can be a normalised form of the fetched URL (for example a trailing "/"), which caused the 59 `no_known_url` results.
+- Two of the six had no page match for this reason: `fdx1_4d4590…` and `fdx1_8ba38e…`.
+- The fix also targets `provenance.sources[].url`, the exact fetched URLs. 91 tests pass.
+
+**Targeted refetch (genuine, using the normal path):** Chris installs kit `v3-001b`, then queues exactly Codex's six requests with their original `requested_at` (`sudo fpd rechecks --file …/six.json`). The next discovery cycle's crawl fetches them at top priority, and the export carries whatever the sources now say.
+- No state is forced and no timestamp is invented.
+- **`fdx1_f889ad73…` cannot be refreshed under its id.** It is carried forward as WITHDRAWN because the engine merged it into `fdx1_5c40d2ef…` (same market; shared anchors `url:…nashvillefarmersmarket.org/apply-farmers-market` and the Marketspread vendor URL). Codex: this needs an identity link or review on V3's side, not a refetch.
+
+**A second item to check after the next cycle:** for `fdx1_86aaebe…` (UKCraftFairs 26684), the page row was fetched on 2026-10-08 19:39Z, but the exported record still says 2026-10-04. If it is still stale after the targeted refetch, I'll query the record's source link on the Pi; I'm not widening the investigation beyond that.
+
+**Spend, messages, publication and production:** none.

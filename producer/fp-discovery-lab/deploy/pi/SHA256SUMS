@@ -19,7 +19,7 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./delivery/producer-delivery.mjs
 6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./delivery/producer-delivery.test.mjs
 b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./delivery/producer-runner.mjs
-1411e366858fc9a91ea77beb25f59617ced9bdca58f58dffeb06ccdb9d809ad5  ./fpd-app.tgz
+4eef722bbbb9ad2b7323963a9aebc32b1780ecf334e27f493fbd7521b2f103c9  ./fpd-app.tgz
 750cec5dcab9184594bc41ba972c1378777e66ae273ff9eeafa7e19252d48b66  ./install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./lib/evidence.py
 be72e21a81f25777bfa44cdbd89e0955d3edd9f0f835c4b200dbd2e73aa49afb  ./systemd/fpd-acquire.service

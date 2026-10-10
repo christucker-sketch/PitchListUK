@@ -209,8 +209,10 @@ def queue_rechecks(conn, requests: list, max_requests: int = 300) -> dict:
             out["unknown_record"] += 1
             continue
         rec = json.loads(row[0])
+        # provenance.sources[].url are the exact fetched URLs (source_url may be normalised, e.g. a trailing "/")
         targets = []
-        for u in ((rec.get("watch") or {}).get("revisit_url"), rec.get("source_url")):
+        for u in ((rec.get("watch") or {}).get("revisit_url"), rec.get("source_url"),
+                  *[s.get("url") for s in (rec.get("provenance") or {}).get("sources") or []]):
             if u and u not in targets:
                 targets.append(u)
         queued = done = found = False
