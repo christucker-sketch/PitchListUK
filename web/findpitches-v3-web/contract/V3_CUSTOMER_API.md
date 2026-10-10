@@ -41,7 +41,7 @@ a database or another host.
 | `GET /stats` | public | — | `{ as_of, total, sports, markets: { CODE: { count, regions } } }` |
 | `GET /regions?market=` | public | | `{ regions: Region[] }` (§3.5) with `opportunity_count` |
 | `GET /geo/resolve?market=&q=` | public | | `{ location: { kind: point\|region\|unknown\|unresolved\|none, label, region_id?, region_code?, lat?, lng?, precision? } }` |
-| `GET /opportunities` | public (paid fields redacted, §3.1) | `market` (required), `q` (place, postcode, ZIP, region id or slug), `q_text` (keyword), `region` (id, includes descendants), `radius_km`, `types` (csv), `sells`, `organiser_types` (csv), `when` (`30\|90\|xmas\|2027`), `month` (`YYYY-MM`), `sort` (`nearest\|soonest\|recently_checked\|az`), `page`, `page_size` (≤100) | `{ market, market_status, coverage: available\|none, location, total, page, page_size, sort, next_start, results: Opportunity[], facets: { types, months, undated, regions }, map_points: [{id,lat,lng,type,title}] }` |
+| `GET /opportunities` | public (paid fields redacted, §3.1) | `market` (required), `q` (place, postcode, ZIP, region id or slug), `q_text` (keyword), `region` (id, includes descendants), `radius_km`, `types` (csv), `sells`, `organiser_types` (csv), `when` (`30\|90\|xmas\|2027`), `month` (`YYYY-MM`), `sort` (`nearest\|soonest\|recently_checked\|az`), `page`, `page_size` (≤100) | `{ market, market_status, coverage: available\|none, location, total, page, page_size, sort, next_start, results: Opportunity[], facets: { types, unclassified_types, months, undated, regions }, map_points: [{id,lat,lng,type,title}] }` |
 | `GET /opportunities/count` | public | the same filters | `{ total }` |
 | `GET /opportunities/:id` | public (redacted) | | `{ opportunity: Opportunity + { similar: Opportunity[≤4], is_current, region_path: Region[] } }`; 404 `not_found` |
 | `GET /opportunities/upcoming?market=&limit=&type=` | public | | `{ items: Opportunity[] }` soonest first, start ≥ today |
@@ -157,3 +157,5 @@ The current values (GB and US live; the others building; GB £4.99 Pro) are in `
   - `Referrer-Policy: strict-origin-when-cross-origin`
   - HSTS
   - `X-Robots-Tag: noindex` on every non-production host
+
+Native preview geography: without verified coordinates, radius and nearest sorting return `400 radius_unavailable`. A non-region place query performs a literal match against retained source location and returns `location.kind: unresolved`; it never geocodes or falls back to all-country results. `facets.unclassified_types` counts rows whose source-backed type remains unknown, so All types includes them without inventing a category.

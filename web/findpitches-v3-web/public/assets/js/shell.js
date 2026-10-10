@@ -217,6 +217,10 @@
     });
   }
   async function requireSignIn(reason) { if (state.session && state.session.signed_in) return state.session; return signIn(reason); }
+  function proActionLabel() {
+    const a=state.session?.access;
+    return a?.checkout_allowed===false ? 'Review billing' : a?.trial_eligible===false ? 'Subscribe to Pro' : 'Try Pro free for 7 days';
+  }
   function upgrade(reason, context, marketCode) {
     track('upgrade_viewed', { context: context || 'generic' });
     if (!state.proIn(marketCode)) {
@@ -228,7 +232,7 @@
     modal(`<div class="dh"><h2>See where to apply with Pro</h2><button class="x" data-close aria-label="Close">×</button></div>
       <p class="muted" style="margin:0 0 14px">${esc(reason || 'Pro shows the organiser’s application page for every listing and alerts you to new ones near you.')}</p>
       <ul style="margin:0 0 16px;padding-left:18px;line-height:1.8">${LIVE ? '<li>Search every checked listing</li><li>Full details and the organiser’s application page</li><li>Save listings to your account</li>' : '<li>The organiser’s application page and source for every listing</li><li>Alerts for new pitches that match you</li><li>Export your shortlist</li>'}</ul>
-      <a class="btn btn-flag" style="width:100%" href="pricing.html?from=${encodeURIComponent(context || 'generic')}">Try Pro free for 7 days</a>
+      <a class="btn btn-flag" style="width:100%" href="pricing.html?from=${encodeURIComponent(context || 'generic')}">${proActionLabel()}</a>
       <p class="muted" style="font-size:.82rem;margin:10px 0 0;text-align:center">${LIVE ? 'Cancel any time.' : 'Search and saving stay free. Cancel any time.'}</p>`);
   }
 
@@ -284,7 +288,7 @@
     }
     return `<div class="applybox locked">${lead}
       ${state.proIn(o.market) ? `<div class="ab-lock"><p><b>Where to apply is part of Pro.</b> Everything else on this listing is free. Pro shows the organiser’s application page for this and every listing${o.access.source_domain_hint ? ` (this one is on a <b>${esc(o.access.source_domain_hint)}</b> site)` : ''}.</p>
-      <button type="button" class="btn btn-flag ab-cta" data-unlock="apply" data-for-market="${esc(o.market)}">${s.signed_in ? 'Try Pro free for 7 days' : 'See where to apply'}</button></div>`
+      <button type="button" class="btn btn-flag ab-cta" data-unlock="apply" data-for-market="${esc(o.market)}">${s.signed_in ? proActionLabel() : 'See where to apply'}</button></div>`
       : `<p class="ab-small">Where to apply is part of Pro, which isn’t available in ${esc(state.m(o.market).the)} yet. Everything else on this listing is free.</p>`}</div>`;
   }
   document.addEventListener('click', e => {
@@ -438,5 +442,5 @@
     return state;
   })();
 
-  FP.ui = { typePluralLc, draftNote, factsHTML, applyPanel, createAlert, units, esc, fmt, days, when, freshness, appStatus, describeQuery, card, row: card, toast, modal, fieldError, signIn, requireSignIn, upgrade, toggleSave, syncSaveButtons, coverageBuilding, renderHeader, STAR, SELLS, SELLS_LC, TYPE_PLURAL, listJoin, cap, qs, TODAY, RM };
+  FP.ui = { proActionLabel, typePluralLc, draftNote, factsHTML, applyPanel, createAlert, units, esc, fmt, days, when, freshness, appStatus, describeQuery, card, row: card, toast, modal, fieldError, signIn, requireSignIn, upgrade, toggleSave, syncSaveButtons, coverageBuilding, renderHeader, STAR, SELLS, SELLS_LC, TYPE_PLURAL, listJoin, cap, qs, TODAY, RM };
 })();

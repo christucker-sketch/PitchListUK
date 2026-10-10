@@ -1,0 +1,196 @@
+{
+  "schema": "findpitches-v3-native-browser-audit-v1",
+  "as_of": "2026-10-10T18:24:29.947583+00:00",
+  "browser": "151.0.7922.173",
+  "origin": "https://findpitches-v3-customer-preview.ctucker.workers.dev",
+  "checks": [
+    {
+      "check": "native_signin_retained_ended_fixture",
+      "passed": true
+    },
+    {
+      "check": "secure_host_session_cookies",
+      "passed": true
+    },
+    {
+      "check": "homepage_browser",
+      "passed": true
+    },
+    {
+      "check": "approved_source_wording",
+      "passed": true
+    },
+    {
+      "check": "GB_finder_browser",
+      "passed": true
+    },
+    {
+      "check": "mobile_finder_browser",
+      "passed": true
+    },
+    {
+      "check": "mobile_no_page_horizontal_overflow",
+      "passed": true
+    },
+    {
+      "check": "GB_route_country_and_radius",
+      "passed": true
+    },
+    {
+      "check": "nearest_control_disabled",
+      "passed": true
+    },
+    {
+      "check": "All_types_includes_unclassified",
+      "passed": true
+    },
+    {
+      "check": "ended_api_redaction",
+      "passed": true
+    },
+    {
+      "check": "opportunity_detail_browser",
+      "passed": true
+    },
+    {
+      "check": "ended_DOM_redaction",
+      "passed": true
+    },
+    {
+      "check": "literal_place_browser",
+      "passed": true
+    },
+    {
+      "check": "literal_place_heading_truthful",
+      "passed": true
+    },
+    {
+      "check": "unresolved_empty_browser",
+      "passed": true
+    },
+    {
+      "check": "unresolved_does_not_claim_all_country",
+      "passed": true
+    },
+    {
+      "check": "US_finder_browser",
+      "passed": true
+    },
+    {
+      "check": "US_route_country",
+      "passed": true
+    },
+    {
+      "check": "US_ended_redaction",
+      "passed": true
+    },
+    {
+      "check": "SEO_hub_browser",
+      "passed": true
+    },
+    {
+      "check": "HTML_noindex",
+      "passed": true
+    },
+    {
+      "check": "pricing_browser",
+      "passed": true
+    },
+    {
+      "check": "account_browser",
+      "passed": true
+    },
+    {
+      "check": "saved_browser",
+      "passed": true
+    },
+    {
+      "check": "alerts_browser",
+      "passed": true
+    },
+    {
+      "check": "ended_no_second_trial_offer",
+      "passed": true
+    },
+    {
+      "check": "local_fonts_loaded",
+      "passed": true
+    },
+    {
+      "check": "zero_foreign_browser_requests",
+      "passed": true
+    },
+    {
+      "check": "browser_request_budget",
+      "passed": true
+    }
+  ],
+  "passed": 30,
+  "total": 30,
+  "issues": [],
+  "timings": [
+    {
+      "route": "/",
+      "status": 200,
+      "interactive_ms": 9931
+    },
+    {
+      "route": "/uk/find-pitches/",
+      "status": 200,
+      "interactive_ms": 12012
+    },
+    {
+      "route": "/uk/opportunity/ent_ba591d89ed0278c026c1508b61da2eb0/",
+      "status": 200,
+      "interactive_ms": 11726
+    },
+    {
+      "route": "/uk/find-pitches/?q=Cambridge",
+      "status": 200,
+      "interactive_ms": 12468
+    },
+    {
+      "route": "/uk/find-pitches/?q=fp-never-a-location-000000",
+      "status": 200,
+      "interactive_ms": 12522
+    },
+    {
+      "route": "/us/find-pitches/",
+      "status": 200,
+      "interactive_ms": 14985
+    },
+    {
+      "route": "/uk/",
+      "status": 200,
+      "interactive_ms": 20161
+    },
+    {
+      "route": "/pricing/",
+      "status": 200,
+      "interactive_ms": 8654
+    },
+    {
+      "route": "/account.html",
+      "status": 200,
+      "interactive_ms": 4176
+    },
+    {
+      "route": "/saved.html",
+      "status": 200,
+      "interactive_ms": 4246
+    },
+    {
+      "route": "/alerts.html",
+      "status": 200,
+      "interactive_ms": 6269
+    }
+  ],
+  "browser_requests": 237,
+  "foreign_requests": 0,
+  "TLS_bypass": false,
+  "profile_scope": "existing_isolated_exact_host_CA",
+  "provider_writes": 0,
+  "messages_sent": 0,
+  "source_writes": 0,
+  "real_customer_writes": 0
+}

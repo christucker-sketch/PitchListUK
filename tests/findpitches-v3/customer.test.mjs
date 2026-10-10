@@ -71,6 +71,9 @@ test('proof projection is redacted on the server; filters never create geography
   assert.equal(mapProof({...p,proof_expires_at:'invalid'},now()),null);
   assert.equal(search([row],{market:'GB',q:'US city'},null,now()).total,0);assert.equal(search([row],{market:'GB',q_text:'craft'},null,now()).total,1);assert.equal(search([row],{market:'GB',types:'market'},null,now()).total,0);assert.equal(search([row],{market:'GB',region:'gb/south-east'},null,now()).total,1);
   assert.throws(()=>search([row],{market:'GB',page_size:0},null,now()),/validation/);assert.throws(()=>search([row],{market:'GB',radius_km:50},null,now()),/radius_unavailable/);
+  assert.throws(()=>search([row],{market:'GB',sort:'nearest'},null,now()),/radius_unavailable/);
+  const unclassified=search([row],{market:'GB'},null,now());assert.deepEqual(unclassified.facets.types,{});assert.equal(unclassified.facets.unclassified_types,1);assert.equal(unclassified.total,1);assert.equal(unclassified.results[0].type,null);
+  const literal=search([row],{market:'GB',q:'Town Hall'},null,now());assert.equal(literal.location.kind,'unresolved');assert.equal(literal.total,1);assert.equal(literal.results[0].location.region_id,'gb/kent');
   assert.equal(inventory([row],'GB',[{key:'craft',filters:{sells:'craft'}}],now()).intents.craft,0);
 });
 test('inventory change log is bounded, replayable and records proof-expiry removals',async t=>{

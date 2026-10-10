@@ -15,12 +15,13 @@
   const DEF_R = String(C.radius_options[2] || 50);
   const S = { q: qs.get('q') ?? (me || ''), sells: qs.get('sells')||'', radius: qs.get('radius')|| DEF_R, when: qs.get('when')||'',
     types: new Set((qs.get('type')||'').split(',').filter(Boolean)), sort: qs.get('sort')||'', view: qs.get('view')||'list', month: qs.get('month')||'', page:1 };
+  if (!CAN.radius && S.sort==='nearest') S.sort='';
   let last = null, shown = [], selected = null, busy = false;
   const REGS = MAP==='us' ? await api.meta.regions({market:MK}) : []; const ID2CODE = Object.fromEntries(REGS.filter(x=>x.code).map(x=>[x.id,x.code.slice(3)]));
 
   /* ---------- controls driven by market config ---------- */
-  $('#qLbl').textContent = C.postal.kind==='district' ? 'District or place' : CAN.radius ? `${C.postal.label} or town` : `${C.postal.label} or ${C.region_label.singular}`;
-  $('#q').placeholder = 'e.g. ' + C.postal.example;
+  $('#qLbl').textContent = C.postal.kind==='district' ? 'District or place' : CAN.radius ? `${C.postal.label} or town` : `Place or ${C.region_label.singular}`;
+  $('#q').placeholder = CAN.radius ? 'e.g. ' + C.postal.example : 'Town or ' + C.region_label.singular;
   if (C.postal.kind==='district') $('#q').setAttribute('autocomplete','address-level2');
   $('#q').value = S.q;
   if (CAN.radius) { $('#radius').innerHTML = C.radius_options.map(v=>`<option value="${v}">${v} ${units.word(UNIT,v)}</option>`).join('') + `<option value="any">Anywhere in ${esc(C.the)}</option>`; if(![...$('#radius').options].some(o=>o.value===S.radius)) S.radius=DEF_R; $('#radius').value = S.radius; }
@@ -45,6 +46,7 @@
     if (!one && S.sells==='food') what = `Food ${C.vocab.traders_short} wanted`;
     if (loc.kind==='point') return S.radius==='any' || !CAN.radius ? `${what} across ${C.the}` : `${what} near ${loc.label}`;
     if (loc.kind==='region') return `${what} in ${loc.label}`;
+    if (loc.kind==='unresolved') return `${what} in ${loc.label}`;
     return `${what} across ${C.the}`;
   }
   const sortWord = s => ({nearest:'nearest first',soonest:'soonest first',recently_checked:'most recently checked first',az:'A to Z'})[s];
@@ -82,12 +84,13 @@
     const draft = CAN.geocoder==='draft_postcode_areas' ? dn('distance is measured from the postcode area centre.') : CAN.geocoder==='draft_zip_to_state' ? dn('ZIP Codes match to their state until listings are geocoded.') : '';
     if (loc.kind==='point') h.innerHTML = `Searching from <b>${esc(loc.label)}</b>${draft}`;
     else if (loc.kind==='region') h.innerHTML = `Showing <b>${esc(loc.label)}</b>${CAN.radius?'':`. ${esc(C.name)} listings are grouped by ${esc(C.region_label.singular)} for now.`}${draft}`;
+    else if (loc.kind==='unresolved') h.innerHTML = `Showing listings whose location includes “<b>${esc(loc.label)}</b>”.`;
     else if (loc.kind==='unknown') h.innerHTML = `<div class="notice warn" role="alert">We couldn’t find “${esc(loc.query)}”, so this shows all of ${esc(C.the)}. Try a ${esc(C.postal.label_mid)} like ${esc(C.postal.example)}${CAN.radius?' or a town name':' or a '+esc(C.region_label.singular)+' name'}.</div>`;
-    else h.innerHTML = `Add your ${esc(C.postal.label_mid)} to see what’s ${CAN.radius?'near you':'in your '+esc(C.region_label.singular)}.`;
+    else h.innerHTML = CAN.radius ? `Add your ${esc(C.postal.label_mid)} to see what’s near you.` : `Search by place name or ${esc(C.region_label.singular)}.`;
   }
 
   function renderChips(r){
-    const counts=r.facets.types, all=Object.values(counts).reduce((a,b)=>a+b,0);
+    const counts=r.facets.types, all=Object.values(counts).reduce((a,b)=>a+b,0)+(r.facets.unclassified_types||0);
     const order = Object.keys(T).filter(k=>counts[k]||S.types.has(k)).sort((a,b)=>(a==='sport')-(b==='sport')||(counts[b]||0)-(counts[a]||0));
     $('#chips').innerHTML = `<button type="button" class="chip" data-t="" aria-pressed="${!S.types.size}">All types <small>${all}</small></button><span class="sep" aria-hidden="true"></span>` +
       order.map(k=>`<button type="button" class="chip ${k==='sport'?'sport':''}" data-t="${k}" aria-pressed="${S.types.has(k)}">${esc(T[k])} <small>${counts[k]||0}</small></button>`).join('');
@@ -122,7 +125,7 @@
   function renderList(){
     const r = last, L = $('#list');
     if (!r.total) return renderZero(r);
-    let html=''; shown.forEach((o,i)=>{ html+=card(o); if(i===4 && !st.entitled && st.proAvailable) html+=`<div class="upsell"><div><b>Found one you like?</b><p>Everything here is free to browse. Pro adds the organiser’s application page for every listing, plus alerts when new ones appear.</p></div><a class="btn btn-flag" href="pricing.html">Try Pro free for 7 days</a></div>`; });
+    let html=''; shown.forEach((o,i)=>{ html+=card(o); if(i===4 && !st.entitled && st.proAvailable) html+=`<div class="upsell"><div><b>Found one you like?</b><p>Everything here is free to browse. Pro adds the organiser’s application page for every listing, plus alerts when new ones appear.</p></div><a class="btn btn-flag" href="pricing.html">${U.proActionLabel()}</a></div>`; });
     if (r.total > PAGE) { const pct = Math.round(100*shown.length/r.total);
       html += `<div class="pager"><p>Showing ${shown.length} of ${r.total}</p><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>${r.total>shown.length?`<button class="btn btn-line" type="button" id="more">Show ${Math.min(PAGE,r.total-shown.length)} more</button>`:''}</div>`; }
     L.innerHTML = html;

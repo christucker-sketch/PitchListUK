@@ -11,7 +11,7 @@
   if(!st.entitled){ const m=st.m(); track('upgrade_viewed',{context:'alerts_page'});
     A.innerHTML=`<div class="gate"><h2>Alerts are part of Pro</h2><p>Set up alerts like these and we’ll email you as soon as a matching listing is checked:</p>
       <ul class="examples"><li>${esc(describeQuery({market:m.code,sells:'food',radius_km:m.search.radius?units.toKm(m.radius_options[1],m.distance_unit):undefined},m.postal.kind==='district'?'Wan Chai':m.code==='GB'?'Maidstone':m.code==='US'?'Dallas':'your area'))}</li><li>${esc(describeQuery({market:m.code,types:[m.code==='US'?'holiday_market':'christmas_market']}))}</li></ul>
-      <a class="btn btn-flag" href="pricing.html">Try Pro free for 7 days</a></div>`; return; }
+      <a class="btn btn-flag" href="pricing.html">${U.proActionLabel()}</a></div>`; return; }
 
   const liveMarkets = st.markets.filter(m=>m.launch_status==='live');
   function nearestOpt(m, km){ if(km==null) return 'any'; const v=units.fromKm(+km,m.distance_unit); return String(m.radius_options.reduce((a,b)=>Math.abs(b-v)<Math.abs(a-v)?b:a)); }

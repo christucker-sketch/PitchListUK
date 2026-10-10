@@ -1,0 +1,169 @@
+{
+  "schema": "findpitches-v3-native-operational-checkpoint-v1",
+  "as_of": "2026-10-10T18:26:27.343586+00:00",
+  "scope": "restricted_private_preview_business_data_reads_and_temporary_retained_TEST_auth_setup",
+  "origin": "https://findpitches-v3-customer-preview.ctucker.workers.dev",
+  "API": {
+    "passed": 39,
+    "total": 39,
+    "measured_at": "2026-10-10T18:17:48.649Z",
+    "GET_probes": 29,
+    "positive_Pro_coverage": {
+      "available": true,
+      "tier": "pro",
+      "market": "GB",
+      "canonical_refresh": true,
+      "provider_writes": 0
+    }
+  },
+  "browser": {
+    "passed": 30,
+    "total": 30,
+    "measured_at": "2026-10-10T18:24:29.947583+00:00",
+    "requests": 237,
+    "foreign_requests": 0,
+    "TLS_bypass": false
+  },
+  "latency": {
+    "scope": "successful_catalogue_API_reads_in_environment_proxy_no_load_test",
+    "samples": 15,
+    "median_ms": 4100,
+    "p95_ms": 5055,
+    "maximum_ms": 5055,
+    "browser_interactive_min_ms": 4176,
+    "browser_interactive_max_ms": 20161,
+    "browser_interception_disables_HTTP_cache": true
+  },
+  "preview_inventory": {
+    "measured_at": "2026-10-10T18:17:48.649Z",
+    "total": 1841,
+    "by_country": {
+      "GB": 128,
+      "US": 1705,
+      "CA": 0,
+      "AU": 4,
+      "NZ": 4
+    },
+    "unclassified_types": 1841,
+    "commercial_origin_breakdown_recounted": false
+  },
+  "tests": {
+    "full_V3": {
+      "passed": 225,
+      "total": 225,
+      "log_completed_at": "2026-10-10T18:11:25.540041+00:00",
+      "scope": "final_backend_change_before_additional_CTA_copy_only"
+    },
+    "focused_customer_recognition": {
+      "passed": 26,
+      "total": 26,
+      "log_completed_at": "2026-10-10T18:14:35.493543+00:00",
+      "scope": "final_backend_and_CTA_source"
+    },
+    "frontend": {
+      "independence_passed": true,
+      "passed": 3,
+      "total": 3,
+      "log_completed_at": "2026-10-10T18:14:35.721550+00:00"
+    }
+  },
+  "deployment": {
+    "schema": "findpitches-v3-native-operational-deployment-v1",
+    "as_of": "2026-10-10T18:17:05.436Z",
+    "worker": "findpitches-v3-customer-preview",
+    "deployed_at": "2026-10-10T18:14:49.538Z",
+    "deployment": {
+      "id": "9a321ba9-73b3-4324-8fbf-f14993cac7d8",
+      "source": "api",
+      "strategy": "percentage",
+      "created_on": "2026-10-10T18:14:48.850116Z",
+      "versions": [
+        {
+          "version_id": "9ba2ac7a-7cdf-4cc0-b0f4-b11477c52169",
+          "percentage": 100
+        }
+      ]
+    },
+    "mail_validation": {
+      "ok": true,
+      "provider": "smtp2go",
+      "sender": "hello@findpitches.com",
+      "credential_validated": true,
+      "sender_domain_verified": true,
+      "emails_sent": 0
+    },
+    "publication_enabled": false,
+    "production_cutover_enabled": false,
+    "billing_mode": "test",
+    "mail_key_written_by_deployment": false,
+    "paid_queries": 0,
+    "asset_custody": {
+      "as_of": "2026-10-10T18:30:05.141Z",
+      "assets": [
+        {
+          "file": "assets/js/shell.js",
+          "sha256": "592b41d4136c6cf3b266a0f8a5e990f14ad6ed8d887693c15a19aa91bbd8c007",
+          "matches_deployed": true
+        },
+        {
+          "file": "assets/js/pages/finder.js",
+          "sha256": "d50bda5536f8e013bc817c5c0ad8420742b9de73627541cc32a3b950ea49b2c3",
+          "matches_deployed": true
+        },
+        {
+          "file": "assets/js/pages/alerts.js",
+          "sha256": "0cd6086bfc94d17c593cce46c449496d95e44c0e30675b7e1a3817dba49a88a9",
+          "matches_deployed": true
+        }
+      ]
+    }
+  },
+  "queue": {
+    "schema": "findpitches-v3-native-operational-queue-v1",
+    "as_of": "2026-10-10T18:20:44.655Z",
+    "jobs": [
+      {
+        "stage": "watch",
+        "status": "ready",
+        "total": 9280,
+        "due": 0,
+        "oldest_due": null
+      }
+    ],
+    "pending_customer_webhooks": 0
+  },
+  "preservation": {
+    "schema": "findpitches-v3-customer-preview-preservation-v1",
+    "as_of": "2026-10-10T18:21:21.798Z",
+    "receipts_compared": 15811,
+    "source_facts_compared": 108819,
+    "existing_identities_compared": 7077,
+    "destructive_source_mutations": 0,
+    "existing_identity_changes": 0,
+    "identity_comparison_key": "retained entity.id",
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "publication_api_denied": true,
+    "publication_enabled": false,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "live_v1_deployment_unchanged": true,
+    "v2_schedules": [],
+    "v2_schedules_unchanged": true
+  },
+  "source_writes_by_probe": 0,
+  "operator_acknowledgement_writes": 0,
+  "provider_writes": 0,
+  "real_subscriber_imports": 0,
+  "messages_sent": 0,
+  "paid_queries": 0,
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "remaining": [
+    "Three V3-001 obsolete/replacement/cross-edition resolutions, separately tracked in lifecycle-final-cloud-2026-10-10.json",
+    "Fresh canonical LIVE ownership/mode/product/price/end evidence for all 57 registry rows; eight vendor-binding exceptions",
+    "Catalogue API median 4.1s, sampled browser interactivity 4.2–20.2s through proxy/interception; profile and reduce safe proof/boot work before release",
+    "All 1,841 preview listing types remain source-unclassified; classification requires stronger evidence, not inferred defaults",
+    "Explicit domain/publication/launch, live subscriber/billing and paid-acquisition approvals remain separate"
+  ]
+}

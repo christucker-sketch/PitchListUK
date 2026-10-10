@@ -1,0 +1,580 @@
+{
+  "schema": "findpitches-v3-native-origin-audit-v1",
+  "started_at": "2026-10-10T18:16:14.309Z",
+  "as_of": "2026-10-10T18:17:48.649Z",
+  "origin": "https://findpitches-v3-customer-preview.ctucker.workers.dev",
+  "read_only": true,
+  "http_get_probes": 29,
+  "auth_setup": {
+    "private_preview_grant": 1,
+    "retained_test_challenges": 2,
+    "messages": 0
+  },
+  "positive_Pro_coverage": {
+    "available": true,
+    "tier": "pro",
+    "market": "GB",
+    "canonical_refresh": true,
+    "provider_writes": 0
+  },
+  "checks": [
+    {
+      "check": "uninvited_html_denied",
+      "passed": true
+    },
+    {
+      "check": "uninvited_search_denied",
+      "passed": true
+    },
+    {
+      "check": "private_home_200",
+      "passed": true
+    },
+    {
+      "check": "security_headers",
+      "passed": true
+    },
+    {
+      "check": "private_noindex",
+      "passed": true
+    },
+    {
+      "check": "robots_disallow",
+      "passed": true
+    },
+    {
+      "check": "sitemap_empty",
+      "passed": true
+    },
+    {
+      "check": "radius_and_geocoder_honest",
+      "passed": true
+    },
+    {
+      "check": "GB_country_scope",
+      "passed": true
+    },
+    {
+      "check": "GB_free_redaction",
+      "passed": true
+    },
+    {
+      "check": "GB_type_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "GB_date_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "distinct_pagination",
+      "passed": true
+    },
+    {
+      "check": "detail_free_redaction",
+      "passed": true
+    },
+    {
+      "check": "verified_region_filter_accounting",
+      "passed": true
+    },
+    {
+      "check": "US_country_scope",
+      "passed": true
+    },
+    {
+      "check": "US_free_redaction",
+      "passed": true
+    },
+    {
+      "check": "US_type_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "US_date_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "CA_country_scope",
+      "passed": true
+    },
+    {
+      "check": "CA_free_redaction",
+      "passed": true
+    },
+    {
+      "check": "CA_type_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "CA_date_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "AU_country_scope",
+      "passed": true
+    },
+    {
+      "check": "AU_free_redaction",
+      "passed": true
+    },
+    {
+      "check": "AU_type_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "AU_date_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "NZ_country_scope",
+      "passed": true
+    },
+    {
+      "check": "NZ_free_redaction",
+      "passed": true
+    },
+    {
+      "check": "NZ_type_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "NZ_date_facet_accounting",
+      "passed": true
+    },
+    {
+      "check": "literal_location_without_inferred_region",
+      "passed": true
+    },
+    {
+      "check": "honest_empty",
+      "passed": true
+    },
+    {
+      "check": "unsupported_radius_rejected",
+      "passed": true
+    },
+    {
+      "check": "unsupported_nearest_rejected",
+      "passed": true
+    },
+    {
+      "check": "invalid_market_rejected",
+      "passed": true
+    },
+    {
+      "check": "invalid_region_rejected",
+      "passed": true
+    },
+    {
+      "check": "retained_canonical_Pro_GB_links",
+      "passed": true
+    },
+    {
+      "check": "retained_GB_Pro_cannot_unlock_US",
+      "passed": true
+    }
+  ],
+  "passed": 39,
+  "total": 39,
+  "issues": [],
+  "timings": [
+    {
+      "route": "/",
+      "status": 401,
+      "duration_ms": 215
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB",
+      "status": 401,
+      "duration_ms": 230
+    },
+    {
+      "route": "/",
+      "status": 200,
+      "duration_ms": 5112
+    },
+    {
+      "route": "/robots.txt",
+      "status": 200,
+      "duration_ms": 135
+    },
+    {
+      "route": "/sitemap.xml",
+      "status": 200,
+      "duration_ms": 90
+    },
+    {
+      "route": "/api/v3/markets",
+      "status": 200,
+      "duration_ms": 5411
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&page_size=100",
+      "status": 200,
+      "duration_ms": 4868
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&page_size=2&page=2",
+      "status": 200,
+      "duration_ms": 4150
+    },
+    {
+      "route": "/api/v3/opportunities/ent_ba591d89ed0278c026c1508b61da2eb0",
+      "status": 200,
+      "duration_ms": 3650
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&region=gb%2Fscotland&page_size=100",
+      "status": 200,
+      "duration_ms": 4492
+    },
+    {
+      "route": "/api/v3/opportunities?market=US&page_size=100",
+      "status": 200,
+      "duration_ms": 4015
+    },
+    {
+      "route": "/api/v3/opportunities?market=CA&page_size=100",
+      "status": 200,
+      "duration_ms": 4100
+    },
+    {
+      "route": "/api/v3/opportunities?market=AU&page_size=100",
+      "status": 200,
+      "duration_ms": 3614
+    },
+    {
+      "route": "/api/v3/opportunities?market=NZ&page_size=100",
+      "status": 200,
+      "duration_ms": 5055
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&q=Cambridge&page_size=100",
+      "status": 200,
+      "duration_ms": 3866
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&q=fp-never-a-location-000000",
+      "status": 200,
+      "duration_ms": 3670
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&radius_km=50",
+      "status": 400,
+      "duration_ms": 4666
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&sort=nearest",
+      "status": 400,
+      "duration_ms": 6117
+    },
+    {
+      "route": "/api/v3/opportunities?market=XX",
+      "status": 404,
+      "duration_ms": 3841
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&region=made-up-region",
+      "status": 400,
+      "duration_ms": 3483
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&page_size=25",
+      "status": 200,
+      "duration_ms": 3707
+    },
+    {
+      "route": "/api/v3/session",
+      "status": 200,
+      "duration_ms": 68
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&page_size=25",
+      "status": 200,
+      "duration_ms": 4293
+    },
+    {
+      "route": "/api/v3/session",
+      "status": 200,
+      "duration_ms": 65
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&page_size=25",
+      "status": 200,
+      "duration_ms": 3460
+    },
+    {
+      "route": "/api/v3/session",
+      "status": 200,
+      "duration_ms": 90
+    },
+    {
+      "route": "/api/v3/session",
+      "status": 200,
+      "duration_ms": 946
+    },
+    {
+      "route": "/api/v3/opportunities?market=GB&page_size=2",
+      "status": 200,
+      "duration_ms": 5050
+    },
+    {
+      "route": "/api/v3/opportunities?market=US&page_size=2",
+      "status": 200,
+      "duration_ms": 4918
+    }
+  ],
+  "markets": [
+    {
+      "market": "GB",
+      "total": 128,
+      "sampled": 100,
+      "with_verified_region": 2,
+      "facets": {
+        "types": {},
+        "unclassified_types": 128,
+        "months": {
+          "2027-04": 8,
+          "2027-11": 14,
+          "2027-03": 7,
+          "2027-12": 14,
+          "2027-07": 9,
+          "2027-09": 10,
+          "2027-08": 8,
+          "2026-10": 6,
+          "2027-10": 11,
+          "2026-12": 8,
+          "2027-05": 11,
+          "2026-11": 13,
+          "2027-06": 9
+        },
+        "undated": 0,
+        "regions": {
+          "gb/south-east": 0,
+          "gb/south-west": 0,
+          "gb/east-of-england": 0,
+          "gb/east-midlands": 0,
+          "gb/west-midlands": 0,
+          "gb/north-west": 0,
+          "gb/north-east": 0,
+          "gb/yorkshire-and-the-humber": 0,
+          "gb/london": 0,
+          "gb/wales": 0,
+          "gb/scotland": 2,
+          "gb/northern-ireland": 0,
+          "gb/midlands": 0,
+          "gb/kent": 0,
+          "gb/surrey": 0,
+          "gb/west-sussex": 0,
+          "gb/east-sussex": 0,
+          "gb/hampshire": 0,
+          "gb/buckinghamshire": 0,
+          "gb/oxfordshire": 0,
+          "gb/berkshire": 0,
+          "gb/isle-of-wight": 0,
+          "gb/devon": 0,
+          "gb/cornwall": 0,
+          "gb/somerset": 0,
+          "gb/gloucestershire": 0,
+          "gb/wiltshire": 0,
+          "gb/dorset": 0,
+          "gb/bristol": 0,
+          "gb/essex": 0,
+          "gb/hertfordshire": 0,
+          "gb/cambridgeshire": 0,
+          "gb/norfolk": 0,
+          "gb/suffolk": 0,
+          "gb/bedfordshire": 0,
+          "gb/lincolnshire": 0,
+          "gb/northamptonshire": 0,
+          "gb/nottinghamshire": 0,
+          "gb/leicestershire": 0,
+          "gb/derbyshire": 0,
+          "gb/rutland": 0,
+          "gb/staffordshire": 0,
+          "gb/warwickshire": 0,
+          "gb/west-midlands-county": 0,
+          "gb/shropshire": 0,
+          "gb/herefordshire": 0,
+          "gb/worcestershire": 0,
+          "gb/greater-manchester": 0,
+          "gb/cheshire": 0,
+          "gb/lancashire": 0,
+          "gb/cumbria": 0,
+          "gb/merseyside": 0,
+          "gb/west-yorkshire": 0,
+          "gb/south-yorkshire": 0,
+          "gb/north-yorkshire": 0,
+          "gb/east-riding-of-yorkshire": 0,
+          "gb/tyne-and-wear": 0,
+          "gb/county-durham": 0,
+          "gb/northumberland": 0,
+          "gb/angus": 0,
+          "gb/argyll-and-bute": 0,
+          "gb/north-ayrshire": 0,
+          "gb/edinburgh": 0,
+          "gb/glasgow": 0,
+          "gb/fife": 0,
+          "gb/highland": 0,
+          "gb/aberdeenshire": 0,
+          "gb/monmouthshire": 0,
+          "gb/cardiff": 0,
+          "gb/gwynedd": 0,
+          "gb/pembrokeshire": 0,
+          "gb/powys": 0,
+          "gb/belfast": 0,
+          "gb/county-antrim": 0,
+          "gb/county-down": 0
+        }
+      }
+    },
+    {
+      "market": "US",
+      "total": 1705,
+      "sampled": 100,
+      "with_verified_region": 100,
+      "facets": {
+        "types": {},
+        "unclassified_types": 1705,
+        "months": {
+          "2027-02": 90,
+          "2027-04": 86,
+          "2026-12": 301,
+          "2026-11": 392,
+          "2026-10": 312,
+          "2027-08": 31,
+          "2026-05": 16,
+          "2027-01": 95,
+          "2027-05": 73,
+          "2026-06": 11,
+          "2027-06": 46,
+          "2027-09": 23,
+          "2026-09": 10,
+          "2027-03": 82,
+          "2026-07": 3,
+          "2026-08": 10,
+          "2026-03": 32,
+          "2027-10": 14,
+          "2026-01": 19,
+          "2027-07": 37,
+          "2027-11": 3,
+          "2026-04": 2,
+          "2026-02": 7,
+          "2025-10": 1,
+          "2027-12": 3,
+          "2025-12": 3,
+          "2024-10": 1,
+          "2025-01": 1,
+          "2025-06": 1
+        },
+        "undated": 0,
+        "regions": {
+          "us/alabama": 21,
+          "us/alaska": 0,
+          "us/arizona": 48,
+          "us/arkansas": 15,
+          "us/california": 84,
+          "us/colorado": 20,
+          "us/connecticut": 1,
+          "us/delaware": 2,
+          "us/district-of-columbia": 0,
+          "us/florida": 323,
+          "us/georgia": 245,
+          "us/hawaii": 4,
+          "us/idaho": 3,
+          "us/illinois": 13,
+          "us/indiana": 22,
+          "us/iowa": 4,
+          "us/kansas": 1,
+          "us/kentucky": 10,
+          "us/louisiana": 10,
+          "us/maine": 3,
+          "us/maryland": 22,
+          "us/massachusetts": 12,
+          "us/michigan": 19,
+          "us/minnesota": 16,
+          "us/mississippi": 9,
+          "us/missouri": 18,
+          "us/montana": 1,
+          "us/nebraska": 0,
+          "us/nevada": 29,
+          "us/new-hampshire": 0,
+          "us/new-jersey": 12,
+          "us/new-mexico": 8,
+          "us/new-york": 74,
+          "us/north-carolina": 178,
+          "us/north-dakota": 1,
+          "us/ohio": 34,
+          "us/oklahoma": 12,
+          "us/oregon": 17,
+          "us/pennsylvania": 17,
+          "us/rhode-island": 2,
+          "us/south-carolina": 34,
+          "us/south-dakota": 0,
+          "us/tennessee": 52,
+          "us/texas": 187,
+          "us/utah": 15,
+          "us/vermont": 1,
+          "us/virginia": 49,
+          "us/washington": 14,
+          "us/west-virginia": 0,
+          "us/wisconsin": 4,
+          "us/wyoming": 5
+        }
+      }
+    },
+    {
+      "market": "CA",
+      "total": 0,
+      "sampled": 0,
+      "with_verified_region": 0,
+      "facets": {
+        "types": {},
+        "unclassified_types": 0,
+        "months": {},
+        "undated": 0,
+        "regions": {}
+      }
+    },
+    {
+      "market": "AU",
+      "total": 4,
+      "sampled": 4,
+      "with_verified_region": 0,
+      "facets": {
+        "types": {},
+        "unclassified_types": 4,
+        "months": {
+          "2026-10": 2,
+          "2026-12": 2
+        },
+        "undated": 0,
+        "regions": {}
+      }
+    },
+    {
+      "market": "NZ",
+      "total": 4,
+      "sampled": 4,
+      "with_verified_region": 0,
+      "facets": {
+        "types": {},
+        "unclassified_types": 4,
+        "months": {
+          "2026-11": 2,
+          "2026-10": 1,
+          "2027-06": 1
+        },
+        "undated": 0,
+        "regions": {}
+      }
+    }
+  ],
+  "provider_writes": 0,
+  "source_writes": 0,
+  "real_customer_writes": 0,
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "paid_queries": 0
+}

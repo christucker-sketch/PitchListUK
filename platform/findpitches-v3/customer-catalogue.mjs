@@ -49,7 +49,7 @@ const csv=value=>Array.isArray(value)?value:typeof value==='string'?value.split(
 export function search(rows,p,access,now) {
   const market=marketOf(p.market),location=resolveLocation(market.code,p.region??p.q),today=budgetDay(now);
   for(const k of ['q_text','q','region','month','when','sort'])if(p[k]!==undefined&&(typeof p[k]!=='string'||p[k].length>200))throw customerError('validation');
-  if(p.radius_km&&p.radius_km!=='any')throw customerError('radius_unavailable',400);
+  if(p.radius_km&&p.radius_km!=='any'||p.sort==='nearest')throw customerError('radius_unavailable',400);
   if(p.region&&location.kind!=='region')throw customerError('validation');
   let list=rows.filter(o=>o.market===market.code);
   if(location.kind==='region')list=list.filter(o=>ancestors(o.market,o.location.region_id).some(r=>r.id===location.region_id));
@@ -60,9 +60,9 @@ export function search(rows,p,access,now) {
   if(p.month){if(!/^\d{4}-\d{2}$/.test(p.month))throw customerError('validation');list=list.filter(o=>o.dates.start?.slice(0,7)===p.month);}
   if(p.when){const end=new Date(today+'T12:00:00Z');if(['30','90'].includes(p.when)){end.setUTCDate(end.getUTCDate()+Number(p.when));list=list.filter(o=>o.dates.start&&o.dates.start<=end.toISOString().slice(0,10)&&(o.dates.end??o.dates.start)>=today);}else if(p.when==='xmas')list=list.filter(o=>o.dates.start?.slice(0,4)===today.slice(0,4)&&['11','12'].includes(o.dates.start.slice(5,7)));else if(/^20\d{2}$/.test(p.when))list=list.filter(o=>o.dates.start?.slice(0,4)===p.when);else throw customerError('validation');}
   const counts=(items,key)=>{const out={};for(const item of items){const value=key(item);if(value)out[value]=(out[value]??0)+1;}return out;};
-  const facets={types:counts(list,o=>o.type),months:counts(list,o=>o.dates.start?.slice(0,7)),undated:list.filter(o=>!o.dates.start).length,regions:Object.fromEntries(regions(market.code,list).map(r=>[r.id,r.opportunity_count]))};
+  const facets={types:counts(list,o=>o.type),unclassified_types:list.filter(o=>!o.type).length,months:counts(list,o=>o.dates.start?.slice(0,7)),undated:list.filter(o=>!o.dates.start).length,regions:Object.fromEntries(regions(market.code,list).map(r=>[r.id,r.opportunity_count]))};
   if(csv(p.types).length)list=list.filter(o=>csv(p.types).includes(o.type));
-  const sort=p.sort??'soonest';if(!['soonest','recently_checked','az','nearest'].includes(sort))throw customerError('validation');
+  const sort=p.sort??'soonest';if(!['soonest','recently_checked','az'].includes(sort))throw customerError('validation');
   list.sort((a,b)=>(sort==='az'?a.title.localeCompare(b.title):sort==='recently_checked'?String(b.checked.last_checked??'').localeCompare(a.checked.last_checked??''):String(a.dates.start??'9999').localeCompare(b.dates.start??'9999'))||a.id.localeCompare(b.id));
   const page=Number(p.page??1),size=Number(p.page_size??25);if(!Number.isInteger(page)||page<1||page>100000||!Number.isInteger(size)||size<1||size>100)throw customerError('validation');
   return {market:market.code,market_status:market.launch_status,coverage:rows.some(o=>o.market===market.code)?'available':'none',location,total:list.length,page,page_size:size,sort,next_start:list.map(o=>o.dates.start).filter(d=>d&&d>=today).sort()[0]??null,results:list.slice((page-1)*size,page*size).map(o=>present(o,access)),facets,map_points:[]};

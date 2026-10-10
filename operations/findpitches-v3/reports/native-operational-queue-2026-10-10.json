@@ -1,0 +1,14 @@
+{
+  "schema": "findpitches-v3-native-operational-queue-v1",
+  "as_of": "2026-10-10T18:20:44.655Z",
+  "jobs": [
+    {
+      "stage": "watch",
+      "status": "ready",
+      "total": 9280,
+      "due": 0,
+      "oldest_due": null
+    }
+  ],
+  "pending_customer_webhooks": 0
+}

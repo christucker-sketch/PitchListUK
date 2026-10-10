@@ -1,0 +1,51 @@
+{
+  "schema": "findpitches-v3-native-operational-deployment-v1",
+  "as_of": "2026-10-10T18:17:05.436Z",
+  "worker": "findpitches-v3-customer-preview",
+  "deployed_at": "2026-10-10T18:14:49.538Z",
+  "deployment": {
+    "id": "9a321ba9-73b3-4324-8fbf-f14993cac7d8",
+    "source": "api",
+    "strategy": "percentage",
+    "created_on": "2026-10-10T18:14:48.850116Z",
+    "versions": [
+      {
+        "version_id": "9ba2ac7a-7cdf-4cc0-b0f4-b11477c52169",
+        "percentage": 100
+      }
+    ]
+  },
+  "mail_validation": {
+    "ok": true,
+    "provider": "smtp2go",
+    "sender": "hello@findpitches.com",
+    "credential_validated": true,
+    "sender_domain_verified": true,
+    "emails_sent": 0
+  },
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "billing_mode": "test",
+  "mail_key_written_by_deployment": false,
+  "paid_queries": 0,
+  "asset_custody": {
+    "as_of": "2026-10-10T18:30:05.141Z",
+    "assets": [
+      {
+        "file": "assets/js/shell.js",
+        "sha256": "592b41d4136c6cf3b266a0f8a5e990f14ad6ed8d887693c15a19aa91bbd8c007",
+        "matches_deployed": true
+      },
+      {
+        "file": "assets/js/pages/finder.js",
+        "sha256": "d50bda5536f8e013bc817c5c0ad8420742b9de73627541cc32a3b950ea49b2c3",
+        "matches_deployed": true
+      },
+      {
+        "file": "assets/js/pages/alerts.js",
+        "sha256": "0cd6086bfc94d17c593cce46c449496d95e44c0e30675b7e1a3817dba49a88a9",
+        "matches_deployed": true
+      }
+    ]
+  }
+}
