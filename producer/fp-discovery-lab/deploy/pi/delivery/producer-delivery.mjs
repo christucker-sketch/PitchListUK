@@ -117,6 +117,33 @@ export async function acknowledgeDeliveredRechecks({requests,delivery,token,fetc
   }
   return {acknowledged};
 }
+// V3-002 option B (PREPARED, OFF unless the runner config names a manifest): upload the exact source documents the
+// discovery side published under export/v3/docs/ for hosts V3 cannot fetch. One document per request; each is
+// re-hashed before sending and recorded as sent only when V3 echoes the same sha256. V3 runs its own verifier.
+// Endpoint and response shape are a proposal (docs/findpitches-v3-producer-source-documents-proposal.md).
+export async function uploadSourceDocuments({manifestFile,ingestUrl,token,stateFile,environment='shadow',fetcher=fetch,maxPerCycle=200}) {
+  if(!['shadow','test'].includes(environment))throw new Error('shadow_or_test_required');
+  const manifest=JSON.parse(fs.readFileSync(manifestFile,'utf8'));
+  if(manifest.schema!=='findpitches-source-documents-manifest-v1'||!Array.isArray(manifest.documents))throw new Error('source_documents_manifest_invalid');
+  const state=fs.existsSync(stateFile)?JSON.parse(fs.readFileSync(stateFile,'utf8')):{sent:{}};
+  const base=path.dirname(manifestFile);let sent=0,skipped=0;
+  for(const doc of manifest.documents) {
+    if(state.sent[doc.content_sha256])continue;
+    if(sent>=maxPerCycle)break;
+    const file=path.resolve(base,doc.file);
+    if(!file.startsWith(path.resolve(base)+path.sep)||!fs.existsSync(file)){skipped++;continue;}
+    const body=fs.readFileSync(file);
+    if(digest(body)!==doc.content_sha256||body.length>2000000){skipped++;continue;}
+    const {file:_f,...meta}=doc;
+    const response=await fetcher(endpoint(ingestUrl)+'/source-documents',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({environment,document:{...meta,body_base64:body.toString('base64')}}),signal:AbortSignal.timeout(60000)});
+    if(!response.ok)throw new Error('source_document_http_'+response.status);
+    const result=await response.json();
+    if(result.content_sha256!==doc.content_sha256||typeof result.accepted!=='boolean')throw new Error('source_document_receipt_invalid');
+    if(result.accepted){state.sent[doc.content_sha256]=new Date().toISOString();sent++;}else skipped++;
+    writeState(stateFile,state);
+  }
+  return {sent,skipped,pending:manifest.documents.filter(d=>!state.sent[d.content_sha256]).length};
+}
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const args=process.argv.slice(2),get=name=>args.includes(name)?args[args.indexOf(name)+1]:null;
   try {

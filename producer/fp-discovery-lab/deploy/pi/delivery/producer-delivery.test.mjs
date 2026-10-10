@@ -67,3 +67,62 @@ test('delivery cycle acks only fresh delivered records, with exact identifiers, 
   const handoff = JSON.parse(fs.readFileSync(path.join(dir, 'state', 'rechecks.json'), 'utf8'));
   assert.equal(handoff.requests.length, 150);   // the discovery side sees every page, not just the first 100
 });
+
+// V3-002 option B (prepared, off by default)
+import { createHash } from 'node:crypto';
+import { uploadSourceDocuments } from './producer-delivery.mjs';
+
+function docsFixture() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fpd-docs-')), v3 = path.join(dir, 'v3');
+  fs.mkdirSync(path.join(v3, 'docs'), { recursive: true });
+  const docs = ['<html>a</html>', '<html>b</html>'].map((html, i) => {
+    const body = Buffer.from(html), sha = createHash('sha256').update(body).digest('hex');
+    fs.writeFileSync(path.join(v3, 'docs', sha + '.bin'), body);
+    return { schema: 'findpitches-source-document-v1', content_sha256: sha, url: 'https://www.ukcraftfairs.com/craft-events/' + i + '/x',
+      final_url: 'https://www.ukcraftfairs.com/craft-events/' + i + '/x', fetched_at: '2026-10-10T09:00:00Z', http_status: 200,
+      content_type: 'text/html', bytes: body.length, producer_record_ids: ['fdx1_' + i], file: 'docs/' + sha + '.bin' };
+  });
+  const manifest = path.join(v3, 'docs-manifest.json');
+  fs.writeFileSync(manifest, JSON.stringify({ schema: 'findpitches-source-documents-manifest-v1', documents: docs }));
+  return { dir, manifest, docs };
+}
+
+test('source documents: exact bytes sent once, recorded only on matching receipt', async () => {
+  const { dir, manifest, docs } = docsFixture(), seen = [];
+  const fetcher = async (url, options) => {
+    assert.equal(new URL(url).pathname, '/source-documents');
+    const { environment, document } = JSON.parse(options.body); seen.push(document);
+    assert.equal(environment, 'shadow');
+    assert.equal(createHash('sha256').update(Buffer.from(document.body_base64, 'base64')).digest('hex'), document.content_sha256);
+    assert.equal(document.file, undefined);
+    return json({ accepted: true, content_sha256: document.content_sha256 });
+  };
+  const stateFile = path.join(dir, 'state.json');
+  const first = await uploadSourceDocuments({ manifestFile: manifest, ingestUrl: ORIGIN, token: TOKEN, stateFile, fetcher });
+  assert.deepEqual(first, { sent: 2, skipped: 0, pending: 0 });
+  const again = await uploadSourceDocuments({ manifestFile: manifest, ingestUrl: ORIGIN, token: TOKEN, stateFile, fetcher });
+  assert.deepEqual(again, { sent: 0, skipped: 0, pending: 0 });
+  assert.equal(seen.length, 2);
+  assert.deepEqual(seen[0].producer_record_ids, docs[0].producer_record_ids);
+});
+
+test('source documents: tampered file skipped; mismatched receipt rejected', async () => {
+  const { dir, manifest, docs } = docsFixture();
+  fs.writeFileSync(path.join(dir, 'v3', docs[0].file), 'tampered');
+  const fetcher = async (url, options) => json({ accepted: true, content_sha256: 'f'.repeat(64) });
+  await assert.rejects(uploadSourceDocuments({ manifestFile: manifest, ingestUrl: ORIGIN, token: TOKEN, stateFile: path.join(dir, 's.json'), fetcher }), /source_document_receipt_invalid/);
+});
+
+test('delivery cycle: document upload is off by default and never fails record delivery', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fpd-cycle-docs-'));
+  const tokenFile = path.join(dir, 'token.env'); fs.writeFileSync(tokenFile, 'V3_INGEST_TOKEN=' + TOKEN + '\n');
+  const input = path.join(dir, 'feed.jsonl');
+  fs.writeFileSync(input, JSON.stringify({ schema_version: 'findpitches-discovery-export-v1', opportunity_id: 'fdx1_0000', last_checked: '2026-10-10T09:00:00.000Z' }) + '\n');
+  const { fetcher } = mockIngest([]);
+  const base = { input_file: input, token_file: tokenFile, ingest_url: ORIGIN, environment: 'shadow', interval_seconds: 900 };
+  const off = await deliveryCycle({ ...base, state_dir: path.join(dir, 's1') }, { fetcher });
+  assert.equal(off.status, 'delivered'); assert.equal(off.source_documents, undefined);
+  const { manifest } = docsFixture();   // endpoint absent on the mock ingest -> 404
+  const on = await deliveryCycle({ ...base, state_dir: path.join(dir, 's2'), source_documents_manifest: manifest }, { fetcher });
+  assert.equal(on.status, 'delivered'); assert.deepEqual(on.source_documents, { error: 'source_document_http_404' });
+});

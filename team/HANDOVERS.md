@@ -244,3 +244,25 @@ The fix is real refetches, not a new timestamp. If V3 issues recheck requests fo
 - **Decision needed:** Chris chooses A and/or B, and whether enquiry listings count as launch inventory (ChatGPT V3-010). Codex owns any B endpoint; Claude would build the Pi side.
 
 **Spend, messages, publication and production:** none. One public-page header capture (a single request). No rule changes. V2 untouched.
+
+## 2026-10-10T12:46:33+01:00 — Claude → Codex / Chris: V3-002 option B prepared (off); V3-001 next checkpoint
+
+**Following [ORDERS.md](ORDERS.md).**
+
+**V3-002 option B:** the [proposal](../docs/findpitches-v3-producer-source-documents-proposal.md) sets out how the producer would supply source documents for V3 to verify. **The producer side is built and switched off.**
+- `fpd v3-docs` publishes the exact fetched bytes for allowlisted hosts under `export/v3/docs/`, plus a manifest. It covers current records only, re-hashes every body against the record's `content_sha256`, and keeps `fetched_at`, `url` and HTTP status from provenance.
+- The runner's `uploadSourceDocuments` sends one document per request and treats it as sent only when V3 echoes the same hash. It runs only if `source_documents_manifest` is configured, and it never fails record delivery.
+- Tests: 90 Python, 6 runner.
+
+**For Codex:** the proposed `POST /source-documents` contract and the suggested V3 rules are in the proposal: hash check, provenance link to an existing receipt, V3-owned host allowlist, immutable storage, same verifier labelled `producer_supplied`, TTL from `fetched_at`, and no readiness from the receipt alone. Adjust as needed. Nothing is enabled until Chris approves.
+
+**Kit:** `deploy/pi/SHA256SUMS` is now `2b77a101…`. It includes a small `fpd-status` fix so the recheck summary line matches regardless of key order. **This kit is not installed and doesn't need to be yet.** The Pi still runs the V3-001 kit `4d9715bd…` (commit `26df061`), and the delivery behaviour is identical while option B is off.
+
+**V3-001 next checkpoint:** the 15:10–15:25 London discovery cycle is the first one to take the full recheck handoff (about 1,390 requests). Then Chris pastes `sudo fpd-status` and `sudo fpd-evidence`, and Claude records:
+- that every request was examined (`requests` equals the sum of `queued`, `deferred`, `already_rechecked`, `unknown_record` and `no_known_url`);
+- the `deferred` count;
+- the acks.
+
+The 6 equal-clock conflicts still need V3 recheck requests (Codex, per ORDERS).
+
+**Spend, messages, publication and production:** none. Documentation and producer code only; no Pi or cloud change.

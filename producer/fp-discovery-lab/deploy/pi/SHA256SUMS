@@ -8,7 +8,7 @@ c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./bin/fpd-cycl
 e9e4d8dbbbb5f936bceef3725bf7b91f52ccab9dde630779d3ec5489aa8d2248  ./bin/fpd-offsite-setup
 52e87b6abfacd93aa16d1c83c51ad61c3e7bc34726c6a0d58b9733046ba82f49  ./bin/fpd-rechecks-handoff
 9ef9b6b1020b09b8fc1417bf67d08b697ccb9da2347275f4e591673fedcc36c0  ./bin/fpd-set-token
-a28fe9ab6cefdc7320305b9a3a2c7184d3a8c30b74aab58cae5314dcf3bdb36c  ./bin/fpd-status
+d6fb082e36cb0f09306b6ef5fca76ba5843b10204d260452a07453488526c35d  ./bin/fpd-status
 e86daada56b3fbff55f63d98fe718f915e523b49c7fead6b268bbb669ae8e39f  ./bin/fpd-v3-feed
 e5abb64814c021f45d42e4dea7f52ffafed85521ccd6342647e036f2a5b2b4f0  ./bin/fpd-v3-prune
 dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
@@ -16,10 +16,10 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 97ed72a42093d94b25ebf6b3663c2d3fca9d3a2ae3ea35ef5b7cd227b6bdde6f  ./config/fpd.env
 814066f7ef584b35a02049920319cb2023bf7d376b950df1096878d502359199  ./config/journald-fpd.conf
 863e756c1f5364b0a9ee61ea678c8a8e20bcf11cb619a3800ae34f149df73b61  ./config/v3-runner.json
-9f15d585ed3a5c4b19a2f2dd5b1bacb63943f51927d89a936c6c3e98b868a55a  ./delivery/producer-delivery.mjs
-aa1fab3a0be6fede352b8e65cf904ccc1e82e1883e286f6a7f660567570b0d67  ./delivery/producer-delivery.test.mjs
-bc63011da1da96c122ec6e6cafa7585536f7fb01dfcf099ab0f22e04a807b502  ./delivery/producer-runner.mjs
-6dddbf02cf63f4b8434bdf6daea43c2883fdce2f99a2146faee0d5eaa0a79a7b  ./fpd-app.tgz
+d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./delivery/producer-delivery.mjs
+6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./delivery/producer-delivery.test.mjs
+b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./delivery/producer-runner.mjs
+1411e366858fc9a91ea77beb25f59617ced9bdca58f58dffeb06ccdb9d809ad5  ./fpd-app.tgz
 750cec5dcab9184594bc41ba972c1378777e66ae273ff9eeafa7e19252d48b66  ./install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./lib/evidence.py
 be72e21a81f25777bfa44cdbd89e0955d3edd9f0f835c4b200dbd2e73aa49afb  ./systemd/fpd-acquire.service

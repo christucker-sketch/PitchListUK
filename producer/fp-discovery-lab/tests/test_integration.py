@@ -824,3 +824,43 @@ def test_v3_recheck_budget_caps_requeues_not_examination(tmp_path):
     conn.execute("UPDATE urls SET fetched_at=? WHERE state='done'", (time.time(),))
     r = queue_rechecks(conn, reqs, max_requests=1)
     assert r["requests"] == 3 and r.get("deferred", 0) == 0 and r["already_rechecked"] == 2 and r["queued"] == 1
+
+
+def test_v3_documents_publish_exact_fetched_bytes_for_allowlisted_hosts(tmp_path):
+    """V3-002 option B: only allowlisted hosts, only current records, bytes re-hashed, stale docs removed."""
+    import gzip, hashlib
+    from fpd.integration.v3docs import build_v3_documents
+    conn = dbm.connect(tmp_path / "e.sqlite")
+    body = b"<html><title>Craft fair</title>Contact the organiser</html>"
+    sha = hashlib.sha256(body).hexdigest()
+    rel = f"cache/{sha[:2]}/{sha}.gz"
+    (tmp_path / "cache" / sha[:2]).mkdir(parents=True)
+    with gzip.open(tmp_path / rel, "wb") as f:
+        f.write(body)
+    url = "https://www.ukcraftfairs.com/craft-events/1/x"
+    conn.execute("INSERT INTO urls(url,host,reg_domain,purpose,generator,created_at,fetched_at,http_status,state,"
+                 "content_hash,cache_path,final_url,content_type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                 (url, "www.ukcraftfairs.com", "ukcraftfairs.com", "candidate", "platform:ukcraftfairs", time.time(),
+                  time.time(), 200, "done", sha, rel, url, "text/html; Charset=windows-1252"))
+    src = lambda u, h: {"provenance": {"sources": [{"url": u, "content_sha256": h, "fetched_at": "2026-10-10T09:00:00Z",
+                                                     "http_status": 200}]}}
+    recs = [{"opportunity_id": "fdx1_a", "channel": "current", **src(url, sha)},
+            {"opportunity_id": "fdx1_b", "channel": "watch", **src(url, sha)},              # not current: ignored
+            {"opportunity_id": "fdx1_c", "channel": "current", **src("https://other.example/x", "f" * 64)},
+            {"opportunity_id": "fdx1_d", "channel": "current", **src("https://www.ukcraftfairs.com/2", "e" * 64)}]
+    root = tmp_path / "export"
+    r = build_v3_documents(conn, tmp_path, root, ["ukcraftfairs.com"], records=recs)
+    assert r["ok"] and r["documents"] == 1 and r["written"] == 1 and r["missing_body"] == 1
+    m = json.loads((root / "v3" / "docs-manifest.json").read_text())
+    d = m["documents"][0]
+    assert d["content_sha256"] == sha and d["producer_record_ids"] == ["fdx1_a"] and d["fetched_at"] == "2026-10-10T09:00:00Z"
+    assert (root / "v3" / d["file"]).read_bytes() == body
+    (root / "v3" / "docs" / ("0" * 64 + ".bin")).write_bytes(b"stale")
+    r = build_v3_documents(conn, tmp_path, root, ["ukcraftfairs.com"], records=recs)
+    assert r["kept"] == 1 and r["removed"] == 1
+    # a corrupted cache body is never published
+    with gzip.open(tmp_path / rel, "wb") as f:
+        f.write(b"tampered")
+    (root / "v3" / d["file"]).unlink()
+    r = build_v3_documents(conn, tmp_path, root, ["ukcraftfairs.com"], records=recs)
+    assert r["hash_mismatch"] == 1 and r["documents"] == 0

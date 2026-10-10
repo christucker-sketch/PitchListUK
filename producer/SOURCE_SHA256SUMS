@@ -6,7 +6,7 @@
 15e6657093d6738c2f1a69c09bdbb9dd45bf1d1e5147e4af109e65b85bb4751f  ./RESULTS.md
 acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.md
 3327a1fbed2675cbe274c12148441a62f86ea538ef64c1dfee5987833121a494  ./deploy/pi/README.md
-4d9715bd855e02a56588578122d7ee479da8bfae4b20667e919eb54f5bb61b4f  ./deploy/pi/SHA256SUMS
+2b77a101588c27655233f06ef506cd6160dac98de289fb1fc5ac572553b27e8a  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./deploy/pi/bin/fpd-backup
 c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./deploy/pi/bin/fpd-cycle
@@ -17,7 +17,7 @@ c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./deploy/pi/bi
 e9e4d8dbbbb5f936bceef3725bf7b91f52ccab9dde630779d3ec5489aa8d2248  ./deploy/pi/bin/fpd-offsite-setup
 52e87b6abfacd93aa16d1c83c51ad61c3e7bc34726c6a0d58b9733046ba82f49  ./deploy/pi/bin/fpd-rechecks-handoff
 9ef9b6b1020b09b8fc1417bf67d08b697ccb9da2347275f4e591673fedcc36c0  ./deploy/pi/bin/fpd-set-token
-a28fe9ab6cefdc7320305b9a3a2c7184d3a8c30b74aab58cae5314dcf3bdb36c  ./deploy/pi/bin/fpd-status
+d6fb082e36cb0f09306b6ef5fca76ba5843b10204d260452a07453488526c35d  ./deploy/pi/bin/fpd-status
 e86daada56b3fbff55f63d98fe718f915e523b49c7fead6b268bbb669ae8e39f  ./deploy/pi/bin/fpd-v3-feed
 e5abb64814c021f45d42e4dea7f52ffafed85521ccd6342647e036f2a5b2b4f0  ./deploy/pi/bin/fpd-v3-prune
 dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./deploy/pi/build-kit.sh
@@ -25,9 +25,9 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./deploy/pi/bu
 97ed72a42093d94b25ebf6b3663c2d3fca9d3a2ae3ea35ef5b7cd227b6bdde6f  ./deploy/pi/config/fpd.env
 814066f7ef584b35a02049920319cb2023bf7d376b950df1096878d502359199  ./deploy/pi/config/journald-fpd.conf
 863e756c1f5364b0a9ee61ea678c8a8e20bcf11cb619a3800ae34f149df73b61  ./deploy/pi/config/v3-runner.json
-9f15d585ed3a5c4b19a2f2dd5b1bacb63943f51927d89a936c6c3e98b868a55a  ./deploy/pi/delivery/producer-delivery.mjs
-aa1fab3a0be6fede352b8e65cf904ccc1e82e1883e286f6a7f660567570b0d67  ./deploy/pi/delivery/producer-delivery.test.mjs
-bc63011da1da96c122ec6e6cafa7585536f7fb01dfcf099ab0f22e04a807b502  ./deploy/pi/delivery/producer-runner.mjs
+d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./deploy/pi/delivery/producer-delivery.mjs
+6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./deploy/pi/delivery/producer-delivery.test.mjs
+b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./deploy/pi/delivery/producer-runner.mjs
 750cec5dcab9184594bc41ba972c1378777e66ae273ff9eeafa7e19252d48b66  ./deploy/pi/install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./deploy/pi/lib/evidence.py
 be72e21a81f25777bfa44cdbd89e0955d3edd9f0f835c4b200dbd2e73aa49afb  ./deploy/pi/systemd/fpd-acquire.service
@@ -43,7 +43,7 @@ e4d7be8671618a186e23da6d73b5a4f79f143e17e5c4a6851b257ff5a6642183  ./deploy/pi/sy
 6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279  ./fpd/__main__.py
 403895a163dcabdb245bd76535d562eca7f595d4b968e83e1740d6c8de54eed7  ./fpd/adapters.py
 1f006d1bcf2484c8274b3ae6c872bc548fd61e0040854d509ccf3516189a9f94  ./fpd/classify.py
-4bad75ae6bdab33a5a67d861265ecc33b4c8eabb946b368d522c38dee51d4928  ./fpd/cli.py
+9719bb47e21f5dfcc1e32d1b33be524ed348c0f4acec5ad8bf73811a174d29cc  ./fpd/cli.py
 6c29b18b5c8c183a381037c501cbd2197e6b4bf97cb073e7139cf10b9a80d1e1  ./fpd/config.py
 113336cc3f4d9178dfe62f2692a7c2261e88c9216de6933ae60ba2dd8d47909d  ./fpd/countries.py
 bfdd0a756a10a509edefc348e5a56b5b585559b2b97bdd1d1bd6b6b60e9722f1  ./fpd/dates.py
@@ -62,6 +62,7 @@ b36d5157356da83a05dabaddb55f595620aa42c066322e7ccb0727dc4adf86f3  ./fpd/integrat
 92d44f236eaec2b1c4a499da7a2dc598d62f9983c0d7b8770ae06b96ebc58268  ./fpd/integration/identity.py
 571dd0f3c8079594120c60beebf04dbe3e3b2ef4d94dd7d71e835cb8fd12582a  ./fpd/integration/records.py
 898fbce312f916fd51cd0f53c1f4f6ad0345939381fa961d8d806bb3d9780b68  ./fpd/integration/schema.py
+715bce0ad341f0ee940b58bb2ec36a2fce3f6fa0c5fbec59ebb9f92295a52381  ./fpd/integration/v3docs.py
 0d2c659345be8592391c129d66546a5c0456fb581b4709fe18e026600b7726bd  ./fpd/integration/v3feed.py
 aa1305a30db9af137e66860ba6fcb6c4983a54ade00f594087ef24f970872d1d  ./fpd/lexicon.py
 c5515167fc1033972c764fc1919c296dd72e1e94ea7eaa2677a4822cee7bfb78  ./fpd/parse.py
@@ -79,4 +80,4 @@ c5ed9703618abb3b8e49c6ea865787807006006ac0952e05403cf1548066fda8  ./fpd/storage.
 e3248e92aeafe19d3ebd33eb0f8145562ac5ed391e4ee60765325004a002b5e8  ./integration_export/README.md
 5cdda2583fae15c891bd8a807deae2196f2d3d7d041c5a03cc9af24855074c45  ./requirements.txt
 002a1f014569a909390e7d11680907f7e40baad261dd438a88554bc56bfa9bee  ./tests/test_core.py
-a583692c2a98d6bc2fd7dade7e62afea0c92ed600bdd5098d65f8f7fc3707a3b  ./tests/test_integration.py
+ce946f6f8518c5fffc82cc926af75bdaa9d151ec9d96d821fc116cc1df6fe28c  ./tests/test_integration.py

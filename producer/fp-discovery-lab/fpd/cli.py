@@ -355,6 +355,17 @@ def cmd_v3_feed(cfg, args):
         raise SystemExit(1)
 
 
+def cmd_v3_docs(cfg, args):
+    """Write <export>/v3/docs/ + docs-manifest.json: fetched source documents for allowlisted hosts (V3-002 option B;
+    prepared, not run by fpd-cycle until enabled)."""
+    from .integration.v3docs import build_v3_documents
+    conn = dbm.connect(cfg.db_path)
+    res = build_v3_documents(conn, cfg.data_dir, _export_root(cfg), args.hosts.split(","))
+    print(json.dumps(res))
+    if not res.get("ok"):
+        raise SystemExit(1)
+
+
 def cmd_health(cfg, args):
     from .integration.exporter import health
     conn = dbm.connect(cfg.db_path)
@@ -411,6 +422,9 @@ def main(argv=None):
     vf = sub.add_parser("v3-feed", help="write export/v3/feed.jsonl (current + lifecycle records for ids that left current)")
     vf.add_argument("--window-days", type=int, default=45)
     vf.set_defaults(func=cmd_v3_feed)
+    vd = sub.add_parser("v3-docs", help="publish fetched source documents for hosts V3 cannot fetch (prepared, off)")
+    vd.add_argument("--hosts", default="ukcraftfairs.com", help="comma-separated allowlist")
+    vd.set_defaults(func=cmd_v3_docs)
     rh = sub.add_parser("revisit-hubs", help="re-read directory/association hub pages older than N days")
     rh.add_argument("--older-than-days", type=float, default=7)
     rh.add_argument("--max-depth", type=int, default=1)

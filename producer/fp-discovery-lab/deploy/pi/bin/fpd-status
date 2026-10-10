@@ -14,7 +14,7 @@ if [[ -r $S/status.json ]]; then
   jq -c '{status, checked_at, last_success_at, records, accepted, rejected, inserted, duplicates, unchanged_export, pending_rechecks, acknowledged_rechecks, source_age_h: ((.source_age_seconds // 0)/3600|floor), freshness_warning, error, error_detail, consecutive_failures}' $S/status.json
 else echo "  (run with sudo to read delivery status)"; fi
 echo "== V3 recheck requests (last cycle)"
-journalctl -u fpd-acquire --no-pager -o cat 2>/dev/null | grep -E '^\{"(queued|unknown_record|already_rechecked|no_known_url|requests)' | tail -1 | sed 's/^/  /' || true
+journalctl -u fpd-acquire --no-pager -o cat 2>/dev/null | grep -F '"polled_at"' | tail -1 | sed 's/^/  /' || true
 echo "== V3 delivery source"
 echo "  $(jq -r '.input_directory + "/" + .file_pattern' /etc/fpd/v3-runner.json 2>/dev/null)$([[ -f /etc/fpd/v3-feed.enabled ]] && echo ' (feed: current + closures)')"
 [[ -f /srv/fpd/export/v3/feed-manifest.json ]] && echo "  feed: $(jq -c '{records, current, lifecycle}' /srv/fpd/export/v3/feed-manifest.json)"

@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-10T12:37:13+01:00
+Updated: 2026-10-10T12:46:33+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001, V3-002 (CLAIMED); V3-003 DONE (see [TASKS.md](../TASKS.md)).
@@ -37,10 +37,11 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
   - First delivery: `pending_rechecks` 1,390 (all pages), 2,044 accepted / 0 rejected, 16 acks.
   - Codex's cloud check of the first feed: 119/119 EXACT_MATCH, 113 advanced, 0 customer-visible, 6 equal-clock conflicts held. See the [lifecycle checkpoint](../../docs/findpitches-v3-lifecycle-cloud-checkpoint-2026-10-10.md).
   - Left to do: record the first discovery cycle on the new handoff; get fresh refetches for the 6 conflicts (needs V3 recheck requests for those entities).
-- **V3-002 (evidence published, decision pending):** see the [UKCraftFairs access note](../../docs/findpitches-v3-ukcraftfairs-access-2026-10-10.md).
-  - The 520 comes from malformed IIS headers.
-  - 159 enquiry-only records with retained HTML and hashes.
-  - Options: A, ask UKCF to fix the headers; B, producer-supplied documents verified by V3. Plus V3's enquiry-only policy. Waiting on Chris's decision.
+- **V3-002 (evidence published; option B prepared, held):**
+  - Root cause and holdings: [UKCraftFairs access note](../../docs/findpitches-v3-ukcraftfairs-access-2026-10-10.md).
+  - Option B path: [proposal](../../docs/findpitches-v3-producer-source-documents-proposal.md). Producer code is built and tested (90 Python + 6 runner tests) but off: no config key is set, and it is not wired into `fpd-cycle`.
+  - Waiting on: Chris (A and/or B; enquiry policy) and Codex (endpoint).
+- **Following [ORDERS.md](../ORDERS.md) (12:40):** V3-001 first. Next evidence is the 15:10 discovery cycle, the first on the new handoff.
 - Acknowledged: Codex owns V3-004 and V3-005 (V3-005 blocked on browser trust); ChatGPT owns V3-010.
 
 ## Evidence and commits
