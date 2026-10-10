@@ -1,6 +1,7 @@
 // Own isolated V3 resources only. No domain routes, live billing or publication.
 import fs from 'node:fs';import path from 'node:path';import {createRequire} from 'node:module';import {spawnSync} from 'node:child_process';import {fileURLToPath} from 'node:url';
 import {cloudflareClient,readCredentials} from './cloudflare-api.mjs';
+import {mailCredentialIsProxyReference} from '../../platform/findpitches-v3/customer-mail.mjs';
 const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 const NAME='findpitches-v3-customer-preview',DBNAME='findpitches-v3-customer-preview';
 export async function deployCustomerPreview({credentialsFile,stateDirectory,customerDirectory}) {
@@ -16,8 +17,10 @@ export async function deployCustomerPreview({credentialsFile,stateDirectory,cust
   if(!secrets.V3_STAGING_TOKEN||secrets.V3_STAGING_TOKEN!==existing.V3_STAGING_TOKEN)throw Error('source_projection_secret_mismatch');
   const stripeFile=path.join(customerDirectory,'stripe-test-private.json');let price=null,portalConfiguration=null;
   if(fs.existsSync(stripeFile)){const stripe=JSON.parse(fs.readFileSync(stripeFile,'utf8'));if(!stripe.STRIPE_SECRET_KEY?.startsWith('sk_test_')||!stripe.STRIPE_PRICE_ID?.startsWith('price_'))throw Error('stripe_test_credentials_required');secrets.STRIPE_SECRET_KEY=stripe.STRIPE_SECRET_KEY;price=stripe.STRIPE_PRICE_ID;portalConfiguration=stripe.STRIPE_PORTAL_CONFIGURATION_ID??null;}
-  const mailFile=path.join(customerDirectory,'mail-private.json');let sender=null;
-  if(fs.existsSync(mailFile)){const mail=JSON.parse(fs.readFileSync(mailFile,'utf8'));if(!mail.V3_EMAIL_API_KEY||! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.V3_EMAIL_FROM??''))throw Error('independent_mail_settings_required');secrets.V3_EMAIL_API_KEY=mail.V3_EMAIL_API_KEY;sender=mail.V3_EMAIL_FROM;}
+  const mailFile=path.join(customerDirectory,'mail-private.json'),pendingMailFile=path.join(customerDirectory,'mail-pending.json');let sender=null;
+  if(mailCredentialIsProxyReference(secrets.V3_EMAIL_API_KEY))delete secrets.V3_EMAIL_API_KEY;
+  if(fs.existsSync(pendingMailFile)){const pending=JSON.parse(fs.readFileSync(pendingMailFile,'utf8'));if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(pending.V3_EMAIL_FROM??''))sender=pending.V3_EMAIL_FROM;}
+  if(fs.existsSync(mailFile)){const mail=JSON.parse(fs.readFileSync(mailFile,'utf8'));if(!mail.V3_EMAIL_API_KEY||mailCredentialIsProxyReference(mail.V3_EMAIL_API_KEY)||! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.V3_EMAIL_FROM??''))throw Error('raw_worker_mail_credential_required');secrets.V3_EMAIL_API_KEY=mail.V3_EMAIL_API_KEY;sender=mail.V3_EMAIL_FROM;}
   fs.writeFileSync(secretFile,JSON.stringify(secrets),{mode:0o600});
   const config={name:NAME,main:path.join(ROOT,'platform/findpitches-v3/customer-worker.mjs'),compatibility_date:'2026-10-01',workers_dev:true,preview_urls:false,routes:[],limits:{cpu_ms:30000},
     assets:{directory:path.join(ROOT,'web/findpitches-v3-web/public'),binding:'ASSETS',run_worker_first:true,html_handling:'none',not_found_handling:'none'},
@@ -34,7 +37,7 @@ export async function deployCustomerPreview({credentialsFile,stateDirectory,cust
   const deployed=await api.accountRequest('/workers/scripts/'+NAME+'/settings'),bindings=deployed.bindings;
   if(bindings.filter(b=>b.type==='d1').length!==1||bindings.find(b=>b.name==='V3_CUSTOMER_DB')?.id!==state.database_id||bindings.find(b=>b.name==='V3_READY_API')?.service!=='findpitches-v3-api-shadow')throw Error('customer_binding_verification_failed');
   const subdomain=await api.accountRequest('/workers/subdomain');state.url='https://'+NAME+'.'+subdomain.subdomain+'.workers.dev';state.deployed_at=new Date().toISOString();fs.writeFileSync(resourceFile,JSON.stringify(state,null,2)+'\n',{mode:0o600});
-  return {worker:NAME,database:DBNAME,url:state.url,publication_enabled:false,production_cutover_enabled:false,billing_mode:config.vars.V3_STRIPE_MODE,email_configured:Boolean(sender)};
+  return {worker:NAME,database:DBNAME,url:state.url,publication_enabled:false,production_cutover_enabled:false,billing_mode:config.vars.V3_STRIPE_MODE,email_sender_configured:Boolean(sender),email_credential_written:Boolean(secrets.V3_EMAIL_API_KEY),native_email_verification_required:true};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   const args=process.argv.slice(2),get=k=>args[args.indexOf(k)+1];try{console.log(JSON.stringify(await deployCustomerPreview({credentialsFile:get('--credentials'),stateDirectory:get('--state-dir'),customerDirectory:get('--customer-dir')})));}catch(e){console.error(/^[a-z_]+$/.test(e.message)?e.message:'customer_preview_deploy_failed');process.exitCode=1;}

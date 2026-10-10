@@ -33,10 +33,27 @@ test('CSRF requires a signed token and the same origin; rate caps are durable',a
   await rateLimit(d,'user',{limit:1,now:now()});await assert.rejects(rateLimit(d,'user',{limit:1,now:now()}),/rate_limited/);
   assert.deepEqual(await readBody(new Request('https://preview.example.org/api/v3/session/logout',{method:'POST',body:''})),{});
 });
+test('invited one-use mail links grant a restricted preview in a fresh browser; invalid links grant nothing',async t=>{
+  const d=db(t),env=environment(d,{items:[]}),origin='https://preview.example.org';
+  const token=await issueChallenge(d,{email:'invited@example.org',next:'/account.html',now:now()});
+  const verify=()=>worker.fetch(new Request(origin+'/api/v3/session/verify?token='+token),env);
+  const result=await verify();assert.equal(result.status,303);assert.equal(result.headers.get('location'),'/account.html');
+  const setCookies=result.headers.getSetCookie();assert.equal(setCookies.length,2);
+  for(const c of setCookies)assert.match(c,/Path=\/; Secure; SameSite=Lax.*HttpOnly/);
+  const cookieHeader=setCookies.map(c=>c.split(';')[0]).join('; ');
+  const sessionResponse=await worker.fetch(new Request(origin+'/api/v3/session',{headers:{cookie:cookieHeader}}),env);
+  assert.equal((await sessionResponse.json()).signed_in,true);
+  const replay=await verify();assert.equal(replay.headers.get('location'),'/account.html?signin=expired');assert.equal(replay.headers.getSetCookie().length,0);
+  const invalid=await worker.fetch(new Request(origin+'/api/v3/session/verify?token=invalid'),env);assert.equal(invalid.headers.getSetCookie().length,0);
+  const unauthorised=await worker.fetch(new Request(origin+'/api/v3/opportunities?market=GB'),env);assert.equal(unauthorised.status,401);
+  assert.equal(d.sqlite.prepare('SELECT COUNT(*) AS n FROM preview_access').get().n,1);
+});
 test('native mail failures cannot claim delivery; successful links remain one-use and secret-free in responses',async t=>{
   const d=db(t),env={V3_CUSTOMER_DB:d,V3_EMAIL_API_KEY:'mail_fixture'},request=new Request('https://preview.example.org/api/v3/session/link',{method:'POST'}),body={email:'reader@example.com',next:'//external.example.org'};
   await assert.rejects(requestLogin(request,env,body,{now:now(),fetcher:()=>{throw Error('must_not_send');}}),/service_unavailable/);assert.equal(d.sqlite.prepare('SELECT COUNT(*) AS n FROM login_challenges').get().n,0);
-  env.V3_EMAIL_FROM='login@sender.example.org';await assert.rejects(requestLogin(request,env,body,{now:now(),fetcher:async()=>Response.json({data:{succeeded:0}})}),/service_unavailable/);assert.equal(d.sqlite.prepare('SELECT COUNT(*) AS n FROM login_challenges').get().n,0);
+  env.V3_EMAIL_FROM='login@sender.example.org';env.V3_EMAIL_API_KEY='__SECRET_FIXTURE_REFERENCE__';
+  await assert.rejects(requestLogin(request,env,body,{now:now(),fetcher:()=>{throw Error('must_not_send');}}),/service_unavailable/);assert.equal(d.sqlite.prepare('SELECT COUNT(*) AS n FROM login_challenges').get().n,0);
+  env.V3_EMAIL_API_KEY='mail_fixture';await assert.rejects(requestLogin(request,env,body,{now:now(),fetcher:async()=>Response.json({data:{succeeded:0}})}),/service_unavailable/);assert.equal(d.sqlite.prepare('SELECT COUNT(*) AS n FROM login_challenges').get().n,0);
   let token;const response=await requestLogin(request,env,body,{now:now(),fetcher:async(url,options)=>{assert.equal(url,'https://api.smtp2go.com/v3/email/send');const mail=JSON.parse(options.body);assert.deepEqual(mail.to,[body.email]);token=new URL(mail.text_body.split('\n')[1]).searchParams.get('token');return Response.json({data:{succeeded:1}});}});
   assert.deepEqual(response,{sent:true});assert.equal((await consumeChallenge(d,token,now())).next,'/account.html');await assert.rejects(consumeChallenge(d,token,now()),/invalid_link/);
 });

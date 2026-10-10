@@ -18,4 +18,6 @@ The API client calls only same-origin `/api/v3/*`. Native passwordless challenge
 
 The user explicitly permits reuse of existing Stripe and SMTP2GO accounts. Provider-account reuse does not permit legacy runtime imports or shared legacy session/customer storage.
 
+As of 10 October, `hello@findpitches.com` is backed by verified SMTP2GO domain configuration. The environment secret is proxy-backed and cannot be copied as a raw Worker credential; direct `V3_EMAIL_API_KEY` installation remains necessary. Native mail rejects proxy references, and status distinguishes that failure from configuration. A valid one-use link issued through the restricted preview can establish its preview cookie in a fresh browser; requesting links remains private. Invalid or replayed tokens never open inventory.
+
 Tests distinguish local fixture checks from real deployed source-proof inventory. `tests/native-preview.py` exercises real V3 IDs and data; the local stub smoke runner does not prove commercial quality. The environment's browser relay retains upstream HTTPS verification and is not proof of direct Chromium TLS or native browser cookie scope.

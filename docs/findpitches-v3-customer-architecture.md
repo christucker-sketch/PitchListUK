@@ -1,6 +1,6 @@
 # V3 customer architecture — owned Build 4 preview
 
-Current implementation: 9 October 2026. The authoritative standalone handover is now copied into `web/findpitches-v3-web`; the native V3 customer service is deployed as a restricted shadow preview. [Current verification report](findpitches-v3-customer-preview-2026-10-09.md) replaces the earlier preparation-only conclusions. [The 16:38 checkpoint](findpitches-v3-customer-preparation-2026-10-09.md) remains historical evidence.
+Current implementation: 10 October 2026. The authoritative standalone handover is now copied into `web/findpitches-v3-web`; the native V3 customer service is deployed as a restricted shadow preview. [The 9 October verification report](findpitches-v3-customer-preview-2026-10-09.md) replaces the earlier preparation-only conclusions. [The native-mail follow-up](findpitches-v3-email-setup-2026-10-10.md) records current credential and invitation validation. [The 16:38 checkpoint](findpitches-v3-customer-preparation-2026-10-09.md) remains historical evidence.
 
 ## Runtime and resource map
 
@@ -15,7 +15,7 @@ flowchart LR
   Customer --> Customers[(Separate customer-preview D1)]
   Customer --> Stripe[Existing Stripe account: TEST only]
   Stripe -->|Independent V3 signed TEST webhook| Customer
-  Customer -. pending accessible existing key and verified sender .-> Email[Existing SMTP2GO account]
+  Customer -. verified sender; direct Worker key required .-> Email[Existing SMTP2GO account]
 ```
 
 | Resource | Implemented responsibility | Isolation |
@@ -26,7 +26,7 @@ flowchart LR
 | `V3_READY_API` service binding | Private `/staging/catalogue` source-proof snapshot | V3 API only; separate server-only staging credential |
 | Own session/operator secrets | Signed CSRF, opaque native sessions and restricted preview grants | Dedicated V3 bindings; never browser assets or local storage |
 | Existing Stripe TEST key/approved GBP £4.99 monthly price | Seven-day trial Checkout, canonical entitlement, separate test portal and test webhook | No live key/customer/subscription/price changes or production endpoint redirection |
-| Existing SMTP2GO account, V3-owned key/sender bindings | Native passwordless email service | No runtime lookup from V1; accessible existing key and sender verification required |
+| Existing SMTP2GO account, V3-owned key/sender bindings | Native passwordless email service | Sender domain verified; environment proxy reference cannot become a Worker key. Direct native key installation and real delivery proof remain pending; no V1 lookup |
 
 Only `public/` is deployed. Supplied `dev/` fixtures and stub server are retained as local contract/UI test material. The fixture's 1,903 rows are never imported as customer inventory. Server taxonomy and SEO are physically owned copies; no runtime import from the dev stub is allowed. CI bundles all nine owned Workers and checks runtime boundaries.
 
@@ -64,6 +64,8 @@ The implemented contract is [V3_CUSTOMER_API.md](../web/findpitches-v3-web/contr
 Customer migrations create `customers`, `login_challenges`, `customer_sessions`, `preview_access`, `customer_rate_limits`, `stripe_customers`, `stripe_subscriptions`, `checkout_attempts`, `checkout_reservations`, `stripe_webhook_receipts`, `saved_opportunities`, `customer_alerts`, `customer_inbox`, `customer_operation_events`, `preview_inventory_state` and `preview_inventory_changes`. No live subscriber records have been copied.
 
 Session and preview cookies use `__Host-`, Secure, HttpOnly, SameSite=Lax and Path=/. Storage keeps only token hashes. Challenges expire after 15 minutes and consume atomically once; sessions expire after seven days and revoke server-side. Browser writes require an HMAC-signed cookie/header token and exact same origin. Responses use private/no-store, restrictive CSP and noindex; shadow robots disallow crawling and sitemaps contain no discoverable listings.
+
+GET challenge verification is reachable without an existing preview cookie so an invited mailbox can open its one-use link in another browser. Challenges are still issued only through authorised preview requests or its operator. Only a successfully consumed challenge establishes a bounded preview grant; invalid/replayed tokens grant nothing. Verification has a durable 30-per-minute IP limit. The operator-only mail-provider check verifies the deployed key without sending mail or exposing credentials.
 
 ## Stripe entitlement and test boundaries
 

@@ -5,6 +5,7 @@ import {customerAccess,plans,checkout,confirmCheckout,portal,webhook,stripeClien
 import {readCatalogue,present,search,marketOf,markets,regions,resolveLocation,inventory,ancestors,recordInventoryChanges} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
 import {budgetDay} from './serper-usage.mjs';
+import {verifyNativeMailSettings,mailCredentialIsProxyReference} from './customer-mail.mjs';
 
 const CSP="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'";
 const headers={'Content-Security-Policy':CSP,'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','Strict-Transport-Security':'max-age=31536000','X-Robots-Tag':'noindex, nofollow','Cache-Control':'private, no-store'};
@@ -38,7 +39,14 @@ async function api(request,env,now) {
   if(method==='GET'&&p==='/session')return response(await session(db,env,customer,now),200,[cookie('fp_csrf',await csrfValue(env),604800,false)]);
   if(method==='POST'&&p==='/session/link')return response(await requestLogin(request,env,body,{now}));
   if((method==='GET'||method==='POST')&&p==='/session/verify') {
-    try{const result=await consumeChallenge(db,method==='GET'?q.token:body.token,now);return method==='GET'?text('',303,{Location:result.next,'Set-Cookie':result.cookie}):response(await session(db,env,result.customer,now),200,[result.cookie]);}
+    try{const result=await consumeChallenge(db,method==='GET'?q.token:body.token,now);
+      if(method==='GET'){
+        // Challenges can only be issued inside an authorised preview or by its
+        // operator. Their one-use proof lets an invited mailbox open the preview
+        // in a different browser, without putting operator credentials in mail.
+        const redirect=text('',303,{Location:result.next});redirect.headers.append('Set-Cookie',result.cookie);redirect.headers.append('Set-Cookie',await grantPreview(db,now));return redirect;
+      }
+      return response(await session(db,env,result.customer,now),200,[result.cookie]);}
     catch(e){if(method==='GET'&&e.code==='invalid_link')return text('',303,{Location:'/account.html?signin=expired'});throw e;}
   }
   if(method==='POST'&&p==='/session/logout')return response({},200,[await logout(request,db,now)]);
@@ -121,14 +129,22 @@ export default {
     try {
       if(p==='/health'&&request.method==='GET'){await stmt(db,'SELECT COUNT(*) AS n FROM customers').first();return response({service:'findpitches-v3-customer-preview',mode:'restricted_shadow_preview',publication_enabled:false,production_cutover_enabled:false,frontend:'Claude Build 4',frontend_source_sha256:FRONTEND_SOURCE});}
       if(p==='/api/v3/stripe/webhook'&&request.method==='POST')return response(await webhook(request,env,{now}));
+      if(p==='/api/v3/session/verify'&&request.method==='GET'){
+        await rateLimit(db,'verify/ip/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:30,seconds:60,now});
+        return await api(request,env,now);
+      }
       if(p.startsWith('/preview/')) {
         if(!await operator(request,env))throw customerError('forbidden',403);
         if(p==='/preview/access'&&request.method==='POST')return response({restricted_preview:true},200,[await grantPreview(db,now)]);
+        if(p==='/preview/email/verify'&&request.method==='POST'){
+          try{return response(await verifyNativeMailSettings(env));}
+          catch(e){return response({ok:false,error:'service_unavailable',diagnostic:e.mailDiagnostic??'provider_unavailable'},503);}
+        }
         if(p==='/preview/test-login'&&request.method==='POST'){const b=await readBody(request);if(!/^[a-z0-9.+_-]+@example\.(com|org|net)$/.test(b.email??''))throw customerError('validation');const token=await issueChallenge(db,{email:b.email,next:b.next,now});return response({dev_link:'/api/v3/session/verify?token='+token});}
         if(p==='/preview/stripe/validate'&&request.method==='POST'){const price=await stripeClient(env)('/prices/'+encodeURIComponent(env.STRIPE_PRICE_ID));return response({test_mode:price.livemode===false,price_valid:price.active&&price.currency==='gbp'&&price.unit_amount===499&&price.recurring?.interval==='month',currency:price.currency,unit_amount:price.unit_amount,interval:price.recurring?.interval});}
         if(p==='/preview/sync'&&request.method==='POST'){const catalogue=await readCatalogue(env,now);return response(await recordInventoryChanges(db,catalogue.rows,now));}
         if(p==='/preview/status'&&request.method==='GET'){const snapshot=await readCatalogue(env,now),counts=await stmt(db,`SELECT (SELECT COUNT(*) FROM customers) AS customers,(SELECT COUNT(*) FROM customer_sessions WHERE revoked_at IS NULL AND expires_at>?) AS active_sessions,(SELECT COUNT(*) FROM stripe_webhook_receipts WHERE processed_at IS NULL) AS pending_webhooks,(SELECT COUNT(*) FROM customer_alerts) AS stored_alerts,(SELECT COUNT(*) FROM preview_inventory_state WHERE visible=1) AS tracked_visible,(SELECT COUNT(*) FROM preview_inventory_changes) AS inventory_changes`,now).first();
-          return response({service:'findpitches-v3-customer-preview',frontend:{design:'Claude Build 4',source_sha256:FRONTEND_SOURCE,owned_by_v3:true},api_target:'V3_READY_API service binding',inventory:{shadow_ready:snapshot.shadow_ready,preview_eligible:snapshot.rows.length,producer_policy_withheld:snapshot.producer_policy_withheld,customer_visible_ready:0},auth:{native_sessions:true,email_configured:Boolean(env.V3_EMAIL_API_KEY&&env.V3_EMAIL_FROM)},billing:{mode:env.V3_STRIPE_MODE??'unconfigured',checkout_enabled:env.V3_CHECKOUT_ENABLED==='test',webhook_configured:Boolean(env.STRIPE_WEBHOOK_SECRET),portal_configured:Boolean(env.STRIPE_PORTAL_CONFIGURATION_ID)},alerts:{storage:true,email_delivery:false},publication_enabled:false,production_cutover_enabled:false,legacy_dependencies:[],counts});}
+          return response({service:'findpitches-v3-customer-preview',frontend:{design:'Claude Build 4',source_sha256:FRONTEND_SOURCE,owned_by_v3:true},api_target:'V3_READY_API service binding',inventory:{shadow_ready:snapshot.shadow_ready,preview_eligible:snapshot.rows.length,producer_policy_withheld:snapshot.producer_policy_withheld,customer_visible_ready:0},auth:{native_sessions:true,email_configured:Boolean(env.V3_EMAIL_API_KEY&&env.V3_EMAIL_FROM&&!mailCredentialIsProxyReference(env.V3_EMAIL_API_KEY))},billing:{mode:env.V3_STRIPE_MODE??'unconfigured',checkout_enabled:env.V3_CHECKOUT_ENABLED==='test',webhook_configured:Boolean(env.STRIPE_WEBHOOK_SECRET),portal_configured:Boolean(env.STRIPE_PORTAL_CONFIGURATION_ID)},alerts:{storage:true,email_delivery:false},publication_enabled:false,production_cutover_enabled:false,legacy_dependencies:[],counts});}
         throw customerError('not_found',404);
       }
       if(!await previewAllowed(request,db,now))throw customerError('preview_access_required',401);

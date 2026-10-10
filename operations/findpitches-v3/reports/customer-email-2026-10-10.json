@@ -1,0 +1,95 @@
+{
+  "schema": "findpitches-v3-customer-mail-checkpoint-v1",
+  "as_of": "2026-10-10T08:57:00.219Z",
+  "worker": "findpitches-v3-customer-preview",
+  "sender": "hello@findpitches.com",
+  "provider": {
+    "schema": "findpitches-v3-existing-mail-verification-v2",
+    "as_of": "2026-10-10T08:55:17.218Z",
+    "existing_account_reused": true,
+    "sender": "hello@findpitches.com",
+    "sender_verified": true,
+    "verification": "existing_verified_domain",
+    "provider_configuration_read_access": true,
+    "provider_verification_pending": false,
+    "worker_binding_ready": false,
+    "credential_transport": "environment_proxy",
+    "configuration_reads": {
+      "domain/view": "available",
+      "single_sender_emails/view": "permission_denied"
+    },
+    "new_senders_created": 0,
+    "emails_sent": 0,
+    "native_delivery_tested": false
+  },
+  "native_provider_check": {
+    "status": 503,
+    "diagnostic": "proxy_reference_is_not_worker_credential",
+    "credential_validated": false
+  },
+  "native_mail_configured": false,
+  "alerts_email_delivery": false,
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "billing_mode": "test",
+  "emails_sent": 0,
+  "real_delivery_verified": false,
+  "authorised_test_recipient_present": true,
+  "test_message_pending": true,
+  "checks": {
+    "full_v3_suite": {
+      "passed": 210,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 110652.504303
+    },
+    "focused_customer_and_mail": {
+      "passed": 21,
+      "failed": 0
+    },
+    "runtime_boundaries": "passed",
+    "deployed_invitation": {
+      "schema": "findpitches-v3-mail-invitation-control-v1",
+      "as_of": "2026-10-10T08:57:36.024Z",
+      "fresh_browser_granted": true,
+      "native_session_verified": true,
+      "logout_revoked": true,
+      "one_use_replay_refused": true,
+      "emails_sent": 0,
+      "reserved_example_accounts_added": 1
+    },
+    "preservation": {
+      "schema": "findpitches-v3-customer-preview-preservation-v1",
+      "as_of": "2026-10-10T09:00:31.192Z",
+      "receipts_compared": 15811,
+      "source_facts_compared": 108819,
+      "existing_identities_compared": 7077,
+      "destructive_source_mutations": 0,
+      "existing_identity_changes": 0,
+      "identity_comparison_key": "retained entity.id",
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "publication_api_denied": true,
+      "publication_enabled": false,
+      "paid_queries_today": 0,
+      "paid_bulk_enabled": false,
+      "live_v1_deployment_unchanged": true,
+      "v2_schedules": [],
+      "v2_schedules_unchanged": true
+    }
+  },
+  "guardrails": {
+    "publication_enabled": false,
+    "production_cutover_enabled": false,
+    "paid_acquisition_enabled": false,
+    "live_billing_enabled": false,
+    "bulk_email_enabled": false
+  },
+  "reserved_example_accounts_total": 7,
+  "environment_start_guidance": {
+    "mail_proxy_limit_documented": true,
+    "saved": true,
+    "requires_publish_for_future_environment_version": true,
+    "current_worker_key_fix_does_not_require_environment_restart": true
+  }
+}

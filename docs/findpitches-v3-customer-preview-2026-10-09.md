@@ -1,5 +1,7 @@
 # FindPitches V3 — commercial preview checkpoint
 
+This is the 9 October inventory checkpoint. [The 10 October native-mail follow-up](findpitches-v3-email-setup-2026-10-10.md) records verified provider-domain configuration, the remaining direct Worker-secret transfer and the fresh-browser invitation checks; its counts do not replace this historical inventory snapshot.
+
 **19:13 Europe/London, 9 October 2026 (18:13:56 UTC inventory checkpoint).** V3 now owns Claude’s full Build 4 frontend and serves real source-proved inventory through its own API, sessions and separate customer database. A restricted deployed preview and real Stripe TEST journeys pass. **Public launch, live billing/customer movement, publication, production cutover and paid acquisition remain disabled.**
 
 ## Commercial inventory
