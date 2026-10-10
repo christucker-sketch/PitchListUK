@@ -1,0 +1,9 @@
+# Only the published contract files belong in this directory.
+.staging/
+*.tmp
+.*.tmp
+*.sqlite
+*.db
+*.html
+*.log
+.env

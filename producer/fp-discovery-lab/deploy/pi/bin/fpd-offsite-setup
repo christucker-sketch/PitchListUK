@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# One-time set-up of the off-site backup destination (an rclone remote named "fpdoffsite").
+# Free options that need no new bills:
+#   * Backblaze B2 (10 GB free): create a bucket and an application key limited to that bucket; rclone type "b2".
+#   * A personal Google Drive / OneDrive (not the work tenant); rclone types "drive" / "onedrive" (needs a browser once:
+#     run  rclone authorize "drive"  on any computer with rclone, paste the token here).
+#   * Another machine you own over SFTP; rclone type "sftp".
+# Recommended: create the provider remote first (e.g. "b2raw"), then a "crypt" remote named "fpdoffsite" that wraps
+# it (b2raw:your-bucket/fpd), and keep the crypt passwords in your password manager. Without them the backup is
+# unreadable, which is the point.
+set -euo pipefail
+[[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
+command -v rclone >/dev/null || { apt-get update -qq && apt-get install -y -qq rclone >/dev/null; }
+CONF=/etc/fpd/rclone.conf; touch "$CONF"; chmod 0600 "$CONF"
+sed -n '2,12p' "$0"
+echo; echo "Starting rclone config (config file: $CONF). Create the remote named: fpdoffsite"; echo
+rclone config --config "$CONF"
+chmod 0600 "$CONF"
+rclone --config "$CONF" listremotes | grep -qx 'fpdoffsite:' || { echo "no remote named fpdoffsite: found; run this again" >&2; exit 1; }
+rclone --config "$CONF" mkdir fpdoffsite:fpd
+echo "test upload..."; systemctl start fpd-offsite-backup.service && journalctl -u fpd-offsite-backup -n 5 --no-pager -o cat
+cat /srv/fpd/backups/offsite-status.json

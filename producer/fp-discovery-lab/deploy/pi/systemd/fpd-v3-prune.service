@@ -1,0 +1,13 @@
+[Unit]
+Description=Prune old V3 delivery export copies and checkpoints
+RequiresMountsFor=/srv/fpd
+
+[Service]
+Type=oneshot
+User=fpdv3
+Group=fpdv3
+ExecStart=/opt/fpd/bin/fpd-v3-prune
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/srv/fpd/delivery

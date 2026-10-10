@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily FindPitches off-site backup (after the nightly DB backup)
+
+[Timer]
+OnCalendar=*-*-* 05:40:00
+RandomizedDelaySec=20min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

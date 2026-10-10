@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the FindPitches discovery cycle every 3 hours
+
+[Timer]
+OnCalendar=*-*-* 00/3:10:00
+RandomizedDelaySec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

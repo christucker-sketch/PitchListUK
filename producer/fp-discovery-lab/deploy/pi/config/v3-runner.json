@@ -1,0 +1,9 @@
+{
+  "input_directory": "/srv/fpd/export/full",
+  "file_pattern": "current.jsonl",
+  "ingest_url": "https://findpitches-v3-ingest-shadow.ctucker.workers.dev",
+  "token_file": "/etc/fpd/v3-ingest.env",
+  "state_dir": "/srv/fpd/delivery/state",
+  "environment": "shadow",
+  "interval_seconds": 900
+}

@@ -1,0 +1,17 @@
+[Unit]
+Description=FindPitches nightly database backup
+RequiresMountsFor=/srv/fpd
+
+[Service]
+Type=oneshot
+User=fpd
+Group=fpd
+EnvironmentFile=/etc/fpd/fpd.env
+ExecStart=/opt/fpd/bin/fpd-backup
+Nice=15
+IOSchedulingClass=idle
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/srv/fpd/backups /srv/fpd/data

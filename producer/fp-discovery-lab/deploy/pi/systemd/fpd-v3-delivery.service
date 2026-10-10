@@ -1,0 +1,31 @@
+[Unit]
+Description=FindPitches V3 structured delivery (ingest-only token, shadow environment)
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/srv/fpd
+ConditionPathExists=/etc/fpd/v3-ingest.env
+
+[Service]
+Type=simple
+User=fpdv3
+Group=fpdv3
+ExecStart=/opt/node22/bin/node /opt/fpd/delivery/producer-runner.mjs --config /etc/fpd/v3-runner.json --loop
+Restart=always
+RestartSec=120
+Nice=5
+MemoryMax=300M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+ReadWritePaths=/srv/fpd/delivery
+ReadOnlyPaths=/srv/fpd/export
+InaccessiblePaths=/srv/fpd/data /srv/fpd/backups
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,39 @@
+#!/opt/fpd/venv/bin/python
+"""Check the acquisition platforms and the V3 ingest endpoint answer from this network, using the engine's own
+fetcher (same User-Agent, robots handling and malformed-header fallback as real crawls). No credentials used."""
+import asyncio
+import sys
+sys.path.insert(0, "/opt/fpd/app")
+from fpd.config import Config  # noqa: E402
+from fpd.fetch import Fetcher  # noqa: E402
+
+TARGETS = {
+    "eventeny": "https://www.eventeny.com/robots.txt",
+    "ukcraftfairs": "https://www.ukcraftfairs.com/robots.txt",
+    "localstalls": "https://localstalls.com/robots.txt",
+    "cluemart": "https://cluemart.co.nz/robots.txt",
+    "v3-ingest (expect 401)": "https://findpitches-v3-ingest-shadow.ctucker.workers.dev/rechecks",
+}
+
+
+async def main() -> int:
+    f = Fetcher(Config.from_env())
+    bad = 0
+    try:
+        for name, url in TARGETS.items():
+            r = await f.get(url, check_robots=False)
+            code = r.status or r.error
+            ok = r.status == 401 if "ingest" in name else r.status == 200
+            note = " (lenient client: site sends malformed headers)" if ok and urlhost(url) in f.lenient_hosts else ""
+            bad += not ok
+            print(f"  {'ok ' if ok else 'BAD'} {name:24} {code}{note}")
+    finally:
+        await f.close()
+    return 1 if bad else 0
+
+
+def urlhost(u: str) -> str:
+    return u.split("/")[2]
+
+
+sys.exit(asyncio.run(main()))

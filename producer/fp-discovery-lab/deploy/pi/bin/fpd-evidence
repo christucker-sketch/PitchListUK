@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Evidence pack for the V3 hand-over (read-only): recheck lifecycle, UK/country breakdown, delivery receipts,
+# dedupe candidates, the current export files, service/boot/backup state. Never includes the V3 token.
+#   sudo fpd-evidence            -> ~/fpd-evidence-<stamp>.tgz
+#   sudo fpd-evidence --with-db  -> also ~/fpd-db-<stamp>.sqlite.zst (newest nightly backup, an off-Pi copy)
+set -euo pipefail
+[[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
+U=${SUDO_USER:-root}; H=$(getent passwd "$U" | cut -d: -f6); STAMP=$(date -u +%Y%m%dT%H%MZ)
+W=$(mktemp -d /tmp/fpd-evidence.XXXXXX); O="$W/fpd-evidence-$STAMP"; mkdir -p "$O/export" "$O/delivery"
+trap 'rm -rf "$W"' EXIT
+E=/srv/fpd/export; S=/srv/fpd/delivery/state
+echo "collecting (read-only)..."
+/opt/fpd/venv/bin/python /opt/fpd/kit/lib/evidence.py "$O"
+for f in full/current.jsonl full/watch.jsonl full/held.jsonl full/current-manifest.json latest.json metrics/latest.json v3/feed-manifest.json; do
+  [[ -f "$E/$f" ]] && cp "$E/$f" "$O/export/$(echo "$f" | tr / _)"
+done
+for f in status.json rechecks.json; do [[ -f "$S/$f" ]] && cp "$S/$f" "$O/delivery/$f"; done
+{
+  echo "== host"; hostname; uptime; cat /proc/device-tree/model 2>/dev/null | tr -d '\0'; echo; . /etc/os-release; echo "$PRETTY_NAME"
+  command -v vcgencmd >/dev/null && { vcgencmd get_throttled; vcgencmd measure_temp; }
+  echo "== boots"; journalctl --list-boots --no-pager 2>/dev/null | tail -10
+  echo "== units"
+  for u in fpd-acquire.timer fpd-acquire.service fpd-v3-delivery.service fpd-backup.timer fpd-v3-prune.timer fpd-offsite-backup.timer; do
+    printf '%-28s enabled=%-9s active=%s\n' "$u" "$(systemctl is-enabled $u 2>/dev/null)" "$(systemctl is-active $u 2>/dev/null)"; done
+  systemctl list-timers 'fpd-*' --no-pager 2>/dev/null
+  echo "== storage"; df -h / /srv/fpd; free -m; swapon --show; findmnt /srv/fpd; grep -E 'FPDDATA|/srv/fpd' /etc/fstab
+  echo "== config (no secrets)"; grep -vE '^\s*#' /etc/fpd/fpd.env | grep -v '^$'
+  echo "FPD_CONTACT set: $(grep -qE '^FPD_CONTACT=.+' /etc/fpd/fpd.env && echo yes || echo NO)"
+  cat /etc/fpd/v3-runner.json; [[ -f /etc/fpd/v3-feed.enabled ]] && echo "v3 feed delivery enabled since $(cat /etc/fpd/v3-feed.enabled)" || echo "v3 feed delivery: not enabled (delivering current.jsonl)"
+  echo "== token file (metadata only)"; stat -c '%n owner=%U mode=%a size=%s modified=%y' /etc/fpd/v3-ingest.env 2>/dev/null || echo "no token file"
+  echo "== backups"; ls -la /srv/fpd/backups 2>/dev/null; cat /srv/fpd/backups/offsite-status.json 2>/dev/null || echo "off-site backup: not configured"
+  echo "== versions"; /opt/node22/bin/node --version; /opt/fpd/venv/bin/python --version
+  echo "app tree sha256: $(cd /opt/fpd/app && find fpd -name '*.py' -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -c1-16)"
+  echo "kit SHA256SUMS sha256: $(sha256sum /opt/fpd/kit/SHA256SUMS 2>/dev/null | cut -c1-16)"
+  echo "== legacy host references in deployed code/config (expect only the V3 ingest URL)"
+  grep -rhoiE 'https?://[a-z0-9.-]+' /opt/fpd/app/fpd /opt/fpd/delivery /etc/fpd/*.json /etc/fpd/fpd.env 2>/dev/null | sort | uniq -c | sort -rn | head -30
+} > "$O/ops.txt" 2>&1
+journalctl -u fpd-v3-delivery --since -7d --no-pager -o short-iso 2>/dev/null | grep -E '\{"(status|schema)' | tail -800 > "$O/delivery_journal_7d.txt" || true
+journalctl -u fpd-acquire --since -7d --no-pager -o short-iso 2>/dev/null | grep -E 'fpd-cycle|^\S+ \S+ \S+: \{|handed over' | tail -1500 > "$O/acquire_journal_7d.txt" || true
+# never ship the token: abort if its value appears anywhere in the pack
+if [[ -r /etc/fpd/v3-ingest.env ]]; then
+  TOK=$(sed -nE 's/^\s*V3_INGEST_TOKEN\s*=\s*"?([^"[:space:]]+)"?.*/\1/p' /etc/fpd/v3-ingest.env | head -1)
+  if [[ -n "$TOK" ]] && grep -rqF -- "$TOK" "$O"; then echo "ABORTED: token value found in evidence (nothing written)" >&2; exit 3; fi
+  unset TOK
+fi
+tar -C "$W" -czf "$H/fpd-evidence-$STAMP.tgz" "fpd-evidence-$STAMP"; chown "$U": "$H/fpd-evidence-$STAMP.tgz"; chmod 0644 "$H/fpd-evidence-$STAMP.tgz"
+echo "written: $H/fpd-evidence-$STAMP.tgz ($(du -h "$H/fpd-evidence-$STAMP.tgz" | cut -f1))"
+if [[ "${1:-}" == "--with-db" ]]; then
+  B=$(ls -1t /srv/fpd/backups/fpd-*.sqlite.zst 2>/dev/null | head -1)
+  if [[ -n "$B" ]]; then cp "$B" "$H/fpd-db-$STAMP.sqlite.zst"; (cd "$H" && sha256sum "fpd-db-$STAMP.sqlite.zst" > "fpd-db-$STAMP.sha256")
+    chown "$U": "$H/fpd-db-$STAMP".*; chmod 0644 "$H/fpd-db-$STAMP".*; echo "written: $H/fpd-db-$STAMP.sqlite.zst ($(du -h "$B" | cut -f1)) from $(basename "$B")"
+  else echo "no nightly backup yet in /srv/fpd/backups"; fi
+fi

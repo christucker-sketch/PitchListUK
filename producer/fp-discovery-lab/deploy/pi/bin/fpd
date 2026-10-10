@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Run any engine command as the fpd service user with the service settings:  sudo fpd <command> [args]
+#   e.g. sudo fpd status | sudo fpd coverage eventeny --band 5000 | sudo fpd health
+set -euo pipefail
+[[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
+mapfile -t ENVV < <(grep -E '^[A-Z_]+=' /etc/fpd/fpd.env)
+cd /opt/fpd/app
+exec runuser -u fpd -- env -i PATH=/usr/bin:/bin HOME=/srv/fpd/data "${ENVV[@]}" /opt/fpd/venv/bin/python -m fpd "$@"

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# One-screen status of discovery, export and V3 delivery. Run with sudo to include delivery state.
+E=/srv/fpd/export; S=/srv/fpd/delivery/state
+echo "== timers"; systemctl list-timers 'fpd-*' --no-pager 2>/dev/null | head -6
+echo "== services"
+for u in fpd-acquire fpd-v3-delivery fpd-backup; do
+  printf '  %-18s active=%-9s enabled=%-8s last=%s result=%s\n' "$u" "$(systemctl is-active $u 2>/dev/null)" "$(systemctl is-enabled $u.service 2>/dev/null || systemctl is-enabled $u.timer 2>/dev/null)" \
+    "$(systemctl show -p ExecMainStartTimestamp --value $u 2>/dev/null)" "$(systemctl show -p Result --value $u 2>/dev/null)"
+done
+echo "== export / health"
+[[ -f $E/metrics/latest.json ]] && jq -c '{last_export: .last_successful_export.export_id, actionable: .actionable_count, watch: .watch_count, stalled: .stalled_or_failed_sources}' $E/metrics/latest.json
+echo "== V3 delivery"
+if [[ -r $S/status.json ]]; then
+  jq -c '{status, checked_at, last_success_at, records, accepted, rejected, inserted, duplicates, unchanged_export, pending_rechecks, acknowledged_rechecks, source_age_h: ((.source_age_seconds // 0)/3600|floor), freshness_warning, error, error_detail, consecutive_failures}' $S/status.json
+else echo "  (run with sudo to read delivery status)"; fi
+echo "== V3 recheck requests (last cycle)"
+journalctl -u fpd-acquire --no-pager -o cat 2>/dev/null | grep -E '^\{"(queued|unknown_record|already_rechecked|no_known_url|requests)' | tail -1 | sed 's/^/  /' || true
+echo "== V3 delivery source"
+echo "  $(jq -r '.input_directory + "/" + .file_pattern' /etc/fpd/v3-runner.json 2>/dev/null)$([[ -f /etc/fpd/v3-feed.enabled ]] && echo ' (feed: current + closures)')"
+[[ -f /srv/fpd/export/v3/feed-manifest.json ]] && echo "  feed: $(jq -c '{records, current, lifecycle}' /srv/fpd/export/v3/feed-manifest.json)"
+echo "== backups"
+echo "  local: $(ls -1t /srv/fpd/backups/fpd-*.sqlite.zst 2>/dev/null | head -1 | xargs -r basename) ($(ls /srv/fpd/backups/fpd-*.sqlite.zst 2>/dev/null | wc -l) kept)"
+if [[ -r /srv/fpd/backups/offsite-status.json ]]; then echo "  off-site: $(jq -c '{ok, at, db_backup, error}' /srv/fpd/backups/offsite-status.json)"
+else echo "  off-site: NOT CONFIGURED (sudo fpd-offsite-setup)"; fi
+grep -qE '^FPD_CONTACT=.+' /etc/fpd/fpd.env || echo "  note: FPD_CONTACT is empty in /etc/fpd/fpd.env"
+echo "== host"
+df -h /srv/fpd | tail -1 | awk '{print "  disk: "$3" used / "$2" ("$5")"}'
+free -m | awk '/Mem:/ {print "  ram: "$3" MB used / "$2" MB"}'
+command -v vcgencmd >/dev/null && echo "  $(vcgencmd measure_temp)  throttled=$(vcgencmd get_throttled | cut -d= -f2) (0x0 = power OK)"

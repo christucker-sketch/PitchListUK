@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Nightly online backup of the discovery DB (consistent while crawls run). Keeps the newest 7. Runs as user fpd.
+set -euo pipefail
+DB="${FPD_DATA_DIR:-/srv/fpd/data}/fpd.sqlite"; DEST=/srv/fpd/backups
+STAMP=$(date -u +%Y%m%dT%H%MZ); TMP="$DEST/.fpd-$STAMP.sqlite"
+/opt/fpd/venv/bin/python - "$DB" "$TMP" <<'PY'
+import sqlite3, sys
+src = sqlite3.connect(sys.argv[1], timeout=120)
+dst = sqlite3.connect(sys.argv[2])
+src.backup(dst)
+ok = dst.execute("PRAGMA quick_check").fetchone()[0]
+dst.close(); src.close()
+sys.exit(0 if ok == "ok" else 1)
+PY
+zstd -q -3 --rm "$TMP" -o "$DEST/fpd-$STAMP.sqlite.zst"
+ls -1t "$DEST"/fpd-*.sqlite.zst | tail -n +8 | xargs -r rm -f
+echo "backup $DEST/fpd-$STAMP.sqlite.zst ($(du -h "$DEST/fpd-$STAMP.sqlite.zst" | cut -f1))"

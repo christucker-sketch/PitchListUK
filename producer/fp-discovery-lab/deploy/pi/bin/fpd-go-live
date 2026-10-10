@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Verify V3 delivery end to end, then start the continuous delivery service.
+#   1) authenticated delivery cycle  2) unchanged second cycle (must make no import calls)  3) enable service
+set -euo pipefail
+[[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
+CFG=/etc/fpd/v3-runner.json; S=/srv/fpd/delivery/state
+[[ -s /etc/fpd/v3-ingest.env ]] || { echo "no token yet: run sudo fpd-set-token" >&2; exit 1; }
+[[ -s /srv/fpd/export/full/current.jsonl ]] || { echo "no export yet at /srv/fpd/export/full/current.jsonl" >&2; exit 1; }
+systemctl stop fpd-v3-delivery.service 2>/dev/null || true
+run() { runuser -u fpdv3 -- /opt/node22/bin/node /opt/fpd/delivery/producer-runner.mjs --config "$CFG" 2>&1 | tail -1; }
+echo "[go-live] cycle 1 (first delivery can take several minutes; 25 records per request)..."
+T0=$(date +%s); OUT1=$(run); T1=$(date +%s)
+echo "$OUT1" | jq -c '{status, error, error_detail, records, accepted, rejected, inserted, duplicates, pending_rechecks, acknowledged_rechecks, source_age_seconds, freshness_warning}' 2>/dev/null || echo "$OUT1"
+CP=$(ls -1t "$S"/checkpoints/*.json 2>/dev/null | head -1 || true)
+# updated_at only changes when an import request is made; the file itself is rewritten every cycle
+M1=$([[ -n "$CP" ]] && jq -r '"\(.updated_at)|\(.results|length)"' "$CP" || echo none)
+echo "[go-live] cycle 1 took $((T1-T0))s"
+echo "[go-live] cycle 2 (unchanged export)..."
+OUT2=$(run)
+echo "$OUT2" | jq -c '{status, error, error_detail, unchanged_export, records, inserted, duplicates, rejected}' 2>/dev/null || echo "$OUT2"
+M2=$([[ -n "$CP" ]] && jq -r '"\(.updated_at)|\(.results|length)"' "$CP" || echo none)
+if [[ -n "$CP" ]]; then
+  jq -c '{complete, total_records, total_batches, accepted, rejected, inserted, duplicates,
+          distinct_canonical_ids: ([.results[].record_ids[]] | unique | length),
+          distinct_producer_ids: ([.results[].producer_record_ids[]] | unique | length),
+          avg_batch_ms: ([.results[].duration_ms // empty] | if length>0 then (add/length|floor) else null end),
+          errors: ([.results[].errors[]] | length)}' "$CP"
+fi
+[[ "$M1" == "$M2" ]] && echo "[go-live] cycle 2 made no import calls" || echo "[go-live] WARNING: cycle 2 sent import requests"
+jq -c '{rechecks_polled_at: .requested_at, pending: (.requests|length)}' "$S/rechecks.json" 2>/dev/null || true
+ST1=$(echo "$OUT1" | jq -r .status 2>/dev/null || echo unknown); ST2=$(echo "$OUT2" | jq -r .status 2>/dev/null || echo unknown)
+if [[ "$ST1" == delivered && "$ST2" == delivered && "$M1" == "$M2" ]]; then
+  if [[ -d /run/systemd/system ]]; then
+    systemctl enable --now fpd-v3-delivery.service >/dev/null
+    echo "[go-live] LIVE: fpd-v3-delivery.service enabled (checks every 15 minutes)."
+  else echo "[go-live] verification passed (no systemd here: service not enabled)"; fi
+else
+  echo "[go-live] NOT enabled: cycle 1=$ST1, cycle 2=$ST2. Check: sudo journalctl -u fpd-v3-delivery -n 50" >&2; exit 1
+fi

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Daily off-site copy of everything needed to rebuild this producer on new hardware, with no PC, OneDrive,
+# V1 or V2 involved: the newest nightly DB backup in install.sh --import format, this kit, and non-secret config.
+# The V3 token is NOT copied (on a rebuild, ask V3 for a new ingest token and run fpd-set-token).
+# Destination: rclone remote "fpdoffsite:" configured once with  sudo fpd-offsite-setup  (config /etc/fpd/rclone.conf).
+set -euo pipefail
+[[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
+CONF=/etc/fpd/rclone.conf; REMOTE="fpdoffsite:fpd"; KEEP_DAYS=${FPD_OFFSITE_KEEP_DAYS:-14}
+B=/srv/fpd/backups; STATUS="$B/offsite-status.json"
+export RCLONE_CONFIG="$CONF" XDG_CACHE_HOME="$B/.rclone-cache" RCLONE_CACHE_DIR="$B/.rclone-cache"
+fail() { jq -n --arg e "$1" --arg at "$(date -u +%FT%TZ)" '{ok:false, at:$at, error:$e}' > "$STATUS"; echo "off-site backup FAILED: $1" >&2; exit 1; }
+[[ -f $CONF ]] || { echo "not configured (run: sudo fpd-offsite-setup)"; exit 0; }
+command -v rclone >/dev/null || fail "rclone not installed"
+DBB=$(ls -1t "$B"/fpd-*.sqlite.zst 2>/dev/null | head -1); [[ -n "$DBB" ]] || fail "no nightly DB backup in $B"
+AGE_H=$(( ( $(date +%s) - $(stat -c %Y "$DBB") ) / 3600 )); (( AGE_H <= 48 )) || fail "newest DB backup is ${AGE_H}h old"
+STAMP=$(basename "$DBB" | sed -E 's/^fpd-(.*)\.sqlite\.zst$/\1/')
+STAGE="$B/.offsite-stage"; rm -rf "$STAGE"; install -d -m 0700 "$STAGE/restore"
+trap 'rm -rf "$STAGE"' EXIT
+ln "$DBB" "$STAGE/restore/fpd.sqlite.zst" 2>/dev/null || cp "$DBB" "$STAGE/restore/fpd.sqlite.zst"
+(cd "$STAGE/restore" && sha256sum fpd.sqlite.zst > MANIFEST.sha256)
+tar -C /opt/fpd -czf "$STAGE/kit.tgz" kit
+tar -C / -czf "$STAGE/config.tgz" etc/fpd/fpd.env etc/fpd/v3-runner.json $( [[ -f /etc/fpd/v3-feed.enabled ]] && echo etc/fpd/v3-feed.enabled )
+cat > "$STAGE/RESTORE.txt" <<TXT
+FindPitches producer off-site backup $STAMP (from $(hostname), $(date -u +%FT%TZ))
+Rebuild on a new Pi (Raspberry Pi OS Lite 64-bit, SSD attached):
+  1. rclone copy fpdoffsite:fpd/latest ./fpd-restore      (or download the folder from the storage provider)
+  2. tar -xzf fpd-restore/kit.tgz && cd kit && sha256sum -c --quiet SHA256SUMS
+  3. sudo bash ./install.sh --disk /dev/sdX --import ../fpd-restore/restore
+  4. sudo tar -xzf ../fpd-restore/config.tgz -C /      (fpd.env etc.; then re-run step 3 without --disk/--import)
+  5. Ask V3 for a NEW ingest token (the old one stays on the dead Pi): sudo fpd-set-token && sudo fpd-go-live
+The database holds the identity registry, so opportunity ids stay the same after a restore.
+The page cache is not backed up; the engine re-fetches pages as needed.
+TXT
+rclone copy "$STAGE" "$REMOTE/daily/$STAMP" --checksum --retries 3 --low-level-retries 5 --stats 0 || fail "upload to $REMOTE/daily/$STAMP failed"
+rclone sync "$STAGE" "$REMOTE/latest" --checksum --retries 3 --stats 0 || fail "update of $REMOTE/latest failed"
+rclone check "$STAGE" "$REMOTE/latest" --one-way --size-only -q || fail "verification of $REMOTE/latest failed"
+rclone delete "$REMOTE/daily" --min-age "${KEEP_DAYS}d" -q || true
+rclone rmdirs "$REMOTE/daily" --leave-root -q || true
+BYTES=$(du -cb "$STAGE"/restore/fpd.sqlite.zst "$STAGE"/kit.tgz "$STAGE"/config.tgz | tail -1 | cut -f1)
+jq -n --arg at "$(date -u +%FT%TZ)" --arg stamp "$STAMP" --argjson bytes "$BYTES" --arg remote "$REMOTE" --argjson keep "$KEEP_DAYS" \
+  '{ok:true, at:$at, db_backup:$stamp, bytes:$bytes, remote:$remote, keep_days:$keep}' > "$STATUS"
+echo "off-site backup ok: $STAMP -> $REMOTE/latest and $REMOTE/daily/$STAMP ($((BYTES/1048576)) MB)"

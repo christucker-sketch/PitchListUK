@@ -1,0 +1,41 @@
+# ---- secrets / credentials (never commit) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+*secret*
+*.token
+
+# ---- engine internal state: databases, raw evidence, caches, archives ----
+data/
+fpd-data/
+cache/
+*.sqlite
+*.sqlite-*
+*.db
+*.sqlite.snap
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.zst
+*.gz
+*.zdict
+evidence*/
+
+# ---- reports and comparison working data (internal, not part of the integration handoff) ----
+output/
+comparison/*.csv
+comparison/output/
+
+# ---- temporary / build files ----
+.deploy/
+integration_export/.staging/
+**/*.tmp
+**/.*.tmp
+__pycache__/
+*.pyc
+.pytest_cache/
+*.log

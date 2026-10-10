@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# The V3 runner keeps a private copy of every export it sends (~6 MB each). Keep the newest 6 copies and
+# 30 days of checkpoints (always at least the newest 20). Runs as user fpdv3.
+set -euo pipefail
+S=/srv/fpd/delivery/state
+[[ -d "$S/exports" ]] && ls -1t "$S"/exports/*.json 2>/dev/null | tail -n +7 | xargs -r rm -f
+if [[ -d "$S/checkpoints" ]]; then
+  ls -1t "$S"/checkpoints/*.json 2>/dev/null | tail -n +21 | while read -r f; do
+    [[ $(find "$f" -mtime +30 -print) ]] && rm -f "$f"
+  done
+fi
+find "$S" -name '*.tmp' -mmin +120 -delete 2>/dev/null || true
+echo "pruned: $(ls "$S"/exports 2>/dev/null | wc -l) export copies, $(ls "$S"/checkpoints 2>/dev/null | wc -l) checkpoints kept"

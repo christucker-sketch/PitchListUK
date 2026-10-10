@@ -14,6 +14,7 @@ Seeded from the user's instructions and verified repository reports. These entri
 | D-008 | Keep all paid work paused; latent commercial cap 25/day and global 4/run, 100/hour, 1,000/day limits | Current user guardrails; [source-led report](../docs/findpitches-v3-source-led-readiness-2026-10-07.md), [current checkpoint](../docs/findpitches-v3-team-status-2026-10-10.md) | Budget headroom is not spend permission; external-client attribution still needed |
 | D-009 | One specific V3 sign-in test email was authorized and completed | User recipient authorization and successful-delivery/sign-in reply; [mail report](../operations/findpitches-v3/reports/customer-email-2026-10-10.json) | No authorization for a second message, alerts, bulk mail or other recipients |
 | D-010 | Centralize Codex/Claude/ChatGPT status and handovers in GitHub | User request in this session; this `team/` hub | Documentation sharing on the V3 feature branch; no automatic deployment or external-agent access |
+| D-011 | Commit the independent producer source (engine + Pi host kit) to this repository as a separate package for V3-003 | Chris to Claude, 2026-10-10 ~11:50 London: “approved to commit the producer source for V3-003”; [producer/README.md](../producer/README.md) | Source custody only under `producer/`; no data, exports or credentials; no CI/deploy wiring, no Pi or cloud change |
 
 ## Approval gates still closed
 

@@ -1,0 +1,31 @@
+[Unit]
+Description=FindPitches discovery cycle (poll sources, crawl, full export)
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/srv/fpd
+
+[Service]
+Type=oneshot
+User=fpd
+Group=fpd
+EnvironmentFile=/etc/fpd/fpd.env
+Environment=HOME=/srv/fpd/data
+WorkingDirectory=/opt/fpd/app
+ExecStartPre=+/opt/fpd/bin/fpd-rechecks-handoff
+ExecStart=/opt/fpd/bin/fpd-cycle
+TimeoutStartSec=2h
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+MemoryHigh=550M
+MemoryMax=700M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+ReadWritePaths=/srv/fpd/data /srv/fpd/export
+UMask=0022

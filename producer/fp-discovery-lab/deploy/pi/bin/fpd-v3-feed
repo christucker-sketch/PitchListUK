@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Choose what the V3 runner delivers:
+#   current  (default) : /srv/fpd/export/full/current.jsonl           - open opportunities only
+#   feed               : /srv/fpd/export/v3/feed.jsonl                 - the same records PLUS closures/withdrawals/watch
+#                        moves of ids V3 already has (same v1 record contract; only channel=current is customer-visible)
+# Switch to "feed" only after V3 has confirmed it treats channel != current as not customer-visible.
+#   sudo fpd-v3-feed status | enable | disable
+set -euo pipefail
+[[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
+CONF=/etc/fpd/v3-runner.json; FLAG=/etc/fpd/v3-feed.enabled; FEED=/srv/fpd/export/v3/feed.jsonl
+apply() {  # $1 = feed|current
+  local tmp; tmp=$(mktemp /etc/fpd/.v3-runner.XXXXXX)
+  if [[ $1 == feed ]]; then jq '.input_directory="/srv/fpd/export/v3" | .file_pattern="feed.jsonl"' "$CONF" > "$tmp"
+  else jq '.input_directory="/srv/fpd/export/full" | .file_pattern="current.jsonl"' "$CONF" > "$tmp"; fi
+  chmod 0644 "$tmp"; mv -f "$tmp" "$CONF"
+}
+case "${1:-status}" in
+  status)
+    echo "delivering: $(jq -r '.input_directory + "/" + .file_pattern' "$CONF")"
+    [[ -f $FLAG ]] && echo "mode: feed (enabled $(cat $FLAG))" || echo "mode: current (feed not enabled)"
+    [[ -f /srv/fpd/export/v3/feed-manifest.json ]] && jq -c '{generated_at, records, current, lifecycle, lifecycle_by_channel, skipped}' /srv/fpd/export/v3/feed-manifest.json || echo "feed not written yet (next discovery cycle writes it)" ;;
+  enable)
+    [[ -s $FEED ]] || { echo "no $FEED yet: wait for a discovery cycle (or: sudo fpd v3-feed)" >&2; exit 1; }
+    date -u +%FT%TZ > "$FLAG"; apply feed; systemctl restart fpd-v3-delivery 2>/dev/null || true
+    echo "V3 delivery now reads $FEED (restarted fpd-v3-delivery)" ;;
+  disable)
+    rm -f "$FLAG"; apply current; systemctl restart fpd-v3-delivery 2>/dev/null || true
+    echo "V3 delivery back to full/current.jsonl" ;;
+  *) echo "usage: sudo fpd-v3-feed status|enable|disable" >&2; exit 2 ;;
+esac

@@ -1,0 +1,452 @@
+{
+ "_comment": "Structural seeds. 'directories' are listing pages whose outbound links are organiser sites (treated as hubs). 'platform_sitemaps' harvest vendor-application URLs straight from application platforms. Every seed's yield is measured separately in the report, so weak seeds can be dropped.",
+ "directories": [
+  {
+   "name": "agshows_australia",
+   "country": "AU",
+   "urls": [
+    "https://agshowsaustralia.org.au/shows/"
+   ],
+   "note": "Agricultural Shows Australia show dates"
+  },
+  {
+   "name": "afma_find_a_market",
+   "country": "AU",
+   "urls": [
+    "https://farmersmarkets.org.au/find-a-market/"
+   ],
+   "note": "Australian Farmers' Markets Association"
+  },
+  {
+   "name": "fma_nsw",
+   "country": "AU",
+   "urls": [
+    "https://www.fmansw.org.au/"
+   ],
+   "note": "Farmers Markets Alliance NSW"
+  },
+  {
+   "name": "vfma",
+   "country": "AU",
+   "urls": [
+    "https://vfma.org.au/Site/Site/Markets/FarmersMarkets.aspx"
+   ],
+   "note": "Victorian Farmers' Markets Association"
+  },
+  {
+   "name": "irish_shows",
+   "country": "IE",
+   "urls": [
+    "https://www.irishshows.org/irishshowdirectory"
+   ],
+   "note": "Irish Shows Association directory"
+  },
+  {
+   "name": "nz_farmers_markets",
+   "country": "NZ",
+   "urls": [
+    "https://www.farmersmarkets.org.nz/find-a-market/"
+   ],
+   "note": "Farmers Markets NZ"
+  },
+  {
+   "name": "localmarkets_nz",
+   "country": "NZ",
+   "urls": [
+    "https://localmarkets.nz/"
+   ],
+   "note": "NZ market directory"
+  },
+  {
+   "name": "ras_nz_shows",
+   "country": "NZ",
+   "urls": [
+    "https://www.ras.org.nz/events/category/ap-show/list/"
+   ],
+   "note": "Royal Agricultural Society NZ A&P shows"
+  },
+  {
+   "name": "oaas_fairs",
+   "country": "CA",
+   "urls": [
+    "https://ontarioagsocieties.com/our-fairs/"
+   ],
+   "note": "Ontario Association of Agricultural Societies"
+  },
+  {
+   "name": "countryshows_uk",
+   "country": "GB",
+   "urls": [
+    "https://countryshows.co.uk/country-show-event-directory/"
+   ],
+   "note": "UK country show directory"
+  },
+  {
+   "name": "asao",
+   "country": "GB",
+   "urls": [
+    "https://www.asao.co.uk/"
+   ],
+   "note": "Association of Show & Agricultural Organisations"
+  },
+  {
+   "name": "designtrust_craft_events",
+   "country": "GB",
+   "urls": [
+    "https://www.thedesigntrust.co.uk/best-design-craft-events-uk-2026/"
+   ],
+   "note": "UK design/craft events with application deadlines"
+  },
+  {
+   "name": "stall_craft_collective",
+   "country": "GB",
+   "urls": [
+    "https://www.stallandcraftcollective.co.uk/uk_craft_fairs-lnd-tl"
+   ],
+   "note": "UK craft fairs list"
+  },
+  {
+   "name": "iafe_events",
+   "country": "US",
+   "urls": [
+    "https://fairsandexpos.com/events/"
+   ],
+   "note": "International Association of Fairs & Expositions"
+  },
+  {
+   "name": "statefairfinder",
+   "country": "US",
+   "urls": [
+    "https://statefairfinder.com/events/"
+   ],
+   "note": "US fair directory"
+  },
+  {
+   "name": "countyfairgrounds",
+   "country": "US",
+   "urls": [
+    "https://countyfairgrounds.net/"
+   ],
+   "note": "US county/state fairs"
+  },
+  {
+   "name": "ny_ag_fairs",
+   "country": "US",
+   "urls": [
+    "https://agriculture.ny.gov/farming/fairs"
+   ],
+   "note": "NY Dept of Agriculture fairs"
+  },
+  {
+   "name": "ga_ag_fairs",
+   "country": "US",
+   "urls": [
+    "https://www.agr.georgia.gov/fairs"
+   ],
+   "note": "Georgia Dept of Agriculture fairs"
+  },
+  {
+   "name": "vendorsmap",
+   "country": "US",
+   "urls": [
+    "https://vendorsmap.com/"
+   ],
+   "note": "Vendor event aggregator"
+  },
+  {
+   "name": "vendorsconnect",
+   "country": "US",
+   "urls": [
+    "https://vendorsconnect.events/"
+   ],
+   "note": "Vendor event aggregator"
+  },
+  {
+   "name": "lehigh_vendor_events",
+   "country": "US",
+   "urls": [
+    "https://www.lehighvalleychamber.org/upcomingvendorevents.html"
+   ],
+   "note": "Chamber list of vendor events"
+  },
+  {
+   "name": "festivalcalendar_food_uk",
+   "country": "GB",
+   "urls": [
+    "https://www.thefestivalcalendar.co.uk/food-festivals-calendar.php",
+    "https://www.thefestivalcalendar.co.uk/"
+   ],
+   "note": "UK festival calendar (food + all)"
+  },
+  {
+   "name": "efestivals_2027",
+   "country": "GB",
+   "urls": [
+    "https://www.efestivals.co.uk/festivals/festivals.php?year=2027",
+    "https://www.efestivals.co.uk/festivals/festivals.php?year=now"
+   ],
+   "follow": "/festivals/[a-z0-9-]+/20(26|27)/?$",
+   "note": "UK music festivals; detail pages link to official sites"
+  },
+  {
+   "name": "festivalcalendar_uk",
+   "country": "GB",
+   "urls": [
+    "https://festivalcalendar.uk/"
+   ],
+   "note": "UK festival calendar"
+  },
+  {
+   "name": "christmascountdown_fairs",
+   "country": "GB",
+   "urls": [
+    "https://christmascountdown.co.uk/christmas-fairs-uk/"
+   ],
+   "note": "133 UK Christmas fairs"
+  },
+  {
+   "name": "chooseyourevent_xmas",
+   "country": "GB",
+   "urls": [
+    "https://www.chooseyourevent.co.uk/christmas-fairs-and-markets"
+   ],
+   "note": "UK Christmas fairs & markets"
+  },
+  {
+   "name": "thechristmaslist_markets",
+   "country": "GB",
+   "urls": [
+    "https://www.thechristmaslist.co.uk/christmas-markets"
+   ],
+   "note": "Artisan Christmas markets UK"
+  },
+  {
+   "name": "rosemary_food_festivals",
+   "country": "GB",
+   "urls": [
+    "https://rosemaryandporkbelly.co.uk/food-festivals-uk/"
+   ],
+   "note": "UK food festivals list"
+  },
+  {
+   "name": "safeag_uk_shows",
+   "country": "GB",
+   "urls": [
+    "https://www.safeagsystems.com/blog/agricultural-shows-uk"
+   ],
+   "note": "UK agricultural shows guide"
+  },
+  {
+   "name": "wheresthemarket_ie",
+   "country": "IE",
+   "urls": [
+    "https://wheresthemarket.ie/"
+   ],
+   "follow": "wheresthemarket\\.ie/(market|markets|listing|listings)/",
+   "note": "Ireland markets, fairs & boot sales"
+  },
+  {
+   "name": "mayo_markets",
+   "country": "IE",
+   "urls": [
+    "https://www.mayo-ireland.ie/en/things-to-do/farmer-markets/farmer-markets-overview.html"
+   ],
+   "note": "Mayo farmers markets"
+  },
+  {
+   "name": "bc_market_trail",
+   "country": "CA",
+   "urls": [
+    "https://bcfarmersmarkettrail.com/"
+   ],
+   "follow": "/(market|markets)/[a-z0-9-]+/?$",
+   "note": "BC farmers' market trail"
+  },
+  {
+   "name": "marketregular_to",
+   "country": "CA",
+   "urls": [
+    "https://www.marketregular.com/markets"
+   ],
+   "follow": "/markets/[a-z0-9-]+/?$",
+   "note": "Toronto farmers markets"
+  },
+  {
+   "name": "everythingcountry_ca",
+   "country": "CA",
+   "urls": [
+    "https://everythingcountry.ca/country-links/farmers-markets-directories/"
+   ],
+   "note": "Canadian farmers market directories"
+  },
+  {
+   "name": "safeag_nz_events",
+   "country": "NZ",
+   "urls": [
+    "https://www.safeagsystems.com/blog/new-zealand-agricultural-events"
+   ],
+   "note": "NZ A&P events"
+  },
+  {
+   "name": "eventfinda_ap_shows",
+   "country": "NZ",
+   "urls": [
+    "https://www.eventfinda.co.nz/ap-shows-field-days/events/new-zealand"
+   ],
+   "follow": "eventfinda\\.co\\.nz/20(26|27)/",
+   "note": "NZ A&P shows & field days"
+  },
+  {
+   "name": "agonline_events_nz",
+   "country": "NZ",
+   "urls": [
+    "https://www.agonline.co.nz/farmers-patch/upcoming-events-agonline?page=1"
+   ],
+   "note": "NZ rural events"
+  },
+  {
+   "name": "marketsandstallholders_au",
+   "country": "AU",
+   "urls": [
+    "https://marketsandstallholders.com/australian-markets-and-festivals-calendar"
+   ],
+   "follow": "marketsandstallholders\\.com/events/[a-z0-9-]+/?$",
+   "note": "AU markets & stallholders calendar; event links carry ?occurrence= (stripped in canonicalisation)"
+  },
+  {
+   "name": "craftynetwork_uk",
+   "country": "GB",
+   "urls": [
+    "https://thecraftynetwork.wordpress.com/craft-fair-tips-advice/directory-of-event-organisers/"
+   ],
+   "note": "UK directory of craft-fair organisers"
+  },
+  {
+   "name": "craftni",
+   "country": "GB",
+   "urls": [
+    "https://craftni.org/opportunities/",
+    "https://craftni.org/"
+   ],
+   "follow": "craftni\\.org/[a-z0-9-]*(?:applications?|call|market|fair)[a-z0-9-]*/?$",
+   "note": "Craft NI opportunities (Northern Ireland)"
+  },
+  {
+   "name": "countrysmallholder_shows",
+   "country": "GB",
+   "urls": [
+    "https://thecountrysmallholder.com/events/"
+   ],
+   "note": "UK agricultural/county shows calendar (~135 show sites)"
+  },
+  {
+   "name": "nefa_ag_shows_uk",
+   "country": "GB",
+   "urls": [
+    "https://www.northeastfamilyadventures.com/post/uk-agriculture-shows-2026"
+   ],
+   "note": "Northern England/Scotland agricultural shows"
+  },
+  {
+   "name": "ruralpayments_shows",
+   "country": "GB",
+   "urls": [
+    "https://ruralpayments.blog.gov.uk/shows-and-events"
+   ],
+   "note": "UK agricultural shows and events"
+  },
+  {
+   "name": "craftcourses_makers_uk",
+   "country": "GB",
+   "urls": [
+    "https://www.craftcourses.com/blog/top-10-makers-markets-in-britain"
+   ],
+   "note": "UK makers markets"
+  }
+ ],
+ "platform_sitemaps": [
+  {
+   "name": "eventeny",
+   "sitemaps": [
+    "https://www.eventeny.com/sitemap.xml"
+   ],
+   "pattern": "/events/vendor/\\?id=\\d+",
+   "child_pattern": "event_elements",
+   "max_age_days": 300,
+   "max_urls": 4000,
+   "note": "Eventeny public vendor-application pages"
+  },
+  {
+   "name": "marketspread",
+   "sitemaps": [
+    "https://marketspread.com/sitemap.xml"
+   ],
+   "pattern": "/market/\\d+/",
+   "child_pattern": "sitemap-markets",
+   "max_age_days": 365,
+   "max_urls": 300,
+   "note": "Marketspread market application pages"
+  },
+  {
+   "name": "localstalls",
+   "sitemaps": [
+    "https://localstalls.com/sitemap.xml"
+   ],
+   "child_pattern": "events-(au|nz|uk|us)-",
+   "pattern": "/(au|nz|uk|us)/event/[^/]+/[^/]+$",
+   "max_age_days": 3650,
+   "max_urls": 3000,
+   "note": "LocalStalls market-management platform: public 'Stallholders wanted / Submit Application' pages (AU, NZ, UK, US)",
+   "country_from_path": {
+    "/au/event/": "AU",
+    "/nz/event/": "NZ",
+    "/uk/event/": "GB",
+    "/us/event/": "US"
+   }
+  },
+  {
+   "name": "cluemart",
+   "sitemaps": [
+    "https://cluemart.co.nz/sitemap.xml"
+   ],
+   "pattern": "cluemart\\.co\\.nz/application/",
+   "max_age_days": 3650,
+   "max_urls": 500,
+   "country": "NZ",
+   "note": "ClueMart (NZ) stallholder application pages"
+  },
+  {
+   "name": "marketspread_apply",
+   "sitemaps": [
+    "https://marketspread.com/sitemap.xml?lane=apply"
+   ],
+   "child_pattern": "sitemap-markets",
+   "pattern": "/market/\\d+/",
+   "max_age_days": 3650,
+   "max_urls": 700,
+   "follow_internal": "/market/\\d+/[^/]+/apply/",
+   "note": "Repurposed: newest Marketspread market pages, following only their /apply/ links"
+  },
+  {
+   "name": "entrythingy",
+   "sitemaps": [
+    "https://app.entrythingy.com/programmatic-sitemap.xml"
+   ],
+   "pattern": "/calls/external/",
+   "max_age_days": 3650,
+   "max_urls": 120,
+   "note": "Small test: EntryThingy external calls (expected mostly art calls, not booths)"
+  }
+ ],
+ "platform_listings": [],
+ "platform_idranges": [
+  {
+   "name": "ukcraftfairs",
+   "template": "https://www.ukcraftfairs.com/craft-events/{id}/x",
+   "start": 26950,
+   "stop": 25750,
+   "country": "GB",
+   "note": "UKCraftFairs organiser-placed UK craft fair listings; slug ignored by server, IDs sequential (newest first)"
+  }
+ ]
+}

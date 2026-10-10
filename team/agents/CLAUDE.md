@@ -1,16 +1,16 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-10T11:00:22+01:00
+Updated: 2026-10-10T11:53:41+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
-Task IDs and published claims: V3-001, V3-002, V3-003 (see [TASKS.md](../TASKS.md)). V3-003 stays BLOCKED on Chris's authorisation to commit producer source.
+Task IDs and published claims: V3-001, V3-002 (CLAIMED); V3-003 DONE (see [TASKS.md](../TASKS.md)).
 Files/components owned: the independent producer (`fp-discovery-lab` engine plus the `deploy/pi` host kit) on `fpd-pi`; the `findpitches-v3-web` Build 4 package as handed over (Codex owns it in V3 from now on); `team/agents/CLAUDE.md`.
 
 ## Access, stated plainly
 
 - I have **no direct shell on the Pi**. Every host measurement below comes from commands Chris ran (`sudo fpd-status`, installs) and pasted back. Host changes reach the Pi as a kit that Chris installs.
-- I hold the producer source in my working copy and built the Pi kit from it. It is **not in GitHub** yet (see V3-003).
+- The producer source (engine plus Pi kit) is now in this repo at [`producer/`](../../producer/README.md) (V3-003, approved by Chris as D-011). Its hashes match the copy the Pi kit was built from.
 - I have no Cloudflare, D1, Stripe or Serper access, and I have not used any.
 
 ## Completed
@@ -38,7 +38,7 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Evidence and commits
 
-- This update is documentation only. Producer source custody is pending (V3-003).
+- Producer source custody: `producer/fp-discovery-lab/` with `producer/SOURCE_SHA256SUMS` (81 files) and a [custody README](../../producer/README.md).
 - Handoff docs 00–08 were supplied to Codex outside GitHub (handover ZIP). Cloud side of the feed: [Codex feed confirmation](../../docs/findpitches-v3-producer-feed-confirmation-2026-10-09.md).
 
 **Deployment version and environment:** the producer runs on the Pi only (`fpd-pi`, systemd). The audit-fix kit was installed on 10 Oct. **Nothing was deployed to Cloudflare by me.**
@@ -67,14 +67,13 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 ## Blockers and dependencies
 
 - Feed enable needs Chris to run `sudo fpd-v3-feed enable` on the Pi.
-- V3-003 needs Chris's OK to commit the producer source to this repo (a separate package path).
 - UKCF access policy: V3 needs to decide whether to accept Pi-retained evidence or find another legitimate route.
 - PSU replacement.
 - Off-site backup remote (S1).
 
-**Next action and owner:** Claude does the recheck-runner cursor upgrade (V3-001) and the UKCF evidence sample (V3-002). Chris enables the feed and authorises source custody.
+**Next action and owner:** Claude does the recheck-runner cursor upgrade (V3-001) and the UKCF evidence sample (V3-002). Chris enables the feed.
 
-**Approval required:** committing producer source to GitHub (Chris). No publication, cutover or billing gate has been reached.
+**Approval required:** none outstanding for my tasks (D-011 granted the source commit). No publication, cutover or billing gate has been reached.
 
 **Paid queries, messages, publication or production changes made:** none. No Serper calls, no emails, no Stripe or Cloudflare changes, and V2 untouched.
 

@@ -68,3 +68,46 @@ Earlier "337 acks" was a Pi-log figure. Codex's ledger supersedes it, so do not 
 **Spend, messages, publication, production and preservation:** no paid queries, no messages, no publication, no Cloudflare/D1/Stripe changes, V2 untouched, no secrets committed.
 
 **Incoming contributor acknowledgement:** pending.
+
+## 2026-10-10T11:53:41+01:00 — Claude → Codex / Chris: V3-003 producer source custody
+
+**Completed:** the independent producer source is now in [`producer/fp-discovery-lab/`](../producer/README.md). It covers:
+- the engine (`fpd/`);
+- the tests;
+- the export contract;
+- the Pi host kit (`deploy/pi/`).
+
+Per-file hashes are in `producer/SOURCE_SHA256SUMS`. Chris approved this as D-011.
+
+**Task IDs and ownership:** Claude has completed V3-003. Claude keeps V3-001 and V3-002.
+
+**Evidence:**
+
+| Check | Result |
+| --- | --- |
+| `sha256sum -c` against the PC working copy the Pi kit was built from | Exit 0 (81 of 81 files) |
+| Engine inside the installed kit archive `fpd-app.tgz` (`dc06305d1c3c929a…`) | Identical to `fpd/`, `tests/` and the contract README |
+| Kit `SHA256SUMS` | `d7639f7b12fc4a60…` |
+| Tests in the cloud workspace | 88 passed |
+
+**Deployment:** not deployed, because this is source custody only. The Pi still runs the kit installed on 10 Oct.
+
+**Limitations:**
+- I have not checked the Pi's installed files directly. Chris can do it read-only with the two commands in `producer/README.md`.
+- A rebuilt kit archive has the same content but is not byte-identical, because tar and gzip record timestamps.
+
+**Excluded:** databases, cache, exports and snapshots, delivery state, logs, the old-snapshot `comparison/` evaluation, the importer dry-run outputs, built archives, and all credentials.
+
+**Blockers:** none for V3-003.
+
+**Next action:** Codex can use `producer/` as the source of record for producer-contract questions. Producer changes from now on go through this folder with tests, and each one records the new kit `SHA256SUMS` hash here.
+
+**Approvals:** D-011 covers this commit only. No other gate has changed.
+
+**Spend, messages, publication, production and preservation:**
+- No paid queries, messages or publication.
+- No Cloudflare, D1, Stripe or Pi change.
+- V2 untouched.
+- No CI or deploy workflow covers `producer/`.
+
+**Incoming acknowledgement:** pending.

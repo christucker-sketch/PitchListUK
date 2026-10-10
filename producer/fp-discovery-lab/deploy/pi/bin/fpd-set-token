@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Store the V3 ingest-only token for the delivery user. Never echoes it.
+#   sudo fpd-set-token                 (paste when prompted)
+#   sudo fpd-set-token --from-file F   (reads F, then overwrites and deletes it)
+set -euo pipefail
+[[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
+SRC=""
+if [[ "${1:-}" == "--from-file" ]]; then
+  SRC="$2"; RAW=$(<"$SRC")
+else
+  read -r -s -p "Paste the V3 ingest token (input hidden), then Enter: " RAW; echo
+fi
+if grep -qE 'CLOUDFLARE_|V3_OPERATOR_TOKEN|SERPER_API_KEY' <<<"$RAW"; then echo "refused: that contains non-ingest credentials" >&2; exit 1; fi
+TOKEN=$(sed -nE 's/^[[:space:]]*V3_INGEST_TOKEN[[:space:]]*=[[:space:]]*["'\'']?([^"'\''[:space:]]+).*/\1/p' <<<"$RAW" | head -1)
+[[ -n "$TOKEN" ]] || TOKEN=$(tr -d '[:space:]' <<<"$RAW")
+[[ ${#TOKEN} -ge 24 && "$TOKEN" != *[[:space:]]* ]] || { echo "refused: does not look like an ingest token" >&2; exit 1; }
+umask 077
+TMP=$(mktemp /etc/fpd/.v3-ingest.XXXXXX)
+printf 'V3_INGEST_TOKEN=%s\n' "$TOKEN" > "$TMP"
+chown fpdv3:fpdv3 "$TMP"; chmod 0600 "$TMP"; mv -f "$TMP" /etc/fpd/v3-ingest.env
+unset RAW TOKEN
+if [[ -n "$SRC" ]]; then shred -u "$SRC" 2>/dev/null || rm -f "$SRC"; echo "source file $SRC removed"; fi
+echo "token stored in /etc/fpd/v3-ingest.env (owner fpdv3, mode 600)"
+if command -v systemctl >/dev/null && systemctl is-active --quiet fpd-v3-delivery.service; then systemctl restart fpd-v3-delivery.service; echo "delivery service restarted"; fi

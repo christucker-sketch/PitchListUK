@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# One discovery cycle: re-queue pages V3 asked to recheck, poll platform sources, revisit due watch records, crawl, then publish a FULL export
+# (the V3 runner reads full/current.jsonl, which only full exports refresh). Runs as user fpd.
+set -uo pipefail
+umask 022
+cd /opt/fpd/app || exit 1
+PY=/opt/fpd/venv/bin/python
+step() { echo "[fpd-cycle] $(date -u +%FT%TZ) $*"; }
+rc=0
+RECHECKS=/srv/fpd/data/inbox/rechecks.json
+if [[ -s $RECHECKS ]]; then
+  step "rechecks (V3 requests first)"
+  $PY -m fpd rechecks --file "$RECHECKS" || { step "rechecks failed"; rc=1; }
+fi
+step "run --source all --minutes ${FPD_RUN_MINUTES:-25}"
+$PY -u -m fpd run --source all --minutes "${FPD_RUN_MINUTES:-25}" >/dev/null || { step "run failed"; rc=1; }
+step "revisit"
+$PY -u -m fpd revisit >/dev/null || { step "revisit failed"; rc=1; }
+step "seed curated (adds only directories not seeded before)"
+$PY -m fpd seed curated >/dev/null || { step "seed failed"; rc=1; }
+step "revisit-hubs (directory pages older than 7 days)"
+$PY -m fpd revisit-hubs --older-than-days 7 || { step "revisit-hubs failed"; rc=1; }
+step "crawl --minutes ${FPD_CRAWL_MINUTES:-10}"
+$PY -u -m fpd crawl --minutes "${FPD_CRAWL_MINUTES:-10}" >/dev/null || { step "crawl failed"; rc=1; }
+step "export full"
+if out=$($PY -u -m fpd export full 2>&1); then
+  echo "$out" | /usr/bin/jq -c '{export_id, counts, delta_by_event}' 2>/dev/null || echo "$out" | tail -3
+else
+  step "EXPORT FAILED (previous export left intact)"; echo "$out" | tail -5; exit 2
+fi
+$PY -m fpd export-validate >/dev/null || { step "export-validate FAILED"; exit 3; }
+step "v3-feed (current + closures of records V3 already has; delivered only if enabled: fpd-v3-feed status)"
+$PY -m fpd v3-feed || { step "v3-feed failed (delivery keeps using the previous feed or current.jsonl)"; rc=1; }
+$PY -m fpd health | /usr/bin/jq -c '{actionable_count, watch_count, stalled_or_failed_sources}' 2>/dev/null || true
+step "done (rc=$rc)"
+exit $rc
