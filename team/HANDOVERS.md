@@ -213,3 +213,34 @@ Then retain one real current→watch/held/retired trace for V3-001. I have no V3
 **Validation / times:** customer snapshot 12:22 London; queue snapshot five due, zero leased/dead. Full preservation at 12:24:32 compares 15,811 retained receipts, 108,819 original facts and 7,077 identities: zero source mutations, identity changes or customer/publication rows; paid queries today zero, bulk off, live Pitchlist deployment and V2 schedules unchanged. Focused existing customer tests 11/11 pass. No full-suite rerun or commercial inventory recount. Documentation/report publication is not a runtime deployment.
 
 **Remaining gates / outcomes:** no deployment, paid acquisition, email, real charge, live subscriber import, production routing or legacy write. No new permission is needed for the next reversible V3-004 increment. All agreed launch/publication/billing/migration/spend/protected-merge gates remain closed. Incoming contributor acknowledgement of this evidence is pending their own update.
+
+## 2026-10-10T12:37:13+01:00 — Claude → Codex / Chris / ChatGPT: V3-001 installed; V3-002 evidence
+
+**V3-001: installed.** Chris installed the paging kit (`SHA256SUMS` `4d9715bd…`) at about 12:26 London.
+
+| Check | Result |
+| --- | --- |
+| Pi tests | 88 passed, 1 skipped |
+| Source checks | all OK (UKCraftFairs via the lenient client) |
+| Delivery | restarted on the new code |
+| First delivery (`checked_at` 11:26:50Z) | `pending_rechecks` **1,390** (every page; the old runner saw 100), 2,044 accepted, 0 rejected, 16 acks |
+
+The 16 acks are expected: the newest export predates most requests, so the next export should raise them. The discovery handoff still shows 100 because that cycle started at 12:17, before the install; the next cycle will show the full count with `deferred`.
+
+Codex's cloud check is acknowledged: 119/119 EXACT_MATCH, 113 advanced, 0 customer-visible, 1 retained trace.
+
+**The 6 equal-clock conflicts:** these look like producer state changes without a new source fetch. Examples are ROLLING-expiry or deadline-passed closures, or the 10 Oct audit-rule rebuild, where `last_checked` did not move. V3 is right not to order them.
+
+The fix is real refetches, not a new timestamp. If V3 issues recheck requests for those 6 entities, the Pi now reads every page and re-queues them (up to 300 per cycle). Codex: please confirm V3 raises rechecks for conflict-held entities, or name the 6 producer ids so Chris can trigger `fpd rechecks`.
+
+**V3-002: evidence.** See the [access note](../docs/findpitches-v3-ukcraftfairs-access-2026-10-10.md).
+- **Cause of the 520:** ukcraftfairs.com (IIS 7.5) sends two RFC-invalid header lines: `text/html: charset=…` and `Strict Transport Security: …`. Cloudflare's edge rejects the response; lenient clients accept it. This is not blocking, and retrying from Workers will never work.
+- **Producer holdings:** 159 current UKCF records (GB, HIGH confidence). All are **enquiry-only**, and all carry HTTP 200, `fetched_at`, content sha256 and retained raw HTML. 15-record sample is in the note.
+- **Two gates before any READY gain:**
+  1. Transport. Option A: Chris asks UKCF to fix two headers. Option B: the Pi uploads retained documents to a new V3 endpoint and V3 runs its own verifier.
+  2. V3's enquiry-only policy.
+
+  Upside is 0–159, not 154 guaranteed.
+- **Decision needed:** Chris chooses A and/or B, and whether enquiry listings count as launch inventory (ChatGPT V3-010). Codex owns any B endpoint; Claude would build the Pi side.
+
+**Spend, messages, publication and production:** none. One public-page header capture (a single request). No rule changes. V2 untouched.

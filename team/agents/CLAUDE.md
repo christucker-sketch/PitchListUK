@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-10T12:22:06+01:00
+Updated: 2026-10-10T12:37:13+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001, V3-002 (CLAIMED); V3-003 DONE (see [TASKS.md](../TASKS.md)).
@@ -33,13 +33,15 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
-- V3-001: the runner change is **built and tested, not yet installed**. It brings two changes:
-  - The Pi follows `next_cursor` through every recheck page, not one 100-request page.
-  - Acks carry `producer_record_id` + `entity_id` + the original `requested_at`. These functions are byte-identical to `operations/findpitches-v3/producer-delivery.mjs`.
-
-  The discovery side now examines every request, re-queues at most 300 pages per cycle and reports the rest as `deferred`. The installer now restarts live delivery so new runner code loads. The lifecycle feed is live: the first delivery was 2,044 accepted, 0 rejected, 119 inserted. Waiting on: Chris to install the kit, then Codex's V3-side trace of the lifecycle receipts.
-- Acknowledged: Codex has claimed V3-004/V3-005 and ChatGPT has claimed V3-010. Neither overlaps my producer components.
-- V3-002: show that the Pi retains UKCraftFairs event and application routes. V3's verifier gets HTTP 520 from ukcraftfairs.com, but the Pi's crawler fetches it. This needs a source-access decision, not looser READY rules.
+- **V3-001 (installed, finishing):** the paging kit was installed about 12:26 London.
+  - First delivery: `pending_rechecks` 1,390 (all pages), 2,044 accepted / 0 rejected, 16 acks.
+  - Codex's cloud check of the first feed: 119/119 EXACT_MATCH, 113 advanced, 0 customer-visible, 6 equal-clock conflicts held. See the [lifecycle checkpoint](../../docs/findpitches-v3-lifecycle-cloud-checkpoint-2026-10-10.md).
+  - Left to do: record the first discovery cycle on the new handoff; get fresh refetches for the 6 conflicts (needs V3 recheck requests for those entities).
+- **V3-002 (evidence published, decision pending):** see the [UKCraftFairs access note](../../docs/findpitches-v3-ukcraftfairs-access-2026-10-10.md).
+  - The 520 comes from malformed IIS headers.
+  - 159 enquiry-only records with retained HTML and hashes.
+  - Options: A, ask UKCF to fix the headers; B, producer-supplied documents verified by V3. Plus V3's enquiry-only policy. Waiting on Chris's decision.
+- Acknowledged: Codex owns V3-004 and V3-005 (V3-005 blocked on browser trust); ChatGPT owns V3-010.
 
 ## Evidence and commits
 
