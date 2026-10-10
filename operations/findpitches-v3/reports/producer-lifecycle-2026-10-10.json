@@ -1,0 +1,110 @@
+{
+  "schema": "findpitches-v3-lifecycle-cloud-checkpoint-v1",
+  "as_of": "2026-10-10T11:22:29.975Z",
+  "mode": "read_only_shadow_audit",
+  "host_report_checked_at": "2026-10-10T11:00:24Z",
+  "cloud_delivery": {
+    "batches": 82,
+    "first_contact_at": "2026-10-10T10:50:39.860Z",
+    "last_contact_at": "2026-10-10T10:56:42.098Z",
+    "records": 2044,
+    "accepted": 2044,
+    "inserted": 119,
+    "duplicates": 1925,
+    "rejected": 0
+  },
+  "cohort": {
+    "immutable_receipts": 119,
+    "distinct_existing_entities": 119,
+    "same_prior_identity_links": 119,
+    "new_entities": 0,
+    "identity_outcome": "EXACT_MATCH",
+    "channels": {
+      "retired": 19,
+      "watch": 100
+    },
+    "incoming_lifecycle": {
+      "CLOSED": 100,
+      "WITHDRAWN": 19
+    },
+    "selected_lifecycle": {
+      "CLOSED": 98,
+      "UNCHANGED": 6,
+      "WITHDRAWN": 15
+    },
+    "readiness": {
+      "None": 6,
+      "blocked": 113
+    },
+    "state_advanced": 113,
+    "conflict_held_entities": 6,
+    "same_clock_conflicts": 11,
+    "conflict_reason": "equal_authority_disagreement",
+    "visible_in_customer_snapshot": 0,
+    "snapshot_as_of": "2026-10-10T11:22:25.751Z",
+    "exact_receipt_acknowledgements": 62,
+    "all_ack_source_clocks_fresh_for_requested_at": true
+  },
+  "trace": {
+    "entity_id": "ent_8c9812f700e87367271684ddf8945a4d",
+    "producer_id_sha256": "a3ef6e46f7ce805181f6a03dc3407ed2b08ac57bcc52e77c68f57422a6cb9051",
+    "previous_receipt_id": "rec_3ca8a8caefd731cd4d07e90cd5e84391fa835709",
+    "previous_received_at": "2026-10-06T13:41:56.409Z",
+    "previous_source_last_checked": "2026-10-04T17:44:37Z",
+    "previous_channel": null,
+    "previous_application_state": "OPEN_NOW",
+    "previous_lifecycle_state": "UNCHANGED",
+    "lifecycle_receipt_id": "rec_1603b1b7407db951e580e3942f6c3b84b566250f",
+    "lifecycle_content_hash": "2ccff9cd5c8897a31b06df4e40bf35fb74160a74799cff4b785b36c3398edfb1",
+    "lifecycle_received_at": "2026-10-10T10:56:16.968Z",
+    "source_last_checked": "2026-10-10T05:23:43Z",
+    "channel": "watch",
+    "incoming_application_state": "CLOSED",
+    "incoming_lifecycle_state": "CLOSED",
+    "selected_application_state": "CLOSED",
+    "selected_lifecycle_state": "CLOSED",
+    "readiness": "blocked",
+    "requested_at": "2026-10-09T00:01:52.502Z",
+    "acknowledged_at": "2026-10-10T10:56:59.071Z",
+    "acknowledgement_id": "recheckack_06f5d3837319f5efa2eb0d558f02ae14",
+    "visible_in_customer_snapshot": false
+  },
+  "queue_snapshot": {
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "publication_enabled": 0,
+    "due_jobs": 5,
+    "leased_jobs": 0,
+    "dead_jobs": 0
+  },
+  "preservation": {
+    "schema": "findpitches-v3-customer-preview-preservation-v1",
+    "as_of": "2026-10-10T11:24:32.083Z",
+    "receipts_compared": 15811,
+    "source_facts_compared": 108819,
+    "existing_identities_compared": 7077,
+    "destructive_source_mutations": 0,
+    "existing_identity_changes": 0,
+    "identity_comparison_key": "retained entity.id",
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "publication_api_denied": true,
+    "publication_enabled": false,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "live_v1_deployment_unchanged": true,
+    "v2_schedules": [],
+    "v2_schedules_unchanged": true
+  },
+  "limitations": [
+    "Prior trace receipt has no explicit channel; OPEN_NOW is retained, but an explicit prior current-channel export is not proved.",
+    "Cloud acknowledgement does not prove the Pi deliberately executed every requested recheck or followed every cursor page.",
+    "Six equal-source-clock lifecycle disagreements remain held; no stronger timestamp was invented.",
+    "Cloud batch receipts were written before the later Pi status checked_at; this is not a clock discrepancy."
+  ],
+  "runtime_changes": 0,
+  "paid_queries": 0,
+  "messages_sent": 0,
+  "publication_enabled": false,
+  "production_cutover_enabled": false
+}

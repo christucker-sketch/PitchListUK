@@ -12,7 +12,7 @@ Maintained initially by **Codex**. This is a manual, evidence-linked dashboard. 
 | Frontend | Standalone approved Build 4 deployed on owned customer Worker; seven pages and three sampled assets returned 200 | Performance/security and completed commercial journeys |
 | Native email/sign-in | One authorized test email delivered; native sign-in and consumed challenge confirmed | Alert email delivery remains disabled |
 | Billing | Stripe TEST Checkout/entitlements/portal/signed webhook; zero pending receipts | Hosted TEST checkout and existing-subscriber recognition |
-| Pi delivery | Host contact and fresh exports observed; 15-minute timing still varies | Full recheck execution, lifecycle trace and source custody |
+| Pi delivery | First lifecycle delivery now cloud-checked; all 119 new receipts linked to existing entities and withheld (12:22 London) | All-page host execution, explicit prior current-channel trace and six equal-clock holds |
 | Queue health | Zero due, leased or dead jobs at 10:22 | Distinguish producer rechecks from pipeline queue jobs |
 | Paid discovery | V3 paid programme manually paused, bulk off; legacy paid flags off; V2 scheduler empty | External-client spend attribution before any later paid decision |
 | Safety | Latest full preservation audit: zero destructive source mutations, identity changes or publication leakage | Preserve evidence/identity safeguards in every task |
@@ -69,6 +69,14 @@ All READY have proved application URL, organiser and location; 93.56% have a fut
 
 Latest full suite **210/210**, focused mail/auth **21/21**, prior deployed UI browser checks **23/23**. The status/coordination update did not rerun the full suite. Latest full preservation audit compared 15,811 original receipts, 108,819 source facts and 7,077 identities: zero destructive mutations/identity changes/customer projection/publication queue rows. [Mail evidence](../docs/findpitches-v3-email-setup-2026-10-10.md) · [Architecture](../docs/findpitches-v3-customer-architecture.md).
 
-Open: producer source custody; all-page rechecks and real lifecycle-feed proof; broader UK source-backed inventory; existing-subscriber recognition; hosted TEST payment journey; approved alert delivery test; source-backed facets/geography; real-origin performance/security review; explicit live domain/billing/publication/cutover approval. The whole-product deletion/independence test remains open even though the frontend/API runtime owns its code and storage.
+Open: all-page producer recheck execution and remaining lifecycle trace gaps; broader UK source-backed inventory; existing-subscriber recognition; hosted TEST payment journey; approved alert delivery test; source-backed facets/geography; real-origin performance/security review; explicit live domain/billing/publication/cutover approval. Producer source custody is completed as V3-003, including Chris's recorded running-kit hash check. The whole-product deletion/independence test remains open even though the frontend/API runtime owns its code and storage.
+
+## Later execution checkpoint — 10 October, 12:29 London
+
+[Cloud lifecycle inspection](../docs/findpitches-v3-lifecycle-cloud-checkpoint-2026-10-10.md) independently matches the first Pi feed: 2,044 accepted, 119 inserted, 1,925 unchanged duplicates and zero rejected. All 119 matched existing identities; zero new entities and zero cohort visibility in the customer snapshot at 12:22. 113 selected lifecycle states advanced; six same-source-clock conflicts remain held. Exact-receipt acknowledgements and one prior OPEN_NOW → CLOSED trace are retained, with missing producer execution/prior-channel evidence explicitly noted. Claude retains V3-001.
+
+Full preservation at 12:24:32 London: zero source mutations, identity changes or customer/publication leakage; zero paid queries today; bulk off; live Pitchlist deployment and V2 schedules unchanged. Queue snapshot at 12:22: five due jobs, zero leased/dead. No runtime deployment or refreshed commercial inventory total is implied.
+
+Codex retains V3-004 with a [reviewed-association implementation/test sequence](../docs/findpitches-v3-customer-launch-checkpoints-2026-10-10.md); existing customer tests pass 11/11. V3-005 is blocked on native-browser certificate trust through the environment proxy. TEST credentials are present; no actual hosted checkout was attempted. Publication, live billing, migration, cutover and acquisition stay disabled.
 
 **Runtime code checkpoint:** `00c752e2104d4006600d12b9188aa91ba2199c6b`. **Full report commit:** `1825ae7b61e17084444ce0199d5ee20dc02d69a1`. Later coordination-only commits are not new runtime deployments. For next work and ownership use [TASKS.md](TASKS.md); for actual approvals use [DECISIONS.md](DECISIONS.md).
