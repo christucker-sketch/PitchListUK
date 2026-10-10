@@ -1,6 +1,6 @@
 {
   "schema": "findpitches-v3-lifecycle-final-cloud-v1",
-  "as_of": "2026-10-10T18:02:45.129Z",
+  "as_of": "2026-10-10T18:14:45.217Z",
   "records": [
     {
       "id": "rec_cd9a734dcb7ac4fdc3efeba2429c6a52f5814f8c",
@@ -322,21 +322,6 @@
       "reason": "watch_recheck_due"
     },
     {
-      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
-      "requested_at": "2026-10-09T13:33:34.663Z",
-      "reason": "watch_recheck_due"
-    },
-    {
-      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
-      "requested_at": "2026-10-09T13:32:36.818Z",
-      "reason": "watch_recheck_due"
-    },
-    {
-      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
-      "requested_at": "2026-10-09T13:33:18.601Z",
-      "reason": "watch_recheck_due"
-    },
-    {
       "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
       "requested_at": "2026-10-09T18:47:53.640Z",
       "reason": "watch_recheck_due"
@@ -347,7 +332,38 @@
       "reason": "watch_recheck_due"
     }
   ],
-  "acks": [],
+  "acks": [
+    {
+      "id": "recheckack_4b166f32b86b2fcbe5030d1ec94c3e9a",
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "requested_at": "2026-10-09T13:33:34.663Z",
+      "request_reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_4d4590cdbd191713c317",
+      "accepted_record_id": "rec_aad4d1f8e3e9b90d76126cefbacd57907d140ae4",
+      "source_last_checked": "2026-10-10T17:37:14Z",
+      "acknowledged_at": "2026-10-10T18:14:29.697Z"
+    },
+    {
+      "id": "recheckack_e15ee1c1cb1b9bc2a18a4e32ccb91db8",
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "requested_at": "2026-10-09T13:32:36.818Z",
+      "request_reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_58df50276bd7933d3ade",
+      "accepted_record_id": "rec_7dfcc73436c03484c34a72b5c636a49edf3b53fa",
+      "source_last_checked": "2026-10-10T17:37:21Z",
+      "acknowledged_at": "2026-10-10T18:14:29.335Z"
+    },
+    {
+      "id": "recheckack_474a974da417cfc3f62653320a0e1608",
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "requested_at": "2026-10-09T13:33:18.601Z",
+      "request_reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_8ba38ecf08fb5cc324d9",
+      "accepted_record_id": "rec_8c2b3a0a1c433c2a1cb44fb6b9ccaa620f1efb14",
+      "source_last_checked": "2026-10-10T17:37:26Z",
+      "acknowledged_at": "2026-10-10T18:14:29.513Z"
+    }
+  ],
   "entities": [
     {
       "id": "ent_610f9171a285d58e114a847995de559e",
@@ -554,7 +570,7 @@
     }
   ],
   "customer_snapshot": {
-    "as_of": "2026-10-10T18:02:49.557Z",
+    "as_of": "2026-10-10T18:14:48.885Z",
     "keys": [
       "schema",
       "as_of",
@@ -629,9 +645,10 @@
   "operator_acknowledgement_writes": 0,
   "closure_verified": false,
   "remaining": [
-    "Three fresh receipts are exact-linked and selected by newer source clocks; original-token producer acknowledgements not yet observed in this snapshot.",
     "UKCF 26684 past event correctly withheld; stale recheck has no designed obsolete-id resolution, not a fabricated fresh acknowledgement.",
     "Marketspread 26215 replacement producer ID not yet supplied by producer evidence or identified in the received corpus.",
     "Nashville proposed survivor belongs to V3 edition 2027; old entity is edition 2026. Reviewed identity/supersession evidence is required; no silent cross-edition merge."
-  ]
+  ],
+  "fresh_receipts_verified": 3,
+  "fresh_exact_token_acknowledgements_verified": 3
 }
