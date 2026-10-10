@@ -7,9 +7,9 @@ When claiming, fill the owner, claimed/updated timestamp (Europe/London with off
 | ID | Priority | Work / completion evidence | State | Owner | Planned components / dependency |
 | --- | --- | --- | --- | --- | --- |
 | HUB-001 | P0 | Create shared hub, evidence-linked dashboard and per-AI update files; push feature branch and verify GitHub readability | DONE | Codex | `team/`, root agent entrypoints; documentation only |
-| V3-001 | P1 | Execute all-page exact-ID producer rechecks and retain a real closure/held/retired → export → identity → acknowledgement → unavailable preview trace | OPEN | Unclaimed | Producer host/runner + V3 recheck contract; host access and retained evidence needed |
-| V3-002 | P1 | Restore legitimate UKCraftFairs source custody/access and prove retained event/application routes; quantify actual READY gained without weaker rules | OPEN | Unclaimed | Producer evidence + source verifier; 154 held GB entities are review population only |
-| V3-003 | P1 | Copy independent discovery engine and host deployment source into an owned separate package with hashes and reproducible instructions | BLOCKED | Unclaimed | Required producer source absent from the supplied ZIP; source owner must provide it |
+| V3-001 | P1 | Execute all-page exact-ID producer rechecks and retain a real closure/held/retired → export → identity → acknowledgement → unavailable preview trace | CLAIMED | Claude | Producer host/runner + V3 recheck contract; host access and retained evidence needed |
+| V3-002 | P1 | Restore legitimate UKCraftFairs source custody/access and prove retained event/application routes; quantify actual READY gained without weaker rules | CLAIMED | Claude | Producer evidence + source verifier; 154 held GB entities are review population only |
+| V3-003 | P1 | Copy independent discovery engine and host deployment source into an owned separate package with hashes and reproducible instructions | BLOCKED | Claude | Claude holds the source (`fp-discovery-lab` + `deploy/pi`); waiting on Chris's authorisation to commit it as a separate package path |
 | V3-004 | P1 | Design and test controlled recognition of existing subscribers in V3 using canonical ownership/entitlement; no duplicate charges or live migration | OPEN | Unclaimed | Native customer/billing + read-only legacy comparison; any real migration stays gated |
 | V3-005 | P1 | Complete the hosted Stripe TEST browser checkout/cancellation/customer journey and retain evidence | OPEN | Unclaimed | Customer UI/billing/browser checks; TEST only, no live objects |
 | V3-006 | P2 | Prepare native alert delivery with bounded recipient/duplicate controls, then obtain explicit recipient/send authorization before actual messages | OPEN | Unclaimed | Customer alerts/email; storage exists, delivery remains disabled |
@@ -23,5 +23,9 @@ Suggested starting points: Claude can assess V3-001/V3-002/V3-003 with producer 
 ## Active claim details
 
 - **HUB-001 / Codex / claimed 2026-10-10T10:55:11+01:00:** documentation hub setup only; no code deployment, paid search, customer email or production change. Completed 2026-10-10T10:56:28+01:00. Initial publication `0ff3b4dd58a5f0b43a1489639289e5be0ad45489`; all 12 files read from GitHub with HTTP 200 and exact content-hash matches. No follow-on task claimed.
+
+- **V3-001 / Claude / claimed 2026-10-10T11:00:22+01:00:** Pi recheck runner follows `next_cursor` to exhaustion and acks exact `producer_record_id`/`entity_id`/`requested_at`; retain one real lifecycle trace after Chris runs `sudo fpd-v3-feed enable`. Components: producer `deploy/pi` runner and kit only (host install by Chris). No cloud/D1 edits. Next checkpoint: kit ready for Chris to install.
+- **V3-002 / Claude / claimed 2026-10-10T11:00:22+01:00:** sanitized sample of Pi-retained UKCraftFairs event/application routes for the 154 held GB entities, plus a source-access options note. No READY rule loosening; no cloud edits. Next checkpoint: evidence note in `docs/`.
+- **V3-003 / Claude / claimed 2026-10-10T11:00:22+01:00, BLOCKED:** source exists with Claude; commit to a separate package path only after Chris authorises. No credentials, exports or receipts will be included.
 
 Use the per-agent [update template](templates/UPDATE.md) for the claim's timestamp, files, checks, blockers and next action. Preserve prior task IDs when work is split or superseded; add a new row rather than repurposing an old ID.

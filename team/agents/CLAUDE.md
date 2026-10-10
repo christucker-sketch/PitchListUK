@@ -1,9 +1,81 @@
 # Claude status
 
-**State:** AWAITING_FIRST_UPDATE. **Author:** this initial placeholder was created by Codex, not Claude. **Session/update timestamp:** not supplied by Claude. **Claimed tasks:** none.
+Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
+Updated: 2026-10-10T11:00:22+01:00
+State: WORKING
+Branch: findpitches-v3/greenfield
+Task IDs and published claims: V3-001, V3-002, V3-003 (see [TASKS.md](../TASKS.md)). V3-003 stays BLOCKED on Chris's authorisation to commit producer source.
+Files/components owned: the independent producer (`fp-discovery-lab` engine plus the `deploy/pi` host kit) on `fpd-pi`; the `findpitches-v3-web` Build 4 package as handed over (Codex owns it in V3 from now on); `team/agents/CLAUDE.md`.
 
-This file is reserved for Claude's own status. Prior evidence says the standalone Build 4 handover was supplied and is physically owned by V3. Pi transport was observed live, but that is not a direct Claude status report or proof that host recheck/lifecycle work is complete.
+## Access, stated plainly
 
-Suggested first action: read the [hub](../README.md), [dashboard](../CURRENT_STATUS.md), [work board](../TASKS.md), [decisions](../DECISIONS.md) and [handover](../HANDOVERS.md); then replace this placeholder with a dated own-session update using [the template](../templates/UPDATE.md). Suggested tasks are V3-001, V3-002 and V3-003, subject to actual source/host access and a published claim.
+- I have **no direct shell on the Pi**. Every host measurement below comes from commands Chris ran (`sudo fpd-status`, installs) and pasted back. Host changes reach the Pi as a kit that Chris installs.
+- I hold the producer source in my working copy and built the Pi kit from it. It is **not in GitHub** yet (see V3-003).
+- I have no Cloudflare, D1, Stripe or Serper access, and I have not used any.
 
-Do not put producer credentials, source exports, customer data or access links here. Host/source access and completion must be stated with evidence, not assumed from suggestions.
+## Completed
+
+- Producer delivery moved from the PC to the Pi (`fpd-v3-delivery`, every 15 min). The ingest-only token is readable only by the `fpdv3` user. The PC host is retired.
+- **Lifecycle feed built and installed, switched OFF:** `/srv/fpd/export/v3/feed.jsonl`. It holds current records plus watch/held/retired records for ids that left current within 45 days, in the same v1 schema. The switch is `sudo fpd-v3-feed enable|disable|status`. Codex confirmed the three cloud semantics in [the 9 Oct confirmation](../../docs/findpitches-v3-producer-feed-confirmation-2026-10-09.md), so only Chris's host command remains.
+- **Audit corrections installed on the Pi on 10 Oct:**
+  - platform names removed from the organiser field;
+  - AUTHORITY_ONLY names held (event-like names exempt);
+  - ROLLING records past their deadline or season end become CLOSED_CURRENT_CYCLE;
+  - the EntryThingy lane suspended;
+  - Marketspread cancelled dates ignored;
+  - Eventeny non-trading forms rejected.
+
+  Tests passed: 87 plus 1 skipped on the Pi, and 88 in my workspace.
+- Host tooling added:
+  - `fpd-evidence` (a read-only evidence pack that aborts if the token appears);
+  - `fpd-offsite-setup` and `fpd-offsite-backup` (rclone, kept 14 days, with `RESTORE.txt`). These are installed but no-ops until a remote is configured.
+- Handed Codex the standalone Build 4 frontend package (`findpitches-v3-web`) plus handoff docs 00–08. Codex now serves it as the customer preview.
+
+## Current work
+
+- V3-001: upgrade the Pi recheck runner so it follows `next_cursor` until absent, not one 100-request page per cycle. It will acknowledge the exact `producer_record_id`, `entity_id` and original `requested_at`, as described in Codex's 9 Oct confirmation. After that, retain one real current→watch/held/retired trace once the feed is on.
+- V3-002: show that the Pi retains UKCraftFairs event and application routes. V3's verifier gets HTTP 520 from ukcraftfairs.com, but the Pi's crawler fetches it. This needs a source-access decision, not looser READY rules.
+
+## Evidence and commits
+
+- This update is documentation only. Producer source custody is pending (V3-003).
+- Handoff docs 00–08 were supplied to Codex outside GitHub (handover ZIP). Cloud side of the feed: [Codex feed confirmation](../../docs/findpitches-v3-producer-feed-confirmation-2026-10-09.md).
+
+**Deployment version and environment:** the producer runs on the Pi only (`fpd-pi`, systemd). The audit-fix kit was installed on 10 Oct. **Nothing was deployed to Cloudflare by me.**
+
+## Checks performed
+
+- Unit and integration suite (88 in my workspace; 87 plus 1 skipped on the Pi).
+- Read-only `fpd-status` output supplied by Chris.
+
+**Not performed:** I have not seen the post-install rebuild results, and I have not run a planned reboot test.
+
+## Metrics: Pi `fpd-status`, about 2026-10-10T10:24+01:00, run by Chris
+
+| Item | Value |
+| --- | --- |
+| Current records | 1,925 |
+| Watch records | 1,871 |
+| Last delivery | 1,925 accepted, 0 rejected |
+| Recheck handling (last cycle) | 63 already fresh, 35 queued, 2 with no known URL |
+| Feed lifecycle records | 119 (built, **not delivered** while the feed is off) |
+| Power | `throttled=0x50005` (live under-voltage). Chris is replacing the PSU. |
+| Off-site backup | Not configured |
+
+**Correction:** my earlier "337 rechecks acknowledged in 20 h" came from the Pi's own delivery log, not V3's ledger. Codex's ledger figures supersede it. Don't add the two together.
+
+## Blockers and dependencies
+
+- Feed enable needs Chris to run `sudo fpd-v3-feed enable` on the Pi.
+- V3-003 needs Chris's OK to commit the producer source to this repo (a separate package path).
+- UKCF access policy: V3 needs to decide whether to accept Pi-retained evidence or find another legitimate route.
+- PSU replacement.
+- Off-site backup remote (S1).
+
+**Next action and owner:** Claude does the recheck-runner cursor upgrade (V3-001) and the UKCF evidence sample (V3-002). Chris enables the feed and authorises source custody.
+
+**Approval required:** committing producer source to GitHub (Chris). No publication, cutover or billing gate has been reached.
+
+**Paid queries, messages, publication or production changes made:** none. No Serper calls, no emails, no Stripe or Cloudflare changes, and V2 untouched.
+
+**Source mutations, identity changes or leakage:** none by me. The token is not in any file, log or update I produced.
