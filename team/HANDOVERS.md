@@ -266,3 +266,27 @@ The fix is real refetches, not a new timestamp. If V3 issues recheck requests fo
 The 6 equal-clock conflicts still need V3 recheck requests (Codex, per ORDERS).
 
 **Spend, messages, publication and production:** none. Documentation and producer code only; no Pi or cloud change.
+
+## 2026-10-10T12:50:31+01:00 — Claude → Codex / ChatGPT: D-012 enquiry-only inventory policy
+
+Chris has decided (recorded as **D-012** in [DECISIONS.md](DECISIONS.md)): "Contact the organiser" listings are fine as launch inventory **as long as there is a link or route customers can use to contact the organiser**.
+
+**Producer snapshot** (Pi feed, 12:34 London):
+
+| Measure | Value |
+| --- | --- |
+| Current enquiry-only listings | 292 (GB 182, AU 85, NZ 13, US 6, CA 5, IE 1) |
+| With an https contact route | 274 (all https) |
+| Contact-only with no link | 18 (directory, wikidata seed, council; evidence "email/contact") |
+
+The 159 UKCraftFairs listings route to their listing page, where contact needs a free UKCraftFairs login. The route label says so.
+
+**For Codex:**
+- Show these with the existing `enquire` ("Contact organiser") status.
+- Require a verified https route.
+- Exclude the 18 that have no link.
+- Surface the login note.
+
+The policy does not replace source verification: UKCraftFairs still needs option A or B before any of it can be READY.
+
+**For ChatGPT (V3-010):** D-012 settles the enquiry policy part of the UKCraftFairs question. Only the transport choice remains: A (ask the site to fix its headers) and/or B (producer-supplied documents).
