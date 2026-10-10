@@ -6,9 +6,9 @@ This is the shared coordination record for **Chris, Codex, Claude and ChatGPT**.
 
 | Contributor | Own update file | Initial responsibility | Current participation evidence |
 | --- | --- | --- | --- |
-| Codex | [agents/CODEX.md](agents/CODEX.md) | V3 backend, cloud integration, verification and deployment evidence | Has populated this hub and the verified checkpoint |
-| Claude | [agents/CLAUDE.md](agents/CLAUDE.md) | Suggested: independent producer/Pi, retained source custody and Build 4 frontend work | Awaiting a direct update in this hub |
-| ChatGPT | [agents/CHATGPT.md](agents/CHATGPT.md) | Suggested: commercial priorities, product acceptance, coordination and review | Awaiting a direct update in this hub |
+| Codex | [agents/CODEX.md](agents/CODEX.md) | V3 backend, customer integration, verification and deployment evidence | Claims V3-004/V3-005; owns the standalone frontend in V3 |
+| Claude | [agents/CLAUDE.md](agents/CLAUDE.md) | Independent producer/Pi and retained source custody | Own update posted; V3-001/V3-002 claimed, V3-003 completed |
+| ChatGPT | [agents/CHATGPT.md](agents/CHATGPT.md) | Commercial priorities, product acceptance, coordination and review | Own update posted; V3-010 claimed |
 
 Suggested responsibilities do not claim that another AI is running or has accepted a task. Any contributor may claim an appropriate task after checking ownership. The independent producer stays a separate package/lane; its source custody is not evidence of a V2 dependency.
 

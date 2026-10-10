@@ -1,17 +1,22 @@
 # Codex status
 
-**Author:** Codex. **Updated:** 2026-10-10T10:56:28+01:00 (Europe/London). **Status:** IDLE; HUB-001 complete. **Scope:** shared documentation hub; no runtime changes.
+**Author:** Codex. **Updated:** 2026-10-10T12:10:19+01:00 (Europe/London). **State:** WORKING; V3-004 and V3-005 claimed. **Branch:** `findpitches-v3/greenfield`.
 
-**Owned task/files:** HUB-001; initial `team/` files plus root `AGENTS.md` and `CLAUDE.md` entrypoints. Other contributors own their future status updates; these initial files do not impersonate their activity.
+**Owned tasks/components:** [V3-004 and V3-005](../TASKS.md): native customer/auth/billing, owned customer schema and verification tools, customer tests and the standalone frontend's TEST browser journey. Claude retains producer V3-001/V3-002; ChatGPT retains launch review V3-010. Their status files and producer components are outside these claims.
 
-**Completed:** V3 standalone frontend/native API/customer database; source-proof inventory; SMTP2GO native credential verification; exactly one authorized email delivered and successful sign-in confirmed. Full team report is pushed at `1825ae7b61e17084444ce0199d5ee20dc02d69a1`; runtime code checkpoint `00c752e2104d4006600d12b9188aa91ba2199c6b`.
+**Completed this update:** fetched and fast-forwarded to `fa6128c96b305400dd3ade7e570ffa8cfae1ebd8`; read the shared hub, decisions, recent handovers and both contributors' own updates. Claimed the two OPEN tasks at the user's explicit request. Updated the hub's participation table to reflect the contributors' published updates. This is a documentation claim, not completed implementation or deployment.
 
-**Evidence:** [10 October report](../../docs/findpitches-v3-team-status-2026-10-10.md), [mail verification](../../docs/findpitches-v3-email-setup-2026-10-10.md), [customer architecture](../../docs/findpitches-v3-customer-architecture.md). Snapshot timings and current open gates are in [CURRENT_STATUS.md](../CURRENT_STATUS.md).
+**Current work / next checkpoints:**
 
-**Verification:** latest runtime suite 210/210, focused mail/auth 21/21. Hub checks passed: 12 required files, 48 relative links, zero broken links, no known credentials/customer recipient values, narrow scope and clean whitespace. Initial published commit `0ff3b4dd58a5f0b43a1489639289e5be0ad45489`; all 12 files independently read from GitHub with HTTP 200 and exact content-hash matches. No new runtime tests or deployment were needed for documentation alone.
+- **V3-004:** inspect native canonical ownership/entitlement and read-only legacy comparison; document the controlled recognition design and shadow test matrix. Cover ownership mismatch, idempotent repeat recognition, duplicate Checkout prevention, cancellation/paid-through and expiry. Use synthetic TEST identities; no live subscriber import or V1/V2 runtime dependency.
+- **V3-005:** assess available browser/Stripe TEST fixtures and existing coverage; prove the actual hosted checkout, return, entitlement, cancellation and expiry journey. API-created TEST subscriptions are insufficient evidence for browser checkout. Retain sanitized evidence; report a missing capability precisely if one prevents the journey.
 
-**Blockers:** no blocker to creating the hub. Producer source/lifecycle and external-session GitHub write/read capability are not yet proved. Do not infer that Claude/ChatGPT are active or have seen the hub.
+**Incoming handovers acknowledged:** Claude's V3-003 source custody and Chris's running-kit hash check are now recorded. Claude also reports lifecycle feed enablement and a first 12:00:24 London delivery with 2,044 accepted / 119 inserted / zero rejected. The V3-side lifecycle links, internal states and preview withholding remain unverified by this session; they are a separate supporting checkpoint for Claude-owned V3-001. ChatGPT's V3-010 review can use the subscriber/payment evidence when it exists. No external session was automatically notified.
 
-**Next:** Claude/ChatGPT can read the hub and post actual own-session updates; next implementation owner should claim an OPEN task before work. No follow-on implementation task claimed here.
+**Retained earlier evidence:** [10 October team report](../../docs/findpitches-v3-team-status-2026-10-10.md), [mail verification](../../docs/findpitches-v3-email-setup-2026-10-10.md), [customer architecture](../../docs/findpitches-v3-customer-architecture.md). Prior runtime code checkpoint `00c752e2104d4006600d12b9188aa91ba2199c6b`; detailed report commit `1825ae7b61e17084444ce0199d5ee20dc02d69a1`. Previous runtime suite 210/210 and focused mail/auth 21/21 are historical results, not rerun here. HUB-001 was completed and its initial publication independently verified on GitHub.
 
-**Changes to environment/spend/publication:** none for hub setup. Paid acquisition, live billing, publication and cutover remain disabled; V2 read-only.
+**Checks / metrics / deployment:** no new runtime, inventory or integrity measurement; no deployment. Documentation links, whitespace, scope and sensitive-content checks are the appropriate verification for this claim update. [CURRENT_STATUS.md](../CURRENT_STATUS.md) retains its separately timestamped measurements.
+
+**Blockers:** none to claiming either task. Browser/TEST fixture capability will be assessed before claiming journey completion. Actual customer migration, live billing, publication and production cutover remain approval gates; none is reached by this claim.
+
+**Spend, messages and preservation:** zero queries or messages sent; no publication, production or runtime data change. V2 and live Pitchlist untouched. Original source evidence and identity remain unchanged by this documentation update.

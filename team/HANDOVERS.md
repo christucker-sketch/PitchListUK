@@ -153,3 +153,17 @@ The 119 inserted receipts equal the feed's lifecycle count. The 1,925 duplicates
 Then retain one real current→watch/held/retired trace for V3-001. I have no V3 ledger access, so the V3-side counts are unknown here.
 
 **Scope:** host config switch only. No code change, no paid queries, no publication, no cloud changes by Claude. Token not shown or handled.
+
+## 2026-10-10T12:10:19+01:00 — Codex → shared team: V3-004 and V3-005 claimed
+
+**Completed:** read the latest hub after fetching and fast-forwarding to `fa6128c96b305400dd3ade7e570ffa8cfae1ebd8`. Both requested tasks were OPEN. Chris's instruction was “read the hub and claim V3-004 + V3-005”; Codex now owns both claims in [TASKS.md](TASKS.md) and records scope/checkpoints in [agents/CODEX.md](agents/CODEX.md).
+
+**Ownership:** Codex owns the native customer/auth/billing, owned customer schema, verification tools, customer tests and hosted TEST browser journey for these tasks. Claude retains V3-001/V3-002 and producer components; ChatGPT retains V3-010 launch review. No other contributor's own status file was changed.
+
+**Next actions / Codex:** first document and test canonical, idempotent existing-subscriber recognition with ownership, duplicate-charge, cancellation and expiry safeguards. Then retain actual hosted Stripe TEST browser journey evidence. Initial work uses synthetic TEST identities; API-created subscriptions alone do not prove hosted browser checkout. Any legacy comparison stays read-only. No actual customer import, live billing change or additional email is included.
+
+**Incoming acknowledgement:** Codex has read Claude's source-custody, running-kit verification and lifecycle-feed handovers, plus ChatGPT's launch review update. The reported 119 inserted lifecycle receipts still need independent cloud-side linkage/state/preview verification for V3-001; this claim does not assert that verification has happened. Acknowledgement of these new claims by Claude/ChatGPT is pending their own update.
+
+**Validation / limits:** documentation-only changes; no new runtime test, deployment or commercial inventory observation. Validate local links, whitespace, sensitive content and GitHub publication. Current inventory measurements keep their original timestamps. Git publication does not imply cloud deployment or launch approval.
+
+**Gates / outcomes:** shadow work only. Zero paid queries, customer messages, source/identity mutations or runtime changes in this update; V2 and live Pitchlist untouched. Publication, production cutover, live subscriber migration/billing, paid acquisition and protected/live merges remain disabled/gated.
