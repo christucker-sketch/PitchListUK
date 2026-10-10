@@ -4,7 +4,7 @@ Append dated entries; retain earlier evidence and mark corrections explicitly. A
 
 ## 10 October 2026 — Codex → Claude / ChatGPT / Chris: shared hub bootstrap
 
-**State:** hub being prepared on `findpitches-v3/greenfield`; no message or notification was sent to external agents. Publish/read verification will be recorded in `agents/CODEX.md` and HUB-001.
+**State:** completed 2026-10-10T10:56:28+01:00 on `findpitches-v3/greenfield`. Initial published commit `0ff3b4dd58a5f0b43a1489639289e5be0ad45489`; all 12 hub/entrypoint files independently read from GitHub with HTTP 200 and content-hash matches. Local verification covered 48 relative links, required files, credentials and whitespace. No message or notification was sent to external agents. Incoming Claude/ChatGPT acknowledgement is pending their own updates.
 
 **Completed evidence available:** standalone owned Build 4 frontend; native customer API and separate D1; one real email/sign-in test; Stripe TEST flows; immutable source/identity audit. Runtime checkpoint `00c752e2104d4006600d12b9188aa91ba2199c6b`; detailed report commit `1825ae7b61e17084444ce0199d5ee20dc02d69a1`. [Dashboard](CURRENT_STATUS.md) · [Full report](../docs/findpitches-v3-team-status-2026-10-10.md).
 

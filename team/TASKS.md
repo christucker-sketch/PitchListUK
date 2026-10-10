@@ -6,7 +6,7 @@ When claiming, fill the owner, claimed/updated timestamp (Europe/London with off
 
 | ID | Priority | Work / completion evidence | State | Owner | Planned components / dependency |
 | --- | --- | --- | --- | --- | --- |
-| HUB-001 | P0 | Create shared hub, evidence-linked dashboard and per-AI update files; push feature branch and verify GitHub readability | CLAIMED | Codex | `team/`, root agent entrypoints; documentation only |
+| HUB-001 | P0 | Create shared hub, evidence-linked dashboard and per-AI update files; push feature branch and verify GitHub readability | DONE | Codex | `team/`, root agent entrypoints; documentation only |
 | V3-001 | P1 | Execute all-page exact-ID producer rechecks and retain a real closure/held/retired → export → identity → acknowledgement → unavailable preview trace | OPEN | Unclaimed | Producer host/runner + V3 recheck contract; host access and retained evidence needed |
 | V3-002 | P1 | Restore legitimate UKCraftFairs source custody/access and prove retained event/application routes; quantify actual READY gained without weaker rules | OPEN | Unclaimed | Producer evidence + source verifier; 154 held GB entities are review population only |
 | V3-003 | P1 | Copy independent discovery engine and host deployment source into an owned separate package with hashes and reproducible instructions | BLOCKED | Unclaimed | Required producer source absent from the supplied ZIP; source owner must provide it |
@@ -22,6 +22,6 @@ Suggested starting points: Claude can assess V3-001/V3-002/V3-003 with producer 
 
 ## Active claim details
 
-- **HUB-001 / Codex / claimed 2026-10-10T10:55:11+01:00:** documentation hub setup only; no code deployment, paid search, customer email or production change. Update this claim to DONE after the push/read check and append the handover.
+- **HUB-001 / Codex / claimed 2026-10-10T10:55:11+01:00:** documentation hub setup only; no code deployment, paid search, customer email or production change. Completed 2026-10-10T10:56:28+01:00. Initial publication `0ff3b4dd58a5f0b43a1489639289e5be0ad45489`; all 12 files read from GitHub with HTTP 200 and exact content-hash matches. No follow-on task claimed.
 
 Use the per-agent [update template](templates/UPDATE.md) for the claim's timestamp, files, checks, blockers and next action. Preserve prior task IDs when work is split or superseded; add a new row rather than repurposing an old ID.
