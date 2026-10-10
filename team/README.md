@@ -22,6 +22,8 @@ Suggested responsibilities do not claim that another AI is running or has accept
 ## While working and at handover
 
 - Update **your own agent file** after a meaningful work block or when blocked. Use the [update template](templates/UPDATE.md). Do not present an assumption or a proposed change as deployed/verified.
+- **Push that checkpoint to the shared branch immediately after the meaningful work block. Do not leave a completed checkpoint only in a local/Cowork workspace waiting for Chris to sync it manually.** The shared branch is the cross-agent handoff boundary.
+- If the current working tree is awkward to rebase/push safely, use `team/tools/hub-sync.sh` to publish a narrow status/evidence update from an isolated temporary clone. Example: `team/tools/hub-sync.sh "Claude: lifecycle checkpoint" team/agents/CLAUDE.md team/TASKS.md docs/example.md`. The helper never stores credentials and requires the environment to already have GitHub push authentication.
 - Record claims, blockers and completion in the relevant task row. An old claim needs coordination; its age is not approval to overwrite the work.
 - Update `CURRENT_STATUS.md` when new **verified** evidence changes the shared product picture. Include the measurement timestamp and environment. Counts are snapshots, not a live GitHub telemetry feed.
 - Add an entry to `HANDOVERS.md` with the [handover template](templates/HANDOVER.md). Preserve earlier entries; correct inaccurate claims in a new entry with evidence.
@@ -48,13 +50,16 @@ Read team/README.md, CURRENT_STATUS.md, TASKS.md, DECISIONS.md,
 recent HANDOVERS.md entries and your own team/agents file before starting.
 Update only your own AI status, claim task ownership before overlapping work,
 link evidence/commits, and push authorized updates to the feature branch.
-V2 stays read-only; paid acquisition, publication, live billing and cutover
-remain disabled. Preserve source facts and identity. Never put secrets or
-customer data in GitHub. Report a missing capability honestly.
+After every meaningful checkpoint, push the status/evidence immediately so the
+other agents can see it without Chris manually syncing the workspace. If the
+working tree is inconvenient, use team/tools/hub-sync.sh for a narrow isolated
+push. V2 stays read-only; paid acquisition, publication, live billing and
+cutover remain disabled. Preserve source facts and identity. Never put secrets
+or customer data in GitHub. Report a missing capability honestly.
 ```
 
 For Claude, its own file is `team/agents/CLAUDE.md`. For ChatGPT it is `team/agents/CHATGPT.md`; for Codex it is `team/agents/CODEX.md`.
 
-This folder provides shared persistence, not automatic inter-AI messaging or background polling. Each AI must have GitHub/repository access and be instructed to read it. This setup does not install a connector, grant another assistant access or notify/start an external session. If an AI has read-only access, it can prepare an update for Chris or an authorized contributor to commit; it must not claim that an unpushed update is shared.
+This folder provides shared persistence, not automatic inter-AI messaging or background polling. Each AI must have GitHub/repository access and be instructed to read it. The checkpoint-push rule plus `team/tools/hub-sync.sh` removes the need for manual status-file copying **when that AI environment has GitHub push authentication**. If an AI environment has no GitHub write credential, that one-time capability still has to be configured; the helper deliberately does not embed or create credentials. If an AI has read-only access, it can prepare an update for Chris or an authorized contributor to commit; it must not claim that an unpushed update is shared.
 
 Older detailed reports remain in [docs/](../docs/); the [10 October team report](../docs/findpitches-v3-team-status-2026-10-10.md) is a dated evidence checkpoint rather than the ongoing work board.
