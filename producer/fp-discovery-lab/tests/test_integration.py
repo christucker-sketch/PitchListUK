@@ -805,3 +805,22 @@ def test_eventeny_non_trading_application_forms_are_not_opportunities():
         a = {"label": "actionable", "reasons": [], "evidence": [], "extracted": {"application_name": name, "state": "OPEN_NOW"}}
         out = adapters.eventeny(P(), a, dt.date(2026, 10, 9))
         assert (out["label"] != "rejected") == relevant, name
+
+
+def test_v3_recheck_budget_caps_requeues_not_examination(tmp_path):
+    """All requests are examined; only re-queues count against the per-cycle budget (V3-001 all-page rechecks)."""
+    from fpd.cli import queue_rechecks
+    conn = dbm.connect(tmp_path / "e.sqlite")
+    _seed(conn, 3)
+    root = tmp_path / "integration_export"
+    Exporter(conn, Cfg(tmp_path), root, TODAY).run("full")
+    ids = [r["opportunity_id"] for r in _read(root / "full" / "current.jsonl")]
+    conn.execute("UPDATE urls SET fetched_at=1000, state='done', priority=0.3")
+    reqs = [{"producer_record_id": pid, "requested_at": "2026-10-06T10:00:00Z"} for pid in ids]
+    r = queue_rechecks(conn, reqs, max_requests=1)
+    assert r["requests"] == 3 and r["queued"] == 1 and r["deferred"] == 2
+    assert conn.execute("SELECT COUNT(*) FROM urls WHERE state='pending'").fetchone()[0] >= 1
+    # a request whose page was already refetched is still recognised after the budget is spent
+    conn.execute("UPDATE urls SET fetched_at=? WHERE state='done'", (time.time(),))
+    r = queue_rechecks(conn, reqs, max_requests=1)
+    assert r["requests"] == 3 and r.get("deferred", 0) == 0 and r["already_rechecked"] == 2 and r["queued"] == 1

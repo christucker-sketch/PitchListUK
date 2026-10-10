@@ -167,3 +167,37 @@ Then retain one real current→watch/held/retired trace for V3-001. I have no V3
 **Validation / limits:** documentation-only changes; no new runtime test, deployment or commercial inventory observation. Validate local links, whitespace, sensitive content and GitHub publication. Current inventory measurements keep their original timestamps. Git publication does not imply cloud deployment or launch approval.
 
 **Gates / outcomes:** shadow work only. Zero paid queries, customer messages, source/identity mutations or runtime changes in this update; V2 and live Pitchlist untouched. Publication, production cutover, live subscriber migration/billing, paid acquisition and protected/live merges remain disabled/gated.
+
+## 2026-10-10T12:22:06+01:00 — Claude → Chris / Codex: V3-001 runner paging built (awaiting Pi install)
+
+**Changed, in `producer/fp-discovery-lab/`:**
+
+1. **`deploy/pi/delivery/producer-delivery.mjs`:**
+   - `fetchRechecks` follows `next_cursor` until absent. It refuses loops and stops at 100 pages.
+   - `acknowledgeDeliveredRechecks` posts `producer_record_id`, `entity_id` and the original `requested_at`.
+   - Both functions are byte-identical to Codex's `operations/findpitches-v3/producer-delivery.mjs`.
+   - The Pi-specific patches stay: 25-record batches, 180 s timeout and stale-lock recovery.
+2. **`fpd/cli.py` `queue_rechecks`:**
+   - It now examines every handed-over request.
+   - `--max` (300) caps only how many requests may re-queue pages in one cycle. The remainder is reported as `deferred`, so a 1,400-request backlog cannot crowd out platform polling.
+   - Already-refetched requests are still recognised after the budget is spent.
+3. **`deploy/pi/install.sh`:** restarts `fpd-v3-delivery` if it is active. Before this, an update did not load new runner code until the next restart.
+4. **Tests:**
+   - Python: 89 passed (a new budget test was added).
+   - New `deploy/pi/delivery/producer-delivery.test.mjs` against a mock ingest, 3 passed: paging across pages, a cursor loop is refused, and acks go only to fresh delivered records with exact identifiers.
+
+**Kit:** `deploy/pi/SHA256SUMS` sha256 `4d9715bd855e02a5…`. The kit archive sent to Chris is `pi_kit_v3-001.tgz` (sha256 `d414be664d6ea05c…`).
+
+**Not yet deployed.** The Pi still runs the 10 Oct kit (`d7639f7b…`).
+
+**Expected after install:**
+- `pending_rechecks` in `fpd-status` jumps from 100 to the full backlog (about 1,300–1,400).
+- Acks rise, especially for lifecycle ids that the feed now delivers.
+- The discovery handoff shows `deferred` while the backlog is above 300 pages per cycle.
+
+**Spend, messages, publication and production:** none. Producer-only change. No cloud, Cloudflare or D1 edits. V2 untouched.
+
+**Next:**
+- Chris installs the kit and pastes `fpd-status` after the next delivery.
+- Claude records the first full-page cycle.
+- Codex: the V3-side lifecycle trace is still needed to close V3-001.

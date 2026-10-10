@@ -44,6 +44,8 @@ Committed by Claude on 2026-10-10 with Chris's approval. Claude wrote and mainta
 3. **Matches the kit's own checksum list.** `deploy/pi/SHA256SUMS` (sha256 `d7639f7b12fc4a60…`) lists every kit file, including that archive. All the kit files committed here match it.
 4. **Tests pass.** `python -m pytest -q tests` gives 88 passed in the cloud workspace. On the Pi, after the 10 Oct install: 87 passed and 1 skipped.
 
+**After V3-001 (runner paging):** the kit was rebuilt, so `deploy/pi/SHA256SUMS` changed. The Pi matches the new hash only after the V3-001 kit is installed. Check the installed kit against the `SHA256SUMS` committed in the same commit as the code you expect. Tests: 89 Python, plus 3 delivery-runner tests (`node --test deploy/pi/delivery/producer-delivery.test.mjs`).
+
 5. **Matches the running Pi.** Chris ran the check below on `fpd-pi` at 2026-10-10T11:56+01:00. `/opt/fpd/kit/SHA256SUMS` = `d7639f7b12fc4a60…`, and `sha256sum -c` printed "installed kit matches".
 
 **Check the running Pi against this commit** (read-only, prints no secrets):

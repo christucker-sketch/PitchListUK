@@ -16,10 +16,11 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 97ed72a42093d94b25ebf6b3663c2d3fca9d3a2ae3ea35ef5b7cd227b6bdde6f  ./config/fpd.env
 814066f7ef584b35a02049920319cb2023bf7d376b950df1096878d502359199  ./config/journald-fpd.conf
 863e756c1f5364b0a9ee61ea678c8a8e20bcf11cb619a3800ae34f149df73b61  ./config/v3-runner.json
-bf8d9b5a3b089bc53599b3da6805b1223a854cb331b73dde7c6e9a62998cc211  ./delivery/producer-delivery.mjs
+9f15d585ed3a5c4b19a2f2dd5b1bacb63943f51927d89a936c6c3e98b868a55a  ./delivery/producer-delivery.mjs
+aa1fab3a0be6fede352b8e65cf904ccc1e82e1883e286f6a7f660567570b0d67  ./delivery/producer-delivery.test.mjs
 bc63011da1da96c122ec6e6cafa7585536f7fb01dfcf099ab0f22e04a807b502  ./delivery/producer-runner.mjs
-dc06305d1c3c929a8a8a21e0e62b9f2126ace0c14cd9a32276ce259ea21b0f2d  ./fpd-app.tgz
-e742c2570de6488d3fde2d996828c23bbb3f90c9ab0b73cb86c6804c74487ba4  ./install.sh
+6dddbf02cf63f4b8434bdf6daea43c2883fdce2f99a2146faee0d5eaa0a79a7b  ./fpd-app.tgz
+750cec5dcab9184594bc41ba972c1378777e66ae273ff9eeafa7e19252d48b66  ./install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./lib/evidence.py
 be72e21a81f25777bfa44cdbd89e0955d3edd9f0f835c4b200dbd2e73aa49afb  ./systemd/fpd-acquire.service
 ae230896155f68a22a21acc3edb85387877729bce056df5c91a1378f20ebe087  ./systemd/fpd-acquire.timer

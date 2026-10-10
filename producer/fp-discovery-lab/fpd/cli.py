@@ -182,7 +182,11 @@ def queue_rechecks(conn, requests: list, max_requests: int = 300) -> dict:
 
     A request is matched to the delivered record by its producer id (opportunity_id). The record's revisit URL and
     source URL are re-queued unless they have already been fetched since the request was made (then the next
-    delivery carries the newer last_checked and V3 acknowledges the request). Stateless and safe to repeat."""
+    delivery carries the newer last_checked and V3 acknowledges the request). Stateless and safe to repeat.
+
+    Every request is examined (the runner fetches all pages from V3). ``max_requests`` caps how many requests may
+    re-queue pages in one cycle, so a large backlog cannot crowd out platform polling; the rest are reported as
+    ``deferred`` and picked up next cycle (V3 serves oldest requests first)."""
     import datetime as _dt
     from collections import Counter
     from urllib.parse import unquote
@@ -192,7 +196,7 @@ def queue_rechecks(conn, requests: list, max_requests: int = 300) -> dict:
         have_state = True
     except Exception:  # noqa: BLE001  (no export has run yet)
         have_state = False
-    for q in requests[:max_requests]:
+    for q in requests:
         pid = (q or {}).get("producer_record_id")
         try:
             req_at = _dt.datetime.fromisoformat(str(q.get("requested_at")).replace("Z", "+00:00")).timestamp()
@@ -210,6 +214,15 @@ def queue_rechecks(conn, requests: list, max_requests: int = 300) -> dict:
             if u and u not in targets:
                 targets.append(u)
         queued = done = found = False
+        if out["queued"] >= max_requests:
+            fresh = False
+            for u in targets:
+                r = conn.execute("SELECT fetched_at FROM urls WHERE url IN (?, ?)", (u, unquote(u))).fetchone()
+                if r:
+                    found = True
+                    fresh = fresh or bool(r["fetched_at"] and r["fetched_at"] >= req_at)
+            out["already_rechecked" if fresh else "deferred" if found else "no_known_url"] += 1
+            continue
         for u in targets:
             r = conn.execute("SELECT id, state, fetched_at FROM urls WHERE url IN (?, ?)", (u, unquote(u))).fetchone()
             if not r:
@@ -224,7 +237,7 @@ def queue_rechecks(conn, requests: list, max_requests: int = 300) -> dict:
                 conn.execute("UPDATE urls SET state='pending', priority=1.0, attempts=0 WHERE id=?", (r["id"],))
                 queued = True
         out["queued" if queued else "already_rechecked" if done else "no_known_url" if not found else "skipped"] += 1
-    out["requests"] = min(len(requests), max_requests)
+    out["requests"] = len(requests)
     return dict(out)
 
 

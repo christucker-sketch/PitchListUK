@@ -138,7 +138,13 @@ is the only delivery host and its database is the master. Don't run exports from
 2. `scp -r` the `pi` folder again.
 3. On the Pi, run `sudo bash ./install.sh` with no `--import`.
 
-Configuration and data are kept.
+Configuration and data are kept. If delivery is live, the installer restarts `fpd-v3-delivery` so the new runner code takes effect.
+
+**Recheck requests.** The runner reads every page of V3's recheck requests (`next_cursor`), not just the first
+100. It acknowledges a request with its `producer_record_id`, `entity_id` and original `requested_at`, and only after a
+0-rejection batch delivered that record with `last_checked` at or after the request. Each discovery cycle
+examines every request and re-queues at most 300 pages (`fpd rechecks --max`); the rest are reported as `deferred`
+and handled in later cycles, oldest first. Tests: `node --test deploy/pi/delivery/producer-delivery.test.mjs`.
 
 **What V3 receives.** By default the runner delivers `export/full/current.jsonl` (open opportunities only). Each
 cycle also writes `export/v3/feed.jsonl`: the same records plus the latest record of every id that has left
