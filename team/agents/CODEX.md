@@ -21,3 +21,5 @@
 ## 2026-10-10T19:04:27+01:00 follow-up
 
 Latest orders read through `11ad1788`; ChatGPT review/status integrated through `bd4f1413`. [Independent V3-001 checkpoint](../../docs/findpitches-v3-lifecycle-final-cloud-2026-10-10.md) publishes three fresh exact receipt links/newer CLOSED selections and zero cohort preview exposure; acks and three exact obsolete/replacement/cross-edition gaps remain. No source/identity/ack writes. [Live-subscriber gate](../../docs/findpitches-v3-live-migration-gate-2026-10-10.md) completed read-only preparation; canonical LIVE evidence remains absent, not simulated. Next: claim V3-008 after this checkpoint is published. V3-004/005 stay DONE.
+
+**V3-008 CLAIMED 2026-10-10T19:04:48+01:00:** cloud checkpoint `5d1aed08` published first; bounded native-preview operational/browser/geography/redaction checks. Planned components and next checkpoint in [TASKS](../TASKS.md). Provider writes/messages and producer edits excluded; unknown evidence remains unknown.
