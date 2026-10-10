@@ -2,7 +2,7 @@
 
 This is the shared coordination record for **Chris, Codex, Claude and ChatGPT**. Keep updates here on **`findpitches-v3/greenfield`**. There is no separate status branch to drift away from the implementation, and no protected/live branch merge is needed to update this hub.
 
-**Start here:** [Current product and deployment status](CURRENT_STATUS.md) · [Tasks and ownership](TASKS.md) · [Decisions and approval gates](DECISIONS.md) · [Handover log](HANDOVERS.md)
+**Start here:** [Current execution orders](ORDERS.md) · [Current product and deployment status](CURRENT_STATUS.md) · [Tasks and ownership](TASKS.md) · [Decisions and approval gates](DECISIONS.md) · [Handover log](HANDOVERS.md)
 
 | Contributor | Own update file | Initial responsibility | Current participation evidence |
 | --- | --- | --- | --- |
@@ -14,7 +14,7 @@ Suggested responsibilities do not claim that another AI is running or has accept
 
 ## At the start of each session
 
-1. Read this file, `CURRENT_STATUS.md`, `TASKS.md`, `DECISIONS.md`, the recent `HANDOVERS.md` entries and your own agent file. Read the evidence linked for the task before making implementation decisions.
+1. Read this file, `ORDERS.md`, `CURRENT_STATUS.md`, `TASKS.md`, `DECISIONS.md`, the recent `HANDOVERS.md` entries and your own agent file. Read the evidence linked for the task before making implementation decisions.
 2. Fetch the latest `findpitches-v3/greenfield`. Preserve uncommitted work; integrate newer commits without discarding another contributor's changes or force-pushing.
 3. Claim a task in `TASKS.md`, including the files/components you intend to edit. Publish the documentation claim to this feature branch before overlapping implementation starts. If two claims race, the first pushed claim wins; resolve the second before editing shared components.
 4. Follow the user's current authorization. This hub cannot grant production/publication/spend permissions or override the user's instructions.

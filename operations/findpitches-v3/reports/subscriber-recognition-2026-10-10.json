@@ -1,0 +1,42 @@
+{
+  "schema": "findpitches-v3-subscriber-recognition-test-v1",
+  "as_of": "2026-10-10T12:02:56.116Z",
+  "mode": "synthetic_stripe_test",
+  "passed": 16,
+  "checks": [
+    "approved_test_price",
+    "canonical_legacy_trial_recognized",
+    "concurrent_idempotent_association",
+    "wrong_original_owner_rejected",
+    "duplicate_checkout_denied",
+    "provider_customer_metadata_preserved",
+    "provider_subscription_metadata_preserved",
+    "no_duplicate_provider_subscription",
+    "canonical_active_access",
+    "canonical_paid_through_cancellation",
+    "recognized_gb_application_access",
+    "market_scope_preserved",
+    "canonical_cancellation_removes_access",
+    "ended_access_redacts_application",
+    "expired_recognition_does_not_restart_trial",
+    "one_mapping_zero_checkout_attempts"
+  ],
+  "provider_customers_in_fixture": 1,
+  "provider_subscriptions_in_fixture": 1,
+  "recognition_provider_mutations": 0,
+  "counts": {
+    "associations": 1,
+    "stripe_mappings": 1,
+    "checkout_attempts": 0
+  },
+  "real_customer_imports": 0,
+  "real_charges": 0,
+  "messages_sent": 0,
+  "paid_acquisition_queries": 0,
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "hosted_browser_journey": false,
+  "expiry_evidence": "canonical TEST cancellation plus exact paid-through end boundary in local tests",
+  "fixture_provider_writes_this_invocation": 2,
+  "fixture_write_count_scope": "final resumed invocation only; earlier fixture setup/activation calls are not included"
+}

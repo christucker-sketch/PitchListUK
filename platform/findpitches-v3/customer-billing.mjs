@@ -1,5 +1,6 @@
 import {hash} from './contract.mjs';
 import {stmt,customerError,hmac,same,noteCustomerEvent,readText} from './customer-security.mjs';
+import {subscriberAssociation,validateRecognizedSubscriber,recordRecognitionDecision} from './customer-recognition.mjs';
 
 export function entitlement(subscriptions,{now=new Date().toISOString(),market=null}={}) {
   const matches=subscriptions.filter(s=>s.livemode===0&&(!market||s.market===market)&&['active','trialing'].includes(s.status)&&Date.parse(s.period_end)>Date.parse(now)&&Date.parse(s.checked_at)<=Date.parse(now)&&Date.parse(s.checked_at)>Date.parse(now)-900000);
@@ -25,17 +26,23 @@ export function stripeClient(env,fetcher=fetch) {
 }
 export async function syncSubscriptions(db,env,customer,{now,fetcher=fetch}={}) {
   const link=await stmt(db,'SELECT * FROM stripe_customers WHERE customer_id=?',customer.id).first();if(!link)return [];
-  const stripe=stripeClient(env,fetcher),owner=await stripe('/customers/'+encodeURIComponent(link.stripe_id));
-  if(owner.deleted||owner.livemode!==false||owner.metadata?.findpitches_v3_customer_id!==customer.id||owner.email?.toLowerCase()!==customer.email)throw customerError('forbidden',403);
+  const stripe=stripeClient(env,fetcher),owner=await stripe('/customers/'+encodeURIComponent(link.stripe_id)),association=await subscriberAssociation(db,customer.id);
+  if(owner.id!==link.stripe_id||owner.deleted||owner.livemode!==false||owner.email?.toLowerCase()!==customer.email||!association&&owner.metadata?.findpitches_v3_customer_id!==customer.id)throw customerError('forbidden',403);
   const list=await stripe('/subscriptions',{params:{customer:link.stripe_id,status:'all',limit:100}});
   if(list.has_more||!Array.isArray(list.data))throw customerError('service_unavailable',503);
   const ids=[];
+  if(association&&!list.data.some(s=>s.id===association.stripe_subscription_id))throw customerError('billing_review_required',409);
   for(const sub of list.data) {
-    if(sub.customer!==link.stripe_id||sub.livemode!==false||sub.metadata?.findpitches_v3_customer_id!==customer.id)continue;
+    if(association) {
+      if(sub.id!==association.stripe_subscription_id)continue;
+      validateRecognizedSubscriber(association,customer,owner,sub,env);
+    }else if(['active','trialing','past_due','unpaid','incomplete','paused'].includes(sub.status)&&(sub.metadata?.findpitches_v3_customer_id!==customer.id||sub.items?.data?.[0]?.price?.id!==env.STRIPE_PRICE_ID))throw customerError('billing_review_required',409);
+    if(sub.customer!==link.stripe_id||sub.livemode!==false||!association&&sub.metadata?.findpitches_v3_customer_id!==customer.id)continue;
     const price=sub.items?.data?.[0]?.price;if(sub.items?.data?.length!==1||price?.id!==env.STRIPE_PRICE_ID)continue;
     if(price.currency!=='gbp'||price.unit_amount!==499||price.recurring?.interval!=='month')throw customerError('price_not_set',409);
     const iso=value=>Number.isFinite(value)?new Date(value*1000).toISOString():null;ids.push(sub.id);
     await stmt(db,`INSERT INTO stripe_subscriptions VALUES (?,?,?,?,?,?,?,?,?,0,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,period_end=excluded.period_end,trial_end=excluded.trial_end,cancel_at_period_end=excluded.cancel_at_period_end,checked_at=excluded.checked_at WHERE stripe_subscriptions.customer_id=excluded.customer_id AND stripe_subscriptions.stripe_customer_id=excluded.stripe_customer_id AND stripe_subscriptions.checked_at<=excluded.checked_at`,sub.id,customer.id,link.stripe_id,price.id,'GB',sub.status,iso(sub.current_period_end??sub.items.data[0].current_period_end),iso(sub.trial_end),sub.cancel_at_period_end?1:0,now).run();
+    if(association)await recordRecognitionDecision(db,association,sub,now);
   }
   await stmt(db,`UPDATE stripe_subscriptions SET status='canceled',checked_at=? WHERE customer_id=? AND checked_at<=? AND id NOT IN (SELECT value FROM json_each(?))`,now,customer.id,now,JSON.stringify(ids)).run();
   return (await stmt(db,'SELECT * FROM stripe_subscriptions WHERE customer_id=?',customer.id).all()).results;
@@ -51,12 +58,16 @@ export async function customerAccess(db,env,customer,{now,market=null,refresh=fa
 export async function checkout(db,env,customer,body,{now,origin,fetcher=fetch}={}) {
   if(body.market!=='GB'||body.plan_id!=='pro_monthly')throw customerError('price_not_set',409);
   if(env.V3_CHECKOUT_ENABLED!=='test')throw customerError('service_unavailable',503);
+  // Even an expired recognized account needs an explicit renewal path. Never
+  // create another customer/subscription or trial as a recognition fallback.
+  if(await subscriberAssociation(db,customer.id))throw customerError('subscription_exists',409);
   const stripe=stripeClient(env,fetcher),price=await stripe('/prices/'+encodeURIComponent(env.STRIPE_PRICE_ID));
   if(price.livemode!==false||!price.active||price.currency!=='gbp'||price.unit_amount!==499||price.recurring?.interval!=='month')throw customerError('price_not_set',409);
   let link=await stmt(db,'SELECT * FROM stripe_customers WHERE customer_id=?',customer.id).first();
   if(!link) {const created=await stripe('/customers',{method:'POST',params:{email:customer.email,'metadata[findpitches_v3_customer_id]':customer.id},idempotencyKey:'v3-test-customer-'+customer.id});
     await stmt(db,'INSERT OR IGNORE INTO stripe_customers VALUES (?,?,0,?)',customer.id,created.id,now).run();link=await stmt(db,'SELECT * FROM stripe_customers WHERE customer_id=?',customer.id).first();}
   const subs=await syncSubscriptions(db,env,customer,{now,fetcher});
+  if(await subscriberAssociation(db,customer.id))throw customerError('subscription_exists',409);
   if(subs.some(s=>['active','trialing','past_due','unpaid','incomplete','paused'].includes(s.status)))throw customerError('subscription_exists',409);
   const expiresAt=new Date(Math.floor(Date.parse(now)/1000)*1000+23*3600000).toISOString();
   const reservation=await stmt(db,`INSERT INTO checkout_reservations VALUES (?,?,?) ON CONFLICT(customer_id) DO UPDATE SET attempt_id=excluded.attempt_id,expires_at=excluded.expires_at WHERE checkout_reservations.expires_at<=? RETURNING attempt_id,expires_at`,customer.id,'v3-test-checkout-'+crypto.randomUUID(),expiresAt,now).first()

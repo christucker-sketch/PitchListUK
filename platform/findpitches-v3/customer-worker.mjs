@@ -1,7 +1,8 @@
 import {hash} from './contract.mjs';
 import {stmt,cookie,cookies,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent} from './customer-security.mjs';
 import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,consumeChallenge,requestLogin,logout,updateProfile} from './customer-auth.mjs';
-import {customerAccess,plans,checkout,confirmCheckout,portal,webhook,stripeClient} from './customer-billing.mjs';
+import {customerAccess,plans,checkout,confirmCheckout,portal,webhook,stripeClient,syncSubscriptions} from './customer-billing.mjs';
+import {reviewSubscriberAssociation} from './customer-recognition.mjs';
 import {readCatalogue,present,search,marketOf,markets,regions,resolveLocation,inventory,ancestors,recordInventoryChanges} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
 import {budgetDay} from './serper-usage.mjs';
@@ -136,6 +137,12 @@ export default {
       if(p.startsWith('/preview/')) {
         if(!await operator(request,env))throw customerError('forbidden',403);
         if(p==='/preview/access'&&request.method==='POST')return response({restricted_preview:true},200,[await grantPreview(db,now)]);
+        if(p==='/preview/subscribers/recognize'&&request.method==='POST'){
+          const association=await reviewSubscriberAssociation(db,env,await readBody(request),{now,stripe:stripeClient(env)});
+          const customer=await stmt(db,'SELECT * FROM customers WHERE id=?',association.customer_id).first();
+          await syncSubscriptions(db,env,customer,{now});
+          return response({...association,recognized:true,access:await customerAccess(db,env,customer,{now}),livemode:false});
+        }
         if(p==='/preview/email/verify'&&request.method==='POST'){
           try{return response(await verifyNativeMailSettings(env));}
           catch(e){return response({ok:false,error:'service_unavailable',diagnostic:e.mailDiagnostic??'provider_unavailable'},503);}

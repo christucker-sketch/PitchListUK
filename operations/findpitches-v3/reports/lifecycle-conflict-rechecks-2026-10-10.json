@@ -1,0 +1,68 @@
+{
+  "schema": "findpitches-v3-lifecycle-conflict-rechecks-v1",
+  "as_of": "2026-10-10T11:45:16.913Z",
+  "scope": "six_same_source_clock_conflicts",
+  "retained_existing": 6,
+  "new_requests": 0,
+  "original_tokens_preserved": true,
+  "requests": [
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "requested_at": "2026-10-09T13:33:05.718Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "market": "GB",
+      "latest_accepted_source_check": "2026-10-04T20:06:19Z",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "requested_at": "2026-10-09T13:33:34.663Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_4d4590cdbd191713c317",
+      "market": "US",
+      "latest_accepted_source_check": "2026-10-04T16:10:45Z",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "requested_at": "2026-10-09T13:32:36.818Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_58df50276bd7933d3ade",
+      "market": "US",
+      "latest_accepted_source_check": "2026-10-04T16:51:54Z",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "requested_at": "2026-10-09T13:33:18.601Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_8ba38ecf08fb5cc324d9",
+      "market": "AU",
+      "latest_accepted_source_check": "2026-10-04T16:45:58Z",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "requested_at": "2026-10-09T18:47:53.640Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_f889ad736b6a93511de5",
+      "market": "US",
+      "latest_accepted_source_check": "2026-10-04T16:19:06Z",
+      "unresolved_conflicts": 1
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "requested_at": "2026-10-09T19:03:18.609Z",
+      "reason": "watch_recheck_due",
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "market": "US",
+      "latest_accepted_source_check": "2026-10-04T19:36:07Z",
+      "unresolved_conflicts": 2
+    }
+  ],
+  "requires_genuinely_new_source_fetch": true,
+  "mass_acknowledgements": 0,
+  "source_mutations": 0,
+  "publication_enabled": false
+}

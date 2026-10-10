@@ -1,5 +1,7 @@
 # Subscriber recognition and hosted TEST journey: next implementation checkpoints
 
+**Historical design checkpoint (12:29 London).** The later [implemented recognition and browser evidence](findpitches-v3-subscriber-recognition-2026-10-10.md) supersedes the implementation/trust status below. TEST recognition now passes; native TLS works; hosted Stripe remains blocked by proxy egress. This earlier design is retained for review history.
+
 Codex owns V3-004 and V3-005 on `findpitches-v3/greenfield`. This checkpoint records inspected code and a concrete implementation/test sequence; it is **not a completed migration or hosted checkout claim**. Publication, production cutover, live billing and customer migration remain disabled. No additional email is authorized.
 
 ## V3-004: controlled subscriber recognition

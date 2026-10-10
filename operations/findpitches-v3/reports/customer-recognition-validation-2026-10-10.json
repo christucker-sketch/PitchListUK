@@ -1,0 +1,15 @@
+{
+  "schema": "findpitches-v3-recognition-validation-v1",
+  "as_of": "2026-10-10T12:23:59.063489+00:00",
+  "node_version": "v22.23.3",
+  "command": "npm test --prefix operations/findpitches-v3",
+  "tests": 223,
+  "passed": 223,
+  "failed": 0,
+  "skipped": 0,
+  "duration_ms": 136240.668199,
+  "runtime_boundary_check": "passed",
+  "fresh_cache_period_end_boundary": "passed",
+  "external_paid_queries": 0,
+  "messages_sent": 0
+}

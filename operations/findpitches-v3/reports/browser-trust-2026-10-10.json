@@ -1,0 +1,51 @@
+{
+  "schema": "findpitches-v3-native-browser-trust-v1",
+  "as_of": "2026-10-10T12:11:01.359958+00:00",
+  "browser": "Chromium 151.0.7922.173",
+  "profile_scope": "dedicated_private_test_profile",
+  "system_trust_changed": false,
+  "certificate_bypass": false,
+  "passed_native_checks": 5,
+  "checks": [
+    "native_origin_certificate_validation",
+    "unauthorized_preview_denied",
+    "native_browser_signin_consumed_challenge",
+    "ended_subscription_application_links_redacted",
+    "native_session_preview_cookie_flags"
+  ],
+  "navigation": {
+    "native_preview": {
+      "trusted": true,
+      "status": 200
+    },
+    "stripe_checkout_origin": {
+      "network_reachable": false,
+      "error": "ERR_TUNNEL_CONNECTION_FAILED"
+    },
+    "stripe_portal_origin": {
+      "network_reachable": false,
+      "error": "ERR_TUNNEL_CONNECTION_FAILED"
+    },
+    "stripe_javascript_origin": {
+      "network_reachable": false,
+      "error": "ERR_TUNNEL_CONNECTION_FAILED"
+    }
+  },
+  "hosted_browser_journey": false,
+  "messages_sent": 0,
+  "provider_writes": 0,
+  "proxy_ca_sha256": "c71b4d1e9d7775c538c688ab10cea9ce417d7312e89838f9d15ff73256cd7fc3",
+  "dns_constraints": [
+    "findpitches-v3-customer-preview.ctucker.workers.dev",
+    "*.stripe.com",
+    "*.stripe.network",
+    "*.stripecdn.com"
+  ],
+  "proxy_connect_probe": {
+    "native_preview": 200,
+    "checkout.stripe.com": 403,
+    "billing.stripe.com": 403,
+    "js.stripe.com": 403
+  },
+  "negative_constraint_navigation_proved": false
+}

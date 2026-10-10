@@ -11,7 +11,7 @@ Maintained initially by **Codex**. This is a manual, evidence-linked dashboard. 
 | V3 backend | Eight isolated shadow Workers, evidence D1, reconciliation and source-proof/readiness gates | Sustainable refresh and broader verified sources |
 | Frontend | Standalone approved Build 4 deployed on owned customer Worker; seven pages and three sampled assets returned 200 | Performance/security and completed commercial journeys |
 | Native email/sign-in | One authorized test email delivered; native sign-in and consumed challenge confirmed | Alert email delivery remains disabled |
-| Billing | Stripe TEST Checkout/entitlements/portal/signed webhook; zero pending receipts | Hosted TEST checkout and existing-subscriber recognition |
+| Billing | Reviewed synthetic TEST recognition deployed, 16 checks pass; TEST Checkout/entitlements/portal/signed webhook | Hosted TEST checkout; actual subscriber/price continuity and gated migration |
 | Pi delivery | First lifecycle delivery now cloud-checked; all 119 new receipts linked to existing entities and withheld (12:22 London) | All-page host execution, explicit prior current-channel trace and six equal-clock holds |
 | Queue health | Zero due, leased or dead jobs at 10:22 | Distinguish producer rechecks from pipeline queue jobs |
 | Paid discovery | V3 paid programme manually paused, bulk off; legacy paid flags off; V2 scheduler empty | External-client spend attribution before any later paid decision |
@@ -20,11 +20,11 @@ Maintained initially by **Codex**. This is a manual, evidence-linked dashboard. 
 ## Frontend deployment and access
 
 - **Preview:** <https://findpitches-v3-customer-preview.ctucker.workers.dev>
-- Cloudflare Worker: `findpitches-v3-customer-preview`; active version `b218bfcf-1f5f-4395-893e-be9ce4d81d8d`, deployed **10:06 London, 10 October**. This is 100% of the private preview Worker's traffic, not production traffic.
+- Cloudflare Worker: `findpitches-v3-customer-preview`; active version `e13b345c-77d1-494a-943c-c355df39cca8`, deployed **12:54:30 London, 10 October**. [Deployment evidence](../operations/findpitches-v3/reports/customer-recognition-deployment-2026-10-10.json). This is 100% of the private preview Worker's traffic, not production traffic.
 - Physically owned assets: `web/findpitches-v3-web/public`; same-origin V3 API with private `V3_READY_API` service binding. No dev stub or V2 frontend runtime dependency.
 - Uninvited homepage access returns **401**. Existing authorized preview sessions can open the URL; forwarding a consumed sign-in link does not invite someone else.
 - No custom domains or Worker routes on `findpitches.com` or `pitchlist.uk`. Checked pages are noindex. No production cutover or public SEO publication.
-- Free search; application/source links and alerts on Pro. Test price: GBP £4.99/month with a seven-day first trial. Existing subscribers have not been migrated or automatically recognized.
+- Free search; application/source links and alerts on Pro. Test price: GBP £4.99/month with a seven-day first trial. One reviewed synthetic TEST subscriber is recognized; actual subscribers have not been migrated or automatically recognized.
 
 ## Commercial inventory snapshot
 
@@ -67,9 +67,9 @@ All READY have proved application URL, organiser and location; 93.56% have a fut
 
 ## Verification and launch gates
 
-Latest full suite **210/210**, focused mail/auth **21/21**, prior deployed UI browser checks **23/23**. The status/coordination update did not rerun the full suite. Latest full preservation audit compared 15,811 original receipts, 108,819 source facts and 7,077 identities: zero destructive mutations/identity changes/customer projection/publication queue rows. [Mail evidence](../docs/findpitches-v3-email-setup-2026-10-10.md) · [Architecture](../docs/findpitches-v3-customer-architecture.md).
+Latest full suite **223/223** at 13:23:59 London; focused customer/recognition **24/24**, deployed synthetic recognition **16/16**, native-origin browser TLS/sign-in/cookie/redaction **5/5** at 13:11:01. Earlier mail/auth **21/21** and deployed UI **23/23** retain their prior timestamps. Latest preservation at 13:06:51 compares 15,811 original receipts, 108,819 source facts and 7,077 identities: zero destructive mutations/identity changes/customer projection/publication queue rows. [Recognition/browser evidence](../docs/findpitches-v3-subscriber-recognition-2026-10-10.md) · [Mail evidence](../docs/findpitches-v3-email-setup-2026-10-10.md) · [Architecture](../docs/findpitches-v3-customer-architecture.md).
 
-Open: all-page producer recheck execution and remaining lifecycle trace gaps; broader UK source-backed inventory; existing-subscriber recognition; hosted TEST payment journey; approved alert delivery test; source-backed facets/geography; real-origin performance/security review; explicit live domain/billing/publication/cutover approval. Producer source custody is completed as V3-003, including Chris's recorded running-kit hash check. The whole-product deletion/independence test remains open even though the frontend/API runtime owns its code and storage.
+Open: all-page producer recheck execution and remaining lifecycle trace gaps; broader UK source-backed inventory; actual subscriber/price continuity and gated migration; hosted TEST payment journey; approved alert delivery test; source-backed facets/geography; real-origin performance/security review; explicit live domain/billing/publication/cutover approval. V3-004's bounded synthetic TEST matrix is complete. Producer source custody is completed as V3-003, including Chris's recorded running-kit hash check. The whole-product deletion/independence test remains open even though the frontend/API runtime owns its code and storage.
 
 ## Later execution checkpoint — 10 October, 12:29 London
 
@@ -79,4 +79,16 @@ Full preservation at 12:24:32 London: zero source mutations, identity changes or
 
 Codex retains V3-004 with a [reviewed-association implementation/test sequence](../docs/findpitches-v3-customer-launch-checkpoints-2026-10-10.md); existing customer tests pass 11/11. V3-005 is blocked on native-browser certificate trust through the environment proxy. TEST credentials are present; no actual hosted checkout was attempted. Publication, live billing, migration, cutover and acquisition stay disabled.
 
-**Runtime code checkpoint:** `00c752e2104d4006600d12b9188aa91ba2199c6b`. **Full report commit:** `1825ae7b61e17084444ce0199d5ee20dc02d69a1`. Later coordination-only commits are not new runtime deployments. For next work and ownership use [TASKS.md](TASKS.md); for actual approvals use [DECISIONS.md](DECISIONS.md).
+**Historical runtime checkpoint:** `00c752e2104d4006600d12b9188aa91ba2199c6b`. **Morning full report commit:** `1825ae7b61e17084444ce0199d5ee20dc02d69a1`. The implementation/deployment below supersede that runtime checkpoint; source custody is the feature-branch commit containing its linked report. For next work/ownership use [ORDERS.md](ORDERS.md) and [TASKS.md](TASKS.md); for actual approvals use [DECISIONS.md](DECISIONS.md).
+
+## Customer implementation checkpoint — 10 October, 13:24 London
+
+[V3-004's reviewed synthetic TEST recognition](../docs/findpitches-v3-subscriber-recognition-2026-10-10.md) is implemented/deployed and its matrix complete. One append-only association/mapping, zero Checkout attempts; correct/wrong owner, replay/concurrency, duplicate protection, trial/active/cancellation/redaction pass. Paid-through end boundaries are locally proved; no elapsed hosted expiry or actual migration claim. No V1/V2 runtime dependency or provider metadata rewrite.
+
+**V3-005 remains blocked:** native Chromium trust/sign-in/cookies/redaction pass with a scoped disposable profile. Proxy **403** for hosted Checkout, Billing Portal and JavaScript. Restricted egress permits only Stripe API today. An additive Codex environment network/startup draft is saved; settings application and genuine hosted TEST flow remain necessary. No new credential or TLS bypass required.
+
+**V3-001 cloud support:** six exact conflict rechecks already exist, original tokens preserved; [IDs/request ledger](../operations/findpitches-v3/reports/lifecycle-conflict-rechecks-2026-10-10.json) observed 12:45:16 London. Claude reports the all-page kit installed; next full discovery execution/deferred counts and genuinely fresher evidence remain pending. The 119-receipt proof keeps its separate timestamp.
+
+**D-012 read:** contact-organiser inventory needs verified usable HTTPS routes and accurate enquiry/login labels. UKCraftFairs transport remains unresolved; option B preparation stays off. No READY gain inferred.
+
+Preservation at 13:06:51: zero mutations/identity changes/customer projection/publication queue rows; live Pitchlist and V2 unchanged; paid queries today zero, bulk off. Publication, cutover, live billing, migration, acquisition and protected/live merges remain closed.

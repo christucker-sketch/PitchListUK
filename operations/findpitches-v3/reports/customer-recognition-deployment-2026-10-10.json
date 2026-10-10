@@ -1,0 +1,14 @@
+{
+  "worker": "findpitches-v3-customer-preview",
+  "url": "https://findpitches-v3-customer-preview.ctucker.workers.dev",
+  "deployed_at": "2026-10-10T11:54:30.660Z",
+  "version_traffic": [
+    {
+      "version_id": "e13b345c-77d1-494a-943c-c355df39cca8",
+      "percentage": 100
+    }
+  ],
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "billing_mode": "test"
+}
