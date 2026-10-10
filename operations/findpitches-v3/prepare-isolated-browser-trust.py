@@ -37,7 +37,14 @@ def prepare(profile):
     profile.chmod(0o700)
     der = ssl.PEM_cert_to_DER_cert(ca.read_text())
     digest = hashlib.sha256(der).hexdigest()
-    names = ['findpitches-v3-customer-preview.ctucker.workers.dev', '*.stripe.com', '*.stripe.network', '*.stripecdn.com']
+    # Use exact required names: this Chromium build rejected hosted Stripe
+    # certificates under wildcard user constraints despite normal TLS passing.
+    names = ['findpitches-v3-customer-preview.ctucker.workers.dev',
+             'checkout.stripe.com', 'billing.stripe.com', 'js.stripe.com',
+             'api.stripe.com', 'm.stripe.com', 'r.stripe.com',
+             'm.stripe.network', 'q.stripe.com', 'b.stripecdn.com',
+             'merchant-ui-api.stripe.com', 'checkout-cookies.stripe.com',
+             'errors.stripe.com', 'a300.stripecdn.com']
     constraints = b''.join(message(0x0a, n.encode()) for n in names)
     # CertificateMetadata.trust.trust_type=TRUSTED (3), with DNS constraints.
     metadata = message(0x0a, b'\x08\x03') + message(0x12, constraints)

@@ -1,0 +1,57 @@
+{
+  "schema": "findpitches-v3-subscriber-coverage-v1",
+  "started_at": "2026-10-10T16:20:26.321Z",
+  "as_of": "2026-10-10T16:20:39.049Z",
+  "source": "confirmed_live_uk_pitchlistuk_production_access_registry",
+  "read_only": true,
+  "non_atomic_snapshot": true,
+  "canonical_registry_rows": 57,
+  "invalid_records": 0,
+  "status_counts": {
+    "active": 27,
+    "canceled": 22,
+    "past_due": 2,
+    "trialing": 6
+  },
+  "distinct_registry_customers": 57,
+  "distinct_registry_emails": 57,
+  "registry_reported_current_access": 33,
+  "verified_live_subscribers": null,
+  "provider_canonical_checks": 0,
+  "ownership": {
+    "subscription_key_binding_valid": 57,
+    "missing_customer_or_email": 0,
+    "customer_index_matches": 57,
+    "email_index_matches": 57,
+    "vendor_profiles_found": 49,
+    "exact_vendor_customer_subscription_bindings": 49,
+    "current_rows_without_exact_vendor_binding": 3,
+    "multiple_subscription_rows_per_customer": 0,
+    "multiple_current_subscriptions_per_customer": 0,
+    "multiple_current_subscriptions_per_email": 0
+  },
+  "entitlement_cases": {
+    "registry_trialing": 6,
+    "registry_active": 27,
+    "current_scheduled_cancellations": 4,
+    "ended_canceled": 22,
+    "payment_problem": 2,
+    "missing_or_invalid_period_end": 57,
+    "reported_current_with_past_period_end": 0
+  },
+  "missing_provider_coverage": {
+    "mode_not_retained": 57,
+    "product_not_retained": 57,
+    "price_not_retained": 57,
+    "rows_requiring_canonical_provider_check": 57,
+    "real_customer_recognition_enabled": false
+  },
+  "provider_key_requirement": "appropriate existing read-only canonical provider access; do not use TEST credentials to infer live subscription state",
+  "http_get_requests": 280,
+  "legacy_writes": 0,
+  "native_customer_imports": 0,
+  "provider_writes": 0,
+  "messages_sent": 0,
+  "serper_queries": 0,
+  "live_deployment_unchanged": true
+}

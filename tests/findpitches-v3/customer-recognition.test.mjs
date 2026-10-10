@@ -87,6 +87,14 @@ test('recognized subscribers never receive duplicate Checkout, including after c
   }
   assert.equal(s.calls.length,before);assert.equal(s.db.sqlite.prepare('SELECT COUNT(*) n FROM checkout_attempts').get().n,0);
 });
+test('recognized ended and unverified owners are not offered another trial or ordinary Checkout',async t=>{
+  const s=await setup(t);await s.review();s.sub.status='canceled';await s.sync();
+  const ended=await customerAccess(s.db,s.env,s.customer,{now:clock});
+  assert.equal(ended.tier,'free');assert.equal(ended.trial_eligible,false);assert.equal(ended.checkout_allowed,false);assert.equal(ended.billing_review_required,true);
+  s.owner.email='wrong@example.com';const failed=await customerAccess(s.db,s.env,s.customer,{now:'2099-01-01T00:04:00.000Z',refresh:true,fetcher:s.fetcher});
+  assert.equal(failed.status,'unverified');assert.equal(failed.checkout_allowed,false);assert.equal(failed.trial_eligible,false);
+  assert.ok(s.calls.every(c=>c.method==='GET'));
+});
 test('DB guards serialize recognition versus outstanding or concurrent Checkout reservations',async t=>{
   const s=await setup(t);await stmt(s.db,'INSERT INTO checkout_reservations VALUES (?,?,?)',s.customer.id,'attempt_test','2099-02-01T00:00:00.000Z').run();
   await assert.rejects(s.review(),/subscriber_mapping_conflict/);assert.equal(s.db.sqlite.prepare('SELECT COUNT(*) n FROM subscriber_associations').get().n,0);

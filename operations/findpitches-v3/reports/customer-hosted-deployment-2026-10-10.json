@@ -1,0 +1,31 @@
+{
+  "schema": "findpitches-v3-customer-deployment-v1",
+  "observed_at": "2026-10-10T16:38:32.446Z",
+  "deployed_at": "2026-10-10T16:37:55.756Z",
+  "worker": "findpitches-v3-customer-preview",
+  "deployment": {
+    "id": "beb281d4-d41d-42c2-9e08-e04bd10932ef",
+    "source": "api",
+    "strategy": "percentage",
+    "created_on": "2026-10-10T16:37:55.079517Z",
+    "versions": [
+      {
+        "version_id": "774f0381-a795-4612-9a04-1e1ccb5c1715",
+        "percentage": 100
+      }
+    ]
+  },
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "billing_mode": "test",
+  "mail_secret_binding_preserved": true,
+  "mail_validation": {
+    "as_of": "2026-10-10T16:39:55.126Z",
+    "ok": true,
+    "provider": "smtp2go",
+    "sender": "hello@findpitches.com",
+    "credential_validated": true,
+    "sender_domain_verified": true,
+    "emails_sent": 0
+  }
+}

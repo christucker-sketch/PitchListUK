@@ -1,0 +1,129 @@
+{
+  "schema": "findpitches-v3-lifecycle-followup-v1",
+  "ledger_as_of": "2026-10-10T16:24:46.838Z",
+  "customer_snapshot_as_of": "2026-10-10T16:38:31.087Z",
+  "cohort_size": 6,
+  "newer_source_checks_observed": 0,
+  "original_pending_request_tokens": 6,
+  "acknowledgements": 0,
+  "unresolved_conflicts": 11,
+  "customer_visible_cohort": 0,
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "records": [
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "revision": 11,
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "received_at": "2026-10-10T10:56:27.720Z",
+      "source_last_checked": "2026-10-04T20:06:19Z",
+      "channel": "retired",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "WITHDRAWN",
+      "selected_application": "ENQUIRY_AVAILABLE",
+      "selected_lifecycle": "UNCHANGED",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "revision": 8,
+      "producer_record_id": "fdx1_4d4590cdbd191713c317",
+      "received_at": "2026-10-10T10:56:22.130Z",
+      "source_last_checked": "2026-10-04T16:10:45Z",
+      "channel": "retired",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "WITHDRAWN",
+      "selected_application": "ENQUIRY_AVAILABLE",
+      "selected_lifecycle": "UNCHANGED",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "revision": 10,
+      "producer_record_id": "fdx1_58df50276bd7933d3ade",
+      "received_at": "2026-10-10T10:56:22.130Z",
+      "source_last_checked": "2026-10-04T16:51:54Z",
+      "channel": "watch",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "CLOSED",
+      "selected_application": "OPEN_NOW",
+      "selected_lifecycle": "UNCHANGED",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "revision": 9,
+      "producer_record_id": "fdx1_8ba38ecf08fb5cc324d9",
+      "received_at": "2026-10-10T10:56:27.720Z",
+      "source_last_checked": "2026-10-04T16:45:58Z",
+      "channel": "watch",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "CLOSED",
+      "selected_application": "OPEN_NOW",
+      "selected_lifecycle": "UNCHANGED",
+      "unresolved_conflicts": 2
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "revision": 20,
+      "producer_record_id": "fdx1_f889ad736b6a93511de5",
+      "received_at": "2026-10-10T10:56:38.204Z",
+      "source_last_checked": "2026-10-04T16:19:06Z",
+      "channel": "retired",
+      "incoming_application": "ROLLING",
+      "incoming_lifecycle": "WITHDRAWN",
+      "selected_application": "ROLLING",
+      "selected_lifecycle": "UNCHANGED",
+      "unresolved_conflicts": 1
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "revision": 19,
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "received_at": "2026-10-10T10:56:27.720Z",
+      "source_last_checked": "2026-10-04T19:36:07Z",
+      "channel": "retired",
+      "incoming_application": "CLOSED",
+      "incoming_lifecycle": "WITHDRAWN",
+      "selected_application": "OPEN_NOW",
+      "selected_lifecycle": "UNCHANGED",
+      "unresolved_conflicts": 2
+    }
+  ],
+  "requests": [
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "requested_at": "2026-10-09T13:33:05.718Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "requested_at": "2026-10-09T13:33:34.663Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "requested_at": "2026-10-09T13:32:36.818Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "requested_at": "2026-10-09T13:33:18.601Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "requested_at": "2026-10-09T18:47:53.640Z",
+      "reason": "watch_recheck_due"
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "requested_at": "2026-10-09T19:03:18.609Z",
+      "reason": "watch_recheck_due"
+    }
+  ],
+  "host_execution_verified": false,
+  "source_writes": 0,
+  "acknowledgement_writes": 0,
+  "interpretation": "No newer source timestamps or acknowledgements returned for these six. Tokens remain pending and all six remain withheld; producer full-cycle/fresh-refetch proof is still required."
+}

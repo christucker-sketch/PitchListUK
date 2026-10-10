@@ -46,9 +46,10 @@
         ${a.tier==='trial'?`<div class="sub-row"><span>Free trial ends</span><b>${d(a.trial_ends)} (${Math.max(0,days(a.trial_ends))} days left)</b></div>`:''}
         ${a.tier!=='free'?`<div class="sub-row"><span>${a.cancel_at_period_end?'Pro ends':a.tier==='trial'?'First payment':'Renews'}</span><b>${d(a.renews_on)}</b></div><div class="sub-row"><span>Price</span><b>${esc(price)}</b></div>`:''}
         ${a.cancel_at_period_end?`<p class="notice warn" style="margin:14px 0 0">Your plan won’t renew. You keep Pro until ${d(a.renews_on)}, then move to Free.</p>`:''}
-        ${a.tier==='free'&&(a.status==='canceled'||a.status==='past_due'||a.status==='unpaid')?`<p class="muted">${a.status==='canceled'?'Your Pro plan has ended. Search and saving stay free.':'Your last payment didn’t go through. Update your card in billing to keep Pro.'}</p>`:''}
+        ${a.tier==='free'&&(a.status==='canceled'||a.status==='expired')?`<p class="muted">Your Pro plan has ended. Search and saving stay free.</p>`:''}
+        ${a.tier==='free'&&a.billing_review_required?`<p class="notice warn">Your billing needs review before another subscription can be started. Your existing billing account is preserved.</p>`:''}
         ${a.tier==='free'?`<p class="muted" style="font-size:.92rem">Free lets you search every checked listing and save pitches. Pro adds where to apply and alerts.</p>`:''}
-        <div style="display:grid;gap:8px;margin-top:16px">${a.tier==='free'?`<a class="btn btn-flag" href="pricing.html">Try Pro free for 7 days</a>`:''}${(a.has_billing_account||a.tier!=='free')?`<button class="btn btn-line" type="button" id="portal">Manage billing</button>`:''}</div>
+        <div style="display:grid;gap:8px;margin-top:16px">${a.tier==='free'&&a.checkout_allowed!==false?`<a class="btn btn-flag" href="pricing.html">${a.trial_eligible===false?'Subscribe to Pro':'Try Pro free for 7 days'}</a>`:''}${(a.has_billing_account||a.tier!=='free')?`<button class="btn btn-line" type="button" id="portal">Manage billing</button>`:''}</div>
       </section>
       <section class="card" aria-labelledby="qlH"><h2 id="qlH">Your lists</h2><div class="links"><a class="btn btn-line" href="saved.html">Saved pitches (${st.saved.size})</a><a class="btn btn-line" href="alerts.html">Alerts</a><button class="btn btn-line" type="button" id="so">Sign out</button></div></section>
     </div>

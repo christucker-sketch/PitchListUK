@@ -1,0 +1,111 @@
+{
+  "schema": "findpitches-v3-hosted-browser-journey-v1",
+  "as_of": "2026-10-10T16:39:14.179870+00:00",
+  "mode": "synthetic_test_only",
+  "actual_hosted_checkout": true,
+  "actual_hosted_portal_cancel": true,
+  "temporal_proof": "Stripe TEST clock attached to the customer after actual hosted card Checkout; no API-created subscription or cache/date edits",
+  "checks_passed": 22,
+  "checks": [
+    "real_origin_trusted_tls",
+    "uninvited_preview_denied",
+    "native_browser_signin_free",
+    "native_single_test_checkout_custody",
+    "actual_hosted_checkout_origin",
+    "hosted_checkout_completed_and_returned",
+    "hosted_trial_pro_features",
+    "trial_application_route_and_market_scope",
+    "existing_hosted_test_customer_clock_attached",
+    "actual_test_trial_end_active_entitlement",
+    "native_owned_portal_created",
+    "actual_hosted_portal_origin",
+    "actual_hosted_portal_period_end_cancellation",
+    "scheduled_cancel_keeps_paid_through_pro",
+    "paid_through_application_routes_remain_unlocked",
+    "customer_cancel_notice_matches_canonical_end",
+    "actual_test_period_end_removes_pro",
+    "ended_application_source_routes_redacted",
+    "ended_trial_not_offered_again",
+    "ended_account_truthful_billing_copy",
+    "returning_pricing_no_second_trial_promise",
+    "ended_retains_single_subscription_and_checkout"
+  ],
+  "transitions": [
+    {
+      "name": "hosted_checkout_return",
+      "observed_at": "2026-10-10T16:23:49.986023+00:00",
+      "state": {
+        "tier": "trial",
+        "canonical_status": "trialing"
+      }
+    },
+    {
+      "name": "test_clock_trial_end",
+      "observed_at": "2026-10-10T16:29:39.828971+00:00",
+      "state": {
+        "tier": "pro",
+        "canonical_status": "active",
+        "clock_time": 1792254199
+      }
+    },
+    {
+      "name": "hosted_portal_cancel_paid_through",
+      "observed_at": "2026-10-10T16:36:36.380646+00:00",
+      "state": {
+        "tier": "pro",
+        "canonical_status": "active",
+        "cancel_at_period_end": true,
+        "period_end": "2026-11-17T16:23:18.000Z"
+      }
+    },
+    {
+      "name": "test_clock_period_end",
+      "observed_at": "2026-10-10T16:37:02.915734+00:00",
+      "state": {
+        "tier": "free",
+        "canonical_status": "canceled",
+        "clock_time": 1794932599
+      }
+    }
+  ],
+  "fixture_counts": {
+    "native_customers": 1,
+    "stripe_test_customers": 1,
+    "checkout_sessions": 1,
+    "subscriptions": 1,
+    "test_clocks": 1
+  },
+  "object_custody_sha256": {
+    "native_customer_id": "523992c18e33ff26da502b2b7a605889b8cfb9cf66618a0847ec5b9371aae570",
+    "stripe_customer_id": "d81a8164000cc732a26379db467fa9fdd2793981b8bc612a5e534a2eefccc4e9",
+    "checkout_session_id": "d1c1bd9909dc9e490e0999cd8f3a6a2ae85dffc20008e055cabdea6ed6e60061",
+    "subscription_id": "58da33dca82aaa72f6ff64f0d008206ed56f3c0244f43066c19c32cf6aea81ef",
+    "clock_id": "9994459bce3a6dbe20ba6d2cbc389607d8249a0b18e0a7d4ff897401f946d68b"
+  },
+  "final_provider_state": {
+    "checkout_status": "complete",
+    "provider_subscription_count": 1,
+    "provider_status": "canceled",
+    "cancel_at_period_end": true,
+    "period_end": "2026-11-17T16:23:18.000Z",
+    "clock_status": "ready",
+    "clock_frozen_time": 1794932599,
+    "native_checkout_completed": true,
+    "owner_verified": true,
+    "test_mode": true
+  },
+  "real_charges": 0,
+  "real_subscriber_imports": 0,
+  "messages_sent": 0,
+  "serper_queries": 0,
+  "publication_enabled": false,
+  "production_cutover_enabled": false,
+  "certificate_bypass": false,
+  "system_trust_changed": false,
+  "private_urls_or_cookies_published": false,
+  "limitations": [
+    "TEST time advancement is not real elapsed calendar time",
+    "Live subscriber/product/price migration remains gated",
+    "Optional Stripe marketing/hCaptcha origins were denied; neither was required to complete this TEST journey"
+  ]
+}

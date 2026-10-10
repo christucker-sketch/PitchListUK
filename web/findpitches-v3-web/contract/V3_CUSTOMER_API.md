@@ -47,7 +47,7 @@ a database or another host.
 | `GET /opportunities/upcoming?market=&limit=&type=` | public | | `{ items: Opportunity[] }` soonest first, start ≥ today |
 | `POST /opportunities/by-ids` | public | `{ ids: [] }` | `{ items: Opportunity[] }` (unknown ids omitted) |
 | `POST /seo/inventory` | public (cache it) | `{ market, intents: [{ key, filters: { types?, sells?, organiser_types? } }] }` | `{ market, generated_at, market_total, intents: {key: n}, regions: {region_id: n}, combos: {"key\|region_id": n} }` |
-| `GET /session` | public | | `{ signed_in, user: { email, business_name, contact_name, phone, market, base_postcode, specialty, regions, public_listing_opt_in } \| null, access: { tier: free\|trial\|pro, status, plan_id?, market?, trial_ends?, renews_on?, cancel_at_period_end?, has_billing_account? } }` |
+| `GET /session` | public | | `{ signed_in, user: { email, business_name, contact_name, phone, market, base_postcode, specialty, regions, public_listing_opt_in } \| null, access: { tier: free\|trial\|pro, status, plan_id?, market?, trial_ends?, renews_on?, cancel_at_period_end?, has_billing_account?, checkout_allowed?, trial_eligible?, billing_review_required? } }` |
 | `POST /session/link` | public, CSRF, rate limited | `{ email, next }` | `{ sent: true }` and an emailed one-time link (`dev_link` only in non-production) |
 | `GET /session/verify?token=&next=` | link | | 303 → `next` (same-origin path) with the session cookie set; bad or used link → `/account.html?signin=expired` |
 | `POST /session/verify` | CSRF | `{ token }` | Session |
@@ -68,6 +68,8 @@ a database or another host.
 | `POST /inbox/organiser_submission` · `/inbox/partnership_enquiry` · `/inbox/listing_report` · `/inbox/waitlist` | public, CSRF, rate limited | form fields | `{ reference }` (stored for staff review; nothing is published automatically) |
 
 ## 3. Objects
+
+Signed-in access includes server-derived Checkout/trial eligibility. Account and pricing screens must not promise a second trial to a returning owner or offer ordinary Checkout when billing needs review. These fields are presentation hints; the server independently enforces canonical ownership and duplicate/trial guards on every billing request. A generic plan's `trial_days` is not proof of individual eligibility.
 
 ### 3.1 Opportunity (what the server returns for each listing)
 

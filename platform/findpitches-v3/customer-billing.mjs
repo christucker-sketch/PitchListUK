@@ -50,10 +50,17 @@ export async function syncSubscriptions(db,env,customer,{now,fetcher=fetch}={}) 
 export async function customerAccess(db,env,customer,{now,market=null,refresh=false,fetcher=fetch}={}) {
   if(!customer)return {tier:'free',status:'none',has_billing_account:false};
   let subs=(await stmt(db,'SELECT * FROM stripe_subscriptions WHERE customer_id=?',customer.id).all()).results;
+  const billing=async(unverified=false)=>{
+    const hasAccount=Boolean(await stmt(db,'SELECT customer_id FROM stripe_customers WHERE customer_id=?',customer.id).first());
+    const recognized=Boolean(await subscriberAssociation(db,customer.id));
+    const pending=subs.some(s=>['active','trialing','past_due','unpaid','incomplete','paused'].includes(s.status));
+    const allowed=!unverified&&!recognized&&!pending;
+    return {has_billing_account:hasAccount,checkout_allowed:allowed,trial_eligible:allowed&&subs.length===0,billing_review_required:unverified||recognized&&!pending};
+  };
   if(refresh&&env.STRIPE_SECRET_KEY&&(subs.length===0||subs.some(s=>Date.parse(s.checked_at)<=Date.parse(now)-60000))) {
-    try{subs=await syncSubscriptions(db,env,customer,{now,fetcher});}catch{await noteCustomerEvent(db,'stripe_sync','failed',now);return {tier:'free',status:'unverified',has_billing_account:Boolean(await stmt(db,'SELECT customer_id FROM stripe_customers WHERE customer_id=?',customer.id).first())};}
+    try{subs=await syncSubscriptions(db,env,customer,{now,fetcher});}catch{await noteCustomerEvent(db,'stripe_sync','failed',now);return {tier:'free',status:'unverified',...await billing(true)};}
   }
-  return {...entitlement(subs,{now,market}),has_billing_account:Boolean(await stmt(db,'SELECT customer_id FROM stripe_customers WHERE customer_id=?',customer.id).first())};
+  return {...entitlement(subs,{now,market}),...await billing()};
 }
 export async function checkout(db,env,customer,body,{now,origin,fetcher=fetch}={}) {
   if(body.market!=='GB'||body.plan_id!=='pro_monthly')throw customerError('price_not_set',409);

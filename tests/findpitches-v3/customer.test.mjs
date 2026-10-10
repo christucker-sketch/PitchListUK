@@ -5,7 +5,7 @@ import {openLocalD1} from '../../operations/findpitches-v3/local-d1.mjs';
 import {hash} from '../../platform/findpitches-v3/contract.mjs';
 import {stmt,csrfValue,requireCsrf,rateLimit,safeNext,hmac,cookie,sessionCookie,readBody} from '../../platform/findpitches-v3/customer-security.mjs';
 import {issueChallenge,consumeChallenge,signedCustomer,logout,updateProfile,requestLogin} from '../../platform/findpitches-v3/customer-auth.mjs';
-import {entitlement,webhook,syncSubscriptions,checkout,confirmCheckout,portal} from '../../platform/findpitches-v3/customer-billing.mjs';
+import {entitlement,webhook,syncSubscriptions,customerAccess,checkout,confirmCheckout,portal} from '../../platform/findpitches-v3/customer-billing.mjs';
 import {mapProof,present,search,inventory,recordInventoryChanges} from '../../platform/findpitches-v3/customer-catalogue.mjs';
 import worker from '../../platform/findpitches-v3/customer-worker.mjs';
 
@@ -121,4 +121,22 @@ test('billing portal requires canonical ownership and its own TEST configuration
   };
   const options={origin:'https://preview.example.org',fetcher};await assert.rejects(portal(d,env,c,options),/service_unavailable/);assert.equal(sessions,0);
   env.STRIPE_PORTAL_CONFIGURATION_ID='bpc_owned';assert.match((await portal(d,env,c,options)).url,/^https:\/\/billing.stripe.com\//);owner='wrong_owner';await assert.rejects(portal(d,env,c,options),/forbidden/);assert.equal(sessions,1);
+});
+test('a returning native subscriber sees Subscribe and Checkout omits a second trial',async t=>{
+  const d=db(t),c=await customer(d),env={V3_STRIPE_MODE:'test',V3_CHECKOUT_ENABLED:'test',STRIPE_SECRET_KEY:'sk_test_fixture',STRIPE_PRICE_ID:'price_test'};
+  assert.equal((await customerAccess(d,env,c,{now:now()})).trial_eligible,true);
+  await stmt(d,'INSERT INTO stripe_customers VALUES (?,?,0,?)',c.id,'cus_returning',now()).run();
+  const price={id:'price_test',livemode:false,active:true,currency:'gbp',unit_amount:499,recurring:{interval:'month'}};
+  let starts=0;
+  const fetcher=async(url,options)=>{
+    if(url.includes('/prices/'))return Response.json(price);
+    if(url.includes('/customers/'))return Response.json({id:'cus_returning',email:c.email,livemode:false,metadata:{findpitches_v3_customer_id:c.id}});
+    if(url.includes('/subscriptions'))return Response.json({object:'list',has_more:false,data:[{id:'sub_returning',customer:'cus_returning',livemode:false,status:'canceled',current_period_end:1,metadata:{findpitches_v3_customer_id:c.id},items:{data:[{price}]}}]});
+    assert.equal(url,'https://api.stripe.com/v1/checkout/sessions');starts++;
+    assert.equal(new URLSearchParams(options.body).has('subscription_data[trial_period_days]'),false);
+    return Response.json({id:'cs_test_returning',livemode:false,url:'https://checkout.stripe.com/c/test'});
+  };
+  await syncSubscriptions(d,env,c,{now:now(),fetcher});
+  const access=await customerAccess(d,env,c,{now:now()});assert.equal(access.tier,'free');assert.equal(access.checkout_allowed,true);assert.equal(access.trial_eligible,false);assert.equal(access.billing_review_required,false);
+  await checkout(d,env,c,{market:'GB',plan_id:'pro_monthly'},{now:now(),origin:'https://preview.example.org',fetcher});assert.equal(starts,1);
 });

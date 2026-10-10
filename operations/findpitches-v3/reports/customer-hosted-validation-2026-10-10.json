@@ -1,0 +1,26 @@
+{
+  "schema": "findpitches-v3-hosted-validation-v1",
+  "as_of": "2026-10-10T16:39:54.445809+00:00",
+  "full_v3_suite": {
+    "passed": 225,
+    "failed": 0,
+    "completed_at": "2026-10-10T16:34:59.424811+00:00"
+  },
+  "focused_customer_recognition": {
+    "passed": 26,
+    "failed": 0,
+    "completed_at": "2026-10-10T16:32:19.888008+00:00"
+  },
+  "standalone_frontend_check": {
+    "independence_passed": true,
+    "unit_tests_passed": 3,
+    "completed_at": "2026-10-10T16:34:59.672817+00:00"
+  },
+  "native_and_hosted_browser_checks": {
+    "passed": 22,
+    "failed": 0,
+    "completed_at": "2026-10-10T16:39:14.179870+00:00"
+  },
+  "billing_state_cache_timestamps_edited": false,
+  "source_evidence_edited": false
+}

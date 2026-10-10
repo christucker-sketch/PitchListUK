@@ -1,0 +1,19 @@
+{
+  "schema": "findpitches-v3-customer-preview-preservation-v1",
+  "as_of": "2026-10-10T16:42:31.213Z",
+  "receipts_compared": 15811,
+  "source_facts_compared": 108819,
+  "existing_identities_compared": 7077,
+  "destructive_source_mutations": 0,
+  "existing_identity_changes": 0,
+  "identity_comparison_key": "retained entity.id",
+  "customer_projection_rows": 0,
+  "publication_queue_rows": 0,
+  "publication_api_denied": true,
+  "publication_enabled": false,
+  "paid_queries_today": 0,
+  "paid_bulk_enabled": false,
+  "live_v1_deployment_unchanged": true,
+  "v2_schedules": [],
+  "v2_schedules_unchanged": true
+}
