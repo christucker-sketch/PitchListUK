@@ -5,11 +5,11 @@
 6bdb044fddc4d7d89057a41a560b4311316b4c645587f7696969033b8581d8a1  ./README.md
 15e6657093d6738c2f1a69c09bdbb9dd45bf1d1e5147e4af109e65b85bb4751f  ./RESULTS.md
 acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.md
-9a10e815503bdc70d7c3fb40638ef20013eab017aa3f4a7c61a30117617974d4  ./deploy/pi-tests/alert-check.test.sh
+21ebaef15519e3cbcbc66f906190cb4632080d41f64cb64f6952bf57b0a1ce01  ./deploy/pi-tests/alert-check.test.sh
 aa3e92f943cf62b5a9514cfea0a10c884cf5e283c6e7ae49071c95dd3506003d  ./deploy/pi/README.md
-4b1e712fdd95e1c94bd2057a087163be27e0f3d48f07378f4302aca1b46fd14b  ./deploy/pi/SHA256SUMS
+a58ad68ae028840f882346c83f0b75b909898a9eadd272b25763b7d7d079963b  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
-827b358e896bafe5e70896668744bb58da0cbe0794f49d9cf3d5130c925e4f9f  ./deploy/pi/bin/fpd-alert-check
+7af5da85599f020900c9074e4c6e1870d4a10bc3043980be3a6cf74a0f44f95c  ./deploy/pi/bin/fpd-alert-check
 d0aebbbd200f562fed47361613f27fc3caef5594532ef5f77f7bb60c118db751  ./deploy/pi/bin/fpd-alert-setup
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./deploy/pi/bin/fpd-backup
 c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./deploy/pi/bin/fpd-cycle

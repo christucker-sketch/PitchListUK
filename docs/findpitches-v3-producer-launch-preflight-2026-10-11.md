@@ -125,3 +125,33 @@ All of these are done:
 | Two audited obsolete past-edition resolutions (`86aaebe…`, `9b04c3e…`) | Codex, 14:37 |
 
 **The one remaining condition:** Codex reviews the Nashville custody above and records an outcome: a supersession within one season, or keep both withheld with the request left open. Either outcome closes V3-001. Nothing is being forced.
+
+## Update 2026-10-11 about 18:21 London: hotfix verified, producer condition met, **GO**
+
+This is from `sudo fpd-status`, run by Chris on the Pi.
+
+**Install and export:**
+- Hotfix `95c08051…` was installed, followed by kit `4b1e712f…` (the same engine plus email alerts).
+- A manual discovery cycle ended `Result=success`.
+- **Last export:** `2026-10-11T164649Z`. 1,855 actionable and 1,967 watch; no stalled sources (MarketsIreland is no longer flagged).
+
+**Delivery at 17:16:02Z:**
+- 2,112 accepted, **0 rejected**, 625 inserted, 1,487 duplicates.
+- **332 rechecks acknowledged.** Pending fell from 977 to 768.
+- **Source age 0 hours**, freshness warning off, 0 failures.
+- Handoff at 17:14:48Z: 768 requests (300 queued, 113 deferred, 355 already fresh).
+- Feed: 2,112 records (1,855 current and 257 lifecycle).
+- The regular 18:15 cycle started on schedule.
+
+**Producer-side launch condition: met. Producer and Pi area: GO.**
+- C1 is closed.
+- C2 is deferred until after launch.
+- C3 (V3-side no-contact alert) still applies: a powered-off Pi cannot email.
+
+**Power:** `throttled=0x50005` at 18:21, during the discovery cycle, which means under-voltage *right now*. This is the PSU issue already known. It affects reliability, not data correctness. The PSU swap is now the top operator item.
+
+**Email alerts (SMTP2GO):**
+- Live: the timer is active, the test email was confirmed by Chris, and there are 0 open problems.
+- The first version alerted on under-voltage "right now". Because under-voltage comes and goes with load, that would send a problem email and then a resolved email every cycle.
+- Kit `a58ad68a…` (`pi_kit_v3-011f`) changes only `fpd-alert-check`: under-voltage now keeps **one** problem open until 24 hours pass without it. 27 stubbed tests pass.
+

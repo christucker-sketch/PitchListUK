@@ -113,4 +113,15 @@ before=$(sends); run $((N+60)); ok "rate limited" '[[ $(sends) == $before ]] && 
 # 13. --show and --test
 FPD_ALERT_NOW=$N bash "$CHECK" --show > $T/out 2>&1; ok "--show lists problems" 'grep -q "offsite_failed" $T/out'
 before=$(sends); FPD_ALERT_NOW=$N bash "$CHECK" --test > $T/out 2>&1; ok "--test sends" '[[ $(sends) == $((before+1)) && "$(subj)" == *"test alert"* ]]'
+# 14. under-voltage that comes and goes stays ONE open problem (no flapping), clears after 24h quiet
+rm -f $T/state/state.json $T/state/power_seen $T/ctl/failed_units; offsite true "$(iso $N)" null; echo boot-2 > $T/ctl/boot_id
+touch -d "@$N" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst"
+P0=$(( N + 7200 )); status "$(iso $P0)" 0 0 600; echo 0x50005 > $T/ctl/throttled; b0=$(sends); run $P0
+ok "power problem raised" '[[ $(sends) == $((b0+1)) && "$(subj)" == *UNDER-VOLTAGE* ]]'
+echo 0x50000 > $T/ctl/throttled; status "$(iso $((P0+900)))" 0 0 600; run $((P0+900))
+ok "dip gone: no resolved yet" '[[ $(sends) == $((b0+1)) ]]'
+echo 0x50005 > $T/ctl/throttled; status "$(iso $((P0+1800)))" 0 0 600; run $((P0+1800))
+ok "dip back: no new email" '[[ $(sends) == $((b0+1)) ]]'
+echo 0x50000 > $T/ctl/throttled; T2=$((P0+1800+86400+60)); touch -d "@$T2" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst"; offsite true "$(iso $T2)" null; status "$(iso $T2)" 0 0 600; run $T2
+ok "resolved after 24h quiet" '[[ "$(subj)" == *"] RESOLVED:"*UNDER-VOLTAGE* ]]'
 echo "alert-check tests: $pass passed, $fail failed"; [[ $fail == 0 ]]

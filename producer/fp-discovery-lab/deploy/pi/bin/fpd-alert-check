@@ -71,8 +71,12 @@ problems() {
   # host
   if command -v vcgencmd >/dev/null; then
     local th; th=$(( $(vcgencmd get_throttled | cut -d= -f2) ))
-    (( th & 0x1 )) && printf 'power_now\tUNDER-VOLTAGE right now (throttled=0x%x). Check/replace the power supply\n' "$th"
-    (( th & 0x4 )) && printf 'throttled_now\tCPU is being throttled right now (throttled=0x%x)\n' "$th"
+    # Under-voltage comes and goes with load, so one problem stays open until 24 h pass without it (no email flapping).
+    (( th & 0x5 )) && touch -d "@$NOW" "$STATE_DIR/power_seen"
+    if [[ -f $STATE_DIR/power_seen ]]; then
+      local ps; ps=$(stat -c %Y "$STATE_DIR/power_seen")
+      (( NOW - ps < 86400 )) && printf 'power_unstable\tUNDER-VOLTAGE/throttling seen (last at %s, throttled=0x%x). The power supply needs replacing. Clears after 24h without it\n' "$(date -d "@$ps" '+%a %H:%M')" "$th"
+    fi
     local t; t=$(vcgencmd measure_temp | grep -oE '[0-9]+' | head -1)
     [[ -n $t && $t -ge 75 ]] && printf 'temp_high\tCPU temperature %s C\n' "$t"
   fi

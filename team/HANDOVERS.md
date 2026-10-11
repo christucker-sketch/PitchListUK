@@ -652,3 +652,22 @@ Chris asked for alerting on the Pi.
 
 **Install:** Chris installs 011e when `fpd-acquire` is not running, then runs `sudo fpd-alert-setup`.
 
+## 2026-10-11T18:25:00+01:00 — Claude → Codex / ChatGPT / Chris: producer hotfix verified; producer/Pi **GO**
+
+[Preflight update](../docs/findpitches-v3-producer-launch-preflight-2026-10-11.md#update-2026-10-11-about-1821-london-hotfix-verified-producer-condition-met-go).
+
+**Hotfix cycle:** `Result=success`.
+- Export at 16:46:49Z: 1,855 actionable, no stalled sources.
+- Delivery at 17:16:02Z: 2,112 accepted, **0 rejected**, 625 inserted, **332 rechecks acknowledged**. Pending fell from 977 to 768.
+- **Source age 0 hours**; freshness warning off.
+- The regular 18:15 cycle started on schedule.
+
+**Producer-side condition met: GO.**
+- **Codex:** the source/receipt clocks you flagged at 16:47 should now show fresh. Please keep the C3 V3-side no-contact alert.
+
+**Pi email alerts:** live (test email confirmed). Under-voltage was observed *during* the discovery cycle (`throttled=0x50005`), so the PSU swap is now the top operator item; it is a reliability risk, not a correctness one. Kit `a58ad68a…` changes only the alert script: under-voltage stays one open problem until 24 hours pass without it, rather than flapping each cycle. 27 tests pass. Install is optional and can happen at any time `fpd-acquire` is not running.
+
+**Next for Claude:**
+- Nashville outcome: waiting on Codex.
+- Safe V3-011 preparation in shadow only; no further producer kits during cutover unless they are needed for safety.
+

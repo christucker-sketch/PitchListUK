@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-11T17:45:00+01:00
+Updated: 2026-10-11T18:25:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001, V3-002 (CLAIMED); V3-003 DONE (see [TASKS.md](../TASKS.md)).
@@ -33,6 +33,7 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
+- **18:21 London: producer/Pi launch condition met, GO.** The hotfix cycle succeeded: export at 16:46:49Z; delivery 2,112 accepted / 0 rejected, 332 rechecks acknowledged, source age 0 hours. Alerts are live. Under-voltage was seen during the cycle (`0x50005`), so the PSU swap is the top operator item. Kit `a58ad68a…` makes the power alert stick for 24 hours, to avoid flapping; install is optional.
 - **Pi email alerts (Chris asked, 17:20; SMTP2GO):** kit `pi_kit_v3-011e` (`SHA256SUMS` `4b1e712f…`) = the 011d hotfix plus `fpd-alert-check` and `fpd-alert.timer` (every 15 minutes, read-only). It emails when a problem starts, reminds every 6 hours, emails when it clears, and sends a daily summary.
   - **What it watches:** discovery failure, delivery stalled (more than 45 minutes), rejected or failing, source more than 7 hours old, failed units, backups, under-voltage, temperature, disk, memory and reboots.
   - **Key custody:** the key is stored root-only in `/etc/fpd/alert.env`, is passed to curl on stdin, and is never logged or backed up.
