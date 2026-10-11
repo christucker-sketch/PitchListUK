@@ -1,85 +1,83 @@
 # FindPitches V3 — current execution orders
 
-Updated: 2026-10-10T19:10:00+01:00
-Authority: Chris requested the team tasks be refreshed after the targeted V3-001 retry cycle. These orders supersede the 18:19 execution order where progress has overtaken it. They do not authorize production cutover, live billing, paid acquisition, customer publication, destructive V1/V2 changes, real subscriber migration, unapproved outbound messages, UKCraftFairs Option B, or protected/live branch merges.
+Updated: 2026-10-11T12:45:00+01:00
+Authority: Chris requested the team's next actions be refreshed after Claude completed and pushed the producer-side V3-001 evidence through `d69ef8c`. These orders supersede the 10 October 19:10 execution order where progress has overtaken it. They do not authorize production cutover, live billing, paid acquisition, customer publication, destructive V1/V2 changes, real subscriber migration, unapproved outbound messages, UKCraftFairs Option B, or protected/live branch merges.
 
 ## Current position
 
-- V3-004 remains DONE for synthetic implementation/acceptance scope. Real subscriber migration remains separately gated.
+- V3-004 remains DONE for synthetic subscriber-recognition/acceptance scope. Real subscriber continuity and migration remain separately gated.
 - V3-005 remains DONE with the genuine hosted Stripe TEST journey complete 22/22.
-- V3-001 is now in final verification rather than broad producer debugging.
-- Of the six targeted lifecycle conflicts from the Pi retry work:
-  - three were genuinely refreshed with newer producer/source evidence;
-  - one is now correctly reclassified as not relevant/past event and is no longer produced under the original id;
-  - one is still OPEN_NOW but now exists under a different producer/platform identity;
-  - one original id has been merged into another identity.
-- The latter three are therefore lifecycle/identity-resolution cases, not failed URL retries. Do not keep retrying obsolete ids merely to make the queue disappear.
-- V3-002 UKCraftFairs remains outside the launch-critical path and stays off-by-default.
-- V3-010 launch-readiness review is active now.
+- V3-008 is DONE: real-origin checks passed 39/39 API and 30/30 browser checks on the restricted preview. The remaining performance concern is catalogue/boot latency and repeated proof-read/boot dependencies, not correctness of the tested customer flow.
+- Claude's producer-side V3-001 work is complete and pushed. The three genuinely fresh retries are already verified by Codex; the remaining three producer resolutions are now fully evidenced:
+  - `fdx1_86aaebe…` / Pop Up Shops: past/not relevant, CLOSED/withheld is the correct outcome;
+  - `fdx1_9b04c3e…` / From the Ground: replacement is `fdx1_f05d338d30aabbc8010f`, the same 2026 edition, retired and never delivered, so there is no current record to relink;
+  - `fdx1_f889ad…` / Nashville: reviewed supersession candidate into `fdx1_5c40d2…`, with both old anchors retained by the surviving identity and an edition-boundary review required.
+- V3-001 is therefore waiting on Codex's final V3-side resolution/sign-off of those three cases, not further Pi refetching.
+- Latest producer evidence shows the recheck queue reduced from 1,390 to 320 and the latest delivery accepted 2,096 / rejected 0. Do not treat queue reduction alone as lifecycle proof.
+- V3-010 launch-readiness review is active. Controlled launch, real-subscriber migration/live billing and paid acquisition remain three separate approval gates.
 
-## Claude — finish producer-side V3-001 evidence
+## Codex — close V3-001 first, then release-readiness follow-up
 
 ### V3-001 — immediate priority
-1. Publish the final producer-side evidence for all six targeted items.
-2. For the three genuinely refreshed items, retain the original request token/requested-at value, producer record id, V3 entity id, source URL, previous source timestamp, new source/fetched timestamp, resulting producer state and acknowledgement outcome.
-3. For the three non-refresh cases, document the exact producer-side resolution instead of retrying obsolete ids:
-   - past/not-relevant item: show why the original record correctly disappears from current production;
-   - replacement-id item: show old id -> current producer/platform id relationship and current OPEN_NOW state;
-   - merged item: show old id -> surviving merged identity relationship.
-4. Include the all-page handoff totals already captured and confirm the runner examined every returned request/page without silently dropping deferred/no-route work.
-5. Retain one clean end-to-end lifecycle trace from producer state change through feed, V3 receipt, existing identity, selected V3 state, acknowledgement and correct preview behaviour.
-6. Hand the final six-item evidence set to Codex for independent ledger/identity verification.
-7. Do not mark V3-001 DONE until Codex confirms both the three fresh receipts and the three lifecycle/identity resolutions on the V3 side.
-8. If Codex verifies all six cleanly, close V3-001. If one item remains wrong, publish that exact item as the blocker; do not reopen the whole lifecycle design.
+1. Verify the three remaining producer resolutions against V3 state, identity and customer visibility using Claude's evidence at `docs/findpitches-v3-001-producer-evidence-2026-10-11.md` and the exact IDs therein.
+2. **Pop Up Shops / `fdx1_86aaebe…`:** confirm the obsolete request can be resolved as CLOSED/withdrawn/non-customer-visible from the audited past/not-relevant evidence without inventing a new source fact or requiring a pointless new fetch.
+3. **From the Ground / `fdx1_9b04c3e…`:** confirm replacement `fdx1_f05d338d30aabbc8010f` is the same past 2026 edition, retired and never delivered, and that V3 should keep the old customer outcome CLOSED/withheld with no duplicate/relink required.
+4. **Nashville / `fdx1_f889ad…`:** review the old standing/2026 identity against survivor `fdx1_5c40d2…` / 2027. Confirm whether a reviewed supersession link is valid from the two shared anchors and edition evidence. Do not silently merge editions.
+5. Resolve/acknowledge only where the current V3 rules and audited evidence allow it. Do not write fabricated source timestamps or mutate immutable source facts to clear the queue.
+6. Confirm none of the three creates duplicate customer-visible inventory or leaks a held/closed/retired record.
+7. Publish one final V3-001 cloud checkpoint. If all three are clean, explicitly state that V3-001 has sufficient cloud-side evidence to close and hand that statement to Claude/ChatGPT.
+8. If one case remains unsafe, name that exact case and required evidence only; do not reopen the whole lifecycle design.
 
-### V3-002 — after V3-001
-1. Keep UKCraftFairs Option B OFF and unwired.
-2. After V3-001 closes, produce a concise recommendation on Option B: likely customer-visible inventory gain, operational cost/risk and whether it is worth implementing.
-3. Preserve D-012: enquiry-only listings are acceptable only with a verified, customer-usable contact/application route. No READY-rule weakening.
+### Release-readiness support after V3-001 checkpoint
+1. Keep V3-004, V3-005 and V3-008 closed unless regression evidence appears.
+2. Preserve the existing real-subscriber migration gate: all 57 legacy rows still require canonical LIVE owner/mode/product/price/period-end evidence; eight vendor-binding exceptions and four scheduled-cancellation continuity cases remain review items. Do not perform LIVE provider writes/imports/messages.
+3. Run a bounded, read-only catalogue/boot profiling pass to identify the cause of the measured preview latency (API median ~4.1s, sampled p95 ~5.1s, browser readiness occasionally much slower in the test environment). Focus on repeated proof reads, boot dependencies, caching opportunities and avoid behavioural/product changes unless a narrow defect is proven.
+4. Publish only measured findings and a safe optimisation recommendation. Do not change production routing or claim production-load performance from the current proxy/interception environment.
 
-## Codex — final independent V3-001 verification, then launch support
+## Claude — close ownership after Codex sign-off, then V3-002 recommendation
 
-### Supporting V3-001 — first priority
-1. Verify the three genuinely fresh retries in the V3 ledger using exact producer-record/entity/request-token linkage.
-2. Confirm newer evidence advances only according to existing source-clock/conflict rules and that no stale fact was force-selected.
-3. Verify the three producer identity/lifecycle cases:
-   - obsolete past/not-relevant id resolves to the correct withdrawn/closed/non-customer-visible outcome;
-   - replacement producer/platform id maps to the correct continuing opportunity without duplicate customer-visible identity;
-   - merged id resolves to the surviving canonical V3 identity without duplication or leakage.
-4. Confirm none of the six produces an incorrect customer snapshot result.
-5. Publish one final V3-001 cloud checkpoint covering all six outcomes and the retained end-to-end lifecycle trace.
-6. If clean, explicitly state that V3-001 has sufficient cloud-side evidence to close. Do not require pointless re-fetches of ids the producer legitimately no longer emits.
+### V3-001
+1. Producer-side implementation/evidence work is complete. Do not keep refetching the three obsolete/replaced/merged ids merely to make pending tokens disappear.
+2. Watch for Codex's final V3-001 cloud checkpoint.
+3. If Codex verifies all three remaining resolutions cleanly, mark V3-001 DONE and update Claude status/TASKS/HANDOVERS with the producer evidence plus Codex cloud proof.
+4. If Codex leaves one case open, address only that exact evidence/identity issue; do not reopen paging, lifecycle-feed or discovery design without new evidence.
+5. The proposed exporter improvement — re-emitting a previously delivered id once as WITHDRAWN with a genuine new clock and explicit `not_relevant:<reason>` / `superseded_by:<id>` — remains a proposal only. Do not implement it unless separately ordered after V3-001 closure.
 
-### Existing-subscriber launch support
-1. Keep V3-004 and V3-005 closed unless regression evidence appears.
-2. Finish the read-only real-subscriber migration-readiness inventory: canonical owner coverage, Stripe mode/product/price/period-end gaps, exceptions and rollback handling.
-3. Do not import, alter, charge, email or otherwise touch real subscribers.
-4. Give ChatGPT a concise migration gate: exactly what must be verified before any real subscriber continuity/migration approval.
+### V3-002 — immediately after V3-001 closes
+1. Keep UKCraftFairs Option B OFF and unwired while V3-001 is open.
+2. Once V3-001 is DONE, publish a concise Option B recommendation covering:
+   - expected customer-visible READY/enquiry inventory gain from the retained 159 UKCF records;
+   - how many have genuinely customer-usable verified contact/application routes under D-012;
+   - operational/security cost of accepting producer-supplied retained documents;
+   - failure/expiry/revalidation behaviour;
+   - whether the gain is commercially worth the extra custody path.
+3. Do not weaken READY/source-proof rules and do not enable Option B as part of the recommendation.
 
-### V3-008 — next bounded engineering work
-1. After the V3-001 cloud checkpoint is published, claim V3-008 if still unclaimed.
-2. Measure the private preview at the real origin: latency, sign-in, search, geography/facets, Pro gating, source-link redaction and obvious browser/security regressions.
-3. Keep it read-only and bounded. No publication, production routing or custom-domain cutover.
+### Pi housekeeping — operator work, not a launch gate by itself
+1. When the replacement PSU is available, swap it and re-check the Pi throttling/under-voltage status before treating the old `0x50005` reading as current.
+2. Configure off-site backup with `sudo fpd-offsite-setup`, then prove one backup and document the restore destination/custody. Do not put backup credentials in GitHub.
 
-## ChatGPT — V3-010 launch-readiness review
+## ChatGPT — finish V3-010 launch-readiness review
 
-1. Continue the V3-010 review now using completed V3-004/V3-005 evidence and the latest V3-001 producer outcomes.
-2. Update the launch acceptance matrix around: lifecycle integrity, identity continuity, customer continuity, duplicate-charge prevention, billing journey, domain/routing, publication safety, rollback, monitoring, V1 protection and subscriber migration readiness.
-3. Treat the three non-refresh lifecycle items correctly as identity/state transitions rather than failed retries when assessing V3-001.
-4. Draft the concrete controlled-cutover sequence and rollback sequence, but do not execute either.
-5. Keep the three approval gates separate:
-   - controlled V3 launch;
-   - real-subscriber migration/live billing;
-   - paid acquisition.
-6. Once Codex publishes the final V3-001 cloud checkpoint and the migration-readiness gaps are quantified, issue one concise GO / CONDITIONAL-GO / NO-GO recommendation with exact remaining blockers and operator approvals required.
+1. Fold the completed V3-008 report into the launch acceptance matrix now. Treat correctness/security checks as passed in bounded preview scope and treat catalogue/boot latency as an explicit release concern requiring profiling/monitoring, not as proven production-load failure.
+2. Fold Claude's final producer evidence into V3-001 interpretation now; the only remaining lifecycle dependency is Codex's V3-side sign-off on Pop Up Shops, From the Ground and Nashville.
+3. Keep the three approval gates separate:
+   - **controlled V3 launch**;
+   - **real-subscriber migration / LIVE billing**;
+   - **paid acquisition**.
+4. Tighten the controlled-cutover plan to the exact routing/domain/publication sequence, pre-flight checks, rollback trigger and monitoring thresholds. Do not execute it.
+5. Preserve the real-subscriber NO-GO until canonical LIVE ownership/product/price/period-end evidence, price policy, exception handling, cohort reconciliation and explicit migration approval exist.
+6. Preserve the paid-acquisition NO-GO until V3-009 paid-client attribution/account protection is complete, launch monitoring is live and Chris separately approves spend.
+7. As soon as Codex publishes the final V3-001 checkpoint, issue the concise V3-010 **GO / CONDITIONAL-GO / NO-GO** recommendation for controlled launch, with exact remaining release concerns and operator approvals.
 
 ## Priority order from here
 
-1. Claude: publish the final six-item producer evidence and lifecycle trace.
-2. Codex: verify all six on the V3 side, including the three identity/lifecycle resolutions, and publish the final V3-001 cloud checkpoint.
-3. ChatGPT: continue V3-010 launch review in parallel and fold in the final V3-001 checkpoint when it lands.
-4. Codex: finish the read-only real-subscriber migration-readiness inventory, then claim/run bounded V3-008 checks if still unclaimed.
-5. Claude: once V3-001 is closed, return to V3-002 and give the UKCraftFairs Option B recommendation.
+1. Codex: verify and resolve the three remaining V3-001 cloud-side cases and publish the final closure checkpoint.
+2. Claude: on clean Codex sign-off, mark V3-001 DONE and publish the V3-002 / UKCraftFairs Option B recommendation.
+3. ChatGPT: fold V3-008 + final V3-001 into V3-010 and issue the controlled-launch recommendation.
+4. Codex: bounded catalogue/boot profiling and safe optimisation recommendation.
+5. Operator/Chris: replace the Pi PSU when available and configure/prove off-site backup.
+6. After controlled-launch readiness is settled, return to V3-007 UK source expansion, V3-009 paid-client attribution and V3-006 alert delivery in that order unless Chris reprioritizes.
 
 ## Standing gates
 
