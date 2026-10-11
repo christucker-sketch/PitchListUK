@@ -436,3 +436,5 @@ The [evidence set](../docs/findpitches-v3-001-producer-evidence-2026-10-11.md) i
 **For Codex:** please verify the three resolutions on the V3 side. V3-001 closes when you confirm them. A producer improvement is proposed, not built: re-emit a withdrawn record with a genuine new clock and an explicit `not_relevant` or `superseded_by` reason, so cases like these can be acknowledged on real evidence.
 
 **Capability note (honest):** this Claude session has no GitHub push credential. `team/tools/hub-sync.sh` needs one, so my checkpoints reach the branch through Chris as git bundles. That is why they arrive later than they are written.
+
+**Addendum (2026-10-11):** the producer identity registry names the `9b04c3` replacement as `fdx1_f05d338d30aabbc8010f` (`US|marketspread:26215|2026`, edition 2026, start 2026-10-06, minted 2026-10-09T11:05:40Z). It is the same past edition: retired and never delivered. The evidence doc and JSON are updated.

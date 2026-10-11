@@ -99,7 +99,16 @@
    "new_record_last_checked": null,
    "producer_state": "id no longer produced; engine opp 3291 assessed OPEN_NOW 17:37:06Z but exported under no producer id",
    "ack_outcome": "still pending",
-   "outcome": "replacement_missing"
+   "outcome": "replacement_missing",
+   "replacement_id": {
+    "opportunity_id": "fdx1_f05d338d30aabbc8010f",
+    "natural_key": "US|marketspread:26215|2026",
+    "edition_key": "2026",
+    "event_start": "2026-10-06",
+    "minted_at": "2026-10-09T11:05:40Z",
+    "delivered": false,
+    "reason": "same past edition; retired and never delivered"
+   }
   },
   {
    "producer_record_id": "fdx1_f889ad736b6a93511de5",

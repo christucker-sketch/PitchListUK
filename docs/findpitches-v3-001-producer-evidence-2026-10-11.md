@@ -81,7 +81,7 @@ None of these ids is produced any more, so no newer evidence can ever be deliver
 | Engine now | Opportunity 3291 is relevant and was assessed OPEN_NOW at **2026-10-10T17:37:06Z** (the targeted refetch). The current code extracts the platform id `marketspread_market:26215` from the same URL, so the natural key becomes `…\|marketspread:26215\|…` and a different producer id is minted. The old record had only the URL anchor; one shared URL anchor is deliberately not enough to keep an id. |
 | Where the replacement is | It is in **no** export: not in the feed, and not in `integration_state` (Codex's broader search agrees). Export rules drop a never-delivered record whose channel is `retired`. The listed edition (6 Oct 2026) has passed, so the replacement is retired and was never delivered. |
 | Correct V3 outcome | The 6 Oct edition is past, so the existing CLOSED/withheld result stands. The request is obsolete. There is no current customer-visible replacement to link. |
-| To confirm | The replacement id is recorded in the producer's identity registry (`integration_identity`, natural key containing `marketspread:26215`). One read-only query will name it. |
+| Replacement id (identity registry, confirmed 2026-10-11) | **`fdx1_f05d338d30aabbc8010f`**: natural key `US\|marketspread:26215\|2026`, edition 2026, event_start 2026-10-06, minted 2026-10-09T11:05:40Z. It is the same 6 Oct edition, retired because the date has passed, and has never been delivered to V3. The old id was minted 2026-10-05T11:47:19Z with the same edition and start date. |
 
 ### `fdx1_f889ad736b6a93511de5`: Nashville Farmers Market (merged)
 
@@ -98,7 +98,7 @@ None of these ids is produced any more, so no newer evidence can ever be deliver
 Each is a single-record item. None is a delivery or lifecycle design defect.
 
 1. **`fdx1_86aaebe…`:** audited obsolete-request resolution on V3. Evidence: past edition, plus two `rejected/no_vendor_signal` assessments, the latest from the targeted refetch.
-2. **`fdx1_9b04c3e…`:** the same kind of resolution, because the edition is past and the replacement was never delivered. The replacement id will be named from the identity registry.
+2. **`fdx1_9b04c3e…`:** the same kind of resolution, because the edition is past. Its replacement `fdx1_f05d338d30aabbc8010f` is the same edition, retired and never delivered, so there is nothing current to relink.
 3. **`fdx1_f889ad…`:** reviewed supersession into `fdx1_5c40d2…`. Evidence: two shared anchors.
 
 **Producer improvement proposed** (not implemented, pending a decision). When an already-delivered id stops being produced, the exporter would re-emit one retired / WITHDRAWN record with a genuine new clock (the latest refetch of its own source page) and an explicit reason: `not_relevant:<reasons>` or `superseded_by:<id>`. Obsolete requests like these three could then be acknowledged on real evidence rather than resolved by hand.
