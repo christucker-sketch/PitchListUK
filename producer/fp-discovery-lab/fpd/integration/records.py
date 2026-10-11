@@ -89,8 +89,10 @@ def source_of(lane: str | None, url: str | None) -> tuple[str, str | None, str]:
         p = lane.split(":", 1)[1]
         if p.startswith("marketspread"):
             return "marketspread", p, "platform_enumeration"
-        if p in ("eventeny", "localstalls", "cluemart", "entrythingy", "marketsireland"):
+        if p in ("eventeny", "localstalls", "cluemart", "entrythingy"):
             return p, None, "platform_enumeration"
+        # Lanes without their own value in the v1 schema's discovery_source enum (e.g. marketsireland) go out as
+        # "other" with the lane in the detail field; the enum is part of the V3 contract and is not widened here.
         if p == "ukcraftfairs":
             return "ukcraftfairs", None, "platform_id_window"
         return "other", p, "platform_enumeration"

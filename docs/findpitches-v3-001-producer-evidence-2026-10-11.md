@@ -93,7 +93,9 @@ None of these ids is produced any more, so no newer evidence can ever be deliver
 | Surviving identity | `fdx1_5c40d2efe2d7096eb916`: current, OPEN_NOW, `last_checked` 2026-10-10T20:34:09Z. Natural key `US\|marketspread:12766\|2027`. Its anchors include **both** of the old id's anchors: `url:https://www.nashvillefarmersmarket.org/apply-farmers-market` and `url:https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/vendor/`. |
 | Correct V3 outcome | A reviewed supersession of `f889ad` into `5c40d2`. Codex has flagged a 2026/2027 edition difference (the old record was "standing"), so no automatic relink is made. |
 
-## 4. Exact remaining blockers for V3-001
+## 4. Exact remaining blockers for V3-001 (superseded)
+
+> **Update 2026-10-11 17:30 London:** items 1 and 2 were resolved by Codex's audited obsolete-request checkpoint (14:37). Nashville (item 3) is the only open case. The producer's source/edition custody evidence is in the [launch preflight](findpitches-v3-producer-launch-preflight-2026-10-11.md#nashville-withheld-with-custody-evidence-for-codex): one application season, 2026-03-01 to 2027-02-28. The survivor's "2027" is that season's last day.
 
 Each is a single-record item. None is a delivery or lifecycle design defect.
 

@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-11T15:28:03+01:00
+Updated: 2026-10-11T17:30:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001, V3-002 (CLAIMED); V3-003 DONE (see [TASKS.md](../TASKS.md)).
@@ -32,6 +32,14 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 - Handed Codex the standalone Build 4 frontend package (`findpitches-v3-web`) plus handoff docs 00–08. Codex now serves it as the customer preview.
 
 ## Current work
+
+- **Launch support ([CLAUDE_LAUNCH_SUPPORT.md](../CLAUDE_LAUNCH_SUPPORT.md)), 17:30:** the [producer preflight](../../docs/findpitches-v3-producer-launch-preflight-2026-10-11.md) is CONDITIONAL-GO.
+  - **The one producer condition:** hotfix kit `95c08051…` installed and a successful export cycle.
+  - **The regression was mine.** Kit `b7c60c3a…` made `export full` fail validation from the 15:21 cycle onwards: `discovery_source` was `marketsireland`, which is not in the schema enum.
+  - **Effect:** delivery stayed at 0 rejected, but freshness aged; the source was 4.4 hours old at 16:04Z.
+  - **Fix:** the lane now uses `other` plus detail, with a regression test. 101 tests pass, and the fix was reproduced and verified locally.
+  - **C1–C3:** C1 is closed (existing shadow ingest path); C2 is deferred until after launch; the C3 thresholds are in the preflight.
+  - **Nashville:** custody evidence has been supplied to Codex.
 
 - **Same-day launch review (ORDERS 15:18): producer/Pi area CONDITIONAL-GO.** See the [report](../../docs/findpitches-v3-launch-readiness-producer-2026-10-11.md). The conditions are C1 (confirm which ingest environment public V3 reads; the runner only allows shadow/test), C2 (fresh ingest-only token) and C3 (staleness alerts in launch monitoring). Nashville is not a blocker. Nothing was installed or changed for launch.
 

@@ -6,7 +6,7 @@
 15e6657093d6738c2f1a69c09bdbb9dd45bf1d1e5147e4af109e65b85bb4751f  ./RESULTS.md
 acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.md
 3327a1fbed2675cbe274c12148441a62f86ea538ef64c1dfee5987833121a494  ./deploy/pi/README.md
-b7c60c3a4f8b28645de55b075c3294fd2043009df6f66c9f6360f82e5b752a47  ./deploy/pi/SHA256SUMS
+95c08051253cf94c4ca75fb0f056ed73c491d6c28bc190c6a1aeefbae258e3ba  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./deploy/pi/bin/fpd-backup
 c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./deploy/pi/bin/fpd-cycle
@@ -60,7 +60,7 @@ c9011bdc333f74c2601c454c6b11ec716ca922673ac62724b09f75cb403b8f75  ./fpd/geo.py
 b36d5157356da83a05dabaddb55f595620aa42c066322e7ccb0727dc4adf86f3  ./fpd/integration/__init__.py
 1d16b795126aee97c998e2ec5738ce4517679a27c10042bff65c178f75e60192  ./fpd/integration/exporter.py
 50dfb641648e3c559ede5de780306430d01b9190d131d6de6267ea91bb1c6960  ./fpd/integration/identity.py
-d09882d5812dc05bfec6eea146236c42fc80ebda16a713764a6658829fa9dc92  ./fpd/integration/records.py
+5e6906c680d0938a76f77fdaf9603dfa40fb0287cb8ebc5d6893a2dbb3f2de2b  ./fpd/integration/records.py
 898fbce312f916fd51cd0f53c1f4f6ad0345939381fa961d8d806bb3d9780b68  ./fpd/integration/schema.py
 715bce0ad341f0ee940b58bb2ec36a2fce3f6fa0c5fbec59ebb9f92295a52381  ./fpd/integration/v3docs.py
 0d2c659345be8592391c129d66546a5c0456fb581b4709fe18e026600b7726bd  ./fpd/integration/v3feed.py
@@ -89,4 +89,4 @@ b0af7b1560c1b4a1ef4d343ec45bbc2a53c3b6eef3b4e0212ed836b2f59bc366  ./tests/fixtur
 cc399676b06024df2ce67471f6e5600f43f899f59668af16fe617df92827a4a5  ./tests/fixtures/marketsireland_notmanaged.html
 c56830c2261640f3b53ac4f3bf13315589e95ebcd08a3e77abefb130586b9d35  ./tests/fixtures/marketsireland_open.html
 1d0e09e8a696c31dca9158802c08ce4a01492668ef63f389d859a42cb4bfd173  ./tests/test_core.py
-b28b670123bf0da1086082413236284e8a8ec451ece47806820899c81d492bb5  ./tests/test_integration.py
+fea28961370340f447ebe7da53d2bd10e83bd456210da1b436d77200171e2558  ./tests/test_integration.py

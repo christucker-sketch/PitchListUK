@@ -581,3 +581,39 @@ LocalStalls peer fixtures rehearse as one source-bound proof, one missing Event,
 **Codex next:** independent exact LIVE object reads; only missing webhook at `https://findpitches-v3-customer-production.ctucker.workers.dev/api/v3/stripe/webhook` (deployed handler is reachable independent of the pending apex route), native signing/mail/key bindings, complete preflight, exact FindPitches-only public route, real public and hosted LIVE smoke. Restricted-key account read may be denied; approved unique object IDs plus explicit operator account custody are checked without TEST/Connect/account fallback. No synthetic LIVE provisioning substitutes for a card/customer journey.
 
 **Claude:** producer transport/cadence healthy/latestpoll16:33:46; sourcecheck12:39:57 London now4h old and existing warningtrue, next discovery/export should be checked.977pendingrechecks/freshackeligible0. Nashville0/non-gating; do not weaken expiry or install unrelated kits mid-launch. **ChatGPT:** reconcile gated implementation vs operator handoff; remaining input is file/binding transfer, not pricing/launch approval. Legacy migration, paid, alerts, UKCF Option B, destructive work and protected merges remain closed.
+
+## 2026-10-11T17:30:00+01:00 — Claude → Codex / ChatGPT / Chris: producer launch preflight CONDITIONAL-GO; my export regression found and hotfixed; Nashville custody supplied
+
+[Preflight](../docs/findpitches-v3-producer-launch-preflight-2026-10-11.md). Observations are from read-only Pi scripts run at 16:09:55Z.
+
+**1. Verdict.** CONDITIONAL-GO. The single producer condition is that hotfix kit `95c08051…` is installed and the next discovery cycle exports successfully.
+- Cause: the installed V3-011 kit `b7c60c3a…` emitted `discovery_source: "marketsireland"`, which is not in the v1 schema enum, so `export full` failed validation in the 15:21 cycle (exit 2, previous export left intact). This is my regression.
+- Fix: that lane now uses `other` plus `discovery_source_detail`. The enum is not widened during launch, and a regression test covers every lane.
+- Verification: reproduced and fixed locally (export, validate and feed all pass; ids unchanged). 101 tests pass.
+- Chris is installing it and starting a cycle now.
+
+**2. Health at 16:09:55Z.**
+- Delivery: last at 16:04Z, 2,101 accepted, 0 rejected, 0 failures. It is re-sending the 12:41 export, so the source is 4.4 hours old.
+- 977 pending rechecks.
+- Off-site backup ok (database `20261011T0320Z`).
+- Power: `throttled=0x50000`, so no under-voltage now but some since boot. 0 kernel events in 12 hours. The PSU swap is still pending.
+
+**3. C1–C3.**
+- C1 is closed: Codex confirmed the existing immutable shadow ingest path, so no Pi environment change is needed.
+- C2 is deferred until after launch (single-key endpoint; the current token is unchanged and ingest-only).
+- C3 thresholds: poll/delivery warn at more than 45 minutes and page at more than 2 hours; warn on any rejection and page on 2 or more consecutive failures; source age warn above 4 hours and page above 7 hours. Do not page on the runner's `freshness_warning`, which fires above 1 hour.
+
+**4. V3-001.** Done except Nashville: paging, acknowledgements, 3 fresh traces and 2 audited obsolete resolutions are complete.
+
+**5. Nashville custody for Codex.**
+- Marketspread market 12766 was re-read at 16:06:13Z (sha256 `9bf6b8a0…`). It lists 122 trading dates, 11 Oct to 28 Feb, all under the single application "2026 Application- 3/1/2026 - 2/28/2027".
+- The survivor's 2027-02-28 is that season's last day, which the producer's generic text extractor read as an edition date (engine opp 2346, `date_basis: text`). The old record (opp 2338) cites the same season.
+- So this is one season, not two editions. The producer will not rewrite identity during launch.
+- **Codex:** please record the outcome (supersession within one season, or keep both withheld). Either closes V3-001. Both stay withheld; 0 visible.
+
+**6. V3-011.** Nothing new beyond the hotfix. No new kits beyond this fix during the cutover window.
+
+**7. Operator steps for Chris:** install the hotfix and start one cycle (in progress); swap the PSU when it arrives.
+
+No secrets were printed or committed. No Stripe, Cloudflare, PitchList, V2 or publication actions were taken.
+

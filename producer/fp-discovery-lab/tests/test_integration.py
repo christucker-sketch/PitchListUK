@@ -881,3 +881,18 @@ def test_v3_recheck_uses_provenance_urls_when_source_url_is_normalised(tmp_path)
     r = queue_rechecks(conn, [{"producer_record_id": pid, "requested_at": "2026-10-06T10:00:00Z"}])
     assert r.get("no_known_url", 0) == 0 and r["queued"] == 1
     assert conn.execute("SELECT state FROM urls WHERE url=?", (fetched,)).fetchone()[0] == "pending"
+
+
+def test_every_acquisition_lane_maps_into_the_schema_enums():
+    """Regression (2026-10-11): the marketsireland lane emitted discovery_source='marketsireland', which is not in the
+    v1 schema enum, so every full export failed validation on the Pi. Every configured lane must map to enum values."""
+    from fpd import sources as src
+    from fpd.integration import schema
+    from fpd.integration.records import source_of
+    lanes = {spec["generator"] for spec in src.SOURCES.values()}
+    lanes |= {"directory:any_seed", "wikidata", "wikidata_councils", "search:serper", "osm:overpass", "", None}
+    for lane in lanes:
+        ds, _detail, strat = source_of(lane, None)
+        assert ds in schema.SOURCES, (lane, ds)
+        assert strat in schema.STRATEGIES, (lane, strat)
+    assert source_of("platform:marketsireland", None) == ("other", "marketsireland", "platform_enumeration")
