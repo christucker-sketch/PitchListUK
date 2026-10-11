@@ -1,0 +1,129 @@
+{
+ "schema": "findpitches-v3-001-producer-evidence-v1",
+ "as_of": "2026-10-11T11:20:45Z",
+ "source": "fpd-pi read-only scripts run by Chris (v3-001-check.sh 2026-10-10 ~18:44 London; v3-001-diag.sh ~19:05; v3-001-final.sh 2026-10-11 ~12:21 London)",
+ "handoff_cycles": [
+  {
+   "cycle_start": "2026-10-10T14:15:26Z",
+   "requests": 1382,
+   "queued": 300,
+   "deferred": 1020,
+   "already_rechecked": 3,
+   "no_known_url": 59,
+   "sum_check": 1382
+  },
+  {
+   "cycle_start": "2026-10-10T17:17:42Z",
+   "kit": "SHA256SUMS ec1238ba (provenance-URL fix)",
+   "requests": 1336,
+   "queued": 300,
+   "deferred": 1036,
+   "already_rechecked": 0,
+   "no_known_url": 0,
+   "sum_check": 1336
+  }
+ ],
+ "pending_rechecks": {
+  "2026-10-10T11:26:50Z": 1390,
+  "2026-10-10T16:31:12Z": 1315,
+  "2026-10-10T17:36:09Z": 1380,
+  "2026-10-11T11:20:45Z": 320
+ },
+ "latest_delivery": {
+  "checked_at": "2026-10-11T11:20:45.659Z",
+  "records": 2096,
+  "accepted": 2096,
+  "rejected": 0
+ },
+ "six": [
+  {
+   "producer_record_id": "fdx1_4d4590cdbd191713c317",
+   "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+   "requested_at": "2026-10-09T13:33:34.663Z",
+   "reason": "watch_recheck_due",
+   "source_url": "https://fiestasanantonio.org/fiesta-san-antonio-vendor",
+   "previous_source_last_checked": "2026-10-04T16:10:45Z",
+   "refetched_at": "2026-10-10T17:37:14Z",
+   "new_record_last_checked": "2026-10-10T17:37:14Z",
+   "producer_state": "retired / HISTORICAL",
+   "ack_outcome": "acknowledged (absent from V3 poll 2026-10-11T11:20:37Z)",
+   "outcome": "refreshed"
+  },
+  {
+   "producer_record_id": "fdx1_58df50276bd7933d3ade",
+   "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+   "requested_at": "2026-10-09T13:32:36.818Z",
+   "reason": "watch_recheck_due",
+   "source_url": "https://626nightmarket.com/join-us (+2 corroborating pages)",
+   "previous_source_last_checked": "2026-10-04T16:51:54Z",
+   "refetched_at": "2026-10-10T17:37:16Z..17:37:21Z",
+   "new_record_last_checked": "2026-10-10T17:37:21Z",
+   "producer_state": "watch / HISTORICAL",
+   "ack_outcome": "acknowledged (absent from V3 poll 2026-10-11T11:20:37Z)",
+   "outcome": "refreshed"
+  },
+  {
+   "producer_record_id": "fdx1_8ba38ecf08fb5cc324d9",
+   "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+   "requested_at": "2026-10-09T13:33:18.601Z",
+   "reason": "watch_recheck_due",
+   "source_url": "https://qvm.com.au/become-a-trader (+2 pages)",
+   "previous_source_last_checked": "2026-10-04T16:45:58Z",
+   "refetched_at": "2026-10-10T17:37:10Z..17:37:26Z",
+   "new_record_last_checked": "2026-10-10T17:37:26Z",
+   "producer_state": "watch / CLOSED_CURRENT_CYCLE",
+   "ack_outcome": "acknowledged (absent from V3 poll 2026-10-11T11:20:37Z)",
+   "outcome": "refreshed"
+  },
+  {
+   "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+   "entity_id": "ent_610f9171a285d58e114a847995de559e",
+   "requested_at": "2026-10-09T13:33:05.718Z",
+   "reason": "watch_recheck_due",
+   "source_url": "https://www.ukcraftfairs.com/craft-events/26684/x",
+   "previous_source_last_checked": "2026-10-04T20:06:19Z",
+   "refetched_at": "2026-10-10T17:35:35Z (assessed 17:35:36Z)",
+   "new_record_last_checked": null,
+   "producer_state": "id no longer produced: engine opp 3257 NOT_RELEVANT",
+   "ack_outcome": "still pending (cannot be acknowledged under this id)",
+   "outcome": "not_relevant_past_event"
+  },
+  {
+   "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+   "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+   "requested_at": "2026-10-09T19:03:18.609Z",
+   "reason": "watch_recheck_due",
+   "source_url": "https://marketspread.com/market/26215/from-the-ground-farmers-markets/apply/intro/",
+   "previous_source_last_checked": "2026-10-04T19:36:07Z",
+   "refetched_at": "2026-10-10T17:37:06Z",
+   "new_record_last_checked": null,
+   "producer_state": "id no longer produced; engine opp 3291 assessed OPEN_NOW 17:37:06Z but exported under no producer id",
+   "ack_outcome": "still pending",
+   "outcome": "replacement_missing"
+  },
+  {
+   "producer_record_id": "fdx1_f889ad736b6a93511de5",
+   "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+   "requested_at": "2026-10-09T18:47:53.640Z",
+   "reason": "watch_recheck_due",
+   "source_url": "https://www.nashvillefarmersmarket.org/apply-farmers-market",
+   "previous_source_last_checked": "2026-10-04T16:19:06Z",
+   "refetched_at": "2026-10-10T17:37:12Z",
+   "new_record_last_checked": null,
+   "producer_state": "id no longer produced: merged into fdx1_5c40d2efe2d7096eb916 (current, OPEN_NOW, last_checked 2026-10-10T20:34:09Z)",
+   "ack_outcome": "still pending (cannot be acknowledged under this id)",
+   "outcome": "merged"
+  }
+ ],
+ "fdx1_5c40d2efe2d7096eb916_anchors": [
+  "pid:marketspread_market:12766",
+  "url:https://marketspread.com/market/12766/nashville-farmers-market/",
+  "url:https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/login/",
+  "url:https://marketspread.com/market/12766/nashville-farmers-market/apply/6679/vendor/",
+  "url:https://marketspread.com/market/12766/nashville-farmers-market/apply/intro/",
+  "url:https://www.nashvillefarmersmarket.org/apply-farmers-market"
+ ],
+ "secrets_printed": false,
+ "source_mutations": 0,
+ "paid_queries": 0
+}

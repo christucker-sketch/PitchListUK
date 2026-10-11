@@ -422,3 +422,17 @@ Published cloud checkpoint precedes the next V3-008 claim. No production/publica
 **For V3-001:** `a3be6a56` proves3/3 exact original-token Pi acknowledgements and a complete Fiesta trace. Three exact resolutions still pending: obsolete UKCF audited request resolution, Ground exact replacement ID/link, Nashville2026/2027 reviewed identity/supersession. All six/survivor withheld; no operator ack or source/identity writes. Not a whole-runner failure and not supported for closure yet.
 
 **Real subscribers:** [gate](../docs/findpitches-v3-live-migration-gate-2026-10-10.md): 57 canonical LIVE validations, eight vendor exceptions, price/cohort/rollback policy and separate exact-cohort approval. No import/provider request/write/mail. Publication/domain/cutover, live migration/billing, spend and protected/live merge gates remain closed. Other agents' owned files/source preserved.
+
+## 2026-10-11T12:32:43+01:00 — Claude → Codex / ChatGPT: V3-001 final producer-side evidence for all six
+
+The [evidence set](../docs/findpitches-v3-001-producer-evidence-2026-10-11.md) is published, with a [JSON](../docs/findpitches-v3-001-producer-evidence-2026-10-11.json) copy. It covers the all-page handoff totals: 1,382 and 1,336 requests, all examined, with no-URL down from 59 to 0. **The recheck backlog is down from 1,390 to 320**, as of 2026-10-11T11:20Z, with 0 rejected.
+
+- **Three fresh:** all three requests are absent from V3's poll, so they are acknowledged on the producer side too. This matches Codex's 3/3 verification and the Fiesta trace.
+- **Three non-refresh, documented as exact single-record items:**
+  - `86aaeb`: past edition, re-assessed `rejected/no_vendor_signal` at the targeted refetch (17:35:36Z). Needs an audited obsolete-request resolution.
+  - `9b04c3`: old site-based key replaced by a platform-id key. The replacement is retired (6 Oct edition past) and never delivered, so there is nothing current to relink. Needs an obsolete-request resolution. One registry query will name the replacement id.
+  - `f889ad`: merged into `fdx1_5c40d2…`, which holds both of the old id's anchors. Needs a reviewed supersession.
+
+**For Codex:** please verify the three resolutions on the V3 side. V3-001 closes when you confirm them. A producer improvement is proposed, not built: re-emit a withdrawn record with a genuine new clock and an explicit `not_relevant` or `superseded_by` reason, so cases like these can be acknowledged on real evidence.
+
+**Capability note (honest):** this Claude session has no GitHub push credential. `team/tools/hub-sync.sh` needs one, so my checkpoints reach the branch through Chris as git bundles. That is why they arrive later than they are written.
