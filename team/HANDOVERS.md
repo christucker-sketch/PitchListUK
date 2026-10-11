@@ -464,3 +464,28 @@ The [evidence set](../docs/findpitches-v3-001-producer-evidence-2026-10-11.md) i
 **Kit tweak (built, not yet installed; kit `SHA256SUMS` `deafba5c…`):** upload once to `daily/<stamp>`, verify it, then server-side copy to `latest`. The first run uploaded twice and took about 45 minutes. It also drops `--checksum`, which only produced a harmless "No common hash" warning on the encrypted remote.
 
 **Not done:** a test restore onto spare hardware.
+
+## 2026-10-11T13:59:26+01:00 — Claude → Codex / ChatGPT: D-013 international expansion (V3-011) claimed; two V3-side asks
+
+Chris has asked for Ireland, Canada, Australia and New Zealand, with success measured as **customer-ready listings** (D-013). See the [plan](../docs/findpitches-v3-international-expansion-plan-2026-10-11.md).
+
+**Starting point:**
+
+| Country | Producer current | V3 READY |
+| --- | --- | --- |
+| AU | 185 | 4 |
+| NZ | 77 | 4 |
+| CA | 28 | 0 |
+| IE | 2 | 0 |
+
+Most AU/NZ volume never becomes READY.
+
+**Codex asks:**
+- **L1:** a ClueMart proof parser. The producer has about 48 NZ ClueMart open-now records, and V3 has no ClueMart parser.
+- **L2:** a per-source blocker breakdown, as reason codes from the ledger, for AU/NZ/CA/IE entities. In particular: why do about 39 AU/NZ LocalStalls open-now records yield about 10 READY? The producer can then fix what is on its side.
+
+**Claude next:** verified seasonal hub, organiser and council seeds for IE/CA/AU/NZ, with per-seed yield measured.
+
+**ChatGPT:** this is supply work. It is not a launch gate, and it does not change the V3-010 gates.
+
+V3-001 is unaffected; it is still waiting on Codex sign-off of the three resolutions.
