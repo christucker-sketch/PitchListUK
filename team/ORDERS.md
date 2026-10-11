@@ -1,6 +1,6 @@
 # FindPitches V3 — current execution orders
 
-Updated: 2026-10-11 after the team readiness reports.
+Updated: 2026-10-11 after the team readiness reports and D-016 pricing decision.
 Authority: **D-014 / Chris: “ok lets do it, or we'll be tinkering forever more”.** The review phase is complete. The team is authorized to execute the minimum safe controlled launch of **public FindPitches with new-customer LIVE subscriptions**.
 
 PitchList remains a separate protected product and must remain live and untouched throughout.
@@ -8,6 +8,8 @@ PitchList remains a separate protected product and must remain live and untouche
 ## Launch objective
 
 Today’s target is a real production FindPitches service with public browsing/search, real sign-in/account creation, existing Free/Pro gating, a working LIVE Stripe subscription path for brand-new FindPitches customers, truthful pricing/feature copy, normal transactional auth/billing messages, and eligible public pages becoming indexable under the existing SEO rules.
+
+**D-016 pricing/entitlement is now authoritative for launch:** FindPitches Pro is one global entitlement. Launch prices are **£4.99 GBP / $6.99 USD / €5.99 EUR per month**, each with the existing **7-day first trial**. Currency is a billing choice only; a Pro customer gets all Pro-gated FindPitches opportunities globally regardless of residence, listing country or currency paid. Do not create GB-Pro/US-Pro/EU-Pro entitlement silos.
 
 Still out of scope: legacy PitchList subscriber migration, paid acquisition, alert campaigns/delivery, UKCraftFairs Option B, destructive V1/V2 changes, infrastructure deletion and unrelated protected/live merges.
 
@@ -38,13 +40,19 @@ Pause routine catalogue/LocalStalls optimisation until the production customer p
 ### B. New-customer LIVE Stripe
 
 1. Reuse the existing Stripe account with FindPitches-owned LIVE product/price/webhook/portal configuration. Do not modify PitchList customer/subscription ownership or webhook behaviour.
-2. Verify exact LIVE account, product, price, currency, interval, trial policy and payable market entitlement before exposing Checkout.
-3. Existing TEST configuration is £4.99/month with a 7-day first trial. Do not silently promote TEST IDs or market scope into LIVE. If no authoritative LIVE product/price/market policy exists, continue all other launch work and report that one exact operator decision rather than reopening architecture.
-4. Keep TEST/LIVE IDs, keys, databases, webhook secrets and idempotency namespaces strictly separated.
-5. LIVE confirmation/entitlement must verify canonical owner, customer, subscription, mode, product, price and market access. Session success alone cannot grant Pro.
-6. Configure a FindPitches-specific LIVE webhook endpoint with signature validation, durable event dedupe/replay handling and canonical provider rereads. Ignore unowned PitchList events.
-7. Configure hosted Billing Portal for FindPitches customers and preserve paid-through cancellation access during rollback.
-8. Correct customer-facing claims before subscriptions are exposed: alerts remain unavailable/coming later until V3-006 is separately approved.
+2. Implement **one global FindPitches Pro entitlement** with three launch price/currency variants:
+   - **GBP £4.99/month**;
+   - **USD $6.99/month**;
+   - **EUR €5.99/month**;
+   - each with a **7-day first trial**.
+3. Currency must not determine catalogue entitlement. Any valid Pro subscription in any of those launch currencies unlocks all Pro-gated FindPitches opportunities globally. Do not retain or create GB-only/US-only/EU-only Pro access rules.
+4. Verify the exact LIVE account, FindPitches product, three LIVE price IDs, currencies, amounts, interval and trial policy before exposing Checkout. TEST IDs must not be promoted into LIVE.
+5. Keep TEST/LIVE IDs, keys, databases, webhook secrets and idempotency namespaces strictly separated.
+6. LIVE confirmation/entitlement must verify canonical owner, customer, subscription, mode, product and an approved D-016 price; session success alone cannot grant Pro.
+7. Configure a FindPitches-specific LIVE webhook endpoint with signature validation, durable event dedupe/replay handling and canonical provider rereads. Ignore unowned PitchList events.
+8. Configure hosted Billing Portal for FindPitches customers and preserve paid-through cancellation access during rollback.
+9. Correct customer-facing claims before subscriptions are exposed: alerts remain unavailable/coming later until V3-006 is separately approved.
+10. Additional currencies may be added later without changing global Pro entitlement semantics; they are not required to block today's launch.
 
 ### C. Public FindPitches runtime / routing
 
@@ -60,7 +68,8 @@ Pause routine catalogue/LocalStalls optimisation until the production customer p
 Publish a launch checkpoint proving:
 
 - full/focused V3 tests green;
-- production-mode customer/auth/billing tests including wrong-mode/wrong-owner/wrong-product/wrong-price/wrong-market cases;
+- production-mode customer/auth/billing tests including wrong-mode/wrong-owner/wrong-product/wrong-price cases;
+- global entitlement tests proving GBP/USD/EUR all grant the same worldwide Pro access and Free remains redacted;
 - Checkout concurrency/retry/idempotency tests;
 - webhook replay/out-of-order/signature/failure tests;
 - cancellation/paid-through/expiry/Free-redaction tests;
@@ -68,7 +77,7 @@ Publish a launch checkpoint proving:
 - no PitchList routing/data/provider changes;
 - frozen READY/customer/queue/producer baseline;
 - exact FindPitches route + rollback object;
-- exact LIVE Stripe product/price/market configuration, or the single unresolved operator decision if provider setup genuinely requires Chris.
+- exact LIVE Stripe product and the three D-016 LIVE price configurations, or the single unresolved operator step if provider setup genuinely requires Chris.
 
 ### E. Controlled production sequence
 
@@ -79,9 +88,9 @@ D-014 authorizes the launch once the preflight above is recorded.
 3. Prove production health without arbitrary customer activity.
 4. Apply the FindPitches-only public route/access change and verify PitchList separately immediately afterwards.
 5. Smoke public homepage/search/auth/redaction/Pro gating/security/SEO from the real hostname.
-6. Expose LIVE Checkout only after exact LIVE provider configuration is verified.
+6. Expose LIVE Checkout only after the FindPitches LIVE product and all three D-016 price variants are verified.
 7. If a final operator-only Stripe step is required, stop at that exact step and give Chris the shortest possible instruction. Do not substitute synthetic provider objects for the real hosted customer journey.
-8. Verify webhook → canonical subscription → entitlement → Portal/cancellation behaviour using the agreed controlled production proof.
+8. Verify webhook → canonical subscription → global Pro entitlement → Portal/cancellation behaviour using the agreed controlled production proof.
 9. Monitor the launch window and report GO or rollback.
 
 ### F. Rollback
@@ -109,16 +118,17 @@ Rollback FindPitches only. Do not route users to PitchList as a substitute produ
 ## ChatGPT — V3-010 launch coordinator
 
 1. Treat D-014 as authorization to proceed with this controlled launch scope.
-2. Reconcile Codex/Claude checkpoints and call out only genuine stop conditions, not polish.
-3. Move V3-010 from review mode to execution/acceptance mode.
-4. Keep legacy PitchList migration separate from new FindPitches billing.
-5. Keep paid acquisition, alerts, UKCF Option B and legacy migration closed.
-6. When Codex reaches a genuine operator-only dependency, surface the exact minimal action to Chris rather than reopening architecture discussion.
-7. Once public-origin and LIVE subscription proof pass, publish the final launch acceptance checkpoint and return the team to supply/optimisation work.
+2. Treat D-016 as the launch pricing/entitlement authority: global Pro, GBP/USD/EUR variants, 7-day first trial.
+3. Reconcile Codex/Claude checkpoints and call out only genuine stop conditions, not polish.
+4. Move V3-010 from review mode to execution/acceptance mode.
+5. Keep legacy PitchList migration separate from new FindPitches billing.
+6. Keep paid acquisition, alerts, UKCF Option B and legacy migration closed.
+7. When Codex reaches a genuine operator-only dependency, surface the exact minimal action to Chris rather than reopening architecture discussion.
+8. Once public-origin and LIVE subscription proof pass, publish the final launch acceptance checkpoint and return the team to supply/optimisation work.
 
 ## Launch stop conditions
 
-Stop/rollback for systemic public auth failure; incorrect Pro grant or Free source-link leakage; wrong market entitlement or wrong Stripe product/price; duplicate subscription behaviour; webhook ownership/signature failure that leaves entitlement unsafe; Nashville/held/closed/expired leakage; duplicate customer-visible identity; sustained public 5xx/timeouts; unexplained material inventory divergence; any impact on `pitchlist.uk`; or loss of account/Portal/cancellation access for LIVE FindPitches customers.
+Stop/rollback for systemic public auth failure; incorrect Pro grant or Free source-link leakage; any currency-specific geographic entitlement restriction contrary to D-016; wrong Stripe product/price; duplicate subscription behaviour; webhook ownership/signature failure that leaves entitlement unsafe; Nashville/held/closed/expired leakage; duplicate customer-visible identity; sustained public 5xx/timeouts; unexplained material inventory divergence; any impact on `pitchlist.uk`; or loss of account/Portal/cancellation access for LIVE FindPitches customers.
 
 ## Deferred until launch stabilises
 
