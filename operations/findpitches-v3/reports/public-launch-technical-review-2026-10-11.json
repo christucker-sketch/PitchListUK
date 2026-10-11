@@ -1,0 +1,490 @@
+{
+  "schema": "findpitches-v3-public-launch-technical-review-v1",
+  "review_scope": "read_only_no_launch_authorization",
+  "started_at": "2026-10-11T14:33:01.392Z",
+  "source_commit": "e30d7cfe3db8ccf43c58c6a16af00b7ccbec9255",
+  "checks": {
+    "deployed_customer_configuration": {
+      "observed_at": "2026-10-11T14:33:01.393Z",
+      "value": {
+        "worker": "findpitches-v3-customer-preview",
+        "mode": "restricted_shadow_preview",
+        "stripe_mode": "test",
+        "checkout": "test",
+        "mail_sender": "hello@findpitches.com",
+        "secret_bindings": [
+          "STRIPE_SECRET_KEY",
+          "STRIPE_WEBHOOK_SECRET",
+          "V3_EMAIL_API_KEY",
+          "V3_PREVIEW_OPERATOR_TOKEN",
+          "V3_SESSION_SECRET",
+          "V3_STAGING_TOKEN"
+        ],
+        "price_configured": true,
+        "portal_configuration_present": true,
+        "customer_database_isolated": true,
+        "source_api_binding": "findpitches-v3-api-shadow"
+      },
+      "completed_at": "2026-10-11T14:33:01.710Z"
+    },
+    "customer_deployment": {
+      "observed_at": "2026-10-11T14:33:01.710Z",
+      "value": {
+        "id": "9a321ba9-73b3-4324-8fbf-f14993cac7d8",
+        "created_on": "2026-10-10T18:14:48.850116Z",
+        "versions": [
+          {
+            "version_id": "9ba2ac7a-7cdf-4cc0-b0f4-b11477c52169",
+            "percentage": 100
+          }
+        ]
+      },
+      "completed_at": "2026-10-11T14:33:02.060Z"
+    },
+    "workers_custom_domains": {
+      "observed_at": "2026-10-11T14:33:02.060Z",
+      "value": {
+        "customer_worker_domains": [],
+        "findpitches_domain_bindings": []
+      },
+      "completed_at": "2026-10-11T14:33:02.220Z"
+    },
+    "findpitches_zone_routing": {
+      "observed_at": "2026-10-11T14:33:02.220Z",
+      "value": {
+        "zone": "findpitches.com",
+        "status": "active",
+        "routes": [],
+        "apex_www_records": [
+          {
+            "id": "0a4589d0630f449b508699daf2bd549f",
+            "name": "findpitches.com",
+            "type": "CNAME",
+            "content": "pitchlistuk.pages.dev",
+            "proxied": true
+          },
+          {
+            "id": "fdc81de36bdb29dc03660bdfa81efc6c",
+            "name": "www.findpitches.com",
+            "type": "CNAME",
+            "content": "pitchlistuk.pages.dev",
+            "proxied": true
+          }
+        ]
+      },
+      "completed_at": "2026-10-11T14:33:04.553Z"
+    },
+    "public_preview_health": {
+      "observed_at": "2026-10-11T14:33:04.553Z",
+      "value": {
+        "http_status": 200,
+        "ok": true,
+        "service": "findpitches-v3-customer-preview",
+        "mode": "restricted_shadow_preview",
+        "publication_enabled": false,
+        "production_cutover_enabled": false,
+        "frontend": "Claude Build 4",
+        "frontend_source_sha256": "24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05"
+      },
+      "completed_at": "2026-10-11T14:33:04.788Z"
+    },
+    "uninvited_access_and_staging_auth": {
+      "observed_at": "2026-10-11T14:33:04.788Z",
+      "value": [
+        {
+          "scope": "customer",
+          "path": "/",
+          "status": 401,
+          "error": "preview_access_required",
+          "robots": "noindex, nofollow",
+          "cache_control": "private, no-store"
+        },
+        {
+          "scope": "customer",
+          "path": "/api/v3/session",
+          "status": 401,
+          "error": "preview_access_required",
+          "robots": "noindex, nofollow",
+          "cache_control": "private, no-store"
+        },
+        {
+          "scope": "customer",
+          "path": "/api/v3/opportunities?market=GB",
+          "status": 401,
+          "error": "preview_access_required",
+          "robots": "noindex, nofollow",
+          "cache_control": "private, no-store"
+        },
+        {
+          "scope": "evidence",
+          "path": "/staging/catalogue",
+          "status": 401,
+          "error": "authorization_required",
+          "robots": null,
+          "cache_control": "no-store"
+        }
+      ],
+      "completed_at": "2026-10-11T14:33:05.603Z"
+    },
+    "native_operator_status": {
+      "observed_at": "2026-10-11T14:33:05.603Z",
+      "value": {
+        "http_status": 200,
+        "inventory": {
+          "shadow_ready": 1811,
+          "preview_eligible": 1811,
+          "producer_policy_withheld": 0,
+          "customer_visible_ready": 0
+        },
+        "auth": {
+          "native_sessions": true,
+          "email_configured": true
+        },
+        "billing": {
+          "mode": "test",
+          "checkout_enabled": true,
+          "webhook_configured": true,
+          "portal_configured": true
+        },
+        "alerts": {
+          "storage": true,
+          "email_delivery": false
+        },
+        "publication_enabled": false,
+        "production_cutover_enabled": false,
+        "legacy_dependencies": [],
+        "counts": {
+          "customers": 10,
+          "active_sessions": 20,
+          "pending_webhooks": 0,
+          "stored_alerts": 3,
+          "tracked_visible": 1811,
+          "inventory_changes": 9240
+        }
+      },
+      "completed_at": "2026-10-11T14:33:09.239Z"
+    },
+    "proof_catalogue": {
+      "observed_at": "2026-10-11T14:33:09.239Z",
+      "value": {
+        "as_of": "2026-10-11T14:33:09.239Z",
+        "shadow_ready": 1811,
+        "preview_eligible": 1811,
+        "producer_policy_withheld": 0,
+        "ready_by_country": {
+          "GB": 127,
+          "US": 1678,
+          "AU": 2,
+          "NZ": 4,
+          "CA": 0,
+          "IE": 0
+        }
+      },
+      "completed_at": "2026-10-11T14:33:13.318Z"
+    },
+    "nashville_visibility": {
+      "observed_at": "2026-10-11T14:34:21.766Z",
+      "value": {
+        "pending_requests": 2,
+        "customer_eligible_count": 0,
+        "entities": [
+          {
+            "id": "ent_93d86b9d0147d8aa91ea8eea541d86b8",
+            "edition": "2027",
+            "event_start": "2027-02-28",
+            "state": "OPEN_NOW",
+            "proof_status": "unverified",
+            "proof_fresh": true,
+            "conflicts": 0,
+            "ready": false,
+            "quarantined": false,
+            "blocked": true,
+            "reasons": [
+              "single_event_source_data_missing"
+            ]
+          },
+          {
+            "id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+            "edition": "2026",
+            "event_start": "2026-10-10",
+            "state": "ROLLING",
+            "proof_status": "unverified",
+            "proof_fresh": true,
+            "conflicts": 1,
+            "ready": false,
+            "quarantined": true,
+            "blocked": false,
+            "reasons": [
+              "single_event_source_data_missing"
+            ]
+          }
+        ]
+      },
+      "completed_at": "2026-10-11T14:34:26.355Z"
+    },
+    "pipeline_safety": {
+      "observed_at": "2026-10-11T14:33:13.597Z",
+      "value": {
+        "publication_enabled": 0,
+        "customer_projection_rows": 0,
+        "publication_queue_rows": 0,
+        "due_jobs": 1,
+        "leased_jobs": 0,
+        "dead_jobs": 0,
+        "future_jobs": 9283,
+        "paid_queries_today": 0,
+        "paid_manual_paused": 0,
+        "paid_bulk_enabled": 0,
+        "commercial_query_limit": 25,
+        "commercial_manual_paused": 1
+      },
+      "completed_at": "2026-10-11T14:33:14.063Z"
+    },
+    "producer_delivery": {
+      "observed_at": "2026-10-11T14:33:14.063Z",
+      "value": {
+        "cloud_ready": true,
+        "expected_interval_seconds": 900,
+        "contact_observation_started": true,
+        "last_authenticated_recheck_poll": "2026-10-11T14:32:52.158Z",
+        "expected_discovery_interval_seconds": 10800,
+        "expected_export_lag_seconds": 3600,
+        "recent_poll_intervals_seconds": [
+          230.021,
+          913.235,
+          913.618
+        ],
+        "host_recently_contacting": true,
+        "cadence_verified": false,
+        "freshness_warning": false,
+        "immutable_receipts": 7258,
+        "producer_ids": 2103,
+        "last_new_receipt_at": "2026-10-11T11:57:43.466Z",
+        "source_last_checked": "2026-10-11T11:39:57Z",
+        "rechecks": {
+          "pending_entities": 938,
+          "fresh_evidence_ack_eligible": 0,
+          "by_country": [
+            {
+              "market": "AU",
+              "pending_entities": 90,
+              "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+              "fresh_evidence_ack_eligible": 0
+            },
+            {
+              "market": "CA",
+              "pending_entities": 13,
+              "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+              "fresh_evidence_ack_eligible": 0
+            },
+            {
+              "market": "GB",
+              "pending_entities": 101,
+              "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+              "fresh_evidence_ack_eligible": 0
+            },
+            {
+              "market": "IE",
+              "pending_entities": 2,
+              "oldest_requested_at": "2026-10-11T13:46:08.039Z",
+              "fresh_evidence_ack_eligible": 0
+            },
+            {
+              "market": "NZ",
+              "pending_entities": 45,
+              "oldest_requested_at": "2026-10-11T12:01:16.861Z",
+              "fresh_evidence_ack_eligible": 0
+            },
+            {
+              "market": "US",
+              "pending_entities": 687,
+              "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+              "fresh_evidence_ack_eligible": 0
+            }
+          ],
+          "acknowledged_last_24h": 2474,
+          "latest_acknowledgement": "2026-10-11T12:14:15.563Z",
+          "obsolete_requests_resolved": 2,
+          "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+          "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+          "pagination_supported": true,
+          "oldest_request_preserved": true
+        },
+        "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+      },
+      "completed_at": "2026-10-11T14:33:14.963Z"
+    },
+    "customer_schema_mode_guards": {
+      "observed_at": "2026-10-11T14:33:14.963Z",
+      "value": [
+        {
+          "table": "stripe_customers",
+          "live_rows_rejected": true,
+          "synthetic_only": null
+        },
+        {
+          "table": "stripe_subscriptions",
+          "live_rows_rejected": true,
+          "synthetic_only": null
+        },
+        {
+          "table": "stripe_webhook_receipts",
+          "live_rows_rejected": true,
+          "synthetic_only": null
+        },
+        {
+          "table": "subscriber_associations",
+          "live_rows_rejected": true,
+          "synthetic_only": true
+        }
+      ],
+      "completed_at": "2026-10-11T14:33:15.296Z"
+    },
+    "protected_pages_domain_custody": {
+      "observed_at": "2026-10-11T14:34:26.612Z",
+      "value": {
+        "project": "pitchlistuk",
+        "domains": [
+          "pitchlistuk.pages.dev",
+          "findpitches.com",
+          "pitchlist.uk",
+          "www.findpitches.com"
+        ],
+        "production_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce"
+      },
+      "completed_at": "2026-10-11T14:34:26.612Z"
+    },
+    "nashville_requests": {
+      "observed_at": "2026-10-11T14:35:34.583Z",
+      "value": [
+        {
+          "entity_id": "ent_93d86b9d0147d8aa91ea8eea541d86b8",
+          "requested_at": "2026-10-11T13:41:48.008Z",
+          "reason": "watch_recheck_due"
+        },
+        {
+          "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+          "requested_at": "2026-10-09T18:47:53.640Z",
+          "reason": "watch_recheck_due"
+        }
+      ]
+    },
+    "credential_capability": {
+      "observed_at": "2026-10-11T14:36:26.364Z",
+      "value": {
+        "cloudflare_credential_available": true,
+        "deployed_native_mail_binding_present": true,
+        "transferable_raw_mail_key_locally_available": false,
+        "deployed_live_billing_binding": false,
+        "canonical_live_stripe_configuration_verified": false
+      },
+      "interpretation": "Secret contents are neither exported from Cloudflare nor included. A separate production Worker may require securely transferring the existing verified mail credential; no new account/sender is needed."
+    },
+    "producer_ready_dependency": {
+      "observed_at": "2026-10-11T14:40:23.511Z",
+      "value": {
+        "total_ready": 1811,
+        "ready_by_country": {
+          "US": 1678,
+          "GB": 127,
+          "NZ": 4,
+          "AU": 2
+        },
+        "exclusive_origin": {
+          "legacy_v2": 325,
+          "platform-catalogue": 960,
+          "independent-structured": 399,
+          "uk-official": 123,
+          "source-led-search": 3,
+          "legacy_mk1": 1
+        },
+        "with_structured_membership_by_country": {
+          "US": 880,
+          "NZ": 4,
+          "AU": 2,
+          "GB": 1
+        },
+        "with_structured_membership_total": 887,
+        "with_structured_selected_facts_by_country": [
+          {
+            "market": "AU",
+            "entities": 2
+          },
+          {
+            "market": "GB",
+            "entities": 1
+          },
+          {
+            "market": "NZ",
+            "entities": 4
+          },
+          {
+            "market": "US",
+            "entities": 880
+          }
+        ],
+        "with_structured_selected_facts_total": 887
+      },
+      "completed_at": "2026-10-11T14:40:31.762Z",
+      "interpretation": "Membership and selected-fact participation overlap origins and are not exclusive causal dependency. A Pi outage does not immediately withdraw this inventory; proof expiry, holds and source refresh decide eligibility."
+    }
+  },
+  "limitations": [
+    "READ-only D1 query API uses POST for SELECT, not data mutations. Uninvited GET denials may append normal operational error logs. No challenges/sessions/customer objects created.",
+    "No canonical LIVE Stripe product/price/account/endpoint state requested; this review has no LIVE key or provider-configuration authorization.",
+    "No fresh browser or production-concurrency test; historical native/hosted browser evidence retains its dates.",
+    "Full source/identity preservation comparison retains the 11 October 14:02:43Z checkpoint; only counters and exact Nashville visibility are refreshed here."
+  ],
+  "completed_at": "2026-10-11T14:40:31.762Z",
+  "activity": {
+    "cloudflare_mutations": 0,
+    "live_stripe_requests": 0,
+    "stripe_writes": 0,
+    "serper_queries": 0,
+    "emails_sent": 0,
+    "customer_imports": 0,
+    "source_or_identity_writes": 0,
+    "routing_or_publication_changes": 0
+  },
+  "validation": {
+    "focused_customer_auth_billing_mail": {
+      "passed": 36,
+      "failed": 0,
+      "scope": "local existing tests with synthetic fixtures; no live provider requests"
+    },
+    "frontend": {
+      "independence_passed": true,
+      "passed": 3,
+      "failed": 0
+    },
+    "full_v3": {
+      "passed": 235,
+      "failed": 0,
+      "scope": "retained 11 October runtime validation; no runtime changes in this readiness review"
+    },
+    "hosted_test_journey": {
+      "passed": 22,
+      "scope": "retained 10 October 17:39:14 London actual Stripe TEST browser evidence; not rerun"
+    },
+    "native_acceptance": {
+      "api_passed": 39,
+      "browser_passed": 30,
+      "scope": "retained 10 October 19:17–19:24 London; not rerun"
+    }
+  },
+  "conclusions": {
+    "as_is": "NO_GO",
+    "prospective": "CONDITIONAL_GO_AFTER_ENGINEERING_PROVIDER_PROOF_AND_EXPLICIT_APPROVAL",
+    "legacy_migration_blocks_new_customers": false,
+    "nashville_blocks_launch": false,
+    "blockers": [
+      "private_only_runtime_and_signin",
+      "test_only_billing_code_and_database",
+      "unverified_live_product_price_portal_webhook_and_mode_isolation",
+      "findpitches_domain_change_set_and_shared_pages_protection",
+      "alerts_advertised_but_delivery_disabled",
+      "initial_payable_markets_and_live_price_policy",
+      "public_security_capacity_and_operational_release_proof"
+    ]
+  }
+}

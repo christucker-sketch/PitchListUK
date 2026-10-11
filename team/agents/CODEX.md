@@ -1,6 +1,22 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-11T15:10:15+01:00** (Europe/London). State: **WORKING — assigned checkpoint complete**. Branch: `findpitches-v3/greenfield`.
+Author: Codex. Updated: **2026-10-11T15:42:00+01:00** (Europe/London). State: **WORKING — public/LIVE review complete**. Branch: `findpitches-v3/greenfield`.
+
+## Current checkpoint
+
+[Public launch technical review](../../docs/findpitches-v3-public-launch-technical-review-2026-10-11.md), supporting ChatGPT-owned V3-010: **NO-GO current runtime as-is**, conditional candidate only after public-runtime and LIVE billing code/schema/configuration/proof and Chris's exact approval. Private mode/sign-in and TEST billing are deliberate hardcoded restrictions, including deployed `livemode=0` database constraints. Changing routing/flags alone will not work. Legacy PitchList migration is independent of new customers; Nashville remains safely excluded and does not gate the rest of the catalogue. Alerts can remain disabled but current sales promises must be corrected before payment. Initial payable markets/prices need explicit policy: current GB Pro does not unlock US inventory.
+
+Read-only deployed custody at 15:33–15:36: preview version unchanged; FindPitches apex/www both point to `pitchlistuk.pages.dev`, which also hosts `pitchlist.uk`. Any future release must change only approved FindPitches objects, preserve the Pages project/PitchList and maintain LIVE customer cancellation/webhooks during rollback. Existing mail binding works; no transferable raw key locally, no verified accessible FindPitches LIVE key/configuration. No secret contents requested/exported/printed.
+
+At **15:40:23**, READY-only attribution remains **1,811**: GB 127 / US 1,678 / AU 2 / NZ 4 / CA 0 / IE 0. Exclusive origins: platform 960, independent structured 399, legacy V2 325, UK official 123, prior source-led paid 3, recovered UK PitchList 1. Structured evidence/selected-fact membership **887 (49.0%)**, overlapping origins; not 887 instantaneous Pi-outage withdrawals. At15:34:21 Nashville **0/2 eligible**; old original request retained, survivor has a later normal watch request, not undone prior acknowledgement.
+
+Claude's `26d19d23` producer/Pi CONDITIONAL-GO and LocalStalls organiser/date fixes received, with source fixtures; new kit installation/delivery not assumed. C1: smallest design retains current shadow ingest/evidence and separate public customer projection, no Pi environment change. C2: no token rotation made; tested coordinated transition required. C3: transport/source age monitoring separate. No peer own-agent/producer edit by Codex.
+
+Current **36/36 customer/auth/billing/mail tests**, frontend independence + **3/3** pass. Full 235 and actual hosted TEST22/native API39/browser30 retain their previous timestamps; no fresh browser/production proof claimed. At15:33:13 queue due1/leased0/dead0, pending customer webhooks0, paid attempts0/bulkoff/commercial manual pause1, publication/customer tables0. No runtime/cloud/provider change, LIVE request, new customer/session/challenge, email, paid query, source/identity write or production/legacy change in this review. Scope followed the onboarding skill using the existing environment/configuration.
+
+**Next owned shadow work:** compact producer-policy projection in the staging catalogue, measured against the current full policy read; preserve identical proof/identity/expiry/held-record results with no cross-request cache. Reviewed LocalStalls organiser/CAS repair remains the next conversion task; producer fixes alone do not clear existing conflicts. Public/LIVE runtime implementation remains a proposed launch task, not executed by this review.
+
+## Retained 15:10 implementation checkpoint
 
 Read the hub/orders and Claude's source reality check through `93dd72cd`; fetched again before this checkpoint. V3-004/005/008 remain DONE. Claude owns producer V3-001/002 and V3-011; ChatGPT owns V3-010. No producer or peer own-agent file edited.
 
