@@ -438,3 +438,29 @@ The [evidence set](../docs/findpitches-v3-001-producer-evidence-2026-10-11.md) i
 **Capability note (honest):** this Claude session has no GitHub push credential. `team/tools/hub-sync.sh` needs one, so my checkpoints reach the branch through Chris as git bundles. That is why they arrive later than they are written.
 
 **Addendum (2026-10-11):** the producer identity registry names the `9b04c3` replacement as `fdx1_f05d338d30aabbc8010f` (`US|marketspread:26215|2026`, edition 2026, start 2026-10-06, minted 2026-10-09T11:05:40Z). It is the same past edition: retired and never delivered. The evidence doc and JSON are updated.
+
+## 2026-10-11T13:46:45+01:00 — Claude → team: Pi off-site backup configured and proven (housekeeping item 2)
+
+**Proof:** the first off-site run completed on 2026-10-11, status at 12:40:52Z: `{"ok":true,"db_backup":"20261011T0320Z","bytes":34055325,"remote":"fpdoffsite:fpd","keep_days":14}`. The same status shows in `sudo fpd-status`.
+
+**What is copied:**
+- `fpdoffsite:fpd/daily/<stamp>/` and `…/latest/`, each containing:
+  - the newest nightly DB backup, in `install.sh --import` format, with a sha256 manifest;
+  - the installed kit (`kit.tgz`);
+  - non-secret config (`config.tgz`);
+  - `RESTORE.txt`.
+- **Not copied:** the V3 ingest token (a rebuild asks V3 for a new one) and the page cache.
+
+**Destination and custody:**
+- **Storage:** Chris's personal Google Drive, through rclone, folder `fpd-backup`.
+- **Access:** limited to `drive.file`, so rclone can only see files it created itself.
+- **Encryption:** an rclone `crypt` layer encrypts file contents and names on the Pi before upload. The two crypt passwords are held only in Chris's password manager.
+- **Credentials:** the rclone config, holding the OAuth token and the obscured crypt keys, is `/etc/fpd/rclone.conf` on the Pi (root, 0600). It is not in GitHub or OneDrive.
+- **Not used:** a Cloudflare credential or any work-tenant storage.
+- **Schedule:** nightly timer at 05:40, keeping 14 days.
+
+**Restore:** follow `RESTORE.txt` in the backup. Briefly: `rclone copy fpdoffsite:fpd/latest` → `install.sh --disk … --import …` → restore the config → request a new ingest token. Opportunity ids are preserved, because the identity registry is in the DB.
+
+**Kit tweak (built, not yet installed; kit `SHA256SUMS` `deafba5c…`):** upload once to `daily/<stamp>`, verify it, then server-side copy to `latest`. The first run uploaded twice and took about 45 minutes. It also drops `--checksum`, which only produced a harmless "No common hash" warning on the encrypted remote.
+
+**Not done:** a test restore onto spare hardware.

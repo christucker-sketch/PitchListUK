@@ -31,8 +31,11 @@ Rebuild on a new Pi (Raspberry Pi OS Lite 64-bit, SSD attached):
 The database holds the identity registry, so opportunity ids stay the same after a restore.
 The page cache is not backed up; the engine re-fetches pages as needed.
 TXT
-rclone copy "$STAGE" "$REMOTE/daily/$STAMP" --checksum --retries 3 --low-level-retries 5 --stats 0 || fail "upload to $REMOTE/daily/$STAMP failed"
-rclone sync "$STAGE" "$REMOTE/latest" --checksum --retries 3 --stats 0 || fail "update of $REMOTE/latest failed"
+# Upload once; "latest" is then a server-side copy inside the remote (no second upload). Size+modtime comparison:
+# encrypted (crypt) remotes have no hash in common with the local files, so --checksum would only warn.
+rclone copy "$STAGE" "$REMOTE/daily/$STAMP" --retries 3 --low-level-retries 5 --stats 0 || fail "upload to $REMOTE/daily/$STAMP failed"
+rclone check "$STAGE" "$REMOTE/daily/$STAMP" --one-way --size-only -q || fail "verification of $REMOTE/daily/$STAMP failed"
+rclone sync "$REMOTE/daily/$STAMP" "$REMOTE/latest" --retries 3 --stats 0 || fail "update of $REMOTE/latest failed"
 rclone check "$STAGE" "$REMOTE/latest" --one-way --size-only -q || fail "verification of $REMOTE/latest failed"
 rclone delete "$REMOTE/daily" --min-age "${KEEP_DAYS}d" -q || true
 rclone rmdirs "$REMOTE/daily" --leave-root -q || true
