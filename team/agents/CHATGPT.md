@@ -1,67 +1,57 @@
 # ChatGPT status
 
-**State:** ACTIVE / V3-010 CLAIMED. **Author:** ChatGPT. **Session/update timestamp:** 2026-10-11T14:25:00+01:00. **Claimed tasks:** V3-010.
+**State:** ACTIVE / V3-010 CLAIMED. **Author:** ChatGPT. **Updated:** 2026-10-11T15:22:00+01:00. **Claimed task:** V3-010.
 
-I have direct GitHub access to `christucker-sketch/PitchListUK` and treat the shared V3 hub on branch `findpitches-v3/greenfield` as the cross-agent source of truth.
+I treat the shared V3 hub on `findpitches-v3/greenfield` as the cross-agent source of truth. My scope is commercial launch acceptance, public cutover/rollback planning, billing-gate separation and reconciliation of Claude/Codex evidence. This status does not authorize launch action.
 
-## Current role
+## Current V3-010 position
 
-Commercial launch acceptance, cutover/rollback planning and reconciliation of Claude/Codex evidence. I own V3-010. This remains review/planning only; it does not authorize production, live billing, migration, publication, spend, customer messages or destructive legacy changes.
+Chris has asked the team to assess a **same-day public FindPitches launch with working subscriptions for new FindPitches customers**. PitchList is a separate live product and is not being replaced or used as the FindPitches rollback destination.
 
-## Work completed this checkpoint
+I have updated `docs/findpitches-v3-launch-readiness-2026-10-10.md` to reflect that corrected model and the new target. The review now separates:
 
-Updated [`docs/findpitches-v3-launch-readiness-2026-10-10.md`](../../docs/findpitches-v3-launch-readiness-2026-10-10.md) to incorporate:
+1. public FindPitches exposure;
+2. new-customer FindPitches LIVE Stripe billing;
+3. legacy PitchList subscriber migration as a later separate gate;
+4. paid acquisition as a later commercial gate.
 
-- completed V3-008 real-origin acceptance (API 39/39, browser 30/30);
-- current V3-001 state: producer evidence complete, only Codex cloud-side sign-off on Pop Up Shops / From the Ground / Nashville remains;
-- off-site Pi backup now configured/proven as an operational improvement rather than an open setup item;
-- V3-011 IE/CA/AU/NZ expansion explicitly treated as non-gating commercial supply work;
-- a tighter Gate-1 cutover sequence;
-- provisional monitoring/rollback thresholds for routing, latency, browser readiness, authentication, entitlement/redaction, billing, publication, identity/lifecycle, producer delivery, inventory/customer counts, queue health and V1 protection.
+## Evidence folded in
 
-## Current V3-010 assessment
+- V3-004 remains DONE for synthetic recognition/association safeguards.
+- V3-005 remains DONE with the genuine hosted Stripe TEST journey 22/22.
+- V3-008 remains DONE with bounded API 39/39 and browser 30/30 acceptance.
+- Codex's 2026-10-11 checkpoint narrows V3-001 to **Nashville only**. Pop Up Shops and From the Ground now have audited append-only resolutions; Nashville remains withheld pending old-2026/survivor-2027 edition/source custody.
+- Codex's first V3-011 L1/L2 international increment is complete with zero new READY; AU LocalStalls is the current highest-yield conversion lever.
+- Catalogue profiling confirms a release concern rather than a demonstrated correctness failure: operator snapshots roughly 3.244-4.762s, D1 execution 816-891ms, repeated inventory/proof reads dominant.
 
-### Controlled V3 launch
+## Same-day launch review drafted
 
-**CONDITIONAL-GO candidate, not executable yet.** Bounded correctness evidence for V3-004, V3-005 and V3-008 is accepted. Remaining Gate-1 conditions are now narrow:
+The launch-readiness document now contains a provisional smallest safe sequence:
 
-1. Codex final V3-001 cloud-side closure for Pop Up Shops, From the Ground and Nashville;
-2. record the exact production hostname/routing object and reversible change set;
-3. freeze a release-candidate preflight baseline and use the launch-watch thresholds in the readiness doc;
-4. explicit Chris approval for that exact controlled-launch scope.
+- collect agent readiness reports;
+- freeze the release candidate and baseline;
+- prove new FindPitches LIVE billing is isolated from legacy PitchList migration;
+- verify exact LIVE product/price/webhook/Checkout/Portal/entitlement configuration without charging first;
+- record exact public hostname/access/Worker/API/indexing changes and reversals;
+- run frozen preflight;
+- obtain Chris's explicit approval separately for public exposure and LIVE new-customer billing;
+- expose FindPitches publicly, smoke test, then enable LIVE billing and run the smallest approved production proof;
+- observe a bounded acceptance window and reverse FindPitches-only changes if a stop condition occurs.
 
-Catalogue/boot latency remains a release concern to profile/monitor, but the proxy/interception sample is not by itself a production-load NO-GO.
+Rollback is now correctly FindPitches-only: disable new LIVE Checkout if relevant, restore the previous FindPitches private/route/indexing state, preserve V3 evidence and verify PitchList remains untouched.
 
-### Real-subscriber migration / LIVE billing
+## Current recommendation
 
-**NO-GO today.** The 57 real UK registry rows still require canonical LIVE owner/mode/product/price/period-end evidence; eight vendor-binding exceptions and four scheduled-cancellation continuity cases remain. The native recognition design is not the blocker. No real migration/live billing should occur without an authorized provider snapshot, price/product policy, reviewed exceptions, full cohort reconciliation and explicit approval.
+**Public FindPitches + new-customer subscriptions today: CONDITIONAL-GO candidate, not executable yet.** I am waiting for:
 
-### Paid acquisition
+- Codex's same-day readiness report, especially LIVE Stripe isolation/config/proof and public-runtime changes;
+- Claude's producer readiness report and exact Nashville custody position;
+- confirmation Nashville can remain safely withheld;
+- exact production hostname/route/access/indexing change set and reversal;
+- explicit Chris approval.
 
-**NO-GO today.** Keep held until V3-009 external/Pi paid-client attribution/account protection is complete, launch monitoring is operating and Chris separately authorizes spend.
-
-## V3-001 interpretation
-
-Claude's producer-side six-item evidence is now complete. Three fresh exact receipts/acks are already independently proven. The final three are not failed retries:
-
-- Pop Up Shops: past/not relevant; CLOSED/withheld is the expected result;
-- From the Ground: replacement `fdx1_f05d338d30aabbc8010f` is the same past 2026 edition, retired and never delivered, so there is no current record to relink;
-- Nashville: old record is a reviewed supersession candidate into `fdx1_5c40d2…`, with both anchors retained but an edition-boundary review required.
-
-V3-001 closes only when Codex confirms the corresponding V3 state/identity/customer visibility and publishes the final checkpoint.
-
-## V3-011 commercial tracking
-
-International expansion for IE/CA/AU/NZ is important supply work but not a Gate-1 blocker. I will judge it by **READY/customer-ready gained by country and source**, not producer totals. Codex's ClueMart parser and blocker breakdown plus Claude's new MarketsIreland and AU/CA hub work are the current highest-value levers.
+Legacy PitchList migration remains separate and is not assumed necessary for today's launch. Alerts, paid acquisition, UKCraftFairs Option B and V3-011 supply growth remain non-launch work unless Chris reprioritises them.
 
 ## Next action
 
-1. Watch for Codex's final V3-001 cloud checkpoint and immediately fold it into the V3-010 recommendation.
-2. Once V3-001 closes, publish the concise controlled-launch GO / CONDITIONAL-GO / NO-GO decision with exact remaining operator inputs.
-3. Keep the exact hostname/routing object as the last operator-specific Gate-1 detail; do not invent it in advance.
-4. Review Codex's later catalogue/boot profiling as a release-performance concern, not a substitute launch gate.
-5. Track V3-011 READY conversion by country/source in parallel.
-
-## Standing rule
-
-Recommendations are not approvals. I will not authorize or execute production routing, live billing, real subscriber migration, paid acquisition, customer publication/messages, destructive V1/V2 actions, UKCraftFairs Option B, or protected/live merges without Chris explicitly approving that exact gate.
+Reconcile the Claude/Codex readiness reports when they land and issue the concise V3-010 GO / CONDITIONAL-GO / NO-GO recommendation. Do not execute any public routing, LIVE Stripe, publication, customer message or migration action without Chris explicitly approving that exact step.
