@@ -1,95 +1,129 @@
 # FindPitches V3 — current execution orders
 
-Updated: 2026-10-11T15:18:00+01:00
-Authority: Chris has asked the team to assess whether FindPitches can go **live and public today with a working subscription option**, and to report readiness/blockers before any launch action. This is a review request only. It does **not** authorize public routing, publication, LIVE Stripe changes, customer charges, real-subscriber migration, paid acquisition, customer messages, UKCraftFairs Option B, destructive V1/V2 changes or protected/live branch merges.
+Updated: 2026-10-11 after the team readiness reports.
+Authority: **D-014 / Chris: “ok lets do it, or we'll be tinkering forever more”.** The review phase is complete. The team is authorized to execute the minimum safe controlled launch of **public FindPitches with new-customer LIVE subscriptions**.
 
-## Current position
+PitchList remains a separate protected product and must remain live and untouched throughout.
 
-- V3-004 remains DONE for synthetic subscriber-recognition/acceptance scope.
-- V3-005 remains DONE with the genuine hosted Stripe TEST journey complete 22/22.
-- V3-008 remains DONE: bounded real-origin API/browser checks passed; catalogue/boot latency is a measured release concern rather than a demonstrated correctness failure.
-- Codex's latest assigned checkpoint is complete. Its 2026-10-11 15:10 status reports:
-  - V3-001 is narrowed to **one remaining lifecycle case only: Nashville old native 2026 versus survivor 2027**. Pop Up Shops and From the Ground now have audited append-only resolutions; all reviewed identities remain withheld from preview.
-  - V3-011 first L1/L2 increment is complete: conservative ClueMart/MarketsIreland proof work and international blocker analysis are published. It produced **0 new READY** this pass and retained all existing cohort READY.
-  - AU LocalStalls is now the highest-value international conversion lever: 32 OPEN_NOW entities, 2 READY, 23 organiser disagreements and 22 entities with unresolved equal-authority conflicts.
-  - Catalogue profiling measured operator snapshots around 3.2–4.8s with D1 execution around 0.8–0.9s; repeated inventory/proof reads dominate. Safe optimisation remains desirable.
-- Current READY/private-eligible recount from Codex at 14:57:26 London: **1,812** total — GB 127 / US 1,679 / AU 2 / NZ 4 / CA 0 / IE 0. This is a READY/country recount, not a refreshed full commercial disposition table.
-- V3-011 remains a non-gating supply programme for IE/CA/AU/NZ.
-- PitchList V1 is a **separate existing site/product**, not the same service being replaced by FindPitches. A FindPitches public launch does not require routing PitchList customers away from PitchList, and PitchList should remain untouched unless separately approved.
+## Launch objective
 
-## Immediate team question — REVIEW AND REPORT ONLY
+Today’s target is a real production FindPitches service with public browsing/search, real sign-in/account creation, existing Free/Pro gating, a working LIVE Stripe subscription path for brand-new FindPitches customers, truthful pricing/feature copy, normal transactional auth/billing messages, and eligible public pages becoming indexable under the existing SEO rules.
 
-Chris is considering making **FindPitches public today, with new-customer subscriptions enabled at launch**. A browse-only public launch is not the target. The team must review its own area and report back before any implementation or configuration change.
+Still out of scope: legacy PitchList subscriber migration, paid acquisition, alert campaigns/delivery, UKCraftFairs Option B, destructive V1/V2 changes, infrastructure deletion and unrelated protected/live merges.
 
-Assumptions for this readiness review:
+## Current evidence
 
-1. **PitchList remains live and separate.** Do not treat PitchList as FindPitches' rollback route and do not assume legacy PitchList subscribers must be migrated today.
-2. The target is a genuine public FindPitches service: public browsing/search, real sign-in, and an operational subscription path for **new FindPitches customers**.
-3. Existing PitchList subscribers may remain on PitchList. Real legacy migration can remain a later project unless an agent finds a hard technical coupling that proves otherwise.
-4. Alerts may remain disabled, paid acquisition may remain paused, UKCraftFairs Option B may remain OFF, and V3-011 supply expansion may continue independently.
-5. No agent is authorized by this review to remove shadow/private restrictions, add production domains, remove `noindex`, enable LIVE Stripe, create/charge a LIVE subscription, change webhooks, publish inventory, send email, alter PitchList, or perform any other launch action.
+- V3-004, V3-005 and V3-008 remain complete.
+- Codex reports the current runtime is **NO-GO as-is** because public access, LIVE billing and LIVE customer storage are deliberately blocked in code/schema. This is now an implementation task.
+- Claude reports the producer/Pi side is **CONDITIONAL-GO**. Nashville can remain withheld and does not block the rest of the catalogue.
+- Nashville old-2026/survivor-2027 must remain excluded from customer-visible inventory until its separate custody question is resolved.
+- Latest Codex READY recount before launch work: 1,811 total at 15:40:23 — GB127 / US1678 / AU2 / NZ4 / CA0 / IE0.
+- Catalogue latency remains a release concern, not a launch stop condition unless the production smoke shows persistent user-visible failure.
+- FindPitches apex/www currently sit on the shared `pitchlistuk.pages.dev` Pages project that also serves `pitchlist.uk`. Do not mutate that shared Pages project in a way that risks PitchList. Prefer a FindPitches-only Worker/custom-route design with an exact reversal.
 
-Each agent must report **GO / CONDITIONAL-GO / NO-GO for its own area**, with:
+## Codex — P0 launch implementation owner
 
-- exact blockers that would prevent a public launch today;
-- which items are true safety/correctness blockers versus nice-to-have polish;
-- what must be changed or verified for **new-customer LIVE subscriptions** specifically;
-- whether the remaining Nashville lifecycle case is a launch blocker and why;
-- rollback/recovery expectations for the agent's area;
-- any operator approvals or credentials required;
-- an estimated smallest safe same-day sequence, but **do not execute it**.
+Pause routine catalogue/LocalStalls optimisation until the production customer path is stable.
 
-## Codex — readiness report requested
+### A. Production customer runtime
 
-1. Review the current V3 customer/auth/billing/publication/runtime stack for a **same-day public FindPitches launch with new-customer LIVE Stripe subscriptions**.
-2. Explicitly separate **new FindPitches billing** from **legacy PitchList subscriber migration**. State whether the existing 57-row legacy migration gate has any technical reason to block brand-new FindPitches LIVE Checkout; do not assume that it does.
-3. Identify the exact LIVE Stripe requirements: product/price/mode, webhook configuration, entitlement path, Checkout/Portal behaviour, duplicate-trial/duplicate-charge controls, return URLs/domain assumptions and the minimum safe production proof needed before approval.
-4. Review what must change to make the private preview genuinely public: access restriction, production/custom domain routing, same-origin API/service binding, `noindex`/SEO state, sign-in access and publication/customer projection controls.
-5. State whether Nashville alone should block public launch or can remain safely withheld while lifecycle review continues.
-6. Include current catalogue performance in the recommendation and distinguish launch-blocking latency from post-launch optimisation.
-7. Do **not** change LIVE provider state, production routing, public access, publication or customer data while preparing this report.
-8. Existing V3-011 LocalStalls conversion work may continue in shadow after the readiness report; it is not a launch gate.
+1. Add an explicit production/public customer mode instead of weakening `restricted_shadow_preview`.
+2. Keep the existing shadow/TEST runtime intact for regression testing.
+3. Use an isolated production customer database/schema that supports LIVE Stripe rows and rejects TEST objects. Do not destructively convert the preview TEST database.
+4. Preserve ownership, single-subscription controls, Checkout reservation/idempotency, webhook receipt dedupe, paid-through cancellation semantics and Free redaction.
+5. Disable synthetic `/preview/*` provisioning/recognition paths in public mode.
+6. Keep browser access same-origin and retain the private service binding to the evidence/catalogue backend.
+7. Preserve Nashville/held/expired/source-proof filters on every customer read path.
 
-## Claude — readiness report requested
+### B. New-customer LIVE Stripe
 
-1. Review the producer/Pi side for a same-day public FindPitches launch.
-2. State whether current delivery cadence, lifecycle feed, recheck backlog, source freshness, Pi health and off-site backup are sufficient for public operation today.
-3. Give the exact Nashville evidence/custody position and state whether it can safely remain withheld without blocking the rest of the catalogue.
-4. Identify any producer-side condition that could make a public catalogue unsafe today versus normal post-launch improvement work.
-5. Confirm what, if anything, a public launch changes for the Pi producer. Do not install/change anything solely for launch readiness unless Chris separately approves it.
-6. V3-011 international producer work may continue in shadow; report READY impact separately from launch readiness.
+1. Reuse the existing Stripe account with FindPitches-owned LIVE product/price/webhook/portal configuration. Do not modify PitchList customer/subscription ownership or webhook behaviour.
+2. Verify exact LIVE account, product, price, currency, interval, trial policy and payable market entitlement before exposing Checkout.
+3. Existing TEST configuration is £4.99/month with a 7-day first trial. Do not silently promote TEST IDs or market scope into LIVE. If no authoritative LIVE product/price/market policy exists, continue all other launch work and report that one exact operator decision rather than reopening architecture.
+4. Keep TEST/LIVE IDs, keys, databases, webhook secrets and idempotency namespaces strictly separated.
+5. LIVE confirmation/entitlement must verify canonical owner, customer, subscription, mode, product, price and market access. Session success alone cannot grant Pro.
+6. Configure a FindPitches-specific LIVE webhook endpoint with signature validation, durable event dedupe/replay handling and canonical provider rereads. Ignore unowned PitchList events.
+7. Configure hosted Billing Portal for FindPitches customers and preserve paid-through cancellation access during rollback.
+8. Correct customer-facing claims before subscriptions are exposed: alerts remain unavailable/coming later until V3-006 is separately approved.
 
-## ChatGPT — readiness review owner
+### C. Public FindPitches runtime / routing
 
-1. Reconcile Codex and Claude readiness reports into a single V3-010 recommendation for **public FindPitches + new-customer subscriptions**, not a PitchList replacement/migration event.
-2. Correct earlier cutover assumptions that treated V1/PitchList as the direct rollback target. PitchList remains an independent protected product.
-3. Define the smallest safe launch sequence and rollback for FindPitches itself, including public routing/access, publication state, SEO/noindex, auth, LIVE billing and monitoring.
-4. Keep legacy PitchList subscriber migration as a separate gate unless evidence shows an unavoidable coupling.
-5. Do not authorize or execute launch actions. Final recommendation must still require Chris's explicit approval.
+1. Make anonymous public browsing/search work without the invitation gate.
+2. Keep mailbox verification/sign-in, secure host cookies, CSRF/revocation and bounded auth/read controls.
+3. Implement public SEO mode: remove blanket private `noindex` only from eligible public content; keep account/auth/API/billing/private/empty surfaces noindex where appropriate.
+4. Prepare an exact FindPitches-only Cloudflare routing change for apex/www. Preserve the shared Pages project and `pitchlist.uk` untouched.
+5. Record prior DNS/route state and exact reverse operation before applying production routing.
+6. Do not enable the unused legacy publication pipeline just to expose the V3 customer catalogue; use the existing proof-filtered customer read model unless evidence proves otherwise.
 
-## Strategic horizon — Europe after the current international wave
+### D. Required preflight before public exposure
 
-This is a **future-direction note, not a current task or launch gate**.
+Publish a launch checkpoint proving:
 
-Once IE/CA/AU/NZ and launch work are stable, Chris wants the next major expansion wave to target **France, Germany, the Netherlands and Spain**. Europe is considered too commercially important to ignore.
+- full/focused V3 tests green;
+- production-mode customer/auth/billing tests including wrong-mode/wrong-owner/wrong-product/wrong-price/wrong-market cases;
+- Checkout concurrency/retry/idempotency tests;
+- webhook replay/out-of-order/signature/failure tests;
+- cancellation/paid-through/expiry/Free-redaction tests;
+- Nashville remains 0 customer-visible;
+- no PitchList routing/data/provider changes;
+- frozen READY/customer/queue/producer baseline;
+- exact FindPitches route + rollback object;
+- exact LIVE Stripe product/price/market configuration, or the single unresolved operator decision if provider setup genuinely requires Chris.
 
-Expected shape of that later programme:
+### E. Controlled production sequence
 
-- native-language discovery/source vocabulary and country-specific organiser/platform/council research;
-- first-language customer pages/search terminology/SEO rather than English-only country variants;
-- country-specific geography, date, event and application-route handling;
-- source-specific proof parsers where generic proof is insufficient;
-- success measured as **customer-ready/READY inventory by country**, not candidate volume;
-- capacity planning for producer acquisition/revalidation as European source volume grows, while Cloudflare/D1 catalogue efficiency and caching/indexing are improved.
+D-014 authorizes the launch once the preflight above is recorded.
 
-Likely future workstream name: **V3-012 European expansion**. Do not claim or start it yet unless Chris separately orders it.
+1. Freeze release/deployment IDs and baseline.
+2. Deploy the production customer Worker/database/bindings while still safely gated.
+3. Prove production health without arbitrary customer activity.
+4. Apply the FindPitches-only public route/access change and verify PitchList separately immediately afterwards.
+5. Smoke public homepage/search/auth/redaction/Pro gating/security/SEO from the real hostname.
+6. Expose LIVE Checkout only after exact LIVE provider configuration is verified.
+7. If a final operator-only Stripe step is required, stop at that exact step and give Chris the shortest possible instruction. Do not substitute synthetic provider objects for the real hosted customer journey.
+8. Verify webhook → canonical subscription → entitlement → Portal/cancellation behaviour using the agreed controlled production proof.
+9. Monitor the launch window and report GO or rollback.
 
-## Existing non-launch work after readiness reports
+### F. Rollback
 
-- Claude: continue V3-011 producer expansion/fixes and V3-002 recommendation according to existing ownership, subject to any launch-priority reprioritisation Chris gives later.
-- Codex: continue reviewed AU LocalStalls conversion work and safe catalogue optimisation after the readiness report, unless Chris explicitly pivots the team to launch execution.
-- ChatGPT: maintain V3-010 and coordinate readiness evidence.
+Rollback FindPitches only. Do not route users to PitchList as a substitute product.
 
-## Standing gates
+- close new Checkout first if billing safety is uncertain;
+- reverse the FindPitches-only route/access/index change to the recorded safe state or serve a FindPitches-only unavailable page;
+- keep LIVE webhook processing and account/Portal/cancellation access working for any LIVE customer objects already created;
+- preserve LIVE customer mappings, subscriptions, receipts and evidence;
+- do not convert LIVE customer storage back to TEST semantics;
+- verify PitchList remained healthy throughout.
 
-Until Chris explicitly approves an exact launch plan, do not make FindPitches public, remove private access controls, remove `noindex`, enable LIVE billing, create/charge real customers, migrate legacy subscribers, publish customer inventory, change production/custom domains, restart paid acquisition, send unapproved messages, enable UKCraftFairs Option B, alter live PitchList, delete legacy infrastructure or merge to protected/live branches.
+## Claude — P0 producer launch support
+
+1. Resolve C1/C2/C3 from the producer readiness report with Codex:
+   - C1: confirm the public customer runtime reads the existing immutable V3 evidence path without requiring the Pi to deliver to a new uncontrolled environment;
+   - C2: if a new ingest-only production token is required, prepare the coordinated Pi transition instructions without exposing/committing the token;
+   - C3: provide producer/source-age thresholds for launch monitoring and confirm current delivery/freshness immediately before cutover.
+2. Nashville remains withheld. Do not delay the whole launch to force a cross-edition decision.
+3. Do not install unrelated international/LocalStalls kits during the cutover window unless needed for safety.
+4. Confirm off-site backup status and current Pi health/freshness immediately before cutover.
+5. After launch stabilises, resume V3-011 and V3-002 work.
+
+## ChatGPT — V3-010 launch coordinator
+
+1. Treat D-014 as authorization to proceed with this controlled launch scope.
+2. Reconcile Codex/Claude checkpoints and call out only genuine stop conditions, not polish.
+3. Move V3-010 from review mode to execution/acceptance mode.
+4. Keep legacy PitchList migration separate from new FindPitches billing.
+5. Keep paid acquisition, alerts, UKCF Option B and legacy migration closed.
+6. When Codex reaches a genuine operator-only dependency, surface the exact minimal action to Chris rather than reopening architecture discussion.
+7. Once public-origin and LIVE subscription proof pass, publish the final launch acceptance checkpoint and return the team to supply/optimisation work.
+
+## Launch stop conditions
+
+Stop/rollback for systemic public auth failure; incorrect Pro grant or Free source-link leakage; wrong market entitlement or wrong Stripe product/price; duplicate subscription behaviour; webhook ownership/signature failure that leaves entitlement unsafe; Nashville/held/closed/expired leakage; duplicate customer-visible identity; sustained public 5xx/timeouts; unexplained material inventory divergence; any impact on `pitchlist.uk`; or loss of account/Portal/cancellation access for LIVE FindPitches customers.
+
+## Deferred until launch stabilises
+
+Legacy PitchList subscriber migration; paid acquisition/V3-009; alert delivery/V3-006; UKCraftFairs Option B; routine LocalStalls optimisation; V3-012 Europe (France, Germany, Netherlands, Spain).
+
+## Standing principle
+
+We are launching a new FindPitches product, not replacing PitchList. Move decisively, but preserve the isolation and evidence rules that got V3 this far.
