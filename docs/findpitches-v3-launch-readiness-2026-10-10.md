@@ -2,104 +2,116 @@
 
 Owner: ChatGPT / V3-010  
 Updated: 2026-10-11  
-Status: **CONDITIONAL-GO candidate for a controlled V3 launch only after the remaining launch-critical evidence closes.** This document is review/planning evidence, not operator approval and not authorization to publish, bill, migrate subscribers, change domains, send customer messages or start paid acquisition.
+Status: **SAME-DAY PUBLIC-LAUNCH REVIEW ACTIVE — no launch action authorized.** The current target under review is a public FindPitches service with working subscriptions for new FindPitches customers. PitchList remains a separate live product. This document is planning/review evidence only; it does not authorize public routing, LIVE Stripe changes, charges, customer migration, paid acquisition, outbound messages, UKCraftFairs Option B or protected/live merges.
 
 ## Executive position
 
-V3-004, V3-005 and V3-008 have now removed the main bounded customer-side correctness blockers. Existing-subscriber recognition is implemented and tested in synthetic TEST scope; one genuine browser journey completed native sign-in -> Stripe-hosted Checkout -> Pro entitlement -> hosted cancellation -> paid-through access -> ended Free/redaction with 22/22 checks; and the restricted real-origin preview passed API 39/39 plus browser 30/30 checks.
+V3-004, V3-005 and V3-008 have removed the main bounded customer-side correctness blockers. Existing-subscriber recognition is implemented and tested in synthetic TEST scope; one genuine browser journey completed native sign-in -> Stripe-hosted Checkout -> Pro entitlement -> hosted cancellation -> paid-through access -> ended Free/redaction with 22/22 checks; and the restricted real-origin preview passed API 39/39 plus browser 30/30 checks.
 
-The remaining launch-critical technical dependency is now **V3-001 final cloud-side closure of the three audited lifecycle/identity cases** (Pop Up Shops, From the Ground and Nashville). Claude's producer-side evidence is complete. Codex must confirm the V3-side resolution and customer visibility for those three without fabricated source evidence or silent cross-edition merging.
+Codex's latest checkpoint narrows V3-001 to **one remaining lifecycle case only: Nashville old native 2026 versus survivor 2027**. Pop Up Shops and From the Ground now have audited append-only resolutions, all reviewed identities remain withheld from preview, and the Nashville pair is still withheld pending explicit edition/source custody. This is no longer a general lifecycle-design blocker.
 
-The other Gate-1 work is operator/release preparation rather than core product correctness: exact production routing scope, frozen preflight baseline, monitoring/rollback thresholds and explicit approval.
+The launch question has also changed materially: **PitchList V1 is a separate product/site and is not the service being replaced by FindPitches.** A FindPitches launch does not require moving PitchList traffic, migrating its subscribers, or using PitchList as FindPitches' rollback destination.
 
-Three approval gates remain separate:
+For a same-day launch with subscriptions, the relevant approval gates are therefore:
 
-1. **Controlled V3 launch** — public/customer routing to V3 under a bounded plan.
-2. **Real-subscriber migration / LIVE billing** — canonical LIVE provider verification, reviewed migration cohort and explicit billing approval.
-3. **Paid acquisition** — separate commercial/spend approval after launch behaviour and attribution are proven.
+1. **Public FindPitches** — remove private/shadow access restrictions, attach approved FindPitches production hostname(s), expose the customer site/API and enable indexing as approved.
+2. **New-customer FindPitches LIVE billing** — enable the LIVE Stripe path only for new FindPitches customers after LIVE product/price/webhook/return/Portal proof and explicit approval.
+3. **Legacy PitchList subscriber migration** — a later, separate project unless an unavoidable technical coupling is demonstrated.
+4. **Paid acquisition** — a later commercial/spend gate.
 
-Passing Gate 1 does not imply Gates 2 or 3. V3-011 international expansion (IE/CA/AU/NZ) is commercially important supply work but is **not** a Gate-1 launch blocker.
+Passing gates 1-2 does not imply gates 3-4. V3-011 international expansion remains commercially important but is not a same-day launch blocker.
 
 ## Acceptance matrix
 
-| Area | Current status | Evidence / assessment | Required before gate |
+| Area | Current status | Evidence / assessment | Required before same-day launch approval |
 | --- | --- | --- | --- |
-| V3 runtime independence | GREEN | V3 customer/auth/billing runtime is native; V1/V2 customer APIs/KV/cookies/databases are not runtime dependencies in the recognition design. Standalone frontend independence checks passed. | Preserve through cutover; no emergency V1/V2 runtime dependency may be introduced. |
-| New-customer hosted billing journey | GREEN in TEST | Genuine hosted Stripe TEST journey passed 22/22 through trial, active Pro, hosted portal cancellation, paid-through access and ended Free/redaction. | Separate explicit approval is still required before LIVE billing. |
-| Duplicate trial / duplicate charge protection | GREEN in TEST | Recognition guards, immutable associations, Checkout reservation/database protections and returning-account UI guards are implemented and tested. | Re-run bounded release-candidate preflight before any LIVE billing approval. |
-| Existing-subscriber recognition design | GREEN for synthetic acceptance | Exact canonical owner/customer/subscription association, no email-only match, replay/concurrency protection and rollback review are defined and tested. | Does **not** authorize real migration. |
-| Real existing-subscriber continuity | RED / gated | Read-only UK registry audit found 57 rows; all 57 still require canonical LIVE owner/mode/product/price/period-end evidence, eight have vendor-binding exceptions and four scheduled-cancellation continuity cases need review. | Authorized read-only LIVE provider evidence; approved legacy product/price policy; reviewed exceptions; full cohort reconciliation; explicit migration approval. |
-| Lifecycle / freshness integrity | AMBER, final dependency | Three genuinely refreshed cases are independently verified and acknowledged. Claude has supplied producer-side evidence for the three non-refresh cases: past/not-relevant, same-edition retired replacement never delivered, and reviewed Nashville supersession candidate. | Codex final V3-side resolution/sign-off for Pop Up Shops, From the Ground and Nashville; then V3-001 marked DONE. |
-| Identity continuity / dedupe | AMBER, final dependency | Initial lifecycle receipts linked to existing identities with no customer leakage. Producer evidence now names the From the Ground replacement and retains both Nashville anchors. | Codex confirms no duplicate customer-visible inventory, correct obsolete-request handling and reviewed Nashville survivor relationship without silent edition merge. |
-| Customer preview / browser behaviour | GREEN in bounded preview scope | V3-008 passed API 39/39 and browser 30/30 at the real restricted origin, covering sign-in, search, geography/facets, Pro gating, redaction, mobile, security headers/cookies/noindex and same-origin assets. | Repeat a compact smoke set against the frozen release candidate immediately before and after cutover. |
-| Performance / boot latency | AMBER release concern | V3-008 measured catalogue API median about 4.1s, sampled p95 about 5.1s, browser readiness 4.2–20.2s under proxy/interception with cache disabled. This is not production-load evidence. | Bounded catalogue/boot profiling plus release monitoring. No need to block solely on the proxy result unless profiling exposes a structural failure. |
-| Publication safety | AMBER | Publication API remains denied; preservation audits show zero customer/publication leakage. | Exact publication/routing scope must be declared before launch. If Gate 1 is routing-only, publication must remain disabled and any publication row/event is a stop condition. |
-| Domain / routing cutover | AMBER | Private preview exists; no custom production domain/route has been authorized. | Before GO record the exact hostname(s), Cloudflare Worker/route/record to change, current target, new target, TTL/propagation expectation, and one-command/one-change rollback path. Preserve V1 routing unchanged until acceptance completes. |
-| Rollback | AMBER, runbook drafted | Rollback principles are defined: reverse routing first, disable new features, preserve V3 evidence/ledgers, avoid destructive customer/provider changes. | Final operator runbook must name exact routing objects and owner; trigger thresholds below become the launch watch. |
-| Monitoring / operations | AMBER, thresholds drafted | Preservation, queue, preview and producer evidence are strong; off-site producer backup is now configured and proven. | Freeze a preflight baseline and monitor the thresholds below during the acceptance window. |
-| V1 protection | GREEN | Repeated audits show live UK Pitchlist/V2 unchanged; no destructive source/identity mutations or paid queries from this work. | Keep V1 protected and immediately restorable until post-launch acceptance plus separate retirement decision. |
-| Alerts / outbound email | NOT A LAUNCH BLOCKER while disabled | Native mail binding validated with zero sends; V3-006 remains open. | Keep alerts disabled unless separately approved and tested. |
-| UKCraftFairs Option B | NOT A LAUNCH BLOCKER | Source-document path remains off-by-default; D-012 route policy exists. | Claude recommendation after V3-001 closure; explicit Chris approval required before enablement. |
-| International expansion V3-011 | NON-GATING COMMERCIAL WORK | Claude is expanding IE/CA/AU/NZ; Codex is assigned ClueMart proof parsing plus per-source blocker diagnostics. | Track READY gained by country/source; do not delay controlled launch purely for raw inventory growth. |
-| Paid acquisition | RED / held | Bulk off and paid usage remains gated. | Separate V3-009 attribution/account-protection evidence plus explicit spend approval and live monitoring. |
+| V3 runtime independence | GREEN | V3 customer/auth/billing runtime is native; standalone frontend checks passed; PitchList/V1 is not required for V3 runtime. | Preserve this through public release. |
+| New-customer hosted billing journey | GREEN in TEST / LIVE proof pending | Genuine hosted Stripe TEST journey passed 22/22 through trial, active Pro, hosted Portal cancellation, paid-through access and ended Free/redaction. | Verify the exact LIVE product/price/mode, webhook endpoint/signing secret, Checkout and Portal return URLs, entitlement transition, duplicate-trial/charge guards and smallest approved LIVE production proof. |
+| Duplicate trial / duplicate charge protection | GREEN in TEST | Association, Checkout reservation/database and returning-account protections are implemented/tested. | Re-run bounded release-candidate checks against the LIVE configuration before approval. |
+| Legacy PitchList subscriber continuity | SEPARATE / NON-GATING FOR NEW-CUSTOMER LAUNCH unless coupling found | Read-only 57-row migration audit still lacks canonical LIVE coverage and has eight binding exceptions/four scheduled-cancellation cases. | Do not migrate them today. Keep PitchList unchanged. This becomes launch-blocking only if Codex shows the new FindPitches LIVE path cannot be safely isolated from legacy recognition. |
+| Lifecycle / freshness integrity | AMBER, one isolated case | Fresh traces/acks are proven; two obsolete cases have append-only audited resolution. Nashville old-2026/survivor-2027 remains withheld because shared standing-market anchors do not prove edition equivalence. | Team must state whether Nashville can remain safely withheld for launch. No merge/relink merely to achieve launch. |
+| Identity continuity / dedupe | AMBER, isolated Nashville review | All reviewed lifecycle identities remain withheld from private preview; no broad leakage/duplication is reported. | Confirm Nashville remains non-customer-visible and cannot create a duplicate/exposure if left unresolved. |
+| Customer preview / browser behaviour | GREEN in bounded preview scope | V3-008 passed API 39/39 and browser 30/30 at the real restricted origin, covering sign-in, search, geography/facets, Pro gating, redaction, mobile, security headers/cookies/noindex and same-origin assets. | Repeat a compact smoke set on the frozen public release candidate and immediately after public routing. |
+| Performance / boot latency | AMBER release concern, not current correctness blocker | Codex measured operator snapshots 3.244-4.762s, D1 execution 816-891ms, native service-binding snapshot 4.440s; repeated inventory/proof reads dominate. | Monitor at launch; safe optimisation can follow unless clean-origin testing shows systemic timeouts or unusable search. |
+| Public access / shadow restrictions | AMBER / explicit change required | Current preview is private; uninvited access is restricted and checked pages are noindex. | Record exact access-control removal, hostname/Worker route, same-origin API/service binding, index/noindex change and rollback. |
+| Publication/customer projection | AMBER | Preservation audits show no publication leakage; current customer inventory is private-preview eligible, not public production. | Define exactly what public exposure means. No hidden publication subsystem should be enabled unnecessarily if routing the existing customer projection is sufficient. |
+| Domain / routing | AMBER | No FindPitches production custom-domain cutover has been approved. | Record exact FindPitches hostname(s), current DNS/Cloudflare state, target Worker/route, propagation expectation and exact reversal. PitchList routes remain untouched. |
+| SEO / indexing | AMBER / launch choice | Current checked pages are noindex. | For a real public launch, explicitly decide which public pages lose noindex and verify robots/canonical/sitemap behaviour. This is reversible and should not be mixed with unrelated app changes. |
+| Auth / sign-in | GREEN in bounded preview / public-path proof pending | Native email/sign-in is proven in restricted preview. | Verify public sign-in without invitation gating and confirm consumed-link/session/cookie behaviour on production hostname. |
+| Alerts/outbound email | NON-GATING while disabled | Alert delivery remains disabled; one authorized sign-in email path is proven. | Keep alerts disabled unless separately approved. Public auth email is part of launch; campaign/alert sending is not. |
+| Rollback | AMBER, corrected model | FindPitches rollback is to restore the previous private/disabled FindPitches route/deployment/access state. PitchList stays independently live throughout. | Record exact FindPitches-only reverse route/access/index/billing switches and preserve evidence. |
+| Monitoring / operations | AMBER | Preservation, queue and producer evidence are strong; off-site producer backup is proven. | Freeze a launch baseline and monitor public origin, auth, billing/webhooks, entitlement/redaction, inventory, producer delivery and error/latency. |
+| International expansion V3-011 | NON-GATING COMMERCIAL WORK | First Codex L1/L2 pass added no READY; AU LocalStalls is now the best conversion lever. | Continue in shadow; do not delay public release for supply growth alone. |
+| Paid acquisition | HELD | Bulk/paid programme remains paused. | Keep off until V3-009 attribution/account protection, explicit budget approval and post-launch monitoring. |
 
-## Controlled cutover sequence — draft only
+## Same-day target under review
 
-This is the shortest safe Gate-1 sequence once V3-001 closes. It deliberately avoids coupling public routing, legacy-subscriber migration and paid acquisition into one irreversible event.
+The smallest commercially meaningful launch Chris is considering is:
 
-1. **Freeze the release candidate.** Record feature-branch commit, Worker versions, schema/migration state, producer delivery health, customer snapshot count, eligible inventory count, queue health and current V1 routing. No feature work during the cutover window.
-2. **Record the exact routing object.** Before any GO, document the exact hostname(s) being moved, current DNS/Cloudflare route/Worker target, proposed V3 target and the exact reverse change. If this information is not recorded, Gate 1 remains CONDITIONAL-GO.
-3. **Run release preflight.** Full V3 suite; focused auth/customer/billing tests; standalone frontend check; compact V3-008 smoke; lifecycle freshness/producer delivery age; customer/inventory count; queue state; publication disabled state; alerts disabled state; LIVE billing/migration disabled state; preservation audit.
-4. **Confirm Gate-1 scope.** Chris explicitly approves only the listed routing/domain change. Unless separately approved, LIVE billing, real-subscriber migration, alerts, paid acquisition and UKCraftFairs Option B remain disabled.
-5. **Apply the smallest routing/domain change.** Point only the approved customer/public route(s) at the frozen V3 release. Do not delete, repurpose or merge V1/V2 infrastructure.
-6. **Immediate real-origin smoke.** Homepage/search, sign-in, geography/facets, Free redaction, Pro gating appropriate to the approved scope, API health, static assets, security headers and no unintended source/customer leakage.
-7. **Observe the bounded acceptance window.** Monitor the release thresholds below against the frozen baseline. Any identity, entitlement, billing or publication anomaly is a stop condition even if general availability looks healthy.
-8. **Declare Gate-1 accepted or roll back.** Do not begin Gate 2 during an unstable Gate-1 observation window.
-9. **Only after Gate 1 stabilizes, consider Gate 2.** Real subscriber migration/LIVE billing requires its own canonical LIVE provider checks, reviewed manifest, approved product/price policy, dry-run reconciliation and explicit Chris approval.
-10. **Paid acquisition remains Gate 3.** Do not restart spend until V3-009 is complete and post-launch quality/conversion monitoring exists.
+- public FindPitches homepage/search/browse;
+- public native sign-in;
+- new FindPitches customers can purchase the approved Pro subscription through LIVE Stripe;
+- existing PitchList remains live and separate, with no same-day migration;
+- alerts disabled;
+- paid acquisition disabled;
+- UKCraftFairs Option B disabled;
+- V3-011 supply expansion continues independently.
 
-## Provisional launch monitoring / rollback thresholds
+A browse-only launch is not the requested target.
 
-These are release guardrails for the controlled window, not claims about normal long-term SLOs. Freeze the actual preflight baseline immediately before cutover and use both absolute and relative signals.
+## Smallest safe same-day sequence — draft, review only
 
-- **Routing / origin availability:** rollback if the approved hostname cannot serve the V3 homepage/API from an external browser for 3 consecutive probes over ~5 minutes, or if there is sustained 5xx behaviour rather than a transient single failure.
-- **API latency:** investigate immediately if catalogue/search p95 is >2x the frozen preflight baseline for 10 minutes; rollback if it is also causing user-visible timeouts/failures. Do not use the proxy-based 5.1s sample as a production SLO.
-- **Browser readiness:** investigate if three consecutive clean-browser probes exceed 30s or fail to reach usable search results; rollback if persistent and attributable to V3 rather than the test network.
-- **Authentication:** any systemic sign-in failure affecting multiple clean test accounts is a stop condition; isolated user error is not.
-- **Entitlement / redaction:** **one reproducible incorrect Pro grant, Free source-link leak, cross-market entitlement leak or paid-through error is an immediate rollback condition.**
-- **Billing safety:** while LIVE billing is disabled, any unexpected LIVE-mode Checkout/subscription/webhook activity is an immediate stop/rollback condition. TEST-mode events are not a Gate-1 production signal.
-- **Publication safety:** if publication is not explicitly included in Gate 1, any non-zero publication queue/write caused by the release is an immediate stop condition.
-- **Identity/lifecycle:** one reproducible duplicate customer-visible opportunity caused by identity resolution, or one closed/withdrawn record incorrectly exposed, is an immediate rollback condition.
-- **Producer delivery:** investigate if authenticated delivery age exceeds 45 minutes (three nominal 15-minute delivery intervals); rollback only if the stale feed is producing incorrect customer state rather than a temporary delayed update.
-- **Customer/inventory counts:** investigate any unexplained >5% divergence from the frozen eligible/customer snapshot during the short acceptance window. Expected expiry/aging must be separated from release-caused loss.
-- **Queue health:** any dead-letter growth or sustained due/leased backlog that starts with the release is a stop condition for further rollout; future watch jobs are not backlog.
-- **V1 health:** V1 must remain healthy and routable as the rollback target throughout the controlled window.
+1. **Collect team readiness reports.** Codex and Claude each state GO / CONDITIONAL-GO / NO-GO for their owned area, including Nashville, LIVE Stripe isolation, producer health, operator requirements and rollback.
+2. **Freeze the release candidate.** Record feature-branch commit, Worker versions, schemas, READY/customer counts, queue state, Pi delivery/freshness and current private access configuration. Pause nonessential release-affecting changes during the window.
+3. **Separate billing scopes explicitly.** Confirm the new-customer FindPitches LIVE flow does not invoke or depend on the 57-row legacy PitchList migration path. Leave all legacy migration controls disabled.
+4. **Prepare LIVE Stripe configuration without charging yet.** Verify exact LIVE product/price, mode, currency/interval/trial, webhook destination/signing secret, Checkout success/cancel URLs, Portal return URL and entitlement mapping. No LIVE customer object or charge until the explicit operator approval step.
+5. **Record the exact public exposure change.** FindPitches hostname(s), Cloudflare route/Worker, private-access restriction to remove, same-origin API binding, and SEO/noindex/robots/sitemap changes. Record exact reversal for each.
+6. **Run frozen preflight.** Full/focused tests; compact real-origin smoke; auth; Free redaction; Pro entitlement logic; publication/customer-projection checks; lifecycle visibility including Nashville withheld; producer age/queue; preservation audit; Stripe configuration sanity.
+7. **Chris approves the exact launch plan.** Approval must separately cover (a) public FindPitches routing/access/indexing and (b) LIVE new-customer Stripe. It does not approve PitchList migration, alerts, paid acquisition or UKCF Option B.
+8. **Enable public FindPitches first.** Apply only the recorded FindPitches access/domain/indexing changes, keep LIVE billing disabled for the first smoke, and immediately verify public homepage/search/sign-in/API/static assets/security headers/no leakage.
+9. **Enable LIVE new-customer billing.** Apply the approved LIVE Stripe configuration and perform the smallest explicitly approved production proof. Verify Checkout -> webhook/canonical provider state -> Pro entitlement -> Portal behaviour -> safe return path. Avoid unnecessary cancellation if the chosen production proof can be completed without creating avoidable real-customer/account debris; exact proof method should come from Codex readiness review.
+10. **Observe a bounded acceptance window.** Monitor public availability, auth, Stripe/webhooks, entitlement/redaction, inventory counts, identity/lifecycle exposure, producer delivery and latency/errors.
+11. **Accept or reverse FindPitches only.** If a stop condition occurs, disable LIVE Checkout first if billing-related, restore the prior FindPitches private/route/index state, preserve all V3 evidence and leave PitchList untouched.
 
-## Rollback sequence — draft only
+## Provisional monitoring / stop conditions
 
-Rollback prefers routing reversal and feature disablement over data deletion.
+These are guardrails for the same-day review, not permanent SLOs.
 
-1. Trigger rollback for material auth/sign-in failure, entitlement error, duplicate billing risk, publication leakage, lifecycle/identity corruption, sustained origin/API failure, or unexplained material customer-count divergence.
-2. Disable any newly enabled Gate-1 switch first. LIVE Checkout/migration should still be disabled under the default controlled-launch scope.
-3. Restore the recorded prior V1 customer/public routing using the exact pre-cutover route/DNS/Worker configuration. Keep V3 shadow services and evidence intact for diagnosis.
-4. Revoke/expire affected V3 sessions only where entitlement safety requires it; do not cancel/recreate provider subscriptions as a rollback shortcut.
-5. Preserve association ledgers, receipts, source evidence, decision history and failed-release telemetry. Do not silently rebind identities or delete audit history.
-6. Verify V1 health, login/access, production routing and customer impact before declaring rollback complete.
-7. Publish a hub checkpoint with trigger, scope, restored route/version, observed metrics and any customer/billing follow-up required.
+- **Public origin:** sustained 5xx or inability to serve homepage/API from clean external probes over ~5 minutes is a stop condition.
+- **Authentication:** systemic sign-in failure on the public hostname is a stop condition.
+- **LIVE billing:** wrong price/product/mode, webhook failure preventing canonical entitlement, duplicate Checkout/subscription behaviour, incorrect trial, unexpected charge, or Portal return failure is a stop condition.
+- **Entitlement/redaction:** one reproducible incorrect Pro grant, Free source-link leak, cross-market entitlement leak or paid-through error is an immediate stop condition.
+- **Identity/lifecycle:** any newly exposed closed/withdrawn/held record or duplicate customer-visible identity attributable to the release is a stop condition. Nashville may remain withheld if the team confirms that is stable behaviour.
+- **Inventory:** investigate unexplained >5% divergence from frozen READY/customer counts during the short release window; distinguish ordinary expiry from release-caused loss.
+- **Producer:** investigate authenticated delivery age >45 minutes; only stop public service if stale producer state is causing incorrect customer output.
+- **Performance:** investigate clean-origin catalogue/search p95 >2x the frozen preflight baseline for 10 minutes; roll back only if it is materially breaking use, not merely slower than ideal.
+- **PitchList:** should remain unchanged. Any unexpected change to PitchList routes, billing or customer behaviour is an immediate stop condition because FindPitches launch is not supposed to touch it.
 
-## Current V3-010 recommendation
+## Corrected rollback model
 
-**Controlled V3 launch: CONDITIONAL-GO, not yet executable.** V3-008 is now accepted in bounded preview scope. The remaining conditions are: final V3-001 cloud-side closure; exact production hostname/routing object plus reversible change; frozen preflight baseline and launch watch; and explicit Chris approval for the exact Gate-1 scope.
+Rollback prefers reversing FindPitches exposure/billing changes over deleting data or touching PitchList.
 
-**Real-subscriber migration / LIVE billing: NO-GO today.** The blocker is missing canonical LIVE provider coverage and approved legacy product/price/period-end/exception handling for the real cohort, not the native V3 recognition implementation.
+1. If the issue is billing-related, disable new LIVE FindPitches Checkout/Portal entry points first while preserving Stripe/V3 audit evidence.
+2. Restore the previous FindPitches access/routing configuration: private restriction/previous Worker route/custom-domain state as recorded before launch.
+3. Restore the prior FindPitches SEO/indexing state if necessary while investigating.
+4. Preserve receipts, facts, identities, association/billing ledgers, webhooks and failed-release telemetry. Do not delete/rebind data merely to make the rollback look clean.
+5. Revoke/expire affected V3 sessions only where entitlement safety requires it.
+6. Verify FindPitches is back in the known prior safe state.
+7. Verify PitchList is still healthy and unchanged; it is a parallel protected service, not the rollback destination.
+8. Publish the incident/checkpoint evidence after the service is safe.
 
-**Paid acquisition: NO-GO today.** Keep held until V3-009 attribution/account protection, explicit spend approval and post-launch monitoring.
+## Current V3-010 position pending team reports
 
-**International expansion:** proceed in parallel. V3-011 should be judged by customer-ready listings gained in IE/CA/AU/NZ, but it does not need to hold Gate 1 open.
+**Public FindPitches + new-customer subscriptions today: CONDITIONAL-GO candidate, not yet executable.** The evidence already supports taking the question seriously rather than treating it as a migration event. Remaining decision evidence is:
 
-## Next evidence to fold in
+- Codex same-day readiness report, especially LIVE Stripe isolation/config/proof and public-runtime changes;
+- Claude producer readiness report and exact Nashville custody position;
+- confirmation Nashville can remain safely withheld without blocking the rest of the catalogue;
+- exact production hostname/route/access/indexing change set and reversal;
+- explicit Chris approval for public FindPitches and LIVE new-customer billing.
 
-- Codex final V3-001 cloud checkpoint for Pop Up Shops, From the Ground and Nashville.
-- Exact production hostname/routing object proposed for Gate 1.
-- Codex bounded catalogue/boot profiling findings when available.
-- V3-011 READY conversion results by country/source as commercial supply evidence, not launch gating.
+**Legacy PitchList migration: separate NO-GO / not required today.** The 57-row canonical LIVE migration gaps remain real but should not block new FindPitches customers unless Codex demonstrates hard coupling.
+
+**Paid acquisition: NO-GO today by default.** Keep it paused until V3-009 attribution/account protection, explicit spend approval and post-launch monitoring.
+
+**International expansion:** continue in parallel. V3-011 and later V3-012 Europe should be judged on READY gained, not raw producer volume, but neither is a prerequisite for exposing the already-working catalogue.
