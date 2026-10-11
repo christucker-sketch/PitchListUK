@@ -1,18 +1,18 @@
 {
   "schema": "findpitches-v3-controlled-public-launch-v1",
-  "as_of": "2026-10-11T19:42:51.286187+00:00",
+  "as_of": "2026-10-11T19:44:56.329286+00:00",
   "authority": [
     "D-014",
     "D-016"
   ],
-  "release_state": "PUBLIC_BROWSING_VERIFIED_CHECKOUT_CLOSED",
-  "source_checkpoint": "80c5bcf57c731adb99b7232b400ca79fbf69d0b4",
+  "release_state": "PUBLIC_BROWSING_AND_NEW_CUSTOMER_LIVE_CHECKOUT_ENABLED_OPERATOR_ACCEPTANCE_PENDING",
+  "source_checkpoint": "8565dba046a56e9f52b8a6aa3ef6ab1ae4531742",
   "launch": {
-    "as_of": "2026-10-11T19:30:13.389Z",
-    "stage": "browse",
+    "as_of": "2026-10-11T19:43:11.682Z",
+    "stage": "checkout",
     "worker": "findpitches-v3-customer-production",
     "public_enabled": true,
-    "checkout_enabled": false,
+    "checkout_enabled": true,
     "routes": [
       {
         "id": "0360701b1a744619b353a8511fddc520",
@@ -29,9 +29,9 @@
     "pitchlist_healthy": true,
     "dns_mutations": 0,
     "pages_mutations": 0,
-    "deployment_id": "0e6ccc96-7d7c-4901-9de0-0fe0a0746e25",
+    "deployment_id": "7f008cb0-7cec-45f4-a8df-20c796fb6970",
     "version_ids": [
-      "f79427d0-879e-43ac-aa21-9a98ef3d075b"
+      "40f060a5-dbaa-409b-adb3-3caa9bd24eac"
     ]
   },
   "public_url": "https://findpitches.com",
@@ -48,7 +48,7 @@
   },
   "native_validation": {
     "schema": "findpitches-v3-native-live-provider-preflight-v1",
-    "as_of": "2026-10-11T19:38:40.125Z",
+    "as_of": "2026-10-11T19:43:40.135Z",
     "billing": {
       "status": 200,
       "data": {
@@ -82,7 +82,7 @@
         "webhook_secret_configured": true,
         "entitlement": "global",
         "trial_days": 7,
-        "checkout_enabled": false,
+        "checkout_enabled": true,
         "customer_objects_created": 0
       }
     },
@@ -104,7 +104,7 @@
         "mode": "production_public",
         "public_enabled": true,
         "billing_mode": "live",
-        "checkout_enabled": false,
+        "checkout_enabled": true,
         "ready": 1811,
         "ready_by_country": {
           "GB": 127,
@@ -153,13 +153,13 @@
       "webhook_receipts": 0
     },
     "native_mail_binding_present": true,
-    "deployment_id": "0e6ccc96-7d7c-4901-9de0-0fe0a0746e25",
+    "deployment_id": "7f008cb0-7cec-45f4-a8df-20c796fb6970",
     "version_ids": [
-      "f79427d0-879e-43ac-aa21-9a98ef3d075b"
+      "40f060a5-dbaa-409b-adb3-3caa9bd24eac"
     ],
     "flags": {
       "V3_ACCOUNT_RECOVERY_ENABLED": "true",
-      "V3_CHECKOUT_ENABLED": "disabled",
+      "V3_CHECKOUT_ENABLED": "live",
       "V3_PUBLIC_ENABLED": "true"
     },
     "routes": [
@@ -177,7 +177,7 @@
       }
     ],
     "pitchlist": {
-      "as_of": "2026-10-11T19:38:40.125Z",
+      "as_of": "2026-10-11T19:43:40.135Z",
       "homepage_status": 200,
       "brand_present": true,
       "pages_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
@@ -192,7 +192,7 @@
     "messages_sent": 0
   },
   "source_health": {
-    "as_of": "2026-10-11T19:38:35.478Z",
+    "as_of": "2026-10-11T19:43:36.782Z",
     "safety": {
       "publication_enabled": 0,
       "customer_projection_rows": 0,
@@ -211,13 +211,13 @@
       "cloud_ready": true,
       "expected_interval_seconds": 900,
       "contact_observation_started": true,
-      "last_authenticated_recheck_poll": "2026-10-11T19:24:00.659Z",
+      "last_authenticated_recheck_poll": "2026-10-11T19:39:11.243Z",
       "expected_discovery_interval_seconds": 10800,
       "expected_export_lag_seconds": 3600,
       "recent_poll_intervals_seconds": [
+        910.584,
         910.528,
-        910.647,
-        909.058
+        910.647
       ],
       "host_recently_contacting": true,
       "cadence_verified": true,
@@ -530,7 +530,106 @@
       "as_of": "2026-10-11T19:40:49.362357+00:00",
       "identical_duplicate_canonical_tags": 1
     },
-    "public_browser_checkout_enabled": null
+    "public_browser_checkout_enabled": {
+      "schema": "findpitches-v3-public-browser-v1",
+      "passed": true,
+      "checks": [
+        {
+          "name": "page_/uk/find-pitches/",
+          "passed": true
+        },
+        {
+          "name": "uk_real_market",
+          "passed": true
+        },
+        {
+          "name": "free_session_redacted",
+          "passed": true
+        },
+        {
+          "name": "entity_is_real_and_locked",
+          "passed": true
+        },
+        {
+          "name": "page_/uk/opportunity/ent_f3b601fdc8e486c66f0974ab5bae9194/",
+          "passed": true
+        },
+        {
+          "name": "all_event_canonicals_match_identity",
+          "passed": true
+        },
+        {
+          "name": "free_apply_link_withheld",
+          "passed": true
+        },
+        {
+          "name": "page_/us/find-pitches/",
+          "passed": true
+        },
+        {
+          "name": "us_real_market",
+          "passed": true
+        },
+        {
+          "name": "page_/pricing.html",
+          "passed": true
+        },
+        {
+          "name": "supported_currency_choices",
+          "passed": true
+        },
+        {
+          "name": "displayed_GBP",
+          "passed": true
+        },
+        {
+          "name": "displayed_USD",
+          "passed": true
+        },
+        {
+          "name": "displayed_EUR",
+          "passed": true
+        },
+        {
+          "name": "truthful_alerts_copy",
+          "passed": true
+        },
+        {
+          "name": "checkout_gate_matches",
+          "passed": true
+        },
+        {
+          "name": "page_/account.html",
+          "passed": true
+        },
+        {
+          "name": "account_noindex",
+          "passed": true
+        },
+        {
+          "name": "page_/alerts.html",
+          "passed": true
+        },
+        {
+          "name": "alerts_unavailable",
+          "passed": true
+        },
+        {
+          "name": "no_browser_errors",
+          "passed": true
+        },
+        {
+          "name": "same_origin_assets_and_api",
+          "passed": true
+        }
+      ],
+      "checkout_state": "enabled",
+      "certificate_bypass": false,
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-11T19:44:19.616702+00:00",
+      "identical_duplicate_canonical_tags": 1
+    }
   },
   "hosted_live_customer_acceptance": {
     "status": "PENDING_REAL_OPERATOR_CUSTOMER_CARD_JOURNEY",

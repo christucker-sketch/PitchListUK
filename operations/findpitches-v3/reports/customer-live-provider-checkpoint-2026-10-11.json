@@ -1,7 +1,7 @@
 {
   "schema": "findpitches-v3-live-provider-checkpoint-v1",
-  "as_of": "2026-10-11T19:42:51.286187+00:00",
-  "release_state": "PUBLIC_BROWSING_VERIFIED_CHECKOUT_CLOSED",
+  "as_of": "2026-10-11T19:44:56.329286+00:00",
+  "release_state": "PUBLIC_BROWSING_AND_NEW_CUSTOMER_LIVE_CHECKOUT_ENABLED_OPERATOR_ACCEPTANCE_PENDING",
   "authority": [
     "D-014",
     "D-016",
@@ -19,19 +19,19 @@
     "database": "findpitches-v3-customer-production",
     "url": "https://findpitches-v3-customer-production.ctucker.workers.dev",
     "deployed_at": "2026-10-11T16:11:26.698Z",
-    "deployment_id": "0e6ccc96-7d7c-4901-9de0-0fe0a0746e25",
+    "deployment_id": "7f008cb0-7cec-45f4-a8df-20c796fb6970",
     "version_ids": [
-      "f79427d0-879e-43ac-aa21-9a98ef3d075b"
+      "40f060a5-dbaa-409b-adb3-3caa9bd24eac"
     ],
     "public_enabled": true,
-    "checkout_enabled": false,
+    "checkout_enabled": true,
     "provider_configured": true,
     "mail_secret_written": false,
     "source": "existing immutable shadow evidence",
     "pitchlist_changed": false,
     "native_mail_binding_present": true,
     "account_recovery_enabled": true,
-    "observed_at": "2026-10-11T19:30:13.389Z"
+    "observed_at": "2026-10-11T19:43:11.682Z"
   },
   "provider": {
     "account_id": "acct_1TTp8UEIdSfbjtdo",
@@ -66,7 +66,7 @@
   },
   "native_validation": {
     "schema": "findpitches-v3-native-live-provider-preflight-v1",
-    "as_of": "2026-10-11T19:38:40.125Z",
+    "as_of": "2026-10-11T19:43:40.135Z",
     "billing": {
       "status": 200,
       "data": {
@@ -100,7 +100,7 @@
         "webhook_secret_configured": true,
         "entitlement": "global",
         "trial_days": 7,
-        "checkout_enabled": false,
+        "checkout_enabled": true,
         "customer_objects_created": 0
       }
     },
@@ -122,7 +122,7 @@
         "mode": "production_public",
         "public_enabled": true,
         "billing_mode": "live",
-        "checkout_enabled": false,
+        "checkout_enabled": true,
         "ready": 1811,
         "ready_by_country": {
           "GB": 127,
@@ -171,13 +171,13 @@
       "webhook_receipts": 0
     },
     "native_mail_binding_present": true,
-    "deployment_id": "0e6ccc96-7d7c-4901-9de0-0fe0a0746e25",
+    "deployment_id": "7f008cb0-7cec-45f4-a8df-20c796fb6970",
     "version_ids": [
-      "f79427d0-879e-43ac-aa21-9a98ef3d075b"
+      "40f060a5-dbaa-409b-adb3-3caa9bd24eac"
     ],
     "flags": {
       "V3_ACCOUNT_RECOVERY_ENABLED": "true",
-      "V3_CHECKOUT_ENABLED": "disabled",
+      "V3_CHECKOUT_ENABLED": "live",
       "V3_PUBLIC_ENABLED": "true"
     },
     "routes": [
@@ -195,7 +195,7 @@
       }
     ],
     "pitchlist": {
-      "as_of": "2026-10-11T19:38:40.125Z",
+      "as_of": "2026-10-11T19:43:40.135Z",
       "homepage_status": 200,
       "brand_present": true,
       "pages_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
@@ -210,7 +210,7 @@
     "messages_sent": 0
   },
   "source_health": {
-    "as_of": "2026-10-11T19:38:35.478Z",
+    "as_of": "2026-10-11T19:43:36.782Z",
     "safety": {
       "publication_enabled": 0,
       "customer_projection_rows": 0,
@@ -229,13 +229,13 @@
       "cloud_ready": true,
       "expected_interval_seconds": 900,
       "contact_observation_started": true,
-      "last_authenticated_recheck_poll": "2026-10-11T19:24:00.659Z",
+      "last_authenticated_recheck_poll": "2026-10-11T19:39:11.243Z",
       "expected_discovery_interval_seconds": 10800,
       "expected_export_lag_seconds": 3600,
       "recent_poll_intervals_seconds": [
+        910.584,
         910.528,
-        910.647,
-        909.058
+        910.647
       ],
       "host_recently_contacting": true,
       "cadence_verified": true,
