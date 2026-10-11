@@ -79,6 +79,29 @@ def _next_occurrence(day: int, mon: int, today: dt.date) -> dt.date | None:
     return None
 
 
+# Frequency labels LocalStalls prints right after the organiser line ("By <b>X</b>" then a facts row).
+_LS_FREQ = re.compile(r"\s+(?:One-off(?: / Irregular)?|Irregular|Weekly|Fortnightly|Monthly|Annually|Yearly|Seasonal|"
+                      r"Twice a (?:year|month)(?: \([A-Za-z]+\))?|Quarterly|Biannual(?:ly)?|Bi-?monthly)\b.*$", re.I)
+
+
+def _ls_organiser(page: Page, t: str) -> str | None:
+    """Organiser as the source states it: Event JSON-LD `organizer.name` first, then the 'By <b>…</b>' line.
+    The facts row after it (frequency, place) is never part of the name (V3-011 L2: contaminated organiser)."""
+    for d in page.jsonld:
+        if str(d.get("@type", "")).lower().endswith("event"):
+            o = d.get("organizer")
+            o = o[0] if isinstance(o, list) and o else o
+            name = (o.get("name") if isinstance(o, dict) else o) if o else None
+            if isinstance(name, str) and name.strip():
+                return name.strip()
+    m = re.search(r"\bBy ([A-Z][^·\n]{2,80}?) (?:[A-Z][a-z]+, (?:VIC|NSW|QLD|WA|SA|TAS|ACT|NT|England|Scotland|Wales)|"
+                  r"Monthly|Weekly|Fortnightly|One-off|Annually|Twice a|Get directions)", t)
+    if not m:
+        return None
+    name = _LS_FREQ.sub("", m.group(1)).strip()
+    return name or None
+
+
 def localstalls(page: Page, a: dict, today: dt.date) -> dict | None:
     """LocalStalls event pages show a fixed block: 'Stallholders wanted', 'Coming dates <Sat 10 Oct> ...',
     'Stallholder applications open / Submit Application' (or only 'Contact event manager').
@@ -98,14 +121,32 @@ def localstalls(page: Page, a: dict, today: dt.date) -> dict | None:
             nd = _next_occurrence(int(d), _MON[mon.lower()], today)
             if nd:
                 dates.append(nd)
+    # Event JSON-LD carries explicit-year dates; prefer them (no year inference) and keep the coming-dates list.
+    ld_end = None
+    for d in page.jsonld:
+        if str(d.get("@type", "")).lower().endswith("event"):
+            try:
+                sd = dt.date.fromisoformat(str(d.get("startDate", ""))[:10])
+            except ValueError:
+                continue
+            try:
+                ed = dt.date.fromisoformat(str(d.get("endDate", ""))[:10])
+            except ValueError:
+                ed = None
+            if (ed or sd) >= today:
+                dates.append(max(sd, today) if ed and sd < today <= ed else sd)
+                if ed and ed > sd and ld_end is None:
+                    ld_end = ed
+    ld_used = bool(ld_end) or any(str(d.get("@type", "")).lower().endswith("event") for d in page.jsonld)
     dates = sorted(set(dates))
-    org = re.search(r"\bBy ([A-Z][^·\n]{2,60}?) (?:[A-Z][a-z]+, (?:VIC|NSW|QLD|WA|SA|TAS|ACT|NT|England|Scotland|Wales)|Monthly|Weekly|Fortnightly)", t)
+    org = _ls_organiser(page, t)
     open_m = re.search(r"Stallholder applications open", t) or re.search(r"Submit Application", t)
     closed_m = re.search(r"applications (?:are )?closed|not (?:currently )?accepting", t, re.I)
     contact_m = re.search(r"Contact event manager|Email organiser", t)
     regular = re.search(r"\b(Weekly|Fortnightly|Monthly)\b[^.]{0,40}|\bEvery (?:Saturday|Sunday|Friday|week)\b", t)
-    ex.update(name=name, country=cc, start_date=dates[0].isoformat() if dates else None, end_date=None,
-              date_source="platform_coming_dates" if dates else None, organiser=(org.group(1).strip() if org else ex.get("organiser")),
+    ex.update(name=name, country=cc, start_date=dates[0].isoformat() if dates else None,
+              end_date=(ld_end.isoformat() if ld_end and dates and ld_end >= dates[0] and len(dates) == 1 else None),
+              date_source=(("platform_event_jsonld" if ld_used else "platform_coming_dates") if dates else None), organiser=(org or ex.get("organiser")),
               relevance="relevant", recurrence=(regular.group(0) if regular else (f"{len(dates)} upcoming dates listed" if len(dates) >= 3 else None)))
     ex["recurrence_evidence"] = ("regular: “%s”" % regular.group(0)) if regular else (
         f"{len(dates)} upcoming dates listed on platform" if len(dates) >= 3 else None)

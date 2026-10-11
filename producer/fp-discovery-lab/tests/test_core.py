@@ -447,3 +447,29 @@ def test_cluemart_dates_with_spaces_open():
 def test_cluemart_demo_listing_rejected():
     a = _cm("cluemart_bare_2026-10-11.html", "https://cluemart.co.nz/application/demo-market")
     assert a["extracted"]["relevance"] == "not_relevant" and a["label"] == "rejected"
+
+
+# ---------------- LocalStalls organiser + explicit-year dates (V3-011 L2 producer-side fixes) ----------------
+def _ls(name, url):
+    from pathlib import Path
+    from fpd import adapters
+    html = (Path(__file__).parent / "fixtures" / name).read_text(encoding="utf-8")
+    page = parse_html(html, url)
+    return adapters.apply(page, classify(page, dt.date(2026, 10, 11)), dt.date(2026, 10, 11), "localstalls.com")
+
+
+def test_localstalls_organiser_excludes_frequency_facts():
+    ex = _ls("localstalls_au_dubbo_crystals_2026-10-11.html",
+             "https://localstalls.com/au/event/dubbo/dubbo-crystals-creatives-mystics-fair")["extracted"]
+    assert ex["organiser"] == "Crystals Creatives & Mystics Fair", ex["organiser"]
+    assert ex["start_date"] == "2026-10-17" and ex["end_date"] == "2026-10-18" and ex["state"] == "OPEN_NOW"
+    ex = _ls("localstalls_au_newtoyou_2026-10-11.html",
+             "https://localstalls.com/au/event/williamstown/new-to-you-pre-loved-clothing-market")["extracted"]
+    assert ex["organiser"] == "New To You Markets", ex["organiser"]
+
+
+def test_localstalls_jsonld_dates_used_when_no_coming_dates():
+    ex = _ls("localstalls_au_xmas_tree_farm_2026-10-11.html",
+             "https://localstalls.com/au/event/plumpton/christmas-tree-farm-markets")["extracted"]
+    assert ex["start_date"] == "2026-11-29" and ex["date_source"] == "platform_event_jsonld"
+    assert ex["state"] != "HISTORICAL"

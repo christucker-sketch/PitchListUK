@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-10T12:46:33+01:00
+Updated: 2026-10-11T15:28:03+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001, V3-002 (CLAIMED); V3-003 DONE (see [TASKS.md](../TASKS.md)).
@@ -32,6 +32,9 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 - Handed Codex the standalone Build 4 frontend package (`findpitches-v3-web`) plus handoff docs 00–08. Codex now serves it as the customer preview.
 
 ## Current work
+
+- **Same-day launch review (ORDERS 15:18): producer/Pi area CONDITIONAL-GO.** See the [report](../../docs/findpitches-v3-launch-readiness-producer-2026-10-11.md). The conditions are C1 (confirm which ingest environment public V3 reads; the runner only allows shadow/test), C2 (fresh ingest-only token) and C3 (staleness alerts in launch monitoring). Nashville is not a blocker. Nothing was installed or changed for launch.
+
 
 - **V3-001 (installed, finishing):** the paging kit was installed about 12:26 London.
   - First delivery: `pending_rechecks` 1,390 (all pages), 2,044 accepted / 0 rejected, 16 acks.
