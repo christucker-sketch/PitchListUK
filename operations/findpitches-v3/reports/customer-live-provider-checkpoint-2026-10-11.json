@@ -1,7 +1,7 @@
 {
   "schema": "findpitches-v3-live-provider-checkpoint-v1",
-  "as_of": "2026-10-11T19:20:34.818833+00:00",
-  "release_state": "REFRESHED_PREFLIGHT_GO_FOR_CONTROLLED_PUBLIC_BROWSING_CHECKOUT_PENDING_SMOKE",
+  "as_of": "2026-10-11T19:42:51.286187+00:00",
+  "release_state": "PUBLIC_BROWSING_VERIFIED_CHECKOUT_CLOSED",
   "authority": [
     "D-014",
     "D-016",
@@ -19,11 +19,11 @@
     "database": "findpitches-v3-customer-production",
     "url": "https://findpitches-v3-customer-production.ctucker.workers.dev",
     "deployed_at": "2026-10-11T16:11:26.698Z",
-    "deployment_id": "6f454020-ecd0-4093-891f-32014155e61b",
+    "deployment_id": "0e6ccc96-7d7c-4901-9de0-0fe0a0746e25",
     "version_ids": [
-      "d44ca18a-850b-45b9-bdb6-0b78b9154613"
+      "f79427d0-879e-43ac-aa21-9a98ef3d075b"
     ],
-    "public_enabled": false,
+    "public_enabled": true,
     "checkout_enabled": false,
     "provider_configured": true,
     "mail_secret_written": false,
@@ -31,7 +31,7 @@
     "pitchlist_changed": false,
     "native_mail_binding_present": true,
     "account_recovery_enabled": true,
-    "observed_at": "2026-10-11T19:17:58.139Z"
+    "observed_at": "2026-10-11T19:30:13.389Z"
   },
   "provider": {
     "account_id": "acct_1TTp8UEIdSfbjtdo",
@@ -66,7 +66,7 @@
   },
   "native_validation": {
     "schema": "findpitches-v3-native-live-provider-preflight-v1",
-    "as_of": "2026-10-11T19:17:58.139Z",
+    "as_of": "2026-10-11T19:38:40.125Z",
     "billing": {
       "status": 200,
       "data": {
@@ -120,7 +120,7 @@
       "data": {
         "ok": true,
         "mode": "production_public",
-        "public_enabled": false,
+        "public_enabled": true,
         "billing_mode": "live",
         "checkout_enabled": false,
         "ready": 1811,
@@ -147,8 +147,8 @@
         "ok": true,
         "service": "findpitches-v3-customer-production",
         "mode": "production_public",
-        "publication_enabled": false,
-        "production_cutover_enabled": false,
+        "publication_enabled": true,
+        "production_cutover_enabled": true,
         "frontend": "Claude Build 4",
         "frontend_source_sha256": "24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05"
       }
@@ -171,18 +171,31 @@
       "webhook_receipts": 0
     },
     "native_mail_binding_present": true,
-    "deployment_id": "6f454020-ecd0-4093-891f-32014155e61b",
+    "deployment_id": "0e6ccc96-7d7c-4901-9de0-0fe0a0746e25",
     "version_ids": [
-      "d44ca18a-850b-45b9-bdb6-0b78b9154613"
+      "f79427d0-879e-43ac-aa21-9a98ef3d075b"
     ],
     "flags": {
       "V3_ACCOUNT_RECOVERY_ENABLED": "true",
       "V3_CHECKOUT_ENABLED": "disabled",
-      "V3_PUBLIC_ENABLED": "false"
+      "V3_PUBLIC_ENABLED": "true"
     },
-    "routes": [],
+    "routes": [
+      {
+        "id": "0360701b1a744619b353a8511fddc520",
+        "pattern": "www.findpitches.com/*",
+        "script": "findpitches-v3-customer-production",
+        "request_limit_fail_open": false
+      },
+      {
+        "id": "522bb4da34ea4b6ca7ff6e714c09efb4",
+        "pattern": "findpitches.com/*",
+        "script": "findpitches-v3-customer-production",
+        "request_limit_fail_open": false
+      }
+    ],
     "pitchlist": {
-      "as_of": "2026-10-11T19:17:58.138Z",
+      "as_of": "2026-10-11T19:38:40.125Z",
       "homepage_status": 200,
       "brand_present": true,
       "pages_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
@@ -197,7 +210,7 @@
     "messages_sent": 0
   },
   "source_health": {
-    "as_of": "2026-10-11T19:17:54.646Z",
+    "as_of": "2026-10-11T19:38:35.478Z",
     "safety": {
       "publication_enabled": 0,
       "customer_projection_rows": 0,
@@ -216,13 +229,13 @@
       "cloud_ready": true,
       "expected_interval_seconds": 900,
       "contact_observation_started": true,
-      "last_authenticated_recheck_poll": "2026-10-11T19:08:50.131Z",
+      "last_authenticated_recheck_poll": "2026-10-11T19:24:00.659Z",
       "expected_discovery_interval_seconds": 10800,
       "expected_export_lag_seconds": 3600,
       "recent_poll_intervals_seconds": [
+        910.528,
         910.647,
-        909.058,
-        909.456
+        909.058
       ],
       "host_recently_contacting": true,
       "cadence_verified": true,
@@ -279,7 +292,7 @@
   },
   "preservation": {
     "schema": "findpitches-v3-customer-preview-preservation-v1",
-    "as_of": "2026-10-11T19:19:59.943Z",
+    "as_of": "2026-10-11T19:41:54.475Z",
     "receipts_compared": 15811,
     "source_facts_compared": 108819,
     "existing_identities_compared": 7077,
