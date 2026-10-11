@@ -1,0 +1,4240 @@
+{
+  "schema": "findpitches-v3-international-blockers-v1",
+  "as_of": "2026-10-11T13:59:58.718Z",
+  "markets": {
+    "AU": {
+      "all_commercial": {
+        "entities": 303,
+        "ready": 2,
+        "verified": 2,
+        "watch": 13,
+        "quarantined": 82,
+        "blocked": 206,
+        "awaiting_verification": 243,
+        "stale_expired": 41,
+        "source_verified_but_not_ready": 0,
+        "source_complete_but_selected_mismatch": 23,
+        "organiser_only_review_candidates": 1,
+        "latest_source_verdicts": {
+          "quarantine": 74,
+          "unverified": 129,
+          "never_checked": 98,
+          "verified": 2
+        },
+        "selected_states": {
+          "CLOSED": 34,
+          "ROLLING": 54,
+          "ENQUIRY_AVAILABLE": 66,
+          "OPEN_NOW": 44,
+          "UNKNOWN": 103,
+          "WATCH": 2
+        },
+        "reason_codes": {
+          "event_application_route_missing_or_ambiguous": 39,
+          "open_vendor_application_not_proved": 40,
+          "selected_event_start_disagrees_with_proof": 35,
+          "selected_event_end_disagrees_with_proof": 30,
+          "selected_application_state_disagrees_with_proof": 40,
+          "source_declared_closed": 30,
+          "proof_missing_expired_or_revision_changed": 243,
+          "past_event_end": 16,
+          "single_event_source_data_missing": 120,
+          "application_state_requires_recheck": 149,
+          "source_backed_location_missing": 205,
+          "organiser_missing": 109,
+          "platform_index_is_not_an_opportunity": 1,
+          "selected_organiser_disagrees_with_proof": 32,
+          "unresolved_evidence_conflict": 35,
+          "event_content_scope_missing": 8,
+          "source_qualification_requires_review": 4,
+          "selected_event_name_disagrees_with_proof": 1,
+          "contradictory_event_name_edition": 1,
+          "contradictory_heading_edition": 1,
+          "source_edition_identity_mismatch": 2,
+          "social_page_is_discovery_only": 3,
+          "source_http_403": 1,
+          "verified_organiser_missing": 1,
+          "stale_edition": 1,
+          "vendor_application_not_proved": 1
+        },
+        "blocker_categories": {
+          "date_or_edition_proof": 42,
+          "application_route_or_state": 196,
+          "proof_missing_expired_or_revision_changed": 243,
+          "source_parser_binding": 128,
+          "venue_or_location_proof": 205,
+          "organiser_proof": 141,
+          "discovery_page_is_not_an_opportunity": 4,
+          "identity_or_evidence_hold": 35,
+          "source_transport": 1
+        }
+      },
+      "structured_membership": {
+        "entities": 200,
+        "ready": 2,
+        "verified": 2,
+        "watch": 13,
+        "quarantined": 74,
+        "blocked": 111,
+        "awaiting_verification": 144,
+        "stale_expired": 39,
+        "source_verified_but_not_ready": 0,
+        "source_complete_but_selected_mismatch": 23,
+        "organiser_only_review_candidates": 1,
+        "latest_source_verdicts": {
+          "quarantine": 70,
+          "unverified": 128,
+          "verified": 2
+        },
+        "selected_states": {
+          "CLOSED": 34,
+          "ROLLING": 54,
+          "ENQUIRY_AVAILABLE": 66,
+          "OPEN_NOW": 44,
+          "WATCH": 2
+        },
+        "reason_codes": {
+          "event_application_route_missing_or_ambiguous": 39,
+          "open_vendor_application_not_proved": 39,
+          "selected_event_start_disagrees_with_proof": 35,
+          "selected_event_end_disagrees_with_proof": 30,
+          "selected_application_state_disagrees_with_proof": 40,
+          "source_declared_closed": 30,
+          "proof_missing_expired_or_revision_changed": 144,
+          "past_event_end": 13,
+          "single_event_source_data_missing": 120,
+          "application_state_requires_recheck": 53,
+          "source_backed_location_missing": 107,
+          "platform_index_is_not_an_opportunity": 1,
+          "organiser_missing": 9,
+          "selected_organiser_disagrees_with_proof": 32,
+          "unresolved_evidence_conflict": 35,
+          "event_content_scope_missing": 7,
+          "selected_event_name_disagrees_with_proof": 1,
+          "contradictory_event_name_edition": 1,
+          "contradictory_heading_edition": 1,
+          "source_edition_identity_mismatch": 2,
+          "source_http_403": 1
+        },
+        "blocker_categories": {
+          "date_or_edition_proof": 39,
+          "application_route_or_state": 99,
+          "proof_missing_expired_or_revision_changed": 144,
+          "source_parser_binding": 127,
+          "venue_or_location_proof": 107,
+          "organiser_proof": 41,
+          "discovery_page_is_not_an_opportunity": 1,
+          "identity_or_evidence_hold": 35,
+          "source_transport": 1
+        }
+      },
+      "by_source": {
+        "localstalls.com": {
+          "all_commercial": {
+            "entities": 183,
+            "ready": 2,
+            "verified": 2,
+            "watch": 7,
+            "quarantined": 69,
+            "blocked": 105,
+            "awaiting_verification": 128,
+            "stale_expired": 38,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 23,
+            "organiser_only_review_candidates": 1,
+            "latest_source_verdicts": {
+              "quarantine": 69,
+              "unverified": 112,
+              "verified": 2
+            },
+            "selected_states": {
+              "CLOSED": 32,
+              "ROLLING": 53,
+              "ENQUIRY_AVAILABLE": 66,
+              "OPEN_NOW": 32
+            },
+            "reason_codes": {
+              "event_application_route_missing_or_ambiguous": 39,
+              "open_vendor_application_not_proved": 39,
+              "selected_event_start_disagrees_with_proof": 35,
+              "selected_event_end_disagrees_with_proof": 30,
+              "selected_application_state_disagrees_with_proof": 40,
+              "source_declared_closed": 29,
+              "proof_missing_expired_or_revision_changed": 128,
+              "past_event_end": 12,
+              "single_event_source_data_missing": 112,
+              "application_state_requires_recheck": 53,
+              "source_backed_location_missing": 105,
+              "selected_organiser_disagrees_with_proof": 32,
+              "unresolved_evidence_conflict": 31,
+              "selected_event_name_disagrees_with_proof": 1,
+              "contradictory_event_name_edition": 1,
+              "contradictory_heading_edition": 1,
+              "source_edition_identity_mismatch": 2,
+              "organiser_missing": 2
+            },
+            "blocker_categories": {
+              "date_or_edition_proof": 38,
+              "application_route_or_state": 98,
+              "proof_missing_expired_or_revision_changed": 128,
+              "source_parser_binding": 112,
+              "venue_or_location_proof": 105,
+              "identity_or_evidence_hold": 31,
+              "organiser_proof": 34
+            }
+          },
+          "structured_membership": {
+            "entities": 183,
+            "ready": 2,
+            "verified": 2,
+            "watch": 7,
+            "quarantined": 69,
+            "blocked": 105,
+            "awaiting_verification": 128,
+            "stale_expired": 38,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 23,
+            "organiser_only_review_candidates": 1,
+            "latest_source_verdicts": {
+              "quarantine": 69,
+              "unverified": 112,
+              "verified": 2
+            },
+            "selected_states": {
+              "CLOSED": 32,
+              "ROLLING": 53,
+              "ENQUIRY_AVAILABLE": 66,
+              "OPEN_NOW": 32
+            },
+            "reason_codes": {
+              "event_application_route_missing_or_ambiguous": 39,
+              "open_vendor_application_not_proved": 39,
+              "selected_event_start_disagrees_with_proof": 35,
+              "selected_event_end_disagrees_with_proof": 30,
+              "selected_application_state_disagrees_with_proof": 40,
+              "source_declared_closed": 29,
+              "proof_missing_expired_or_revision_changed": 128,
+              "past_event_end": 12,
+              "single_event_source_data_missing": 112,
+              "application_state_requires_recheck": 53,
+              "source_backed_location_missing": 105,
+              "selected_organiser_disagrees_with_proof": 32,
+              "unresolved_evidence_conflict": 31,
+              "selected_event_name_disagrees_with_proof": 1,
+              "contradictory_event_name_edition": 1,
+              "contradictory_heading_edition": 1,
+              "source_edition_identity_mismatch": 2,
+              "organiser_missing": 2
+            },
+            "blocker_categories": {
+              "date_or_edition_proof": 38,
+              "application_route_or_state": 98,
+              "proof_missing_expired_or_revision_changed": 128,
+              "source_parser_binding": 112,
+              "venue_or_location_proof": 105,
+              "identity_or_evidence_hold": 31,
+              "organiser_proof": 34
+            }
+          }
+        },
+        "mfdays.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "platform_index_is_not_an_opportunity": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "discovery_page_is_not_an_opportunity": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "platform_index_is_not_an_opportunity": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "discovery_page_is_not_an_opportunity": 1
+            }
+          }
+        },
+        "sefd.com.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "partyinthepaddockfestival.com.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "lardnerpark.com.au": {
+          "all_commercial": {
+            "entities": 2,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 2,
+            "awaiting_verification": 2,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 2
+            },
+            "selected_states": {
+              "OPEN_NOW": 1,
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 2,
+              "past_event_end": 1,
+              "proof_missing_expired_or_revision_changed": 2,
+              "source_backed_location_missing": 2,
+              "organiser_missing": 1,
+              "source_declared_closed": 1
+            },
+            "blocker_categories": {
+              "date_or_edition_proof": 1,
+              "organiser_proof": 1,
+              "venue_or_location_proof": 2,
+              "source_parser_binding": 2,
+              "proof_missing_expired_or_revision_changed": 2,
+              "application_route_or_state": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 2,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 2,
+            "awaiting_verification": 2,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 2
+            },
+            "selected_states": {
+              "OPEN_NOW": 1,
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 2,
+              "past_event_end": 1,
+              "proof_missing_expired_or_revision_changed": 2,
+              "source_backed_location_missing": 2,
+              "organiser_missing": 1,
+              "source_declared_closed": 1
+            },
+            "blocker_categories": {
+              "date_or_edition_proof": 1,
+              "organiser_proof": 1,
+              "venue_or_location_proof": 2,
+              "source_parser_binding": 2,
+              "proof_missing_expired_or_revision_changed": 2,
+              "application_route_or_state": 1
+            }
+          }
+        },
+        "stkildafestival.com.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "ballaratbegoniafestival.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "kingston.vic.gov.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "WATCH": 1
+            },
+            "reason_codes": {
+              "source_http_403": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_transport": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "WATCH": 1
+            },
+            "reason_codes": {
+              "source_http_403": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_transport": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "busselton.wa.gov.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "WATCH": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "WATCH": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "aggrow.com.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "kondinin.wa.gov.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "acmruralevents.com.au": {
+          "all_commercial": {
+            "entities": 2,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 2,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "never_checked": 1,
+              "unverified": 1
+            },
+            "selected_states": {
+              "UNKNOWN": 1,
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 2,
+              "source_backed_location_missing": 1,
+              "organiser_missing": 1,
+              "single_event_source_data_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "venue_or_location_proof": 1,
+              "application_route_or_state": 1,
+              "proof_missing_expired_or_revision_changed": 2,
+              "source_parser_binding": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "sdwk.wa.gov.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "agfest.com.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "qvm.com.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 1,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 1,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "womadelaide.com.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "ciaf.com.au": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        }
+      },
+      "structured_open_by_source": {
+        "localstalls.com": {
+          "entities": 32,
+          "ready": 2,
+          "verified": 2,
+          "watch": 0,
+          "quarantined": 24,
+          "blocked": 6,
+          "awaiting_verification": 11,
+          "stale_expired": 5,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 19,
+          "organiser_only_review_candidates": 1,
+          "latest_source_verdicts": {
+            "unverified": 6,
+            "quarantine": 24,
+            "verified": 2
+          },
+          "selected_states": {
+            "OPEN_NOW": 32
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 6,
+            "proof_missing_expired_or_revision_changed": 11,
+            "source_backed_location_missing": 6,
+            "selected_organiser_disagrees_with_proof": 23,
+            "unresolved_evidence_conflict": 22,
+            "selected_event_name_disagrees_with_proof": 1,
+            "selected_event_start_disagrees_with_proof": 1
+          },
+          "blocker_categories": {
+            "venue_or_location_proof": 6,
+            "source_parser_binding": 6,
+            "proof_missing_expired_or_revision_changed": 11,
+            "identity_or_evidence_hold": 22,
+            "organiser_proof": 23,
+            "date_or_edition_proof": 1
+          }
+        },
+        "mfdays.com": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 1,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "quarantine": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "platform_index_is_not_an_opportunity": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 1,
+            "discovery_page_is_not_an_opportunity": 1
+          }
+        },
+        "sefd.com.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 1,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "event_content_scope_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 1,
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "partyinthepaddockfestival.com.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 1,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "event_content_scope_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 1,
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "lardnerpark.com.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 1,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "event_content_scope_missing": 1,
+            "past_event_end": 1,
+            "proof_missing_expired_or_revision_changed": 1,
+            "source_backed_location_missing": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "date_or_edition_proof": 1,
+            "organiser_proof": 1,
+            "venue_or_location_proof": 1,
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "stkildafestival.com.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 1,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 1,
+            "unresolved_evidence_conflict": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          },
+          "blocker_categories": {
+            "identity_or_evidence_hold": 1,
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "ballaratbegoniafestival.com": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 1,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "event_content_scope_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 1,
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "aggrow.com.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 1,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "event_content_scope_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          },
+          "blocker_categories": {
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "kondinin.wa.gov.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 1,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          },
+          "blocker_categories": {
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "sdwk.wa.gov.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 1,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          },
+          "blocker_categories": {
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "agfest.com.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 1,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "event_content_scope_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          },
+          "blocker_categories": {
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "acmruralevents.com.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 1,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          },
+          "blocker_categories": {
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "ciaf.com.au": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 1,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 1,
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        }
+      },
+      "sources_without_structured_membership": {
+        "domains": 76,
+        "entities": 102
+      }
+    },
+    "NZ": {
+      "all_commercial": {
+        "entities": 292,
+        "ready": 4,
+        "verified": 4,
+        "watch": 5,
+        "quarantined": 94,
+        "blocked": 189,
+        "awaiting_verification": 208,
+        "stale_expired": 59,
+        "source_verified_but_not_ready": 0,
+        "source_complete_but_selected_mismatch": 2,
+        "organiser_only_review_candidates": 0,
+        "latest_source_verdicts": {
+          "unverified": 10,
+          "never_checked": 194,
+          "quarantine": 84,
+          "verified": 4
+        },
+        "selected_states": {
+          "ROLLING": 3,
+          "UNKNOWN": 200,
+          "OPEN_NOW": 28,
+          "CLOSED": 52,
+          "ENQUIRY_AVAILABLE": 9
+        },
+        "reason_codes": {
+          "single_event_source_data_missing": 8,
+          "proof_missing_expired_or_revision_changed": 208,
+          "organiser_missing": 200,
+          "application_state_requires_recheck": 191,
+          "source_backed_location_missing": 197,
+          "verified_organiser_missing": 27,
+          "cluemart_trader_application_not_proved": 23,
+          "open_vendor_application_not_proved": 33,
+          "selected_event_start_disagrees_with_proof": 32,
+          "selected_event_end_disagrees_with_proof": 32,
+          "selected_application_state_disagrees_with_proof": 34,
+          "past_event_end": 31,
+          "source_parent_event_binding_required": 1,
+          "stale_edition": 2,
+          "vendor_application_not_proved": 1,
+          "source_country_market_mismatch": 2,
+          "source_qualification_requires_review": 7,
+          "platform_index_is_not_an_opportunity": 1,
+          "unresolved_evidence_conflict": 4,
+          "event_application_route_missing_or_ambiguous": 9,
+          "selected_event_name_disagrees_with_proof": 4,
+          "selected_organiser_disagrees_with_proof": 2,
+          "selected_location_disagrees_with_proof": 2,
+          "source_declared_closed": 52,
+          "event_identity_not_bound_to_page": 45,
+          "social_page_is_discovery_only": 2,
+          "application_deadline_passed": 1,
+          "application_closed": 1,
+          "event_content_scope_missing": 2
+        },
+        "blocker_categories": {
+          "organiser_proof": 225,
+          "source_parser_binding": 55,
+          "proof_missing_expired_or_revision_changed": 208,
+          "venue_or_location_proof": 199,
+          "application_route_or_state": 270,
+          "date_or_edition_proof": 39,
+          "identity_or_evidence_hold": 51,
+          "geography_proof": 2,
+          "discovery_page_is_not_an_opportunity": 3
+        }
+      },
+      "structured_membership": {
+        "entities": 92,
+        "ready": 4,
+        "verified": 4,
+        "watch": 5,
+        "quarantined": 79,
+        "blocked": 4,
+        "awaiting_verification": 12,
+        "stale_expired": 53,
+        "source_verified_but_not_ready": 0,
+        "source_complete_but_selected_mismatch": 1,
+        "organiser_only_review_candidates": 0,
+        "latest_source_verdicts": {
+          "unverified": 9,
+          "quarantine": 79,
+          "verified": 4
+        },
+        "selected_states": {
+          "ROLLING": 3,
+          "OPEN_NOW": 27,
+          "CLOSED": 52,
+          "ENQUIRY_AVAILABLE": 9,
+          "UNKNOWN": 1
+        },
+        "reason_codes": {
+          "single_event_source_data_missing": 8,
+          "proof_missing_expired_or_revision_changed": 12,
+          "organiser_missing": 5,
+          "verified_organiser_missing": 27,
+          "cluemart_trader_application_not_proved": 23,
+          "open_vendor_application_not_proved": 32,
+          "selected_event_start_disagrees_with_proof": 31,
+          "selected_event_end_disagrees_with_proof": 31,
+          "selected_application_state_disagrees_with_proof": 33,
+          "past_event_end": 25,
+          "platform_index_is_not_an_opportunity": 1,
+          "source_backed_location_missing": 4,
+          "event_application_route_missing_or_ambiguous": 9,
+          "selected_event_name_disagrees_with_proof": 3,
+          "selected_organiser_disagrees_with_proof": 2,
+          "selected_location_disagrees_with_proof": 1,
+          "source_declared_closed": 52,
+          "event_identity_not_bound_to_page": 45,
+          "application_state_requires_recheck": 8,
+          "event_content_scope_missing": 1
+        },
+        "blocker_categories": {
+          "organiser_proof": 30,
+          "source_parser_binding": 54,
+          "proof_missing_expired_or_revision_changed": 12,
+          "date_or_edition_proof": 32,
+          "application_route_or_state": 85,
+          "venue_or_location_proof": 5,
+          "discovery_page_is_not_an_opportunity": 1,
+          "identity_or_evidence_hold": 45
+        }
+      },
+      "by_source": {
+        "otagofarmersmarket.org.nz": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "cluemart.co.nz": {
+          "all_commercial": {
+            "entities": 68,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 68,
+            "blocked": 0,
+            "awaiting_verification": 2,
+            "stale_expired": 45,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 68
+            },
+            "selected_states": {
+              "OPEN_NOW": 22,
+              "CLOSED": 45,
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "verified_organiser_missing": 23,
+              "cluemart_trader_application_not_proved": 23,
+              "open_vendor_application_not_proved": 23,
+              "selected_event_start_disagrees_with_proof": 23,
+              "selected_event_end_disagrees_with_proof": 23,
+              "selected_application_state_disagrees_with_proof": 23,
+              "past_event_end": 23,
+              "event_identity_not_bound_to_page": 45,
+              "source_declared_closed": 45,
+              "proof_missing_expired_or_revision_changed": 2,
+              "selected_event_name_disagrees_with_proof": 1
+            },
+            "blocker_categories": {
+              "date_or_edition_proof": 23,
+              "organiser_proof": 23,
+              "application_route_or_state": 68,
+              "identity_or_evidence_hold": 45,
+              "source_parser_binding": 45,
+              "proof_missing_expired_or_revision_changed": 2
+            }
+          },
+          "structured_membership": {
+            "entities": 68,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 68,
+            "blocked": 0,
+            "awaiting_verification": 2,
+            "stale_expired": 45,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 68
+            },
+            "selected_states": {
+              "OPEN_NOW": 22,
+              "CLOSED": 45,
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "verified_organiser_missing": 23,
+              "cluemart_trader_application_not_proved": 23,
+              "open_vendor_application_not_proved": 23,
+              "selected_event_start_disagrees_with_proof": 23,
+              "selected_event_end_disagrees_with_proof": 23,
+              "selected_application_state_disagrees_with_proof": 23,
+              "past_event_end": 23,
+              "event_identity_not_bound_to_page": 45,
+              "source_declared_closed": 45,
+              "proof_missing_expired_or_revision_changed": 2,
+              "selected_event_name_disagrees_with_proof": 1
+            },
+            "blocker_categories": {
+              "date_or_edition_proof": 23,
+              "organiser_proof": 23,
+              "application_route_or_state": 68,
+              "identity_or_evidence_hold": 45,
+              "source_parser_binding": 45,
+              "proof_missing_expired_or_revision_changed": 2
+            }
+          }
+        },
+        "rhythmandalps.co.nz": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "platform_index_is_not_an_opportunity": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "venue_or_location_proof": 1,
+              "discovery_page_is_not_an_opportunity": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "platform_index_is_not_an_opportunity": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "venue_or_location_proof": 1,
+              "discovery_page_is_not_an_opportunity": 1
+            }
+          }
+        },
+        "localstalls.com": {
+          "all_commercial": {
+            "entities": 22,
+            "ready": 4,
+            "verified": 4,
+            "watch": 5,
+            "quarantined": 11,
+            "blocked": 2,
+            "awaiting_verification": 8,
+            "stale_expired": 9,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 2,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "verified": 4,
+              "quarantine": 11,
+              "unverified": 7
+            },
+            "selected_states": {
+              "OPEN_NOW": 5,
+              "CLOSED": 7,
+              "ENQUIRY_AVAILABLE": 9,
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "event_application_route_missing_or_ambiguous": 9,
+              "open_vendor_application_not_proved": 9,
+              "selected_event_name_disagrees_with_proof": 2,
+              "selected_organiser_disagrees_with_proof": 2,
+              "selected_event_start_disagrees_with_proof": 9,
+              "selected_event_end_disagrees_with_proof": 9,
+              "selected_location_disagrees_with_proof": 1,
+              "selected_application_state_disagrees_with_proof": 10,
+              "source_declared_closed": 7,
+              "single_event_source_data_missing": 7,
+              "application_state_requires_recheck": 7,
+              "proof_missing_expired_or_revision_changed": 8,
+              "source_backed_location_missing": 2,
+              "verified_organiser_missing": 4,
+              "organiser_missing": 4,
+              "past_event_end": 3
+            },
+            "blocker_categories": {
+              "date_or_edition_proof": 10,
+              "organiser_proof": 6,
+              "venue_or_location_proof": 3,
+              "application_route_or_state": 16,
+              "source_parser_binding": 7,
+              "proof_missing_expired_or_revision_changed": 8
+            }
+          },
+          "structured_membership": {
+            "entities": 21,
+            "ready": 4,
+            "verified": 4,
+            "watch": 5,
+            "quarantined": 10,
+            "blocked": 2,
+            "awaiting_verification": 8,
+            "stale_expired": 8,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 1,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "verified": 4,
+              "quarantine": 10,
+              "unverified": 7
+            },
+            "selected_states": {
+              "OPEN_NOW": 4,
+              "CLOSED": 7,
+              "ENQUIRY_AVAILABLE": 9,
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "event_application_route_missing_or_ambiguous": 9,
+              "open_vendor_application_not_proved": 9,
+              "selected_event_name_disagrees_with_proof": 2,
+              "selected_organiser_disagrees_with_proof": 2,
+              "selected_event_start_disagrees_with_proof": 8,
+              "selected_event_end_disagrees_with_proof": 8,
+              "selected_location_disagrees_with_proof": 1,
+              "selected_application_state_disagrees_with_proof": 10,
+              "source_declared_closed": 7,
+              "single_event_source_data_missing": 7,
+              "application_state_requires_recheck": 7,
+              "proof_missing_expired_or_revision_changed": 8,
+              "source_backed_location_missing": 2,
+              "verified_organiser_missing": 4,
+              "organiser_missing": 4,
+              "past_event_end": 2
+            },
+            "blocker_categories": {
+              "date_or_edition_proof": 9,
+              "organiser_proof": 6,
+              "venue_or_location_proof": 3,
+              "application_route_or_state": 16,
+              "source_parser_binding": 7,
+              "proof_missing_expired_or_revision_changed": 8
+            }
+          }
+        },
+        "agfest.co.nz": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "UNKNOWN": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "venue_or_location_proof": 1,
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "UNKNOWN": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "venue_or_location_proof": 1,
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        }
+      },
+      "structured_open_by_source": {
+        "cluemart.co.nz": {
+          "entities": 22,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 22,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "quarantine": 22
+          },
+          "selected_states": {
+            "OPEN_NOW": 22
+          },
+          "reason_codes": {
+            "verified_organiser_missing": 22,
+            "cluemart_trader_application_not_proved": 22,
+            "open_vendor_application_not_proved": 22,
+            "selected_event_start_disagrees_with_proof": 22,
+            "selected_event_end_disagrees_with_proof": 22,
+            "selected_application_state_disagrees_with_proof": 22,
+            "past_event_end": 22,
+            "selected_event_name_disagrees_with_proof": 1
+          },
+          "blocker_categories": {
+            "date_or_edition_proof": 22,
+            "organiser_proof": 22,
+            "application_route_or_state": 22
+          }
+        },
+        "rhythmandalps.co.nz": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 1,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "quarantine": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "platform_index_is_not_an_opportunity": 1,
+            "source_backed_location_missing": 1
+          },
+          "blocker_categories": {
+            "venue_or_location_proof": 1,
+            "discovery_page_is_not_an_opportunity": 1
+          }
+        },
+        "localstalls.com": {
+          "entities": 4,
+          "ready": 4,
+          "verified": 4,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "verified": 4
+          },
+          "selected_states": {
+            "OPEN_NOW": 4
+          },
+          "reason_codes": {},
+          "blocker_categories": {}
+        }
+      },
+      "sources_without_structured_membership": {
+        "domains": 118,
+        "entities": 199
+      }
+    },
+    "CA": {
+      "all_commercial": {
+        "entities": 172,
+        "ready": 0,
+        "verified": 0,
+        "watch": 10,
+        "quarantined": 21,
+        "blocked": 141,
+        "awaiting_verification": 164,
+        "stale_expired": 4,
+        "source_verified_but_not_ready": 0,
+        "source_complete_but_selected_mismatch": 0,
+        "organiser_only_review_candidates": 0,
+        "latest_source_verdicts": {
+          "never_checked": 132,
+          "quarantine": 9,
+          "unverified": 31
+        },
+        "selected_states": {
+          "UNKNOWN": 143,
+          "OPEN_NOW": 9,
+          "CLOSED": 4,
+          "ENQUIRY_AVAILABLE": 4,
+          "ROLLING": 12
+        },
+        "reason_codes": {
+          "application_state_requires_recheck": 138,
+          "proof_missing_expired_or_revision_changed": 164,
+          "source_backed_location_missing": 139,
+          "organiser_missing": 157,
+          "editorial_page_is_discovery_only": 3,
+          "single_event_source_data_missing": 17,
+          "source_declared_closed": 1,
+          "social_page_is_discovery_only": 4,
+          "platform_index_is_not_an_opportunity": 2,
+          "source_qualification_requires_review": 5,
+          "unresolved_evidence_conflict": 9,
+          "source_response_size_limit": 5,
+          "event_content_scope_missing": 6,
+          "source_fetch_failed": 2,
+          "past_event_end": 1,
+          "source_http_500": 1
+        },
+        "blocker_categories": {
+          "organiser_proof": 157,
+          "venue_or_location_proof": 139,
+          "application_route_or_state": 139,
+          "proof_missing_expired_or_revision_changed": 164,
+          "discovery_page_is_not_an_opportunity": 9,
+          "source_parser_binding": 23,
+          "identity_or_evidence_hold": 9,
+          "source_transport": 3,
+          "date_or_edition_proof": 1
+        }
+      },
+      "structured_membership": {
+        "entities": 31,
+        "ready": 0,
+        "verified": 0,
+        "watch": 8,
+        "quarantined": 9,
+        "blocked": 14,
+        "awaiting_verification": 27,
+        "stale_expired": 3,
+        "source_verified_but_not_ready": 0,
+        "source_complete_but_selected_mismatch": 0,
+        "organiser_only_review_candidates": 0,
+        "latest_source_verdicts": {
+          "quarantine": 5,
+          "unverified": 26
+        },
+        "selected_states": {
+          "OPEN_NOW": 9,
+          "CLOSED": 4,
+          "ENQUIRY_AVAILABLE": 4,
+          "ROLLING": 12,
+          "UNKNOWN": 2
+        },
+        "reason_codes": {
+          "editorial_page_is_discovery_only": 3,
+          "organiser_missing": 20,
+          "single_event_source_data_missing": 17,
+          "source_declared_closed": 1,
+          "proof_missing_expired_or_revision_changed": 27,
+          "application_state_requires_recheck": 6,
+          "platform_index_is_not_an_opportunity": 2,
+          "unresolved_evidence_conflict": 6,
+          "event_content_scope_missing": 4,
+          "source_fetch_failed": 2,
+          "source_backed_location_missing": 3,
+          "source_response_size_limit": 2,
+          "source_http_500": 1
+        },
+        "blocker_categories": {
+          "organiser_proof": 20,
+          "discovery_page_is_not_an_opportunity": 5,
+          "application_route_or_state": 7,
+          "source_parser_binding": 21,
+          "proof_missing_expired_or_revision_changed": 27,
+          "identity_or_evidence_hold": 6,
+          "source_transport": 3,
+          "venue_or_location_proof": 3
+        }
+      },
+      "by_source": {
+        "heho.ca": {
+          "all_commercial": {
+            "entities": 2,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 2,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 2
+            },
+            "selected_states": {
+              "OPEN_NOW": 2
+            },
+            "reason_codes": {
+              "editorial_page_is_discovery_only": 2,
+              "organiser_missing": 2,
+              "unresolved_evidence_conflict": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 2,
+              "discovery_page_is_not_an_opportunity": 2,
+              "identity_or_evidence_hold": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 2,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 2,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 2
+            },
+            "selected_states": {
+              "OPEN_NOW": 2
+            },
+            "reason_codes": {
+              "editorial_page_is_discovery_only": 2,
+              "organiser_missing": 2,
+              "unresolved_evidence_conflict": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 2,
+              "discovery_page_is_not_an_opportunity": 2,
+              "identity_or_evidence_hold": 1
+            }
+          }
+        },
+        "kitchenermarket.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "source_declared_closed": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "source_declared_closed": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "theoshawamarkets.ca": {
+          "all_commercial": {
+            "entities": 2,
+            "ready": 0,
+            "verified": 0,
+            "watch": 2,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 2,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 2
+            },
+            "selected_states": {
+              "ENQUIRY_AVAILABLE": 2
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 2,
+              "application_state_requires_recheck": 2,
+              "proof_missing_expired_or_revision_changed": 2
+            },
+            "blocker_categories": {
+              "application_route_or_state": 2,
+              "source_parser_binding": 2,
+              "proof_missing_expired_or_revision_changed": 2
+            }
+          },
+          "structured_membership": {
+            "entities": 2,
+            "ready": 0,
+            "verified": 0,
+            "watch": 2,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 2,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 2
+            },
+            "selected_states": {
+              "ENQUIRY_AVAILABLE": 2
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 2,
+              "application_state_requires_recheck": 2,
+              "proof_missing_expired_or_revision_changed": 2
+            },
+            "blocker_categories": {
+              "application_route_or_state": 2,
+              "source_parser_binding": 2,
+              "proof_missing_expired_or_revision_changed": 2
+            }
+          }
+        },
+        "carpfarmersmarket.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "popmontreal.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "UNKNOWN": 1
+            },
+            "reason_codes": {
+              "editorial_page_is_discovery_only": 1,
+              "application_state_requires_recheck": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "application_route_or_state": 1,
+              "discovery_page_is_not_an_opportunity": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "UNKNOWN": 1
+            },
+            "reason_codes": {
+              "editorial_page_is_discovery_only": 1,
+              "application_state_requires_recheck": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "application_route_or_state": 1,
+              "discovery_page_is_not_an_opportunity": 1
+            }
+          }
+        },
+        "downtowngeorgetown.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 1,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "platform_index_is_not_an_opportunity": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "discovery_page_is_not_an_opportunity": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 1,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "platform_index_is_not_an_opportunity": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "discovery_page_is_not_an_opportunity": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "marketspread.com": {
+          "all_commercial": {
+            "entities": 6,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 6,
+            "awaiting_verification": 6,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 5,
+              "never_checked": 1
+            },
+            "selected_states": {
+              "ROLLING": 2,
+              "UNKNOWN": 1,
+              "OPEN_NOW": 3
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 5,
+              "proof_missing_expired_or_revision_changed": 6,
+              "organiser_missing": 6,
+              "application_state_requires_recheck": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 6,
+              "source_parser_binding": 5,
+              "proof_missing_expired_or_revision_changed": 6,
+              "venue_or_location_proof": 1,
+              "application_route_or_state": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 5,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 5,
+            "awaiting_verification": 5,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 5
+            },
+            "selected_states": {
+              "ROLLING": 2,
+              "OPEN_NOW": 3
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 5,
+              "proof_missing_expired_or_revision_changed": 5,
+              "organiser_missing": 5
+            },
+            "blocker_categories": {
+              "organiser_proof": 5,
+              "source_parser_binding": 5,
+              "proof_missing_expired_or_revision_changed": 5
+            }
+          }
+        },
+        "quesnelmarket.net": {
+          "all_commercial": {
+            "entities": 2,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1,
+              "never_checked": 1
+            },
+            "selected_states": {
+              "ROLLING": 1,
+              "UNKNOWN": 1
+            },
+            "reason_codes": {
+              "platform_index_is_not_an_opportunity": 1,
+              "unresolved_evidence_conflict": 1,
+              "organiser_missing": 2,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "organiser_proof": 2,
+              "discovery_page_is_not_an_opportunity": 1,
+              "venue_or_location_proof": 1,
+              "application_route_or_state": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 0,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "quarantine": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "platform_index_is_not_an_opportunity": 1,
+              "unresolved_evidence_conflict": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "organiser_proof": 1,
+              "discovery_page_is_not_an_opportunity": 1
+            }
+          }
+        },
+        "calgaryfarmersmarket.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 1,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 1,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "stjacobsmarket.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "docs.google.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "missioncityfarmersmarket.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "source_fetch_failed": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_transport": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "source_fetch_failed": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_transport": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "ajax.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "UNKNOWN": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "UNKNOWN": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "evergreen.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ENQUIRY_AVAILABLE": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ENQUIRY_AVAILABLE": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "leslievillemarket.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "georginafarmersmarket.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 1,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "venue_or_location_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 1,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "venue_or_location_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "farmersmarketsnovascotia.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ENQUIRY_AVAILABLE": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ENQUIRY_AVAILABLE": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "application_route_or_state": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "thefoldcanada.org": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "brampton.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 1,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "CLOSED": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "unresolved_evidence_conflict": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "identity_or_evidence_hold": 1,
+              "organiser_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "farmersmarketpeterborough.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "thestouffvillemarket.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "venue_or_location_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "event_content_scope_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "venue_or_location_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "creativehub1352.ca": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "source_response_size_limit": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 1,
+            "quarantined": 0,
+            "blocked": 0,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "source_response_size_limit": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            },
+            "blocker_categories": {
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "squamishfarmersmarket.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "source_response_size_limit": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ROLLING": 1
+            },
+            "reason_codes": {
+              "source_response_size_limit": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "canadaslargestribfest.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "source_http_500": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "venue_or_location_proof": 1,
+              "source_transport": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "source_http_500": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "venue_or_location_proof": 1,
+              "source_transport": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "sledisland.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "source_fetch_failed": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_transport": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "source_fetch_failed": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "source_transport": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        }
+      },
+      "structured_open_by_source": {
+        "heho.ca": {
+          "entities": 2,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 2,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "quarantine": 2
+          },
+          "selected_states": {
+            "OPEN_NOW": 2
+          },
+          "reason_codes": {
+            "editorial_page_is_discovery_only": 2,
+            "organiser_missing": 2,
+            "unresolved_evidence_conflict": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 2,
+            "discovery_page_is_not_an_opportunity": 2,
+            "identity_or_evidence_hold": 1
+          }
+        },
+        "marketspread.com": {
+          "entities": 3,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 3,
+          "awaiting_verification": 3,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 3
+          },
+          "selected_states": {
+            "OPEN_NOW": 3
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 3,
+            "proof_missing_expired_or_revision_changed": 3,
+            "organiser_missing": 3
+          },
+          "blocker_categories": {
+            "organiser_proof": 3,
+            "source_parser_binding": 3,
+            "proof_missing_expired_or_revision_changed": 3
+          }
+        },
+        "docs.google.com": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 1,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "event_content_scope_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          },
+          "blocker_categories": {
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "leslievillemarket.com": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 1,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          },
+          "blocker_categories": {
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "canadaslargestribfest.com": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 1,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "source_http_500": 1,
+            "proof_missing_expired_or_revision_changed": 1,
+            "source_backed_location_missing": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 1,
+            "venue_or_location_proof": 1,
+            "source_transport": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        },
+        "sledisland.com": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 1,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "source_fetch_failed": 1,
+            "proof_missing_expired_or_revision_changed": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 1,
+            "source_transport": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        }
+      },
+      "sources_without_structured_membership": {
+        "domains": 96,
+        "entities": 139
+      }
+    },
+    "IE": {
+      "all_commercial": {
+        "entities": 175,
+        "ready": 0,
+        "verified": 0,
+        "watch": 1,
+        "quarantined": 11,
+        "blocked": 163,
+        "awaiting_verification": 171,
+        "stale_expired": 2,
+        "source_verified_but_not_ready": 0,
+        "source_complete_but_selected_mismatch": 0,
+        "organiser_only_review_candidates": 0,
+        "latest_source_verdicts": {
+          "never_checked": 164,
+          "partial": 1,
+          "unverified": 7,
+          "quarantine": 3
+        },
+        "selected_states": {
+          "UNKNOWN": 173,
+          "OPEN_NOW": 1,
+          "ENQUIRY_AVAILABLE": 1
+        },
+        "reason_codes": {
+          "application_state_requires_recheck": 164,
+          "proof_missing_expired_or_revision_changed": 171,
+          "source_backed_location_missing": 173,
+          "organiser_missing": 170,
+          "vendor_application_not_proved": 1,
+          "open_vendor_application_not_proved": 1,
+          "single_event_source_data_missing": 4,
+          "unresolved_evidence_conflict": 3,
+          "event_content_scope_missing": 2,
+          "source_qualification_requires_review": 5,
+          "past_event_end": 2,
+          "social_page_is_discovery_only": 2,
+          "source_redirect_loop": 1,
+          "contradictory_application_deadline_after_event": 1,
+          "source_country_market_mismatch": 1,
+          "selected_application_state_disagrees_with_proof": 1,
+          "source_parent_event_binding_required": 1
+        },
+        "blocker_categories": {
+          "organiser_proof": 170,
+          "venue_or_location_proof": 173,
+          "application_route_or_state": 164,
+          "proof_missing_expired_or_revision_changed": 171,
+          "source_parser_binding": 6,
+          "identity_or_evidence_hold": 4,
+          "date_or_edition_proof": 2,
+          "discovery_page_is_not_an_opportunity": 2,
+          "geography_proof": 1
+        }
+      },
+      "structured_membership": {
+        "entities": 2,
+        "ready": 0,
+        "verified": 0,
+        "watch": 0,
+        "quarantined": 0,
+        "blocked": 2,
+        "awaiting_verification": 2,
+        "stale_expired": 0,
+        "source_verified_but_not_ready": 0,
+        "source_complete_but_selected_mismatch": 0,
+        "organiser_only_review_candidates": 0,
+        "latest_source_verdicts": {
+          "unverified": 2
+        },
+        "selected_states": {
+          "OPEN_NOW": 1,
+          "ENQUIRY_AVAILABLE": 1
+        },
+        "reason_codes": {
+          "single_event_source_data_missing": 1,
+          "proof_missing_expired_or_revision_changed": 2,
+          "source_backed_location_missing": 2,
+          "organiser_missing": 1,
+          "source_redirect_loop": 1,
+          "application_state_requires_recheck": 1
+        },
+        "blocker_categories": {
+          "organiser_proof": 1,
+          "venue_or_location_proof": 2,
+          "source_parser_binding": 1,
+          "proof_missing_expired_or_revision_changed": 2,
+          "application_route_or_state": 1
+        }
+      },
+      "by_source": {
+        "docsireland.ie": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "venue_or_location_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "OPEN_NOW": 1
+            },
+            "reason_codes": {
+              "single_event_source_data_missing": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1,
+              "organiser_missing": 1
+            },
+            "blocker_categories": {
+              "organiser_proof": 1,
+              "venue_or_location_proof": 1,
+              "source_parser_binding": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        },
+        "corksummershow.com": {
+          "all_commercial": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ENQUIRY_AVAILABLE": 1
+            },
+            "reason_codes": {
+              "source_redirect_loop": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "venue_or_location_proof": 1,
+              "application_route_or_state": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          },
+          "structured_membership": {
+            "entities": 1,
+            "ready": 0,
+            "verified": 0,
+            "watch": 0,
+            "quarantined": 0,
+            "blocked": 1,
+            "awaiting_verification": 1,
+            "stale_expired": 0,
+            "source_verified_but_not_ready": 0,
+            "source_complete_but_selected_mismatch": 0,
+            "organiser_only_review_candidates": 0,
+            "latest_source_verdicts": {
+              "unverified": 1
+            },
+            "selected_states": {
+              "ENQUIRY_AVAILABLE": 1
+            },
+            "reason_codes": {
+              "source_redirect_loop": 1,
+              "application_state_requires_recheck": 1,
+              "proof_missing_expired_or_revision_changed": 1,
+              "source_backed_location_missing": 1
+            },
+            "blocker_categories": {
+              "venue_or_location_proof": 1,
+              "application_route_or_state": 1,
+              "proof_missing_expired_or_revision_changed": 1
+            }
+          }
+        }
+      },
+      "structured_open_by_source": {
+        "docsireland.ie": {
+          "entities": 1,
+          "ready": 0,
+          "verified": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 1,
+          "awaiting_verification": 1,
+          "stale_expired": 0,
+          "source_verified_but_not_ready": 0,
+          "source_complete_but_selected_mismatch": 0,
+          "organiser_only_review_candidates": 0,
+          "latest_source_verdicts": {
+            "unverified": 1
+          },
+          "selected_states": {
+            "OPEN_NOW": 1
+          },
+          "reason_codes": {
+            "single_event_source_data_missing": 1,
+            "proof_missing_expired_or_revision_changed": 1,
+            "source_backed_location_missing": 1,
+            "organiser_missing": 1
+          },
+          "blocker_categories": {
+            "organiser_proof": 1,
+            "venue_or_location_proof": 1,
+            "source_parser_binding": 1,
+            "proof_missing_expired_or_revision_changed": 1
+          }
+        }
+      },
+      "sources_without_structured_membership": {
+        "domains": 111,
+        "entities": 173
+      }
+    }
+  },
+  "definitions": {
+    "scope": "Distinct linked shadow commercial entities; test/control excluded. Structured membership overlaps commercial origins. Assigned market on held records is discovery identity, not verified geography.",
+    "domain_scope": "Detailed domain rows cover every structured-member source family and include all origins on those domains. Legacy-only domains are counted separately; their entities/reasons remain in all_commercial totals.",
+    "dispositions": "READY/WATCH/quarantined/blocked are exclusive. Verification/stale flags and blocker categories overlap; do not sum them.",
+    "source_reasons": "Retained latest proof reason codes plus current eligibility and freshness. Expired parser reasons are diagnostic history, not a claim of a new visit.",
+    "source_verified_but_not_ready": "Current revision/version/TTL-matched parser VERIFIED report, but selection comparison, identity/evidence holds, eligibility or readiness blocks the entity.",
+    "selected_mismatch_review": "Source complete means current proof has only selected-field disagreement reasons. Organiser-only review candidates additionally have no other eligibility/identity/legacy hold and selected organiser/location present. These counts are review populations, not promised READY upside; no selection is changed by this tool.",
+    "open_cohort": "Selected OPEN_NOW fields, not producer raw volume or independently proved current applications."
+  }
+}

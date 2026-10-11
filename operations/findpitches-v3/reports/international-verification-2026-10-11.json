@@ -1,0 +1,106 @@
+{
+  "schema": "findpitches-v3-international-verification-outcome-v1",
+  "before_as_of": "2026-10-11T13:49:01.890Z",
+  "after_as_of": "2026-10-11T13:59:58.718Z",
+  "max_direct_checks": 75,
+  "direct_entity_checks": 75,
+  "serper_queries_by_this_runner": 0,
+  "groups": {
+    "NZ/cluemart.co.nz": {
+      "checked": 23,
+      "source_verdicts": {
+        "quarantine": 23
+      },
+      "ready_before": 0,
+      "ready_after": 0,
+      "new_ready": 0,
+      "ready_lost": 0,
+      "watch": 0,
+      "quarantined": 23,
+      "blocked": 0,
+      "latest_proof_changed_elsewhere": 0,
+      "reasons": {
+        "verified_organiser_missing": 23,
+        "cluemart_trader_application_not_proved": 23,
+        "open_vendor_application_not_proved": 23,
+        "selected_event_start_disagrees_with_proof": 23,
+        "selected_event_end_disagrees_with_proof": 23,
+        "selected_application_state_disagrees_with_proof": 23,
+        "selected_event_name_disagrees_with_proof": 1
+      }
+    },
+    "ALL": {
+      "checked": 75,
+      "source_verdicts": {
+        "quarantine": 39,
+        "unverified": 31,
+        "verified": 5
+      },
+      "ready_before": 5,
+      "ready_after": 5,
+      "new_ready": 0,
+      "ready_lost": 0,
+      "watch": 3,
+      "quarantined": 39,
+      "blocked": 28,
+      "latest_proof_changed_elsewhere": 0,
+      "reasons": {
+        "verified_organiser_missing": 23,
+        "cluemart_trader_application_not_proved": 23,
+        "open_vendor_application_not_proved": 23,
+        "selected_event_start_disagrees_with_proof": 25,
+        "selected_event_end_disagrees_with_proof": 25,
+        "selected_application_state_disagrees_with_proof": 23,
+        "selected_event_name_disagrees_with_proof": 2,
+        "single_event_source_data_missing": 31,
+        "selected_organiser_disagrees_with_proof": 13
+      }
+    },
+    "AU/localstalls.com": {
+      "checked": 48,
+      "source_verdicts": {
+        "unverified": 30,
+        "quarantine": 16,
+        "verified": 2
+      },
+      "ready_before": 2,
+      "ready_after": 2,
+      "new_ready": 0,
+      "ready_lost": 0,
+      "watch": 3,
+      "quarantined": 16,
+      "blocked": 27,
+      "latest_proof_changed_elsewhere": 0,
+      "reasons": {
+        "single_event_source_data_missing": 30,
+        "selected_organiser_disagrees_with_proof": 13,
+        "selected_event_start_disagrees_with_proof": 2,
+        "selected_event_end_disagrees_with_proof": 2,
+        "selected_event_name_disagrees_with_proof": 1
+      }
+    },
+    "NZ/localstalls.com": {
+      "checked": 4,
+      "source_verdicts": {
+        "verified": 3,
+        "unverified": 1
+      },
+      "ready_before": 3,
+      "ready_after": 3,
+      "new_ready": 0,
+      "ready_lost": 0,
+      "watch": 0,
+      "quarantined": 0,
+      "blocked": 1,
+      "latest_proof_changed_elsewhere": 0,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      }
+    }
+  },
+  "selected_field_changes": [],
+  "scope": "Bounded structured-member direct-source cohort, not full corpus. New READY counted only where the latest proof is this runner result; concurrent deliveries/expiry are separately visible. Verdicts are parser reports; READY includes comparison, holds and current readiness.",
+  "retained_document_replays": 23,
+  "additional_source_fetches_for_replays": 0,
+  "source_clocks_changed_by_replays": 0
+}

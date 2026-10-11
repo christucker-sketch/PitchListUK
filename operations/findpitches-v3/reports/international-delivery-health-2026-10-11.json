@@ -1,0 +1,71 @@
+{
+  "as_of": "2026-10-11T14:04:05.225Z",
+  "cloud_ready": true,
+  "expected_interval_seconds": 900,
+  "contact_observation_started": true,
+  "last_authenticated_recheck_poll": "2026-10-11T13:58:35.284Z",
+  "expected_discovery_interval_seconds": 10800,
+  "expected_export_lag_seconds": 3600,
+  "recent_poll_intervals_seconds": [
+    912.337,
+    912.485,
+    110.715
+  ],
+  "host_recently_contacting": true,
+  "cadence_verified": true,
+  "freshness_warning": false,
+  "immutable_receipts": 7258,
+  "producer_ids": 2103,
+  "last_new_receipt_at": "2026-10-11T11:57:43.466Z",
+  "source_last_checked": "2026-10-11T11:39:57Z",
+  "rechecks": {
+    "pending_entities": 845,
+    "fresh_evidence_ack_eligible": 0,
+    "by_country": [
+      {
+        "market": "AU",
+        "pending_entities": 89,
+        "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "CA",
+        "pending_entities": 13,
+        "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "GB",
+        "pending_entities": 101,
+        "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "IE",
+        "pending_entities": 2,
+        "oldest_requested_at": "2026-10-11T13:46:08.039Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "NZ",
+        "pending_entities": 45,
+        "oldest_requested_at": "2026-10-11T12:01:16.861Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "US",
+        "pending_entities": 595,
+        "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+        "fresh_evidence_ack_eligible": 0
+      }
+    ],
+    "acknowledged_last_24h": 2474,
+    "latest_acknowledgement": "2026-10-11T12:14:15.563Z",
+    "obsolete_requests_resolved": 2,
+    "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+    "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+    "pagination_supported": true,
+    "oldest_request_preserved": true
+  },
+  "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+}

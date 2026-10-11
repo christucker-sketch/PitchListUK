@@ -1,0 +1,31 @@
+{
+  "as_of": "2026-10-11T14:01:57.018Z",
+  "au_open_localstalls_entities": 32,
+  "unresolved_conflicts": [
+    {
+      "reason": "equal_authority_disagreement",
+      "conflicts": 66,
+      "entities": 22
+    }
+  ],
+  "selection_conflict_history": [
+    {
+      "field_name": "lifecycle_state",
+      "reason": "equal_authority_disagreement",
+      "decisions": 1,
+      "entities": 1
+    },
+    {
+      "field_name": "organiser",
+      "reason": "equal_authority_disagreement",
+      "decisions": 66,
+      "entities": 22
+    }
+  ],
+  "queue_due_leased_dead": [],
+  "future_watch_jobs": 9284,
+  "producer_received": {
+    "received_last_hour": 0,
+    "latest_receipt_within_last_hour": null
+  }
+}

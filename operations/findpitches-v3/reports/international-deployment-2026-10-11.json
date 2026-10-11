@@ -1,0 +1,49 @@
+{
+  "as_of": "2026-10-11T13:57:51.665Z",
+  "worker": "findpitches-v3-enrichment-shadow",
+  "application_policy": "current-application-v1.11",
+  "guard": {
+    "publication_enabled": 0,
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "bulk_enabled": 0,
+    "paused": 1
+  },
+  "current_deployment": {
+    "id": "e04ec02c-29ed-4c77-b687-b355c4d694db",
+    "created_on": "2026-10-11T13:57:48.129625Z",
+    "strategy": "percentage",
+    "versions": [
+      {
+        "version_id": "5d45269d-360a-408e-aff6-aeefc987ea78",
+        "percentage": 100
+      }
+    ]
+  },
+  "previous_deployment": {
+    "id": "e4000e54-3cc0-4cb4-986f-6ffab36d117b",
+    "created_on": "2026-10-11T13:48:06.636362Z",
+    "strategy": "percentage",
+    "versions": [
+      {
+        "version_id": "6ad7d9dc-e7df-43cc-a5dc-0697bbd7e19e",
+        "percentage": 100
+      }
+    ]
+  },
+  "full_suite": {
+    "tests": 235,
+    "pass": 235,
+    "fail": 0,
+    "duration_ms": 132001.068064
+  },
+  "focused": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "duration_ms": 197.698864,
+    "scope": "Final operator reporting refinements and adapter regression coverage; runtime full suite passed before these reporting-only refinements."
+  },
+  "frontend_deployed": false,
+  "paid_queries": 0
+}

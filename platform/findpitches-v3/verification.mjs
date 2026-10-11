@@ -3,9 +3,10 @@ import {parseHtml,nodes,first,text,hasClass,decode} from './source-dom.mjs';
 import {safeSourceUrl} from './source-document.mjs';
 import {verifyUKBundle} from './uk-sources.mjs';
 import {verifyUKCouncilForm} from './uk-council.mjs';
+import {verifyClueMart,verifyMarketsIreland} from './international-sources.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
-export const APPLICATION_POLICY_VERSION='current-application-v1.10';
+export const APPLICATION_POLICY_VERSION='current-application-v1.11';
 const COUNTRIES={us:'US',usa:'US','united states':'US','united states of america':'US',gb:'GB',uk:'GB','united kingdom':'GB',england:'GB',scotland:'GB',wales:'GB','northern ireland':'GB',au:'AU',australia:'AU',ca:'CA',canada:'CA',nz:'NZ','new zealand':'NZ',ie:'IE',ireland:'IE',fr:'FR',france:'FR',de:'DE',germany:'DE',kr:'KR','south korea':'KR'};
 const TYPES=new Set(['Event','Festival','BusinessEvent','ExhibitionEvent','SaleEvent']);
 const clean=v=>decode(String(v??'')).replace(/\s+/g,' ').trim();
@@ -111,6 +112,9 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
   if(document.reason||!document.html){report.reasons.push(document.reason??'source_document_missing');return report;}
   try {
     const u=new URL(document.url),host=u.hostname.replace(/^www\./,''),root=parseHtml(document.html);
+    const context={now,version:VERIFIER_VERSION,policy:APPLICATION_POLICY_VERSION,country,calendarDate,eventShape};
+    if(host==='cluemart.co.nz')return verifyClueMart(document,context);
+    if(host==='marketsireland.ie')return verifyMarketsIreland(document,context);
     const social=/(?:^|\.)(facebook\.com|instagram\.com|tiktok\.com|x\.com)$/.test(host);
     if(social){report.page_kind='social';report.status='quarantine';report.reasons=['social_page_is_discovery_only'];return report;}
     if(host==='eventeny.com')report.profile='eventeny';else if(host==='localstalls.com')report.profile='localstalls';else if(host==='ukcraftfairs.com')report.profile='ukcraftfairs';else if(/eventbrite\./.test(host))report.profile='eventbrite';else if(host==='marketspread.com')report.profile='marketspread';

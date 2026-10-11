@@ -1,0 +1,11 @@
+{
+  "schema": "sanitized-source-fixtures-v1",
+  "files": {
+    "cluemart-application-shell.html": {
+      "source_url": "https://cluemart.co.nz/application/little-river-farmers-market",
+      "fetched_at": "2026-10-11T13:22:09.044Z",
+      "source_content_sha256": "cc580c6e45e433312ac058a8e5db52ac6e2693b07bea8432132294a0b13b8a9b",
+      "retained": "Event JSON-LD, actual fallback body and abridged public data frame. Removed unrelated site data, contacts, scripts, assets and owner identifiers. Positive form variants in unit tests are explicitly synthetic; no live application proof claimed."
+    }
+  }
+}
