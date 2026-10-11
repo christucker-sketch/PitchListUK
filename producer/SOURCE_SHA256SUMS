@@ -5,9 +5,12 @@
 6bdb044fddc4d7d89057a41a560b4311316b4c645587f7696969033b8581d8a1  ./README.md
 15e6657093d6738c2f1a69c09bdbb9dd45bf1d1e5147e4af109e65b85bb4751f  ./RESULTS.md
 acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.md
-3327a1fbed2675cbe274c12148441a62f86ea538ef64c1dfee5987833121a494  ./deploy/pi/README.md
-95c08051253cf94c4ca75fb0f056ed73c491d6c28bc190c6a1aeefbae258e3ba  ./deploy/pi/SHA256SUMS
+9a10e815503bdc70d7c3fb40638ef20013eab017aa3f4a7c61a30117617974d4  ./deploy/pi-tests/alert-check.test.sh
+aa3e92f943cf62b5a9514cfea0a10c884cf5e283c6e7ae49071c95dd3506003d  ./deploy/pi/README.md
+4b1e712fdd95e1c94bd2057a087163be27e0f3d48f07378f4302aca1b46fd14b  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
+827b358e896bafe5e70896668744bb58da0cbe0794f49d9cf3d5130c925e4f9f  ./deploy/pi/bin/fpd-alert-check
+d0aebbbd200f562fed47361613f27fc3caef5594532ef5f77f7bb60c118db751  ./deploy/pi/bin/fpd-alert-setup
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./deploy/pi/bin/fpd-backup
 c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./deploy/pi/bin/fpd-cycle
 374e763c8470e04632a09a2de70ff0631cca0da5cfd2cf8e02f7db2e98b1ae0a  ./deploy/pi/bin/fpd-evidence
@@ -17,7 +20,7 @@ d7cdbb76a63ca9a2488cda6587bceafd435bc99bec419816eb60e0c581a13d0d  ./deploy/pi/bi
 e9e4d8dbbbb5f936bceef3725bf7b91f52ccab9dde630779d3ec5489aa8d2248  ./deploy/pi/bin/fpd-offsite-setup
 52e87b6abfacd93aa16d1c83c51ad61c3e7bc34726c6a0d58b9733046ba82f49  ./deploy/pi/bin/fpd-rechecks-handoff
 9ef9b6b1020b09b8fc1417bf67d08b697ccb9da2347275f4e591673fedcc36c0  ./deploy/pi/bin/fpd-set-token
-d6fb082e36cb0f09306b6ef5fca76ba5843b10204d260452a07453488526c35d  ./deploy/pi/bin/fpd-status
+f9ac309ab92d9517c583a7a2935e04f566ed95a27f46141c05665776a0c81888  ./deploy/pi/bin/fpd-status
 e86daada56b3fbff55f63d98fe718f915e523b49c7fead6b268bbb669ae8e39f  ./deploy/pi/bin/fpd-v3-feed
 e5abb64814c021f45d42e4dea7f52ffafed85521ccd6342647e036f2a5b2b4f0  ./deploy/pi/bin/fpd-v3-prune
 dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./deploy/pi/build-kit.sh
@@ -28,10 +31,12 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./deploy/pi/bu
 d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./deploy/pi/delivery/producer-delivery.mjs
 6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./deploy/pi/delivery/producer-delivery.test.mjs
 b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./deploy/pi/delivery/producer-runner.mjs
-750cec5dcab9184594bc41ba972c1378777e66ae273ff9eeafa7e19252d48b66  ./deploy/pi/install.sh
+8514409c03a3a137bfb4ffd481026ede8066023735f920f1b31150b9b759f79e  ./deploy/pi/install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./deploy/pi/lib/evidence.py
 be72e21a81f25777bfa44cdbd89e0955d3edd9f0f835c4b200dbd2e73aa49afb  ./deploy/pi/systemd/fpd-acquire.service
 ae230896155f68a22a21acc3edb85387877729bce056df5c91a1378f20ebe087  ./deploy/pi/systemd/fpd-acquire.timer
+a3bb4403af7b87adac0f6e7d851fe7dafcd51ca0266dbe04404f29339dbab6bf  ./deploy/pi/systemd/fpd-alert.service
+91e843e33eace6e1a027c63ffed81a62701f3c3fb9c17c0538aac4561e6c20a4  ./deploy/pi/systemd/fpd-alert.timer
 91d90b4fe445330b6082088185c838cf3d9566c42f343fdd25e15dcb50130a32  ./deploy/pi/systemd/fpd-backup.service
 fe1d828a3957209b6d387766ae25731ec7e452903964dca33431c79ff2112cf4  ./deploy/pi/systemd/fpd-backup.timer
 4949dbc701be7166f1c330140b97440e188968cccb93cf37c018aa0136855e50  ./deploy/pi/systemd/fpd-offsite-backup.service

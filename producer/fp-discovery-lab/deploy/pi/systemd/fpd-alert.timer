@@ -1,0 +1,11 @@
+[Unit]
+Description=FindPitches Pi health check every 15 minutes (and shortly after boot)
+
+[Timer]
+OnBootSec=4min
+OnCalendar=*-*-* *:07/15:00
+RandomizedDelaySec=60
+Persistent=false
+
+[Install]
+WantedBy=timers.target

@@ -181,6 +181,28 @@ sudo systemctl start fpd-acquire.timer fpd-v3-delivery
 **Power.** If `fpd-status` shows `throttled` other than `0x0`, the supply is too weak for the Pi plus SSD.
 Replace it before the SSD starts dropping out.
 
+## Email alerts (SMTP2GO)
+
+`fpd-alert.timer` runs `fpd-alert-check` every 15 minutes and shortly after boot. The checks are read-only. It emails:
+- **when a problem starts:** discovery cycle failed, V3 delivery stalled for more than 45 minutes, delivery rejected or failing, source data more than 7 hours old, a failed `fpd-*` unit, local backup more than 36 hours old, off-site backup failed or more than 36 hours old, under-voltage or throttling right now, temperature 75 °C or higher, disk 85% full or more, less than 60 MB of memory, or an unexpected restart;
+- **a reminder** every 6 hours while a problem lasts;
+- **when the problem clears.**
+
+It also sends a **daily summary** (08:00 by default). If that stops arriving, the Pi itself is down or offline, which the Pi cannot report about itself. At most 8 emails are sent per hour.
+
+To set it up once:
+1. In SMTP2GO, add an API key used only by this Pi, allowed to send email and nothing else.
+2. Run `sudo fpd-alert-setup`. It asks for the sender (which must be verified in SMTP2GO), the recipient and the key, then sends a test email.
+
+The key is stored only in `/etc/fpd/alert.env` (root, 0600). It is passed to curl on stdin and is never printed, logged or backed up.
+
+Other commands:
+- `sudo fpd-alert-setup test` sends a test email;
+- `sudo fpd-alert-setup show` lists current problems;
+- `sudo fpd-alert-setup disable` turns alerts off.
+
+Tests: `bash deploy/pi-tests/alert-check.test.sh` (stubbed; no network).
+
 ## Files
 
 * `install.sh`: idempotent installer.

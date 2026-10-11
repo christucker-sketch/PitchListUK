@@ -1,0 +1,183 @@
+#!/usr/bin/env bash
+# FindPitches Pi health alerts by email (SMTP2GO HTTP API). Read-only checks; run every 15 min by fpd-alert.timer.
+#   fpd-alert-check            check, then email new problems / reminders / resolutions (and the daily summary)
+#   fpd-alert-check --test     send one test email now
+#   fpd-alert-check --show     print current problems, send nothing
+# Config: /etc/fpd/alert.env (root, 0600) with SMTP2GO_API_KEY, ALERT_FROM, ALERT_TO, optional ALERT_DAILY_HOUR (0-23, default 8).
+# The API key is passed to curl on stdin, never on the command line, and is never printed or logged.
+set -uo pipefail
+umask 077
+CONF=${FPD_ALERT_CONF:-/etc/fpd/alert.env}
+STATE_DIR=${FPD_ALERT_STATE:-/var/lib/fpd-alert}
+SRV=${FPD_SRV:-/srv/fpd}
+STATUS=$SRV/delivery/state/status.json
+OFFSITE=$SRV/backups/offsite-status.json
+NOW=${FPD_ALERT_NOW:-$(date +%s)}
+HOST=$(hostname)
+REPEAT_S=$((6*3600)); MAX_PER_HOUR=8
+MODE=${1:-check}
+
+[[ -r $CONF ]] || { echo "fpd-alert: $CONF missing (run: sudo fpd-alert-setup)" >&2; exit 0; }
+set -a
+# shellcheck source=/dev/null
+. "$CONF"
+set +a
+: "${ALERT_DAILY_HOUR:=8}"
+mkdir -p "$STATE_DIR"; STATE=$STATE_DIR/state.json
+[[ -s $STATE ]] && jq -e . "$STATE" >/dev/null 2>&1 || echo '{"active":{},"sent":[],"daily":"","boot":""}' > "$STATE"
+
+age_of() { local t; t=$(date -d "$1" +%s 2>/dev/null) || { echo -1; return; }; echo $(( NOW - t )); }
+hrs() { awk -v s="$1" 'BEGIN{printf "%.1f", s/3600}'; }
+clean() { grep -viE 'token|bearer|authoriz|api[-_]?key|password|secret' | cut -c1-300; }
+
+# ------------------------------------------------------------------ checks: one line per problem, "key<TAB>message"
+problems() {
+  local r a s
+  # discovery cycle
+  r=$(systemctl show fpd-acquire -p ActiveState --value 2>/dev/null)
+  if [[ $r == failed ]]; then
+    local at; at=$(systemctl show fpd-acquire -p ExecMainExitTimestamp --value)
+    local why; why=$(journalctl -u fpd-acquire --since "$(systemctl show fpd-acquire -p ExecMainStartTimestamp --value)" --no-pager -o cat 2>/dev/null \
+      | grep -E 'FAILED|failed|export_failed|Traceback|Error' | clean | tail -4 | tr '\n' ' ')
+    printf 'acquire_failed\tDiscovery cycle FAILED (ended %s). %s\n' "$at" "${why:-see: journalctl -u fpd-acquire}"
+  fi
+  # delivery
+  if [[ -r $STATUS ]]; then
+    local st; st=$(jq -c '{checked_at,rejected:(.rejected//0),cf:(.consecutive_failures//0),error,age:(.source_age_seconds//null),status}' "$STATUS" 2>/dev/null)
+    if [[ -n $st ]]; then
+      a=$(age_of "$(jq -r .checked_at <<<"$st")")
+      [[ $a -lt 0 || $a -gt 2700 ]] && printf 'delivery_stalled\tNo V3 delivery for %sh (last %s). Check: systemctl status fpd-v3-delivery\n' "$(hrs $a)" "$(jq -r .checked_at <<<"$st")"
+      [[ $(jq .rejected <<<"$st") -gt 0 ]] && printf 'delivery_rejected\tV3 rejected %s records in the last delivery\n' "$(jq .rejected <<<"$st")"
+      if [[ $(jq .cf <<<"$st") -ge 2 || $(jq -r '.error // empty' <<<"$st") != "" ]]; then
+        printf 'delivery_failing\tV3 delivery failing: status=%s error=%s consecutive_failures=%s\n' "$(jq -r .status <<<"$st")" "$(jq -r '.error // "none"' <<<"$st" | clean)" "$(jq .cf <<<"$st")"
+      fi
+      s=$(jq -r '.age // empty' <<<"$st")
+      [[ -n $s && $s -gt 25200 ]] && printf 'source_stale\tProducer source data is %sh old (newest page check); a discovery cycle has been missed twice\n' "$(hrs $s)"
+    fi
+    [[ $(systemctl is-active fpd-v3-delivery 2>/dev/null) == active ]] || printf 'delivery_down\tfpd-v3-delivery service is not running\n'
+  fi
+  # other fpd units in failed state (backup, prune, off-site)
+  for u in $(systemctl list-units 'fpd-*' --state=failed --no-legend --plain 2>/dev/null | awk '{print $1}' | grep -v '^fpd-acquire.service$'); do
+    printf 'unit_%s\t%s FAILED: %s\n' "${u%.service}" "$u" "$(journalctl -u "$u" -n 3 --no-pager -o cat 2>/dev/null | clean | tr '\n' ' ')"
+  done
+  # backups
+  local newest; newest=$(ls -1t "$SRV"/backups/fpd-*.sqlite.zst 2>/dev/null | head -1)
+  if [[ -z $newest ]]; then printf 'backup_missing\tNo local database backup found\n'
+  else a=$(( NOW - $(stat -c %Y "$newest") )); [[ $a -gt 129600 ]] && printf 'backup_stale\tNewest local backup is %sh old\n' "$(hrs $a)"; fi
+  if [[ -r $OFFSITE ]]; then
+    [[ $(jq -r .ok "$OFFSITE") == true ]] || printf 'offsite_failed\tOff-site backup failed: %s\n' "$(jq -r '.error // "unknown"' "$OFFSITE" | clean)"
+    a=$(age_of "$(jq -r .at "$OFFSITE")"); [[ $a -lt 0 || $a -gt 129600 ]] && printf 'offsite_stale\tLast off-site backup was %sh ago\n' "$(hrs $a)"
+  fi
+  # host
+  if command -v vcgencmd >/dev/null; then
+    local th; th=$(( $(vcgencmd get_throttled | cut -d= -f2) ))
+    (( th & 0x1 )) && printf 'power_now\tUNDER-VOLTAGE right now (throttled=0x%x). Check/replace the power supply\n' "$th"
+    (( th & 0x4 )) && printf 'throttled_now\tCPU is being throttled right now (throttled=0x%x)\n' "$th"
+    local t; t=$(vcgencmd measure_temp | grep -oE '[0-9]+' | head -1)
+    [[ -n $t && $t -ge 75 ]] && printf 'temp_high\tCPU temperature %s C\n' "$t"
+  fi
+  local use; use=$(df --output=pcent "$SRV" 2>/dev/null | tail -1 | tr -dc 0-9)
+  [[ -n $use && $use -ge 85 ]] && printf 'disk_full\tData disk %s%% full\n' "$use"
+  local mem; mem=$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo)
+  [[ -n $mem && $mem -lt 60 ]] && printf 'memory_low\tOnly %s MB memory available\n' "$mem"
+}
+
+summary() {
+  echo "Host: $HOST   $(date -d "@$NOW" '+%a %d %b %Y %H:%M %Z')   up $(uptime -p 2>/dev/null | sed 's/^up //')"
+  [[ -r $STATUS ]] && jq -r '"Delivery: \(.status) at \(.checked_at), \(.accepted)/\(.records) accepted, \(.rejected) rejected; pending rechecks \(.pending_rechecks); source age \(((.source_age_seconds//0)/360|floor)/10)h"' "$STATUS" 2>/dev/null
+  echo "Discovery: last run $(systemctl show fpd-acquire -p ExecMainStartTimestamp --value 2>/dev/null) result=$(systemctl show fpd-acquire -p Result --value 2>/dev/null); next $(systemctl show fpd-acquire.timer -p NextElapseUSecRealtime --value 2>/dev/null)"
+  [[ -r $OFFSITE ]] && jq -r '"Off-site backup: ok=\(.ok) at \(.at)"' "$OFFSITE" 2>/dev/null
+  command -v vcgencmd >/dev/null && echo "Power: throttled=$(vcgencmd get_throttled | cut -d= -f2) (0x0 = never since boot)  $(vcgencmd measure_temp)"
+  echo "Disk: $(df -h --output=used,size "$SRV" 2>/dev/null | tail -1 | awk '{print $1" / "$2}')"
+}
+
+send() {  # send SUBJECT BODY -> 0 on confirmed acceptance
+  local subj="[$HOST] $1" body tmp code
+  if [[ ${FPD_ALERT_DRY_RUN:-0} == 1 ]]; then printf -- '--- DRY RUN email\nSubject: %s\n%s\n' "$subj" "$2"; return 0; fi
+  [[ -n ${SMTP2GO_API_KEY:-} && -n ${ALERT_FROM:-} && -n ${ALERT_TO:-} ]] || { echo "fpd-alert: alert.env incomplete" >&2; return 1; }
+  tmp=$(mktemp -d); body=$tmp/body.json
+  jq -n --arg f "$ALERT_FROM" --arg t "$ALERT_TO" --arg s "$subj" --arg b "$2" \
+    '{sender:$f, to:($t|split(",")|map(gsub("^\\s+|\\s+$";""))), subject:$s, text_body:$b}' > "$body"
+  code=$(printf 'header = "X-Smtp2go-Api-Key: %s"\n' "$SMTP2GO_API_KEY" | \
+    curl -sS --max-time 25 -K - -H 'Content-Type: application/json' --data-binary @"$body" -o "$tmp/resp" -w '%{http_code}' \
+    https://api.smtp2go.com/v3/email/send 2>"$tmp/err")
+  if [[ $code == 200 ]] && jq -e '(.data.succeeded // 0) >= 1 and (.data.failed // 0) == 0' "$tmp/resp" >/dev/null 2>&1; then
+    echo "fpd-alert: sent \"$subj\""; rm -rf "$tmp"; return 0
+  fi
+  echo "fpd-alert: SEND FAILED http=$code $(jq -c '{error_code:.data.error_code,error:.data.error,failures:.data.failures}' "$tmp/resp" 2>/dev/null || head -c 200 "$tmp/err" | clean)" >&2
+  rm -rf "$tmp"; return 1
+}
+
+case $MODE in
+  --show) P=$(problems); [[ -z $P ]] && echo "no problems" || echo "$P" | sed 's/\t/: /'; summary; exit 0 ;;
+  --test) send "test alert: email alerts are working" "This is a test from fpd-alert-check on $HOST. You will get an email when something goes wrong, a reminder every 6 hours while it stays wrong, one when it is fixed, and a daily summary around ${ALERT_DAILY_HOUR}:00. If the daily summary stops arriving, the Pi itself is down or offline.
+
+$(summary)"; exit $? ;;
+  check) ;;
+  *) echo "usage: fpd-alert-check [--test|--show]" >&2; exit 2 ;;
+esac
+
+# ------------------------------------------------------------------ decide what to send
+P=$(problems)
+CUR=$(printf '%s\n' "$P" | jq -Rn '[inputs|select(length>0)|split("\t")|{key:.[0],value:(.[1:]|join(" "))}]|from_entries')
+S=$(cat "$STATE")
+BOOT=$(cat "${FPD_BOOT_ID_FILE:-/proc/sys/kernel/random/boot_id}" 2>/dev/null || echo unknown)
+NEW=$(jq -r --argjson c "$CUR" '.active as $a | $c|to_entries|map(select($a[.key]==null))|.[]|"- \(.value)"' <<<"$S")
+DUE=$(jq -r --argjson c "$CUR" --argjson now "$NOW" --argjson rep "$REPEAT_S" '.active as $a | $c|to_entries|map(select($a[.key]!=null and ($now-$a[.key].last_sent)>=$rep))|.[]|"- \(.value) (since \($a[.key].since|todate))"' <<<"$S")
+GONE=$(jq -r --argjson c "$CUR" '.active|to_entries|map(select($c[.key]==null))|.[]|"- \(.value.msg)"' <<<"$S")
+REBOOT=""; PREV_BOOT=$(jq -r .boot <<<"$S"); [[ -n $PREV_BOOT && $PREV_BOOT != "$BOOT" ]] && REBOOT="The Pi restarted (booted $(uptime -s 2>/dev/null)). If you did not restart it, suspect a power cut or the power supply."
+DAILY=""; TODAY=$(date -d "@$NOW" +%F); HOUR=$(date -d "@$NOW" +%-H)
+[[ $HOUR -ge $ALERT_DAILY_HOUR && $(jq -r .daily <<<"$S") != "$TODAY" ]] && DAILY=1
+
+SENT_HOUR=$(jq --argjson now "$NOW" '[.sent[]|select(.>($now-3600))]|length' <<<"$S")
+subject=""; body=""
+if [[ -n $NEW || -n $REBOOT ]]; then
+  n=$(jq 'length' <<<"$CUR")
+  subject="PROBLEM: $(printf '%s\n' "$NEW" | head -1 | sed 's/^- //' | cut -c1-70)$( [[ $n -gt 1 ]] && echo " (+$((n-1)) more)")"
+  [[ -z $NEW ]] && subject="Pi restarted"
+fi
+[[ -z $subject && -n $DUE ]] && subject="STILL WRONG: $(printf '%s\n' "$DUE" | head -1 | sed 's/^- //' | cut -c1-70)"
+[[ -z $subject && -n $GONE ]] && subject="RESOLVED: $(printf '%s\n' "$GONE" | head -1 | sed 's/^- //' | cut -c1-70)"
+if [[ -n $subject ]]; then
+  body="${REBOOT:+$REBOOT
+
+}${NEW:+New problems:
+$NEW
+
+}${DUE:+Still wrong:
+$DUE
+
+}${GONE:+Resolved:
+$GONE
+
+}All current problems: $(jq 'length' <<<"$CUR")
+$(summary)"
+elif [[ -n $DAILY ]]; then
+  if [[ $(jq length <<<"$CUR") -eq 0 ]]; then subject="daily: all OK"; else subject="daily: $(jq length <<<"$CUR") open problem(s)"; fi
+  body="Daily summary. If this email stops arriving, the Pi is down, offline or its alerting has stopped.
+
+$( [[ $(jq length <<<"$CUR") -gt 0 ]] && printf 'Open problems:\n%s\n\n' "$(jq -r 'to_entries[]|"- \(.value)"' <<<"$CUR")")$(summary)"
+fi
+
+ok=1
+if [[ -n $subject ]]; then
+  if [[ $SENT_HOUR -ge $MAX_PER_HOUR ]]; then echo "fpd-alert: rate limit ($MAX_PER_HOUR/hour) reached; will retry next run" >&2; ok=0
+  else send "$subject" "$body" || ok=0; fi
+fi
+
+# ------------------------------------------------------------------ persist state (only advance what was actually sent)
+if [[ $ok == 1 ]]; then
+  jq --argjson c "$CUR" --argjson now "$NOW" --argjson rep "$REPEAT_S" --arg boot "$BOOT" --arg today "$TODAY" \
+     --arg sent "$([[ -n $subject ]] && echo 1)" --arg daily "$DAILY" --arg main "$([[ -n $NEW || -n $DUE || -n $GONE || -n $REBOOT ]] && echo 1)" '
+    .active as $a
+    | .active = ($c|to_entries|map(.key as $k | {key:$k, value:{msg:.value,
+          since:($a[$k].since // $now),
+          last_sent:(if $a[$k]==null or ($now-$a[$k].last_sent)>=$rep then (if $main=="1" then $now else ($a[$k].last_sent // 0) end) else $a[$k].last_sent end)}})|from_entries)
+    | .boot = $boot
+    | (if $daily=="1" and $main=="" then .daily=$today else . end)
+    | .sent = ([.sent[]|select(.>($now-3600))] + (if $sent=="1" then [$now] else [] end))' <<<"$S" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
+else
+  # nothing confirmed sent: keep previous state but remember the boot so a reboot notice is retried, not lost
+  :
+fi
+exit 0

@@ -221,7 +221,7 @@ if [[ $NO_SYSTEMD -eq 0 ]]; then
   log "Services"
   install -m 0644 "$KIT"/systemd/* /etc/systemd/system/
   systemctl daemon-reload
-  systemctl enable --now fpd-backup.timer fpd-v3-prune.timer fpd-offsite-backup.timer >/dev/null
+  systemctl enable --now fpd-backup.timer fpd-v3-prune.timer fpd-offsite-backup.timer fpd-alert.timer >/dev/null
   if [[ -f "$SRV/data/fpd.sqlite" ]]; then systemctl enable --now fpd-acquire.timer >/dev/null; else warn "no database yet: fpd-acquire.timer not enabled"; fi
   # The delivery runner is a long-lived loop: restart it (only if already live) so updated runner code takes effect.
   if systemctl is-active --quiet fpd-v3-delivery; then systemctl restart fpd-v3-delivery; echo "restarted fpd-v3-delivery (new runner code)"; fi
@@ -235,5 +235,6 @@ Next (skip what is already done):
   2. Store the V3 ingest token:   sudo fpd-set-token
   3. Verify and start delivery:   sudo fpd-go-live
   4. Off-site backup (once):      sudo fpd-offsite-setup
+  5. Email alerts (once):         sudo fpd-alert-setup     (SMTP2GO; the key is not in backups, so re-run after a restore)
   Status at any time:             sudo fpd-status
 EOF

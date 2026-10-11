@@ -22,6 +22,10 @@ echo "== backups"
 echo "  local: $(ls -1t /srv/fpd/backups/fpd-*.sqlite.zst 2>/dev/null | head -1 | xargs -r basename) ($(ls /srv/fpd/backups/fpd-*.sqlite.zst 2>/dev/null | wc -l) kept)"
 if [[ -r /srv/fpd/backups/offsite-status.json ]]; then echo "  off-site: $(jq -c '{ok, at, db_backup, error}' /srv/fpd/backups/offsite-status.json)"
 else echo "  off-site: NOT CONFIGURED (sudo fpd-offsite-setup)"; fi
+if [[ -f /etc/fpd/alert.env ]]; then
+  echo "== alerts: email on ($(systemctl is-active fpd-alert.timer 2>/dev/null) timer)"
+  [[ -r /var/lib/fpd-alert/state.json ]] && jq -r '"  open problems: \(.active|length)\(if (.active|length)>0 then " ("+(.active|keys|join(", "))+")" else "" end); last email: \(if (.sent|length)>0 then (.sent|max|todate) else "none in the last hour" end)"' /var/lib/fpd-alert/state.json
+else echo "== alerts: NOT CONFIGURED (sudo fpd-alert-setup)"; fi
 grep -qE '^FPD_CONTACT=.+' /etc/fpd/fpd.env || echo "  note: FPD_CONTACT is empty in /etc/fpd/fpd.env"
 echo "== host"
 df -h /srv/fpd | tail -1 | awk '{print "  disk: "$3" used / "$2" ("$5")"}'

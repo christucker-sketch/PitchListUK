@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Email alerts for this Pi via SMTP2GO (HTTP API).
+#   sudo fpd-alert-setup            set sender, recipient and API key, send a test email, start the 15-minute checks
+#   sudo fpd-alert-setup test       send a test email
+#   sudo fpd-alert-setup show       list current problems (sends nothing)
+#   sudo fpd-alert-setup disable    stop alerts and delete the stored key
+# In SMTP2GO, create a NEW API key just for this Pi, allowed only to send email (Settings > API Keys > Add; permissions:
+# Email > Send only), optionally with a rate limit. The sender address must be on a domain/sender verified in SMTP2GO.
+# The key is stored only in /etc/fpd/alert.env (root, 0600). It is never printed, logged, or included in backups.
+set -euo pipefail
+[[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
+CONF=/etc/fpd/alert.env
+case "${1:-setup}" in
+  test) exec /opt/fpd/bin/fpd-alert-check --test ;;
+  show) exec /opt/fpd/bin/fpd-alert-check --show ;;
+  disable) systemctl disable --now fpd-alert.timer >/dev/null 2>&1 || true; rm -f "$CONF"; echo "alerts disabled; key removed"; exit 0 ;;
+  setup) ;;
+  *) sed -n '2,5p' "$0"; exit 2 ;;
+esac
+command -v curl >/dev/null || { apt-get update -qq && apt-get install -y -qq curl >/dev/null; }
+sed -n '6,8p' "$0" | sed 's/^# \{0,1\}//'; echo
+email='^[^@[:space:]<>]+@[^@[:space:]<>]+\.[^@[:space:]<>]+$'
+read -rp "Sender address (verified in SMTP2GO, e.g. alerts@yourdomain): " FROM
+[[ $FROM =~ $email && $FROM != *[\'\"]* ]] || { echo "not an email address" >&2; exit 1; }
+read -rp "Send alerts to (one address, or several separated by commas): " TO
+for a in ${TO//,/ }; do [[ $a =~ $email && $a != *[\'\"]* ]] || { echo "not an email address: $a" >&2; exit 1; }; done
+read -rp "Daily summary hour, 0-23 [8]: " HOUR; HOUR=${HOUR:-8}
+[[ $HOUR =~ ^([0-9]|1[0-9]|2[0-3])$ ]] || { echo "hour must be 0-23" >&2; exit 1; }
+read -rsp "SMTP2GO API key (hidden; paste and press Enter): " KEY; echo
+[[ $KEY =~ ^[A-Za-z0-9_-]{16,128}$ ]] || { echo "that does not look like an SMTP2GO API key (expected letters, digits, - or _)" >&2; exit 1; }
+tmp=$(mktemp /etc/fpd/.alert.XXXXXX); chmod 0600 "$tmp"
+printf "SMTP2GO_API_KEY='%s'\nALERT_FROM='FindPitches Pi <%s>'\nALERT_TO='%s'\nALERT_DAILY_HOUR='%s'\n" "$KEY" "$FROM" "$TO" "$HOUR" > "$tmp"
+unset KEY
+chown root:root "$tmp"; mv -f "$tmp" "$CONF"
+echo "saved $CONF (root only). Sending a test email..."
+if /opt/fpd/bin/fpd-alert-check --test; then
+  systemctl enable --now fpd-alert.timer >/dev/null
+  echo "OK: check your inbox (and spam folder). Checks now run every 15 minutes:"; systemctl list-timers fpd-alert.timer --no-pager | sed -n 2p
+else
+  echo "The test email was NOT accepted (reason above). Check the key's permissions and that the sender is verified, then run: sudo fpd-alert-setup" >&2
+  exit 1
+fi

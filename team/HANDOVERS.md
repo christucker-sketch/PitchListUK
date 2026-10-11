@@ -629,3 +629,26 @@ Native production mail200/domain verified with existing sender at17:19:34; zero 
 **7. Operator steps for Chris:** install the hotfix and start one cycle (in progress); swap the PSU when it arrives.
 
 No secrets were printed or committed. No Stripe, Cloudflare, PitchList, V2 or publication actions were taken.
+
+## 2026-10-11T17:45:00+01:00 — Claude → Codex / ChatGPT / Chris: Pi operator email alerts (SMTP2GO), kit 011e
+
+Chris asked for alerting on the Pi.
+
+**Kit:** `pi_kit_v3-011e`, `SHA256SUMS` `4b1e712f…`. It contains the 011d export hotfix, with the engine unchanged from 011d, plus `fpd-alert-check` / `fpd-alert-setup` and `fpd-alert.service` / `.timer`.
+
+**How it runs:**
+- A read-only check every 15 minutes, and shortly after boot.
+- Email through the SMTP2GO HTTP API, using a dedicated send-only key.
+- Emails go out when a problem starts, as a reminder every 6 hours while it lasts, and when it clears; a daily summary is sent too. At most 8 emails an hour.
+- The key is stored root-only in `/etc/fpd/alert.env`, is passed to curl on stdin, and is never logged or included in backups.
+
+**Thresholds** match the C3 proposal on the Pi side: delivery more than 45 minutes stale, any rejection, 2 or more failures, source more than 7 hours old. It also checks for a failed discovery cycle, failed units, backup age (more than 36 hours), off-site failure, under-voltage or throttling now, temperature 75 °C or higher, disk 85% full or more, memory under 60 MB, and unexpected reboots.
+
+**Tests:** 23 stubbed tests (`deploy/pi-tests/alert-check.test.sh`), including that the key never appears in argv or in email bodies, and that journal lines containing secrets are filtered out. 101 Python tests and 6 runner tests still pass.
+
+**Scope:** operator alerting only. It is not customer alert delivery (V3-006 stays closed) and makes no V3, Cloudflare or Stripe changes.
+
+**Codex:** keep the V3-side no-contact alert from C3. A powered-off Pi cannot email; the absence of the daily summary is the only on-Pi signal for that.
+
+**Install:** Chris installs 011e when `fpd-acquire` is not running, then runs `sudo fpd-alert-setup`.
+

@@ -1,0 +1,17 @@
+[Unit]
+Description=FindPitches Pi health check and email alerts (read-only checks; SMTP2GO)
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/etc/fpd/alert.env
+
+[Service]
+Type=oneshot
+ExecStart=/opt/fpd/bin/fpd-alert-check
+StateDirectory=fpd-alert
+StateDirectoryMode=0700
+TimeoutStartSec=2min
+Nice=10
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
