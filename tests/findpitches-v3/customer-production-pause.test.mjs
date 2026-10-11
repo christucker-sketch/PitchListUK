@@ -12,3 +12,9 @@ test('rollback verification rejects losing LIVE mail/keys/database or altering u
  const bad=structuredClone(good);bad.bindings.find(v=>v.name==='V3_CUSTOMER_DB').id='test-db';assert.throws(()=>assertRecoveryPreserved(b,bad,changes),/unrelated_production_binding_changed/);
  assert.throws(()=>assertRecoveryPreserved(b,{...good,compatibility_date:'changed'},changes),/unrelated_production_setting_changed/);
 });
+test('settings updates preserve operator annotations while Cloudflare regenerates only the version actor',()=>{
+ const b=before();b.annotations={'workers/message':'Operator release note','workers/triggered_by':'dashboard'};
+ const changes={V3_CHECKOUT_ENABLED:'disabled'},patch=recoverySettings(b,changes);assert.deepEqual(patch.annotations,{'workers/message':'Operator release note'});
+ const after=structuredClone(b);after.bindings[0].text='disabled';after.annotations['workers/triggered_by']='api';assertRecoveryPreserved(b,after,changes);
+ delete after.annotations['workers/message'];assert.throws(()=>assertRecoveryPreserved(b,after,changes),/production_user_annotation_changed/);
+});

@@ -6,12 +6,16 @@ const WORKER='findpitches-v3-customer-production',FLAGS=['V3_CHECKOUT_ENABLED','
 export function recoverySettings(before,changes) {
   if(Object.keys(changes).some(n=>!FLAGS.includes(n))||Object.entries(changes).some(([n,v])=>n==='V3_CHECKOUT_ENABLED'?v!=='disabled':v!==(n==='V3_PUBLIC_ENABLED'?'false':'true')))throw Error('close_only_flags_required');
   for(const n of Object.keys(changes))if(!before.bindings?.some(b=>b.name===n&&b.type==='plain_text'))throw Error('production_flag_missing');
-  return {bindings:before.bindings.map(b=>Object.hasOwn(changes,b.name)?{name:b.name,type:'plain_text',text:changes[b.name]}:{name:b.name,type:'inherit',version_id:'latest'})};
+  return {annotations:Object.fromEntries(Object.entries(before.annotations??{}).filter(([k])=>k!=='workers/triggered_by')),bindings:before.bindings.map(b=>Object.hasOwn(changes,b.name)?{name:b.name,type:'plain_text',text:changes[b.name]}:{name:b.name,type:'inherit',version_id:'latest'})};
 }
 export function assertRecoveryPreserved(before,after,changes) {
   if(before.bindings.length!==after.bindings.length)throw Error('production_binding_count_changed');
   for(const b of before.bindings){const expected=Object.hasOwn(changes,b.name)?{...b,text:changes[b.name]}:b;if(!isDeepStrictEqual(expected,after.bindings.find(v=>v.name===b.name)))throw Error('unrelated_production_binding_changed');}
-  for(const k of Object.keys(before).filter(k=>k!=='bindings'))if(!isDeepStrictEqual(before[k],after[k]))throw Error('unrelated_production_setting_changed');
+  // Cloudflare recomputes the version's actor on an API settings update.
+  // Preserve user annotations; only this generated actor is allowed to change.
+  const annotations=s=>Object.fromEntries(Object.entries(s.annotations??{}).filter(([k])=>k!=='workers/triggered_by'));
+  if(!isDeepStrictEqual(annotations(before),annotations(after)))throw Error('production_user_annotation_changed');
+  for(const k of Object.keys(before).filter(k=>!['bindings','annotations'].includes(k)))if(!isDeepStrictEqual(before[k],after[k]))throw Error('unrelated_production_setting_changed');
 }
 export async function pauseCustomerProduction({credentialsFile,productionDirectory,fetcher=proxyFetch()}) {
   const credentials=readCredentials(credentialsFile),api=cloudflareClient(credentials,{fetcher}),state=JSON.parse(fs.readFileSync(path.join(productionDirectory,'resources.json')));
