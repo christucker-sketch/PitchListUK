@@ -442,7 +442,7 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
     elif re.search(r"(?:^|\.)eventeny\.com$", _us(url).hostname or "") and not _path.startswith("/events/"):
         label, reasons = "rejected", ["platform_marketing_page"]
     elif platform_here and not on_platform_vendor_page and re.search(
-            r"(?:^|\.)(?:eventeny\.com|marketspread\.com|localstalls\.com|cluemart\.co\.nz|zapplication\.org|entrythingy\.com)$",
+            r"(?:^|\.)(?:eventeny\.com|marketspread\.com|localstalls\.com|cluemart\.co\.nz|zapplication\.org|entrythingy\.com|marketsireland\.ie)$",
             _us(url).hostname or "") and not re.search(r"/(?:apply|application|book|forms?)/", _path):
         label, reasons = "rejected", ["platform_non_application_page"]
     elif site_role == "platform" and platform_here and not on_platform_vendor_page:

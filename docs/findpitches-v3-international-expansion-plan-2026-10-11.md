@@ -75,3 +75,36 @@ V3 READY needs a source-proved, dated, open application. V3 has dedicated proof 
 - **No inferred geography or dates.** V3 keeps its proof rules unchanged.
 - **Enquiry listings** count only under D-012: a verified https route, honestly labelled.
 - **Effect on V3-001:** none. This runs on the producer alongside it and does not touch lifecycle or identity code.
+
+## 5. First producer increment (built 2026-10-11, kit `SHA256SUMS` 29a7c85d…)
+
+**New lane: `marketsireland` (MarketsIreland.ie).** It is Ireland's only stallholder listing platform found. Its sitemap lists 48 markets, and the platform does not host applications.
+
+Each listing states its own vendor status, which the producer maps as follows:
+
+| Listing says | Producer state |
+| --- | --- |
+| "Applications are open for this market" | OPEN_NOW with a `platform_enquiry` route, plus the organiser site where one is given |
+| "Applications are closed or not managed here" | UNKNOWN. The wording is ambiguous, so it is not treated as a closure. The organiser site is followed for discovery. |
+| No status (standing markets) | UNKNOWN |
+
+Northern Ireland counties and BT postcodes map to GB.
+
+**Dry run on all 48 pages** (fetched politely on 2026-10-11): 5 IE OPEN_NOW, 40 IE unknown, 3 GB (NI) unknown. The open five are:
+- Castledermot, 6 Dec;
+- Balla, 5 Dec;
+- Kilmacthomas, 13 Dec;
+- Brockagh, 29 Nov;
+- Winterval Waterford, 13 Nov.
+
+Most contact is by email or phone shown on the listing. Only Balla, Brockagh and Winterval link an organiser site. **This is a small, honest start for IE**: V3 must judge whether these routes meet its proof rules and D-012.
+
+**New hub seeds:**
+- `neon_nsw_markets`: the NSW Government's NEON Marketplace, market category, with council and organiser stallholder calls.
+- `finderskeepers_apply_au`.
+- `allianceforarts_calls_ca`: BC artists' calls, filtered to market, fair, vendor, craft and maker posts.
+- `albertacraft_calls_ca`.
+
+Per-seed yield will show in the producer report after the first cycles.
+
+**Tests:** 95 pass, including 4 new MarketsIreland tests. The fixtures are sanitised: organiser emails and phone numbers have been replaced.

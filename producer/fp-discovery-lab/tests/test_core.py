@@ -381,3 +381,41 @@ def test_dated_platform_instances_not_merged(tmp_path):
     o1, _ = r.upsert(u1, "https://www.eventeny.com/events/vendor/?id=1", 1, a1)
     o2, _ = r.upsert(u2, "https://www.eventeny.com/events/vendor/?id=2", 2, a2)
     assert o1 != o2
+
+
+# ---------------- MarketsIreland.ie lane (D-013 / V3-011, IE) ----------------
+def _mi(name, url):
+    from pathlib import Path
+    from fpd import adapters
+    html = (Path(__file__).parent / "fixtures" / name).read_text(encoding="utf-8")
+    page = parse_html(html, url)
+    return adapters.apply(page, classify(page, TODAY), TODAY, "marketsireland.ie")
+
+
+def test_marketsireland_open_listing():
+    a = _mi("marketsireland_open.html", "https://marketsireland.ie/market/castledermot/")
+    ex = a["extracted"]
+    assert ex["state"] == "OPEN_NOW" and ex["open_strength"] == "explicit", ex["state_evidence"]
+    assert ex["country"] == "IE" and ex["region"] == "County Kildare" and ex["start_date"] == "2026-12-06"
+    assert ex["platform_ids"]["marketsireland_market"] == "castledermot"
+    assert ex["routes"][0]["type"] == "platform_enquiry" and ex["fees"].startswith("EUR 40")
+
+
+def test_marketsireland_not_managed_is_not_a_closure():
+    a = _mi("marketsireland_notmanaged.html", "https://marketsireland.ie/market/yulefest-kilkenny-christmas-market/")
+    ex = a["extracted"]
+    assert ex["state"] == "UNKNOWN" and "not treated as closed" in ex["state_evidence"]
+    assert any(r["type"] == "platform_link" and "yulefestkilkenny.ie" in r["url"] for r in ex["routes"])
+    assert ex["country"] == "IE" and a["label"] == "uncertain"
+
+
+def test_marketsireland_northern_ireland_is_gb():
+    a = _mi("marketsireland_belfast.html", "https://marketsireland.ie/market/belfast-christmas-market/")
+    assert a["extracted"]["country"] == "GB" and a["extracted"]["region"] == "County Antrim"
+
+
+def test_marketsireland_identity_key():
+    from fpd.integration import identity as idn
+    pids = idn.platform_ids(["https://marketsireland.ie/market/castledermot/"])
+    nk, plat, ed = idn.natural_key("IE", pids, None, "Castledermot", "2026-12-06", False)
+    assert nk == "IE|marketsireland:castledermot|2026" and plat == "marketsireland"

@@ -362,6 +362,40 @@
     "https://www.craftcourses.com/blog/top-10-makers-markets-in-britain"
    ],
    "note": "UK makers markets"
+  },
+  {
+   "name": "neon_nsw_markets",
+   "country": "AU",
+   "urls": [
+    "https://www.neonmarketplace.nsw.gov.au/opportunity/?f.categories=market"
+   ],
+   "follow": "neonmarketplace\\.nsw\\.gov\\.au/opportunity/(?:nd/[a-z0-9-]+/?$|\\?f\\.categories=market&(?:amp;)?p=\\d+$)",
+   "note": "NSW Government NEON Marketplace: council/organiser stallholder calls (market category), D-013"
+  },
+  {
+   "name": "finderskeepers_apply_au",
+   "country": "AU",
+   "urls": [
+    "https://www.thefinderskeepers.com/applications-overview.html"
+   ],
+   "note": "The Finders Keepers design markets: stallholder application calendar (AU), D-013"
+  },
+  {
+   "name": "allianceforarts_calls_ca",
+   "country": "CA",
+   "urls": [
+    "https://www.allianceforarts.com/artists-calls"
+   ],
+   "follow": "allianceforarts\\.com/artists-calls/20(?:26|27)/\\d{1,2}/\\d{1,2}/[a-z0-9-]*(?:market|fair|vendor|craft|artisan|maker)[a-z0-9-]*$",
+   "note": "Alliance for Arts and Culture (BC) artists' calls: craft/artisan market vendor calls only, D-013"
+  },
+  {
+   "name": "albertacraft_calls_ca",
+   "country": "CA",
+   "urls": [
+    "https://www.albertacraft.ab.ca/acc-calls-for-entry"
+   ],
+   "note": "Alberta Craft Council calls for entry (craft markets/fairs), D-013"
   }
  ],
  "platform_sitemaps": [

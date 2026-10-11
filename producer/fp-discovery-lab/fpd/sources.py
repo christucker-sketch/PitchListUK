@@ -50,6 +50,12 @@ SOURCES = {
         "item_pattern": r"cluemart\.co\.nz/application/([a-z0-9\-]+)", "country": "NZ",
         "default_max_new": 200,
     },
+    "marketsireland": {
+        "kind": "sitemap", "generator": "platform:marketsireland",
+        "sitemaps": ["https://marketsireland.ie/market-sitemap.xml"], "child_pattern": None,
+        "item_pattern": r"marketsireland\.ie/market/([a-z0-9\-]+)/?$", "country": "IE",
+        "default_max_new": 100, "yield_floor": False,  # slugs, no numeric ids; small site: visit every listing
+    },
     "marketspread": {
         "kind": "sitemap", "generator": "platform:marketspread",
         "sitemaps": ["https://marketspread.com/sitemap.xml"], "child_pattern": r"sitemap-markets",

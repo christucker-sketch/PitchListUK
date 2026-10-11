@@ -11,7 +11,7 @@ from .urlutil import canonicalize, host_of, reg_domain, should_skip
 from .lexicon import APPLICATION_PLATFORMS
 
 # Registrable domains of application/form platforms (their pages belong to many different organisers).
-PLATFORM_DOMAINS = {reg_domain('https://' + k.split('/')[0].strip('.')) for k in APPLICATION_PLATFORMS} | {'google.com', 'forms.gle', 'ukcraftfairs.com', 'localstalls.com', 'cluemart.co.nz'}
+PLATFORM_DOMAINS = {reg_domain('https://' + k.split('/')[0].strip('.')) for k in APPLICATION_PLATFORMS} | {'google.com', 'forms.gle', 'ukcraftfairs.com', 'localstalls.com', 'cluemart.co.nz', 'marketsireland.ie'}
 
 # Purposes that consume an organiser site's exploration budget.
 BUDGETED = {"site_home", "candidate", "follow"}

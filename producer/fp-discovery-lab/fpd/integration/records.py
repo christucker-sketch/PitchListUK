@@ -47,6 +47,7 @@ _EVENTISH = re.compile(r"\b(?:festival|fest|markets?|fair|fayre|show|parade|hunt
                        r"bazaar|celebration|night|day|week|database|vendors?)\b", re.I)
 # Platform names are not organisers (UKCraftFairs/ClueMart listings name the platform where the organiser is hidden).
 PLATFORM_ORGANISERS = {"ukcraftfairs.com", "ukcraftfairs", "cluemart", "localstalls", "eventeny", "marketspread",
+                       "marketsireland", "marketsireland.ie",
                        "entrythingy", "entry thingy"}
 # Listing-frequency labels that platforms print right after the organiser name ("Le Makete One-off / Irregular").
 ORG_SUFFIX = re.compile(r"\s+(?:one-off(?:\s*/\s*irregular)?|irregular|weekly|fortnightly|monthly|bi-?monthly|annually|"
@@ -88,7 +89,7 @@ def source_of(lane: str | None, url: str | None) -> tuple[str, str | None, str]:
         p = lane.split(":", 1)[1]
         if p.startswith("marketspread"):
             return "marketspread", p, "platform_enumeration"
-        if p in ("eventeny", "localstalls", "cluemart", "entrythingy"):
+        if p in ("eventeny", "localstalls", "cluemart", "entrythingy", "marketsireland"):
             return p, None, "platform_enumeration"
         if p == "ukcraftfairs":
             return "ukcraftfairs", None, "platform_id_window"
@@ -107,6 +108,7 @@ def source_of(lane: str | None, url: str | None) -> tuple[str, str | None, str]:
 
 
 PLATFORM_HOSTS = {"eventeny.com": "eventeny", "localstalls.com": "localstalls", "cluemart.co.nz": "cluemart",
+                  "marketsireland.ie": "marketsireland",
                   "ukcraftfairs.com": "ukcraftfairs", "marketspread.com": "marketspread",
                   "entrythingy.com": "entrythingy", "zapplication.org": "zapp"}
 FORM_HOSTS = {"google.com", "forms.gle", "jotform.com", "wufoo.com", "typeform.com", "cognitoforms.com",

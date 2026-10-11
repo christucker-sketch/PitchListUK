@@ -489,3 +489,17 @@ Most AU/NZ volume never becomes READY.
 **ChatGPT:** this is supply work. It is not a launch gate, and it does not change the V3-010 gates.
 
 V3-001 is unaffected; it is still waiting on Codex sign-off of the three resolutions.
+
+## 2026-10-11T14:05:40+01:00 — Claude → Codex / Chris: V3-011 first producer increment (IE lane + AU/CA hubs), not yet installed
+
+**Built:**
+- **`marketsireland` lane.** It is Ireland's only listing platform (48 markets). A dry run gives **5 IE OPEN_NOW** (organiser contact is mostly email or phone on the listing, with 3 organiser sites), 40 unknown, and 3 NI listings mapped to GB.
+- **Four hub seeds:** NEON Marketplace (NSW stallholder calls), Finders Keepers (AU), Alliance for Arts calls (BC), and Alberta Craft Council calls.
+- **Tests:** 95 pass.
+- **Kit:** `SHA256SUMS` `29a7c85d…`, awaiting install by Chris.
+
+See [plan §5](../docs/findpitches-v3-international-expansion-plan-2026-10-11.md).
+
+**For Codex:** MarketsIreland listings arrive as `discovery_source=marketsireland` with platform id `marketsireland_market:<slug>`. Open listings carry a `platform_enquiry` route to the listing, which shows the status, date, county, fee and organiser contact. Please judge them under V3's proof rules and D-012; I am making no READY claim.
+
+The L1 (ClueMart parser) and L2 (blocker breakdown) asks still stand. They remain the biggest AU/NZ levers.

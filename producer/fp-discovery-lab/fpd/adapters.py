@@ -333,6 +333,73 @@ def marketspread(page: Page, a: dict, today: dt.date) -> dict | None:
     return a
 
 
+_NI_COUNTIES = {"antrim", "armagh", "down", "fermanagh", "londonderry", "derry", "tyrone"}
+
+
+def marketsireland(page: Page, a: dict, today: dt.date) -> dict | None:
+    """MarketsIreland.ie market listings (IE + Northern Ireland). The site lists markets and connects vendors with
+    organisers; it does not host applications. Each listing states its own vendor status:
+      'Applications are open for this market'      -> open (contact organiser via the listing / organiser site)
+      'Applications are closed or not managed here' -> unknown (closed OR handled elsewhere: not a closure claim)
+      (no status)                                   -> standing market listing, no application claim.
+    Dates come from the listing's 'Event Details Date <Weekday> <Dth> <Month> <YYYY>' or 'Event Dates <Dow> <D> <Mon> <YYYY>'."""
+    m = re.search(r"marketsireland\.ie/market/([a-z0-9\-]+)/?$", page.url)
+    if not m:
+        return None
+    t = re.sub(r"\s+", " ", page.text)
+    ex = a["extracted"]
+    name = re.sub(r"\s*[-|]\s*marketsireland\.ie\s*$", "", page.title, flags=re.I).strip() or ex.get("name")
+    ds = []
+    dm = re.search(r"Event Details Date (?:\w+day )?(\d{1,2})(?:st|nd|rd|th)? (\w+) (20\d\d)", t) or \
+        re.search(r"Event Dates \w{3} (\d{1,2}) (\w{3}) (20\d\d)", t)
+    if dm:
+        ds = extract_dates(f"{dm.group(1)} {dm.group(2)} {dm.group(3)}", today)
+    start = ds[0].start if ds else None
+    county = re.search(r"\bCounty ([A-Z][a-z]+) Market type\b", t) or \
+        re.search(r"Location [^|]{0,120}?\b(?:County|Co\.) ([A-Z][a-z]+)\b", t)
+    loc = re.search(r"Location (.{3,120}?) County [A-Z][a-z]+", t)
+    cname = county.group(1) if county else None
+    cc = "GB" if (cname and cname.lower() in _NI_COUNTIES) or re.search(r"\bBT\d{1,2} ?\d[A-Z]{2}\b", t) else "IE"
+    fee = re.search(r"Stall fee (EUR|€|£|GBP) ?(\d+(?:\.\d\d)?)(?: ([Pp]er \w+))?", t)
+    status = re.search(r"For vendors (Applications are open for this market|Applications are closed or not managed here)", t)
+    org_links = [ln.url for ln in page.links if not re.search(
+        r"marketsireland\.ie|google\.|maps\.|facebook\.com/sharer|wa\.me|whatsapp|twitter\.com|x\.com/intent|gmpg\.org|"
+        r"wordpress|gravatar|elementor", ln.url) and ln.url.startswith("http")]
+    org_site = next((u for u in org_links if not re.search(r"facebook\.com|instagram\.com", u)), None)
+    contact = bool(re.search(r"\bCall\b|\bEmail\b", t))
+    ex["geo_basis"] = (["platform_county_field"] if cname else []) + (["uk_postcode_BT"] if cc == "GB" and not cname else [])
+    ex.update(name=name, country=cc, region=(f"County {cname}" if cname else ex.get("region")),
+              venue=(loc.group(1).split(",")[0].strip() if loc else ex.get("venue")),
+              start_date=start.isoformat() if start else None, end_date=None,
+              date_source="platform_listing" if start else None, relevance="relevant",
+              fees=(f"{fee.group(1)} {fee.group(2)}" + (f" {fee.group(3)}" if fee.group(3) else "")) if fee else ex.get("fees"))
+    routes = []
+    if org_site:
+        routes.append({"type": "platform_link", "url": org_site, "platform": None, "anchor": "Organiser website",
+                       "category": "craft"})
+    if start and start < today:
+        ex.update(state="HISTORICAL", open_strength=None, missing=["next_edition_dates"],
+                  state_evidence=f"MarketsIreland listing date {start.isoformat()} has passed")
+    elif status and status.group(1).startswith("Applications are open"):
+        routes.insert(0, {"type": "platform_enquiry", "url": page.url, "platform": "MarketsIreland",
+                          "anchor": "Applications open - contact organiser" + (" (email/phone on listing)" if contact else ""),
+                          "category": "craft"})
+        ex.update(state="OPEN_NOW" if start else "UNKNOWN", open_strength="explicit" if start else None,
+                  apply_url=(org_site or page.url), missing=[] if start else ["current_dates"],
+                  state_evidence=f"MarketsIreland: “{status.group(1)}” ({'event ' + start.isoformat() if start else 'no date listed'}"
+                                 f"; organiser contact {'site ' + org_site if org_site else 'by email/phone on listing'})")
+    else:
+        why = (f"“{status.group(1)}” (closed or handled by the organiser elsewhere; not treated as closed)" if status
+               else "standing market listing with no vendor-application status")
+        ex.update(state="UNKNOWN", open_strength=None, missing=["open_application"],
+                  state_evidence=f"MarketsIreland: {why}" + (f"; organiser site {org_site}" if org_site else ""))
+    ex["routes"] = routes
+    a["label"] = "actionable" if ex["state"] == "OPEN_NOW" else "uncertain"
+    a["reasons"] = ["platform_adapter:marketsireland"]
+    a["evidence"].insert(0, {"kind": "state", "text": f"{ex['state']}: {ex['state_evidence']}"})
+    return a
+
+
 def _platform_ids_only(rx: str, key: str):
     def fn(page: Page, a: dict, today: dt.date) -> dict | None:
         m = re.search(rx, page.url)
@@ -347,6 +414,7 @@ def _platform_ids_only(rx: str, key: str):
 cluemart = _platform_ids_only(r"cluemart\.co\.nz/application/([a-z0-9\-]+)", "cluemart_application")
 _ls_ids = _platform_ids_only(r"localstalls\.com/((?:au|nz|uk|us)/event/[^/?#]+/[^/?#]+)", "localstalls_event")
 _uk_ids = _platform_ids_only(r"ukcraftfairs\.com/craft-events/(\d+)", "ukcraftfairs_event")
+_mi_ids = _platform_ids_only(r"marketsireland\.ie/market/([a-z0-9\-]+)", "marketsireland_market")
 
 
 def _chain(*fns):
@@ -361,7 +429,8 @@ def _chain(*fns):
 
 
 ADAPTERS = {"ukcraftfairs.com": _chain(ukcraftfairs, _uk_ids), "localstalls.com": _chain(localstalls, _ls_ids),
-            "eventeny.com": eventeny, "cluemart.co.nz": cluemart, "marketspread.com": marketspread}
+            "eventeny.com": eventeny, "cluemart.co.nz": cluemart, "marketspread.com": marketspread,
+            "marketsireland.ie": _chain(marketsireland, _mi_ids)}
 
 
 def apply(page: Page, a: dict, today: dt.date, reg_domain: str) -> dict:

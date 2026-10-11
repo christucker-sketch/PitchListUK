@@ -75,6 +75,7 @@ CREATE INDEX IF NOT EXISTS ix_anchor_opp ON integration_anchor(opportunity_id);
 SHARED_HOSTS = {
     "eventeny.com", "jotform.com", "google.com", "forms.gle", "facebook.com", "fb.com", "instagram.com",
     "vendorsmap.com", "eventbrite.com", "eventbrite.co.uk", "marketspread.com", "localstalls.com", "cluemart.co.nz",
+    "marketsireland.ie",
     "ukcraftfairs.com", "zapplication.org", "entrythingy.com", "wufoo.com", "typeform.com", "cognitoforms.com",
     "formstack.com", "airtable.com", "microsoft.com", "office.com", "linktr.ee", "squarespace.com", "wixsite.com",
 }
@@ -85,6 +86,7 @@ LOCALSTALLS = re.compile(r"localstalls\.com/((?:au|nz|uk|us)/event/[^/?#]+/[^/?#
 CLUEMART = re.compile(r"cluemart\.co\.nz/application/([a-z0-9\-]+)")
 UKCF = re.compile(r"ukcraftfairs\.com/craft-events/(\d+)")
 MARKETSPREAD = re.compile(r"marketspread\.com/market/(\d+)/")
+MARKETSIRELAND = re.compile(r"marketsireland\.ie/market/([a-z0-9\-]+)")
 
 
 def canonical_anchor_url(u: str | None) -> str | None:
@@ -109,7 +111,8 @@ def platform_ids(urls: list[str], extracted_ids: list[dict] | None = None) -> di
     for u in urls:
         for key, rx, conv in (("eventeny_vendor", EVENTENY_VENDOR, int), ("localstalls_event", LOCALSTALLS, str),
                               ("cluemart_application", CLUEMART, str), ("ukcraftfairs_event", UKCF, int),
-                              ("marketspread_market", MARKETSPREAD, int)):
+                              ("marketspread_market", MARKETSPREAD, int),
+                              ("marketsireland_market", MARKETSIRELAND, str)):
             m = rx.search(u or "")
             if m:
                 ids.setdefault(key, set()).add(conv(m.group(1)))
@@ -138,6 +141,9 @@ def natural_key(country: str | None, pids: dict, primary_url: str | None, name: 
         prog, plat, ed = f"cluemart:{min(pids['cluemart_application'])}", "cluemart", "standing"
     elif pids.get("ukcraftfairs_event"):
         prog, plat, ed = f"ukcraftfairs:{min(pids['ukcraftfairs_event'])}", "ukcraftfairs", ""
+    elif pids.get("marketsireland_market"):
+        prog, plat = f"marketsireland:{min(pids['marketsireland_market'])}", "marketsireland"
+        ed = (event_start or "")[:4] or "undated"
     elif pids.get("marketspread_market"):
         prog, plat = f"marketspread:{min(pids['marketspread_market'])}", "marketspread"
         ed = "standing" if standing else ((event_start or "")[:4] or "undated")
