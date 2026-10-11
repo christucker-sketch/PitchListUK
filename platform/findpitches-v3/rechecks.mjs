@@ -1,5 +1,5 @@
 import {sql} from './store.mjs';
-import {hash} from './contract.mjs';
+import {hash,stableJson} from './contract.mjs';
 const MEMBERSHIP="r.producer_name='independent-structured' AND r.environment='shadow' AND r.validation_status='accepted'";
 function cursorValue(tuple) {return btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(tuple))));}
 function decodeCursor(cursor) {
@@ -55,6 +55,42 @@ export async function producerRecheckStatus(db,now=new Date().toISOString()) {
       SUM(CASE WHEN p.source_check>=julianday(p.requested_at) AND p.source_check<=julianday(?) THEN 1 ELSE 0 END) AS fresh_evidence_ack_eligible
     FROM pending p JOIN entities e ON e.id=p.entity_id GROUP BY e.market`,now).all()).results;
   const acknowledgements=await sql(db,'SELECT COUNT(*) AS acknowledged_last_24h,MAX(acknowledged_at) AS latest_acknowledgement FROM producer_recheck_acknowledgements WHERE acknowledged_at>=?',new Date(Date.parse(now)-86400000).toISOString()).first();
-  return {pending_entities:rows.reduce((s,r)=>s+r.pending_entities,0),fresh_evidence_ack_eligible:rows.reduce((s,r)=>s+r.fresh_evidence_ack_eligible,0),by_country:rows,...acknowledgements,
+  const resolutions=await sql(db,'SELECT COUNT(*) AS obsolete_requests_resolved,MAX(reviewed_at) AS latest_obsolete_resolution FROM producer_recheck_resolutions').first();
+  return {pending_entities:rows.reduce((s,r)=>s+r.pending_entities,0),fresh_evidence_ack_eligible:rows.reduce((s,r)=>s+r.fresh_evidence_ack_eligible,0),by_country:rows,...acknowledgements,...resolutions,
     producer_completion:'Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.',pagination_supported:true,oldest_request_preserved:true};
+}
+
+// Separate operator audit for an ID that the producer no longer emits. The
+// retained source state/clock and identity are untouched. A new edition, merge,
+// current opportunity or replacement receipt cannot use this resolution.
+export async function resolveObsoleteProducerRequest(db,input,{now=new Date().toISOString()}={}) {
+  const {entity_id,requested_at,producer_record_id,entity_revision,accepted_record_id,evidence_ref,evidence_hash,evidence,reviewed_by}=input??{};
+  if(!/^ent_[a-f0-9]{32}$/.test(entity_id??'')||!Number.isFinite(Date.parse(requested_at))||!Number.isInteger(entity_revision)||
+    typeof producer_record_id!=='string'||!producer_record_id||producer_record_id.length>256||typeof accepted_record_id!=='string'||accepted_record_id.length>100||
+    !/^docs\/[a-z0-9._-]+\.json$/.test(evidence_ref??'')||!/^([a-f0-9]{64})$/.test(evidence_hash??'')||
+    !/^[A-Za-z][A-Za-z0-9 _-]{0,79}$/.test(reviewed_by??'')||!evidence||evidence.producer_record_id!==producer_record_id||evidence.entity_id!==entity_id||evidence.requested_at!==requested_at||
+    evidence.no_longer_produced!==true||evidence.edition_is_past!==true||evidence.replacement_delivered!==false||!/^\d{4}-\d{2}-\d{2}$/.test(evidence.last_event_date??'')||
+    !Number.isFinite(Date.parse(evidence.assessed_at))||Date.parse(evidence.assessed_at)>Date.parse(now)||stableJson(evidence).length>8000)throw Error('obsolete_resolution_review_required');
+  const id='recheckresolution_'+(await hash([entity_id,requested_at])).slice(0,32),encoded=stableJson(evidence);
+  const original=await sql(db,'SELECT * FROM producer_recheck_resolutions WHERE id=?',id).first();
+  if(original)return {resolved:original.producer_record_id===producer_record_id&&original.evidence_hash===evidence_hash&&original.evidence_json===encoded,replayed:true,resolution_id:id,acknowledged:false};
+  // The supplied receipt must be the latest source-clock observation for this
+  // exact producer ID. The native edition/date must agree with the review.
+  const predicate=`q.entity_id=? AND q.requested_at=? AND e.environment='shadow' AND e.revision=? AND ${MEMBERSHIP}
+    AND r.id=? AND r.producer_record_id=?
+    AND NOT EXISTS(SELECT 1 FROM entity_records x JOIN producer_records p ON p.id=x.record_id WHERE x.entity_id=e.id AND p.producer_name='independent-structured' AND p.validation_status='accepted' AND p.producer_record_id<>r.producer_record_id)
+    AND NOT EXISTS(SELECT 1 FROM producer_records n WHERE n.producer_name=r.producer_name AND n.producer_record_id=r.producer_record_id AND n.environment=r.environment AND n.validation_status='accepted'
+      AND (julianday(json_extract(n.normalized_json,'$.last_checked'))>julianday(json_extract(r.normalized_json,'$.last_checked')) OR json_extract(n.normalized_json,'$.last_checked')=json_extract(r.normalized_json,'$.last_checked') AND (n.received_at>r.received_at OR n.received_at=r.received_at AND n.id>r.id)))
+    AND NOT EXISTS(SELECT 1 FROM readiness ready WHERE ready.entity_id=e.id AND ready.status='ready')
+    AND date(?)<date(?) AND e.edition=substr(?,1,4)
+    AND EXISTS(SELECT 1 FROM selected_facts f WHERE f.entity_id=e.id AND f.field_name IN ('event_start','event_end') AND json_extract(f.value_json,'$')=?)
+    AND NOT EXISTS(SELECT 1 FROM selected_facts f WHERE f.entity_id=e.id AND f.field_name IN ('event_start','event_end') AND date(json_extract(f.value_json,'$'))>date(?))`;
+  const result=await db.batch([
+    sql(db,`INSERT OR IGNORE INTO producer_recheck_resolutions(id,entity_id,requested_at,request_reason,producer_record_id,accepted_record_id,entity_revision,resolution,evidence_ref,evidence_hash,evidence_json,reviewed_by,reviewed_at)
+      SELECT ?,q.entity_id,q.requested_at,q.reason,r.producer_record_id,r.id,e.revision,'obsolete_past_edition',?,?,?,?,?
+      FROM recheck_requests q JOIN entities e ON e.id=q.entity_id JOIN entity_records er ON er.entity_id=q.entity_id JOIN producer_records r ON r.id=er.record_id WHERE ${predicate}`,
+      id,evidence_ref,evidence_hash,encoded,reviewed_by,now,entity_id,requested_at,entity_revision,accepted_record_id,producer_record_id,evidence.last_event_date,now,evidence.last_event_date,evidence.last_event_date,evidence.last_event_date),
+    sql(db,`DELETE FROM recheck_requests WHERE entity_id=? AND requested_at=? AND EXISTS(SELECT 1 FROM producer_recheck_resolutions a WHERE a.id=? AND a.entity_id=recheck_requests.entity_id AND a.requested_at=recheck_requests.requested_at)`,entity_id,requested_at,id)
+  ]);
+  return {resolved:Number(result[1].meta?.changes)===1,resolution_id:id,acknowledged:false,reason:Number(result[1].meta?.changes)===1?'obsolete_past_edition_reviewed':'exact_review_or_past_edition_guard_failed'};
 }

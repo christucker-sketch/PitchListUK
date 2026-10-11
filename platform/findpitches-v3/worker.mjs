@@ -1,7 +1,7 @@
 import {commercialStatus} from './commercial.mjs';
 import {startUKRun,discoverUKSource,importUKCandidate,stopUKRun,ukSourceStatus} from './uk-store.mjs';
 import {stagingReady,stagingCatalogue} from './staging.mjs';
-import {producerRechecks,acknowledgeProducerRecheck} from './rechecks.mjs';
+import {producerRechecks,acknowledgeProducerRecheck,resolveObsoleteProducerRequest} from './rechecks.mjs';
 import {fetchCatalogueDocument} from './source-catalogue.mjs';
 import {startCatalogueRun,resumeReviewedCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,adoptCommittedCatalogueReceipt,stopCatalogueRun,catalogueStatus} from './catalogue-store.mjs';
 import {verifyEntitySource,reverifyRetainedSource,verificationGate,verificationStatus} from './verification-store.mjs';
@@ -202,6 +202,7 @@ export default {
       if(request.method==='POST'&&path==='/rechecks/ack'&&role==='ingest') {
         return json(await acknowledgeProducerRecheck(db,await bodyJson(request)));
       }
+      if(request.method==='POST'&&path==='/rechecks/resolve'&&role==='api')return json(await resolveObsoleteProducerRequest(db,await bodyJson(request)));
       if(request.method==='GET'&&path==='/shadow'&&role==='api') {
         const limit=Math.min(100,Math.max(1,Number(url.searchParams.get('limit'))||25)),after=url.searchParams.get('after')??'';
         const environment=url.searchParams.get('environment')??'shadow';if(!['shadow','test'].includes(environment))throw new Error('shadow_or_test_required');

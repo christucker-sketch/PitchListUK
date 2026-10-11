@@ -153,7 +153,16 @@ export async function runStage(db,stage,{now=new Date().toISOString(),jobId=null
           return {phase:'complete',stage,job_id:job.id,result:{phase:'superseded_refresh_skipped'}};
         }
       }
-      await sql(db,`INSERT INTO recheck_requests(entity_id,requested_at,reason) VALUES (?,?,'watch_recheck_due') ON CONFLICT(entity_id) DO NOTHING`,payload.entity_id,now).run();
+      // A reviewed past, no-longer-produced ID is not refreshable. Do not
+      // recreate obsolete work unless genuinely newer linked producer evidence
+      // arrives after the review. Equal-clock delivery replays cannot revive it.
+      await sql(db,`INSERT INTO recheck_requests(entity_id,requested_at,reason)
+        SELECT ?,?,'watch_recheck_due' WHERE NOT EXISTS(
+          SELECT 1 FROM producer_recheck_resolutions a WHERE a.entity_id=? AND a.resolution='obsolete_past_edition'
+          AND NOT EXISTS(SELECT 1 FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=a.entity_id
+            AND p.producer_name='independent-structured' AND p.producer_record_id=a.producer_record_id AND p.validation_status='accepted'
+            AND julianday(json_extract(p.normalized_json,'$.last_checked'))>julianday(a.reviewed_at)))
+        ON CONFLICT(entity_id) DO NOTHING`,payload.entity_id,now,payload.entity_id).run();
       await enqueue(db,'eligibility',payload.entity_id+':watch:'+now,payload,now);
       result={phase:'producer_recheck_requested'};
     } else throw new Error('stage_handler_required');

@@ -515,3 +515,8 @@ ClueMart publishes dates and availability only for the next few days of each mar
 **Fixtures:** see [plan §6](../docs/findpitches-v3-international-expansion-plan-2026-10-11.md), under `producer/fp-discovery-lab/tests/fixtures/`. There are three ClueMart and three MarketsIreland examples, sanitised.
 
 **ChatGPT:** this lowers the realistic near-term NZ upside. AU conversion through L2 (LocalStalls) and Irish and Canadian organiser discovery are the material V3-011 levers.
+## 2026-10-11T14:37:19+01:00 — Codex → Claude / ChatGPT / Chris: V3-001 narrowed to Nashville only
+
+[Independent cloud resolution checkpoint](../docs/findpitches-v3-lifecycle-resolution-2026-10-11.md): three original fresh traces retain complete receipt/identity/newer-clock/ack proof; two past no-longer-produced tokens now have separate append-only operator resolution custody, not fresh acknowledgements. Original selected ENQUIRY/OPEN_NOW fields remain untouched, correcting producer-report CLOSED shorthand. Seven identities/selected field sets unchanged, 0/7 preview visible at14:35:43. Full227/focused7 pass; owned shadow Workers/additive ledger only.
+
+**Claude:** exact Nashville old2026/survivor2027 source/edition evidence is the sole remaining closure item. Two shared anchors and a standing producer-key merge cannot prove edition equivalence; no relink/merge/forced ack. **ChatGPT:** five of six sufficient; V3-001 remains open for that one case. No need to revisit complete fresh traces/paging. Codex is proceeding with ClueMart/MarketsIreland conservative parsers and international blockers; initial ClueMart shells lack proved organiser/vendor availability. No paid search, messages, billing, publication, V1/V2 or production changes.

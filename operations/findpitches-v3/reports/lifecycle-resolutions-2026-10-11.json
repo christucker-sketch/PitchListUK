@@ -1,0 +1,181 @@
+{
+  "schema": "findpitches-v3-lifecycle-resolution-checkpoint-v1",
+  "as_of": "2026-10-11T13:33:36.535Z",
+  "evidence_ref": "docs/findpitches-v3-001-producer-evidence-2026-10-11.json",
+  "evidence_hash": "a0ee29fd6220f2f0cdb2e266c095b1a2ef6d06b98715d949f1c225553f75e9a7",
+  "resolutions": [
+    {
+      "producer_record_id": "fdx1_86aaebe1504fa56df8c0",
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "requested_at": "2026-10-09T13:33:05.718Z",
+      "accepted_record_id": "rec_cd9a734dcb7ac4fdc3efeba2429c6a52f5814f8c",
+      "resolved": true,
+      "resolution_id": "recheckresolution_42fed81197852520b4b8d2ca99447621",
+      "acknowledged": false,
+      "reason": "obsolete_past_edition_reviewed"
+    },
+    {
+      "producer_record_id": "fdx1_9b04c3e4d51b66bbcfab",
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "requested_at": "2026-10-09T19:03:18.609Z",
+      "accepted_record_id": "rec_f4edfe8685feab07f8cb5f3f61cca1251fe93c27",
+      "resolved": true,
+      "resolution_id": "recheckresolution_71b023d3fa142646da3716035ddd357d",
+      "acknowledged": false,
+      "reason": "obsolete_past_edition_reviewed"
+    }
+  ],
+  "remaining_exact_requests": [
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "requested_at": "2026-10-09T18:47:53.640Z",
+      "reason": "watch_recheck_due"
+    }
+  ],
+  "source_fact_writes": 0,
+  "identity_writes": 0,
+  "producer_acknowledgements_fabricated": 0,
+  "nashville_review": "No canonical supersession/merge: native editions 2026 and 2027 differ; old standing producer key and shared anchors alone do not establish edition equivalence. Retain both identities and the original request/holds pending explicit source/edition custody.",
+  "visibility_checked_at": "2026-10-11T13:35:43.527Z",
+  "customer_proof_snapshot": {
+    "total": 1812,
+    "cohort_visible": []
+  },
+  "cohort": [
+    {
+      "entity_id": "ent_610f9171a285d58e114a847995de559e",
+      "market": "GB",
+      "edition": "2026",
+      "selected_application_state": "ENQUIRY_AVAILABLE",
+      "selected_lifecycle": "UNCHANGED",
+      "current_disposition": "quarantined",
+      "proof_reasons": [
+        "source_http_520"
+      ],
+      "identity_unchanged": true,
+      "selected_source_fields_unchanged": true
+    },
+    {
+      "entity_id": "ent_93d86b9d0147d8aa91ea8eea541d86b8",
+      "market": "US",
+      "edition": "2027",
+      "selected_application_state": "OPEN_NOW",
+      "selected_lifecycle": "UNCHANGED",
+      "current_disposition": "blocked",
+      "proof_reasons": [
+        "single_event_source_data_missing"
+      ],
+      "identity_unchanged": true,
+      "selected_source_fields_unchanged": true
+    },
+    {
+      "entity_id": "ent_980b3f71a872ef95d9154b343f51e956",
+      "market": "US",
+      "edition": "2026",
+      "selected_application_state": "CLOSED",
+      "selected_lifecycle": "WITHDRAWN",
+      "current_disposition": "quarantined",
+      "proof_reasons": [
+        "single_event_source_data_missing"
+      ],
+      "identity_unchanged": true,
+      "selected_source_fields_unchanged": true
+    },
+    {
+      "entity_id": "ent_aab98ac5f0d02c73ffbc5d27cd067ff6",
+      "market": "US",
+      "edition": "2026",
+      "selected_application_state": "CLOSED",
+      "selected_lifecycle": "CLOSED",
+      "current_disposition": "quarantined",
+      "proof_reasons": [
+        "single_event_source_data_missing"
+      ],
+      "identity_unchanged": true,
+      "selected_source_fields_unchanged": true
+    },
+    {
+      "entity_id": "ent_bca3cd60081993beb8a5a678375ca83b",
+      "market": "AU",
+      "edition": null,
+      "selected_application_state": "CLOSED",
+      "selected_lifecycle": "CLOSED",
+      "current_disposition": "quarantined",
+      "proof_reasons": [
+        "single_event_source_data_missing"
+      ],
+      "identity_unchanged": true,
+      "selected_source_fields_unchanged": true
+    },
+    {
+      "entity_id": "ent_dda1403e0c99eb5b1c1871f37c325cb2",
+      "market": "US",
+      "edition": "2026",
+      "selected_application_state": "ROLLING",
+      "selected_lifecycle": "UNCHANGED",
+      "current_disposition": "quarantined",
+      "proof_reasons": [
+        "single_event_source_data_missing"
+      ],
+      "identity_unchanged": true,
+      "selected_source_fields_unchanged": true
+    },
+    {
+      "entity_id": "ent_fe98b225e6bc12c8321d0bfb8bb9e214",
+      "market": "US",
+      "edition": "2026",
+      "selected_application_state": "OPEN_NOW",
+      "selected_lifecycle": "UNCHANGED",
+      "current_disposition": "quarantined",
+      "proof_reasons": [
+        "single_event_source_data_missing"
+      ],
+      "identity_unchanged": true,
+      "selected_source_fields_unchanged": true
+    }
+  ],
+  "global_safety": {
+    "customer_rows": 0,
+    "publication_rows": 0,
+    "publication_enabled": 0,
+    "lifetime_paid_queries": 25,
+    "bulk_enabled": 0
+  },
+  "deployment": {
+    "as_of": "2026-10-11T13:32:04.764Z",
+    "deployments": [
+      {
+        "role": "api",
+        "deployment": [
+          {
+            "id": "4ba0b396-6084-4d65-a102-04a965441dff",
+            "strategy": "percentage",
+            "versions": [
+              {
+                "version_id": "dcea9723-7084-4c28-befc-a34e6bb3b6dc",
+                "percentage": 100
+              }
+            ],
+            "created_on": "2026-10-11T13:31:45.762666Z"
+          }
+        ]
+      },
+      {
+        "role": "watch",
+        "deployment": [
+          {
+            "id": "d395262b-152b-4f82-bf9a-f297681e9267",
+            "strategy": "percentage",
+            "versions": [
+              {
+                "version_id": "3cc58b8a-5868-4bba-86a2-b2a7c5154ee0",
+                "percentage": 100
+              }
+            ],
+            "created_on": "2026-10-11T13:31:19.981394Z"
+          }
+        ]
+      }
+    ]
+  }
+}
