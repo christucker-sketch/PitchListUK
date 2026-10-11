@@ -4,7 +4,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {shadowContext} from './shadow-context.mjs';
 import {customerContext} from './customer-context.mjs';
-import {stagingCatalogue} from '../../platform/findpitches-v3/staging.mjs';
+import {stagingCatalogue,LATEST_STRUCTURED_POLICY_SQL} from '../../platform/findpitches-v3/staging.mjs';
 import {previewCookie} from '../../platform/findpitches-v3/customer-security.mjs';
 
 const round=n=>Math.round(n*100)/100;
@@ -13,7 +13,7 @@ function timedDatabase(db,measurements){
     const s=params.length?db.prepare(query).bind(...params):db.prepare(query);
     return {bind:(...args)=>statement(query,args),all:async()=>{
       if(!/^SELECT\b/i.test(query.trim()))throw Error('read_only_profile_required');
-      const start=performance.now(),r=await s.all();measurements.push({component:query.includes('FROM entity_records er JOIN producer_records p ON p.id=er.record_id\n    WHERE')?'latest_producer_policy':'inventory_page',wall_ms:round(performance.now()-start),d1_duration_ms:r.meta?.duration??null,rows_read:r.meta?.rows_read??null,rows_returned:r.results?.length??0});return r;
+      const start=performance.now(),r=await s.all();measurements.push({component:query.includes('FROM entity_records er JOIN producer_records p ON p.id=er.record_id\n    WHERE')?'latest_producer_policy':'inventory_page',wall_ms:round(performance.now()-start),d1_duration_ms:r.meta?.duration??null,rows_read:r.meta?.rows_read??null,rows_returned:r.results?.length??0,response_bytes:new TextEncoder().encode(JSON.stringify(r.results??[])).length});return r;
     }};
   }
   return {prepare:query=>statement(query)};
@@ -27,11 +27,7 @@ export async function profileCatalogue({credentialsFile,stateDirectory,customerD
     samples.push({sample:i+1,path:'operator_D1_HTTP_snapshot',snapshot_as_of:snapshot.as_of,wall_ms:round(performance.now()-start),private_eligible:snapshot.items.length,private_eligible_by_country:countries,shadow_ready:snapshot.shadow_ready,producer_policy_withheld:snapshot.producer_policy_withheld,queries});
   }
   const indexes=(await ctx.db.prepare("SELECT name,sql FROM sqlite_master WHERE type='index' AND tbl_name='producer_records'").all()).results;
-  const latestReceiptPlan=(await ctx.db.prepare(`EXPLAIN QUERY PLAN SELECT er.entity_id,p.producer_record_id,p.normalized_json
-    FROM entity_records er JOIN producer_records p ON p.id=er.record_id
-    WHERE p.producer_name='independent-structured' AND p.environment='shadow' AND p.validation_status='accepted'
-    AND NOT EXISTS(SELECT 1 FROM producer_records n WHERE n.producer_name=p.producer_name AND n.producer_record_id=p.producer_record_id AND n.environment=p.environment AND n.validation_status='accepted'
-      AND (COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')>COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') OR COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')=COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') AND (n.received_at>p.received_at OR n.received_at=p.received_at AND n.id>p.id)))`).all()).results;
+  const latestReceiptPlan=(await ctx.db.prepare('EXPLAIN QUERY PLAN '+LATEST_STRUCTURED_POLICY_SQL).all()).results;
   const customer=await customerContext({credentialsFile,customerDirectory}),http=[];
   const access=JSON.parse(fs.readFileSync(previewAccessFile??path.join(customerDirectory,'browser-access-private.json'))),preview=access.cookies?.find(c=>c.name===previewCookie);
   if(access.base!==customer.state.url||!preview)throw Error('existing_preview_access_required');

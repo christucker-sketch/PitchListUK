@@ -1,0 +1,379 @@
+{
+  "schema": "findpitches-v3-catalogue-profile-v1",
+  "as_of": "2026-10-11T14:57:10.985Z",
+  "round_cap": 3,
+  "samples": [
+    {
+      "sample": 1,
+      "path": "operator_D1_HTTP_snapshot",
+      "snapshot_as_of": "2026-10-11T14:56:54.660Z",
+      "wall_ms": 3976.91,
+      "private_eligible": 1811,
+      "private_eligible_by_country": {
+        "US": 1678,
+        "GB": 127,
+        "NZ": 4,
+        "AU": 2
+      },
+      "shadow_ready": 1811,
+      "producer_policy_withheld": 0,
+      "queries": [
+        {
+          "component": "latest_producer_policy",
+          "wall_ms": 520.14,
+          "d1_duration_ms": 169.0481,
+          "rows_read": 27827,
+          "rows_returned": 2089,
+          "response_bytes": 301499
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 533.51,
+          "d1_duration_ms": 107.2733,
+          "rows_read": 21096,
+          "rows_returned": 250,
+          "response_bytes": 576694
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 368.17,
+          "d1_duration_ms": 104.4446,
+          "rows_read": 20596,
+          "rows_returned": 250,
+          "response_bytes": 579573
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 354.57,
+          "d1_duration_ms": 83.9473,
+          "rows_read": 20388,
+          "rows_returned": 250,
+          "response_bytes": 576357
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 372.08,
+          "d1_duration_ms": 78.3344,
+          "rows_read": 20538,
+          "rows_returned": 250,
+          "response_bytes": 578722
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 359.03,
+          "d1_duration_ms": 83.8809,
+          "rows_read": 20471,
+          "rows_returned": 250,
+          "response_bytes": 575669
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 348.63,
+          "d1_duration_ms": 84.5842,
+          "rows_read": 20668,
+          "rows_returned": 250,
+          "response_bytes": 577944
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 465.98,
+          "d1_duration_ms": 93.989,
+          "rows_read": 20501,
+          "rows_returned": 250,
+          "response_bytes": 578132
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 237.71,
+          "d1_duration_ms": 32.5093,
+          "rows_read": 7726,
+          "rows_returned": 95,
+          "response_bytes": 219509
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 139.52,
+          "d1_duration_ms": 1.147,
+          "rows_read": 10,
+          "rows_returned": 0,
+          "response_bytes": 2
+        }
+      ]
+    },
+    {
+      "sample": 2,
+      "path": "operator_D1_HTTP_snapshot",
+      "snapshot_as_of": "2026-10-11T14:56:58.637Z",
+      "wall_ms": 3773.7,
+      "private_eligible": 1811,
+      "private_eligible_by_country": {
+        "US": 1678,
+        "GB": 127,
+        "NZ": 4,
+        "AU": 2
+      },
+      "shadow_ready": 1811,
+      "producer_policy_withheld": 0,
+      "queries": [
+        {
+          "component": "latest_producer_policy",
+          "wall_ms": 515.05,
+          "d1_duration_ms": 218.0212,
+          "rows_read": 27827,
+          "rows_returned": 2089,
+          "response_bytes": 301499
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 599.73,
+          "d1_duration_ms": 116.1358,
+          "rows_read": 21096,
+          "rows_returned": 250,
+          "response_bytes": 576694
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 355.45,
+          "d1_duration_ms": 86.3019,
+          "rows_read": 20596,
+          "rows_returned": 250,
+          "response_bytes": 579573
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 307.87,
+          "d1_duration_ms": 91.3724,
+          "rows_read": 20388,
+          "rows_returned": 250,
+          "response_bytes": 576357
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 434.14,
+          "d1_duration_ms": 91.165,
+          "rows_read": 20538,
+          "rows_returned": 250,
+          "response_bytes": 578722
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 321.6,
+          "d1_duration_ms": 75.9795,
+          "rows_read": 20471,
+          "rows_returned": 250,
+          "response_bytes": 575669
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 361.88,
+          "d1_duration_ms": 80.1352,
+          "rows_read": 20668,
+          "rows_returned": 250,
+          "response_bytes": 577944
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 282.55,
+          "d1_duration_ms": 109.3313,
+          "rows_read": 20501,
+          "rows_returned": 250,
+          "response_bytes": 578132
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 299.58,
+          "d1_duration_ms": 35.7697,
+          "rows_read": 7726,
+          "rows_returned": 95,
+          "response_bytes": 219509
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 152.14,
+          "d1_duration_ms": 1.304,
+          "rows_read": 10,
+          "rows_returned": 0,
+          "response_bytes": 2
+        }
+      ]
+    },
+    {
+      "sample": 3,
+      "path": "operator_D1_HTTP_snapshot",
+      "snapshot_as_of": "2026-10-11T14:57:02.411Z",
+      "wall_ms": 3372.34,
+      "private_eligible": 1811,
+      "private_eligible_by_country": {
+        "US": 1678,
+        "GB": 127,
+        "NZ": 4,
+        "AU": 2
+      },
+      "shadow_ready": 1811,
+      "producer_policy_withheld": 0,
+      "queries": [
+        {
+          "component": "inventory_page",
+          "wall_ms": 341.81,
+          "d1_duration_ms": 100.304,
+          "rows_read": 21096,
+          "rows_returned": 250,
+          "response_bytes": 576694
+        },
+        {
+          "component": "latest_producer_policy",
+          "wall_ms": 531.11,
+          "d1_duration_ms": 173.7764,
+          "rows_read": 27827,
+          "rows_returned": 2089,
+          "response_bytes": 301499
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 352.47,
+          "d1_duration_ms": 88.2645,
+          "rows_read": 20596,
+          "rows_returned": 250,
+          "response_bytes": 579573
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 349.19,
+          "d1_duration_ms": 83.4712,
+          "rows_read": 20388,
+          "rows_returned": 250,
+          "response_bytes": 576357
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 351.46,
+          "d1_duration_ms": 93.2256,
+          "rows_read": 20538,
+          "rows_returned": 250,
+          "response_bytes": 578722
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 266.16,
+          "d1_duration_ms": 78.9629,
+          "rows_read": 20471,
+          "rows_returned": 250,
+          "response_bytes": 575669
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 364.03,
+          "d1_duration_ms": 92.4182,
+          "rows_read": 20668,
+          "rows_returned": 250,
+          "response_bytes": 577944
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 342.67,
+          "d1_duration_ms": 72.7916,
+          "rows_read": 20501,
+          "rows_returned": 250,
+          "response_bytes": 578132
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 224.97,
+          "d1_duration_ms": 43.3035,
+          "rows_read": 7726,
+          "rows_returned": 95,
+          "response_bytes": 219509
+        },
+        {
+          "component": "inventory_page",
+          "wall_ms": 130.77,
+          "d1_duration_ms": 1.2485,
+          "rows_read": 10,
+          "rows_returned": 0,
+          "response_bytes": 2
+        }
+      ]
+    }
+  ],
+  "http_reads": [
+    {
+      "route": "/api/v3/session",
+      "status": 401,
+      "wall_ms": 292.14,
+      "error": "existing_preview_invitation_expired"
+    },
+    {
+      "route": "/preview/status",
+      "status": 200,
+      "wall_ms": 4361.11,
+      "inventory": {
+        "shadow_ready": 1811,
+        "preview_eligible": 1811,
+        "producer_policy_withheld": 0,
+        "customer_visible_ready": 0
+      },
+      "cache_control": "private, no-store"
+    }
+  ],
+  "native_http_coverage": "Existing invitation is no longer valid; customer boot endpoints were not profiled. No new invitation/session created. Operator GET /preview/status provides the current native service-binding snapshot timing.",
+  "producer_record_indexes": [
+    {
+      "name": "sqlite_autoindex_producer_records_1",
+      "sql": null
+    },
+    {
+      "name": "sqlite_autoindex_producer_records_2",
+      "sql": null
+    },
+    {
+      "name": "producer_records_activity",
+      "sql": "CREATE INDEX producer_records_activity ON producer_records(producer_name, received_at)"
+    }
+  ],
+  "latest_receipt_query_plan": [
+    {
+      "id": 5,
+      "parent": 0,
+      "notused": 61,
+      "detail": "SEARCH p USING INDEX sqlite_autoindex_producer_records_2 (environment=? AND producer_name=?)"
+    },
+    {
+      "id": 14,
+      "parent": 0,
+      "notused": 0,
+      "detail": "CORRELATED SCALAR SUBQUERY 1"
+    },
+    {
+      "id": 19,
+      "parent": 14,
+      "notused": 60,
+      "detail": "SEARCH n USING INDEX sqlite_autoindex_producer_records_2 (environment=? AND producer_name=? AND producer_record_id=?)"
+    },
+    {
+      "id": 62,
+      "parent": 0,
+      "notused": 47,
+      "detail": "SEARCH er USING INDEX sqlite_autoindex_entity_records_1 (record_id=?)"
+    }
+  ],
+  "boot_dependencies": {
+    "shell": "Markets and anonymous session in parallel; then plans for currently live markets in parallel; signed-in users also request saved IDs.",
+    "finder": "Waits for shell; US then awaits regions before the initial search. Each markets/regions/search endpoint reads a fresh catalogue.",
+    "catalogue": "READY inventory is paged at 250. Latest independent-producer policy is read on every snapshot; each producer candidate runs a correlated newer-receipt anti-join with JSON source-clock extraction."
+  },
+  "limits": "Single client, bounded sequential samples in the Codex proxy environment. Operator snapshot wall time includes Cloudflare management API round trips; preview endpoint wall time includes network/proxy and service-binding work. This is not browser rendering or production-load evidence.",
+  "writes": {
+    "source_facts": 0,
+    "identity": 0,
+    "customer_accounts": 0,
+    "provider": 0,
+    "publication": 0,
+    "paid_queries": 0
+  },
+  "recommendations": [
+    "Reduce repeated inventory reads first: use one fresh proof snapshot within each server request and profile a compact batched projection against the same expiry/revision/hold checks.",
+    "The newer-receipt query plan already bounds each history by environment/producer/record ID. Profile JSON clock extraction within those histories before proposing an expression index or transactionally maintained latest-receipt pointer; preserve source-clock and received-at/ID tie ordering.",
+    "Avoid gating the Finder on billing plans that are only needed by upgrade controls; retain unavailable-price behavior.",
+    "Any future cross-request cache needs expiry, source/identity revision, producer-policy invalidation and fail-closed entitlement/redaction checks; do not deploy a stale global catalogue cache."
+  ]
+}

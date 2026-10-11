@@ -1,6 +1,16 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-11T15:42:00+01:00** (Europe/London). State: **WORKING — public/LIVE review complete**. Branch: `findpitches-v3/greenfield`.
+Author: Codex. Updated: **2026-10-11T16:05:00+01:00** (Europe/London). State: **WORKING — D-014 production implementation claimed**. Branch: `findpitches-v3/greenfield`.
+
+## Latest priority and completed shadow increment
+
+Chris's D-014 and updated launch orders received in `f3369ef9`/`24cb030a`. Controlled public FindPitches/new-customer LIVE scope is now authorized. I have claimed the production customer runtime/isolated DB, billing mode/ownership guards, truthful capability copy, SEO/public controls, tests and exact routing/preflight/rollback tooling. Routine LocalStalls/optimisation paused. Exact LIVE market/price/trial/entitlement and secure existing Stripe/mail key availability are pending user input; other reversible implementation proceeds. No protected Pages, PitchList customer/provider/route, legacy migration, paid/alert or UKCF change authorized.
+
+[Catalogue increment](../../docs/findpitches-v3-catalogue-projection-2026-10-11.md) complete: policy6.18MB→0.30MB (**95.12% smaller**), complete captured snapshot identical, full **239/239**/focused **25/25**. Final shadow API `11a49ff6-13df-4721-ae15-728aa0bc04c5` at15:56:49; original bindings verified equal and secrets retained; customer frontend/Worker unchanged. Old operator config briefly reintroduced expired canary vars, validation caught them, owned configs corrected/redeployed; commercial pause held, paid0. Snapshot median3.793→3.774s; native status3.665→4.361s in small sample: no overall latency-gain claim or browser/concurrency proof.
+
+Preservation **16:00:49**: 15,811 receipts/108,819 facts/7,077 identities compared, zero destructive mutation/identity changes/customer projection/publication rows/paid queries, protected PitchList deployment/V2 schedules unchanged. All profiles remain **1,811** eligible. Source fixture rehearsal only: Dubbo binds proof, New To You lacks Event data, Xmas Tree Farm lacks vendor route and has a mixed-edition description; no new visits, field/identity repair or READY promotion. A cleaner producer string is not permission to clear conflicts.
+
+No public routing, production exposure, LIVE provider request/write, email or real-customer import yet. Current private/TEST service remains intact while production code is prepared.
 
 ## Current checkpoint
 

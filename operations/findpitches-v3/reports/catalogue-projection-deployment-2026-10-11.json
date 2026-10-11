@@ -1,0 +1,62 @@
+{
+  "schema": "findpitches-v3-compact-catalogue-deployment-v1",
+  "as_of": "2026-10-11T14:56:54.258Z",
+  "worker": "findpitches-v3-api-shadow",
+  "previous_deployment": {
+    "id": "4ba0b396-6084-4d65-a102-04a965441dff",
+    "created_on": "2026-10-11T13:31:45.762666Z",
+    "strategy": "percentage",
+    "versions": [
+      {
+        "version_id": "dcea9723-7084-4c28-befc-a34e6bb3b6dc",
+        "percentage": 100
+      }
+    ]
+  },
+  "current_deployment": {
+    "id": "5724e727-6d29-47bc-bdb3-0d37725f4150",
+    "created_on": "2026-10-11T14:56:49.743039Z",
+    "strategy": "percentage",
+    "versions": [
+      {
+        "version_id": "11a49ff6-13df-4721-ae15-728aa0bc04c5",
+        "percentage": 100
+      }
+    ]
+  },
+  "guard": {
+    "paid_queries_today": 0,
+    "commercial_paused": 1,
+    "bulk_enabled": 0,
+    "publication_enabled": 0,
+    "publication_rows": 0,
+    "customer_rows": 0
+  },
+  "customer_deployment_unchanged": true,
+  "customer_version": "9ba2ac7a-7cdf-4cc0-b0f4-b11477c52169",
+  "bindings_equal_to_original_version": true,
+  "secret_bindings_replaced": false,
+  "database_migrations": 0,
+  "source_or_identity_writes": 0,
+  "publication_changes": 0,
+  "paid_queries": 0,
+  "deployment_check_correction": {
+    "stale_local_config_reintroduced_expired_canary_variables": true,
+    "removed": true,
+    "local_api_configs_corrected": true,
+    "canary_was_expired": true,
+    "commercial_pause_remained_enforced": true,
+    "paid_queries_observed": 0
+  },
+  "tests": {
+    "full_passed": 239,
+    "full_failed": 0,
+    "focused_passed": 25,
+    "focused_failed": 0,
+    "duration_ms": 135834.788072
+  },
+  "source_hashes": {
+    "staging": "f45b4749c5a8f5f4803ca08e4c2f1d81dc7216ad11aaafcfa56dc9de160a98be",
+    "worker": "c98ae41ac14785f4e60c91711158674567f6fcbb80cc0450939bca50595ede18"
+  }
+}

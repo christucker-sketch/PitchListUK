@@ -14,13 +14,19 @@ export async function stagingReady(db,{market=null,after='',limit=50,region=null
 
 // Private service-binding projection, still source-proved shadow data. The
 // independent producer's READY label is never sufficient for customer access.
-export async function stagingCatalogue(db,{now=new Date().toISOString()}={}) {
-  const [rows,policy]=await Promise.all([commercialRows(db,{onlyCachedReady:true}),sql(db,`SELECT er.entity_id,p.producer_record_id,p.normalized_json
+// Read only the policy fields needed here. Full immutable receipts remain in
+// the evidence store; their payloads are not a catalogue query dependency.
+export const LATEST_STRUCTURED_POLICY_SQL=`SELECT er.entity_id,
+    json_extract(p.normalized_json,'$.confidence.level') AS confidence_level,
+    json_extract(p.normalized_json,'$.producer_channel') AS producer_channel,
+    json_extract(p.normalized_json,'$.producer_export_readiness') AS producer_export_readiness
     FROM entity_records er JOIN producer_records p ON p.id=er.record_id
     WHERE p.producer_name='independent-structured' AND p.environment='shadow' AND p.validation_status='accepted'
     AND NOT EXISTS(SELECT 1 FROM producer_records n WHERE n.producer_name=p.producer_name AND n.producer_record_id=p.producer_record_id AND n.environment=p.environment AND n.validation_status='accepted'
-      AND (COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')>COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') OR COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')=COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') AND (n.received_at>p.received_at OR n.received_at=p.received_at AND n.id>p.id)))`).all()]);
-  const held=new Set();for(const row of policy.results){const p=JSON.parse(row.normalized_json);if(p.confidence?.level==='LOW'||p.producer_channel&&p.producer_channel!=='current'||p.producer_export_readiness&&p.producer_export_readiness!=='READY')held.add(row.entity_id);}
+      AND (COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')>COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') OR COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')=COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') AND (n.received_at>p.received_at OR n.received_at=p.received_at AND n.id>p.id)))`;
+export async function stagingCatalogue(db,{now=new Date().toISOString()}={}) {
+  const [rows,policy]=await Promise.all([commercialRows(db,{onlyCachedReady:true}),sql(db,LATEST_STRUCTURED_POLICY_SQL).all()]);
+  const held=new Set();for(const p of policy.results)if(p.confidence_level==='LOW'||p.producer_channel&&p.producer_channel!=='current'||p.producer_export_readiness&&p.producer_export_readiness!=='READY')held.add(p.entity_id);
   const ready=rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready&&!held.has(r.id));
   return {schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now,publication_enabled:false,production_cutover_enabled:false,
     shadow_ready:rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready).length,producer_policy_withheld:rows.filter(r=>held.has(r.id)).length,
