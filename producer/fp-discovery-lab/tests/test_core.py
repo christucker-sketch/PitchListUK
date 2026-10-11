@@ -419,3 +419,31 @@ def test_marketsireland_identity_key():
     pids = idn.platform_ids(["https://marketsireland.ie/market/castledermot/"])
     nk, plat, ed = idn.natural_key("IE", pids, None, "Castledermot", "2026-12-06", False)
     assert nk == "IE|marketsireland:castledermot|2026" and plat == "marketsireland"
+
+
+# ---------------- ClueMart (NZ) pages: open only with listed dates AND spaces ----------------
+def _cm(name, url):
+    from pathlib import Path
+    from fpd import adapters
+    html = (Path(__file__).parent / "fixtures" / name).read_text(encoding="utf-8")
+    page = parse_html(html, url)
+    return adapters.apply(page, classify(page, dt.date(2026, 10, 11)), dt.date(2026, 10, 11), "cluemart.co.nz")
+
+
+def test_cluemart_bare_page_is_not_open():
+    a = _cm("cluemart_bare_2026-10-11.html", "https://cluemart.co.nz/application/botany-night-market")
+    ex = a["extracted"]
+    assert ex["state"] == "UNKNOWN" and ex["missing"] == ["current_dates"] and ex["country"] == "NZ"
+    assert ex["platform_ids"]["cluemart_application"] == "botany-night-market"
+
+
+def test_cluemart_dates_with_spaces_open():
+    a = _cm("cluemart_dated_probable_test_listing_2026-10-11.html", "https://cluemart.co.nz/application/farmers-market")
+    ex = a["extracted"]
+    assert ex["state"] == "OPEN_NOW" and ex["start_date"] == "2026-10-12", ex["state_evidence"]
+    assert ex["region"] == "Auckland"
+
+
+def test_cluemart_demo_listing_rejected():
+    a = _cm("cluemart_bare_2026-10-11.html", "https://cluemart.co.nz/application/demo-market")
+    assert a["extracted"]["relevance"] == "not_relevant" and a["label"] == "rejected"

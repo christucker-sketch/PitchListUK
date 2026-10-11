@@ -108,3 +108,30 @@ Most contact is by email or phone shown on the listing. Only Balla, Brockagh and
 Per-seed yield will show in the producer report after the first cycles.
 
 **Tests:** 95 pass, including 4 new MarketsIreland tests. The fixtures are sanitised: organiser emails and phone numbers have been replaced.
+
+## 6. ClueMart finding: L1 expected gain revised down (2026-10-11)
+
+I fetched all 74 ClueMart application pages listed in its sitemap (allowed by robots.txt) on 2026-10-11 at about 14:20 London. The static HTML breaks down as:
+
+| Page content | Pages |
+| --- | --- |
+| Bare: only "View this market application on ClueMart" | 61 |
+| Description only, no dates | 11 or 12 |
+| "Market dates:" list with "N spaces available" | **1**, and that one looks like a test listing ($1 mini stall, generic "Farmers Market") |
+
+ClueMart therefore shows dates and availability only while an organiser has upcoming dates published. That would explain why the producer's 48 open records of 9 Oct were dated 10 or 11 Oct, the coming weekend.
+
+**Consequence for L1:** a ClueMart parser in V3 can prove a listing only inside those short windows. **Expect a small, fluctuating NZ READY count, not about 50.** The data itself (`/api/`) is disallowed by robots.txt, so there is no legitimate richer source.
+
+**Producer change:** a new ClueMart adapter claims open only when future market dates **and** available spaces are listed. A bare page is UNKNOWN ("no market dates currently published"), and demo/test listings are not relevant. Kit `SHA256SUMS` is `1ce097c9…`; this kit supersedes `29a7c85d…`. 98 tests pass.
+
+**Fixtures for Codex**, in `producer/fp-discovery-lab/tests/fixtures/` (sanitised, scripts stripped):
+
+| File | Contents |
+| --- | --- |
+| `cluemart_bare_2026-10-11.html` | Bare page |
+| `cluemart_description_only_2026-10-11.html` | Description only |
+| `cluemart_dated_probable_test_listing_2026-10-11.html` | Dates and spaces; a probable test listing, so not for READY claims |
+| `marketsireland_open.html` | Open status, 6 Dec, County Kildare, EUR 40 per day |
+| `marketsireland_notmanaged.html` | "Closed or not managed here", with an organiser site |
+| `marketsireland_belfast.html` | Northern Ireland, so GB |

@@ -411,7 +411,56 @@ def _platform_ids_only(rx: str, key: str):
     return fn
 
 
-cluemart = _platform_ids_only(r"cluemart\.co\.nz/application/([a-z0-9\-]+)", "cluemart_application")
+_cm_ids = _platform_ids_only(r"cluemart\.co\.nz/application/([a-z0-9\-]+)", "cluemart_application")
+
+
+def _cluemart(page: Page, a: dict, today: dt.date) -> dict | None:
+    """ClueMart (NZ) application pages. Their static HTML shows a 'Market dates:' list with stall types and
+    'N spaces available' only while the organiser has upcoming dates published; otherwise the page is bare
+    ('View this market application on ClueMart'). Open is claimed only from listed future dates WITH available
+    spaces; a bare page is UNKNOWN (no dates published), never OPEN_NOW. Demo/test listings are not relevant."""
+    m = re.search(r"cluemart\.co\.nz/application/([a-z0-9\-]+)", page.url)
+    if not m:
+        return None
+    t = re.sub(r"\s+", " ", page.text)
+    ex = a["extracted"]
+    name = re.sub(r"\s*\|\s*ClueMart\s*$", "", page.title).strip() or ex.get("name")
+    if re.match(r"demo\b|test\b", m.group(1)) or re.match(r"(?i)(demo|test)\b", name or ""):
+        ex.update(name=name, relevance="not_relevant", state="NOT_RELEVANT",
+                  state_evidence="ClueMart demo/test listing")
+        a["label"], a["reasons"] = "rejected", ["platform_demo_listing"]
+        return a
+    region = re.search(r"\b([A-Z][A-Za-z' &]+?) , New Zealand\b", t)
+    md = re.search(r"Market dates: (.{0,1500}?)(?:⏰|Application deadline|Product Discover|$)", t)
+    dates = []
+    if md:
+        for d in extract_dates(md.group(1), today):
+            if d.start and d.start >= today:
+                dates.append(d.start)
+    dates = sorted(set(dates))
+    spaces = [int(n) for n in re.findall(r"\((\d+) spaces? available\)", md.group(1) if md else "")]
+    ex.update(name=name, country="NZ", region=(region.group(1).strip() if region else ex.get("region")),
+              relevance="relevant", start_date=dates[0].isoformat() if dates else None, end_date=None,
+              date_source="platform_market_dates" if dates else None)
+    ex["geo_basis"] = ["platform_country:cluemart"]
+    route = {"type": "platform_page", "url": page.url, "platform": "ClueMart", "anchor": "Apply on ClueMart",
+             "category": "market"}
+    if dates and any(n > 0 for n in spaces):
+        ex.update(state="OPEN_NOW", open_strength="explicit", routes=[route], apply_url=page.url, missing=[],
+                  recurrence=(f"{len(dates)} upcoming market dates listed" if len(dates) >= 3 else None),
+                  state_evidence=f"ClueMart: {len(dates)} upcoming market date(s) from {dates[0].isoformat()} with "
+                                 f"{sum(spaces)} stall space(s) available")
+    elif dates:
+        ex.update(state="UNKNOWN", open_strength=None, routes=[route], apply_url=page.url, missing=["open_application"],
+                  state_evidence=f"ClueMart: market dates listed from {dates[0].isoformat()} but no stall spaces shown as available")
+    else:
+        ex.update(state="UNKNOWN", open_strength=None, routes=[route], apply_url=page.url, missing=["current_dates"],
+                  state_evidence="ClueMart application page with no market dates currently published")
+    a["label"] = "actionable" if ex["state"] == "OPEN_NOW" else "uncertain"
+    a["reasons"] = ["platform_adapter:cluemart"]
+    a["evidence"].insert(0, {"kind": "state", "text": f"{ex['state']}: {ex['state_evidence']}"})
+    return a
+
 _ls_ids = _platform_ids_only(r"localstalls\.com/((?:au|nz|uk|us)/event/[^/?#]+/[^/?#]+)", "localstalls_event")
 _uk_ids = _platform_ids_only(r"ukcraftfairs\.com/craft-events/(\d+)", "ukcraftfairs_event")
 _mi_ids = _platform_ids_only(r"marketsireland\.ie/market/([a-z0-9\-]+)", "marketsireland_market")
@@ -427,6 +476,9 @@ def _chain(*fns):
     fn.__name__ = fns[0].__name__
     return fn
 
+
+cluemart = _chain(_cluemart, _cm_ids)
+cluemart.__name__ = "cluemart"
 
 ADAPTERS = {"ukcraftfairs.com": _chain(ukcraftfairs, _uk_ids), "localstalls.com": _chain(localstalls, _ls_ids),
             "eventeny.com": eventeny, "cluemart.co.nz": cluemart, "marketspread.com": marketspread,

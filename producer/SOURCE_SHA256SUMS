@@ -6,7 +6,7 @@
 15e6657093d6738c2f1a69c09bdbb9dd45bf1d1e5147e4af109e65b85bb4751f  ./RESULTS.md
 acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.md
 3327a1fbed2675cbe274c12148441a62f86ea538ef64c1dfee5987833121a494  ./deploy/pi/README.md
-29a7c85de9a53695d035f0b79b60847fd41549262d1aeb38bc44134d9862f643  ./deploy/pi/SHA256SUMS
+1ce097c96d10ef7042b342294519f0363c154ba2af298741cb054fed42647c59  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./deploy/pi/bin/fpd-backup
 c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./deploy/pi/bin/fpd-cycle
@@ -41,7 +41,7 @@ e51e8996071f15c4fb2a065050cbf8e8d550ef033fceebf4e8ed971e64767e72  ./deploy/pi/sy
 e4d7be8671618a186e23da6d73b5a4f79f143e17e5c4a6851b257ff5a6642183  ./deploy/pi/systemd/fpd-v3-prune.timer
 357a2add6556103fbc82aab16c58328e174f30c1bf53cef668cd1e3acd2b146f  ./fpd/__init__.py
 6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279  ./fpd/__main__.py
-3fe3f1f39f166a3bbac0ac62ff83b1b5bfaf30e137b96563b8fa209986d4f998  ./fpd/adapters.py
+643975b35c63ea98ff61c8649f5be1898118365246c3189507da9b161274516e  ./fpd/adapters.py
 a7997d146ce3ca17d17176376862eebd5f204accc4171a7e6016302ad86c9f7f  ./fpd/classify.py
 e78d0bd57de4f6d5ed75d8be59d4d009c745e9e78f068b2efbe492df5e52b6f2  ./fpd/cli.py
 6c29b18b5c8c183a381037c501cbd2197e6b4bf97cb073e7139cf10b9a80d1e1  ./fpd/config.py
@@ -79,8 +79,11 @@ c5ed9703618abb3b8e49c6ea865787807006006ac0952e05403cf1548066fda8  ./fpd/storage.
 962d58c0655fd9e57741d95caacace0f18cece5867634232cd05e6ea79999b8f  ./integration_export/.gitignore
 e3248e92aeafe19d3ebd33eb0f8145562ac5ed391e4ee60765325004a002b5e8  ./integration_export/README.md
 5cdda2583fae15c891bd8a807deae2196f2d3d7d041c5a03cc9af24855074c45  ./requirements.txt
+5758b393fcc2c7375c365f6da6dd7107ec8237d1955222547503ee6880829252  ./tests/fixtures/cluemart_bare_2026-10-11.html
+9230fd92dc0bfa7ec3d492d2e1a2299ffbf8491dd3661d8712fa1265fa2a31fb  ./tests/fixtures/cluemart_dated_probable_test_listing_2026-10-11.html
+be430bf040fee4c397d0ac4914578f85e50b4107b94a247c6f2219b147a96c36  ./tests/fixtures/cluemart_description_only_2026-10-11.html
 8c861b6edeec1ecc5be49e11c80dacad695941b9d6829e1bf6fe5d296b39a006  ./tests/fixtures/marketsireland_belfast.html
 cc399676b06024df2ce67471f6e5600f43f899f59668af16fe617df92827a4a5  ./tests/fixtures/marketsireland_notmanaged.html
 c56830c2261640f3b53ac4f3bf13315589e95ebcd08a3e77abefb130586b9d35  ./tests/fixtures/marketsireland_open.html
-ec3ebd6457e32583d945d7580fee32616bc2e7ff88bac2c2479c58ef4cae9275  ./tests/test_core.py
+2068220d34dabc5a85a414721f0fcadd33a511ba9a854e3006826233b270e8ca  ./tests/test_core.py
 b28b670123bf0da1086082413236284e8a8ec451ece47806820899c81d492bb5  ./tests/test_integration.py
