@@ -30,12 +30,12 @@ export async function readCatalogue(env,now) {
   if(!env.V3_READY_API||!env.V3_STAGING_TOKEN)throw customerError('service_unavailable',503);
   const response=await env.V3_READY_API.fetch('https://v3-internal.invalid/staging/catalogue',{headers:{Authorization:'Bearer '+env.V3_STAGING_TOKEN}});
   if(!response.ok)throw customerError('service_unavailable',503);const snapshot=await response.json();
-  if(snapshot.schema!=='findpitches-v3-customer-proof-snapshot-v1'||snapshot.publication_enabled!==false||snapshot.production_cutover_enabled!==false||!Array.isArray(snapshot.items)||snapshot.items.length>20000||!Number.isFinite(Date.parse(snapshot.as_of))||Math.abs(Date.parse(snapshot.as_of)-Date.parse(now))>120000)throw customerError('service_unavailable',503);
+  if(snapshot.schema!=='findpitches-v3-customer-proof-snapshot-v1'||snapshot.publication_enabled!==false||snapshot.production_cutover_enabled!==false||!Array.isArray(snapshot.items)||snapshot.items.length>20000||new Set(snapshot.items.map(i=>i.id)).size!==snapshot.items.length||!Number.isFinite(Date.parse(snapshot.as_of))||Math.abs(Date.parse(snapshot.as_of)-Date.parse(now))>120000)throw customerError('service_unavailable',503);
   return {...snapshot,rows:snapshot.items.map(i=>mapProof(i,now)).filter(Boolean)};
 }
 export function present(row,access={tier:'free'}) {
   access??={tier:'free'};
-  const {_restricted,_proof,confidence,...out}=row,entitled=['pro','trial'].includes(access.tier)&&access.market===row.market;
+  const {_restricted,_proof,confidence,...out}=row,entitled=['pro','trial'].includes(access.tier)&&(access.scope==='global'||access.market===row.market);
   return {...out,access:entitled?{locked:false,..._restricted}:{locked:true,source_domain_hint:_restricted.source_domain?.match(/\.[a-z]+$/)?.[0]??null,source_url:null,application_url:null},is_current:true};
 }
 export function regions(market,rows) {marketOf(market);return allRegions(market).map(r=>({...r,code:r.code??null,opportunity_count:rows.filter(o=>o.market===market&&ancestors(market,o.location.region_id).some(x=>x.id===r.id)).length}));}

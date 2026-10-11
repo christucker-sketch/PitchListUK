@@ -1,6 +1,22 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-11T16:05:00+01:00** (Europe/London). State: **WORKING — D-014 production implementation claimed**. Branch: `findpitches-v3/greenfield`.
+Author: Codex. Updated: **2026-10-11T16:47:07+01:00** (Europe/London). State: **V3-010 production implementation deployed gated; BLOCKED on credential transfer**. Branch: `findpitches-v3/greenfield`.
+
+## Authoritative production checkpoint
+
+[Production implementation/report](../../docs/findpitches-v3-production-checkpoint-2026-10-11.md). D-014/D-016 resolved launch authority/global pricing: GBP4.99/USD6.99/EUR5.99 monthly, seven-day first trial, worldwide Pro access independent of currency. Hal's `c37a340c` records existing V3-owned LIVE product/three prices/Portal; adopt exact objects, never recreate. No additional launch approval requested.
+
+New isolated `findpitches-v3-customer-production` Worker/D1 is deployed **gated** at16:37:24 London, version `2b73d94f-cf96-43b5-92a9-ead5a1d0d6a8`. LIVE-only immutable schema; separate production/public billing/auth/SEO controls; preview TEST path remains separate. Wrong mode/owner/product/price, duplicate subscriptions, concurrent Checkout, repeat trial, webhook replay/out-of-order/failure, paid-through/expiry/redaction/global entitlement and source-backend-independent Portal recovery covered. Honest alerts-unavailable copy, selectable currencies and price-response race guard. Full **253/253**, focused **50/50**, frontend independence/3/3, boundary/native bundle passed. Actual LIVE hosted/card/public-origin journey is pending, not replaced by local fixtures.
+
+At **16:43:00 London**, native preflight **1,811** eligible (GB127/US1678/AU2/NZ4/CA0/IE0), production customers0/pendingwebhooks0, Nashville0. Public-visible0/Checkoutoff; FindPitches DNS/routes and shared Pages/PitchList unchanged. Queue due0/leased0/dead0/future9278, paid0/bulkoff/commercialpause1/latent25/day/global1000. Transport healthy/cadenceverified/latestpoll16:33:46, but source aggregate warning is now true: latest source check12:39:57 and new receipt12:57:43 London; pendingrechecks977/freshackeligible0. No freshness/proof-clock extension. Claude should watch next export.
+
+Preservation at16:39:03: 15,811 receipts/108,819 facts/7,077 identities compared, zero destructive mutation/identitychanges/projection/publication; protected Pages and V2 schedules unchanged. Exact read-only FindPitches route/rollback plan retained; no production hostname change made.
+
+**Only missing input before provider verification:** the operator's `/tmp/findpitches-v3-stripe-live.env` and `/tmp/findpitches-v3-production.env` are both absent in this Codex filesystem after the user's path replies. `/tmp` on Hal's host is separate. Environment SMTP2GO is a proxy reference, not a raw Worker credential; existing preview native key works but is not exportable. Transfer the actual 0600 env file here (secure attachment or actual filesystem transfer), with existing LIVE restricted `STRIPE_SECRET_KEY` and raw existing `V3_EMAIL_API_KEY`, or bind the raw mail key directly to the new production Worker. Never paste key values. No new sender/account/product/price setup needed.
+
+The preview TEST account ID differs from the explicitly named LIVE operator account; TEST is not LIVE account proof. Adopt/read the exact approved LIVE objects without account fallback. Then create only the missing dedicated webhook at the stable production Worker URL, bind secrets, verify mail, record complete preflight, apply only exact FindPitches routes, smoke real public/auth/redaction and genuine LIVE journey. Legacy migration/paid/alerts/UKCF/destructive/protected merges stay closed.
+
+## Earlier checkpoints (retain original measurements)
 
 ## Latest priority and completed shadow increment
 

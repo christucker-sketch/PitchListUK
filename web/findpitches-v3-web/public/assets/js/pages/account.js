@@ -18,11 +18,11 @@
   const u=s.user, a=s.access, C=st.m(u.market||st.market);
   const tierLabel={free:'Free',trial:'Pro trial',pro:'Pro'}[a.tier];
   const pm=st.m(a.market||C.code); let price='';
-  if(a.tier!=='free'){ try{ const pl=(await api.billing.plans({market:pm.code})).find(p=>p.id==='pro_monthly'); price=pl.price!=null?`${pl.price_label} / month`:'To be confirmed'; }catch(e){ price='—'; } }
+  if(a.tier!=='free'){ try{ const pl=(await api.billing.plans({market:pm.code,currency:a.currency})).find(p=>p.id==='pro_monthly'); price=pl.price!=null?`${pl.price_label} / month`:'To be confirmed'; }catch(e){ price='—'; } }
   const d=iso=>esc(fmt(iso,C.code,{day:'numeric',month:'long',year:'numeric'}));
   const welcome = confirmed && a.tier!=='free';
   const welcomeHead = a.tier==='trial' ? 'You’re on Pro. Your free trial has started.' : 'You’re on Pro.';
-  const welcomeBody = 'Where to apply is now shown on every listing, and you can set up alerts.';
+  const welcomeBody = 'Where to apply is now shown on every listing. Email alerts are coming later.';
   A.innerHTML=`${checkoutNote}${welcome?`<div class="welcome" role="status"><div><b style="font-size:1.1rem">${welcomeHead}</b><p>${welcomeBody}</p></div><a class="btn" href="finder.html" style="background:#fff;color:var(--turf)">Start searching</a></div>`:''}
   <div class="agrid">
     <form class="card" id="prof" novalidate aria-labelledby="profH"><h2 id="profH">Your details</h2>
@@ -48,7 +48,7 @@
         ${a.cancel_at_period_end?`<p class="notice warn" style="margin:14px 0 0">Your plan won’t renew. You keep Pro until ${d(a.renews_on)}, then move to Free.</p>`:''}
         ${a.tier==='free'&&(a.status==='canceled'||a.status==='expired')?`<p class="muted">Your Pro plan has ended. Search and saving stay free.</p>`:''}
         ${a.tier==='free'&&a.billing_review_required?`<p class="notice warn">Your billing needs review before another subscription can be started. Your existing billing account is preserved.</p>`:''}
-        ${a.tier==='free'?`<p class="muted" style="font-size:.92rem">Free lets you search every checked listing and save pitches. Pro adds where to apply and alerts.</p>`:''}
+        ${a.tier==='free'?`<p class="muted" style="font-size:.92rem">Free lets you search every checked listing and save pitches. Pro unlocks application and source links worldwide. Email alerts are coming later.</p>`:''}
         <div style="display:grid;gap:8px;margin-top:16px">${a.tier==='free'&&a.checkout_allowed!==false?`<a class="btn btn-flag" href="pricing.html">${a.trial_eligible===false?'Subscribe to Pro':'Try Pro free for 7 days'}</a>`:''}${(a.has_billing_account||a.tier!=='free')?`<button class="btn btn-line" type="button" id="portal">Manage billing</button>`:''}</div>
       </section>
       <section class="card" aria-labelledby="qlH"><h2 id="qlH">Your lists</h2><div class="links"><a class="btn btn-line" href="saved.html">Saved pitches (${st.saved.size})</a><a class="btn btn-line" href="alerts.html">Alerts</a><button class="btn btn-line" type="button" id="so">Sign out</button></div></section>

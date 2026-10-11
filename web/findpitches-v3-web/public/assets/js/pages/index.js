@@ -148,7 +148,7 @@ async function setFaq(m){
   try{ const pro=(await api.billing.plans({market:m.code})).find(p=>p.id==='pro_monthly');
     if (LIVE) { $('#faqPrice').textContent = pro.price!=null ? `Listings are for subscribers. Pro is ${pro.price_label} a month${pro.trial_days?` after a ${pro.trial_days}-day free trial`:''}, and gives you every checked listing, full details and the organiser’s application page.` : `Listings are for subscribers. ${pro.note||''}`;
       $('#freeline').innerHTML = pro.price!=null ? (pro.trial_days?`<b>Try Pro free for ${pro.trial_days} days</b>, then ${esc(pro.price_label)} a month.`:`<b>Pro is ${esc(pro.price_label)} a month.</b>`)+' Cancel any time.' : ''; return; }
-    $('#faqPrice').textContent = pro.price!=null ? `Searching and saving are free. Pro is ${pro.price_label} a month after a 7-day free trial, and adds the organiser’s application page for every listing plus alerts.` : `Searching and saving are free. Pro adds the organiser’s application page for every listing plus alerts. ${pro.note||''}`;
+    $('#faqPrice').textContent = pro.price!=null ? `Searching and saving are free. Pro is ${pro.price_label} a month after a 7-day first trial, and unlocks application and source links. Email alerts are coming later.` : `Searching and saving are free. Pro unlocks application and source links. Email alerts are coming later. ${pro.note||''}`;
     $('#freeline').innerHTML = `<b>Free to search.</b> No account needed.${pro.price!=null?` Pro from ${esc(pro.price_label)} a month when you’re ready to apply.`:''}`;
   }catch(x){}
 }

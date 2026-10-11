@@ -125,7 +125,7 @@
   function renderList(){
     const r = last, L = $('#list');
     if (!r.total) return renderZero(r);
-    let html=''; shown.forEach((o,i)=>{ html+=card(o); if(i===4 && !st.entitled && st.proAvailable) html+=`<div class="upsell"><div><b>Found one you like?</b><p>Everything here is free to browse. Pro adds the organiser’s application page for every listing, plus alerts when new ones appear.</p></div><a class="btn btn-flag" href="pricing.html">${U.proActionLabel()}</a></div>`; });
+    let html=''; shown.forEach((o,i)=>{ html+=card(o); if(i===4 && !st.entitled && st.proAvailable) html+=`<div class="upsell"><div><b>Found one you like?</b><p>Everything here is free to browse. Pro adds the organiser’s application page for every listing, with email alerts coming later.</p></div><a class="btn btn-flag" href="pricing.html">${U.proActionLabel()}</a></div>`; });
     if (r.total > PAGE) { const pct = Math.round(100*shown.length/r.total);
       html += `<div class="pager"><p>Showing ${shown.length} of ${r.total}</p><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>${r.total>shown.length?`<button class="btn btn-line" type="button" id="more">Show ${Math.min(PAGE,r.total-shown.length)} more</button>`:''}</div>`; }
     L.innerHTML = html;

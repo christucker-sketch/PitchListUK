@@ -66,7 +66,7 @@
     live: true,           // a real service: real sign-in, real payments, server-side entitlement
     ApiError,
     meta: {
-      async markets() { return (await call('GET', '/markets')).markets; },
+      async markets(p) { return (await call('GET', '/markets'+qs(p))).markets; },
       async stats() { return call('GET', '/stats'); },
       types() { return TYPES; },
       async regions({ market }) { return (await call('GET', '/regions' + qs({ market }))).regions; }
@@ -122,8 +122,8 @@
       async remove(id) { return send('DELETE', '/alerts/' + encodeURIComponent(id)); }
     },
     billing: {
-      async plans({ market } = {}) { return (await call('GET', '/billing/plans' + qs({ market: market || 'GB' }))).plans; },
-      async startCheckout({ plan_id, market }) { const r = await send('POST', '/billing/checkout', { plan_id, market }); return { checkout_url: r.checkout_url }; },
+      async plans({ market, currency } = {}) { return (await call('GET', '/billing/plans' + qs({ market: market || 'GB',currency }))).plans; },
+      async startCheckout({ plan_id, market, currency }) { const r = await send('POST', '/billing/checkout', { plan_id, market,...(currency?{currency}:{}) }); return { checkout_url: r.checkout_url }; },
       async confirmCheckout({ session_id }) { return send('POST', '/billing/confirm', { session_id }); },
       async portal() { return (await send('POST', '/billing/portal')).url; },
       // Plan changes and cancellation happen in the payment provider's hosted portal (billing.portal).

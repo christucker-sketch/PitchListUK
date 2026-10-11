@@ -1,0 +1,270 @@
+{
+  "schema": "findpitches-v3-production-implementation-checkpoint-v1",
+  "as_of": "2026-10-11T15:43:00.397Z",
+  "authority": [
+    "D-014",
+    "D-016",
+    "Hal LIVE provider handoff c37a340c"
+  ],
+  "release_state": "GATED_DEPLOYMENT_BLOCKED_ON_SECURE_CREDENTIAL_TRANSFER",
+  "deployment": {
+    "worker": "findpitches-v3-customer-production",
+    "database": "findpitches-v3-customer-production",
+    "url": "https://findpitches-v3-customer-production.ctucker.workers.dev",
+    "deployed_at": "2026-10-11T15:37:24.018Z",
+    "deployment_id": "21d559e0-83a7-4f72-b55c-30eabd839405",
+    "version_ids": [
+      "2b73d94f-cf96-43b5-92a9-ead5a1d0d6a8"
+    ],
+    "public_enabled": false,
+    "checkout_enabled": false,
+    "provider_configured": false,
+    "mail_secret_written": false,
+    "source": "existing immutable shadow evidence",
+    "pitchlist_changed": false
+  },
+  "local_validation": {
+    "full_v3": {
+      "passed": 253,
+      "failed": 0,
+      "duration_ms": 141186.218763
+    },
+    "focused_customer": {
+      "passed": 50,
+      "failed": 0
+    },
+    "frontend": {
+      "passed": 3,
+      "failed": 0,
+      "independence_passed": true
+    },
+    "boundaries_passed": true,
+    "native_bundle_passed": true,
+    "scope": "Local fixtures plus real gated Cloudflare health/proof/schema; no genuine LIVE Checkout/card/browser proof claimed"
+  },
+  "native_validation": {
+    "schema": "findpitches-v3-gated-production-validation-v1",
+    "as_of": "2026-10-11T15:43:00.397Z",
+    "preflight": {
+      "ok": true,
+      "mode": "production_public",
+      "public_enabled": false,
+      "billing_mode": "live",
+      "checkout_enabled": false,
+      "ready": 1811,
+      "ready_by_country": {
+        "GB": 127,
+        "US": 1678,
+        "CA": 0,
+        "AU": 2,
+        "IE": 0,
+        "NZ": 4,
+        "SG": 0,
+        "HK": 0
+      },
+      "email_configured": false,
+      "counts": {
+        "customers": 0,
+        "pending_webhooks": 0
+      }
+    },
+    "nashville_eligible": 0,
+    "shadow_publication_enabled": false,
+    "controls": {
+      "commercial_paused": 1,
+      "commercial_daily_limit": 25,
+      "bulk_paid_enabled": 0,
+      "global_daily_limit": 1000,
+      "shadow_customer_rows": 0,
+      "shadow_publication_rows": 0,
+      "paid_queries_today": 0
+    },
+    "queue": {
+      "due": 0,
+      "leased": 0,
+      "dead": 0,
+      "future": 9278
+    },
+    "producer": {
+      "cloud_ready": true,
+      "expected_interval_seconds": 900,
+      "contact_observation_started": true,
+      "last_authenticated_recheck_poll": "2026-10-11T15:33:46.641Z",
+      "expected_discovery_interval_seconds": 10800,
+      "expected_export_lag_seconds": 3600,
+      "recent_poll_intervals_seconds": [
+        913.094,
+        913.095,
+        913.627
+      ],
+      "host_recently_contacting": true,
+      "cadence_verified": true,
+      "freshness_warning": true,
+      "immutable_receipts": 7258,
+      "producer_ids": 2103,
+      "last_new_receipt_at": "2026-10-11T11:57:43.466Z",
+      "source_last_checked": "2026-10-11T11:39:57Z",
+      "rechecks": {
+        "pending_entities": 977,
+        "fresh_evidence_ack_eligible": 0,
+        "by_country": [
+          {
+            "market": "AU",
+            "pending_entities": 91,
+            "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "CA",
+            "pending_entities": 15,
+            "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "GB",
+            "pending_entities": 101,
+            "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "IE",
+            "pending_entities": 2,
+            "oldest_requested_at": "2026-10-11T13:46:08.039Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "NZ",
+            "pending_entities": 45,
+            "oldest_requested_at": "2026-10-11T12:01:16.861Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "US",
+            "pending_entities": 723,
+            "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+            "fresh_evidence_ack_eligible": 0
+          }
+        ],
+        "acknowledged_last_24h": 2139,
+        "latest_acknowledgement": "2026-10-11T12:14:15.563Z",
+        "obsolete_requests_resolved": 2,
+        "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+        "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+        "pagination_supported": true,
+        "oldest_request_preserved": true
+      },
+      "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+    }
+  },
+  "preservation": {
+    "schema": "findpitches-v3-customer-preview-preservation-v1",
+    "as_of": "2026-10-11T15:39:03.356Z",
+    "receipts_compared": 15811,
+    "source_facts_compared": 108819,
+    "existing_identities_compared": 7077,
+    "destructive_source_mutations": 0,
+    "existing_identity_changes": 0,
+    "identity_comparison_key": "retained entity.id",
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "publication_api_denied": true,
+    "publication_enabled": false,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "live_v1_deployment_unchanged": true,
+    "v2_schedules": [],
+    "v2_schedules_unchanged": true
+  },
+  "routing_plan": {
+    "schema": "findpitches-v3-public-routing-plan-v1",
+    "as_of": "2026-10-11T15:28:50.762Z",
+    "authority": [
+      "D-014",
+      "D-016"
+    ],
+    "zone_id": "917f3fc02ac6a173d8cc32075c2f8d93",
+    "zone_name": "findpitches.com",
+    "prior_routes": [],
+    "prior_dns": [
+      {
+        "id": "0a4589d0630f449b508699daf2bd549f",
+        "type": "CNAME",
+        "name": "findpitches.com",
+        "content": "pitchlistuk.pages.dev",
+        "proxied": true
+      },
+      {
+        "id": "fdc81de36bdb29dc03660bdfa81efc6c",
+        "type": "CNAME",
+        "name": "www.findpitches.com",
+        "content": "pitchlistuk.pages.dev",
+        "proxied": true
+      }
+    ],
+    "desired_routes": [
+      {
+        "pattern": "findpitches.com/*",
+        "script": "findpitches-v3-customer-production"
+      },
+      {
+        "pattern": "www.findpitches.com/*",
+        "script": "findpitches-v3-customer-production"
+      }
+    ],
+    "dns_mutations": [],
+    "pages_mutations": [],
+    "protected_pages": {
+      "project": "pitchlistuk",
+      "deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
+      "domains": [
+        "pitchlistuk.pages.dev",
+        "findpitches.com",
+        "pitchlist.uk",
+        "www.findpitches.com"
+      ]
+    },
+    "applied": false,
+    "rollback": {
+      "first": "Disable new Checkout; keep LIVE key/database/webhook/Portal",
+      "customer_safe": "Keep FindPitches routes, set public access false and account recovery true; private surfaces remain noindex",
+      "no_live_customers_only": "Remove only newly-created exact route IDs after confirming zero LIVE mappings and unchanged prior DNS/routes; never delete the shared Pages project"
+    },
+    "preconditions": [
+      "all production/full tests passed",
+      "native gated production preflight passed",
+      "mail sender/key verified",
+      "exact existing LIVE account and D-016 product/prices/webhook/Portal verified",
+      "frozen source/queue/producer/PitchList baseline retained",
+      "public smoke and immediate PitchList verification prepared"
+    ]
+  },
+  "provider_state": {
+    "operator_product_prices_portal_recorded": true,
+    "independently_live_verified_by_codex": false,
+    "live_webhook_created": false,
+    "live_requests_or_writes_by_codex": 0,
+    "preview_test_account_id_differs_from_approved_live": true,
+    "expected_live_account_source": "Explicit Chris/Hal LIVE account and exact object IDs; never substitute preview TEST account"
+  },
+  "blockers": [
+    {
+      "code": "live_handoff_file_absent_on_codex_machine",
+      "path": "/tmp/findpitches-v3-stripe-live.env",
+      "operator_reported_permissions": "0600",
+      "checked_here_exists": false
+    },
+    {
+      "code": "smtp2go_environment_is_proxy_reference",
+      "existing_preview_native_mail_binding_works": true,
+      "new_production_mail_binding_present": false,
+      "raw_key_contents_printed": false
+    }
+  ],
+  "next": [
+    "Transfer existing LIVE restricted key and raw existing SMTP2GO key securely into this Codex environment; attach secure env file or physically place it here",
+    "Independently read exact Hal LIVE configuration, create only the missing dedicated webhook at the deployed native Worker URL, bind LIVE secrets and verify mail domain without sending test mail",
+    "Record complete release preflight; apply only exact FindPitches routes/public access, immediately verify protected PitchList",
+    "Verify real-origin public/auth/Free redaction/global Pro and controlled genuine LIVE hosted journey; Checkout remains closed until exact provider verification",
+    "Keep paid acquisition, alert sending, legacy migration, UKCF Option B and destructive changes closed"
+  ]
+}

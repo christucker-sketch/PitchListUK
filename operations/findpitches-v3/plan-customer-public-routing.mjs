@@ -1,0 +1,15 @@
+// Read-only D-014 preflight. Keep shared Pages and every DNS record intact.
+import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
+import {cloudflareClient,readCredentials} from './cloudflare-api.mjs';
+export async function publicRoutingPlan({credentialsFile,productionDirectory}){
+ const api=cloudflareClient(readCredentials(credentialsFile)),state=JSON.parse(fs.readFileSync(path.join(productionDirectory,'resources.json')));
+ if(state.account_id!==api.account||state.worker!=='findpitches-v3-customer-production')throw Error('owned_production_required');
+ const zones=await api.request('/zones?name=findpitches.com&account.id='+api.account);if(zones.length!==1||zones[0].status!=='active')throw Error('exact_findpitches_zone_required');
+ const zone=zones[0],routes=await api.request('/zones/'+zone.id+'/workers/routes'),dns=await api.request('/zones/'+zone.id+'/dns_records?type=CNAME'),pages=await api.accountRequest('/pages/projects/pitchlistuk');
+ const expected=['findpitches.com/*','www.findpitches.com/*'];if(routes.length)throw Error('existing_routes_require_new_preflight');
+ const hostRecords=dns.filter(d=>['findpitches.com','www.findpitches.com'].includes(d.name));if(hostRecords.length!==2||hostRecords.some(d=>d.content!=='pitchlistuk.pages.dev'||!d.proxied)||!pages.domains?.includes('pitchlist.uk'))throw Error('protected_hostname_baseline_changed');
+ const plan={schema:'findpitches-v3-public-routing-plan-v1',as_of:new Date().toISOString(),authority:['D-014','D-016'],zone_id:zone.id,zone_name:zone.name,prior_routes:routes,prior_dns:hostRecords.map(({id,type,name,content,proxied})=>({id,type,name,content,proxied})),desired_routes:expected.map(pattern=>({pattern,script:state.worker})),dns_mutations:[],pages_mutations:[],protected_pages:{project:'pitchlistuk',deployment_id:pages.canonical_deployment?.id,domains:pages.domains},applied:false,
+  rollback:{first:'Disable new Checkout; keep LIVE key/database/webhook/Portal',customer_safe:'Keep FindPitches routes, set public access false and account recovery true; private surfaces remain noindex',no_live_customers_only:'Remove only newly-created exact route IDs after confirming zero LIVE mappings and unchanged prior DNS/routes; never delete the shared Pages project'},preconditions:['all production/full tests passed','native gated production preflight passed','mail sender/key verified','exact existing LIVE account and D-016 product/prices/webhook/Portal verified','frozen source/queue/producer/PitchList baseline retained','public smoke and immediate PitchList verification prepared']};
+ fs.writeFileSync(path.join(productionDirectory,'routing-plan.json'),JSON.stringify(plan,null,2)+'\n',{mode:0o600});return plan;
+}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){const args=process.argv.slice(2),get=k=>args[args.indexOf(k)+1];try{console.log(JSON.stringify(await publicRoutingPlan({credentialsFile:get('--credentials'),productionDirectory:get('--production-dir')})));}catch(e){console.error(/^[a-z_]+$/.test(e.message)?e.message:'routing_plan_failed');process.exitCode=1;}}

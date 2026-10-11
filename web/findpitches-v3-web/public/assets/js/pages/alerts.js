@@ -6,7 +6,7 @@
 
   const A=$('#al'), T=api.meta.types();
   const FREQ={instant:'As soon as one appears',daily:'Daily summary',weekly:'Weekly summary'};
-  // Alerts need backend matching and email sending, which don't exist yet. Say so rather than pretend.
+  if(!st.session?.capabilities?.alerts_delivery){A.innerHTML='<div class="gate"><h2>Email alerts are coming later</h2><p>Alert emails are unavailable at launch. You can search checked opportunities and save the ones you want to follow.</p><a class="btn btn-turf" href="saved.html">Saved opportunities</a></div>';return;}
   if(!st.session.signed_in) return gate(A,'Sign in to manage alerts','Alerts email you new checked listings that match what you’re looking for, so you hear about them first.');
   if(!st.entitled){ const m=st.m(); track('upgrade_viewed',{context:'alerts_page'});
     A.innerHTML=`<div class="gate"><h2>Alerts are part of Pro</h2><p>Set up alerts like these and we’ll email you as soon as a matching listing is checked:</p>

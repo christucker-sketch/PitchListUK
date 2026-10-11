@@ -11,7 +11,7 @@ export function entitlement(subscriptions,{now=new Date().toISOString(),market=n
 export function plans(market,env) {
   const configured=market==='GB'&&env.STRIPE_PRICE_ID&&env.V3_STRIPE_MODE==='test';
   return [{id:'free',name:'Free',market,price:0,price_label:'Free',currency:market==='GB'?'GBP':'USD',interval:null,trial_days:0,card_required:false,features:['Search checked opportunities','See event dates and locations'],note:null},
-    {id:'pro_monthly',name:'Pro',market,price:configured?4.99:null,price_label:configured?'£4.99':'To be confirmed',currency:market==='GB'?'GBP':'USD',interval:'month',trial_days:7,card_required:true,features:['Application and source links','Saved opportunities','Alerts'],note:configured?null:'Pricing is not confirmed for this market.'}];
+    {id:'pro_monthly',name:'Pro',market,price:configured?4.99:null,price_label:configured?'£4.99':'To be confirmed',currency:market==='GB'?'GBP':'USD',interval:'month',trial_days:7,card_required:true,features:['Application and source links','Saved opportunities'],note:configured?'Email alerts are coming later.':'Pricing is not confirmed for this market.'}];
 }
 export function stripeClient(env,fetcher=fetch) {
   if(env.V3_STRIPE_MODE!=='test'||!env.STRIPE_SECRET_KEY?.startsWith('sk_test_'))throw customerError('service_unavailable',503);

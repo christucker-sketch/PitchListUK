@@ -68,7 +68,7 @@
     <div>
       ${noData ? FP.ui.coverageBuilding(d.market)
         : M.count ? `<div class="results"><h2>${d.intent?'Latest listings':'Coming up'}${d.region?' in '+esc(M.place):''}</h2>${visible.map(o=>card(o)).join('')}${M.count>search.results.length?`<a class="btn btn-line" href="${finderHref}">See all ${M.count} in the Finder →</a>`:''}</div>`
-        : `<div class="zero"><h2>Nothing live for this search right now</h2><p class="muted" style="margin:0">Organisers open applications all year. Try a wider area below, or set an alert and we’ll email you when one is checked.</p></div>`}
+        : `<div class="zero"><h2>Nothing live for this search right now</h2><p class="muted" style="margin:0">Organisers open applications all year. Try a wider area below. Email alerts are coming later.</p></div>`}
       ${L.map(g=>`<section class="lblock"><h2>${esc(g.title)}</h2><div class="linkgrid">${g.links.map(l=>`<a href="${R.draft.seo(l.path)}">${esc(l.label)}<small>${l.count}</small></a>`).join('')}</div></section>`).join('')}
       <section class="lblock faq"><h2>Questions</h2>${M.faq.map((f,i)=>`<details ${i===0?'open':''}><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</section>
     </div>

@@ -156,7 +156,7 @@
     const typesTop = Object.entries((search.facets && search.facets.types) || {}).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => TYPE_PLURAL[k] || k);
     const description = clip(count
       ? `${d.intent ? label + ' in ' + place + ': ' + count + ' checked listings' : count + ' checked ' + w.noun + ' in ' + place}${typesTop.length ? ', including ' + listJoin(typesTop) : ''}. ${next ? `Next: ${next.title}, ${fmt(next.dates.start)}. ` : ''}Every listing links to the organiser.`
-      : `Find ${d.intent ? label.toLowerCase() : w.noun} in ${place} on FindPitches. Checked listings straight from organisers, with alerts when new ones appear.`, 155);
+      : `Find ${d.intent ? label.toLowerCase() : w.noun} in ${place} on FindPitches. Checked listings with event dates, locations and application routes.`, 155);
 
     const canonical = R.abs(d.path);
     // Breadcrumbs follow the URL structure: market › intent › region ancestors › region
@@ -198,7 +198,7 @@
     const m = data.market, g = (CFG.guidance[m.code] || []).slice(0, 3);
     const what = d.intent ? x.label.toLowerCase() : x.w.noun;
     const out = [
-      { q: `How many ${what} are there in ${x.place}?`, a: x.count ? `FindPitches currently lists ${x.count} checked ${d.intent ? 'listings' : x.w.noun} in ${x.place}. The list updates as organisers open and close applications.` : `There are none live right now. Set an alert and we’ll email you when one is checked.` },
+      { q: `How many ${what} are there in ${x.place}?`, a: x.count ? `FindPitches currently lists ${x.count} checked ${d.intent ? 'listings' : x.w.noun} in ${x.place}. The list updates as organisers open and close applications.` : `There are none live right now. Try a wider area or check again later.` },
       { q: `How do I apply?`, a: `Each listing links to the organiser’s own application page. Organisers often ask for ${g.length ? g.join(', ') : 'insurance and photos of your stall'}.` },
       { q: `Does FindPitches guarantee me a ${m.vocab.pitch}?`, a: `No. Organisers choose their ${m.vocab.traders_short}. We make sure every listing is real, comes from the organiser, and shows when it was last checked.` }
     ];

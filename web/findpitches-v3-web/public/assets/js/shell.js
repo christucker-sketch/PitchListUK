@@ -230,7 +230,7 @@
         <button class="btn btn-turf" style="width:100%" type="button" data-close>OK</button>`);
     }
     modal(`<div class="dh"><h2>See where to apply with Pro</h2><button class="x" data-close aria-label="Close">×</button></div>
-      <p class="muted" style="margin:0 0 14px">${esc(reason || 'Pro shows the organiser’s application page for every listing and alerts you to new ones near you.')}</p>
+      <p class="muted" style="margin:0 0 14px">${esc(reason || 'Pro shows the organiser’s application page for every listing worldwide. Email alerts are coming later.')}</p>
       <ul style="margin:0 0 16px;padding-left:18px;line-height:1.8">${LIVE ? '<li>Search every checked listing</li><li>Full details and the organiser’s application page</li><li>Save listings to your account</li>' : '<li>The organiser’s application page and source for every listing</li><li>Alerts for new pitches that match you</li><li>Export your shortlist</li>'}</ul>
       <a class="btn btn-flag" style="width:100%" href="pricing.html?from=${encodeURIComponent(context || 'generic')}">${proActionLabel()}</a>
       <p class="muted" style="font-size:.82rem;margin:10px 0 0;text-align:center">${LIVE ? 'Cancel any time.' : 'Search and saving stay free. Cancel any time.'}</p>`);
@@ -299,6 +299,7 @@
 
   /* ---------- create an alert from any search (Finder, listing page, SEO page) ---------- */
   async function createAlert(query, { placeLabel } = {}) {
+    if(!state.session?.capabilities?.alerts_delivery)return toast('Email alerts are coming later. You can save opportunities now.');
     const s = await requireSignIn('Sign in to get alerts for new pitches that match this search.'); if (!s) return;
     if (!state.entitled) return upgrade('Alerts are part of Pro. We’ll email you when a new checked listing matches this search.', 'alert');
     const q = Object.assign({}, query, placeLabel ? { place_label: placeLabel } : {});
@@ -418,13 +419,14 @@
   FP.ready = (async function boot() {
     try {
       // Live: ask for saved ids only once we know someone is signed in (no pointless 401s).
-      const [markets, session, draftIds] = await Promise.all([api().meta.markets(), api().session.get(), REAL ? null : api().saved.ids()]);
+      const recovery=['account','pricing','alerts','saved'].includes(document.body.dataset.page);
+      const [markets, session, draftIds] = await Promise.all([api().meta.markets(recovery?{registry_only:true}:undefined), api().session.get(), REAL ? null : api().saved.ids()]);
       const ids = REAL ? (session && session.signed_in ? await api().saved.ids() : []) : draftIds;
       state.markets = markets; state.session = session; state.saved = new Set(session.signed_in ? ids : []);
       // Can Pro be bought in this country right now? (No price is ever invented: unpriced or not-yet-open markets say so.)
       const live = markets.filter(m => m.launch_status === 'live');
       const plans = await Promise.all(live.map(m => api().billing.plans({ market: m.code }).catch(() => [])));
-      state.proBuyable = {}; live.forEach((m, i) => { const pro = plans[i].find(p => p.id !== 'free'); state.proBuyable[m.code] = !!(pro && pro.price != null); });
+      state.proBuyable = {}; live.forEach((m, i) => { const pro = plans[i].find(p => p.id !== 'free'); state.proBuyable[m.code] = !!(pro && pro.price != null&&pro.checkout_enabled!==false); });
     } catch (e) {
       if (REAL && !state.markets.length) {
         // The site can't work without the market list (backend or config problem). Say so plainly and

@@ -1,7 +1,8 @@
 import {hash} from './contract.mjs';
-import {stmt,cookie,cookies,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent} from './customer-security.mjs';
+import {stmt,cookie,cookies,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent,same} from './customer-security.mjs';
 import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,consumeChallenge,requestLogin,logout,updateProfile} from './customer-auth.mjs';
-import {customerAccess,plans,checkout,confirmCheckout,portal,webhook,stripeClient,syncSubscriptions} from './customer-billing.mjs';
+import * as previewBilling from './customer-billing.mjs';
+import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook} from './customer-live-billing.mjs';
 import {reviewSubscriberAssociation} from './customer-recognition.mjs';
 import {readCatalogue,present,search,marketOf,markets,regions,resolveLocation,inventory,ancestors,recordInventoryChanges} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
@@ -11,16 +12,25 @@ import {verifyNativeMailSettings,mailCredentialIsProxyReference} from './custome
 const CSP="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'";
 const headers={'Content-Security-Policy':CSP,'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','Strict-Transport-Security':'max-age=31536000','X-Robots-Tag':'noindex, nofollow','Cache-Control':'private, no-store'};
 const response=(data,status=200,setCookies=[])=>{const h=new Headers({...headers,'Content-Type':'application/json'});for(const c of setCookies)h.append('Set-Cookie',c);return new Response(JSON.stringify({ok:true,...data}),{status,headers:h});};
-const error=e=>response({ok:false,error:e.code??'internal_error',message:({auth_required:'Sign in to continue.',upgrade_required:'Pro is required for this feature.',service_unavailable:'This service is temporarily unavailable.',csrf_failed:'Refresh the page and try again.',rate_limited:'Please wait before trying again.',not_found:'This opportunity is unavailable.',subscription_exists:'Manage your existing subscription in billing.'})[e.code]??'Please check your request and try again.'},e.status??500);
+const error=e=>response({ok:false,error:e.code??'internal_error',message:({auth_required:'Sign in to continue.',upgrade_required:'Pro is required for this feature.',service_unavailable:'This service is temporarily unavailable.',csrf_failed:'Refresh the page and try again.',rate_limited:'Please wait before trying again.',not_found:'This opportunity is unavailable.',subscription_exists:'Manage your existing subscription in billing.',checkout_currency_locked:'You already opened Checkout in another currency. Finish it or wait for it to expire before switching.'})[e.code]??'Please check your request and try again.'},e.status??500);
 const text=(value,status=200,extra={})=>new Response(value,{status,headers:{...headers,...extra}});
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const jsonld=value=>JSON.stringify(value).replace(/</g,'\\u003c');
 export const FRONTEND_SOURCE='24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05';
+const production=env=>env.V3_CUSTOMER_MODE==='production_public';
+const customerAccess=(db,env,...args)=>(production(env)?liveCustomerAccess:previewBilling.customerAccess)(db,env,...args);
+const plans=(market,env,currency)=>production(env)?livePlans(market,env,currency):previewBilling.plans(market,env);
+const checkout=(db,env,...args)=>(production(env)?liveCheckout:previewBilling.checkout)(db,env,...args);
+const confirmCheckout=(db,env,...args)=>(production(env)?liveConfirmCheckout:previewBilling.confirmCheckout)(db,env,...args);
+const portal=(db,env,...args)=>(production(env)?livePortal:previewBilling.portal)(db,env,...args);
+const webhook=(request,env,...args)=>(production(env)?liveWebhook:previewBilling.webhook)(request,env,...args);
+const {stripeClient,syncSubscriptions}=previewBilling;
+const recoveryPath=p=>p.startsWith('/assets/')||['/account.html','/pricing.html','/pricing/','/api/v3/session','/api/v3/session/link','/api/v3/session/verify','/api/v3/session/logout','/api/v3/session/profile','/api/v3/billing/plans','/api/v3/billing/portal','/api/v3/billing/confirm','/api/v3/saved'].includes(p)||p==='/api/v3/markets';
 
 async function session(db,env,customer,now) {
   const profile=customer?JSON.parse(customer.profile_json):null;
   return {signed_in:Boolean(customer),user:customer?{email:customer.email,business_name:null,contact_name:null,phone:null,market:null,base_postcode:null,specialty:null,regions:[],public_listing_opt_in:false,...profile}:null,
-    access:await customerAccess(db,env,customer,{now,refresh:true})};
+    access:await customerAccess(db,env,customer,{now,refresh:true}),capabilities:{alerts_delivery:false,public_mode:production(env),catalogue_available:!production(env)||env.V3_PUBLIC_ENABLED==='true'}};
 }
 async function alerts(db,customer,rows,access,now) {
   return Promise.all((await stmt(db,'SELECT * FROM customer_alerts WHERE customer_id=? ORDER BY created_at',customer.id).all()).results.map(async a=>{const query=JSON.parse(a.query_json),s=search(rows,query,access,now);return {id:a.id,name:a.name,query,frequency:a.frequency,paused:Boolean(a.paused),created_at:a.created_at,current_matches:s.total,sample:s.results.slice(0,3)};}));
@@ -30,7 +40,7 @@ function alertBody(body,old,rows,access,now) {
   const a={name:old?.name,query:old?JSON.parse(old.query_json):undefined,frequency:old?.frequency??'daily',paused:Boolean(old?.paused),...body};
   if(typeof a.name!=='string'||!a.name.trim()||a.name.length>150||!['instant','daily','weekly'].includes(a.frequency)||typeof a.paused!=='boolean'||!a.query||typeof a.query!=='object'||Array.isArray(a.query))throw customerError('validation');
   if(Object.keys(a.query).some(k=>!['market','q','q_text','place_label','radius_km','types','sells','organiser_types','when','month','region'].includes(k)))throw customerError('validation');
-  if(a.query.market!==access.market)throw customerError('upgrade_required',402);
+  if(access.scope!=='global'&&a.query.market!==access.market)throw customerError('upgrade_required',402);
   search(rows,a.query,access,now);return a;
 }
 async function api(request,env,now) {
@@ -45,20 +55,23 @@ async function api(request,env,now) {
         // Challenges can only be issued inside an authorised preview or by its
         // operator. Their one-use proof lets an invited mailbox open the preview
         // in a different browser, without putting operator credentials in mail.
-        const redirect=text('',303,{Location:result.next});redirect.headers.append('Set-Cookie',result.cookie);redirect.headers.append('Set-Cookie',await grantPreview(db,now));return redirect;
+        const redirect=text('',303,{Location:result.next});redirect.headers.append('Set-Cookie',result.cookie);if(!production(env))redirect.headers.append('Set-Cookie',await grantPreview(db,now));return redirect;
       }
       return response(await session(db,env,result.customer,now),200,[result.cookie]);}
     catch(e){if(method==='GET'&&e.code==='invalid_link')return text('',303,{Location:'/account.html?signin=expired'});throw e;}
   }
   if(method==='POST'&&p==='/session/logout')return response({},200,[await logout(request,db,now)]);
   if(method==='PATCH'&&p==='/session/profile')return response(await session(db,env,await updateProfile(db,needCustomer(customer),body),now));
-  if(method==='GET'&&p==='/billing/plans'){marketOf(q.market??'GB');return response({plans:plans(q.market??'GB',env)});}
+  if(method==='GET'&&p==='/billing/plans'){marketOf(q.market??'GB');return response({plans:plans(q.market??'GB',env,q.currency)});}
   if(method==='POST'&&p==='/billing/checkout')return response(await checkout(db,env,needCustomer(customer),body,{now,origin:url.origin}));
   if(method==='POST'&&p==='/billing/confirm'){await confirmCheckout(db,env,needCustomer(customer),body,{now});return response(await session(db,env,customer,now));}
   if(method==='POST'&&p==='/billing/portal')return response(await portal(db,env,needCustomer(customer),{origin:url.origin}));
   // Saved IDs are customer-owned state, not a catalogue read. Expanded saved
   // records below still require a fresh source-proof snapshot and redaction.
   if(method==='GET'&&p==='/saved'&&!q.expand){needCustomer(customer);const saved=(await stmt(db,'SELECT entity_id FROM saved_opportunities WHERE customer_id=? ORDER BY saved_at DESC',customer.id).all()).results;return response({ids:saved.map(r=>r.entity_id)});}
+  // Account/Portal recovery cannot depend on evidence-backend availability.
+  if(method==='GET'&&p==='/markets'&&q.registry_only==='true')return response({markets:markets([]).map(m=>({...m,opportunity_count:null})),inventory_available:false});
+  if(production(env)&&env.V3_PUBLIC_ENABLED!=='true')throw customerError('service_unavailable',503);
   if(method==='POST'&&/^\/inbox\/(organiser_submission|partnership_enquiry|listing_report|waitlist)$/.test(p)) {
     await rateLimit(db,'inbox/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:10,now});const id='FP-'+crypto.randomUUID();
     await stmt(db,'INSERT INTO customer_inbox VALUES (?,?,?,?)',id,p.split('/').at(-1),JSON.stringify(body),now).run();return response({reference:id},201);
@@ -98,38 +111,58 @@ async function api(request,env,now) {
 async function html(request,env,now) {
   const url=new URL(request.url),path=url.pathname;
   if(path==='/favicon.ico')return text('',204);
-  if(path==='/robots.txt')return text('User-agent: *\nDisallow: /\n',200,{'Content-Type':'text/plain'});
+  if(path==='/robots.txt')return text(production(env)&&env.V3_PUBLIC_ENABLED==='true'?'User-agent: *\nDisallow: /api/\nDisallow: /ops/\nDisallow: /preview/\nDisallow: /account.html\nDisallow: /saved.html\nDisallow: /alerts.html\nSitemap: https://findpitches.com/sitemap.xml\n':'User-agent: *\nDisallow: /\n',200,{'Content-Type':'text/plain'});
   if(path.startsWith('/assets/')){const asset=await env.ASSETS.fetch(request);return new Response(asset.body,{status:asset.status,headers:{...Object.fromEntries(asset.headers),...headers}});}
-  if(path==='/sitemap.xml'||/^\/sitemap-[a-z]+\.xml$/.test(path))return text(path==='/sitemap.xml'?'<?xml version="1.0"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></sitemapindex>':seo.sitemapXml([],budgetDay(now)),200,{'Content-Type':'application/xml'});
-  const snapshot=await readCatalogue(env,now),rows=snapshot.rows,ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
+  const sitemap=path==='/sitemap.xml'||/^\/sitemap-[a-z]+\.xml$/.test(path);
+  if(sitemap&&!production(env))return text(path==='/sitemap.xml'?'<?xml version="1.0"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></sitemapindex>':seo.sitemapXml([],budgetDay(now)),200,{'Content-Type':'application/xml'});
+  const recovery=['/account.html','/pricing.html','/pricing/','/saved.html','/alerts.html'].includes(path);
+  const rows=recovery?[]:(await readCatalogue(env,now)).rows,ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
+  if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
   let d,template,routeQuery='';
   const staticPages={'/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};
   if(staticPages[path])template=staticPages[path];else {d=seo.resolve(path,{markets:ms,regions:rs});if(d.kind==='redirect')return text('',301,{Location:d.to});if(d.kind==='not_found')return text('Page not found',404);if(d.kind==='app'){const u=new URL(d.to,url);template=u.pathname.split('/').at(-1);routeQuery=u.searchParams.toString();}else{template='seo.html';routeQuery=new URLSearchParams({path:d.path}).toString();}}
-  const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=await asset.text(),meta='',title=null;
+  const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=await asset.text(),meta='',title=null,robots=production(env)&&rows.length&&['index.html','organisers.html'].includes(template)?'index,follow':'noindex,follow';
   if(d&&d.kind==='page') {
     const inv=inventory(rows,d.market,seoConfig.intentsFor(d.market),now),s=search(rows,{...seo.filters(d),page_size:12},null,now),m=ms.find(m=>m.code===d.market),M=seo.meta(d,{market:m,markets:ms,regions:rs[d.market],inventory:inv,inventories:{[d.market]:inv},search:s,visible:s.results,regionPath:ancestors(d.market,d.region?.id),today:budgetDay(now)});
-    title=M.title;meta=`<meta name="description" content="${esc(M.description)}"><link rel="canonical" href="${esc(M.canonical)}">`+M.hreflang.map(h=>`<link rel="alternate" hreflang="${esc(h.lang)}" href="${esc(h.href)}">`).join('')+M.jsonld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
+    title=M.title;robots=M.robots;meta=`<meta name="description" content="${esc(M.description)}"><link rel="canonical" href="${esc(M.canonical)}">`+M.hreflang.map(h=>`<link rel="alternate" hreflang="${esc(h.lang)}" href="${esc(h.href)}">`).join('')+M.jsonld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
   }
   if(template==='opportunity.html') {
     const query=new URLSearchParams(routeQuery||url.search),id=query.get('id'),row=rows.find(r=>r.id===id);if(!row) return text('Opportunity unavailable',404);
-    title=row.title+' | FindPitches';const ld=[{'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{name:'FindPitches',url:routes.abs('/')},{name:marketOf(row.market).name,url:routes.abs(routes.marketPath(row.market))},{name:row.title,url:routes.abs(row.canonical_path)}].map((r,i)=>({'@type':'ListItem',position:i+1,name:r.name,item:r.url}))}];
+    title=row.title+' | FindPitches';robots=path===row.canonical_path?'index,follow':'noindex,follow';const ld=[{'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{name:'FindPitches',url:routes.abs('/')},{name:marketOf(row.market).name,url:routes.abs(routes.marketPath(row.market))},{name:row.title,url:routes.abs(row.canonical_path)}].map((r,i)=>({'@type':'ListItem',position:i+1,name:r.name,item:r.url}))}];
     if(row.dates.start)ld.push({'@context':'https://schema.org','@type':'Event',name:row.title,startDate:row.dates.start,...(row.dates.end?{endDate:row.dates.end}:{}),url:routes.abs(row.canonical_path),location:{'@type':'Place',name:row.location.label,address:row.location.label},organizer:{'@type':'Organization',name:row.organiser.name}});
     meta=`<link rel="canonical" href="${esc(routes.abs(row.canonical_path))}">`+ld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
   }
   if(title)markup=markup.replace(/<title>[^<]*<\/title>/,`<title>${esc(title)}</title>`);
   // The copied shell reads route defaults from data, without inline executable
   // scripts. Relative Build 4 assets and links resolve from this owned origin.
-  markup=markup.replace('<head>',`<head><base href="/"><meta name="fp-environment" content="restricted_shadow_preview"><meta name="fp-route-query" content="${esc(routeQuery)}">`+meta+'<meta name="robots" content="noindex,nofollow">');
-  return text(markup,200,{'Content-Type':'text/html; charset=utf-8'});
+  if(!production(env))robots='noindex,nofollow';
+  markup=markup.replace(/<meta\s+name="robots"[^>]*>/gi,'').replace('<head>',`<head><base href="/"><meta name="fp-environment" content="${env.V3_CUSTOMER_MODE}"><meta name="fp-route-query" content="${esc(routeQuery)}">`+meta+`<meta name="robots" content="${robots}">`);
+  return text(markup,200,{'Content-Type':'text/html; charset=utf-8','X-Robots-Tag':robots});
 }
 
 export default {
   async fetch(request,env) {
     const now=new Date().toISOString(),p=new URL(request.url).pathname,db=env.V3_CUSTOMER_DB;
-    if(env.V3_CUSTOMER_MODE!=='restricted_shadow_preview'||!db)return error(customerError('service_unavailable',503));
+    if(!['restricted_shadow_preview','production_public'].includes(env.V3_CUSTOMER_MODE)||!db)return error(customerError('service_unavailable',503));
     try {
-      if(p==='/health'&&request.method==='GET'){await stmt(db,'SELECT COUNT(*) AS n FROM customers').first();return response({service:'findpitches-v3-customer-preview',mode:'restricted_shadow_preview',publication_enabled:false,production_cutover_enabled:false,frontend:'Claude Build 4',frontend_source_sha256:FRONTEND_SOURCE});}
+      if(production(env)){let runtime;try{runtime=await stmt(db,'SELECT mode,schema_version FROM customer_runtime WHERE id=1').first();}catch{throw customerError('service_unavailable',503);}if(runtime?.mode!=='production_public'||runtime.schema_version!==1||env.V3_STRIPE_MODE!=='live')throw customerError('service_unavailable',503);}
+      if(p==='/health'&&request.method==='GET'){await stmt(db,'SELECT COUNT(*) AS n FROM customers').first();return response({service:production(env)?'findpitches-v3-customer-production':'findpitches-v3-customer-preview',mode:env.V3_CUSTOMER_MODE,publication_enabled:production(env)&&env.V3_PUBLIC_ENABLED==='true',production_cutover_enabled:production(env)&&env.V3_PUBLIC_ENABLED==='true',frontend:'Claude Build 4',frontend_source_sha256:FRONTEND_SOURCE});}
       if(p==='/api/v3/stripe/webhook'&&request.method==='POST')return response(await webhook(request,env,{now}));
+      if(production(env)&&p.startsWith('/ops/')){
+        if(!env.V3_PRODUCTION_OPERATOR_TOKEN||env.V3_PRODUCTION_OPERATOR_TOKEN.length<32||!same(await hash(request.headers.get('authorization')??''),await hash('Bearer '+env.V3_PRODUCTION_OPERATOR_TOKEN)))throw customerError('forbidden',403);
+        if(p==='/ops/preflight'&&request.method==='GET'){const snapshot=await readCatalogue(env,now),counts=await stmt(db,`SELECT (SELECT COUNT(*) FROM customers) AS customers,(SELECT COUNT(*) FROM stripe_webhook_receipts WHERE processed_at IS NULL) AS pending_webhooks`).first();return response({mode:env.V3_CUSTOMER_MODE,public_enabled:env.V3_PUBLIC_ENABLED==='true',billing_mode:env.V3_STRIPE_MODE,checkout_enabled:env.V3_CHECKOUT_ENABLED==='live',ready:snapshot.rows.length,ready_by_country:Object.fromEntries(markets(snapshot.rows).map(m=>[m.code,m.opportunity_count])),email_configured:!!env.V3_EMAIL_API_KEY&&!mailCredentialIsProxyReference(env.V3_EMAIL_API_KEY),counts});}
+        if(p==='/ops/email/verify'&&request.method==='POST')return response(await verifyNativeMailSettings(env));
+        throw customerError('not_found',404);
+      }
+      if(production(env)){
+        if(p.startsWith('/preview/'))throw customerError('not_found',404);
+        const u=new URL(request.url);
+        if(u.origin==='https://www.findpitches.com'&&['GET','HEAD'].includes(request.method))return text('',301,{Location:'https://findpitches.com'+u.pathname+u.search});
+        if(u.origin!==env.V3_PUBLIC_ORIGIN||u.origin!=='https://findpitches.com')throw customerError('forbidden',403);
+        if(env.V3_PUBLIC_ENABLED!=='true'&&!(env.V3_ACCOUNT_RECOVERY_ENABLED==='true'&&recoveryPath(p)))throw customerError('service_unavailable',503);
+        if(!p.startsWith('/assets/'))await rateLimit(db,'public/ip/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:120,seconds:60,now});
+        if(p==='/api/v3/billing/checkout')await rateLimit(db,'checkout/ip/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:10,now});
+      }
       if(p==='/api/v3/session/verify'&&request.method==='GET'){
         await rateLimit(db,'verify/ip/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:30,seconds:60,now});
         return await api(request,env,now);
@@ -154,11 +187,11 @@ export default {
           return response({service:'findpitches-v3-customer-preview',frontend:{design:'Claude Build 4',source_sha256:FRONTEND_SOURCE,owned_by_v3:true},api_target:'V3_READY_API service binding',inventory:{shadow_ready:snapshot.shadow_ready,preview_eligible:snapshot.rows.length,producer_policy_withheld:snapshot.producer_policy_withheld,customer_visible_ready:0},auth:{native_sessions:true,email_configured:Boolean(env.V3_EMAIL_API_KEY&&env.V3_EMAIL_FROM&&!mailCredentialIsProxyReference(env.V3_EMAIL_API_KEY))},billing:{mode:env.V3_STRIPE_MODE??'unconfigured',checkout_enabled:env.V3_CHECKOUT_ENABLED==='test',webhook_configured:Boolean(env.STRIPE_WEBHOOK_SECRET),portal_configured:Boolean(env.STRIPE_PORTAL_CONFIGURATION_ID)},alerts:{storage:true,email_delivery:false},publication_enabled:false,production_cutover_enabled:false,legacy_dependencies:[],counts});}
         throw customerError('not_found',404);
       }
-      if(!await previewAllowed(request,db,now))throw customerError('preview_access_required',401);
+      if(!production(env)&&!await previewAllowed(request,db,now))throw customerError('preview_access_required',401);
       if(p.startsWith('/api/v3/'))return await api(request,env,now);
       if(request.method!=='GET'&&request.method!=='HEAD')throw customerError('not_found',404);
       return await html(request,env,now);
     }catch(e){try{await noteCustomerEvent(db,'request',e.code??'internal_error',now);}catch{}return error(e);}
   },
-  async scheduled(_event,env,ctx) {if(env.V3_CUSTOMER_MODE==='restricted_shadow_preview')ctx.waitUntil(readCatalogue(env,new Date().toISOString()).then(s=>recordInventoryChanges(env.V3_CUSTOMER_DB,s.rows,new Date().toISOString())).catch(()=>noteCustomerEvent(env.V3_CUSTOMER_DB,'inventory_sync','failed')));}
+  async scheduled(_event,env,ctx) {if(env.V3_CUSTOMER_MODE==='restricted_shadow_preview'||production(env)&&env.V3_PUBLIC_ENABLED==='true')ctx.waitUntil(readCatalogue(env,new Date().toISOString()).then(s=>recordInventoryChanges(env.V3_CUSTOMER_DB,s.rows,new Date().toISOString())).catch(()=>noteCustomerEvent(env.V3_CUSTOMER_DB,'inventory_sync','failed')));}
 };

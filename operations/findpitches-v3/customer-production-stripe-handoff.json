@@ -1,0 +1,12 @@
+{
+  "source": "docs/findpitches-v3-live-stripe-config-2026-10-11.md",
+  "authority": "Chris operator handoff via Hal/OpenClaw; D-016",
+  "account_id": "acct_1TTp8UEIdSfbjtdo",
+  "product_id": "prod_VQF2oqHreWwhOj",
+  "price_ids": {
+    "GBP": "price_1UPOYoEIdSfbjtdokwYZebsp",
+    "USD": "price_1UPOYoEIdSfbjtdoDVzOaxpQ",
+    "EUR": "price_1UPOYoEIdSfbjtdov30fVN2j"
+  },
+  "portal_id": "bpc_1UPOZ7EIdSfbjtdoUSK1A5h9"
+}
