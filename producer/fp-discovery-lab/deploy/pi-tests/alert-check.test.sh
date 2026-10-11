@@ -11,6 +11,7 @@ SMTP2GO_API_KEY='$KEY'
 ALERT_FROM='FindPitches Pi <alerts@example.test>'
 ALERT_TO='ops@example.test'
 ALERT_DAILY_HOUR='8'
+ALERT_QUIET='off'
 EOF
 # --- stubs: behaviour comes from files in $T/ctl
 cat > "$STUB/systemctl" <<'EOF'
@@ -124,4 +125,20 @@ echo 0x50005 > $T/ctl/throttled; status "$(iso $((P0+1800)))" 0 0 600; run $((P0
 ok "dip back: no new email" '[[ $(sends) == $((b0+1)) ]]'
 echo 0x50000 > $T/ctl/throttled; T2=$((P0+1800+86400+60)); touch -d "@$T2" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst"; offsite true "$(iso $T2)" null; status "$(iso $T2)" 0 0 600; run $T2
 ok "resolved after 24h quiet" '[[ "$(subj)" == *"] RESOLVED:"*UNDER-VOLTAGE* ]]'
+# 15. quiet hours 22-7: nothing sent overnight; one email at 07:00 covering what happened
+sed -i "s/^ALERT_QUIET=.*/ALERT_QUIET='22-7'/" $T/alert.env
+rm -f $T/state/state.json $T/state/power_seen; echo 0x0 > $T/ctl/throttled; rm -f $T/ctl/acquire_state
+D=$(date -d "2026-10-12 21:30" +%s); touch -d "@$D" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst"; offsite true "$(iso $D)" null
+status "$(iso $D)" 0 0 600; run $D; b1=$(sends)
+Q=$(date -d "2026-10-12 23:30" +%s); echo failed > $T/ctl/acquire_state; status "$(iso $Q)" 0 0 600; run $Q
+ok "quiet: no email at 23:30" '[[ $(sends) == $b1 ]] && grep -q "quiet hours" $T/out'
+Q2=$(date -d "2026-10-13 02:00" +%s); rm $T/ctl/acquire_state; status "$(iso $Q2)" 3 0 600; run $Q2
+ok "quiet: no email at 02:00" '[[ $(sends) == $b1 ]]'
+M=$(date -d "2026-10-13 07:07" +%s); touch -d "@$M" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst"; offsite true "$(iso $M)" null; status "$(iso $M)" 3 0 600; run $M
+ok "07:07 one email" '[[ $(sends) == $((b1+1)) ]]'
+ok "still-present problem reported as new" 'jq -r .text_body $T/ctl/last_body.json | grep -q "rejected 3"'
+ok "cleared overnight problem listed" 'jq -r .text_body $T/ctl/last_body.json | grep -q "During quiet hours" && jq -r .text_body $T/ctl/last_body.json | grep -q "Discovery cycle FAILED"'
+ok "overnight cleared after send" '[[ $(jq ".overnight|length" $T/state/state.json) == 0 ]]'
+Q3=$(date -d "2026-10-13 22:15" +%s); status "$(iso $Q3)" 0 0 600; run $Q3
+ok "resolution at 22:15 held" '[[ $(sends) == $((b1+1)) ]]'
 echo "alert-check tests: $pass passed, $fail failed"; [[ $fail == 0 ]]

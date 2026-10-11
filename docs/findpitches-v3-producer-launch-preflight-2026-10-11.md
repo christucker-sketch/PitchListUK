@@ -155,3 +155,5 @@ This is from `sudo fpd-status`, run by Chris on the Pi.
 - The first version alerted on under-voltage "right now". Because under-voltage comes and goes with load, that would send a problem email and then a resolved email every cycle.
 - Kit `a58ad68a…` (`pi_kit_v3-011f`) changes only `fpd-alert-check`: under-voltage now keeps **one** problem open until 24 hours pass without it. 27 stubbed tests pass.
 
+**Superseded the same evening:** kit `0748f4e3…` (`pi_kit_v3-011g`) replaces `a58ad68a…`. It adds quiet hours at Chris's request: **no emails from 22:00 to 07:00 UK time**. The first check after 07:00 sends one email covering everything seen overnight, including problems that have already cleared. Only `fpd-alert-check` and `fpd-alert-setup` change; the engine is unchanged; 34 stubbed tests pass. Existing installs get the 22–7 default without re-running setup.
+

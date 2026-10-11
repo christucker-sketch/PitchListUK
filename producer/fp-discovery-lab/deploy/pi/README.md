@@ -188,6 +188,8 @@ Replace it before the SSD starts dropping out.
 - **a reminder** every 6 hours while a problem lasts;
 - **when the problem clears.**
 
+**Quiet hours (default 22:00–07:00 UK time):** no emails are sent overnight. The first check after 07:00 sends one email covering everything seen overnight, including problems that have already cleared. To change or turn off quiet hours, edit `ALERT_QUIET` in `/etc/fpd/alert.env` (for example `23-6`, or `off`), or re-run setup.
+
 It also sends a **daily summary** (08:00 by default). If that stops arriving, the Pi itself is down or offline, which the Pi cannot report about itself. At most 8 emails are sent per hour.
 
 To set it up once:

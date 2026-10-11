@@ -3,7 +3,9 @@
 #   fpd-alert-check            check, then email new problems / reminders / resolutions (and the daily summary)
 #   fpd-alert-check --test     send one test email now
 #   fpd-alert-check --show     print current problems, send nothing
-# Config: /etc/fpd/alert.env (root, 0600) with SMTP2GO_API_KEY, ALERT_FROM, ALERT_TO, optional ALERT_DAILY_HOUR (0-23, default 8).
+# Config: /etc/fpd/alert.env (root, 0600) with SMTP2GO_API_KEY, ALERT_FROM, ALERT_TO, optional ALERT_DAILY_HOUR (0-23, default 8)
+#   and ALERT_QUIET (no emails in these local hours, default "22-7" = 22:00-07:00; "off" to disable).
+#   Problems seen during quiet hours are reported in one email at the end of them, including ones that already cleared.
 # The API key is passed to curl on stdin, never on the command line, and is never printed or logged.
 set -uo pipefail
 umask 077
@@ -22,7 +24,7 @@ set -a
 # shellcheck source=/dev/null
 . "$CONF"
 set +a
-: "${ALERT_DAILY_HOUR:=8}"
+: "${ALERT_DAILY_HOUR:=8}" "${ALERT_QUIET:=22-7}"
 mkdir -p "$STATE_DIR"; STATE=$STATE_DIR/state.json
 [[ -s $STATE ]] && jq -e . "$STATE" >/dev/null 2>&1 || echo '{"active":{},"sent":[],"daily":"","boot":""}' > "$STATE"
 
@@ -132,6 +134,18 @@ GONE=$(jq -r --argjson c "$CUR" '.active|to_entries|map(select($c[.key]==null))|
 REBOOT=""; PREV_BOOT=$(jq -r .boot <<<"$S"); [[ -n $PREV_BOOT && $PREV_BOOT != "$BOOT" ]] && REBOOT="The Pi restarted (booted $(uptime -s 2>/dev/null)). If you did not restart it, suspect a power cut or the power supply."
 DAILY=""; TODAY=$(date -d "@$NOW" +%F); HOUR=$(date -d "@$NOW" +%-H)
 [[ $HOUR -ge $ALERT_DAILY_HOUR && $(jq -r .daily <<<"$S") != "$TODAY" ]] && DAILY=1
+if [[ $ALERT_QUIET =~ ^([0-9]{1,2})-([0-9]{1,2})$ ]]; then
+  QS=$((10#${BASH_REMATCH[1]})); QE=$((10#${BASH_REMATCH[2]}))
+  if (( QS != QE )) && { (( QS > QE && (HOUR >= QS || HOUR < QE) )) || (( QS < QE && HOUR >= QS && HOUR < QE )); }; then
+    # quiet hours: send nothing; remember what was seen so the first email afterwards reports it (even if it cleared)
+    jq --argjson c "$CUR" --argjson now "$NOW" '.overnight = ((.overnight // {}) as $o
+        | $o + ($c|with_entries(.key as $k | .value = {msg:.value, first:($o[$k].first // $now), last:$now})))' <<<"$S" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
+    [[ -n $NEW || -n $GONE || -n $REBOOT ]] && echo "fpd-alert: quiet hours ($ALERT_QUIET); holding email until ${QE}:00"
+    exit 0
+  fi
+fi
+OVER=$(jq -r --argjson c "$CUR" '.active as $a | (.overnight // {})|to_entries|map(select($c[.key]==null and $a[.key]==null))
+  |.[]|"- \(.value.msg) (seen \(.value.first|strflocaltime("%H:%M"))-\(.value.last|strflocaltime("%H:%M")))"' <<<"$S")
 
 SENT_HOUR=$(jq --argjson now "$NOW" '[.sent[]|select(.>($now-3600))]|length' <<<"$S")
 subject=""; body=""
@@ -142,6 +156,7 @@ if [[ -n $NEW || -n $REBOOT ]]; then
 fi
 [[ -z $subject && -n $DUE ]] && subject="STILL WRONG: $(printf '%s\n' "$DUE" | head -1 | sed 's/^- //' | cut -c1-70)"
 [[ -z $subject && -n $GONE ]] && subject="RESOLVED: $(printf '%s\n' "$GONE" | head -1 | sed 's/^- //' | cut -c1-70)"
+[[ -z $subject && -n $OVER ]] && subject="OVERNIGHT: $(printf '%s\n' "$OVER" | wc -l) problem(s) came and went during quiet hours"
 if [[ -n $subject ]]; then
   body="${REBOOT:+$REBOOT
 
@@ -153,6 +168,9 @@ $DUE
 
 }${GONE:+Resolved:
 $GONE
+
+}${OVER:+During quiet hours (already cleared, not emailed at the time):
+$OVER
 
 }All current problems: $(jq 'length' <<<"$CUR")
 $(summary)"
@@ -172,12 +190,13 @@ fi
 # ------------------------------------------------------------------ persist state (only advance what was actually sent)
 if [[ $ok == 1 ]]; then
   jq --argjson c "$CUR" --argjson now "$NOW" --argjson rep "$REPEAT_S" --arg boot "$BOOT" --arg today "$TODAY" \
-     --arg sent "$([[ -n $subject ]] && echo 1)" --arg daily "$DAILY" --arg main "$([[ -n $NEW || -n $DUE || -n $GONE || -n $REBOOT ]] && echo 1)" '
+     --arg sent "$([[ -n $subject ]] && echo 1)" --arg daily "$DAILY" --arg main "$([[ -n $NEW || -n $DUE || -n $GONE || -n $REBOOT || -n $OVER ]] && echo 1)" '
     .active as $a
     | .active = ($c|to_entries|map(.key as $k | {key:$k, value:{msg:.value,
           since:($a[$k].since // $now),
           last_sent:(if $a[$k]==null or ($now-$a[$k].last_sent)>=$rep then (if $main=="1" then $now else ($a[$k].last_sent // 0) end) else $a[$k].last_sent end)}})|from_entries)
     | .boot = $boot
+    | (if $sent=="1" then .overnight = {} else . end)
     | (if $daily=="1" and $main=="" then .daily=$today else . end)
     | .sent = ([.sent[]|select(.>($now-3600))] + (if $sent=="1" then [$now] else [] end))' <<<"$S" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
 else

@@ -26,10 +26,12 @@ read -rp "Send alerts to (one address, or several separated by commas): " TO
 for a in ${TO//,/ }; do [[ $a =~ $email && $a != *[\'\"]* ]] || { echo "not an email address: $a" >&2; exit 1; }; done
 read -rp "Daily summary hour, 0-23 [8]: " HOUR; HOUR=${HOUR:-8}
 [[ $HOUR =~ ^([0-9]|1[0-9]|2[0-3])$ ]] || { echo "hour must be 0-23" >&2; exit 1; }
+read -rp "Quiet hours, no emails (start-end in 24h, or off) [22-7]: " QUIET; QUIET=${QUIET:-22-7}
+[[ $QUIET == off || $QUIET =~ ^([0-9]|1[0-9]|2[0-3])-([0-9]|1[0-9]|2[0-3])$ ]] || { echo "quiet hours must look like 22-7 or off" >&2; exit 1; }
 read -rsp "SMTP2GO API key (hidden; paste and press Enter): " KEY; echo
 [[ $KEY =~ ^[A-Za-z0-9_-]{16,128}$ ]] || { echo "that does not look like an SMTP2GO API key (expected letters, digits, - or _)" >&2; exit 1; }
 tmp=$(mktemp /etc/fpd/.alert.XXXXXX); chmod 0600 "$tmp"
-printf "SMTP2GO_API_KEY='%s'\nALERT_FROM='FindPitches Pi <%s>'\nALERT_TO='%s'\nALERT_DAILY_HOUR='%s'\n" "$KEY" "$FROM" "$TO" "$HOUR" > "$tmp"
+printf "SMTP2GO_API_KEY='%s'\nALERT_FROM='FindPitches Pi <%s>'\nALERT_TO='%s'\nALERT_DAILY_HOUR='%s'\nALERT_QUIET='%s'\n" "$KEY" "$FROM" "$TO" "$HOUR" "$QUIET" > "$tmp"
 unset KEY
 chown root:root "$tmp"; mv -f "$tmp" "$CONF"
 echo "saved $CONF (root only). Sending a test email..."

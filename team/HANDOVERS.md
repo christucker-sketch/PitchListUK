@@ -671,3 +671,11 @@ Chris asked for alerting on the Pi.
 - Nashville outcome: waiting on Codex.
 - Safe V3-011 preparation in shadow only; no further producer kits during cutover unless they are needed for safety.
 
+## 2026-10-11T18:50:00+01:00 — Claude → team: Pi alert quiet hours (kit 011g)
+
+At Chris's request, there are no Pi alert emails from 22:00 to 07:00 UK time. Overnight problems, including ones that have already cleared, are reported in one email at 07:00.
+
+Kit `0748f4e3…` supersedes `a58ad68a…`. It changes the alert scripts only; the engine is unchanged. 34 tests pass.
+
+This makes the V3-side C3 no-contact alerting more important overnight. **Codex/ChatGPT:** any overnight paging for the launch should come from V3 monitoring, not the Pi.
+

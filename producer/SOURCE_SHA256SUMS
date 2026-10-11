@@ -5,12 +5,12 @@
 6bdb044fddc4d7d89057a41a560b4311316b4c645587f7696969033b8581d8a1  ./README.md
 15e6657093d6738c2f1a69c09bdbb9dd45bf1d1e5147e4af109e65b85bb4751f  ./RESULTS.md
 acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.md
-21ebaef15519e3cbcbc66f906190cb4632080d41f64cb64f6952bf57b0a1ce01  ./deploy/pi-tests/alert-check.test.sh
-aa3e92f943cf62b5a9514cfea0a10c884cf5e283c6e7ae49071c95dd3506003d  ./deploy/pi/README.md
-a58ad68ae028840f882346c83f0b75b909898a9eadd272b25763b7d7d079963b  ./deploy/pi/SHA256SUMS
+246496f35533724f0fac0161d080d0fd4b8433fb29bd9b1df52811fd3ef51ad1  ./deploy/pi-tests/alert-check.test.sh
+e93d44f3d2137d9e2bdec4686b2e6e00dd8a103dcea700bf0b2dcace31104308  ./deploy/pi/README.md
+0748f4e375b7a306a964f47b075d9f73b2279685521ab22ae006941911df38fe  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
-7af5da85599f020900c9074e4c6e1870d4a10bc3043980be3a6cf74a0f44f95c  ./deploy/pi/bin/fpd-alert-check
-d0aebbbd200f562fed47361613f27fc3caef5594532ef5f77f7bb60c118db751  ./deploy/pi/bin/fpd-alert-setup
+9db7faa390203d02b54efaf8d4a34e2ccc91afaf49b16460416ef2eb4d6a5772  ./deploy/pi/bin/fpd-alert-check
+78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./deploy/pi/bin/fpd-alert-setup
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./deploy/pi/bin/fpd-backup
 c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./deploy/pi/bin/fpd-cycle
 374e763c8470e04632a09a2de70ff0631cca0da5cfd2cf8e02f7db2e98b1ae0a  ./deploy/pi/bin/fpd-evidence
