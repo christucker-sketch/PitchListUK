@@ -1,7 +1,7 @@
 {
   "schema": "findpitches-v3-live-provider-checkpoint-v1",
-  "as_of": "2026-10-11T16:25:44.968735+00:00",
-  "release_state": "PREFLIGHT_GO_FOR_CONTROLLED_PUBLIC_BROWSING_CHECKOUT_PENDING_SMOKE",
+  "as_of": "2026-10-11T19:20:34.818833+00:00",
+  "release_state": "REFRESHED_PREFLIGHT_GO_FOR_CONTROLLED_PUBLIC_BROWSING_CHECKOUT_PENDING_SMOKE",
   "authority": [
     "D-014",
     "D-016",
@@ -19,9 +19,9 @@
     "database": "findpitches-v3-customer-production",
     "url": "https://findpitches-v3-customer-production.ctucker.workers.dev",
     "deployed_at": "2026-10-11T16:11:26.698Z",
-    "deployment_id": "9456746c-d966-4cd5-be3c-6cb330428728",
+    "deployment_id": "6f454020-ecd0-4093-891f-32014155e61b",
     "version_ids": [
-      "7a955e61-aa19-41a5-a677-5bb9a63510be"
+      "d44ca18a-850b-45b9-bdb6-0b78b9154613"
     ],
     "public_enabled": false,
     "checkout_enabled": false,
@@ -29,7 +29,9 @@
     "mail_secret_written": false,
     "source": "existing immutable shadow evidence",
     "pitchlist_changed": false,
-    "native_mail_binding_present": true
+    "native_mail_binding_present": true,
+    "account_recovery_enabled": true,
+    "observed_at": "2026-10-11T19:17:58.139Z"
   },
   "provider": {
     "account_id": "acct_1TTp8UEIdSfbjtdo",
@@ -64,7 +66,7 @@
   },
   "native_validation": {
     "schema": "findpitches-v3-native-live-provider-preflight-v1",
-    "as_of": "2026-10-11T16:25:16.751Z",
+    "as_of": "2026-10-11T19:17:58.139Z",
     "billing": {
       "status": 200,
       "data": {
@@ -102,6 +104,17 @@
         "customer_objects_created": 0
       }
     },
+    "email": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "provider": "smtp2go",
+        "sender": "hello@findpitches.com",
+        "credential_validated": true,
+        "sender_domain_verified": true,
+        "emails_sent": 0
+      }
+    },
     "preflight": {
       "status": 200,
       "data": {
@@ -128,18 +141,6 @@
         }
       }
     },
-    "email": {
-      "status": 200,
-      "data": {
-        "ok": true,
-        "provider": "smtp2go",
-        "sender": "hello@findpitches.com",
-        "credential_validated": true,
-        "sender_domain_verified": true,
-        "emails_sent": 0
-      }
-    },
-    "operator_unauthorized_status": 403,
     "health": {
       "status": 200,
       "data": {
@@ -152,6 +153,15 @@
         "frontend_source_sha256": "24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05"
       }
     },
+    "operator_unauthorized": {
+      "status": 403,
+      "data": {
+        "ok": false,
+        "error": "forbidden",
+        "message": "Please check your request and try again."
+      }
+    },
+    "operator_unauthorized_status": 403,
     "nashville_eligible": 0,
     "production_counts": {
       "customers": 0,
@@ -161,16 +171,33 @@
       "webhook_receipts": 0
     },
     "native_mail_binding_present": true,
-    "deployment_id": "9456746c-d966-4cd5-be3c-6cb330428728",
+    "deployment_id": "6f454020-ecd0-4093-891f-32014155e61b",
     "version_ids": [
-      "7a955e61-aa19-41a5-a677-5bb9a63510be"
+      "d44ca18a-850b-45b9-bdb6-0b78b9154613"
     ],
-    "provider_write_scope": "one dedicated webhook; no customers, Checkout Sessions, subscriptions or charges",
-    "messages_sent": 0,
-    "source_mutations_performed": 0
+    "flags": {
+      "V3_ACCOUNT_RECOVERY_ENABLED": "true",
+      "V3_CHECKOUT_ENABLED": "disabled",
+      "V3_PUBLIC_ENABLED": "false"
+    },
+    "routes": [],
+    "pitchlist": {
+      "as_of": "2026-10-11T19:17:58.138Z",
+      "homepage_status": 200,
+      "brand_present": true,
+      "pages_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
+      "domains": [
+        "pitchlistuk.pages.dev",
+        "findpitches.com",
+        "pitchlist.uk",
+        "www.findpitches.com"
+      ]
+    },
+    "source_mutations_performed": 0,
+    "messages_sent": 0
   },
   "source_health": {
-    "as_of": "2026-10-11T16:10:40.987Z",
+    "as_of": "2026-10-11T19:17:54.646Z",
     "safety": {
       "publication_enabled": 0,
       "customer_projection_rows": 0,
@@ -178,7 +205,7 @@
       "due_jobs": 0,
       "leased_jobs": 0,
       "dead_jobs": 0,
-      "future_jobs": 9278,
+      "future_jobs": 9252,
       "paid_queries_today": 0,
       "paid_bulk_enabled": 0,
       "global_query_limit": 1000,
@@ -189,64 +216,58 @@
       "cloud_ready": true,
       "expected_interval_seconds": 900,
       "contact_observation_started": true,
-      "last_authenticated_recheck_poll": "2026-10-11T16:04:13.315Z",
+      "last_authenticated_recheck_poll": "2026-10-11T19:08:50.131Z",
       "expected_discovery_interval_seconds": 10800,
       "expected_export_lag_seconds": 3600,
       "recent_poll_intervals_seconds": [
-        913.887,
-        912.787,
-        913.094
+        910.647,
+        909.058,
+        909.456
       ],
       "host_recently_contacting": true,
       "cadence_verified": true,
-      "freshness_warning": true,
-      "immutable_receipts": 7258,
-      "producer_ids": 2103,
-      "last_new_receipt_at": "2026-10-11T11:57:43.466Z",
-      "source_last_checked": "2026-10-11T11:39:57Z",
+      "freshness_warning": false,
+      "immutable_receipts": 8203,
+      "producer_ids": 2114,
+      "last_new_receipt_at": "2026-10-11T17:51:46.000Z",
+      "source_last_checked": "2026-10-11T17:41:09Z",
       "rechecks": {
-        "pending_entities": 977,
+        "pending_entities": 314,
         "fresh_evidence_ack_eligible": 0,
         "by_country": [
           {
             "market": "AU",
-            "pending_entities": 91,
+            "pending_entities": 63,
             "oldest_requested_at": "2026-10-09T13:27:04.255Z",
             "fresh_evidence_ack_eligible": 0
           },
           {
             "market": "CA",
-            "pending_entities": 15,
+            "pending_entities": 16,
             "oldest_requested_at": "2026-10-09T18:44:04.688Z",
             "fresh_evidence_ack_eligible": 0
           },
           {
             "market": "GB",
-            "pending_entities": 101,
+            "pending_entities": 62,
             "oldest_requested_at": "2026-10-09T13:33:17.963Z",
             "fresh_evidence_ack_eligible": 0
           },
           {
-            "market": "IE",
-            "pending_entities": 2,
-            "oldest_requested_at": "2026-10-11T13:46:08.039Z",
-            "fresh_evidence_ack_eligible": 0
-          },
-          {
             "market": "NZ",
-            "pending_entities": 45,
-            "oldest_requested_at": "2026-10-11T12:01:16.861Z",
+            "pending_entities": 27,
+            "oldest_requested_at": "2026-10-11T17:05:45.580Z",
             "fresh_evidence_ack_eligible": 0
           },
           {
             "market": "US",
-            "pending_entities": 723,
+            "pending_entities": 146,
             "oldest_requested_at": "2026-10-08T15:03:36.957Z",
             "fresh_evidence_ack_eligible": 0
           }
         ],
-        "acknowledged_last_24h": 2139,
-        "latest_acknowledgement": "2026-10-11T12:14:15.563Z",
+        "acknowledged_last_24h": 2742,
+        "latest_acknowledgement": "2026-10-11T18:08:20.612Z",
         "obsolete_requests_resolved": 2,
         "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
         "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
@@ -258,7 +279,7 @@
   },
   "preservation": {
     "schema": "findpitches-v3-customer-preview-preservation-v1",
-    "as_of": "2026-10-11T16:13:34.317Z",
+    "as_of": "2026-10-11T19:19:59.943Z",
     "receipts_compared": 15811,
     "source_facts_compared": 108819,
     "existing_identities_compared": 7077,
@@ -354,10 +375,11 @@
   },
   "validation": {
     "full_v3": {
-      "passed": 259,
+      "passed": 260,
       "failed": 0,
       "skipped": 0,
-      "duration_ms": 131685.022659
+      "duration_ms": 138144.046448,
+      "completed_at": "2026-10-11T16:34:31.086995+00:00"
     },
     "production_focused": {
       "passed": 17,
@@ -371,8 +393,9 @@
     "boundaries_passed": true,
     "scope": "Local safety cases and actual gated Cloudflare canonical LIVE configuration reads. No genuine hosted LIVE customer/card/cancellation journey.",
     "launch_and_pause_focused": {
-      "passed": 5,
-      "failed": 0
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
     }
   },
   "native_bundle_sha256": "c8450c0b8b8566f8fc05ffd086cb059cd2aa8abd2b361e9c67f464a494c0f0ed",
@@ -407,5 +430,21 @@
       "7a955e61-aa19-41a5-a677-5bb9a63510be"
     ],
     "messages_sent": 0
+  },
+  "launch_retry": {
+    "first_attempt_at": "2026-10-11T16:29:00Z",
+    "first_attempt_routes_added": 0,
+    "automatic_customer_safe_pause_passed": true,
+    "unrelated_binding_changes": 0,
+    "cause": "Cloudflare generated actor annotation and omitted operator version note; strict metadata preservation stopped before route creation. Patch now retains operator annotations and allows only generated actor metadata to change.",
+    "functional_setting_checks_weakened": false
+  },
+  "nashville_decision": {
+    "outcome": "KEEP_BOTH_WITHHELD",
+    "customer_eligible": 0,
+    "identity_or_source_writes": 0,
+    "old_request_retained": true,
+    "producer_custody_received": true,
+    "future_repair": "Separate additive audited within-season review; no silent edition merge during launch."
   }
 }

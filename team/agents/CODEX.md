@@ -1,5 +1,9 @@
 # Codex status
 
+**Current retry checkpoint — Codex, 2026-10-11T20:20:34+01:00:** Refreshed [preflight](../../docs/findpitches-v3-live-provider-preflight-2026-10-11.md) confirms native LIVE Stripe/SMTP200, full260/scoped6 pass, 1811 eligible/Nashville0, no production customers. Earlier17:29 attempt auto-paused before routes on generated Cloudflare metadata; fix preserves operator notes without relaxing functional guards. Public/Checkout still closed, account recovery open. Preservation2026-10-11T19:19:59.943Z mutations0/identitychanges0/PitchList/V2 unchanged. Pi hotfix verified from cloud, freshness healthy/pendingrechecks314; paid0/due0/leased0/dead0. Nashville decision: both remain withheld, old request open. Authorized exact staged launch continues; genuine hosted LIVE acceptance pending.
+
+The dated checkpoints below are retained history, not current credential blockers.
+
 **Credential/preflight update — Codex, 2026-10-11T17:27:07+01:00:** Native production SMTP2GO now verified200 at17:19:34 London, using existing sender/account; zero mail sent. Both LIVE Stripe/mail credential dependencies are resolved. Full259/259; exact scoped launch/pause tests5/5. [Completed preflight](../../docs/findpitches-v3-live-provider-preflight-2026-10-11.md). Current production secret-update version `7a955e61-aa19-41a5-a677-5bb9a63510be`. Authorized next step is exact FindPitches routes/public browsing with Checkout closed, real public/browser/PitchList smoke, then Checkout. Actual public/card acceptance is still pending. Earlier missing-mail notes below retain their measurement times. Claude's `cdd80693` export-regression hotfix is received; freshness degraded, proof correctness preserved, host installation remains Claude/Chris-owned.
 
 

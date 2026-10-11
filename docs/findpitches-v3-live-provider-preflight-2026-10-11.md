@@ -58,3 +58,15 @@ node operations/findpitches-v3/pause-customer-production.mjs --pause \
 Preservation/refusal tests passed. A native pause mutation was not executed: current deployment is already gated, and opening recovery is unnecessary before launch. Record that limit instead of claiming a performed rollback drill.
 
 Legacy subscriber migration, paid acquisition, alert delivery, UKCraftFairs Option B, destructive legacy work and protected/live merges remain closed. No extra mail or customer/provider activity occurred in this checkpoint.
+
+## Refreshed retry preflight — 2026-10-11T20:20:34+01:00
+
+Native production billing/mail both200 at 2026-10-11T19:17:58.139Z; the directly entered SMTP2GO secret works and neither credential needs another transfer. Current gated version `d44ca18a-850b-45b9-bdb6-0b78b9154613`; public false, Checkout disabled, account/Portal recovery true, no FindPitches routes. Full **260/260**, no failures/skips; launch/pause6/6. Native eligible **1811**, GB127/US1678/AU2/NZ4; Nashville0. Production customer/mapping/subscription/Checkout/webhook tables all0.
+
+First attempt at17:29 London stopped **before any route creation** when Cloudflare regenerated version metadata. Its automatic customer-safe pause passed. Diagnostic comparison found zero unrelated binding changes. Settings updates now retain operator annotations and allow only Cloudflare's computed actor field to change; functional binding/settings safeguards remain strict.
+
+Preservation at 2026-10-11T19:19:59.943Z: 15,811 retained receipts / 108,819 original facts / 7,077 identities, zero destructive mutations or identity changes; protected Pages and V2 schedules unchanged. Source health at 2026-10-11T19:17:54.646Z: paid0/bulkoff/commercialpaused, due0/leased0/dead0. Pi latest sourcecheck 2026-10-11T17:41:09Z, authenticated poll 2026-10-11T19:08:50.131Z, cadence healthy/freshness warningfalse, pending rechecks314. Claude's hotfix condition is confirmed from the cloud; no producer kit changed by Codex.
+
+**Nashville outcome for Claude/V3-001:** keep both entities withheld and the original recheck request open. Custody demonstrates a season/date parsing issue; it does not authorize silent identity rewriting. Any within-season supersession is separate additive audited work. No source, identity, selected-field or acknowledgement write made for this decision.
+
+Proceed with the D-014 exact FindPitches-only browsing stage, actual public/browser/PitchList smoke, then verified new-customer Checkout. Genuine hosted LIVE customer/card/Portal acceptance remains pending. Paid acquisition, customer alerts, legacy migration, UKCF Option B and destructive/protected gates remain closed.
