@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {openLocalD1} from '../../operations/findpitches-v3/local-d1.mjs';
 import {stmt,hmac} from '../../platform/findpitches-v3/customer-security.mjs';
 import {issueChallenge,consumeChallenge} from '../../platform/findpitches-v3/customer-auth.mjs';
-import {livePricePolicy,livePlans,liveEntitlement,liveStripeClient,validateLivePrice,syncLiveSubscriptions,liveCustomerAccess,liveCheckout,livePortal,liveConfirmCheckout,liveWebhook} from '../../platform/findpitches-v3/customer-live-billing.mjs';
+import {livePricePolicy,livePlans,liveEntitlement,liveStripeClient,validateLivePrice,syncLiveSubscriptions,liveCustomerAccess,liveCheckout,livePortal,liveConfirmCheckout,liveWebhook,verifyLiveBillingSettings} from '../../platform/findpitches-v3/customer-live-billing.mjs';
 import {mapProof,present} from '../../platform/findpitches-v3/customer-catalogue.mjs';
 import worker from '../../platform/findpitches-v3/customer-worker.mjs';
 
@@ -108,4 +108,18 @@ test('gated deployment and rollback retain account recovery without evidence rea
  e.V3_ACCOUNT_RECOVERY_ENABLED='true';e.V3_READY_API.fetch=()=>{throw Error('catalogue_down');};assert.equal((await call('/account.html')).status,200);assert.equal((await call('/api/v3/session')).status,200);assert.equal((await call('/api/v3/markets?registry_only=true')).status,200);assert.equal((await call('/api/v3/opportunities?market=US')).status,503);
  const plans=await (await call('/api/v3/billing/plans?market=GB&currency=EUR')).json();assert.equal(plans.plans[1].checkout_enabled,false);
  assert.match((await call('/account.html')).headers.get('x-robots-tag'),/noindex/);
+});
+test('production billing preflight checks all canonical LIVE variants and Portal without customer writes',async t=>{
+ const db=setup(t),e=env(db),calls=[],policy=livePricePolicy(e);let wrongPrice=false,unsafePortal=false;
+ const fetcher=async(url,options)=>{assert.equal(options.method,'GET');const p=new URL(url).pathname.slice(3);calls.push(p);
+  if(p==='/products/'+e.V3_LIVE_PRODUCT_ID)return Response.json({id:e.V3_LIVE_PRODUCT_ID,active:true,livemode:true,metadata:{app:'findpitches',version:'v3',plan:'pro',entitlement:'global'}});
+  const price=policy.find(v=>p==='/prices/'+v.id);if(price)return Response.json({id:price.id,active:true,livemode:true,product:price.product,currency:price.currency.toLowerCase(),unit_amount:price.amount+(wrongPrice?1:0),recurring:{interval:'month',interval_count:1},billing_scheme:'per_unit',type:'recurring'});
+  assert.equal(p,'/billing_portal/configurations/'+e.STRIPE_PORTAL_CONFIGURATION_ID);return Response.json({id:e.STRIPE_PORTAL_CONFIGURATION_ID,active:true,livemode:true,is_default:false,features:{subscription_cancel:{enabled:true,mode:'at_period_end'},subscription_update:{enabled:unsafePortal},customer_update:{enabled:false},invoice_history:{enabled:true},payment_method_update:{enabled:true}}});
+ };
+ const r=await verifyLiveBillingSettings(e,{fetcher});assert.equal(r.credential_validated,true);assert.equal(r.entitlement,'global');assert.deepEqual(r.prices.map(p=>p.currency),['GBP','USD','EUR']);assert.equal(calls.length,5);assert.equal(db.sqlite.prepare('SELECT COUNT(*) n FROM customers').get().n,0);assert.equal(db.sqlite.prepare('SELECT COUNT(*) n FROM stripe_customers').get().n,0);
+ wrongPrice=true;await assert.rejects(verifyLiveBillingSettings(e,{fetcher}),/price_not_set/);wrongPrice=false;unsafePortal=true;await assert.rejects(verifyLiveBillingSettings(e,{fetcher}),/billing_review_required/);
+ await assert.rejects(liveStripeClient(e,fetcher)('/billing_portal/configurations/'+e.STRIPE_PORTAL_CONFIGURATION_ID,{method:'POST'}),/forbidden/);
+ const req=new Request('https://findpitches-v3-customer-production.fixture.workers.dev/ops/billing/verify',{method:'POST'});assert.equal((await worker.fetch(req,e)).status,403);
+ unsafePortal=false;t.mock.method(globalThis,'fetch',fetcher);const allowed=new Request(req.url,{method:'POST',headers:{Authorization:'Bearer '+e.V3_PRODUCTION_OPERATOR_TOKEN}});assert.equal((await worker.fetch(allowed,e)).status,200);
+ assert.equal((await worker.fetch(allowed,{...e,V3_CUSTOMER_MODE:'restricted_shadow_preview'})).status,401);
 });

@@ -1,8 +1,23 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-11T16:47:07+01:00** (Europe/London). State: **V3-010 production implementation deployed gated; BLOCKED on credential transfer**. Branch: `findpitches-v3/greenfield`.
+**Credential/preflight update — Codex, 2026-10-11T17:27:07+01:00:** Native production SMTP2GO now verified200 at17:19:34 London, using existing sender/account; zero mail sent. Both LIVE Stripe/mail credential dependencies are resolved. Full259/259; exact scoped launch/pause tests5/5. [Completed preflight](../../docs/findpitches-v3-live-provider-preflight-2026-10-11.md). Current production secret-update version `7a955e61-aa19-41a5-a677-5bb9a63510be`. Authorized next step is exact FindPitches routes/public browsing with Checkout closed, real public/browser/PitchList smoke, then Checkout. Actual public/card acceptance is still pending. Earlier missing-mail notes below retain their measurement times. Claude's `cdd80693` export-regression hotfix is received; freshness degraded, proof correctness preserved, host installation remains Claude/Chris-owned.
 
-## Authoritative production checkpoint
+
+Author: Codex. Updated: **2026-10-11T17:19:00+01:00** (Europe/London). State: **V3-010 LIVE provider verified on gated production; completed preflight; controlled public launch in progress**. Branch: `findpitches-v3/greenfield`.
+
+## Current LIVE provider checkpoint
+
+[Report](../../docs/findpitches-v3-live-provider-preflight-2026-10-11.md) / [machine evidence](../../operations/findpitches-v3/reports/customer-live-provider-checkpoint-2026-10-11.json). Actual secure Stripe attachment received/0600, exact Hal product/three LIVE prices/Portal verified and adopted unchanged. One owned webhook `we_1UPPE8EIdSfbjtdo0FcfjvyT` created at the stable production Worker handler; signing/key secrets bound. Replay six reads/zero writes. Restricted `/account`403 is disclosed; account identity is operator custody plus exact approved unique LIVE objects, without TEST/Connect fallback.
+
+Production operator-only canonical billing probe returned200; unauthorized probe403; unsigned webhook403/no receipt. All prices/global entitlement/Portal configuration checked through the deployed credential. Final gated version `eea9ed01-a1e9-4c65-9514-360ff6140bb2`, deployment `7afc8edf-0b92-48f4-bc0b-e57afb8bc333`, at17:11:26 London. Public/Checkout/routes remain closed. Full **256/256**, production-focused **17/17**, frontend3/independence/boundaries pass. Added cancellation-safe [pause command](../../operations/findpitches-v3/pause-customer-production.mjs), with binding-preservation/refusal tests; no native pause drill claimed.
+
+At17:12:27 eligible **1811** (GB127/US1678/AU2/NZ4/CA0/IE0), Nashville0; production customers/mappings/subscriptions/Checkout attempts/webhook receipts all0. Preservation17:13:34 verifies zero source/identity changes across15,811 receipts/108,819 facts/7,077 identities; protected Pages/V2 unchanged. Routing baseline remains empty17:13:48; PitchList homepage200/identity present17:14:22. Queue17:10 due0/leased0/dead0, paid0/bulkoff/commercialpaused. Pi healthy15.2m cadence/latestpoll17:04; sourcecheck12:39/receipt12:57 remain beyond4h warning,977pending/freshackeligible0. No source clock or proof gate changed.
+
+**Only credential dependency now:** existing raw SMTP2GO key bound as **`V3_EMAIL_API_KEY` Secret on `findpitches-v3-customer-production`**, sender already `hello@findpitches.com`. Actual attachment contains Stripe only; local SMTP environment reference and non-exportable preview key cannot be copied. Native production mail503. Chris received exact Worker/settings location and asked for the name; supplied it explicitly. No duplicate sender/account or additional launch approval needed.
+
+After that native binding: verify domain without arbitrary test email, freeze completed preflight, exact authorized FindPitches routes/public access, immediate PitchList and real public/security/SEO/Free smoke, then genuine hosted LIVE customer/card/webhook/global Pro/Portal/cancel proof. No synthetic LIVE objects created; genuine journey pending. Legacy migration, paid, alerts, UKCF Option B, destructive/protected gates remain closed. Received peer `746029c7` Claude launch-support scope; preserve producer ownership/no kit installation during launch.
+
+## Earlier 16:47 production checkpoint
 
 [Production implementation/report](../../docs/findpitches-v3-production-checkpoint-2026-10-11.md). D-014/D-016 resolved launch authority/global pricing: GBP4.99/USD6.99/EUR5.99 monthly, seven-day first trial, worldwide Pro access independent of currency. Hal's `c37a340c` records existing V3-owned LIVE product/three prices/Portal; adopt exact objects, never recreate. No additional launch approval requested.
 

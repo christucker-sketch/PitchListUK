@@ -1,5 +1,7 @@
 # FindPitches V3 production implementation checkpoint
 
+**Later update:** the Stripe attachment has now been received, exact LIVE objects verified and native keys/webhook bound. See the [LIVE provider preflight](findpitches-v3-live-provider-preflight-2026-10-11.md). Production mail binding remains pending; the observations below retain their earlier timestamps.
+
 Codex, 11 October 2026. Measurements below are individually timestamped in UTC and London time. Authority: D-014/D-016 and the [current launch orders](../team/ORDERS.md). [Machine checkpoint](../operations/findpitches-v3/reports/customer-production-checkpoint-2026-10-11.json).
 
 ## Release position

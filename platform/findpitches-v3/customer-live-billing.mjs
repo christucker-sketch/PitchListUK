@@ -29,7 +29,7 @@ export function livePlans(market,env,currency) {
 export function liveStripeClient(env,fetcher=fetch) {
   if(env.V3_CUSTOMER_MODE!=='production_public'||env.V3_STRIPE_MODE!=='live'||! /^(sk|rk)_live_/.test(env.STRIPE_SECRET_KEY??''))throw customerError('service_unavailable',503);
   return async(path,{method='GET',params={},idempotencyKey}={})=>{
-    if(!/^\/(prices|products|customers|subscriptions|checkout\/sessions|billing_portal\/sessions)(\/|$)/.test(path))throw customerError('forbidden',403);
+    if(!/^\/(prices|products|customers|subscriptions|checkout\/sessions|billing_portal\/sessions)(\/|$)/.test(path)&&!(method==='GET'&&/^\/billing_portal\/configurations\/bpc_[A-Za-z0-9]+$/.test(path)))throw customerError('forbidden',403);
     const form=new URLSearchParams();for(const [k,v] of Object.entries(params))if(v!==undefined&&v!==null)form.set(k,String(v));
     const r=await fetcher('https://api.stripe.com/v1'+path+(method==='GET'&&form.size?'?'+form:''),{method,headers:{Authorization:'Bearer '+env.STRIPE_SECRET_KEY,'Stripe-Version':'2024-06-20',...(method!=='GET'?{'Content-Type':'application/x-www-form-urlencoded'}:{}),...(idempotencyKey?{'Idempotency-Key':idempotencyKey}:{})},...(method==='GET'?{}:{body:form.toString()}),signal:AbortSignal.timeout(20000)});
     const value=await r.json();if(!r.ok)throw customerError('service_unavailable',503);
@@ -41,6 +41,17 @@ function returnOrigin(origin,env) {if(origin!==env.V3_PUBLIC_ORIGIN||origin!=='h
 async function productProof(stripe,env) {
   const p=await stripe('/products/'+encodeURIComponent(env.V3_LIVE_PRODUCT_ID));
   if(p.id!==env.V3_LIVE_PRODUCT_ID||!p.active||p.metadata?.app!=='findpitches'||p.metadata?.version!=='v3'||p.metadata?.plan!=='pro'||p.metadata?.entitlement!=='global')throw customerError('billing_review_required',409);
+}
+// Operator-only canonical reads using the actual deployed credential. Never
+// create a customer/session/subscription just to demonstrate configuration.
+export async function verifyLiveBillingSettings(env,{fetcher=fetch}={}) {
+  const stripe=liveStripeClient(env,fetcher),policy=livePricePolicy(env);
+  if(!/^bpc_[A-Za-z0-9]+$/.test(env.STRIPE_PORTAL_CONFIGURATION_ID??'')||!env.STRIPE_WEBHOOK_SECRET?.startsWith('whsec_')||env.STRIPE_WEBHOOK_SECRET.length<32)throw customerError('service_unavailable',503);
+  await productProof(stripe,env);
+  for(const p of policy){const price=await stripe('/prices/'+p.id);validateLivePrice(price,p);if(!price.active)throw customerError('price_not_set',409);}
+  const portal=await stripe('/billing_portal/configurations/'+env.STRIPE_PORTAL_CONFIGURATION_ID);
+  if(portal.id!==env.STRIPE_PORTAL_CONFIGURATION_ID||!portal.active||portal.is_default||!portal.features?.subscription_cancel?.enabled||portal.features.subscription_cancel.mode!=='at_period_end'||portal.features?.customer_update?.enabled||portal.features?.subscription_update?.enabled||!portal.features?.payment_method_update?.enabled||!portal.features?.invoice_history?.enabled)throw customerError('billing_review_required',409);
+  return {provider:'stripe',mode:'live',credential_validated:true,product_id:env.V3_LIVE_PRODUCT_ID,prices:policy.map(({id,currency,amount})=>({id,currency,amount,interval:'month'})),portal_id:portal.id,portal_cancel_at_period_end:true,webhook_secret_configured:true,entitlement:'global',trial_days:7,checkout_enabled:env.V3_CHECKOUT_ENABLED==='live',customer_objects_created:0};
 }
 async function nativeOwner(db,stripe,customer) {
   const link=await stmt(db,'SELECT * FROM stripe_customers WHERE customer_id=?',customer.id).first();

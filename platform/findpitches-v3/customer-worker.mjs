@@ -2,7 +2,7 @@ import {hash} from './contract.mjs';
 import {stmt,cookie,cookies,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent,same} from './customer-security.mjs';
 import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,consumeChallenge,requestLogin,logout,updateProfile} from './customer-auth.mjs';
 import * as previewBilling from './customer-billing.mjs';
-import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook} from './customer-live-billing.mjs';
+import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook,verifyLiveBillingSettings} from './customer-live-billing.mjs';
 import {reviewSubscriberAssociation} from './customer-recognition.mjs';
 import {readCatalogue,present,search,marketOf,markets,regions,resolveLocation,inventory,ancestors,recordInventoryChanges} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
@@ -152,6 +152,7 @@ export default {
         if(!env.V3_PRODUCTION_OPERATOR_TOKEN||env.V3_PRODUCTION_OPERATOR_TOKEN.length<32||!same(await hash(request.headers.get('authorization')??''),await hash('Bearer '+env.V3_PRODUCTION_OPERATOR_TOKEN)))throw customerError('forbidden',403);
         if(p==='/ops/preflight'&&request.method==='GET'){const snapshot=await readCatalogue(env,now),counts=await stmt(db,`SELECT (SELECT COUNT(*) FROM customers) AS customers,(SELECT COUNT(*) FROM stripe_webhook_receipts WHERE processed_at IS NULL) AS pending_webhooks`).first();return response({mode:env.V3_CUSTOMER_MODE,public_enabled:env.V3_PUBLIC_ENABLED==='true',billing_mode:env.V3_STRIPE_MODE,checkout_enabled:env.V3_CHECKOUT_ENABLED==='live',ready:snapshot.rows.length,ready_by_country:Object.fromEntries(markets(snapshot.rows).map(m=>[m.code,m.opportunity_count])),email_configured:!!env.V3_EMAIL_API_KEY&&!mailCredentialIsProxyReference(env.V3_EMAIL_API_KEY),counts});}
         if(p==='/ops/email/verify'&&request.method==='POST')return response(await verifyNativeMailSettings(env));
+        if(p==='/ops/billing/verify'&&request.method==='POST')return response(await verifyLiveBillingSettings(env));
         throw customerError('not_found',404);
       }
       if(production(env)){
