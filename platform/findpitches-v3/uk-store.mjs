@@ -2,6 +2,7 @@ import {sql,ingestRecords,loadEntity} from './store.mjs';
 import {hash,stableJson,EXPORT_SCHEMA} from './contract.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
 import {myntVenues,myntVenueUrl,parseMyntVenue,fetchMyntBundle} from './uk-sources.mjs';
+import {CCA_BOOKING,CCA_ADAPTER_VERSION,ccaVenueUrl,fetchCCAProgramme} from './creative-crafts.mjs';
 import {verifyDocument} from './verification.mjs';
 import {recordVerification,verificationUrl,verificationGate,verifyEntitySource} from './verification-store.mjs';
 import {reconcileRecord,evaluateReadiness,runStage,enrichEntity} from './pipeline.mjs';
@@ -42,11 +43,9 @@ async function reserveVisit(db,runId,url,now) {
   if(!r.results.length){await stopUKRun(db,runId,'source_visit_limit');throw Error('uk_source_visit_limit');}
   return {id:'uk_visit_'+crypto.randomUUID(),url};
 }
-export async function discoverUKSource(db,{run_id,url},{fetcher=fetch,now=new Date().toISOString()}={}) {
-  await active(db,run_id,now);
-  if(url!=='https://www.myntimage.co.uk/events/'&&!myntVenueUrl(url))throw Error('approved_uk_source_required');
-  const prior=await sql(db,'SELECT source_document_id FROM uk_source_candidates WHERE run_id=? AND url=? LIMIT 1',run_id,url).first();
-  if(prior)return {run_id,url,replay:true,candidates:(await sql(db,'SELECT id,source_identifier FROM uk_source_candidates WHERE run_id=? AND url=?',run_id,url).all()).results};
+export const assertUKReviewRun=active;
+export const retainUKDocument=retain;
+export function ukSourceReader(db,run_id,{fetcher=fetch,now=new Date().toISOString()}={}) {
   let reservationFailure=null;
   const fetchBounded=async(u,options)=>{
     let reservation;try{reservation=await reserveVisit(db,run_id,u,now);}catch(e){reservationFailure=e;throw e;}
@@ -57,7 +56,29 @@ export async function discoverUKSource(db,{run_id,url},{fetcher=fetch,now=new Da
     if(!response)throw Error('source_fetch_failed');return response;
   };
   const visit=async d=>{if(reservationFailure)throw reservationFailure;await retain(db,d);if(d.reason==='source_http_429'||d.reason==='postcode_http_429'){await stopUKRun(db,run_id,'source_rate_limited');throw Error('uk_source_rate_limited');}};
+  return {fetcher:fetchBounded,visit};
+}
+export async function discoverUKSource(db,{run_id,url},{fetcher=fetch,now=new Date().toISOString()}={}) {
+  await active(db,run_id,now);
+  if(url!=='https://www.myntimage.co.uk/events/'&&!myntVenueUrl(url)&&url!==CCA_BOOKING&&!ccaVenueUrl(url))throw Error('approved_uk_source_required');
+  const replayWhere=url===CCA_BOOKING?"run_id=? AND family=?":"run_id=? AND url=?",replayValue=url===CCA_BOOKING?'creativecrafts':url;
+  const prior=await sql(db,`SELECT source_document_id FROM uk_source_candidates WHERE ${replayWhere} LIMIT 1`,run_id,replayValue).first();
+  if(prior)return {run_id,url,replay:true,candidates:(await sql(db,`SELECT c.id,c.source_identifier,p.status,p.reason FROM uk_source_candidates c JOIN uk_source_progress p ON p.candidate_id=c.id WHERE ${replayWhere.replace('run_id','c.run_id').replace('family','c.family').replace('url','c.url')}`,run_id,replayValue).all()).results};
+  const {fetcher:fetchBounded,visit}=ukSourceReader(db,run_id,{fetcher,now});
   try {
+    if(url===CCA_BOOKING||ccaVenueUrl(url)) {
+      const programme=await fetchCCAProgramme({fetcher:fetchBounded,now,visit,url:url===CCA_BOOKING?null:url}),candidates=[];
+      if(programme.bundles.length>100)throw Error('uk_venue_candidate_limit');
+      for(const bundle of programme.bundles) {
+        const proof=verifyDocument(bundle,{now}),documentId=await retain(db,bundle);
+        const candidate={id:'uk_candidate_'+(await hash([run_id,bundle.url,bundle.source_identifier])).slice(0,40),source_identifier:bundle.source_identifier,status:proof.status==='verified'?'pending':'held',reason:proof.reasons.join(',')||null,date:proof.facts.event_start,end:proof.facts.event_end,url:bundle.url};
+        await db.batch([
+          sql(db,"INSERT OR IGNORE INTO uk_source_candidates VALUES (?,?,?,?,?,'creativecrafts',?)",candidate.id,run_id,documentId,bundle.url,bundle.source_identifier,now),
+          sql(db,"INSERT OR IGNORE INTO uk_source_progress(candidate_id,status,reason,checked_at) VALUES (?,?,?,?)",candidate.id,candidate.status,candidate.reason,candidate.status==='held'?now:null),
+        ]);candidates.push(candidate);
+      }
+      return {run_id,url,candidates,held_options:programme.held,source_family:'creativecrafts',paid_queries:0};
+    }
     if(url==='https://www.myntimage.co.uk/events/') {const d=await fetchSourceDocument(url,{fetcher:fetchBounded,now});await visit(d);return {run_id,venues:myntVenues(d),reason:d.reason??null};}
     const bundle=await fetchMyntBundle(url,null,{fetcher:fetchBounded,now,visit});
     const venue=parseMyntVenue(bundle.documents[0]),documentId=await retain(db,bundle),candidates=[];
@@ -89,7 +110,8 @@ export async function importUKCandidate(db,candidateId,{now=new Date().toISOStri
   if(!claim.results.length)throw Error('uk_candidate_claimed');
   try {
     const budget=await sql(db,"UPDATE uk_source_runs SET checked=checked+1 WHERE id=? AND status='active' AND checked<max_candidates RETURNING checked",c.run_id).all();if(!budget.results.length)throw Error('uk_candidate_limit');
-    const f=proof.facts,record={schema_version:EXPORT_SCHEMA,opportunity_id:'myntimage:'+c.source_identifier,country_code:'GB',...Object.fromEntries(Object.entries(f).filter(([k])=>k!=='country')),lifecycle_state:'NEW',last_checked:document.fetched_at,source_fingerprint:document.content_hash,evidence:proof.evidence,
+    if(!['myntimage','creativecrafts'].includes(c.family)||proof.facts.source_platform!==c.family||proof.facts.source_identifier!==c.source_identifier)throw Error('uk_source_family_identity_required');
+    const f=proof.facts,record={schema_version:EXPORT_SCHEMA,opportunity_id:c.family+':'+c.source_identifier,country_code:'GB',...Object.fromEntries(Object.entries(f).filter(([k])=>k!=='country')),lifecycle_state:'NEW',last_checked:document.fetched_at,source_fingerprint:document.content_hash,evidence:proof.evidence,
       provenance:[{producer:'uk-official',adapter_version:document.adapter_version,source_document_id:c.source_document_id,source_identifier:c.source_identifier,source_url:c.url,paid_queries:0}]};
     const imported=await ingestRecords(db,[record],{producer:'uk-official',environment:'shadow',now});if(imported.rejected)throw Error('uk_source_record_invalid');
     const recordId=imported.record_ids[0],decision=await reconcileRecord(db,recordId,{now});
@@ -110,12 +132,13 @@ export async function importUKCandidate(db,candidateId,{now=new Date().toISOStri
     const current=await sql(db,'SELECT r.status,r.entity_revision,e.revision FROM readiness r JOIN entities e ON e.id=r.entity_id WHERE r.entity_id=?',entity.id).first();
     const readiness=current&&current.entity_revision===current.revision?current:await evaluateReadiness(db,entity.id,{now});
     await sql(db,"UPDATE uk_source_progress SET status='imported',reason=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",readiness.status,now,candidateId).run();
-    return {candidate_id:candidateId,status:'imported',entity_id:entity.id,identity_outcome:outcome,original_identity_outcome:decision.outcome,readiness:readiness.status,verification_id:verification.verification_id,source_country:'GB',source_family:'myntimage',source_visits:0};
+    return {candidate_id:candidateId,status:'imported',entity_id:entity.id,identity_outcome:outcome,original_identity_outcome:decision.outcome,readiness:readiness.status,verification_id:verification.verification_id,source_country:'GB',source_family:c.family,source_visits:0};
   }catch(e){await sql(db,"UPDATE uk_source_progress SET status='failed',reason='custody_requires_review',checked_at=?,lease_until=NULL WHERE candidate_id=?",now,candidateId).run();await stopUKRun(db,c.run_id,'failed_custody_or_import');throw e;}
 }
 export async function ukSourceStatus(db) {
   const runs=(await sql(db,'SELECT * FROM uk_source_runs ORDER BY created_at DESC LIMIT 10').all()).results??[];
   const outcomes=(await sql(db,'SELECT c.run_id,c.family,p.status,p.reason,p.identity_outcome,COUNT(*) AS candidates FROM uk_source_candidates c JOIN uk_source_progress p ON p.candidate_id=c.id GROUP BY c.run_id,c.family,p.status,p.reason,p.identity_outcome').all()).results??[];
   const visits=await sql(db,'SELECT COUNT(*) AS direct_source_visits,SUM(CASE WHEN reason IS NOT NULL THEN 1 ELSE 0 END) AS failed_visits FROM uk_source_visits').first();
-  return {producer:'uk-official',paid_queries:0,standing_scheduler_enabled:false,adapter_versions:['myntimage-dated-stalls-v1'],runs,outcomes,...visits,visit_definition:'Actual adapter HTTP requests, including venue, embedded application, venue directions and public coordinate-country lookup. Research visits are reported separately.'};
+  const reviews=(await sql(db,'SELECT run_id,COUNT(*) AS reviewed_existing_entities,SUM(readiness_at_review=\'ready\') AS ready_at_review FROM official_source_review_outcomes GROUP BY run_id').all()).results??[];
+  return {producer:'uk-official',paid_queries:0,standing_scheduler_enabled:false,adapter_versions:['myntimage-dated-stalls-v1',CCA_ADAPTER_VERSION],runs,outcomes,reviewed_source_matches:reviews,...visits,visit_definition:'Actual adapter HTTP requests, including venue, embedded application, venue directions and public country lookup. Research visits are reported separately.'};
 }

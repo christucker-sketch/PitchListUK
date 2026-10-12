@@ -7,9 +7,24 @@ import {INVENTORY_SQL,commercialEntity} from './commercial.mjs';
 
 export const SOURCE_LED_MARKETS=Object.freeze(['GB','CA','AU','NZ','US']);
 export const SOURCE_LED_LIMITS=Object.freeze({warmup_queries:10,min_ready_per_query:0.1,max_duplicate_rate:0.7,min_candidates_for_mix_stop:20,max_excluded_mix:0.5,max_due_jobs:40,max_oldest_due_seconds:120,max_pending_candidates:10});
+export const UK_SOURCE_LED_LIMITS=Object.freeze({max_queries:4,warmup_queries:4});
 const LANE='source-led-paid';
-export function sourceLedPlan(now) {
+const UK_SCOPE_PREFIX='sourceled_uk_growth_';
+const programmeScope=p=>p.id.startsWith(UK_SCOPE_PREFIX)?'uk_growth':'international';
+export function sourceLedPlan(now,scope='international') {
+  if(!['international','uk_growth'].includes(scope))throw Error('source_led_unknown_scope');
   const year=new Date(now).getUTCFullYear(),next=year+1,avoid=' -site:facebook.com -site:instagram.com -site:eventbrite.com -site:tripadvisor.com';
+  if(scope==='uk_growth') {
+    // Operator/event-first searches complement the existing paid templates.
+    // Their countries/years are discovery targeting, never source proof.
+    const excluded=avoid+' -site:tiktok.com -site:youtube.com -site:ticketmaster.co.uk -site:ticketsource.co.uk -inurl:news -inurl:blog -inurl:login -inurl:sign-in -inurl:directory -inurl:listings';
+    return [
+      ['localstalls',`site:localstalls.com/uk/event/ "Stallholder applications open" "${year}" ("Scotland" OR "Wales")`],
+      ['localstalls',`site:localstalls.com/uk/event/ "Stallholder applications open" "${year}" ("Northern Ireland" OR "Lancashire" OR "Cumbria")`],
+      ['official_organiser',`("agricultural show" OR "county show") "${next}" ("trade stand" OR "exhibitor") ("Scotland" OR "Wales")`],
+      ['official_organiser',`("Christmas market" OR "artisan market") "${year}" ("trader" OR "stallholder") ("Northern Ireland" OR "Wales")`],
+    ].map(([family,query])=>({market:'GB',family,query:query+excluded,programme_scope:'uk_growth'}));
+  }
   const rows={
     GB:[['localstalls',`site:localstalls.com/uk/event/ "Stallholder applications open" ${year}`],['official_organiser',`"trader applications" "applications open" "${next}" "United Kingdom"`],['municipal',`site:gov.uk "stallholder application" "${next}"`],['fair_operator',`"Christmas fair" "stallholder application" "${year}" site:co.uk`],['localstalls',`site:localstalls.com/uk/event/ "Stallholder applications open" ${next}`]],
     CA:[['official_organiser',`"vendor applications" "applications open" "${next}" site:ca`],['municipal',`"festival" "vendor application" "${next}" "Canada"`],['eventeny',`site:eventeny.com/events/vendor/ "Canada" "${year}"`],['fair_operator',`"craft fair" "vendor application" "${next}" site:ca`],['official_organiser',`"vendor applications" "business name" "${next}" site:ca`]],
@@ -19,7 +34,12 @@ export function sourceLedPlan(now) {
   };
   return Array.from({length:5},(_,i)=>SOURCE_LED_MARKETS.map(market=>({market,family:rows[market][i][0],query:rows[market][i][1]+avoid}))).flat();
 }
-export function sourceLedRoute(url) {
+function validUKProgramme(p) {
+  try{return Number.isInteger(p.max_queries)&&p.max_queries>=1&&p.max_queries<=UK_SOURCE_LED_LIMITS.max_queries
+    &&stableJson(JSON.parse(p.plan_json))===stableJson(sourceLedPlan(p.created_at,'uk_growth'));}catch{return false;}
+}
+export function sourceLedRoute(url,{scope='international'}={}) {
+  if(!['international','uk_growth'].includes(scope))throw Error('source_led_unknown_scope');
   if(!safeSourceUrl(url))return {family:'unsafe',disposition:'excluded'};
   const u=new URL(url),host=u.hostname.replace(/^www\./,'');
   for(const k of [...u.searchParams.keys()])if(/^(utm_|srsltid|fbclid|aff)/i.test(k))u.searchParams.delete(k);u.hash='';
@@ -27,6 +47,7 @@ export function sourceLedRoute(url) {
   if(/(?:^|\.)(facebook\.com|instagram\.com|tiktok\.com|x\.com|youtube\.com|linkedin\.com)$/.test(host))return {key,family:'social',disposition:'excluded'};
   if(/eventbrite\.|ticketmaster\.|ticketsource\.|tripadvisor\.|yelp\./.test(host))return {key,family:'visitor_directory',disposition:'excluded'};
   if(/\/(news|blog|stories|press|editorial)(\/|$)/i.test(u.pathname))return {key,family:'editorial',disposition:'excluded'};
+  if(scope==='uk_growth'&&/\/(?:login|sign-in|signin|log-in|account|tickets?|ticketing|directory|listings|search)(?:\/|$)/i.test(u.pathname))return {key,family:'directory_login',disposition:'excluded'};
   if(host==='eventeny.com')return {key,family:'eventeny',disposition:/^\/events\/vendor\/?$/.test(u.pathname)&&/^\d+$/.test(u.searchParams.get('id')??'')?'pending':'excluded'};
   if(host==='localstalls.com')return {key,family:'localstalls',disposition:/^\/[a-z]{2}\/event\/[^/]+\/[^/]+\/?$/.test(u.pathname)?'pending':'excluded'};
   if(u.pathname==='/'||/\/(directory|listings|search|login|sign-in|events|calendar|vendors)\/?$/i.test(u.pathname))return {key,family:'directory_login',disposition:'excluded'};
@@ -58,7 +79,7 @@ export async function sourceLedMetrics(db,id,now=new Date().toISOString()) {
   const families=Object.fromEntries([...new Set(candidates.map(c=>c.family).concat(runs.map(r=>r.family)))].map(family=>[family,{queries:runs.filter(r=>r.family===family).reduce((n,r)=>n+(r.queries_attempted??0),0),candidates:candidates.filter(c=>c.family===family).length,ready_gained:byFamily[family]??0}]));
   const watchQuarantine=candidates.filter(c=>c.status!=='duplicate'&&c.status!=='excluded'&&(!c.entity_id||!entities.find(e=>e.id===c.entity_id)?.ready)&&!['pending','verifying'].includes(c.status)).length;
   const price=await sql(db,'SELECT credit_unit_cost_usd FROM serper_policy WHERE id=1').first();
-  return {queries:totalQueries,reserved,observed_credits:credits,candidates:candidates.length,distinct_candidate_urls:seen.size,distinct_entities:entities.length,entities_created:createdIds.size,verified_entities:entities.filter(e=>e.verified).length,ready_opportunities:ready.length,ready_gained:gained.length,ready_by_country:byCountry,ready_by_source_family:byFamily,
+  return {programme_scope:programmeScope(session),settled_queries:runs.filter(r=>r.status==='complete'&&r.usage_status==='complete').reduce((n,r)=>n+(r.queries_attempted??0),0),queries:totalQueries,reserved,observed_credits:credits,candidates:candidates.length,distinct_candidate_urls:seen.size,distinct_entities:entities.length,entities_created:createdIds.size,verified_entities:entities.filter(e=>e.verified).length,ready_opportunities:ready.length,ready_gained:gained.length,ready_by_country:byCountry,ready_by_source_family:byFamily,
     duplicate_candidates:duplicates,duplicate_rate:candidates.length?duplicates/candidates.length:0,watch_quarantine_candidates:watchQuarantine,watch_quarantine_rate:candidates.length?watchQuarantine/candidates.length:0,watch_entities:entities.filter(e=>e.watch).length,quarantined_entities:entities.filter(e=>e.quarantined).length,blocked_entities:entities.filter(e=>e.blocked).length,
     out_of_market_candidates:candidates.filter(c=>c.status==='out_of_market').length,excluded_candidates:excluded,excluded_mix:candidates.length?excluded/candidates.length:0,pending_candidates:pending,ready_per_100_queries:totalQueries?100*gained.length/totalQueries:0,queries_per_ready:gained.length?totalQueries/gained.length:null,credits_per_ready:gained.length&&credits!==null?credits/gained.length:null,cost_usd_per_ready:gained.length&&credits!==null&&price.credit_unit_cost_usd!==null?credits*price.credit_unit_cost_usd/gained.length:null,
     false_ready_promotions_detected:falsePromotions,unlinked_identity_review_candidates:candidates.filter(c=>c.record_id&&!c.entity_id&&c.outcome).length,failed_runs:runs.filter(r=>r.status==='failed').length,...guards,...jobs,...structured,oldest_due_seconds:jobs.oldest_due?Math.max(0,(Date.parse(now)-Date.parse(jobs.oldest_due))/1000):0,
@@ -73,7 +94,8 @@ export function sourceLedStopReason(m) {
   if(m.due_jobs>SOURCE_LED_LIMITS.max_due_jobs||m.oldest_due_seconds>SOURCE_LED_LIMITS.max_oldest_due_seconds||m.pending_candidates>SOURCE_LED_LIMITS.max_pending_candidates)return 'verification_backlog';
   if(m.candidates>=SOURCE_LED_LIMITS.min_candidates_for_mix_stop&&m.duplicate_rate>SOURCE_LED_LIMITS.max_duplicate_rate)return 'duplicate_rate_spike';
   if(m.candidates>=SOURCE_LED_LIMITS.min_candidates_for_mix_stop&&m.excluded_mix>SOURCE_LED_LIMITS.max_excluded_mix)return 'excluded_source_mix_dominant';
-  if(m.queries>=SOURCE_LED_LIMITS.warmup_queries&&m.pending_candidates===0){if(!m.ready_gained)return 'zero_ready_after_balanced_warmup';if(m.ready_gained/m.queries<SOURCE_LED_LIMITS.min_ready_per_query)return 'ready_yield_below_threshold';}
+  const uk=m.programme_scope==='uk_growth',warmup=uk?UK_SOURCE_LED_LIMITS.warmup_queries:SOURCE_LED_LIMITS.warmup_queries;
+  if(m.queries>=warmup&&m.pending_candidates===0&&(!uk||(m.settled_queries>=warmup&&!m.due_jobs))){if(!m.ready_gained)return uk?'zero_ready_after_uk_warmup':'zero_ready_after_balanced_warmup';if(m.ready_gained/m.queries<SOURCE_LED_LIMITS.min_ready_per_query)return 'ready_yield_below_threshold';}
   return null;
 }
 export async function stopSourceLed(db,id,reason,now=new Date().toISOString(),{latch=true}={}) {
@@ -84,22 +106,28 @@ export async function stopSourceLed(db,id,reason,now=new Date().toISOString(),{l
 async function check(db,id,now,{yieldCheck=true}={}) {
   const p=await sql(db,'SELECT * FROM source_led_programmes WHERE id=?',id).first();
   if(!p||p.status!=='active')throw Error('source_led_programme_not_active');
+  if(programmeScope(p)==='uk_growth'&&!validUKProgramme(p)){await stopSourceLed(db,id,'uk_programme_scope_requires_review',now);throw Error('source_led_uk_programme_scope_requires_review');}
   if(p.budget_day!==budgetDay(now)||p.expires_at<=now){await stopSourceLed(db,id,'programme_expired',now,{latch:false});throw Error('source_led_programme_expired');}
   const metrics=await sourceLedMetrics(db,id,now),reason=sourceLedStopReason({...metrics,...yieldCheck?{}:{queries:0}});
   if(reason){await stopSourceLed(db,id,reason,now);throw Error('source_led_'+reason);}
   return {programme:p,metrics};
 }
-export async function startSourceLed(db,{max_queries=25}={},now=new Date().toISOString()) {
+export async function startSourceLed(db,options={},now=new Date().toISOString()) {
+  if(!options||typeof options!=='object'||Array.isArray(options)||Object.keys(options).some(k=>!['scope','max_queries'].includes(k)))throw Error('source_led_start_fields_invalid');
+  const {scope='international',max_queries=scope==='uk_growth'?UK_SOURCE_LED_LIMITS.max_queries:25}=options;
+  if(!['international','uk_growth'].includes(scope))throw Error('source_led_unknown_scope');
+  if(scope==='uk_growth'&&(!Number.isInteger(max_queries)||max_queries<1||max_queries>UK_SOURCE_LED_LIMITS.max_queries))throw Error('source_led_uk_max_four_queries_required');
   const policy=await sql(db,'SELECT * FROM commercial_acquisition_policy WHERE id=1').first();
   if(policy.manual_paused)throw Error('source_led_operator_review_required');
   if(!Number.isInteger(max_queries)||max_queries<1||max_queries>policy.daily_query_limit)throw Error('source_led_bounded_budget_required');
-  const id='sourceled_'+crypto.randomUUID(),expires=new Date(Math.min(Date.parse(now)+3*3600000,Date.parse(nextBudgetDay(now)))).toISOString();
-  await sql(db,"INSERT INTO source_led_programmes(id,budget_day,status,max_queries,plan_json,created_at,expires_at,updated_at) VALUES (?,?,'active',?,?,?,?,?)",id,budgetDay(now),max_queries,stableJson(sourceLedPlan(now)),now,expires,now).run();
-  await check(db,id,now);return {id,max_queries,daily_total_paid_limit:policy.daily_query_limit,queries_per_country:policy.queries_per_market,expires_at:expires,limits:SOURCE_LED_LIMITS};
+  const id=(scope==='uk_growth'?UK_SCOPE_PREFIX:'sourceled_')+crypto.randomUUID(),expires=new Date(Math.min(Date.parse(now)+3*3600000,Date.parse(nextBudgetDay(now)))).toISOString();
+  await sql(db,"INSERT INTO source_led_programmes(id,budget_day,status,max_queries,plan_json,created_at,expires_at,updated_at) VALUES (?,?,'active',?,?,?,?,?)",id,budgetDay(now),max_queries,stableJson(sourceLedPlan(now,scope)),now,expires,now).run();
+  await check(db,id,now);return {id,scope,max_queries,daily_total_paid_limit:policy.daily_query_limit,queries_per_country:policy.queries_per_market,expires_at:expires,limits:scope==='uk_growth'?{...SOURCE_LED_LIMITS,...UK_SOURCE_LED_LIMITS}:SOURCE_LED_LIMITS};
 }
 export async function scheduleSourceLed(db,id,now=new Date().toISOString()) {
   const {programme:p,metrics:m}=await check(db,id,now);
   if(m.structured_pending)return {waiting:true,reason:'structured_producer_has_priority'};
+  if(programmeScope(p)==='uk_growth'&&m.due_jobs)return {waiting:true,reason:'uk_verification_settlement_pending'};
   if(p.active_run_id){const g=await sql(db,'SELECT status FROM source_led_grants WHERE run_id=?',p.active_run_id).first();if(g?.status!=='complete'||m.pending_candidates)throw Error('source_led_previous_run_not_settled');}
   const budget=await serperStatus(db,now),policy=await sql(db,'SELECT * FROM commercial_acquisition_policy WHERE id=1').first(),entry=JSON.parse(p.plan_json)[p.next_query];
   if(policy.manual_paused){await stopSourceLed(db,id,policy.pause_reason??'operator_pause',now,{latch:false});return {complete:true,reason:policy.pause_reason};}
@@ -113,14 +141,20 @@ export async function scheduleSourceLed(db,id,now=new Date().toISOString()) {
   const claim=await sql(db,"UPDATE source_led_programmes SET active_run_id=?,next_query=next_query+1,updated_at=? WHERE id=? AND status='active' AND next_query=? AND active_run_id IS ? RETURNING id",runId,now,id,p.next_query,p.active_run_id).all();
   if(claim.results.length!==1)throw Error('source_led_admission_raced');
   await sql(db,"INSERT INTO source_led_grants VALUES (?,?,?,?,?, ?,?,'approved',?)",runId,id,p.next_query,entry.market,entry.family,entry.query,queryHash,now).run();
-  return {run_id:runId,programme_id:id,market:entry.market,family:entry.family,query_limit:1};
+  return {run_id:runId,programme_id:id,scope:programmeScope(p),market:entry.market,family:entry.family,query_limit:1};
 }
 export async function executeSourceLed(db,runId,env,{fetcher=fetch,now=new Date().toISOString()}={}) {
   if(env.V3_CITY_ENABLED!=='false'||Number(env.V3_DAILY_QUERY_LIMIT)!==1000||!env.SERPER_API_KEY)throw Error('source_led_shadow_configuration_required');
   const grant=await sql(db,'SELECT * FROM source_led_grants WHERE run_id=?',runId).first();if(!grant)throw Error('source_led_grant_required');
   if(grant.status==='complete')return {run_id:runId,replay:true};
   if(grant.status!=='approved')throw Error('source_led_outcome_requires_review');
-  await check(db,grant.programme_id,now,{yieldCheck:false});
+  const {programme}=await check(db,grant.programme_id,now,{yieldCheck:false});
+  if(programmeScope(programme)==='uk_growth') {
+    const expected=JSON.parse(programme.plan_json)[grant.query_index];
+    if(!expected||grant.market!=='GB'||grant.family!==expected.family||grant.query!==expected.query||grant.query_hash!==await hash(expected.query)) {
+      await stopSourceLed(db,programme.id,'uk_grant_scope_requires_review',now);throw Error('source_led_uk_grant_scope_requires_review');
+    }
+  }
   const claimed=await sql(db,"UPDATE source_led_grants SET status='running' WHERE run_id=? AND status='approved' RETURNING run_id",runId).all();if(claimed.results.length!==1)throw Error('source_led_already_claimed');
   let usageId=null;
   try {
@@ -133,7 +167,7 @@ export async function executeSourceLed(db,runId,env,{fetcher=fetch,now=new Date(
     const excess=await observeSerperCredits(db,usageId,body.credits,now);if(!response.ok)throw Error('search_provider_http_'+response.status);
     const items=(Array.isArray(body.organic)?body.organic:[]).slice(0,10);
     for(const [position,item] of items.entries()) {
-      const url=typeof item.link==='string'?item.link:'',route=sourceLedRoute(url),candidateId='discovery_'+(await hash([runId,position])).slice(0,40);
+      const url=typeof item.link==='string'?item.link:'',route=sourceLedRoute(url,{scope:programmeScope(programme)}),candidateId='discovery_'+(await hash([runId,position])).slice(0,40);
       const known=route.key&&await sql(db,'SELECT candidate_id FROM source_led_candidate_progress p JOIN source_led_candidates c ON c.id=p.candidate_id WHERE c.url_key=? AND c.discovered_at>=? AND p.status<>\'failed\' LIMIT 1',route.key,new Date(Date.parse(now)-7*86400000).toISOString()).first();
       const imported=route.key&&await sql(db,"SELECT 1 AS known FROM producer_records WHERE environment='shadow' AND validation_status='accepted' AND (json_extract(normalized_json,'$.canonical_url')=? OR json_extract(normalized_json,'$.application_url')=?) LIMIT 1",route.key,route.key).first();
       const status=(known||imported)?'duplicate':route.disposition;
@@ -179,5 +213,5 @@ export async function verifySourceLedCandidate(db,candidateId,{fetcher=fetch,now
 export async function sourceLedStatus(db,now=new Date().toISOString()) {
   const policy=await sql(db,'SELECT * FROM commercial_acquisition_policy WHERE id=1').first(),budget=await serperStatus(db,now);
   const rows=await query(db,'SELECT id,budget_day,status,max_queries,next_query,stop_reason,created_at,expires_at FROM source_led_programmes ORDER BY created_at DESC LIMIT 3');
-  return {lane:LANE,automatic_paid_scheduler:false,structured_producer_priority:true,timezone:'Europe/London',policy,daily_total_paid_queries:budget.usage.day_queries_reserved,daily_credit_budget_units:budget.usage.day_credit_budget_units,remaining_queries:Math.max(0,policy.daily_query_limit-budget.usage.day_queries_reserved),remaining_credit_units:Math.max(0,policy.daily_query_limit-budget.usage.day_credit_budget_units),budget_paused:budget.usage.day_queries_reserved>=policy.daily_query_limit||budget.usage.day_credit_budget_units>=policy.daily_query_limit||budget.paused,limits:SOURCE_LED_LIMITS,markets:SOURCE_LED_MARKETS,sessions:await Promise.all(rows.map(async r=>({...r,metrics:await sourceLedMetrics(db,r.id,now)})))};
+  return {lane:LANE,automatic_paid_scheduler:false,structured_producer_priority:true,timezone:'Europe/London',policy,daily_total_paid_queries:budget.usage.day_queries_reserved,daily_credit_budget_units:budget.usage.day_credit_budget_units,remaining_queries:Math.max(0,policy.daily_query_limit-budget.usage.day_queries_reserved),remaining_credit_units:Math.max(0,policy.daily_query_limit-budget.usage.day_credit_budget_units),budget_paused:budget.usage.day_queries_reserved>=policy.daily_query_limit||budget.usage.day_credit_budget_units>=policy.daily_query_limit||budget.paused,limits:SOURCE_LED_LIMITS,uk_growth_limits:UK_SOURCE_LED_LIMITS,markets:SOURCE_LED_MARKETS,sessions:await Promise.all(rows.map(async r=>({...r,scope:programmeScope(r),metrics:await sourceLedMetrics(db,r.id,now)})))};
 }

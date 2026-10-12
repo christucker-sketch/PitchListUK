@@ -1,0 +1,560 @@
+{
+  "schema": "findpitches-v3-uk-growth-readiness-v1",
+  "published_at": "2026-10-12T17:26:19.646341+00:00",
+  "inventory": {
+    "schema": "findpitches-v3-uk-growth-outcome-v1",
+    "as_of": "2026-10-12T17:13:15.598Z",
+    "measured_at": "2026-10-12T17:13:19.954Z",
+    "baseline_as_of": "2026-10-12T12:57:19.426Z",
+    "baseline": {
+      "customer_ready": 127,
+      "distinct_source_location_strings": 15,
+      "distinct_source_organiser_strings": 4,
+      "exact_coordinate_opportunities": 123,
+      "exact_venue_pin_groups": 12,
+      "by_domain": {
+        "eventeny.com": 2,
+        "localstalls.com": 1,
+        "myntimage.co.uk": 123,
+        "northamptontowncouncil.gov.uk": 1
+      },
+      "by_organiser": {
+        "Discover Ellesmere": 2,
+        "King Edward's School, Bath": 1,
+        "Mynt Image": 123,
+        "Northampton Town Council": 1
+      },
+      "proved_browse_regions": [
+        {
+          "id": "gb/south-east",
+          "name": "South East",
+          "count": 89
+        },
+        {
+          "id": "gb/south-west",
+          "name": "South West",
+          "count": 34
+        }
+      ]
+    },
+    "current": {
+      "customer_ready": 134,
+      "distinct_source_location_strings": 21,
+      "distinct_source_organiser_strings": 5,
+      "exact_coordinate_opportunities": 123,
+      "exact_venue_pin_groups": 12,
+      "by_domain": {
+        "creativecrafts-online.co.uk": 7,
+        "eventeny.com": 2,
+        "localstalls.com": 1,
+        "myntimage.co.uk": 123,
+        "northamptontowncouncil.gov.uk": 1
+      },
+      "by_organiser": {
+        "Creative Crafts Association": 7,
+        "Discover Ellesmere": 2,
+        "King Edward's School, Bath": 1,
+        "Mynt Image": 123,
+        "Northampton Town Council": 1
+      },
+      "proved_browse_regions": [
+        {
+          "id": "gb/south-east",
+          "name": "South East",
+          "count": 89
+        },
+        {
+          "id": "gb/south-west",
+          "name": "South West",
+          "count": 34
+        },
+        {
+          "id": "gb/west-midlands",
+          "name": "West Midlands",
+          "count": 1
+        },
+        {
+          "id": "gb/north-west",
+          "name": "North West",
+          "count": 6
+        }
+      ]
+    },
+    "net_customer_ready_gain": 7,
+    "newly_customer_ready": 7,
+    "no_longer_customer_ready": 0,
+    "exclusive_ready_origin": {
+      "independent-structured": 5,
+      "legacy_mk1": 1,
+      "legacy_v2": 1,
+      "platform-catalogue": 2,
+      "uk-official": 125
+    },
+    "commercial_disposition": {
+      "total_distinct_entities": 870,
+      "verified": 134,
+      "ready": 134,
+      "watch": 160,
+      "quarantined": 71,
+      "blocked": 505,
+      "awaiting_verification": 696,
+      "missing_application_proof": 729,
+      "stale_expired": 31,
+      "verification_checked": 392
+    },
+    "latest_verified_families": [
+      {
+        "family": "creativecrafts",
+        "entities": 7
+      },
+      {
+        "family": "eventeny",
+        "entities": 2
+      },
+      {
+        "family": "localstalls",
+        "entities": 1
+      },
+      {
+        "family": "myntimage",
+        "entities": 123
+      },
+      {
+        "family": "uk_council_dated_form",
+        "entities": 1
+      }
+    ],
+    "runs": [
+      {
+        "id": "uk_a4e7af40-495d-404d-8752-929a8116ecc5",
+        "status": "paused",
+        "max_visits": 40,
+        "visits_reserved": 17,
+        "max_candidates": 10,
+        "checked": 6,
+        "stop_reason": "bounded_catalogue_complete",
+        "created_at": "2026-10-12T16:00:40.832Z"
+      },
+      {
+        "id": "uk_e9974b73-4e77-4597-9901-80f896b88f0d",
+        "status": "paused",
+        "max_visits": 30,
+        "visits_reserved": 5,
+        "max_candidates": 5,
+        "checked": 1,
+        "stop_reason": "official_review_requires_custody_check",
+        "created_at": "2026-10-12T16:57:36.223Z"
+      },
+      {
+        "id": "uk_5284deb5-dfcf-48a9-b695-196970e7f400",
+        "status": "paused",
+        "max_visits": 30,
+        "visits_reserved": 25,
+        "max_candidates": 5,
+        "checked": 5,
+        "stop_reason": "bounded_source_review_complete",
+        "created_at": "2026-10-12T17:10:46.217Z"
+      },
+      {
+        "id": "uk_4f56aa3d-d814-45d0-adfc-f2fd8590dd5d",
+        "status": "paused",
+        "max_visits": 10,
+        "visits_reserved": 5,
+        "max_candidates": 2,
+        "checked": 1,
+        "stop_reason": "bounded_catalogue_complete",
+        "created_at": "2026-10-12T17:12:03.523Z"
+      }
+    ],
+    "actual_direct_adapter_http_requests": 52,
+    "separate_public_research_http_requests": 14,
+    "paid_queries_added": 0,
+    "policy": {
+      "max_run": 4,
+      "max_hour": 100,
+      "max_day": 1000,
+      "bulk": 0,
+      "manually_paused": 1,
+      "commercial_day_limit": 25
+    },
+    "location_count_definition": "Distinct exact source-location strings, not certified global physical-venue deduplication. Precise map groups count actual retained source-proved coordinates.",
+    "concentration": {
+      "baseline_mynt_share_percent": 96.85039370078741,
+      "current_mynt_share_percent": 91.7910447761194
+    },
+    "geography_correction": "Scotland Street in Ellesmere is an English address; historical false Scottish browse counts are withdrawn. Baseline regions here use the corrected conservative address-component projection."
+  },
+  "preservation": {
+    "schema": "findpitches-v3-uk-growth-preservation-v1",
+    "started_at": "2026-10-12T17:13:11.958Z",
+    "as_of": "2026-10-12T17:17:54.401Z",
+    "baseline_as_of": "2026-10-12T15:55:38.983Z",
+    "receipts_compared": 23021,
+    "source_facts_compared": 192924,
+    "fixed_identity_tuples_compared": 7232,
+    "destructive_source_mutations": 0,
+    "fixed_identity_tuple_changes": 0,
+    "tuple_fields": [
+      "id",
+      "market",
+      "edition",
+      "environment",
+      "shadow_only",
+      "promotion_eligible",
+      "publication_eligible"
+    ],
+    "original_build_baseline": {
+      "receipts": 15811,
+      "facts": 108819,
+      "identities": 7077,
+      "destructive_source_mutations": 0,
+      "fixed_identity_tuple_changes": 0
+    },
+    "explicit_review_lineage": {
+      "reviews": 5,
+      "reviewed_existing_entities": 5
+    },
+    "selected_field_supersessions": [
+      {
+        "field_name": "application_state",
+        "changes": 5
+      },
+      {
+        "field_name": "application_url",
+        "changes": 5
+      },
+      {
+        "field_name": "canonical_url",
+        "changes": 5
+      },
+      {
+        "field_name": "event_end",
+        "changes": 5
+      },
+      {
+        "field_name": "event_name",
+        "changes": 5
+      },
+      {
+        "field_name": "event_start",
+        "changes": 5
+      },
+      {
+        "field_name": "location",
+        "changes": 5
+      },
+      {
+        "field_name": "organiser",
+        "changes": 5
+      },
+      {
+        "field_name": "source_platform",
+        "changes": 5
+      }
+    ],
+    "original_identity_custody": {
+      "reviews": 5,
+      "original_candidate_custody_retained": 5
+    },
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "source_publication_enabled": false,
+    "source_publication_api_denied": true,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "paid_manually_paused": 1,
+    "pitchlist_deployment_unchanged": true,
+    "v2_schedules_unchanged": true,
+    "paid_policy_observed_at": "2026-10-12T17:14:10.861Z"
+  },
+  "selected_source_repairs": [
+    {
+      "field_name": "application_state",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 5
+    },
+    {
+      "field_name": "application_url",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 5
+    },
+    {
+      "field_name": "canonical_url",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 5
+    },
+    {
+      "field_name": "event_end",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 0
+    },
+    {
+      "field_name": "event_name",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 5
+    },
+    {
+      "field_name": "event_start",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 0
+    },
+    {
+      "field_name": "location",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 5
+    },
+    {
+      "field_name": "organiser",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 5
+    },
+    {
+      "field_name": "source_platform",
+      "source_backing_supersessions": 5,
+      "selected_value_changes": 5
+    }
+  ],
+  "source_health": {
+    "as_of": "2026-10-12T17:14:10.861Z",
+    "safety": {
+      "publication_enabled": 0,
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "due_jobs": 0,
+      "leased_jobs": 0,
+      "dead_jobs": 0,
+      "future_jobs": 9190,
+      "paid_queries_today": 0,
+      "paid_bulk_enabled": 0,
+      "global_query_limit": 1000,
+      "commercial_query_limit": 25,
+      "commercial_manual_paused": 1
+    },
+    "producer": {
+      "cloud_ready": true,
+      "expected_interval_seconds": 900,
+      "last_authenticated_recheck_poll": "2026-10-12T17:01:44.885Z",
+      "expected_discovery_interval_seconds": 10800,
+      "expected_export_lag_seconds": 3600,
+      "recent_poll_intervals_seconds": [
+        912.229,
+        912.194,
+        912.438
+      ],
+      "host_recently_contacting": true,
+      "cadence_verified": true,
+      "freshness_warning": false,
+      "immutable_receipts": 10117,
+      "last_new_receipt_at": "2026-10-12T14:59:02.619Z",
+      "source_last_checked": "2026-10-12T14:40:08Z",
+      "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact.",
+      "rechecks": {
+        "pending_entities": 579,
+        "fresh_evidence_ack_eligible": 0,
+        "by_country": [
+          {
+            "market": "AU",
+            "pending_entities": 138,
+            "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "CA",
+            "pending_entities": 12,
+            "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "GB",
+            "pending_entities": 88,
+            "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "IE",
+            "pending_entities": 7,
+            "oldest_requested_at": "2026-10-12T13:46:49.026Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "NZ",
+            "pending_entities": 36,
+            "oldest_requested_at": "2026-10-12T10:57:45.276Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "US",
+            "pending_entities": 298,
+            "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+            "fresh_evidence_ack_eligible": 0
+          }
+        ],
+        "acknowledged_last_24h": 2248,
+        "obsolete_requests_resolved": 2,
+        "pagination_supported": true
+      }
+    }
+  },
+  "customer": {
+    "observed_at": "2026-10-12T17:14:18.783Z",
+    "eligible_ready": 1788,
+    "ready_by_country": {
+      "GB": 134,
+      "US": 1648,
+      "CA": 0,
+      "AU": 2,
+      "IE": 0,
+      "NZ": 4,
+      "SG": 0,
+      "HK": 0
+    },
+    "nashville_eligible": 0,
+    "flags": {
+      "V3_ACCOUNT_RECOVERY_ENABLED": "true",
+      "V3_CHECKOUT_ENABLED": "live",
+      "V3_PUBLIC_ENABLED": "true"
+    },
+    "version_ids": [
+      "ab008ef7-4317-4244-a42b-15ebdae1a6f2"
+    ],
+    "deployment_id": "c2c65e73-87af-44f4-93be-3a2752e57269",
+    "native_billing_status": 200,
+    "native_mail_status": 200,
+    "counts": {
+      "customers": 0,
+      "stripe_customer_mappings": 0,
+      "subscriptions": 0,
+      "checkout_attempts": 0,
+      "webhook_receipts": 7
+    },
+    "pitchlist_healthy": true,
+    "owned_live_billing_journey_acceptance": "pending"
+  },
+  "validation": {
+    "full_v3_tests": 326,
+    "full_v3_failures": 0,
+    "frontend_tests": 3,
+    "frontend_independence": true,
+    "runtime_boundaries": true,
+    "native_d1_review_regression": true,
+    "public_smoke": {
+      "passed": true,
+      "checks": 29,
+      "as_of": "2026-10-12T17:19:15.984Z",
+      "expected_checkout_enabled": true
+    },
+    "public_map": {
+      "passed": true,
+      "checks": 32,
+      "as_of": "2026-10-12T17:14:46.441364+00:00",
+      "samples": [
+        {
+          "device": "desktop",
+          "uk_total": 134,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 11,
+          "page_errors": 0,
+          "foreign_requests": 0
+        },
+        {
+          "device": "mobile",
+          "uk_total": 134,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 11,
+          "page_errors": 0,
+          "foreign_requests": 0
+        }
+      ],
+      "certificate_bypass": false,
+      "synthetic_points": 0
+    },
+    "public_coverage": {
+      "as_of": "2026-10-12T17:13:19.093Z",
+      "uk_total": 134,
+      "precisely_mapped": 123,
+      "precise_venue_groups": 12,
+      "regions": [
+        {
+          "id": "gb/south-east",
+          "name": "South East",
+          "slug": "south-east",
+          "level": "region",
+          "parent_id": null,
+          "code": null,
+          "opportunity_count": 89
+        },
+        {
+          "id": "gb/south-west",
+          "name": "South West",
+          "slug": "south-west",
+          "level": "region",
+          "parent_id": null,
+          "code": null,
+          "opportunity_count": 34
+        },
+        {
+          "id": "gb/west-midlands",
+          "name": "West Midlands",
+          "slug": "west-midlands",
+          "level": "region",
+          "parent_id": null,
+          "code": null,
+          "opportunity_count": 1
+        },
+        {
+          "id": "gb/north-west",
+          "name": "North West",
+          "slug": "north-west",
+          "level": "region",
+          "parent_id": null,
+          "code": null,
+          "opportunity_count": 6
+        }
+      ],
+      "checkout_live": true,
+      "free_redaction": true,
+      "messages_sent": 0,
+      "provider_objects_created": 0
+    }
+  },
+  "shadow_deployments": {
+    "api": {
+      "version": "85a124d3-dd79-4e90-9b4a-c78517376369",
+      "deployment": "372082cd-386a-4e77-9ac7-4b6ec78be5a5",
+      "bindings_and_schedules_preserved": true
+    },
+    "enrichment": {
+      "version": "081f3e98-9b31-44b9-b71b-18ca41720007",
+      "deployment": "032e1566-fc64-46b8-904d-1932b6fe402c",
+      "bindings_and_schedules_preserved": true
+    },
+    "acquisition": {
+      "version": "5a8e17db-e6aa-4ed4-a78d-3477b67d7788",
+      "deployment": "79c928ef-5113-4c10-a9fd-5ca110888534",
+      "bindings_and_schedules_preserved": true
+    },
+    "reconcile": {
+      "version": "9534c00c-f88c-4bc3-b172-bc345030379c",
+      "deployment": "862b4465-4cd1-4354-8cf4-99a99e101f4b",
+      "bindings_and_schedules_preserved": true
+    },
+    "eligibility": {
+      "version": "1b84c05a-7d61-41c6-8d61-1632dbc6ff80",
+      "deployment": "9c365956-a86c-4643-9366-40ba64adb221",
+      "bindings_and_schedules_preserved": true
+    },
+    "readiness": {
+      "version": "67760435-5585-4b2b-af05-d22efaa5ca0b",
+      "deployment": "9df4e61c-7abd-44b1-873f-846a9432a122",
+      "bindings_and_schedules_preserved": true
+    }
+  },
+  "disposition": {
+    "programme": "V3-007 remains claimed; first measured CCA batch complete",
+    "paid": "paused; UK-only four-query programme implemented but not run",
+    "next_task": "Claude/Pi fresh Folk & Bespoke event/application custody and new operators in Scotland, Wales and Northern Ireland",
+    "peer_acknowledgement_or_host_installation_claimed": false
+  }
+}

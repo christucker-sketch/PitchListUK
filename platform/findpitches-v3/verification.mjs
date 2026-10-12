@@ -2,6 +2,7 @@ import {stableJson} from './contract.mjs';
 import {parseHtml,nodes,first,text,hasClass,decode} from './source-dom.mjs';
 import {safeSourceUrl} from './source-document.mjs';
 import {verifyUKBundle} from './uk-sources.mjs';
+import {verifyCCABundle} from './creative-crafts.mjs';
 import {verifyUKCouncilForm} from './uk-council.mjs';
 import {verifyClueMart,verifyMarketsIreland} from './international-sources.mjs';
 import {VENUE_COORDINATE_POLICY,eventVenueCoordinates} from './source-coordinates.mjs';
@@ -41,7 +42,7 @@ const explicitState=s=>/^(?:join (?:the )?waitlist|waitlist(?: only)?|applicatio
 export function applicationScope(report) {
   const heading=report.application_heading??report.evidence?.find(e=>e.kind==='main_heading')?.excerpt??'';
   if(report.profile==='uk_council_dated_form')return {heading,audience:'traders',reasons:report.application_scope_proof?.trader_application===true||report.application_scope_proof?.trader_application===1?[]:['specific_trader_form_not_proved']};
-  if(report.profile==='myntimage')return {heading,audience:'traders',reasons:report.application_scope_proof?.trader_application===true||report.application_scope_proof?.trader_application===1?[]:['trader_application_purpose_not_proved']};
+  if(['myntimage','creativecrafts'].includes(report.profile))return {heading,audience:'traders',reasons:report.application_scope_proof?.trader_application===true||report.application_scope_proof?.trader_application===1?[]:['trader_application_purpose_not_proved']};
   if(report.profile!=='eventeny')return {heading,audience:'traders',reasons:[]};
   const description=report.application_scope_proof?.application_description??report.application_scope_proof?.evidence?.find(e=>e.kind==='application_description')?.excerpt??'';
   const role=report.application_scope_proof?.application_role??applicationRole(description,heading);
@@ -108,6 +109,7 @@ function eventenyScopeProof(main,heading) {
 // Discovery metadata (including search market/city) is deliberately absent from parsing.
 export function verifyDocument(document,{now=new Date().toISOString()}={}) {
   if(document.document_kind==='uk_official_bundle')return verifyUKBundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
+  if(document.document_kind==='cca_official_bundle')return verifyCCABundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
   const council=verifyUKCouncilForm(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});if(council)return council;
   const report={version:VERIFIER_VERSION,application_policy:APPLICATION_POLICY_VERSION,source_url:document.url??document.requested_url,checked_at:document.fetched_at??now,profile:'generic',status:'unverified',page_kind:'unproved',facts:{},reasons:[],evidence:[]};
   if(document.reason||!document.html){report.reasons.push(document.reason??'source_document_missing');return report;}
@@ -217,7 +219,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
 
 export function compareProof(entity,report) {
   const reasons=[];const f=report.facts;
-  if(entity.source_platform==='myntimage'&&f.source_identifier&&entity.source_identifier!==f.source_identifier)reasons.push('source_event_identity_mismatch');
+  if(['myntimage','creativecrafts'].includes(entity.source_platform)&&f.source_identifier&&entity.source_identifier!==f.source_identifier)reasons.push('source_event_identity_mismatch');
   if(eventNameEditionConflict(f))reasons.push('contradictory_event_name_edition');
   const expected=eventenyParentId(entity.canonical_url),observed=eventenyParentId(provedEventSourceUrl(report));
   if(expected&&expected!==observed)reasons.push(observed?'source_parent_event_identity_mismatch':'source_parent_event_binding_required');

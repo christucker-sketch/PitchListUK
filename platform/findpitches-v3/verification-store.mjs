@@ -3,6 +3,7 @@ import {sql,loadEntity} from './store.mjs';
 import {proposeFact} from './evidence.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
 import {fetchMyntBundle,myntVenueUrl} from './uk-sources.mjs';
+import {fetchCCABundle,ccaVenueUrl} from './creative-crafts.mjs';
 import {verifyDocument,compareProof,applicationScope,provedEventSourceUrl,eventenyParentId,VERIFIER_VERSION} from './verification.mjs';
 
 export function verificationUrl(entity) {
@@ -71,7 +72,9 @@ export async function verifyEntitySource(db,entityId,{now=new Date().toISOString
   const original=verificationUrl(entity);if(!original)throw Error('entity_original_source_required');
   const document=entity.source_platform==='myntimage'&&myntVenueUrl(original)
     ?await fetchMyntBundle(original,entity.source_identifier,{fetcher,now})
-    :await fetchSourceDocument(original,{fetcher,now});
+    :entity.source_platform==='creativecrafts'&&ccaVenueUrl(original)
+      ?await fetchCCABundle(original,entity.source_identifier,{fetcher,now})
+      :await fetchSourceDocument(original,{fetcher,now});
   return recordVerification(db,entityId,document,{now});
 }
 export async function reverifyRetainedSource(db,entityId,{now=new Date().toISOString()}={}) {

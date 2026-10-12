@@ -2,9 +2,10 @@
 // customer/session/Checkout creation, signed fake provider events or TLS bypass.
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
 import {proxyFetch} from './cloudflare-api.mjs';import {pauseCustomerProduction} from './pause-customer-production.mjs';
-export async function smokeCustomerPublic({productionDirectory,fetcher=proxyFetch()}){
+export async function smokeCustomerPublic({productionDirectory,fetcher=proxyFetch(),checkoutEnabled=false}){
+ if(typeof checkoutEnabled!=='boolean')throw Error('explicit_checkout_state_required');
  const origin='https://findpitches.com',checks=[],counts={},held=['ent_dda1403e0c99eb5b1c1871f37c325cb2','ent_93d86b9d0147d8aa91ea8eea541d86b8'];
- const report={schema:'findpitches-v3-public-smoke-v1',started_at:new Date().toISOString(),passed:false,checks,country_counts:counts,customer_objects_created:0,messages_sent:0,certificate_bypass:false},save=()=>fs.writeFileSync(path.join(productionDirectory,'public-smoke.json'),JSON.stringify(report,null,2)+'\n',{mode:0o600});save();
+ const report={schema:'findpitches-v3-public-smoke-v1',started_at:new Date().toISOString(),passed:false,checks,country_counts:counts,customer_objects_created:0,messages_sent:0,certificate_bypass:false,expected_checkout_enabled:checkoutEnabled},save=()=>fs.writeFileSync(path.join(productionDirectory,'public-smoke.json'),JSON.stringify(report,null,2)+'\n',{mode:0o600});save();
  const check=(name,ok)=>{checks.push({name,passed:!!ok});save();if(!ok)throw Error('public_smoke_check_failed');};
  const get=async(p,opts={})=>{const start=Date.now(),r=await fetcher(origin+p,{...opts,redirect:'manual',signal:AbortSignal.timeout(45000)});return {status:r.status,headers:r.headers,text:await r.text(),duration_ms:Date.now()-start};},json=async p=>{const r=await get(p);check('json_'+new URL(p,origin).pathname,r.status===200);return JSON.parse(r.text);};
  try{
@@ -16,7 +17,7 @@ export async function smokeCustomerPublic({productionDirectory,fetcher=proxyFetc
   const d=await get(detail.canonical_path);check('public_event_identity_indexable',d.status===200&&/index,follow/.test(d.headers.get('x-robots-tag')??'')&&d.text.includes(detail.id));
   for(const id of held)check('held_'+id,(await get('/api/v3/opportunities/'+id)).status===404);
   for(const p of ['/account.html','/pricing.html','/alerts.html']){const r=await get(p);check('private_noindex_'+p,r.status===200&&/noindex/.test(r.headers.get('x-robots-tag')??''));}
-  const plans=await json('/api/v3/billing/plans?market=US&currency=EUR');check('global_eur_price_checkout_closed',plans.plans[1].scope==='global'&&plans.plans[1].currency==='EUR'&&plans.plans[1].price===5.99&&plans.plans[1].checkout_enabled===false);
+  const plans=await json('/api/v3/billing/plans?market=US&currency=EUR');check('global_eur_price_checkout_state',plans.plans[1].scope==='global'&&plans.plans[1].currency==='EUR'&&plans.plans[1].price===5.99&&plans.plans[1].checkout_enabled===checkoutEnabled);
   check('unsafe_signin_csrf_rejected',(await get('/api/v3/session/link',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).status===403);
   check('operator_private',(await get('/ops/preflight')).status===403);check('preview_provisioning_unavailable',(await get('/preview/test-login',{method:'POST'})).status===404);check('unsigned_live_webhook_rejected',(await get('/api/v3/stripe/webhook',{method:'POST',body:'{}'})).status===403);
   const robots=await get('/robots.txt');check('public_robots_private_paths',robots.status===200&&!robots.text.includes('Disallow: /\n')&&robots.text.includes('Disallow: /api/')&&robots.text.includes('Sitemap: https://findpitches.com/sitemap.xml'));
@@ -25,4 +26,4 @@ export async function smokeCustomerPublic({productionDirectory,fetcher=proxyFetc
   report.passed=true;report.as_of=new Date().toISOString();save();return report;
  }catch(e){report.as_of=new Date().toISOString();report.error='public_smoke_failed';save();throw e;}
 }
-if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){const a=process.argv.slice(2),get=n=>a[a.indexOf(n)+1],productionDirectory=get('--production-dir');try{console.log(JSON.stringify(await smokeCustomerPublic({productionDirectory})));}catch{if(a.includes('--credentials')){try{console.error(JSON.stringify(await pauseCustomerProduction({credentialsFile:get('--credentials'),productionDirectory})));}catch{console.error('public_smoke_failed_manual_pause_required');}}process.exitCode=1;}}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){const a=process.argv.slice(2),get=n=>a[a.indexOf(n)+1],productionDirectory=get('--production-dir');try{const state=a.includes('--checkout-state')?get('--checkout-state'):'closed';if(!['closed','live'].includes(state))throw Error('explicit_checkout_state_required');console.log(JSON.stringify(await smokeCustomerPublic({productionDirectory,checkoutEnabled:state==='live'})));}catch{if(a.includes('--credentials')){try{console.error(JSON.stringify(await pauseCustomerProduction({credentialsFile:get('--credentials'),productionDirectory})));}catch{console.error('public_smoke_failed_manual_pause_required');}}process.exitCode=1;}}

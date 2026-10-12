@@ -1,5 +1,7 @@
 # UK READY growth programme — first checkpoint, 12 October
 
+**Executed outcome:** [134 UK customer-ready, +7; six new venue programmes, one operator and two browse regions](findpitches-v3-uk-growth-outcome-2026-10-12.md). Zero Serper queries. The first CCA target is complete; wider growth remains active. Figures below are the dated diagnostic baseline, not the current total.
+
 Codex owns D-017/V3-007. Status **2026-10-12T14:08:51+01:00**; [measured census](../operations/findpitches-v3/reports/uk-growth-baseline-2026-10-12.json), source observation 2026-10-12T12:57:17.374Z.
 
 **Baseline: 127 UK customer-ready opportunities across 868 commercial entities.** READY origin: official programme 123, independent structured producer 1, platform catalogue 2, legacy Mk1 evidence 1; legacy V2/city/legacy global0. READY sources: Mynt 123, Eventeny 2, LocalStalls 1, Northampton council 1. Mynt is 96.85% of UK READY, from 12 physical venues. Corrected source-backed region baseline: South East89,SouthWest34,unmapped4; Scotland/Wales/NI have0 proved regional READY. The original two Scottish UI assignments came from “Scotland Street” in English Ellesmere and are withdrawn; the display fix is being validated. No town→region or market→country inference.

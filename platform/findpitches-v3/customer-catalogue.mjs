@@ -18,7 +18,12 @@ function proofRegion(item) {
   // those to the registry, without translating a town into a guessed county.
   const named=regs.find(r=>norm(r.name)===norm(item.region)&&item.region);
   // Literal region in retained verified location, never a town→county guess.
-  const matches=regs.filter(r=>new RegExp('(^|[^a-z])'+r.name.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-z]|$)').test(norm(item.location)));
+  // A UK nation/region embedded in a street or venue name is not geography:
+  // "Scotland Street, Ellesmere, England" must never become Scotland.
+  // Keep literal, separately stated address components and explicit proof
+  // region fields; never translate towns/postcodes into guessed regions here.
+  const components=String(item.location??'').split(/[,;\n]/).map(s=>norm(s.trim()));
+  const matches=regs.filter(r=>item.country==='GB'?components.includes(norm(r.name)):new RegExp('(^|[^a-z])'+r.name.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-z]|$)').test(norm(item.location)));
   const specific=matches.filter(r=>!matches.some(s=>s.parent_id===r.id)),literal=specific.length===1?specific[0]:null;
   if(named&&literal&&!ancestors(item.country,literal.id).some(r=>r.id===named.id)&&!ancestors(item.country,named.id).some(r=>r.id===literal.id))return null;
   return literal??named??null;

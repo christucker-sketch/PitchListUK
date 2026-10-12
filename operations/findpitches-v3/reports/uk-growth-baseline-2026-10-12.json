@@ -6760,5 +6760,17 @@
     "bulk": 0,
     "paused": 1,
     "pilot_cap": 25
+  },
+  "post_observation_correction": {
+    "reason": "Scotland Street in Ellesmere, England was a false Scottish browse assignment. Original UI measurement is retained below; it is not verified Scottish coverage.",
+    "corrected_baseline_regions": {
+      "South East": 89,
+      "South West": 34,
+      "unmapped": 4,
+      "Scotland": 0,
+      "Wales": 0,
+      "Northern Ireland": 0
+    },
+    "current_outcome_report": "uk-growth-outcome-2026-10-12.json"
   }
 }

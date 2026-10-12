@@ -24,6 +24,12 @@ test('literal verified region labels survive projection without turning towns in
   assert.equal(mapProof(proof({country:'US',location:'A hall',region:'TX'}),now()).location.region_id,'us/texas');
   assert.equal(mapProof(proof({proof_expires_at:'2020-01-01T00:00:00Z',region:'South East'}),now()),null);
 });
+test('UK street/venue names cannot fabricate national or regional coverage',()=>{
+  for(const location of ['Scotland Street, Ellesmere, England SY12 0DG','Wales Lane, An English Town','North East Hall, Bath'])assert.equal(mapProof(proof({location,region:null}),now()).location.region_id,null);
+  assert.equal(mapProof(proof({location:'A venue, Scotland',region:null}),now()).location.region_id,'gb/scotland');
+  assert.equal(mapProof(proof({location:'A venue, North West',region:null}),now()).location.region_id,'gb/north-west');
+  assert.equal(mapProof(proof({location:'Scotland Street, Ellesmere, England',region:'West Midlands'}),now()).location.region_id,'gb/west-midlands');
+});
 test('one homepage snapshot shows actual future inventory and named regions with Free redaction',()=>{
   const rows=[mapProof(proof({region:'South East',location:'A venue, England'}),now()),mapProof(proof({id:'ent_'+'2'.repeat(32),region:'South West',location:'Another venue, England',event_start:null,event_end:null}),now())];
   const home=homepage(rows,{tier:'free'},now());assert.equal(home.stats.total,2);assert.equal(home.stats.markets.GB.regions,2);assert.equal(home.markets.find(m=>m.code==='GB').opportunity_count,2);

@@ -8,7 +8,8 @@ import {stableJson} from '../../platform/findpitches-v3/contract.mjs';
 import {sourceLedMetrics,SOURCE_LED_LIMITS} from '../../platform/findpitches-v3/source-led.mjs';
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function identitySnapshot(db){const rows=(await db.prepare('SELECT id,market,edition,environment,shadow_only,promotion_eligible,publication_eligible FROM entities ORDER BY id').all()).results;return Object.fromEntries(rows.map(r=>[r.id,stableJson(r)]));}
-export async function runSourceLedPilot({credentialsFile,stateDirectory,outDirectory,maxQueries=25}) {
+export async function runSourceLedPilot({credentialsFile,stateDirectory,outDirectory,scope='international',maxQueries=scope==='uk_growth'?4:25}) {
+ if(!['international','uk_growth'].includes(scope)||!Number.isInteger(maxQueries)||maxQueries<1||scope==='uk_growth'&&maxQueries>4)throw Error('source_led_operator_scope_or_budget_invalid');
  fs.mkdirSync(outDirectory,{recursive:true,mode:0o700});
  const {db,call}=await shadowContext({credentialsFile,stateDirectory}),initial=await call('api','/status');
  const save=(name,value)=>fs.writeFileSync(path.join(outDirectory,name),JSON.stringify(value,null,2)+'\n',{mode:0o600});
@@ -18,7 +19,7 @@ export async function runSourceLedPilot({credentialsFile,stateDirectory,outDirec
  let programme=null,reason=null,mutations=0,identityChanges=0;const runs=[];
  async function integrity(){const current=await immutableDigests(db);mutations=Math.max(mutations,sourceMutationCount(baseline,current));Object.assign(baseline.records,current.records);Object.assign(baseline.facts,current.facts);const next=await identitySnapshot(db);for(const [id,value] of Object.entries(identities))if(next[id]!==value)identityChanges++;Object.assign(identities,next);if(mutations||identityChanges)throw Error('source_integrity_failure');}
  try {
-  programme=await call('acquisition','/source-led/start',{max_queries:maxQueries});save('programme-private.json',programme);
+  programme=await call('acquisition','/source-led/start',{scope,max_queries:maxQueries});save('programme-private.json',programme);
   while(Date.now()<Date.parse(programme.expires_at)) {
    let grant;
    try{grant=await call('acquisition','/source-led/next',{programme_id:programme.id});}
@@ -48,13 +49,13 @@ export async function runSourceLedPilot({credentialsFile,stateDirectory,outDirec
  await integrity();if(!programme)throw Error(reason??'source_led_start_failed');
  const final=await call('api','/status');save('final-status-private.json',final);
  const session=final.source_led_programme.sessions.find(s=>s.id===programme.id),m=session.metrics;
- const recommendation=m.ready_gained&&m.ready_per_100_queries>=10&&!m.false_ready_promotions_detected?'Keep the 25/day total cap for further operator-run country-balanced validation; do not increase yet.':'Keep paid acquisition paused (0/day effective) pending source/application verification improvements.';
- const report={schema:'findpitches-v3-source-led-pilot-report-v1',as_of:final.now,programme_id:programme.id,budget_timezone:'Europe/London',budget_day:session.budget_day,daily_total_paid_cap:final.source_led_programme.policy.daily_query_limit,queries_per_market:final.source_led_programme.policy.queries_per_market,prior_queries_today:initial.serper.usage.day_queries_attempted,paid_queries_used_this_pilot:m.queries,total_paid_queries_today:final.serper.usage.day_queries_attempted,observed_credits:m.observed_credits,
+ const recommendation=m.ready_gained&&m.ready_per_100_queries>=10&&!m.false_ready_promotions_detected?(scope==='uk_growth'?'Keep UK pilots at at most 4 queries with the existing 25/day total cap; do not increase yet.':'Keep the 25/day total cap for further operator-run country-balanced validation; do not increase yet.'):'Keep paid acquisition paused (0/day effective) pending source/application verification improvements.';
+ const report={schema:'findpitches-v3-source-led-pilot-report-v1',as_of:final.now,programme_scope:scope,programme_id:programme.id,budget_timezone:'Europe/London',budget_day:session.budget_day,daily_total_paid_cap:final.source_led_programme.policy.daily_query_limit,queries_per_market:final.source_led_programme.policy.queries_per_market,prior_queries_today:initial.serper.usage.day_queries_attempted,paid_queries_used_this_pilot:m.queries,total_paid_queries_today:final.serper.usage.day_queries_attempted,observed_credits:m.observed_credits,
   metrics:m,stop_status:session.status,stop_reason:session.stop_reason??reason,policy:final.source_led_programme.policy,global_limits:final.serper.limits,source_mutations:mutations,identity_changes:identityChanges,customer_leakage:final.customer_rows,publication_leakage:final.publication_rows,publication_enabled:final.publication_enabled,bulk_enabled:final.serper.bulk_enabled,commercial_inventory:final.commercial,structured_delivery:final.structured_delivery,structured_host:'Raspberry Pi installation/delivery remains an external dependency; structured receipts and direct verification retain priority.',pricing_status:final.serper.pricing_status,runs,queue_health:final.jobs,immutable_records_verified:Object.keys(baseline.records).length,immutable_fields_verified:Object.keys(baseline.facts).length,recommendation};
  save('source-led-pilot-report.json',report);if(mutations||identityChanges||final.customer_rows||final.publication_rows)throw Error('final_integrity_or_leakage_failed');return report;
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
- const args=process.argv.slice(2),get=name=>args[args.indexOf(name)+1];
- try{const r=await runSourceLedPilot({credentialsFile:get('--credentials'),stateDirectory:get('--state-dir'),outDirectory:get('--out-dir')});console.log(JSON.stringify({queries:r.paid_queries_used_this_pilot,ready:r.metrics.ready_gained,stop_reason:r.stop_reason}));}
+ const args=process.argv.slice(2),get=name=>args.includes(name)?args[args.indexOf(name)+1]:undefined;
+ try{const scope=get('--scope')??'international',r=await runSourceLedPilot({credentialsFile:get('--credentials'),stateDirectory:get('--state-dir'),outDirectory:get('--out-dir'),scope,...(get('--max-queries')!==undefined?{maxQueries:Number(get('--max-queries'))}:{})});console.log(JSON.stringify({scope,queries:r.paid_queries_used_this_pilot,ready:r.metrics.ready_gained,stop_reason:r.stop_reason}));}
  catch(error){console.error(/^[a-z0-9_]+$/.test(error.message)?error.message:'source_led_operator_failed');process.exitCode=1;}
 }

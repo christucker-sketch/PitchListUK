@@ -1,5 +1,6 @@
 import {commercialStatus} from './commercial.mjs';
 import {startUKRun,discoverUKSource,importUKCandidate,stopUKRun,ukSourceStatus} from './uk-store.mjs';
+import {reviewOfficialCandidate} from './official-source-review.mjs';
 import {stagingReady,stagingCatalogue} from './staging.mjs';
 import {producerRechecks,acknowledgeProducerRecheck,resolveObsoleteProducerRequest} from './rechecks.mjs';
 import {fetchCatalogueDocument} from './source-catalogue.mjs';
@@ -11,6 +12,7 @@ export function safeFailureCode(error) {
   if(/SQLITE_(?:BUSY|LOCKED)|\b(?:locked|busy|overloaded)\b/i.test(message))return 'database_busy';
   if(/too many sql variables/i.test(message))return 'sql_parameter_limit';
   if(/too many (?:api requests|queries|subrequests)/i.test(message))return 'worker_request_limit';
+  if(/expression tree is too large/i.test(message))return 'sql_expression_depth';
   if(/SQLITE_CONSTRAINT/i.test(message))return 'sqlite_constraint';
   if(/SQLITE_ERROR/i.test(message))return 'sqlite_error';
   return {TypeError:'type_error',ReferenceError:'reference_error',SyntaxError:'syntax_error',TimeoutError:'timeout',AbortError:'aborted'}[error?.name]??'runtime_error';
@@ -130,6 +132,7 @@ export default {
       if(request.method==='POST'&&path==='/uk/start'&&role==='enrichment')return json(await startUKRun(db,await bodyJson(request)),201);
       if(request.method==='POST'&&path==='/uk/discover'&&role==='enrichment')return json(await discoverUKSource(db,await bodyJson(request)));
       if(request.method==='POST'&&path==='/uk/import'&&role==='enrichment')return json(await importUKCandidate(db,(await bodyJson(request)).candidate_id));
+      if(request.method==='POST'&&path==='/uk/review'&&role==='enrichment')return json(await reviewOfficialCandidate(db,await bodyJson(request)));
       if(request.method==='POST'&&path==='/uk/stop'&&role==='enrichment'){const b=await bodyJson(request);await stopUKRun(db,b.run_id,b.reason??'operator_stopped');return json({paused:true});}
       if(request.method==='GET'&&path==='/source-led/status')return json(await sourceLedStatus(db));
       if(request.method==='POST'&&path==='/source-led/start'&&role==='acquisition')return json(await startSourceLed(db,await bodyJson(request)),201);

@@ -1,4 +1,18 @@
 import { platformId } from './contract.mjs';
+import {isTrustedOfficialSourceReview} from './evidence.mjs';
+
+const REVIEWED_ALIASES=new WeakMap();
+export function attachReviewedIdentityKeys(candidate,keys,review) {
+  if(!isTrustedOfficialSourceReview(review)||review.entity_id!==candidate.id||!Array.isArray(keys))throw Error('trusted_reviewed_identity_lineage_required');
+  // Approve only the receipt's explicit source anchors, never other retained
+  // application/footer/profile URLs or name tokens belonging to this entity.
+  const approved=new Set(['url:'+canonicalUrl(review.raw.original_canonical_url)]);
+  for(const [platform,identifier] of [[review.raw.original_source_platform,review.raw.original_source_identifier],[review.raw.reviewed_source_platform,review.raw.reviewed_source_identifier]]) {
+    if(platform&&identifier)approved.add('platform:'+platform+':'+identifier);
+  }
+  const allowed=Object.freeze([...new Set(keys.filter(key=>approved.has(key)))]);
+  candidate.reviewed_identity_keys=allowed;REVIEWED_ALIASES.set(candidate,{keys:allowed,source_platform:review.raw.original_source_platform,source_identifier:review.raw.original_source_identifier});return candidate;
+}
 
 export function canonicalUrl(value) {
   try { const u=new URL(value); u.hash='';u.hostname=u.hostname.toLowerCase().replace(/^www\./,'');for(const key of [...u.searchParams.keys()]) if(/^utm_|^(fbclid|gclid)$/i.test(key))u.searchParams.delete(key);u.searchParams.sort();u.pathname=u.pathname.replace(/\/+$/,'')||'/';return u.toString(); } catch { return null; }
@@ -7,7 +21,11 @@ const STOP=new Set('the and of at a an to for in on application apply vendor ven
 function tokens(value) { return [...new Set(String(value||'').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g,' ').split(' ').filter(t=>t.length>2&&!STOP.has(t)))]; }
 function overlap(a,b) { const x=tokens(a), y=new Set(tokens(b));const shared=x.filter(t=>y.has(t));return { count:shared.length,ratio:shared.length/Math.max(1,Math.min(x.length,y.size)) }; }
 export function edition(record) { return String(record.event_start||'').match(/\b20\d{2}\b/)?.[0] ?? String(record.event_name||'').match(/\b20\d{2}\b/)?.[0] ?? null; }
-function specific(url) { try { const u=new URL(url);return Boolean(u.searchParams.get('id')) || u.pathname.split('/').filter(Boolean).some(part=>!['events','event','applications','application','vendors','vendor','stallholders','solutions','vendor-management'].includes(part)); } catch { return false; } }
+function specific(url) { try { const u=new URL(url);
+  // CCA's booking portal and venue programmes each contain multiple distinct
+  // dated events. Their routes cannot silently merge those event identities.
+  if(u.hostname.replace(/^www\./,'')==='creativecrafts-online.co.uk'&&/^\/(?:booking-form|craft-events)(?:\/|$)/i.test(u.pathname))return false;
+  return Boolean(u.searchParams.get('id')) || u.pathname.split('/').filter(Boolean).some(part=>!['events','event','applications','application','vendors','vendor','stallholders','solutions','vendor-management'].includes(part)); } catch { return false; } }
 export function identityKeys(record) {
   const keys=[];
   for(const url of [record.canonical_url,record.application_url]) if(url)keys.push('url:'+canonicalUrl(url));
@@ -37,9 +55,16 @@ export function reconcileIdentity(incoming,candidates) {
     const sameId=samePlatform&&aId&&aId===bId;
     const urls=[incoming.canonical_url,incoming.application_url].filter(Boolean).map(canonicalUrl);
     const exact=urls.some(u=>specific(u)&&[candidate.canonical_url,candidate.application_url].filter(Boolean).map(canonicalUrl).includes(u));
+    const lineage=REVIEWED_ALIASES.get(candidate),aliases=lineage?.keys??[],reviewedAlias=!sameId&&identityCandidateKeys(incoming).some(key=>!key.startsWith('name:')&&aliases.includes(key));
+    // A historical URL/platform alias is an explicitly reviewed lineage, not
+    // permission to roll the old opportunity into the next occurrence.
+    if(reviewedAlias&&(!incoming.event_start||!incoming.event_end||incoming.event_start!==candidate.event_start||incoming.event_end!==candidate.event_end))continue;
+    if(reviewedAlias&&incoming.source_platform===lineage.source_platform&&lineage.source_identifier&&aId&&aId!==lineage.source_identifier)continue;
     if(incoming.event_start&&candidate.event_start&&incoming.event_start!==candidate.event_start&&!exact&&!sameId)continue;
     const name=overlap(incoming.event_name,candidate.event_name), org=overlap(incoming.organiser,candidate.organiser), location=overlap(incoming.location,candidate.location);
-    if((exact||sameId) && (name.count>=1 || org.count>=1 || location.count>=1)) matches.push({ outcome:'EXACT_MATCH',entity_id:candidate.id,reason:sameId?'platform_identifier':'specific_route_and_corroboration' });
+    if(reviewedAlias&&name.count>=1&&(org.count>=1||location.count>=1))matches.push({outcome:'EXACT_MATCH',entity_id:candidate.id,reason:'reviewed_historical_source_alias'});
+    else if(reviewedAlias)matches.push({outcome:'CONFLICT',entity_id:candidate.id,reason:'reviewed_alias_conflicting_identity'});
+    else if((exact||sameId) && (name.count>=1 || org.count>=1 || location.count>=1)) matches.push({ outcome:'EXACT_MATCH',entity_id:candidate.id,reason:sameId?'platform_identifier':'specific_route_and_corroboration' });
     else if(exact||sameId) matches.push({ outcome:'CONFLICT',entity_id:candidate.id,reason:'exact_route_conflicting_identity' });
     else if(name.count>=3&&name.ratio>=.75&&(org.count>=1&&org.ratio>=.65||location.count>=1&&location.ratio>=.7))matches.push({ outcome:'PROBABLE_MATCH',entity_id:candidate.id,reason:'distinctive_name_and_corroboration' });
   }

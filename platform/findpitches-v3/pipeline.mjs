@@ -1,13 +1,20 @@
 import { FIELDS,hash,stableJson,platformId } from './contract.mjs';
-import { identityKeys,identityCandidateKeys,identityAnchor,reconcileIdentity,edition } from './identity.mjs';
+import { identityKeys,identityCandidateKeys,identityAnchor,reconcileIdentity,edition,attachReviewedIdentityKeys } from './identity.mjs';
 import { sql,loadEntity } from './store.mjs';
-import { selectRecordFacts,proposeFact } from './evidence.mjs';
+import { selectRecordFacts,proposeFact,trustedOfficialSourceReview } from './evidence.mjs';
 import { enqueue,jobStatement,claimJob,finishJob,failJob } from './jobs.mjs';
 import {verificationGate} from './verification-store.mjs';
 
 export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}={}) {
   const existing=await sql(db,'SELECT * FROM reconciliation_decisions WHERE record_id=?',recordId).first();
-  if(existing)return existing;
+  if(existing) {
+    if(existing.outcome==='PROBABLE_MATCH') {
+      const link=await sql(db,'SELECT entity_id FROM entity_records WHERE record_id=?',recordId).first();
+      const review=link&&await trustedOfficialSourceReview(db,link.entity_id,{candidateRecordId:recordId});
+      if(review)return {...existing,outcome:'REVIEWED_MATCH',entity_id:link.entity_id,reason:'official_source_supersession_review',review_receipt_id:review.receipt_id,original_decision:existing};
+    }
+    return existing;
+  }
   if(await sql(db,'SELECT record_id FROM legacy_quality_holds WHERE record_id=?',recordId).first()) {
     const decision={outcome:'REVIEW_REQUIRED',entity_id:null,candidates:[],reason:'legacy_source_qualification_requires_review'};
     await sql(db,'INSERT OR IGNORE INTO reconciliation_decisions(record_id,outcome,entity_id,candidates_json,reason,created_at) VALUES (?,?,NULL,?,?,?)',recordId,decision.outcome,'[]',decision.reason,now).run();
@@ -36,7 +43,14 @@ export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}
   if(rows.length>100)decision={outcome:'REVIEW_REQUIRED',entity_id:null,candidates:[],reason:'identity_pool_requires_review'};
   else {
     const candidates=[];
-    for(const row of rows)candidates.push(await loadEntity(db,row.entity_id));
+    for(const row of rows) {
+      const candidate=await loadEntity(db,row.entity_id),review=await trustedOfficialSourceReview(db,row.entity_id);
+      if(review) {
+        const historical=(await sql(db,'SELECT identity_key FROM identity_keys WHERE entity_id=? AND environment=? AND market=?',candidate.id,candidate.environment,candidate.market).all()).results??[];
+        attachReviewedIdentityKeys(candidate,historical.map(k=>k.identity_key),review);
+      }
+      candidates.push(candidate);
+    }
     decision=reconcileIdentity(incoming,candidates);
   }
   if(incoming.producer_name==='independent-structured') {
