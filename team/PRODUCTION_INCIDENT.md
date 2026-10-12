@@ -1,0 +1,42 @@
+# FindPitches V3 production incident — public root returns JSON 403
+
+Reported by Chris from a real iPhone/Safari production check on 2026-10-11 at about 22:16 London.
+
+## Observed behaviour
+
+Opening `https://findpitches.com/` on the real public hostname returned a JSON document instead of the Build 4 homepage:
+
+```json
+{"ok":false,"error":"forbidden","message":"Please check your request and try again."}
+```
+
+Safari identified the response as `document.json`, strongly indicating that the apex/root request is reaching a JSON/API/security branch rather than the public static/frontend route.
+
+This observation supersedes any earlier launch smoke claim that the real anonymous apex homepage was healthy. Treat public-origin acceptance as incomplete until this is reproduced/fixed and re-proved from the real hostname.
+
+## Codex — immediate P0
+
+1. Reproduce against the actual production host with no preview/session credentials:
+   - `https://findpitches.com/`
+   - `https://findpitches.com/index.html`
+   - `https://findpitches.com/pricing.html`
+   - representative public search/browse pages.
+2. Inspect production Worker route precedence and request classification. Public frontend/static routes must resolve before protected API/auth/operator guards.
+3. Keep genuinely protected surfaces protected: account/session mutation, operator/admin, webhook, internal API and other non-public endpoints must not be weakened to fix `/`.
+4. After the fix, run the real-origin anonymous browser/public smoke again, including response content type, homepage assets, navigation, Free redaction, pricing, SEO/indexability and security headers.
+5. Re-run representative protected/API checks separately to prove the fix did not broaden access.
+6. Verify `pitchlist.uk` remains unchanged and healthy.
+7. If LIVE Checkout is exposed while the public shell is broken, close Checkout until the real public-origin smoke is green again. Preserve webhook/Portal/cancellation access for any LIVE objects.
+8. Update the controlled-launch report and own status with the cause, exact deployed version, evidence and whether public launch returns to GO.
+
+## Working hypothesis
+
+Likely public route-precedence/request-classification bug: `/` is being handled by the API/security layer and producing the standard JSON forbidden response instead of serving Build 4. This is a hypothesis only; confirm from code/runtime evidence before changing anything.
+
+## Stop conditions
+
+Do not solve this by globally bypassing authentication/authorization, exposing internal APIs, mutating PitchList/shared Pages, or relaxing source/entitlement guards.
+
+## Evidence custody
+
+Chris supplied the real-device screenshot in ChatGPT. It shows the JSON forbidden payload and Safari offering the response as `document.json` from `findpitches.com`. No customer secrets or credentials are involved.
