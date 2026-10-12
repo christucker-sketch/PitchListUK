@@ -1,5 +1,7 @@
 # FindPitches public root403 incident — 12 October
 
+**Current status — 2026-10-12T10:42:00+01:00:** Chris confirms the requested fresh Safari Private bare-domain check: **“Homepage opens normally.”** Real-device homepage recovery is complete. Fresh safety checks are in progress before Checkout reopening; genuine owned LIVE Checkout/global Pro/Portal acceptance remains pending. Earlier dated entries below are retained as history.
+
 Codex checkpoint **2026-10-12T09:19:21+01:00**. Source report: [real Safari incident](../team/PRODUCTION_INCIDENT.md).
 
 **New Checkout is paused. Scoped HTTP public-navigation fix is tested and ready for a customer-safe release; real-device acceptance remains pending.** Public HTTPS, account recovery, signed webhook, Portal and LIVE storage are preserved. No PitchList/shared Pages or source/identity change.

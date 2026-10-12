@@ -1,7 +1,7 @@
 {
   "schema": "findpitches-v3-public-root-incident-v1",
-  "as_of": "2026-10-12T08:53:00.838377+00:00",
-  "state": "HTTP_REDIRECT_DEPLOYED_PUBLIC_PROOF_PASSED_REAL_SAFARI_RECHECK_PENDING_CHECKOUT_CLOSED",
+  "as_of": "2026-10-12T10:42:00+01:00",
+  "state": "REAL_SAFARI_RECOVERY_CONFIRMED_CHECKOUT_REOPENING_PREFLIGHT_IN_PROGRESS",
   "source_commit": "38334c27001311ad8892bc1b4a61545885500253",
   "reported_incident_commit": "b490f953",
   "user_bare_domain_confirmed": true,
@@ -11,7 +11,7 @@
     "new_worker_http_document_status": 301,
     "external_http_probe_available": false,
     "https_mobile_safari_headers_status": 200,
-    "real_device_after_fix": "PENDING_USER_CONFIRMATION"
+    "real_device_after_fix": "CONFIRMED_BY_CHRIS_HOMEPAGE_OPENS_NORMALLY"
   },
   "fix_scope": "Exact owned HTTP apex/www GET/HEAD document/asset navigation to canonical HTTPS; API/operator/preview/webhook and unsafe request safeguards unchanged.",
   "close_checkout": {
@@ -594,5 +594,13 @@
     "source_identity_writes": 0,
     "customer_provisioning_by_codex": 0,
     "emails_sent_by_codex": 0
+  },
+  "real_device_confirmation": {
+    "received_at": "2026-10-12T10:42:00+01:00",
+    "source": "Chris reply in this Codex session",
+    "requested_check": "Fresh Safari Private tab; type bare findpitches.com",
+    "outcome": "Homepage opens normally",
+    "accepted": true,
+    "scope": "Public homepage navigation only; not Checkout/global Pro/Portal acceptance"
   }
 }
