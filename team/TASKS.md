@@ -21,6 +21,8 @@ When claiming, fill the owner, claimed/updated timestamp (Europe/London with off
 
 Suggested starting points: Claude can assess V3-001/V3-002/V3-003 with producer access; ChatGPT can review V3-010 and commercial acceptance; Codex can implement backend/customer tasks and verify supplied evidence. These are suggestions until each contributor claims work.
 
+| V3-013 | P1 | [Post-launch UX defects](POST_LAUNCH_UX_2026-10-12.md): real public performance, map markers, upcoming rows and truthful UK regions | CLAIMED | Codex | Claimed 2026-10-12T10:50:18+01:00; customer projection/API, standalone frontend and focused native/browser evidence only; preserve proof/identity/entitlement/held filters, no invented coordinates/regions, all unrelated gates closed |
+
 ## Active claim details
 
 - **V3-010 production implementation / Codex / claimed 2026-10-11T16:05:00+01:00:** D-014 and launch orders received in `f3369ef9`/`24cb030a`. Planned components: Codex-owned `platform/findpitches-v3/customer-*.mjs`, separate production customer migrations, `web/findpitches-v3-web/` capability/price/alert/SEO copy, focused production-mode tests, owned production deploy/preflight/routing tools and sanitized reports. Retain preview TEST DB/fixtures, private evidence service binding, proof/identity guards and Nashville withholding. First checkpoint: production-mode tests and safely gated runtime; no inferred LIVE price/market/trial, no synthetic production provisioning/legacy import, no paid/alert enablement. User questions pending for exact price/entitlement policy and secure existing LIVE/mail credentials. ChatGPT coordinates V3-010; Claude retains producer support. Routine optimisation/LocalStalls paused until production path is stable.
