@@ -4,7 +4,7 @@ import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,c
 import * as previewBilling from './customer-billing.mjs';
 import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook,verifyLiveBillingSettings} from './customer-live-billing.mjs';
 import {reviewSubscriberAssociation} from './customer-recognition.mjs';
-import {readCatalogue,present,search,marketOf,markets,regions,resolveLocation,inventory,ancestors,recordInventoryChanges} from './customer-catalogue.mjs';
+import {readCatalogue,present,search,marketOf,markets,regions,resolveLocation,inventory,ancestors,recordInventoryChanges,homepage,upcoming} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
 import {budgetDay} from './serper-usage.mjs';
 import {verifyNativeMailSettings,mailCredentialIsProxyReference} from './customer-mail.mjs';
@@ -77,6 +77,7 @@ async function api(request,env,now) {
     await stmt(db,'INSERT INTO customer_inbox VALUES (?,?,?,?)',id,p.split('/').at(-1),JSON.stringify(body),now).run();return response({reference:id},201);
   }
   const snapshot=await readCatalogue(env,now),rows=snapshot.rows,access=await customerAccess(db,env,customer,{now,refresh:true});
+  if(method==='GET'&&p==='/home')return response(homepage(rows,access,now,snapshot.as_of));
   if(method==='GET'&&p==='/markets')return response({markets:markets(rows)});
   if(method==='GET'&&p==='/stats')return response({as_of:snapshot.as_of,total:rows.length,sports:rows.filter(r=>r.type==='sport').length,markets:Object.fromEntries(markets(rows).map(m=>[m.code,{count:m.opportunity_count,regions:regions(m.code,rows).filter(r=>r.opportunity_count).length}]))});
   if(method==='GET'&&p==='/regions')return response({regions:regions(q.market,rows)});
@@ -85,8 +86,7 @@ async function api(request,env,now) {
   if(method==='GET'&&p==='/opportunities/count')return response({total:search(rows,q,access,now).total});
   if(method==='GET'&&p==='/opportunities/changes'){needCustomer(customer);const after=Number(q.after??0);if(!Number.isSafeInteger(after)||after<0)throw customerError('validation');const changes=(await stmt(db,'SELECT sequence,entity_id,kind,occurred_at FROM preview_inventory_changes WHERE sequence>? ORDER BY sequence LIMIT 100',after).all()).results;return response({changes,next_cursor:changes.at(-1)?.sequence??after,as_of:now});}
   if(method==='GET'&&p==='/opportunities/upcoming') {
-    if(q.market)marketOf(q.market);const limit=Number(q.limit??10);if(!Number.isInteger(limit)||limit<1||limit>100)throw customerError('validation');
-    const upcoming=rows.filter(r=>(!q.market||r.market===q.market)&&r.dates.start>=budgetDay(now)&&(!q.type||r.type===q.type)).sort((a,b)=>a.dates.start.localeCompare(b.dates.start)||a.id.localeCompare(b.id)).slice(0,limit);return response({items:upcoming.map(r=>present(r,access))});
+    return response({items:upcoming(rows,{market:q.market,type:q.type,limit:Number(q.limit??10)},now).map(r=>present(r,access))});
   }
   if(method==='POST'&&p==='/opportunities/by-ids'){if(!Array.isArray(body.ids)||body.ids.length>100||body.ids.some(i=>typeof i!=='string'))throw customerError('validation');return response({items:rows.filter(r=>body.ids.includes(r.id)).map(r=>present(r,access))});}
   if(method==='GET'&&/^\/opportunities\/[^/]+$/.test(p)){const row=rows.find(r=>r.id===decodeURIComponent(p.split('/').at(-1)));if(!row)throw customerError('not_found',404);return response({opportunity:{...present(row,access),similar:rows.filter(r=>r.id!==row.id&&r.market===row.market&&r.location.region_id&&r.location.region_id===row.location.region_id).slice(0,4).map(r=>present(r,access)),region_path:ancestors(row.market,row.location.region_id)}});}
@@ -116,12 +116,15 @@ async function html(request,env,now) {
   const sitemap=path==='/sitemap.xml'||/^\/sitemap-[a-z]+\.xml$/.test(path);
   if(sitemap&&!production(env))return text(path==='/sitemap.xml'?'<?xml version="1.0"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></sitemapindex>':seo.sitemapXml([],budgetDay(now)),200,{'Content-Type':'application/xml'});
   const recovery=['/account.html','/pricing.html','/pricing/','/saved.html','/alerts.html'].includes(path);
-  const rows=recovery?[]:(await readCatalogue(env,now)).rows,ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
+  // These documents contain no inventory facts. Their browser API requests
+  // still read fresh proof; SEO/detail pages and sitemaps remain proof-bound.
+  const shellDocument=['/','/index.html','/finder.html','/organisers.html','/organisers/'].includes(path)||/^\/(?:uk|us|ca|au|ie|nz|sg|hk)\/find-pitches\/$/.test(path);
+  const rows=recovery||shellDocument?[]:(await readCatalogue(env,now)).rows,ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
   if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
   let d,template,routeQuery='';
-  const staticPages={'/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};
+  const staticPages={'/':'index.html','/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};
   if(staticPages[path])template=staticPages[path];else {d=seo.resolve(path,{markets:ms,regions:rs});if(d.kind==='redirect')return text('',301,{Location:d.to});if(d.kind==='not_found')return text('Page not found',404);if(d.kind==='app'){const u=new URL(d.to,url);template=u.pathname.split('/').at(-1);routeQuery=u.searchParams.toString();}else{template='seo.html';routeQuery=new URLSearchParams({path:d.path}).toString();}}
-  const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=await asset.text(),meta='',title=null,robots=production(env)&&rows.length&&['index.html','organisers.html'].includes(template)?'index,follow':'noindex,follow';
+  const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=await asset.text(),meta='',title=null,robots=production(env)&&['index.html','organisers.html'].includes(template)?'index,follow':'noindex,follow';
   if(d&&d.kind==='page') {
     const inv=inventory(rows,d.market,seoConfig.intentsFor(d.market),now),s=search(rows,{...seo.filters(d),page_size:12},null,now),m=ms.find(m=>m.code===d.market),M=seo.meta(d,{market:m,markets:ms,regions:rs[d.market],inventory:inv,inventories:{[d.market]:inv},search:s,visible:s.results,regionPath:ancestors(d.market,d.region?.id),today:budgetDay(now)});
     title=M.title;robots=M.robots;meta=`<meta name="description" content="${esc(M.description)}"><link rel="canonical" href="${esc(M.canonical)}">`+M.hreflang.map(h=>`<link rel="alternate" hreflang="${esc(h.lang)}" href="${esc(h.href)}">`).join('')+M.jsonld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');

@@ -18,10 +18,10 @@ When claiming, fill the owner, claimed/updated timestamp (Europe/London with off
 | V3-009 | P1 | Attribute every external/Pi paid client and document account protection before any later acquisition recommendation | OPEN | Unclaimed | Read-only spend/producer audit; no new searches or acquisition enablement |
 | V3-010 | P0 | Controlled public FindPitches/new-customer LIVE launch under D-014; [technical blockers](../docs/findpitches-v3-public-launch-technical-review-2026-10-11.md) are now implementation scope | CLAIMED | ChatGPT (coordinator); Codex (customer/runtime) | Safari recovery confirmed; guarded Checkout reopened12October with fresh proof ([evidence](../docs/findpitches-v3-public-root-incident-2026-10-12.md)); genuine owned LIVE Checkout/global Pro/Portal acceptance pending; all unrelated gates closed |
 | V3-011 | P1 | International customer-ready supply (IE, CA, AU, NZ) per D-013: producer organiser/council/hub discovery plus V3 proof-parser and blocker work; report READY by country | CLAIMED | Claude (producer); Codex (V3 L1/L2) | [Plan](../docs/findpitches-v3-international-expansion-plan-2026-10-11.md); producer seeds/adapters only; V3 parsers by Codex |
+| V3-013 | P1 | [Post-launch UX defects](POST_LAUNCH_UX_2026-10-12.md): real public performance, map markers, upcoming rows and truthful UK regions | CLAIMED | Codex | Claimed 2026-10-12T10:50:18+01:00; customer projection/API, standalone frontend and focused native/browser evidence only; preserve proof/identity/entitlement/held filters, no invented coordinates/regions, all unrelated gates closed |
 
 Suggested starting points: Claude can assess V3-001/V3-002/V3-003 with producer access; ChatGPT can review V3-010 and commercial acceptance; Codex can implement backend/customer tasks and verify supplied evidence. These are suggestions until each contributor claims work.
 
-| V3-013 | P1 | [Post-launch UX defects](POST_LAUNCH_UX_2026-10-12.md): real public performance, map markers, upcoming rows and truthful UK regions | CLAIMED | Codex | Claimed 2026-10-12T10:50:18+01:00; customer projection/API, standalone frontend and focused native/browser evidence only; preserve proof/identity/entitlement/held filters, no invented coordinates/regions, all unrelated gates closed |
 
 ## Active claim details
 

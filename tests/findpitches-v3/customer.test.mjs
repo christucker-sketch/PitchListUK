@@ -6,7 +6,7 @@ import {hash} from '../../platform/findpitches-v3/contract.mjs';
 import {stmt,csrfValue,requireCsrf,rateLimit,safeNext,hmac,cookie,sessionCookie,readBody} from '../../platform/findpitches-v3/customer-security.mjs';
 import {issueChallenge,consumeChallenge,signedCustomer,logout,updateProfile,requestLogin} from '../../platform/findpitches-v3/customer-auth.mjs';
 import {entitlement,webhook,syncSubscriptions,customerAccess,checkout,confirmCheckout,portal} from '../../platform/findpitches-v3/customer-billing.mjs';
-import {mapProof,present,search,inventory,recordInventoryChanges} from '../../platform/findpitches-v3/customer-catalogue.mjs';
+import {mapProof,present,search,inventory,recordInventoryChanges,homepage} from '../../platform/findpitches-v3/customer-catalogue.mjs';
 import worker from '../../platform/findpitches-v3/customer-worker.mjs';
 
 const now=()=>new Date().toISOString(),future=()=>new Date(Date.now()+86400000).toISOString();
@@ -16,6 +16,28 @@ function environment(d,snapshot){return {V3_CUSTOMER_DB:d,V3_CUSTOMER_MODE:'rest
   V3_READY_API:{fetch:async(_url,options)=>{assert.equal(options.headers.Authorization,'Bearer '+'staging'.repeat(8));return Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now(),publication_enabled:false,production_cutover_enabled:false,shadow_ready:snapshot.items.length,producer_policy_withheld:0,...snapshot});}},
   ASSETS:{fetch:async url=>{const file=new URL(url).pathname.slice(1);try{return new Response(fs.readFileSync(new URL('../../web/findpitches-v3-web/public/'+file,import.meta.url)));}catch{return new Response('',{status:404});}}}};}
 async function customer(d,email='tester@example.com'){const token=await issueChallenge(d,{email,next:'/account.html',now:now()});return (await consumeChallenge(d,token,now())).customer;}
+test('literal verified region labels survive projection without turning towns into inferred counties',()=>{
+  const se=mapProof(proof({location:'A venue, England',region:'South East'}),now());assert.equal(se.location.region_id,'gb/south-east');
+  assert.equal(mapProof(proof({location:'A venue, England',region:'South West'}),now()).location.region_id,'gb/south-west');
+  assert.equal(mapProof(proof({location:'Guildford, England',region:'Guildford'}),now()).location.region_id,null);
+  const conflict=mapProof(proof({location:'Town Hall, Devon',region:'South East'}),now());assert.equal(conflict.location.region_id,null);assert.equal(conflict.id,proof().id);
+  assert.equal(mapProof(proof({country:'US',location:'A hall',region:'TX'}),now()).location.region_id,'us/texas');
+  assert.equal(mapProof(proof({proof_expires_at:'2020-01-01T00:00:00Z',region:'South East'}),now()),null);
+});
+test('one homepage snapshot shows actual future inventory and named regions with Free redaction',()=>{
+  const rows=[mapProof(proof({region:'South East',location:'A venue, England'}),now()),mapProof(proof({id:'ent_'+'2'.repeat(32),region:'South West',location:'Another venue, England',event_start:null,event_end:null}),now())];
+  const home=homepage(rows,{tier:'free'},now());assert.equal(home.stats.total,2);assert.equal(home.stats.markets.GB.regions,2);assert.equal(home.markets.find(m=>m.code==='GB').opportunity_count,2);
+  assert.equal(home.upcoming.GB.length,1);assert.equal(home.upcoming.GB[0].id,rows[0].id);assert.ok(!JSON.stringify(home).includes('organiser.example.org'));
+  assert.equal(homepage([],null,now()).stats.total,0);assert.deepEqual(homepage([],null,now()).upcoming,{});
+});
+test('map results include only exact finite venue positions and follow the same search filters',()=>{
+  const venue=mapProof(proof(),now());venue.location={...venue.location,precision:'venue',lat:51.25,lng:0.6};
+  const unknown=mapProof(proof({id:'ent_'+'2'.repeat(32)}),now());
+  const area={...venue,id:'ent_'+'3'.repeat(32),location:{...venue.location,precision:'region'}};
+  const bad={...venue,id:'ent_'+'4'.repeat(32),location:{...venue.location,lat:NaN}};
+  const result=search([venue,unknown,area,bad],{market:'GB'},null,now());assert.deepEqual(result.map_points.map(p=>p.id),[venue.id]);assert.ok(!JSON.stringify(result.map_points).includes('organiser.example.org'));
+  assert.equal(search([venue],{market:'GB',q_text:'Unrelated'},null,now()).map_points.length,0);
+});
 test('one-use magic links, hashed cookies, revocation and safe redirects',async t=>{
   const d=db(t),token=await issueChallenge(d,{email:'Owner@example.com',next:'//evil.example.org',now:now()});
   const result=await consumeChallenge(d,token,now());assert.equal(result.next,'/account.html');assert.equal(result.customer.email,'owner@example.com');assert.match(result.cookie,/Secure; SameSite=Lax.*HttpOnly/);

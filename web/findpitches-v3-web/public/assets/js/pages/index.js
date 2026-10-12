@@ -12,7 +12,7 @@ const TYPE={food:'Food',christmas:'Christmas',sport:'Sport',craft:'Craft',market
 const good=o=>!/^(Trader call|Street trading|Vendor call)/i.test(o.title);
 
 /* ---------- data (all via FP.api) ---------- */
-const dataMarkets = MARKETS.filter(m=>m.draft_has_data);
+const dataMarkets = MARKETS.filter(m=>m.opportunity_count>0);
 // Live mode: listings are subscriber-only and the API has no public counts or "coming up" feed, so the
 // homepage shows no listing data at all (nothing public is derived from paid records).
 const LIVE = false; // V3: full homepage (board, stats, SEO links)
@@ -22,17 +22,19 @@ if (LIVE) {
   ['#coming-up', '.proof', '#popular', 'section.seo', '.sreal', 'article.listing[aria-label="Example listing"]'].forEach(sel => document.querySelectorAll(sel).forEach(el => el.hidden = true));
   document.querySelectorAll('#reelTotal').forEach(e => e.closest('.tile').hidden = true);
 } else {
-  const stats = await api.meta.stats();
-  for (const m of dataMarkets) BOARD[m.code] = (await api.opportunities.upcoming({market:m.code,limit:30})).filter(good).slice(0,11).map(o=>[o.dates.start,o.title,o.location.label,KEY[o.type]||'event',o.id]);
-  await fillLiveExamples();
+  const home = st.home || await api.meta.home(), stats=home.stats;
+  for (const m of dataMarkets) BOARD[m.code] = (home.upcoming[m.code]||[]).slice(0,11).map(o=>[o.dates.start,o.title,o.location.label,KEY[o.type]||'event',o.id]);
+  fillLiveExamples(home);
+  const areas=(home.regions.GB||[]).filter(r=>!r.parent_id&&r.opportunity_count>0);
+  $('#coverageAreas').innerHTML=areas.length?areas.map(r=>`<a href="${R.draft.seo(SEO.pathOf('GB',null,r))}">${esc(r.name)} <span>${r.opportunity_count} checked ${r.opportunity_count===1?'listing':'listings'}</span></a>`).join(''):'<p>Regional coverage is still being checked. <a href="'+R.draft.finder('GB')+'">Browse every UK listing</a>.</p>';
   $('#stTotal').textContent=stats.total; document.querySelectorAll('#reelTotal').forEach(e=>e.textContent=stats.total); $('#stUS').textContent=(stats.markets.US||{}).regions||0; $('#stUK').textContent=(stats.markets.GB||{}).regions||0;
 }
 
 // Example content on the homepage is always a real, current listing from the V3 API (never hard-coded).
-async function fillLiveExamples(){
+function fillLiveExamples(home){
   const U=FP.ui, live=dataMarkets.map(m=>m.code);
   try {
-    const up=[]; for (const c of live) up.push(...(await api.opportunities.upcoming({market:c,limit:12})).filter(good));
+    const up=live.flatMap(c=>(home.upcoming[c]||[]).slice(0,12));
     const cards=[...document.querySelectorAll('[data-live-card]')];
     up.slice(0,cards.length).forEach((o,i)=>{ const el=cards[i]; el.innerHTML=`<span class="t">${U.esc(o.type_label||'Listing')}</span><b>${U.esc(o.title)}</b><span>${U.esc(o.location.label)}${o.dates.start?' · '+U.esc(fmtDate(o.dates.start,o.market)):''}</span><span class="ok">✓ Checked</span>`; el.hidden=false; });
     const ex=up.find(o=>o.market==='GB')||up[0], L=document.querySelector('[data-live-listing]');
@@ -40,8 +42,7 @@ async function fillLiveExamples(){
       f('checked').textContent=ex.checked&&ex.checked.last_checked?fmtDate(ex.checked.last_checked,ex.market):''; f('type').textContent=ex.type_label||'Listing';
       f('title').textContent=ex.title; f('where').textContent=ex.location.label; f('when').textContent=U.when(ex,ex.market); f('apply').textContent=st.short||'Direct, via the organiser';
       f('link').href=R.draft.opportunity(ex.id); L.hidden=false; }
-    const S=document.querySelector('[data-live-sport]'); const sport=[];
-    for (const c of live) { const r=await api.opportunities.search({market:c,types:['sport'],page_size:2}); sport.push(...r.results); }
+    const S=document.querySelector('[data-live-sport]'); const sport=home.sports;
     if (S && sport.length) { S.innerHTML=sport.slice(0,4).map(o=>`<a class="scard" href="${R.draft.opportunity(o.id)}"><span class="t">${U.esc(o.type_label||'Sports')}</span><b>${U.esc(o.title)}</b><span>${U.esc(o.location.label)}${o.dates.start?' · '+U.esc(fmtDate(o.dates.start,o.market)):''}</span><span class="cc2">${U.esc(o.market==='GB'?'UK':o.market)}</span></a>`).join(''); S.hidden=false; }
   } catch (e) { console.warn('homepage examples unavailable', e && e.code); }
 }
@@ -55,9 +56,10 @@ btabs.innerHTML = dataMarkets.map((m,i)=>`<button type="button" aria-pressed="${
 function scramble(el,text){ if(RM){el.textContent=text;return;} const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; let f=0; const N=10;
   const t=setInterval(()=>{f++; el.textContent=text.split('').map((ch,i)=>ch===' '||i<text.length*f/N?ch:chars[(Math.random()*36)|0]).join(''); if(f>=N){clearInterval(t);el.textContent=text;}},45); }
 function renderBoard(code){
-  if(!BOARD[code]) code=dataMarkets[0].code;
+  if(!BOARD[code]&&dataMarkets[0]) code=dataMarkets[0].code;
   document.querySelectorAll('[data-b]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.b===code)));
   const body=$('#boardBody'); body.innerHTML='';
+  if(!(BOARD[code]||[]).length){body.innerHTML='<tr><td colspan="4">No verified upcoming dates for this country yet. <a href="'+R.draft.finder(code||cur)+'">Browse all its current opportunities</a>.</td></tr>';return;}
   BOARD[code].forEach((r,i)=>{ const tr=document.createElement('tr'); tr.style.animationDelay=(i*0.06)+'s'; tr.style.cursor='pointer';
     tr.onclick=e=>{ if(!e.target.closest('a')) location.href=R.draft.opportunity(r[4]); };
     tr.innerHTML=`<td>${fmtDate(r[0],code)}</td><td class="ev"><a href="${R.draft.opportunity(r[4])}" aria-label="${esc(r[1])}"></a></td><td class="wh">${esc(r[2])}</td><td><span class="ty ${r[3]==='sport'?'sport':''}">${TYPE[r[3]]}</span></td>`;
@@ -95,7 +97,7 @@ async function applyLocale(code,opts={}){
   if(!intents.length) $('#seoCols').innerHTML=`<a href="${R.draft.seo(R.marketPath(code))}">Browse ${esc(m.name)}</a>`;
   $('#popular').hidden=!intents.length;
   $('#seoFor').textContent = m.launch_status==='live' ? `Each one is also broken down by ${m.region_label.singular}, so you can see what’s near you.` : `${m.name} opens soon. These pages fill up as listings are checked.`;
-  if(BOARD[code] && !opts.keepBoard) renderBoard(code);
+  if(!opts.keepBoard) renderBoard(code);
   $('#ecountry').value = M[code].launch_status==='live' ? (MARKETS.find(x=>x.launch_status!=='live')||M[code]).code : code;
 }
 $('#clist').innerHTML=MARKETS.map(m=>`<li><button type="button" data-c="${m.code}"><span class="code">${esc(m.display_code)}</span><span>${esc(m.name)}<small>${esc(m.postal.kind==='district'?'District':m.postal.label)} · ${m.distance_unit==='mi'?'miles':'kilometres'} · ${esc(m.currency)}</small></span><span class="st ${m.launch_status==='live'?'live':''}">${m.launch_status==='live'?(m.opportunity_count!=null?m.opportunity_count+' live':'Live'):'Coming soon'}</span></button></li>`).join('');

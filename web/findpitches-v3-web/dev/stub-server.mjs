@@ -50,6 +50,11 @@ async function api(req, res, url) {
   const ok = (obj, status = 200) => json(res, status, Object.assign({ ok: true }, obj), setCookie.length ? { 'set-cookie': setCookie } : {});
   const m = (re) => p.match(re);
   try {
+    if (req.method === 'GET' && p === '/home') {
+      const markets=await API.meta.markets(),stats=await API.meta.stats(),regions={},upcoming={},sports=[];
+      for(const m of markets){regions[m.code]=await API.meta.regions({market:m.code});if(m.opportunity_count){upcoming[m.code]=await API.opportunities.upcoming({market:m.code,limit:30});sports.push(...(await API.opportunities.search({market:m.code,types:['sport'],page_size:2})).results);}}
+      return ok({as_of:stats.as_of,markets,stats,regions,upcoming,sports:sports.slice(0,4)});
+    }
     if (req.method === 'GET' && p === '/markets') return ok({ markets: await API.meta.markets() });
     if (req.method === 'GET' && p === '/stats') return ok(await API.meta.stats());
     if (req.method === 'GET' && p === '/regions') return ok({ regions: await API.meta.regions({ market: q.market }) });

@@ -13,9 +13,14 @@ const norm=value=>String(value??'').normalize('NFKC').toLowerCase();
 function proofRegion(item) {
   const regs=allRegions(item.country),byCode=item.region?regs.find(r=>r.code&&(r.code===item.region||r.code===item.country+'-'+item.region)):null;
   if(byCode)return byCode;
+  // The verified source projection also supplies literal region names. Match
+  // those to the registry, without translating a town into a guessed county.
+  const named=regs.find(r=>norm(r.name)===norm(item.region)&&item.region);
   // Literal region in retained verified location, never a town→county guess.
   const matches=regs.filter(r=>new RegExp('(^|[^a-z])'+r.name.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-z]|$)').test(norm(item.location)));
-  const specific=matches.filter(r=>!matches.some(s=>s.parent_id===r.id));return specific.length===1?specific[0]:null;
+  const specific=matches.filter(r=>!matches.some(s=>s.parent_id===r.id)),literal=specific.length===1?specific[0]:null;
+  if(named&&literal&&!ancestors(item.country,literal.id).some(r=>r.id===named.id)&&!ancestors(item.country,named.id).some(r=>r.id===literal.id))return null;
+  return literal??named??null;
 }
 export function mapProof(item,now) {
   if(!/^ent_[a-f0-9]{32}$/.test(item.id)||!MARKETS.some(m=>m.code===item.country)||!item.title||!item.organiser||!item.location||!publicHttps(item.application_url)||!Number.isFinite(Date.parse(item.proof_expires_at))||!Number.isFinite(Date.parse(item.verified_at))||Date.parse(item.proof_expires_at)<=Date.parse(now)||Date.parse(item.verified_at)>Date.parse(now))return null;
@@ -65,7 +70,17 @@ export function search(rows,p,access,now) {
   const sort=p.sort??'soonest';if(!['soonest','recently_checked','az'].includes(sort))throw customerError('validation');
   list.sort((a,b)=>(sort==='az'?a.title.localeCompare(b.title):sort==='recently_checked'?String(b.checked.last_checked??'').localeCompare(a.checked.last_checked??''):String(a.dates.start??'9999').localeCompare(b.dates.start??'9999'))||a.id.localeCompare(b.id));
   const page=Number(p.page??1),size=Number(p.page_size??25);if(!Number.isInteger(page)||page<1||page>100000||!Number.isInteger(size)||size<1||size>100)throw customerError('validation');
-  return {market:market.code,market_status:market.launch_status,coverage:rows.some(o=>o.market===market.code)?'available':'none',location,total:list.length,page,page_size:size,sort,next_start:list.map(o=>o.dates.start).filter(d=>d&&d>=today).sort()[0]??null,results:list.slice((page-1)*size,page*size).map(o=>present(o,access)),facets,map_points:[]};
+  const map_points=list.filter(o=>o.location.precision==='venue'&&Number.isFinite(o.location.lat)&&Number.isFinite(o.location.lng)&&Math.abs(o.location.lat)<90&&Math.abs(o.location.lng)<=180).map(o=>({id:o.id,title:o.title,type:o.type,lat:o.location.lat,lng:o.location.lng}));
+  return {market:market.code,market_status:market.launch_status,coverage:rows.some(o=>o.market===market.code)?'available':'none',location,total:list.length,page,page_size:size,sort,next_start:list.map(o=>o.dates.start).filter(d=>d&&d>=today).sort()[0]??null,results:list.slice((page-1)*size,page*size).map(o=>present(o,access)),facets,map_points};
+}
+export function upcoming(rows,{market=null,type=null,limit=10}={},now) {
+  if(market)marketOf(market);if(!Number.isInteger(limit)||limit<1||limit>100)throw customerError('validation');
+  return rows.filter(r=>(!market||r.market===market)&&r.dates.start&&r.dates.start>=budgetDay(now)&&(!type||r.type===type)).sort((a,b)=>a.dates.start.localeCompare(b.dates.start)||a.id.localeCompare(b.id)).slice(0,limit);
+}
+export function homepage(rows,access,now,as_of=now) {
+  const ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
+  return {as_of,markets:ms,stats:{as_of,total:rows.length,sports:rows.filter(r=>r.type==='sport').length,markets:Object.fromEntries(ms.map(m=>[m.code,{count:m.opportunity_count,regions:rs[m.code].filter(r=>!r.parent_id&&r.opportunity_count).length}]))},
+    regions:rs,upcoming:Object.fromEntries(ms.filter(m=>m.opportunity_count).map(m=>[m.code,upcoming(rows,{market:m.code,limit:30},now).map(r=>present(r,access))])),sports:rows.filter(r=>r.type==='sport').slice(0,4).map(r=>present(r,access))};
 }
 export function inventory(rows,market,intents,now) {
   marketOf(market);if(!Array.isArray(intents)||intents.length>30)throw customerError('validation');

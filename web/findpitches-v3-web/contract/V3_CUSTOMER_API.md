@@ -39,6 +39,7 @@ a database or another host.
 |---|---|---|---|
 | `GET /markets` | public | — | `{ markets: Market[] }` (§3.3) |
 | `GET /stats` | public | — | `{ as_of, total, sports, markets: { CODE: { count, regions } } }` |
+| `GET /home` | public (paid fields redacted, §3.1) | — | One fresh proof snapshot: `{ as_of, markets, stats, regions: { CODE: Region[] }, upcoming: { CODE: Opportunity[] }, sports: Opportunity[] }`. Upcoming uses future event start dates, at most 30 per country. No draft flags, inferred regions, stored readiness bypass or cross-request proof cache. |
 | `GET /regions?market=` | public | | `{ regions: Region[] }` (§3.5) with `opportunity_count` |
 | `GET /geo/resolve?market=&q=` | public | | `{ location: { kind: point\|region\|unknown\|unresolved\|none, label, region_id?, region_code?, lat?, lng?, precision? } }` |
 | `GET /opportunities` | public (paid fields redacted, §3.1) | `market` (required), `q` (place, postcode, ZIP, region id or slug), `q_text` (keyword), `region` (id, includes descendants), `radius_km`, `types` (csv), `sells`, `organiser_types` (csv), `when` (`30\|90\|xmas\|2027`), `month` (`YYYY-MM`), `sort` (`nearest\|soonest\|recently_checked\|az`), `page`, `page_size` (≤100) | `{ market, market_status, coverage: available\|none, location, total, page, page_size, sort, next_start, results: Opportunity[], facets: { types, unclassified_types, months, undated, regions }, map_points: [{id,lat,lng,type,title}] }` |

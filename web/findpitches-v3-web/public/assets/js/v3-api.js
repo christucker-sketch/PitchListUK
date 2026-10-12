@@ -66,6 +66,7 @@
     live: true,           // a real service: real sign-in, real payments, server-side entitlement
     ApiError,
     meta: {
+      async home() { return call('GET', '/home'); },
       async markets(p) { return (await call('GET', '/markets'+qs(p))).markets; },
       async stats() { return call('GET', '/stats'); },
       types() { return TYPES; },

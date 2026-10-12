@@ -420,13 +420,17 @@
     try {
       // Live: ask for saved ids only once we know someone is signed in (no pointless 401s).
       const recovery=['account','pricing','alerts','saved'].includes(document.body.dataset.page);
-      const [markets, session, draftIds] = await Promise.all([api().meta.markets(recovery?{registry_only:true}:undefined), api().session.get(), REAL ? null : api().saved.ids()]);
+      const home=document.body.dataset.page==='home'&&api().meta.home;
+      const [metadata, session, draftIds] = await Promise.all([home?api().meta.home():api().meta.markets(recovery?{registry_only:true}:undefined), api().session.get(), REAL ? null : api().saved.ids()]);
+      const markets=home?metadata.markets:metadata;
+      state.home=home?metadata:null;
       const ids = REAL ? (session && session.signed_in ? await api().saved.ids() : []) : draftIds;
       state.markets = markets; state.session = session; state.saved = new Set(session.signed_in ? ids : []);
       // Can Pro be bought in this country right now? (No price is ever invented: unpriced or not-yet-open markets say so.)
       const live = markets.filter(m => m.launch_status === 'live');
-      const plans = await Promise.all(live.map(m => api().billing.plans({ market: m.code }).catch(() => [])));
-      state.proBuyable = {}; live.forEach((m, i) => { const pro = plans[i].find(p => p.id !== 'free'); state.proBuyable[m.code] = !!(pro && pro.price != null&&pro.checkout_enabled!==false); });
+      state.proBuyable = {};
+      // Optional upgrade controls must not delay search/listing rendering.
+      FP.plansReady=Promise.all(live.map(m => api().billing.plans({ market: m.code }).catch(() => []))).then(plans=>{live.forEach((m, i) => { const pro = plans[i].find(p => p.id !== 'free'); state.proBuyable[m.code] = !!(pro && pro.price != null&&pro.checkout_enabled!==false); });renderHeader();});
     } catch (e) {
       if (REAL && !state.markets.length) {
         // The site can't work without the market list (backend or config problem). Say so plainly and

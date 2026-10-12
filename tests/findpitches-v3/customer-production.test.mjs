@@ -14,6 +14,14 @@ function env(db){return {V3_CUSTOMER_DB:db,V3_CUSTOMER_MODE:'production_public',
  V3_READY_API:{fetch:async()=>Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now(),publication_enabled:false,production_cutover_enabled:false,items:[proof()],shadow_ready:1,producer_policy_withheld:0})},
  ASSETS:{fetch:async u=>{try{return new Response(fs.readFileSync(new URL('../../web/findpitches-v3-web/public/'+new URL(u).pathname.slice(1),import.meta.url)));}catch{return new Response('',{status:404});}}}};}
 function proof(country='US'){return {id:'ent_'+('1'.repeat(32)),country,title:'River Festival',organiser:'River Association',location:country==='GB'?'Kent Town Hall':'Oregon Park',event_start:'2099-11-03',event_end:'2099-11-04',application_url:'https://organiser.example.org/apply',application_state:'OPEN_NOW',source_url:'https://organiser.example.org/event',verified_at:new Date(Date.now()-1000).toISOString(),proof_expires_at:future(),entity_revision:1,verification_id:1};}
+test('brand and Finder shells do not read inventory; homepage data still fails closed and uses one fresh snapshot',async t=>{
+ const db=setup(t),e=env(db);let reads=0,failed=false;
+ e.V3_READY_API.fetch=async()=>{reads++;if(failed)throw Error('source_unavailable');return Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now(),publication_enabled:false,production_cutover_enabled:false,items:[proof('GB'),{...proof('US'),id:'ent_'+'2'.repeat(32),proof_expires_at:'2020-01-01T00:00:00Z'}]});};
+ const call=p=>worker.fetch(new Request('https://findpitches.com'+p),e);
+ for(const p of ['/','/index.html','/finder.html','/us/find-pitches/','/organisers.html'])assert.equal((await call(p)).status,200);
+ assert.equal(reads,0);const home=await (await call('/api/v3/home')).json();assert.equal(reads,1);assert.equal(home.stats.total,1);assert.equal(home.upcoming.GB.length,1);assert.ok(!JSON.stringify(home).includes('organiser.example.org'));
+ failed=true;assert.equal((await call('/')).status,200);assert.ok((await call('/api/v3/home')).status>=500);assert.ok((await call('/api/v3/opportunities?market=GB')).status>=500);assert.ok((await call('/uk/')).status>=500);
+});
 test('bare-domain HTTP frontend navigation redirects to the owned HTTPS site before reading catalogue evidence',async t=>{
  const db=setup(t),e=env(db);let catalogueReads=0;
  e.V3_READY_API={fetch:async()=>{catalogueReads++;throw Error('source_unavailable');}};

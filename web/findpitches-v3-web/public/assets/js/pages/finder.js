@@ -167,11 +167,11 @@
       // Scale strokes by hand: vector-effect on this large path mis-renders its fill when zoomed in Chromium.
       svg.insertAdjacentHTML('beforeend',`<path class="land" d="${M.svg}" style="stroke-width:${1/z}px"/>`+extra);
       svg.setAttribute('viewBox',vb);
-      const pts=r.map_points.filter(p=>p.lat!=null);
+      const pts=(r.map_points||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&Math.abs(p.lat)<90&&Math.abs(p.lng)<=180);
       pts.forEach(p=>{ const [x,y]=projUK(p.lat,p.lng); const c=document.createElementNS(NS,'circle'); c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',(ids.has(p.id)?6:3.8)/z); c.style.strokeWidth=1.4/z;
         c.setAttribute('class','pin'+(p.type==='sport'?' sport':'')+(ids.has(p.id)?'':' dim')+(p.id===selected?' hot':'')); c.dataset.id=p.id; c.dataset.n=p.title; svg.appendChild(c); });
       $('#mapTitle').innerHTML=`<b>${esc(loc.kind==='point'?loc.label:C.name)}</b>`; $('#mapCount').textContent=`${pts.length} on the map`;
-      $('#mapNote').innerHTML=`<span class="legend"><span><i></i>Listing</span><span><i class="sp"></i>Sports event</span></span> Pale pins are further down the list. Area-wide listings aren’t pinned.`;
+      $('#mapNote').innerHTML=pts.length?`<span class="legend"><span><i></i>Listing</span><span><i class="sp"></i>Sports event</span></span> Pale pins are further down the list. Only source-proved coordinates are pinned.`:`No verified coordinates are available for these ${r.total} listings yet. All results remain in the list; we do not guess map positions.`;
       svg.setAttribute('aria-label',`Map of ${pts.length} listings${loc.kind==='point'?' around '+loc.label:''}. The list has every result.`);
     } else if (MAP==='us'){
       const M=G.us; svg.setAttribute('viewBox',`0 0 ${M.W} ${M.H}`);
