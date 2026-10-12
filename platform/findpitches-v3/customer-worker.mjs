@@ -158,6 +158,10 @@ export default {
       if(production(env)){
         if(p.startsWith('/preview/'))throw customerError('not_found',404);
         const u=new URL(request.url);
+        // A typed bare domain can arrive over HTTP. Redirect only safe owned
+        // document/asset navigation; API, operator and mutation guards remain.
+        if(['http://findpitches.com','http://www.findpitches.com'].includes(u.origin)&&['GET','HEAD'].includes(request.method)&&!['/api','/ops','/preview'].some(prefix=>p===prefix||p.startsWith(prefix+'/')))
+          return text('',301,{Location:'https://findpitches.com'+u.pathname+u.search});
         if(u.origin==='https://www.findpitches.com'&&['GET','HEAD'].includes(request.method))return text('',301,{Location:'https://findpitches.com'+u.pathname+u.search});
         if(u.origin!==env.V3_PUBLIC_ORIGIN||u.origin!=='https://findpitches.com')throw customerError('forbidden',403);
         if(env.V3_PUBLIC_ENABLED!=='true'&&!(env.V3_ACCOUNT_RECOVERY_ENABLED==='true'&&recoveryPath(p)))throw customerError('service_unavailable',503);

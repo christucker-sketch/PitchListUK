@@ -14,6 +14,24 @@ function env(db){return {V3_CUSTOMER_DB:db,V3_CUSTOMER_MODE:'production_public',
  V3_READY_API:{fetch:async()=>Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now(),publication_enabled:false,production_cutover_enabled:false,items:[proof()],shadow_ready:1,producer_policy_withheld:0})},
  ASSETS:{fetch:async u=>{try{return new Response(fs.readFileSync(new URL('../../web/findpitches-v3-web/public/'+new URL(u).pathname.slice(1),import.meta.url)));}catch{return new Response('',{status:404});}}}};}
 function proof(country='US'){return {id:'ent_'+('1'.repeat(32)),country,title:'River Festival',organiser:'River Association',location:country==='GB'?'Kent Town Hall':'Oregon Park',event_start:'2099-11-03',event_end:'2099-11-04',application_url:'https://organiser.example.org/apply',application_state:'OPEN_NOW',source_url:'https://organiser.example.org/event',verified_at:new Date(Date.now()-1000).toISOString(),proof_expires_at:future(),entity_revision:1,verification_id:1};}
+test('bare-domain HTTP frontend navigation redirects to the owned HTTPS site before reading catalogue evidence',async t=>{
+ const db=setup(t),e=env(db);let catalogueReads=0;
+ e.V3_READY_API={fetch:async()=>{catalogueReads++;throw Error('source_unavailable');}};
+ for(const host of ['findpitches.com','www.findpitches.com'])for(const method of ['GET','HEAD'])for(const path of ['/','/index.html','/pricing.html','/uk/find-pitches/?q=York','/assets/js/shell.js','/account.html']){
+  const r=await worker.fetch(new Request('http://'+host+path,{method}),e);
+  assert.equal(r.status,301,method+' '+host+path);assert.equal(r.headers.get('location'),'https://findpitches.com'+path);assert.equal(await r.text(),'');
+ }
+ assert.equal(catalogueReads,0);
+});
+test('HTTP public-navigation redirect never opens API, operator, webhook, preview or unsafe request surfaces',async t=>{
+ const db=setup(t),e=env(db);
+ for(const [path,method,status] of [['/api/v3/session','GET',403],['/api/v3/session/link','POST',403],['/api/v3/billing/checkout','POST',403],['/ops/preflight','GET',403],['/api/v3/stripe/webhook','POST',403],['/preview/test-login','POST',404],['/','POST',403],['/index.html','DELETE',403]]){
+  const r=await worker.fetch(new Request('http://findpitches.com'+path,{method}),e);assert.equal(r.status,status,path);assert.equal(r.headers.get('location'),null);
+ }
+ for(const origin of ['http://foreign.example','https://foreign.example','http://findpitches.com:8080'])assert.equal((await worker.fetch(new Request(origin+'/'),e)).status,403);
+ assert.equal((await stmt(db,'SELECT COUNT(*) AS n FROM customers').first()).n,0);
+ assert.equal((await stmt(db,'SELECT COUNT(*) AS n FROM stripe_webhook_receipts').first()).n,0);
+});
 async function native(db){return (await consumeChallenge(db,await issueChallenge(db,{email:'live-fixture@example.org',now:now()}),now())).customer;}
 function provider(e,c,currency='GBP'){
  const p=livePricePolicy(e).find(p=>p.currency===currency),state={price:{id:p.id,object:'price',livemode:true,active:true,product:p.product,currency:currency.toLowerCase(),unit_amount:p.amount,recurring:{interval:'month',interval_count:1},billing_scheme:'per_unit',type:'recurring'},owner:{id:'cus_owned',object:'customer',email:c.email,livemode:true,metadata:{findpitches_v3_customer_id:c.id,findpitches_v3_runtime:'production_public'}},product:{id:p.product,object:'product',active:true,livemode:true,metadata:{app:'findpitches',version:'v3',plan:'pro',entitlement:'global',findpitches_v3_runtime:'production_public'}},subs:[],sessions:new Map(),calls:[],failure:false};
