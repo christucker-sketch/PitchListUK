@@ -14,6 +14,26 @@ This is not a raw-candidate exercise. Report gains as:
 - source diversity and repeatability;
 - spend/credit consumption where Serper is used.
 
+## Customer-visible baseline — 2026-10-12
+
+Chris's live customer map check shows the UK footprint currently reads as approximately **123 customer-visible listings at only 12 venues**, with markers heavily concentrated in the South East / southern England. Earlier homepage/facet checks also showed only **1 UK area** exposed to the customer UI before the region-display defect was addressed.
+
+Treat this as a commercial baseline, not just a frontend cosmetic issue. UK growth must improve both **volume and geographic/organiser diversity**.
+
+Codex should track at minimum:
+
+- customer-visible UK listings;
+- distinct UK venues;
+- distinct organisers/operators where evidence permits;
+- UK regions/countries represented;
+- distribution across England, Scotland, Wales and Northern Ireland;
+- concentration ratio (for example, share of UK READY tied to the top 5 venues/operators);
+- map coverage sufficient that the live UK map no longer appears effectively South-East-only.
+
+Do not optimise for dozens of additional rows from one operator if the customer-visible footprint remains geographically narrow.
+
+Priority coverage gaps to investigate include the Midlands, North West, North East, Yorkshire, South West, Scotland, Wales and Northern Ireland, while preserving evidence requirements and never inventing geography.
+
 ## Codex — programme owner
 
 Codex should first diagnose why UK READY is low, then choose the highest-yield mix of acquisition and conversion work rather than simply increasing query volume.
@@ -25,6 +45,7 @@ Required review:
 3. Revisit lessons from the earlier city programme and two-hop discovery work. Prefer event-first/operator-first discovery where direct “trader application” queries saturate.
 4. Identify high-yield UK source families: councils, tourism/what’s-on programmes, market operators, festival/food/event organisers, venue programmes, agricultural/county shows, Christmas/seasonal markets, artisan/farmers/night markets and regional event directories that can lead to direct organiser/application proof.
 5. Do not count an aggregator/listing page alone as READY evidence unless it satisfies existing proof rules; use it as hop-1 discovery when appropriate.
+6. Rank lanes not only by expected READY count, but by **incremental venue/organiser/region coverage** so the live map and customer browse experience become materially broader.
 
 ## Team authority
 
@@ -98,10 +119,11 @@ Do not manufacture UK regions, dates, organiser names or application status mere
 Publish a short evidence-led UK growth plan containing:
 
 1. current UK READY baseline;
-2. top blocker populations and likely recoverable counts;
-3. top five acquisition/conversion lanes ranked by expected READY gain;
-4. which work belongs to Codex vs Claude/Pi vs Hal;
-5. proposed Serper pilot size and stop/scale criteria;
-6. first measurable target for net new UK READY.
+2. current customer-visible **listings / distinct venues / distinct organisers / represented UK regions** baseline;
+3. top blocker populations and likely recoverable counts;
+4. top five acquisition/conversion lanes ranked by expected READY gain **and coverage/diversity gain**;
+5. which work belongs to Codex vs Claude/Pi vs Hal;
+6. proposed Serper pilot size and stop/scale criteria;
+7. first measurable target for net new UK READY and a separate target for venue/region expansion.
 
 Then execute the highest-value reversible work without waiting for another architectural review. Escalate only genuine new policy decisions or unusually high spend.
