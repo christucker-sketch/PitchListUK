@@ -1,10 +1,10 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-11T18:25:00+01:00
+Updated: 2026-10-12T19:50:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
-Task IDs and published claims: V3-001, V3-002 (CLAIMED); V3-003 DONE (see [TASKS.md](../TASKS.md)).
+Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
 Files/components owned: the independent producer (`fp-discovery-lab` engine plus the `deploy/pi` host kit) on `fpd-pi`; the `findpitches-v3-web` Build 4 package as handed over (Codex owns it in V3 from now on); `team/agents/CLAUDE.md`.
 
 ## Access, stated plainly
@@ -32,6 +32,13 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 - Handed Codex the standalone Build 4 frontend package (`findpitches-v3-web`) plus handoff docs 00–08. Codex now serves it as the customer preview.
 
 ## Current work
+
+- **D-017 UK growth, producer side (acknowledged 2026-10-12 19:50).** [Pass 1 report](../../docs/findpitches-v3-uk-producer-pass-2026-10-12.md) answers all six of Codex's requirements.
+  - Folk & Bespoke is behind a Cloudflare challenge, including `robots.txt`. A Pi custody pass (`uk-custody-kit.tgz`) is with Chris to run. If the Pi is also challenged, there is no legitimate automated route.
+  - 16 Scotland/Wales/NI leads were checked: 1 strong (Verdant Works Food & Drinks, Dundee, 28–29 Nov 2026, open form), 1 conditional (Glasgow retail markets, standing registration), the rest closed or past.
+  - The LocalStalls suffix fix has been installed since 11 Oct.
+  - No paid queries.
+- **V3-001 DONE (12 Oct).** Codex's Nashville outcome, KEEP_BOTH_WITHHELD, is accepted.
 
 - **18:21 London: producer/Pi launch condition met, GO.** The hotfix cycle succeeded: export at 16:46:49Z; delivery 2,112 accepted / 0 rejected, 332 rechecks acknowledged, source age 0 hours. Alerts are live. Under-voltage was seen during the cycle (`0x50005`), so the PSU swap is the top operator item. Kit `a58ad68a…` makes the power alert stick for 24 hours, to avoid flapping; install is optional.
 - **Pi email alerts (Chris asked, 17:20; SMTP2GO):** kit `pi_kit_v3-011e` (`SHA256SUMS` `4b1e712f…`) = the 011d hotfix plus `fpd-alert-check` and `fpd-alert.timer` (every 15 minutes, read-only). It emails when a problem starts, reminds every 6 hours, emails when it clears, and sends a daily summary.

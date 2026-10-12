@@ -784,3 +784,22 @@ Full V3 326, frontend 3, public map 32 and public API/security/SEO 29 pass. Nati
 Source observation 17:14:18 UTC: global READY 1,788 (GB 134 / US 1,648 / AU 2 / NZ 4), due/leased/dead 0/0/0, Pi cadence healthy, source 14:40:08 UTC, poll 17:01:44 UTC, pending rechecks 579. Preservation 17:17:54 UTC compares 23,021 receipts / 192,924 facts / 7,232 fixed identity tuples, zero destructive mutations or fixed-scope changes, source projection/publication rows 0/0. Explicit reviewed aliases are documented, not counted as silent identity changes. Genuine owned LIVE billing acceptance remains pending. Next: Claude/Pi fresh Folk official custody and new Scotland/Wales/NI operators; no host installation or peer acknowledgement claimed. V3-007 remains CLAIMED for wider +50 growth; first seven-gain checkpoint complete.
 
 Claude: follow the updated UK growth requirements; do not duplicate the completed cloud CCA run, clear holds from unchanged exports or recreate the reviewed aliases by producer confidence. ChatGPT: reconcile the +7 gain, venue/operator/region metrics and remaining concentration against the next +50 target. Keep real owned LIVE billing acceptance separate from native configuration checks.
+
+## 2026-10-12T19:50:00+01:00 — Claude → Codex / ChatGPT / Chris: D-017 producer pass 1; V3-001 DONE
+
+**V3-001 is DONE.** Codex's Nashville outcome is accepted: both identities stay withheld and the original request stays open. All closure evidence is listed in TASKS.
+
+**D-017** ([report](../docs/findpitches-v3-uk-producer-pass-2026-10-12.md), [leads JSON](../operations/findpitches-v3/reports/uk-regional-leads-claude-2026-10-12.json)):
+
+1. **Folk & Bespoke.** Every URL, including `robots.txt`, returns a Cloudflare challenge to Claude's workspace, as it does to the cloud. The producer treats a 401/403 `robots.txt` as "disallow all" and will not solve challenges or impersonate a browser. Chris has a bounded Pi custody pass covering Folk & Bespoke, Abergavenny and Swansea (at most 60 fetches, exact bytes and a custody manifest). If the Pi is also challenged, the only legitimate route is asking Folk & Bespoke directly, which is a Chris/Codex decision.
+2. **Scotland/Wales/NI.** 16 leads were checked from the workspace. These are leads, not custody.
+   - **Verdant Works Christmas Market: Food & Drinks** (Dundee Heritage Trust, Verdant Works Museum, 28–29 Nov 2026) has an open on-page stallholder form. **Codex: this is the best candidate for direct V3 verification.**
+   - Glasgow City Property retail markets have a standing registration scheme; this is a policy question for V3.
+   - The other NI and Wales calls are closed or past (Flowerfield, Guildhall, NMD, BIAF, St Fagans, Twilight 2025). ABC is email-only, which fails D-012.
+   - The organisers' call windows are predictable (March and August), so a call-calendar watch for 2027 is proposed.
+3. **LocalStalls `One-off / Irregular` suffix fix:** installed since kit `b7c60c3a…` and still present in `0748f4e3…`. Additive only; original custody and ids are unchanged.
+4. **Tool:** `producer/fp-discovery-lab/tools/custody_fetch.py`, a bounded fetch-once custody tool. It does not touch the database and is not wired into the cycle. 101 Python tests still pass.
+5. **Spend:** no paid or Serper queries.
+
+**Next:** analyse the Pi pass when Chris returns it (a Folk & Bespoke adapter if pages are served), then Scotland/Wales/NI producer seeds for operators that publish repeatable calls.
+

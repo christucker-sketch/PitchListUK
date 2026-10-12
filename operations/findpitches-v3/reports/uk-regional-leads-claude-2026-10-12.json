@@ -1,0 +1,304 @@
+{
+ "schema": "findpitches-uk-regional-leads-v1",
+ "author": "Claude",
+ "created": "2026-10-12T19:45:00+01:00",
+ "status": "LEADS ONLY. Fetched from Claude's workspace (not the Pi) with the producer user-agent, robots honoured; this is NOT producer custody and NOT V3 proof. V3 should fetch directly where it can.",
+ "workspace_run": {
+  "schema": "findpitches-custody-fetch-v1",
+  "finished_at": "2026-10-12T18:33:50Z",
+  "user_agent": "FPDiscoveryLab/0.1 (+research prototype; respects robots.txt; ops@findpitches.invalid)",
+  "seeds": 16,
+  "max_fetches": 150,
+  "requests": 49,
+  "ok": 41,
+  "http_errors": {
+   "200": 1,
+   "403": 1
+  },
+  "robots_blocked": 6,
+  "skipped_discovery_only": 4,
+  "skipped_cap": 0
+ },
+ "leads": [
+  {
+   "nation": "SCO",
+   "event": "Verdant Works Christmas Market: Food & Drinks",
+   "organiser": "Dundee Heritage Trust",
+   "venue": "Verdant Works Museum, Dundee",
+   "dates": "28\u201329 Nov 2026",
+   "state_as_read": "OPEN: on-page stallholder form for food & drink producers (craft stalls stated full)",
+   "url": "https://www.dundeeheritagetrust.co.uk/event/verdant-works-christmas-market-food-drinks",
+   "disposition": "strongest lead: explicit year/dates, named venue, open trader form on the organiser page",
+   "custody": {
+    "fetched_at": "2026-10-12T18:33:05Z",
+    "http_status": 200,
+    "final_url": "https://www.dundeeheritagetrust.co.uk/event/verdant-works-christmas-market-food-drinks/",
+    "content_sha256": "6aaeb017462f04eebb3d140045055b146270179f1134dc3a6c823cdafccc2253",
+    "bytes": 166517,
+    "error": null
+   }
+  },
+  {
+   "nation": "SCO",
+   "event": "Verdant Works Christmas Market: Art, Craft & Design",
+   "organiser": "Dundee Heritage Trust",
+   "venue": "Verdant Works Museum, Dundee",
+   "dates": "21\u201322 Nov 2026",
+   "state_as_read": "FULL: food page says art/craft/design stalls are full",
+   "url": "https://www.dundeeheritagetrust.co.uk/event/christmas-market",
+   "disposition": "hold: no open route",
+   "custody": {
+    "fetched_at": "2026-10-12T18:33:11Z",
+    "http_status": 200,
+    "final_url": "https://www.dundeeheritagetrust.co.uk/event/christmas-market/",
+    "content_sha256": "9ef1b30bd6b44a97730ce39f3a04a346b2bb8239c39c53cd9d0f9b1dcb509751",
+    "bytes": 139769,
+    "error": null
+   }
+  },
+  {
+   "nation": "SCO",
+   "event": "Glasgow retail markets (Bridgeton Cross Tue/Fri; Partick Mansfield Park Wed)",
+   "organiser": "City Property (Glasgow) LLP",
+   "venue": "Bridgeton Cross G40 1BW; Mansfield Park G11 5QP",
+   "dates": "weekly, standing",
+   "state_as_read": "ROLLING registration scheme stated (stalls from \u00a328; ID/insurance requirements); contact route on page",
+   "url": "https://www.citypropertyglasgow.co.uk/markets/retail/",
+   "disposition": "needs V3 rolling/enquiry policy check; no dated occurrence",
+   "custody": {
+    "fetched_at": "2026-10-12T18:33:15Z",
+    "http_status": 200,
+    "final_url": "https://www.citypropertyglasgow.co.uk/markets/retail/",
+    "content_sha256": "cb0ad2eebc38ac244607ada959f63342732f1bf1b8f568dfd47baeeb0e8bbab1",
+    "bytes": 325483,
+    "error": null
+   }
+  },
+  {
+   "nation": "SCO",
+   "event": "Curated In The Square (Aberdeen Christmas market)",
+   "organiser": "Charlie House / Aberdeen Inspired",
+   "venue": "Marischal Square, Aberdeen",
+   "dates": "2025 season",
+   "state_as_read": "CLOSED/PAST: article dated 19 Sep 2025, applications closed 6 Oct 2025",
+   "url": "https://www.agcc.co.uk/news-article/local-creatives-and-traders-invited-to-be-part-of-aberdeens-unique-christmas-market-curated-in-the-square",
+   "disposition": "exclude (past); watch for 2026 call",
+   "custody": {
+    "fetched_at": "2026-10-12T18:33:34Z",
+    "http_status": 200,
+    "final_url": "https://www.agcc.co.uk/news-article/local-creatives-and-traders-invited-to-be-part-of-aberdeens-unique-christmas-market-curated-in-the-square",
+    "content_sha256": "57e2c70c63da68c7b83b1ac5928d48588fba6e65924e13a12361818bee65dc18",
+    "bytes": 90322,
+    "error": null
+   }
+  },
+  {
+   "nation": "NI",
+   "event": "Belfast St George's Market \u2013 new traders",
+   "organiser": "Belfast City Council",
+   "venue": "St George's Market, Belfast",
+   "dates": "standing",
+   "state_as_read": "CLOSED: 'We are not accepting applications for new traders at the market'",
+   "url": "https://www.belfastcity.gov.uk/things-to-do/markets/st-george-s-market/traders-and-trading-at-st-george-s-market",
+   "disposition": "hold; test-trading scheme page exists but shows no open call",
+   "custody": {
+    "fetched_at": "2026-10-12T18:32:39Z",
+    "http_status": 200,
+    "final_url": "https://www.belfastcity.gov.uk/things-to-do/markets/st-george-s-market/traders-and-trading-at-st-george-s-market",
+    "content_sha256": "707c69c64b15e61b4a64b38ab0089e876bb53afebff0092f0d1216d9f6b368d7",
+    "bytes": 51986,
+    "error": null
+   }
+  },
+  {
+   "nation": "NI",
+   "event": "Christmas Twilight Market (St George's)",
+   "organiser": "Belfast City Council via Craft NI",
+   "venue": "St George's Market, Belfast",
+   "dates": "25\u201326 Nov 2025",
+   "state_as_read": "PAST: 2025 call, deadline 10 Oct 2025",
+   "url": "https://craftni.org/christmas-twilight-market-application/",
+   "disposition": "exclude (past); 2026 call not yet published on this route",
+   "custody": {
+    "fetched_at": "2026-10-12T18:32:50Z",
+    "http_status": 200,
+    "final_url": "https://craftni.org/christmas-twilight-market-application/",
+    "content_sha256": "9196245c9c124261ff172d0b33525225781904f6191b89a4fa275f24fe350e10",
+    "bytes": 140086,
+    "error": null
+   }
+  },
+  {
+   "nation": "NI",
+   "event": "Guildhall Craft Fair 2026",
+   "organiser": "Derry City & Strabane District Council",
+   "venue": "Guildhall, Derry/Londonderry",
+   "dates": "2026 (Christmas)",
+   "state_as_read": "CLOSED: applications deadline 5 Aug 2026",
+   "url": "https://www.derrystrabane.com/subsites/christmas/guildhall-craft-fair",
+   "disposition": "hold: closed",
+   "custody": {
+    "fetched_at": "2026-10-12T18:4xZ (separate probe)",
+    "note": "probed outside the custody run; hash not retained"
+   }
+  },
+  {
+   "nation": "NI",
+   "event": "Flowerfield Christmas Craft Market 2026",
+   "organiser": "Causeway Coast & Glens Borough Council",
+   "venue": "Flowerfield Arts Centre, Portstewart",
+   "dates": "14 Nov\u201323 Dec 2026",
+   "state_as_read": "CLOSED: call 12 Aug 2026, closing 21 Sep 2026",
+   "url": "https://causewaycoastandglens.gov.uk/news/calling-all-makers-applications-open-for-flowerfield-christmas-craft-market-2026",
+   "disposition": "hold: closed",
+   "custody": {
+    "fetched_at": "2026-10-12T18:4xZ (separate probe)",
+    "note": "probed outside the custody run; hash not retained"
+   }
+  },
+  {
+   "nation": "NI",
+   "event": "Borough-wide Artisan Markets 2026",
+   "organiser": "Armagh City, Banbridge & Craigavon Borough Council",
+   "venue": "Armagh, Banbridge, Dromore, Lurgan, Portadown",
+   "dates": "2026 programme (dates on council page)",
+   "state_as_read": "EMAIL-ONLY: 'If you would like to be a trader\u2026 email' (address protected)",
+   "url": "https://www.armaghbanbridgecraigavon.gov.uk/borough-wide-artisan-markets-return-with-double-the-dates-for-2026",
+   "disposition": "needs dated list + https route; email-only does not meet D-012",
+   "custody": {
+    "fetched_at": "2026-10-12T18:32:33Z",
+    "http_status": 200,
+    "final_url": "https://www.armaghbanbridgecraigavon.gov.uk/borough-wide-artisan-markets-return-with-double-the-dates-for-2026/",
+    "content_sha256": "a552c2cf664647471d9a82d43eb65461212fb7e51158685d9e84f20647eb32e4",
+    "bytes": 139634,
+    "error": null
+   }
+  },
+  {
+   "nation": "NI",
+   "event": "Artisan Markets 2026 programme",
+   "organiser": "Newry, Mourne & Down District Council",
+   "venue": "district towns",
+   "dates": "2026 programme",
+   "state_as_read": "CLOSED: application window 9\u201331 Mar 2026",
+   "url": "https://www.newrymournedown.org/council-invites-traders-to-apply-for-2026-artisan-markets-initiative",
+   "disposition": "hold: closed; 2027 call expected early 2027",
+   "custody": {
+    "fetched_at": "2026-10-12T18:32:28Z",
+    "http_status": 200,
+    "final_url": "https://www.newrymournedown.org/council-invites-traders-to-apply-for-2026-artisan-markets-initiative",
+    "content_sha256": "9dd2153ae9dd688fe223213dc2079ee43708254e00245207cac77b3758e7b7db",
+    "bytes": 160646,
+    "error": null
+   }
+  },
+  {
+   "nation": "NI",
+   "event": "Belfast International Arts Festival 2026 \u2013 vendors",
+   "organiser": "BIAF via Craft NI",
+   "venue": "Belfast",
+   "dates": "Oct 2026",
+   "state_as_read": "CLOSED: deadline 7 Oct 2026",
+   "url": "https://craftni.org/apply-to-be-a-vendor-at-belfast-international-arts-festival-2026",
+   "disposition": "exclude",
+   "custody": {
+    "fetched_at": "2026-10-12T18:32:48Z",
+    "http_status": 200,
+    "final_url": "https://craftni.org/apply-to-be-a-vendor-at-belfast-international-arts-festival-2026/",
+    "content_sha256": "d49ddab84818afb813458c001d47e4dd55ed2590bfe21d2cbbf48539043133a0",
+    "bytes": 138412,
+    "error": null
+   }
+  },
+  {
+   "nation": "WAL",
+   "event": "St Fagans Food Festival",
+   "organiser": "Amgueddfa Cymru \u2013 Museum Wales",
+   "venue": "St Fagans National Museum of History, Cardiff",
+   "dates": "12\u201313 Sep 2026",
+   "state_as_read": "PAST/CLOSED: trader applications closed 20 Mar; 2027 interest list only",
+   "url": "https://museum.wales/whatson/food-festival/apply",
+   "disposition": "exclude; 2027 interest list is not an open application",
+   "custody": {
+    "fetched_at": "2026-10-12T18:33:37Z",
+    "http_status": 200,
+    "final_url": "https://museum.wales/whatson/food-festival/apply/",
+    "content_sha256": "d0c250fa442e99bb5f7ea99e67fae90c5da08c1e7e848456b49ecc91d027ea59",
+    "bytes": 83407,
+    "error": null
+   }
+  },
+  {
+   "nation": "WAL",
+   "event": "Christmas Craft Fair at T\u0177 Pawb",
+   "organiser": "Wrexham County Borough Council",
+   "venue": "T\u0177 Pawb, Wrexham",
+   "dates": "Sun 1 Dec (2024)",
+   "state_as_read": "PAST",
+   "url": "https://news.wrexham.gov.uk/christmas-craft-fair-at-ty-pawb",
+   "disposition": "exclude (past)",
+   "custody": {
+    "fetched_at": "2026-10-12T18:33:50Z",
+    "http_status": 200,
+    "final_url": "https://news.wrexham.gov.uk/christmas-craft-fair-at-ty-pawb/",
+    "content_sha256": "d15146876ca399920baef4643a0789a4d6638a2605cf37c87828a50a147daa1f",
+    "bytes": 133982,
+    "error": null
+   }
+  },
+  {
+   "nation": "WAL",
+   "event": "Abergavenny Food Festival \u2013 trader information 2026",
+   "organiser": "Abergavenny Food Festival",
+   "venue": "Abergavenny",
+   "dates": "2026",
+   "state_as_read": "UNKNOWN: Cloudflare 403 to workspace; in Pi custody pass",
+   "url": "https://www.abergavennyfoodfestival.com/trader-information-2026/",
+   "disposition": "Pi custody pass",
+   "custody": {
+    "fetched_at": "2026-10-12T18:33:44Z",
+    "http_status": 403,
+    "final_url": "https://www.abergavennyfoodfestival.com/trader-information-2026/",
+    "content_sha256": "f261423d1da97890ff6bfccd31ff4ee0b74f69351cf75095fbe791cb16cbf5bd",
+    "bytes": 103,
+    "error": "http_403"
+   }
+  },
+  {
+   "nation": "WAL",
+   "event": "Swansea Market casual trading",
+   "organiser": "City & County of Swansea",
+   "venue": "Swansea Market",
+   "dates": "standing",
+   "state_as_read": "UNKNOWN: robots.txt behind Cloudflare challenge (403) to workspace; in Pi custody pass",
+   "url": "https://www.swansea.gov.uk/marketcasualtrading",
+   "disposition": "Pi custody pass",
+   "custody": {
+    "fetched_at": "2026-10-12T18:33:44Z",
+    "http_status": null,
+    "final_url": null,
+    "content_sha256": null,
+    "bytes": null,
+    "error": "robots_disallowed"
+   }
+  },
+  {
+   "nation": "ENG",
+   "event": "Folk & Bespoke events and trader applications",
+   "organiser": "Folk & Bespoke",
+   "venue": "various (England)",
+   "dates": "\u2014",
+   "state_as_read": "UNKNOWN: Cloudflare challenge on every URL incl. robots.txt for workspace and V3 cloud",
+   "url": "https://www.folkandbespoke.com/",
+   "disposition": "Pi custody pass; if the Pi is also challenged, there is no legitimate automated route",
+   "custody": {
+    "fetched_at": "2026-10-12T18:32:14Z",
+    "http_status": null,
+    "final_url": null,
+    "content_sha256": null,
+    "bytes": null,
+    "error": "robots_disallowed"
+   }
+  }
+ ]
+}

@@ -95,3 +95,4 @@ cc399676b06024df2ce67471f6e5600f43f899f59668af16fe617df92827a4a5  ./tests/fixtur
 c56830c2261640f3b53ac4f3bf13315589e95ebcd08a3e77abefb130586b9d35  ./tests/fixtures/marketsireland_open.html
 1d0e09e8a696c31dca9158802c08ce4a01492668ef63f389d859a42cb4bfd173  ./tests/test_core.py
 fea28961370340f447ebe7da53d2bd10e83bd456210da1b436d77200171e2558  ./tests/test_integration.py
+069e3b51f995cff59941559d5a50a6ad133e3dabd7a376c2cd8704b6c1474cae  ./tools/custody_fetch.py
