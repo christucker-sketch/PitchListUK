@@ -25,8 +25,9 @@ def main():
             else:foreign.append(urlsplit(r.request.url).hostname);r.abort()
         ctx.route('**/*',route);page=ctx.new_page();page.on('pageerror',lambda _:errors.append('browser_error'))
         def visit(path,selector):
-            r=page.goto(base+path,wait_until='domcontentloaded',timeout=75000);page.wait_for_selector(selector,timeout=75000);check('page_'+path,r.status==200)
+            r=page.goto(base+path,wait_until='domcontentloaded',timeout=75000);page.wait_for_selector(selector,timeout=75000);check('page_'+path,r.status==200);return r
         try:
+            homepage=visit('/','h1');check('apex_homepage_html',homepage.headers.get('content-type','').startswith('text/html'));check('apex_homepage_indexable','index,follow' in homepage.headers.get('x-robots-tag',''))
             visit('/uk/find-pitches/','#list .ocard h3 a');check('uk_real_market',page.evaluate("FP.state.market==='GB'"));check('free_session_redacted',page.evaluate("FP.state.session.access.tier==='free'"))
             record=page.evaluate("FP.api.opportunities.search({market:'GB',page_size:1}).then(r=>r.results[0])");check('entity_is_real_and_locked',record['id'].startswith('ent_') and record['access']['locked'] and not record['access'].get('application_url') and not record['access'].get('source_url'))
             visit(record['canonical_path'],'h1');canons=page.locator('link[rel=canonical]').evaluate_all('es=>es.map(e=>e.href)');check('all_event_canonicals_match_identity',bool(canons) and all(c==base+record['canonical_path'] for c in canons));report['identical_duplicate_canonical_tags']=max(0,len(canons)-1);check('free_apply_link_withheld',page.evaluate("![...document.querySelectorAll('[data-apply]')].some(a=>a.href&&a.href.startsWith('https://'))"))
