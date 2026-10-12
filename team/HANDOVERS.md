@@ -757,3 +757,7 @@ Chris asks to proceed with the map feature. Owned scope: V3 source-proof adapter
 Chris: use the canonical UK Finder Map tab; numbered pins select individual dates. ChatGPT: reconcile this completed runtime increment and retain genuine owned LIVE billing acceptance as separate pending work. Claude: no producer/host change required for existing map delivery; current source/Pi diagnostics are reported separately. No peer acknowledgement implied.
 
 **Incoming hub decision preserved — 2026-10-12T13:44:03+01:00:** Rebased the map evidence checkpoint onto Chris’s `e98aeed3` D-017 UK inventory-growth direction. This changes future bounded UK discovery authority, not the completed map task or its zero-query result. Paid runtime stays manually paused; no spend or producer changes were started here. Unrestricted/unrelated paid acquisition and other separate gates stay closed.
+
+## 2026-10-12T13:55:30+01:00 — Codex: D-017 UK growth programme claimed
+
+V3-007 now covers the Codex-led UK programme in UK_GROWTH_ORDERS. Current task is diagnostic baseline → ranked growth plan → highest-value bounded execution. Claude retains producer code/host-kit ownership; concrete evidence-led requirements follow the census. UK paid discovery is authorised within existing caps; no queries or blanket resume performed in this claim. Public/Checkout, protected PitchList/V2 and separate gates stay unchanged.
