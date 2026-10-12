@@ -1,6 +1,6 @@
 # FindPitches public root403 incident — 12 October
 
-**Current status — 2026-10-12T10:42:00+01:00:** Chris confirms the requested fresh Safari Private bare-domain check: **“Homepage opens normally.”** Real-device homepage recovery is complete. Fresh safety checks are in progress before Checkout reopening; genuine owned LIVE Checkout/global Pro/Portal acceptance remains pending. Earlier dated entries below are retained as history.
+**Current status — 2026-10-12T10:48:10+01:00:** The Safari public-navigation incident is resolved on Chris confirmation (“Homepage opens normally”). Guarded new-customer LIVE Checkout is reopened and actual enabled-browser checks pass. Genuine owned LIVE Checkout/global Pro/Portal acceptance remains pending. Earlier dated checkpoints below are history.
 
 Codex checkpoint **2026-10-12T09:19:21+01:00**. Source report: [real Safari incident](../team/PRODUCTION_INCIDENT.md).
 
@@ -33,3 +33,15 @@ Code release at2026-10-12T08:33:17.014Z, version `7676cb7d-6535-4a95-ac02-8389e5
 Native at2026-10-12T08:38:46.028Z: **1,778 READY (GB127 / US1645 / AU2 / NZ4)**, Nashville0; live billing/mail probes200, customers/subscriptions/Checkout attempts0, pendingwebhooks0. Processed unowned receipts are not owned customer acceptance. Queue due0/leased0/dead0; paid0/bulkoff/manualpaused. Pi cadence/source healthy, pendingrechecks198. Final preservation **2026-10-12T08:43:24.394Z**: 15,811 receipts /108,819 facts /7,077 identities, zero destructive mutations/identity changes; protected PitchList/V2 schedules unchanged.
 
 Chris: retry typing `findpitches.com` in a fresh Safari Private tab. A 200 HTTPS smoke does not itself prove the previously failing real-device navigation, and this runner cannot send external HTTP. On confirmed recovery, the existing D-014 authority allows guarded Checkout reopening; genuine hosted Checkout → global Pro → Portal remains a separate operator proof. ChatGPT retains acceptance coordination.
+
+## Real-device acceptance and Checkout reopening — 2026-10-12T10:48:10+01:00
+
+Chris completed the requested fresh Private Safari bare-domain check and replied “Homepage opens normally”; receipt recorded at 10:42 London. No external HTTP trace is claimed. D-014/D-016 already authorize the guarded reopening, so no duplicate approval or credential transfer was needed.
+
+Checkout flag changed to LIVE at **2026-10-12T09:44:18.498Z**, version **`63fb3d42-f71b-493c-9b27-3ad8c32c89f0`**, deployment `bd5cfc12-67aa-4e30-ae0d-01a2dd712d5c`. Public browsing/account recovery remain enabled. Exact current route IDs and every unrelated native binding are preserved; no DNS/Pages/provider/customer/source/identity write. PitchList remains healthy with the original deployment.
+
+Fresh public API/security/SEO **29/29**, browser with Checkout closed **25/25**, enabled **25/25**, native Stripe/SMTP200, full source preservation at **2026-10-12T09:43:21.232Z**: **15,811 receipts /108,819 facts /7,077 identities**, zero destructive mutations/identity changes; V2 schedules/PitchList unchanged. Successful earlier 12October full264/focused21/frontend3/independence/boundaries/build results were retained, not re-dated or rerun for a flag-only change. TLS/CSP remained enabled.
+
+Native **2026-10-12T09:45:44.840Z**: **1,785 customer-eligible READY (GB127 /US1652 /AU2 /NZ4)**; Nashville0. Customers/subscriptions/Checkout attempts0; two processed unowned receipts, pending0. Source **2026-10-12T09:45:41.566Z**: paid0/bulkoff/manualpaused, due0/leased0/dead0; five scheduled jobs briefly became due at09:44:40Z and cleared by the next observed cycle. Pi contact/source healthy, pendingrechecks61. Recheck acknowledgements do not establish customer readiness.
+
+**Remaining acceptance:** a genuine own-account hosted LIVE Checkout → signed owned canonical subscription → global UK/US Pro application access → Billing Portal/cancellation journey. Requested from Chris in this session; no synthetic LIVE objects or TEST substitute. ChatGPT retains overall coordination; V3-010 is not DONE. Paid acquisition, alerts, legacy migration, UKCF Option B, destructive changes and protected/live merges remain closed.

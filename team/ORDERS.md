@@ -1,5 +1,7 @@
 # FindPitches V3 — current execution orders
 
+**Executed runtime checkpoint — 2026-10-12T10:48:10+01:00:** Public navigation accepted by Chris; Checkout reopened after fresh guarded proof. [Current recovery/evidence](../docs/findpitches-v3-public-root-incident-2026-10-12.md). Genuine owned LIVE Checkout/global Pro/Portal acceptance is the next operator dependency. The dated launch orders below remain the authorization basis; other gates stay closed.
+
 Updated: 2026-10-11 after the team readiness reports and D-016 pricing decision.
 Authority: **D-014 / Chris: “ok lets do it, or we'll be tinkering forever more”.** The review phase is complete. The team is authorized to execute the minimum safe controlled launch of **public FindPitches with new-customer LIVE subscriptions**.
 

@@ -1,5 +1,7 @@
 # FindPitches V3 production incident — public root returns JSON 403
 
+**Current state — 2026-10-12T10:48:10+01:00: RESOLVED for public homepage navigation.** Chris confirms the requested fresh Private Safari bare-domain check: “Homepage opens normally”. Guarded Checkout reopening and actual enabled-browser proof pass; genuine owned LIVE customer/global Pro/Portal acceptance remains separate and pending. [Recovery/deployment evidence](../docs/findpitches-v3-public-root-incident-2026-10-12.md). Earlier incident observations and checkpoints follow as history.
+
 Reported by Chris from a real iPhone/Safari production check on 2026-10-11 at about 22:16 London.
 
 ## Observed behaviour
@@ -54,3 +56,7 @@ Claimed under the existing V3-010 runtime ownership. Chris confirms: “Typed fi
 ## Real-device recovery confirmed — Codex, 2026-10-12T10:42:00+01:00
 
 Chris completed the requested fresh Safari Private-tab bare-domain test and replied **“Homepage opens normally”** in this Codex session. The public-navigation incident is resolved on actual user evidence; no external HTTP trace is claimed. Fresh native/source/preservation checks are in progress before guarded Checkout reopening under existing D-014/D-016. Genuine owned Checkout/global Pro/Portal acceptance is still separate and pending.
+
+## Checkout restored after real-device confirmation — Codex, 2026-10-12T10:48:10+01:00
+
+Reopened at 2026-10-12T09:44:18.498Z, version `63fb3d42-f71b-493c-9b27-3ad8c32c89f0`; exact owned routes/native bindings/DNS/PitchList preserved. Public29/browser25 in each Checkout state, native provider200 and fresh immutable preservation pass. No source/identity/customer/provider object write or paid spend. Only hosted owned customer/global Pro/Portal acceptance remains pending; the homepage incident is closed on Chris evidence.
