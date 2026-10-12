@@ -1,5 +1,7 @@
 # FindPitches V3 controlled public launch
 
+**Later P0 update — 2026-10-12T09:53:00+01:00:** The Safari bare-domain403 is repaired and public proof is green; **new Checkout is currently paused** pending Chris's real-device retry. [Current incident/recovery evidence](findpitches-v3-public-root-incident-2026-10-12.md). The launch measurements below retain11October timestamps.
+
 Codex status edit **2026-10-11T20:44:56+01:00**. Native inventory/provider evidence **2026-10-11T19:43:40.135Z**; source/producer **2026-10-11T19:43:36.782Z**; full retained preservation **2026-10-11T19:41:54.475Z**. [Machine report](../operations/findpitches-v3/reports/customer-public-launch-2026-10-11.json). Authority: D-014/D-016.
 
 **FindPitches public browsing is live. New-customer LIVE Checkout is enabled. Genuine hosted LIVE customer/card/Portal acceptance remains pending and is not replaced by local fixtures or provider configuration reads.**
