@@ -1,0 +1,6764 @@
+{
+  "as_of": "2026-10-12T12:57:17.374Z",
+  "customer_ready": 127,
+  "commercial": {
+    "total_distinct_entities": 868,
+    "verified": 127,
+    "ready": 127,
+    "watch": 165,
+    "quarantined": 71,
+    "blocked": 505,
+    "awaiting_verification": 700,
+    "missing_application_proof": 734,
+    "stale_expired": 30,
+    "verification_checked": 390
+  },
+  "by_source": [
+    {
+      "domain": "ukcraftfairs.com",
+      "total": 161,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 12,
+      "quarantined": 4,
+      "awaiting_verification": 145,
+      "stale_expired": 4,
+      "missing_application_proof": 161,
+      "reasons": {
+        "source_http_520": 161
+      },
+      "origins": {
+        "legacy_v2": 45,
+        "independent-structured": 116
+      },
+      "future_dated_selected": 150,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "myntimage.co.uk",
+      "total": 123,
+      "customer_ready": 123,
+      "ready": 123,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 0,
+      "reasons": {},
+      "origins": {
+        "uk-official": 123
+      },
+      "future_dated_selected": 123,
+      "proof_verified_country": 123
+    },
+    {
+      "domain": "facebook.com",
+      "total": 117,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 107,
+      "quarantined": 10,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 117,
+      "reasons": {
+        "social_page_is_discovery_only": 6
+      },
+      "origins": {
+        "legacy_v2": 116,
+        "city-search": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "localstalls.com",
+      "total": 40,
+      "customer_ready": 1,
+      "ready": 1,
+      "watch": 0,
+      "blocked": 5,
+      "quarantined": 26,
+      "awaiting_verification": 8,
+      "stale_expired": 15,
+      "missing_application_proof": 32,
+      "reasons": {
+        "single_event_source_data_missing": 13,
+        "event_application_route_missing_or_ambiguous": 17,
+        "open_vendor_application_not_proved": 17,
+        "selected_event_start_disagrees_with_proof": 17,
+        "selected_event_end_disagrees_with_proof": 10,
+        "selected_application_state_disagrees_with_proof": 17,
+        "selected_organiser_disagrees_with_proof": 6,
+        "verified_country_missing": 1,
+        "selected_event_name_disagrees_with_proof": 1
+      },
+      "origins": {
+        "independent-structured": 23,
+        "legacy_v2": 17
+      },
+      "future_dated_selected": 23,
+      "proof_verified_country": 26
+    },
+    {
+      "domain": "vendorsmap.com",
+      "total": 12,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 12,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 12,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 12
+      },
+      "future_dated_selected": 2,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "form.jotform.com",
+      "total": 10,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 10,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 10,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 9,
+        "independent-structured": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eventeny.com",
+      "total": 8,
+      "customer_ready": 2,
+      "ready": 2,
+      "watch": 1,
+      "blocked": 5,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 6,
+      "reasons": {
+        "application_restricted_audience_requires_review": 1
+      },
+      "origins": {
+        "legacy_v2": 5,
+        "independent-structured": 1,
+        "platform-catalogue": 2
+      },
+      "future_dated_selected": 3,
+      "proof_verified_country": 3
+    },
+    {
+      "domain": "docs.google.com",
+      "total": 7,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 7,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 7,
+      "reasons": {
+        "event_content_scope_missing": 2
+      },
+      "origins": {
+        "legacy_v2": 6,
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eventbrite.com",
+      "total": 5,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 3,
+      "quarantined": 2,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 5,
+      "reasons": {
+        "event_cancelled_or_postponed": 1,
+        "vendor_application_not_proved": 2,
+        "open_vendor_application_not_proved": 2,
+        "source_country_market_mismatch": 2
+      },
+      "origins": {
+        "legacy_v2": 5
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "braintree.gov.uk",
+      "total": 5,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 5,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 5,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 5
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "veganmarkets.co.uk",
+      "total": 5,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 5,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 5,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 5
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "cjseventswarwickshire.co.uk",
+      "total": 3,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 3,
+      "reasons": {
+        "platform_index_is_not_an_opportunity": 1
+      },
+      "origins": {
+        "legacy_v2": 3
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "salisburycitycouncil.gov.uk",
+      "total": 3,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 3,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 3,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 3
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "readkong.com",
+      "total": 3,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 3,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 3,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 3
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "saundersmarkets.co.uk",
+      "total": 3,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 3,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 3,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 2,
+        "legacy-global-uk": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "pitchlist.uk",
+      "total": 3,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 3,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 3,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 3
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "livingrainforest.org",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eventbrite.co.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bristol.gov.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "knitandstitchshow.co.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 2,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "greatbritishfoodfestival.com",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {
+        "event_content_scope_missing": 2
+      },
+      "origins": {
+        "legacy-global-uk": 1,
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "gov.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nottinghammarkets.com",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "instagram.com",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {
+        "social_page_is_discovery_only": 1
+      },
+      "origins": {
+        "city-search": 1,
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "berkshireeagle.com",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "southdownsfoodfestival.com",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {
+        "source_response_size_limit": 1
+      },
+      "origins": {
+        "legacy_v2": 1,
+        "independent-structured": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "warriorsandwitches.co.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eventbrite.ca",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nottinghamwinterwonderland.co.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "rosiesretrobazaar.co.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "sandersonarcade.co.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 2,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "leithfestival.com",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {
+        "platform_index_is_not_an_opportunity": 1
+      },
+      "origins": {
+        "legacy_v2": 1,
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "medway.gov.uk",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "zeffy.com",
+      "total": 2,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 2,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 2
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ruskington.parish.lincolnshire.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "greatestatefestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "texaswoodworkingfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "moldfoodfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "discoverpeterborough.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "seaislechamber.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "rickmansworthevents.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "junctiongoole.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "rwas.wales",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "hertsshow.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "editorial_page_is_discovery_only": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "dorsetfarmersmarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "yorkshirefarmingconference.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "editorial_page_is_discovery_only": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lymingtonandpennington-tc.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "goat-shed.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "pershorebroadstreetmarket.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "expomap.ru",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ladysmithmanor.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nebg.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "newarkdragonboatfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "tangletowngardens.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "cornwallshopsmall.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "threads.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "northyorks.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_mk1": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "zapplication.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ruralandwest.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "commoncause.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "boothscout.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "foodmarketplace.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lopemedefarm.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "gravesparkfoodfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "growlocalgreenwoodlake.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "maxtmakerspace.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thecraftandmakersmarket.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lowermarshmarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bristolmumfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "oldbolsovertowncouncil.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "parmarket.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "kentfestiveshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "wealdfest.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "mrsanimation.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "norfolkfleamarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stivesfoodanddrinkfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "commongreensohio.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "greatervanfoodtruckfest.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thefarmhouseproject.market",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "quaysidemarket.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy-global-uk": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "kxci.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "newarkvintagetractorshow.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "invalid_structured_source_data": 1,
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "svblive.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "madhattersevents.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "cfweradio.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "melbourne-farmers-markets-mfm.myshopify.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "heartoftheparkocala.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "carevents.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "denbighandflintshow.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "homecounty.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "winchester.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "artisanmarketscornwall.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "tidewaterfarmersmarkets.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ocsa.submittable.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eventaly.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "glastonburyfestivalstraders.glastonburyfestivals.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "platform_index_is_not_an_opportunity": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "businesswales.gov.wales",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "charnwood.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lovebedford.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "winterfair.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "wealdentimes-fair.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "agriculture.delaware.gov",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bromsgrove.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "rushmoor.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "somersetarmedforcesday.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "hatch-retail.space",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "crowdpullersevents.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "westsuffolk-self.achieveservice.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "capelchristmasfair.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "applebyfair.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "realfoodfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "legacy-global-uk": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stalbans.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "highclereshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bathdecorativeantiquesfair.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ludlowfoodfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "pedddle.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lewisham.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "liverpool.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "swanage.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "covenanterscottishfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "templenewsamfoodfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "farnham.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "americanswedish.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "farmerphilsfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stallandcraftcollective.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nantwichfoodfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "norwichfilmfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "editorial_page_is_discovery_only": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "tastecumbria.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "skiptontowncouncil.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "marketplace.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "crickboatshow.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "landoftheloonfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "newburygardenshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "x.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "suffolkmilitaryshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "redditchbc.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "apps.liverpool.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "sdwk.wa.gov.au",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "littleowl-artisan.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nottsfestiveshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "louthlions.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "editorial_page_is_discovery_only": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eventsbystir.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "powderham.typeform.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "codenevents.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "seahamfoodfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "londonwelsh.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "englandsmedievalfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bbc.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "foreveraftercollective.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "newforestshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "newenglandopenmarkets.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "allaboutdogsshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "downtowngrandville.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ilfracombemarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "essexdayfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "northamptonshow.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "smartsurvey.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "essexcountyfair.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "woofwagfestival.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "chaffeeartcenter.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "fleetchristmasfestival.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "porthopefair.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "guildford.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "source_http_404": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ipswich.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ma.to",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "aldeburghfoodanddrink.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "academycenter.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "militariashows.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eastherts.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "visitsuffolkva.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "findhomegrown.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "buylocalfood.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "paristown.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "callhomefest.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "rotherham.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy-global-uk": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "birthplaceofcountrymusic.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "newkent-va.us",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "artisanmarkets.wales",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "greatbritishlife.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eventowl.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "milletsfarmcentre.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "benlomondvillage.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "durhamfarmersmarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lazydaysfestival.festivalpro.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eventslist.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nwleics.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "watercressfestival.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "hatfield-house.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eckington-pc.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "rbvernon.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "paniermarkets.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thepatchworkmarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "yourholisticevents.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "relovedmarkets.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "southkesteven.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "farmmachineryshow.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "newwestfarmers.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "xplosiveevents.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "wonderwoolwales.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "platform_index_is_not_an_opportunity": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ebme-expo.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "invalid_structured_source_data": 1,
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "allareloveevents.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "forms.north-norfolk.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stwhospice.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eumw.eu",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "wisbechtowncouncil.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ukvrm.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ormskirk-market.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "sweetcarthire.biz",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "barremacarshow.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thecolumbiaboatshow.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "museumofcambridge.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "punchline-gloucester.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nationalbeefassociation.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "historicalvillage.org.nz",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "northamptontowncouncil.gov.uk",
+      "total": 1,
+      "customer_ready": 1,
+      "ready": 1,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 0,
+      "reasons": {},
+      "origins": {
+        "legacy_mk1": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 1
+    },
+    {
+      "domain": "lowcarbonagricultureshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "inyourarea.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "broadstairsfoodfestival.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "legacy-global-uk": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "buckinghamshirelive.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thefromeindependent.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "visityorktown.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "colchester.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "worcestershow.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "durhammagazine.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "deerfield.il.us",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bbc.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "editorial_page_is_discovery_only": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "coventmarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "cotswoldfest.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "vtfarmersmarket.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "watfordmarket.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "oxford-rocks.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thebeekeepingshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "powderhamfoodfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "happyvalleynorfolk.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "sheptonmallet.nub.news",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nelincs.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "swbh.nhs.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "capetown.gov.za",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "boyne4thofjuly.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "suffolkvafarmersmarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "trybooking.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "chinacoat.net",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "markets.leeds.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "chiltondurham-tc.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "franchiseshowinfo.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stallfinder.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "megabiteevents.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "marketspread.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "craftykingfisher.wixsite.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "nationalcountryshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "londonbookfair.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "northerncollectiveevents.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "amazingaccrington.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "iowtakeover.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "meanwoodmarket.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "castledonington-pc.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "greenbriarpictureshows.blogspot.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lincolnshireworld.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "owambeconnect.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "cohunamarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "asri.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "northamptonchron.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "northumberland.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "re-markets.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "crafters.market",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "leightonbuzzardmarket.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lancashirebusinessview.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "urban-farmers-market.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "christmasinoxford.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "logandowntown.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "wwt.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "commcare.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "surreymarkets.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ymcanrt.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "hopetoun.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "farmbusinessshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "veganfairs.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "discover.kdf.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "danburyleisurecentre.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "dpcountryfair.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lovewimbledon.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy-global-uk": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "hawk-conservancy.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lancowomenforgood.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "liverpoolcoffeefestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "marketvendorpack.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "northleedsfoodfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "forms.regionofwaterloo.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "uk.linkedin.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "christie.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "visitcheshire.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "minoroak.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "visithorsham.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lakecumberlandfarmersmarket.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "cleecountry.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "urbanmarketsandevents.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "lep.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "isleofwight.gov",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "townofcentreville.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stourporttowncouncil.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "devoncountyshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "gecuk.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "wells.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "historicbethlehem.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ukfos.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thefold.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "pentictonscottishfestival.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "solskinfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "destinationsouthayrshire.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bristolgoodfood.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "hebceltfest.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "derbyshirechristmasfair.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "uniteworldwideinc.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "londonbridalexpo.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "carfest.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "platform_index_is_not_an_opportunity": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "obdm.com.au",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thirsksowerbyfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "vendelux.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 1,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "tendringshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "appelfarm.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stationeryshowlondon.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "midlandsmakers.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "buckleandboots.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "blackhorsebeamish.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "essexvt.gov",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "twyfordparishcouncil.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "leicester.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "curecoffeehouse.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "appleandgrape.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "truckfestival.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "cambridgefolkfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "emleyshow.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "north-norfolk.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ladnerfm.mymarket.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "soapladz.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "seas.org.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "heighingtonchristmasmarket.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "festevents.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "walescomiccon.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "brackleynorthants-tc.gov.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "cloverdale-ae.ca",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "linktr.ee",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "newport-carnival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ukponycon.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "uubedford.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "thaxtedfayretrust.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "sussexartfair.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bishopaucklandfoodfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bakewellahs.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "source_response_size_limit": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "malvernautumn.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 1,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "editorial_page_is_discovery_only": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "collectivecrop.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "eveshamobserver.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stroudfoodanddrink.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "ncwineandfood.co.nz",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "bensyard.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "hookednationalfishingfestival.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 0,
+      "quarantined": 0,
+      "awaiting_verification": 1,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "stampexinternational.com",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "single_event_source_data_missing": 1
+      },
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "northumberlandfairandeventgroup.co.uk",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {},
+      "origins": {
+        "legacy_v2": 1
+      },
+      "future_dated_selected": 0,
+      "proof_verified_country": 0
+    },
+    {
+      "domain": "abbfest.org",
+      "total": 1,
+      "customer_ready": 0,
+      "ready": 0,
+      "watch": 0,
+      "blocked": 1,
+      "quarantined": 0,
+      "awaiting_verification": 0,
+      "stale_expired": 0,
+      "missing_application_proof": 1,
+      "reasons": {
+        "event_content_scope_missing": 1
+      },
+      "origins": {
+        "independent-structured": 1
+      },
+      "future_dated_selected": 1,
+      "proof_verified_country": 0
+    }
+  ],
+  "blockers": [
+    {
+      "reason": "source_http_520",
+      "entities": 161
+    },
+    {
+      "reason": "single_event_source_data_missing",
+      "entities": 37
+    },
+    {
+      "reason": "open_vendor_application_not_proved",
+      "entities": 19
+    },
+    {
+      "reason": "event_application_route_missing_or_ambiguous",
+      "entities": 17
+    },
+    {
+      "reason": "selected_event_start_disagrees_with_proof",
+      "entities": 17
+    },
+    {
+      "reason": "selected_application_state_disagrees_with_proof",
+      "entities": 17
+    },
+    {
+      "reason": "event_content_scope_missing",
+      "entities": 15
+    },
+    {
+      "reason": "selected_event_end_disagrees_with_proof",
+      "entities": 10
+    },
+    {
+      "reason": "social_page_is_discovery_only",
+      "entities": 7
+    },
+    {
+      "reason": "editorial_page_is_discovery_only",
+      "entities": 6
+    },
+    {
+      "reason": "selected_organiser_disagrees_with_proof",
+      "entities": 6
+    },
+    {
+      "reason": "platform_index_is_not_an_opportunity",
+      "entities": 5
+    },
+    {
+      "reason": "vendor_application_not_proved",
+      "entities": 2
+    },
+    {
+      "reason": "source_country_market_mismatch",
+      "entities": 2
+    },
+    {
+      "reason": "invalid_structured_source_data",
+      "entities": 2
+    },
+    {
+      "reason": "source_response_size_limit",
+      "entities": 2
+    },
+    {
+      "reason": "event_cancelled_or_postponed",
+      "entities": 1
+    },
+    {
+      "reason": "application_restricted_audience_requires_review",
+      "entities": 1
+    },
+    {
+      "reason": "verified_country_missing",
+      "entities": 1
+    },
+    {
+      "reason": "selected_event_name_disagrees_with_proof",
+      "entities": 1
+    },
+    {
+      "reason": "source_http_404",
+      "entities": 1
+    }
+  ],
+  "uk_regions": [
+    {
+      "id": "gb/south-east",
+      "name": "South East",
+      "count": 89
+    },
+    {
+      "id": "gb/south-west",
+      "name": "South West",
+      "count": 34
+    },
+    {
+      "id": "gb/scotland",
+      "name": "Scotland",
+      "count": 2
+    }
+  ],
+  "latest_proof_counts": [
+    {
+      "profile": "eventbrite",
+      "status": "quarantine",
+      "records": 2
+    },
+    {
+      "profile": "eventeny",
+      "status": "partial",
+      "records": 1
+    },
+    {
+      "profile": "eventeny",
+      "status": "verified",
+      "records": 2
+    },
+    {
+      "profile": "generic",
+      "status": "quarantine",
+      "records": 18
+    },
+    {
+      "profile": "generic",
+      "status": "unverified",
+      "records": 203
+    },
+    {
+      "profile": "localstalls",
+      "status": "quarantine",
+      "records": 26
+    },
+    {
+      "profile": "localstalls",
+      "status": "unverified",
+      "records": 13
+    },
+    {
+      "profile": "localstalls",
+      "status": "verified",
+      "records": 1
+    },
+    {
+      "profile": "myntimage",
+      "status": "verified",
+      "records": 123
+    },
+    {
+      "profile": "uk_council_dated_form",
+      "status": "verified",
+      "records": 1
+    }
+  ],
+  "policy": {
+    "per_run": 4,
+    "per_hour": 100,
+    "per_day": 1000,
+    "bulk": 0,
+    "paused": 1,
+    "pilot_cap": 25
+  }
+}

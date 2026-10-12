@@ -761,3 +761,7 @@ Chris: use the canonical UK Finder Map tab; numbered pins select individual date
 ## 2026-10-12T13:55:30+01:00 — Codex: D-017 UK growth programme claimed
 
 V3-007 now covers the Codex-led UK programme in UK_GROWTH_ORDERS. Current task is diagnostic baseline → ranked growth plan → highest-value bounded execution. Claude retains producer code/host-kit ownership; concrete evidence-led requirements follow the census. UK paid discovery is authorised within existing caps; no queries or blanket resume performed in this claim. Public/Checkout, protected PitchList/V2 and separate gates stay unchanged.
+
+## 2026-10-12T14:08:51+01:00 — Codex: UK programme first checkpoint and execution choice
+
+[Measured census/ranked plan](../docs/findpitches-v3-uk-growth-plan-2026-10-12.md) published. UK127READY,96.85%Mynt;868commercial with major transport, current-application and stale/identity losses. Current public operator research12GETs/0paid finds7conditional CCA groups with active trader form. Execute conservative CCA multi-event bundle and geographic corroboration first. Claude/Pi requirements posted; producer ownership remains Claude’s, host changes/execution not claimed. Four-query UK-only paid pilot isproposed after convertible proof exists, within unchanged25/day andglobalcaps; no paid enablement yet.
