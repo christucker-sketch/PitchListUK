@@ -12,7 +12,7 @@ e9e4d8dbbbb5f936bceef3725bf7b91f52ccab9dde630779d3ec5489aa8d2248  ./bin/fpd-offs
 9ef9b6b1020b09b8fc1417bf67d08b697ccb9da2347275f4e591673fedcc36c0  ./bin/fpd-set-token
 f9ac309ab92d9517c583a7a2935e04f566ed95a27f46141c05665776a0c81888  ./bin/fpd-status
 e86daada56b3fbff55f63d98fe718f915e523b49c7fead6b268bbb669ae8e39f  ./bin/fpd-v3-feed
-e5abb64814c021f45d42e4dea7f52ffafed85521ccd6342647e036f2a5b2b4f0  ./bin/fpd-v3-prune
+9f95c36112cb44ec268d79fe680845406a2ee3cca6f1fb651fca95680b21d463  ./bin/fpd-v3-prune
 dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 0fe991441144dbcf4b32be9c733792cea2c1e357edb86ebad5e70d4c130cd714  ./config/constraints.txt
 97ed72a42093d94b25ebf6b3663c2d3fca9d3a2ae3ea35ef5b7cd227b6bdde6f  ./config/fpd.env
@@ -21,7 +21,7 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./delivery/producer-delivery.mjs
 6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./delivery/producer-delivery.test.mjs
 b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./delivery/producer-runner.mjs
-ddd6b453ebfa84338e224fe772c6ae2f80c9171168fe7418796f6614f29e37fb  ./fpd-app.tgz
+ff66b305f208a8d194a129c28c5e01403f9512dc3ec31f40aadb79275c4185e6  ./fpd-app.tgz
 8514409c03a3a137bfb4ffd481026ede8066023735f920f1b31150b9b759f79e  ./install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./lib/evidence.py
 be72e21a81f25777bfa44cdbd89e0955d3edd9f0f835c4b200dbd2e73aa49afb  ./systemd/fpd-acquire.service

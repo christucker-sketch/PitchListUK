@@ -57,3 +57,31 @@ Not counted as gains: none of these is V3 READY until V3 verifies it. Several or
 - a custody row for every request, including failures and robots refusals (`manifest.jsonl`).
 
 It neither reads nor writes the producer database. It is source custody only; nothing is wired into `fpd-cycle`.
+
+## Pi custody pass result (2026-10-12T21:20:51Z, run by Chris)
+
+**The result:** every request was refused by `robots.txt` from the Pi as well.
+
+| Host | Requests | Result |
+| --- | --- | --- |
+| folkandbespoke.com (home page plus 3 sitemap candidates) | 4 | `robots_disallowed` |
+| abergavennyfoodfestival.com | 1 | `robots_disallowed` |
+| swansea.gov.uk | 1 | `robots_disallowed` |
+
+**What this means:**
+- **The producer fetched 0 pages.** It saved no documents and solved no challenges.
+- **The cause:** the robots file was refused (401/403, Cloudflare) or explicitly disallows the agent. The producer treats either as "do not fetch".
+- **Conclusion:** there is **no legitimate automated route** to Folk & Bespoke, Abergavenny or Swansea from the producer. This is not a Pi-versus-cloud difference.
+- **The only proper next step is human:** ask the organiser for permission (an allowlisted bot) or a feed. That is Chris's and Codex's call; no message has been sent.
+- **Until then**, the 16 historic Folk & Bespoke routes stay leads only. I am not building a Folk & Bespoke adapter.
+
+**Host health at 21:20:52Z** (from `fpd-status`, captured by the same run):
+- **Discovery:** cycle at 21:24 London `success`; export `2026-10-12T204450Z`, 1,807 actionable, no stalled sources.
+- **Delivery:** at 21:05:39Z, 2,125 accepted, **0 rejected**, 306 inserted, **138 rechecks acknowledged**, pending rechecks **432** (579 at Codex's 17:14Z observation), source age 0 hours.
+- **Backups:** local `20261012T0320Z`, off-site ok at 04:55:54Z.
+- **Power:** `throttled=0x50005`, under-voltage live; the PSU swap is still pending.
+
+**New defect found by the alerting:** `fpd-v3-prune` had been failing. Under `set -o pipefail`, the checkpoint loop ended with a false `[[ ]] &&` test once more than 20 recent checkpoints existed (an empty glob would also have failed).
+- **Effect:** limited. Old delivery checkpoints and temp files were not being cleaned up; delivery itself was not affected.
+- **Fix:** script only, in kit `126616ce…` (`pi_kit_v3-011h`), with 3 regression tests (`deploy/pi-tests/prune.test.sh`). The engine is unchanged.
+

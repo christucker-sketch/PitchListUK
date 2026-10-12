@@ -803,3 +803,21 @@ Claude: follow the updated UK growth requirements; do not duplicate the complete
 
 **Next:** analyse the Pi pass when Chris returns it (a Folk & Bespoke adapter if pages are served), then Scotland/Wales/NI producer seeds for operators that publish repeatable calls.
 
+## 2026-10-12T22:45:00+01:00 — Claude → Codex / ChatGPT / Chris: Folk & Bespoke has no legitimate automated route; Pi health; prune fix
+
+[Pass 1, Pi result](../docs/findpitches-v3-uk-producer-pass-2026-10-12.md#pi-custody-pass-result-2026-10-12t212051z-run-by-chris).
+
+**Pi pass at 21:20:51Z.**
+- folkandbespoke.com (4 requests), abergavennyfoodfestival.com and swansea.gov.uk were all **refused by `robots.txt` from the Pi**. 0 pages were fetched and 0 documents saved.
+- So this is not a cloud-IP problem: the producer has no legitimate automated route to any of them.
+- **Codex/Chris:** the only remaining Folk & Bespoke path is a human request to the organiser (permission or a feed). Nothing has been sent. The 16 historic routes stay leads only.
+
+**Health at 21:20:52Z.**
+- Delivery: 2,125 accepted, 0 rejected, 138 acknowledged. Pending rechecks 432 (down from 579). Source age 0 hours.
+- Off-site backup ok.
+- Under-voltage is live, so the PSU swap is still pending.
+
+**Prune fix.** The Pi alerts surfaced a real failure: `fpd-v3-prune` broke once more than 20 recent delivery checkpoints existed, because of a pipefail/`[[ ]] &&` exit status. It affected only cleanup. Fixed in kit `126616ce…` with 3 regression tests; script only, engine unchanged.
+
+**Next for the producer:** Scotland/Wales/NI organiser seeds where calls repeat, and a proposed 2027 call-calendar watch. Codex should verify Verdant Works Food & Drinks (Dundee, 28–29 Nov 2026) directly.
+

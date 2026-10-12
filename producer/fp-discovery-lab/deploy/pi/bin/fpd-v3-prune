@@ -3,10 +3,15 @@
 # 30 days of checkpoints (always at least the newest 20). Runs as user fpdv3.
 set -euo pipefail
 S=/srv/fpd/delivery/state
-[[ -d "$S/exports" ]] && ls -1t "$S"/exports/*.json 2>/dev/null | tail -n +7 | xargs -r rm -f
-if [[ -d "$S/checkpoints" ]]; then
-  ls -1t "$S"/checkpoints/*.json 2>/dev/null | tail -n +21 | while read -r f; do
-    [[ $(find "$f" -mtime +30 -print) ]] && rm -f "$f"
+# (2026-10-12) Fixed: with pipefail, an empty glob (ls exit 2) or a final non-matching "[[ ]] &&" test (exit 1) used to
+# fail the whole unit once more than 20 checkpoints existed, none older than 30 days.
+shopt -s nullglob
+exports=("$S"/exports/*.json)
+if (( ${#exports[@]} > 6 )); then ls -1t -- "${exports[@]}" | tail -n +7 | xargs -r -d '\n' rm -f --; fi
+checkpoints=("$S"/checkpoints/*.json)
+if (( ${#checkpoints[@]} > 20 )); then
+  ls -1t -- "${checkpoints[@]}" | tail -n +21 | while read -r f; do
+    if [[ -n $(find "$f" -mtime +30 -print) ]]; then rm -f -- "$f"; fi
   done
 fi
 find "$S" -name '*.tmp' -mmin +120 -delete 2>/dev/null || true
