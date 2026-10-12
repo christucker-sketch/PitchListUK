@@ -1,7 +1,7 @@
 {
   "schema": "findpitches-v3-live-provider-checkpoint-v1",
-  "as_of": "2026-10-12T12:00:00+01:00",
-  "release_state": "PUBLIC_AND_CHECKOUT_LIVE_SCOPED_UX_PASS_VERIFIED_OWNED_BILLING_ACCEPTANCE_PENDING",
+  "as_of": "2026-10-12T13:36:14+01:00",
+  "release_state": "UK_VENUE_MAP_LIVE_CHECKOUT_RESTORED",
   "authority": [
     "D-014",
     "D-016",
@@ -66,7 +66,7 @@
   },
   "native_validation": {
     "schema": "findpitches-v3-native-live-provider-preflight-v1",
-    "as_of": "2026-10-12T10:53:45.860Z",
+    "as_of": "2026-10-12T12:30:26.232Z",
     "billing": {
       "status": 200,
       "data": {
@@ -168,12 +168,12 @@
       "stripe_customer_mappings": 0,
       "subscriptions": 0,
       "checkout_attempts": 0,
-      "webhook_receipts": 2
+      "webhook_receipts": 5
     },
     "native_mail_binding_present": true,
-    "deployment_id": "8ebbb509-9704-416e-9dcf-cba3974807b8",
+    "deployment_id": "75ec712b-a563-40fa-b7af-a8a1cae1d036",
     "version_ids": [
-      "e351d86b-eb77-4b59-badd-4d4eeb682684"
+      "d8b12c2b-b0ab-4f77-beeb-bd182d17a133"
     ],
     "flags": {
       "V3_ACCOUNT_RECOVERY_ENABLED": "true",
@@ -195,7 +195,7 @@
       }
     ],
     "pitchlist": {
-      "as_of": "2026-10-12T10:53:45.859Z",
+      "as_of": "2026-10-12T12:30:26.230Z",
       "homepage_status": 200,
       "brand_present": true,
       "pages_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
@@ -210,15 +210,15 @@
     "messages_sent": 0
   },
   "source_health": {
-    "as_of": "2026-10-12T10:53:42.830Z",
+    "as_of": "2026-10-12T12:30:21.938Z",
     "safety": {
       "publication_enabled": 0,
       "customer_projection_rows": 0,
       "publication_queue_rows": 0,
-      "due_jobs": 5,
-      "leased_jobs": 1,
+      "due_jobs": 2,
+      "leased_jobs": 0,
       "dead_jobs": 0,
-      "future_jobs": 9236,
+      "future_jobs": 9230,
       "paid_queries_today": 0,
       "paid_bulk_enabled": 0,
       "global_query_limit": 1000,
@@ -229,52 +229,58 @@
       "cloud_ready": true,
       "expected_interval_seconds": 900,
       "contact_observation_started": true,
-      "last_authenticated_recheck_poll": "2026-10-12T10:40:24.940Z",
+      "last_authenticated_recheck_poll": "2026-10-12T12:19:22.252Z",
       "expected_discovery_interval_seconds": 10800,
       "expected_export_lag_seconds": 3600,
       "recent_poll_intervals_seconds": [
-        909.63,
-        910.268,
-        907.412
+        938.69,
+        1357.585,
+        910.259
       ],
       "host_recently_contacting": true,
-      "cadence_verified": true,
+      "cadence_verified": false,
       "freshness_warning": false,
-      "immutable_receipts": 9504,
-      "producer_ids": 2125,
-      "last_new_receipt_at": "2026-10-12T08:54:03.147Z",
-      "source_last_checked": "2026-10-12T08:33:55Z",
+      "immutable_receipts": 9813,
+      "producer_ids": 2126,
+      "last_new_receipt_at": "2026-10-12T11:47:46.353Z",
+      "source_last_checked": "2026-10-12T11:34:54Z",
       "rechecks": {
-        "pending_entities": 259,
+        "pending_entities": 383,
         "fresh_evidence_ack_eligible": 0,
         "by_country": [
           {
             "market": "AU",
-            "pending_entities": 1,
+            "pending_entities": 12,
             "oldest_requested_at": "2026-10-09T13:27:04.255Z",
             "fresh_evidence_ack_eligible": 0
           },
           {
             "market": "CA",
-            "pending_entities": 1,
+            "pending_entities": 2,
             "oldest_requested_at": "2026-10-09T18:44:04.688Z",
             "fresh_evidence_ack_eligible": 0
           },
           {
             "market": "GB",
-            "pending_entities": 60,
+            "pending_entities": 28,
             "oldest_requested_at": "2026-10-09T13:33:17.963Z",
             "fresh_evidence_ack_eligible": 0
           },
           {
+            "market": "NZ",
+            "pending_entities": 16,
+            "oldest_requested_at": "2026-10-12T10:57:45.276Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
             "market": "US",
-            "pending_entities": 197,
+            "pending_entities": 325,
             "oldest_requested_at": "2026-10-08T15:03:36.957Z",
             "fresh_evidence_ack_eligible": 0
           }
         ],
-        "acknowledged_last_24h": 2211,
-        "latest_acknowledgement": "2026-10-12T08:54:36.756Z",
+        "acknowledged_last_24h": 2215,
+        "latest_acknowledgement": "2026-10-12T12:04:21.875Z",
         "obsolete_requests_resolved": 2,
         "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
         "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
@@ -286,7 +292,7 @@
   },
   "preservation": {
     "schema": "findpitches-v3-customer-preview-preservation-v1",
-    "as_of": "2026-10-12T10:39:36.198Z",
+    "as_of": "2026-10-12T12:24:03.662Z",
     "receipts_compared": 15811,
     "source_facts_compared": 108819,
     "existing_identities_compared": 7077,
@@ -382,12 +388,9 @@
   },
   "validation": {
     "full_v3": {
-      "passed": 268,
+      "passed": 274,
       "failed": 0,
-      "skipped": 0,
-      "as_of": "2026-10-12T10:29:56.483176+00:00",
-      "source_commit": "b72a4828",
-      "scope": "Final V3-013 runtime code suite."
+      "skipped": 0
     },
     "production_focused": {
       "passed": 17,
@@ -817,6 +820,331 @@
       "as_of": "2026-10-12T10:37:17.536156+00:00",
       "observation_completed": true,
       "acceptance_passed": true
+    },
+    "public_smoke": {
+      "schema": "findpitches-v3-public-smoke-v1",
+      "started_at": "2026-10-12T12:17:04.544Z",
+      "passed": true,
+      "checks": [
+        {
+          "name": "json_/health",
+          "passed": true
+        },
+        {
+          "name": "public_production_health",
+          "passed": true
+        },
+        {
+          "name": "owned_homepage_/",
+          "passed": true
+        },
+        {
+          "name": "truthful_homepage_/",
+          "passed": true
+        },
+        {
+          "name": "owned_homepage_/index.html",
+          "passed": true
+        },
+        {
+          "name": "truthful_homepage_/index.html",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/session",
+          "passed": true
+        },
+        {
+          "name": "anonymous_free_no_alert_delivery",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/opportunities",
+          "passed": true
+        },
+        {
+          "name": "GB_real_ready_redacted",
+          "passed": true
+        },
+        {
+          "name": "GB_no_duplicate_or_held_identity",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/opportunities",
+          "passed": true
+        },
+        {
+          "name": "US_real_ready_redacted",
+          "passed": true
+        },
+        {
+          "name": "US_no_duplicate_or_held_identity",
+          "passed": true
+        },
+        {
+          "name": "public_event_identity_indexable",
+          "passed": true
+        },
+        {
+          "name": "held_ent_dda1403e0c99eb5b1c1871f37c325cb2",
+          "passed": true
+        },
+        {
+          "name": "held_ent_93d86b9d0147d8aa91ea8eea541d86b8",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/account.html",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/pricing.html",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/alerts.html",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/billing/plans",
+          "passed": true
+        },
+        {
+          "name": "global_eur_price_checkout_closed",
+          "passed": true
+        },
+        {
+          "name": "unsafe_signin_csrf_rejected",
+          "passed": true
+        },
+        {
+          "name": "operator_private",
+          "passed": true
+        },
+        {
+          "name": "preview_provisioning_unavailable",
+          "passed": true
+        },
+        {
+          "name": "unsigned_live_webhook_rejected",
+          "passed": true
+        },
+        {
+          "name": "public_robots_private_paths",
+          "passed": true
+        },
+        {
+          "name": "proof_filtered_sitemap",
+          "passed": true
+        },
+        {
+          "name": "www_redirect_to_owned_apex",
+          "passed": true
+        }
+      ],
+      "country_counts": {
+        "GB": 127,
+        "US": 1649
+      },
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "certificate_bypass": false,
+      "as_of": "2026-10-12T12:17:29.826Z"
+    },
+    "venue_map_browser": {
+      "schema": "findpitches-v3-venue-map-browser-v1",
+      "scope": "actual_public",
+      "passed": true,
+      "checks": [
+        {
+          "name": "desktop_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "desktop_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "desktop_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "desktop_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "desktop_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "desktop_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "desktop_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "desktop_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "desktop_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "desktop_whole_uk_option",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "desktop_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "desktop_no_script_errors_or_foreign_requests",
+          "passed": true
+        },
+        {
+          "name": "mobile_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "mobile_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "mobile_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "mobile_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "mobile_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "mobile_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "mobile_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "mobile_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "mobile_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "mobile_whole_uk_option",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "mobile_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "mobile_no_script_errors_or_foreign_requests",
+          "passed": true
+        }
+      ],
+      "samples": [
+        {
+          "device": "desktop",
+          "uk_total": 127,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 4,
+          "page_errors": 0,
+          "foreign_requests": 0
+        },
+        {
+          "device": "mobile",
+          "uk_total": 127,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 4,
+          "page_errors": 0,
+          "foreign_requests": 0
+        }
+      ],
+      "certificate_bypass": false,
+      "synthetic_points": 0,
+      "serper_queries": 0,
+      "customer_provider_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-12T12:33:54.230472+00:00"
+    },
+    "after_checkout_restore": {
+      "as_of": "2026-10-12T12:30:08.987Z",
+      "passed": true,
+      "checks": [
+        {
+          "name": "homepage_remains_html",
+          "passed": true
+        },
+        {
+          "name": "global_live_checkout_restored",
+          "passed": true
+        },
+        {
+          "name": "uk_real_markers_after_flag_restore",
+          "passed": true
+        },
+        {
+          "name": "free_source_routes_stay_locked",
+          "passed": true
+        },
+        {
+          "name": "alerts_remain_disabled",
+          "passed": true
+        }
+      ],
+      "uk_total": 127,
+      "coordinate_opportunities": 123,
+      "venue_markers": 12,
+      "checkout_enabled": true,
+      "serper_queries": 0,
+      "provider_objects_created": 0,
+      "messages_sent": 0
     }
   },
   "native_bundle_sha256": "c8450c0b8b8566f8fc05ffd086cb059cd2aa8abd2b361e9c67f464a494c0f0ed",
@@ -908,5 +1236,6 @@
     "test_mode_is_not_live_acceptance": true,
     "unowned_receipts_are_not_owned_acceptance": true
   },
-  "current_ux_report": "post-launch-ux-2026-10-12.json"
+  "current_ux_report": "post-launch-ux-2026-10-12.json",
+  "current_map_report": "operations/findpitches-v3/reports/venue-map-2026-10-12.json"
 }

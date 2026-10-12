@@ -1,8 +1,31 @@
 """Anonymous map acceptance against owned public origin or a local proof fixture."""
-import argparse, datetime, json, os
+import argparse, datetime, hashlib, json, os, sqlite3, ssl, tempfile
 from pathlib import Path
 from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright
+
+def verified_public_context(playwright,proxy,viewport):
+    # Import only the CA already trusted by this environment, constrained to
+    # the two owned public hostnames in a disposable anonymous profile. No
+    # system trust edit, certificate bypass or user profile/cookie reuse.
+    ca=Path('/usr/local/share/ca-certificates/environment-proxy-ca.crt')
+    assert os.environ.get('NODE_EXTRA_CA_CERTS')==str(ca),'existing_environment_ca_required'
+    der=ssl.PEM_cert_to_DER_cert(ca.read_text())
+    assert der in ssl.create_default_context(cafile=os.environ['SSL_CERT_FILE']).get_ca_certs(binary_form=True),'environment_ca_must_already_be_trusted'
+    profile=Path(tempfile.mkdtemp(prefix='venue-map-browser-',dir='/workspace/.pitchlist-cloud'));profile.chmod(0o700)
+    options={'executable_path':'/usr/bin/chromium','proxy':proxy,'viewport':viewport,'reduced_motion':'reduce'}
+    initial=playwright.chromium.launch_persistent_context(str(profile),**options);initial.close()
+    database=profile/'Default/ServerCertificate';assert database.exists(),'chromium_certificate_database_required'
+    names=['findpitches.com','www.findpitches.com']
+    def message(tag,data):
+        length=len(data);encoded=bytearray()
+        while length>127:encoded.append((length&127)|128);length>>=7
+        encoded.append(length);return bytes([tag])+bytes(encoded)+data
+    metadata=message(0x0a,b'\x08\x03')+message(0x12,b''.join(message(0x0a,n.encode()) for n in names))
+    with sqlite3.connect(database) as db:
+        assert [r[1] for r in db.execute('PRAGMA table_info(certificates)')]==['sha256hash_hex','der_cert','trust_settings'],'supported_chromium_certificate_schema_required'
+        db.execute('INSERT OR REPLACE INTO certificates VALUES (?,?,?)',(hashlib.sha256(der).hexdigest(),der,metadata))
+    return playwright.chromium.launch_persistent_context(str(profile),**options)
 
 def main():
     parser=argparse.ArgumentParser()
@@ -25,17 +48,17 @@ def main():
     def payload(response):
         data=response.json();assert response.status==200 and data['ok'];return data
     with sync_playwright() as p:
-        browser=p.chromium.launch(executable_path='/usr/bin/chromium',**({'proxy':proxy} if proxy else {}))
+        browser=None if proxy else p.chromium.launch(executable_path='/usr/bin/chromium')
         try:
             for device,viewport in [('desktop',{'width':1440,'height':1000}),('mobile',{'width':390,'height':844})]:
-                context=browser.new_context(viewport=viewport,reduced_motion='reduce');page=context.new_page();errors=[];foreign=[]
+                context=verified_public_context(p,proxy,viewport) if proxy else browser.new_context(viewport=viewport,reduced_motion='reduce');page=context.new_page();errors=[];foreign=[]
                 page.on('pageerror',lambda _:errors.append('page_error'))
                 def route(r):
                     if r.request.url.startswith(base+'/') or r.request.url.startswith('data:'):r.continue_()
                     else:foreign.append(urlsplit(r.request.url).hostname);r.abort()
                 context.route('**/*',route)
                 with page.expect_response(search_response,timeout=90000) as response:
-                    page.goto(base+'/finder.html?cc=uk&view=map',wait_until='domcontentloaded',timeout=90000)
+                    page.goto(base+'/uk/find-pitches/?view=map',wait_until='domcontentloaded',timeout=90000)
                 data=payload(response.value);page.locator('#map .pin').first.wait_for(state='visible',timeout=90000)
                 points=data['map_points'];locations={(p['lat'],p['lng']) for p in points};pins=page.locator('#map .pin')
                 check(device+'_real_source_points',len(points)>0 and len({p['id'] for p in points})==len(points))
@@ -67,13 +90,14 @@ def main():
                     page.locator('#q').fill('no venue matches this token v3-014');page.get_by_role('button',name='Search',exact=True).click()
                 empty=payload(response.value);page.locator('#list .zero').wait_for(state='attached')
                 check(device+'_zero_results_clear_markers',empty['total']==0 and not empty['map_points'] and page.locator('#map .pin').count()==0)
-                with page.expect_response(search_response,timeout=90000):page.goto(base+'/finder.html?cc=us&view=map',wait_until='domcontentloaded',timeout=90000)
+                with page.expect_response(search_response,timeout=90000):page.goto(base+'/us/find-pitches/?view=map',wait_until='domcontentloaded',timeout=90000)
                 page.locator('#map .st').first.wait_for(state='attached',timeout=90000)
                 check(device+'_us_state_coverage_preserved',page.locator('#map .st').count()>=50)
                 check(device+'_no_script_errors_or_foreign_requests',not errors and not foreign)
                 samples.append({'device':device,'uk_total':data['total'],'coordinate_opportunities':len(points),'venue_markers':len(locations),'unpinned':unpinned,'page_errors':len(errors),'foreign_requests':len(foreign)})
                 context.close();save()
             report['passed']=True;save();print(json.dumps(report))
-        finally:browser.close()
+        finally:
+            if browser:browser.close()
 
 if __name__=='__main__':main()

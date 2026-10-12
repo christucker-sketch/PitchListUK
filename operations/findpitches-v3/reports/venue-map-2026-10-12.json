@@ -1,0 +1,1016 @@
+{
+  "schema": "findpitches-v3-venue-map-readiness-v1",
+  "as_of": "2026-10-12T13:36:14+01:00",
+  "runtime_source_commit": "83fbbc6f404a8631fd7693b371a68db3bdfeb35d",
+  "state": "UK_VENUE_MAP_LIVE_CHECKOUT_RESTORED",
+  "authority": "Chris authorizes V3-014 map work; D-014/D-016 existing public runtime retained.",
+  "uk_inventory": {
+    "device": "desktop",
+    "uk_total": 127,
+    "coordinate_opportunities": 123,
+    "venue_markers": 12,
+    "unpinned": 4,
+    "page_errors": 0,
+    "foreign_requests": 0
+  },
+  "coordinate_policy": "source-venue-coordinate-v1",
+  "ready_gained_by_map_work": 0,
+  "retained_evidence_correction": "Earlier no-GB-coordinate claim omitted Mynt venue_coordinate_country_proof evidence. 123 eligible UK opportunities already retained exact official venue pins, corroborated within 100m; this work restores their delivery, not new location guesses.",
+  "method": {
+    "source_visits_for_this_task": 0,
+    "retained_documents_reparsed_read_only": 4,
+    "identity_or_source_fact_writes": 0,
+    "new_d1_migrations": 0,
+    "paid_geocoding_requests": 0,
+    "serper_queries": 0,
+    "future_verification": "Exact event.location.geo or matched official Mynt directions; bind to source country/location, reject conflicting duplicates/invalid/approximate positions. Unknown coordinates stay unpinned.",
+    "us": "Original state shading retained; no US venue pins invented.",
+    "retained_mynt_pin_projection": "Current verified READY only, same source clock, proof expiry, revision and producer holds."
+  },
+  "validation": {
+    "full_v3": {
+      "passed": 274,
+      "failed": 0,
+      "skipped": 0
+    },
+    "focused": {
+      "passed": 53,
+      "failed": 0
+    },
+    "frontend": {
+      "passed": 3,
+      "independence_passed": true
+    },
+    "boundaries_passed": true,
+    "local_map": {
+      "schema": "findpitches-v3-venue-map-browser-v1",
+      "scope": "local_retained_proof_fixture",
+      "passed": true,
+      "checks": [
+        {
+          "name": "desktop_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "desktop_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "desktop_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "desktop_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "desktop_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "desktop_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "desktop_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "desktop_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "desktop_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "desktop_whole_uk_option",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "desktop_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "desktop_no_script_errors_or_foreign_requests",
+          "passed": true
+        },
+        {
+          "name": "mobile_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "mobile_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "mobile_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "mobile_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "mobile_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "mobile_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "mobile_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "mobile_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "mobile_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "mobile_whole_uk_option",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "mobile_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "mobile_no_script_errors_or_foreign_requests",
+          "passed": true
+        }
+      ],
+      "samples": [
+        {
+          "device": "desktop",
+          "uk_total": 127,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 4,
+          "page_errors": 0,
+          "foreign_requests": 0
+        },
+        {
+          "device": "mobile",
+          "uk_total": 127,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 4,
+          "page_errors": 0,
+          "foreign_requests": 0
+        }
+      ],
+      "certificate_bypass": false,
+      "synthetic_points": 0,
+      "serper_queries": 0,
+      "customer_provider_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-12T12:10:45.242186+00:00"
+    },
+    "public_map_checkout_disabled": {
+      "schema": "findpitches-v3-venue-map-browser-v1",
+      "scope": "actual_public",
+      "passed": true,
+      "checks": [
+        {
+          "name": "desktop_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "desktop_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "desktop_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "desktop_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "desktop_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "desktop_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "desktop_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "desktop_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "desktop_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "desktop_whole_uk_option",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "desktop_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "desktop_no_script_errors_or_foreign_requests",
+          "passed": true
+        },
+        {
+          "name": "mobile_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "mobile_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "mobile_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "mobile_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "mobile_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "mobile_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "mobile_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "mobile_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "mobile_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "mobile_whole_uk_option",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "mobile_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "mobile_no_script_errors_or_foreign_requests",
+          "passed": true
+        }
+      ],
+      "samples": [
+        {
+          "device": "desktop",
+          "uk_total": 127,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 4,
+          "page_errors": 0,
+          "foreign_requests": 0
+        },
+        {
+          "device": "mobile",
+          "uk_total": 127,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 4,
+          "page_errors": 0,
+          "foreign_requests": 0
+        }
+      ],
+      "certificate_bypass": false,
+      "synthetic_points": 0,
+      "serper_queries": 0,
+      "customer_provider_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-12T12:21:13.473540+00:00"
+    },
+    "public_map_checkout_enabled_canonical_routes": {
+      "schema": "findpitches-v3-venue-map-browser-v1",
+      "scope": "actual_public",
+      "passed": true,
+      "checks": [
+        {
+          "name": "desktop_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "desktop_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "desktop_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "desktop_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "desktop_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "desktop_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "desktop_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "desktop_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "desktop_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "desktop_whole_uk_option",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "desktop_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "desktop_no_script_errors_or_foreign_requests",
+          "passed": true
+        },
+        {
+          "name": "mobile_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "mobile_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "mobile_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "mobile_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "mobile_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "mobile_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "mobile_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "mobile_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "mobile_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "mobile_whole_uk_option",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "mobile_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "mobile_no_script_errors_or_foreign_requests",
+          "passed": true
+        }
+      ],
+      "samples": [
+        {
+          "device": "desktop",
+          "uk_total": 127,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 4,
+          "page_errors": 0,
+          "foreign_requests": 0
+        },
+        {
+          "device": "mobile",
+          "uk_total": 127,
+          "coordinate_opportunities": 123,
+          "venue_markers": 12,
+          "unpinned": 4,
+          "page_errors": 0,
+          "foreign_requests": 0
+        }
+      ],
+      "certificate_bypass": false,
+      "synthetic_points": 0,
+      "serper_queries": 0,
+      "customer_provider_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-12T12:33:54.230472+00:00"
+    },
+    "public_api_security_seo": {
+      "schema": "findpitches-v3-public-smoke-v1",
+      "started_at": "2026-10-12T12:17:04.544Z",
+      "passed": true,
+      "checks": [
+        {
+          "name": "json_/health",
+          "passed": true
+        },
+        {
+          "name": "public_production_health",
+          "passed": true
+        },
+        {
+          "name": "owned_homepage_/",
+          "passed": true
+        },
+        {
+          "name": "truthful_homepage_/",
+          "passed": true
+        },
+        {
+          "name": "owned_homepage_/index.html",
+          "passed": true
+        },
+        {
+          "name": "truthful_homepage_/index.html",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/session",
+          "passed": true
+        },
+        {
+          "name": "anonymous_free_no_alert_delivery",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/opportunities",
+          "passed": true
+        },
+        {
+          "name": "GB_real_ready_redacted",
+          "passed": true
+        },
+        {
+          "name": "GB_no_duplicate_or_held_identity",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/opportunities",
+          "passed": true
+        },
+        {
+          "name": "US_real_ready_redacted",
+          "passed": true
+        },
+        {
+          "name": "US_no_duplicate_or_held_identity",
+          "passed": true
+        },
+        {
+          "name": "public_event_identity_indexable",
+          "passed": true
+        },
+        {
+          "name": "held_ent_dda1403e0c99eb5b1c1871f37c325cb2",
+          "passed": true
+        },
+        {
+          "name": "held_ent_93d86b9d0147d8aa91ea8eea541d86b8",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/account.html",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/pricing.html",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/alerts.html",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/billing/plans",
+          "passed": true
+        },
+        {
+          "name": "global_eur_price_checkout_closed",
+          "passed": true
+        },
+        {
+          "name": "unsafe_signin_csrf_rejected",
+          "passed": true
+        },
+        {
+          "name": "operator_private",
+          "passed": true
+        },
+        {
+          "name": "preview_provisioning_unavailable",
+          "passed": true
+        },
+        {
+          "name": "unsigned_live_webhook_rejected",
+          "passed": true
+        },
+        {
+          "name": "public_robots_private_paths",
+          "passed": true
+        },
+        {
+          "name": "proof_filtered_sitemap",
+          "passed": true
+        },
+        {
+          "name": "www_redirect_to_owned_apex",
+          "passed": true
+        }
+      ],
+      "country_counts": {
+        "GB": 127,
+        "US": 1649
+      },
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "certificate_bypass": false,
+      "as_of": "2026-10-12T12:17:29.826Z"
+    },
+    "after_checkout_restore": {
+      "as_of": "2026-10-12T12:30:08.987Z",
+      "passed": true,
+      "checks": [
+        {
+          "name": "homepage_remains_html",
+          "passed": true
+        },
+        {
+          "name": "global_live_checkout_restored",
+          "passed": true
+        },
+        {
+          "name": "uk_real_markers_after_flag_restore",
+          "passed": true
+        },
+        {
+          "name": "free_source_routes_stay_locked",
+          "passed": true
+        },
+        {
+          "name": "alerts_remain_disabled",
+          "passed": true
+        }
+      ],
+      "uk_total": 127,
+      "coordinate_opportunities": 123,
+      "venue_markers": 12,
+      "checkout_enabled": true,
+      "serper_queries": 0,
+      "provider_objects_created": 0,
+      "messages_sent": 0
+    },
+    "tls": "Existing environment CA copied only to disposable anonymous Chromium profiles with exact findpitches.com/www.findpitches.com DNS constraints; no certificate bypass, system trust change or HOME override."
+  },
+  "release": {
+    "as_of": "2026-10-12T12:16:10.815Z",
+    "worker": "findpitches-v3-customer-production",
+    "release_method": "version_upload_and_deploy",
+    "deployment_id": "82387d2a-e1a2-4cb9-8ec7-7a7843e91199",
+    "version_ids": [
+      "54b09031-740e-4022-b726-292d729b0c03"
+    ],
+    "checkout_enabled": false,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "all_native_bindings_and_settings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "pitchlist_unchanged": true,
+    "database_migrations": 0,
+    "secret_values_replaced": false,
+    "source_identity_writes": 0
+  },
+  "checkout_reopen": {
+    "as_of": "2026-10-12T12:26:55.654Z",
+    "stage": "checkout",
+    "worker": "findpitches-v3-customer-production",
+    "public_enabled": true,
+    "checkout_enabled": true,
+    "routes": [
+      {
+        "id": "8fe7bac98b2c47799cefa8e2e8bb1c64",
+        "pattern": "www.findpitches.com/*",
+        "script": "findpitches-v3-customer-production"
+      },
+      {
+        "id": "6d76d649e5904df6a90e53a36573a3eb",
+        "pattern": "findpitches.com/*",
+        "script": "findpitches-v3-customer-production"
+      }
+    ],
+    "unrelated_bindings_preserved": true,
+    "pitchlist_healthy": true,
+    "dns_mutations": 0,
+    "pages_mutations": 0,
+    "deployment_id": "75ec712b-a563-40fa-b7af-a8a1cae1d036",
+    "version_ids": [
+      "d8b12c2b-b0ab-4f77-beeb-bd182d17a133"
+    ]
+  },
+  "shadow_releases": [
+    {
+      "role": "api",
+      "version_id": "a532143e-bd97-4aa2-b8d3-3b1dfefbc9e8",
+      "deployment_id": "1c1f6055-859b-4127-aa89-ec9950376bcc",
+      "completed_at": "2026-10-12T12:11:09.072Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "enrichment",
+      "version_id": "d26d6993-79e0-469f-9a1c-d8555b0890f9",
+      "deployment_id": "879b9b09-9661-4bef-b228-4c25f046ebe4",
+      "completed_at": "2026-10-12T12:12:09.669Z",
+      "bindings_and_schedules_preserved": true
+    }
+  ],
+  "native_validation": {
+    "schema": "findpitches-v3-native-live-provider-preflight-v1",
+    "as_of": "2026-10-12T12:30:26.232Z",
+    "billing": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "provider": "stripe",
+        "mode": "live",
+        "credential_validated": true,
+        "product_id": "prod_VQF2oqHreWwhOj",
+        "prices": [
+          {
+            "id": "price_1UPOYoEIdSfbjtdokwYZebsp",
+            "currency": "GBP",
+            "amount": 499,
+            "interval": "month"
+          },
+          {
+            "id": "price_1UPOYoEIdSfbjtdoDVzOaxpQ",
+            "currency": "USD",
+            "amount": 699,
+            "interval": "month"
+          },
+          {
+            "id": "price_1UPOYoEIdSfbjtdov30fVN2j",
+            "currency": "EUR",
+            "amount": 599,
+            "interval": "month"
+          }
+        ],
+        "portal_id": "bpc_1UPOZ7EIdSfbjtdoUSK1A5h9",
+        "portal_cancel_at_period_end": true,
+        "webhook_secret_configured": true,
+        "entitlement": "global",
+        "trial_days": 7,
+        "checkout_enabled": true,
+        "customer_objects_created": 0
+      }
+    },
+    "email": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "provider": "smtp2go",
+        "sender": "hello@findpitches.com",
+        "credential_validated": true,
+        "sender_domain_verified": true,
+        "emails_sent": 0
+      }
+    },
+    "preflight": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "mode": "production_public",
+        "public_enabled": true,
+        "billing_mode": "live",
+        "checkout_enabled": true,
+        "ready": 1782,
+        "ready_by_country": {
+          "GB": 127,
+          "US": 1649,
+          "CA": 0,
+          "AU": 2,
+          "IE": 0,
+          "NZ": 4,
+          "SG": 0,
+          "HK": 0
+        },
+        "email_configured": true,
+        "counts": {
+          "customers": 0,
+          "pending_webhooks": 0
+        }
+      }
+    },
+    "health": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "service": "findpitches-v3-customer-production",
+        "mode": "production_public",
+        "publication_enabled": true,
+        "production_cutover_enabled": true,
+        "frontend": "Claude Build 4",
+        "frontend_source_sha256": "24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05"
+      }
+    },
+    "operator_unauthorized": {
+      "status": 403,
+      "data": {
+        "ok": false,
+        "error": "forbidden",
+        "message": "Please check your request and try again."
+      }
+    },
+    "operator_unauthorized_status": 403,
+    "nashville_eligible": 0,
+    "production_counts": {
+      "customers": 0,
+      "stripe_customer_mappings": 0,
+      "subscriptions": 0,
+      "checkout_attempts": 0,
+      "webhook_receipts": 5
+    },
+    "native_mail_binding_present": true,
+    "deployment_id": "75ec712b-a563-40fa-b7af-a8a1cae1d036",
+    "version_ids": [
+      "d8b12c2b-b0ab-4f77-beeb-bd182d17a133"
+    ],
+    "flags": {
+      "V3_ACCOUNT_RECOVERY_ENABLED": "true",
+      "V3_CHECKOUT_ENABLED": "live",
+      "V3_PUBLIC_ENABLED": "true"
+    },
+    "routes": [
+      {
+        "id": "8fe7bac98b2c47799cefa8e2e8bb1c64",
+        "pattern": "www.findpitches.com/*",
+        "script": "findpitches-v3-customer-production",
+        "request_limit_fail_open": false
+      },
+      {
+        "id": "6d76d649e5904df6a90e53a36573a3eb",
+        "pattern": "findpitches.com/*",
+        "script": "findpitches-v3-customer-production",
+        "request_limit_fail_open": false
+      }
+    ],
+    "pitchlist": {
+      "as_of": "2026-10-12T12:30:26.230Z",
+      "homepage_status": 200,
+      "brand_present": true,
+      "pages_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
+      "domains": [
+        "pitchlistuk.pages.dev",
+        "findpitches.com",
+        "pitchlist.uk",
+        "www.findpitches.com"
+      ]
+    },
+    "source_mutations_performed": 0,
+    "messages_sent": 0
+  },
+  "source_health": {
+    "as_of": "2026-10-12T12:30:21.938Z",
+    "safety": {
+      "publication_enabled": 0,
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "due_jobs": 2,
+      "leased_jobs": 0,
+      "dead_jobs": 0,
+      "future_jobs": 9230,
+      "paid_queries_today": 0,
+      "paid_bulk_enabled": 0,
+      "global_query_limit": 1000,
+      "commercial_query_limit": 25,
+      "commercial_manual_paused": 1
+    },
+    "producer": {
+      "cloud_ready": true,
+      "expected_interval_seconds": 900,
+      "contact_observation_started": true,
+      "last_authenticated_recheck_poll": "2026-10-12T12:19:22.252Z",
+      "expected_discovery_interval_seconds": 10800,
+      "expected_export_lag_seconds": 3600,
+      "recent_poll_intervals_seconds": [
+        938.69,
+        1357.585,
+        910.259
+      ],
+      "host_recently_contacting": true,
+      "cadence_verified": false,
+      "freshness_warning": false,
+      "immutable_receipts": 9813,
+      "producer_ids": 2126,
+      "last_new_receipt_at": "2026-10-12T11:47:46.353Z",
+      "source_last_checked": "2026-10-12T11:34:54Z",
+      "rechecks": {
+        "pending_entities": 383,
+        "fresh_evidence_ack_eligible": 0,
+        "by_country": [
+          {
+            "market": "AU",
+            "pending_entities": 12,
+            "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "CA",
+            "pending_entities": 2,
+            "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "GB",
+            "pending_entities": 28,
+            "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "NZ",
+            "pending_entities": 16,
+            "oldest_requested_at": "2026-10-12T10:57:45.276Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "US",
+            "pending_entities": 325,
+            "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+            "fresh_evidence_ack_eligible": 0
+          }
+        ],
+        "acknowledged_last_24h": 2215,
+        "latest_acknowledgement": "2026-10-12T12:04:21.875Z",
+        "obsolete_requests_resolved": 2,
+        "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+        "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+        "pagination_supported": true,
+        "oldest_request_preserved": true
+      },
+      "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+    }
+  },
+  "preservation": {
+    "schema": "findpitches-v3-customer-preview-preservation-v1",
+    "as_of": "2026-10-12T12:24:03.662Z",
+    "receipts_compared": 15811,
+    "source_facts_compared": 108819,
+    "existing_identities_compared": 7077,
+    "destructive_source_mutations": 0,
+    "existing_identity_changes": 0,
+    "identity_comparison_key": "retained entity.id",
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "publication_api_denied": true,
+    "publication_enabled": false,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "live_v1_deployment_unchanged": true,
+    "v2_schedules": [],
+    "v2_schedules_unchanged": true
+  },
+  "remaining_gates": [
+    "unrestricted/unrelated paid acquisition",
+    "customer alerts",
+    "legacy subscriber migration",
+    "UKCF Option B",
+    "destructive V1/V2/infrastructure changes",
+    "protected/live merges"
+  ],
+  "remaining_acceptance": "Genuine owned LIVE Checkout/global UK+US Pro/Billing Portal journey remains pending; anonymous map checks are not billing acceptance.",
+  "rollout_note": "The Checkout-close API response timed out; guarded code release independently confirmed the flag was closed and all native bindings preserved before activation. Subsequent native/public checks and guarded reopening succeeded.",
+  "coordination_update": {
+    "as_of": "2026-10-12T13:44:03+01:00",
+    "incoming_commit": "e98aeed36857da24953704a0bfb12600b567c169",
+    "decision": "D-017 bounded UK inventory-growth authority preserved during rebase. Paid runtime remains paused; no queries used for map work."
+  }
+}
