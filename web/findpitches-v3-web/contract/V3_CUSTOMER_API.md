@@ -35,6 +35,8 @@ a database or another host.
 
 ## 2. Endpoints
 
+`GET /markets?registry_only=true` and `GET /regions?market=US&registry_only=true` return presentation taxonomy only, with `inventory_available:false` and every `opportunity_count:null`. Finder boot can use these without reading evidence. Search results, facets/counts, upcoming/detail/SEO inventory and paid-field access still require a fresh proof snapshot; registry metadata never establishes availability or geography of an opportunity.
+
 | Method and path | Access | Request | Response (`ok:true` + …) |
 |---|---|---|---|
 | `GET /markets` | public | — | `{ markets: Market[] }` (§3.3) |

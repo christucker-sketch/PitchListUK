@@ -6,7 +6,7 @@
   await FP.ready;
   const st = FP.state, C = st.m(), MK = C.code, UNIT = C.distance_unit, CAN = C.search || {};
   // Which outline to draw for a market (presentation asset, not a status check). Markets without one show list only.
-  const MAPS = { GB: 'uk', US: 'us' }; const MAP = C.opportunity_count > 0 ? MAPS[MK] : null;
+  const MAPS = { GB: 'uk', US: 'us' }; const MAP = MAPS[MK] || null;
   const T = api.meta.types();
   const PAGE = 25;
 
@@ -17,7 +17,7 @@
     types: new Set((qs.get('type')||'').split(',').filter(Boolean)), sort: qs.get('sort')||'', view: qs.get('view')||'list', month: qs.get('month')||'', page:1 };
   if (!CAN.radius && S.sort==='nearest') S.sort='';
   let last = null, shown = [], selected = null, busy = false;
-  const REGS = MAP==='us' ? await api.meta.regions({market:MK}) : []; const ID2CODE = Object.fromEntries(REGS.filter(x=>x.code).map(x=>[x.id,x.code.slice(3)]));
+  const REGS = MAP==='us' ? await api.meta.regions({market:MK,registry_only:true}) : []; const ID2CODE = Object.fromEntries(REGS.filter(x=>x.code).map(x=>[x.id,x.code.slice(3)]));
 
   /* ---------- controls driven by market config ---------- */
   $('#qLbl').textContent = C.postal.kind==='district' ? 'District or place' : CAN.radius ? `${C.postal.label} or town` : `Place or ${C.region_label.singular}`;

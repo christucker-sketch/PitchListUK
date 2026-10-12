@@ -70,7 +70,7 @@
       async markets(p) { return (await call('GET', '/markets'+qs(p))).markets; },
       async stats() { return call('GET', '/stats'); },
       types() { return TYPES; },
-      async regions({ market }) { return (await call('GET', '/regions' + qs({ market }))).regions; }
+      async regions({ market, registry_only }) { return (await call('GET', '/regions' + qs({ market, registry_only }))).regions; }
     },
     geo: {
       async resolve({ market, q }) { return (await call('GET', '/geo/resolve' + qs({ market, q }))).location; }

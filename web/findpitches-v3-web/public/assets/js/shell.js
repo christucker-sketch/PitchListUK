@@ -419,7 +419,7 @@
   FP.ready = (async function boot() {
     try {
       // Live: ask for saved ids only once we know someone is signed in (no pointless 401s).
-      const recovery=['account','pricing','alerts','saved'].includes(document.body.dataset.page);
+      const recovery=['account','pricing','alerts','saved','finder'].includes(document.body.dataset.page);
       const home=document.body.dataset.page==='home'&&api().meta.home;
       const [metadata, session, draftIds] = await Promise.all([home?api().meta.home():api().meta.markets(recovery?{registry_only:true}:undefined), api().session.get(), REAL ? null : api().saved.ids()]);
       const markets=home?metadata.markets:metadata;

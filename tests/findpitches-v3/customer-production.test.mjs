@@ -21,6 +21,7 @@ test('brand and Finder shells do not read inventory; homepage data still fails c
  for(const p of ['/','/index.html','/finder.html','/us/find-pitches/','/organisers.html'])assert.equal((await call(p)).status,200);
  assert.equal(reads,0);const home=await (await call('/api/v3/home')).json();assert.equal(reads,1);assert.equal(home.stats.total,1);assert.equal(home.upcoming.GB.length,1);assert.ok(!JSON.stringify(home).includes('organiser.example.org'));
  failed=true;assert.equal((await call('/')).status,200);assert.ok((await call('/api/v3/home')).status>=500);assert.ok((await call('/api/v3/opportunities?market=GB')).status>=500);assert.ok((await call('/uk/')).status>=500);
+ const prior=reads,registry=await (await call('/api/v3/markets?registry_only=true')).json(),states=await (await call('/api/v3/regions?market=US&registry_only=true')).json();assert.equal(reads,prior);assert.ok(registry.markets.every(m=>m.opportunity_count===null));assert.ok(states.regions.every(r=>r.opportunity_count===null));assert.ok(states.regions.some(r=>r.code==='US-TX'));assert.equal((await call('/api/v3/regions?market=INVALID&registry_only=true')).status,404);
 });
 test('bare-domain HTTP frontend navigation redirects to the owned HTTPS site before reading catalogue evidence',async t=>{
  const db=setup(t),e=env(db);let catalogueReads=0;

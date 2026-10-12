@@ -4,7 +4,7 @@ import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,c
 import * as previewBilling from './customer-billing.mjs';
 import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook,verifyLiveBillingSettings} from './customer-live-billing.mjs';
 import {reviewSubscriberAssociation} from './customer-recognition.mjs';
-import {readCatalogue,present,search,marketOf,markets,regions,resolveLocation,inventory,ancestors,recordInventoryChanges,homepage,upcoming} from './customer-catalogue.mjs';
+import {readCatalogue,present,search,marketOf,markets,regions,allRegions,resolveLocation,inventory,ancestors,recordInventoryChanges,homepage,upcoming} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
 import {budgetDay} from './serper-usage.mjs';
 import {verifyNativeMailSettings,mailCredentialIsProxyReference} from './customer-mail.mjs';
@@ -71,6 +71,7 @@ async function api(request,env,now) {
   if(method==='GET'&&p==='/saved'&&!q.expand){needCustomer(customer);const saved=(await stmt(db,'SELECT entity_id FROM saved_opportunities WHERE customer_id=? ORDER BY saved_at DESC',customer.id).all()).results;return response({ids:saved.map(r=>r.entity_id)});}
   // Account/Portal recovery cannot depend on evidence-backend availability.
   if(method==='GET'&&p==='/markets'&&q.registry_only==='true')return response({markets:markets([]).map(m=>({...m,opportunity_count:null})),inventory_available:false});
+  if(method==='GET'&&p==='/regions'&&q.registry_only==='true'){marketOf(q.market);return response({regions:allRegions(q.market).map(r=>({...r,opportunity_count:null})),inventory_available:false});}
   if(production(env)&&env.V3_PUBLIC_ENABLED!=='true')throw customerError('service_unavailable',503);
   if(method==='POST'&&/^\/inbox\/(organiser_submission|partnership_enquiry|listing_report|waitlist)$/.test(p)) {
     await rateLimit(db,'inbox/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:10,now});const id='FP-'+crypto.randomUUID();
