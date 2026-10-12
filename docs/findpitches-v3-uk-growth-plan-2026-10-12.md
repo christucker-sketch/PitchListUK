@@ -2,7 +2,7 @@
 
 Codex owns D-017/V3-007. Status **2026-10-12T14:08:51+01:00**; [measured census](../operations/findpitches-v3/reports/uk-growth-baseline-2026-10-12.json), source observation 2026-10-12T12:57:17.374Z.
 
-**Baseline: 127 UK customer-ready opportunities across 868 commercial entities.** READY origin: official programme 123, independent structured producer 1, platform catalogue 2, legacy Mk1 evidence 1; legacy V2/city/legacy global0. READY sources: Mynt 123, Eventeny 2, LocalStalls 1, Northampton council 1. Mynt is 96.85% of UK READY, from 12 physical venues. Regions proved by source: South East 89, South West 34, Scotland 2, unmapped 2; Wales/NI have 0 READY. No town→region or market→country inference.
+**Baseline: 127 UK customer-ready opportunities across 868 commercial entities.** READY origin: official programme 123, independent structured producer 1, platform catalogue 2, legacy Mk1 evidence 1; legacy V2/city/legacy global0. READY sources: Mynt 123, Eventeny 2, LocalStalls 1, Northampton council 1. Mynt is 96.85% of UK READY, from 12 physical venues. Corrected source-backed region baseline: South East89,SouthWest34,unmapped4; Scotland/Wales/NI have0 proved regional READY. The original two Scottish UI assignments came from “Scotland Street” in English Ellesmere and are withdrawn; the display fix is being validated. No town→region or market→country inference.
 
 The problem is both supply and conversion. UK has 165 WATCH, 71 quarantined and 505 blocked; 700 await verification and 734 lack current application proof (overlapping diagnostics).209 non-READY records carry future selected dates, but150 are UKCraftFairs and only 59 are outside that family. Selected future dates are targeting hints, not certified opportunities. Social/directory/generic-account or past records are not a recoverable READY forecast.
 
@@ -35,3 +35,10 @@ Stop at integrity/identity failure, leakage, false promotion, budget, excluded-s
 Earlier evidence: city 12 queries →10 entities →0 READY; source-led 12 queries/12 credits →70 candidates →7 entities →4 qualified READY, all AU/US. GB 3 queries →11 candidates →0 READY. One old LocalStalls query used /gb/ instead of /uk/; membership-restricted promotion caused the source-led stop. These results do not forecast UK conversion.
 
 [Concrete Claude/Pi requirements](../team/CLAUDE_UK_GROWTH_REQUIREMENTS.md) cover fresh Folk custody, event/operator-first regional lanes, exact source clocks and retained raw evidence. They are requests, not a claim of host installation/execution or peer acknowledgement. No producer edits by Codex; no source backed field/identity/proof TTL rewriting. Public/Checkout and protected PitchList/V2 settings stay untouched during source expansion. UKCF Option B, legacy migration, alerts, destructive actions and protected/live merges remain separate gates.
+
+
+## Customer-visible coverage amendment, 2026-10-12T16:50:11+01:00
+
+Hub8e597321 strengthens coverage/diversity requirements. Snapshot127UKlistings includes123preciselymapped at12verified venues;15distinctsource-location strings and4organiser strings are separate diagnostics. CCA’s conditional7READY adds up to6new officialvenue programmes,1operator andNorthWest/WestMidlands source-proved browse regions. Exact map pins remain a separate proof requirement; official maps’ camera coordinates and postcode centres are not venue pins. First coverage target:6new source-bound venue programmes/1operator/2new browse regions, with honest map-coverage reporting. Nextprogramme target adds at least3nonMyntoperators/4provedregions alongside+50READY.
+
+The UK-only pilot implementation uses regional LocalStalls and agricultural/operator event-first discovery. It avoids spending on already-known free CCA pages or repeatedly cloud-blocked Folk pages. Paid work remains paused/unrun at this free-conversion checkpoint; D-017 permits a later bounded4query experiment when necessary.
