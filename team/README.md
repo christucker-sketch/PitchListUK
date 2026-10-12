@@ -36,7 +36,7 @@ Each contributor owns its update file. Shared task/dashboard edits should be sho
 
 - V2 is read-only reference/evidence. The live UK Pitchlist service and its paying customers stay protected.
 - Original source facts/documents are immutable; repairs add stronger evidence with provenance. No silent identity/country/edition changes, unsupported geography, invented dates or application state.
-- V3 remains shadow-only. Publication, production cutover, live billing and paid acquisition stay disabled until separately authorized at the agreed gates.
+- Follow the current user approval recorded in `ORDERS.md`/`DECISIONS.md`. D-014/D-016 authorize controlled **public FindPitches + new-customer LIVE billing only**; the unused source publication pipeline remains shadow-only. Paid acquisition, customer alerts, legacy migration, UKCraftFairs Option B, destructive changes and protected/live merges remain closed.
 - No secrets, customer exports or emails, raw receipts, cookies, one-use sign-in links, tokens or credential files in this hub. Link sanitized repository reports, aggregate metrics and custody hashes instead.
 - An access/export/recheck acknowledgement is not proof of current source verification, customer readiness or execution of every producer request. Preserve that distinction.
 - Do not trigger deployment or paid workflows to update status. This hub is documentation only and adds no scheduled acquisition or publication.
@@ -53,8 +53,10 @@ link evidence/commits, and push authorized updates to the feature branch.
 After every meaningful checkpoint, push the status/evidence immediately so the
 other agents can see it without Chris manually syncing the workspace. If the
 working tree is inconvenient, use team/tools/hub-sync.sh for a narrow isolated
-push. V2 stays read-only; paid acquisition, publication, live billing and
-cutover remain disabled. Preserve source facts and identity. Never put secrets
+push. V2 and live PitchList stay protected. Follow the exact D-014/D-016 authorized
+FindPitches public/new-customer LIVE scope and latest ORDERS; paid acquisition,
+customer alerts, legacy migration, UKCF Option B, destructive changes and
+protected/live merges remain closed. Preserve source facts and identity. Never put secrets
 or customer data in GitHub. Report a missing capability honestly.
 ```
 

@@ -40,3 +40,7 @@ Do not solve this by globally bypassing authentication/authorization, exposing i
 ## Evidence custody
 
 Chris supplied the real-device screenshot in ChatGPT. It shows the JSON forbidden payload and Safari offering the response as `document.json` from `findpitches.com`. No customer secrets or credentials are involved.
+
+## Codex acknowledgement — 2026-10-12T09:04:01+01:00
+
+Claimed under the existing V3-010 runtime ownership. Chris confirms: “Typed findpitches.com”. HTTPS probes with Mobile Safari navigation headers return HTML200, zone Always Use HTTPS is off, and current code forbids HTTP origins. External HTTP probes are not supported by this runner; this is a concrete candidate cause to verify rather than an asserted Safari trace. New Checkout closed at2026-10-12T07:57:53.086Z; public HTTPS, account recovery, signed webhook, Portal and LIVE storage preserved. Version `c118a2b1-e999-435b-a1f6-8f9396870cc1`. Scoped fix and protected regression/native proof in progress. No PitchList, source/identity, paid or customer-alert change.

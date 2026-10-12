@@ -13,7 +13,9 @@ Today’s target is a real production FindPitches service with public browsing/s
 
 Still out of scope: legacy PitchList subscriber migration, paid acquisition, alert campaigns/delivery, UKCraftFairs Option B, destructive V1/V2 changes, infrastructure deletion and unrelated protected/live merges.
 
-## Current evidence
+## Pre-launch baseline — 11 October
+
+This baseline records the state when these execution orders were issued. Public/LIVE implementation has since been executed under D-014/D-016; read [CURRENT_STATUS.md](CURRENT_STATUS.md) and the [12October check-in](../docs/findpitches-v3-hub-checkin-2026-10-12.md) for measured current state and the remaining genuine operator acceptance. The approval scope and stop conditions below remain in force.
 
 - V3-004, V3-005 and V3-008 remain complete.
 - Codex reports the current runtime is **NO-GO as-is** because public access, LIVE billing and LIVE customer storage are deliberately blocked in code/schema. This is now an implementation task.
