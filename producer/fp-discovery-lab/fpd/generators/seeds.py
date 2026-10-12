@@ -80,6 +80,20 @@ def run(conn, frontier, tel, cfg, only: str | None = None) -> int:
                             budgeted=False):
                 added += 1
         done.add(key)
+    # Named organiser pages (council/venue/festival trader-call pages): assessed as ordinary candidate pages on an
+    # organiser site, never as hubs, so an open call on the page itself can become an opportunity (D-017).
+    for o in seeds.get("organiser_pages", []):
+        if only and only not in ("organisers", o["name"]):
+            continue
+        key = f"org:{o['name']}"
+        if key in done:
+            continue
+        for url in o["urls"]:
+            frontier.ensure_site(reg_domain(url), f"organiser:{o['name']}", country=o.get("country"))
+            if frontier.add(url, "candidate", f"organiser:{o['name']}", priority=0.85, depth=0,
+                            anchor=o.get("note", ""), meta={"country": o.get("country")}, budgeted=False):
+                added += 1
+        done.add(key)
     kv_set(conn, "seeds.done", sorted(done))
     tel.inc("seed.curated.enqueued", added)
     tel.flush()

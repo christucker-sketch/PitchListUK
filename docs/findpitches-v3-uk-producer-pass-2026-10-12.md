@@ -85,3 +85,46 @@ It neither reads nor writes the producer database. It is source custody only; no
 - **Effect:** limited. Old delivery checkpoints and temp files were not being cleaned up; delivery itself was not affected.
 - **Fix:** script only, in kit `126616ce…` (`pi_kit_v3-011h`), with 3 regression tests (`deploy/pi-tests/prune.test.sh`). The engine is unchanged.
 
+## Pass 2: Scotland/Wales/NI producer lanes (kit `8b3d4368…`, `pi_kit_v3-011i`; supersedes `126616ce…`)
+
+**New seed kind: `organiser_pages`.**
+- Named council, venue and festival trader-call pages are queued as ordinary **candidate pages on organiser sites**. They are not treated as hubs, so an open call on the page itself can become a record.
+- Directory seeds force a hub role on the whole domain, which would have stopped this.
+- Lane: `organiser:<name>`, exported as `discovery_source: organiser_site`.
+- New command: `fpd seed organisers`. It runs in the normal cycle through `seed curated`, once per seed group.
+
+**The seeds:**
+
+| Type | Pages |
+| --- | --- |
+| Organiser pages | Dundee Heritage Trust (Verdant Works markets); City Property Glasgow (retail and farmers' markets); NI council calls (Newry, Mourne & Down artisan markets, Derry Guildhall Craft Fair, St George's Market traders); St Fagans Food Festival |
+| Hub, follow-limited | Craft NI makers' opportunities board, following only links whose slug mentions vendor, trader, stall, market, fair or Christmas |
+
+The Armagh, Banbridge & Craigavon (ABC) news page was **left out**: the generic extractor took today's date from it as an event date, and its route is email-only.
+
+**Two correctness fixes found while testing on a copy of the producer database:**
+
+| Fix | What changed |
+| --- | --- |
+| Classifier | **Newsletter and mailing-list forms are never application routes.** Mailchimp and similar senders, or fields such as newsletter, subscribe or special offers, are excluded. On the Verdant page the Mailchimp sign-up had been taken as the route, and was the only reason the page looked open. In the earlier local sample, 0 existing actionable records relied on such a route. |
+| `dundeeheritage` adapter | The event's dates are **the header line under the H1 only**. The Food & Drinks page also mentions the 21–22 Nov craft market, which the generic extractor had taken. The venue tag above the title is used as stated text (no locality inference). The open state comes only from the explicit on-page call, "…food or drinks producer… stallholder… please fill in this form…", with the form posting to the same page. After the event, it is not open. |
+
+**End-to-end result (local copy of the producer database, export and validation pass):**
+
+| Record | Channel and state | Details |
+| --- | --- | --- |
+| **Verdant Works Christmas Market: Food & Drinks** | `current`, **OPEN_NOW** | 2026-11-28 to 2026-11-29 (`organiser_event_header`); organiser Dundee Heritage Trust; venue Verdant Works Museum; application on the event page |
+| Farmers Markets in Glasgow | `current`, ENQUIRY_AVAILABLE | No https application route; V3's D-012 check decides |
+| Newry, Mourne & Down artisan markets | `watch`, CLOSED_CURRENT_CYCLE | Its "application URL" is the council's generic `/apply` page; V3 should not treat it as proof |
+| Glasgow retail markets | `watch`, UNKNOWN | |
+| St George's traders | `held`, UNKNOWN | |
+| Verdant craft page | rejected | "currently full" |
+| Derry | rejected | |
+| St Fagans | rejected | |
+
+**Tests and changes:**
+- 103 Python tests pass. New: Verdant fixture (sanitised), organiser-seed behaviour, newsletter exclusion via the Verdant assertions.
+- Pi tests: alerts 34, prune 3.
+- Engine changes are limited to `adapters.py`, `classify.py`, `cli.py`, `generators/seeds.py`, `integration/records.py` and `seeds.json`.
+- Identity, lifecycle and export rules are unchanged.
+

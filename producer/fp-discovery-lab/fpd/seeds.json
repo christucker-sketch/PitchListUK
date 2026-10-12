@@ -396,6 +396,15 @@
     "https://www.albertacraft.ab.ca/acc-calls-for-entry"
    ],
    "note": "Alberta Craft Council calls for entry (craft markets/fairs), D-013"
+  },
+  {
+   "name": "craftni_opportunities_ni",
+   "country": "GB",
+   "urls": [
+    "https://craftni.org/opportunities-for-makers/"
+   ],
+   "follow": "craftni\\.org/[a-z0-9-]*(?:vendor|trader|stall|market|fair|christmas)[a-z0-9-]*/?$",
+   "note": "Craft NI makers' opportunities board: market/fair/vendor calls only (Northern Ireland), D-017"
   }
  ],
  "platform_sitemaps": [
@@ -481,6 +490,44 @@
    "stop": 25750,
    "country": "GB",
    "note": "UKCraftFairs organiser-placed UK craft fair listings; slug ignored by server, IDs sequential (newest first)"
+  }
+ ],
+ "organiser_pages": [
+  {
+   "name": "dundee_heritage_markets_sco",
+   "country": "GB",
+   "urls": [
+    "https://www.dundeeheritagetrust.co.uk/event/verdant-works-christmas-market-food-drinks",
+    "https://www.dundeeheritagetrust.co.uk/event/christmas-market"
+   ],
+   "note": "Dundee Heritage Trust, Verdant Works Christmas markets: on-page stallholder form (Scotland); organiser pages assessed as candidates, not hubs, D-017"
+  },
+  {
+   "name": "glasgow_city_markets_sco",
+   "country": "GB",
+   "urls": [
+    "https://www.citypropertyglasgow.co.uk/markets/retail/",
+    "https://www.citypropertyglasgow.co.uk/markets/farmers"
+   ],
+   "note": "City Property (Glasgow) LLP council markets: trader registration (Scotland); organiser pages assessed as candidates, not hubs, D-017"
+  },
+  {
+   "name": "ni_council_market_calls",
+   "country": "GB",
+   "urls": [
+    "https://www.newrymournedown.org/trading-at-artisan-markets",
+    "https://www.derrystrabane.com/subsites/christmas/guildhall-craft-fair",
+    "https://www.belfastcity.gov.uk/things-to-do/markets/st-george-s-market/traders-and-trading-at-st-george-s-market"
+   ],
+   "note": "NI council market/craft-fair trader calls that open on a yearly cycle (NMD March, Derry August); weekly hub revisit catches 2027 calls; organiser pages assessed as candidates, not hubs, D-017 (ABC artisan-market news page left out: email-only route and no dated list on that page)"
+  },
+  {
+   "name": "st_fagans_food_festival_wal",
+   "country": "GB",
+   "urls": [
+    "https://museum.wales/whatson/food-festival/apply"
+   ],
+   "note": "Amgueddfa Cymru St Fagans Food Festival trader applications (Wales; call usually opens early in the year); organiser pages assessed as candidates, not hubs, D-017"
   }
  ]
 }

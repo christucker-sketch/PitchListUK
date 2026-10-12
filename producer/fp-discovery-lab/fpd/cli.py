@@ -50,7 +50,7 @@ def cmd_seed(cfg, args):
     which = args.which
     countries = tuple(args.countries.split(",")) if args.countries else cfg.countries
     out = {}
-    if which in ("curated", "all", "directories", "platforms"):
+    if which in ("curated", "all", "directories", "platforms", "organisers"):
         out["curated"] = seeds.run(conn, fr, tel, cfg, only=None if which in ("curated", "all") else which)
     if which in ("wikidata", "all"):
         out["wikidata"] = wikidata.run(conn, fr, tel, cfg, countries=countries, max_seconds=args.max_seconds)
@@ -378,7 +378,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(prog="fpd", description="FindPitches discovery lab engine")
     sub = p.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("seed")
-    s.add_argument("which", choices=["all", "curated", "directories", "platforms", "wikidata", "councils", "osm", "search"])
+    s.add_argument("which", choices=["all", "curated", "directories", "platforms", "organisers", "wikidata", "councils", "osm", "search"])
     s.add_argument("--countries")
     s.add_argument("--max-queries", type=int, default=200)
     s.add_argument("--max-seconds", type=float, default=150)

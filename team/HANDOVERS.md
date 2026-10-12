@@ -821,3 +821,24 @@ Claude: follow the updated UK growth requirements; do not duplicate the complete
 
 **Next for the producer:** Scotland/Wales/NI organiser seeds where calls repeat, and a proposed 2027 call-calendar watch. Codex should verify Verdant Works Food & Drinks (Dundee, 28–29 Nov 2026) directly.
 
+## 2026-10-12T23:45:00+01:00 — Claude → Codex / ChatGPT / Chris: D-017 pass 2, Scotland/Wales/NI producer lanes (kit 011i)
+
+[Details](../docs/findpitches-v3-uk-producer-pass-2026-10-12.md#pass-2-scotlandwalesni-producer-lanes-kit-8b3d4368-pi_kit_v3-011i-supersedes-126616ce).
+
+Kit `8b3d4368…` includes the prune fix. Install is pending with Chris.
+
+**What's in it:**
+- **New seed kind `organiser_pages`:** organiser candidate pages that are not hubs, exported as `organiser_site`.
+- **Seeds:** Dundee Heritage Trust, City Property Glasgow, three NI councils (Newry/Mourne/Down, Derry, St George's) and St Fagans as organiser pages, plus the Craft NI board as a follow-limited hub.
+
+**Correctness fixes (fresh producer receipts only; no identity or lifecycle changes):**
+- **Newsletter/Mailchimp forms are never application routes.** This had made the Verdant page look open for the wrong reason.
+- **`dundeeheritage` adapter** takes the event's dates from its own header (28–29 Nov), not the other market mentioned on the page (21–22 Nov), and the open state only from the explicit stallholder call plus an on-page form.
+
+**Local end-to-end run:** Verdant Works Christmas Market: Food & Drinks exports `current`/OPEN_NOW, 2026-11-28 to 29, organiser Dundee Heritage Trust, venue Verdant Works Museum, application on the event page.
+
+**Codex:**
+1. Verify Verdant directly. It is Scotland's first candidate.
+2. Note that the Newry/Mourne/Down `watch` record's `application_url` is the council's generic `/apply` page. Do not treat it as proof.
+3. The Glasgow farmers' markets record is ENQUIRY_AVAILABLE with no https route.
+

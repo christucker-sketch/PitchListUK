@@ -896,3 +896,30 @@ def test_every_acquisition_lane_maps_into_the_schema_enums():
         assert ds in schema.SOURCES, (lane, ds)
         assert strat in schema.STRATEGIES, (lane, strat)
     assert source_of("platform:marketsireland", None) == ("other", "marketsireland", "platform_enumeration")
+
+
+def test_organiser_page_seeds_are_candidates_on_organiser_sites(tmp_path, monkeypatch):
+    """D-017: named council/venue trader-call pages must be assessed as candidate pages (so an open call can become an
+    opportunity), not as hubs like directory seeds; their lane maps to organiser_site in the export."""
+    from fpd.frontier import Frontier
+    from fpd.generators import seeds
+    from fpd.integration.records import source_of
+    conn = dbm.connect(tmp_path / "t.sqlite")
+    fr = Frontier(conn, 1)
+    monkeypatch.setattr(seeds, "load_seeds", lambda: {
+        "directories": [{"name": "hubx", "country": "GB", "urls": ["https://hubsite.example/opps"]}],
+        "organiser_pages": [{"name": "venuex", "country": "GB", "urls": ["https://venuesite.example/event/christmas-market"]}]})
+    class Tel:
+        def inc(self, *a, **k):
+            pass
+
+        def flush(self):
+            pass
+    assert seeds.run(conn, fr, Tel(), None) == 2
+    rows = {r["url"]: dict(r) for r in conn.execute(
+        "SELECT u.url, u.purpose, u.generator, s.role FROM urls u JOIN sites s ON s.reg_domain=u.reg_domain")}
+    page = rows["https://venuesite.example/event/christmas-market"]
+    assert (page["purpose"], page["role"], page["generator"]) == ("candidate", "organiser", "organiser:venuex")
+    assert rows["https://hubsite.example/opps"]["role"] == "hub"
+    assert seeds.run(conn, fr, Tel(), None) == 0          # each seed group runs once
+    assert source_of("organiser:venuex", None) == ("organiser_site", "venuex", "other")

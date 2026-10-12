@@ -201,6 +201,10 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
         routes.append({"type": "platform_page", "url": url, "platform": platform_here})
     for f in page.forms:
         ft = (f.field_text or "").lower()
+        # Newsletter/mailing-list sign-ups are never trader applications (D-017: a Mailchimp form was taken as the route).
+        if re.search(r"list-manage\.com|mailchimp|createsend\.com|sendinblue|brevo\.com|klaviyo|constantcontact|campaign-archive",
+                     f.action or "", re.I) or re.search(r"\bnewsletter\b|\bsubscribe\b|mailing list|special offers", ft):
+            continue
         if f.n_inputs >= 4 and not re.search(r"\bsearch\b", ft) and (
                 re.search(L.ROLE, ft, re.I) or re.search(r"(business|company|products?|stall|pitch|booth|insurance|gazebo|menu)", ft)
                 or (focus and f.n_inputs >= 6)):

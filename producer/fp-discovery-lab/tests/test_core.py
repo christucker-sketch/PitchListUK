@@ -473,3 +473,24 @@ def test_localstalls_jsonld_dates_used_when_no_coming_dates():
              "https://localstalls.com/au/event/plumpton/christmas-tree-farm-markets")["extracted"]
     assert ex["start_date"] == "2026-11-29" and ex["date_source"] == "platform_event_jsonld"
     assert ex["state"] != "HISTORICAL"
+
+
+def test_dundee_heritage_event_uses_header_dates_not_other_events_on_page():
+    """D-017: the Verdant Works Food & Drinks page also mentions the 21–22 Nov craft market and shows it in a related
+    card; the opportunity's own dates are the header line (28 & 29 November 2026)."""
+    from pathlib import Path
+    from fpd import adapters
+    url = "https://www.dundeeheritagetrust.co.uk/event/verdant-works-christmas-market-food-drinks"
+    html = (Path(__file__).parent / "fixtures" / "dundeeheritage_verdant_food_2026-10-12.html").read_text()
+    page = parse_html(html, url)
+    a = adapters.apply(page, classify(page, dt.date(2026, 10, 12)), dt.date(2026, 10, 12), "dundeeheritagetrust.co.uk")
+    ex = a["extracted"]
+    assert (ex["start_date"], ex["end_date"], ex["date_source"]) == ("2026-11-28", "2026-11-29", "organiser_event_header")
+    assert a["features"]["adapter"] == "dundeeheritage"
+    assert ex["apply_url"] == url and "list-manage" not in json.dumps(ex["routes"])   # not the newsletter form
+    assert ex["venue"] == "Verdant Works Museum" and "2026-11-21" not in (ex.get("state_evidence") or "")
+    assert (a["label"], ex["state"], ex["open_strength"]) == ("actionable", "OPEN_NOW", "explicit")
+    assert "food or drinks producer" in ex["state_evidence"] and "not accepting applications from artists" in ex["state_evidence"]
+    # after the event the same page is not an open call
+    late = adapters.apply(page, classify(page, dt.date(2026, 12, 1)), dt.date(2026, 12, 1), "dundeeheritagetrust.co.uk")
+    assert late["extracted"].get("state") != "OPEN_NOW"

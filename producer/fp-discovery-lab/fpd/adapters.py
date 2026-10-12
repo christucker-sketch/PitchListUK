@@ -521,7 +521,60 @@ def _chain(*fns):
 cluemart = _chain(_cluemart, _cm_ids)
 cluemart.__name__ = "cluemart"
 
-ADAPTERS = {"ukcraftfairs.com": _chain(ukcraftfairs, _uk_ids), "localstalls.com": _chain(localstalls, _ls_ids),
+_DHT_RANGE = re.compile(r"\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:&|and|-|–|—|to)\s*(\d{1,2})(?:st|nd|rd|th)?\s+"
+                        r"(january|february|march|april|may|june|july|august|september|october|november|december)\s+(20\d\d)\b", re.I)
+_DHT_ONE = re.compile(r"\b(\d{1,2})(?:st|nd|rd|th)?\s+(january|february|march|april|may|june|july|august|september|october|"
+                      r"november|december)\s+(20\d\d)\b", re.I)
+
+
+def dundeeheritage(page: Page, a: dict, today: dt.date) -> dict | None:
+    """Dundee Heritage Trust event pages (D-017): the event's own dates are the first date line under the H1
+    ('28 & 29 November 2026'). Other events are mentioned further down the page and in related-event cards, so the
+    generic extractor can take the wrong ones; only the header line is used. State and routes are left to the classifier."""
+    if "/event/" not in page.url or not page.h1:
+        return None
+    # The H1 text also appears in the <title>; use the first occurrence that is directly followed by a date line.
+    m = None
+    for occ in re.finditer(re.escape(page.h1), page.text):
+        head = page.text[occ.end(): occ.end() + 160]
+        m = _DHT_RANGE.search(head) or _DHT_ONE.search(head)
+        if m:
+            break
+    if not m:
+        return None
+    if m.re is _DHT_RANGE:
+        d1, d2, mon, yr = int(m.group(1)), int(m.group(2)), _MON[m.group(3)[:3].lower()], int(m.group(4))
+        start, end = dt.date(yr, mon, d1), dt.date(yr, mon, d2)
+    else:
+        start = end = dt.date(int(m.group(3)), _MON[m.group(2)[:3].lower()], int(m.group(1)))
+    ex = a["extracted"]
+    ex.update(start_date=start.isoformat(), end_date=end.isoformat() if end != start else None,
+              date_source="organiser_event_header")
+    if isinstance(ex.get("state_evidence"), str):
+        ex["state_evidence"] = re.sub(r"\(event [0-9–-]+\)", f"(event {start.isoformat()}"
+                                      f"{'–' + end.isoformat() if end != start else ''})", ex["state_evidence"])
+    a["evidence"].insert(0, {"kind": "dates", "text": f"Event header: “{m.group(0)}”"})
+    # The venue tag printed directly above the event title (e.g. 'Verdant Works Museum'): source text, not inference.
+    before = page.text[:occ.start()].rstrip().rsplit("\n", 1)[-1].strip()
+    if re.fullmatch(r"(?:Verdant Works Museum|Discovery Point|RRS Discovery)", before):
+        ex["venue"] = before
+    # The stallholder application is the on-page form ('please fill in this form'), posting back to the event page.
+    if re.search(r"stallholder", page.text, re.I) and re.search(r"fill in this form", page.text, re.I):
+        own = [f for f in page.forms if (f.action or page.url).rstrip("/") == page.url.rstrip("/") and f.n_inputs >= 4]
+        call = re.search(r"[^.\n]*\bstallholder\b[^.\n]*fill in this form[^.\n]*\.(?:\s*Please note[^.\n]*\.)?", page.text, re.I)
+        if own and call and start >= today:
+            route = {"type": "onpage_form", "url": page.url, "inputs": own[0].n_inputs, "category": "general"}
+            ex["routes"] = [route] + [r for r in ex.get("routes") or [] if r.get("type") != "onpage_form"]
+            ex["apply_url"] = page.url
+            dates = start.isoformat() + ("–" + end.isoformat() if end != start else "")
+            ex.update(relevance="relevant", state="OPEN_NOW", open_strength="explicit", missing=[],
+                      state_evidence=f"Open: “{re.sub(chr(10), ' ', call.group(0)).strip()[:420]}” (event {dates})")
+            a["label"], a["reasons"] = "actionable", ["organiser_adapter:dundeeheritage"]
+            a["evidence"].insert(0, {"kind": "state", "text": f"OPEN_NOW: {ex['state_evidence']}"})
+    return a
+
+
+ADAPTERS = {"ukcraftfairs.com": _chain(ukcraftfairs, _uk_ids), "dundeeheritagetrust.co.uk": dundeeheritage, "localstalls.com": _chain(localstalls, _ls_ids),
             "eventeny.com": eventeny, "cluemart.co.nz": cluemart, "marketspread.com": marketspread,
             "marketsireland.ie": _chain(marketsireland, _mi_ids)}
 

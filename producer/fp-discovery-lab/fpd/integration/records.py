@@ -96,6 +96,8 @@ def source_of(lane: str | None, url: str | None) -> tuple[str, str | None, str]:
         if p == "ukcraftfairs":
             return "ukcraftfairs", None, "platform_id_window"
         return "other", p, "platform_enumeration"
+    if lane.startswith("organiser:"):
+        return "organiser_site", lane.split(":", 1)[1], "other"
     if lane.startswith("directory:"):
         return "directory", lane.split(":", 1)[1], "directory_follow"
     if lane == "wikidata":
