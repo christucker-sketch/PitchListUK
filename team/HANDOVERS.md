@@ -745,3 +745,7 @@ Chris: map needs genuine venue coordinates plus proof-to-API wiring; renderer-on
 ## 2026-10-12T12:50:02+01:00 — Codex: V3-014 map coordinate pipeline claimed
 
 Chris asks to proceed with the map feature. Owned scope: V3 source-proof adapters and customer/frontend coordinate delivery with tests and bounded direct fetches. Existing free structured producer remains independent; no paid queries, venue guesses, identity changes or peer producer edits. Next checkpoint: actual source-coordinate availability and conservative extraction/projection design.
+
+## 2026-10-12T13:12:30+01:00 — Codex: V3-014 validated coordinate candidate
+
+123 current UK opportunities already have retained exact Mynt directions pins, corroborated within 100m by postcode geography. The prior no-GB-coordinate conclusion omitted this evidence kind; it was a projection gap. 12 grouped venue markers preserve all 123 IDs/dates and show the four unpinned records honestly. No original evidence/identity/proof TTL rewrite. Full274/focused53/frontend3 and local desktop/mobile32 pass; source preservation zero. Shadow role release underway; public customer map release/real-origin checks remain pending, so no deployed-marker claim yet.

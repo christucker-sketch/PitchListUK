@@ -1,6 +1,7 @@
 import {parseHtml,nodes,first,text} from './source-dom.mjs';
 import {stableJson} from './contract.mjs';
 import {safeSourceUrl} from './source-document.mjs';
+import {VENUE_COORDINATE_POLICY,eventVenueCoordinates} from './source-coordinates.mjs';
 
 const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
 const token=v=>clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -41,6 +42,7 @@ export function verifyClueMart(document,{now,version,policy,country,calendarDate
     report.evidence.push({kind:'cluemart_public_event_binding',excerpt:stableJson({slug:data.slug,name:data.name,active:data.active,deletedAt:data.deletedAt,location:data.location,dateTime:data.dateTime}).slice(0,14000)});
   }
   report.page_kind='application_shell';report.facts=facts;report.event_source_url=document.url;
+  report.venue_coordinate_policy=VENUE_COORDINATE_POLICY;report.venue_coordinates=eventVenueCoordinates(events,facts,document.url);
   report.evidence.push({kind:'event_json_ld',excerpt:stableJson(event).slice(0,14000)});
   if(!facts.country)report.reasons.push('verified_country_missing');
   if(!event.location?.address?.streetAddress||!event.location?.address?.addressLocality)report.reasons.push('verified_venue_missing');

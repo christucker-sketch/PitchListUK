@@ -4,6 +4,7 @@ import {routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
 import {budgetDay} from './serper-usage.mjs';
 import {publicHttps,hash} from './contract.mjs';
 import {customerError,stmt} from './customer-security.mjs';
+import {validVenueCoordinates} from './source-coordinates.mjs';
 
 export const types={christmas_market:'Christmas market',holiday_market:'Holiday market',food_festival:'Food festival',festival:'Festival',market:'Market',street_trading:'Street trading',show:'Show',concession:'Concession',event:'Event',sport:'Sports & stadiums'};
 export const marketOf=code=>{const m=MARKETS.find(m=>m.code===code);if(!m)throw customerError('unknown_market',404);return m;};
@@ -28,6 +29,8 @@ export function mapProof(item,now) {
     source_url:publicHttps(item.source_url)?item.source_url:null,application_url:item.application_url,last_checked:item.verified_at,opportunity_type:item.opportunity_type,vendor_categories:item.vendor_categories},today);
   if(['ended','closed','unknown'].includes(row.application.status))return null;
   const region=proofRegion(item);row.location={...row.location,region:item.region,region_id:region?.id??null,region_name:region?.name??null};
+  const position=validVenueCoordinates(item.venue_coordinates,{country:item.country,location:item.location});
+  if(position)row.location={...row.location,lat:position.lat,lng:position.lng,precision:'venue'};
   row.organiser.verified=true;row.organiser.type_label=null;row.type_label=types[row.type]??'Event';row.canonical_path=routes.opportunityPath(row.market,row.id);row.distance_km=null;
   row._proof={expires_at:item.proof_expires_at,revision:item.entity_revision,verification_id:item.verification_id};return row;
 }

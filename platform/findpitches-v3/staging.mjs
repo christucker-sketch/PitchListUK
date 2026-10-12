@@ -1,5 +1,6 @@
 import {commercialRows,commercialEntity} from './commercial.mjs';
 import {sql} from './store.mjs';
+import {retainedVenueCoordinates} from './source-coordinates.mjs';
 
 // Separate read-only preview. This never writes customer/publication tables.
 export async function stagingReady(db,{market=null,after='',limit=50,region=null,location=null,now=new Date().toISOString()}={}) {
@@ -34,7 +35,8 @@ export async function stagingCatalogue(db,{now=new Date().toISOString()}={}) {
       event_start:r.proof.facts.event_start,event_end:r.proof.facts.event_end,application_url:r.proof.facts.application_url,application_state:r.proof.facts.application_state,
       application_deadline:r.proof.facts.application_deadline??null,source_url:r.proof.event_source_url??r.proof.source_url??null,source_domain:r.domain,
       verified_at:r.checked_at,proof_expires_at:r.expires_at,entity_revision:r.revision,verification_id:r.proof_sequence,
-      // Category, sells, fees and coordinates are not in current source-proof
-      // facts. Their absence is honest; producer labels cannot fill these gaps.
+      venue_coordinates:retainedVenueCoordinates(r.proof),
+      // Category, sells and fees are not in current source-proof facts.
+      // Producer labels cannot fill these gaps or supply venue coordinates.
       opportunity_type:null,vendor_categories:[]}))};
 }

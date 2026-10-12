@@ -16,7 +16,7 @@
   const S = { q: qs.get('q') ?? (me || ''), sells: qs.get('sells')||'', radius: qs.get('radius')|| DEF_R, when: qs.get('when')||'',
     types: new Set((qs.get('type')||'').split(',').filter(Boolean)), sort: qs.get('sort')||'', view: qs.get('view')||'list', month: qs.get('month')||'', page:1 };
   if (!CAN.radius && S.sort==='nearest') S.sort='';
-  let last = null, shown = [], selected = null, busy = false;
+  let last = null, shown = [], selected = null, busy = false, ukWhole = false;
   const REGS = MAP==='us' ? await api.meta.regions({market:MK,registry_only:true}) : []; const ID2CODE = Object.fromEntries(REGS.filter(x=>x.code).map(x=>[x.id,x.code.slice(3)]));
 
   /* ---------- controls driven by market config ---------- */
@@ -161,17 +161,28 @@
     const ids=new Set(shown.map(o=>o.id));
     if (MAP==='uk'){
       const M=G.uk, loc=r.location; let vb=`0 0 ${M.W} ${M.H}`, z=1; const rk=radiusKm();
+      const pts=(r.map_points||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&Math.abs(p.lat)<90&&Math.abs(p.lng)<=180);
       let extra='';
       if (loc.kind==='point' && rk){ const [x,y]=projUK(loc.lat,loc.lng); const rpx=M.k*(rk/6371)/Math.cos(loc.lat*Math.PI/180); const w=Math.max(rpx*2.5,120); vb=`${x-w/2} ${y-w*0.6} ${w} ${w*1.2}`; z=M.W/w;
         extra=`<circle class="radius" cx="${x}" cy="${y}" r="${rpx}" style="stroke-width:${1.2/z}px;stroke-dasharray:${4/z} ${4/z}"/><circle class="home" cx="${x}" cy="${y}" r="${7/z}" style="stroke-width:${2/z}px"/>`; }
+      else if(pts.length&&!ukWhole){
+        const positions=pts.map(p=>projUK(p.lat,p.lng)),xs=positions.map(p=>p[0]),ys=positions.map(p=>p[1]),left=Math.min(...xs),right=Math.max(...xs),top=Math.min(...ys),bottom=Math.max(...ys);
+        const w=Math.max(120,right-left+40,(bottom-top+40)*M.W/M.H),h=w*M.H/M.W;vb=`${(left+right-w)/2} ${(top+bottom-h)/2} ${w} ${h}`;z=M.W/w;
+      }
       // Scale strokes by hand: vector-effect on this large path mis-renders its fill when zoomed in Chromium.
       svg.insertAdjacentHTML('beforeend',`<path class="land" d="${M.svg}" style="stroke-width:${1/z}px"/>`+extra);
       svg.setAttribute('viewBox',vb);
-      const pts=(r.map_points||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&Math.abs(p.lat)<90&&Math.abs(p.lng)<=180);
-      pts.forEach(p=>{ const [x,y]=projUK(p.lat,p.lng); const c=document.createElementNS(NS,'circle'); c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',(ids.has(p.id)?6:3.8)/z); c.style.strokeWidth=1.4/z;
-        c.setAttribute('class','pin'+(p.type==='sport'?' sport':'')+(ids.has(p.id)?'':' dim')+(p.id===selected?' hot':'')); c.dataset.id=p.id; c.dataset.n=p.title; svg.appendChild(c); });
-      $('#mapTitle').innerHTML=`<b>${esc(loc.kind==='point'?loc.label:C.name)}</b>`; $('#mapCount').textContent=`${pts.length} on the map`;
-      $('#mapNote').innerHTML=pts.length?`<span class="legend"><span><i></i>Listing</span><span><i class="sp"></i>Sports event</span></span> Pale pins are further down the list. Only source-proved coordinates are pinned.`:`No verified coordinates are available for these ${r.total} listings yet. All results remain in the list; we do not guess map positions.`;
+      const groups=new Map();pts.forEach(p=>{const key=p.lat+','+p.lng;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(p);});
+      groups.forEach(group=>{ const p=group.find(p=>ids.has(p.id))||group[0], visible=group.some(p=>ids.has(p.id)),[x,y]=projUK(p.lat,p.lng),c=document.createElementNS(NS,'circle');
+        c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',(group.length>1?10:visible?6:3.8)/z);c.style.strokeWidth=1.4/z;
+        c.setAttribute('class','pin'+(p.type==='sport'?' sport':'')+(visible?'':' dim')+(group.some(p=>p.id===selected)?' hot':''));c.dataset.id=p.id;c.dataset.ids=group.map(p=>p.id).join(',');c.dataset.n=group.length>1?`${group.length} opportunities at this venue`:p.title;
+        c.setAttribute('tabindex','0');c.setAttribute('role','button');c.setAttribute('aria-label',c.dataset.n);svg.appendChild(c);
+        if(group.length>1){const label=document.createElementNS(NS,'text');label.setAttribute('x',x);label.setAttribute('y',y+3.2/z);label.setAttribute('text-anchor','middle');label.setAttribute('font-size',9/z);label.setAttribute('fill','#fff');label.setAttribute('font-weight','700');label.setAttribute('pointer-events','none');label.setAttribute('aria-hidden','true');label.textContent=group.length;svg.appendChild(label);}
+      });
+      $('#mapTitle').innerHTML=`<b>${esc(loc.kind==='point'?loc.label:C.name)}</b>${pts.length&&loc.kind!=='point'?` <button id="mapExtent" type="button" class="btn btn-line btn-sm">${ukWhole?'Show venues':'Whole UK'}</button>`:''}`; $('#mapCount').textContent=`${pts.length} listings at ${groups.size} ${groups.size===1?'venue':'venues'}`;
+      const extent=$('#mapExtent');if(extent)extent.onclick=()=>{ukWhole=!ukWhole;renderMap();};
+      const unpinned=Math.max(0,r.total-pts.length);
+      $('#mapNote').innerHTML=pts.length?`<span class="legend"><span><i></i>Listing</span><span><i class="sp"></i>Sports event</span></span> Numbered pins have several opportunities. Select a pin to choose one.${unpinned?` ${unpinned} ${unpinned===1?'listing has':'listings have'} no verified coordinates and ${unpinned===1?'remains':'remain'} in the list.`:''}`:`No verified coordinates are available for these ${r.total} listings yet. All results remain in the list; we do not guess map positions.`;
       svg.setAttribute('aria-label',`Map of ${pts.length} listings${loc.kind==='point'?' around '+loc.label:''}. The list has every result.`);
     } else if (MAP==='us'){
       const M=G.us; svg.setAttribute('viewBox',`0 0 ${M.W} ${M.H}`);
@@ -190,13 +201,16 @@
     const box=$('#mapsel'); const o = selected && (shown.find(x=>x.id===selected) || (last.map_points.find(p=>p.id===selected)));
     if (!o) { box.hidden=true; return; }
     const full = shown.find(x=>x.id===selected);
-    box.innerHTML=`<div><b>${esc(o.title)}</b><span>${full?esc(U.when(full,MK)) + ' · ' + esc(full.location.label):'Further down the list'}</span></div><div class="acts"><button class="btn btn-turf btn-sm" type="button" data-qv="${esc(o.id)}">Details</button><button class="x" type="button" id="selX" aria-label="Clear selection">×</button></div>`;
+    const point=last.map_points.find(p=>p.id===selected),group=point?last.map_points.filter(p=>p.lat===point.lat&&p.lng===point.lng):[];
+    const chooser=group.length>1?`<label for="mapOpportunities">Opportunities at this venue</label><select id="mapOpportunities">${group.map(p=>`<option value="${esc(p.id)}"${p.id===selected?' selected':''}>${esc(p.title)}</option>`).join('')}</select>`:'';
+    box.innerHTML=`<div><b>${esc(o.title)}</b><span>${full?esc(U.when(full,MK)) + ' · ' + esc(full.location.label):'Further down the list'}</span>${chooser}</div><div class="acts"><button class="btn btn-turf btn-sm" type="button" data-qv="${esc(o.id)}">Details</button><button class="x" type="button" id="selX" aria-label="Clear selection">×</button></div>`;
     box.hidden=false; $('#selX').onclick=()=>select(null);
+    const choices=$('#mapOpportunities');if(choices)choices.onchange=()=>select(choices.value,{scroll:false});
   }
   function select(id, {scroll=true}={}){
     selected=id;
     $$('#list .ocard').forEach(el=>el.setAttribute('aria-current',String(el.dataset.id===id)));
-    $$('.pin').forEach(p=>p.classList.toggle('hot',p.dataset.id===id));
+    $$('.pin').forEach(p=>p.classList.toggle('hot',(p.dataset.ids||p.dataset.id).split(',').includes(id)));
     renderMapSel();
     if (id && scroll && S.view==='list' && innerWidth>900) { const el=document.querySelector(`#list .ocard[data-id="${CSS.escape(id)}"]`); if(el) el.scrollIntoView({block:'nearest',behavior:U.RM?'auto':'smooth'}); }
   }
@@ -269,9 +283,10 @@
     const stt=t.closest('.st'); if(stt){ S.q=stt.dataset.st; $('#q').value=S.q; track('filters_changed',{state:S.q}); return search({reason:'filter'}); }
     const open=t.closest('a[data-open]'); if(open && !e.metaKey && !e.ctrlKey && !e.shiftKey && e.button===0 && open.closest('#list')){ e.preventDefault(); return openDrawer(open.dataset.open,'finder_list'); }
   });
-  $('#list').addEventListener('mouseover',e=>{ const r=e.target.closest('.ocard'); $$('.pin').forEach(p=>p.classList.toggle('hot',(r&&p.dataset.id===r.dataset.id)||p.dataset.id===selected)); });
+  $('#map').addEventListener('keydown',e=>{const pin=e.target.closest('.pin');if(pin&&['Enter',' '].includes(e.key)){e.preventDefault();select(pin.dataset.id,{scroll:false});}});
+  $('#list').addEventListener('mouseover',e=>{ const r=e.target.closest('.ocard'); $$('.pin').forEach(p=>{const ids=(p.dataset.ids||p.dataset.id).split(',');p.classList.toggle('hot',(r&&ids.includes(r.dataset.id))||ids.includes(selected));}); });
   const tip=$('#tip');
-  $('#map').addEventListener('mousemove',e=>{ const p=e.target.closest('.pin,.st'); if(!p){tip.hidden=true;return;} tip.textContent=p.dataset.n; tip.hidden=false; tip.style.left=Math.min(e.clientX+12,innerWidth-250)+'px'; tip.style.top=(e.clientY+12)+'px'; if(p.classList.contains('pin')) $$('#list .ocard').forEach(r=>r.classList.toggle('hot',r.dataset.id===p.dataset.id)); });
+  $('#map').addEventListener('mousemove',e=>{ const p=e.target.closest('.pin,.st'); if(!p){tip.hidden=true;return;} tip.textContent=p.dataset.n; tip.hidden=false; tip.style.left=Math.min(e.clientX+12,innerWidth-250)+'px'; tip.style.top=(e.clientY+12)+'px'; if(p.classList.contains('pin')) $$('#list .ocard').forEach(r=>r.classList.toggle('hot',(p.dataset.ids||p.dataset.id).split(',').includes(r.dataset.id))); });
   $('#map').addEventListener('mouseleave',()=>{tip.hidden=true;$$('#list .ocard.hot').forEach(r=>r.classList.remove('hot'));});
   document.addEventListener('fp:session',()=>search({reason:'session'}));
   document.addEventListener('fp:saved',e=>{ const b=document.querySelector(`#drawer [data-save]`); if(b){ const on=st.saved.has(b.dataset.save); b.textContent=on?'★ Saved':'☆ Save'; } });

@@ -35,6 +35,8 @@ a database or another host.
 
 ## 2. Endpoints
 
+Search `map_points` uses only current, revision-matching source proof of exact venue coordinates. The location's `lat`, `lng` and `precision:venue` are public; proof source/application URLs remain subject to Pro redaction. Several opportunities at the same venue share one numbered marker with an opportunity selector, without merging their IDs. Missing, contradictory, approximate or expired coordinates remain unpinned. A search location never creates a venue position. The UK map supports venue markers; the US map currently retains its state coverage design.
+
 `GET /markets?registry_only=true` and `GET /regions?market=US&registry_only=true` return presentation taxonomy only, with `inventory_available:false` and every `opportunity_count:null`. Finder boot can use these without reading evidence. Search results, facets/counts, upcoming/detail/SEO inventory and paid-field access still require a fresh proof snapshot; registry metadata never establishes availability or geography of an opportunity.
 
 | Method and path | Access | Request | Response (`ok:true` + …) |

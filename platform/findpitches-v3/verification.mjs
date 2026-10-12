@@ -4,6 +4,7 @@ import {safeSourceUrl} from './source-document.mjs';
 import {verifyUKBundle} from './uk-sources.mjs';
 import {verifyUKCouncilForm} from './uk-council.mjs';
 import {verifyClueMart,verifyMarketsIreland} from './international-sources.mjs';
+import {VENUE_COORDINATE_POLICY,eventVenueCoordinates} from './source-coordinates.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
 export const APPLICATION_POLICY_VERSION='current-application-v1.11';
@@ -139,6 +140,8 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
     else identity=Boolean(heading&&token(heading)===token(event.name)&&sameRoute(event.url??document.url,document.url));
     if(!identity){report.status='quarantine';report.page_kind='unrelated_event';report.reasons.push('event_identity_not_bound_to_page');return report;}
     report.page_kind='event';report.facts=facts;report.evidence.push({kind:'event_json_ld',excerpt:stableJson(event).slice(0,14000)},{kind:'main_heading',excerpt:heading});
+    report.venue_coordinate_policy=VENUE_COORDINATE_POLICY;
+    report.venue_coordinates=eventVenueCoordinates(events,facts,document.url);
     report.event_source_url=event.url?route(event.url,document.url):null;
     if(report.profile==='eventeny'&&vendorId(document.requested_url)!==vendorId(document.url))report.reasons.push('source_application_identity_mismatch');
     if(report.profile==='eventeny')report.application_scope_proof=eventenyScopeProof(main,heading);

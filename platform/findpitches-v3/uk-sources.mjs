@@ -1,6 +1,7 @@
 // Official programme adapters: raw pages are the proof, never operator labels.
 import {hash,stableJson} from './contract.mjs';
 import {parseHtml,nodes,first,text,hasClass} from './source-dom.mjs';
+import {VENUE_COORDINATE_POLICY,validVenueCoordinates} from './source-coordinates.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
 
 export const UK_ADAPTER_VERSION='myntimage-dated-stalls-v1';
@@ -109,6 +110,8 @@ export function verifyUKBundle(document,{now,version,applicationPolicy}) {
     if(geography){facts.country='GB';facts.region_code=geography.region??geography.nation;facts.location+=`, ${geography.nation}`;report.nation=geography.nation;report.evidence.push({kind:'venue_coordinate_country_proof',source_url:geo.url,excerpt:geography.excerpt});}
     else if(venue.country_excerpt){facts.country='GB';report.nation='England';}
     else report.reasons.push('verified_country_missing');
+    report.venue_coordinate_policy=VENUE_COORDINATE_POLICY;
+    report.venue_coordinates=geography?validVenueCoordinates({policy:VENUE_COORDINATE_POLICY,precision:'venue',country:facts.country,location:facts.location,lat:pin.lat,lng:pin.lon,source_url:directions.url,method:'official_venue_directions'},facts):null;
     report.evidence.push({kind:'official_dated_capacity',source_url:event.url,excerpt:row.excerpt},{kind:'official_booking_instructions',source_url:event.url,excerpt:venue.instructions});
     if(row.date<now.slice(0,10))report.reasons.push('stale_edition');
     if(row.capacity===0)report.reasons.push('application_closed');

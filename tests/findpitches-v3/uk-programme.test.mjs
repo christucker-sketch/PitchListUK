@@ -57,6 +57,7 @@ test('country join binds the official venue pin and checks distance independentl
   const geoUrl='https://api.postcodes.io/postcodes?lon=-1.57&lat=50.87&radius=100&limit=1';
   b.documents.push({requested_url:geoUrl,url:geoUrl,fetched_at:NOW,json_text:JSON.stringify({status:200,result:[{latitude:50.87,longitude:-1.57,distance:0,postcode:'SO43 7NY',country:'England',region:'South East'}]})});
   assert.equal(verifyDocument(b,{now:NOW}).status,'verified');
+  const coordinates=verifyDocument(b,{now:NOW}).venue_coordinates;assert.equal(coordinates.lat,50.87);assert.equal(coordinates.lng,-1.57);assert.equal(coordinates.source_url,direction);
   const conflict=structuredClone(b);conflict.documents[0].html=conflict.documents[0].html.replace('Lyndhurst.','Lyndhurst in England.');conflict.documents[3].json_text=conflict.documents[3].json_text.replace('England','Scotland');assert.equal(verifyDocument(conflict,{now:NOW}).status,'quarantine');
   b.documents[3].json_text=b.documents[3].json_text.replace('50.87','40.87');assert.ok(verifyDocument(b,{now:NOW}).reasons.includes('verified_country_missing'));
 });
