@@ -1,6 +1,6 @@
 {
   "schema": "findpitches-v3-public-root-incident-v1",
-  "as_of": "2026-10-12T10:48:10+01:00",
+  "as_of": "2026-10-12T12:00:00+01:00",
   "state": "PUBLIC_HOMEPAGE_ACCEPTED_CHECKOUT_LIVE_OWNED_CUSTOMER_ACCEPTANCE_PENDING",
   "source_commit": "38334c27001311ad8892bc1b4a61545885500253",
   "reported_incident_commit": "b490f953",
@@ -761,5 +761,16 @@
       "dead": 0
     },
     "interpretation": "Five scheduled jobs became due between snapshots and cleared on the next observed cycle; no failed or leased backlog."
+  },
+  "current_ux_runtime_checkpoint": {
+    "report": "post-launch-ux-2026-10-12.json",
+    "as_of": "2026-10-12T10:53:45.860Z",
+    "version_ids": [
+      "e351d86b-eb77-4b59-badd-4d4eeb682684"
+    ],
+    "public_enabled": true,
+    "checkout_enabled": true,
+    "homepage_real_device_accepted": true,
+    "owned_customer_acceptance": "pending"
   }
 }

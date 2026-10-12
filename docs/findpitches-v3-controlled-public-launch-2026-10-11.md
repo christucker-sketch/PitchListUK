@@ -1,5 +1,7 @@
 # FindPitches V3 controlled public launch
 
+**Latest runtime — 2026-10-12T12:00:00+01:00:** [Deployed post-launch UX and restored Checkout](findpitches-v3-post-launch-ux-2026-10-12.md); Safari recovery accepted, public/Checkout LIVE, genuine owned billing/Portal acceptance pending. Older entries below retain their original timestamps.
+
 **Current recovery update — 2026-10-12T10:48:10+01:00:** Chris confirms fresh Safari bare-domain homepage recovery; **new-customer LIVE Checkout is reopened** after fresh public/security/browser/native/preservation proof. [Current deployment and acceptance evidence](findpitches-v3-public-root-incident-2026-10-12.md). Genuine owned LIVE customer/global Pro/Portal acceptance remains pending. The original launch measurements below retain11October timestamps.
 
 Codex status edit **2026-10-11T20:44:56+01:00**. Native inventory/provider evidence **2026-10-11T19:43:40.135Z**; source/producer **2026-10-11T19:43:36.782Z**; full retained preservation **2026-10-11T19:41:54.475Z**. [Machine report](../operations/findpitches-v3/reports/customer-public-launch-2026-10-11.json). Authority: D-014/D-016.

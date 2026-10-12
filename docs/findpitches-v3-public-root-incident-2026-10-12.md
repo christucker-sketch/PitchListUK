@@ -1,5 +1,7 @@
 # FindPitches public root403 incident — 12 October
 
+**Latest runtime — 2026-10-12T12:00:00+01:00:** [Deployed post-launch UX and restored Checkout](findpitches-v3-post-launch-ux-2026-10-12.md); Safari recovery accepted, public/Checkout LIVE, genuine owned billing/Portal acceptance pending. Older entries below retain their original timestamps.
+
 **Current status — 2026-10-12T10:48:10+01:00:** The Safari public-navigation incident is resolved on Chris confirmation (“Homepage opens normally”). Guarded new-customer LIVE Checkout is reopened and actual enabled-browser checks pass. Genuine owned LIVE Checkout/global Pro/Portal acceptance remains pending. Earlier dated checkpoints below are history.
 
 Codex checkpoint **2026-10-12T09:19:21+01:00**. Source report: [real Safari incident](../team/PRODUCTION_INCIDENT.md).

@@ -1,7 +1,7 @@
 {
   "schema": "findpitches-v3-live-provider-checkpoint-v1",
-  "as_of": "2026-10-12T10:48:10+01:00",
-  "release_state": "PUBLIC_HOMEPAGE_ACCEPTED_CHECKOUT_LIVE_OWNED_CUSTOMER_ACCEPTANCE_PENDING",
+  "as_of": "2026-10-12T12:00:00+01:00",
+  "release_state": "PUBLIC_AND_CHECKOUT_LIVE_SCOPED_UX_PASS_VERIFIED_OWNED_BILLING_ACCEPTANCE_PENDING",
   "authority": [
     "D-014",
     "D-016",
@@ -19,9 +19,9 @@
     "database": "findpitches-v3-customer-production",
     "url": "https://findpitches-v3-customer-production.ctucker.workers.dev",
     "deployed_at": "2026-10-11T16:11:26.698Z",
-    "deployment_id": "bd5cfc12-67aa-4e30-ae0d-01a2dd712d5c",
+    "deployment_id": "8ebbb509-9704-416e-9dcf-cba3974807b8",
     "version_ids": [
-      "63fb3d42-f71b-493c-9b27-3ad8c32c89f0"
+      "e351d86b-eb77-4b59-badd-4d4eeb682684"
     ],
     "public_enabled": true,
     "checkout_enabled": true,
@@ -31,7 +31,7 @@
     "pitchlist_changed": false,
     "native_mail_binding_present": true,
     "account_recovery_enabled": true,
-    "observed_at": "2026-10-12T09:45:44.840Z"
+    "observed_at": "2026-10-12T10:53:45.860Z"
   },
   "provider": {
     "account_id": "acct_1TTp8UEIdSfbjtdo",
@@ -66,7 +66,7 @@
   },
   "native_validation": {
     "schema": "findpitches-v3-native-live-provider-preflight-v1",
-    "as_of": "2026-10-12T09:45:44.840Z",
+    "as_of": "2026-10-12T10:53:45.860Z",
     "billing": {
       "status": 200,
       "data": {
@@ -123,10 +123,10 @@
         "public_enabled": true,
         "billing_mode": "live",
         "checkout_enabled": true,
-        "ready": 1785,
+        "ready": 1782,
         "ready_by_country": {
           "GB": 127,
-          "US": 1652,
+          "US": 1649,
           "CA": 0,
           "AU": 2,
           "IE": 0,
@@ -171,9 +171,9 @@
       "webhook_receipts": 2
     },
     "native_mail_binding_present": true,
-    "deployment_id": "bd5cfc12-67aa-4e30-ae0d-01a2dd712d5c",
+    "deployment_id": "8ebbb509-9704-416e-9dcf-cba3974807b8",
     "version_ids": [
-      "63fb3d42-f71b-493c-9b27-3ad8c32c89f0"
+      "e351d86b-eb77-4b59-badd-4d4eeb682684"
     ],
     "flags": {
       "V3_ACCOUNT_RECOVERY_ENABLED": "true",
@@ -195,7 +195,7 @@
       }
     ],
     "pitchlist": {
-      "as_of": "2026-10-12T09:45:44.840Z",
+      "as_of": "2026-10-12T10:53:45.859Z",
       "homepage_status": 200,
       "brand_present": true,
       "pages_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
@@ -210,15 +210,15 @@
     "messages_sent": 0
   },
   "source_health": {
-    "as_of": "2026-10-12T09:45:41.566Z",
+    "as_of": "2026-10-12T10:53:42.830Z",
     "safety": {
       "publication_enabled": 0,
       "customer_projection_rows": 0,
       "publication_queue_rows": 0,
-      "due_jobs": 0,
-      "leased_jobs": 0,
+      "due_jobs": 5,
+      "leased_jobs": 1,
       "dead_jobs": 0,
-      "future_jobs": 9243,
+      "future_jobs": 9236,
       "paid_queries_today": 0,
       "paid_bulk_enabled": 0,
       "global_query_limit": 1000,
@@ -229,13 +229,13 @@
       "cloud_ready": true,
       "expected_interval_seconds": 900,
       "contact_observation_started": true,
-      "last_authenticated_recheck_poll": "2026-10-12T09:39:50.956Z",
+      "last_authenticated_recheck_poll": "2026-10-12T10:40:24.940Z",
       "expected_discovery_interval_seconds": 10800,
       "expected_export_lag_seconds": 3600,
       "recent_poll_intervals_seconds": [
-        906.978,
-        906.851,
-        1324.113
+        909.63,
+        910.268,
+        907.412
       ],
       "host_recently_contacting": true,
       "cadence_verified": true,
@@ -245,7 +245,7 @@
       "last_new_receipt_at": "2026-10-12T08:54:03.147Z",
       "source_last_checked": "2026-10-12T08:33:55Z",
       "rechecks": {
-        "pending_entities": 61,
+        "pending_entities": 259,
         "fresh_evidence_ack_eligible": 0,
         "by_country": [
           {
@@ -262,13 +262,13 @@
           },
           {
             "market": "GB",
-            "pending_entities": 14,
+            "pending_entities": 60,
             "oldest_requested_at": "2026-10-09T13:33:17.963Z",
             "fresh_evidence_ack_eligible": 0
           },
           {
             "market": "US",
-            "pending_entities": 45,
+            "pending_entities": 197,
             "oldest_requested_at": "2026-10-08T15:03:36.957Z",
             "fresh_evidence_ack_eligible": 0
           }
@@ -286,7 +286,7 @@
   },
   "preservation": {
     "schema": "findpitches-v3-customer-preview-preservation-v1",
-    "as_of": "2026-10-12T09:43:21.232Z",
+    "as_of": "2026-10-12T10:39:36.198Z",
     "receipts_compared": 15811,
     "source_facts_compared": 108819,
     "existing_identities_compared": 7077,
@@ -382,12 +382,12 @@
   },
   "validation": {
     "full_v3": {
-      "passed": 264,
+      "passed": 268,
       "failed": 0,
       "skipped": 0,
-      "as_of": "2026-10-12T08:30:16.892680+00:00",
-      "rerun_for_flag_change": false,
-      "scope": "264/264 unchanged code suite completed earlier on 12 October; launch flag reopening uses fresh native/browser/preservation proof."
+      "as_of": "2026-10-12T10:29:56.483176+00:00",
+      "source_commit": "b72a4828",
+      "scope": "Final V3-013 runtime code suite."
     },
     "production_focused": {
       "passed": 17,
@@ -407,7 +407,7 @@
     },
     "public_api_security_seo": {
       "schema": "findpitches-v3-public-smoke-v1",
-      "started_at": "2026-10-12T09:40:19.086Z",
+      "started_at": "2026-10-12T10:36:52.353Z",
       "passed": true,
       "checks": [
         {
@@ -529,12 +529,12 @@
       ],
       "country_counts": {
         "GB": 127,
-        "US": 1652
+        "US": 1651
       },
       "customer_objects_created": 0,
       "messages_sent": 0,
       "certificate_bypass": false,
-      "as_of": "2026-10-12T09:40:48.717Z"
+      "as_of": "2026-10-12T10:37:21.740Z"
     },
     "public_browser_checkout_closed": {
       "schema": "findpitches-v3-public-browser-v1",
@@ -645,7 +645,7 @@
       "certificate_bypass": false,
       "customer_objects_created": 0,
       "messages_sent": 0,
-      "as_of": "2026-10-12T09:42:07.841612+00:00",
+      "as_of": "2026-10-12T10:37:23.385972+00:00",
       "identical_duplicate_canonical_tags": 1
     },
     "public_browser_checkout_enabled": {
@@ -757,8 +757,66 @@
       "certificate_bypass": false,
       "customer_objects_created": 0,
       "messages_sent": 0,
-      "as_of": "2026-10-12T09:45:18.483428+00:00",
+      "as_of": "2026-10-12T10:48:08.990206+00:00",
       "identical_duplicate_canonical_tags": 1
+    },
+    "local_desktop_mobile_ux": {
+      "passed": 16,
+      "failed": 0,
+      "scope": "Frozen actual proof snapshot and separately labelled synthetic renderer control; no production records or provider objects written."
+    },
+    "public_desktop_mobile_ux": {
+      "schema": "findpitches-v3-public-ux-v1",
+      "phase": "after",
+      "passed": true,
+      "samples": [
+        {
+          "device": "desktop",
+          "homepage_status": 200,
+          "document_ms": 1041,
+          "homepage_data_ms": 9014,
+          "upcoming_rows": 11,
+          "uk_area_links": 3,
+          "homepage_api_calls": [
+            "/api/v3/home",
+            "/api/v3/session",
+            "/api/v3/billing/plans",
+            "/api/v3/billing/plans",
+            "/api/v3/billing/plans"
+          ],
+          "finder_results_ms": 5655,
+          "uk_map_pins": 0,
+          "map_note": "No verified coordinates are available for these 127 listings yet. All results remain in the list; we do not guess map positions.",
+          "page_errors": 0,
+          "foreign_requests": 0
+        },
+        {
+          "device": "mobile",
+          "homepage_status": 200,
+          "document_ms": 490,
+          "homepage_data_ms": 4836,
+          "upcoming_rows": 11,
+          "uk_area_links": 3,
+          "homepage_api_calls": [
+            "/api/v3/home",
+            "/api/v3/session",
+            "/api/v3/billing/plans",
+            "/api/v3/billing/plans",
+            "/api/v3/billing/plans"
+          ],
+          "finder_results_ms": 4247,
+          "uk_map_pins": 0,
+          "map_note": "No verified coordinates are available for these 127 listings yet. All results remain in the list; we do not guess map positions.",
+          "page_errors": 0,
+          "foreign_requests": 0
+        }
+      ],
+      "certificate_bypass": false,
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-12T10:37:17.536156+00:00",
+      "observation_completed": true,
+      "acceptance_passed": true
     }
   },
   "native_bundle_sha256": "c8450c0b8b8566f8fc05ffd086cb059cd2aa8abd2b361e9c67f464a494c0f0ed",
@@ -815,7 +873,7 @@
     "scope": "Public homepage navigation only; not Checkout/global Pro/Portal acceptance"
   },
   "current_checkout_checkpoint": {
-    "as_of": "2026-10-12T09:44:18.498Z",
+    "as_of": "2026-10-12T10:46:41.173Z",
     "stage": "checkout",
     "worker": "findpitches-v3-customer-production",
     "public_enabled": true,
@@ -836,9 +894,9 @@
     "pitchlist_healthy": true,
     "dns_mutations": 0,
     "pages_mutations": 0,
-    "deployment_id": "bd5cfc12-67aa-4e30-ae0d-01a2dd712d5c",
+    "deployment_id": "8ebbb509-9704-416e-9dcf-cba3974807b8",
     "version_ids": [
-      "63fb3d42-f71b-493c-9b27-3ad8c32c89f0"
+      "e351d86b-eb77-4b59-badd-4d4eeb682684"
     ]
   },
   "hosted_live_customer_acceptance": {
@@ -849,5 +907,6 @@
     "synthetic_live_objects_created": 0,
     "test_mode_is_not_live_acceptance": true,
     "unowned_receipts_are_not_owned_acceptance": true
-  }
+  },
+  "current_ux_report": "post-launch-ux-2026-10-12.json"
 }

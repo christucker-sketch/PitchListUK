@@ -1,0 +1,926 @@
+{
+  "schema": "findpitches-v3-post-launch-ux-v1",
+  "as_of": "2026-10-12T12:00:00+01:00",
+  "source_commit": "b72a4828",
+  "authority": [
+    "D-014",
+    "D-016"
+  ],
+  "state": "PUBLIC_AND_CHECKOUT_LIVE_SCOPED_UX_PASS_VERIFIED_OWNED_BILLING_ACCEPTANCE_PENDING",
+  "release": {
+    "as_of": "2026-10-12T10:34:27.930Z",
+    "worker": "findpitches-v3-customer-production",
+    "release_method": "version_upload_and_deploy",
+    "deployment_id": "c126b09e-0f95-4360-ba25-c0b888f7be10",
+    "version_ids": [
+      "d05030c4-f8df-4c13-a9de-927a55484ec5"
+    ],
+    "checkout_enabled": false,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "all_native_bindings_and_settings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "pitchlist_unchanged": true,
+    "database_migrations": 0,
+    "secret_values_replaced": false,
+    "source_identity_writes": 0
+  },
+  "checkout_reopen": {
+    "as_of": "2026-10-12T10:46:41.173Z",
+    "stage": "checkout",
+    "worker": "findpitches-v3-customer-production",
+    "public_enabled": true,
+    "checkout_enabled": true,
+    "routes": [
+      {
+        "id": "8fe7bac98b2c47799cefa8e2e8bb1c64",
+        "pattern": "www.findpitches.com/*",
+        "script": "findpitches-v3-customer-production"
+      },
+      {
+        "id": "6d76d649e5904df6a90e53a36573a3eb",
+        "pattern": "findpitches.com/*",
+        "script": "findpitches-v3-customer-production"
+      }
+    ],
+    "unrelated_bindings_preserved": true,
+    "pitchlist_healthy": true,
+    "dns_mutations": 0,
+    "pages_mutations": 0,
+    "deployment_id": "8ebbb509-9704-416e-9dcf-cba3974807b8",
+    "version_ids": [
+      "e351d86b-eb77-4b59-badd-4d4eeb682684"
+    ]
+  },
+  "native_validation": {
+    "schema": "findpitches-v3-native-live-provider-preflight-v1",
+    "as_of": "2026-10-12T10:53:45.860Z",
+    "billing": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "provider": "stripe",
+        "mode": "live",
+        "credential_validated": true,
+        "product_id": "prod_VQF2oqHreWwhOj",
+        "prices": [
+          {
+            "id": "price_1UPOYoEIdSfbjtdokwYZebsp",
+            "currency": "GBP",
+            "amount": 499,
+            "interval": "month"
+          },
+          {
+            "id": "price_1UPOYoEIdSfbjtdoDVzOaxpQ",
+            "currency": "USD",
+            "amount": 699,
+            "interval": "month"
+          },
+          {
+            "id": "price_1UPOYoEIdSfbjtdov30fVN2j",
+            "currency": "EUR",
+            "amount": 599,
+            "interval": "month"
+          }
+        ],
+        "portal_id": "bpc_1UPOZ7EIdSfbjtdoUSK1A5h9",
+        "portal_cancel_at_period_end": true,
+        "webhook_secret_configured": true,
+        "entitlement": "global",
+        "trial_days": 7,
+        "checkout_enabled": true,
+        "customer_objects_created": 0
+      }
+    },
+    "email": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "provider": "smtp2go",
+        "sender": "hello@findpitches.com",
+        "credential_validated": true,
+        "sender_domain_verified": true,
+        "emails_sent": 0
+      }
+    },
+    "preflight": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "mode": "production_public",
+        "public_enabled": true,
+        "billing_mode": "live",
+        "checkout_enabled": true,
+        "ready": 1782,
+        "ready_by_country": {
+          "GB": 127,
+          "US": 1649,
+          "CA": 0,
+          "AU": 2,
+          "IE": 0,
+          "NZ": 4,
+          "SG": 0,
+          "HK": 0
+        },
+        "email_configured": true,
+        "counts": {
+          "customers": 0,
+          "pending_webhooks": 0
+        }
+      }
+    },
+    "health": {
+      "status": 200,
+      "data": {
+        "ok": true,
+        "service": "findpitches-v3-customer-production",
+        "mode": "production_public",
+        "publication_enabled": true,
+        "production_cutover_enabled": true,
+        "frontend": "Claude Build 4",
+        "frontend_source_sha256": "24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05"
+      }
+    },
+    "operator_unauthorized": {
+      "status": 403,
+      "data": {
+        "ok": false,
+        "error": "forbidden",
+        "message": "Please check your request and try again."
+      }
+    },
+    "operator_unauthorized_status": 403,
+    "nashville_eligible": 0,
+    "production_counts": {
+      "customers": 0,
+      "stripe_customer_mappings": 0,
+      "subscriptions": 0,
+      "checkout_attempts": 0,
+      "webhook_receipts": 2
+    },
+    "native_mail_binding_present": true,
+    "deployment_id": "8ebbb509-9704-416e-9dcf-cba3974807b8",
+    "version_ids": [
+      "e351d86b-eb77-4b59-badd-4d4eeb682684"
+    ],
+    "flags": {
+      "V3_ACCOUNT_RECOVERY_ENABLED": "true",
+      "V3_CHECKOUT_ENABLED": "live",
+      "V3_PUBLIC_ENABLED": "true"
+    },
+    "routes": [
+      {
+        "id": "8fe7bac98b2c47799cefa8e2e8bb1c64",
+        "pattern": "www.findpitches.com/*",
+        "script": "findpitches-v3-customer-production",
+        "request_limit_fail_open": false
+      },
+      {
+        "id": "6d76d649e5904df6a90e53a36573a3eb",
+        "pattern": "findpitches.com/*",
+        "script": "findpitches-v3-customer-production",
+        "request_limit_fail_open": false
+      }
+    ],
+    "pitchlist": {
+      "as_of": "2026-10-12T10:53:45.859Z",
+      "homepage_status": 200,
+      "brand_present": true,
+      "pages_deployment_id": "7f359dff-0702-4acb-aa69-2f28859c91ce",
+      "domains": [
+        "pitchlistuk.pages.dev",
+        "findpitches.com",
+        "pitchlist.uk",
+        "www.findpitches.com"
+      ]
+    },
+    "source_mutations_performed": 0,
+    "messages_sent": 0
+  },
+  "source_health": {
+    "as_of": "2026-10-12T10:53:42.830Z",
+    "safety": {
+      "publication_enabled": 0,
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "due_jobs": 5,
+      "leased_jobs": 1,
+      "dead_jobs": 0,
+      "future_jobs": 9236,
+      "paid_queries_today": 0,
+      "paid_bulk_enabled": 0,
+      "global_query_limit": 1000,
+      "commercial_query_limit": 25,
+      "commercial_manual_paused": 1
+    },
+    "producer": {
+      "cloud_ready": true,
+      "expected_interval_seconds": 900,
+      "contact_observation_started": true,
+      "last_authenticated_recheck_poll": "2026-10-12T10:40:24.940Z",
+      "expected_discovery_interval_seconds": 10800,
+      "expected_export_lag_seconds": 3600,
+      "recent_poll_intervals_seconds": [
+        909.63,
+        910.268,
+        907.412
+      ],
+      "host_recently_contacting": true,
+      "cadence_verified": true,
+      "freshness_warning": false,
+      "immutable_receipts": 9504,
+      "producer_ids": 2125,
+      "last_new_receipt_at": "2026-10-12T08:54:03.147Z",
+      "source_last_checked": "2026-10-12T08:33:55Z",
+      "rechecks": {
+        "pending_entities": 259,
+        "fresh_evidence_ack_eligible": 0,
+        "by_country": [
+          {
+            "market": "AU",
+            "pending_entities": 1,
+            "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "CA",
+            "pending_entities": 1,
+            "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "GB",
+            "pending_entities": 60,
+            "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "US",
+            "pending_entities": 197,
+            "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+            "fresh_evidence_ack_eligible": 0
+          }
+        ],
+        "acknowledged_last_24h": 2211,
+        "latest_acknowledgement": "2026-10-12T08:54:36.756Z",
+        "obsolete_requests_resolved": 2,
+        "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+        "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+        "pagination_supported": true,
+        "oldest_request_preserved": true
+      },
+      "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+    }
+  },
+  "preservation": {
+    "schema": "findpitches-v3-customer-preview-preservation-v1",
+    "as_of": "2026-10-12T10:39:36.198Z",
+    "receipts_compared": 15811,
+    "source_facts_compared": 108819,
+    "existing_identities_compared": 7077,
+    "destructive_source_mutations": 0,
+    "existing_identity_changes": 0,
+    "identity_comparison_key": "retained entity.id",
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "publication_api_denied": true,
+    "publication_enabled": false,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "live_v1_deployment_unchanged": true,
+    "v2_schedules": [],
+    "v2_schedules_unchanged": true
+  },
+  "validation": {
+    "full_v3": {
+      "passed": 268,
+      "failed": 0,
+      "skipped": 0,
+      "as_of": "2026-10-12T10:29:56.483176+00:00"
+    },
+    "frontend": {
+      "passed": 3,
+      "failed": 0,
+      "independence_passed": true
+    },
+    "boundaries_passed": true,
+    "native_build_passed": true,
+    "local_desktop_mobile_controls": {
+      "passed": 16,
+      "failed": 0,
+      "scope": "local_frozen_source_and_synthetic_renderer_control"
+    },
+    "public_api_security_seo": {
+      "schema": "findpitches-v3-public-smoke-v1",
+      "started_at": "2026-10-12T10:36:52.353Z",
+      "passed": true,
+      "checks": [
+        {
+          "name": "json_/health",
+          "passed": true
+        },
+        {
+          "name": "public_production_health",
+          "passed": true
+        },
+        {
+          "name": "owned_homepage_/",
+          "passed": true
+        },
+        {
+          "name": "truthful_homepage_/",
+          "passed": true
+        },
+        {
+          "name": "owned_homepage_/index.html",
+          "passed": true
+        },
+        {
+          "name": "truthful_homepage_/index.html",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/session",
+          "passed": true
+        },
+        {
+          "name": "anonymous_free_no_alert_delivery",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/opportunities",
+          "passed": true
+        },
+        {
+          "name": "GB_real_ready_redacted",
+          "passed": true
+        },
+        {
+          "name": "GB_no_duplicate_or_held_identity",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/opportunities",
+          "passed": true
+        },
+        {
+          "name": "US_real_ready_redacted",
+          "passed": true
+        },
+        {
+          "name": "US_no_duplicate_or_held_identity",
+          "passed": true
+        },
+        {
+          "name": "public_event_identity_indexable",
+          "passed": true
+        },
+        {
+          "name": "held_ent_dda1403e0c99eb5b1c1871f37c325cb2",
+          "passed": true
+        },
+        {
+          "name": "held_ent_93d86b9d0147d8aa91ea8eea541d86b8",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/account.html",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/pricing.html",
+          "passed": true
+        },
+        {
+          "name": "private_noindex_/alerts.html",
+          "passed": true
+        },
+        {
+          "name": "json_/api/v3/billing/plans",
+          "passed": true
+        },
+        {
+          "name": "global_eur_price_checkout_closed",
+          "passed": true
+        },
+        {
+          "name": "unsafe_signin_csrf_rejected",
+          "passed": true
+        },
+        {
+          "name": "operator_private",
+          "passed": true
+        },
+        {
+          "name": "preview_provisioning_unavailable",
+          "passed": true
+        },
+        {
+          "name": "unsigned_live_webhook_rejected",
+          "passed": true
+        },
+        {
+          "name": "public_robots_private_paths",
+          "passed": true
+        },
+        {
+          "name": "proof_filtered_sitemap",
+          "passed": true
+        },
+        {
+          "name": "www_redirect_to_owned_apex",
+          "passed": true
+        }
+      ],
+      "country_counts": {
+        "GB": 127,
+        "US": 1651
+      },
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "certificate_bypass": false,
+      "as_of": "2026-10-12T10:37:21.740Z"
+    },
+    "browser_checkout_closed": {
+      "schema": "findpitches-v3-public-browser-v1",
+      "passed": true,
+      "checks": [
+        {
+          "name": "page_/",
+          "passed": true
+        },
+        {
+          "name": "apex_homepage_html",
+          "passed": true
+        },
+        {
+          "name": "apex_homepage_indexable",
+          "passed": true
+        },
+        {
+          "name": "page_/uk/find-pitches/",
+          "passed": true
+        },
+        {
+          "name": "uk_real_market",
+          "passed": true
+        },
+        {
+          "name": "free_session_redacted",
+          "passed": true
+        },
+        {
+          "name": "entity_is_real_and_locked",
+          "passed": true
+        },
+        {
+          "name": "page_/uk/opportunity/ent_f3b601fdc8e486c66f0974ab5bae9194/",
+          "passed": true
+        },
+        {
+          "name": "all_event_canonicals_match_identity",
+          "passed": true
+        },
+        {
+          "name": "free_apply_link_withheld",
+          "passed": true
+        },
+        {
+          "name": "page_/us/find-pitches/",
+          "passed": true
+        },
+        {
+          "name": "us_real_market",
+          "passed": true
+        },
+        {
+          "name": "page_/pricing.html",
+          "passed": true
+        },
+        {
+          "name": "supported_currency_choices",
+          "passed": true
+        },
+        {
+          "name": "displayed_GBP",
+          "passed": true
+        },
+        {
+          "name": "displayed_USD",
+          "passed": true
+        },
+        {
+          "name": "displayed_EUR",
+          "passed": true
+        },
+        {
+          "name": "truthful_alerts_copy",
+          "passed": true
+        },
+        {
+          "name": "checkout_gate_matches",
+          "passed": true
+        },
+        {
+          "name": "page_/account.html",
+          "passed": true
+        },
+        {
+          "name": "account_noindex",
+          "passed": true
+        },
+        {
+          "name": "page_/alerts.html",
+          "passed": true
+        },
+        {
+          "name": "alerts_unavailable",
+          "passed": true
+        },
+        {
+          "name": "no_browser_errors",
+          "passed": true
+        },
+        {
+          "name": "same_origin_assets_and_api",
+          "passed": true
+        }
+      ],
+      "checkout_state": "disabled",
+      "certificate_bypass": false,
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-12T10:37:23.385972+00:00",
+      "identical_duplicate_canonical_tags": 1
+    },
+    "browser_checkout_enabled": {
+      "schema": "findpitches-v3-public-browser-v1",
+      "passed": true,
+      "checks": [
+        {
+          "name": "page_/",
+          "passed": true
+        },
+        {
+          "name": "apex_homepage_html",
+          "passed": true
+        },
+        {
+          "name": "apex_homepage_indexable",
+          "passed": true
+        },
+        {
+          "name": "page_/uk/find-pitches/",
+          "passed": true
+        },
+        {
+          "name": "uk_real_market",
+          "passed": true
+        },
+        {
+          "name": "free_session_redacted",
+          "passed": true
+        },
+        {
+          "name": "entity_is_real_and_locked",
+          "passed": true
+        },
+        {
+          "name": "page_/uk/opportunity/ent_f3b601fdc8e486c66f0974ab5bae9194/",
+          "passed": true
+        },
+        {
+          "name": "all_event_canonicals_match_identity",
+          "passed": true
+        },
+        {
+          "name": "free_apply_link_withheld",
+          "passed": true
+        },
+        {
+          "name": "page_/us/find-pitches/",
+          "passed": true
+        },
+        {
+          "name": "us_real_market",
+          "passed": true
+        },
+        {
+          "name": "page_/pricing.html",
+          "passed": true
+        },
+        {
+          "name": "supported_currency_choices",
+          "passed": true
+        },
+        {
+          "name": "displayed_GBP",
+          "passed": true
+        },
+        {
+          "name": "displayed_USD",
+          "passed": true
+        },
+        {
+          "name": "displayed_EUR",
+          "passed": true
+        },
+        {
+          "name": "truthful_alerts_copy",
+          "passed": true
+        },
+        {
+          "name": "checkout_gate_matches",
+          "passed": true
+        },
+        {
+          "name": "page_/account.html",
+          "passed": true
+        },
+        {
+          "name": "account_noindex",
+          "passed": true
+        },
+        {
+          "name": "page_/alerts.html",
+          "passed": true
+        },
+        {
+          "name": "alerts_unavailable",
+          "passed": true
+        },
+        {
+          "name": "no_browser_errors",
+          "passed": true
+        },
+        {
+          "name": "same_origin_assets_and_api",
+          "passed": true
+        }
+      ],
+      "checkout_state": "enabled",
+      "certificate_bypass": false,
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-12T10:48:08.990206+00:00",
+      "identical_duplicate_canonical_tags": 1
+    },
+    "public_ux": {
+      "schema": "findpitches-v3-public-ux-v1",
+      "phase": "after",
+      "passed": true,
+      "samples": [
+        {
+          "device": "desktop",
+          "homepage_status": 200,
+          "document_ms": 771,
+          "homepage_data_ms": 3685,
+          "upcoming_rows": 11,
+          "uk_area_links": 3,
+          "homepage_api_calls": [
+            "/api/v3/home",
+            "/api/v3/session",
+            "/api/v3/billing/plans",
+            "/api/v3/billing/plans",
+            "/api/v3/billing/plans"
+          ],
+          "finder_results_ms": 3657,
+          "uk_map_pins": 0,
+          "map_note": "No verified coordinates are available for these 127 listings yet. All results remain in the list; we do not guess map positions.",
+          "page_errors": 0,
+          "foreign_requests": 0
+        },
+        {
+          "device": "mobile",
+          "homepage_status": 200,
+          "document_ms": 470,
+          "homepage_data_ms": 3324,
+          "upcoming_rows": 11,
+          "uk_area_links": 3,
+          "homepage_api_calls": [
+            "/api/v3/home",
+            "/api/v3/session",
+            "/api/v3/billing/plans",
+            "/api/v3/billing/plans",
+            "/api/v3/billing/plans"
+          ],
+          "finder_results_ms": 3103,
+          "uk_map_pins": 0,
+          "map_note": "No verified coordinates are available for these 127 listings yet. All results remain in the list; we do not guess map positions.",
+          "page_errors": 0,
+          "foreign_requests": 0
+        }
+      ],
+      "certificate_bypass": false,
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-12T10:52:28.248534+00:00",
+      "observation_completed": true,
+      "acceptance_passed": true
+    }
+  },
+  "before_public_ux": {
+    "schema": "findpitches-v3-public-ux-v1",
+    "phase": "before",
+    "passed": true,
+    "samples": [
+      {
+        "device": "desktop",
+        "homepage_status": 200,
+        "document_ms": 4105,
+        "homepage_data_ms": 10580,
+        "upcoming_rows": 0,
+        "uk_area_links": 0,
+        "homepage_api_calls": [
+          "/api/v3/markets",
+          "/api/v3/session",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans",
+          "/api/v3/stats",
+          "/api/v3/billing/plans"
+        ],
+        "finder_results_ms": 10405,
+        "uk_map_pins": 0,
+        "map_note": "Listing\nSports event\nPale pins are further down the list. Area-wide listings aren\u2019t pinned.",
+        "page_errors": 0,
+        "foreign_requests": 0
+      },
+      {
+        "device": "mobile",
+        "homepage_status": 200,
+        "document_ms": 3715,
+        "homepage_data_ms": 12102,
+        "upcoming_rows": 0,
+        "uk_area_links": 0,
+        "homepage_api_calls": [
+          "/api/v3/markets",
+          "/api/v3/session",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans",
+          "/api/v3/stats",
+          "/api/v3/billing/plans"
+        ],
+        "finder_results_ms": 11377,
+        "uk_map_pins": 0,
+        "map_note": "Listing\nSports event\nPale pins are further down the list. Area-wide listings aren\u2019t pinned.",
+        "page_errors": 0,
+        "foreign_requests": 0
+      }
+    ],
+    "certificate_bypass": false,
+    "customer_objects_created": 0,
+    "messages_sent": 0,
+    "as_of": "2026-10-12T10:07:25.271128+00:00",
+    "acceptance_passed": false
+  },
+  "after_during_parallel_validation": {
+    "schema": "findpitches-v3-public-ux-v1",
+    "phase": "after",
+    "passed": true,
+    "samples": [
+      {
+        "device": "desktop",
+        "homepage_status": 200,
+        "document_ms": 1041,
+        "homepage_data_ms": 9014,
+        "upcoming_rows": 11,
+        "uk_area_links": 3,
+        "homepage_api_calls": [
+          "/api/v3/home",
+          "/api/v3/session",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans"
+        ],
+        "finder_results_ms": 5655,
+        "uk_map_pins": 0,
+        "map_note": "No verified coordinates are available for these 127 listings yet. All results remain in the list; we do not guess map positions.",
+        "page_errors": 0,
+        "foreign_requests": 0
+      },
+      {
+        "device": "mobile",
+        "homepage_status": 200,
+        "document_ms": 490,
+        "homepage_data_ms": 4836,
+        "upcoming_rows": 11,
+        "uk_area_links": 3,
+        "homepage_api_calls": [
+          "/api/v3/home",
+          "/api/v3/session",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans"
+        ],
+        "finder_results_ms": 4247,
+        "uk_map_pins": 0,
+        "map_note": "No verified coordinates are available for these 127 listings yet. All results remain in the list; we do not guess map positions.",
+        "page_errors": 0,
+        "foreign_requests": 0
+      }
+    ],
+    "certificate_bypass": false,
+    "customer_objects_created": 0,
+    "messages_sent": 0,
+    "as_of": "2026-10-12T10:37:17.536156+00:00",
+    "observation_completed": true,
+    "acceptance_passed": true
+  },
+  "after_quiet_client": {
+    "schema": "findpitches-v3-public-ux-v1",
+    "phase": "after",
+    "passed": true,
+    "samples": [
+      {
+        "device": "desktop",
+        "homepage_status": 200,
+        "document_ms": 771,
+        "homepage_data_ms": 3685,
+        "upcoming_rows": 11,
+        "uk_area_links": 3,
+        "homepage_api_calls": [
+          "/api/v3/home",
+          "/api/v3/session",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans"
+        ],
+        "finder_results_ms": 3657,
+        "uk_map_pins": 0,
+        "map_note": "No verified coordinates are available for these 127 listings yet. All results remain in the list; we do not guess map positions.",
+        "page_errors": 0,
+        "foreign_requests": 0
+      },
+      {
+        "device": "mobile",
+        "homepage_status": 200,
+        "document_ms": 470,
+        "homepage_data_ms": 3324,
+        "upcoming_rows": 11,
+        "uk_area_links": 3,
+        "homepage_api_calls": [
+          "/api/v3/home",
+          "/api/v3/session",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans",
+          "/api/v3/billing/plans"
+        ],
+        "finder_results_ms": 3103,
+        "uk_map_pins": 0,
+        "map_note": "No verified coordinates are available for these 127 listings yet. All results remain in the list; we do not guess map positions.",
+        "page_errors": 0,
+        "foreign_requests": 0
+      }
+    ],
+    "certificate_bypass": false,
+    "customer_objects_created": 0,
+    "messages_sent": 0,
+    "as_of": "2026-10-12T10:52:28.248534+00:00",
+    "observation_completed": true,
+    "acceptance_passed": true
+  },
+  "ready": 1782,
+  "ready_by_country": {
+    "GB": 127,
+    "US": 1649,
+    "CA": 0,
+    "AU": 2,
+    "IE": 0,
+    "NZ": 4,
+    "SG": 0,
+    "HK": 0
+  },
+  "fixes": {
+    "homepage": "Replaced absent draft_has_data selector with actual opportunity counts; one fresh redacted /home response; purposeful empty state; real future event rows and existing canonical IDs.",
+    "regions": "Exact verified region names now map to the existing registry; conflicting named/literal regions stay unmapped. No town-to-county guesses. Three real top-level UK area links.",
+    "performance": "Brand/Finder document shells need no inventory read. Finder boot uses static taxonomy with unknown counts, followed by one fresh result/proof read. Optional billing plans no longer gate rendering. No cross-request proof cache.",
+    "map": "Unknown-coordinate state explained; valid finite venue-point/filter controls pass. Genuine GB/US venue coordinates absent; actual UK pins remain 0."
+  },
+  "coordinate_dependency": {
+    "gb_us_retained_verified_venue_coordinates": 0,
+    "renderer_control_scope": "Synthetic local point only, never a production/source write.",
+    "remaining_work": "Source-backed venue coordinate verification and proof-to-customer API projection; preserve identity and original facts. No town/postcode centre passed off as venue.",
+    "additional_serper_queries": 0
+  },
+  "performance_limits": [
+    "Bounded anonymous Chromium desktop/mobile-viewport observations through this runner proxy, not a Safari/device or production-load SLA.",
+    "Parallel validation produced a 9.01s homepage-data outlier; source catalogue latency remains variable. Quiet-client measurements are reported separately, not substituted for every observation."
+  ],
+  "hosted_live_customer_acceptance": {
+    "state": "PENDING_GENUINE_OWNED_LIVE_CHECKOUT_GLOBAL_PRO_PORTAL",
+    "homepage_safari_confirmed_by_chris": true,
+    "owned_customer_journey_accepted": false,
+    "operator_outcome_requested": true,
+    "synthetic_live_provider_objects_created": 0
+  },
+  "remaining_gates": [
+    "paid acquisition",
+    "customer alerts",
+    "legacy subscriber migration",
+    "UKCF Option B",
+    "destructive V1/V2 changes",
+    "infrastructure deletion",
+    "protected/live merges"
+  ]
+}

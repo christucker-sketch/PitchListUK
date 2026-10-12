@@ -1,5 +1,7 @@
 # FindPitches V3 — current execution orders
 
+**Current runtime checkpoint — 2026-10-12T12:00:00+01:00:** [V3-013 deployed UX proof](../docs/findpitches-v3-post-launch-ux-2026-10-12.md); public/Checkout LIVE again, genuine owned billing acceptance still pending. Coordinates and variable fresh-source latency are explicit follow-ups. Existing D-014/D-016 scope and all other gates unchanged.
+
 **Executed runtime checkpoint — 2026-10-12T10:48:10+01:00:** Public navigation accepted by Chris; Checkout reopened after fresh guarded proof. [Current recovery/evidence](../docs/findpitches-v3-public-root-incident-2026-10-12.md). Genuine owned LIVE Checkout/global Pro/Portal acceptance is the next operator dependency. The dated launch orders below remain the authorization basis; other gates stay closed.
 
 Updated: 2026-10-11 after the team readiness reports and D-016 pricing decision.
