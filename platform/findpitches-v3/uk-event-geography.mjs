@@ -1,6 +1,7 @@
 // Source-event postal addresses can be corroborated by a public postcode
 // receipt. Query geography, company footers and postcode-centre pins are excluded.
 import {hash,stableJson} from './contract.mjs';
+import {applyUsableRoute} from './usable-route.mjs';
 const normalize=v=>String(v??'').toUpperCase().replace(/\s/g,'');
 export const ukPostcode=v=>/^(?:GIR0AA|[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2})$/.test(normalize(v))?normalize(v):null;
 export const postcodeURL=v=>'https://api.postcodes.io/postcodes/'+encodeURIComponent(ukPostcode(v)??'');
@@ -40,5 +41,5 @@ export function verifyUKEventGeography(document,{now,verify}) {
   report.facts={...report.facts,country:proof.country,...proof.region?{region_code:proof.region}:{}};report.nation=proof.nation;report.checked_at=document.fetched_at;
   report.reasons=report.reasons.filter(r=>r!=='verified_country_missing');report.evidence.push({kind:'source_event_postcode_country',source_url:geo.url,excerpt:stableJson(proof)});
   if(!report.reasons.length&&['partial','unverified','verified'].includes(report.status))report.status='verified';
-  return report;
+  return applyUsableRoute(source,report,{now});
 }

@@ -4,6 +4,7 @@ import { sql,loadEntity } from './store.mjs';
 import { selectRecordFacts,proposeFact,trustedOfficialSourceReview } from './evidence.mjs';
 import { enqueue,jobStatement,claimJob,finishJob,failJob } from './jobs.mjs';
 import {verificationGate} from './verification-store.mjs';
+import {usableRouteEligible} from './usable-route.mjs';
 
 export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}={}) {
   const existing=await sql(db,'SELECT * FROM reconciliation_decisions WHERE record_id=?',recordId).first();
@@ -86,13 +87,13 @@ export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}
   ]);
   return {...decision,entity_id:id};
 }
-export function assessEligibility(entity,{now=new Date().toISOString(),conflicts=0,qualityHolds=0}={}) {
+export function assessEligibility(entity,{now=new Date().toISOString(),conflicts=0,qualityHolds=0,proof=null}={}) {
   let status='eligible',reasons=[];
   if(qualityHolds) { status='review';reasons=['source_qualification_requires_review']; }
   else if(conflicts) { status='review';reasons=['unresolved_evidence_conflict']; }
   else if(entity.lifecycle_state==='WITHDRAWN'||entity.application_state==='CLOSED') { status='closed';reasons=['source_declared_closed']; }
   else if(entity.event_end&&Number.isFinite(Date.parse(entity.event_end))&&Date.parse(entity.event_end)<Date.parse(now)) { status='closed';reasons=['past_event_end']; }
-  else if(['WATCH','UNKNOWN','ENQUIRY_AVAILABLE'].includes(entity.application_state)||!entity.application_state) { status='watch';reasons=['application_state_requires_recheck']; }
+  else if((['WATCH','UNKNOWN','ENQUIRY_AVAILABLE'].includes(entity.application_state)||!entity.application_state)&&!(proof?.status==='verified'&&usableRouteEligible(proof)&&['WATCH','UNKNOWN','ENQUIRY_AVAILABLE'].includes(entity.application_state))) { status='watch';reasons=['application_state_requires_recheck']; }
   else if(!entity.event_name||!(entity.application_url||entity.canonical_url)) { status='review';reasons=['insufficient_source_evidence']; }
   return {status,reasons,score:status==='eligible'?1:status==='watch'?.5:0};
 }
@@ -124,8 +125,8 @@ export async function evaluateReadiness(db,id,{now=new Date().toISOString()}={})
   if(!entity)throw new Error('entity_missing');
   const conflict=await sql(db,'SELECT COUNT(*) AS n FROM conflicts WHERE entity_id=? AND resolved=0',id).first();
   const quality=await sql(db,'SELECT COUNT(*) AS n FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=?',id).first();
-  const eligibility=assessEligibility(entity,{now,conflicts:conflict.n,qualityHolds:quality.n});
   const verification=await verificationGate(db,entity,{now});
+  const eligibility=assessEligibility(entity,{now,conflicts:conflict.n,qualityHolds:quality.n,proof:verification});
   const reasons=[...new Set([...eligibility.reasons,...verification.reasons])];
   if(!entity.location)reasons.push('source_backed_location_missing');
   if(!entity.organiser)reasons.push('organiser_missing');

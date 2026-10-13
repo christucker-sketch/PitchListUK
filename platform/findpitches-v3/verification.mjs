@@ -10,10 +10,11 @@ import {verifyHummingbirdBundle} from './hummingbird.mjs';
 import {verifyVeganBundle} from './vegan-events.mjs';
 import {verifyClueMart,verifyMarketsIreland} from './international-sources.mjs';
 import {VENUE_COORDINATE_POLICY,eventVenueCoordinates} from './source-coordinates.mjs';
+import {applyUsableRoute,applyEventenyRegistration,applyEventenyContact,usableRouteEligible} from './usable-route.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
 export const APPLICATION_POLICY_VERSION='current-application-v1.11';
-const COUNTRIES={us:'US',usa:'US','united states':'US','united states of america':'US',gb:'GB',uk:'GB','united kingdom':'GB',england:'GB',scotland:'GB',wales:'GB','northern ireland':'GB',au:'AU',australia:'AU',ca:'CA',canada:'CA',nz:'NZ','new zealand':'NZ',ie:'IE',ireland:'IE',fr:'FR',france:'FR',de:'DE',germany:'DE',kr:'KR','south korea':'KR'};
+const COUNTRIES={us:'US',usa:'US','united states':'US','united states of america':'US',gb:'GB',uk:'GB','united kingdom':'GB',england:'GB',scotland:'GB',wales:'GB','northern ireland':'GB',au:'AU',australia:'AU',ca:'CA',canada:'CA',nz:'NZ','new zealand':'NZ',ie:'IE',ireland:'IE',hk:'HK','hong kong':'HK',sg:'SG',singapore:'SG',fr:'FR',france:'FR',de:'DE',germany:'DE',kr:'KR','south korea':'KR'};
 const TYPES=new Set(['Event','Festival','BusinessEvent','ExhibitionEvent','SaleEvent']);
 const clean=v=>decode(String(v??'')).replace(/\s+/g,' ').trim();
 const token=v=>clean(v).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -112,6 +113,14 @@ function eventenyScopeProof(main,heading) {
 
 // Discovery metadata (including search market/city) is deliberately absent from parsing.
 export function verifyDocument(document,{now=new Date().toISOString()}={}) {
+  if(document.document_kind==='global_usable_route_bundle'){
+    if(!Array.isArray(document.documents)||document.documents.length<1||document.documents.length>3)return {status:'unverified',facts:{},reasons:['usable_route_bundle_invalid']};
+    const [source,...routeDocuments]=document.documents,clocks=document.documents.map(d=>Date.parse(d.fetched_at));
+    const base=verifyDocument(source,{now});
+    if(clocks.some(t=>!Number.isFinite(t)||t>Date.parse(now))||document.url!==source.url||document.requested_url!==source.requested_url||document.fetched_at!==new Date(Math.min(...clocks)).toISOString())return {...base,status:'quarantine',reasons:[...base.reasons,'usable_route_bundle_custody_mismatch']};
+    const htmlSource=source.document_kind==='uk_event_geography_bundle'?source.documents[0]:source;
+    return {...applyUsableRoute(htmlSource,applyEventenyContact(htmlSource,base,routeDocuments,{now}),{routeDocuments,now}),checked_at:document.fetched_at};
+  }
   if(document.document_kind==='uk_official_bundle')return verifyUKBundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
   if(document.document_kind==='cca_official_bundle')return verifyCCABundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
   if(document.document_kind==='dundeeheritage_event_bundle')return verifyDundeeBundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
@@ -221,7 +230,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
     if(facts.application_state!=='OPEN_NOW')report.reasons.push(state==='WAITLIST'?'waitlist_only':facts.application_state==='CLOSED'?'application_closed':'open_vendor_application_not_proved');
     report.reasons=[...new Set(report.reasons)];
     report.status=report.reasons.some(r=>/stale_edition|contradictory_|event_cancelled/.test(r))?'quarantine':report.reasons.length?'partial':'verified';
-    return report;
+    return applyUsableRoute(document,applyEventenyRegistration(document,report,{now}),{now});
   } catch {report.reasons.push('source_document_cannot_be_verified');return report;}
 }
 
@@ -245,6 +254,7 @@ export function compareProof(entity,report) {
   // discovery labelled ROLLING. It does not prove perpetual/rolling availability;
   // the commercial state is the proved OPEN_NOW value, with the original retained.
   const currentlyOpen=entity.application_state==='ROLLING'&&f.application_state==='OPEN_NOW';
-  if(f.application_state&&entity.application_state&&f.application_state!==entity.application_state&&!currentlyOpen)reasons.push('selected_application_state_disagrees_with_proof');
+  const previouslyUnknown=['UNKNOWN','WATCH','OPEN_NOW','ROLLING'].includes(entity.application_state)&&f.application_state==='ENQUIRY_AVAILABLE'&&usableRouteEligible(report);
+  if(f.application_state&&entity.application_state&&f.application_state!==entity.application_state&&!currentlyOpen&&!previouslyUnknown)reasons.push('selected_application_state_disagrees_with_proof');
   return reasons;
 }

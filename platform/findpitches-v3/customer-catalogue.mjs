@@ -5,6 +5,7 @@ import {budgetDay} from './serper-usage.mjs';
 import {publicHttps,hash} from './contract.mjs';
 import {customerError,stmt} from './customer-security.mjs';
 import {validVenueCoordinates} from './source-coordinates.mjs';
+import {USABLE_ROUTE_POLICY,USABLE_ROUTE_TYPES} from './usable-route.mjs';
 
 export const types={christmas_market:'Christmas market',holiday_market:'Holiday market',food_festival:'Food festival',festival:'Festival',market:'Market',street_trading:'Street trading',show:'Show',concession:'Concession',event:'Event',sport:'Sports & stadiums'};
 export const marketOf=code=>{const m=MARKETS.find(m=>m.code===code);if(!m)throw customerError('unknown_market',404);return m;};
@@ -33,6 +34,12 @@ export function mapProof(item,now) {
   const today=budgetDay(now),row=toSiteOpportunity({opportunity_id:item.id,country_code:item.country,event_name:item.title,organiser:item.organiser,location:item.location,event_start:item.event_start?.slice(0,10),event_end:item.event_end?.slice(0,10),application_deadline:item.application_deadline?.slice(0,10),application_state:item.application_state,
     source_url:publicHttps(item.source_url)?item.source_url:null,application_url:item.application_url,last_checked:item.verified_at,opportunity_type:item.opportunity_type,vendor_categories:item.vendor_categories},today);
   if(['ended','closed','unknown'].includes(row.application.status))return null;
+  const usable=item.usable_route;
+  if(usable?.policy===USABLE_ROUTE_POLICY&&USABLE_ROUTE_TYPES.includes(usable.type)&&usable.landing_url===item.application_url&&usable.current===true&&usable.organiser_controlled===true&&usable.prospective_trader===true){
+    row.application.route_type=usable.type;
+    if(usable.type==='trader_email'&&/^mailto:[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(usable.destination??'')||publicHttps(usable.destination))row._restricted.application_action_url=usable.destination;
+    if(usable.requires_account===true){row.application.requires_account=true;row.application.account_provider=usable.account_provider??null;}
+  }
   const region=proofRegion(item);row.location={...row.location,region:item.region,region_id:region?.id??null,region_name:region?.name??null};
   const position=validVenueCoordinates(item.venue_coordinates,{country:item.country,location:item.location});
   if(position)row.location={...row.location,lat:position.lat,lng:position.lng,precision:'venue'};

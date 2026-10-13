@@ -182,7 +182,7 @@ export default {
       }
       if(request.method==='POST'&&path==='/verification/verify'&&role==='enrichment') {
         const body=await bodyJson(request);if(typeof body.entity_id!=='string')throw Error('entity_id_required');
-        const result=await verifyEntitySource(db,body.entity_id);
+        const result=await verifyEntitySource(db,body.entity_id,{maxSourceRequests:body.max_source_requests??null});
         await enqueue(db,'readiness',result.verification_id,{entity_id:body.entity_id});
         ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result);
       }

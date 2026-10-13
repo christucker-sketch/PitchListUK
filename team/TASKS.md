@@ -24,7 +24,8 @@ When claiming, fill the owner, claimed/updated timestamp (Europe/London with off
 Suggested starting points: Claude can assess V3-001/V3-002/V3-003 with producer access; ChatGPT can review V3-010 and commercial acceptance; Codex can implement backend/customer tasks and verify supplied evidence. These are suggestions until each contributor claims work.
 
 
-| V3-015 | P1 | D-018 global usable-route conversion; D-019 US-first scale; country/route gains with unchanged event/lifecycle/identity proof | CLAIMED | Codex (V3 verification); Claude (producer follow-up requested) | Claimed 13 October after receiving871753e9. First: read-only global withheld/route blocker census; then additive route proof through verifier, eligibility, readiness, commercial/customer semantics and bounded replay. No peer host work assumed; no global paid search |
+| V3-015 | P1 | [D-018 global usable-route implementation/re-evaluation](../docs/findpitches-v3-global-usable-routes-2026-10-13.md) | DONE | Codex | Complete13October: +21USREADY/10newexacteventgroups, 18enquiries/3registrations; full383/public29/browser4, source/identitypreservation passed. No newpaid query. Further source-family adapters remain ordinary coverage work |
+| V3-017 | P1 | D-019 free catalogue growth toward thousands, US priority; measure event/application and venue/operator/state diversity | CLAIMED | Codex (V3); Claude (producer support requested) | Begin after completedD-018. Native bounded public catalogues/actual vendor routes; retain source proof, dedupe known routes, stop bad yield/backlog/integrity. No US/global paid search |
 | V3-016 | P1 | D-020 real US venue map markers at catalogue scale | CLAIMED | Codex | Claimed 13 October. Initial current customer projection: US1,630READY/0source-provedpins. Audit retained Eventeny location/address custody and preserve exact event join; no city/state/ZIP-centre or paid-geocoding substitute |
 
 ## Active claim details

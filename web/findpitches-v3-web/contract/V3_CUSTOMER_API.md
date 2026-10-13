@@ -164,3 +164,12 @@ The current values (GB and US live; the others building; GB £4.99 Pro) are in `
   - `X-Robots-Tag: noindex` on every non-production host
 
 Native preview geography: without verified coordinates, radius and nearest sorting return `400 radius_unavailable`. A non-region place query performs a literal match against retained source location and returns `location.kind: unresolved`; it never geocodes or falls back to all-country results. `facets.unclassified_types` counts rows whose source-backed type remains unknown, so All types includes them without inventing a category.
+
+
+## Global usable-route extension (D-018, 13 October 2026)
+
+A source-proved customer opportunity may be an active exact-event application or a current organiser-controlled prospective-vendor intake, standing registration, trader enquiry/email route or directed prospective vendor portal. All event/date/location/country/organiser/identity/lifecycle safeguards still apply. Generic contacts, newsletters, ticket routes, expired/restricted applications and existing-vendor-only login shells do not qualify.
+
+`application.route_type` is an optional public enum: `event_application`, `organiser_intake`, `standing_registration`, `trader_enquiry`, `trader_email`, `vendor_portal_registration`. Standing/enquiry availability uses `enquire` and truthful registration/contact wording rather than a fabricated exact-event OPEN claim. `application.requires_account` and `application.account_provider` may describe a legitimate prospective account step.
+
+Pro/trial `access.application_action_url` is an optional proved action destination, either public HTTPS or a narrowly validated published `mailto:` address without query/header parameters. `access.application_url` remains the source-proved HTTPS landing page. Free responses exclude action destinations and email addresses, alongside existing source/application URL redaction. The frontend uses a register/contact/email CTA appropriate to the route type. This extension does not decide the separately queued Free-versus-Pro identity/venue paywall policy.

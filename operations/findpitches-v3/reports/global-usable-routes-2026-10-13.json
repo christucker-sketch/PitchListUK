@@ -1,0 +1,1021 @@
+{
+  "schema": "findpitches-v3-global-usable-route-readiness-v1",
+  "published_at": "2026-10-13T17:53:22.123244+00:00",
+  "recheck": {
+    "schema": "findpitches-v3-global-route-recheck-v1",
+    "as_of": "2026-10-13T17:04:42.741Z",
+    "baseline_as_of": "2026-10-13T16:07:42.654Z",
+    "total_commercial_entities_inspected": 7172,
+    "source_rechecks": 120,
+    "source_requests_observed": 195,
+    "paid_queries_added": 0,
+    "entities_created_by_this_lane": 0,
+    "stop": "bounded_global_recheck_complete",
+    "growth": {
+      "ready_before": 1799,
+      "ready_after": 1820,
+      "ready_gained": 21,
+      "ready_lost": 0,
+      "net_ready_gain": 21,
+      "ready_gained_by_country": {
+        "US": 21
+      },
+      "ready_gained_by_origin": {
+        "platform-catalogue": 10,
+        "independent-structured": 3,
+        "legacy_v2": 7,
+        "source-led-search": 1
+      },
+      "ready_gained_by_source": {
+        "eventeny.com": 21
+      },
+      "identity_mutations": 0,
+      "missing_original_entities": 0
+    },
+    "ready_gained_by_route_type": {
+      "trader_enquiry": 18,
+      "vendor_portal_registration": 3
+    },
+    "inventory": {
+      "schema": "findpitches-v3-commercial-inventory-v1",
+      "as_of": "2026-10-13T17:04:42.741Z",
+      "timezone": "Europe/London",
+      "markets": {
+        "GB": {
+          "ready": 162,
+          "watch": 170,
+          "quarantined": 72,
+          "blocked": 507,
+          "exact_event_groups": 161,
+          "application_entities": 162,
+          "organiser_count": 7,
+          "source_domains": {
+            "myntimage.co.uk": 136,
+            "creativecrafts-online.co.uk": 7,
+            "dundeeheritagetrust.co.uk": 1,
+            "littlehummingbirdevents.co.uk": 14,
+            "eventeny.com": 2,
+            "northamptontowncouncil.gov.uk": 1,
+            "localstalls.com": 1
+          },
+          "source_families": {
+            "myntimage": 136,
+            "creativecrafts": 7,
+            "dundeeheritage": 1,
+            "littlehummingbird": 14,
+            "eventeny": 2,
+            "uk_council_dated_form": 1,
+            "localstalls": 1
+          },
+          "ready_by_producer": {
+            "uk-official": 152,
+            "independent-structured": 6,
+            "platform-catalogue": 2,
+            "legacy_mk1": 1,
+            "legacy_v2": 1
+          },
+          "held_reason_breakdown": {
+            "vegan_required_document_upload_account_gate": 12,
+            "source_http_520": 156,
+            "single_event_source_data_missing": 38,
+            "editorial_page_is_discovery_only": 7,
+            "verified_venue_missing": 1,
+            "vendor_application_not_proved": 3,
+            "open_vendor_application_not_proved": 19,
+            "event_cancelled_or_postponed": 1,
+            "source_country_market_mismatch": 2,
+            "event_content_scope_missing": 16,
+            "application_restricted_audience_requires_review": 1,
+            "platform_index_is_not_an_opportunity": 5,
+            "invalid_structured_source_data": 2,
+            "event_application_route_missing_or_ambiguous": 16,
+            "selected_event_start_disagrees_with_proof": 17,
+            "selected_event_end_disagrees_with_proof": 10,
+            "selected_application_state_disagrees_with_proof": 17,
+            "social_page_is_discovery_only": 7,
+            "source_event_postcode_country_not_proved": 7,
+            "selected_organiser_disagrees_with_proof": 6,
+            "selected_event_name_disagrees_with_proof": 1,
+            "source_http_404": 1,
+            "source_response_size_limit": 2
+          },
+          "source_proof_freshness": {
+            "current_verified": 162,
+            "stale_expired": 28,
+            "oldest_ready_source_check": "2026-10-13T00:28:44.493Z"
+          },
+          "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+        },
+        "US": {
+          "ready": 1651,
+          "watch": 297,
+          "quarantined": 684,
+          "blocked": 2646,
+          "exact_event_groups": 1026,
+          "application_entities": 1651,
+          "organiser_count": 470,
+          "source_domains": {
+            "eventeny.com": 1651
+          },
+          "source_families": {
+            "eventeny": 1651
+          },
+          "ready_by_producer": {
+            "legacy_v2": 320,
+            "platform-catalogue": 931,
+            "independent-structured": 396,
+            "source-led-search": 4
+          },
+          "held_reason_breakdown": {
+            "stale_edition": 114,
+            "application_deadline_passed": 243,
+            "application_closed": 242,
+            "event_content_scope_missing": 32,
+            "single_event_source_data_missing": 212,
+            "selected_application_deadline_disagrees_with_proof": 129,
+            "event_identity_not_bound_to_page": 71,
+            "application_restricted_audience_requires_review": 32,
+            "contradictory_application_deadline_after_event": 78,
+            "selected_event_start_disagrees_with_proof": 26,
+            "selected_application_state_disagrees_with_proof": 171,
+            "vendor_application_not_proved": 12,
+            "open_vendor_application_not_proved": 28,
+            "platform_index_is_not_an_opportunity": 18,
+            "trader_application_purpose_not_proved": 67,
+            "waitlist_only": 7,
+            "event_cancelled_or_postponed": 10,
+            "editorial_page_is_discovery_only": 7,
+            "verified_venue_missing": 103,
+            "application_is_not_a_trader_opportunity": 33,
+            "source_parent_event_binding_required": 15,
+            "social_page_is_discovery_only": 11,
+            "selected_event_name_disagrees_with_proof": 28,
+            "selected_organiser_disagrees_with_proof": 18,
+            "selected_location_disagrees_with_proof": 19,
+            "source_http_404": 2,
+            "sponsor_trading_entitlement_not_proved": 16,
+            "selected_event_end_disagrees_with_proof": 16,
+            "event_application_route_missing_or_ambiguous": 1,
+            "contradictory_heading_edition": 10,
+            "contradictory_application_description_dates": 3,
+            "source_http_403": 4,
+            "source_fetch_failed": 1,
+            "source_edition_identity_mismatch": 2,
+            "contradictory_event_name_edition": 3,
+            "source_http_429": 2
+          },
+          "source_proof_freshness": {
+            "current_verified": 1661,
+            "stale_expired": 522,
+            "oldest_ready_source_check": "2026-10-12T21:44:57.229Z"
+          },
+          "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+        }
+      },
+      "gb": {
+        "ready": 162,
+        "watch": 170,
+        "quarantined": 72,
+        "blocked": 507,
+        "exact_event_groups": 161,
+        "application_entities": 162,
+        "organiser_count": 7,
+        "source_domains": {
+          "myntimage.co.uk": 136,
+          "creativecrafts-online.co.uk": 7,
+          "dundeeheritagetrust.co.uk": 1,
+          "littlehummingbirdevents.co.uk": 14,
+          "eventeny.com": 2,
+          "northamptontowncouncil.gov.uk": 1,
+          "localstalls.com": 1
+        },
+        "source_families": {
+          "myntimage": 136,
+          "creativecrafts": 7,
+          "dundeeheritage": 1,
+          "littlehummingbird": 14,
+          "eventeny": 2,
+          "uk_council_dated_form": 1,
+          "localstalls": 1
+        },
+        "ready_by_producer": {
+          "uk-official": 152,
+          "independent-structured": 6,
+          "platform-catalogue": 2,
+          "legacy_mk1": 1,
+          "legacy_v2": 1
+        },
+        "held_reason_breakdown": {
+          "vegan_required_document_upload_account_gate": 12,
+          "source_http_520": 156,
+          "single_event_source_data_missing": 38,
+          "editorial_page_is_discovery_only": 7,
+          "verified_venue_missing": 1,
+          "vendor_application_not_proved": 3,
+          "open_vendor_application_not_proved": 19,
+          "event_cancelled_or_postponed": 1,
+          "source_country_market_mismatch": 2,
+          "event_content_scope_missing": 16,
+          "application_restricted_audience_requires_review": 1,
+          "platform_index_is_not_an_opportunity": 5,
+          "invalid_structured_source_data": 2,
+          "event_application_route_missing_or_ambiguous": 16,
+          "selected_event_start_disagrees_with_proof": 17,
+          "selected_event_end_disagrees_with_proof": 10,
+          "selected_application_state_disagrees_with_proof": 17,
+          "social_page_is_discovery_only": 7,
+          "source_event_postcode_country_not_proved": 7,
+          "selected_organiser_disagrees_with_proof": 6,
+          "selected_event_name_disagrees_with_proof": 1,
+          "source_http_404": 1,
+          "source_response_size_limit": 2
+        },
+        "source_proof_freshness": {
+          "current_verified": 162,
+          "stale_expired": 28,
+          "oldest_ready_source_check": "2026-10-13T00:28:44.493Z"
+        },
+        "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+      },
+      "us": {
+        "ready": 1651,
+        "watch": 297,
+        "quarantined": 684,
+        "blocked": 2646,
+        "exact_event_groups": 1026,
+        "application_entities": 1651,
+        "organiser_count": 470,
+        "source_domains": {
+          "eventeny.com": 1651
+        },
+        "source_families": {
+          "eventeny": 1651
+        },
+        "ready_by_producer": {
+          "legacy_v2": 320,
+          "platform-catalogue": 931,
+          "independent-structured": 396,
+          "source-led-search": 4
+        },
+        "held_reason_breakdown": {
+          "stale_edition": 114,
+          "application_deadline_passed": 243,
+          "application_closed": 242,
+          "event_content_scope_missing": 32,
+          "single_event_source_data_missing": 212,
+          "selected_application_deadline_disagrees_with_proof": 129,
+          "event_identity_not_bound_to_page": 71,
+          "application_restricted_audience_requires_review": 32,
+          "contradictory_application_deadline_after_event": 78,
+          "selected_event_start_disagrees_with_proof": 26,
+          "selected_application_state_disagrees_with_proof": 171,
+          "vendor_application_not_proved": 12,
+          "open_vendor_application_not_proved": 28,
+          "platform_index_is_not_an_opportunity": 18,
+          "trader_application_purpose_not_proved": 67,
+          "waitlist_only": 7,
+          "event_cancelled_or_postponed": 10,
+          "editorial_page_is_discovery_only": 7,
+          "verified_venue_missing": 103,
+          "application_is_not_a_trader_opportunity": 33,
+          "source_parent_event_binding_required": 15,
+          "social_page_is_discovery_only": 11,
+          "selected_event_name_disagrees_with_proof": 28,
+          "selected_organiser_disagrees_with_proof": 18,
+          "selected_location_disagrees_with_proof": 19,
+          "source_http_404": 2,
+          "sponsor_trading_entitlement_not_proved": 16,
+          "selected_event_end_disagrees_with_proof": 16,
+          "event_application_route_missing_or_ambiguous": 1,
+          "contradictory_heading_edition": 10,
+          "contradictory_application_description_dates": 3,
+          "source_http_403": 4,
+          "source_fetch_failed": 1,
+          "source_edition_identity_mismatch": 2,
+          "contradictory_event_name_edition": 3,
+          "source_http_429": 2
+        },
+        "source_proof_freshness": {
+          "current_verified": 1661,
+          "stale_expired": 522,
+          "oldest_ready_source_check": "2026-10-12T21:44:57.229Z"
+        },
+        "definitions": "READY is source-proved country. WATCH/quarantine/blocked use retained entity market and can include an unverified or disputed country; they are not geography proof. Exact event grouping is advisory and does not alter identity."
+      },
+      "ready_definition": "Shadow entities with current version/revision-matched source proof, current READY assessment, supported vendor application and no identity/evidence/legacy hold. Publication remains disabled.",
+      "scope": {
+        "commercial_entities": 7172,
+        "test_control_excluded": 108,
+        "other_noncommercial_excluded": 0
+      },
+      "totals": {
+        "total_distinct_entities": 7172,
+        "verified": 1830,
+        "ready": 1820,
+        "watch": 495,
+        "quarantined": 982,
+        "blocked": 3875,
+        "awaiting_verification": 4709,
+        "missing_application_proof": 5178,
+        "stale_expired": 689,
+        "verification_checked": 3534
+      },
+      "by_origin": {
+        "independent-structured": {
+          "total_distinct_entities": 1245,
+          "verified": 411,
+          "ready": 406,
+          "watch": 259,
+          "quarantined": 306,
+          "blocked": 274,
+          "awaiting_verification": 531,
+          "missing_application_proof": 720,
+          "stale_expired": 189,
+          "verification_checked": 1245
+        },
+        "legacy_v2": {
+          "total_distinct_entities": 4555,
+          "verified": 327,
+          "ready": 324,
+          "watch": 169,
+          "quarantined": 483,
+          "blocked": 3579,
+          "awaiting_verification": 3995,
+          "missing_application_proof": 4207,
+          "stale_expired": 305,
+          "verification_checked": 917
+        },
+        "city-search": {
+          "total_distinct_entities": 20,
+          "verified": 1,
+          "ready": 0,
+          "watch": 0,
+          "quarantined": 12,
+          "blocked": 8,
+          "awaiting_verification": 8,
+          "missing_application_proof": 19,
+          "stale_expired": 0,
+          "verification_checked": 20
+        },
+        "source-led-search": {
+          "total_distinct_entities": 7,
+          "verified": 4,
+          "ready": 4,
+          "watch": 2,
+          "quarantined": 1,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "missing_application_proof": 2,
+          "stale_expired": 0,
+          "verification_checked": 7
+        },
+        "platform-catalogue": {
+          "total_distinct_entities": 1172,
+          "verified": 934,
+          "ready": 933,
+          "watch": 52,
+          "quarantined": 180,
+          "blocked": 7,
+          "awaiting_verification": 167,
+          "missing_application_proof": 210,
+          "stale_expired": 195,
+          "verification_checked": 1172
+        },
+        "uk-official": {
+          "total_distinct_entities": 164,
+          "verified": 152,
+          "ready": 152,
+          "watch": 12,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "missing_application_proof": 12,
+          "stale_expired": 0,
+          "verification_checked": 164
+        },
+        "legacy-global-uk": {
+          "total_distinct_entities": 7,
+          "verified": 0,
+          "ready": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 7,
+          "awaiting_verification": 7,
+          "missing_application_proof": 7,
+          "stale_expired": 0,
+          "verification_checked": 7
+        },
+        "legacy_mk1": {
+          "total_distinct_entities": 2,
+          "verified": 1,
+          "ready": 1,
+          "watch": 1,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 1,
+          "missing_application_proof": 1,
+          "stale_expired": 0,
+          "verification_checked": 2
+        }
+      },
+      "by_source_membership": {
+        "independent-structured": {
+          "total_distinct_entities": 2135,
+          "verified": 894,
+          "ready": 888,
+          "watch": 378,
+          "quarantined": 506,
+          "blocked": 363,
+          "awaiting_verification": 830,
+          "missing_application_proof": 1104,
+          "stale_expired": 425,
+          "verification_checked": 2135
+        },
+        "legacy_v2": {
+          "total_distinct_entities": 5433,
+          "verified": 683,
+          "ready": 675,
+          "watch": 342,
+          "quarantined": 719,
+          "blocked": 3697,
+          "awaiting_verification": 4264,
+          "missing_application_proof": 4626,
+          "stale_expired": 462,
+          "verification_checked": 1795
+        },
+        "city-search": {
+          "total_distinct_entities": 20,
+          "verified": 1,
+          "ready": 0,
+          "watch": 0,
+          "quarantined": 12,
+          "blocked": 8,
+          "awaiting_verification": 8,
+          "missing_application_proof": 19,
+          "stale_expired": 0,
+          "verification_checked": 20
+        },
+        "source-led-search": {
+          "total_distinct_entities": 7,
+          "verified": 4,
+          "ready": 4,
+          "watch": 2,
+          "quarantined": 1,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "missing_application_proof": 2,
+          "stale_expired": 0,
+          "verification_checked": 7
+        },
+        "platform-catalogue": {
+          "total_distinct_entities": 1172,
+          "verified": 934,
+          "ready": 933,
+          "watch": 52,
+          "quarantined": 180,
+          "blocked": 7,
+          "awaiting_verification": 167,
+          "missing_application_proof": 210,
+          "stale_expired": 195,
+          "verification_checked": 1172
+        },
+        "uk-official": {
+          "total_distinct_entities": 169,
+          "verified": 157,
+          "ready": 157,
+          "watch": 12,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 0,
+          "missing_application_proof": 12,
+          "stale_expired": 0,
+          "verification_checked": 169
+        },
+        "legacy-global-uk": {
+          "total_distinct_entities": 10,
+          "verified": 0,
+          "ready": 0,
+          "watch": 0,
+          "quarantined": 0,
+          "blocked": 10,
+          "awaiting_verification": 10,
+          "missing_application_proof": 10,
+          "stale_expired": 0,
+          "verification_checked": 10
+        },
+        "legacy_mk1": {
+          "total_distinct_entities": 3,
+          "verified": 1,
+          "ready": 1,
+          "watch": 2,
+          "quarantined": 0,
+          "blocked": 0,
+          "awaiting_verification": 2,
+          "missing_application_proof": 2,
+          "stale_expired": 0,
+          "verification_checked": 3
+        }
+      },
+      "attribution": "Origin is the earliest accepted non-diagnostic producer receipt linked to the entity. Origin rows are exclusive and sum to the commercial total. Source membership overlaps and must not be summed.",
+      "status_counts": "READY/WATCH/quarantined/blocked are exclusive current dispositions. Verified, awaiting verification, missing application proof and stale/expired are overlapping flags. Old cached READY alone never qualifies.",
+      "ready_by_country": {
+        "US": 1651,
+        "NZ": 5,
+        "GB": 162,
+        "AU": 2
+      },
+      "ready_by_source_domain": {
+        "eventeny.com": 1653,
+        "localstalls.com": 8,
+        "myntimage.co.uk": 136,
+        "creativecrafts-online.co.uk": 7,
+        "dundeeheritagetrust.co.uk": 1,
+        "littlehummingbirdevents.co.uk": 14,
+        "northamptontowncouncil.gov.uk": 1
+      },
+      "ready_by_source_platform": {
+        "eventeny": 1653,
+        "localstalls": 8,
+        "myntimage": 136,
+        "creativecrafts": 7,
+        "organiser_site": 1,
+        "littlehummingbird": 14,
+        "uk_council_dated_form": 1
+      },
+      "ready_by_application_state": {
+        "OPEN_NOW": 1784,
+        "ENQUIRY_AVAILABLE": 36
+      },
+      "ready_by_usable_route_type": {
+        "event_application": 1781,
+        "trader_enquiry": 36,
+        "vendor_portal_registration": 3
+      },
+      "ready_event_groups": {
+        "distinct_exact_field_groups": 1194,
+        "multiple_application_groups": 343,
+        "additional_application_entities": 626,
+        "definition": "Advisory grouping by proved country, event title, start/end dates, organiser and venue. READY counts distinct application-opportunity entities; this comparison neither merges identity nor proves semantic duplicates."
+      },
+      "kpis": {
+        "total_customer_ready_opportunities": 1820,
+        "verification_conversion_percent": 51.5,
+        "verification_entities_checked": 3534,
+        "coverage_all_inventory_unverified_presence": {
+          "denominator": 7172,
+          "application_url_percent": 55.37,
+          "future_event_date_percent": 40,
+          "location_percent": 47.57,
+          "organiser_percent": 45.98
+        },
+        "coverage_ready_source_proof": {
+          "denominator": 1820,
+          "application_url_percent": 100,
+          "future_event_date_percent": 93.85,
+          "location_percent": 100,
+          "organiser_percent": 100
+        }
+      }
+    },
+    "before_ready_by_country": {
+      "US": 1630,
+      "NZ": 5,
+      "GB": 162,
+      "AU": 2
+    },
+    "after_ready_by_country": {
+      "US": 1651,
+      "NZ": 5,
+      "GB": 162,
+      "AU": 2
+    },
+    "ready_by_route_type": {
+      "event_application": 1781,
+      "trader_enquiry": 36,
+      "vendor_portal_registration": 3
+    }
+  },
+  "exact_event_groups_before": 1184,
+  "exact_event_groups_after": 1194,
+  "preservation": {
+    "schema": "findpitches-v3-uk-growth-preservation-v1",
+    "started_at": "2026-10-13T17:10:56.674Z",
+    "as_of": "2026-10-13T17:15:54.694Z",
+    "baseline_as_of": "2026-10-13T06:14:07.258Z",
+    "receipts_compared": 24490,
+    "source_facts_compared": 209971,
+    "fixed_identity_tuples_compared": 7238,
+    "destructive_source_mutations": 0,
+    "fixed_identity_tuple_changes": 0,
+    "tuple_fields": [
+      "id",
+      "market",
+      "edition",
+      "environment",
+      "shadow_only",
+      "promotion_eligible",
+      "publication_eligible"
+    ],
+    "original_build_baseline": {
+      "receipts": 15811,
+      "facts": 108819,
+      "identities": 7077,
+      "destructive_source_mutations": 0,
+      "fixed_identity_tuple_changes": 0
+    },
+    "explicit_review_lineage": {
+      "reviews": 5,
+      "reviewed_existing_entities": 5
+    },
+    "selected_field_supersessions": [
+      {
+        "field_name": "application_state",
+        "changes": 5
+      },
+      {
+        "field_name": "application_url",
+        "changes": 5
+      },
+      {
+        "field_name": "canonical_url",
+        "changes": 5
+      },
+      {
+        "field_name": "event_end",
+        "changes": 5
+      },
+      {
+        "field_name": "event_name",
+        "changes": 5
+      },
+      {
+        "field_name": "event_start",
+        "changes": 5
+      },
+      {
+        "field_name": "location",
+        "changes": 5
+      },
+      {
+        "field_name": "organiser",
+        "changes": 5
+      },
+      {
+        "field_name": "source_platform",
+        "changes": 5
+      }
+    ],
+    "original_identity_custody": {
+      "reviews": 5,
+      "original_candidate_custody_retained": 5
+    },
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "source_publication_enabled": false,
+    "source_publication_api_denied": true,
+    "paid_queries_today": 4,
+    "paid_bulk_enabled": false,
+    "paid_manually_paused": 1,
+    "pitchlist_deployment_unchanged": true,
+    "v2_schedules_unchanged": true
+  },
+  "customer_release": {
+    "as_of": "2026-10-13T17:21:35.331Z",
+    "worker": "findpitches-v3-customer-production",
+    "release_method": "version_upload_and_deploy",
+    "deployment_id": "59d7f4b8-2a30-444e-878c-1c5b968e3f79",
+    "version_ids": [
+      "97cb438e-7e4a-4ecd-a676-0f415fc6dcdb"
+    ],
+    "checkout_enabled": false,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "all_native_bindings_and_settings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "pitchlist_unchanged": true,
+    "database_migrations": 0,
+    "secret_values_replaced": false,
+    "source_identity_writes": 0
+  },
+  "checkout_restore": {
+    "as_of": "2026-10-13T17:39:38.745Z",
+    "public": true,
+    "checkout": "live",
+    "recovery": true,
+    "bindings_preserved": true,
+    "routes_unchanged": true,
+    "version": "fe89aedf-b63b-4c4a-9da2-46b3cc06b2b7"
+  },
+  "public_closed": {
+    "schema": "findpitches-v3-public-smoke-v1",
+    "started_at": "2026-10-13T17:38:54.935Z",
+    "passed": true,
+    "checks": [
+      {
+        "name": "json_/health",
+        "passed": true
+      },
+      {
+        "name": "public_production_health",
+        "passed": true
+      },
+      {
+        "name": "owned_homepage_/",
+        "passed": true
+      },
+      {
+        "name": "truthful_homepage_/",
+        "passed": true
+      },
+      {
+        "name": "owned_homepage_/index.html",
+        "passed": true
+      },
+      {
+        "name": "truthful_homepage_/index.html",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/session",
+        "passed": true
+      },
+      {
+        "name": "anonymous_free_no_alert_delivery",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/opportunities",
+        "passed": true
+      },
+      {
+        "name": "GB_real_ready_redacted",
+        "passed": true
+      },
+      {
+        "name": "GB_no_duplicate_or_held_identity",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/opportunities",
+        "passed": true
+      },
+      {
+        "name": "US_real_ready_redacted",
+        "passed": true
+      },
+      {
+        "name": "US_no_duplicate_or_held_identity",
+        "passed": true
+      },
+      {
+        "name": "public_event_identity_indexable",
+        "passed": true
+      },
+      {
+        "name": "held_ent_dda1403e0c99eb5b1c1871f37c325cb2",
+        "passed": true
+      },
+      {
+        "name": "held_ent_93d86b9d0147d8aa91ea8eea541d86b8",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/account.html",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/pricing.html",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/alerts.html",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/billing/plans",
+        "passed": true
+      },
+      {
+        "name": "global_eur_price_checkout_state",
+        "passed": true
+      },
+      {
+        "name": "unsafe_signin_csrf_rejected",
+        "passed": true
+      },
+      {
+        "name": "operator_private",
+        "passed": true
+      },
+      {
+        "name": "preview_provisioning_unavailable",
+        "passed": true
+      },
+      {
+        "name": "unsigned_live_webhook_rejected",
+        "passed": true
+      },
+      {
+        "name": "public_robots_private_paths",
+        "passed": true
+      },
+      {
+        "name": "proof_filtered_sitemap",
+        "passed": true
+      },
+      {
+        "name": "www_redirect_to_owned_apex",
+        "passed": true
+      }
+    ],
+    "country_counts": {
+      "GB": 162,
+      "US": 1651
+    },
+    "customer_objects_created": 0,
+    "messages_sent": 0,
+    "certificate_bypass": false,
+    "expected_checkout_enabled": false,
+    "as_of": "2026-10-13T17:39:34.233Z"
+  },
+  "public_live": {
+    "schema": "findpitches-v3-public-smoke-v1",
+    "started_at": "2026-10-13T17:42:28.525Z",
+    "passed": true,
+    "checks": [
+      {
+        "name": "json_/health",
+        "passed": true
+      },
+      {
+        "name": "public_production_health",
+        "passed": true
+      },
+      {
+        "name": "owned_homepage_/",
+        "passed": true
+      },
+      {
+        "name": "truthful_homepage_/",
+        "passed": true
+      },
+      {
+        "name": "owned_homepage_/index.html",
+        "passed": true
+      },
+      {
+        "name": "truthful_homepage_/index.html",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/session",
+        "passed": true
+      },
+      {
+        "name": "anonymous_free_no_alert_delivery",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/opportunities",
+        "passed": true
+      },
+      {
+        "name": "GB_real_ready_redacted",
+        "passed": true
+      },
+      {
+        "name": "GB_no_duplicate_or_held_identity",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/opportunities",
+        "passed": true
+      },
+      {
+        "name": "US_real_ready_redacted",
+        "passed": true
+      },
+      {
+        "name": "US_no_duplicate_or_held_identity",
+        "passed": true
+      },
+      {
+        "name": "public_event_identity_indexable",
+        "passed": true
+      },
+      {
+        "name": "held_ent_dda1403e0c99eb5b1c1871f37c325cb2",
+        "passed": true
+      },
+      {
+        "name": "held_ent_93d86b9d0147d8aa91ea8eea541d86b8",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/account.html",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/pricing.html",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/alerts.html",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/billing/plans",
+        "passed": true
+      },
+      {
+        "name": "global_eur_price_checkout_state",
+        "passed": true
+      },
+      {
+        "name": "unsafe_signin_csrf_rejected",
+        "passed": true
+      },
+      {
+        "name": "operator_private",
+        "passed": true
+      },
+      {
+        "name": "preview_provisioning_unavailable",
+        "passed": true
+      },
+      {
+        "name": "unsigned_live_webhook_rejected",
+        "passed": true
+      },
+      {
+        "name": "public_robots_private_paths",
+        "passed": true
+      },
+      {
+        "name": "proof_filtered_sitemap",
+        "passed": true
+      },
+      {
+        "name": "www_redirect_to_owned_apex",
+        "passed": true
+      }
+    ],
+    "country_counts": {
+      "GB": 162,
+      "US": 1651
+    },
+    "customer_objects_created": 0,
+    "messages_sent": 0,
+    "certificate_bypass": false,
+    "expected_checkout_enabled": true,
+    "as_of": "2026-10-13T17:43:14.096Z"
+  },
+  "actual_browser": {
+    "as_of": "2026-10-13T17:45:33.141097+00:00",
+    "passed": true,
+    "checks": [
+      {
+        "device": "desktop",
+        "route_type": "trader_enquiry",
+        "truthful_label": true,
+        "free_action_redacted": true
+      },
+      {
+        "device": "desktop",
+        "route_type": "vendor_portal_registration",
+        "truthful_label": true,
+        "free_action_redacted": true
+      },
+      {
+        "device": "mobile",
+        "route_type": "trader_enquiry",
+        "truthful_label": true,
+        "free_action_redacted": true
+      },
+      {
+        "device": "mobile",
+        "route_type": "vendor_portal_registration",
+        "truthful_label": true,
+        "free_action_redacted": true
+      }
+    ],
+    "messages_sent": 0,
+    "provider_objects_created": 0,
+    "certificate_bypass": false
+  },
+  "tests": {
+    "full_v3": 383,
+    "failed": 0,
+    "skipped": 0,
+    "focused_route_verification_staging": 31,
+    "frontend": 3,
+    "boundaries_passed": true
+  },
+  "remaining": {
+    "us_maps": "queued_after_growth",
+    "us_paid_authorized": false,
+    "free_pro_final_rule": "not_recorded",
+    "owned_live_billing_acceptance": "pending"
+  }
+}

@@ -95,11 +95,14 @@
   function appStatus(o, mk) {
     const a = o.application || { status: 'unknown' }, cc = mk || o.market;
     const d = a.deadline ? fmt(a.deadline, cc, { day: 'numeric', month: 'short' }) : '';
+    if(['enquire','open_now','open','rolling'].includes(a.status)&&['standing_registration','vendor_portal_registration'].includes(a.route_type))return {cls:'enquire',short:'Vendor registration',long:'Register with the organiser’s vendor intake. Registration does not guarantee a place at this event.'};
+    if(a.status==='enquire'&&a.route_type==='organiser_intake')return {cls:'enquire',short:'Join vendor intake',long:'Use the organiser’s current vendor intake to ask about trading at this event. Acceptance is decided by the organiser.'};
+    if(a.status==='enquire'&&a.requires_account)return {cls:'enquire',short:'Contact organiser',long:`Use the vendor enquiry route. A ${a.account_provider||'provider'} account is required; an enquiry does not guarantee a trading place.`};
     switch (a.status) {
       // Evidence-based states from the V3 data (contract §3.2). Shown only when the source says so.
       case 'open_now': return { cls: 'open', short: 'Taking applications', long: 'The organiser’s page says applications are open. No closing date is published, so apply soon.' };
       case 'rolling': return { cls: 'open', short: 'Apply any time', long: 'This organiser takes applications all year round.' };
-      case 'enquire': return { cls: 'enquire', short: 'Contact organiser', long: 'There is no open application form. Contact the organiser to ask about a pitch.' };
+      case 'enquire': return { cls: 'enquire', short: 'Contact organiser', long: 'Use the organiser’s trader enquiry route to ask about a pitch.' };
       case 'opens_later': return { cls: 'opens_later', short: a.opens_on ? `Opens ${fmt(a.opens_on, cc, { day: 'numeric', month: 'short' })}` : 'Opens later', long: a.opens_on ? `Applications open on ${fmt(a.opens_on, cc, { day: 'numeric', month: 'long', year: 'numeric' })}.` : 'Applications open later. Save it and check back.' };
       case 'open': return { cls: 'open', short: `Apply by ${d}`, long: LIVE && a.basis === 'deadline'
         // Live: we know a future deadline, not that applications have opened. Say only what's known.
@@ -282,7 +285,8 @@
     const lead = `<p class="ab-status">${st.cls === 'unknown' ? '<b>How to apply</b>' : `<span class="status ${st.cls}"><i aria-hidden="true"></i>${esc(st.short)}</span>`}</p><p class="ab-lead">${esc(leadText)}</p>`;
     if (!o.access.locked) {
       if (!o.access.application_url) return `<div class="applybox">${lead}<p>${org} hasn’t published an application link. Contact them through their listing.</p></div>`;
-      return `<div class="applybox">${lead}<a class="btn btn-turf ab-cta" href="${esc(o.access.application_url)}" target="_blank" rel="noopener" data-apply="${esc(o.id)}">Apply on ${org === 'the organiser' ? 'the organiser’s' : org + '’s'} site<span class="sr"> (opens in a new tab)</span> ↗</a>
+      const routeType=o.application?.route_type,cta=routeType==='trader_email'?'Email organiser':['standing_registration','vendor_portal_registration'].includes(routeType)?'Register with organiser':['trader_enquiry','organiser_intake'].includes(routeType)?'Contact organiser':`Apply on ${org === 'the organiser' ? 'the organiser’s' : org + '’s'} site`;
+      return `<div class="applybox">${lead}<a class="btn btn-turf ab-cta" href="${esc(o.access.application_action_url||o.access.application_url)}" target="_blank" rel="noopener" data-apply="${esc(o.id)}">${cta}<span class="sr"> (opens in a new tab)</span> ↗</a>
         <p class="ab-small">You apply directly with ${org}. FindPitches checks listings but doesn’t take applications or guarantee a place.</p>
         ${o.access.source_url && o.access.source_url !== o.access.application_url ? `<p class="ab-small"><a href="${esc(o.access.source_url)}" target="_blank" rel="noopener" data-source="${esc(o.id)}">View the original listing on ${esc(o.access.source_domain || 'the organiser’s site')}<span class="sr"> (opens in a new tab)</span></a></p>` : ''}</div>`;
     }

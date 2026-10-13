@@ -1,6 +1,7 @@
 import {commercialRows,commercialEntity} from './commercial.mjs';
 import {sql} from './store.mjs';
 import {retainedVenueCoordinates} from './source-coordinates.mjs';
+import {usableRouteEligible} from './usable-route.mjs';
 
 // Separate read-only preview. This never writes customer/publication tables.
 export async function stagingReady(db,{market=null,after='',limit=50,region=null,location=null,now=new Date().toISOString()}={}) {
@@ -18,6 +19,7 @@ export async function stagingReady(db,{market=null,after='',limit=50,region=null
 // Read only the policy fields needed here. Full immutable receipts remain in
 // the evidence store; their payloads are not a catalogue query dependency.
 export const LATEST_STRUCTURED_POLICY_SQL=`SELECT er.entity_id,
+    json_extract(p.normalized_json,'$.last_checked') AS source_last_checked,
     json_extract(p.normalized_json,'$.confidence.level') AS confidence_level,
     json_extract(p.normalized_json,'$.producer_channel') AS producer_channel,
     json_extract(p.normalized_json,'$.producer_export_readiness') AS producer_export_readiness
@@ -27,13 +29,18 @@ export const LATEST_STRUCTURED_POLICY_SQL=`SELECT er.entity_id,
       AND (COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')>COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') OR COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')=COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') AND (n.received_at>p.received_at OR n.received_at=p.received_at AND n.id>p.id)))`;
 export async function stagingCatalogue(db,{now=new Date().toISOString()}={}) {
   const [rows,policy]=await Promise.all([commercialRows(db,{onlyCachedReady:true}),sql(db,LATEST_STRUCTURED_POLICY_SQL).all()]);
-  const held=new Set();for(const p of policy.results)if(p.confidence_level==='LOW'||p.producer_channel&&p.producer_channel!=='current'||p.producer_export_readiness&&p.producer_export_readiness!=='READY')held.add(p.entity_id);
+  const current=new Map(rows.map(r=>[r.id,commercialEntity(r,now)]));
+  const held=new Set();for(const p of policy.results){
+    const r=current.get(p.entity_id),freshRoute=r?.ready&&usableRouteEligible(r.proof)&&['current','watch',null].includes(p.producer_channel)&&['READY','WATCH',null].includes(p.producer_export_readiness)&&(!p.source_last_checked||Date.parse(r.checked_at)>=Date.parse(p.source_last_checked));
+    if(p.confidence_level==='LOW'||!freshRoute&&(p.producer_channel&&p.producer_channel!=='current'||p.producer_export_readiness&&p.producer_export_readiness!=='READY'))held.add(p.entity_id);
+  }
   const ready=rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready&&!held.has(r.id));
   return {schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now,publication_enabled:false,production_cutover_enabled:false,
     shadow_ready:rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready).length,producer_policy_withheld:rows.filter(r=>held.has(r.id)).length,
     items:ready.map(r=>({id:r.id,country:r.market,region:r.proof.facts.region_code??null,title:r.proof.facts.event_name,organiser:r.proof.facts.organiser,location:r.proof.facts.location,
       event_start:r.proof.facts.event_start,event_end:r.proof.facts.event_end,application_url:r.proof.facts.application_url,application_state:r.proof.facts.application_state,
       application_deadline:r.proof.facts.application_deadline??null,source_url:r.proof.event_source_url??r.proof.source_url??null,source_domain:r.domain,
+      usable_route:usableRouteEligible(r.proof)?r.proof.usable_route:null,
       verified_at:r.checked_at,proof_expires_at:r.expires_at,entity_revision:r.revision,verification_id:r.proof_sequence,
       venue_coordinates:retainedVenueCoordinates(r.proof),
       // Category, sells and fees are not in current source-proof facts.

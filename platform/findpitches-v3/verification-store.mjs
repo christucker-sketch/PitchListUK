@@ -19,7 +19,7 @@ export async function verificationGate(db,entity,{now=new Date().toISOString()}=
   const report=JSON.parse(row.report_json);
   if(row.entity_revision!==entity.revision||row.verifier_version!==VERIFIER_VERSION||Date.parse(row.checked_at)>Date.parse(now)||Date.parse(row.expires_at)<=Date.parse(now))return {status:'unverified',reasons:['source_verification_stale_or_revision_changed'],verification_id:row.id};
   const comparison=compareProof(entity,report),scope=applicationScope(report),reasons=[...new Set([...report.reasons,...comparison,...scope.reasons])];
-  return {status:(comparison.length||scope.reasons.some(r=>r.startsWith('contradictory_')))&&row.status==='verified'?'quarantine':scope.reasons.length&&row.status==='verified'?'partial':row.status,reasons,verification_id:row.id,profile:report.profile,facts:report.facts,application_heading:scope.heading,application_audience:scope.audience,checked_at:row.checked_at,expires_at:row.expires_at};
+  return {status:(comparison.length||scope.reasons.some(r=>r.startsWith('contradictory_')))&&row.status==='verified'?'quarantine':scope.reasons.length&&row.status==='verified'?'partial':row.status,reasons,verification_id:row.id,profile:report.profile,facts:report.facts,usable_route:report.usable_route??null,application_heading:scope.heading,application_audience:scope.audience,checked_at:row.checked_at,expires_at:row.expires_at};
 }
 export async function recordVerification(db,entityId,document,{now=new Date().toISOString(),addEvidence=true}={}) {
   let entity=await loadEntity(db,entityId);if(!entity||!['test','shadow'].includes(entity.environment))throw Error('shadow_entity_required');
@@ -66,11 +66,15 @@ export async function recordVerification(db,entityId,document,{now=new Date().to
   ]);
   return {verification_id:id,entity_id:entityId,entity_revision:entity.revision,report,proposals};
 }
-export async function verifyEntitySource(db,entityId,{now=new Date().toISOString(),fetcher=fetch}={}) {
+export async function verifyEntitySource(db,entityId,{now=new Date().toISOString(),fetcher=fetch,maxSourceRequests=null}={}) {
+  if(maxSourceRequests!==null&&(!Number.isInteger(maxSourceRequests)||maxSourceRequests<1||maxSourceRequests>16))throw Error('bounded_verification_source_requests_required');
+  let observed=0,budgetReached=false;const bounded=maxSourceRequests===null?fetcher:async(...args)=>{if(observed>=maxSourceRequests){budgetReached=true;throw Error('verification_source_request_budget');}observed++;return fetcher(...args);};
   const entity=await loadEntity(db,entityId);if(!entity||!['test','shadow'].includes(entity.environment))throw Error('shadow_entity_required');
   const original=verificationUrl(entity);if(!original)throw Error('entity_original_source_required');
-  const document=await fetchProofDocument(original,{fetcher,now,sourceIdentifier:entity.source_identifier});
-  return recordVerification(db,entityId,document,{now});
+  const document=await fetchProofDocument(original,{fetcher:bounded,now,sourceIdentifier:entity.source_identifier});
+  const result=await recordVerification(db,entityId,document,{now});
+  const requests=d=>Array.isArray(d.documents)?d.documents.reduce((n,x)=>n+requests(x),0):['unsafe_original_source_url','source_event_postcode_required'].includes(d.reason)?0:d.redirect_chain?.length??1;
+  return {...result,source_requests_observed:maxSourceRequests===null?requests(document):observed,source_request_budget_reached:budgetReached};
 }
 export async function reverifyRetainedSource(db,entityId,{now=new Date().toISOString()}={}) {
   const latest=await sql(db,'SELECT d.document_json FROM source_verifications v JOIN source_documents d ON d.id=v.document_id WHERE v.entity_id=? ORDER BY v.sequence DESC LIMIT 1',entityId).first();

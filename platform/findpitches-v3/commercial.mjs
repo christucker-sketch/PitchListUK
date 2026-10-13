@@ -3,6 +3,7 @@ import {assessEligibility} from './pipeline.mjs';
 import {compareProof,applicationScope,VERIFIER_VERSION,calendarDate} from './verification.mjs';
 import {budgetDay} from './serper-usage.mjs';
 import {ukSourceStatus} from './uk-store.mjs';
+import {usableRouteEligible} from './usable-route.mjs';
 
 export const COMMERCIAL_PRODUCERS=['independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1'];
 export const INVENTORY_SQL=`SELECT e.*,
@@ -15,7 +16,7 @@ export const INVENTORY_SQL=`SELECT e.*,
  (SELECT COUNT(*) FROM conflicts c WHERE c.entity_id=e.id AND c.resolved=0) AS conflicts,
  r.status AS cached_readiness,r.entity_revision AS readiness_revision,
  v.sequence AS proof_sequence,v.entity_revision AS proof_revision,v.status AS proof_status,
- json_object('status',v.status,'facts',json(json_extract(v.report_json,'$.facts')),'reasons',json(json_extract(v.report_json,'$.reasons')),'profile',json_extract(v.report_json,'$.profile'),'source_url',json_extract(v.report_json,'$.source_url'),
+ json_object('status',v.status,'usable_route',json(json_extract(v.report_json,'$.usable_route')),'facts',json(json_extract(v.report_json,'$.facts')),'reasons',json(json_extract(v.report_json,'$.reasons')),'profile',json_extract(v.report_json,'$.profile'),'source_url',json_extract(v.report_json,'$.source_url'),
     'venue_coordinate_policy',json_extract(v.report_json,'$.venue_coordinate_policy'),'venue_coordinates',json(json_extract(v.report_json,'$.venue_coordinates')),
     'coordinate_evidence',json((SELECT json_group_array(json_object('kind','venue_coordinate_country_proof','source_url',json_extract(x.value,'$.source_url'),'excerpt',json_extract(x.value,'$.excerpt'))) FROM json_each(v.report_json,'$.evidence') x WHERE json_extract(x.value,'$.kind')='venue_coordinate_country_proof' AND json_extract(v.report_json,'$.venue_coordinate_policy') IS NULL)),
     'application_heading',COALESCE(json_extract(v.report_json,'$.application_heading'),(SELECT json_extract(h.value,'$.excerpt') FROM json_each(v.report_json,'$.evidence') h WHERE json_extract(h.value,'$.kind')='main_heading' LIMIT 1)),'application_scope_proof',json_object('trader_application',json_extract(v.report_json,'$.application_scope_proof.trader_application'),'restricted_audience',json_extract(v.report_json,'$.application_scope_proof.restricted_audience'),'guaranteed_vendor_space',json_extract(v.report_json,'$.application_scope_proof.guaranteed_vendor_space'),
@@ -42,12 +43,12 @@ export function commercialEntity(row,now) {
   const fields=parse(row.fields_json,{}),proof=parse(row.proof_json,{}),entity={...row,...fields};
   const fresh=Boolean(row.proof_sequence&&row.proof_revision===row.revision&&row.verifier_version===VERIFIER_VERSION&&Date.parse(row.checked_at)<=Date.parse(now)&&Date.parse(row.expires_at)>Date.parse(now));
   const comparison=compareProof(entity,{...proof,facts:proof.facts??{}}),scope=applicationScope(proof),reasons=[...new Set([...(proof.reasons??[]),...comparison,...scope.reasons])];
-  const eligibility=assessEligibility(entity,{now,conflicts:row.conflicts??0,qualityHolds:row.quality_holds??0});
+  const eligibility=assessEligibility(entity,{now,conflicts:row.conflicts??0,qualityHolds:row.quality_holds??0,proof:fresh?proof:null});
   const verified=fresh&&row.proof_status==='verified'&&reasons.length===0;
   const ready=verified&&row.cached_readiness==='ready'&&row.readiness_revision===row.revision&&eligibility.status==='eligible'&&Boolean(fields.organiser&&fields.location);
   const quarantined=!ready&&Boolean(row.quality_holds||row.conflicts||row.proof_status==='quarantine'||fresh&&(comparison.length||scope.reasons.some(r=>r.startsWith('contradictory_'))));
   const blocked=!ready&&!quarantined&&(['closed','review'].includes(eligibility.status)||!fields.organiser||!fields.location);
-  const applicationProof=fresh&&!scope.reasons.length&&Boolean(proof.facts?.application_url)&&['OPEN_NOW','ROLLING'].includes(proof.facts?.application_state)&&!reasons.some(r=>/vendor_application_not_proved|application_route_missing|waitlist_only|application_closed|application_deadline_passed|selected_application_.*disagrees/.test(r));
+  const applicationProof=fresh&&!scope.reasons.length&&Boolean(proof.facts?.application_url)&&(['OPEN_NOW','ROLLING'].includes(proof.facts?.application_state)||usableRouteEligible(proof))&&!reasons.some(r=>/vendor_application_not_proved|application_route_missing|waitlist_only|application_closed|application_deadline_passed|selected_application_.*disagrees/.test(r));
   const stale=Boolean(row.proof_sequence&&!fresh||fields.event_end&&calendarDate(fields.event_end)<budgetDay(now)||fields.application_deadline&&calendarDate(fields.application_deadline)<budgetDay(now));
   let domain='missing';try{domain=new URL(proof.source_url??fields.canonical_url??fields.application_url).hostname.replace(/^www\./,'');}catch{}
   return {...row,fields,proof,reasons,domain,commercial:row.environment==='shadow'&&COMMERCIAL_PRODUCERS.includes(row.origin),verified,ready,quarantined,blocked,watch:!ready&&!quarantined&&!blocked,
@@ -58,7 +59,7 @@ export function inventoryFromRows(rows,{now=new Date().toISOString()}={}) {
   const origin=Object.fromEntries(COMMERCIAL_PRODUCERS.map(p=>[p,empty()])),membership=Object.fromEntries(COMMERCIAL_PRODUCERS.map(p=>[p,empty()])),totals=empty();
   function count(out,row){out.total_distinct_entities++;for(const key of Object.keys(out).filter(k=>k!=='total_distinct_entities'))if(row[key])out[key]++;}
   for(const row of commercial){count(totals,row);count(origin[row.origin],row);for(const p of new Set(parse(row.producers_json,[])))if(membership[p])count(membership[p],row);}
-  const byCountry={},byDomain={},byState={},byPlatform={};for(const r of ready){byCountry[r.market]=(byCountry[r.market]??0)+1;byDomain[r.domain]=(byDomain[r.domain]??0)+1;const state=r.proof.facts.application_state;byState[state]=(byState[state]??0)+1;const platform=r.fields.source_platform??r.proof.profile??'unknown';byPlatform[platform]=(byPlatform[platform]??0)+1;}
+  const byCountry={},byDomain={},byState={},byPlatform={},byRouteType={};for(const r of ready){byCountry[r.market]=(byCountry[r.market]??0)+1;byDomain[r.domain]=(byDomain[r.domain]??0)+1;const state=r.proof.facts.application_state;byState[state]=(byState[state]??0)+1;const platform=r.fields.source_platform??r.proof.profile??'unknown';byPlatform[platform]=(byPlatform[platform]??0)+1;const routeType=usableRouteEligible(r.proof)?r.proof.usable_route.type:'event_application';byRouteType[routeType]=(byRouteType[routeType]??0)+1;}
   function coverage(subset,source=false){const f=r=>source?r.proof.facts:r.fields;const have=k=>subset.filter(r=>Boolean(f(r)?.[k])).length;return {denominator:subset.length,application_url_percent:pct(have('application_url'),subset.length),future_event_date_percent:pct(subset.filter(r=>calendarDate(f(r)?.event_start)>=budgetDay(now)).length,subset.length),location_percent:pct(have('location'),subset.length),organiser_percent:pct(have('organiser'),subset.length)};}
   const eventGroups=new Map();
   for(const r of ready){const f=r.proof.facts,key=JSON.stringify([r.market,...['event_name','event_start','event_end','organiser','location'].map(k=>String(f[k]??r.fields[k]??'').normalize('NFKC').toLowerCase().replace(/\s+/g,' ').trim())]);eventGroups.set(key,(eventGroups.get(key)??0)+1);}
@@ -76,7 +77,7 @@ export function inventoryFromRows(rows,{now=new Date().toISOString()}={}) {
     scope:{commercial_entities:commercial.length,test_control_excluded:all.filter(r=>r.environment==='test').length,other_noncommercial_excluded:all.filter(r=>r.environment!=='test'&&!r.commercial).length},
     totals,by_origin:origin,by_source_membership:membership,attribution:'Origin is the earliest accepted non-diagnostic producer receipt linked to the entity. Origin rows are exclusive and sum to the commercial total. Source membership overlaps and must not be summed.',
     status_counts:'READY/WATCH/quarantined/blocked are exclusive current dispositions. Verified, awaiting verification, missing application proof and stale/expired are overlapping flags. Old cached READY alone never qualifies.',
-    ready_by_country:byCountry,ready_by_source_domain:byDomain,ready_by_source_platform:byPlatform,ready_by_application_state:byState,
+    ready_by_country:byCountry,ready_by_source_domain:byDomain,ready_by_source_platform:byPlatform,ready_by_application_state:byState,ready_by_usable_route_type:byRouteType,
     ready_event_groups:{distinct_exact_field_groups:eventGroups.size,multiple_application_groups:[...eventGroups.values()].filter(n=>n>1).length,additional_application_entities:ready.length-eventGroups.size,definition:'Advisory grouping by proved country, event title, start/end dates, organiser and venue. READY counts distinct application-opportunity entities; this comparison neither merges identity nor proves semantic duplicates.'},
     kpis:{total_customer_ready_opportunities:ready.length,verification_conversion_percent:pct(ready.length,totals.verification_checked),verification_entities_checked:totals.verification_checked,coverage_all_inventory_unverified_presence:coverage(commercial),coverage_ready_source_proof:coverage(ready,true)}};
 }

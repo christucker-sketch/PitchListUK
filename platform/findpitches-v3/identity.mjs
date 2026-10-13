@@ -18,6 +18,12 @@ export function canonicalUrl(value) {
   try { const u=new URL(value); u.hash='';u.hostname=u.hostname.toLowerCase().replace(/^www\./,'');for(const key of [...u.searchParams.keys()]) if(/^utm_|^(fbclid|gclid)$/i.test(key))u.searchParams.delete(key);u.searchParams.sort();u.pathname=u.pathname.replace(/\/+$/,'')||'/';return u.toString(); } catch { return null; }
 }
 const STOP=new Set('the and of at a an to for in on application apply vendor vendors trader traders market festival fair event exhibitors exhibitor registration form'.split(' '));
+function sourceIdentityUrls(record){
+  // A standing vendor intake belongs to many distinct dated events. Keep
+  // existing keys immutable, but never use that shared route as an exact match.
+  const app=record.application_url,canonical=record.canonical_url;
+  return [canonical,...(app&&(!canonical||canonicalUrl(app)===canonicalUrl(canonical)||platformId(app))?[app]:[])].filter(Boolean);
+}
 function tokens(value) { return [...new Set(String(value||'').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g,' ').split(' ').filter(t=>t.length>2&&!STOP.has(t)))]; }
 function overlap(a,b) { const x=tokens(a), y=new Set(tokens(b));const shared=x.filter(t=>y.has(t));return { count:shared.length,ratio:shared.length/Math.max(1,Math.min(x.length,y.size)) }; }
 export function edition(record) { return String(record.event_start||'').match(/\b20\d{2}\b/)?.[0] ?? String(record.event_name||'').match(/\b20\d{2}\b/)?.[0] ?? null; }
@@ -31,7 +37,7 @@ function specific(url) { try { const u=new URL(url);
   return Boolean(u.searchParams.get('id')) || u.pathname.split('/').filter(Boolean).some(part=>!['events','event','applications','application','vendors','vendor','stallholders','solutions','vendor-management'].includes(part)); } catch { return false; } }
 export function identityKeys(record) {
   const keys=[];
-  for(const url of [record.canonical_url,record.application_url]) if(url)keys.push('url:'+canonicalUrl(url));
+  for(const url of sourceIdentityUrls(record))keys.push('url:'+canonicalUrl(url));
   const identifier=record.source_identifier??platformId(record.application_url);
   if(identifier && record.source_platform)keys.push('platform:'+record.source_platform+':'+identifier);
   for(const token of tokens(record.event_name))keys.push('name:'+token);
@@ -43,7 +49,7 @@ export function identityCandidateKeys(record) {
 }
 export function identityAnchor(record) {
   if(record.source_identifier&&record.source_platform)return 'platform:'+record.source_platform+':'+record.source_identifier;
-  for(const url of [record.application_url,record.canonical_url])if(specific(url))return 'url:'+canonicalUrl(url);
+  for(const url of sourceIdentityUrls(record))if(specific(url))return 'url:'+canonicalUrl(url);
   return 'producer:'+record.producer_name+':'+record.producer_record_id;
 }
 export function reconcileIdentity(incoming,candidates) {
@@ -56,8 +62,8 @@ export function reconcileIdentity(incoming,candidates) {
     const samePlatform=Boolean(incoming.source_platform&&incoming.source_platform===candidate.source_platform);
     if(samePlatform&&aId&&bId&&aId!==bId) continue;
     const sameId=samePlatform&&aId&&aId===bId;
-    const urls=[incoming.canonical_url,incoming.application_url].filter(Boolean).map(canonicalUrl);
-    const exact=urls.some(u=>specific(u)&&[candidate.canonical_url,candidate.application_url].filter(Boolean).map(canonicalUrl).includes(u));
+    const urls=sourceIdentityUrls(incoming).map(canonicalUrl);
+    const exact=urls.some(u=>specific(u)&&sourceIdentityUrls(candidate).map(canonicalUrl).includes(u));
     const lineage=REVIEWED_ALIASES.get(candidate),aliases=lineage?.keys??[],reviewedAlias=!sameId&&identityCandidateKeys(incoming).some(key=>!key.startsWith('name:')&&aliases.includes(key));
     // A historical URL/platform alias is an explicitly reviewed lineage, not
     // permission to roll the old opportunity into the next occurrence.
