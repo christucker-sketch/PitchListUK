@@ -1,0 +1,140 @@
+{
+ "schema": "findpitches-uk-regional-leads-v1",
+ "author": "Claude",
+ "created": "2026-10-13T08:30:00+01:00",
+ "status": "LEADS ONLY, read from Claude's workspace 2026-10-13 ~07:45-08:15 London with the producer user-agent, robots honoured. Not producer custody, not V3 proof; all hosts below were reachable directly, so V3 should fetch them itself.",
+ "finding": "Of 13 English/Welsh seasonal Christmas-2026 trader calls checked, 4-5 are plausibly open; the rest closed between March and September. Two pages still say 'applications are now open' in their intro while stating a past closing date. Seasonal Christmas calls are largely exhausted by mid-October.",
+ "producer_test": "Adding these as organiser seeds and running the generic classifier on a local DB copy gave wrong dates or routes on 2 of the open ones (Hawk Conservancy: 2026-10-25; Weald & Downland: visitor ticketing taken as the trader route, 20 Nov). The seeds were therefore NOT shipped to the Pi.",
+ "leads": [
+  {
+   "nation": "EM",
+   "event": "Leicester Christmas Market 2026",
+   "organiser": "Leicester Christmas Market (operator)",
+   "venue": "Humberstone Gate / High Street & Gallowtree Gate, Leicester",
+   "dates": "12 Nov\u201327 Dec 2026",
+   "state_as_read": "OPEN: stallholder registration form 'register your interest in trading at Leicester Christmas Market 2026'",
+   "url": "https://stallholders.leicesterchristmasmarket.co.uk/",
+   "disposition": "verify: registration-of-interest form; confirm it is a trader application"
+  },
+  {
+   "nation": "SE",
+   "event": "Hawk Conservancy Trust Christmas Market",
+   "organiser": "Hawk Conservancy Trust",
+   "venue": "Hawk Conservancy Trust, near Andover (Hampshire)",
+   "dates": "dated evenings incl. Thu 26 Nov 2026 (form lists dates)",
+   "state_as_read": "OPEN: stallholder application form with date and position choices",
+   "url": "https://www.hawk-conservancy.org/christmas-market-stallholder-application-form/",
+   "disposition": "verify: per-date options are ONE application, not separate opportunities"
+  },
+  {
+   "nation": "SE",
+   "event": "Weald & Downland Living Museum Christmas Market",
+   "organiser": "Weald & Downland Living Museum",
+   "venue": "Singleton, West Sussex",
+   "dates": "21\u201322 Nov 2026",
+   "state_as_read": "OPEN?: trader applications page ('Apply here: Christmas Market Trader Application')",
+   "url": "https://www.wealddown.co.uk/?p=30666",
+   "disposition": "verify current status; the event page's 'Book Here' is visitor ticketing (eventaly), NOT the trader route"
+  },
+  {
+   "nation": "NW",
+   "event": "Knutsford Christmas Market 2026",
+   "organiser": "Knutsford Town Council",
+   "venue": "Knutsford town centre",
+   "dates": "market on/around 6 Dec 2026 (light switch-on 21 Nov)",
+   "state_as_read": "OPEN?: 'Please complete this application form to apply for a stall'",
+   "url": "https://www.knutsfordtowncouncil.gov.uk/christmas-market/trade",
+   "disposition": "verify exact market date and deadline on page"
+  },
+  {
+   "nation": "SW",
+   "event": "Cotswold Fair",
+   "organiser": "Cotswold Fair",
+   "venue": "(venue on site)",
+   "dates": "9\u201312 Nov 2026",
+   "state_as_read": "UNKNOWN: stallholder application page, status not stated in text",
+   "url": "https://cotswoldfair.com/stallholder-application/",
+   "disposition": "verify"
+  },
+  {
+   "nation": "YH",
+   "event": "The Hepworth Wakefield Festive Market 2026",
+   "organiser": "The Hepworth Wakefield",
+   "venue": "The Hepworth Wakefield, Wakefield",
+   "dates": "20\u201322 & 28\u201329 Nov 2026",
+   "state_as_read": "CLOSED: applications closed midday Mon 29 Jun 2026 (page still says 'now open' in the intro)",
+   "url": "https://hepworthwakefield.org/news/the-hepworth-wakefield-festive-market-2026-open-call-for-stall-holders/",
+   "disposition": "exclude; trap: stale 'applications are now open' wording"
+  },
+  {
+   "nation": "SW",
+   "event": "Symondsbury Estate Christmas Market 2026",
+   "organiser": "Symondsbury Estate",
+   "venue": "Symondsbury, Dorset DT6",
+   "dates": "5\u20136 Dec 2026",
+   "state_as_read": "CLOSED: applications closed midnight Sun 31 May (page intro still says 'now open')",
+   "url": "https://symondsburyestate.co.uk/news/apply-for-the-symondsbury-estate-christmas-market-2026/",
+   "disposition": "exclude; same stale-wording trap"
+  },
+  {
+   "nation": "NE",
+   "event": "Newcastle Christmas Market 2026",
+   "organiser": "NE1 / Newcastle",
+   "venue": "Newcastle city centre",
+   "dates": "2026 season",
+   "state_as_read": "CLOSED: trader deadline 27 Mar 2026",
+   "url": "https://www.getintonewcastle.co.uk/things-to-do/trade-at-newcastle-christmas-market",
+   "disposition": "exclude"
+  },
+  {
+   "nation": "WM",
+   "event": "mac Birmingham Arts Market",
+   "organiser": "mac Birmingham",
+   "venue": "Cannon Hill Park, Birmingham",
+   "dates": "2026",
+   "state_as_read": "CLOSED: closed Sun 26 Jul 2026",
+   "url": "https://macbirmingham.co.uk/arts-market-applications",
+   "disposition": "exclude"
+  },
+  {
+   "nation": "SE",
+   "event": "Rochester Christmas Market",
+   "organiser": "Medway Council",
+   "venue": "Rochester",
+   "dates": "2026",
+   "state_as_read": "CLOSED: closed Wed 30 Sep 2026",
+   "url": "https://www.medway.gov.uk/info/200145/events_medway/1809/rochester_christmas_market_stallholder_information",
+   "disposition": "exclude"
+  },
+  {
+   "nation": "SW",
+   "event": "Cornwall Christmas Fair, Eden Project",
+   "organiser": "Cornwall Christmas Fair",
+   "venue": "Eden Project, Cornwall",
+   "dates": "2026",
+   "state_as_read": "CLOSED",
+   "url": "https://www.cornwallchristmasfair.com/stalls/stallholder-information",
+   "disposition": "exclude"
+  },
+  {
+   "nation": "WAL",
+   "event": "Portmeirion Christmas Fair",
+   "organiser": "Portmeirion",
+   "venue": "Portmeirion, Gwynedd",
+   "dates": "2026",
+   "state_as_read": "CLOSED (closing date passed)",
+   "url": "https://portmeirion.wales/visit/whats-on/food-and-craft-fair",
+   "disposition": "exclude"
+  },
+  {
+   "nation": "SW",
+   "event": "Bath Christmas Market",
+   "organiser": "Bath BID / B&NES",
+   "venue": "Bath",
+   "dates": "2026",
+   "state_as_read": "NOT OPEN on info page ('available ahead of applications opening')",
+   "url": "https://www.bathchristmasmarket.co.uk/information-stallholder-applications",
+   "disposition": "exclude for now"
+  }
+ ]
+}
