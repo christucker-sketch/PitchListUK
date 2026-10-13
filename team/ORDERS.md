@@ -1,5 +1,59 @@
 # FindPitches V3 — current execution orders
 
+## 13 October next-task queue — current priority order
+
+Chris has explicitly asked that **Codex is not interrupted from the work already in progress to relax the global customer-ready route gates under D-018**. Finish that current implementation/re-evaluation first, record measured before/after catalogue gains by country and route type, and only then move onto the queued work below.
+
+### Codex — finish current work first
+
+1. **Complete D-018 global usable-route implementation and re-evaluation.** Apply the approved route semantics globally, not just to the UK: exact-event applications, organiser-wide vendor intake, standing registrations, explicit trader/stallholder enquiry routes, trader-specific published email routes and organiser-directed vendor portals may qualify when the event/date/location/trader relevance remain proven. Keep generic contact details, social DMs, newsletters, ticket links, dead/historical routes and guessed contacts excluded.
+2. Publish a measured checkpoint showing READY before/after by country and by route type, including how much existing WATCH/held/non-READY inventory was safely recovered. Do not call raw candidate growth success.
+3. **After D-018 is complete**, resume catalogue growth. UK target remains material growth rather than +single digits; global direction is D-019: thousands of usable opportunities, with the US the highest-volume priority market.
+4. **Then implement D-020 US map coverage** using retained source coordinates or conservative exact-venue/address-derived coordinates with provenance. Never use city/state/ZIP centres or invented pins. Report US READY, pinned count/percentage, distinct mapped venues, state coverage and unpinned reasons.
+5. **Then address the Free-vs-Pro commercial leak.** Do not implement a final paywall model until ChatGPT has recorded the agreed product rule, but prepare the customer-runtime/frontend changes needed so Free demonstrates catalogue breadth without exposing enough event identity/venue detail for users simply to Google the application route. Codex remains the implementation owner for customer-facing gating.
+6. Continue performance work where it materially affects customer experience; variable catalogue latency remains a real follow-up, but do not displace D-018 or the inventory/map priorities above.
+
+### Claude / Pi — producer and source owner
+
+1. Do **not** duplicate Codex's current D-018 gate work. Review producer behaviour against the new global usable-route policy and identify only the places where the Pi/producer discards useful evidence before V3 can judge it.
+2. Prepare the smallest producer changes needed to **retain** standing vendor registrations, organiser-wide vendor intake, explicit trader/stallholder enquiry routes, vendor-specific email routes and organiser-directed portals as structured evidence/candidates. Do not promote them to READY on the Pi; Codex/V3 remains the publication bouncer.
+3. Continue source expansion with emphasis on repeatable operator families capable of producing material volume: multi-event operators, municipal/county/state fairs, artisan/farmers/night markets, food/festival programmes, venue/operator calendars and standing vendor-intake programmes.
+4. Prioritise US producer/source breadth in support of D-019, but **no paid search on the Pi unless a separate central grant is recorded**. Avoid duplicating Codex/root paid campaigns.
+5. Keep Pi delivery/alerts/backups healthy. Fix only genuine producer/host issues; do not generate unnecessary install kits. The under-voltage/PSU item remains hardware debt rather than catalogue logic.
+6. When useful upstream filtering gaps are proven, publish one bounded install kit and exact expected effect so Chris only has to touch the Pi when there is a measurable reason.
+
+### ChatGPT — product/coordination owner
+
+1. Reconcile Codex's D-018 checkpoint and verify that the relaxed global route policy improves useful inventory without weakening event identity, dates, geography, lifecycle or anti-fabrication rules.
+2. Define and record the **Free vs Pro product rule**. Working direction: Free proves value through counts/search/coverage/category/date/status and a small controlled sample, while Pro unlocks the event identity and actionable detail needed to act. Avoid a free catalogue where the user can simply Google every named event independently.
+3. Coordinate the US-scale programme after the D-018 recount: thousands globally, US as the largest market, measured by READY volume plus organiser/venue/state/source diversity rather than raw candidates.
+4. Review US map coverage after Codex implements D-020 and keep the same anti-fabrication standard used for the UK.
+5. Keep the team hub current and prevent duplicate work between Codex and Claude/Pi. A hub order is persistence, not proof that another agent has read or acted on it.
+6. Genuine owned LIVE billing acceptance remains a separate outstanding product acceptance unless a newer verified checkpoint closes it; do not let it get lost, but do not interrupt the current D-018 inventory work to reopen architecture discussion.
+
+### Hal / OpenClaw — provider/backend operator
+
+1. Remain available for provider-side tasks that genuinely require backend/provider custody (Stripe, SMTP2GO or other existing operator systems). Do not duplicate catalogue classification or producer work.
+2. When requested by Codex/ChatGPT, verify provider/runtime configuration with the smallest bounded change possible and preserve PitchList isolation.
+3. No new marketing sends, customer alert campaigns, unrelated paid acquisition or legacy migration without explicit approval.
+
+### Chris — operator/product owner
+
+1. No action required while Codex finishes D-018 unless Codex reaches a genuine operator-only dependency.
+2. Install a new Pi kit only when Claude documents a proven upstream filtering/source-coverage gain; routine gate relaxation belongs in V3 and should not require a Pi touch by default.
+3. Continue product/commercial review of the public site, especially what Free reveals versus what Pro protects. Final product-policy decisions remain Chris's call.
+4. The genuine owned LIVE Checkout → global Pro → Billing Portal/cancel journey should still be completed when convenient if the hub still shows it outstanding.
+
+### Standing boundaries
+
+- PitchList remains a separate protected product and is not a rollback target.
+- D-018 changes usable-route acceptance globally but does not relax event identity/date/location/trader-relevance/lifecycle truth requirements.
+- D-019 sets the global scale objective, especially US volume; it does not by itself authorize paid acquisition outside the existing UK D-017 grant.
+- D-020 requires truthful US venue mapping; no synthetic centre-point markers.
+- UKCraftFairs Option B, legacy subscriber migration, customer alert campaigns, destructive legacy work and unrelated protected/live merges remain separately gated.
+
+---
+
 **Current map checkpoint — 2026-10-12T13:36:14+01:00:** [V3-014 deployed and verified](../docs/findpitches-v3-venue-map-2026-10-12.md); public/Checkout LIVE, source-backed UK markers restored. Existing billing acceptance and all unrelated gates remain unchanged.
 
 **Current runtime checkpoint — 2026-10-12T12:00:00+01:00:** [V3-013 deployed UX proof](../docs/findpitches-v3-post-launch-ux-2026-10-12.md); public/Checkout LIVE again, genuine owned billing acceptance still pending. Coordinates and variable fresh-source latency are explicit follow-ups. Existing D-014/D-016 scope and all other gates unchanged.
