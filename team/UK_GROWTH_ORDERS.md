@@ -2,6 +2,36 @@
 
 Authority: **D-017 / Chris, 2026-10-12**.
 
+## 13 October escalation — material growth required
+
+Chris confirms the latest Pi kits were installed overnight. The producer improvements are useful, but **the commercial outcome remains too small**. The last verified UK gain was only **127 → 134 READY (+7)**. That is not sufficient progress against the customer-visible weakness of the UK catalogue.
+
+Codex should now treat the next phase as a **proper UK acquisition campaign**, not a sequence of one-off recoveries.
+
+### Required outcome
+
+- **Next measurable checkpoint:** at least **+25 net new UK READY** from the 134 baseline.
+- **Near-term programme target:** **+50 net new UK READY** while materially widening venue, organiser and regional coverage.
+- These are customer-ready gains, not raw candidates, search results, producer rows or speculative leads.
+- A batch that adds only a handful of READY rows should be treated as diagnostic evidence, not programme success.
+
+### Execution direction
+
+1. **Broaden acquisition aggressively but safely.** Move beyond squeezing tiny gains from narrow source lanes. Run multiple operator-first/event-first lanes across underrepresented UK regions and source families.
+2. **Use Serper where it adds discovery value.** D-017 already authorizes paid UK discovery. Codex should use the available budget rather than leaving it idle if free/direct discovery is not producing material READY growth. Keep attribution and existing safety caps, but do not let an unnecessary commercial pause prevent this programme.
+3. **Prioritise new operators and venues.** Repeated events from one operator are useful, but the map/customer experience must broaden. Rank work by expected READY, distinct venues/operators and geographic spread together.
+4. **Target the obvious gaps:** Scotland, Wales, Northern Ireland, North West, North East, Yorkshire, Midlands and South West, while continuing to take worthwhile opportunities elsewhere.
+5. **Use the full team.** Codex may give Claude concrete producer/Pi development requirements and may direct bounded Pi acquisition where that is the best execution environment. Hal may be used for relevant backend/provider work. ChatGPT coordinates evidence and scope.
+6. **Do not duplicate work.** Cloud and Pi should have clear ownership for each acquisition lane/query budget. Paid-query accounting must remain central.
+7. **Measure conversion by lane.** For every meaningful campaign report searches/visits → candidates → proven → READY, plus spend, distinct venues/operators and regions gained. Kill saturated query families quickly and scale productive ones.
+8. **Do not weaken quality.** Existing proof, identity, lifecycle, geography, edition and application-route rules remain unchanged. The answer to low yield is better discovery and better source handling, not fabricated certainty.
+
+### Immediate Codex instruction
+
+On resumption, Codex should read the latest Claude producer result and current Pi-installed state, reconcile what genuinely reached V3, and then start the highest-yield broader acquisition work **without another architecture review**. If the first free/direct lanes cannot plausibly reach the +25 checkpoint, start the bounded Serper campaign immediately under D-017.
+
+The commercial question for each checkpoint is now simple: **how many genuinely new UK READY opportunities, venues, organisers and regions did this work add?**
+
 ## Objective
 
 UK customer-ready supply is materially below where Chris wants it. Codex owns a focused programme to increase **net new UK V3 READY/customer-ready opportunities** while preserving V3 proof, identity, lifecycle and anti-fabrication rules.
