@@ -25,7 +25,7 @@ Suggested starting points: Claude can assess V3-001/V3-002/V3-003 with producer 
 
 
 | V3-015 | P1 | [D-018 global usable-route implementation/re-evaluation](../docs/findpitches-v3-global-usable-routes-2026-10-13.md) | DONE | Codex | Complete13October: +21USREADY/10newexacteventgroups, 18enquiries/3registrations; full383/public29/browser4, source/identitypreservation passed. No newpaid query. Further source-family adapters remain ordinary coverage work |
-| V3-017 | P1 | D-019 free catalogue growth toward thousands, US priority; measure event/application and venue/operator/state diversity | CLAIMED | Codex (V3); Claude (producer support requested) | Begin after completedD-018. Native bounded public catalogues/actual vendor routes; retain source proof, dedupe known routes, stop bad yield/backlog/integrity. No US/global paid search |
+| V3-017 | P1 | Free source-led global growth under D-019; US priority after D-018 | CLAIMED | Codex | **Checkpoint 2026-10-13T19:44+01:00:** [source result](../docs/findpitches-v3-free-source-growth-2026-10-13.md), +20READY/+10exact eventgroups; 48checks/0paid, automaticbacklogpause. Enrichment capacity3/negative-clock replay guard/full387; thousands target ongoing. Resume only after normal queue/custody review. Source catalogue/store, bounded operator runners, focused tests and aggregate reports. |
 | V3-016 | P1 | D-020 real US venue map markers at catalogue scale | CLAIMED | Codex | Claimed 13 October. Initial current customer projection: US1,630READY/0source-provedpins. Audit retained Eventeny location/address custody and preserve exact event join; no city/state/ZIP-centre or paid-geocoding substitute |
 
 ## Active claim details

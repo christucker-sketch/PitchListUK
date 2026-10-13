@@ -11,9 +11,21 @@ import {verifyDocument,compareProof} from '../../platform/findpitches-v3/verific
 import {reverifyRetainedSource,recordVerification} from '../../platform/findpitches-v3/verification-store.mjs';
 import {evaluateReadiness,drainPipeline} from '../../platform/findpitches-v3/pipeline.mjs';
 import {enqueue} from '../../platform/findpitches-v3/jobs.mjs';
-import {catalogueGrowthStop,completedCatalogueOutcome} from '../../operations/findpitches-v3/catalogue-growth.mjs';
+import {catalogueAdmissionStop,catalogueFamilyPause,catalogueGrowthStop,completedCatalogueOutcome} from '../../operations/findpitches-v3/catalogue-growth.mjs';
 import {safeFailureCode} from '../../platform/findpitches-v3/worker.mjs';
 const now='2026-10-07T15:00:00.000Z';
+test('free catalogue admission guards pause without retrying a candidate or masking custody failures',()=>{
+  assert.equal(catalogueAdmissionStop('shadow_http_400_catalogue_verification_backlog'),'verification_backlog');
+  assert.equal(catalogueAdmissionStop('shadow_http_400_catalogue_bounded_fetch_limit_reached'),'bounded_fetch_limit_reached');
+  for(const failure of ['shadow_fetch_timeout_enrichment','shadow_http_400_catalogue_current_scope_false_promotion','shadow_http_400_catalogue_budget_reservation_error','private error text'])assert.equal(catalogueAdmissionStop(failure),null);
+});
+test('free catalogue family warm-up does not let another family conceal twenty zero-yield visits',()=>{
+  const weak=Array.from({length:20},()=>({source_family:'localstalls',status:'held'}));
+  assert.equal(catalogueFamilyPause(weak.slice(0,19),'localstalls'),null);
+  assert.equal(catalogueFamilyPause([...weak,{source_family:'eventeny',readiness:'ready'}],'localstalls'),'zero_ready_after_family_warmup');
+  assert.equal(catalogueFamilyPause([...weak,{source_family:'localstalls',readiness:'ready'}],'localstalls'),null);
+  assert.equal(catalogueFamilyPause(weak,'eventeny'),null);
+});
 test('runtime diagnosis retains safe classes without returning SQL, source payloads or credentials',()=>{
   assert.equal(safeFailureCode(Error('D1_ERROR SQLITE_BUSY: database locked; private-payload')),'database_busy');
   assert.equal(safeFailureCode(Error('SQLITE_CONSTRAINT: source payload with private-token')),'sqlite_constraint');

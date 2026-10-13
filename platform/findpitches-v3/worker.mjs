@@ -5,7 +5,7 @@ import {stagingReady,stagingCatalogue} from './staging.mjs';
 import {producerRechecks,acknowledgeProducerRecheck,resolveObsoleteProducerRequest} from './rechecks.mjs';
 import {fetchCatalogueDocument} from './source-catalogue.mjs';
 import {startCatalogueRun,resumeReviewedCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,adoptCommittedCatalogueReceipt,stopCatalogueRun,catalogueStatus} from './catalogue-store.mjs';
-import {verifyEntitySource,reverifyRetainedSource,verificationGate,verificationStatus} from './verification-store.mjs';
+import {verifyEntitySource,reverifyRetainedSource,sourceFetchRequired,verificationGate,verificationStatus} from './verification-store.mjs';
 import { hash } from './contract.mjs';
 export function safeFailureCode(error) {
   const message=String(error?.message??'');
@@ -97,8 +97,8 @@ async function tick(env,{jobId=null,limit=10}={}) {
   for(let i=0;i<limit;i++) {
     const handlers=stage==='acquisition'?{acquisition:p=>acquireCity(env.FINDPITCHES_V3_DB,p,env,{runId:p.run_id})}:stage==='enrichment'?{enrichment:async p=>{
       const entity=await loadEntity(env.FINDPITCHES_V3_DB,p.entity_id),gate=await verificationGate(env.FINDPITCHES_V3_DB,entity);
-      // Unchanged exports cannot extend proof freshness. Missing/expired proof is fetched directly.
-      if(entity.environment==='shadow'&&(gate.status==='unverified'||p.refresh_verification_id&&p.refresh_verification_id===gate.verification_id))await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id);
+      // Unchanged exports extend neither positive nor negative source clocks.
+      if(entity.environment==='shadow'&&sourceFetchRequired(gate,{refreshVerificationId:p.refresh_verification_id}))await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id);
       return enrichEntity(env.FINDPITCHES_V3_DB,p.entity_id,{proposals:p.proposals??[],recheckToken:p.recheck_token});
     }}:{};
     const result=await runStage(env.FINDPITCHES_V3_DB,stage,{jobId,clock:()=>new Date(),handlers});

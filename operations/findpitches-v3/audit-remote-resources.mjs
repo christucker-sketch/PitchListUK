@@ -32,7 +32,8 @@ export async function auditResources({credentialsFile,stateDirectory}) {
     const role=name.replace('findpitches-v3-','').replace('-shadow','');
     if(['reconcile','eligibility','enrichment','readiness','acquisition','watch'].includes(role)) {
       if(queue.settings?.delivery_paused===true)throw new Error('queue_delivery_paused_'+role);
-      if(consumers.length!==1||consumers[0].script!=='findpitches-v3-'+role+'-shadow'||consumers[0].dead_letter_queue!=='findpitches-v3-dead-shadow'||consumers[0].settings.max_retries!==3||consumers[0].settings.max_concurrency!==1)throw new Error('queue_consumer_recovery_failed_'+role);
+      const expected=JSON.parse(fs.readFileSync(new URL('./cloudflare/'+role+'.jsonc',import.meta.url),'utf8')).queues.consumers[0];
+      if(consumers.length!==1||consumers[0].script!=='findpitches-v3-'+role+'-shadow'||consumers[0].dead_letter_queue!==expected.dead_letter_queue||consumers[0].settings.max_retries!==expected.max_retries||consumers[0].settings.max_concurrency!==expected.max_concurrency||consumers[0].settings.batch_size!==expected.max_batch_size||consumers[0].settings.max_wait_time_ms!==expected.max_batch_timeout*1000)throw new Error('queue_consumer_recovery_failed_'+role);
     } else if(consumers.length)throw new Error('reserved_queue_has_consumer');
     queues.push({name,id,delivery_paused:queue.settings?.delivery_paused??false,consumers:consumers.map(c=>({type:c.type,script:c.script??null,dead_letter_queue:c.dead_letter_queue??null,settings:c.settings})),producer_count:(queue.producers??[]).length});
   }

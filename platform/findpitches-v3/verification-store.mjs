@@ -21,6 +21,15 @@ export async function verificationGate(db,entity,{now=new Date().toISOString()}=
   const comparison=compareProof(entity,report),scope=applicationScope(report),reasons=[...new Set([...report.reasons,...comparison,...scope.reasons])];
   return {status:(comparison.length||scope.reasons.some(r=>r.startsWith('contradictory_')))&&row.status==='verified'?'quarantine':scope.reasons.length&&row.status==='verified'?'partial':row.status,reasons,verification_id:row.id,profile:report.profile,facts:report.facts,usable_route:report.usable_route??null,application_heading:scope.heading,application_audience:scope.audience,checked_at:row.checked_at,expires_at:row.expires_at};
 }
+export function sourceFetchRequired(gate,{now=new Date().toISOString(),refreshVerificationId=null}={}) {
+  if(refreshVerificationId&&refreshVerificationId===gate.verification_id)return true;
+  if(gate.status!=='unverified')return false;
+  // A current, revision-matched negative receipt remains a WATCH outcome.
+  // Replayed delivery is not permission to hammer a refused/missing source.
+  // Expired, missing and revision-changed gates omit these fresh clocks.
+  return !(gate.verification_id&&Number.isFinite(Date.parse(gate.checked_at))&&Date.parse(gate.checked_at)<=Date.parse(now)
+    &&Date.parse(gate.expires_at)>Date.parse(now)&&!gate.reasons.includes('source_verification_stale_or_revision_changed'));
+}
 export async function recordVerification(db,entityId,document,{now=new Date().toISOString(),addEvidence=true}={}) {
   let entity=await loadEntity(db,entityId);if(!entity||!['test','shadow'].includes(entity.environment))throw Error('shadow_entity_required');
   const originalRoute=verificationUrl(entity);
