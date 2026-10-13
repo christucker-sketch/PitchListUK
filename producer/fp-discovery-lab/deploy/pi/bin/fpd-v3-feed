@@ -5,9 +5,13 @@
 #                        moves of ids V3 already has (same v1 record contract; only channel=current is customer-visible)
 # Switch to "feed" only after V3 has confirmed it treats channel != current as not customer-visible.
 #   sudo fpd-v3-feed status | enable | disable
+# D-018 route candidates (OFF by default): watch/UNKNOWN records that have an organiser route, sent as channel=watch
+# (never customer-visible) so V3 can judge them under the usable-route policy. Takes effect at the next discovery cycle.
+#   sudo fpd-v3-feed candidates-on | candidates-off
 set -euo pipefail
 [[ $EUID -eq 0 ]] || { echo "run with sudo" >&2; exit 1; }
 CONF=/etc/fpd/v3-runner.json; FLAG=/etc/fpd/v3-feed.enabled; FEED=/srv/fpd/export/v3/feed.jsonl
+CAND=/etc/fpd/v3-feed-candidates.enabled
 apply() {  # $1 = feed|current
   local tmp; tmp=$(mktemp /etc/fpd/.v3-runner.XXXXXX)
   if [[ $1 == feed ]]; then jq '.input_directory="/srv/fpd/export/v3" | .file_pattern="feed.jsonl"' "$CONF" > "$tmp"
@@ -18,7 +22,12 @@ case "${1:-status}" in
   status)
     echo "delivering: $(jq -r '.input_directory + "/" + .file_pattern' "$CONF")"
     [[ -f $FLAG ]] && echo "mode: feed (enabled $(cat $FLAG))" || echo "mode: current (feed not enabled)"
-    [[ -f /srv/fpd/export/v3/feed-manifest.json ]] && jq -c '{generated_at, records, current, lifecycle, lifecycle_by_channel, skipped}' /srv/fpd/export/v3/feed-manifest.json || echo "feed not written yet (next discovery cycle writes it)" ;;
+    [[ -f $CAND ]] && echo "route candidates: ON (since $(cat $CAND))" || echo "route candidates: off"
+    [[ -f /srv/fpd/export/v3/feed-manifest.json ]] && jq -c '{generated_at, records, current, lifecycle, lifecycle_by_channel, skipped, route_candidates, route_candidates_by_country}' /srv/fpd/export/v3/feed-manifest.json || echo "feed not written yet (next discovery cycle writes it)" ;;
+  candidates-on)
+    date -u +%FT%TZ > "$CAND"; chmod 0644 "$CAND"; echo "route candidates ON from the next discovery cycle (needs feed mode: sudo fpd-v3-feed status)" ;;
+  candidates-off)
+    rm -f "$CAND"; echo "route candidates off from the next discovery cycle" ;;
   enable)
     [[ -s $FEED ]] || { echo "no $FEED yet: wait for a discovery cycle (or: sudo fpd v3-feed)" >&2; exit 1; }
     date -u +%FT%TZ > "$FLAG"; apply feed; systemctl restart fpd-v3-delivery 2>/dev/null || true
@@ -26,5 +35,5 @@ case "${1:-status}" in
   disable)
     rm -f "$FLAG"; apply current; systemctl restart fpd-v3-delivery 2>/dev/null || true
     echo "V3 delivery back to full/current.jsonl" ;;
-  *) echo "usage: sudo fpd-v3-feed status|enable|disable" >&2; exit 2 ;;
+  *) echo "usage: sudo fpd-v3-feed status|enable|disable|candidates-on|candidates-off" >&2; exit 2 ;;
 esac

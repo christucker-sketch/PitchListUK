@@ -923,3 +923,55 @@ def test_organiser_page_seeds_are_candidates_on_organiser_sites(tmp_path, monkey
     assert rows["https://hubsite.example/opps"]["role"] == "hub"
     assert seeds.run(conn, fr, Tel(), None) == 0          # each seed group runs once
     assert source_of("organiser:venuex", None) == ("organiser_site", "venuex", "other")
+
+
+def test_d018_trader_email_route_is_exported_against_its_https_source_page(tmp_path):
+    """D-018: a trader-specific published email is a usable route. It used to be dropped at export because the
+    schema needs http(s) route URLs, which left ENQUIRY_AVAILABLE records with no route for V3 to judge."""
+    conn = dbm.connect(tmp_path / "e.sqlite")
+    _seed(conn, 2)
+    o1, o2 = [r[0] for r in conn.execute("SELECT id FROM opportunities ORDER BY id")]
+    conn.execute("DELETE FROM routes WHERE opportunity_id=?", (o1,))
+    conn.execute("UPDATE opportunities SET state='ENQUIRY_AVAILABLE', state_evidence='Enquiry route only (email/contact)' "
+                 "WHERE id=?", (o1,))
+    for oid, addr in ((o1, "stalls@fest0.example.co.uk"), (o2, "not-an-address")):
+        conn.execute("INSERT INTO routes(opportunity_id,url,route_type,platform,category,anchor,source_url,source_state) "
+                     "VALUES (?,?,?,?,?,?,?,?)", (oid, f"mailto:{addr}?subject=Stall", "email", None, "craft",
+                                                  "Traders: email to book a stall", f"https://fest{oid - 1}.example.co.uk/traders",
+                                                  "ENQUIRY_AVAILABLE"))
+    root = tmp_path / "integration_export"
+    Exporter(conn, Cfg(tmp_path), root, TODAY).run("full")
+    assert validate_export(root)["ok"]
+    cur = {r["event_name"]: r for r in _read(root / "full" / "current.jsonl")}
+    em = [x for x in cur["Village Fete Number0"]["application_routes"] if x["route_type"] == "trader_email"]
+    assert len(em) == 1 and em[0]["url"] == "https://fest0.example.co.uk/traders"
+    assert em[0]["label"].startswith("stalls@fest0.example.co.uk") and "book a stall" in em[0]["label"]
+    assert not [x for x in cur["Village Fete Number1"]["application_routes"] if x["route_type"] == "trader_email"]
+
+
+def test_d018_route_candidates_are_watch_records_and_off_by_default(tmp_path):
+    """D-018: watch/UNKNOWN records that do have an organiser route go to V3 only when switched on, and only as
+    channel=watch (never customer-visible). Records without a route, or with past dates, never do."""
+    from fpd.integration.v3feed import build_v3_feed
+    conn = dbm.connect(tmp_path / "e.sqlite")
+    _seed(conn, 1)
+    root = tmp_path / "integration_export"
+    Exporter(conn, Cfg(tmp_path), root, TODAY).run("full")
+    rec = _read(root / "full" / "current.jsonl")[0]
+
+    def w(oid, **kw):
+        return {**rec, "opportunity_id": oid, "channel": "watch", "export_readiness": "WATCH",
+                "application_state": "UNKNOWN", **kw}
+    rows = [w("fdx1_" + "a" * 20, event_start=None, event_end=None),                       # candidate
+            w("fdx1_" + "b" * 20, application_routes=[], application_url=None),            # no route
+            w("fdx1_" + "c" * 20, event_start="2026-01-01", event_end="2026-01-02"),       # past
+            w("fdx1_" + "d" * 20, application_state="HISTORICAL")]                         # not UNKNOWN
+    (root / "full" / "watch.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    t0 = dt.datetime(2026, 10, 13, tzinfo=dt.timezone.utc).timestamp()
+    off = build_v3_feed(conn, root, now=t0)
+    assert off["route_candidates"] == 0 and len(_read(root / "v3" / "feed.jsonl")) == 1
+    on = build_v3_feed(conn, root, now=t0 + 100, include_candidates=True)
+    feed = _read(root / "v3" / "feed.jsonl")
+    cand = [x for x in feed if x["channel"] == "watch"]
+    assert on["route_candidates"] == 1 and [x["opportunity_id"] for x in cand] == ["fdx1_" + "a" * 20]
+    assert cand[0]["export_readiness"] == "WATCH" and all(not validate(x, RECORD_SCHEMA) for x in feed)

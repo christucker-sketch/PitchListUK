@@ -53,6 +53,7 @@ PLATFORM_ORGANISERS = {"ukcraftfairs.com", "ukcraftfairs", "cluemart", "localsta
 ORG_SUFFIX = re.compile(r"\s+(?:one-off(?:\s*/\s*irregular)?|irregular|weekly|fortnightly|monthly|bi-?monthly|annually|"
                         r"quarterly|seasonal)\b.*$", re.I)
 # Lanes switched off after the 9 Oct 2026 audit (closed, past or out-of-market art calls presented as open).
+EMAIL_RE = re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}")
 SUSPENDED_LANES = {"entrythingy": "art calls: 0/2 correct in the 9 Oct 2026 audit"}
 
 
@@ -212,8 +213,9 @@ def build_records(conn, today: dt.date, registry: idn.Registry, now_iso: str) ->
             "FROM opportunity_sources s JOIN urls u ON u.id=s.url_id LEFT JOIN assessments a ON a.id=s.assessment_id"):
         srcs[r["oid"]].append(dict(r))
     routes = defaultdict(list)
-    for r in conn.execute("SELECT opportunity_id, url, route_type, platform, category, anchor FROM routes"):
-        routes[r[0]].append({"url": r[1], "route_type": r[2], "platform": r[3], "category": r[4], "label": r[5]})
+    for r in conn.execute("SELECT opportunity_id, url, route_type, platform, category, anchor, source_url FROM routes"):
+        routes[r[0]].append({"url": r[1], "route_type": r[2], "platform": r[3], "category": r[4], "label": r[5],
+                             "source_url": r[6]})
     suppress = load_suppressions(conn)
     opps = [dict(o) for o in conn.execute("SELECT * FROM opportunities WHERE relevance='relevant'")]
     prepared = []
@@ -303,6 +305,19 @@ def _record(o, ss, exs, routes, pids, nkey, oid, how, anchors, today, suppress) 
     rts = []
     seen = set()
     for r in sorted(routes, key=lambda r: (r["url"] or "", r["category"] or "")):
+        if (r["url"] or "").lower().startswith("mailto:"):
+            # D-018: a trader-specific published email is a usable route. The schema needs an http(s) URL, so the
+            # route points at the page that publishes the address and carries the address in its label.
+            addr = r["url"][7:].split("?")[0].strip()
+            src = r.get("source_url") or ""
+            if not EMAIL_RE.fullmatch(addr) or not re.match(r"^https?://", src):
+                continue
+            rid = idn.route_id(src, f"trader_email:{addr.lower()}")
+            if rid and rid not in seen:
+                seen.add(rid)
+                rts.append({"route_id": rid, "url": clean_url(src), "route_type": "trader_email", "platform": None,
+                            "category": r["category"], "label": _clip(f"{addr} — {r['label'] or ''}".rstrip(" —"), 120)})
+            continue
         if not r["url"] or not re.match(r"^https?://", r["url"]):
             continue
         rid = idn.route_id(r["url"], r["category"])

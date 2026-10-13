@@ -16,6 +16,12 @@ Records are the same findpitches-discovery-export-v1 records: no schema change. 
 channel == "current" (export_readiness == "READY") and treat everything else as "not customer-visible".
 Lifecycle records with a non-https source or application URL are left out (V3 rejects them).
 
+Optionally (D-018, OFF unless switched on with  sudo fpd-v3-feed candidates-on ) it also carries ROUTE CANDIDATES:
+watch-channel records in state UNKNOWN that have at least one organiser route (form, vendor page, standing
+registration, trader email or explicit trader contact instruction) but lack something the producer can prove on its
+own (usually current dates). They are delivered as channel=watch / WATCH, i.e. never customer-visible, so that V3 can
+judge them under the global usable-route policy. The producer does not promote them.
+
 Delivery of this file is OFF until it is switched on (sudo fpd-v3-feed enable on the Pi), because V3 has
 to confirm it handles non-current records first. Writing it is harmless.
 """
@@ -75,7 +81,39 @@ def _backfill(conn, root: Path, now: float) -> int:
     return len(seen)
 
 
-def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int = 45) -> dict:
+def _candidates(root: Path, exclude: set, now: float, limit: int) -> tuple[list[dict], dict]:
+    import datetime as dt
+    today = dt.datetime.fromtimestamp(now, dt.timezone.utc).date().isoformat()
+    out, skipped = [], {"no_route": 0, "not_unknown": 0, "past": 0, "insecure_url": 0, "schema": 0, "limit": 0}
+    for r in _iter_jsonl(Path(root) / "full" / "watch.jsonl"):
+        oid = r.get("opportunity_id")
+        if not oid or oid in exclude or r.get("channel") != "watch":
+            continue
+        if r.get("application_state") != "UNKNOWN":
+            skipped["not_unknown"] += 1
+            continue
+        if not r.get("application_routes"):
+            skipped["no_route"] += 1
+            continue
+        if (r.get("event_end") or r.get("event_start") or "9999") < today:
+            skipped["past"] += 1
+            continue
+        if not (_https(r.get("source_url")) and _https(r.get("application_url"))
+                and all(_https(x.get("url")) for x in r["application_routes"])):
+            skipped["insecure_url"] += 1
+            continue
+        if validate(r, RECORD_SCHEMA):
+            skipped["schema"] += 1
+            continue
+        if len(out) >= limit:
+            skipped["limit"] += 1
+            continue
+        out.append(r)
+    return out, skipped
+
+
+def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int = 45,
+                  include_candidates: bool = False, max_candidates: int = 500) -> dict:
     root = Path(root)
     now = time.time() if now is None else now
     conn.executescript(STATE_SQL)
@@ -117,10 +155,13 @@ def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int =
             continue
         lifecycle.append(rec)
     conn.commit()
+    candidates, cand_skipped = ([], {})
+    if include_candidates:
+        candidates, cand_skipped = _candidates(root, cur_ids | {r["opportunity_id"] for r in lifecycle}, now, max_candidates)
     out_dir = root / "v3"
     out_dir.mkdir(parents=True, exist_ok=True)
     tmp = out_dir / f".feed.{os.getpid()}.tmp"
-    lines = [json.dumps(r, ensure_ascii=False, sort_keys=True) for r in current + lifecycle]
+    lines = [json.dumps(r, ensure_ascii=False, sort_keys=True) for r in current + lifecycle + candidates]
     body = ("\n".join(lines) + "\n").encode("utf-8") if lines else b""
     with open(tmp, "wb") as f:
         f.write(body)
@@ -139,6 +180,10 @@ def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int =
         "lifecycle_by_event": dict(Counter(r["lifecycle_event"] for r in lifecycle)),
         "lifecycle_by_state": dict(Counter(r["application_state"] for r in lifecycle)),
         "skipped": skipped, "backfilled_ids": backfilled, "left_current_this_run": len(gone),
+        "route_candidates": len(candidates), "route_candidates_enabled": include_candidates,
+        "route_candidates_by_country": dict(Counter(r.get("country_code") for r in candidates)),
+        "route_candidates_by_route_type": dict(Counter(x["route_type"] for r in candidates for x in r["application_routes"])),
+        "route_candidates_skipped": cand_skipped,
     }
     mtmp = out_dir / f".manifest.{os.getpid()}.tmp"
     mtmp.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -146,4 +191,5 @@ def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int =
     os.replace(mtmp, out_dir / "feed-manifest.json")
     return {"ok": True, **{k: manifest[k] for k in ("records", "current", "lifecycle", "lifecycle_by_channel",
                                                     "lifecycle_by_event", "skipped", "backfilled_ids",
-                                                    "left_current_this_run")}}
+                                                    "left_current_this_run", "route_candidates",
+                                                    "route_candidates_by_country", "route_candidates_by_route_type")}}

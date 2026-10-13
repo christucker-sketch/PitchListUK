@@ -164,14 +164,18 @@ def finalize(conn, today: dt.date) -> dict:
         for s in srcs:
             for rt in s["ex"].get("routes", []) or []:
                 u = rt.get("url")
-                if not u or rt.get("type") in ("contact_instruction",):
+                if rt.get("type") == "contact_instruction" and not u:
+                    # D-018: an explicit published instruction for traders ("email us to book a stall") is evidence
+                    # of a route; keep it, anchored to the page that states it, so V3 can judge it.
+                    u = s["url"]
+                if not u:
                     continue
                 cats.add(rt.get("category") or "general")
                 cur = conn.execute(
                     "INSERT OR IGNORE INTO routes(opportunity_id,url,route_type,platform,category,anchor,source_url,source_state)"
                     " VALUES (?,?,?,?,?,?,?,?)",
                     (oid, u, rt.get("type"), rt.get("platform") or platform_of(u), rt.get("category"),
-                     (rt.get("anchor") or "")[:150], s["url"], s["ex"].get("state")))
+                     (rt.get("anchor") or rt.get("context") or rt.get("text") or "")[:150], s["url"], s["ex"].get("state")))
                 nroutes += cur.rowcount
         o_tmp = {**o, "recurrence_evidence": rec}
         plan = _plan(o_tmp, state, ex, today)

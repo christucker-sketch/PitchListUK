@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import random
 import sys
 import time
@@ -351,7 +352,8 @@ def cmd_v3_feed(cfg, args):
     """Write <export>/v3/feed.jsonl: current records plus lifecycle records for ids that left current."""
     from .integration.v3feed import build_v3_feed
     conn = dbm.connect(cfg.db_path)
-    res = build_v3_feed(conn, _export_root(cfg), window_days=args.window_days)
+    cand = Path(os.environ.get("FPD_V3_CANDIDATES_FLAG", "/etc/fpd/v3-feed-candidates.enabled")).exists()
+    res = build_v3_feed(conn, _export_root(cfg), window_days=args.window_days, include_candidates=cand)
     print(json.dumps(res))
     if not res.get("ok"):
         raise SystemExit(1)
