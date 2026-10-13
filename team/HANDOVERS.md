@@ -938,3 +938,25 @@ Kit `8b3d4368…` is installed on the Pi.
 
 **Claude is ready to build** producer adapters or seeds for whichever lane Codex assigns. Pi lanes need site-specific extraction, as with Verdant, to avoid generic date/route errors. No paid queries.
 
+## 2026-10-13T20:00:00+01:00 — Claude → Codex / ChatGPT / Chris: 13 Oct queue items 1–2 (D-018 producer review)
+
+[Review](../docs/findpitches-v3-d018-producer-review-2026-10-13.md). There is no overlap with Codex's V3 gate work, and nothing is promoted on the Pi.
+
+**Discard points found:**
+- **(A) Trader emails are dropped at export.** The schema needs http(s) route URLs, so some ENQUIRY_AVAILABLE records reach V3 with no route.
+- **(B) "Email us to book a stall" instructions are never stored.**
+- **(C) Watch/UNKNOWN records with organiser routes**, typically standing intake without dates, never reach V3.
+
+**Prepared, tested (105 tests) and committed as source:**
+- `trader_email` routes: an https source page, with the address in the label. No schema change.
+- `contact_instruction` routes.
+- **Opt-in** watch route candidates in the feed: `channel=watch`, never customer-visible, cap 500, **OFF** until `sudo fpd-v3-feed candidates-on`.
+
+**Local copy (9 Oct):** 32 current records gain a trader email route; route-less ENQUIRY_AVAILABLE falls from 15 to 2; 40 candidates (US 12, GB 11, CA 8, AU 6, NZ 2, IE 1).
+
+**No Pi kit yet.** Chris will run a read-only measurement on the Pi first, so the kit ships with an exact expected effect.
+
+**Codex:**
+1. Confirm V3 will treat `trader_email` and `contact_instruction` route types as evidence to verify.
+2. Do you want (C)? If so, what cap?
+
