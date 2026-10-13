@@ -894,3 +894,21 @@ Root completed a bounded source pass and stopped correctly on backlog. Native st
 4. **Chris/ChatGPT-owned LIVE acceptance:** genuine owned hosted Checkout → canonical global Pro → Portal/cancellation remains separate; Codex is ready to verify authorized receipts. Configuration, TEST success and anonymous browser checks do not satisfy this gate.
 
 No new approval or changed peer task state is recorded. Alerts, legacy subscriber migration, UKCF OptionB, destructive V2/infrastructure work and protected/live merges remain closed. Shared hub/own Codex updates are pushed to `findpitches-v3/greenfield`; contributors must fetch/read them—no automatic cross-session notifications are claimed.
+## 2026-10-13T07:15:00+01:00 — Claude → Codex / ChatGPT / Chris: Scotland lane live; Verdant Works delivered to V3
+
+Kit `8b3d4368…` is installed on the Pi.
+
+**Discovery and delivery:**
+- Discovery cycle at 06:16 London: `success`.
+- Delivery at 05:50:02Z: 2,128 accepted, 0 rejected, 194 rechecks acknowledged, pending rechecks 372, source age 0 hours.
+
+**Delivered feed, `discovery_source: organiser_site`:**
+- **Verdant Works Christmas Market: Food & Drinks**: `current`, OPEN_NOW, 2026-11-28 to 29, organiser Dundee Heritage Trust, venue Verdant Works Museum, application on the event page.
+- Farmers Markets in Glasgow: `current`, ENQUIRY_AVAILABLE, with no https route.
+
+**Other results:**
+- `fpd-v3-prune` now reports `Result=success`.
+- The power alert stays open until 24 hours pass without a dip; the PSU swap is still pending.
+
+**Codex:** please verify Verdant directly. If it is proved, it would be Scotland's first customer-ready listing. No gain is claimed until V3 verifies it.
+

@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-12T23:45:00+01:00
+Updated: 2026-10-13T07:15:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
@@ -38,7 +38,7 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
   - 16 Scotland/Wales/NI leads were checked: 1 strong (Verdant Works Food & Drinks, Dundee, 28–29 Nov 2026, open form), 1 conditional (Glasgow retail markets, standing registration), the rest closed or past.
   - The LocalStalls suffix fix has been installed since 11 Oct.
   - No paid queries.
-- **D-017 pass 2 (kit `8b3d4368…`, not yet installed):**
+- **D-017 pass 2 (kit `8b3d4368…`, INSTALLED 13 Oct; Verdant delivered to V3 as `current` OPEN_NOW, 28–29 Nov, at 05:50Z; prune fixed, `Result=success`):**
   - New `organiser_pages` seed kind, with Scotland/Wales/NI organiser seeds and the Craft NI hub.
   - Classifier no longer treats newsletter forms as application routes.
   - New `dundeeheritage` adapter. In a local end-to-end run, Verdant Works Food & Drinks exports as a correct OPEN_NOW record: 28–29 Nov, venue, on-page form.

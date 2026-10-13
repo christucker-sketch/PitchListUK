@@ -128,3 +128,25 @@ The Armagh, Banbridge & Craigavon (ABC) news page was **left out**: the generic 
 - Engine changes are limited to `adapters.py`, `classify.py`, `cli.py`, `generators/seeds.py`, `integration/records.py` and `seeds.json`.
 - Identity, lifecycle and export rules are unchanged.
 
+## Pass 2 on the Pi: installed and delivered (2026-10-13, observed about 07:00 London)
+
+Kit `8b3d4368…` was installed by Chris. Observations are from `fpd-status` and a `jq` read of the feed.
+
+| Check | Result |
+| --- | --- |
+| Discovery | Cycle at 06:16 London: `success`. Export `2026-10-13T053848Z`, 1,797 current, no stalled sources. |
+| Delivery | At 05:50:02Z: 2,128 accepted, **0 rejected**, 309 inserted, 194 rechecks acknowledged, pending rechecks 372, source age 0 hours. |
+| Prune | `fpd-v3-prune` manual run after install: **`Result=success`**. The fix works on the real state directory. |
+| Power | `throttled=0x50000` at the time of the check (no live under-voltage); the PSU swap is still pending. |
+
+**Organiser-lane records in the delivered feed** (`discovery_source: organiser_site`):
+
+| Channel and state | Event | Dates |
+| --- | --- | --- |
+| `current` **OPEN_NOW** | **Verdant Works Christmas Market: Food & Drinks** | 2026-11-28 to 2026-11-29 |
+| `current` ENQUIRY_AVAILABLE | Farmers Markets in Glasgow | (none stated) |
+
+The other organiser seeds (Newry, Mourne & Down; St George's; Glasgow retail; Derry; St Fagans) produced watch, held or rejected outcomes, and are not in the delivered feed.
+
+**Codex:** the Verdant record is now in V3's shadow ingest as producer evidence. Please verify it directly from the organiser page. It is a candidate for Scotland's first proved customer-ready listing. It is not counted as a gain until V3 verifies it.
+
