@@ -2,6 +2,8 @@ import {sql,ingestRecords,loadEntity} from './store.mjs';
 import {hash,stableJson,EXPORT_SCHEMA,platformId} from './contract.mjs';
 import {catalogueUrl,fetchCatalogueDocument,catalogueLinks,platformRoute,eventApplicationLinks} from './source-catalogue.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
+import {fetchProofDocument} from './proof-document.mjs';
+import {encodeSourceDocument} from './document-custody.mjs';
 import {verifyDocument,applicationScope,compareProof} from './verification.mjs';
 import {reconcileRecord,evaluateReadiness,runStage,enrichEntity} from './pipeline.mjs';
 import {recordVerification,verificationGate,verifyEntitySource} from './verification-store.mjs';
@@ -135,7 +137,8 @@ export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500,by
   ]);
   return {run_id,document_id:documentId,coverage:document.coverage??'complete_document',byte_offset,catalogues:links.catalogues,event_details:links.routes.filter(r=>r.kind==='event_detail').slice(offset,offset+limit),routes:applications.length,offset,next_offset:offset+limit<applications.length?offset+limit:null,candidates};
 }
-export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now=new Date().toISOString()}={}) {
+export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now=new Date().toISOString(),targetMarket=null}={}) {
+  if(targetMarket!==null&&!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(targetMarket))throw Error('catalogue_operator_market_scope_invalid');
   const c=await sql(db,'SELECT c.*,p.status,p.entity_id,p.record_id FROM catalogue_candidates c JOIN catalogue_progress p ON p.candidate_id=c.id WHERE c.id=?',candidateId).first();
   if(!c)throw Error('catalogue_candidate_missing');if(c.status!=='pending')return {candidate_id:candidateId,status:c.status,entity_id:c.entity_id,record_id:c.record_id,replay:true};
   await activeRun(db,c.run_id,now);
@@ -157,11 +160,11 @@ export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now
   if(!reserved.results.length){await sql(db,"UPDATE catalogue_progress SET status='pending',lease_until=NULL WHERE candidate_id=?",candidateId).run();throw Error('catalogue_bounded_fetch_limit_reached');}
   let checkpoint='source_fetch';
   try {
-    const document=await fetchSourceDocument(c.url,{fetcher,now}),report=verifyDocument(document,{now}),documentId='doc_'+(await hash(document)).slice(0,40);
+    const document=await fetchProofDocument(c.url,{fetcher,now}),report=verifyDocument(document,{now}),documentId='doc_'+(await hash(document)).slice(0,40);
     checkpoint='document_retention';
-    await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,c.url,document.content_hash??null,document.fetched_at,stableJson(document)).run();
-    if(report.status!=='verified'||!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(report.facts.country)) {
-      const reason=report.reasons.join(',')||'supported_verified_country_required';
+    await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,c.url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document)).run();
+    if(report.status!=='verified'||!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(report.facts.country)||targetMarket&&report.facts.country!==targetMarket) {
+      const reason=targetMarket&&report.facts.country&&report.facts.country!==targetMarket?'verified_country_outside_operator_scope':report.reasons.join(',')||'supported_verified_country_required';
       await sql(db,"UPDATE catalogue_progress SET status='held',reason=?,document_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",reason,documentId,now,candidateId).run();
       if(report.reasons.includes('source_http_429'))await stopCatalogueRun(db,c.run_id,'source_rate_limited');
       return {candidate_id:candidateId,status:'held',reason,source_country:report.facts.country??null};

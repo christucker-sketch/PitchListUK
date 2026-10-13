@@ -7,8 +7,8 @@ export function decode(value) {
     const n=key[1].toLowerCase()==='x'?parseInt(key.slice(2),16):Number(key.slice(1));return n>0&&n<=0x10ffff?String.fromCodePoint(n):' ';
   });
 }
-export function parseHtml(html) {
-  if(typeof html!=='string'||html.length>1048576)throw Error('source_html_size_limit');
+export function parseHtml(html,{maxBytes=1048576}={}) {
+  if(!Number.isInteger(maxBytes)||maxBytes<1||maxBytes>2097152||typeof html!=='string'||html.length>maxBytes)throw Error('source_html_size_limit');
   const root={tag:'root',attrs:{},children:[],start:0,end:html.length},stack=[root];let cursor=0,count=0;
   const tags=/<!--[\s\S]*?-->|<![^>]*>|<\/?[a-z][a-z\d:-]*(?:"[^"]*"|'[^']*'|[^'">])*>/gi;
   for(let m;(m=tags.exec(html));) {

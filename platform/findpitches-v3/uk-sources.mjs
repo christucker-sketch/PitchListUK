@@ -3,6 +3,8 @@ import {hash,stableJson} from './contract.mjs';
 import {parseHtml,nodes,first,text,hasClass} from './source-dom.mjs';
 import {VENUE_COORDINATE_POLICY,validVenueCoordinates} from './source-coordinates.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
+import {CHICHESTER_ROOM,CHICHESTER_HOUSE,CHICHESTER_SOURCE,chichesterPostalBinding,chichesterCountryProof} from './chichester-venue.mjs';
+import {fetchUKPostcode} from './uk-event-geography.mjs';
 
 export const UK_ADAPTER_VERSION='myntimage-dated-stalls-v1';
 const MONTHS=['january','february','march','april','may','june','july','august','september','october','november','december'];
@@ -98,20 +100,24 @@ function geoProof(document,pin) {
 export function verifyUKBundle(document,{now,version,applicationPolicy}) {
   const report={version,application_policy:applicationPolicy,source_url:document.url,checked_at:document.fetched_at,profile:'myntimage',adapter_version:UK_ADAPTER_VERSION,status:'unverified',page_kind:'unproved',facts:{},reasons:[],evidence:[]};
   try {
-    if(document.adapter_version!==UK_ADAPTER_VERSION||!Array.isArray(document.documents)||document.documents.length>4)throw Error('official_bundle_structure_changed');
+    if(document.adapter_version!==UK_ADAPTER_VERSION||!Array.isArray(document.documents)||document.documents.length>(document.url===CHICHESTER_SOURCE?6:4))throw Error('official_bundle_structure_changed');
     const event=document.documents[0],venue=parseMyntVenue(event),row=venue.rows.find(r=>r.source_identifier===document.source_identifier);
     if(!row||document.url!==event.url||document.requested_url!==event.requested_url)throw Error('source_event_identity_mismatch');
     const dates=document.documents.map(d=>Date.parse(d.fetched_at));if(dates.some(x=>!Number.isFinite(x)||x>Date.parse(now))||document.fetched_at!==new Date(Math.min(...dates)).toISOString())throw Error('source_bundle_freshness_invalid');
     report.page_kind='event';const form=document.documents.find(d=>d.requested_url===venue.form_url),directions=document.documents.find(d=>d.requested_url===venue.directions_url),geo=document.documents.find(d=>d.json_text);
     const facts=report.facts={event_name:`${venue.town.replace(/\b\w/g,c=>c.toUpperCase())} Craft and Gift Market — ${row.date}`,organiser:'Mynt Image',location:`${venue.venue}, ${venue.town.replace(/\b\w/g,c=>c.toUpperCase())}`,event_start:row.date,event_end:row.date,canonical_url:event.url,source_platform:'myntimage',source_identifier:row.source_identifier,application_url:venue.form_url,application_state:row.capacity===0?'CLOSED':'UNKNOWN'};
-    const pin=directions?myntPin(directions,venue):null,geography=geoProof(geo,pin);
+    const pin=directions?myntPin(directions,venue):null,coordinateGeography=geoProof(geo,pin),postalGeography=chichesterCountryProof(event,document.documents,{now}),geography=coordinateGeography??postalGeography;
+    if(coordinateGeography&&postalGeography&&coordinateGeography.nation!==postalGeography.nation)report.reasons.push('contradictory_venue_country_proof');
     if(venue.country_excerpt)report.evidence.push({kind:'venue_country_assertion',source_url:event.url,excerpt:venue.country_excerpt});
     if(geography&&venue.country_excerpt&&geography.nation!=='England')report.reasons.push('contradictory_venue_country_proof');
-    if(geography){facts.country='GB';facts.region_code=geography.region??geography.nation;facts.location+=`, ${geography.nation}`;report.nation=geography.nation;report.evidence.push({kind:'venue_coordinate_country_proof',source_url:geo.url,excerpt:geography.excerpt});}
+    if(geography){facts.country='GB';facts.region_code=geography.region??geography.nation;facts.location+=`, ${geography.nation}`;report.nation=geography.nation;
+      if(coordinateGeography)report.evidence.push({kind:'venue_coordinate_country_proof',source_url:geo.url,excerpt:geography.excerpt});
+      if(postalGeography)report.evidence.push({kind:'official_room_building_address',source_url:postalGeography.building_source,excerpt:stableJson(postalGeography)},{kind:'official_room_identity',source_url:postalGeography.room_source,excerpt:postalGeography.room_excerpt},{kind:'source_event_postcode_country',source_url:postalGeography.receipt_source,excerpt:stableJson({postcode:postalGeography.postcode,nation:postalGeography.nation,region:postalGeography.region})});
+    }
     else if(venue.country_excerpt){facts.country='GB';report.nation='England';}
     else report.reasons.push('verified_country_missing');
     report.venue_coordinate_policy=VENUE_COORDINATE_POLICY;
-    report.venue_coordinates=geography?validVenueCoordinates({policy:VENUE_COORDINATE_POLICY,precision:'venue',country:facts.country,location:facts.location,lat:pin.lat,lng:pin.lon,source_url:directions.url,method:'official_venue_directions'},facts):null;
+    report.venue_coordinates=coordinateGeography?validVenueCoordinates({policy:VENUE_COORDINATE_POLICY,precision:'venue',country:facts.country,location:facts.location,lat:pin.lat,lng:pin.lon,source_url:directions.url,method:'official_venue_directions'},facts):null;
     report.evidence.push({kind:'official_dated_capacity',source_url:event.url,excerpt:row.excerpt},{kind:'official_booking_instructions',source_url:event.url,excerpt:venue.instructions});
     if(row.date<now.slice(0,10))report.reasons.push('stale_edition');
     if(row.capacity===0)report.reasons.push('application_closed');
@@ -146,6 +152,11 @@ export async function fetchMyntBundle(url,sourceIdentifier,{fetcher=fetch,now=ne
   const read=async u=>{const d=await fetchSourceDocument(u,{fetcher,now});if(visit)await visit(d);return d;};
   const event=await read(url),venue=parseMyntVenue(event),form=await read(venue.form_url),documents=[event,form];
   if(venue.directions_url){const directions=await read(venue.directions_url);documents.push(directions);const pin=myntPin(directions,venue);if(pin){const geo=await fetchPostcodeDocument(pin,{fetcher,now});if(visit)await visit(geo);documents.push(geo);}}
+  if(url===CHICHESTER_SOURCE&&!venue.country_excerpt&&!documents.some(d=>d.json_text)){
+    documents.push(await read(CHICHESTER_ROOM),await read(CHICHESTER_HOUSE));
+    const binding=chichesterPostalBinding(event,documents);
+    if(binding){const geo=await fetchUKPostcode(binding.postcode,{fetcher,now});if(visit)await visit(geo);documents.push(geo);}
+  }
   const checked=new Date(Math.min(...documents.map(d=>Date.parse(d.fetched_at)))).toISOString();
   return {document_kind:'uk_official_bundle',adapter_version:UK_ADAPTER_VERSION,requested_url:url,url,source_identifier:sourceIdentifier,fetched_at:checked,documents,content_hash:await hash(documents)};
 }

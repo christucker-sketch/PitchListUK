@@ -1,9 +1,8 @@
 import {hash,stableJson} from './contract.mjs';
 import {sql,loadEntity} from './store.mjs';
 import {proposeFact} from './evidence.mjs';
-import {fetchSourceDocument} from './source-document.mjs';
-import {fetchMyntBundle,myntVenueUrl} from './uk-sources.mjs';
-import {fetchCCABundle,ccaVenueUrl} from './creative-crafts.mjs';
+import {fetchProofDocument} from './proof-document.mjs';
+import {encodeSourceDocument,decodeSourceDocument} from './document-custody.mjs';
 import {verifyDocument,compareProof,applicationScope,provedEventSourceUrl,eventenyParentId,VERIFIER_VERSION} from './verification.mjs';
 
 export function verificationUrl(entity) {
@@ -37,7 +36,7 @@ export async function recordVerification(db,entityId,document,{now=new Date().to
     const original=first?JSON.parse(first.report_json):null;
     // Older reports may have a truncated JSON-LD excerpt. The immutable full
     // document still binds the original parent; parsing it performs no visit.
-    const prior=original?(eventenyParentId(provedEventSourceUrl(original))??eventenyParentId(provedEventSourceUrl(verifyDocument(JSON.parse(first.document_json),{now:original.checked_at})))):null,current=eventenyParentId(provedEventSourceUrl(report));
+    const prior=original?(eventenyParentId(provedEventSourceUrl(original))??eventenyParentId(provedEventSourceUrl(verifyDocument(await decodeSourceDocument(first.document_json),{now:original.checked_at})))):null,current=eventenyParentId(provedEventSourceUrl(report));
     if(prior&&prior!==current)report.reasons.push(current?'source_parent_event_identity_mismatch':'source_parent_event_binding_required');
   }
   const identityReasons=[...report.reasons,...compareProof(entity,report)].filter(r=>/identity_mismatch|market_mismatch|source_parent_event_binding_required/.test(r));
@@ -60,9 +59,9 @@ export async function recordVerification(db,entityId,document,{now=new Date().to
   let expiry=Date.parse(checked)+24*3600000;
   if(report.facts.application_deadline)expiry=Math.min(expiry,Date.parse(report.facts.application_deadline+'T00:00:00Z'));
   const expires=new Date(expiry).toISOString(),documentId='doc_'+(await hash(document)).slice(0,40);
-  const id='ver_'+(await hash([entityId,entity.revision,documentId,report])).slice(0,40);
+  const id='ver_'+(await hash([entityId,entity.revision,documentId,report])).slice(0,40),custody=await encodeSourceDocument(document);
   await db.batch([
-    sql(db,'INSERT OR IGNORE INTO source_documents(id,source_url,content_hash,fetched_at,document_json) VALUES (?,?,?,?,?)',documentId,originalRoute,document.content_hash??null,checked,stableJson(document)),
+    sql(db,'INSERT OR IGNORE INTO source_documents(id,source_url,content_hash,fetched_at,document_json) VALUES (?,?,?,?,?)',documentId,originalRoute,document.content_hash??null,checked,custody),
     sql(db,'INSERT OR IGNORE INTO source_verifications(id,entity_id,entity_revision,document_id,verifier_version,status,report_json,checked_at,expires_at) VALUES (?,?,?,?,?,?,?,?,?)',id,entityId,entity.revision,documentId,VERIFIER_VERSION,report.status,stableJson(report),checked,expires),
   ]);
   return {verification_id:id,entity_id:entityId,entity_revision:entity.revision,report,proposals};
@@ -70,16 +69,12 @@ export async function recordVerification(db,entityId,document,{now=new Date().to
 export async function verifyEntitySource(db,entityId,{now=new Date().toISOString(),fetcher=fetch}={}) {
   const entity=await loadEntity(db,entityId);if(!entity||!['test','shadow'].includes(entity.environment))throw Error('shadow_entity_required');
   const original=verificationUrl(entity);if(!original)throw Error('entity_original_source_required');
-  const document=entity.source_platform==='myntimage'&&myntVenueUrl(original)
-    ?await fetchMyntBundle(original,entity.source_identifier,{fetcher,now})
-    :entity.source_platform==='creativecrafts'&&ccaVenueUrl(original)
-      ?await fetchCCABundle(original,entity.source_identifier,{fetcher,now})
-      :await fetchSourceDocument(original,{fetcher,now});
+  const document=await fetchProofDocument(original,{fetcher,now,sourceIdentifier:entity.source_identifier});
   return recordVerification(db,entityId,document,{now});
 }
 export async function reverifyRetainedSource(db,entityId,{now=new Date().toISOString()}={}) {
   const latest=await sql(db,'SELECT d.document_json FROM source_verifications v JOIN source_documents d ON d.id=v.document_id WHERE v.entity_id=? ORDER BY v.sequence DESC LIMIT 1',entityId).first();
-  if(!latest)throw Error('retained_source_document_required');const document=JSON.parse(latest.document_json);
+  if(!latest)throw Error('retained_source_document_required');const document=await decodeSourceDocument(latest.document_json);
   // A policy replay does not claim a new source visit or reset the proof TTL.
   if(!Number.isFinite(Date.parse(document.fetched_at))||Date.parse(now)-Date.parse(document.fetched_at)>=24*3600000)throw Error('retained_source_document_expired');
   return recordVerification(db,entityId,document,{now,addEvidence:false});

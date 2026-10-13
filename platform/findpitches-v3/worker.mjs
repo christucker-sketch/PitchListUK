@@ -32,7 +32,7 @@ import {importLegacyGlobalRecords} from './legacy-global.mjs';
 import {importMk1Source,fetchLiveMk1Catalogue,fetchMk1Attachment} from './mk1-source.mjs';
 import {schedulePilotRun,stopPilot,pilotStatus} from './pilot.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
-import {startSourceLed,scheduleSourceLed,executeSourceLed,verifySourceLedCandidate,stopSourceLed,sourceLedStatus} from './source-led.mjs';
+import {startSourceLed,scheduleSourceLed,executeSourceLed,verifySourceLedCandidate,stopSourceLed,sourceLedStatus,startUKCampaign,stopUKCampaign,ukCampaignStatus} from './source-led.mjs';
 
 const STAGES=['reconcile','eligibility','enrichment','readiness','acquisition','watch'];
 const NEXT={ingest:'reconcile',acquisition:'reconcile',reconcile:'eligibility',eligibility:'enrichment',enrichment:'readiness',readiness:'watch',watch:'eligibility'};
@@ -135,6 +135,9 @@ export default {
       if(request.method==='POST'&&path==='/uk/review'&&role==='enrichment')return json(await reviewOfficialCandidate(db,await bodyJson(request)));
       if(request.method==='POST'&&path==='/uk/stop'&&role==='enrichment'){const b=await bodyJson(request);await stopUKRun(db,b.run_id,b.reason??'operator_stopped');return json({paused:true});}
       if(request.method==='GET'&&path==='/source-led/status')return json(await sourceLedStatus(db));
+      if(request.method==='GET'&&path==='/source-led/campaign/status')return json(await ukCampaignStatus(db));
+      if(request.method==='POST'&&path==='/source-led/campaign/start'&&role==='acquisition')return json(await startUKCampaign(db,await bodyJson(request)),201);
+      if(request.method==='POST'&&path==='/source-led/campaign/stop'&&role==='acquisition'){const body=await bodyJson(request);await stopUKCampaign(db,body.campaign_id,body.reason??'operator_stop');return json({paused:true});}
       if(request.method==='POST'&&path==='/source-led/start'&&role==='acquisition')return json(await startSourceLed(db,await bodyJson(request)),201);
       if(request.method==='POST'&&path==='/source-led/next'&&role==='acquisition')return json(await scheduleSourceLed(db,(await bodyJson(request)).programme_id));
       if(request.method==='POST'&&path==='/source-led/run'&&role==='acquisition')return json(await executeSourceLed(db,(await bodyJson(request)).run_id,env));
@@ -151,7 +154,7 @@ export default {
       if(request.method==='POST'&&path==='/catalogue/adopt-committed'&&role==='enrichment')return json(await adoptCommittedCatalogueReceipt(db,await bodyJson(request)));
       if(request.method==='POST'&&path==='/catalogue/discover'&&role==='enrichment')return json(await discoverCataloguePage(db,await bodyJson(request)));
       if(request.method==='POST'&&path==='/catalogue/verify'&&role==='enrichment') {
-        const result=await verifyCatalogueCandidate(db,(await bodyJson(request)).candidate_id);
+        const body=await bodyJson(request),result=await verifyCatalogueCandidate(db,body.candidate_id,{targetMarket:body.target_market??null});
         ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result);
       }
       if(request.method==='POST'&&path==='/catalogue/recover'&&role==='enrichment')return json(await recoverUncommittedCatalogueLease(db,(await bodyJson(request)).candidate_id));

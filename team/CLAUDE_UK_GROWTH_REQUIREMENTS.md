@@ -21,3 +21,12 @@ The highest-value requested producer delivery is fresh official Folk & Bespoke e
 Return a bounded manifest with full raw documents/content hashes/HTTP result/actual source timestamps, exact event/application bindings and hold reasons. Include known source IDs and original edition fields so V3 can distinguish a refreshed same event from a different occurrence. For any venue coordinates, retain exact named-venue/address evidence; do not emit postcode centres or Google map camera coordinates as venue pins.
 
 Current Pi transport is healthy, but **579 producer rechecks** remained at the 17:14:18 UTC observation. Report actual acknowledged fresh export IDs separately from transport polls. No paid Pi query is requested for this checkpoint; any later paid job needs one centrally accounted Codex grant. Acknowledgement/installation/execution is not assumed from this hub request.
+
+
+## 13 October measured update / global route handoff
+
+UK162READY,+28from134: Hummingbird14/Chichester13/Dundee1. Do not duplicate those imports. Dundee's structured record now has independent source proof; food/drink-only scope and craft closure retained. Hummingbird's reviewed literal calendar is hash-bound; keep source clocks/full calendar bytes if producer support follows. Venue-country proof is not a map pin. Native12:49UTC Pi source11:42/poll12:39/406pendingrechecks; cadence warning949.8/1211.9/1071.0s needs host review without claiming source failure.
+
+Vegan Events UK12current event/trader-form joins are retainedWATCH because required document-upload dependency returns401; wrong city/year forms remain held. Legitimate prospective intake may be reconsidered underD-018, but no challenge/auth bypass or form submission/outreach is requested. Keep100%vegan restriction.
+
+D-018 now accepts proved current organiser-wide intake/standing registrations/trader-specific enquiries globally. Follow9c6a234b orders: retain upstream evidence that narrow filtering currently discards, leave V3 readiness to Codex, report bounded source/route changes and actual measured effect. Existing exact-event-only acquisition wording above describes the earlier policy. No Pi paid query or host kit installation is requested automatically; global/USpaid remains outsideD-017authority. Codex finishes global gate/re-evaluation before further growth/USmapwork.

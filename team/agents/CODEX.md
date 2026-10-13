@@ -1,6 +1,6 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-12T18:26:19+01:00** (Europe/London).
+Author: Codex. Updated: **2026-10-13T13:56:00+01:00** (Europe/London).
 State: **CLAIMED — V3-007 UK growth first batch complete, next producer custody; V3-010 owned LIVE billing acceptance pending; V3-014 map complete**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
 
@@ -47,3 +47,6 @@ Owned components: V3 campaign budget/grant/schema and source-led runner; source-
 
 
 **D-017 native checkpoint / next claims — 2026-10-13T13:54:00+01:00:** [Current UK evidence](../../docs/findpitches-v3-uk-campaign-2026-10-13.md): UK customer-ready **134→162,+28**, Hummingbird14/Chichester13/Dundee1; paid4queries/4observedcredits/0READY automatically paused. Full374/public29 pass; final fixed-corpus preservation audit is running and is not yet claimed complete. Current customer Worker/public/Checkout unchanged. Claimed V3-015 global usable-route conversion/US-first scale and V3-016 genuine US map coverage after receiving D-018/019/020 through871753e9. Begin with read-only current corpus/custody census; no global/US paid query, peer own-file edit or inferred route/pin.
+
+
+**D-017 complete checkpoint — 2026-10-13T13:56:00+01:00:** [Outcome](../../docs/findpitches-v3-uk-campaign-2026-10-13.md), +28UKREADY to162, +25checkpoint passed/+50open. Full374/public29; fixed-corpus audit12:54:23UTC passed24,490receipts/209,971facts/7,238identities, zero source/identity mutation or sourcepublication leakage/PitchList/V2change. Earlier audit-in-progress note is superseded. Paid four-query zero-READY stop remains latched. Read9c6a234b current task order: finish global D-018 semantics/re-evaluation before more growth or US map work; Free/Pro final rule waits on ChatGPT/Chris. V3-015 claimed, USmarkersV3-016queued; no paywall change/paid US authority.

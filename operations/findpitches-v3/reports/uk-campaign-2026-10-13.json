@@ -1,0 +1,777 @@
+{
+  "schema": "findpitches-v3-uk-campaign-readiness-v1",
+  "published_at": "2026-10-13T12:55:56.118104+00:00",
+  "inventory": {
+    "schema": "findpitches-v3-uk-growth-outcome-v1",
+    "as_of": "2026-10-13T12:51:29.764Z",
+    "measured_at": "2026-10-13T12:51:33.796Z",
+    "baseline_as_of": "2026-10-12T17:13:15.598Z",
+    "baseline": {
+      "customer_ready": 134,
+      "distinct_source_location_strings": 21,
+      "distinct_source_organiser_strings": 5,
+      "exact_coordinate_opportunities": 123,
+      "exact_venue_pin_groups": 12,
+      "by_domain": {
+        "creativecrafts-online.co.uk": 7,
+        "eventeny.com": 2,
+        "localstalls.com": 1,
+        "myntimage.co.uk": 123,
+        "northamptontowncouncil.gov.uk": 1
+      },
+      "by_organiser": {
+        "Creative Crafts Association": 7,
+        "Discover Ellesmere": 2,
+        "King Edward's School, Bath": 1,
+        "Mynt Image": 123,
+        "Northampton Town Council": 1
+      },
+      "proved_browse_regions": [
+        {
+          "id": "gb/south-east",
+          "name": "South East",
+          "count": 89
+        },
+        {
+          "id": "gb/south-west",
+          "name": "South West",
+          "count": 34
+        },
+        {
+          "id": "gb/west-midlands",
+          "name": "West Midlands",
+          "count": 1
+        },
+        {
+          "id": "gb/north-west",
+          "name": "North West",
+          "count": 6
+        }
+      ]
+    },
+    "current": {
+      "customer_ready": 162,
+      "distinct_source_location_strings": 30,
+      "distinct_source_organiser_strings": 7,
+      "exact_coordinate_opportunities": 123,
+      "exact_venue_pin_groups": 12,
+      "by_domain": {
+        "creativecrafts-online.co.uk": 7,
+        "dundeeheritagetrust.co.uk": 1,
+        "eventeny.com": 2,
+        "littlehummingbirdevents.co.uk": 14,
+        "localstalls.com": 1,
+        "myntimage.co.uk": 136,
+        "northamptontowncouncil.gov.uk": 1
+      },
+      "by_organiser": {
+        "Creative Crafts Association": 7,
+        "Discover Ellesmere": 2,
+        "Dundee Heritage Trust": 1,
+        "King Edward's School, Bath": 1,
+        "Little Hummingbird Events": 14,
+        "Mynt Image": 136,
+        "Northampton Town Council": 1
+      },
+      "proved_browse_regions": [
+        {
+          "id": "gb/south-east",
+          "name": "South East",
+          "count": 102
+        },
+        {
+          "id": "gb/south-west",
+          "name": "South West",
+          "count": 34
+        },
+        {
+          "id": "gb/east-midlands",
+          "name": "East Midlands",
+          "count": 4
+        },
+        {
+          "id": "gb/west-midlands",
+          "name": "West Midlands",
+          "count": 1
+        },
+        {
+          "id": "gb/north-west",
+          "name": "North West",
+          "count": 6
+        },
+        {
+          "id": "gb/yorkshire-and-the-humber",
+          "name": "Yorkshire and the Humber",
+          "count": 8
+        },
+        {
+          "id": "gb/scotland",
+          "name": "Scotland",
+          "count": 1
+        }
+      ]
+    },
+    "net_customer_ready_gain": 28,
+    "newly_customer_ready": 28,
+    "no_longer_customer_ready": 0,
+    "exclusive_ready_origin": {
+      "independent-structured": 6,
+      "legacy_mk1": 1,
+      "legacy_v2": 1,
+      "platform-catalogue": 2,
+      "uk-official": 152
+    },
+    "commercial_disposition": {
+      "total_distinct_entities": 911,
+      "verified": 162,
+      "ready": 162,
+      "watch": 171,
+      "quarantined": 71,
+      "blocked": 507,
+      "awaiting_verification": 698,
+      "missing_application_proof": 743,
+      "stale_expired": 32,
+      "verification_checked": 433
+    },
+    "latest_verified_families": [
+      {
+        "family": "creativecrafts",
+        "entities": 7
+      },
+      {
+        "family": "dundeeheritage",
+        "entities": 1
+      },
+      {
+        "family": "eventeny",
+        "entities": 2
+      },
+      {
+        "family": "littlehummingbird",
+        "entities": 14
+      },
+      {
+        "family": "localstalls",
+        "entities": 1
+      },
+      {
+        "family": "myntimage",
+        "entities": 136
+      },
+      {
+        "family": "uk_council_dated_form",
+        "entities": 1
+      }
+    ],
+    "runs": [
+      {
+        "id": "uk_caccf3ab-6440-4c44-8fde-798c94ef57af",
+        "status": "paused",
+        "max_visits": 60,
+        "visits_reserved": 18,
+        "max_candidates": 40,
+        "checked": 0,
+        "stop_reason": "operator_complete_no_more_fetches",
+        "created_at": "2026-10-13T11:52:31.743Z"
+      },
+      {
+        "id": "uk_b47dfd17-9490-4d98-9644-b56bce82f757",
+        "status": "paused",
+        "max_visits": 60,
+        "visits_reserved": 19,
+        "max_candidates": 40,
+        "checked": 14,
+        "stop_reason": "bounded_official_programme_complete",
+        "created_at": "2026-10-13T11:56:31.846Z"
+      },
+      {
+        "id": "uk_c8e1c65c-7682-40b5-80e9-415ef36cf04b",
+        "status": "paused",
+        "max_visits": 80,
+        "visits_reserved": 19,
+        "max_candidates": 100,
+        "checked": 7,
+        "stop_reason": "bounded_official_programme_complete",
+        "created_at": "2026-10-13T12:00:17.376Z"
+      },
+      {
+        "id": "uk_78b70217-4fc8-495a-a430-3779cb237627",
+        "status": "paused",
+        "max_visits": 100,
+        "visits_reserved": 0,
+        "max_candidates": 250,
+        "checked": 0,
+        "stop_reason": "verification_backlog",
+        "created_at": "2026-10-13T12:11:18.828Z"
+      },
+      {
+        "id": "uk_23bb0e74-0657-4616-bd8c-c65e73d0e0e1",
+        "status": "paused",
+        "max_visits": 100,
+        "visits_reserved": 21,
+        "max_candidates": 250,
+        "checked": 0,
+        "stop_reason": "bounded_new_venue_programme_complete",
+        "created_at": "2026-10-13T12:17:08.054Z"
+      },
+      {
+        "id": "uk_5a9104bd-a5c0-4e79-8248-1ee8e828ba43",
+        "status": "paused",
+        "max_visits": 120,
+        "visits_reserved": 58,
+        "max_candidates": 40,
+        "checked": 12,
+        "stop_reason": "bounded_watch_proof_complete",
+        "created_at": "2026-10-13T12:23:02.860Z"
+      },
+      {
+        "id": "uk_8b343d67-2f2d-40ed-9128-96424c70ded2",
+        "status": "paused",
+        "max_visits": 10,
+        "visits_reserved": 6,
+        "max_candidates": 20,
+        "checked": 13,
+        "stop_reason": "bounded_batch_complete",
+        "created_at": "2026-10-13T12:48:09.210Z"
+      }
+    ],
+    "actual_direct_adapter_http_requests": 141,
+    "separate_public_research_http_requests": 128,
+    "paid_queries_added": 4,
+    "policy": {
+      "max_run": 4,
+      "max_hour": 100,
+      "max_day": 1000,
+      "bulk": 0,
+      "manually_paused": 1,
+      "commercial_day_limit": 25
+    },
+    "location_count_definition": "Distinct exact source-location strings, not certified global physical-venue deduplication. Precise map groups count actual retained source-proved coordinates.",
+    "concentration": {
+      "baseline_mynt_share_percent": 91.7910447761194,
+      "current_mynt_share_percent": 83.95061728395062
+    },
+    "geography_correction": "Scotland Street in Ellesmere is an English address; historical false Scottish browse counts are withdrawn. Baseline regions here use the corrected conservative address-component projection."
+  },
+  "public": {
+    "as_of": "2026-10-13T12:49:57.103Z",
+    "uk_total": 162,
+    "precisely_mapped": 123,
+    "precise_venue_groups": 12,
+    "regions": [
+      {
+        "id": "gb/south-east",
+        "name": "South East",
+        "slug": "south-east",
+        "level": "region",
+        "parent_id": null,
+        "code": null,
+        "opportunity_count": 102
+      },
+      {
+        "id": "gb/south-west",
+        "name": "South West",
+        "slug": "south-west",
+        "level": "region",
+        "parent_id": null,
+        "code": null,
+        "opportunity_count": 34
+      },
+      {
+        "id": "gb/east-midlands",
+        "name": "East Midlands",
+        "slug": "east-midlands",
+        "level": "region",
+        "parent_id": null,
+        "code": null,
+        "opportunity_count": 4
+      },
+      {
+        "id": "gb/west-midlands",
+        "name": "West Midlands",
+        "slug": "west-midlands",
+        "level": "region",
+        "parent_id": null,
+        "code": null,
+        "opportunity_count": 1
+      },
+      {
+        "id": "gb/north-west",
+        "name": "North West",
+        "slug": "north-west",
+        "level": "region",
+        "parent_id": null,
+        "code": null,
+        "opportunity_count": 6
+      },
+      {
+        "id": "gb/yorkshire-and-the-humber",
+        "name": "Yorkshire and the Humber",
+        "slug": "yorkshire-and-the-humber",
+        "level": "region",
+        "parent_id": null,
+        "code": null,
+        "opportunity_count": 8
+      },
+      {
+        "id": "gb/scotland",
+        "name": "Scotland",
+        "slug": "scotland",
+        "level": "nation",
+        "parent_id": null,
+        "code": null,
+        "opportunity_count": 1
+      }
+    ],
+    "checkout_live": true,
+    "free_redaction": true,
+    "messages_sent": 0,
+    "provider_objects_created": 0
+  },
+  "preservation": {
+    "schema": "findpitches-v3-uk-growth-preservation-v1",
+    "started_at": "2026-10-13T12:49:35.118Z",
+    "as_of": "2026-10-13T12:54:23.286Z",
+    "baseline_as_of": "2026-10-13T06:14:07.258Z",
+    "receipts_compared": 24490,
+    "source_facts_compared": 209971,
+    "fixed_identity_tuples_compared": 7238,
+    "destructive_source_mutations": 0,
+    "fixed_identity_tuple_changes": 0,
+    "tuple_fields": [
+      "id",
+      "market",
+      "edition",
+      "environment",
+      "shadow_only",
+      "promotion_eligible",
+      "publication_eligible"
+    ],
+    "original_build_baseline": {
+      "receipts": 15811,
+      "facts": 108819,
+      "identities": 7077,
+      "destructive_source_mutations": 0,
+      "fixed_identity_tuple_changes": 0
+    },
+    "explicit_review_lineage": {
+      "reviews": 5,
+      "reviewed_existing_entities": 5
+    },
+    "selected_field_supersessions": [
+      {
+        "field_name": "application_state",
+        "changes": 5
+      },
+      {
+        "field_name": "application_url",
+        "changes": 5
+      },
+      {
+        "field_name": "canonical_url",
+        "changes": 5
+      },
+      {
+        "field_name": "event_end",
+        "changes": 5
+      },
+      {
+        "field_name": "event_name",
+        "changes": 5
+      },
+      {
+        "field_name": "event_start",
+        "changes": 5
+      },
+      {
+        "field_name": "location",
+        "changes": 5
+      },
+      {
+        "field_name": "organiser",
+        "changes": 5
+      },
+      {
+        "field_name": "source_platform",
+        "changes": 5
+      }
+    ],
+    "original_identity_custody": {
+      "reviews": 5,
+      "original_candidate_custody_retained": 5
+    },
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "source_publication_enabled": false,
+    "source_publication_api_denied": true,
+    "paid_queries_today": 4,
+    "paid_bulk_enabled": false,
+    "paid_manually_paused": 1,
+    "pitchlist_deployment_unchanged": true,
+    "v2_schedules_unchanged": true
+  },
+  "paid": {
+    "queries": 4,
+    "observed_credits": 4,
+    "metrics": {
+      "programme_scope": "uk_campaign",
+      "settled_queries": 4,
+      "pending_runs": 0,
+      "queries": 4,
+      "reserved": 4,
+      "credit_budget_units": 4,
+      "observed_credits": 4,
+      "candidates": 20,
+      "distinct_candidate_urls": 20,
+      "distinct_entities": 0,
+      "entities_created": 0,
+      "verified_entities": 0,
+      "ready_opportunities": 0,
+      "ready_gained": 0,
+      "ready_by_country": {},
+      "ready_by_source_family": {},
+      "duplicate_candidates": 2,
+      "duplicate_rate": 0.1,
+      "watch_quarantine_candidates": 14,
+      "watch_quarantine_rate": 0.7,
+      "watch_entities": 0,
+      "quarantined_entities": 0,
+      "blocked_entities": 0,
+      "out_of_market_candidates": 1,
+      "excluded_candidates": 5,
+      "excluded_mix": 0.25,
+      "pending_candidates": 0,
+      "ready_per_100_queries": 0,
+      "queries_per_ready": null,
+      "credits_per_ready": null,
+      "cost_usd_per_ready": null,
+      "false_ready_promotions_detected": 0,
+      "unlinked_identity_review_candidates": 0,
+      "failed_runs": 0,
+      "customer_rows": 0,
+      "publication_rows": 0,
+      "publication_enabled": 0,
+      "bulk_enabled": 0,
+      "preservation_gate": 1,
+      "source_mutations": 0,
+      "due_jobs": 0,
+      "oldest_due": null,
+      "structured_pending": 0,
+      "oldest_due_seconds": 0,
+      "by_target_country": {
+        "GB": {
+          "queries": 4,
+          "candidates": 20,
+          "ready_gained": 0
+        },
+        "CA": {
+          "queries": 0,
+          "candidates": 0,
+          "ready_gained": 0
+        },
+        "AU": {
+          "queries": 0,
+          "candidates": 0,
+          "ready_gained": 0
+        },
+        "NZ": {
+          "queries": 0,
+          "candidates": 0,
+          "ready_gained": 0
+        },
+        "US": {
+          "queries": 0,
+          "candidates": 0,
+          "ready_gained": 0
+        }
+      },
+      "by_discovered_source_family": {
+        "localstalls": {
+          "queries": 2,
+          "candidates": 1,
+          "ready_gained": 0
+        },
+        "official_organiser": {
+          "queries": 1,
+          "candidates": 11,
+          "ready_gained": 0
+        },
+        "direct_form_pdf": {
+          "queries": 0,
+          "candidates": 4,
+          "ready_gained": 0
+        },
+        "social": {
+          "queries": 0,
+          "candidates": 3,
+          "ready_gained": 0
+        },
+        "directory_login": {
+          "queries": 0,
+          "candidates": 1,
+          "ready_gained": 0
+        },
+        "municipal": {
+          "queries": 1,
+          "candidates": 0,
+          "ready_gained": 0
+        }
+      },
+      "campaign_lanes": {
+        "localstalls": {
+          "queries": 2,
+          "candidates": 1,
+          "distinct_entities": 0,
+          "ready_gained": 0,
+          "ready_per_100_queries": 0,
+          "queries_per_ready": null,
+          "observed_credits": 2,
+          "duplicate_candidates": 1
+        },
+        "official_organiser": {
+          "queries": 1,
+          "candidates": 10,
+          "distinct_entities": 0,
+          "ready_gained": 0,
+          "ready_per_100_queries": 0,
+          "queries_per_ready": null,
+          "observed_credits": 1,
+          "duplicate_candidates": 1
+        },
+        "municipal": {
+          "queries": 1,
+          "candidates": 9,
+          "distinct_entities": 0,
+          "ready_gained": 0,
+          "ready_per_100_queries": 0,
+          "queries_per_ready": null,
+          "observed_credits": 1,
+          "duplicate_candidates": 0
+        }
+      },
+      "by_target_region": {
+        "GB-SCT": {
+          "queries": 1,
+          "targeting_only": true
+        },
+        "GB-WLS": {
+          "queries": 1,
+          "targeting_only": true
+        },
+        "GB-NIR": {
+          "queries": 1,
+          "targeting_only": true
+        },
+        "GB-NW": {
+          "queries": 1,
+          "targeting_only": true
+        }
+      },
+      "run_telemetry": [
+        {
+          "run_id": "sourceledrun_9217cfbd-bc8c-4457-97bb-77ebf77a692a",
+          "programme_id": "sourceled_uk_campaign_a6b4c149-04c5-439b-9295-00685ef4d787",
+          "query_index": 0,
+          "market": "GB",
+          "family": "localstalls",
+          "status": "complete",
+          "created_at": "2026-10-13T11:11:16.495Z",
+          "queries_reserved": 1,
+          "queries_attempted": 1,
+          "credit_units_reserved": 1,
+          "credits_observed": 1,
+          "candidates_produced": 1,
+          "usage_status": "complete",
+          "target_region": "GB-SCT",
+          "campaign_lane": "localstalls"
+        },
+        {
+          "run_id": "sourceledrun_46099c20-1b35-442d-acca-a7801c9c657e",
+          "programme_id": "sourceled_uk_campaign_a6b4c149-04c5-439b-9295-00685ef4d787",
+          "query_index": 1,
+          "market": "GB",
+          "family": "official_organiser",
+          "status": "complete",
+          "created_at": "2026-10-13T11:12:12.640Z",
+          "queries_reserved": 1,
+          "queries_attempted": 1,
+          "credit_units_reserved": 1,
+          "credits_observed": 1,
+          "candidates_produced": 10,
+          "usage_status": "complete",
+          "target_region": "GB-WLS",
+          "campaign_lane": "official_organiser"
+        },
+        {
+          "run_id": "sourceledrun_7330822a-82dc-4178-883f-6dac594568e0",
+          "programme_id": "sourceled_uk_campaign_a6b4c149-04c5-439b-9295-00685ef4d787",
+          "query_index": 2,
+          "market": "GB",
+          "family": "municipal",
+          "status": "complete",
+          "created_at": "2026-10-13T11:12:49.613Z",
+          "queries_reserved": 1,
+          "queries_attempted": 1,
+          "credit_units_reserved": 1,
+          "credits_observed": 1,
+          "candidates_produced": 9,
+          "usage_status": "complete",
+          "target_region": "GB-NIR",
+          "campaign_lane": "municipal"
+        },
+        {
+          "run_id": "sourceledrun_e534dafb-dd6e-4214-8292-50708c5fbdea",
+          "programme_id": "sourceled_uk_campaign_a6b4c149-04c5-439b-9295-00685ef4d787",
+          "query_index": 3,
+          "market": "GB",
+          "family": "localstalls",
+          "status": "complete",
+          "created_at": "2026-10-13T11:13:14.600Z",
+          "queries_reserved": 1,
+          "queries_attempted": 1,
+          "credit_units_reserved": 1,
+          "credits_observed": 1,
+          "candidates_produced": 0,
+          "usage_status": "complete",
+          "target_region": "GB-NW",
+          "campaign_lane": "localstalls"
+        }
+      ],
+      "definitions": "Queries count attempts, credits are observed only. READY gained excludes any entity with an earlier proved READY history. Query country is targeting only; READY country comes from source. Duplicate denominator and WATCH/quarantine denominator are all candidate occurrences. Unsupported/unproved sources remain discovery candidates without invented canonical geography.",
+      "campaign_id": "ukcampaign_e10355c9-2884-49d6-b363-efd9c8bd6da8"
+    },
+    "stop": {
+      "status": "paused",
+      "stop_reason": "zero_ready_after_uk_warmup",
+      "review_required": 1
+    },
+    "unspent_daily_slots": 21,
+    "separate_manual_paid_assisted_watch": 12,
+    "free_ready_gains_not_attributed_to_paid": 28
+  },
+  "source_health": {
+    "as_of": "2026-10-13T12:49:42.281Z",
+    "safety": {
+      "publication_enabled": 0,
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "due_jobs": 0,
+      "leased_jobs": 0,
+      "dead_jobs": 0,
+      "future_jobs": 9188,
+      "paid_queries_today": 4,
+      "paid_bulk_enabled": 0,
+      "global_query_limit": 1000,
+      "commercial_query_limit": 25,
+      "commercial_manual_paused": 1
+    },
+    "producer": {
+      "last_authenticated_recheck_poll": "2026-10-13T12:39:54.674Z",
+      "source_last_checked": "2026-10-13T11:42:09Z",
+      "recent_poll_intervals_seconds": [
+        949.838,
+        1211.902,
+        1071.011
+      ],
+      "cadence_verified": false,
+      "freshness_warning": false,
+      "receipts_received": null,
+      "producer_ids_seen": null,
+      "pending_rechecks": 406
+    }
+  },
+  "customer": {
+    "as_of": "2026-10-13T12:49:46.200Z",
+    "ready": 1799,
+    "ready_by_country": {
+      "GB": 162,
+      "US": 1630,
+      "CA": 0,
+      "AU": 2,
+      "IE": 0,
+      "NZ": 5,
+      "SG": 0,
+      "HK": 0
+    },
+    "nashville_eligible": 0,
+    "version_ids": [
+      "ab008ef7-4317-4244-a42b-15ebdae1a6f2"
+    ],
+    "flags": {
+      "V3_ACCOUNT_RECOVERY_ENABLED": "true",
+      "V3_CHECKOUT_ENABLED": "live",
+      "V3_PUBLIC_ENABLED": "true"
+    },
+    "native_billing_status": 200,
+    "native_mail_status": 200,
+    "messages_sent": 0,
+    "provider_objects_created": 0
+  },
+  "shadow_release": [
+    {
+      "role": "api",
+      "uploaded_version_id": "d3ad24d6-51e2-43dd-a252-d179f197a54a",
+      "deployment_id": "6eab2b06-1033-484c-afae-92e1c0a3e0bc",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-13T12:46:10.332Z"
+    },
+    {
+      "role": "enrichment",
+      "uploaded_version_id": "27c5e436-571d-49ee-b7bc-8b48ddb572ad",
+      "deployment_id": "74c8f80d-0f47-4235-870c-9038ff76880f",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-13T12:46:33.418Z"
+    },
+    {
+      "role": "reconcile",
+      "uploaded_version_id": "f8973e12-7fa1-4da0-9d53-e5af40121638",
+      "deployment_id": "d0410c33-54f7-4713-810d-e74a598072a9",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-13T12:46:54.682Z"
+    },
+    {
+      "role": "eligibility",
+      "uploaded_version_id": "8a0a4a22-7a94-4aed-a063-f3e5fedb1a6a",
+      "deployment_id": "44dc2d18-a4f1-49db-9983-cefd1ea7aed9",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-13T12:47:16.154Z"
+    },
+    {
+      "role": "readiness",
+      "uploaded_version_id": "fea4bd84-4eb6-4af5-8591-74372dd999d0",
+      "deployment_id": "8f7f606a-9580-46f7-8c6a-4d42d5e6e66d",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-13T12:47:33.765Z"
+    },
+    {
+      "role": "acquisition",
+      "uploaded_version_id": "a7ea4222-0c0f-44ee-aa5e-a910e73b6f96",
+      "deployment_id": "4250066d-4a15-4f94-b804-089e137e9598",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-13T12:47:55.380Z"
+    }
+  ],
+  "checks": {
+    "full_v3": {
+      "passed": 374,
+      "failed": 0,
+      "skipped": 0
+    },
+    "chichester_programme": {
+      "passed": 14,
+      "failed": 0
+    },
+    "public": {
+      "passed": 29,
+      "failed": 0
+    },
+    "runtime_boundaries": true
+  },
+  "remaining": {
+    "uk_184_target_gap": 22,
+    "global_route_policy_implementation": "claimed_next_not_yet_deployed",
+    "us_ready_venue_pins": 0,
+    "us_paid_authorized": false,
+    "producer_host_changes_this_run": false
+  }
+}

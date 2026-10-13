@@ -23,11 +23,30 @@ export async function reserveSerperQuery(db,{runId,index,query,producer='city-se
   const day=budgetDay(now),hour=new Date(Date.parse(now)-3600000).toISOString();
   const id='serper_'+(await hash([runId,index])).slice(0,40);
   // One atomic INSERT ... SELECT serializes concurrent reservations in D1.
-  const inserted=await sql(db,`INSERT INTO serper_usage(id,run_id,query_index,kind,producer,lane,market,region,query_hash,
+  const inserted=await sql(db,`WITH campaign_admission AS (
+    SELECT 1 AS approved FROM uk_paid_campaign_programmes cp
+    JOIN uk_paid_campaigns c ON c.id=cp.campaign_id JOIN source_led_programmes s ON s.id=cp.programme_id
+    JOIN source_led_grants g ON g.programme_id=s.id JOIN uk_paid_campaign_targets t ON t.run_id=g.run_id AND t.campaign_id=c.id
+    WHERE g.run_id=? AND s.id=? AND ?='source-led-paid' AND ?='source-led-search' AND ?='GB' AND ?=0
+      AND t.target_region IS ? AND g.query_hash=? AND g.query=?
+      AND c.actor='codex' AND c.status='active' AND s.status='active' AND g.status='running'
+      AND c.expires_at>? AND c.budget_day=? AND s.budget_day=c.budget_day AND s.expires_at=c.expires_at
+      AND s.max_queries BETWEEN 1 AND 4 AND s.active_run_id=g.run_id AND g.market='GB'
+      AND g.query=json_extract(s.plan_json,'$['||g.query_index||'].query')
+      AND g.query=json_extract(c.plan_json,'$['||(cp.plan_offset+g.query_index)||'].query')
+      AND t.target_region=json_extract(s.plan_json,'$['||g.query_index||'].target_region')
+      AND COALESCE((SELECT SUM(u.queries_reserved) FROM serper_usage u JOIN uk_paid_campaign_targets x ON x.run_id=u.run_id WHERE x.campaign_id=c.id),0)+1<=c.max_queries
+      AND COALESCE((SELECT SUM(MAX(u.credit_units_reserved,COALESCE(u.credits_observed,0))) FROM serper_usage u JOIN uk_paid_campaign_targets x ON x.run_id=u.run_id WHERE x.campaign_id=c.id),0)+1<=c.max_credits
+      AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=c.budget_day),0)+1<=25
+      AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE budget_day=c.budget_day),0)+1<=25
+      AND NOT EXISTS(SELECT 1 FROM serper_usage WHERE run_id=g.run_id)
+    )
+    INSERT INTO serper_usage(id,run_id,query_index,kind,producer,lane,market,region,query_hash,
     queries_reserved,credit_units_reserved,status,budget_day,reserved_at)
     SELECT ?,?,?,'live',?,?,?,?,?,1,1,'reserved',?,? FROM serper_policy p
     WHERE p.id=1 AND p.manual_paused=0 AND (p.pause_until IS NULL OR p.pause_until<=?)
-      AND (SELECT manual_paused FROM commercial_acquisition_policy WHERE id=1)=0
+      AND ((SELECT manual_paused FROM commercial_acquisition_policy WHERE id=1)=0 OR EXISTS(SELECT 1 FROM campaign_admission))
+      AND (NOT EXISTS(SELECT 1 FROM uk_paid_campaign_programmes WHERE programme_id=?) OR EXISTS(SELECT 1 FROM campaign_admission))
       AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE run_id=?),0)+1<=p.max_queries_per_run
       AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE run_id=?),0)+1<=p.max_credits_per_run
       AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE reserved_at>?),0)+1<=p.max_queries_per_hour
@@ -38,15 +57,16 @@ export async function reserveSerperQuery(db,{runId,index,query,producer='city-se
       AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE budget_day=?),0)+1<=(SELECT daily_query_limit FROM commercial_acquisition_policy WHERE id=1)
       AND (?<>'source-led-paid' OR EXISTS(SELECT 1 FROM source_led_programmes s JOIN source_led_grants g ON g.programme_id=s.id
         JOIN commercial_acquisition_policy c ON c.id=1 WHERE s.id=? AND s.status='active' AND s.expires_at>? AND s.budget_day=?
-        AND s.active_run_id=g.run_id AND g.run_id=? AND g.status='running' AND g.market=? AND g.query_hash=? AND c.manual_paused=0
+        AND s.active_run_id=g.run_id AND g.run_id=? AND g.status='running' AND g.market=? AND g.query_hash=? AND (c.manual_paused=0 OR EXISTS(SELECT 1 FROM campaign_admission))
         AND COALESCE((SELECT SUM(u.queries_reserved) FROM serper_usage u JOIN source_led_grants z ON z.run_id=u.run_id WHERE z.programme_id=s.id),0)+1<=s.max_queries
-        AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=? AND lane='source-led-paid' AND market=g.market),0)+1<=c.queries_per_market))
+        AND (COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=? AND lane='source-led-paid' AND market=g.market),0)+1<=c.queries_per_market OR EXISTS(SELECT 1 FROM campaign_admission))))
       AND (? IS NULL OR EXISTS(SELECT 1 FROM acquisition_pilots s JOIN pilot_run_grants g ON g.pilot_id=s.id
         WHERE s.id=? AND s.status='active' AND s.expires_at>? AND s.budget_day=? AND s.active_run_id=g.run_id AND g.run_id=? AND g.status='running'
         AND COALESCE((SELECT SUM(queries_reserved) FROM serper_usage WHERE budget_day=?),0)+1<=s.daily_ceiling
         AND COALESCE((SELECT SUM(${CREDITS}) FROM serper_usage WHERE budget_day=?),0)+1<=s.daily_ceiling
         AND COALESCE((SELECT SUM(u.queries_reserved) FROM serper_usage u JOIN pilot_run_grants z ON z.run_id=u.run_id WHERE z.pilot_id=s.id),0)+1<=s.max_queries))
-    RETURNING id`,id,runId,index,producer,lane,market,region,await hash(query),day,now,now,runId,runId,hour,hour,day,day,day,day,lane,programmeId,now,day,runId,market,await hash(query),day,pilotId,pilotId,now,day,runId,day,day).all();
+    RETURNING id`,runId,programmeId,lane,producer,market,index,region,await hash(query),query,now,day,
+    id,runId,index,producer,lane,market,region,await hash(query),day,now,now,programmeId,runId,runId,hour,hour,day,day,day,day,lane,programmeId,now,day,runId,market,await hash(query),day,pilotId,pilotId,now,day,runId,day,day).all();
   await refreshSerperPause(db,now);
   if(inserted.results.length!==1)throw new Error('serper_query_budget_exhausted_or_paused');
   return id;

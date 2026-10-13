@@ -5,7 +5,8 @@ export function safeSourceUrl(url) {
   if(!legacySourceUrl(url))return false;
   const u=new URL(url);return !u.port||u.port==='443';
 }
-export async function fetchSourceDocument(url,{fetcher=fetch,now=new Date().toISOString()}={}) {
+export async function fetchSourceDocument(url,{fetcher=fetch,now=new Date().toISOString(),maxBytes=1048576}={}) {
+  if(!Number.isInteger(maxBytes)||maxBytes<1||maxBytes>2097152)throw Error('bounded_source_size_required');
   let current=url;const visited=[];
   try {
     for(let redirects=0;redirects<=3;redirects++) {
@@ -22,7 +23,7 @@ export async function fetchSourceDocument(url,{fetcher=fetch,now=new Date().toIS
       const contentType=response.headers.get('content-type')??'';
       if(!/(?:text\/html|application\/xhtml\+xml)/i.test(contentType))return {...meta,reason:'source_format_requires_review'};
       const reader=response.body.getReader(),parts=[];let size=0;
-      try {for(;;){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>1048576){await reader.cancel();return {...meta,reason:'source_response_size_limit'};}parts.push(value);}}
+      try {for(;;){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>maxBytes){await reader.cancel();return {...meta,reason:'source_response_size_limit'};}parts.push(value);}}
       finally {reader.releaseLock();}
       const bytes=new Uint8Array(size);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.length;}
       const html=new TextDecoder().decode(bytes);

@@ -51,6 +51,12 @@ test('free inventory growth targets useful unverified source routes and requires
   const out=growthOutcome([row],[{...row,market:'CA'}],{beforeAt:now,now});assert.equal(out.identity_mutations,1);
 });
 async function configured(t){const db=database(t);await sql(db,"INSERT INTO quality_gates VALUES ('structured-100-preservation',100,0,'{}','gate',?)",NOW).run();await sql(db,"UPDATE commercial_acquisition_policy SET manual_paused=1,pause_reason='quality_review' WHERE id=1").run();return db;}
+test('operator country targeting can withhold a proved foreign event but never becomes its geography',async t=>{
+ const db=await configured(t),run=await startCatalogueRun(db,{max_candidates:1},NOW),doc=documentFixture();
+ const page=await discoverCataloguePage(db,{run_id:run.id,url:'https://www.eventeny.com/sitemap/event_elements.xml'},{now:NOW,fetcher:async()=>new Response('<urlset><url><loc>'+doc.url+'</loc></url></urlset>')});
+ const result=await verifyCatalogueCandidate(db,page.candidates[0].id,{targetMarket:'GB',now:NOW,fetcher:async()=>new Response(doc.html,{headers:{'Content-Type':'text/html'}})});
+ assert.equal(result.status,'held');assert.equal(result.reason,'verified_country_outside_operator_scope');assert.equal(result.source_country,'US');assert.equal((await sql(db,'SELECT COUNT(*) n FROM producer_records').first()).n,0);assert.equal((await sql(db,'SELECT COUNT(*) n FROM entities').first()).n,0);
+});
 test('lost committed reconciliation response adopts only source-bound immutable custody',async t=>{
   const db=await configured(t),run=await startCatalogueRun(db,{max_candidates:2},NOW),doc=documentFixture();
   const page=await discoverCataloguePage(db,{run_id:run.id,url:'https://www.eventeny.com/sitemap/event_elements.xml'},{now:NOW,fetcher:async()=>new Response('<urlset><url><loc>'+doc.url+'</loc></url></urlset>')}),id=page.candidates[0].id;

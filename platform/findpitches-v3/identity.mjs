@@ -25,6 +25,9 @@ function specific(url) { try { const u=new URL(url);
   // CCA's booking portal and venue programmes each contain multiple distinct
   // dated events. Their routes cannot silently merge those event identities.
   if(u.hostname.replace(/^www\./,'')==='creativecrafts-online.co.uk'&&/^\/(?:booking-form|craft-events)(?:\/|$)/i.test(u.pathname))return false;
+  if(u.hostname.replace(/^www\./,'')==='myntimage.co.uk'&&/^(?:\/events\/[a-z-]+\/?|\/[a-z0-9-]+\.html)$/i.test(u.pathname))return false;
+  if(u.hostname.replace(/^www\./,'')==='littlehummingbirdevents.co.uk'&&/^\/trade-with-us\/?$/.test(u.pathname))return false;
+  if(u.hostname.replace(/^www\./,'')==='veganeventsuk.co.uk'&&/^\/(?:trade)?\/?$/.test(u.pathname))return false;
   return Boolean(u.searchParams.get('id')) || u.pathname.split('/').filter(Boolean).some(part=>!['events','event','applications','application','vendors','vendor','stallholders','solutions','vendor-management'].includes(part)); } catch { return false; } }
 export function identityKeys(record) {
   const keys=[];

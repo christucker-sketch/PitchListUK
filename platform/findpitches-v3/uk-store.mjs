@@ -1,8 +1,11 @@
 import {sql,ingestRecords,loadEntity} from './store.mjs';
 import {hash,stableJson,EXPORT_SCHEMA} from './contract.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
+import {encodeSourceDocument,decodeSourceDocument} from './document-custody.mjs';
 import {myntVenues,myntVenueUrl,parseMyntVenue,fetchMyntBundle} from './uk-sources.mjs';
 import {CCA_BOOKING,CCA_ADAPTER_VERSION,ccaVenueUrl,fetchCCAProgramme} from './creative-crafts.mjs';
+import {HUMMINGBIRD_TRADE,HUMMINGBIRD_ADAPTER_VERSION,fetchHummingbirdProgramme} from './hummingbird.mjs';
+import {VEGAN_HOME,VEGAN_ADAPTER_VERSION,fetchVeganProgramme} from './vegan-events.mjs';
 import {verifyDocument} from './verification.mjs';
 import {recordVerification,verificationUrl,verificationGate,verifyEntitySource} from './verification-store.mjs';
 import {reconcileRecord,evaluateReadiness,runStage,enrichEntity} from './pipeline.mjs';
@@ -35,7 +38,7 @@ export async function startUKRun(db,{max_visits=100,max_candidates=300}={},now=n
   await sql(db,"INSERT INTO uk_source_runs(id,status,max_visits,max_candidates,created_at,expires_at) VALUES (?,'active',?,?,?,?)",run.id,max_visits,max_candidates,now,run.expires_at).run();
   return {...run,paid_queries:0,standing_scheduler_enabled:false};
 }
-async function retain(db,document) {const id='doc_'+(await hash(document)).slice(0,40);await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',id,document.requested_url,document.content_hash??null,document.fetched_at,stableJson(document)).run();return id;}
+async function retain(db,document) {const id='doc_'+(await hash(document)).slice(0,40);await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',id,document.requested_url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document)).run();return id;}
 async function reserveVisit(db,runId,url,now) {
   await active(db,runId,now);
   // The reservation commits before the network request. Failed requests consume it.
@@ -45,6 +48,9 @@ async function reserveVisit(db,runId,url,now) {
 }
 export const assertUKReviewRun=active;
 export const retainUKDocument=retain;
+// A fully bound current event/form with an unresolved mandatory uploader may
+// enter WATCH as UNKNOWN. This exception never supplies open/READY authority.
+export function qualifiedVeganWatch(proof,now){return proof.profile==='veganeventsuk'&&proof.status==='partial'&&proof.page_kind==='event'&&proof.facts?.country==='GB'&&proof.facts.event_start>=now.slice(0,10)&&proof.facts.application_state==='UNKNOWN'&&proof.facts.application_url&&proof.application_scope_proof?.trader_application===true&&proof.reasons.length===1&&['vegan_required_document_upload_account_gate','vegan_required_document_upload_operational_proof_missing'].includes(proof.reasons[0]);}
 export function ukSourceReader(db,run_id,{fetcher=fetch,now=new Date().toISOString()}={}) {
   let reservationFailure=null;
   const fetchBounded=async(u,options)=>{
@@ -60,24 +66,25 @@ export function ukSourceReader(db,run_id,{fetcher=fetch,now=new Date().toISOStri
 }
 export async function discoverUKSource(db,{run_id,url},{fetcher=fetch,now=new Date().toISOString()}={}) {
   await active(db,run_id,now);
-  if(url!=='https://www.myntimage.co.uk/events/'&&!myntVenueUrl(url)&&url!==CCA_BOOKING&&!ccaVenueUrl(url))throw Error('approved_uk_source_required');
+  if(url!=='https://www.myntimage.co.uk/events/'&&!myntVenueUrl(url)&&url!==CCA_BOOKING&&!ccaVenueUrl(url)&&url!==HUMMINGBIRD_TRADE&&url!==VEGAN_HOME)throw Error('approved_uk_source_required');
   const replayWhere=url===CCA_BOOKING?"run_id=? AND family=?":"run_id=? AND url=?",replayValue=url===CCA_BOOKING?'creativecrafts':url;
   const prior=await sql(db,`SELECT source_document_id FROM uk_source_candidates WHERE ${replayWhere} LIMIT 1`,run_id,replayValue).first();
   if(prior)return {run_id,url,replay:true,candidates:(await sql(db,`SELECT c.id,c.source_identifier,p.status,p.reason FROM uk_source_candidates c JOIN uk_source_progress p ON p.candidate_id=c.id WHERE ${replayWhere.replace('run_id','c.run_id').replace('family','c.family').replace('url','c.url')}`,run_id,replayValue).all()).results};
   const {fetcher:fetchBounded,visit}=ukSourceReader(db,run_id,{fetcher,now});
   try {
-    if(url===CCA_BOOKING||ccaVenueUrl(url)) {
-      const programme=await fetchCCAProgramme({fetcher:fetchBounded,now,visit,url:url===CCA_BOOKING?null:url}),candidates=[];
+    if(url===CCA_BOOKING||ccaVenueUrl(url)||url===HUMMINGBIRD_TRADE||url===VEGAN_HOME) {
+      const family=url===HUMMINGBIRD_TRADE?'littlehummingbird':url===VEGAN_HOME?'veganeventsuk':'creativecrafts';
+      const programme=family==='littlehummingbird'?await fetchHummingbirdProgramme({fetcher:fetchBounded,now,visit}):family==='veganeventsuk'?await fetchVeganProgramme({fetcher:fetchBounded,now,visit}):await fetchCCAProgramme({fetcher:fetchBounded,now,visit,url:url===CCA_BOOKING?null:url}),candidates=[];
       if(programme.bundles.length>100)throw Error('uk_venue_candidate_limit');
       for(const bundle of programme.bundles) {
         const proof=verifyDocument(bundle,{now}),documentId=await retain(db,bundle);
-        const candidate={id:'uk_candidate_'+(await hash([run_id,bundle.url,bundle.source_identifier])).slice(0,40),source_identifier:bundle.source_identifier,status:proof.status==='verified'?'pending':'held',reason:proof.reasons.join(',')||null,date:proof.facts.event_start,end:proof.facts.event_end,url:bundle.url};
+        const candidate={id:'uk_candidate_'+(await hash([run_id,bundle.url,bundle.source_identifier])).slice(0,40),source_identifier:bundle.source_identifier,status:proof.status==='verified'||qualifiedVeganWatch(proof,now)?'pending':'held',reason:proof.reasons.join(',')||null,date:proof.facts.event_start,end:proof.facts.event_end,url:bundle.url};
         await db.batch([
-          sql(db,"INSERT OR IGNORE INTO uk_source_candidates VALUES (?,?,?,?,?,'creativecrafts',?)",candidate.id,run_id,documentId,bundle.url,bundle.source_identifier,now),
+          sql(db,'INSERT OR IGNORE INTO uk_source_candidates VALUES (?,?,?,?,?,?,?)',candidate.id,run_id,documentId,bundle.url,bundle.source_identifier,family,now),
           sql(db,"INSERT OR IGNORE INTO uk_source_progress(candidate_id,status,reason,checked_at) VALUES (?,?,?,?)",candidate.id,candidate.status,candidate.reason,candidate.status==='held'?now:null),
         ]);candidates.push(candidate);
       }
-      return {run_id,url,candidates,held_options:programme.held,source_family:'creativecrafts',paid_queries:0};
+      return {run_id,url,candidates,held_options:programme.held,source_family:family,paid_queries:0};
     }
     if(url==='https://www.myntimage.co.uk/events/') {const d=await fetchSourceDocument(url,{fetcher:fetchBounded,now});await visit(d);return {run_id,venues:myntVenues(d),reason:d.reason??null};}
     const bundle=await fetchMyntBundle(url,null,{fetcher:fetchBounded,now,visit});
@@ -102,15 +109,15 @@ export async function importUKCandidate(db,candidateId,{now=new Date().toISOStri
   if(!c)throw Error('uk_candidate_missing');if(c.status!=='pending')return {candidate_id:candidateId,status:c.status,entity_id:c.entity_id,replay:true};
   await active(db,c.run_id,now);
   const documentRow=await sql(db,'SELECT document_json FROM source_documents WHERE id=?',c.source_document_id).first();
-  const document={...JSON.parse(documentRow.document_json),source_identifier:c.source_identifier};
+  const document={...await decodeSourceDocument(documentRow.document_json),source_identifier:c.source_identifier};
   if(Date.parse(now)-Date.parse(document.fetched_at)>300000){await stopUKRun(db,c.run_id,'shared_source_proof_expired');throw Error('uk_shared_source_proof_expired');}
   const proof=verifyDocument(document,{now});
-  if(proof.status!=='verified'||proof.facts.country!=='GB'){await sql(db,"UPDATE uk_source_progress SET status='held',reason=?,checked_at=? WHERE candidate_id=? AND status='pending'",proof.reasons.join(',')||'verified_gb_required',now,candidateId).run();return {candidate_id:candidateId,status:'held',reason:proof.reasons};}
+  if((proof.status!=='verified'&&!qualifiedVeganWatch(proof,now))||proof.facts.country!=='GB'){await sql(db,"UPDATE uk_source_progress SET status='held',reason=?,checked_at=? WHERE candidate_id=? AND status='pending'",proof.reasons.join(',')||'verified_gb_required',now,candidateId).run();return {candidate_id:candidateId,status:'held',reason:proof.reasons};}
   const claim=await sql(db,"UPDATE uk_source_progress SET status='verifying',lease_until=? WHERE candidate_id=? AND status='pending' RETURNING candidate_id",new Date(Date.parse(now)+120000).toISOString(),candidateId).all();
   if(!claim.results.length)throw Error('uk_candidate_claimed');
   try {
     const budget=await sql(db,"UPDATE uk_source_runs SET checked=checked+1 WHERE id=? AND status='active' AND checked<max_candidates RETURNING checked",c.run_id).all();if(!budget.results.length)throw Error('uk_candidate_limit');
-    if(!['myntimage','creativecrafts'].includes(c.family)||proof.facts.source_platform!==c.family||proof.facts.source_identifier!==c.source_identifier)throw Error('uk_source_family_identity_required');
+    if(!['myntimage','creativecrafts','littlehummingbird','veganeventsuk'].includes(c.family)||proof.facts.source_platform!==c.family||proof.facts.source_identifier!==c.source_identifier)throw Error('uk_source_family_identity_required');
     const f=proof.facts,record={schema_version:EXPORT_SCHEMA,opportunity_id:c.family+':'+c.source_identifier,country_code:'GB',...Object.fromEntries(Object.entries(f).filter(([k])=>k!=='country')),lifecycle_state:'NEW',last_checked:document.fetched_at,source_fingerprint:document.content_hash,evidence:proof.evidence,
       provenance:[{producer:'uk-official',adapter_version:document.adapter_version,source_document_id:c.source_document_id,source_identifier:c.source_identifier,source_url:c.url,paid_queries:0}]};
     const imported=await ingestRecords(db,[record],{producer:'uk-official',environment:'shadow',now});if(imported.rejected)throw Error('uk_source_record_invalid');
@@ -140,5 +147,5 @@ export async function ukSourceStatus(db) {
   const outcomes=(await sql(db,'SELECT c.run_id,c.family,p.status,p.reason,p.identity_outcome,COUNT(*) AS candidates FROM uk_source_candidates c JOIN uk_source_progress p ON p.candidate_id=c.id GROUP BY c.run_id,c.family,p.status,p.reason,p.identity_outcome').all()).results??[];
   const visits=await sql(db,'SELECT COUNT(*) AS direct_source_visits,SUM(CASE WHEN reason IS NOT NULL THEN 1 ELSE 0 END) AS failed_visits FROM uk_source_visits').first();
   const reviews=(await sql(db,'SELECT run_id,COUNT(*) AS reviewed_existing_entities,SUM(readiness_at_review=\'ready\') AS ready_at_review FROM official_source_review_outcomes GROUP BY run_id').all()).results??[];
-  return {producer:'uk-official',paid_queries:0,standing_scheduler_enabled:false,adapter_versions:['myntimage-dated-stalls-v1',CCA_ADAPTER_VERSION],runs,outcomes,reviewed_source_matches:reviews,...visits,visit_definition:'Actual adapter HTTP requests, including venue, embedded application, venue directions and public country lookup. Research visits are reported separately.'};
+  return {producer:'uk-official',paid_queries:0,standing_scheduler_enabled:false,adapter_versions:['myntimage-dated-stalls-v1',CCA_ADAPTER_VERSION,HUMMINGBIRD_ADAPTER_VERSION,VEGAN_ADAPTER_VERSION],runs,outcomes,reviewed_source_matches:reviews,...visits,visit_definition:'Actual adapter HTTP requests, including venue, embedded application, venue directions and public country lookup. Research visits are reported separately.'};
 }
