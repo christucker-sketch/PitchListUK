@@ -1,0 +1,211 @@
+{
+  "schema": "findpitches-v3-france-integration-v1",
+  "as_of": "2026-10-14T13:26:53.074Z",
+  "source_checkpoint": "af4f37aa",
+  "real_commercial_fr_ready": 0,
+  "total_commercial_ready": 1887,
+  "ready_by_country": {
+    "US": 1718,
+    "NZ": 5,
+    "GB": 160,
+    "AU": 3,
+    "CA": 1
+  },
+  "validation": {
+    "full_v3_tests": 413,
+    "full_v3_passed": 413,
+    "focused_route_tests": 14,
+    "focused_customer_tests": 21,
+    "frontend_tests": 3,
+    "frontend_independence_files": 87,
+    "frontend_build": true,
+    "boundaries": true,
+    "public_closed_checks": 29,
+    "public_closed_passed": true,
+    "public_live_checks": 29,
+    "public_live_passed": true,
+    "france_api_checks": 6,
+    "france_browser_checks": 14,
+    "france_browser_passed": true
+  },
+  "native_canary": {
+    "schema": "findpitches-v3-france-native-canary-v1",
+    "as_of": "2026-10-14T13:16:20.892Z",
+    "scope": "test_excluded_from_commercial",
+    "accepted": 1,
+    "replayed": 1,
+    "reconciled": 1,
+    "entity_growth_on_replay": 0,
+    "original_receipt_mutations": 0,
+    "original_source_fact_mutations": 0,
+    "synthetic_records_in_customer_catalogue": 0,
+    "source_publication_rows": 0,
+    "source_customer_rows": 0,
+    "paid_queries_today": 0,
+    "commercial_fr_ready": 0,
+    "total_ready": 1887
+  },
+  "preservation": {
+    "schema": "findpitches-v3-france-preservation-v1",
+    "started_at": "2026-10-14T13:12:02.740Z",
+    "as_of": "2026-10-14T13:17:30.030Z",
+    "baseline_as_of": "2026-10-13T17:15:54.694Z",
+    "receipts_compared": 25230,
+    "source_facts_compared": 218939,
+    "fixed_identity_tuples_compared": 7280,
+    "destructive_source_mutations": 0,
+    "fixed_identity_tuple_changes": 0,
+    "original_build_source_mutations": 0,
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "source_publication_enabled": false,
+    "source_publication_api_denied": true,
+    "paid_queries_today": 0,
+    "paid_day": "2026-10-14",
+    "paid_queries_lifetime": 29,
+    "paid_bulk_enabled": false,
+    "paid_manually_paused": 1,
+    "pitchlist_deployment_unchanged": true,
+    "v2_schedules_unchanged": true
+  },
+  "real_source_fixture_review": {
+    "as_of": "2026-10-14T13:21:11.405Z",
+    "scope": "peer_retained_sanitized_fixture_review_not_fresh_source_fetch",
+    "checked": 4,
+    "verified": 0,
+    "reports": [
+      {
+        "fixture": "fr_seyssins_marche_noel_appel_2026-10-14.html",
+        "domain": "www.seyssins.fr",
+        "status": "unverified",
+        "page_kind": "unproved",
+        "reasons": [
+          "event_content_scope_missing"
+        ]
+      },
+      {
+        "fixture": "fr_valdemoder_inscription_waitlist_2026-10-14.html",
+        "domain": "www.noel.valdemoder.fr",
+        "status": "unverified",
+        "page_kind": "unproved",
+        "reasons": [
+          "event_content_scope_missing"
+        ]
+      },
+      {
+        "fixture": "fr_ornans_afp_appel_candidature_2026-10-14.html",
+        "domain": "www.ornans.fr",
+        "status": "unverified",
+        "page_kind": "unproved",
+        "reasons": [
+          "single_event_source_data_missing"
+        ]
+      },
+      {
+        "fixture": "fr_valence_village_noel_home_2026-10-14.html",
+        "domain": "www.village-noel-valence.com",
+        "status": "quarantine",
+        "page_kind": "directory",
+        "reasons": [
+          "platform_index_is_not_an_opportunity"
+        ]
+      }
+    ]
+  },
+  "shadow_release": {
+    "workers": [
+      {
+        "role": "api",
+        "version_id": "705927c0-992b-46d8-a1ea-822db19026dc",
+        "deployment_id": "9dd2d0f8-aeab-4c60-abd0-b8fae0dfc7e7",
+        "bindings_and_schedules_preserved": true
+      },
+      {
+        "role": "enrichment",
+        "version_id": "03f23906-dacf-4cc4-9b47-9f9bce4555e8",
+        "deployment_id": "a95ffb96-8ed6-4297-ad36-5449b4e9381e",
+        "bindings_and_schedules_preserved": true
+      },
+      {
+        "role": "readiness",
+        "version_id": "cceb4239-5e4c-4717-8fad-cf3d90d9276a",
+        "deployment_id": "36c4d1c2-a068-4483-a046-f158b63d67f8",
+        "bindings_and_schedules_preserved": true
+      },
+      {
+        "role": "eligibility",
+        "version_id": "4c4dad56-f28f-4c94-b783-0e6f114a1cd6",
+        "deployment_id": "273ca60d-ff0b-4f16-8d7e-1fc0a4f22faa",
+        "bindings_and_schedules_preserved": true
+      },
+      {
+        "role": "reconcile",
+        "version_id": "86b20064-60b9-4d9b-a78d-eac1a9bb2724",
+        "deployment_id": "576105a7-e5cc-4e0d-ac6c-f229e79749cb",
+        "bindings_and_schedules_preserved": true
+      },
+      {
+        "role": "watch",
+        "version_id": "532b6841-bac6-438e-9f20-9c46b17dbabe",
+        "deployment_id": "350129a3-46b7-4748-8593-27cbda8eb317",
+        "bindings_and_schedules_preserved": true
+      },
+      {
+        "role": "acquisition",
+        "version_id": "53da4d47-aa88-4f41-a036-875cb9f44a3c",
+        "deployment_id": "102b8cd7-fe42-495a-a1a8-62c2763e9baf",
+        "bindings_and_schedules_preserved": true
+      },
+      {
+        "role": "ingest",
+        "version_id": "41425089-9fae-445e-93aa-047946a4be95",
+        "deployment_id": "e52e4916-a717-4f06-811a-2d69ca14e099",
+        "bindings_and_schedules_preserved": true
+      }
+    ],
+    "migrations": 0,
+    "secret_replacements": 0
+  },
+  "customer_release": {
+    "code_version_id": "abf7aa4d-e298-421e-9085-639941dff02c",
+    "completed": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "bindings_and_secrets_preserved": true,
+    "as_of": "2026-10-14T13:24:51.071Z",
+    "public": true,
+    "checkout": "live",
+    "recovery": true,
+    "bindings_preserved": true,
+    "version": "feb52d39-a866-40cf-9b72-613d488437bf"
+  },
+  "resource_audit": {
+    "as_of": "2026-10-14T13:14:41.819Z",
+    "workers": 8,
+    "queues": 8,
+    "max_queries_per_run": 4,
+    "max_queries_per_hour": 100,
+    "max_queries_per_day": 1000,
+    "bulk_enabled": 0
+  },
+  "commercial_daily_ceiling": 25,
+  "paid_manually_paused": 1,
+  "paid_queries_today": 0,
+  "source_publication_enabled": false,
+  "source_customer_rows": 0,
+  "source_publication_rows": 0,
+  "producer_rollout": {
+    "owner": "Claude",
+    "pack": "011l",
+    "installed_on_pi": "not_confirmed_by_codex",
+    "fr_delivery": "held_pending_producer_classifier_diff_and_fr_on",
+    "v3_contract_and_canary_gate": "passed",
+    "country_enum": "FR_added_by_Claude",
+    "public_ready_not_inferred_from_producer_labels": true
+  },
+  "next_priority": "French official organiser/council HTML + linked-document proof adapter, starting with Seyssins; direct source corroboration of date, venue, country and current exhibitor route. Generic fallback stays conservative.",
+  "certificate_bypass": false,
+  "customer_objects_created": 0,
+  "messages_sent": 0,
+  "source_forms_submitted": 0
+}

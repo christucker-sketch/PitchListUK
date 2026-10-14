@@ -52,7 +52,7 @@ const slug = s => String(s).toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]
   Object.entries(STATE_NAMES).forEach(([c, n]) => REGIONS.US['us/' + slug(n)] = { id: 'us/' + slug(n), name: n, slug: slug(n), level: 'state', parent_id: null, code: 'US-' + c });
   const US_BY_CODE = Object.fromEntries(Object.values(REGIONS.US).map(r => [r.code.slice(3), r.id]));
 // Only explicit source-published names/codes map to these regions. No city/postcode inference.
-const FR_REGIONS={ARA:'Auvergne-Rhône-Alpes',BFC:'Bourgogne-Franche-Comté',BRE:'Bretagne',CVL:'Centre-Val de Loire',COR:'Corse',GES:'Grand Est',HDF:'Hauts-de-France',IDF:'Île-de-France',NOR:'Normandie',NAQ:'Nouvelle-Aquitaine',OCC:'Occitanie',PDL:'Pays de la Loire',PAC:'Provence-Alpes-Côte d’Azur',GUA:'Guadeloupe',GF:'Guyane',LRE:'La Réunion',MTQ:'Martinique',MAY:'Mayotte'};
+const FR_REGIONS={ARA:'Auvergne-Rhône-Alpes',BFC:'Bourgogne-Franche-Comté',BRE:'Bretagne',CVL:'Centre-Val de Loire','20R':'Corse',GES:'Grand Est',HDF:'Hauts-de-France',IDF:'Île-de-France',NOR:'Normandie',NAQ:'Nouvelle-Aquitaine',OCC:'Occitanie',PDL:'Pays de la Loire',PAC:'Provence-Alpes-Côte d’Azur',GP:'Guadeloupe',GF:'Guyane',RE:'La Réunion',MQ:'Martinique',YT:'Mayotte'};
 Object.entries(FR_REGIONS).forEach(([code,name])=>{const s=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');REGIONS.FR['fr/'+s]={id:'fr/'+s,name,slug:s,level:'region',parent_id:null,code:'FR-'+code};});
 export const SUPPORTED_MARKETS=Object.freeze(MARKETS.map(m=>m.code));
 export {MARKETS,REGIONS};
