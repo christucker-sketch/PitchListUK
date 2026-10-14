@@ -1,0 +1,78 @@
+{
+  "schema": "findpitches-v3-storage-reader-compatibility-v1",
+  "as_of": "2026-10-14T17:05:52.109Z",
+  "validation": {
+    "full_v3_passed": 421,
+    "full_v3_failed": 0,
+    "reader_custody_capacity_checks": 63
+  },
+  "native_canary": {
+    "as_of": "2026-10-14T17:05:52.109Z",
+    "ready_before": 1887,
+    "ready_after": 1887,
+    "mapped_before": 1134,
+    "mapped_after": 1134,
+    "original_canary_mapped": 1134,
+    "map_bindings_repaired": 1,
+    "repair_provider_requests": 1,
+    "archived_cache_replay_provider_requests": 0,
+    "archived_cache_replay_verified": true,
+    "identity_changes": 0,
+    "source_facts_changed": 0,
+    "repair_interpretation": "Current source address had no exact-address cache match; one bounded free Census GET restored the pin. This is separate from the existing archived-cache replay, which used zero provider requests."
+  },
+  "source_release": [
+    {
+      "role": "api",
+      "version": "36a9739d-e01c-46e6-b7fa-6cbf1912e032",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-14T17:02:05.372Z"
+    },
+    {
+      "role": "enrichment",
+      "version": "0c336e05-4760-458a-98be-8b17f733ed70",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-14T17:02:28.189Z"
+    },
+    {
+      "role": "readiness",
+      "version": "6372ca1c-4302-4e06-82b2-daeefc098f11",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-14T17:02:57.651Z"
+    },
+    {
+      "role": "eligibility",
+      "version": "065aaf15-1fb0-47ac-8843-95f3c99d0f38",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-14T17:03:19.423Z"
+    },
+    {
+      "role": "reconcile",
+      "version": "e32f2dc5-1254-4531-b484-1a09ed07c641",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-14T17:03:42.091Z"
+    },
+    {
+      "role": "watch",
+      "version": "c33f1a93-6c6b-4af1-96d4-93e11924aca6",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-14T17:04:04.261Z"
+    },
+    {
+      "role": "acquisition",
+      "version": "91e20269-2811-47f9-a804-23a64baef90f",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-14T17:04:26.336Z"
+    },
+    {
+      "role": "ingest",
+      "version": "23205445-3051-4e19-a679-74b1ad4268fd",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-14T17:04:48.076Z"
+    }
+  ],
+  "source_facts_and_fixed_identities_changed": 0,
+  "customer_worker_changed": false,
+  "paid_queries_added": 0,
+  "cold_migration_resumed": true
+}

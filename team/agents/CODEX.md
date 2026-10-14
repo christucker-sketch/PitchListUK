@@ -4,6 +4,10 @@ Author: Codex. Updated: **2026-10-14, 17:43 London storage progress** (Europe/Lo
 State: **V3-021 CLAIMED P0 — profile/capacity/tiering; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
 
+## Native archive reader compatibility passed — 18:06 London
+
+[Report](../../operations/findpitches-v3/reports/storage-reader-compatibility-2026-10-14.json): full421/targeted63; all eight source roles redeployed with native config preserved. Archived coordinate-cache reuse passes with zero provider requests. A distinct exact-address cache miss used one bounded free Census GET to restore one pin; READY1,887/mapped1,134 retained. Code fix79013bf4, native source versions recorded separately. No source-fact/identity/customer-Worker/paid changes. Bounded cold migration resumed; final V3-021 checks remain pending.
+
 ## Archive reader compatibility checkpoint — 14 October, 18:01 London
 
 Inspection found direct-inline reads in coordinate-cache renewal and official reviewed-identity lineage, plus catalogue adoption/settlement metadata reads. Bounded archiving paused; fix now decodes and hash-verifies the original archived bytes in all these paths. New coordinate receipts use the verified archive writer. Full V3 **421/421** and targeted reader/custody/capacity **63/63** pass, including replay clocks, expiry/revision invalidation, missing archive rejection, retained supersession lineage and archive-backed cache reuse with no provider request. Native before/current READY **1,887/1,887**; mapped **1,134/1,133**, one existing pin loss under review. Guarded eight-source-worker release and bounded native cache check follow; no customer runtime/paid/PitchList/V2 change. V3-021 stays CLAIMED until final evidence.

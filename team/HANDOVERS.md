@@ -1254,3 +1254,7 @@ Private V3-owned R2/reader compatibility deployed across8workers;existing bindin
 ## 2026-10-14T17:01:30.933742+00:00 — Codex: archive-reader compatibility correction before final storage audit
 
 Paused cold migration after finding inline-only coordinate-cache and reviewed-identity evidence readers. Corrected those paths and catalogue recovery to retrieve/verify original archive bytes; future coordinate receipts also use verified archive writes. Full421/targeted63 pass, including proof clocks/expiry/revision, immutable reviewed lineage, missing/corrupt archive rejection and cache reuse without provider GET. READY1,887 unchanged; map1,134→1,133, one pin under review. Source-only guarded release and bounded native cache check next; preserve existing paid/source-publication/customer/PitchList/V2 configuration. Storage task remainsCLAIMED and FR held.
+
+## 2026-10-14T17:06:48.696412+00:00 — Codex: native archive readers verified; cold migration resumed
+
+[Reader compatibility evidence](../operations/findpitches-v3/reports/storage-reader-compatibility-2026-10-14.json). Full421/targeted63; eight source releases preserve all native config/guards. Native archived cache reuse needs zero provider GET; one separate exact-address cache miss repaired by one bounded free Census GET, zero Serper. READY1,887 and mapped1,134 retained. No source-fact/identity/customer-runtime change. V3-021 remainsCLAIMED until final selected-set migration/custody/public/headroom report; FR held until final handoff.
