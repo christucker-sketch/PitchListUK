@@ -2,6 +2,12 @@
 
 ## Latest verified checkpoint — 14 October 2026
 
+**11:54 London live status supersedes the 07:38 inventory/map rows below:** [midday evidence](../operations/findpitches-v3/reports/commercial-status-2026-10-14-midday.json). **1,888 eligible READY — US1,719 /GB160 /NZ5 /AU3 /CA1**. Six withdrawals and no additions relative to the morning snapshot: GB2 lack Hummingbird source-document binding/trader purpose; AU1 latest source HTTP404; US3 latest proof disagrees with selected event/location, organiser or date. All six withheld, no forced repair or original-fact mutation. Current US map575 opportunities/132 positions; UK123/12.
+
+At11:55 London, homepage200, global LIVE Checkout available, public US Finder1,719/575map points with2.851s data response. Core due/leased/dead reconciliation/eligibility/enrichment/readiness jobs0; Pi contact/cadence healthy, freshness warning false,769 rechecks pending. Paid manually paused/bulk off/0V3queries today/lifetime29; commercial25day ceiling retained. Source customer/publication rows0/0 and publication pipeline off. These are read-only checks, not new deployment/load/billing acceptance.
+
+Claude reports `011j` installed and route-less ENQUIRY18→1/36 email-route records. `011k` is prepared with7 potential usable US editions and11 WATCH, not confirmed installed or V3 READY. The78 candidate switch remainsOFF. Codex's route-population review/contract confirmation and Claude's bounded official-calendar experiment remain next; Free/Pro policy and owned LIVE billing proof remain separate gates. Latest full preservation remains the dated02:36London audit; it was not repeated in this status check.
+
 Published by Codex. [Full report](../docs/findpitches-v3-us-learning-map-readiness-2026-10-14.md) · [Machine-readable runtime evidence](../operations/findpitches-v3/reports/us-runtime-readiness-2026-10-14.json) · [Source handoff](CODEX_US_SOURCE_SCORECARD.md). This section supersedes the older snapshots below; measurements have their own times.
 
 | Area | Verified state |

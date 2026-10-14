@@ -1086,3 +1086,11 @@ No other country is affected.
 
 **Codex:** the 7 are producer `current` records. V3 still decides READY under its own source-proof and identity checks. They are distinct dated editions (for example, several Bulverde Market Day dates), so per-edition identity applies, not merges. The candidate switch remains OFF.
 
+## 14 October, 11:54–11:56 London — Codex read-only live status
+
+Fetched through `b37b10d7`; [fresh inventory/runtime and decline diagnostic](../operations/findpitches-v3/reports/commercial-status-2026-10-14-midday.json). **1,888 eligible READY — US1,719/GB160/NZ5/AU3/CA1**,6 withdrawals/no additions from07:38. Exact lost-record review: GB2 Hummingbird source binding/trader purpose unverified; AU1 source HTTP404; US3 source-proof/selected-field disagreements (name/location, organiser, date). All held; no additive repair, overwrite or new identity decision performed. Do not explain this movement as six expired proofs: all six latest proof clocks were unexpired in the diagnostic.
+
+Public homepage200, global LIVE Checkout available, publicUS1,719/map575/data2.851s; sourceUK160/map123. Core due/leased/dead jobs0, Pi contact/cadence healthy/freshness warning false,769 pending rechecks. Paid0V3queries today/lifetime29/manual pause on/bulk off; commercial25day ceiling retained. Source publication off/customer/publication rows0/0. No source visits, paid calls, deployment, provider/customer creation or messages in this checkpoint; full preservation/test results remain the prior dated release evidence.
+
+Claude's `011j` installation and18→1 route-less enquiries are acknowledged as producer evidence gains; V3 READY effect not yet measured. `011k`7 potential usable US editions/11WATCH is a prepared kit, not an observed install or READY gain here. The78 candidate switch staysOFF; Codex population/contract review and Claude official-calendar sample remain next. Current US1,770 target is51 short; Free/Pro policy and genuine owned LIVE billing acceptance remain separate. User-facing status and own Codex hub update use these timestamps; no new approval, peer own-file edit or protected-system change.
+

@@ -1,0 +1,175 @@
+{
+  "schema": "findpitches-v3-commercial-midday-status-v1",
+  "inventory_as_of": "2026-10-14T10:54:30.648Z",
+  "eligible_ready": 1888,
+  "ready_by_country": {
+    "US": 1719,
+    "NZ": 5,
+    "GB": 160,
+    "AU": 3,
+    "CA": 1
+  },
+  "map": {
+    "US": {
+      "ready": 1719,
+      "mapped_opportunities": 575,
+      "coordinate_positions": 132
+    },
+    "GB": {
+      "ready": 160,
+      "mapped_opportunities": 123,
+      "coordinate_positions": 12
+    }
+  },
+  "public_checks": {
+    "as_of": "2026-10-14T10:55:04.820Z",
+    "checks": [
+      {
+        "route": "/",
+        "status": 200,
+        "elapsed_ms": 396,
+        "homepage": true
+      },
+      {
+        "route": "/api/v3/billing/plans?market=US&currency=EUR",
+        "status": 200,
+        "elapsed_ms": 382,
+        "checkout_enabled": true,
+        "global_scope": "global"
+      },
+      {
+        "route": "/api/v3/opportunities?market=US&page_size=1",
+        "status": 200,
+        "elapsed_ms": 2851,
+        "ready": 1719,
+        "map_points": 575
+      }
+    ]
+  },
+  "core_jobs": [],
+  "paid": {
+    "day": "2026-10-14",
+    "queries_attempted": 0,
+    "bulk_enabled": false,
+    "commercial_policy": {
+      "manual_paused": 1,
+      "daily_query_limit": 25
+    },
+    "lifetime_v3_queries": 29
+  },
+  "producer": {
+    "host_recently_contacting": true,
+    "cadence_verified": true,
+    "freshness_warning": false,
+    "last_authenticated_recheck_poll": "2026-10-14T10:40:48.993Z",
+    "last_new_receipt_at": "2026-10-14T08:50:03.914Z",
+    "source_last_checked": "2026-10-14T08:37:27Z"
+  },
+  "producer_rechecks_pending": 769,
+  "source_publication_enabled": false,
+  "source_customer_rows": 0,
+  "source_publication_rows": 0,
+  "movement_since_morning": {
+    "as_of": "2026-10-14T10:56:32.551Z",
+    "before_as_of": "2026-10-14T06:38:20.337Z",
+    "after_as_of": "2026-10-14T10:54:30.648Z",
+    "removed": 6,
+    "added": 0,
+    "records": [
+      {
+        "country": "GB",
+        "ready": false,
+        "producer_held": false,
+        "proof_status": "unverified",
+        "cached_readiness": "watch",
+        "proof_expired": false,
+        "proof_revision_matches": true,
+        "awaiting_verification": true,
+        "blocked": false,
+        "quarantined": false,
+        "reasons": [
+          "hummingbird_source_document_binding_required",
+          "trader_application_purpose_not_proved"
+        ]
+      },
+      {
+        "country": "AU",
+        "ready": false,
+        "producer_held": false,
+        "proof_status": "unverified",
+        "cached_readiness": "watch",
+        "proof_expired": false,
+        "proof_revision_matches": true,
+        "awaiting_verification": true,
+        "blocked": false,
+        "quarantined": false,
+        "reasons": [
+          "source_http_404"
+        ]
+      },
+      {
+        "country": "US",
+        "ready": false,
+        "producer_held": false,
+        "proof_status": "quarantine",
+        "cached_readiness": "blocked",
+        "proof_expired": false,
+        "proof_revision_matches": true,
+        "awaiting_verification": false,
+        "blocked": false,
+        "quarantined": true,
+        "reasons": [
+          "selected_event_name_disagrees_with_proof",
+          "selected_location_disagrees_with_proof"
+        ]
+      },
+      {
+        "country": "GB",
+        "ready": false,
+        "producer_held": false,
+        "proof_status": "unverified",
+        "cached_readiness": "watch",
+        "proof_expired": false,
+        "proof_revision_matches": true,
+        "awaiting_verification": true,
+        "blocked": false,
+        "quarantined": false,
+        "reasons": [
+          "hummingbird_source_document_binding_required",
+          "trader_application_purpose_not_proved"
+        ]
+      },
+      {
+        "country": "US",
+        "ready": false,
+        "producer_held": false,
+        "proof_status": "quarantine",
+        "cached_readiness": "blocked",
+        "proof_expired": false,
+        "proof_revision_matches": true,
+        "awaiting_verification": false,
+        "blocked": false,
+        "quarantined": true,
+        "reasons": [
+          "selected_organiser_disagrees_with_proof"
+        ]
+      },
+      {
+        "country": "US",
+        "ready": false,
+        "producer_held": false,
+        "proof_status": "quarantine",
+        "cached_readiness": "blocked",
+        "proof_expired": false,
+        "proof_revision_matches": true,
+        "awaiting_verification": false,
+        "blocked": false,
+        "quarantined": true,
+        "reasons": [
+          "selected_event_start_disagrees_with_proof"
+        ]
+      }
+    ]
+  },
+  "interpretation": "Six prior-ready opportunities withheld: GB2 source binding/trader purpose; AU1 HTTP404; US3 selected-field/proof conflicts. No additions in this snapshot comparison. Producer route-retention gains and prepared title fix are not counted as V3 READY. No acquisition, deployment, field repair, publication enablement, provider/customer object creation or message performed in this check."
+}

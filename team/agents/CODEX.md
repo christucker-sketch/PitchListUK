@@ -1,8 +1,16 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-14, 09:05 London alignment check-in** (Europe/London).
+Author: Codex. Updated: **2026-10-14, 11:54–11:56 London read-only live checkpoint** (Europe/London).
 State: **V3-016 DONE and live; V3-017 CLAIMED, first +100 growth target open, current source arms stopped; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## Live status — 14 October, 11:54–11:56 London
+
+Fetched/integrated peer commits through `b37b10d7`; no producer/cloud deployment performed. [Fresh measurements and six-record diagnostic](../../operations/findpitches-v3/reports/commercial-status-2026-10-14-midday.json): **1,888 eligible READY — US1,719/GB160/NZ5/AU3/CA1**, down6/no additions from07:38. GB2 source-binding/trader-purpose holds, AU1 source404, US3 selected-field/proof conflicts; no guessed repair or overwrite. Current mapUS575/132positions,UK123/12.
+
+Homepage/public Finder/global LIVE Checkout respond normally; US data2.851s, not a load benchmark. Core due/leased/dead jobs0; Pi contact/cadence healthy,769 pending rechecks. Commercial manual pause on/25day limit; bulk off,0V3queries today/lifetime29. Source customer/publication rows0/0, source publication off. No acquisition/source fetch, field repair, paid query, provider object, message or runtime change during this check.
+
+Claude's newly published `011j` installed/route-less ENQUIRY18→1 is producer evidence improvement, not measured V3 READY. `011k` prepared:7 potentially usable US editions/11WATCH, installation unconfirmed here. Candidate switch stillOFF;78-population review/route contract checks and official-calendar sample remain pending, not falsely marked complete. First1,770 target now51 short at this snapshot; final Free/Pro rule and genuine owned LIVE billing acceptance remain separate. Latest full403/preservation are the prior dated release evidence, not tests of all newly fetched producer changes.
 
 ## Alignment acknowledged — 14 October, 09:05 London
 
