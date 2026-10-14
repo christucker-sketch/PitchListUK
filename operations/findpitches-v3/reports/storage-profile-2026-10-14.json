@@ -1,0 +1,4054 @@
+{
+  "schema": "findpitches-v3-native-storage-profile-v1",
+  "started_at": "2026-10-14T14:30:45.057Z",
+  "before_file_size_bytes": 9626914816,
+  "tables": [
+    {
+      "name": "acquisition_pilots",
+      "rows": 1,
+      "measured_at": "2026-10-14T14:30:45.331Z",
+      "elapsed_ms": 273,
+      "logical_payload_bytes": 23210,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 42,
+          "max_bytes": 42,
+          "non_null": 1,
+          "average_bytes": 42
+        },
+        {
+          "name": "budget_day",
+          "type": "TEXT",
+          "bytes": 10,
+          "max_bytes": 10,
+          "non_null": 1,
+          "average_bytes": 10
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 6,
+          "max_bytes": 6,
+          "non_null": 1,
+          "average_bytes": 6
+        },
+        {
+          "name": "plan_json",
+          "type": "TEXT",
+          "bytes": 23019,
+          "max_bytes": 23019,
+          "non_null": 1,
+          "average_bytes": 23019
+        },
+        {
+          "name": "active_run_id",
+          "type": "TEXT",
+          "bytes": 45,
+          "max_bytes": 45,
+          "non_null": 1,
+          "average_bytes": 45
+        },
+        {
+          "name": "stop_reason",
+          "type": "TEXT",
+          "bytes": 16,
+          "max_bytes": 16,
+          "non_null": 1,
+          "average_bytes": 16
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 24,
+          "max_bytes": 24,
+          "non_null": 1,
+          "average_bytes": 24
+        },
+        {
+          "name": "expires_at",
+          "type": "TEXT",
+          "bytes": 24,
+          "max_bytes": 24,
+          "non_null": 1,
+          "average_bytes": 24
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 24,
+          "max_bytes": 24,
+          "non_null": 1,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 1.8696
+    },
+    {
+      "name": "acquisition_runs",
+      "rows": 23,
+      "measured_at": "2026-10-14T14:30:45.608Z",
+      "elapsed_ms": 276,
+      "logical_payload_bytes": 7536,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 1097,
+          "max_bytes": 49,
+          "non_null": 23,
+          "average_bytes": 48
+        },
+        {
+          "name": "city",
+          "type": "TEXT",
+          "bytes": 257,
+          "max_bytes": 13,
+          "non_null": 23,
+          "average_bytes": 11
+        },
+        {
+          "name": "day",
+          "type": "TEXT",
+          "bytes": 230,
+          "max_bytes": 10,
+          "non_null": 23,
+          "average_bytes": 10
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 184,
+          "max_bytes": 8,
+          "non_null": 23,
+          "average_bytes": 8
+        },
+        {
+          "name": "result_json",
+          "type": "TEXT",
+          "bytes": 4664,
+          "max_bytes": 669,
+          "non_null": 23,
+          "average_bytes": 203
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 552,
+          "max_bytes": 24,
+          "non_null": 23,
+          "average_bytes": 24
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 552,
+          "max_bytes": 24,
+          "non_null": 23,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.9644
+    },
+    {
+      "name": "address_coordinate_cache",
+      "rows": 672,
+      "measured_at": "2026-10-14T14:30:45.788Z",
+      "elapsed_ms": 179,
+      "logical_payload_bytes": 503784,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 33600,
+          "max_bytes": 50,
+          "non_null": 672,
+          "average_bytes": 50
+        },
+        {
+          "name": "address_hash",
+          "type": "TEXT",
+          "bytes": 43008,
+          "max_bytes": 64,
+          "non_null": 672,
+          "average_bytes": 64
+        },
+        {
+          "name": "document_id",
+          "type": "TEXT",
+          "bytes": 29568,
+          "max_bytes": 44,
+          "non_null": 672,
+          "average_bytes": 44
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 4080,
+          "max_bytes": 7,
+          "non_null": 672,
+          "average_bytes": 6
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 5554,
+          "max_bytes": 34,
+          "non_null": 208,
+          "average_bytes": 27
+        },
+        {
+          "name": "position_json",
+          "type": "TEXT",
+          "bytes": 371846,
+          "max_bytes": 1050,
+          "non_null": 464,
+          "average_bytes": 801
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 16128,
+          "max_bytes": 24,
+          "non_null": 672,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 21.3444
+    },
+    {
+      "name": "assessments",
+      "rows": 33015,
+      "measured_at": "2026-10-14T14:30:46.319Z",
+      "elapsed_ms": 531,
+      "logical_payload_bytes": 5668732,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 2136047,
+          "max_bytes": 65,
+          "non_null": 33015,
+          "average_bytes": 65
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 1188540,
+          "max_bytes": 36,
+          "non_null": 33015,
+          "average_bytes": 36
+        },
+        {
+          "name": "ruleset",
+          "type": "TEXT",
+          "bytes": 825375,
+          "max_bytes": 25,
+          "non_null": 33015,
+          "average_bytes": 25
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 228322,
+          "max_bytes": 8,
+          "non_null": 33015,
+          "average_bytes": 7
+        },
+        {
+          "name": "reasons_json",
+          "type": "TEXT",
+          "bytes": 498088,
+          "max_bytes": 40,
+          "non_null": 33015,
+          "average_bytes": 15
+        },
+        {
+          "name": "assessed_at",
+          "type": "TEXT",
+          "bytes": 792360,
+          "max_bytes": 24,
+          "non_null": 33015,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 362.4088
+    },
+    {
+      "name": "catalogue_candidates",
+      "rows": 41061,
+      "measured_at": "2026-10-14T14:30:46.849Z",
+      "elapsed_ms": 530,
+      "logical_payload_bytes": 9518627,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 2463660,
+          "max_bytes": 60,
+          "non_null": 41061,
+          "average_bytes": 60
+        },
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 1888806,
+          "max_bytes": 46,
+          "non_null": 41061,
+          "average_bytes": 46
+        },
+        {
+          "name": "source_document_id",
+          "type": "TEXT",
+          "bytes": 1806684,
+          "max_bytes": 44,
+          "non_null": 41061,
+          "average_bytes": 44
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "bytes": 2036921,
+          "max_bytes": 103,
+          "non_null": 41061,
+          "average_bytes": 50
+        },
+        {
+          "name": "family",
+          "type": "TEXT",
+          "bytes": 337092,
+          "max_bytes": 11,
+          "non_null": 41061,
+          "average_bytes": 8
+        },
+        {
+          "name": "discovered_at",
+          "type": "TEXT",
+          "bytes": 985464,
+          "max_bytes": 24,
+          "non_null": 41061,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 290.1384
+    },
+    {
+      "name": "catalogue_progress",
+      "rows": 41061,
+      "measured_at": "2026-10-14T14:30:47.140Z",
+      "elapsed_ms": 291,
+      "logical_payload_bytes": 4530253,
+      "columns": [
+        {
+          "name": "candidate_id",
+          "type": "TEXT",
+          "bytes": 2463660,
+          "max_bytes": 60,
+          "non_null": 41061,
+          "average_bytes": 60
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 310030,
+          "max_bytes": 9,
+          "non_null": 41061,
+          "average_bytes": 8
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 1105803,
+          "max_bytes": 185,
+          "non_null": 28999,
+          "average_bytes": 38
+        },
+        {
+          "name": "document_id",
+          "type": "TEXT",
+          "bytes": 355828,
+          "max_bytes": 44,
+          "non_null": 8087,
+          "average_bytes": 44
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 55484,
+          "max_bytes": 44,
+          "non_null": 1261,
+          "average_bytes": 44
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 45360,
+          "max_bytes": 36,
+          "non_null": 1260,
+          "average_bytes": 36
+        },
+        {
+          "name": "lease_until",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "checked_at",
+          "type": "TEXT",
+          "bytes": 194088,
+          "max_bytes": 24,
+          "non_null": 8087,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 132.0224
+    },
+    {
+      "name": "catalogue_runs",
+      "rows": 16,
+      "measured_at": "2026-10-14T14:30:47.319Z",
+      "elapsed_ms": 178,
+      "logical_payload_bytes": 2018,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 736,
+          "max_bytes": 46,
+          "non_null": 16,
+          "average_bytes": 46
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 96,
+          "max_bytes": 6,
+          "non_null": 16,
+          "average_bytes": 6
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 384,
+          "max_bytes": 24,
+          "non_null": 16,
+          "average_bytes": 24
+        },
+        {
+          "name": "expires_at",
+          "type": "TEXT",
+          "bytes": 384,
+          "max_bytes": 24,
+          "non_null": 16,
+          "average_bytes": 24
+        },
+        {
+          "name": "stop_reason",
+          "type": "TEXT",
+          "bytes": 418,
+          "max_bytes": 46,
+          "non_null": 16,
+          "average_bytes": 26
+        }
+      ],
+      "query_duration_ms": 0.971
+    },
+    {
+      "name": "commercial_acquisition_policy",
+      "rows": 1,
+      "measured_at": "2026-10-14T14:30:47.613Z",
+      "elapsed_ms": 293,
+      "logical_payload_bytes": 50,
+      "columns": [
+        {
+          "name": "pause_reason",
+          "type": "TEXT",
+          "bytes": 26,
+          "max_bytes": 26,
+          "non_null": 1,
+          "average_bytes": 26
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 24,
+          "max_bytes": 24,
+          "non_null": 1,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.6503
+    },
+    {
+      "name": "commercial_acquisition_policy_history",
+      "rows": 6,
+      "measured_at": "2026-10-14T14:30:47.828Z",
+      "elapsed_ms": 214,
+      "logical_payload_bytes": 850,
+      "columns": [
+        {
+          "name": "policy_json",
+          "type": "TEXT",
+          "bytes": 706,
+          "max_bytes": 137,
+          "non_null": 6,
+          "average_bytes": 118
+        },
+        {
+          "name": "changed_at",
+          "type": "TEXT",
+          "bytes": 144,
+          "max_bytes": 24,
+          "non_null": 6,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.3707
+    },
+    {
+      "name": "commercial_readiness_history",
+      "rows": 33776,
+      "measured_at": "2026-10-14T14:30:48.049Z",
+      "elapsed_ms": 221,
+      "logical_payload_bytes": 7590883,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 3888361,
+          "max_bytes": 117,
+          "non_null": 33776,
+          "average_bytes": 115
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 1215936,
+          "max_bytes": 36,
+          "non_null": 33776,
+          "average_bytes": 36
+        },
+        {
+          "name": "verification_id",
+          "type": "TEXT",
+          "bytes": 1486144,
+          "max_bytes": 44,
+          "non_null": 33776,
+          "average_bytes": 44
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 189818,
+          "max_bytes": 7,
+          "non_null": 33776,
+          "average_bytes": 6
+        },
+        {
+          "name": "occurred_at",
+          "type": "TEXT",
+          "bytes": 810624,
+          "max_bytes": 24,
+          "non_null": 33776,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 52.4809
+    },
+    {
+      "name": "conflicts",
+      "rows": 1097,
+      "measured_at": "2026-10-14T14:30:48.231Z",
+      "elapsed_ms": 182,
+      "logical_payload_bytes": 257397,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 100377,
+          "max_bytes": 102,
+          "non_null": 1097,
+          "average_bytes": 92
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 37908,
+          "max_bytes": 36,
+          "non_null": 1053,
+          "average_bytes": 36
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 48268,
+          "max_bytes": 44,
+          "non_null": 1097,
+          "average_bytes": 44
+        },
+        {
+          "name": "field_name",
+          "type": "TEXT",
+          "bytes": 11933,
+          "max_bytes": 20,
+          "non_null": 907,
+          "average_bytes": 13
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 32583,
+          "max_bytes": 48,
+          "non_null": 1097,
+          "average_bytes": 30
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 26328,
+          "max_bytes": 24,
+          "non_null": 1097,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 11.5837
+    },
+    {
+      "name": "customer_projections",
+      "rows": 0,
+      "measured_at": "2026-10-14T14:30:48.383Z",
+      "elapsed_ms": 151,
+      "logical_payload_bytes": 0,
+      "columns": [
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "payload_json",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        }
+      ],
+      "query_duration_ms": 0.6597
+    },
+    {
+      "name": "d1_migrations",
+      "rows": 22,
+      "measured_at": "2026-10-14T14:30:48.670Z",
+      "elapsed_ms": 286,
+      "logical_payload_bytes": 716,
+      "columns": [
+        {
+          "name": "name",
+          "type": "TEXT",
+          "bytes": 716,
+          "max_bytes": 42,
+          "non_null": 22,
+          "average_bytes": 33
+        }
+      ],
+      "query_duration_ms": 1.0567
+    },
+    {
+      "name": "enrichment_proposals",
+      "rows": 5279,
+      "measured_at": "2026-10-14T14:30:48.929Z",
+      "elapsed_ms": 259,
+      "logical_payload_bytes": 1063859,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 300194,
+          "max_bytes": 65,
+          "non_null": 5279,
+          "average_bytes": 57
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 190044,
+          "max_bytes": 36,
+          "non_null": 5279,
+          "average_bytes": 36
+        },
+        {
+          "name": "fact_id",
+          "type": "TEXT",
+          "bytes": 300194,
+          "max_bytes": 65,
+          "non_null": 5279,
+          "average_bytes": 57
+        },
+        {
+          "name": "decision",
+          "type": "TEXT",
+          "bytes": 42232,
+          "max_bytes": 8,
+          "non_null": 5279,
+          "average_bytes": 8
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 104499,
+          "max_bytes": 22,
+          "non_null": 5279,
+          "average_bytes": 20
+        },
+        {
+          "name": "proposed_at",
+          "type": "TEXT",
+          "bytes": 126696,
+          "max_bytes": 24,
+          "non_null": 5279,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 59.0602
+    },
+    {
+      "name": "entities",
+      "rows": 7385,
+      "measured_at": "2026-10-14T14:30:49.134Z",
+      "elapsed_ms": 205,
+      "logical_payload_bytes": 696402,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 265860,
+          "max_bytes": 36,
+          "non_null": 7385,
+          "average_bytes": 36
+        },
+        {
+          "name": "market",
+          "type": "TEXT",
+          "bytes": 14770,
+          "max_bytes": 2,
+          "non_null": 7385,
+          "average_bytes": 2
+        },
+        {
+          "name": "edition",
+          "type": "TEXT",
+          "bytes": 17200,
+          "max_bytes": 4,
+          "non_null": 4300,
+          "average_bytes": 4
+        },
+        {
+          "name": "environment",
+          "type": "TEXT",
+          "bytes": 44092,
+          "max_bytes": 6,
+          "non_null": 7385,
+          "average_bytes": 6
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 177240,
+          "max_bytes": 24,
+          "non_null": 7385,
+          "average_bytes": 24
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 177240,
+          "max_bytes": 24,
+          "non_null": 7385,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 8.3022
+    },
+    {
+      "name": "entity_facts",
+      "rows": 247624,
+      "measured_at": "2026-10-14T14:30:50.369Z",
+      "elapsed_ms": 1233,
+      "logical_payload_bytes": 23240353,
+      "columns": [
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 8914464,
+          "max_bytes": 36,
+          "non_null": 247624,
+          "average_bytes": 36
+        },
+        {
+          "name": "fact_id",
+          "type": "TEXT",
+          "bytes": 14325889,
+          "max_bytes": 65,
+          "non_null": 247624,
+          "average_bytes": 58
+        }
+      ],
+      "query_duration_ms": 1080.9338
+    },
+    {
+      "name": "entity_records",
+      "rows": 22830,
+      "measured_at": "2026-10-14T14:30:50.818Z",
+      "elapsed_ms": 449,
+      "logical_payload_bytes": 1826415,
+      "columns": [
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 1004535,
+          "max_bytes": 47,
+          "non_null": 22830,
+          "average_bytes": 44
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 821880,
+          "max_bytes": 36,
+          "non_null": 22830,
+          "average_bytes": 36
+        }
+      ],
+      "query_duration_ms": 19.6756
+    },
+    {
+      "name": "field_selections",
+      "rows": 60975,
+      "measured_at": "2026-10-14T14:30:51.076Z",
+      "elapsed_ms": 257,
+      "logical_payload_bytes": 6524576,
+      "columns": [
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 2195100,
+          "max_bytes": 36,
+          "non_null": 60975,
+          "average_bytes": 36
+        },
+        {
+          "name": "field_name",
+          "type": "TEXT",
+          "bytes": 792718,
+          "max_bytes": 20,
+          "non_null": 60975,
+          "average_bytes": 13
+        },
+        {
+          "name": "fact_id",
+          "type": "TEXT",
+          "bytes": 3536758,
+          "max_bytes": 65,
+          "non_null": 60975,
+          "average_bytes": 58
+        }
+      ],
+      "query_duration_ms": 107.5993
+    },
+    {
+      "name": "identity_keys",
+      "rows": 45750,
+      "measured_at": "2026-10-14T14:30:51.350Z",
+      "elapsed_ms": 273,
+      "logical_payload_bytes": 2995782,
+      "columns": [
+        {
+          "name": "environment",
+          "type": "TEXT",
+          "bytes": 273472,
+          "max_bytes": 6,
+          "non_null": 45750,
+          "average_bytes": 6
+        },
+        {
+          "name": "market",
+          "type": "TEXT",
+          "bytes": 91500,
+          "max_bytes": 2,
+          "non_null": 45750,
+          "average_bytes": 2
+        },
+        {
+          "name": "identity_key",
+          "type": "TEXT",
+          "bytes": 983810,
+          "max_bytes": 535,
+          "non_null": 45750,
+          "average_bytes": 22
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 1647000,
+          "max_bytes": 36,
+          "non_null": 45750,
+          "average_bytes": 36
+        }
+      ],
+      "query_duration_ms": 122.7027
+    },
+    {
+      "name": "jobs",
+      "rows": 175850,
+      "measured_at": "2026-10-14T14:30:52.008Z",
+      "elapsed_ms": 659,
+      "logical_payload_bytes": 45378662,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 6330646,
+          "max_bytes": 52,
+          "non_null": 175850,
+          "average_bytes": 36
+        },
+        {
+          "name": "stage",
+          "type": "TEXT",
+          "bytes": 1535394,
+          "max_bytes": 11,
+          "non_null": 175850,
+          "average_bytes": 9
+        },
+        {
+          "name": "dedupe_key",
+          "type": "TEXT",
+          "bytes": 10967749,
+          "max_bytes": 127,
+          "non_null": 175850,
+          "average_bytes": 62
+        },
+        {
+          "name": "payload_json",
+          "type": "TEXT",
+          "bytes": 12498845,
+          "max_bytes": 147,
+          "non_null": 175850,
+          "average_bytes": 71
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 1384828,
+          "max_bytes": 8,
+          "non_null": 175850,
+          "average_bytes": 8
+        },
+        {
+          "name": "available_at",
+          "type": "TEXT",
+          "bytes": 4220400,
+          "max_bytes": 24,
+          "non_null": 175850,
+          "average_bytes": 24
+        },
+        {
+          "name": "lease_until",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "lease_token",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "last_error",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 4220400,
+          "max_bytes": 24,
+          "non_null": 175850,
+          "average_bytes": 24
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 4220400,
+          "max_bytes": 24,
+          "non_null": 175850,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 483.6808
+    },
+    {
+      "name": "legacy_quality_holds",
+      "rows": 173,
+      "measured_at": "2026-10-14T14:30:52.164Z",
+      "elapsed_ms": 155,
+      "logical_payload_bytes": 24143,
+      "columns": [
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 7612,
+          "max_bytes": 44,
+          "non_null": 173,
+          "average_bytes": 44
+        },
+        {
+          "name": "rules_version",
+          "type": "TEXT",
+          "bytes": 4002,
+          "max_bytes": 24,
+          "non_null": 173,
+          "average_bytes": 23
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 8377,
+          "max_bytes": 51,
+          "non_null": 173,
+          "average_bytes": 48
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 4152,
+          "max_bytes": 24,
+          "non_null": 173,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 1.3819
+    },
+    {
+      "name": "legacy_recovery_claims",
+      "rows": 32246,
+      "measured_at": "2026-10-14T14:30:52.468Z",
+      "elapsed_ms": 303,
+      "logical_payload_bytes": 5828600,
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 2289466,
+          "max_bytes": 71,
+          "non_null": 32246,
+          "average_bytes": 71
+        },
+        {
+          "name": "legacy_id",
+          "type": "TEXT",
+          "bytes": 1475390,
+          "max_bytes": 46,
+          "non_null": 32246,
+          "average_bytes": 46
+        },
+        {
+          "name": "content_hash",
+          "type": "TEXT",
+          "bytes": 2063744,
+          "max_bytes": 64,
+          "non_null": 32246,
+          "average_bytes": 64
+        }
+      ],
+      "query_duration_ms": 135.2269
+    },
+    {
+      "name": "legacy_recovery_records",
+      "rows": 32240,
+      "measured_at": "2026-10-14T14:30:52.957Z",
+      "elapsed_ms": 489,
+      "logical_payload_bytes": 50022968,
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 2289040,
+          "max_bytes": 71,
+          "non_null": 32240,
+          "average_bytes": 71
+        },
+        {
+          "name": "legacy_id",
+          "type": "TEXT",
+          "bytes": 1475132,
+          "max_bytes": 46,
+          "non_null": 32240,
+          "average_bytes": 46
+        },
+        {
+          "name": "content_hash",
+          "type": "TEXT",
+          "bytes": 2063360,
+          "max_bytes": 64,
+          "non_null": 32240,
+          "average_bytes": 64
+        },
+        {
+          "name": "references_json",
+          "type": "TEXT",
+          "bytes": 2236088,
+          "max_bytes": 202,
+          "non_null": 32240,
+          "average_bytes": 69
+        },
+        {
+          "name": "category",
+          "type": "TEXT",
+          "bytes": 358573,
+          "max_bytes": 17,
+          "non_null": 32240,
+          "average_bytes": 11
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 1336865,
+          "max_bytes": 51,
+          "non_null": 32240,
+          "average_bytes": 41
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 297616,
+          "max_bytes": 44,
+          "non_null": 6764,
+          "average_bytes": 44
+        },
+        {
+          "name": "field_audit_json",
+          "type": "TEXT",
+          "bytes": 39192534,
+          "max_bytes": 1250,
+          "non_null": 32240,
+          "average_bytes": 1216
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 773760,
+          "max_bytes": 24,
+          "non_null": 32240,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 324.4647
+    },
+    {
+      "name": "legacy_recovery_runs",
+      "rows": 2,
+      "measured_at": "2026-10-14T14:30:53.130Z",
+      "elapsed_ms": 173,
+      "logical_payload_bytes": 746,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 142,
+          "max_bytes": 71,
+          "non_null": 2,
+          "average_bytes": 71
+        },
+        {
+          "name": "snapshot_hash",
+          "type": "TEXT",
+          "bytes": 128,
+          "max_bytes": 64,
+          "non_null": 2,
+          "average_bytes": 64
+        },
+        {
+          "name": "source_counts_json",
+          "type": "TEXT",
+          "bytes": 294,
+          "max_bytes": 147,
+          "non_null": 2,
+          "average_bytes": 147
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 15,
+          "max_bytes": 8,
+          "non_null": 2,
+          "average_bytes": 8
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        },
+        {
+          "name": "superseded_by",
+          "type": "TEXT",
+          "bytes": 71,
+          "max_bytes": 71,
+          "non_null": 1,
+          "average_bytes": 71
+        }
+      ],
+      "query_duration_ms": 2.5575
+    },
+    {
+      "name": "lifecycle_observation_resolutions",
+      "rows": 255,
+      "measured_at": "2026-10-14T14:30:53.367Z",
+      "elapsed_ms": 236,
+      "logical_payload_bytes": 299922,
+      "columns": [
+        {
+          "name": "conflict_id",
+          "type": "TEXT",
+          "bytes": 24735,
+          "max_bytes": 97,
+          "non_null": 255,
+          "average_bytes": 97
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 9180,
+          "max_bytes": 36,
+          "non_null": 255,
+          "average_bytes": 36
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 11220,
+          "max_bytes": 44,
+          "non_null": 255,
+          "average_bytes": 44
+        },
+        {
+          "name": "incoming_fact_id",
+          "type": "TEXT",
+          "bytes": 15300,
+          "max_bytes": 60,
+          "non_null": 255,
+          "average_bytes": 60
+        },
+        {
+          "name": "selected_fact_id",
+          "type": "TEXT",
+          "bytes": 15300,
+          "max_bytes": 60,
+          "non_null": 255,
+          "average_bytes": 60
+        },
+        {
+          "name": "policy_version",
+          "type": "TEXT",
+          "bytes": 6120,
+          "max_bytes": 24,
+          "non_null": 255,
+          "average_bytes": 24
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 11220,
+          "max_bytes": 44,
+          "non_null": 255,
+          "average_bytes": 44
+        },
+        {
+          "name": "evidence_json",
+          "type": "TEXT",
+          "bytes": 200727,
+          "max_bytes": 796,
+          "non_null": 255,
+          "average_bytes": 787
+        },
+        {
+          "name": "resolved_at",
+          "type": "TEXT",
+          "bytes": 6120,
+          "max_bytes": 24,
+          "non_null": 255,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 18.8366
+    },
+    {
+      "name": "official_source_review_outcomes",
+      "rows": 5,
+      "measured_at": "2026-10-14T14:30:53.552Z",
+      "elapsed_ms": 184,
+      "logical_payload_bytes": 1460,
+      "columns": [
+        {
+          "name": "candidate_id",
+          "type": "TEXT",
+          "bytes": 265,
+          "max_bytes": 53,
+          "non_null": 5,
+          "average_bytes": 53
+        },
+        {
+          "name": "review_record_id",
+          "type": "TEXT",
+          "bytes": 235,
+          "max_bytes": 47,
+          "non_null": 5,
+          "average_bytes": 47
+        },
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 195,
+          "max_bytes": 39,
+          "non_null": 5,
+          "average_bytes": 39
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 220,
+          "max_bytes": 44,
+          "non_null": 5,
+          "average_bytes": 44
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 180,
+          "max_bytes": 36,
+          "non_null": 5,
+          "average_bytes": 36
+        },
+        {
+          "name": "verification_id",
+          "type": "TEXT",
+          "bytes": 220,
+          "max_bytes": 44,
+          "non_null": 5,
+          "average_bytes": 44
+        },
+        {
+          "name": "readiness_at_review",
+          "type": "TEXT",
+          "bytes": 25,
+          "max_bytes": 5,
+          "non_null": 5,
+          "average_bytes": 5
+        },
+        {
+          "name": "reviewed_at",
+          "type": "TEXT",
+          "bytes": 120,
+          "max_bytes": 24,
+          "non_null": 5,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 1.2908
+    },
+    {
+      "name": "official_source_supersessions",
+      "rows": 45,
+      "measured_at": "2026-10-14T14:30:53.825Z",
+      "elapsed_ms": 272,
+      "logical_payload_bytes": 14565,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 1980,
+          "max_bytes": 44,
+          "non_null": 45,
+          "average_bytes": 44
+        },
+        {
+          "name": "review_record_id",
+          "type": "TEXT",
+          "bytes": 2115,
+          "max_bytes": 47,
+          "non_null": 45,
+          "average_bytes": 47
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 1620,
+          "max_bytes": 36,
+          "non_null": 45,
+          "average_bytes": 36
+        },
+        {
+          "name": "field_name",
+          "type": "TEXT",
+          "bytes": 535,
+          "max_bytes": 17,
+          "non_null": 45,
+          "average_bytes": 12
+        },
+        {
+          "name": "previous_fact_id",
+          "type": "TEXT",
+          "bytes": 2560,
+          "max_bytes": 62,
+          "non_null": 45,
+          "average_bytes": 57
+        },
+        {
+          "name": "next_fact_id",
+          "type": "TEXT",
+          "bytes": 2695,
+          "max_bytes": 65,
+          "non_null": 45,
+          "average_bytes": 60
+        },
+        {
+          "name": "document_id",
+          "type": "TEXT",
+          "bytes": 1980,
+          "max_bytes": 44,
+          "non_null": 45,
+          "average_bytes": 44
+        },
+        {
+          "name": "reviewed_at",
+          "type": "TEXT",
+          "bytes": 1080,
+          "max_bytes": 24,
+          "non_null": 45,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 1.9937
+    },
+    {
+      "name": "pilot_run_grants",
+      "rows": 6,
+      "measured_at": "2026-10-14T14:30:54.019Z",
+      "elapsed_ms": 193,
+      "logical_payload_bytes": 1682,
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 270,
+          "max_bytes": 45,
+          "non_null": 6,
+          "average_bytes": 45
+        },
+        {
+          "name": "pilot_id",
+          "type": "TEXT",
+          "bytes": 252,
+          "max_bytes": 42,
+          "non_null": 6,
+          "average_bytes": 42
+        },
+        {
+          "name": "city_id",
+          "type": "TEXT",
+          "bytes": 40,
+          "max_bytes": 7,
+          "non_null": 6,
+          "average_bytes": 7
+        },
+        {
+          "name": "queries_json",
+          "type": "TEXT",
+          "bytes": 928,
+          "max_bytes": 164,
+          "non_null": 6,
+          "average_bytes": 155
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 8,
+          "non_null": 6,
+          "average_bytes": 8
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 144,
+          "max_bytes": 24,
+          "non_null": 6,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.363
+    },
+    {
+      "name": "producer_recheck_acknowledgements",
+      "rows": 9762,
+      "measured_at": "2026-10-14T14:30:54.373Z",
+      "elapsed_ms": 353,
+      "logical_payload_bytes": 2274546,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 419766,
+          "max_bytes": 43,
+          "non_null": 9762,
+          "average_bytes": 43
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 351432,
+          "max_bytes": 36,
+          "non_null": 9762,
+          "average_bytes": 36
+        },
+        {
+          "name": "requested_at",
+          "type": "TEXT",
+          "bytes": 234288,
+          "max_bytes": 24,
+          "non_null": 9762,
+          "average_bytes": 24
+        },
+        {
+          "name": "request_reason",
+          "type": "TEXT",
+          "bytes": 165954,
+          "max_bytes": 17,
+          "non_null": 9762,
+          "average_bytes": 17
+        },
+        {
+          "name": "producer_record_id",
+          "type": "TEXT",
+          "bytes": 244050,
+          "max_bytes": 25,
+          "non_null": 9762,
+          "average_bytes": 25
+        },
+        {
+          "name": "accepted_record_id",
+          "type": "TEXT",
+          "bytes": 429528,
+          "max_bytes": 44,
+          "non_null": 9762,
+          "average_bytes": 44
+        },
+        {
+          "name": "source_last_checked",
+          "type": "TEXT",
+          "bytes": 195240,
+          "max_bytes": 20,
+          "non_null": 9762,
+          "average_bytes": 20
+        },
+        {
+          "name": "acknowledged_at",
+          "type": "TEXT",
+          "bytes": 234288,
+          "max_bytes": 24,
+          "non_null": 9762,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 167.3619
+    },
+    {
+      "name": "producer_recheck_resolutions",
+      "rows": 2,
+      "measured_at": "2026-10-14T14:30:54.577Z",
+      "elapsed_ms": 204,
+      "logical_payload_bytes": 1493,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 100,
+          "max_bytes": 50,
+          "non_null": 2,
+          "average_bytes": 50
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 72,
+          "max_bytes": 36,
+          "non_null": 2,
+          "average_bytes": 36
+        },
+        {
+          "name": "requested_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        },
+        {
+          "name": "request_reason",
+          "type": "TEXT",
+          "bytes": 34,
+          "max_bytes": 17,
+          "non_null": 2,
+          "average_bytes": 17
+        },
+        {
+          "name": "producer_record_id",
+          "type": "TEXT",
+          "bytes": 50,
+          "max_bytes": 25,
+          "non_null": 2,
+          "average_bytes": 25
+        },
+        {
+          "name": "accepted_record_id",
+          "type": "TEXT",
+          "bytes": 88,
+          "max_bytes": 44,
+          "non_null": 2,
+          "average_bytes": 44
+        },
+        {
+          "name": "resolution",
+          "type": "TEXT",
+          "bytes": 42,
+          "max_bytes": 21,
+          "non_null": 2,
+          "average_bytes": 21
+        },
+        {
+          "name": "evidence_ref",
+          "type": "TEXT",
+          "bytes": 114,
+          "max_bytes": 57,
+          "non_null": 2,
+          "average_bytes": 57
+        },
+        {
+          "name": "evidence_hash",
+          "type": "TEXT",
+          "bytes": 128,
+          "max_bytes": 64,
+          "non_null": 2,
+          "average_bytes": 64
+        },
+        {
+          "name": "evidence_json",
+          "type": "TEXT",
+          "bytes": 759,
+          "max_bytes": 391,
+          "non_null": 2,
+          "average_bytes": 380
+        },
+        {
+          "name": "reviewed_by",
+          "type": "TEXT",
+          "bytes": 10,
+          "max_bytes": 5,
+          "non_null": 2,
+          "average_bytes": 5
+        },
+        {
+          "name": "reviewed_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.5917
+    },
+    {
+      "name": "producer_records",
+      "rows": 28269,
+      "measured_at": "2026-10-14T14:30:57.418Z",
+      "elapsed_ms": 2841,
+      "logical_payload_bytes": 272049193,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 1243851,
+          "max_bytes": 47,
+          "non_null": 28269,
+          "average_bytes": 44
+        },
+        {
+          "name": "producer_name",
+          "type": "TEXT",
+          "bytes": 528279,
+          "max_bytes": 31,
+          "non_null": 28269,
+          "average_bytes": 19
+        },
+        {
+          "name": "producer_type",
+          "type": "TEXT",
+          "bytes": 325507,
+          "max_bytes": 20,
+          "non_null": 28269,
+          "average_bytes": 12
+        },
+        {
+          "name": "producer_record_id",
+          "type": "TEXT",
+          "bytes": 939852,
+          "max_bytes": 91,
+          "non_null": 28269,
+          "average_bytes": 33
+        },
+        {
+          "name": "environment",
+          "type": "TEXT",
+          "bytes": 168660,
+          "max_bytes": 6,
+          "non_null": 28269,
+          "average_bytes": 6
+        },
+        {
+          "name": "market",
+          "type": "TEXT",
+          "bytes": 56534,
+          "max_bytes": 2,
+          "non_null": 28267,
+          "average_bytes": 2
+        },
+        {
+          "name": "content_hash",
+          "type": "TEXT",
+          "bytes": 1809216,
+          "max_bytes": 64,
+          "non_null": 28269,
+          "average_bytes": 64
+        },
+        {
+          "name": "raw_json",
+          "type": "TEXT",
+          "bytes": 154240518,
+          "max_bytes": 23557,
+          "non_null": 28269,
+          "average_bytes": 5456
+        },
+        {
+          "name": "normalized_json",
+          "type": "TEXT",
+          "bytes": 111775483,
+          "max_bytes": 23900,
+          "non_null": 22983,
+          "average_bytes": 4863
+        },
+        {
+          "name": "validation_status",
+          "type": "TEXT",
+          "bytes": 226152,
+          "max_bytes": 8,
+          "non_null": 28269,
+          "average_bytes": 8
+        },
+        {
+          "name": "errors_json",
+          "type": "TEXT",
+          "bytes": 56685,
+          "max_bytes": 99,
+          "non_null": 28269,
+          "average_bytes": 2
+        },
+        {
+          "name": "received_at",
+          "type": "TEXT",
+          "bytes": 678456,
+          "max_bytes": 24,
+          "non_null": 28269,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 2678.2682
+    },
+    {
+      "name": "publication_queue",
+      "rows": 0,
+      "measured_at": "2026-10-14T14:30:57.609Z",
+      "elapsed_ms": 191,
+      "logical_payload_bytes": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        }
+      ],
+      "query_duration_ms": 0.6212
+    },
+    {
+      "name": "quality_gates",
+      "rows": 1,
+      "measured_at": "2026-10-14T14:30:57.770Z",
+      "elapsed_ms": 160,
+      "logical_payload_bytes": 433,
+      "columns": [
+        {
+          "name": "name",
+          "type": "TEXT",
+          "bytes": 27,
+          "max_bytes": 27,
+          "non_null": 1,
+          "average_bytes": 27
+        },
+        {
+          "name": "report_json",
+          "type": "TEXT",
+          "bytes": 318,
+          "max_bytes": 318,
+          "non_null": 1,
+          "average_bytes": 318
+        },
+        {
+          "name": "report_hash",
+          "type": "TEXT",
+          "bytes": 64,
+          "max_bytes": 64,
+          "non_null": 1,
+          "average_bytes": 64
+        },
+        {
+          "name": "passed_at",
+          "type": "TEXT",
+          "bytes": 24,
+          "max_bytes": 24,
+          "non_null": 1,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.4889
+    },
+    {
+      "name": "queue_dispatches",
+      "rows": 157681,
+      "measured_at": "2026-10-14T14:30:58.425Z",
+      "elapsed_ms": 655,
+      "logical_payload_bytes": 9460860,
+      "columns": [
+        {
+          "name": "job_id",
+          "type": "TEXT",
+          "bytes": 5676516,
+          "max_bytes": 36,
+          "non_null": 157681,
+          "average_bytes": 36
+        },
+        {
+          "name": "last_sent_at",
+          "type": "TEXT",
+          "bytes": 3784344,
+          "max_bytes": 24,
+          "non_null": 157681,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 487.0208
+    },
+    {
+      "name": "readiness",
+      "rows": 7337,
+      "measured_at": "2026-10-14T14:30:58.632Z",
+      "elapsed_ms": 206,
+      "logical_payload_bytes": 1568433,
+      "columns": [
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 264132,
+          "max_bytes": 36,
+          "non_null": 7337,
+          "average_bytes": 36
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 46267,
+          "max_bytes": 7,
+          "non_null": 7337,
+          "average_bytes": 6
+        },
+        {
+          "name": "reasons_json",
+          "type": "TEXT",
+          "bytes": 612378,
+          "max_bytes": 372,
+          "non_null": 7337,
+          "average_bytes": 83
+        },
+        {
+          "name": "snapshot_hash",
+          "type": "TEXT",
+          "bytes": 469568,
+          "max_bytes": 64,
+          "non_null": 7337,
+          "average_bytes": 64
+        },
+        {
+          "name": "evaluated_at",
+          "type": "TEXT",
+          "bytes": 176088,
+          "max_bytes": 24,
+          "non_null": 7337,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 9.5737
+    },
+    {
+      "name": "recheck_requests",
+      "rows": 6123,
+      "measured_at": "2026-10-14T14:30:58.841Z",
+      "elapsed_ms": 209,
+      "logical_payload_bytes": 471471,
+      "columns": [
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 220428,
+          "max_bytes": 36,
+          "non_null": 6123,
+          "average_bytes": 36
+        },
+        {
+          "name": "requested_at",
+          "type": "TEXT",
+          "bytes": 146952,
+          "max_bytes": 24,
+          "non_null": 6123,
+          "average_bytes": 24
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 104091,
+          "max_bytes": 17,
+          "non_null": 6123,
+          "average_bytes": 17
+        }
+      ],
+      "query_duration_ms": 53.2547
+    },
+    {
+      "name": "reconciliation_decisions",
+      "rows": 22983,
+      "measured_at": "2026-10-14T14:30:59.167Z",
+      "elapsed_ms": 325,
+      "logical_payload_bytes": 3821450,
+      "columns": [
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 1011252,
+          "max_bytes": 44,
+          "non_null": 22983,
+          "average_bytes": 44
+        },
+        {
+          "name": "outcome",
+          "type": "TEXT",
+          "bytes": 245848,
+          "max_bytes": 15,
+          "non_null": 22983,
+          "average_bytes": 11
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 821520,
+          "max_bytes": 36,
+          "non_null": 22820,
+          "average_bytes": 36
+        },
+        {
+          "name": "candidates_json",
+          "type": "TEXT",
+          "bytes": 637964,
+          "max_bytes": 118,
+          "non_null": 22983,
+          "average_bytes": 28
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 553274,
+          "max_bytes": 48,
+          "non_null": 22983,
+          "average_bytes": 24
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 551592,
+          "max_bytes": 24,
+          "non_null": 22983,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 143.2193
+    },
+    {
+      "name": "runtime_policy",
+      "rows": 1,
+      "measured_at": "2026-10-14T14:30:59.344Z",
+      "elapsed_ms": 176,
+      "logical_payload_bytes": 0,
+      "columns": [],
+      "query_duration_ms": 0.2547
+    },
+    {
+      "name": "selection_audit",
+      "rows": 247742,
+      "measured_at": "2026-10-14T14:31:01.368Z",
+      "elapsed_ms": 2024,
+      "logical_payload_bytes": 57670589,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 8918712,
+          "max_bytes": 36,
+          "non_null": 247742,
+          "average_bytes": 36
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 8918712,
+          "max_bytes": 36,
+          "non_null": 247742,
+          "average_bytes": 36
+        },
+        {
+          "name": "field_name",
+          "type": "TEXT",
+          "bytes": 3184102,
+          "max_bytes": 20,
+          "non_null": 247742,
+          "average_bytes": 13
+        },
+        {
+          "name": "proposed_fact_id",
+          "type": "TEXT",
+          "bytes": 14332657,
+          "max_bytes": 65,
+          "non_null": 247742,
+          "average_bytes": 58
+        },
+        {
+          "name": "previous_fact_id",
+          "type": "TEXT",
+          "bytes": 10796256,
+          "max_bytes": 65,
+          "non_null": 186767,
+          "average_bytes": 58
+        },
+        {
+          "name": "decision",
+          "type": "TEXT",
+          "bytes": 2656188,
+          "max_bytes": 12,
+          "non_null": 247742,
+          "average_bytes": 11
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 2918154,
+          "max_bytes": 37,
+          "non_null": 247742,
+          "average_bytes": 12
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 5945808,
+          "max_bytes": 24,
+          "non_null": 247742,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 1767.1424
+    },
+    {
+      "name": "serper_policy",
+      "rows": 1,
+      "measured_at": "2026-10-14T14:31:01.538Z",
+      "elapsed_ms": 169,
+      "logical_payload_bytes": 24,
+      "columns": [
+        {
+          "name": "pause_until",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "pause_reason",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 24,
+          "max_bytes": 24,
+          "non_null": 1,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.682
+    },
+    {
+      "name": "serper_run_records",
+      "rows": 27,
+      "measured_at": "2026-10-14T14:31:01.694Z",
+      "elapsed_ms": 156,
+      "logical_payload_bytes": 4358,
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 1223,
+          "max_bytes": 49,
+          "non_null": 27,
+          "average_bytes": 45
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 1188,
+          "max_bytes": 44,
+          "non_null": 27,
+          "average_bytes": 44
+        },
+        {
+          "name": "usage_id",
+          "type": "TEXT",
+          "bytes": 1299,
+          "max_bytes": 50,
+          "non_null": 27,
+          "average_bytes": 48
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 648,
+          "max_bytes": 24,
+          "non_null": 27,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 1.1157
+    },
+    {
+      "name": "serper_usage",
+      "rows": 29,
+      "measured_at": "2026-10-14T14:31:01.848Z",
+      "elapsed_ms": 153,
+      "logical_payload_bytes": 8761,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 1366,
+          "max_bytes": 50,
+          "non_null": 29,
+          "average_bytes": 47
+        },
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 1367,
+          "max_bytes": 49,
+          "non_null": 29,
+          "average_bytes": 47
+        },
+        {
+          "name": "kind",
+          "type": "TEXT",
+          "bytes": 118,
+          "max_bytes": 6,
+          "non_null": 29,
+          "average_bytes": 4
+        },
+        {
+          "name": "producer",
+          "type": "TEXT",
+          "bytes": 415,
+          "max_bytes": 17,
+          "non_null": 29,
+          "average_bytes": 14
+        },
+        {
+          "name": "lane",
+          "type": "TEXT",
+          "bytes": 448,
+          "max_bytes": 16,
+          "non_null": 29,
+          "average_bytes": 15
+        },
+        {
+          "name": "market",
+          "type": "TEXT",
+          "bytes": 58,
+          "max_bytes": 2,
+          "non_null": 29,
+          "average_bytes": 2
+        },
+        {
+          "name": "region",
+          "type": "TEXT",
+          "bytes": 93,
+          "max_bytes": 6,
+          "non_null": 17,
+          "average_bytes": 5
+        },
+        {
+          "name": "query_hash",
+          "type": "TEXT",
+          "bytes": 1792,
+          "max_bytes": 64,
+          "non_null": 28,
+          "average_bytes": 64
+        },
+        {
+          "name": "credits_source",
+          "type": "TEXT",
+          "bytes": 494,
+          "max_bytes": 18,
+          "non_null": 29,
+          "average_bytes": 17
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 232,
+          "max_bytes": 8,
+          "non_null": 29,
+          "average_bytes": 8
+        },
+        {
+          "name": "budget_day",
+          "type": "TEXT",
+          "bytes": 290,
+          "max_bytes": 10,
+          "non_null": 29,
+          "average_bytes": 10
+        },
+        {
+          "name": "reserved_at",
+          "type": "TEXT",
+          "bytes": 696,
+          "max_bytes": 24,
+          "non_null": 29,
+          "average_bytes": 24
+        },
+        {
+          "name": "dispatched_at",
+          "type": "TEXT",
+          "bytes": 696,
+          "max_bytes": 24,
+          "non_null": 29,
+          "average_bytes": 24
+        },
+        {
+          "name": "completed_at",
+          "type": "TEXT",
+          "bytes": 696,
+          "max_bytes": 24,
+          "non_null": 29,
+          "average_bytes": 24
+        },
+        {
+          "name": "error_code",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        }
+      ],
+      "query_duration_ms": 1.5215
+    },
+    {
+      "name": "shadow_projections",
+      "rows": 7337,
+      "measured_at": "2026-10-14T14:31:02.431Z",
+      "elapsed_ms": 582,
+      "logical_payload_bytes": 9898167,
+      "columns": [
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 264132,
+          "max_bytes": 36,
+          "non_null": 7337,
+          "average_bytes": 36
+        },
+        {
+          "name": "payload_json",
+          "type": "TEXT",
+          "bytes": 9457947,
+          "max_bytes": 2443,
+          "non_null": 7337,
+          "average_bytes": 1289
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 176088,
+          "max_bytes": 24,
+          "non_null": 7337,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 439.9516
+    },
+    {
+      "name": "source_facts",
+      "rows": 248948,
+      "measured_at": "2026-10-14T14:31:45.750Z",
+      "elapsed_ms": 13311,
+      "logical_payload_bytes": 476123592,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 14402659,
+          "max_bytes": 65,
+          "non_null": 248948,
+          "average_bytes": 58
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 10953877,
+          "max_bytes": 47,
+          "non_null": 248948,
+          "average_bytes": 44
+        },
+        {
+          "name": "field_name",
+          "type": "TEXT",
+          "bytes": 3199834,
+          "max_bytes": 20,
+          "non_null": 248948,
+          "average_bytes": 13
+        },
+        {
+          "name": "value_json",
+          "type": "TEXT",
+          "bytes": 6205920,
+          "max_bytes": 530,
+          "non_null": 248948,
+          "average_bytes": 25
+        },
+        {
+          "name": "source_url",
+          "type": "TEXT",
+          "bytes": 13543673,
+          "max_bytes": 372,
+          "non_null": 248948,
+          "average_bytes": 54
+        },
+        {
+          "name": "evidence_json",
+          "type": "TEXT",
+          "bytes": 236437107,
+          "max_bytes": 19195,
+          "non_null": 248948,
+          "average_bytes": 950
+        },
+        {
+          "name": "provenance_json",
+          "type": "TEXT",
+          "bytes": 185405770,
+          "max_bytes": 4779,
+          "non_null": 248948,
+          "average_bytes": 745
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 5974752,
+          "max_bytes": 24,
+          "non_null": 248948,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 3645.1362
+    },
+    {
+      "name": "source_led_candidate_progress",
+      "rows": 90,
+      "measured_at": "2026-10-14T14:31:46.113Z",
+      "elapsed_ms": 360,
+      "logical_payload_bytes": 8376976,
+      "columns": [
+        {
+          "name": "candidate_id",
+          "type": "TEXT",
+          "bytes": 4500,
+          "max_bytes": 50,
+          "non_null": 90,
+          "average_bytes": 50
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 919,
+          "max_bytes": 15,
+          "non_null": 90,
+          "average_bytes": 10
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 308,
+          "max_bytes": 44,
+          "non_null": 7,
+          "average_bytes": 44
+        },
+        {
+          "name": "actual_country",
+          "type": "TEXT",
+          "bytes": 36,
+          "max_bytes": 2,
+          "non_null": 18,
+          "average_bytes": 2
+        },
+        {
+          "name": "document_json",
+          "type": "TEXT",
+          "bytes": 8253681,
+          "max_bytes": 801413,
+          "non_null": 53,
+          "average_bytes": 155730
+        },
+        {
+          "name": "report_json",
+          "type": "TEXT",
+          "bytes": 114343,
+          "max_bytes": 11750,
+          "non_null": 53,
+          "average_bytes": 2157
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 1917,
+          "max_bytes": 112,
+          "non_null": 90,
+          "average_bytes": 21
+        },
+        {
+          "name": "checked_at",
+          "type": "TEXT",
+          "bytes": 1272,
+          "max_bytes": 24,
+          "non_null": 53,
+          "average_bytes": 24
+        },
+        {
+          "name": "lease_until",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        }
+      ],
+      "query_duration_ms": 24.9058
+    },
+    {
+      "name": "source_led_candidates",
+      "rows": 90,
+      "measured_at": "2026-10-14T14:31:46.280Z",
+      "elapsed_ms": 166,
+      "logical_payload_bytes": 81162,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 4500,
+          "max_bytes": 50,
+          "non_null": 90,
+          "average_bytes": 50
+        },
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 4410,
+          "max_bytes": 49,
+          "non_null": 90,
+          "average_bytes": 49
+        },
+        {
+          "name": "usage_id",
+          "type": "TEXT",
+          "bytes": 4230,
+          "max_bytes": 47,
+          "non_null": 90,
+          "average_bytes": 47
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "bytes": 7057,
+          "max_bytes": 133,
+          "non_null": 90,
+          "average_bytes": 78
+        },
+        {
+          "name": "url_key",
+          "type": "TEXT",
+          "bytes": 5692,
+          "max_bytes": 133,
+          "non_null": 90,
+          "average_bytes": 63
+        },
+        {
+          "name": "family",
+          "type": "TEXT",
+          "bytes": 1149,
+          "max_bytes": 18,
+          "non_null": 90,
+          "average_bytes": 13
+        },
+        {
+          "name": "discovery_json",
+          "type": "TEXT",
+          "bytes": 51251,
+          "max_bytes": 826,
+          "non_null": 90,
+          "average_bytes": 569
+        },
+        {
+          "name": "discovered_at",
+          "type": "TEXT",
+          "bytes": 2160,
+          "max_bytes": 24,
+          "non_null": 90,
+          "average_bytes": 24
+        },
+        {
+          "name": "initial_disposition",
+          "type": "TEXT",
+          "bytes": 713,
+          "max_bytes": 15,
+          "non_null": 90,
+          "average_bytes": 8
+        }
+      ],
+      "query_duration_ms": 0.9875
+    },
+    {
+      "name": "source_led_grants",
+      "rows": 16,
+      "measured_at": "2026-10-14T14:31:46.482Z",
+      "elapsed_ms": 201,
+      "logical_payload_bytes": 6268,
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 784,
+          "max_bytes": 49,
+          "non_null": 16,
+          "average_bytes": 49
+        },
+        {
+          "name": "programme_id",
+          "type": "TEXT",
+          "bytes": 784,
+          "max_bytes": 58,
+          "non_null": 16,
+          "average_bytes": 49
+        },
+        {
+          "name": "market",
+          "type": "TEXT",
+          "bytes": 32,
+          "max_bytes": 2,
+          "non_null": 16,
+          "average_bytes": 2
+        },
+        {
+          "name": "family",
+          "type": "TEXT",
+          "bytes": 206,
+          "max_bytes": 18,
+          "non_null": 16,
+          "average_bytes": 13
+        },
+        {
+          "name": "query",
+          "type": "TEXT",
+          "bytes": 2926,
+          "max_bytes": 333,
+          "non_null": 16,
+          "average_bytes": 183
+        },
+        {
+          "name": "query_hash",
+          "type": "TEXT",
+          "bytes": 1024,
+          "max_bytes": 64,
+          "non_null": 16,
+          "average_bytes": 64
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 128,
+          "max_bytes": 8,
+          "non_null": 16,
+          "average_bytes": 8
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 384,
+          "max_bytes": 24,
+          "non_null": 16,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.7447
+    },
+    {
+      "name": "source_led_programmes",
+      "rows": 2,
+      "measured_at": "2026-10-14T14:31:46.718Z",
+      "elapsed_ms": 234,
+      "logical_payload_bytes": 7128,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 104,
+          "max_bytes": 58,
+          "non_null": 2,
+          "average_bytes": 52
+        },
+        {
+          "name": "budget_day",
+          "type": "TEXT",
+          "bytes": 20,
+          "max_bytes": 10,
+          "non_null": 2,
+          "average_bytes": 10
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 12,
+          "max_bytes": 6,
+          "non_null": 2,
+          "average_bytes": 6
+        },
+        {
+          "name": "plan_json",
+          "type": "TEXT",
+          "bytes": 6695,
+          "max_bytes": 4882,
+          "non_null": 2,
+          "average_bytes": 3348
+        },
+        {
+          "name": "active_run_id",
+          "type": "TEXT",
+          "bytes": 98,
+          "max_bytes": 49,
+          "non_null": 2,
+          "average_bytes": 49
+        },
+        {
+          "name": "stop_reason",
+          "type": "TEXT",
+          "bytes": 55,
+          "max_bytes": 38,
+          "non_null": 2,
+          "average_bytes": 28
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        },
+        {
+          "name": "expires_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 1.0716
+    },
+    {
+      "name": "source_verifications",
+      "rows": 32956,
+      "measured_at": "2026-10-14T14:31:47.514Z",
+      "elapsed_ms": 795,
+      "logical_payload_bytes": 170725020,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 1450064,
+          "max_bytes": 44,
+          "non_null": 32956,
+          "average_bytes": 44
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 1186416,
+          "max_bytes": 36,
+          "non_null": 32956,
+          "average_bytes": 36
+        },
+        {
+          "name": "document_id",
+          "type": "TEXT",
+          "bytes": 1450064,
+          "max_bytes": 44,
+          "non_null": 32956,
+          "average_bytes": 44
+        },
+        {
+          "name": "verifier_version",
+          "type": "TEXT",
+          "bytes": 494340,
+          "max_bytes": 15,
+          "non_null": 32956,
+          "average_bytes": 15
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 286918,
+          "max_bytes": 10,
+          "non_null": 32956,
+          "average_bytes": 9
+        },
+        {
+          "name": "report_json",
+          "type": "TEXT",
+          "bytes": 164275330,
+          "max_bytes": 36589,
+          "non_null": 32956,
+          "average_bytes": 4985
+        },
+        {
+          "name": "checked_at",
+          "type": "TEXT",
+          "bytes": 790944,
+          "max_bytes": 24,
+          "non_null": 32956,
+          "average_bytes": 24
+        },
+        {
+          "name": "expires_at",
+          "type": "TEXT",
+          "bytes": 790944,
+          "max_bytes": 24,
+          "non_null": 32956,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 573.6396
+    },
+    {
+      "name": "structured_delivery_contacts",
+      "rows": 4822,
+      "measured_at": "2026-10-14T14:31:47.674Z",
+      "elapsed_ms": 159,
+      "logical_payload_bytes": 708068,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 173592,
+          "max_bytes": 36,
+          "non_null": 4822,
+          "average_bytes": 36
+        },
+        {
+          "name": "kind",
+          "type": "TEXT",
+          "bytes": 30010,
+          "max_bytes": 8,
+          "non_null": 4822,
+          "average_bytes": 6
+        },
+        {
+          "name": "environment",
+          "type": "TEXT",
+          "bytes": 28898,
+          "max_bytes": 6,
+          "non_null": 4822,
+          "average_bytes": 6
+        },
+        {
+          "name": "received_at",
+          "type": "TEXT",
+          "bytes": 115728,
+          "max_bytes": 24,
+          "non_null": 4822,
+          "average_bytes": 24
+        },
+        {
+          "name": "batch_hash",
+          "type": "TEXT",
+          "bytes": 274112,
+          "max_bytes": 64,
+          "non_null": 4283,
+          "average_bytes": 64
+        },
+        {
+          "name": "source_last_checked",
+          "type": "TEXT",
+          "bytes": 85728,
+          "max_bytes": 24,
+          "non_null": 4283,
+          "average_bytes": 20
+        }
+      ],
+      "query_duration_ms": 10.8236
+    },
+    {
+      "name": "uk_paid_campaign_programmes",
+      "rows": 1,
+      "measured_at": "2026-10-14T14:31:47.915Z",
+      "elapsed_ms": 240,
+      "logical_payload_bytes": 105,
+      "columns": [
+        {
+          "name": "programme_id",
+          "type": "TEXT",
+          "bytes": 58,
+          "max_bytes": 58,
+          "non_null": 1,
+          "average_bytes": 58
+        },
+        {
+          "name": "campaign_id",
+          "type": "TEXT",
+          "bytes": 47,
+          "max_bytes": 47,
+          "non_null": 1,
+          "average_bytes": 47
+        }
+      ],
+      "query_duration_ms": 0.3549
+    },
+    {
+      "name": "uk_paid_campaign_targets",
+      "rows": 4,
+      "measured_at": "2026-10-14T14:31:48.160Z",
+      "elapsed_ms": 245,
+      "logical_payload_bytes": 456,
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 196,
+          "max_bytes": 49,
+          "non_null": 4,
+          "average_bytes": 49
+        },
+        {
+          "name": "campaign_id",
+          "type": "TEXT",
+          "bytes": 188,
+          "max_bytes": 47,
+          "non_null": 4,
+          "average_bytes": 47
+        },
+        {
+          "name": "target_region",
+          "type": "TEXT",
+          "bytes": 23,
+          "max_bytes": 6,
+          "non_null": 4,
+          "average_bytes": 6
+        },
+        {
+          "name": "lane",
+          "type": "TEXT",
+          "bytes": 49,
+          "max_bytes": 18,
+          "non_null": 4,
+          "average_bytes": 12
+        }
+      ],
+      "query_duration_ms": 0.5019
+    },
+    {
+      "name": "uk_paid_campaigns",
+      "rows": 2,
+      "measured_at": "2026-10-14T14:31:48.402Z",
+      "elapsed_ms": 241,
+      "logical_payload_bytes": 23713,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 94,
+          "max_bytes": 47,
+          "non_null": 2,
+          "average_bytes": 47
+        },
+        {
+          "name": "budget_day",
+          "type": "TEXT",
+          "bytes": 20,
+          "max_bytes": 10,
+          "non_null": 2,
+          "average_bytes": 10
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 12,
+          "max_bytes": 6,
+          "non_null": 2,
+          "average_bytes": 6
+        },
+        {
+          "name": "plan_json",
+          "type": "TEXT",
+          "bytes": 23196,
+          "max_bytes": 11598,
+          "non_null": 2,
+          "average_bytes": 11598
+        },
+        {
+          "name": "actor",
+          "type": "TEXT",
+          "bytes": 10,
+          "max_bytes": 5,
+          "non_null": 2,
+          "average_bytes": 5
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 110,
+          "max_bytes": 55,
+          "non_null": 2,
+          "average_bytes": 55
+        },
+        {
+          "name": "reviewed_campaign_id",
+          "type": "TEXT",
+          "bytes": 47,
+          "max_bytes": 47,
+          "non_null": 1,
+          "average_bytes": 47
+        },
+        {
+          "name": "stop_reason",
+          "type": "TEXT",
+          "bytes": 80,
+          "max_bytes": 54,
+          "non_null": 2,
+          "average_bytes": 40
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        },
+        {
+          "name": "expires_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "bytes": 48,
+          "max_bytes": 24,
+          "non_null": 2,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.8914
+    },
+    {
+      "name": "uk_source_candidates",
+      "rows": 313,
+      "measured_at": "2026-10-14T14:31:48.565Z",
+      "elapsed_ms": 163,
+      "logical_payload_bytes": 75780,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 16589,
+          "max_bytes": 53,
+          "non_null": 313,
+          "average_bytes": 53
+        },
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 12207,
+          "max_bytes": 39,
+          "non_null": 313,
+          "average_bytes": 39
+        },
+        {
+          "name": "source_document_id",
+          "type": "TEXT",
+          "bytes": 13772,
+          "max_bytes": 44,
+          "non_null": 313,
+          "average_bytes": 44
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "bytes": 15088,
+          "max_bytes": 103,
+          "non_null": 313,
+          "average_bytes": 48
+        },
+        {
+          "name": "source_identifier",
+          "type": "TEXT",
+          "bytes": 7469,
+          "max_bytes": 60,
+          "non_null": 313,
+          "average_bytes": 24
+        },
+        {
+          "name": "family",
+          "type": "TEXT",
+          "bytes": 3143,
+          "max_bytes": 17,
+          "non_null": 313,
+          "average_bytes": 10
+        },
+        {
+          "name": "discovered_at",
+          "type": "TEXT",
+          "bytes": 7512,
+          "max_bytes": 24,
+          "non_null": 313,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 1.0098
+    },
+    {
+      "name": "uk_source_progress",
+      "rows": 313,
+      "measured_at": "2026-10-14T14:31:48.732Z",
+      "elapsed_ms": 166,
+      "logical_payload_bytes": 47043,
+      "columns": [
+        {
+          "name": "candidate_id",
+          "type": "TEXT",
+          "bytes": 16589,
+          "max_bytes": 53,
+          "non_null": 313,
+          "average_bytes": 53
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 1972,
+          "max_bytes": 8,
+          "non_null": 313,
+          "average_bytes": 6
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 5571,
+          "max_bytes": 117,
+          "non_null": 301,
+          "average_bytes": 19
+        },
+        {
+          "name": "record_id",
+          "type": "TEXT",
+          "bytes": 7744,
+          "max_bytes": 44,
+          "non_null": 176,
+          "average_bytes": 44
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 6156,
+          "max_bytes": 36,
+          "non_null": 171,
+          "average_bytes": 36
+        },
+        {
+          "name": "identity_outcome",
+          "type": "TEXT",
+          "bytes": 1787,
+          "max_bytes": 14,
+          "non_null": 176,
+          "average_bytes": 10
+        },
+        {
+          "name": "checked_at",
+          "type": "TEXT",
+          "bytes": 7224,
+          "max_bytes": 24,
+          "non_null": 301,
+          "average_bytes": 24
+        },
+        {
+          "name": "lease_until",
+          "type": "TEXT",
+          "bytes": 0,
+          "max_bytes": 0,
+          "non_null": 0,
+          "average_bytes": 0
+        }
+      ],
+      "query_duration_ms": 1.1248
+    },
+    {
+      "name": "uk_source_runs",
+      "rows": 14,
+      "measured_at": "2026-10-14T14:31:48.887Z",
+      "elapsed_ms": 155,
+      "logical_payload_bytes": 1710,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 546,
+          "max_bytes": 39,
+          "non_null": 14,
+          "average_bytes": 39
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 84,
+          "max_bytes": 6,
+          "non_null": 14,
+          "average_bytes": 6
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 336,
+          "max_bytes": 24,
+          "non_null": 14,
+          "average_bytes": 24
+        },
+        {
+          "name": "expires_at",
+          "type": "TEXT",
+          "bytes": 336,
+          "max_bytes": 24,
+          "non_null": 14,
+          "average_bytes": 24
+        },
+        {
+          "name": "stop_reason",
+          "type": "TEXT",
+          "bytes": 408,
+          "max_bytes": 38,
+          "non_null": 14,
+          "average_bytes": 29
+        }
+      ],
+      "query_duration_ms": 0.6674
+    },
+    {
+      "name": "uk_source_visits",
+      "rows": 282,
+      "measured_at": "2026-10-14T14:31:49.043Z",
+      "elapsed_ms": 156,
+      "logical_payload_bytes": 60860,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 12690,
+          "max_bytes": 45,
+          "non_null": 282,
+          "average_bytes": 45
+        },
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 10998,
+          "max_bytes": 39,
+          "non_null": 282,
+          "average_bytes": 39
+        },
+        {
+          "name": "url",
+          "type": "TEXT",
+          "bytes": 17932,
+          "max_bytes": 182,
+          "non_null": 282,
+          "average_bytes": 64
+        },
+        {
+          "name": "visited_at",
+          "type": "TEXT",
+          "bytes": 6768,
+          "max_bytes": 24,
+          "non_null": 282,
+          "average_bytes": 24
+        },
+        {
+          "name": "document_id",
+          "type": "TEXT",
+          "bytes": 12408,
+          "max_bytes": 44,
+          "non_null": 282,
+          "average_bytes": 44
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 64,
+          "max_bytes": 19,
+          "non_null": 4,
+          "average_bytes": 16
+        }
+      ],
+      "query_duration_ms": 1.2181
+    },
+    {
+      "name": "venue_address_coordinates",
+      "rows": 1225,
+      "measured_at": "2026-10-14T14:31:49.222Z",
+      "elapsed_ms": 179,
+      "logical_payload_bytes": 1674805,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 53900,
+          "max_bytes": 44,
+          "non_null": 1225,
+          "average_bytes": 44
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 44100,
+          "max_bytes": 36,
+          "non_null": 1225,
+          "average_bytes": 36
+        },
+        {
+          "name": "verification_id",
+          "type": "TEXT",
+          "bytes": 53900,
+          "max_bytes": 44,
+          "non_null": 1225,
+          "average_bytes": 44
+        },
+        {
+          "name": "source_document_id",
+          "type": "TEXT",
+          "bytes": 53900,
+          "max_bytes": 44,
+          "non_null": 1225,
+          "average_bytes": 44
+        },
+        {
+          "name": "cache_id",
+          "type": "TEXT",
+          "bytes": 61250,
+          "max_bytes": 50,
+          "non_null": 1225,
+          "average_bytes": 50
+        },
+        {
+          "name": "position_json",
+          "type": "TEXT",
+          "bytes": 1378355,
+          "max_bytes": 1377,
+          "non_null": 1225,
+          "average_bytes": 1125
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 29400,
+          "max_bytes": 24,
+          "non_null": 1225,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 5.2753
+    },
+    {
+      "name": "venue_map_checks",
+      "rows": 2186,
+      "measured_at": "2026-10-14T14:31:49.371Z",
+      "elapsed_ms": 148,
+      "logical_payload_bytes": 502424,
+      "columns": [
+        {
+          "name": "run_id",
+          "type": "TEXT",
+          "bytes": 100556,
+          "max_bytes": 46,
+          "non_null": 2186,
+          "average_bytes": 46
+        },
+        {
+          "name": "entity_id",
+          "type": "TEXT",
+          "bytes": 78696,
+          "max_bytes": 36,
+          "non_null": 2186,
+          "average_bytes": 36
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 10746,
+          "max_bytes": 6,
+          "non_null": 2186,
+          "average_bytes": 5
+        },
+        {
+          "name": "reason",
+          "type": "TEXT",
+          "bytes": 34744,
+          "max_bytes": 38,
+          "non_null": 1185,
+          "average_bytes": 29
+        },
+        {
+          "name": "result_json",
+          "type": "TEXT",
+          "bytes": 277682,
+          "max_bytes": 150,
+          "non_null": 2186,
+          "average_bytes": 127
+        }
+      ],
+      "query_duration_ms": 6.5459
+    },
+    {
+      "name": "venue_map_runs",
+      "rows": 4,
+      "measured_at": "2026-10-14T14:31:49.513Z",
+      "elapsed_ms": 140,
+      "logical_payload_bytes": 496,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 184,
+          "max_bytes": 46,
+          "non_null": 4,
+          "average_bytes": 46
+        },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "bytes": 24,
+          "max_bytes": 6,
+          "non_null": 4,
+          "average_bytes": 6
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "bytes": 96,
+          "max_bytes": 24,
+          "non_null": 4,
+          "average_bytes": 24
+        },
+        {
+          "name": "expires_at",
+          "type": "TEXT",
+          "bytes": 96,
+          "max_bytes": 24,
+          "non_null": 4,
+          "average_bytes": 24
+        },
+        {
+          "name": "stop_reason",
+          "type": "TEXT",
+          "bytes": 96,
+          "max_bytes": 27,
+          "non_null": 4,
+          "average_bytes": 24
+        }
+      ],
+      "query_duration_ms": 0.8748
+    },
+    {
+      "name": "source_documents",
+      "rows": 37283,
+      "logical_payload_bytes": 7910570089,
+      "started_at": "2026-10-14T14:32:52.172Z",
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "bytes": 1640452,
+          "max_bytes": 44,
+          "non_null": 37283,
+          "average_bytes": 44
+        },
+        {
+          "name": "source_url",
+          "type": "TEXT",
+          "bytes": 2053969,
+          "max_bytes": 372,
+          "non_null": 37283,
+          "average_bytes": 55
+        },
+        {
+          "name": "content_hash",
+          "type": "TEXT",
+          "bytes": 2283200,
+          "max_bytes": 64,
+          "non_null": 35675,
+          "average_bytes": 64
+        },
+        {
+          "name": "fetched_at",
+          "type": "TEXT",
+          "bytes": 894792,
+          "max_bytes": 24,
+          "non_null": 37283,
+          "average_bytes": 24
+        },
+        {
+          "name": "document_json",
+          "type": "TEXT",
+          "bytes": 7903697676,
+          "max_bytes": 1085930,
+          "non_null": 37283,
+          "average_bytes": 211992
+        }
+      ],
+      "batches": 125,
+      "completed_at": "2026-10-14T14:34:04.388Z"
+    }
+  ],
+  "physical_object_bytes_available": false,
+  "index_footprint": "native dbstat unavailable; logical payload bytes are measured, not physical table/index bytes",
+  "errors": [],
+  "completed_at": "2026-10-14T14:34:04.388Z",
+  "after_file_size_bytes": 9626968064,
+  "logical_payload_bytes": 9092239664,
+  "top_consumers": [
+    {
+      "table": "source_documents",
+      "bytes": 7910570089,
+      "percent_of_file": 82.17
+    },
+    {
+      "table": "source_facts",
+      "bytes": 476123592,
+      "percent_of_file": 4.95
+    },
+    {
+      "table": "producer_records",
+      "bytes": 272049193,
+      "percent_of_file": 2.83
+    },
+    {
+      "table": "source_verifications",
+      "bytes": 170725020,
+      "percent_of_file": 1.77
+    },
+    {
+      "table": "selection_audit",
+      "bytes": 57670589,
+      "percent_of_file": 0.6
+    }
+  ],
+  "indexes": [
+    {
+      "type": "index",
+      "name": "acquisition_day",
+      "tbl_name": "acquisition_runs"
+    },
+    {
+      "type": "index",
+      "name": "address_coordinate_cache_lookup",
+      "tbl_name": "address_coordinate_cache"
+    },
+    {
+      "type": "index",
+      "name": "catalogue_run_candidates",
+      "tbl_name": "catalogue_candidates"
+    },
+    {
+      "type": "index",
+      "name": "commercial_history_entity",
+      "tbl_name": "commercial_readiness_history"
+    },
+    {
+      "type": "index",
+      "name": "conflicts_entity",
+      "tbl_name": "conflicts"
+    },
+    {
+      "type": "index",
+      "name": "entity_records_entity",
+      "tbl_name": "entity_records"
+    },
+    {
+      "type": "index",
+      "name": "jobs_ready",
+      "tbl_name": "jobs"
+    },
+    {
+      "type": "index",
+      "name": "legacy_recovery_record",
+      "tbl_name": "legacy_recovery_records"
+    },
+    {
+      "type": "index",
+      "name": "producer_recheck_ack_time",
+      "tbl_name": "producer_recheck_acknowledgements"
+    },
+    {
+      "type": "index",
+      "name": "producer_records_activity",
+      "tbl_name": "producer_records"
+    },
+    {
+      "type": "index",
+      "name": "reconciliation_entity_outcome",
+      "tbl_name": "reconciliation_decisions"
+    },
+    {
+      "type": "index",
+      "name": "selection_audit_proposed_fact",
+      "tbl_name": "selection_audit"
+    },
+    {
+      "type": "index",
+      "name": "serper_usage_day",
+      "tbl_name": "serper_usage"
+    },
+    {
+      "type": "index",
+      "name": "serper_usage_hour",
+      "tbl_name": "serper_usage"
+    },
+    {
+      "type": "index",
+      "name": "source_facts_record",
+      "tbl_name": "source_facts"
+    },
+    {
+      "type": "index",
+      "name": "source_led_single_active",
+      "tbl_name": "source_led_programmes"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_acquisition_pilots_1",
+      "tbl_name": "acquisition_pilots"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_acquisition_pilots_2",
+      "tbl_name": "acquisition_pilots"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_acquisition_runs_1",
+      "tbl_name": "acquisition_runs"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_address_coordinate_cache_1",
+      "tbl_name": "address_coordinate_cache"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_assessments_1",
+      "tbl_name": "assessments"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_assessments_2",
+      "tbl_name": "assessments"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_catalogue_candidates_1",
+      "tbl_name": "catalogue_candidates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_catalogue_candidates_2",
+      "tbl_name": "catalogue_candidates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_catalogue_progress_1",
+      "tbl_name": "catalogue_progress"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_catalogue_runs_1",
+      "tbl_name": "catalogue_runs"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_commercial_readiness_history_1",
+      "tbl_name": "commercial_readiness_history"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_conflicts_1",
+      "tbl_name": "conflicts"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_customer_projections_1",
+      "tbl_name": "customer_projections"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_d1_migrations_1",
+      "tbl_name": "d1_migrations"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_enrichment_proposals_1",
+      "tbl_name": "enrichment_proposals"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_entities_1",
+      "tbl_name": "entities"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_entity_facts_1",
+      "tbl_name": "entity_facts"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_entity_records_1",
+      "tbl_name": "entity_records"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_field_selections_1",
+      "tbl_name": "field_selections"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_identity_keys_1",
+      "tbl_name": "identity_keys"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_jobs_1",
+      "tbl_name": "jobs"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_jobs_2",
+      "tbl_name": "jobs"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_legacy_quality_holds_1",
+      "tbl_name": "legacy_quality_holds"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_legacy_recovery_claims_1",
+      "tbl_name": "legacy_recovery_claims"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_legacy_recovery_records_1",
+      "tbl_name": "legacy_recovery_records"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_legacy_recovery_runs_1",
+      "tbl_name": "legacy_recovery_runs"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_lifecycle_observation_resolutions_1",
+      "tbl_name": "lifecycle_observation_resolutions"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_official_source_review_outcomes_1",
+      "tbl_name": "official_source_review_outcomes"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_official_source_review_outcomes_2",
+      "tbl_name": "official_source_review_outcomes"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_official_source_supersessions_1",
+      "tbl_name": "official_source_supersessions"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_official_source_supersessions_2",
+      "tbl_name": "official_source_supersessions"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_pilot_run_grants_1",
+      "tbl_name": "pilot_run_grants"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_pilot_run_grants_2",
+      "tbl_name": "pilot_run_grants"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_producer_recheck_acknowledgements_1",
+      "tbl_name": "producer_recheck_acknowledgements"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_producer_recheck_acknowledgements_2",
+      "tbl_name": "producer_recheck_acknowledgements"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_producer_recheck_resolutions_1",
+      "tbl_name": "producer_recheck_resolutions"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_producer_recheck_resolutions_2",
+      "tbl_name": "producer_recheck_resolutions"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_producer_records_1",
+      "tbl_name": "producer_records"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_producer_records_2",
+      "tbl_name": "producer_records"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_publication_queue_1",
+      "tbl_name": "publication_queue"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_quality_gates_1",
+      "tbl_name": "quality_gates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_queue_dispatches_1",
+      "tbl_name": "queue_dispatches"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_readiness_1",
+      "tbl_name": "readiness"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_recheck_requests_1",
+      "tbl_name": "recheck_requests"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_reconciliation_decisions_1",
+      "tbl_name": "reconciliation_decisions"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_selection_audit_1",
+      "tbl_name": "selection_audit"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_serper_run_records_1",
+      "tbl_name": "serper_run_records"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_serper_usage_1",
+      "tbl_name": "serper_usage"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_serper_usage_2",
+      "tbl_name": "serper_usage"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_shadow_projections_1",
+      "tbl_name": "shadow_projections"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_documents_1",
+      "tbl_name": "source_documents"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_facts_1",
+      "tbl_name": "source_facts"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_facts_2",
+      "tbl_name": "source_facts"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_led_candidate_progress_1",
+      "tbl_name": "source_led_candidate_progress"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_led_candidates_1",
+      "tbl_name": "source_led_candidates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_led_candidates_2",
+      "tbl_name": "source_led_candidates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_led_grants_1",
+      "tbl_name": "source_led_grants"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_led_grants_2",
+      "tbl_name": "source_led_grants"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_led_programmes_1",
+      "tbl_name": "source_led_programmes"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_source_verifications_1",
+      "tbl_name": "source_verifications"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_structured_delivery_contacts_1",
+      "tbl_name": "structured_delivery_contacts"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_paid_campaign_programmes_1",
+      "tbl_name": "uk_paid_campaign_programmes"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_paid_campaign_programmes_2",
+      "tbl_name": "uk_paid_campaign_programmes"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_paid_campaign_targets_1",
+      "tbl_name": "uk_paid_campaign_targets"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_paid_campaigns_1",
+      "tbl_name": "uk_paid_campaigns"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_source_candidates_1",
+      "tbl_name": "uk_source_candidates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_source_candidates_2",
+      "tbl_name": "uk_source_candidates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_source_progress_1",
+      "tbl_name": "uk_source_progress"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_source_runs_1",
+      "tbl_name": "uk_source_runs"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_uk_source_visits_1",
+      "tbl_name": "uk_source_visits"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_venue_address_coordinates_1",
+      "tbl_name": "venue_address_coordinates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_venue_address_coordinates_2",
+      "tbl_name": "venue_address_coordinates"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_venue_map_checks_1",
+      "tbl_name": "venue_map_checks"
+    },
+    {
+      "type": "index",
+      "name": "sqlite_autoindex_venue_map_runs_1",
+      "tbl_name": "venue_map_runs"
+    },
+    {
+      "type": "index",
+      "name": "structured_delivery_recent",
+      "tbl_name": "structured_delivery_contacts"
+    },
+    {
+      "type": "index",
+      "name": "uk_paid_campaign_single_active",
+      "tbl_name": "uk_paid_campaigns"
+    },
+    {
+      "type": "index",
+      "name": "uk_run_candidates",
+      "tbl_name": "uk_source_candidates"
+    },
+    {
+      "type": "index",
+      "name": "venue_address_current",
+      "tbl_name": "venue_address_coordinates"
+    },
+    {
+      "type": "index",
+      "name": "verification_entity_latest",
+      "tbl_name": "source_verifications"
+    }
+  ]
+}
