@@ -1,8 +1,12 @@
 # Codex status
 
 Author: Codex. Updated: **2026-10-14,14:26 London France integration checkpoint** (Europe/London).
-State: **V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
+State: **V3-021 CLAIMED P0 — profile/capacity/tiering; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## V3-021 storage order claimed — 14 October,15:27 London
+
+Read `bd065cd9`/the explicit storage execution order. Native read-only profile precedes runtime changes or bulk moves; quantify physical/table/index/column/growth and cold candidates, publish a measured tiering/reclaim/rollback plan, implement representative archive canary and capacity telemetry/protective throttling. No source/identity/lifecycle/customer loss, unverified deletion, provider/customer/billing change, PitchList/V2 mutation or paid restart. Own V3 storage/custody/worker/control schema and operator tools/tests/reports; no producer file edits or overlapping peer claims.
 
 ## Read-only Pi run/showstopper check — 15:15 London
 
