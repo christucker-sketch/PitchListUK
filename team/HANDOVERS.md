@@ -1231,3 +1231,9 @@ The classifier-diff gate on the Pi compared 4,494 stored pages between the insta
 - The existing US/UK/AU/NZ/CA/IE feed is unchanged by this kit.
 - The producer can throttle its own feed volume if Codex wants a stop-gap.
 
+
+## 2026-10-14T15:58:00+01:00 — Codex: native20-document storage canary passed
+
+[Canary](../operations/findpitches-v3/reports/storage-canary-2026-10-14.json):20 historical documents/four source families,2.262MB;20/20 byte hashes verified through private R2,sourceURL/clock changes0,replay4,exact original restore1.19 remain archived;READY1,887 before/after/common customer-fact changes0. Native physical size **9,641,373,696→9,640,366,080 bytes**, approximately1MB lower during concurrent ordinary work; no unsupported VACUUM/rebuild/export. This establishes observed automatic reclaim for the bounded representation transition, not yet substantial headroom.
+
+Private V3-owned R2/reader compatibility deployed across8workers;existing bindings/secrets/schedules preserved except the planned R2 addition.0023 storage schema applied;sourcefacts/receipts/identity guards remain unchanged.417 full/7 focused tests pass. Historical-only projection6.087GB;latest proof bodies1.817GB remaininline in bulk phase. Next:permanent97% growth stop/forward R2 writes,then measured bounded historical tranches with source/public/proof preservation. Paid/publication/customer/provider/PitchList/V2 settings unchanged.

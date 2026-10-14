@@ -1,0 +1,29 @@
+{
+  "schema": "findpitches-v3-storage-canary-v1",
+  "started_at": "2026-10-14T14:57:07.422Z",
+  "as_of": "2026-10-14T14:57:47.736Z",
+  "archived_documents": 20,
+  "domains": [
+    "www.eventeny.com",
+    "www.myntimage.co.uk",
+    "localstalls.com",
+    "www.creativecrafts-online.co.uk"
+  ],
+  "original_bytes": 2261897,
+  "byte_hash_matches": 20,
+  "metadata_clock_changes": 0,
+  "replayed_without_rewrites": 4,
+  "exact_restore_proved": 1,
+  "remaining_archived": 19,
+  "native_size_before": 9641373696,
+  "native_size_after": 9640366080,
+  "ready_before": 1887,
+  "ready_after": 1887,
+  "common_customer_fact_changes": 0,
+  "originals_kept_in_private_r2": true,
+  "source_facts_changed": 0,
+  "identity_changes": 0,
+  "paid_paused": true,
+  "publication_enabled": false,
+  "cert_bypass": false
+}

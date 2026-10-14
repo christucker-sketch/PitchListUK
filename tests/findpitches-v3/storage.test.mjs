@@ -5,6 +5,7 @@ import {encodeSourceDocument,decodeSourceDocument} from '../../platform/findpitc
 import {archiveHistoricalDocuments,restoreArchivedDocument} from '../../platform/findpitches-v3/storage-migration.mjs';
 import {recordVerification} from '../../platform/findpitches-v3/verification-store.mjs';
 import {documentFixture} from './verification-fixture.mjs';
+import worker from '../../platform/findpitches-v3/worker.mjs';
 import {capacityState,CAPACITY_STOP_BYTES} from '../../platform/findpitches-v3/storage-capacity.mjs';
 function bucket(){const objects=new Map();return {objects,puts:0,async get(key){const bytes=objects.get(key);return bytes?{size:bytes.length,body:new Blob([bytes]).stream()}:null;},async put(key,data){if(objects.has(key))return null;objects.set(key,new Uint8Array(data));this.puts++;return {};}};}
 test('archive exact bytes/clocks survives compressed/inline formats, replays idempotently and fails closed on corruption or identity changes',async()=>{
@@ -32,4 +33,11 @@ test('historical archive/restore preserves document metadata, source facts and i
 test('capacity warnings/stop use native size and unknown measurements never permit source growth',()=>{
  for(const [size,state]of [[6999999999,'normal'],[7000000000,'warning'],[8000000000,'high'],[9000000000,'critical'],[CAPACITY_STOP_BYTES,'protective_stop']])assert.equal(capacityState(size).state,state);
  assert.equal(capacityState(CAPACITY_STOP_BYTES-1).source_growth_allowed,true);assert.equal(capacityState(CAPACITY_STOP_BYTES).source_growth_allowed,false);assert.equal(capacityState(undefined).source_growth_allowed,false);assert.equal(capacityState(NaN).available,false);
+});
+
+test('native capacity rejection returns retryable503 before a producer receipt and preserves read/recheck endpoints',async t=>{
+ const actual=database(t),db={...actual,prepare(q){const statement=actual.prepare(q);return q==='SELECT 1 capacity_probe'?{...statement,all:async()=>({results:[{capacity_probe:1}],meta:{size_after:CAPACITY_STOP_BYTES}})}:statement;}};
+ const token='test-ingest-storage-capacity-token-000000',env={FINDPITCHES_V3_DB:db,V3_ROLE:'ingest',V3_INGEST_TOKEN:token,V3_CAPACITY_GUARD_ENABLED:'true'};
+ const request=new Request('https://v3.invalid/imports',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({records:[]})});const response=await worker.fetch(request,env);assert.equal(response.status,503);assert.equal(response.headers.get('retry-after'),'900');const result=await response.json();assert.equal(result.retryable,true);assert.equal(result.accepted,0);assert.equal((await sql(actual,'SELECT COUNT(*) n FROM producer_records').first()).n,0);
+ assert.equal((await worker.fetch(new Request('https://v3.invalid/health'),env)).status,200);assert.equal((await worker.fetch(new Request('https://v3.invalid/rechecks?probe=1',{headers:{Authorization:'Bearer '+token}}),env)).status,200);
 });
