@@ -21,6 +21,7 @@ test('status comes only from producer evidence', () => {
 test('types, sells and organiser follow the contract', () => {
   assert.equal(siteType(rec()), 'christmas_market');
   assert.equal(siteType(rec({ country_code: 'US' })), 'holiday_market');
+  assert.equal(siteType(rec({country_code:'FR',event_name:'Marché de Noël des créateurs'})), 'christmas_market');
   assert.equal(siteType(rec({ opportunity_type: 'agricultural_show' })), 'show');
   assert.equal(siteType(rec({ opportunity_type: null })), null);
   assert.deepEqual(siteSells(rec()), ['craft']);

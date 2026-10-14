@@ -11,7 +11,7 @@ const CURRENCY = { GB: 'GBP', US: 'USD', CA: 'CAD', AU: 'AUD', IE: 'EUR', NZ: 'N
 export function siteType(rec) {
   const t = rec.opportunity_type;
   if (!t) return null;
-  if (t === 'christmas_market') return rec.country_code === 'GB' || rec.country_code === 'IE' || rec.country_code === 'NZ' || rec.country_code === 'AU' ? 'christmas_market' : 'holiday_market';
+  if (t === 'christmas_market') return rec.country_code === 'GB' || rec.country_code === 'IE' || rec.country_code === 'NZ' || rec.country_code === 'AU' || rec.country_code === 'FR' ? 'christmas_market' : 'holiday_market';
   return ({
     food_festival: 'food_festival', festival: 'festival', music_festival: 'festival', street_festival: 'festival', cultural_event: 'festival',
     market: 'market', farmers_market: 'market', craft_fair: 'market', agricultural_show: 'show', exhibition: 'show',
