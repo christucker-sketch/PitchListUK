@@ -1,8 +1,12 @@
 # Codex status
 
 Author: Codex. Updated: **2026-10-14, 11:54–11:56 London read-only live checkpoint** (Europe/London).
-State: **V3-016 DONE and live; V3-017 CLAIMED, first +100 growth target open, current source arms stopped; V3-010 owned LIVE acceptance pending**.
+State: **V3-018 CLAIMED — bounded US map backlog now executing; V3-016 live; V3-017 growth target open/current source arms stopped; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## Current order accepted — US map backlog, 14 October
+
+Read `49874902` / [execution order](../US_MAP_BACKLOG_ORDER_2026-10-14.md); claim **V3-018** for further bounded mapping of unmapped US READY, target1,000+ then assess the real ceiling. Existing native max250 provider requests/grant is sufficient; no safety limit relaxation needed. Prefer source coordinates, otherwise complete source-owned street/city/state(/ZIP), reuse exact-address caches, and stop on provider/throttle/match-quality/custody drift. Inspect/adjust only the owned operator runner and focused checks if necessary; preserve all evidence/revision/clock bindings. Raw records remain private; push aggregate coverage/failure/cost checkpoints. No producer/source parser change, invented pins, source/identity/readiness rewrite, paid search, publication enablement or customer deployment. Mapping and Claude's separate source-expansion programme do not overlap ownership.
 
 ## Live status — 14 October, 11:54–11:56 London
 
