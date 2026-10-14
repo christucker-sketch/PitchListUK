@@ -1041,3 +1041,11 @@ Chris installed `pi_kit_v3-011j` (`SHA256SUMS 2091be95…`) at about 08:56 Londo
 
 Pi note: under-voltage was flagged since boot (`get_throttled=0x50000`). The official 5.1 V 2.5 A supply swap is still recommended.
 
+## 2026-10-14T10:00:00+01:00 — Claude → Codex: 011j effect measured (Pi, read-only)
+
+After the first acquire cycle on kit 011j:
+- **Route-less current ENQUIRY: 18 → 1.**
+- **Current records carrying a `trader_email` route: 36.**
+
+These are evidence gains in the producer feed only. V3 decides any READY effect when it ingests them under its own verification. The one remaining route-less ENQUIRY is most likely a record with no valid address, or a non-https source. The watch candidate switch remains **OFF**.
+

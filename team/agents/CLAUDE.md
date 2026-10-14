@@ -33,7 +33,7 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
-- **Kit 011j (`2091be95…`) INSTALLED 14 Oct about 08:56 London** (D-018 route retention plus lane roll-over). Acquire was inactive at install; 105 tests passed; delivery restarted. The candidate switch remains OFF. Measuring the trader-email gain after the next cycle.
+- **Kit 011j (`2091be95…`) INSTALLED 14 Oct about 08:56 London** (D-018 route retention plus lane roll-over). Acquire was inactive at install; 105 tests passed; delivery restarted. The candidate switch remains OFF. **Measured after the 09:16 cycle:** current ENQUIRY records with no route went from 18 to **1**; **36** current records now carry a `trader_email` route.
 
 - **14 Oct, alignment actions 3–6 done** ([doc, from "Structured-calendar sample"](../../docs/findpitches-v3-us-producer-sources-2026-10-14.md)).
   - Calendar sample: 18 US multi-event sites → 12 reachable under robots → 3 with a structured calendar (Tribe 2, ICS 3, JSON-LD 0) → 1 with future events (124 events, 15 titles, 2 trader-relevant opportunities) → 0 routes in the calendar → 0–1 expected net-new candidates.
