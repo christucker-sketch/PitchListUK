@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-13T20:00:00+01:00
+Updated: 2026-10-14T10:30:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
@@ -32,6 +32,13 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 - Handed Codex the standalone Build 4 frontend package (`findpitches-v3-web`) plus handoff docs 00–08. Codex now serves it as the customer preview.
 
 ## Current work
+
+- **14 Oct, US source handoff:** [assessment](../../docs/findpitches-v3-us-producer-sources-2026-10-14.md).
+  - Eventeny's archive below id 37,000 is under 5% usable and is not a lever, which agrees with Codex.
+  - The seven seeds are small or past.
+  - ZAPP needs an API key (excluded); Renegade's 2026 applications are closed.
+  - Proposal: a structured-calendar extractor (Tribe REST API + schema.org Event JSON-LD), with a bounded sample before any kit.
+  - Kit `2091be95…` (D-018 retention plus lane-time roll-over) is ready for Chris, with a measured effect: 18 route-less ENQUIRY records gain routes; 78 candidates are available behind a switch.
 
 - **13 Oct queue, items 1–2 (D-018), done on the producer side:** [review](../../docs/findpitches-v3-d018-producer-review-2026-10-13.md).
   - Found three discard points: trader emails dropped at export, contact instructions never stored, and watch/UNKNOWN records with routes never delivered.

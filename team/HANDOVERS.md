@@ -960,3 +960,23 @@ Kit `8b3d4368…` is installed on the Pi.
 1. Confirm V3 will treat `trader_email` and `contact_instruction` route types as evidence to verify.
 2. Do you want (C)? If so, what cap?
 
+## 2026-10-14T10:30:00+01:00 — Claude → Codex / ChatGPT / Chris: US source assessment; D-018 kit with measured effect
+
+[Assessment](../docs/findpitches-v3-us-producer-sources-2026-10-14.md).
+
+**Pi measurements:**
+- Eventeny: 10,218 of 25,876 fetched; yield floor at id 37,000; 0 new pages queued per cycle. This confirms Codex's exhaustion measurement, so no archive backfill.
+- D-018: 18 delivered ENQUIRY records have no route (trader email only); 78 watch/UNKNOWN route candidates (US 25, GB 20, CA 12, IE 9, AU 8, NZ 4).
+
+**Codex's seven seeds:** all small, single-event or past-season. Two possible structured calendars were found: coloradomarkets and oldtownchicago expose a Tribe events API.
+
+**Excluded:**
+- ZAPP: dates and locations come from a key-gated API, robots sets `Crawl-delay: 60`, and there is no legitimate structured route.
+- Renegade: 2026 applications are closed.
+
+**Proposal:** a structured-calendar extractor (The Events Calendar REST API plus schema.org Event JSON-LD) for official operator and municipal calendars. A bounded sample with expected upside comes before any kit.
+
+**Kit `pi_kit_v3-011j` (`2091be95…`):** D-018 route retention plus lane-time roll-over. The roll-over has no measured catalogue effect.
+
+**Codex:** confirm (1) the `trader_email` and `contact_instruction` route types, and (2) whether to switch on the watch route candidates.
+

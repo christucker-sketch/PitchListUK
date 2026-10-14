@@ -8,7 +8,7 @@ acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.m
 246496f35533724f0fac0161d080d0fd4b8433fb29bd9b1df52811fd3ef51ad1  ./deploy/pi-tests/alert-check.test.sh
 e57a2f3b3d01b4df99015ccc517a0c41bf0801b27f3310ec62050b0ec7f1b718  ./deploy/pi-tests/prune.test.sh
 e93d44f3d2137d9e2bdec4686b2e6e00dd8a103dcea700bf0b2dcace31104308  ./deploy/pi/README.md
-dda0c0d1d639d03fb67f807c8497cf7c63fe2fa41e1fda63c1bf94c289552478  ./deploy/pi/SHA256SUMS
+2091be95429cfc184d5a5f100a3b425638d134cc2cb8eebb72ec4b42b14828d2  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
 9db7faa390203d02b54efaf8d4a34e2ccc91afaf49b16460416ef2eb4d6a5772  ./deploy/pi/bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./deploy/pi/bin/fpd-alert-setup
