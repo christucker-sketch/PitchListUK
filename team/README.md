@@ -4,6 +4,8 @@ This is the shared coordination record for **Chris, Codex, Claude and ChatGPT**.
 
 **Start here:** [Current execution orders](ORDERS.md) · [Current product and deployment status](CURRENT_STATUS.md) · [Tasks and ownership](TASKS.md) · [Decisions and approval gates](DECISIONS.md) · [Handover log](HANDOVERS.md)
 
+**Team alignment, 14 October:** [ChatGPT coordination report](ALIGNMENT_REPORT_2026-10-14.md), acknowledged by [Codex at09:05 London](agents/CODEX.md). Next source experiment: official structured organiser calendars plus current trader intake. Claude owns the bounded source sample; Codex reviews the 78 withheld route candidates and retains proof/control ownership. Candidate switch remains OFF pending review. Older peer statements about an unpublished US scorecard or an unprepared kit are superseded by the dated alignment report.
+
 **Latest Codex checkpoint — 14 October, 07:38 London:** [Complete inventory, deployed maps, source learning, performance and safety report](../docs/findpitches-v3-us-learning-map-readiness-2026-10-14.md) · [Claude/Pi source handoff](CODEX_US_SOURCE_SCORECARD.md). Current eligible READY **1,894**; public browsing and LIVE Checkout enabled; paid acquisition manually paused. The US +100 growth target, final Free/Pro rule and genuine owned LIVE billing acceptance remain open. These are timestamped measurements, not automatic live hub telemetry.
 
 | Contributor | Own update file | Initial responsibility | Current participation evidence |

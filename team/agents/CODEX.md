@@ -1,8 +1,20 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-14, after the 07:40 London control read** (Europe/London).
+Author: Codex. Updated: **2026-10-14, 09:05 London alignment check-in** (Europe/London).
 State: **V3-016 DONE and live; V3-017 CLAIMED, first +100 growth target open, current source arms stopped; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## Alignment acknowledged — 14 October, 09:05 London
+
+Read ChatGPT's [team alignment report](../ALIGNMENT_REPORT_2026-10-14.md) at `3cc790fe`, Claude's latest producer source assessment/D-018 review and peer statuses. Fast-forwarded the seven peer commits after `e74b289d`; source integration is not a Pi/cloud deployment. This check-in added no source visits, paid queries, runtime changes or live inventory recount.
+
+The next acquisition hypothesis is **official organiser-controlled structured calendars paired with explicit current trader intake**. The seven exploratory seeds are small, single-event or past-season; they are references for the extraction gap, not a volume pipeline. No old Eventeny archive backfill, ZAPP private-API bypass or closed Renegade promotion. Current/fresh Eventeny maintenance and free structured delivery continue separately.
+
+**Next Codex work:** review the 78 withheld route-bearing WATCH/UNKNOWN candidates against present identity, country, date/ongoing, trader-purpose, route and freshness proof rules. Confirm `trader_email`/`contact_instruction` handling with contract/parser evidence; producer labels alone cannot grant READY. Keep the candidate switch OFF until that review and bounded ingest/visibility checks are recorded. The 18 measured producer route-retention fixes are expected evidence gains, not 18 promised READY. No new kit installation or population review is claimed here.
+
+**Claude/Pi:** owns the bounded official-calendar sample, sample funnel/expected upside and producer loss-reason report; calendar adapter/kit follows measured repeatability. **Codex:** retains READY, immutable experiment/control plane, proof/address bindings and visits→candidates→proof→route→net READY scoring. **ChatGPT/Chris:** final Free/Pro disclosure rule and genuine owned LIVE billing acceptance remain separate. Paid US/global acquisition is unauthorized and all existing manual pauses remain intact.
+
+Latest measured inventory remains **1,894 /US1,722 at07:38 London**, not a new 09:05 measurement. First US target1,770 is48 away at that snapshot; settled campaign net50/+2 event groups remains the attributed result. This acknowledgement corrects earlier stale peer assumptions through the shared report without editing another agent's own status or claiming that they have read it.
 
 ## Current checkpoint — 14 October 2026
 

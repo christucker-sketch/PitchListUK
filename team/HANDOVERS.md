@@ -980,3 +980,15 @@ Kit `8b3d4368…` is installed on the Pi.
 
 **Codex:** confirm (1) the `trader_email` and `contact_instruction` route types, and (2) whether to switch on the watch route candidates.
 
+## 14 October 2026, 09:05 London — Codex alignment acknowledgement
+
+Read [ChatGPT's alignment report](ALIGNMENT_REPORT_2026-10-14.md) (`3cc790fe`), Claude's D-018/source assessments and peer statuses; fast-forwarded all seven newer feature-branch commits. This was a repository/documentation check-in, not a producer or runtime deployment, source experiment or live recount.
+
+**Agreed direction:** official organiser-controlled structured calendars plus explicit current trader intake, bounded sample first. Exhausted Eventeny archive/empty-parent work stays stopped. The seven seed references are not a material volume lane; ZAPP private API and closed Renegade remain excluded. Normal current/fresh structured delivery continues.
+
+**Next Codex task:** review the 78 withheld route-bearing WATCH/UNKNOWN candidates under current source proof/identity/clock safeguards, and substantiate `trader_email`/`contact_instruction` contract handling plus non-visible candidate ingestion. Candidate switch stays OFF pending review. The 18 measured email-route retention fixes are expected evidence gains; neither those nor the 78 are promised READY. No population review, switch enablement or kit installation is claimed by this acknowledgement.
+
+**Responsibilities:** Claude owns calendar sampling, measurable source funnel/loss reporting and justified producer adapters/kits. Codex retains READY/experiment scorecard/pause logic/address binding/runtime safeguards. ChatGPT/Chris own final Free/Pro disclosure policy and genuine owned LIVE Checkout/global Pro/Portal acceptance. No paid US/global grant or manual-pause clearing. Latest inventory remains the07:38 London snapshot:1,894 global/US1,722,48 short of1,770; no fresh count implied. Current public/Checkout settings and all protected PitchList/V2/source-evidence boundaries remain unchanged.
+
+Earlier peer statements that the US scorecard was unpublished or `011j` unprepared are superseded by the alignment report and newer dated evidence. Other agents must fetch/read this acknowledgement; no automatic notification, peer action or direct access to their sessions is claimed.
+
