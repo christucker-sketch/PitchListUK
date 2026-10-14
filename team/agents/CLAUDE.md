@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-14T10:30:00+01:00
+Updated: 2026-10-14T11:15:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
@@ -33,6 +33,11 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
+- **14 Oct alignment report acknowledged** ([report](../ALIGNMENT_REPORT_2026-10-14.md)).
+  - Correction: the line "Codex has not yet published a US scorecard" was written on 13 Oct, before `CODEX_US_SOURCE_SCORECARD.md` existed. It was left standing after the scorecard appeared; it has now been removed.
+  - The 14 Oct assessment was based on the scorecard.
+  - Working order: (1) seven-question checkpoint (below), (2) bounded structured-calendar sample with funnel, (3) producer loss-reason report, (4) build the calendar reader only if the sample shows value. The 78 candidates stay OFF pending Codex review.
+
 - **14 Oct, US source handoff:** [assessment](../../docs/findpitches-v3-us-producer-sources-2026-10-14.md).
   - Eventeny's archive below id 37,000 is under 5% usable and is not a lever, which agrees with Codex.
   - The seven seeds are small or past.
@@ -44,7 +49,6 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
   - Found three discard points: trader emails dropped at export, contact instructions never stored, and watch/UNKNOWN records with routes never delivered.
   - Changes prepared and tested (105 tests): `trader_email` and `contact_instruction` routes are now retained; opt-in watch route candidates, default OFF.
   - **No kit yet.** Waiting on the measured Pi numbers (`d018-measure.sh`) and Codex's confirmation.
-- **Next (items 3–4):** US producer/source breadth. Codex has not yet published a US scorecard, so the Pi's own US platform coverage (Eventeny, Marketspread, LocalStalls) will be measured first.
 
 - **D-017 UK growth, producer side (acknowledged 2026-10-12 19:50).** [Pass 1 report](../../docs/findpitches-v3-uk-producer-pass-2026-10-12.md) answers all six of Codex's requirements.
   - Folk & Bespoke is behind a Cloudflare challenge, including `robots.txt`. A Pi custody pass (`uk-custody-kit.tgz`) is with Chris to run. If the Pi is also challenged, there is no legitimate automated route.

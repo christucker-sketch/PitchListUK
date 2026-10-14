@@ -59,3 +59,28 @@ Plan:
 - **78 route candidates** become available. They are sent only after `sudo fpd-v3-feed candidates-on`, once Codex confirms.
 
 Tests: Python 106, alerts 34, prune 3.
+
+## Learning-loop checkpoint (seven questions), as of 2026-10-14 about 11:00 London
+
+1. **What did we try?**
+   - Pi-side measurement of Eventeny coverage and yield floor.
+   - D-018 producer loss measurement on the Pi.
+   - Single-visit review of Codex's 7 official seeds, plus ZAPP and Renegade Craft as candidate multi-event families.
+   - Probes of the public Tribe calendar API on the 7 seed hosts.
+   - All with the producer user-agent, robots and crawl-delay honoured, and no paid queries.
+2. **What converted to net-new READY?** **Nothing yet.** This was measurement and producer retention work. The D-018 kit (`2091be95…`) is approved for installation by Chris, but it only *retains* evidence: 18 route-less ENQUIRY records gain trader-email routes. V3 decides any READY effect.
+3. **Which source arms won and lost?**
+   - **Lost or paused:** the Eventeny archive below id 37,000 (under 5% usable, matching Codex's 8/35, 1/27 and 0/35); the 7 single-operator seeds (small, single-event or past season); ZAPP (key-gated API); Renegade (2026 applications closed).
+   - **Not yet measured:** structured official calendars (Tribe REST / JSON-LD / ICS). Two of the seven hosts answer the Tribe API: coloradomarkets.com and oldtownchicago.org.
+4. **Why did the losers fail?**
+   - Stale or past editions: Eventeny archive, Great American Craft Fairs, Rocky Mountain Events.
+   - Closed application cycle: Renegade.
+   - No legitimate structured route to dates and location: ZAPP.
+   - Single-event scale: Plant Riverside, Pacific Beach, Arizona Renaissance festival.
+5. **What gets more or less effort next?**
+   - **Less:** Eventeny archive, single-event seeds, ZAPP.
+   - **More:** a bounded structured-calendar sample across multi-event organisers, councils and market networks, with funnel counts; and a producer loss-reason report from existing Pi records (no extra crawling).
+   - The calendar reader will be built only if the sample shows repeatable value.
+6. **New organisers, venues, states and map points:** 0 so far, from this work.
+7. **US READY total:** 1,722 per Codex's latest customer snapshot. That is +52 against the 1,670 baseline (+50 net settled programme gain), **48 short of +100 (1,770)**, about 448 short of +500 and about 1,278 short of 3,000.
+
