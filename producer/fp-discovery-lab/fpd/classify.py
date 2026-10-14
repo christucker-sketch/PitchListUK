@@ -280,8 +280,11 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
     evs = jsonld_events(page)
     dates = extract_dates(body[:80_000], today, day_first=True)
     # A live 'today' clock in the site header ("mercredi 14 octobre 2026 - 14:55") is not an event date.
-    dates = [d for d in dates if not (d.start == today and d.end is None and
-                                      re.match(r"\s*[-–,à]?\s*\d{1,2}\s*[:h]\s*\d{2}", body[d.endpos: d.endpos + 14]))]
+    # Only a header-position date joined to a clock by a dash, with no deadline cue before it (an English
+    # "Deadline: Oct 14, 2026 11:59 pm" must stay a deadline).
+    dates = [d for d in dates if not (d.start == today and d.end is None and d.pos < 2000 and
+                                      re.match(r"\s*[-–]\s*\d{1,2}\s*[:h]\s*\d{2}", body[d.endpos: d.endpos + 14]) and
+                                      not L.DEADLINE_CUE.search(body[max(0, d.pos - 110): d.pos]))]
     deadlines, event_dates = [], []
     for d in dates:
         before = body[max(0, d.pos - 110): d.pos]

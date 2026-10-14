@@ -62,7 +62,9 @@ def _mk(y, m, d):
 def _infer_year(text: str, pos: int, today: dt.date, win: int = 250) -> int | None:
     # Nearest explicit year within `win` chars (prefer before), else None.
     window = text[max(0, pos - win): pos + win]
-    off = pos - max(0, pos - win)
+    # English path keeps its historical distance reference (250 into the window) so existing classifications do not
+    # move; the French path measures from the actual date position.
+    off = 250 if win == 250 else pos - max(0, pos - win)
     ys = [(abs(m.start() - off), int(m.group(1))) for m in RE_YEAR.finditer(window)]
     if ys:
         return sorted(ys)[0][1]

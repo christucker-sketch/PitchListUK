@@ -240,3 +240,13 @@ def test_french_records_exported_only_when_switched_on(tmp_path, monkeypatch):
 def test_french_authority_names(name, organiser_only):
     from fpd.integration.records import FR_AUTHORITY_ONLY, FR_EVENTISH
     assert bool(FR_AUTHORITY_ONLY.match(name) and not FR_EVENTISH.search(name)) is organiser_only
+
+
+def test_deadline_today_with_time_is_not_a_header_clock():
+    # Pi gate, 14 Oct: an Eventeny 'Deadline: Oct 14, 2026 11:59 pm' was dropped as a live clock -> wrongly CLOSED
+    html = ("<html><head><title>Fall Festival - Food Vendor Application</title></head><body><h1>Food Vendor Application</h1>"
+            "<p>Vendor applications are now open. Application deadline is October 9, 2026 for crafters.</p>"
+            "<p>Deadline: Oct 14, 2026 11:59 pm (GMT-04:00) Eastern Time. Festival Saturday October 17, 2026, Cartersville, GA.</p>"
+            "<a href='https://forms.gle/x'>Apply now</a></body></html>")
+    x = classify(parse_html(html, "https://fallfest.example.com/vendors"), T, hint={"site_role": "organiser"})["extracted"]
+    assert x["deadline"] == "2026-10-14" and x["state"] == "OPEN_NOW"

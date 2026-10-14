@@ -71,7 +71,7 @@ About 31% of trading events carry an organiser homepage. **Probe 5 is next**: it
 
 **Realistic hop-two yield:** about 5% of reachable organiser sites, not 20%.
 
-## Build: France pack v1 and DATAtourisme lane (kit `pi_kit_v3-011l`, `SHA256SUMS c6dfe9fd…`; first build `769bec3c` was withdrawn after the Pi gate)
+## Build: France pack v1 and DATAtourisme lane (kit `pi_kit_v3-011l`, `SHA256SUMS 88c0dcb8…`; builds `769bec3c` and `c6dfe9fd` were withdrawn after the Pi gate)
 
 **Pack (`fpd/packs/fr.py`)** extends the shared, rule-based engine. English rules are unchanged. It covers:
 - French trader vocabulary: inscription/candidature des exposants, devenir exposant, réservation d'emplacement, tarif au mètre linéaire, commerçants non sédentaires, appel à candidatures (only with market context);
@@ -120,3 +120,10 @@ About 31% of trading events carry an organiser homepage. **Probe 5 is next**: it
   - Fix: bare "marchés publics" is no longer a procurement signal; appels d'offres, DCE, pouvoir adjudicateur and BOAMP still are.
 - Regression tests were added for all three. Tests: 149 Python; shell 34/3/8.
 - A targeted re-check of the 34 changed pages (`classifier-diff.sh --ids …`) runs before install.
+
+### Targeted re-check of `c6dfe9fd` (14:47Z): 28 of 30 identical, 2 still changed
+
+- **Eventeny (US):** "Deadline: Oct 14, 2026 11:59 pm" was dropped by the new header-clock filter, so the form showed as closed. The filter now needs a dash before the time, a header position, and no deadline cue.
+- **CIAF (AU):** a correction I made to year inference also moved English dates near the top of the page. The English path now keeps its historical behaviour exactly.
+
+Both reproduce as identical to the installed engine locally. A regression test is added (150 Python tests). Rebuilt as `88c0dcb8`.
