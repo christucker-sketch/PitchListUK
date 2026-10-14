@@ -1,0 +1,226 @@
+"""France (fr-FR) pack: trader/exhibitor vocabulary, dates, geography and scope rules.
+
+Built from real pages seen in the 14 Oct 2026 France census (DATAtourisme organiser sites: Seyssins, Val-de-Moder,
+Pluneret, Gex, Steinseltz, Ornans, Valence) and the probe-4 listing texts. Vocabulary is deliberately specific
+(accented French words, French phrase shapes) so it cannot fire on English pages.
+
+Scope (Chris, 14 Oct 2026): marchés de Noël, artisan/creator markets, producer markets, foires and salons with
+exhibitor intake are in scope; brocantes / vide-greniers / braderies only when professionals are explicitly allowed.
+"""
+from __future__ import annotations
+
+A = r"['’]"          # apostrophe, straight or typographic
+E = r"[ée]"          # e with or without acute accent (sites are inconsistent)
+
+ROLE_WORDS = (r"exposants?|exposantes?|artisans?|cr" + E + r"ateurs?|cr" + E + r"atrices?|commer[cç]ants?|"
+              r"producteurs?|productrices?|marchands?|brocanteurs?|forains?|camelots?|bouquinistes?|"
+              r"antiquaires?|food[\s-]?trucks?")
+
+MONTHS_FR = {
+    "janvier": 1, "janv": 1, "février": 2, "fevrier": 2, "févr": 2, "fevr": 2, "mars": 3, "avril": 4, "avr": 4,
+    "mai": 5, "juin": 6, "juillet": 7, "juil": 7, "août": 8, "aout": 8, "septembre": 9, "sept": 9,
+    "octobre": 10, "novembre": 11, "décembre": 12, "decembre": 12, "déc": 12,
+}
+MONTH_FR_RE = (r"(janvier|janv\.?|f[ée]vrier|f[ée]vr\.?|mars|avril|avr\.?|mai|juin|juillet|juil\.?|ao[uû]t|"
+               r"septembre|sept\.?|octobre|novembre|d[ée]cembre|d[ée]c\.?)")
+WEEKDAY_FR = r"(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)"
+
+# Postcode followed by a commune name: "26000 Valence", "67150 Hipsheim", "01170 GEX", "F-75001 Paris".
+_CONNECT = r"(?:de|du|des|en|sur|sous|l[eè]s|le|la|les|et|aux?|d['’])"
+POSTCODE_COMMUNE = (r"\b(?:F-)?((?:0[1-9]|[1-8]\d|9[0-5]|2[AB])\d{3}|97[1-6]\d{2})\s+"
+                    r"((?:(?:Saint|Sainte|St|Ste|Le|La|Les|L['’])\s?)?[A-ZÀ-Ý][A-Za-zÀ-ÿ'’\-]+(?:\s" + _CONNECT + r"\s?[A-ZÀ-Ýa-zà-ÿ][A-Za-zÀ-ÿ'’\-]+){0,2})")
+PHONE_FR = r"(?<![\d+])(?:\+33\s?\(?0?\)?\s?[1-9]|0[1-9])(?:[\s.\-]?\d{2}){4}(?!\d)"
+
+# ISO 3166-2:FR regions (2016) and the départements in each (by postcode prefix).
+REGIONS = {
+    "FR-ARA": ("Auvergne-Rhône-Alpes", "01 03 07 15 26 38 42 43 63 69 73 74"),
+    "FR-BFC": ("Bourgogne-Franche-Comté", "21 25 39 58 70 71 89 90"),
+    "FR-BRE": ("Bretagne", "22 29 35 56"),
+    "FR-CVL": ("Centre-Val de Loire", "18 28 36 37 41 45"),
+    "FR-20R": ("Corse", "20 2A 2B"),
+    "FR-GES": ("Grand Est", "08 10 51 52 54 55 57 67 68 88"),
+    "FR-HDF": ("Hauts-de-France", "02 59 60 62 80"),
+    "FR-IDF": ("Île-de-France", "75 77 78 91 92 93 94 95"),
+    "FR-NOR": ("Normandie", "14 27 50 61 76"),
+    "FR-NAQ": ("Nouvelle-Aquitaine", "16 17 19 23 24 33 40 47 64 79 86 87"),
+    "FR-OCC": ("Occitanie", "09 11 12 30 31 32 34 46 48 65 66 81 82"),
+    "FR-PDL": ("Pays de la Loire", "44 49 53 72 85"),
+    "FR-PAC": ("Provence-Alpes-Côte d'Azur", "04 05 06 13 83 84"),
+    "FR-GP": ("Guadeloupe", "971"), "FR-MQ": ("Martinique", "972"), "FR-GF": ("Guyane", "973"),
+    "FR-RE": ("La Réunion", "974"), "FR-YT": ("Mayotte", "976"),
+}
+_DEPT_REGION = {d: code for code, (_, deps) in REGIONS.items() for d in deps.split()}
+
+
+def region_of_postcode(pc: str | None) -> tuple[str, str] | None:
+    """('FR-BRE', 'Bretagne') for a French postcode, from its département prefix; None if not French."""
+    pc = (pc or "").strip().upper().removeprefix("F-")
+    if len(pc) != 5:
+        return None
+    code = _DEPT_REGION.get(pc[:3]) or _DEPT_REGION.get(pc[:2])
+    return (code, REGIONS[code][0]) if code else None
+
+
+_PART = r"(?:" + ROLE_WORDS + r")"
+
+PACK = {
+    "name": "fr",
+    "country": "FR",
+    "role": [ROLE_WORDS],
+    # Participation language (tier 1): somebody is being asked to apply/book/register as a trader.
+    "strong_apply": [
+        r"\b(?:inscriptions?|candidatures?|r" + E + r"servations?|demandes?\s+d" + A + r"(?:emplacement|inscription)|"
+        r"(?:dossiers?|bulletins?|formulaires?|fiches?)\s+d" + A + r"(?:inscription|candidature))\s+"
+        r"(?:des\s+|pour\s+les\s+|aux\s+|d" + A + r"|de\s+)?(?:nouveaux\s+)?" + _PART + r"\b",
+        r"\b" + _PART + r"\s*:\s*(?:inscriptions?|candidatures?|r" + E + r"servations?)\b",
+        r"\bdevenir\s+(?:exposant|exposante|commer[cç]ant|producteur|marchand|forain)\b",
+        r"\b(?:vous\s+souhaitez|vous\s+voulez|envie\s+d" + A + r"|pour)\s+exposer\b",
+        r"\bexposer\s+(?:au|à|a|sur|lors\s+d[eu]|vos\s+(?:cr" + E + r"ations|produits))\b",
+        r"\bappels?\s+(?:à|a)\s+(?:candidatures?|projets?)\b[^.\n]{0,90}\b(?:march" + E + r"|exposants?|artisans?|"
+        r"cr" + E + r"ateurs?|no[ëe]l|foire|salon|stands?|chalets?)",
+        r"\b(?:march" + E + r"|no[ëe]l|foire|salon|exposants?|artisans?|cr" + E + r"ateurs?)\b[^.\n]{0,60}\bappels?\s+(?:à|a)\s+candidatures?\b",
+        r"\bappels?\s+(?:à|a|aux)\s+(?:exposants?|artisans?|cr" + E + r"ateurs?|producteurs?|commer[cç]ants?)\b",
+        r"\br" + E + r"serv(?:ez|er|ation)\s+(?:de\s+|d" + A + r"un\s+|votre\s+|un\s+|des\s+|les\s+|vos\s+)?"
+        r"(?:emplacements?|stands?|chalets?|places?\s+(?:d" + A + r")?exposants?)\b",
+        r"\b(?:vous\s+[êe]tes|si\s+vous\s+[êe]tes)\s+(?:un\s+|une\s+)?(?:" + ROLE_WORDS + r")[^.?\n]{0,80}"
+        r"(?:rejoignez|inscri|candidat|postuler|participer|exposer|contactez)",
+        r"\bcomment\s+(?:postuler|participer|s" + A + r"inscrire|candidater)\b",
+        r"\b(?:" + ROLE_WORDS + r")\s+(?:recherch" + E + r"s?|bienvenus?|wanted)\b|\bnous\s+recherchons\s+(?:des\s+)?(?:"
+        + ROLE_WORDS + r")\b",
+        r"\b(?:tarifs?|prix|droits?)\s+(?:des\s+|de\s+l" + A + r"|d" + A + r"un\s+|du\s+)?(?:emplacements?|exposants?|stands?|chalets?)\b",
+        r"\b\d+(?:[,.]\d+)?\s*(?:€|euros?)\s*(?:le|du|par|/)\s*(?:m[eè]tre(?:\s+lin" + E + r"aire)?|ml\b|m\b|stand|emplacement|table)",
+        r"\bcommer[cç]ants?\s+non[\s-]s" + E + r"dentaires?\b",
+        r"\binscriptions?\s+(?:des\s+)?(?:exposants?\s+)?(?:au|:)\s*(?:\+33|0[1-9])",
+        r"\b(?:placier|droits?\s+de\s+place)\b",
+    ],
+    # Topical (tier 2): attendee-facing mentions that need corroboration ("plus de 90 exposants").
+    "strong_topic": [
+        r"\b(?:nombreux|plus\s+de\s+\d+|pas\s+moins\s+de\s+\d+|une?\s+\w+\s+d" + A + r"|\d+)\s+exposants\b",
+        r"\bstands?\s+(?:d" + A + r"artisans|de\s+cr" + E + r"ateurs|de\s+producteurs)\b",
+        r"\bmarch" + E + r"\s+(?:artisanal|des\s+cr" + E + r"ateurs|de\s+cr" + E + r"ateurs|de\s+producteurs|des\s+producteurs|nocturne)\b",
+    ],
+    "weak": [
+        r"\bexposants?\b", r"\bemplacements?\b", r"\bstands?\b", r"\bchalets?\b", r"\bartisans?\b",
+        r"\bcr" + E + r"ateurs?\b", r"\bproducteurs?\b", r"\bm[eè]tres?\s+lin" + E + r"aires?\b",
+        r"\bresponsabilit" + E + r"\s+civile\b", r"\bk-?bis\b", r"\bsiret\b", r"\bregistre\s+du\s+commerce\b",
+        r"\battestation\s+d" + A + r"assurance\b", r"\btonnelles?\b", r"\bbarnums?\b",
+    ],
+    "event_types": {
+        "christmas_market": r"\bmarch" + E + r"s?\s+de\s+no[ëe]l\b|\bvillage\s+de\s+no[ëe]l\b|\bmarch" + E + r"\s+(?:de\s+l" + A + r"avent|d" + A + r"hiver)\b",
+        "craft_fair": r"\bmarch" + E + r"s?\s+(?:artisanal|artisanaux|des\s+(?:artisans|cr" + E + r"ateurs)|de\s+cr" + E + r"ateurs|d" + A + r"art)\b|"
+                      r"\bsalon\s+(?:des\s+)?(?:m" + E + r"tiers\s+d" + A + r"art|cr" + E + r"ateurs|artisans)\b|\bf[êe]te\s+de\s+l" + A + r"artisanat\b",
+        "farmers_market": r"\bmarch" + E + r"s?\s+(?:de\s+producteurs|des\s+producteurs|paysans?|fermiers?|du\s+terroir|bio)\b",
+        "food_festival": r"\bmarch" + E + r"\s+gourmand\b|\bfestival\s+gourmand\b|\bf[êe]te\s+de\s+la\s+gastronomie\b",
+        "agricultural_show": r"\bfoire\s+agricole\b|\bcomice\s+agricole\b",
+        "market": r"\bmarch" + E + r"s?\s+(?:hebdomadaire|nocturne|du\s+\w+|de\s+\w+)\b|\bbrocantes?\b|\bvide[\s-]greniers?\b|\bbraderies?\b|\bpuces\b",
+        "fair_fete": r"\bfoires?\b|\bf[êe]te\s+(?:de\s+village|patronale|locale|des\s+\w+)\b",
+        "exhibition": r"\bsalons?\b|\bexpositions?\b",
+    },
+    "trader_types": {
+        "food": r"\b(?:restauration|traiteurs?|food[\s-]?trucks?|produits?\s+du\s+terroir|m" + E + r"tiers\s+de\s+bouche|alimentaire|gastronomie)\b",
+        "craft": r"\b(?:artisans?|artisanat|cr" + E + r"ateurs?|cr" + E + r"atrices?|fait\s+main|savoir-faire)\b",
+        "art": r"\b(?:artistes?|peintres?|sculpteurs?|plasticiens?)\b",
+        "produce": r"\b(?:producteurs?\s+locaux|mara[îi]chers?|fermiers?|viticulteurs?|apiculteurs?)\b",
+        "retail": r"\b(?:commer[cç]ants?|marchands?|brocanteurs?|antiquaires?|bouquinistes?)\b",
+        "exhibitor": r"\bexposants?\b",
+        "nonprofit": r"\bassociations?\b",
+    },
+    "negatives": {
+        # In French a 'marché public' is a public procurement contract, not a market (and Gex lists its tenders
+        # under "Appels à candidatures").
+        "procurement": r"\bmarch" + E + r"s?\s+publics?\b|\bappels?\s+d" + A + r"offres?\b|\bconsultations?\s+des\s+entreprises\b|"
+                       r"\bpouvoir\s+adjudicateur\b|\bavis\s+d" + A + r"appel\s+public\b|\bacheteur\s+public\b|\bboamp\b|\bdce\b",
+        "jobs": r"\boffres?\s+d" + A + r"emploi\b|\brecrutement\b|\bforum\s+(?:de\s+l" + A + r")?emploi\b|\bcandidature\s+spontan" + E + r"e\b|"
+                r"\bjob\s*dating\b|\balternance\b|\bfrance\s+travail\b",
+        "volunteer_only": r"\bb" + E + r"n" + E + r"voles?\s+(?:recherch|inscri)",
+        "real_estate": r"\blocal\s+commercial\s+(?:à|a)\s+louer\b|\bbail\s+(?:commercial|rural|à\s+clauses)\b|\bcession\s+de\s+fonds\b",
+        "fixed_concession": r"\bterrasses?\s+(?:de\s+caf" + E + r"|commerciales?)\b|\boccupation\s+du\s+domaine\s+public\s+(?:pour|des)\s+terrasses?\b",
+        "agriculture_tenancy": r"\b" + E + r"leveurs?\b[^.\n]{0,80}\b(?:parcelles?|bail|convention\s+de\s+gestion)\b|\bassociation\s+fonci[eè]re\s+pastorale\b",
+    },
+    "closed": [
+        r"\b(?:inscriptions?|candidatures?|r" + E + r"servations?)\s+(?:sont\s+|est\s+)?(?:d" + E + r"sormais\s+|maintenant\s+|actuellement\s+)?"
+        r"(?:closes?|cl[ôo]tur" + E + r"es?|ferm" + E + r"es?|termin" + E + r"es?)\b",
+        r"\b(?:le\s+march" + E + r"|les\s+emplacements|les\s+stands|les\s+inscriptions)\s+(?:est|sont)\s+(?:d" + E + r"j[àa]\s+)?complets?\b",
+        r"\bcomplet\s+pour\s+(?:les\s+)?exposants\b|\bnous\s+(?:sommes|affichons)\s+complets?\b",
+        r"\bvotre\s+demande\s+(?:est|sera)\s+plac" + E + r"e\s+sur\s+(?:notre\s+|la\s+)?liste\s+d" + A + r"attente\b",
+        r"\bplus\s+(?:aucune?\s+)?(?:de\s+)?(?:places?|emplacements?|stands?)\s+disponibles?\b",
+    ],
+    "not_yet": [
+        r"\binscriptions?\s+(?:ouvriront|s" + A + r"ouvriront|seront\s+ouvertes|ouvrent)\b",
+        r"\bouverture\s+des\s+(?:inscriptions|candidatures)\s+(?:le|en|à\s+partir\s+d[ue]|d[eè]s|prochainement)\b",
+        r"\b(?:inscriptions?|candidatures?)\s+(?:à\s+venir|prochainement)\b",
+    ],
+    "open": [
+        r"\b(?:inscriptions?|candidatures?|r" + E + r"servations?)\s+(?:sont\s+|est\s+)?(?:ouvertes?|en\s+cours)\b(?!\s+(?:le|à\s+partir|d[eè]s|en\s+\w+\s+20))",
+        r"\bil\s+reste\s+(?:encore\s+)?des\s+(?:places|emplacements|stands)\b",
+        r"\b(?:exposants?|artisans?|cr" + E + r"ateurs?|producteurs?)\s+recherch" + E + r"s\b",
+    ],
+    "recurrence": [
+        r"\b(?:tous\s+les|chaque)\s+(?:lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?|week-?ends?|mois)\b",
+        r"\b(?:tous\s+les|chaque)\s+(?:premiers?|deuxi[eè]mes?|troisi[eè]mes?|quatri[eè]mes?|derniers?|1ers?|2[eè]?mes?|3[eè]?mes?)\s+"
+        r"(?:lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?)\s+du\s+mois\b",
+        r"\bmarch" + E + r"\s+hebdomadaire\b",
+    ],
+    "deadline_cue": [
+        r"date\s+limite(?:\s+d" + A + r"(?:inscription|envoi|d" + E + r"p[oô]t|retour))?|avant\s+le|au\s+plus\s+tard\s+le|"
+        r"cl[ôo]ture\s+des\s+(?:inscriptions|candidatures)|retour\s+des\s+(?:dossiers|bulletins)|"
+        r"inscriptions?\s+(?:possibles?\s+)?jusqu" + A + r"au",
+    ],
+    "link_strong": [
+        r"exposant|exposer|devenir[\s_-]exposant|candidature|inscription[\s_-]+(?:des[\s_-]+)?(?:exposants?|march|brocante|vide)|"
+        r"emplacement|commer[cç]ants?[\s_-]non|placier|droits?[\s_-]de[\s_-]place|marche[\s_-]de[\s_-]noel|march" + E + r"[\s_-]de[\s_-]no[ëe]l",
+    ],
+    "link_medium": [
+        r"inscri|r" + E + r"serv|formulaire|t" + E + r"l" + E + r"charg|documents?|march" + E + r"s?|marches?|animations?|"
+        + E + r"v" + E + r"nements?|agenda|f[êe]tes?|vie[\s_-]?(?:locale|associative|" + E + r"conomique)|commerces?|associations?",
+    ],
+    "link_negative": [
+        r"mentions[\s_-]l" + E + r"gales|confidentialit|connexion|panier|billetterie|recrutement|emploi|"
+        r"urbanisme|" + E + r"tat[\s_-]civil|cimeti[eè]re|d" + E + r"ch[eè]ts|cantine|scolaire|periscolaire|p" + E + r"riscolaire|"
+        r"march" + E + r"s[\s_-]publics|marches[\s_-]publics|appels?[\s_-]d[\s_-]?offres",
+    ],
+    "non_vendor_anchor": [
+        r"b" + E + r"n" + E + r"voles?|billets?|billetterie|lettre\s+d" + A + r"information|dons?\b|concours|spectacles?|"
+        r"r" + E + r"servation\s+(?:de\s+)?(?:salle|repas|table\s+au\s+repas)|emploi|recrutement|stages?\b|scolaire",
+    ],
+    "apply_anchor": [
+        r"inscri|candidat|postuler|r" + E + r"serv(?:er|ez|ation)\s+(?:un\s+|votre\s+)?(?:emplacement|stand|chalet|table)|"
+        r"formulaire|bulletin|dossier|t" + E + r"l" + E + r"charger|participer|exposer",
+    ],
+    "form_doc_name": [r"inscription|candidature|bulletin|dossier|formulaire|exposant|emplacement"],  # not 'règlement' (rules)
+    "platforms": {"helloasso.com": "HelloAsso", "billetweb.fr": "Billetweb", "weezevent.com": "Weezevent"},
+    # Used for both tickets and exhibitor bookings: a route only when the link itself is about exhibiting.
+    "ticketing_only": ["HelloAsso", "Billetweb", "Weezevent"],
+    # Phone/email booking instruction in text ("Inscriptions exposants au 06 12 34 56 78").
+    "contact_instruction": [
+        r"(?:inscriptions?|r" + E + r"servations?|renseignements?\s+et\s+inscriptions?|pour\s+exposer|candidatures?|"
+        r"dossiers?\s+de\s+candidature|r" + E + r"servation\s+des\s+emplacements)[^.\n]{0,60}?(?:au|:|aupr[eè]s\s+d[eu]|par\s+t" + E + r"l" + E + r"phone|"
+        r"par\s+mail|à\s+l" + A + r"adresse)[^.\n]{0,40}?(?:" + PHONE_FR + r"|[\w.+-]+@[\w-]+\.[\w.-]+)",
+    ],
+    # state.py: route categories (anchor/url words), merged into the English categories of the same name.
+    "route_categories": {
+        "food": r"\b(?:restauration|alimentaire|m" + E + r"tiers\s+de\s+bouche|food[\s-]?trucks?|buvette)\b",
+        "craft": r"\b(?:artisan\w*|cr" + E + r"at(?:eur|rice)s?)\b",
+        "exhibitor": r"\b(?:exposants?|stands?|emplacements?|chalets?)\b",
+        "produce": r"\b(?:producteurs?|paysans?|fermiers?)\b",
+        "retail": r"\b(?:commer[cç]ants?|marchands?|brocanteurs?|march" + E + r"s?|marche(?:de|s)?\w*|no[ëe]l\w*|foires?|salons?)",
+    },
+    "opens_on": [
+        r"(?:inscriptions?|candidatures?|r" + E + r"servations?)\s+(?:seront\s+)?(?:ouvertes?|ouvriront|s" + A + r"ouvriront|ouvrent)\s+"
+        r"(?:le|à\s+partir\s+d[ue]|d[eè]s\s+le|en|au)?\s*([^.\n]{0,40})",
+        r"ouverture\s+des\s+(?:inscriptions|candidatures)\s+(?:le|à\s+partir\s+d[ue]|d[eè]s\s+le|en)?\s*([^.\n]{0,40})",
+    ],
+    "annual": [r"\b\d{1,3}\s*(?:e|è|ème|eme|ième|ieme)\s+" + E + r"dition\b|\bchaque\s+ann" + E + r"e\b|\btous\s+les\s+ans\b|\bannuel(?:le)?\b"],
+    "recur_market": [
+        r"\b(?:tous\s+les|chaque)\s+(?:lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?|week-?ends?|semaines?|mois)\b|"
+        r"\bhebdomadaire\b|\bmensuel(?:le)?\b",
+    ],
+    # Scope rule (brocantes / vide-greniers only when professionals may take part).
+    "private_sellers_event": r"\b(?:brocantes?|vide[\s-]greniers?|braderies?|bourses?\s+aux\s+(?:jouets|v[êe]tements|livres)|troc)\b",
+    "private_only": r"\br" + E + r"serv" + E + r"e?s?\s+aux\s+particuliers\b|\b(?:uniquement|exclusivement)\s+(?:pour\s+les\s+|aux\s+|des\s+)?particuliers\b|"
+                    r"\bparticuliers\s+(?:uniquement|seulement)\b|\b(?:interdits?|ferm" + E + r"s?)\s+aux\s+professionnels\b|"
+                    r"\bprofessionnels\s+(?:non\s+admis|interdits|exclus|non\s+autoris" + E + r"s)\b",
+    "pro_allowed": r"\b(?:professionnels?\s+(?:et|ou)\s+(?:les\s+)?particuliers|particuliers\s+(?:et|ou)\s+(?:les\s+)?professionnels?)\b|"
+                   r"\bprofessionnels?\s+(?:accept" + E + r"s|admis|bienvenus|autoris" + E + r"s)\b|\bouvert(?:e|es)?\s+aux\s+(?:professionnels|pros)\b|"
+                   r"\bbrocanteurs?\s+professionnels?\b|\bantiquaires\b",
+}

@@ -112,7 +112,7 @@ Each has a stable `route_id`, so an importer can list them separately if it want
 A record is READY only if all of the following hold:
 
 * it is a genuine trading opportunity (relevant);
-* the country is supported (GB, US, CA, AU, NZ, IE);
+* the country is supported (GB, US, CA, AU, NZ, IE; FR only once switched on with `sudo fpd-v3-feed fr-on`, V3-019);
 * the country is supported by page or platform evidence, not just by the discovery query or seed;
 * there is no region/country conflict;
 * the event name is usable (not "Google Docs", a bare domain or a date string);
@@ -138,7 +138,7 @@ timestamps are UTC `YYYY-MM-DDTHH:MM:SSZ`. The authoritative definition is the J
 | `lifecycle_event`, `lifecycle_changes`, `previous_application_state`, `carried_forward` | | see Lifecycle |
 | `export_readiness` | enum | `READY` (current), `WATCH`, `NOT_READY` (held), `RETIRED` |
 | `readiness_issues` | string[] | why a record is held/withdrawn |
-| `country`, `country_code` | string / ISO 3166-1 alpha-2 | `country_code` ∈ GB, US, CA, AU, NZ, IE |
+| `country`, `country_code` | string / ISO 3166-1 alpha-2 | `country_code` ∈ GB, US, CA, AU, NZ, IE, FR (FR: France pack; `region_code` FR-ARA…FR-PAC, FR-20R, overseas FR-GP/MQ/GF/RE/YT; original French text kept verbatim) |
 | `region`, `region_code` | string / ISO 3166-2 | `region_code` only where derivable (US states, CA provinces, AU states), else null |
 | `locality`, `venue` | string\|null | as found in the source |
 | `location` | string\|null | display string *derived* from venue, locality and region (not an address claim) |

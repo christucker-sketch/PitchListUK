@@ -22,6 +22,13 @@ for code, prof in COUNTRIES.items():
 
 US_CITY_ST = re.compile(r"\b([A-Z][a-z][a-zA-Z.'-]*(?:\s[A-Z][a-z][a-zA-Z.'-]*){0,3}),\s+(" + "|".join(COUNTRIES["US"].region_abbrevs) + r")\b(?!\s*\d{4}\b)")
 CA_CITY_PR = re.compile(r"\b([A-Z][a-zA-Z.'-]+(?:\s[A-Z][a-zA-Z.'-]+){0,3}),\s+(" + "|".join(COUNTRIES["CA"].region_abbrevs) + r")\b")
+from .packs.fr import PHONE_FR as _FR_PHONE, POSTCODE_COMMUNE as _FR_PC, region_of_postcode as _fr_region  # noqa: E402
+
+FR_PC_COMMUNE = re.compile(_FR_PC)
+FR_PHONE = re.compile(_FR_PHONE)
+# "12345 Fairview Road" is a US street number, not "12345 <commune>".
+US_STREET_AFTER = re.compile(r"\s+(?:Road|Rd|Street|St|Avenue|Ave|Drive|Dr|Lane|Ln|Boulevard|Blvd|Way|Court|Ct|Highway|Hwy|"
+                             r"Pike|Parkway|Pkwy|Trail|Circle|Terrace|Loop)\b\.?")
 AU_TOWN_ST = re.compile(r"\b([A-Z][a-zA-Z.'-]+(?:\s[A-Z][a-zA-Z.'-]+){0,3}),?\s+(NSW|VIC|QLD|SA|TAS|ACT|NT|WA)\s+(\d{4})\b")
 
 COUNTRY_NAMES = {
@@ -31,13 +38,14 @@ COUNTRY_NAMES = {
     "AU": [r"\bAustralia\b"],
     "NZ": [r"\bNew Zealand\b", r"\bAotearoa\b"],
     "IE": [r"\bIreland\b", r"\bÉire\b", r"\bRepublic of Ireland\b"],
+    "FR": [r"\bFrance\b"],
 }
 COUNTRY_NAMES_RE = {k: [re.compile(p) for p in v] for k, v in COUNTRY_NAMES.items()}
 
 ISO_ALIASES = {"UK": "GB", "GBR": "GB", "UNITED KINGDOM": "GB", "USA": "US", "UNITED STATES": "US",
                "CAN": "CA", "CANADA": "CA", "AUS": "AU", "AUSTRALIA": "AU", "NZL": "NZ",
                "NEW ZEALAND": "NZ", "IRL": "IE", "IRELAND": "IE", "ENGLAND": "GB", "SCOTLAND": "GB",
-               "WALES": "GB"}
+               "WALES": "GB", "FRA": "FR", "FRANCE": "FR"}
 
 
 def _norm_country(v) -> str | None:
@@ -165,10 +173,24 @@ def infer_geo(url: str, text: str, jsonld_events: list[dict], hint: dict | None 
             locality, st, _ = m[0]
             region = region or COUNTRIES["AU"].region_abbrevs.get(st)
 
+    # France: "26000 Valence" gives département -> région and the commune; national phone format "04 75 44 90 40".
+    fr_pc = [(m.group(1), m.group(2)) for m in FR_PC_COMMUNE.finditer(sample)
+             if _fr_region(m.group(1)) and not re.search(r"\b[A-Z]{2},?\s*$", sample[max(0, m.start() - 5): m.start()])
+             and not US_STREET_AFTER.match(sample, m.end())]
+    if fr_pc:
+        vote("FR", min(3.0, 1.5 * len(fr_pc)), f"postcode+commune x{len(fr_pc)}")
+        fr_region = _fr_region(fr_pc[0][0])[1]
+    n_ph = len(FR_PHONE.findall(sample))
+    if n_ph and fr_pc:
+        vote("FR", min(2.0, 1.0 * n_ph), f"phone (FR format) x{n_ph}")
+
     if not votes:
         return {"country": None, "confidence": 0.0, "region": region, "locality": locality, "venue": venue, "why": {}}
     ranked = sorted(votes.items(), key=lambda kv: -kv[1])
     best, score = ranked[0]
+    if best == "FR" and fr_pc:
+        region = region or fr_region
+        locality = locality or fr_pc[0][1].strip()
     if not region:
         region = region_by_country.get(best)
     second = ranked[1][1] if len(ranked) > 1 else 0.0

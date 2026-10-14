@@ -44,7 +44,7 @@ def _close(cfg, conn, run_id, status="ok", notes=None, force_snapshot=False):
 
 def cmd_seed(cfg, args):
     from .frontier import Frontier
-    from .generators import osm, search, seeds, wikidata
+    from .generators import datatourisme, osm, search, seeds, wikidata
     conn, run_id = _open(cfg, "seed", args)
     tel = dbm.Telemetry(conn, run_id)
     fr = Frontier(conn, run_id, cfg.site_page_budget, cfg.max_depth)
@@ -61,6 +61,8 @@ def cmd_seed(cfg, args):
         out["osm"] = osm.run(conn, fr, tel, cfg, countries=countries, max_seconds=args.max_seconds)
     if which in ("search", "all"):
         out["search"] = search.run(conn, fr, tel, cfg, max_queries=args.max_queries)
+    if which == "datatourisme":  # France lane (hop one); never part of 'all'
+        out["datatourisme"] = datatourisme.run(conn, fr, tel, cfg, max_calls=args.max_calls)
     tel.flush()
     print(json.dumps({"enqueued": out, "pending": fr.pending_count()}, indent=1))
     _close(cfg, conn, run_id)
@@ -70,6 +72,9 @@ def cmd_crawl(cfg, args):
     from .pipeline import Engine
     conn, run_id = _open(cfg, "crawl", args)
     eng = Engine(cfg, conn, run_id)
+    if args.generators:
+        # Country/lane-restricted crawl (e.g. the France lane: --generators datatourisme:fr).
+        eng.frontier.allowed = set(args.generators.split(","))
     status = "ok"
     try:
         res = asyncio.run(eng.crawl(args.minutes * 60, args.max_fetches))
@@ -396,7 +401,9 @@ def main(argv=None):
     p = argparse.ArgumentParser(prog="fpd", description="FindPitches discovery lab engine")
     sub = p.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("seed")
-    s.add_argument("which", choices=["all", "curated", "directories", "platforms", "organisers", "wikidata", "councils", "osm", "search"])
+    s.add_argument("which", choices=["all", "curated", "directories", "platforms", "organisers", "wikidata", "councils", "osm", "search",
+                                     "datatourisme"])
+    s.add_argument("--max-calls", type=int, default=20, help="datatourisme: API pages to read this run (100 events each)")
     s.add_argument("--countries")
     s.add_argument("--max-queries", type=int, default=200)
     s.add_argument("--max-seconds", type=float, default=150)
@@ -404,6 +411,7 @@ def main(argv=None):
     c = sub.add_parser("crawl")
     c.add_argument("--minutes", type=float, default=10)
     c.add_argument("--max-fetches", type=int)
+    c.add_argument("--generators", help="comma-separated acquisition lanes to crawl (default: all)")
     c.set_defaults(func=cmd_crawl)
     rb = sub.add_parser("rebuild")
     rb.add_argument("--max-seconds", type=float, default=150)

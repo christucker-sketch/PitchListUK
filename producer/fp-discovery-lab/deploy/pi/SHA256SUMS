@@ -2,7 +2,7 @@ fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./bin/fpd
 9db7faa390203d02b54efaf8d4a34e2ccc91afaf49b16460416ef2eb4d6a5772  ./bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./bin/fpd-alert-setup
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./bin/fpd-backup
-c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./bin/fpd-cycle
+510f03fbbb6ab1184398c4439ef3b94f239dc502036b7c97e03135bdea56fb51  ./bin/fpd-cycle
 374e763c8470e04632a09a2de70ff0631cca0da5cfd2cf8e02f7db2e98b1ae0a  ./bin/fpd-evidence
 8a7f7f61cc7ea2be3ddb2a92f44f944c17fc8a9efa26a848c74dea63b9f81a91  ./bin/fpd-go-live
 60c8ed0cab9f946ee43c79b8b2a36e34a866b3ba41d88b4d79f586fdb7f1a772  ./bin/fpd-netcheck
@@ -12,7 +12,7 @@ e9e4d8dbbbb5f936bceef3725bf7b91f52ccab9dde630779d3ec5489aa8d2248  ./bin/fpd-offs
 465ed7bd02c20bcfabc3bf3e83f853533ce40de4bcf80e0291037fc78a858148  ./bin/fpd-set-source-key
 9ef9b6b1020b09b8fc1417bf67d08b697ccb9da2347275f4e591673fedcc36c0  ./bin/fpd-set-token
 f9ac309ab92d9517c583a7a2935e04f566ed95a27f46141c05665776a0c81888  ./bin/fpd-status
-f6e07dc4cf55d881ccb7ff5f2657aa2310e745a592e015ca2f90cfa35d8c5feb  ./bin/fpd-v3-feed
+069e48f3726c59f0d014ca0e2cee056fb4ebfe31e71d8a0c7f90fcec360cd64c  ./bin/fpd-v3-feed
 9f95c36112cb44ec268d79fe680845406a2ee3cca6f1fb651fca95680b21d463  ./bin/fpd-v3-prune
 dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 0fe991441144dbcf4b32be9c733792cea2c1e357edb86ebad5e70d4c130cd714  ./config/constraints.txt
@@ -22,10 +22,10 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./delivery/producer-delivery.mjs
 6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./delivery/producer-delivery.test.mjs
 b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./delivery/producer-runner.mjs
-93c86f67d035c507d60c44e45e88910a019ad78fb2e12fe89c95527fa9e3ada7  ./fpd-app.tgz
-8514409c03a3a137bfb4ffd481026ede8066023735f920f1b31150b9b759f79e  ./install.sh
+571e7c1760b8e8ca802dd2a6c039e4140e28482fa2e407c8185df66fde64e522  ./fpd-app.tgz
+298232ef42b5123a88320f3bded540df76c10c2d996b86347b0f1608072794f3  ./install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./lib/evidence.py
-be72e21a81f25777bfa44cdbd89e0955d3edd9f0f835c4b200dbd2e73aa49afb  ./systemd/fpd-acquire.service
+c5f37b2ec3a06cfb21cef14f48622aec23b3882e477a836a2bcafd4b06a65b91  ./systemd/fpd-acquire.service
 ae230896155f68a22a21acc3edb85387877729bce056df5c91a1378f20ebe087  ./systemd/fpd-acquire.timer
 a3bb4403af7b87adac0f6e7d851fe7dafcd51ca0266dbe04404f29339dbab6bf  ./systemd/fpd-alert.service
 91e843e33eace6e1a027c63ffed81a62701f3c3fb9c17c0538aac4561e6c20a4  ./systemd/fpd-alert.timer

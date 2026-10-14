@@ -8,7 +8,9 @@ from __future__ import annotations
 
 import re
 
-CLASSIFIER_VERSION = "rules-v4-states"
+from .packs import extend_map, extend_re, extra
+
+CLASSIFIER_VERSION = "rules-v5-packs-fr"
 
 # Who: the participant roles we care about.
 ROLE = (
@@ -18,6 +20,9 @@ ROLE = (
     r"booth|trade[\s-]?stand|tradestand|market[\s-]?stall|food[\s-]?vendor|craft[\s-]?vendor|"
     r"art(?:ist)?s?[\s-]?vendor|producer|grower)s?"
 )
+# Language packs add their own trader roles (e.g. French 'exposant', 'commerçant', 'créateur').
+if extra("role"):
+    ROLE = "(?:" + ROLE + "|" + "|".join(f"(?:{r})" for r in extra("role")) + ")"
 
 # Strong, specific phrasings: a page using one of these is almost certainly *about* trading at an event.
 STRONG_PATTERNS = [
@@ -320,3 +325,42 @@ PLATFORM_APP_PATH = {
     "Manage My Market": r"/(?:apply|application|vendor)",
     "MarketWurks": r"/(?:apply|application|vendor)",
 }
+
+
+# ---------------------------------------------------------------- language packs (see fpd/packs)
+# Packs only extend these lists/patterns; English rules are untouched. The participation tier keeps its place at
+# the head of STRONG_PATTERNS so STRONG_APPLY_RE / STRONG_TOPIC_RE keep their meaning.
+_apply = STRONG_PATTERNS[:N_APPLY] + extra("strong_apply")
+_topic = STRONG_PATTERNS[N_APPLY:] + extra("strong_topic")
+STRONG_PATTERNS = _apply + _topic
+N_APPLY = len(_apply)
+STRONG_RE = [re.compile(p, re.I) for p in STRONG_PATTERNS]
+STRONG_APPLY_RE = STRONG_RE[:N_APPLY]
+STRONG_TOPIC_RE = STRONG_RE[N_APPLY:]
+WEAK_PATTERNS = WEAK_PATTERNS + extra("weak")
+WEAK_RE = [re.compile(p, re.I) for p in WEAK_PATTERNS]
+EVENT_TYPES = extend_map(EVENT_TYPES, "event_types")
+EVENT_TYPES_RE = {k: re.compile(v, re.I) for k, v in EVENT_TYPES.items()}
+TRADER_TYPES = extend_map(TRADER_TYPES, "trader_types")
+TRADER_TYPES_RE = {k: re.compile(v, re.I) for k, v in TRADER_TYPES.items()}
+NEGATIVE_PATTERNS = extend_map(NEGATIVE_PATTERNS, "negatives")
+NEGATIVE_RE = {k: re.compile(v, re.I) for k, v in NEGATIVE_PATTERNS.items()}
+CLOSED_PATTERNS = CLOSED_PATTERNS + extra("closed")
+CLOSED_RE = [re.compile(p, re.I) for p in CLOSED_PATTERNS]
+NOT_YET_OPEN_PATTERNS = NOT_YET_OPEN_PATTERNS + extra("not_yet")
+NOT_YET_OPEN_RE = [re.compile(p, re.I) for p in NOT_YET_OPEN_PATTERNS]
+OPEN_PATTERNS = OPEN_PATTERNS + extra("open")
+OPEN_RE = [re.compile(p, re.I) for p in OPEN_PATTERNS]
+RECURRENCE_PATTERNS = RECURRENCE_PATTERNS + extra("recurrence")
+RECURRENCE_RE = [re.compile(p, re.I) for p in RECURRENCE_PATTERNS]
+DEADLINE_CUE = extend_re(DEADLINE_CUE, "deadline_cue")
+LINK_STRONG = extend_re(LINK_STRONG, "link_strong")
+LINK_MEDIUM = extend_re(LINK_MEDIUM, "link_medium")
+LINK_NEGATIVE = extend_re(LINK_NEGATIVE, "link_negative")
+NON_VENDOR_ANCHOR = extend_re(NON_VENDOR_ANCHOR, "non_vendor_anchor")
+APPLY_ANCHOR = extend_re(APPLY_ANCHOR, "apply_anchor")
+FORM_DOC_NAME = extend_re(FORM_DOC_NAME, "form_doc_name")
+CONTACT_INSTRUCTION_RE = [re.compile(p, re.I) for p in extra("contact_instruction")]
+for _pk in __import__("fpd.packs", fromlist=["PACKS"]).PACKS:
+    APPLICATION_PLATFORMS.update(_pk.get("platforms", {}))
+    TICKETING_ONLY |= set(_pk.get("ticketing_only", []))

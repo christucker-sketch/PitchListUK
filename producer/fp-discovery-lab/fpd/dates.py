@@ -28,6 +28,14 @@ RE_ISO = re.compile(r"\b(20\d{2})-(\d{2})-(\d{2})\b")
 RE_NUM = re.compile(r"\b(\d{1,2})[/.](\d{1,2})[/.](20\d{2}|\d{2})\b")
 RE_YEAR = re.compile(r"\b(20[12]\d)\b")
 
+# French (fr pack): "samedi 5 et dimanche 6 décembre 2026", "du 5 au 7 décembre", "1er décembre", "les 12 et 13 déc."
+from .packs.fr import MONTH_FR_RE, MONTHS_FR, WEEKDAY_FR  # noqa: E402
+
+_D_FR = r"(\d{1,2})(?:er|e|è|ème|eme)?"
+_WD_FR = rf"(?:{WEEKDAY_FR}\s+)?"
+RE_FR = re.compile(rf"\b{_WD_FR}{_D_FR}(?:\s*(?:au|et|-|–|—|&|à)\s*{_WD_FR}{_D_FR})?\s+{MONTH_FR_RE}(?:\s+{Y})?(?![\w])",
+                   re.I)
+
 
 @dataclass
 class DateMention:
@@ -41,7 +49,7 @@ class DateMention:
 
 def _month(s: str) -> int | None:
     s = s.lower().rstrip(".")
-    return MONTHS.get(s) or MONTHS.get(s[:3])
+    return MONTHS.get(s) or MONTHS_FR.get(s) or MONTHS_FR.get(s.replace("é", "e").replace("û", "u")) or MONTHS.get(s[:3])
 
 
 def _mk(y, m, d):
@@ -51,10 +59,11 @@ def _mk(y, m, d):
         return None
 
 
-def _infer_year(text: str, pos: int, today: dt.date) -> int | None:
-    # Nearest explicit year within 250 chars (prefer before), else None.
-    window = text[max(0, pos - 250): pos + 250]
-    ys = [(abs(m.start() - 250), int(m.group(1))) for m in RE_YEAR.finditer(window)]
+def _infer_year(text: str, pos: int, today: dt.date, win: int = 250) -> int | None:
+    # Nearest explicit year within `win` chars (prefer before), else None.
+    window = text[max(0, pos - win): pos + win]
+    off = pos - max(0, pos - win)
+    ys = [(abs(m.start() - off), int(m.group(1))) for m in RE_YEAR.finditer(window)]
     if ys:
         return sorted(ys)[0][1]
     return None
@@ -71,6 +80,20 @@ def extract_dates(text: str, today: dt.date, day_first: bool = True) -> list[Dat
         d = _mk(m.group(1), m.group(2), m.group(3))
         if d:
             out.append(DateMention(d, None, m.start(), m.end(), True, m.group(0)))
+            taken.append((m.start(), m.end()))
+
+    for m in RE_FR.finditer(text):
+        d1, d2, mon, yr = m.group(1), m.group(2), m.group(3), m.group(4)
+        mo = _month(mon)
+        has_year = bool(yr)
+        # French announcements put the edition year in a nearby sentence ("Rejoignez l'édition 2026"): wider window.
+        y = int(yr) if yr else _infer_year(text, m.start(), today, win=400)
+        if not y or not mo:
+            continue
+        s = _mk(y, mo, d1)
+        e = _mk(y, mo, d2) if d2 else None
+        if s:
+            out.append(DateMention(s, e if e and e >= s else None, m.start(), m.end(), has_year, m.group(0)))
             taken.append((m.start(), m.end()))
 
     for m in RE_DMY.finditer(text):
@@ -127,8 +150,8 @@ def extract_dates(text: str, today: dt.date, day_first: bool = True) -> list[Dat
         if merged:
             prev = merged[-1]
             gap = text[prev.endpos: dm.pos]
-            if prev.end is None and re.fullmatch(r"\s*(?:-|–|—|to|until|through|thru)\s*", gap or "") \
-                    and dm.start >= prev.start and (dm.start - prev.start).days <= 31:
+            if prev.end is None and re.fullmatch(r"\s*(?:-|–|—|to|until|through|thru|au|jusqu['’]au)\s*", gap or "", re.I) \
+                    and dm.start >= prev.start and (dm.start - prev.start).days <= 45:
                 if not prev.has_year and dm.has_year and prev.start.year != dm.start.year:
                     prev.start = _mk(dm.start.year, prev.start.month, prev.start.day) or prev.start
                 prev.end = dm.start

@@ -19,7 +19,21 @@ from ..urlutil import reg_domain
 from . import identity as idn
 from .schema import SCHEMA_VERSION, USABLE_STATES
 
-SUPPORTED = {"GB", "US", "CA", "AU", "NZ", "IE"}
+SUPPORTED_BASE = {"GB", "US", "CA", "AU", "NZ", "IE"}
+# Countries whose records are exported only once V3 has confirmed it accepts them (switch: sudo fpd-v3-feed fr-on).
+SWITCHED = {"FR": "FPD_EXPORT_FR_FLAG"}
+_SWITCH_DEFAULT = {"FR": "/etc/fpd/export-fr.enabled"}
+
+
+def supported_countries() -> set[str]:
+    """Exportable countries: the base set plus any country whose switch file exists (read at each call)."""
+    import os
+    from pathlib import Path
+    on = {cc for cc, env in SWITCHED.items() if Path(os.environ.get(env, _SWITCH_DEFAULT[cc])).exists()}
+    return SUPPORTED_BASE | on
+
+
+SUPPORTED = supported_countries()  # as at import; export code calls supported_countries() so a switch takes effect next run
 WATCH_STATES = {"UPCOMING_NOT_OPEN", "CLOSED_CURRENT_CYCLE", "UNKNOWN", "HISTORICAL"}
 ENGINE = "fp-discovery-lab"
 
@@ -77,6 +91,10 @@ AUTHORITY_ONLY = re.compile(r"^(?i:the\s+)?(?i:city|shire|town|borough|county|di
                             r"[A-Z][\w'’.\-]*(?:\s+[A-Z][\w'’.\-]*){0,3}$")
 _EVENTISH = re.compile(r"\b(?:festival|fest|markets?|fair|fayre|show|parade|hunt|trees|christmas|carnival|expo|events?|"
                        r"bazaar|celebration|night|day|week|database|vendors?)\b", re.I)
+# French authority names ("Mairie de Seyssins", "Ville de Gex", "Office de Tourisme Pays Basque") are organisers, not events.
+FR_AUTHORITY_ONLY = re.compile(r"^(?:mairie|ville|commune|communaut[ée]\s+(?:de\s+communes|d['’]agglom[ée]ration)|"
+                               r"office\s+(?:de\s+|du\s+)?tourisme|comit[ée]\s+des\s+f[êe]tes|conseil\s+(?:municipal|d[ée]partemental))\b", re.I)
+FR_EVENTISH = re.compile(r"\b(?:march[ée]s?|foires?|salons?|f[êe]tes?|no[ëe]l|brocantes?|braderies?|festivals?|vide[\s-]greniers?)\b", re.I)
 # Platform names are not organisers (UKCraftFairs/ClueMart listings name the platform where the organiser is hidden).
 PLATFORM_ORGANISERS = {"ukcraftfairs.com", "ukcraftfairs", "cluemart", "localstalls", "eventeny", "marketspread",
                        "marketsireland", "marketsireland.ie",
@@ -169,6 +187,10 @@ def source_type(url: str) -> tuple[str, str | None]:
 
 
 def region_code(cc: str | None, region: str | None) -> str | None:
+    if cc == "FR" and region:
+        from ..packs.fr import REGIONS as _FR
+        r = region.strip().lower()
+        return next((code for code, (name, _) in _FR.items() if name.lower() == r), None)
     if not cc or not region or cc not in _REV:
         return None
     r = region.strip()
@@ -295,7 +317,7 @@ def _merge(a: dict, b: dict) -> dict:
 
 
 def _record(o, ss, exs, routes, pids, nkey, oid, how, anchors, today, suppress) -> dict:
-    cc = o["country"] if o["country"] in SUPPORTED else None
+    cc = o["country"] if o["country"] in supported_countries() else None
     lane = o["lane"]
     dsrc, ddetail, strat = source_of(lane, o["primary_url"])
     primary = o["primary_url"] or (ss[0]["url"] if ss else None)
@@ -479,7 +501,7 @@ def _gate(rec: dict, o: dict, today: dt.date, hint_only: bool, conflicts: list, 
             rec["application_state"] = st = "CLOSED_CURRENT_CYCLE"
             rec["application_state_evidence"] = _clip(f"Application deadline {rec['application_deadline']} has passed "
                                                       f"(source date); previously: {rec['application_state_evidence']}", 400)
-    if rec["country_code"] not in SUPPORTED:
+    if rec["country_code"] not in supported_countries():
         issues.append("unsupported_or_unknown_country")
     if hint_only:
         issues.append("geography_unverified (only the discovery query/seed suggested the country)")
@@ -491,7 +513,8 @@ def _gate(rec: dict, o: dict, today: dt.date, hint_only: bool, conflicts: list, 
         issues.append("event_name_not_usable")
     elif dated == "date_conflict":
         issues.append("event_name_date_conflict (date in the title does not match the event dates)")
-    elif COUNCIL_ONLY.match(name.strip()) or (AUTHORITY_ONLY.match(name.strip()) and not _EVENTISH.search(name)):
+    elif COUNCIL_ONLY.match(name.strip()) or (AUTHORITY_ONLY.match(name.strip()) and not _EVENTISH.search(name)) or \
+            (FR_AUTHORITY_ONLY.match(name.strip()) and not FR_EVENTISH.search(name)):
         issues.append("event_name_is_organiser_only")
     if rec["discovery_source"] in SUSPENDED_LANES:
         issues.append(f"lane_suspended ({SUSPENDED_LANES[rec['discovery_source']]})")

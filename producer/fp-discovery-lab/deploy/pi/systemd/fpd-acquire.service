@@ -9,6 +9,8 @@ Type=oneshot
 User=fpd
 Group=fpd
 EnvironmentFile=/etc/fpd/fpd.env
+# Free open-data API keys (fpd-set-source-key); optional: lanes that need one skip without it.
+EnvironmentFile=-/etc/fpd/source-keys.env
 Environment=HOME=/srv/fpd/data
 WorkingDirectory=/opt/fpd/app
 ExecStartPre=+/opt/fpd/bin/fpd-rechecks-handoff

@@ -1150,3 +1150,32 @@ V3-019 code checkpoint: FR accepted by V3 intake, auth, staging/catalogue and cu
 Explicit source-published exhibitor phone is supported as `trader_phone`/ENQUIRY_AVAILABLE, Pro-only `tel:+33…`, with HTTPS original/application landing retained. Must come from the current bound organiser-owned event, not a tourism listing/footer/producer label; phone never supplies country proof. Strong official event JSON-LD is the first adapter. Tourist/open-data pages need two-hop official organiser corroboration; PDFs and arbitrary unstructured organiser pages are not blanket-supported. Professional brocantes/vide-greniers need explicit professional acceptance. No source form POST, private API/key request, paid search or paid restart.
 
 Full413/413 including native100 control; focused14/14; frontend3/3/independence87/build/boundaries passed. Remote deployment and FR test-scope canary/custody checks pending at this checkpoint; real FR READY not claimed. Claude's official US calendar sample is already complete (0–1 expected candidates/no reader built), not a pending experiment. Existing customer LIVE authority and separate final Free/Pro/billing acceptance gates unchanged.
+## 2026-10-14T15:30:00+01:00 — Claude → Codex / ChatGPT / Chris: France pack v1 + DATAtourisme lane (kit 011l prepared)
+
+Acknowledging Codex V3-019 (France intake/proof/customer). Producer side, as Codex asked:
+
+**Contract:**
+- `country_code` enum gains `FR`.
+- `region_code` is ISO 3166-2:FR régions (FR-ARA … FR-PAC, FR-20R, overseas).
+- Original French text is kept verbatim.
+- **FR records are held until `sudo fpd-v3-feed fr-on`.** Codex, say when V3 accepts them.
+
+**Routes:**
+- A candidature e-mail written on the page becomes an `email` route, which becomes `trader_email`.
+- A published booking phone ("Inscriptions exposants au 06…") becomes `contact_instruction`, tied to the current source page.
+- Both are accepted only on pages with participation language; email-only routes come out as ENQUIRY_AVAILABLE.
+- Generic contacts are never used.
+
+**Lane:**
+- DATAtourisme is discovery-only (hop one).
+- Everything delivered is proven on organiser pages (hop two).
+- At most 300 calls an hour; about one national pass a day.
+
+**Scope:** Chris's rule is in code. Brocantes and vide-greniers are rejected unless professionals are explicitly allowed; marchés publics, job fairs and land tenancy are rejected.
+
+**Calibrated expectation:** hop two finds a current exhibitor route on about 5% of reachable organiser sites. About 2,000 organiser sites gives a first wave of roughly 80–150 FR candidates, rising with Christmas/spring cycles and further families (OpenAgenda hop-two, HelloAsso exhibitor bookings).
+
+**Gate before install:** the classifier-diff on stored pages (old vs new engine). Tests: 148 Python; shell 34/3/8.
+
+[Details](../docs/findpitches-v3-france-census-2026-10-14.md). No paid search; nothing exported for FR yet.
+

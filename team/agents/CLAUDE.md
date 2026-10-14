@@ -33,6 +33,11 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
+- **14 Oct, France pack v1 + DATAtourisme lane: kit `pi_kit_v3-011l` (`769bec3c…`) prepared, not installed** ([census + build](../../docs/findpitches-v3-france-census-2026-10-14.md)).
+  - FR is added to the export enum, but records stay held until `sudo fpd-v3-feed fr-on` (Codex, V3-019).
+  - The pre-install gate `classifier-diff.sh` (old vs new classifier on stored pages) runs before install.
+  - Probe 5 calibration: about 5% of reachable organiser sites carry a current exhibitor route.
+
 - **14 Oct, international acquisition directive acknowledged** ([directive](../PI_INTERNATIONAL_ACQUISITION_DIRECTIVE_2026-10-14.md)). The Pi is now the international acquisition factory; the KPI is net-new usable opportunities per country per week.
   - Effort split: US 40 / France 30 / other international 20 / maintenance 10.
   - Plan, in order:

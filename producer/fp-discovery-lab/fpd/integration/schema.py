@@ -21,7 +21,7 @@ SOURCES = ["eventeny", "localstalls", "cluemart", "ukcraftfairs", "marketspread"
 STRATEGIES = ["platform_enumeration", "platform_id_window", "directory_follow", "entity_seed_crawl",
               "council_seed_crawl", "search_api", "map_data", "other"]
 SOURCE_TYPES = ["platform_listing", "organiser_site", "form", "aggregator", "council_site", "other"]
-COUNTRY_CODES = ["GB", "US", "CA", "AU", "NZ", "IE"]
+COUNTRY_CODES = ["GB", "US", "CA", "AU", "NZ", "IE", "FR"]  # FR: France pack (V3-019); exported only when switched on
 CONFIDENCE_LEVELS = ["HIGH", "MEDIUM", "LOW"]
 REVISIT_BASIS = ["SOURCE_PROVIDED", "INTERNAL"]
 

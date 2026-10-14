@@ -52,3 +52,55 @@ About 31% of trading events carry an organiser homepage. **Probe 5 is next**: it
   - **Always in scope:** marchés de Noël, artisan/creator markets, producer markets, foires and salons with exhibitor intake.
   - **Brocantes and vide-greniers:** only when professionals are explicitly allowed. Records "réservé aux particuliers" are excluded.
 - **Routes:** phone-only exhibitor booking ("inscriptions exposants au 06…") is an explicit trader contact instruction under D-018. **Codex** must confirm V3 accepts it, and that the export contract may add `FR`. The contract enum today is GB/US/CA/AU/NZ/IE.
+
+## Probe 5: two-hop route (DATAtourisme → organiser website), 40 API calls + 72 polite fetches
+
+**Funnel:**
+- 2,418 current trading events → 869 with an organiser website (705 distinct sites).
+- 80 sampled → 61 reachable (13 blocked by robots, 6 unreachable).
+- 14 with an exhibitor signal → 12–13 that the probe flagged as a route.
+
+**Calibration of those hits:** I re-read them with the real classifier.
+- **Real current route:** Seyssins. Marché de Noël, appel à candidatures, applications by e-mail before 15 Nov; event 10 Dec 2026.
+- **Real route, full:** Val-de-Moder. A 42-field exhibitor form, but applicants are now placed on a waiting list.
+- **Real route, possibly last year's:** Pluneret's professional PDF form, uploaded in 2025.
+- **False positives:**
+  - shopper pages that mention "exposants" (Valence, Gex);
+  - an exhibitor directory (Steinseltz);
+  - an agricultural-land call (Ornans).
+
+**Realistic hop-two yield:** about 5% of reachable organiser sites, not 20%.
+
+## Build: France pack v1 and DATAtourisme lane (kit `pi_kit_v3-011l`, `SHA256SUMS 769bec3c…`)
+
+**Pack (`fpd/packs/fr.py`)** extends the shared, rule-based engine. English rules are unchanged. It covers:
+- French trader vocabulary: inscription/candidature des exposants, devenir exposant, réservation d'emplacement, tarif au mètre linéaire, commerçants non sédentaires, appel à candidatures (only with market context);
+- closed / waiting-list / not-yet-open phrasings;
+- French dates: "samedi 5 et dimanche 6 décembre 2026", "du 27 novembre au 27 décembre", "1er", and live header clocks ignored;
+- postcode → département → région (ISO 3166-2:FR) and commune;
+- French phone numbers;
+- negatives: marchés publics / appels d'offres (procurement), emploi/recrutement, land tenancy;
+- HelloAsso, Billetweb and Weezevent recognised as routes only with exhibitor wording;
+- **Chris's scope rule**: brocantes and vide-greniers are rejected unless professionals are explicitly allowed.
+
+**Routes:**
+- An e-mail address written in a candidature instruction becomes an e-mail route.
+- "Inscriptions exposants au 06…" becomes a `contact_instruction` route (D-018), tied to that page. It is only accepted when the page also carries participation language.
+
+**Lane (`fpd/generators/datatourisme.py`):** discovery only.
+- Current trading events with an organiser website put that website into the frontier.
+- Every delivered fact is proven from the organiser's own pages by the existing crawler and classifier.
+- Nothing from DATAtourisme is copied into a record.
+- At most 300 API calls an hour (the API allows 1,000), with a persistent cursor.
+
+**Cycle:** a France step (`seed datatourisme --max-calls 20`, then `crawl --generators datatourisme:fr --minutes 12`) gives about one full national pass a day.
+
+**Export:**
+- `FR` is added to the contract enum, and `region_code` takes FR-xxx values.
+- **French records stay held until `sudo fpd-v3-feed fr-on`.** That is Codex's call under V3-019.
+
+**Tests:** Python 148, plus 147 + 1 skipped from the kit.
+- 24 France tests, covering 4 real organiser-page fixtures (sanitised: organisational contacts only, form tokens redacted), dates, geography, scope, procurement, job fairs and the lane.
+- Shell tests: alerts 34, prune 3, source-key 8.
+
+**Pre-install gate:** `classifier-diff.sh` re-classifies about 4,500 stored pages, opportunity-linked ones first, with the installed engine and with the new kit. It reports every label, state or country change before anything is installed.

@@ -83,6 +83,8 @@ IE_COUNTIES = (
     "Offaly", "Roscommon", "Sligo", "Tipperary", "Waterford", "Westmeath", "Wexford", "Wicklow",
 )
 
+from .packs.fr import POSTCODE_COMMUNE as _FR_PC, REGIONS as _FR_REGIONS  # noqa: E402
+
 COUNTRIES: dict[str, CountryProfile] = {
     "GB": CountryProfile(
         code="GB", name="United Kingdom", wikidata_qid="Q145", osm_area_iso="GB",
@@ -147,6 +149,17 @@ COUNTRIES: dict[str, CountryProfile] = {
         trader_terms=("trader application", "stallholder application", "trade stand application",
                       "food vendor application", "craft fair stall"),
     ),
+    # France pack (fpd/packs/fr.py). Regions are the 2016 régions; the département comes from the postcode.
+    "FR": CountryProfile(
+        code="FR", name="France", wikidata_qid="Q142", osm_area_iso="FR",
+        tlds=("fr", "gouv.fr", "asso.fr", "com.fr", "nom.fr", "tm.fr", "bzh", "alsace", "corsica", "paris"),
+        currency_markers=(),  # '€' alone is shared with Ireland; French evidence comes from postcode/phone/TLD
+        phone_prefixes=("+33",),
+        postcode_re=r"(?!x)x",  # French postcodes are voted in geo.py (needs the commune, and not a US 'ST 62701')
+        regions=tuple(name for name, _ in _FR_REGIONS.values() if name not in ("Corse", "Guyane", "Martinique")),
+        trader_terms=("inscription exposants", "devenir exposant", "appel à candidatures marché de noël",
+                      "réservation emplacement brocante", "candidature exposant marché artisanal"),
+    ),
 }
 
 IN_SCOPE = tuple(COUNTRIES)
@@ -167,6 +180,6 @@ def tld_country(suffix: str) -> str | None:
 # Countries we explicitly recognise as OUT of scope, so a page clearly located there is rejected
 # rather than left uncertain. Minimal list of strong signals.
 OUT_OF_SCOPE_TLDS = {
-    "de", "fr", "es", "it", "nl", "be", "ch", "at", "se", "no", "dk", "fi", "pl", "pt", "cz",
+    "de", "es", "it", "nl", "be", "ch", "at", "se", "no", "dk", "fi", "pl", "pt", "cz",
     "za", "in", "sg", "my", "ph", "jp", "cn", "hk", "br", "mx", "ar", "ae", "ng", "ke",
 }

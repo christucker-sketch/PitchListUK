@@ -47,6 +47,13 @@ RECUR_MARKET_RE = re.compile(
     r"friday|saturday|sunday)\b|\b(?:weekly|fortnightly|monthly)\b|\bmonthly\s*·", re.I)
 
 
+# Language packs (fpd/packs) extend the opening-date, annual and regular-market phrasings.
+from .packs import extend_re  # noqa: E402
+
+OPENS_ON_RE = extend_re(OPENS_ON_RE, "opens_on")
+ANNUAL_RE = extend_re(ANNUAL_RE, "annual")
+RECUR_MARKET_RE = extend_re(RECUR_MARKET_RE, "recur_market")
+
 MONTHS = {m: i + 1 for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])}
 SEASON_END_RE = re.compile(
     r"\b(?:until|till|to|through|thru|into)\s+(?:the\s+)?(?:early\s+|mid[\s-]?|late\s+|end\s+of\s+)?"
@@ -260,6 +267,9 @@ ROUTE_CATEGORIES = [
     ("produce", r"\b(?:farmer|produce|grower)s?\b"),
     ("retail", r"\b(?:retail|merchant|marketplace|general|vendor|stallholder|trader|market)s?\b"),
 ]
+from .packs import extend_map as _extend_map  # noqa: E402
+
+ROUTE_CATEGORIES = list(_extend_map(dict(ROUTE_CATEGORIES), "route_categories").items())  # order kept (dicts are ordered)
 _RC = [(k, re.compile(v, re.I)) for k, v in ROUTE_CATEGORIES]
 
 

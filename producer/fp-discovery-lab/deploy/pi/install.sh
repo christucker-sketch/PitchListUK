@@ -236,5 +236,6 @@ Next (skip what is already done):
   3. Verify and start delivery:   sudo fpd-go-live
   4. Off-site backup (once):      sudo fpd-offsite-setup
   5. Email alerts (once):         sudo fpd-alert-setup     (SMTP2GO; the key is not in backups, so re-run after a restore)
+  6. French open-data keys (once): sudo fpd-set-source-key datatourisme   (France lane; skips without it)
   Status at any time:             sudo fpd-status
 EOF

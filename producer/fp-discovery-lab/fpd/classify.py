@@ -23,6 +23,7 @@ from collections import Counter
 from urllib.parse import urlsplit
 
 from . import lexicon as L
+from .packs import PACKS
 from .dates import extract_dates, parse_iso, year_counts
 from .geo import infer_geo
 from .parse import Page, jsonld_events
@@ -35,7 +36,10 @@ NAME_JUNK = re.compile(
     r"stallholders?.*|exhibitors?.*|trade\s+stands?.*|apply.*|booking.*|eventeny|marketspread|zapp.*|"
     r"jotform|google\s+forms?|facebook|instagram|.*\bvendor\s+application|.*\bvendors?\s+info.*|"
     r"food\s+(?:vendors?|traders?).*|get\s+involved|take\s+part|.*\bapplications?$|contact(?:\s+us)?|"
-    r"about(?:\s+us)?|faqs?|information|info)$",
+    r"about(?:\s+us)?|faqs?|information|info|"
+    r"accueil|bienvenue.*|inscriptions?|inscription\s+(?:exposants?|au\s+.*|en\s+ligne)|candidatures?|appel\s+[àa]\s+candidatures?|"
+    r"formulaire.*|exposants?(?:\s+divers)?|devenir\s+exposant|contact(?:ez[\s-]nous)?|actualit[ée]s?|agenda|[ée]v[ée]nements?|"
+    r"tous\s+les\s+[ée]v[ée]nements|mairie\s+d[eu'’].*|ville\s+d[eu'’].*|commune\s+d[eu'’].*|office\s+de\s+tourisme.*)$",
     re.I,
 )
 ORGANISER_RE = re.compile(
@@ -66,7 +70,8 @@ SECTION_WORDS = re.compile(
     r"\b(?:vendors?|exhibitors?|traders?|stall\s*holders?|concessions?|applications?|apply|info(?:rmation)?|contract|"
     r"handbook|become|our|copy\s+of|welcome|home|page|site|website|merchants?|booths?|stalls?|pitch(?:es)?|"
     r"waitlist|registration|register|faqs?|terms|rules|guidelines|get\s+involved|opportunit(?:y|ies)|"
-    r"tips|blog|news|contact|about|sponsors?|tickets?|charts?|form|portal)\b", re.I)
+    r"tips|blog|news|contact|about|sponsors?|tickets?|charts?|form|portal|"
+    r"inscriptions?|candidatures?|exposants?|formulaire|accueil|actualit[ée]s?|agenda|mairie|r[èe]glement)\b", re.I)
 GENERIC_ANCHOR = re.compile(r"^(?:website|web\s*site|visit(?:\s+(?:website|site))?|site|link|click\s+here|more(?:\s+info)?|"
                             r"read\s+more|details|info|fair\s+site|official\s+site|home(?:page)?|www\..*|https?://.*)$", re.I)
 
@@ -217,7 +222,8 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
     for ln in page.links:
         u = ln.url
         if u.startswith("mailto:"):
-            if role_rx.search(ln.context) or re.search(r"\b(book|stall|pitch|trade|appl)", ln.context, re.I):
+            if role_rx.search(ln.context) or re.search(r"\b(book|stall|pitch|trade|appl)", ln.context, re.I) or \
+                    re.search(r"\b(?:inscri|candidat|r[ée]serv|exposer|emplacement|postuler)", ln.context, re.I):
                 routes.append({"type": "email", "url": u, "context": ln.context[:160]})
             continue
         if is_social(u) or L.NON_ROUTE_HOSTS.search(u):
@@ -245,6 +251,20 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
                       r"(?:book|apply|enquire|reserve|register)[^\n]{0,40}(?:stall|pitch|space|booth|stand)", body, re.I)
         if m:
             routes.append({"type": "contact_instruction", "url": None, "text": m.group(0)[:200]})
+    # Language-pack booking instructions ("Inscriptions exposants au 06 12 34 56 78", "dossier de candidature …
+    # à l'adresse suivante : x@y.fr"). A written e-mail address becomes an e-mail route; a phone number stays an
+    # instruction (D-018 'explicit trader contact instruction'). Only counted with participation language on the page.
+    if not routes and distinct_apply:
+        for rx in L.CONTACT_INSTRUCTION_RE:
+            m = rx.search(body)
+            if not m:
+                continue
+            em = re.search(r"[\w.+-]+@[\w-]+\.[\w.-]*\w", m.group(0))
+            if em:
+                routes.append({"type": "email", "url": "mailto:" + em.group(0), "context": m.group(0)[:160]})
+            else:
+                routes.append({"type": "contact_instruction", "url": None, "text": m.group(0)[:200]})
+            break
     prio = {"platform_page": 0, "platform_link": 1, "embedded_form": 1, "onpage_form": 2, "form_document": 3,
             "apply_link": 4, "email": 5, "contact_instruction": 6}
     def _vend(r):
@@ -259,6 +279,9 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
     # ---------- 3. currency ----------
     evs = jsonld_events(page)
     dates = extract_dates(body[:80_000], today, day_first=True)
+    # A live 'today' clock in the site header ("mercredi 14 octobre 2026 - 14:55") is not an event date.
+    dates = [d for d in dates if not (d.start == today and d.end is None and
+                                      re.match(r"\s*[-–,à]?\s*\d{1,2}\s*[:h]\s*\d{2}", body[d.endpos: d.endpos + 14]))]
     deadlines, event_dates = [], []
     for d in dates:
         before = body[max(0, d.pos - 110): d.pos]
@@ -440,6 +463,14 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
                                       "agricultural_show", "food_festival", "fair_fete", "street_festival"))
     feats.update(livestock_terms=livestock, commercial_terms=commercial, article=article, permit_page=permit_page)
     feats.update(online=online, interest_list=interest_list)
+    # Scope (France, 14 Oct 2026): brocantes / vide-greniers / braderies are in only when professionals may take part.
+    private_sellers = False
+    for _pk in PACKS:
+        ev_rx, only_rx, pro_rx = _pk.get("private_sellers_event"), _pk.get("private_only"), _pk.get("pro_allowed")
+        if ev_rx and re.search(ev_rx, title_blob + " " + heads_blob, re.I):
+            if re.search(only_rx, body[:30_000], re.I) or not re.search(pro_rx, body[:30_000], re.I):
+                private_sellers = True
+                feats["private_sellers_event"] = True
     site_role = hint.get("site_role", "organiser")
     if site_role == "hub":
         label, reasons = "hub", ["aggregator_site"]
@@ -455,7 +486,8 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
         label = "hub" if is_hub else "rejected"
         reasons.append("no_vendor_signal")
     elif procurement >= 2 and not (
-            len(distinct_apply) >= 2 and re.search(r"\b(festival|fair|market|show|expo)s?\b", title_blob + " " + heads_blob, re.I)):
+            len(distinct_apply) >= 2 and re.search(r"\b(festival|fair|market|show|expo)s?\b|\bmarch[ée]s?\s+(?:de\s+no[ëe]l|artisan|des\s+cr[ée]ateurs|de\s+producteurs)|\bfoire|\bsalon|\bbrocante",
+                                                   title_blob + " " + heads_blob, re.I)):
         label, reasons = "rejected", ["procurement_context"]
     elif (negs.get("sports_pitch", 0) >= 2 and commercial <= 2) or re.search(
             r"school[-_]lets|pitch[-_]charges|pitch[-_]hire|pitch[-_]bookings?|sports?[-_](?:facilities|pitches)", _path):
@@ -469,8 +501,12 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
         label, reasons = "rejected", ["non_event_context"]
     elif (negs.get("jobs", 0) >= 2 or negs.get("real_estate", 0) >= 2) and vendor != "strong":
         label, reasons = "rejected", ["non_event_context"]
+    elif negs.get("agriculture_tenancy", 0) >= 1 and commercial <= 2:
+        label, reasons = "rejected", ["non_event_context"]
     elif online:
         label, reasons = "rejected", ["online_event"]
+    elif private_sellers:
+        label, reasons = "rejected", ["private_sellers_event"]
     elif on_platform_vendor_page and L.NON_VENDOR_ANCHOR.search(page.h1 or "") and not re.search(
             r"(vendor|exhibit|booth|stall|trader|concession|market|merchant|artisan|craft|food|artist|maker|retail|seller)",
             page.h1 or "", re.I):

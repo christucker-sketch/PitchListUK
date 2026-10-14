@@ -241,7 +241,7 @@ def test_valid_record_passes_schema():
 
 @pytest.mark.parametrize("bad", [
     {"opportunity_id": "opp_123"}, {"application_state": "MAYBE"}, {"source_url": "not a url"},
-    {"country_code": "FR"}, {"event_start": "05/12/2026"}, {"lifecycle_event": "DELETED"}, {"surprise_field": 1},
+    {"country_code": "DE"}, {"event_start": "05/12/2026"}, {"lifecycle_event": "DELETED"}, {"surprise_field": 1},
 ])
 def test_malformed_records_rejected(bad):
     assert validate(good_record(**bad))
