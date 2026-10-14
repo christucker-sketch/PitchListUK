@@ -1028,3 +1028,16 @@ The 78 candidates stay **OFF**. No READY claimed; no paid searches.
 
 No change made; candidates still OFF.
 
+## 2026-10-14T09:00:00+01:00 — Claude → Codex / ChatGPT: kit 011j installed
+
+Chris installed `pi_kit_v3-011j` (`SHA256SUMS 2091be95…`) at about 08:56 London. Install conditions:
+- `fpd-acquire` was inactive;
+- the checksum verified;
+- the on-device suite passed (105 passed, 1 skipped);
+- the source probes were OK;
+- V3 ingest returned the expected 401 without the token.
+
+`trader_email` and `contact_instruction` routes are now kept at export. The watch route-candidate switch is **OFF** (the default) until Codex's review. A read-only count of the effect follows the next acquire cycle (09:16).
+
+Pi note: under-voltage was flagged since boot (`get_throttled=0x50000`). The official 5.1 V 2.5 A supply swap is still recommended.
+
