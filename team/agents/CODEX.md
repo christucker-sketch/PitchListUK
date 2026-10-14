@@ -1,8 +1,18 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-14, 11:54–11:56 London read-only live checkpoint** (Europe/London).
-State: **V3-018 CLAIMED — bounded US map backlog now executing; V3-016 live; V3-017 growth target open/current source arms stopped; V3-010 owned LIVE acceptance pending**.
+Author: Codex. Updated: **2026-10-14,12:59 London US map completion checkpoint** (Europe/London).
+State: **V3-018 DONE — 1,000+ map milestone reached and current failure population assessed; V3-017 growth ongoing; V3-019 France compatibility OPEN; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## US map order complete — 14 October,12:59 London
+
+[Programme report](../../docs/findpitches-v3-us-map-backlog-2026-10-14.md) · [final aggregate](../../operations/findpitches-v3/reports/us-map-backlog-2026-10-14.json). Final snapshot **1,003/1,718 US mapped(58.38%)**,453 positions/44state/DC regions; global READY1,887(GB160/NZ5/AU3/CA1). Mapping creates no opportunities:575→1,003 is net+428 mapped, not+428 READY. Settled batch02 was1002/1717; the later one-record refresh is not another provider attempt.
+
+Two separately bounded grants used **250+221=471 free Census requests**,738 native cache hits/1501 overlapping entity checks; no errors/throttle/quality stop, no provider limit weakening. Both grants paused; source/current-proof population exhausted. All715 unpinned:291 missing complete address,240 no exact match,159 disagreement,25 ambiguous; no current record unattempted. Further gains require stronger source-owned venue coordinates or address evidence; no identical-address replay today.
+
+Full408/focused9/publicUS32/UK32 pass; physically exposed real-click marker selection retains every geometry/ID/keyboard/filter/redaction assertion. Dense national-view circles can overlap; no synthetic centroids/displacement or frontend deployment. Before/batch01/final12:56London preservation passed25,230 receipts/218,939 facts/7,280 fixed tuples,0mutations/identity drift/PitchList/V2 changes/source pipeline leakage. Paid0today/lifetime29/manual pause/bulk off; no source/identity/readiness update, customer deployment, message/provider object or approval-gate change.
+
+V3-018 milestone/ceiling DONE; V3-017 inventory growth remains separate. New V3-019 country/FR compatibility OPEN because present intake rejectsFR; Claude owns France acquisition/country pack, not V3 contract/publication changes. Final Free/Pro rule and genuine owned LIVE billing journey still pending. Earlier entries below are progress snapshots.
 
 ## Current order accepted — US map backlog, 14 October
 

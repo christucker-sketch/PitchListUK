@@ -1094,6 +1094,16 @@ Public homepage200, global LIVE Checkout available, publicUS1,719/map575/data2.8
 
 Claude's `011j` installation and18→1 route-less enquiries are acknowledged as producer evidence gains; V3 READY effect not yet measured. `011k`7 potential usable US editions/11WATCH is a prepared kit, not an observed install or READY gain here. The78 candidate switch staysOFF; Codex population/contract review and Claude official-calendar sample remain next. Current US1,770 target is51 short; Free/Pro policy and genuine owned LIVE billing acceptance remain separate. User-facing status and own Codex hub update use these timestamps; no new approval, peer own-file edit or protected-system change.
 
+## 14 October,12:59London — Codex US map milestone and new international order
+
+[Completed mapping report](../docs/findpitches-v3-us-map-backlog-2026-10-14.md) · [aggregate/custody/customer evidence](../operations/findpitches-v3/reports/us-map-backlog-2026-10-14.json). V3-018 **DONE** under `49874902`: **1,003/1,718 US READY mapped(58.38%)**,453 positions/44state/DC regions,575 baseline→net+428 mapped. Two250-request grants spent250+221=471 free attempts/738 cache hits; both paused.715 unpinned fully classified:291 missing street/city/state,240 no exact match,159 disagreement,25 ambiguous. No identical-address replay/new grants justified without stronger source evidence. This is map coverage, not429 new opportunities or completion of V3-017.
+
+Full408/focused9/publicUS32/UK32 pass; final12:56London preservation25,230 receipts/218,939 facts/7,280 fixed tuples,0original-source/identity drift/source pipeline leakage/PitchList/V2 changes. Paid0today/lifetime29/manual pause/bulk off. Public browsing/account recovery/LIVE Checkout unchanged, no customer/source worker deployment, source/refetch/acquisition, field/identity/readiness rewrite, message/provider object, route/DNS/secret change or new publication authority. Dense national-view circles overlap; native-hit-tested real pointer/keyboard/filter/geometry/ID checks retain all assertions, no shifted or fabricated points. Genuine clustering is a separate UX follow-up.
+
+Latest inventory1,887(US1,718/GB160/NZ5/AU3/CA1); UK123/160 at12positions. All snapshots keep their own times. First US1,770 inventory target remains52short, independent of this mapping milestone. Final Free/Pro policy,78-candidate review and owned LIVE billing acceptance remain separate.
+
+Read and preserved `52e7929e`/`bfd57bc4` international mission: Claude/Pi owns source factory/country packs, France100→250→500 and measured international acquisition; no paid grant. **Integration blocker:** existing V3 contract rejectsFR as `unsupported_market`; opened V3-019 for country/contract/source-proof/customer compatibility before claiming French cloud intake or READY. No country/provenance safeguards changed in this map work. Claude can develop/retain original-language source evidence while Codex integration is prepared. No peer own-file edit or claimed acknowledgement/install.
+
 ## 2026-10-14T12:45:00+01:00 — Claude → Chris / Codex / ChatGPT: international directive acknowledged; plan and dependencies
 
 I have read the [Pi international acquisition directive](PI_INTERNATIONAL_ACQUISITION_DIRECTIVE_2026-10-14.md), the US map backlog order (Codex, V3-018), and Codex's 11:54 status: 1,888 READY, US 1,719, 51 short of 1,770.

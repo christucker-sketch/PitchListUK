@@ -1,0 +1,680 @@
+{
+  "schema": "findpitches-v3-us-map-backlog-v1",
+  "as_of": "2026-10-14T11:59:42.586Z",
+  "country_counts": {
+    "US": 1718,
+    "NZ": 5,
+    "GB": 160,
+    "AU": 3,
+    "CA": 1
+  },
+  "global_ready": 1887,
+  "us_ready": 1718,
+  "mapped": 1003,
+  "coverage_percent": 58.38,
+  "coordinate_positions": 453,
+  "state_dc_regions": 44,
+  "baseline_mapped": 575,
+  "net_current_map_gain": 428,
+  "batches": [
+    {
+      "schema": "findpitches-v3-us-address-map-v1",
+      "as_of": "2026-10-14T11:25:23.617Z",
+      "run": {
+        "id": "venue_map_b3770411-0f17-44e8-af86-77d7fcb13b6f",
+        "status": "paused",
+        "max_requests": 250,
+        "requests_reserved": 250,
+        "max_entities": 1819,
+        "entities_checked": 627,
+        "created_at": "2026-10-14T11:12:01.912Z",
+        "expires_at": "2026-10-14T13:12:01.912Z",
+        "stop_reason": "free_geocoder_request_limit"
+      },
+      "us_ready": 1719,
+      "coordinate_opportunities": 845,
+      "coverage_percent": 49.16,
+      "distinct_source_address_locations": 344,
+      "distinct_coordinate_positions": 304,
+      "mapped_by_source_state": {
+        "MN": 8,
+        "FL": 169,
+        "GA": 152,
+        "PA": 6,
+        "WI": 2,
+        "MD": 7,
+        "TX": 94,
+        "NC": 89,
+        "MS": 6,
+        "OR": 12,
+        "MI": 12,
+        "DC": 2,
+        "NY": 27,
+        "NV": 21,
+        "LA": 5,
+        "CA": 57,
+        "KY": 9,
+        "TN": 23,
+        "AZ": 22,
+        "NJ": 7,
+        "WA": 6,
+        "CO": 15,
+        "SC": 13,
+        "OH": 11,
+        "MO": 8,
+        "AL": 9,
+        "IN": 8,
+        "IA": 2,
+        "VA": 10,
+        "IL": 4,
+        "WY": 2,
+        "UT": 5,
+        "AR": 6,
+        "HI": 4,
+        "OK": 5,
+        "MA": 2,
+        "DE": 2,
+        "NM": 3
+      },
+      "provider_requests": 250,
+      "cache_hits": 376,
+      "checked": 627,
+      "unpinned": 874,
+      "held_reasons": {
+        "census_no_exact_match": 208,
+        "census_address_components_disagree": 128,
+        "census_ambiguous_address": 20,
+        "free_geocoder_request_limit": 1
+      },
+      "not_attempted": 517,
+      "planned_complete_address_entities": 852,
+      "planned_source_evidence_deficiency_entities": 292,
+      "stop_reason": "free_geocoder_request_limit",
+      "paid_queries_added": 0,
+      "paid_geocoding_cost": 0,
+      "precision": "Existing source venue coordinates or US Census exact street-address matches, interpolated along a proved street range; no GPS/rooftop accuracy claim.",
+      "original_source_updates": 0,
+      "identity_updates": 0,
+      "readiness_updates": 0,
+      "remaining_failure_buckets": {
+        "not_attempted": 518,
+        "no_exact_match": 208,
+        "address_disagreement": 128,
+        "missing_street_city_state": 0,
+        "ambiguous_match": 20,
+        "source_evidence_deficiency": 0,
+        "provider_error": 0
+      }
+    },
+    {
+      "schema": "findpitches-v3-us-address-map-v1",
+      "as_of": "2026-10-14T11:53:02.822Z",
+      "run": {
+        "id": "venue_map_0274e204-6082-4d86-8d75-fc8a336a083b",
+        "status": "paused",
+        "max_requests": 250,
+        "requests_reserved": 221,
+        "max_entities": 1819,
+        "entities_checked": 874,
+        "created_at": "2026-10-14T11:34:33.483Z",
+        "expires_at": "2026-10-14T13:34:33.483Z",
+        "stop_reason": "bounded_map_complete"
+      },
+      "us_ready": 1717,
+      "coordinate_opportunities": 1002,
+      "coverage_percent": 58.36,
+      "distinct_source_address_locations": 503,
+      "distinct_coordinate_positions": 453,
+      "mapped_by_source_state": {
+        "MN": 10,
+        "FL": 169,
+        "GA": 170,
+        "PA": 7,
+        "WI": 4,
+        "MD": 10,
+        "TX": 123,
+        "NC": 115,
+        "MS": 6,
+        "OR": 14,
+        "MI": 14,
+        "OH": 14,
+        "NE": 1,
+        "DC": 2,
+        "NY": 39,
+        "MO": 10,
+        "NV": 25,
+        "LA": 6,
+        "CA": 57,
+        "KY": 9,
+        "TN": 30,
+        "WA": 12,
+        "VA": 23,
+        "AZ": 22,
+        "NJ": 9,
+        "CO": 15,
+        "SC": 14,
+        "AL": 9,
+        "IN": 14,
+        "IA": 4,
+        "IL": 7,
+        "WY": 2,
+        "UT": 6,
+        "AR": 6,
+        "HI": 4,
+        "OK": 7,
+        "ND": 1,
+        "MA": 3,
+        "ME": 1,
+        "RI": 1,
+        "DE": 2,
+        "ID": 1,
+        "NM": 3,
+        "WV": 1
+      },
+      "provider_requests": 221,
+      "cache_hits": 362,
+      "checked": 874,
+      "unpinned": 715,
+      "held_reasons": {
+        "census_no_exact_match": 240,
+        "census_address_components_disagree": 159,
+        "census_ambiguous_address": 25,
+        "source_exact_street_city_state_missing": 291
+      },
+      "not_attempted": 0,
+      "remaining_failure_buckets": {
+        "not_attempted": 0,
+        "no_exact_match": 240,
+        "address_disagreement": 159,
+        "missing_street_city_state": 291,
+        "ambiguous_match": 25,
+        "source_evidence_deficiency": 0,
+        "provider_error": 0
+      },
+      "planned_complete_address_entities": 582,
+      "planned_source_evidence_deficiency_entities": 292,
+      "stop_reason": "bounded_map_complete",
+      "paid_queries_added": 0,
+      "paid_geocoding_cost": 0,
+      "precision": "Existing source venue coordinates or US Census exact street-address matches, interpolated along a proved street range; no GPS/rooftop accuracy claim.",
+      "original_source_updates": 0,
+      "identity_updates": 0,
+      "readiness_updates": 0
+    }
+  ],
+  "provider_attempts": 471,
+  "native_cache_hits": 738,
+  "entity_checks": 1501,
+  "successful_resolutions": 429,
+  "unmapped": 715,
+  "remaining_failure_buckets": {
+    "not_attempted": 0,
+    "no_exact_match": 240,
+    "address_disagreement": 159,
+    "missing_street_city_state": 291,
+    "ambiguous_match": 25,
+    "source_evidence_deficiency": 0,
+    "provider_error": 0
+  },
+  "target": 1000,
+  "target_met": true,
+  "programme_status": "paused; current evidence exhausted; new stronger evidence required",
+  "operator_tests": {
+    "full_passed": 408,
+    "focused_passed": 9,
+    "failed": 0
+  },
+  "public_maps": {
+    "us": {
+      "schema": "findpitches-v3-venue-map-browser-v1",
+      "scope": "actual_public",
+      "passed": true,
+      "checks": [
+        {
+          "name": "desktop_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "desktop_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "desktop_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "desktop_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "desktop_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "desktop_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "desktop_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "desktop_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "desktop_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "desktop_extent_option",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "desktop_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "desktop_no_script_errors_or_foreign_requests",
+          "passed": true
+        },
+        {
+          "name": "mobile_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "mobile_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "mobile_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "mobile_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "mobile_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "mobile_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "mobile_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "mobile_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "mobile_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "mobile_extent_option",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "mobile_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "mobile_no_script_errors_or_foreign_requests",
+          "passed": true
+        }
+      ],
+      "certificate_bypass": false,
+      "synthetic_points": 0,
+      "serper_queries": 0,
+      "customer_provider_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-14T11:52:46.710352+00:00"
+    },
+    "uk": {
+      "schema": "findpitches-v3-venue-map-browser-v1",
+      "scope": "actual_public",
+      "passed": true,
+      "checks": [
+        {
+          "name": "desktop_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "desktop_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "desktop_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "desktop_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "desktop_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "desktop_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "desktop_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "desktop_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "desktop_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "desktop_extent_option",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "desktop_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "desktop_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "desktop_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "desktop_no_script_errors_or_foreign_requests",
+          "passed": true
+        },
+        {
+          "name": "mobile_real_source_points",
+          "passed": true
+        },
+        {
+          "name": "mobile_one_marker_per_venue",
+          "passed": true
+        },
+        {
+          "name": "mobile_all_opportunities_retained",
+          "passed": true
+        },
+        {
+          "name": "mobile_source_coordinates_inside_map",
+          "passed": true
+        },
+        {
+          "name": "mobile_honest_unpinned_count",
+          "passed": true
+        },
+        {
+          "name": "mobile_grouped_dates_available",
+          "passed": true
+        },
+        {
+          "name": "mobile_selector_preserves_ids",
+          "passed": true
+        },
+        {
+          "name": "mobile_selected_opportunity_details",
+          "passed": true
+        },
+        {
+          "name": "mobile_keyboard_marker",
+          "passed": true
+        },
+        {
+          "name": "mobile_extent_option",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_view_restored",
+          "passed": true
+        },
+        {
+          "name": "mobile_free_source_urls_withheld",
+          "passed": true
+        },
+        {
+          "name": "mobile_venue_filter_applies_to_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_zero_results_clear_markers",
+          "passed": true
+        },
+        {
+          "name": "mobile_us_state_coverage_preserved",
+          "passed": true
+        },
+        {
+          "name": "mobile_no_script_errors_or_foreign_requests",
+          "passed": true
+        }
+      ],
+      "certificate_bypass": false,
+      "synthetic_points": 0,
+      "serper_queries": 0,
+      "customer_provider_objects_created": 0,
+      "messages_sent": 0,
+      "as_of": "2026-10-14T11:52:51.480439+00:00"
+    }
+  },
+  "preservation": {
+    "schema": "findpitches-v3-us-scale-map-preservation-v1",
+    "started_at": "2026-10-14T11:52:10.014Z",
+    "as_of": "2026-10-14T11:56:59.826Z",
+    "baseline_as_of": "2026-10-13T17:15:54.694Z",
+    "receipts_compared": 25230,
+    "source_facts_compared": 218939,
+    "fixed_identity_tuples_compared": 7280,
+    "destructive_source_mutations": 0,
+    "fixed_identity_tuple_changes": 0,
+    "original_build_source_mutations": 0,
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "source_publication_enabled": false,
+    "source_publication_api_denied": true,
+    "paid_queries_today": 0,
+    "paid_day": "2026-10-14",
+    "paid_queries_lifetime": 29,
+    "paid_bulk_enabled": false,
+    "paid_manually_paused": 1,
+    "pitchlist_deployment_unchanged": true,
+    "v2_schedules_unchanged": true
+  },
+  "paid": {
+    "queries_today": 0,
+    "lifetime_v3": 29,
+    "bulk_enabled": false,
+    "manual_paused": 1
+  },
+  "source_customer_rows": 0,
+  "source_publication_rows": 0,
+  "customer_deployments": 0,
+  "source_identity_readiness_updates": 0,
+  "serper_queries_added": 0,
+  "paid_geocoding_cost": 0,
+  "france_intake": "unsupported_market; country/contract/proof/customer compatibility pending",
+  "map_density_limitation": "Nearby real-source circles overlap at national scale; keyboard/filter controls remain, no coordinate displacement or synthetic centroid.",
+  "public_api": {
+    "schema": "findpitches-v3-public-smoke-v1",
+    "started_at": "2026-10-14T12:03:25.754Z",
+    "passed": true,
+    "checks": [
+      {
+        "name": "json_/health",
+        "passed": true
+      },
+      {
+        "name": "public_production_health",
+        "passed": true
+      },
+      {
+        "name": "owned_homepage_/",
+        "passed": true
+      },
+      {
+        "name": "truthful_homepage_/",
+        "passed": true
+      },
+      {
+        "name": "owned_homepage_/index.html",
+        "passed": true
+      },
+      {
+        "name": "truthful_homepage_/index.html",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/session",
+        "passed": true
+      },
+      {
+        "name": "anonymous_free_no_alert_delivery",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/opportunities",
+        "passed": true
+      },
+      {
+        "name": "GB_real_ready_redacted",
+        "passed": true
+      },
+      {
+        "name": "GB_no_duplicate_or_held_identity",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/opportunities",
+        "passed": true
+      },
+      {
+        "name": "US_real_ready_redacted",
+        "passed": true
+      },
+      {
+        "name": "US_no_duplicate_or_held_identity",
+        "passed": true
+      },
+      {
+        "name": "public_event_identity_indexable",
+        "passed": true
+      },
+      {
+        "name": "held_ent_dda1403e0c99eb5b1c1871f37c325cb2",
+        "passed": true
+      },
+      {
+        "name": "held_ent_93d86b9d0147d8aa91ea8eea541d86b8",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/account.html",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/pricing.html",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/alerts.html",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/billing/plans",
+        "passed": true
+      },
+      {
+        "name": "global_eur_price_checkout_state",
+        "passed": true
+      },
+      {
+        "name": "unsafe_signin_csrf_rejected",
+        "passed": true
+      },
+      {
+        "name": "operator_private",
+        "passed": true
+      },
+      {
+        "name": "preview_provisioning_unavailable",
+        "passed": true
+      },
+      {
+        "name": "unsigned_live_webhook_rejected",
+        "passed": true
+      },
+      {
+        "name": "public_robots_private_paths",
+        "passed": true
+      },
+      {
+        "name": "proof_filtered_sitemap",
+        "passed": true
+      },
+      {
+        "name": "www_redirect_to_owned_apex",
+        "passed": true
+      }
+    ],
+    "country_counts": {
+      "GB": 160,
+      "US": 1718
+    },
+    "customer_objects_created": 0,
+    "messages_sent": 0,
+    "certificate_bypass": false,
+    "expected_checkout_enabled": true,
+    "as_of": "2026-10-14T12:03:46.623Z"
+  }
+}

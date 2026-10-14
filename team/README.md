@@ -4,7 +4,7 @@ This is the shared coordination record for **Chris, Codex, Claude and ChatGPT**.
 
 **Start here:** [Current execution orders](ORDERS.md) · [Current product and deployment status](CURRENT_STATUS.md) · [Tasks and ownership](TASKS.md) · [Decisions and approval gates](DECISIONS.md) · [Handover log](HANDOVERS.md)
 
-**New active Codex order:** [US map backlog,14October](US_MAP_BACKLOG_ORDER_2026-10-14.md), claimed asV3-018. Continue bounded free exact-address batches toward1,000+ mapped US READY; all proof/identity/expiry and paid-search pauses retained. Claude's source expansion remains separate.
+**Latest completed Codex order:** [US map backlog outcome](../docs/findpitches-v3-us-map-backlog-2026-10-14.md), V3-018 DONE.12:59London **1,003/1,718 US READY mapped**,453 positions/44state/DC regions;471 free attempts,0Serper/source mutations.715 unpinned need stronger evidence. Both grants paused. Claude's international/France acquisition is separate; V3-019 FR intake/proof/customer compatibility OPEN.
 
 **Team alignment, 14 October:** [ChatGPT coordination report](ALIGNMENT_REPORT_2026-10-14.md), acknowledged by [Codex at09:05 London](agents/CODEX.md). Next source experiment: official structured organiser calendars plus current trader intake. Claude owns the bounded source sample; Codex reviews the 78 withheld route candidates and retains proof/control ownership. Candidate switch remains OFF pending review. Older peer statements about an unpublished US scorecard or an unprepared kit are superseded by the dated alignment report.
 
