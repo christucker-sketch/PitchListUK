@@ -138,7 +138,44 @@ It prints counts only (no URLs, names or contacts), at four stages: fetch → pa
 
 Each item is counted once, at the stage where it stopped. Uncertain pages are not counted at the page stage, because they carry on into watch records. There is a regression test (107 Python tests pass).
 
-The Pi run is a single read-only command (`loss-report.sh`, given to Chris), and its numbers will be posted here.
+The Pi run is a single read-only command (`loss-report.sh`, given to Chris).
+
+### Pi result, 2026-10-14 08:14Z (read-only)
+
+**Engine:** 6,678 opportunities (from 11,871 attached sources; 4,825 exact or apply-URL merges, 366 fuzzy-name merges).
+- Exported: current 1,821, watch 2,016, held 230.
+- 2,611 retired or internal (past, with no recurrence evidence).
+
+**Where US records stop after the page gate:**
+
+| Bucket | US | All countries |
+| --- | --- | --- |
+| Delivered as current | 1,403 | 1,821 |
+| Watch: stale or closed (past edition / closed cycle) | **1,612** | 1,798 |
+| Held: identity (event name unusable or organiser-only) | **51** | 92 |
+| Held: geography missing or unverified | **44** | 102 (+6 conflict) |
+| Watch: D-018 route candidate (specific route) | 24 | 60 |
+| Watch: generic route only (category "general") | 1 | 18 |
+| Watch: no usable route | 18 | 90 |
+| Watch: not yet open | 11 | 47 |
+| Held: http URL / invalid URL | 9 | 18 |
+| Held: known false positive / lane suspended | 10 | 12 |
+| Watch: no current date | 0 | 3 |
+| Freshness conflict | 0 | 0 |
+
+60 + 18 = the 78 D-018 candidates measured earlier. The 18 that have only "general" routes are the weakest.
+
+**Before the export gate (pages and fetches, not opportunities):**
+- 16,751 pages had no trader relevance and 12,119 were platform pages with no application. That is crawl cost, not lost opportunities.
+- 1,197 URLs were blocked by robots / 401 / 403 / 429. That is permanent: no bypass.
+- Parser failures: 5.
+
+### What this says
+
+1. **The US loss is time, not extraction.** 1,612 US records sit in watch as past or closed editions, about 54% of US exported records. The only legitimate recovery is next-edition evidence on the source, which watch revisits already schedule. No new source fixes this.
+2. **The cheapest identifiable US lever is the 95 held records** (identity 51, geography 44). Some may be in usable states and would be current if the name or geography were proven. That breakdown is being measured next (read-only). Any fix must prove name and geography from the source, never guess them.
+3. Route discovery on held organisers (no usable route, 18 US) is small. Blocked sources are not addressable.
+
 
 ## Learning-loop checkpoint 2 (seven questions), 14 Oct later
 
