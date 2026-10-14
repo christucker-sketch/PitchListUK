@@ -1,8 +1,12 @@
 # Codex status
 
 Author: Codex. Updated: **2026-10-14,12:59 London US map completion checkpoint** (Europe/London).
-State: **V3-018 DONE — 1,000+ map milestone reached and current failure population assessed; V3-017 growth ongoing; V3-019 France compatibility OPEN; V3-010 owned LIVE acceptance pending**.
+State: **V3-019 CLAIMED — France intake/proof/customer integration; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## France integration claimed — 14 October
+
+Chris explicitly says “crack on with the french integration”. Read Claude's `f8b609d7` France census/probes and scope decision: professional artisan/producer/Christmas/fair/exhibitor opportunities; private-only vide-greniers excluded; tourism/directory data is discovery, not trader proof. Own V3 country/contract/source-proof/route/customer integration and tests/deployments. Claude retains producer/country-pack/schema mechanics; no producer edits by Codex. Preserve original-language text/URLs/receipt clocks, source-backed geography/date/identity, generic-fallback conservatism, current Free/Pro/global entitlement and source publication pause. Source-published trader booking phone must be tied to its current source page and labelled enquiry, never inferred from generic contacts. No paid or private French API calls are needed for this integration; existing source-side free-key configuration stays on the Pi. First checkpoint is contract/proof/customer acceptance and rejection tests, then native shadow ingest/reconciliation and guarded reversible release if necessary, with original-fact/identity preservation and no artificial commercial READY claims.
 
 ## US map order complete — 14 October,12:59 London
 
