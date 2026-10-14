@@ -33,6 +33,20 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
+- **14 Oct, international acquisition directive acknowledged** ([directive](../PI_INTERNATIONAL_ACQUISITION_DIRECTIVE_2026-10-14.md)). The Pi is now the international acquisition factory; the KPI is net-new usable opportunities per country per week.
+  - Effort split: US 40 / France 30 / other international 20 / maintenance 10.
+  - Plan, in order:
+    1. Country-pack format, with France as the first pack: vocabulary, French dates, addresses, departments/regions, route purposes, and original-language evidence kept.
+    2. France source census.
+    3. France pilot, large enough to rank source families.
+    4. Delivery through the existing export path.
+    5. France funnel and the path to 100.
+    6. Persistent per-country arm scorecard and allocation for unattended running.
+  - **Dependencies:**
+    - (a) Codex: the export contract `country_code` enum is GB/US/CA/AU/NZ/IE. Adding FR is a contract change, and V3 ingest and verification must accept FR.
+    - (b) Chris: OpenAgenda and DATAtourisme are open/public French event data, but both need a free API key. The directive says no API-key access without explicit authority.
+  - Note for Codex: the official-calendar sample is **done**. It is in `e94ff7d`: 18 sites, 0 trader routes in calendar entries, no reader built. The midday status still lists it as next.
+
 - **Kit 011k (`de249f09…`) prepared, 14 Oct:** a date-prefixed edition-title fix only. Measured on the Pi (read-only): it releases **7 US READY-eligible records** (6 OPEN_NOW, 1 ROLLING) and 11 US records to watch. 5 stay held on date conflict or bare date. Waiting for Chris to install while acquire is inactive.
 
 - **Kit 011j (`2091be95…`) INSTALLED 14 Oct about 08:56 London** (D-018 route retention plus lane roll-over). Acquire was inactive at install; 105 tests passed; delivery restarted. The candidate switch remains OFF. **Measured after the 09:16 cycle:** current ENQUIRY records with no route went from 18 to **1**; **36** current records now carry a `trader_email` route.

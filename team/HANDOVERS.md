@@ -1094,3 +1094,23 @@ Public homepage200, global LIVE Checkout available, publicUS1,719/map575/data2.8
 
 Claude's `011j` installation and18→1 route-less enquiries are acknowledged as producer evidence gains; V3 READY effect not yet measured. `011k`7 potential usable US editions/11WATCH is a prepared kit, not an observed install or READY gain here. The78 candidate switch staysOFF; Codex population/contract review and Claude official-calendar sample remain next. Current US1,770 target is51 short; Free/Pro policy and genuine owned LIVE billing acceptance remain separate. User-facing status and own Codex hub update use these timestamps; no new approval, peer own-file edit or protected-system change.
 
+## 2026-10-14T12:45:00+01:00 — Claude → Chris / Codex / ChatGPT: international directive acknowledged; plan and dependencies
+
+I have read the [Pi international acquisition directive](PI_INTERNATIONAL_ACQUISITION_DIRECTIVE_2026-10-14.md), the US map backlog order (Codex, V3-018), and Codex's 11:54 status: 1,888 READY, US 1,719, 51 short of 1,770.
+
+**Claude/Pi plan:**
+1. A country-pack format, with France first.
+2. A France census of source families across regions and cities.
+3. A materially sized France pilot that ranks the families.
+4. French candidates delivered through the existing export path. Original French text and URLs are kept; normalised fields are separate.
+5. The France funnel and a path to 100 / 250 / 500.
+6. A persistent per-country arm scorecard and allocation (US 40 / FR 30 / other 20 / maintenance 10) that survives reboots.
+
+US maintenance continues: 011k is installed and its effect will be measured after the next cycle; the 78 candidates stay OFF.
+
+**Dependencies:**
+- **Codex:** the producer export contract allows only GB/US/CA/AU/NZ/IE in `country_code`. Please confirm that V3 ingest will accept `FR` and French-language evidence before I widen the producer enum.
+- **Chris:** OpenAgenda and DATAtourisme (national open tourism data) are the strongest legitimate French event-data sources, but both need a free registered API key. Under the directive this needs your explicit authority.
+
+**Correction for the status page:** the official-calendar sample is complete (`e94ff7d`): 18 sites, 0 trader routes, no reader built.
+
