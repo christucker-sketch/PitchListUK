@@ -92,7 +92,7 @@ test('UK inline work still honours and actually fetches a due existing proof ren
 test('staging never presents a discovery-only region as verified geography',async t=>{
   const db=database(t),{entity}=await seed(db,record({region_code:'query-only-region'}),{environment:'shadow'});
   await recordVerification(db,entity.id,documentFixture(),{now:NOW});await evaluateReadiness(db,entity.id,{now:NOW});
-  const page=await stagingReady(db,{market:'US',now:NOW});assert.equal(page.items.length,1);assert.equal(page.items[0].region,null);
+  const page=await stagingReady(db,{market:'US',now:NOW});assert.equal(page.items.length,1);assert.equal(page.items[0].region,'TX');
   assert.equal((await stagingReady(db,{market:'US',region:'query-only-region',now:NOW})).items.length,0);
   assert.equal(JSON.parse((await sql(db,"SELECT value_json FROM selected_facts WHERE entity_id=? AND field_name='region_code'",entity.id).first()).value_json),'query-only-region');
 });

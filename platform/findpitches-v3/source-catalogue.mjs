@@ -66,3 +66,14 @@ export function eventApplicationLinks(document) {
   }
   return [...out.values()];
 }
+
+// Hop-one organiser pages supply candidate links, never event/country facts.
+export function operatorPageLinks(document) {
+  if(document.reason||!document.html)return [];
+  const root=parseHtml(document.html),out=new Map();
+  for(const a of nodes(root,n=>n.tag==='a'&&n.attrs.href,{scoped:true})) {
+    let route;try{route=platformRoute(new URL(a.attrs.href,document.url).href);}catch{}
+    if(route)out.set(route.identity??route.url,{...route,label:text(a).slice(0,300)});
+  }
+  return [...out.values()];
+}

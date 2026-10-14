@@ -5,6 +5,7 @@ import {budgetDay} from './serper-usage.mjs';
 import {publicHttps,hash} from './contract.mjs';
 import {customerError,stmt} from './customer-security.mjs';
 import {validVenueCoordinates} from './source-coordinates.mjs';
+import {validAddressCoordinates} from './address-coordinates.mjs';
 import {USABLE_ROUTE_POLICY,USABLE_ROUTE_TYPES} from './usable-route.mjs';
 
 export const types={christmas_market:'Christmas market',holiday_market:'Holiday market',food_festival:'Food festival',festival:'Festival',market:'Market',street_trading:'Street trading',show:'Show',concession:'Concession',event:'Event',sport:'Sports & stadiums'};
@@ -24,16 +25,23 @@ function proofRegion(item) {
   // Keep literal, separately stated address components and explicit proof
   // region fields; never translate towns/postcodes into guessed regions here.
   const components=String(item.location??'').split(/[,;\n]/).map(s=>norm(s.trim()));
-  const matches=regs.filter(r=>item.country==='GB'?components.includes(norm(r.name)):new RegExp('(^|[^a-z])'+r.name.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-z]|$)').test(norm(item.location)));
+  // A city such as Washington is not proof of Washington state. US records
+  // require the literal structured addressRegion captured by the verifier.
+  const matches=item.country==='US'?[]:regs.filter(r=>components.includes(norm(r.name)));
   const specific=matches.filter(r=>!matches.some(s=>s.parent_id===r.id)),literal=specific.length===1?specific[0]:null;
   if(named&&literal&&!ancestors(item.country,literal.id).some(r=>r.id===named.id)&&!ancestors(item.country,named.id).some(r=>r.id===literal.id))return null;
   return literal??named??null;
 }
 export function mapProof(item,now) {
   if(!/^ent_[a-f0-9]{32}$/.test(item.id)||!MARKETS.some(m=>m.code===item.country)||!item.title||!item.organiser||!item.location||!publicHttps(item.application_url)||!Number.isFinite(Date.parse(item.proof_expires_at))||!Number.isFinite(Date.parse(item.verified_at))||Date.parse(item.proof_expires_at)<=Date.parse(now)||Date.parse(item.verified_at)>Date.parse(now))return null;
-  const today=budgetDay(now),row=toSiteOpportunity({opportunity_id:item.id,country_code:item.country,event_name:item.title,organiser:item.organiser,location:item.location,event_start:item.event_start?.slice(0,10),event_end:item.event_end?.slice(0,10),application_deadline:item.application_deadline?.slice(0,10),application_state:item.application_state,
+  const exactClose=Date.parse(item.application_close_at);if(Number.isFinite(exactClose)&&exactClose<=Date.parse(now))return null;
+  const today=budgetDay(now),row=toSiteOpportunity({opportunity_id:item.id,country_code:item.country,event_name:item.title,organiser:item.organiser,location:item.location,event_start:item.event_start?.slice(0,10),event_end:item.event_end?.slice(0,10),application_deadline:Number.isFinite(exactClose)?new Date(exactClose).toISOString().slice(0,10):item.application_deadline?.slice(0,10),application_state:item.application_state,
     source_url:publicHttps(item.source_url)?item.source_url:null,application_url:item.application_url,last_checked:item.verified_at,opportunity_type:item.opportunity_type,vendor_categories:item.vendor_categories},today);
   if(['ended','closed','unknown'].includes(row.application.status))return null;
+  // Presentation retains the publisher's original calendar date; its verified
+  // closing instant decides availability across time zones.
+  row.application.deadline=item.application_deadline??null;row.dates.application_deadline=item.application_deadline??null;
+  if(Number.isFinite(exactClose))row.application.closes_at=item.application_close_at;
   const usable=item.usable_route;
   if(usable?.policy===USABLE_ROUTE_POLICY&&USABLE_ROUTE_TYPES.includes(usable.type)&&usable.landing_url===item.application_url&&usable.current===true&&usable.organiser_controlled===true&&usable.prospective_trader===true){
     row.application.route_type=usable.type;
@@ -41,8 +49,10 @@ export function mapProof(item,now) {
     if(usable.requires_account===true){row.application.requires_account=true;row.application.account_provider=usable.account_provider??null;}
   }
   const region=proofRegion(item);row.location={...row.location,region:item.region,region_id:region?.id??null,region_name:region?.name??null};
-  const position=validVenueCoordinates(item.venue_coordinates,{country:item.country,location:item.location});
-  if(position)row.location={...row.location,lat:position.lat,lng:position.lng,precision:'venue'};
+  const venue=validVenueCoordinates(item.venue_coordinates,{country:item.country,location:item.location}),address=validAddressCoordinates(item.address_coordinates,{country:item.country,location:item.location});
+  const boundAddress=address&&address.entity_id===item.id&&address.entity_revision===item.entity_revision&&address.verification_id===item.verification_id&&address.source_checked_at===item.verified_at&&address.source_expires_at===item.proof_expires_at?address:null;
+  const position=venue??boundAddress;
+  if(position)row.location={...row.location,lat:position.lat,lng:position.lng,precision:position.precision,coordinate_method:position.method};
   row.organiser.verified=true;row.organiser.type_label=null;row.type_label=types[row.type]??'Event';row.canonical_path=routes.opportunityPath(row.market,row.id);row.distance_km=null;
   row._proof={expires_at:item.proof_expires_at,revision:item.entity_revision,verification_id:item.verification_id};return row;
 }
@@ -85,7 +95,7 @@ export function search(rows,p,access,now) {
   const sort=p.sort??'soonest';if(!['soonest','recently_checked','az'].includes(sort))throw customerError('validation');
   list.sort((a,b)=>(sort==='az'?a.title.localeCompare(b.title):sort==='recently_checked'?String(b.checked.last_checked??'').localeCompare(a.checked.last_checked??''):String(a.dates.start??'9999').localeCompare(b.dates.start??'9999'))||a.id.localeCompare(b.id));
   const page=Number(p.page??1),size=Number(p.page_size??25);if(!Number.isInteger(page)||page<1||page>100000||!Number.isInteger(size)||size<1||size>100)throw customerError('validation');
-  const map_points=list.filter(o=>o.location.precision==='venue'&&Number.isFinite(o.location.lat)&&Number.isFinite(o.location.lng)&&Math.abs(o.location.lat)<90&&Math.abs(o.location.lng)<=180).map(o=>({id:o.id,title:o.title,type:o.type,lat:o.location.lat,lng:o.location.lng}));
+  const map_points=list.filter(o=>['venue','address'].includes(o.location.precision)&&Number.isFinite(o.location.lat)&&Number.isFinite(o.location.lng)&&Math.abs(o.location.lat)<90&&Math.abs(o.location.lng)<=180).map(o=>({id:o.id,title:o.title,type:o.type,lat:o.location.lat,lng:o.location.lng,precision:o.location.precision,start:o.dates.start,end:o.dates.end}));
   return {market:market.code,market_status:market.launch_status,coverage:rows.some(o=>o.market===market.code)?'available':'none',location,total:list.length,page,page_size:size,sort,next_start:list.map(o=>o.dates.start).filter(d=>d&&d>=today).sort()[0]??null,results:list.slice((page-1)*size,page*size).map(o=>present(o,access)),facets,map_points};
 }
 export function upcoming(rows,{market=null,type=null,limit=10}={},now) {

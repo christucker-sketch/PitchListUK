@@ -4,6 +4,7 @@ import {proposeFact} from './evidence.mjs';
 import {fetchProofDocument} from './proof-document.mjs';
 import {encodeSourceDocument,decodeSourceDocument} from './document-custody.mjs';
 import {verifyDocument,compareProof,applicationScope,provedEventSourceUrl,eventenyParentId,VERIFIER_VERSION} from './verification.mjs';
+import {attachCachedAddress} from './address-coordinate-store.mjs';
 
 export function verificationUrl(entity) {
   // Prefer the retained event detail over an old footer application link.
@@ -66,13 +67,16 @@ export async function recordVerification(db,entityId,document,{now=new Date().to
   report.reasons=[...new Set([...report.reasons,...compareProof(entity,report)])];
   if(identityReasons.length||report.reasons.some(r=>/disagrees_with_proof|identity_mismatch|market_mismatch/.test(r)))report.status='quarantine';
   let expiry=Date.parse(checked)+24*3600000;
-  if(report.facts.application_deadline)expiry=Math.min(expiry,Date.parse(report.facts.application_deadline+'T00:00:00Z'));
+  if(report.facts.application_deadline)expiry=Math.min(expiry,Date.parse(report.application_close_at??report.facts.application_deadline+'T00:00:00Z'));
   const expires=new Date(expiry).toISOString(),documentId='doc_'+(await hash(document)).slice(0,40);
   const id='ver_'+(await hash([entityId,entity.revision,documentId,report])).slice(0,40),custody=await encodeSourceDocument(document);
   await db.batch([
     sql(db,'INSERT OR IGNORE INTO source_documents(id,source_url,content_hash,fetched_at,document_json) VALUES (?,?,?,?,?)',documentId,originalRoute,document.content_hash??null,checked,custody),
     sql(db,'INSERT OR IGNORE INTO source_verifications(id,entity_id,entity_revision,document_id,verifier_version,status,report_json,checked_at,expires_at) VALUES (?,?,?,?,?,?,?,?,?)',id,entityId,entity.revision,documentId,VERIFIER_VERSION,report.status,stableJson(report),checked,expires),
   ]);
+  // Renewed source proof can reuse a previously matched exact address. This
+  // adds a new proof binding, never a provider request or a source-clock extension.
+  if(report.status==='verified'&&report.venue_address?.country==='US')await attachCachedAddress(db,{entityId,verificationId:id,address:report.venue_address,now});
   return {verification_id:id,entity_id:entityId,entity_revision:entity.revision,report,proposals};
 }
 export async function verifyEntitySource(db,entityId,{now=new Date().toISOString(),fetcher=fetch,maxSourceRequests=null}={}) {

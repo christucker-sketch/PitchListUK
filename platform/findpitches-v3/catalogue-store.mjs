@@ -1,7 +1,8 @@
 import {sql,ingestRecords,loadEntity} from './store.mjs';
 import {hash,stableJson,EXPORT_SCHEMA,platformId} from './contract.mjs';
-import {catalogueUrl,fetchCatalogueDocument,catalogueLinks,platformRoute,eventApplicationLinks} from './source-catalogue.mjs';
-import {fetchSourceDocument} from './source-document.mjs';
+import {catalogueUrl,fetchCatalogueDocument,catalogueLinks,platformRoute,eventApplicationLinks,operatorPageLinks} from './source-catalogue.mjs';
+import {fetchSourceDocument,safeSourceUrl} from './source-document.mjs';
+import {publicRobotsAllowed} from './source-robots.mjs';
 import {fetchProofDocument} from './proof-document.mjs';
 import {encodeSourceDocument} from './document-custody.mjs';
 import {verifyDocument,applicationScope,compareProof} from './verification.mjs';
@@ -113,15 +114,22 @@ export async function recoverUncommittedCatalogueLease(db,candidateId,now=new Da
   ]);
   if(outcome[0].results.length!==1)throw Error('catalogue_custody_recovery_requires_review');return {candidate_id:candidateId,recovered:true,reservations_refunded:0};
 }
-export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500,byte_offset=0},{fetcher=fetch,now=new Date().toISOString()}={}) {
+export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500,byte_offset=0,operator_page=false},{fetcher=fetch,now=new Date().toISOString()}={}) {
   await activeRun(db,run_id,now);if(!Number.isInteger(offset)||offset<0||!Number.isInteger(limit)||limit<1||limit>500)throw Error('bounded_catalogue_page_required');
-  let document,links;
-  if(catalogueUrl(url)) {document=await fetchCatalogueDocument(url,{fetcher,now,byte_offset});links=catalogueLinks(document);}
-  else if(platformRoute(url)?.kind==='event_detail'){document=await fetchSourceDocument(url,{fetcher,now});links={catalogues:[],routes:eventApplicationLinks(document)};}
+  let document,links;const requests=[];
+  const observedFetcher=async(u,options)=>{const receipt={url:String(u),requested_at:new Date().toISOString(),http_status:null};requests.push(receipt);try{const r=await fetcher(u,options);receipt.http_status=r.status;return r;}catch(error){receipt.transport_failed=true;throw error;}};
+  if(catalogueUrl(url)) {document=await fetchCatalogueDocument(url,{fetcher:observedFetcher,now,byte_offset});links=catalogueLinks(document);}
+  else if(platformRoute(url)?.kind==='event_detail'){document=await fetchSourceDocument(url,{fetcher:observedFetcher,now});links={catalogues:[],routes:eventApplicationLinks(document)};}
+  else if(operator_page===true&&safeSourceUrl(url)) {
+    const access=await publicRobotsAllowed(url,{fetcher:observedFetcher});
+    if(!access.allowed)return {run_id,reason:access.reason,routes:0,catalogues:[],candidates:[],source_requests_observed:requests.length};
+    document=await fetchSourceDocument(url,{fetcher:observedFetcher,now});links={catalogues:[],routes:operatorPageLinks(document)};
+    await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)','doc_'+(await hash(document)).slice(0,40),url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document)).run();
+  }
   else throw Error('approved_public_catalogue_or_event_detail_required');
-  if(document.reason)return {run_id,reason:document.reason,routes:0,catalogues:[],candidates:[]};
+  if(document.reason)return {run_id,reason:document.reason,routes:0,catalogues:[],candidates:[],source_requests_observed:requests.length};
   const applications=links.routes.filter(r=>r.kind==='application'),selected=applications.slice(offset,offset+limit);
-  const extract={...document,content:undefined,html:undefined,document_kind:'catalogue_route_extract',offset,total_application_routes_observed:applications.length,routes:selected};
+  const extract={...document,content:undefined,html:undefined,request_audit:{requests},document_kind:'catalogue_route_extract',offset,total_application_routes_observed:applications.length,routes:selected};
   const documentId='doc_'+(await hash(extract)).slice(0,40);
   await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,url,document.content_hash,document.fetched_at,stableJson(extract)).run();
   const known=(await sql(db,"SELECT json_extract(normalized_json,'$.canonical_url') AS canonical_url,json_extract(normalized_json,'$.application_url') AS application_url FROM producer_records WHERE environment='shadow' AND validation_status='accepted'").all()).results??[];
@@ -135,7 +143,7 @@ export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500,by
     sql(db,`INSERT OR IGNORE INTO catalogue_candidates SELECT json_extract(value,'$.id'),?,?,json_extract(value,'$.url'),json_extract(value,'$.family'),? FROM json_each(?)`,run_id,documentId,now,stableJson(candidates)),
     sql(db,`INSERT OR IGNORE INTO catalogue_progress(candidate_id,status,reason) SELECT json_extract(value,'$.id'),CASE WHEN json_extract(value,'$.duplicate') THEN 'duplicate' ELSE 'pending' END,json_extract(value,'$.duplicate_reason') FROM json_each(?)`,stableJson(candidates)),
   ]);
-  return {run_id,document_id:documentId,coverage:document.coverage??'complete_document',byte_offset,catalogues:links.catalogues,event_details:links.routes.filter(r=>r.kind==='event_detail').slice(offset,offset+limit),routes:applications.length,offset,next_offset:offset+limit<applications.length?offset+limit:null,candidates};
+  return {run_id,document_id:documentId,coverage:document.coverage??'complete_document',byte_offset,catalogues:links.catalogues,event_details:links.routes.filter(r=>r.kind==='event_detail').slice(offset,offset+limit),routes:applications.length,offset,next_offset:offset+limit<applications.length?offset+limit:null,candidates,source_requests_observed:requests.length};
 }
 export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now=new Date().toISOString(),targetMarket=null}={}) {
   if(targetMarket!==null&&!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(targetMarket))throw Error('catalogue_operator_market_scope_invalid');
@@ -160,14 +168,23 @@ export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now
   if(!reserved.results.length){await sql(db,"UPDATE catalogue_progress SET status='pending',lease_until=NULL WHERE candidate_id=?",candidateId).run();throw Error('catalogue_bounded_fetch_limit_reached');}
   let checkpoint='source_fetch';
   try {
-    const document=await fetchProofDocument(c.url,{fetcher,now}),report=verifyDocument(document,{now}),documentId='doc_'+(await hash(document)).slice(0,40);
+    const requestAudit=[];let requestBudgetReached=false;
+    const boundedFetcher=async(url,options)=>{
+      if(requestAudit.length>=16){requestBudgetReached=true;throw Error('catalogue_candidate_source_request_limit');}
+      const receipt={url:String(url),requested_at:new Date().toISOString(),http_status:null};requestAudit.push(receipt);
+      try{const response=await fetcher(url,options);receipt.http_status=response.status;return response;}catch(error){receipt.transport_failed=true;throw error;}
+    };
+    const fetched=await fetchProofDocument(c.url,{fetcher:boundedFetcher,now});
+    const document={...fetched,request_audit:{maximum_requests:16,requests:requestAudit,budget_reached:requestBudgetReached}},report=verifyDocument(document,{now}),documentId='doc_'+(await hash(document)).slice(0,40);
+    const fetchMetrics={source_requests_observed:requestAudit.length,source_successful_responses:requestAudit.filter(r=>r.http_status>=200&&r.http_status<300).length};
+    if(requestBudgetReached){report.status='partial';report.reasons.push('catalogue_candidate_source_request_limit');}
     checkpoint='document_retention';
     await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,c.url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document)).run();
     if(report.status!=='verified'||!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(report.facts.country)||targetMarket&&report.facts.country!==targetMarket) {
       const reason=targetMarket&&report.facts.country&&report.facts.country!==targetMarket?'verified_country_outside_operator_scope':report.reasons.join(',')||'supported_verified_country_required';
       await sql(db,"UPDATE catalogue_progress SET status='held',reason=?,document_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",reason,documentId,now,candidateId).run();
       if(report.reasons.includes('source_http_429'))await stopCatalogueRun(db,c.run_id,'source_rate_limited');
-      return {candidate_id:candidateId,status:'held',reason,source_country:report.facts.country??null};
+      return {candidate_id:candidateId,status:'held',reason,source_country:report.facts.country??null,...fetchMetrics};
     }
     // Only current proved trader applications enter the canonical pipeline. The
     // catalogue path/label supplies no geography, dates or availability facts.
@@ -178,10 +195,10 @@ export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now
     const imported=await ingestRecords(db,[record],{producer:'platform-catalogue',environment:'shadow',now});if(imported.rejected)throw Error('catalogue_source_record_invalid');
     checkpoint='identity_reconciliation';
     const recordId=imported.record_ids[0],decision=await reconcileRecord(db,recordId,{now});
-    if(!decision.entity_id){await sql(db,"UPDATE catalogue_progress SET status='held',reason=?,document_id=?,record_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",decision.reason,documentId,recordId,now,candidateId).run();return {candidate_id:candidateId,status:'held',reason:decision.reason};}
+    if(!decision.entity_id){await sql(db,"UPDATE catalogue_progress SET status='held',reason=?,document_id=?,record_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",decision.reason,documentId,recordId,now,candidateId).run();return {candidate_id:candidateId,status:'held',reason:decision.reason,...fetchMetrics};}
     const entity=await loadEntity(db,decision.entity_id);
     const retainedRoute=entity.application_url&&platformId(entity.application_url)?entity.application_url:entity.canonical_url??entity.application_url;
-    if(retainedRoute!==document.requested_url){await sql(db,"UPDATE catalogue_progress SET status='held',reason='matched_entity_requires_original_source_verification',document_id=?,record_id=?,entity_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",documentId,recordId,decision.entity_id,now,candidateId).run();return {candidate_id:candidateId,status:'held',entity_id:decision.entity_id,reason:'matched_entity_requires_original_source_verification'};}
+    if(retainedRoute!==document.requested_url){await sql(db,"UPDATE catalogue_progress SET status='held',reason='matched_entity_requires_original_source_verification',document_id=?,record_id=?,entity_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",documentId,recordId,decision.entity_id,now,candidateId).run();return {candidate_id:candidateId,status:'held',entity_id:decision.entity_id,reason:'matched_entity_requires_original_source_verification',...fetchMetrics};}
     // Proof is recorded against the retained route/revision, including any
     // disagreement with stronger selected evidence on an existing entity.
     checkpoint='custody_checkpoint';
@@ -212,7 +229,7 @@ export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now
     const readiness=current&&current.entity_revision===current.revision&&current.evaluated_at>=now?current:await evaluateReadiness(db,decision.entity_id,{now});
     checkpoint='receipt_completion';
     await sql(db,"UPDATE catalogue_progress SET status='imported',reason=?,document_id=?,record_id=?,entity_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",readiness.status,documentId,recordId,decision.entity_id,now,candidateId).run();
-    return {candidate_id:candidateId,status:'imported',entity_id:decision.entity_id,identity_outcome:decision.outcome,readiness:readiness.status,source_country:f.country,source_family:report.profile,verification_id:proof.verification_id};
+    return {candidate_id:candidateId,status:'imported',entity_id:decision.entity_id,identity_outcome:decision.outcome,readiness:readiness.status,source_country:f.country,source_family:report.profile,verification_id:proof.verification_id,...fetchMetrics};
   }catch(e) {
     const code=String(e.message).match(/\bSQLITE_[A-Z_]+\b/)?.[0]?.toLowerCase()??(/too many (?:api requests|queries|subrequests)/i.test(e.message)?'worker_request_limit':/\b(?:locked|busy|overloaded)\b/i.test(e.message)?'database_busy':'runtime_failure');
     await sql(db,"UPDATE catalogue_progress SET status='failed',reason=?,lease_until=NULL,checked_at=? WHERE candidate_id=? AND status='verifying'",'verification_outcome_requires_review_'+checkpoint+'_'+code,now,candidateId).run();

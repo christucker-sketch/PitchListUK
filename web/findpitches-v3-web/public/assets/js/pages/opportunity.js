@@ -62,9 +62,12 @@
   /* mini map (presentation asset per market; none for markets without an outline) */
   const mm=document.getElementById('mm'), capEl=document.getElementById('mmcap');
   if(G.uk && cc==='GB'){ const M=G.uk; if(o.location.lat!=null){ const p=o.location.lat*Math.PI/180, x=M.k*o.location.lng*Math.PI/180+M.tx, y=M.ty-M.k*Math.log(Math.tan(Math.PI/4+p/2)); const w=160, z=M.W/w; mm.setAttribute('viewBox',`${x-w/2} ${y-w*0.35} ${w} ${w*0.7}`);
-      mm.innerHTML=`<path class="land" d="${M.svg}" style="stroke-width:${1/z}px"/><circle class="pinbig" cx="${x}" cy="${y}" r="3.6" stroke-width="1"/>`; capEl.textContent=o.location.precision==='place'?'Pinned at the checked location.':`Approximate: this listing covers ${o.location.region_name||'the area'}.`; }
+      mm.innerHTML=`<path class="land" d="${M.svg}" style="stroke-width:${1/z}px"/><circle class="pinbig" cx="${x}" cy="${y}" r="3.6" stroke-width="1"/>`; capEl.textContent=['place','venue'].includes(o.location.precision)?'Pinned at the checked venue.':`Approximate: this listing covers ${o.location.region_name||'the area'}.`; }
     else mm.closest('figure').remove(); /* no location recorded: show nothing rather than a whole-country map */ }
-  else if (G.us && cc==='US'){ const M=G.us; mm.setAttribute('viewBox',`0 0 ${M.W} ${M.H}`); mm.innerHTML=Object.entries(M.states).map(([ab,s])=>`<path class="st ${ab===o.location.region_code?'sel':''}" d="${s.d}"/>`).join(''); capEl.innerHTML=`${esc(o.location.region_name||o.location.label)} is highlighted. The exact site is on the organiser’s listing.`+FP.ui.draftNote('US listings aren’t geocoded yet, so only the state is shown.'); }
+  else if (G.us && cc==='US'){ const M=G.us,point=Number.isFinite(o.location.lat)&&Number.isFinite(o.location.lng)?window.FP_US_PROJECTION.projectUS(o.location.lat,o.location.lng,M.projection):null;
+    const state=(o.location.region||'').replace(/^US-/,'');mm.setAttribute('viewBox',`0 0 ${M.W} ${M.H}`);mm.innerHTML=Object.entries(M.states).map(([ab,s])=>`<path class="st ${ab===state?'sel':''}" d="${s.d}"/>`).join('');
+    if(point){const [x,y]=point,w=160;mm.setAttribute('viewBox',`${x-w/2} ${y-w*0.35} ${w} ${w*0.7}`);mm.insertAdjacentHTML('beforeend',`<circle class="pinbig" cx="${x}" cy="${y}" r="3.6"/>`);capEl.textContent=o.location.precision==='address'?'Matched street address; the marker is approximate.':'Source-verified venue coordinates.';}
+    else capEl.textContent=o.location.region_name?`${o.location.region_name} is highlighted. No verified address coordinates are available.`:'No verified address coordinates are available.'; }
   else mm.closest('figure').remove();
 
   /* Structured data: conservative. Event only when a start date exists; nothing inferred (no status, offers, images or times).

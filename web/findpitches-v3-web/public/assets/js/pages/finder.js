@@ -16,7 +16,7 @@
   const S = { q: qs.get('q') ?? (me || ''), sells: qs.get('sells')||'', radius: qs.get('radius')|| DEF_R, when: qs.get('when')||'',
     types: new Set((qs.get('type')||'').split(',').filter(Boolean)), sort: qs.get('sort')||'', view: qs.get('view')||'list', month: qs.get('month')||'', page:1 };
   if (!CAN.radius && S.sort==='nearest') S.sort='';
-  let last = null, shown = [], selected = null, busy = false, ukWhole = false;
+  let last = null, shown = [], selected = null, busy = false, ukWhole = false, usWhole = true;
   const REGS = MAP==='us' ? await api.meta.regions({market:MK,registry_only:true}) : []; const ID2CODE = Object.fromEntries(REGS.filter(x=>x.code).map(x=>[x.id,x.code.slice(3)]));
 
   /* ---------- controls driven by market config ---------- */
@@ -188,11 +188,26 @@
       const M=G.us; svg.setAttribute('viewBox',`0 0 ${M.W} ${M.H}`);
       const counts={}; Object.entries(r.facets.regions).forEach(([id,n])=>{ const c=ID2CODE[id]; if(c) counts[c]=(counts[c]||0)+n; }); const max=Math.max(1,...Object.values(counts)), sel=r.location.kind==='region'?(r.location.region_code||ID2CODE[r.location.region_id]||''):'';
       Object.entries(M.states).forEach(([ab,s])=>{ const p=document.createElementNS(NS,'path'); p.setAttribute('d',s.d); const c=counts[ab]||0; p.setAttribute('class','st'+(sel===ab?' sel':'')); p.style.fill=c?`rgba(20,94,57,${(0.08+0.5*c/max).toFixed(2)})`:'#fff'; p.dataset.st=ab; p.dataset.n=`${s.n}: ${c} ${c===1?'listing':'listings'}`; svg.appendChild(p); });
-      // No pins: US listings have no coordinates yet, so the map only shades states (no invented positions).
-      $('#mapTitle').innerHTML=`<b>${esc(sel?r.location.label:C.name)}</b>${sel?' · <a href="#" id="allStates">All states</a>':''}`;
-      $('#mapCount').textContent=`${Object.keys(counts).length} states with listings`;
-      $('#mapNote').innerHTML='Darker states have more listings. Choose a state to see them.';
-      svg.setAttribute('aria-label',`Map of the United States shaded by number of listings per state${sel?', '+r.location.label+' selected':''}. Search by state or ZIP Code above.`);
+      // Only the proof-filtered API supplies pins. Albers USA is the same
+      // projection used to generate these local outlines, including AK/HI.
+      const project=p=>window.FP_US_PROJECTION.projectUS(p.lat,p.lng,M.projection);
+      const pts=(r.map_points||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&project(p));
+      let z=1;
+      if(pts.length&&!usWhole){const positions=pts.map(project),xs=positions.map(p=>p[0]),ys=positions.map(p=>p[1]),left=Math.min(...xs),right=Math.max(...xs),top=Math.min(...ys),bottom=Math.max(...ys),w=Math.max(160,(right-left)*1.3,(bottom-top)*M.W/M.H*1.3),h=w*M.H/M.W;
+        svg.setAttribute('viewBox',`${(left+right-w)/2} ${(top+bottom-h)/2} ${w} ${h}`);z=M.W/w;}
+      const groups=new Map();pts.forEach(p=>{const key=p.lat+','+p.lng;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(p);});
+      groups.forEach(group=>{const p=group.find(p=>ids.has(p.id))||group[0],visible=group.some(p=>ids.has(p.id)),[x,y]=project(p),c=document.createElementNS(NS,'circle');
+        c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',(group.length>1?10:visible?6:3.8)/z);c.style.strokeWidth=1.4/z;
+        c.setAttribute('class','pin'+(p.type==='sport'?' sport':'')+(visible?'':' dim')+(group.some(p=>p.id===selected)?' hot':''));c.dataset.id=p.id;c.dataset.ids=group.map(p=>p.id).join(',');c.dataset.n=group.length>1?`${group.length} opportunities at this address`:p.title;
+        c.setAttribute('tabindex','0');c.setAttribute('role','button');c.setAttribute('aria-label',c.dataset.n);svg.appendChild(c);
+        if(group.length>1){const label=document.createElementNS(NS,'text');label.setAttribute('x',x);label.setAttribute('y',y+3.2/z);label.setAttribute('text-anchor','middle');label.setAttribute('font-size',9/z);label.setAttribute('fill','#fff');label.setAttribute('font-weight','700');label.setAttribute('pointer-events','none');label.setAttribute('aria-hidden','true');label.textContent=group.length;svg.appendChild(label);}
+      });
+      $('#mapTitle').innerHTML=`<b>${esc(sel?r.location.label:C.name)}</b>${sel?' · <a href="#" id="allStates">All states</a>':''}${pts.length?` <button id="mapExtent" type="button" class="btn btn-line btn-sm">${usWhole?'Show addresses':'Whole US'}</button>`:''}`;
+      $('#mapCount').textContent=`${pts.length} listings at ${groups.size} mapped ${groups.size===1?'address':'addresses'}`;
+      const extent=$('#mapExtent');if(extent)extent.onclick=()=>{usWhole=!usWhole;renderMap();};
+      const unpinned=Math.max(0,r.total-pts.length);
+      $('#mapNote').textContent=pts.length?`Markers use source coordinates or matched street addresses. Address matches are approximate positions along the street. Numbered markers have several opportunities. Darker states have more listings.${unpinned?` ${unpinned} listings have no verified map position and remain in the list.`:''}`:`No verified coordinates are available for these ${r.total} listings yet. All results remain in the list; we do not guess map positions. Darker states have more listings.`;
+      svg.setAttribute('aria-label',`Map of ${pts.length} source-proved US locations, with states shaded by number of listings${sel?', '+r.location.label+' selected':''}. Search by state or ZIP Code above.`);
       const a=$('#allStates'); if(a) a.onclick=e=>{e.preventDefault();S.q='';$('#q').value='';track('filters_changed',{removed:'q'});search({reason:'filter'});};
     }
     renderMapSel();
@@ -202,7 +217,7 @@
     if (!o) { box.hidden=true; return; }
     const full = shown.find(x=>x.id===selected);
     const point=last.map_points.find(p=>p.id===selected),group=point?last.map_points.filter(p=>p.lat===point.lat&&p.lng===point.lng):[];
-    const chooser=group.length>1?`<label for="mapOpportunities">Opportunities at this venue</label><select id="mapOpportunities">${group.map(p=>`<option value="${esc(p.id)}"${p.id===selected?' selected':''}>${esc(p.title)}</option>`).join('')}</select>`:'';
+    const chooser=group.length>1?`<label for="mapOpportunities">Opportunities at this venue</label><select id="mapOpportunities">${group.map(p=>`<option value="${esc(p.id)}"${p.id===selected?' selected':''}>${esc(p.title)}${p.start?' · '+esc(fmt(p.start,MK)):''}</option>`).join('')}</select>`:'';
     box.innerHTML=`<div><b>${esc(o.title)}</b><span>${full?esc(U.when(full,MK)) + ' · ' + esc(full.location.label):'Further down the list'}</span>${chooser}</div><div class="acts"><button class="btn btn-turf btn-sm" type="button" data-qv="${esc(o.id)}">Details</button><button class="x" type="button" id="selX" aria-label="Clear selection">×</button></div>`;
     box.hidden=false; $('#selX').onclick=()=>select(null);
     const choices=$('#mapOpportunities');if(choices)choices.onchange=()=>select(choices.value,{scroll:false});

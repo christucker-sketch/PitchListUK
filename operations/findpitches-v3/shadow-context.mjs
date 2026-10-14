@@ -14,5 +14,10 @@ export async function shadowContext({credentialsFile,stateDirectory}) {
     let data;try{data=await response.json();}catch{throw Error('shadow_invalid_json_'+role+'_'+response.status);}
     if(!response.ok){const error=Error('shadow_http_'+response.status+'_'+(/^[a-z0-9_]+$/.test(data.error??'')?data.error:'request_failed'));if(/^[a-z0-9_]{1,40}$/.test(data.diagnostic_code??''))error.diagnostic_code=data.diagnostic_code;throw error;}return data;
   }
-  return {state,db,api,call,fetcher,ingestToken:secrets.V3_INGEST_TOKEN};
+  async function catalogue(){
+    const response=await fetcher(state.urls.api+'/staging/catalogue',{headers:{Authorization:'Bearer '+secrets.V3_STAGING_TOKEN},signal:AbortSignal.timeout(90000)});
+    if(!response.ok)throw Error('shadow_catalogue_http_'+response.status);const snapshot=await response.json();
+    if(snapshot.schema!=='findpitches-v3-customer-proof-snapshot-v1'||snapshot.publication_enabled!==false||snapshot.production_cutover_enabled!==false)throw Error('shadow_catalogue_scope_required');return snapshot;
+  }
+  return {state,db,api,call,catalogue,fetcher,ingestToken:secrets.V3_INGEST_TOKEN};
 }

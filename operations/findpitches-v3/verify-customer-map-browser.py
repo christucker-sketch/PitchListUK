@@ -31,6 +31,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--output',required=True)
     parser.add_argument('--base-url',default='https://findpitches.com')
+    parser.add_argument('--market',choices=['GB','US'],default='GB')
     parser.add_argument('--screenshot-dir')
     args=parser.parse_args();base=args.base_url.rstrip('/')
     assert base in ['https://findpitches.com','http://127.0.0.1:8792'],'owned_origin_required'
@@ -58,7 +59,7 @@ def main():
                     else:foreign.append(urlsplit(r.request.url).hostname);r.abort()
                 context.route('**/*',route)
                 with page.expect_response(search_response,timeout=90000) as response:
-                    page.goto(base+'/uk/find-pitches/?view=map',wait_until='domcontentloaded',timeout=90000)
+                    page.goto(base+('/uk' if args.market=='GB' else '/us')+'/find-pitches/?view=map',wait_until='domcontentloaded',timeout=90000)
                 data=payload(response.value);page.locator('#map .pin').first.wait_for(state='visible',timeout=90000)
                 points=data['map_points'];locations={(p['lat'],p['lng']) for p in points};pins=page.locator('#map .pin')
                 check(device+'_real_source_points',len(points)>0 and len({p['id'] for p in points})==len(points))
@@ -67,7 +68,7 @@ def main():
                 check(device+'_all_opportunities_retained',len(represented)==len(points) and set(represented)=={p['id'] for p in points})
                 check(device+'_source_coordinates_inside_map',page.locator('#map').evaluate('(svg)=>{const b=svg.viewBox.baseVal;return [...svg.querySelectorAll(".pin")].every(p=>{const x=+p.getAttribute("cx"),y=+p.getAttribute("cy");return Number.isFinite(x)&&Number.isFinite(y)&&x>=b.x&&x<=b.x+b.width&&y>=b.y&&y<=b.y+b.height;});}'))
                 note=page.locator('#mapNote').inner_text();unpinned=data['total']-len(points)
-                check(device+'_honest_unpinned_count',not unpinned or str(unpinned) in note and 'no verified coordinates' in note)
+                check(device+'_honest_unpinned_count',not unpinned or str(unpinned) in note and ('no verified coordinates' in note or 'no verified map position' in note))
                 grouped=page.locator('#map .pin').evaluate_all('(els)=>els.filter(e=>e.dataset.ids.includes(",")).map(e=>e.dataset.id)')
                 check(device+'_grouped_dates_available',bool(grouped))
                 pin=page.locator('#map .pin[data-id="'+grouped[0]+'"]');pin.click()
@@ -75,8 +76,8 @@ def main():
                 check(device+'_selector_preserves_ids',len(values)>1 and set(values)<=set(represented))
                 choices.select_option(values[-1]);check(device+'_selected_opportunity_details',page.locator('#mapsel [data-qv]').get_attribute('data-qv')==values[-1] and 'hot' in pin.get_attribute('class'))
                 pin.focus();page.keyboard.press('Enter');check(device+'_keyboard_marker',page.locator('#mapsel [data-qv]').get_attribute('data-qv')==grouped[0])
-                page.locator('#mapExtent').click();check(device+'_whole_uk_option',page.locator('#mapExtent').inner_text()=='Show venues' and page.locator('#map .pin').count()==len(locations))
-                page.locator('#mapExtent').click();check(device+'_venue_view_restored',page.locator('#mapExtent').inner_text()=='Whole UK' and page.locator('#map .pin').count()==len(locations))
+                page.locator('#mapExtent').click();check(device+'_extent_option',page.locator('#mapExtent').inner_text()==('Show venues' if args.market=='GB' else 'Whole US') and page.locator('#map .pin').count()==len(locations))
+                page.locator('#mapExtent').click();check(device+'_venue_view_restored',page.locator('#mapExtent').inner_text()==('Whole UK' if args.market=='GB' else 'Show addresses') and page.locator('#map .pin').count()==len(locations))
                 page.mouse.move(1,1)
                 if args.screenshot_dir:
                     page.screenshot(path=str(Path(args.screenshot_dir)/(device+'-venue-map.png')),full_page=True)
@@ -94,7 +95,7 @@ def main():
                 page.locator('#map .st').first.wait_for(state='attached',timeout=90000)
                 check(device+'_us_state_coverage_preserved',page.locator('#map .st').count()>=50)
                 check(device+'_no_script_errors_or_foreign_requests',not errors and not foreign)
-                samples.append({'device':device,'uk_total':data['total'],'coordinate_opportunities':len(points),'venue_markers':len(locations),'unpinned':unpinned,'page_errors':len(errors),'foreign_requests':len(foreign)})
+                samples.append({'device':device,'market':args.market,'total':data['total'],'coordinate_opportunities':len(points),'venue_markers':len(locations),'unpinned':unpinned,'page_errors':len(errors),'foreign_requests':len(foreign)})
                 context.close();save()
             report['passed']=True;save();print(json.dumps(report))
         finally:

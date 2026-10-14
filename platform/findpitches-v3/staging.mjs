@@ -9,7 +9,7 @@ export async function stagingReady(db,{market=null,after='',limit=50,region=null
   const needle=s=>String(s??'').toLowerCase();
   const ready=(await commercialRows(db,{market,onlyCachedReady:true,after})).map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready&&(!region||needle(r.proof.facts.region_code).includes(needle(region)))&&(!location||needle(r.proof.facts.location).includes(needle(location))));
   const page=ready.slice(0,limit);return {schema:'findpitches-v3-staging-ready-v1',mode:'private_shadow_preview',as_of:now,publication_enabled:false,production_cutover_enabled:false,
-    items:page.map(r=>({id:r.id,country:r.market,region:r.proof.facts.region_code??null,title:r.proof.facts.event_name,organiser:r.proof.facts.organiser,location:r.proof.facts.location,event_start:r.proof.facts.event_start,event_end:r.proof.facts.event_end,
+    items:page.map(r=>({id:r.id,country:r.market,region:r.proof.facts.region_code??r.proof.address_coordinates?.source_address?.state??null,title:r.proof.facts.event_name,organiser:r.proof.facts.organiser,location:r.proof.facts.location,event_start:r.proof.facts.event_start,event_end:r.proof.facts.event_end,
       application_url:r.proof.facts.application_url,application_state:r.proof.facts.application_state,application_deadline:r.proof.facts.application_deadline??null,source_domain:r.domain,verified_at:r.checked_at,proof_expires_at:r.expires_at})),
     next_after:ready.length>limit?page.at(-1).id:null};
 }
@@ -37,12 +37,14 @@ export async function stagingCatalogue(db,{now=new Date().toISOString()}={}) {
   const ready=rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready&&!held.has(r.id));
   return {schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now,publication_enabled:false,production_cutover_enabled:false,
     shadow_ready:rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready).length,producer_policy_withheld:rows.filter(r=>held.has(r.id)).length,
-    items:ready.map(r=>({id:r.id,country:r.market,region:r.proof.facts.region_code??null,title:r.proof.facts.event_name,organiser:r.proof.facts.organiser,location:r.proof.facts.location,
+    items:ready.map(r=>({id:r.id,country:r.market,region:r.proof.facts.region_code??r.proof.address_coordinates?.source_address?.state??null,title:r.proof.facts.event_name,organiser:r.proof.facts.organiser,location:r.proof.facts.location,
       event_start:r.proof.facts.event_start,event_end:r.proof.facts.event_end,application_url:r.proof.facts.application_url,application_state:r.proof.facts.application_state,
       application_deadline:r.proof.facts.application_deadline??null,source_url:r.proof.event_source_url??r.proof.source_url??null,source_domain:r.domain,
+      application_close_at:r.proof.application_close_at??null,
       usable_route:usableRouteEligible(r.proof)?r.proof.usable_route:null,
       verified_at:r.checked_at,proof_expires_at:r.expires_at,entity_revision:r.revision,verification_id:r.proof_sequence,
       venue_coordinates:retainedVenueCoordinates(r.proof),
+      address_coordinates:r.proof.address_coordinates??null,
       // Category, sells and fees are not in current source-proof facts.
       // Producer labels cannot fill these gaps or supply venue coordinates.
       opportunity_type:null,vendor_categories:[]}))};

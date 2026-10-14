@@ -6,6 +6,20 @@ export const VENUE_COORDINATE_POLICY='source-venue-coordinate-v1';
 const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
 const aliases={uk:'GB',gb:'GB','united kingdom':'GB',england:'GB',scotland:'GB',wales:'GB','northern ireland':'GB',us:'US',usa:'US','united states':'US','united states of america':'US',ca:'CA',canada:'CA',au:'AU',australia:'AU',nz:'NZ','new zealand':'NZ',ie:'IE',ireland:'IE'};
 const country=v=>aliases[clean(typeof v==='object'?v?.name:v).toLowerCase()]??null;
+const US_STATES=Object.fromEntries('AL:Alabama|AK:Alaska|AZ:Arizona|AR:Arkansas|CA:California|CO:Colorado|CT:Connecticut|DE:Delaware|DC:District of Columbia|FL:Florida|GA:Georgia|HI:Hawaii|ID:Idaho|IL:Illinois|IN:Indiana|IA:Iowa|KS:Kansas|KY:Kentucky|LA:Louisiana|ME:Maine|MD:Maryland|MA:Massachusetts|MI:Michigan|MN:Minnesota|MS:Mississippi|MO:Missouri|MT:Montana|NE:Nebraska|NV:Nevada|NH:New Hampshire|NJ:New Jersey|NM:New Mexico|NY:New York|NC:North Carolina|ND:North Dakota|OH:Ohio|OK:Oklahoma|OR:Oregon|PA:Pennsylvania|RI:Rhode Island|SC:South Carolina|SD:South Dakota|TN:Tennessee|TX:Texas|UT:Utah|VT:Vermont|VA:Virginia|WA:Washington|WV:West Virginia|WI:Wisconsin|WY:Wyoming'.split('|').map(x=>x.split(':')));
+export function sourceUSState(value){const v=clean(value).toUpperCase();return US_STATES[v]?v:Object.keys(US_STATES).find(k=>US_STATES[k].toUpperCase()===v)??null;}
+export function sourceVenueAddress(events,facts) {
+  const addresses=[];
+  for(const event of events){const place=event?.location,address=place?.address;
+    if(!address||typeof address.streetAddress!=='string'||typeof address.addressLocality!=='string'||country(address.addressCountry)!==facts.country)return null;
+    const location=clean([place.name,address.streetAddress,address.addressLocality,address.addressRegion,address.postalCode].filter(Boolean).join(', '));
+    if(location!==clean(facts.location))return null;
+    const state=facts.country==='US'?sourceUSState(address.addressRegion):null;
+    addresses.push({country:facts.country,location,venue_name:clean(place.name)||null,street:clean(address.streetAddress),city:clean(address.addressLocality),
+      state,source_region:typeof address.addressRegion==='string'?clean(address.addressRegion):null,postal_code:typeof address.postalCode==='string'?clean(address.postalCode):null});
+  }
+  const unique=[...new Map(addresses.map(a=>[JSON.stringify(a),a])).values()];return unique.length===1?unique[0]:null;
+}
 function number(v){return typeof v==='number'?v:typeof v==='string'&&/^-?\d+(?:\.\d+)?$/.test(v.trim())?Number(v):NaN;}
 const boxes={GB:[[49,61,-9,2]],US:[[24,50,-125,-66],[51,72,-180,-129],[51,72,172,180],[18,23,-161,-154]],CA:[[41,84,-142,-52]],AU:[[-44,-9,112,154]],NZ:[[-48,-33,165,180],[-45,-43,-177,-175]],IE:[[51,56,-11,-5]]};
 export function coordinateCountryConsistent(code,lat,lng){return Number.isFinite(lat)&&Number.isFinite(lng)&&Math.abs(lat)<90&&Math.abs(lng)<=180&&Boolean(boxes[code]?.some(([s,n,w,e])=>lat>=s&&lat<=n&&lng>=w&&lng<=e));}

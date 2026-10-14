@@ -1,4 +1,5 @@
 import {commercialStatus} from './commercial.mjs';
+import {startVenueMap,resolveVenueAddress,stopVenueMap} from './address-coordinate-store.mjs';
 import {startUKRun,discoverUKSource,importUKCandidate,stopUKRun,ukSourceStatus} from './uk-store.mjs';
 import {reviewOfficialCandidate} from './official-source-review.mjs';
 import {stagingReady,stagingCatalogue} from './staging.mjs';
@@ -144,6 +145,13 @@ export default {
       if(request.method==='POST'&&path==='/source-led/stop'&&role==='acquisition') {const body=await bodyJson(request);await stopSourceLed(db,body.programme_id,body.reason??'operator_stop');return json({paused:true});}
       if(request.method==='POST'&&path==='/source-led/verify'&&role==='enrichment')return json(await verifySourceLedCandidate(db,(await bodyJson(request)).candidate_id));
       if(request.method==='POST'&&path==='/catalogue/start'&&role==='enrichment')return json(await startCatalogueRun(db,await bodyJson(request)),201);
+      if(request.method==='POST'&&path==='/venue-map/start'&&role==='enrichment')return json(await startVenueMap(db,await bodyJson(request)),201);
+      if(request.method==='POST'&&path==='/venue-map/resolve'&&role==='enrichment')return json(await resolveVenueAddress(db,await bodyJson(request)));
+      if(request.method==='POST'&&path==='/venue-map/batch'&&role==='enrichment'){
+        const body=await bodyJson(request);if(!Array.isArray(body.entity_ids)||body.entity_ids.length<1||body.entity_ids.length>8||new Set(body.entity_ids).size!==body.entity_ids.length)throw Error('bounded_coordinate_batch_required');
+        const results=[];for(const entity_id of body.entity_ids){const r=await resolveVenueAddress(db,{run_id:body.run_id,entity_id});results.push(r);if(/census_http_(?:403|429|5\d\d)|request_limit|fetch_failed/.test(r.reason??''))break;}return json({results});
+      }
+      if(request.method==='POST'&&path==='/venue-map/stop'&&role==='enrichment'){const body=await bodyJson(request);await stopVenueMap(db,body.run_id,body.reason);return json({paused:true});}
       if(request.method==='GET'&&path==='/mk1/live-catalogue'&&role==='enrichment')return json(await fetchLiveMk1Catalogue());
       if(request.method==='POST'&&path==='/mk1/attachment'&&role==='enrichment')return json(await fetchMk1Attachment((await bodyJson(request)).url));
       if(request.method==='POST'&&path==='/mk1/verify-import'&&role==='enrichment') {

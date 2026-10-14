@@ -140,7 +140,7 @@
     if (o.dates && o.dates.start) { const d = new Date(o.dates.start + 'T12:00:00Z'); dt = `<div class="date ${sp ? 'sport' : ''}" aria-hidden="true"><b>${d.getUTCDate()}</b><span>${fmt(o.dates.start, cc, { month: 'short' })}${o.dates.start.slice(0, 4) !== TODAY.slice(0, 4) ? ' ’' + o.dates.start.slice(2, 4) : ''}</span></div>`; }
     else dt = `<div class="date ong" aria-hidden="true"><span>${o.dates && o.dates.recurring ? 'Regular' : 'No date'}</span></div>`;
     let dist = '';
-    if (o.distance_km != null) dist = o.location.precision === 'place' ? ` · <b>${units.fmt(o.distance_km, cc)}</b>` : ` · <span class="muted">${esc(o.location.region_name || o.location.region || 'area')}-wide listing</span>`;
+    if (o.distance_km != null) dist = ['place','venue','address'].includes(o.location.precision) ? ` · <b>${units.fmt(o.distance_km, cc)}</b>` : ` · <span class="muted">${esc(o.location.region_name || o.location.region || 'area')}-wide listing</span>`;
     const wl = offeringList(o); const wantsTxt = wl.length ? 'Wants ' + listJoin(wl.slice(0, 3)) + (wl.length > 3 ? ' and more' : '') : '';
     const past = st.cls === 'ended';
     return `<article class="ocard${past ? ' past' : ''}" data-id="${esc(o.id)}">${dt}
@@ -264,7 +264,9 @@
     const cc = o.market, m = state.m(cc), st = appStatus(o, cc);
     const wants = offeringList(o);
     let where = esc(o.location.label);
-    if (o.distance_km != null && o.location.precision === 'place') where += `<br><small class="muted">${units.fmt(o.distance_km, cc)} from ${esc(opts.from || 'your search')}</small>`;
+    if (o.distance_km != null && ['place','venue','address'].includes(o.location.precision)) where += `<br><small class="muted">${units.fmt(o.distance_km, cc)} from ${esc(opts.from || 'your search')}</small>`;
+    else if (o.location.precision === 'address') where += `<br><small class="muted">Street address verified; map position is approximate</small>`;
+    else if (o.location.precision === 'venue') where += `<br><small class="muted">Venue coordinates verified</small>`;
     else if (o.location.precision && o.location.precision !== 'place') where += `<br><small class="muted">Area-wide listing: exact site given by the organiser</small>`;
     const rows = [
       ['When', esc(when(o, cc))],

@@ -1,0 +1,1 @@
+{"name":"findpitches-map-assets","private":true,"type":"module","scripts":{"generate":"node generate.mjs"},"dependencies":{"d3-geo":"3.1.1","topojson-client":"3.1.0","us-atlas":"3.0.1","esbuild":"0.28.1"}}

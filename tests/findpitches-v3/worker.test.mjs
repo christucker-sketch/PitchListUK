@@ -119,3 +119,11 @@ test('canary API rejects undelegated runs and schedules one fixed query without 
   assert.equal(payload.query_limit,1);assert.equal(payload.city,'austin-tx');assert.equal(payload.canary,true);
   assert.equal((await post('/acquisition')).status,400);
 });
+test('map operator batches reject oversized input and ingest-only credentials without a provider request',async t=>{
+ const db=database(t),env={FINDPITCHES_V3_DB:db,V3_ROLE:'enrichment',V3_OPERATOR_TOKEN:TOKEN};
+ assert.equal((await worker.fetch(request('/venue-map/batch',{method:'POST',body:{run_id:'none',entity_ids:Array.from({length:9},(_,i)=>'ent_'+i)}}),env)).status,400);
+ assert.equal((await sql(db,'SELECT COUNT(*) n FROM venue_map_runs').first()).n,0);
+ const ingest={...env,V3_ROLE:'ingest',V3_OPERATOR_TOKEN:undefined,V3_INGEST_TOKEN:TOKEN};
+ assert.notEqual((await worker.fetch(request('/venue-map/start',{method:'POST',body:{max_requests:250}}),ingest)).status,201);
+ assert.equal((await sql(db,'SELECT COUNT(*) n FROM venue_map_runs').first()).n,0);
+});

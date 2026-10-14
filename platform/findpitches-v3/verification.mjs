@@ -9,7 +9,7 @@ import {verifyUKEventGeography} from './uk-event-geography.mjs';
 import {verifyHummingbirdBundle} from './hummingbird.mjs';
 import {verifyVeganBundle} from './vegan-events.mjs';
 import {verifyClueMart,verifyMarketsIreland} from './international-sources.mjs';
-import {VENUE_COORDINATE_POLICY,eventVenueCoordinates} from './source-coordinates.mjs';
+import {VENUE_COORDINATE_POLICY,eventVenueCoordinates,sourceVenueAddress} from './source-coordinates.mjs';
 import {applyUsableRoute,applyEventenyRegistration,applyEventenyContact,usableRouteEligible} from './usable-route.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
@@ -161,6 +161,8 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
     report.page_kind='event';report.facts=facts;report.evidence.push({kind:'event_json_ld',excerpt:stableJson(event).slice(0,14000)},{kind:'main_heading',excerpt:heading});
     report.venue_coordinate_policy=VENUE_COORDINATE_POLICY;
     report.venue_coordinates=eventVenueCoordinates(events,facts,document.url);
+    report.venue_address=sourceVenueAddress(events,facts);
+    if(report.venue_address?.country==='US'&&report.venue_address.state)facts.region_code=report.venue_address.state;
     report.event_source_url=event.url?route(event.url,document.url):null;
     if(report.profile==='eventeny'&&vendorId(document.requested_url)!==vendorId(document.url))report.reasons.push('source_application_identity_mismatch');
     if(report.profile==='eventeny')report.application_scope_proof=eventenyScopeProof(main,heading);
@@ -186,6 +188,8 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
       const deadlines=new Set(own.map(o=>calendarDate(o.availabilityEnds)).filter(Boolean));
       if(deadlines.size>1)report.reasons.push('contradictory_application_deadlines');
       facts.application_url=route(document.url,document.url);facts.application_deadline=[...deadlines][0]??null;
+      const preciseEnds=own.map(o=>o.availabilityEnds);
+      if(preciseEnds.length&&preciseEnds.every(s=>typeof s==='string'&&/^\d{4}-\d\d-\d\dT.+(?:Z|[+-]\d\d:?\d\d)$/.test(s)&&Number.isFinite(Date.parse(s))))report.application_close_at=new Date(Math.min(...preciseEnds.map(s=>Date.parse(s)))).toISOString();
       const visible=body.match(/Deadline:\s*([A-Z][a-z]{2,8}\s+\d{1,2},\s*20\d{2})/);
       if(visible&&facts.application_deadline){const date=new Date(visible[1]+' 12:00:00 UTC');if(Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)!==facts.application_deadline)report.reasons.push('contradictory_visible_application_deadline');}
       if(!state&&states.size===1&&states.has('InStock')&&own.every(o=>o.availabilityStarts&&Date.parse(o.availabilityStarts)<=Date.parse(now)&&o.availabilityEnds&&Date.parse(o.availabilityEnds)>Date.parse(now))&&/start application/i.test(body))facts.application_state='OPEN_NOW';
@@ -226,7 +230,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
       if(report.profile==='ukcraftfairs'&&/contact (?:the )?organiser/i.test(body))facts.application_state='ENQUIRY_AVAILABLE';
     }
     if(facts.application_deadline&&facts.event_end&&facts.application_deadline>facts.event_end)report.reasons.push('contradictory_application_deadline_after_event');
-    if(facts.application_deadline&&facts.application_deadline<now.slice(0,10)){facts.application_state='CLOSED';report.reasons.push('application_deadline_passed');}
+    if(facts.application_deadline&&(report.application_close_at?Date.parse(report.application_close_at)<=Date.parse(now):facts.application_deadline<now.slice(0,10))){facts.application_state='CLOSED';report.reasons.push('application_deadline_passed');}
     if(facts.application_state!=='OPEN_NOW')report.reasons.push(state==='WAITLIST'?'waitlist_only':facts.application_state==='CLOSED'?'application_closed':'open_vendor_application_not_proved');
     report.reasons=[...new Set(report.reasons)];
     report.status=report.reasons.some(r=>/stale_edition|contradictory_|event_cancelled/.test(r))?'quarantine':report.reasons.length?'partial':'verified';

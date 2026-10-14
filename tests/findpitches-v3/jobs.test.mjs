@@ -53,7 +53,7 @@ test('READY proof refresh runs before expiry, crosses completed daily jobs and s
 });
 test('READY refresh near a fixed application deadline does not create a fetch loop',async t=>{
   const db=database(t),{entity}=await seed(db,undefined,{environment:'shadow'}),now='2026-10-06T22:10:00.000Z';
-  const doc=documentFixture({event:{offers:[{'@type':'Offer',url:entity.application_url,availability:'https://schema.org/InStock',availabilityStarts:'2026-09-01',availabilityEnds:'2026-10-07T23:59:00Z'}]}});
+  const doc=documentFixture({event:{offers:[{'@type':'Offer',url:entity.application_url,availability:'https://schema.org/InStock',availabilityStarts:'2026-09-01',availabilityEnds:'2026-10-07T00:00:00Z'}]}});
   const proof=await recordVerification(db,entity.id,{...doc,fetched_at:now},{now});
   assert.equal((await evaluateReadiness(db,entity.id,{now})).status,'ready');
   const job=await sql(db,"SELECT available_at FROM jobs WHERE stage='watch' AND json_extract(payload_json,'$.refresh_verification_id')=?",proof.verification_id).first();
