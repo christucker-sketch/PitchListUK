@@ -80,17 +80,30 @@ def main() -> None:
     ap.add_argument("--linked", type=int, default=3000, help="opportunity-linked pages to compare (spread sample)")
     ap.add_argument("--sample", type=int, default=1500, help="other stored pages to compare (spread sample)")
     ap.add_argument("--ids-out", default=os.path.expanduser("~/classifier-diff-ids.txt"))
+    ap.add_argument("--ids", help="compare exactly these url ids (comma-separated) instead of a sample")
     a = ap.parse_args()
     import sqlite3
     conn = sqlite3.connect(f"file:{a.db}?mode=ro", uri=True)
+    if a.ids:
+        linked, other = [int(x) for x in a.ids.split(",") if x.strip()], []
+    else:
+        linked, other = _sample(conn, a)
+    ids = linked + other
+    with open(a.ids_out, "w") as f:
+        f.write("\n".join(map(str, ids)))
+    _compare(conn, a, ids, linked)
+
+
+def _sample(conn, a):
     linked = [r[0] for r in conn.execute("SELECT DISTINCT url_id FROM opportunity_sources ORDER BY (url_id * 2654435761) % 1000003 "
                                          "LIMIT ?", (a.linked,))]
     other = [r[0] for r in conn.execute(
         "SELECT id FROM urls WHERE state='done' AND cache_path IS NOT NULL AND purpose!='sitemap' "
         "AND id NOT IN (SELECT url_id FROM opportunity_sources) ORDER BY (id * 2654435761) % 1000003 LIMIT ?", (a.sample,))]
-    ids = linked + other
-    with open(a.ids_out, "w") as f:
-        f.write("\n".join(map(str, ids)))
+    return linked, other
+
+
+def _compare(conn, a, ids, linked):
     old = run_tree(a.old, a.db, a.data_dir, a.ids_out)
     new = run_tree(a.new, a.db, a.data_dir, a.ids_out)
     c = collections.Counter()
@@ -113,9 +126,9 @@ def main() -> None:
             c[f"changed_{k}"] += 1
         trans[f"{o.get('label')}/{o.get('state')} -> {n.get('label')}/{n.get('state')}"] += 1
         if len(examples) < 30 and ("label" in changed or "state" in changed or "country" in changed):
-            host = conn.execute("SELECT host FROM urls WHERE id=?", (uid,)).fetchone()[0]
-            examples.append(f"{uid:>7} {host[:36]:36s} {o.get('label')}/{o.get('state')}/{o.get('country')} -> "
-                            f"{n.get('label')}/{n.get('state')}/{n.get('country')}  {n.get('reasons')}")
+            url = conn.execute("SELECT url FROM urls WHERE id=?", (uid,)).fetchone()[0]
+            examples.append(f"{uid:>7} {o.get('label')}/{o.get('state')}/{o.get('country')}/{o.get('start')} -> "
+                            f"{n.get('label')}/{n.get('state')}/{n.get('country')}/{n.get('start')}  {n.get('reasons')}  {url[:90]}")
     print(json.dumps({"pages": len(ids), "opportunity_linked": len(linked), **c}, indent=1))
     print("== transitions (old label/state -> new label/state)")
     for t, k in trans.most_common(25):

@@ -71,7 +71,7 @@ About 31% of trading events carry an organiser homepage. **Probe 5 is next**: it
 
 **Realistic hop-two yield:** about 5% of reachable organiser sites, not 20%.
 
-## Build: France pack v1 and DATAtourisme lane (kit `pi_kit_v3-011l`, `SHA256SUMS 769bec3c…`)
+## Build: France pack v1 and DATAtourisme lane (kit `pi_kit_v3-011l`, `SHA256SUMS c6dfe9fd…`; first build `769bec3c` was withdrawn after the Pi gate)
 
 **Pack (`fpd/packs/fr.py`)** extends the shared, rule-based engine. English rules are unchanged. It covers:
 - French trader vocabulary: inscription/candidature des exposants, devenir exposant, réservation d'emplacement, tarif au mètre linéaire, commerçants non sédentaires, appel à candidatures (only with market context);
@@ -104,3 +104,19 @@ About 31% of trading events carry an organiser homepage. **Probe 5 is next**: it
 - Shell tests: alerts 34, prune 3, source-key 8.
 
 **Pre-install gate:** `classifier-diff.sh` re-classifies about 4,500 stored pages, opportunity-linked ones first, with the installed engine and with the new kit. It reports every label, state or country change before anything is installed.
+
+### Pi gate result on the first build (`769bec3c`), 14 Oct 13:17Z: 4,494 stored pages compared
+
+- 4,460 pages were identical; 34 changed. **The gate caught real regressions, so that build was not installed.**
+- **28 Marketspread US listings and one US Jotform OPEN_NOW form flipped to country FR.**
+  - Cause: US ZIP codes followed by a line break ("20111⏎Go") matched the French "postcode + commune" shape.
+  - Fix: postcode and commune must be on the same line.
+  - Fix: French postcode, phone and "France" evidence now counts only on a French-language page (≥5% French function words). A `.fr` TLD still counts.
+- **One Eventeny form (OPEN_NOW → CLOSED) and one Australian form (OPEN_NOW → HISTORICAL) changed state.**
+  - Cause: "Sept"/"Dec" are also English, so "1 Sept" took the French path with its wider year window.
+  - Fix: the French month list now excludes spellings shared with English.
+- **Marchés publics de Montréal flipped to rejected as procurement.**
+  - Cause: in Québec a "marché public" is a public market.
+  - Fix: bare "marchés publics" is no longer a procurement signal; appels d'offres, DCE, pouvoir adjudicateur and BOAMP still are.
+- Regression tests were added for all three. Tests: 149 Python; shell 34/3/8.
+- A targeted re-check of the 34 changed pages (`classifier-diff.sh --ids …`) runs before install.

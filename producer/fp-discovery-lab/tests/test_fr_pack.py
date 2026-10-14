@@ -53,6 +53,10 @@ def test_french_deadline_cue_not_swallowed():
 def test_english_dates_unchanged():
     assert extract_dates("Sept 19-20, 2026", T)[0].end == dt.date(2026, 9, 20)
     assert extract_dates("Marché de mai 2026", T) == []
+    # "1 Sept" / "5 Dec" stay on the English path (no wider French year window): no year nearby -> no date
+    far = "x " * 160
+    assert extract_dates("Opens 1 Sept " + far + " 2025", T) == []
+    assert extract_dates("Fair on 5 Dec " + far + " 2025", T) == []
 
 
 # ---------------------------------------------------------------- geography
@@ -63,10 +67,19 @@ def test_postcode_region():
     assert region_of_postcode("1234") is None
 
 
+FR_PROSE = ("Le marché de Noël aura lieu sur la place de la mairie et vous pouvez nous contacter pour les "
+            "inscriptions des exposants, avec les horaires et les tarifs pour la journée. ")
+
+
 def test_geo_france_and_us_not_confused():
-    g = infer_geo("https://www.seyssins.fr/x", "Mairie 38180 Seyssins Tél 04 76 21 04 14", [], {})
+    g = infer_geo("https://www.seyssins.fr/x", FR_PROSE + "Mairie 38180 Seyssins Tél 04 76 21 04 14", [], {})
     assert (g["country"], g["region"], g["locality"]) == ("FR", "Auvergne-Rhône-Alpes", "Seyssins")
-    assert infer_geo("https://x.com/", "72000 Le Mans", [], {})["locality"] == "Le Mans"
+    assert infer_geo("https://x.com/", FR_PROSE + "72000 Le Mans", [], {})["locality"] == "Le Mans"
+    # Same postcode shapes on an English page are not French evidence (classifier-diff on the Pi, 14 Oct:
+    # Marketspread listings print "20111\nGo"; a US Jotform flipped to FR).
+    en = "Market listings near you. Find a market and apply as a vendor today. "
+    ms = infer_geo("https://marketspread.com/market/1/x/", en * 3 + "Manassas, VA 20111\nGo 24426\nGo 20110 Premium France", [], {})
+    assert "FR" not in ms["votes"]
     us = infer_geo("https://example.com/", "12345 Fairview Road, Austin, TX 78701", [], {})
     assert us["country"] == "US" and "FR" not in us["votes"]
     us2 = infer_geo("https://example.com/", "Springfield, IL 62701 Vendor fair", [], {})
@@ -128,6 +141,14 @@ def test_public_procurement_is_not_a_market():
                   "télécharger. Pouvoir adjudicateur : commune. Candidatures avant le 30 novembre 2026.</p>",
                   url="https://www.ville-exemple.fr/marches-publics/consultation-12", title="Appel d'offres travaux")
     assert a["label"] == "rejected"
+
+
+def test_quebec_public_market_is_not_procurement():
+    a = _cls_html("<p>Les Marchés publics de Montréal accueillent les producteurs. Les marchés publics de Montréal "
+                  "recherchent des producteurs : inscriptions des producteurs pour la saison 2027, formulaire en ligne. "
+                  "Marché Jean-Talon, 7070 avenue Henri-Julien, Montréal, QC H2S 3S3.</p>",
+                  url="https://www.marchespublics-mtl.com/devenir-producteur/", title="Devenir producteur")
+    assert "procurement_context" not in a["reasons"]
 
 
 def test_job_forum_is_not_a_market():

@@ -1212,3 +1212,22 @@ Chris reports first new Pi run taking time. Read-only cloud checks:publichealth2
 ## 2026-10-14T15:38:00+01:00 — Codex: storage profile and bounded plan before migration
 
 [Profile/plan](../docs/findpitches-v3-storage-plan-2026-10-14.md). Native9.627GB;source_documents7.911GB/82.17%,source_facts0.476GB/4.95%,producer_records0.272GB/2.83%;61-table logical column/row profile. Physical table/index footprint unavailable through native D1. R2 access exists. Next:private owned bucket, at most20 historical-document archive round trips plus narrow reversible storage representations and70/80/90/97% capacity controls; no bulk move before canary and refined projection. No native full export (provider blocks queries while exporting), unsupported VACUUM, unarchived deletion, source/identity/customer/provider/PitchList/V2 change. Physical1.75–2.25GB is an all-document estimate, not measured/reclaimed headroom.
+## 2026-10-14T16:10:00+01:00 — Claude → Codex / Chris: pre-install gate caught FR leaks into US/AU; kit 011l rebuilt (`c6dfe9fd`)
+
+The classifier-diff gate on the Pi compared 4,494 stored pages between the installed engine and the first 011l build: 4,460 identical, 34 changed.
+
+**Real regressions, now fixed:**
+- 29 US pages (Marketspread listings, one OPEN_NOW Jotform form) took country FR, from a US ZIP + line break matching the French postcode shape.
+- Two forms (Eventeny, CIAF AU) changed state because "Sept"/"Dec" went through the French date path.
+- Marchés publics de Montréal (a public *market*) was rejected as procurement.
+
+**Fixes:** French geography evidence now counts only on French-language pages; postcode and commune must be on the same line; French month spellings shared with English are excluded; bare "marchés publics" is no longer a procurement signal.
+
+**Status:** that build was **not installed**. The rebuilt kit is `c6dfe9fd`. A targeted re-check of the 34 pages runs before install. No US/UK record changed in production.
+
+**V3-021 (D1 at about 9.6 of 10 GB): read.**
+- The France lane in 011l writes nothing to V3. FR records are built and held on the Pi only (not exported, not in the feed) until `fr-on`.
+- **I will not ask for `fr-on` until V3-021 reports safe headroom.**
+- The existing US/UK/AU/NZ/CA/IE feed is unchanged by this kit.
+- The producer can throttle its own feed volume if Codex wants a stop-gap.
+

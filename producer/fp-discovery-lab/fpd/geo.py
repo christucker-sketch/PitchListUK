@@ -22,10 +22,17 @@ for code, prof in COUNTRIES.items():
 
 US_CITY_ST = re.compile(r"\b([A-Z][a-z][a-zA-Z.'-]*(?:\s[A-Z][a-z][a-zA-Z.'-]*){0,3}),\s+(" + "|".join(COUNTRIES["US"].region_abbrevs) + r")\b(?!\s*\d{4}\b)")
 CA_CITY_PR = re.compile(r"\b([A-Z][a-zA-Z.'-]+(?:\s[A-Z][a-zA-Z.'-]+){0,3}),\s+(" + "|".join(COUNTRIES["CA"].region_abbrevs) + r")\b")
-from .packs.fr import PHONE_FR as _FR_PHONE, POSTCODE_COMMUNE as _FR_PC, region_of_postcode as _fr_region  # noqa: E402
+from .packs.fr import FRENCH_TEXT as _FR_TEXT, PHONE_FR as _FR_PHONE, POSTCODE_COMMUNE as _FR_PC, region_of_postcode as _fr_region  # noqa: E402
 
 FR_PC_COMMUNE = re.compile(_FR_PC)
 FR_PHONE = re.compile(_FR_PHONE)
+FR_TEXT = re.compile(_FR_TEXT, re.I)
+
+
+def looks_french(text: str) -> bool:
+    """At least ~5% French function words in the first 20k characters (an English page scores well under 1%)."""
+    words = re.findall(r"[A-Za-zÀ-ÿ'’]+", text[:20_000])
+    return len(words) >= 20 and len(FR_TEXT.findall(text[:20_000])) / len(words) >= 0.05
 # "12345 Fairview Road" is a US street number, not "12345 <commune>".
 US_STREET_AFTER = re.compile(r"\s+(?:Road|Rd|Street|St|Avenue|Ave|Drive|Dr|Lane|Ln|Boulevard|Blvd|Way|Court|Ct|Highway|Hwy|"
                              r"Pike|Parkway|Pkwy|Trail|Circle|Terrace|Loop)\b\.?")
@@ -129,7 +136,10 @@ def infer_geo(url: str, text: str, jsonld_events: list[dict], hint: dict | None 
         vote("XX", 3, f"tld:{sfx}")
 
     sample = text[:60_000]
+    french = looks_french(sample)
     for code, prof in COUNTRIES.items():
+        if code == "FR" and not french:
+            continue  # postcode/phone/name evidence for France only counts on a French-language page (TLD voted above)
         n = len(re.findall(prof.postcode_re, sample))
         if n:
             vote(code, min(3, 1.5 * n), f"postcode x{n}")
@@ -174,7 +184,7 @@ def infer_geo(url: str, text: str, jsonld_events: list[dict], hint: dict | None 
             region = region or COUNTRIES["AU"].region_abbrevs.get(st)
 
     # France: "26000 Valence" gives département -> région and the commune; national phone format "04 75 44 90 40".
-    fr_pc = [(m.group(1), m.group(2)) for m in FR_PC_COMMUNE.finditer(sample)
+    fr_pc = [] if not french else [(m.group(1), m.group(2)) for m in FR_PC_COMMUNE.finditer(sample)
              if _fr_region(m.group(1)) and not re.search(r"\b[A-Z]{2},?\s*$", sample[max(0, m.start() - 5): m.start()])
              and not US_STREET_AFTER.match(sample, m.end())]
     if fr_pc:

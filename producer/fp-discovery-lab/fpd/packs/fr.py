@@ -21,14 +21,20 @@ MONTHS_FR = {
     "mai": 5, "juin": 6, "juillet": 7, "juil": 7, "août": 8, "aout": 8, "septembre": 9, "sept": 9,
     "octobre": 10, "novembre": 11, "décembre": 12, "decembre": 12, "déc": 12,
 }
-MONTH_FR_RE = (r"(janvier|janv\.?|f[ée]vrier|f[ée]vr\.?|mars|avril|avr\.?|mai|juin|juillet|juil\.?|ao[uû]t|"
-               r"septembre|sept\.?|octobre|novembre|d[ée]cembre|d[ée]c\.?)")
+# Only spellings that are not also English month words/abbreviations ("Sept", "Dec"), so an English page never
+# goes through the French date path (classifier-diff on the Pi, 14 Oct: "1 Sept" took a wider year window).
+MONTH_FR_RE = (r"(janvier|janv\.|f[ée]vrier|f[ée]vr\.|mars|avril|avr\.|mai|juin|juillet|juil\.|ao[uû]t|"
+               r"septembre|octobre|novembre|d[ée]cembre|déc\.)")
 WEEKDAY_FR = r"(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)"
 
 # Postcode followed by a commune name: "26000 Valence", "67150 Hipsheim", "01170 GEX", "F-75001 Paris".
 _CONNECT = r"(?:de|du|des|en|sur|sous|l[eè]s|le|la|les|et|aux?|d['’])"
-POSTCODE_COMMUNE = (r"\b(?:F-)?((?:0[1-9]|[1-8]\d|9[0-5]|2[AB])\d{3}|97[1-6]\d{2})\s+"
-                    r"((?:(?:Saint|Sainte|St|Ste|Le|La|Les|L['’])\s?)?[A-ZÀ-Ý][A-Za-zÀ-ÿ'’\-]+(?:\s" + _CONNECT + r"\s?[A-ZÀ-Ýa-zà-ÿ][A-Za-zÀ-ÿ'’\-]+){0,2})")
+# Same line only ("20111\nGo" on a US listing is a ZIP followed by a button, not "20111 Go").
+POSTCODE_COMMUNE = (r"\b(?:F-)?((?:0[1-9]|[1-8]\d|9[0-5]|2[AB])\d{3}|97[1-6]\d{2})[ \t\u00a0]+"
+                    r"((?:(?:Saint|Sainte|St|Ste|Le|La|Les|L['’])[ \u00a0]?)?[A-ZÀ-Ý][A-Za-zÀ-ÿ'’\-]+(?:[ \u00a0]" + _CONNECT +
+                    r"[ \u00a0]?[A-ZÀ-Ýa-zà-ÿ][A-Za-zÀ-ÿ'’\-]+){0,2})")
+# French function words: postcode / phone / "France" only count as French evidence on a French-language page.
+FRENCH_TEXT = r"\b(?:le|la|les|des|du|et|pour|avec|une|est|vous|nous|sur|dans|aux|au|votre|vos|ou|sont)\b"
 PHONE_FR = r"(?<![\d+])(?:\+33\s?\(?0?\)?\s?[1-9]|0[1-9])(?:[\s.\-]?\d{2}){4}(?!\d)"
 
 # ISO 3166-2:FR regions (2016) and the départements in each (by postcode prefix).
@@ -128,7 +134,8 @@ PACK = {
     "negatives": {
         # In French a 'marché public' is a public procurement contract, not a market (and Gex lists its tenders
         # under "Appels à candidatures").
-        "procurement": r"\bmarch" + E + r"s?\s+publics?\b|\bappels?\s+d" + A + r"offres?\b|\bconsultations?\s+des\s+entreprises\b|"
+        # (not bare 'marchés publics': in Québec that is a public MARKET, e.g. Marchés publics de Montréal)
+        "procurement": r"\bappels?\s+d" + A + r"offres?\b|\bconsultations?\s+des\s+entreprises\b|"
                        r"\bpouvoir\s+adjudicateur\b|\bavis\s+d" + A + r"appel\s+public\b|\bacheteur\s+public\b|\bboamp\b|\bdce\b",
         "jobs": r"\boffres?\s+d" + A + r"emploi\b|\brecrutement\b|\bforum\s+(?:de\s+l" + A + r")?emploi\b|\bcandidature\s+spontan" + E + r"e\b|"
                 r"\bjob\s*dating\b|\balternance\b|\bfrance\s+travail\b",

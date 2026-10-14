@@ -9,7 +9,7 @@ acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.m
 e57a2f3b3d01b4df99015ccc517a0c41bf0801b27f3310ec62050b0ec7f1b718  ./deploy/pi-tests/prune.test.sh
 a400ce419909cc89513aacc55c1040ae60f196d5e19016ffd3b45fb8e9006801  ./deploy/pi-tests/source-key.test.sh
 e93d44f3d2137d9e2bdec4686b2e6e00dd8a103dcea700bf0b2dcace31104308  ./deploy/pi/README.md
-cd63f859516c4b4c6e634fcab7058ee923ff7732776f7d541eb323bd6a350d37  ./deploy/pi/SHA256SUMS
+769bec3c96f798eae338bf7a10288ad7578dd4cac3df834569207e6a84114cf6  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
 9db7faa390203d02b54efaf8d4a34e2ccc91afaf49b16460416ef2eb4d6a5772  ./deploy/pi/bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./deploy/pi/bin/fpd-alert-setup
@@ -65,7 +65,7 @@ d1c95d30eed42fbfab6d8e031ca52ddf3db71b4b7083ec2727e47aeab0f1468c  ./fpd/generato
 2b95abc45df8b452c9b3eaf7c6f5ca44371c1201ffb4ef9a147151512b6db66b  ./fpd/generators/search.py
 d44437b235320e5eb4064f206061de2983f87dbea177826dd45278d0867719b5  ./fpd/generators/seeds.py
 98c6b93a4034aa5e9048bd8fab19cf6a43f23de2e92bb1e50dc55d17ee7e1600  ./fpd/generators/wikidata.py
-9f4c718c5bd6d51c38eb70dcbb86989017646d719c5059ef57e70d75baa0cdb9  ./fpd/geo.py
+ecd2ba5baad0adeda5ff43ed98a683e36b893ba0cf4bb9903ffe634ccdc324c8  ./fpd/geo.py
 b36d5157356da83a05dabaddb55f595620aa42c066322e7ccb0727dc4adf86f3  ./fpd/integration/__init__.py
 1d16b795126aee97c998e2ec5738ce4517679a27c10042bff65c178f75e60192  ./fpd/integration/exporter.py
 50dfb641648e3c559ede5de780306430d01b9190d131d6de6267ea91bb1c6960  ./fpd/integration/identity.py
@@ -75,7 +75,7 @@ d470bb4c6e163d23be7c348cd86a244722e0b7a3857640325da1c719974c2e2e  ./fpd/integrat
 4851e692645ce2b8074ec25f356aea317e4b8e18b1480f8aa02724bd46ef8623  ./fpd/integration/v3feed.py
 d9524d6a956e134ffbe7a37677225a2139ee4ba2b67f19d36e6687363f27e91a  ./fpd/lexicon.py
 bb9e0e36f2aa07433e67e57a9ba83386af9321e3ced3c883845e0c23f3d966f4  ./fpd/packs/__init__.py
-63b3a5b110bd9f866fb038ac67c9160344208e85b00037a4f2e520e9385bedc5  ./fpd/packs/fr.py
+9f5ba6431af406d6d61727f7137b0c986823766c8d9955e969b37a675f738cf0  ./fpd/packs/fr.py
 c5515167fc1033972c764fc1919c296dd72e1e94ea7eaa2677a4822cee7bfb78  ./fpd/parse.py
 e392833a31bab53090ee0522a9a249e478fa7f0184ade9d4b7297f117ac2f8d9  ./fpd/pipeline.py
 2f78bdfc6d0833d3b8576f63a514d5127fc42e8f33eee77c81bb6fbfac15e905  ./fpd/report.py
@@ -105,8 +105,8 @@ b0af7b1560c1b4a1ef4d343ec45bbc2a53c3b6eef3b4e0212ed836b2f59bc366  ./tests/fixtur
 cc399676b06024df2ce67471f6e5600f43f899f59668af16fe617df92827a4a5  ./tests/fixtures/marketsireland_notmanaged.html
 c56830c2261640f3b53ac4f3bf13315589e95ebcd08a3e77abefb130586b9d35  ./tests/fixtures/marketsireland_open.html
 89920decd67516718809bf63c785723a6a70399379b60f9e32be86c8b075ff63  ./tests/test_core.py
-633c074d466782639f86b0d3a3e23638a8429b0cfca064b6d46062c50d233ee7  ./tests/test_fr_pack.py
+433b779c678a2fba56a37b1e41a2b59145e481d47e40737a2ba88b181297636d  ./tests/test_fr_pack.py
 ea235873a3063cab1a792643befd550381c0d6522047fca855c3d000f22f34ab  ./tests/test_integration.py
-3030fb64a3193592981e3ef02e9b4c8edda4a8c96b55d50e5571566d9c0710cf  ./tools/classifier_diff.py
+c9194ddc5f22246f7d61e1e2a37689681c642eb9576021b6dce05778a4f2ed45  ./tools/classifier_diff.py
 069e3b51f995cff59941559d5a50a6ad133e3dabd7a376c2cd8704b6c1474cae  ./tools/custody_fetch.py
 907f8439aa20d5702581025feb13e46a4a5519ea9dd69e9bef18209b9b2bd226  ./tools/loss_report.py
