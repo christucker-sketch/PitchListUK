@@ -33,6 +33,8 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
+- **Kit 011k (`de249f09…`) prepared, 14 Oct:** a date-prefixed edition-title fix only. Measured on the Pi (read-only): it releases **7 US READY-eligible records** (6 OPEN_NOW, 1 ROLLING) and 11 US records to watch. 5 stay held on date conflict or bare date. Waiting for Chris to install while acquire is inactive.
+
 - **Kit 011j (`2091be95…`) INSTALLED 14 Oct about 08:56 London** (D-018 route retention plus lane roll-over). Acquire was inactive at install; 105 tests passed; delivery restarted. The candidate switch remains OFF. **Measured after the 09:16 cycle:** current ENQUIRY records with no route went from 18 to **1**; **36** current records now carry a `trader_email` route.
 
 - **14 Oct, alignment actions 3–6 done** ([doc, from "Structured-calendar sample"](../../docs/findpitches-v3-us-producer-sources-2026-10-14.md)).

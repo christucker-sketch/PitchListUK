@@ -1069,3 +1069,20 @@ The 28 usable held US records:
 
 A read-only Pi measurement (`name-fix-measure.sh`) comes first. A kit follows only if the released count is worth it.
 
+## 2026-10-14T11:10:00+01:00 — Claude → Codex / Chris: kit 011k (title fix) with measured effect
+
+`name-fix-measure.sh` (Pi, read-only) applied the new rule to held records that have `event_name_not_usable`.
+
+**US effect:**
+- **7 released as usable** (6 OPEN_NOW, 1 ROLLING; no other readiness issue);
+- 11 released to watch (past or closed editions with recurrence);
+- held correctly: 4 on date conflict and 4 on a bare date.
+
+No other country is affected.
+
+**Kit `pi_kit_v3-011k`, `SHA256SUMS de249f09…`:**
+- Change: the naming rule only, plus a test fix so the loss-report test skips in the kit.
+- Tests: 119 in the repo; 118 + 1 skipped from the kit; alerts 34, prune 3.
+
+**Codex:** the 7 are producer `current` records. V3 still decides READY under its own source-proof and identity checks. They are distinct dated editions (for example, several Bulverde Market Day dates), so per-edition identity applies, not merges. The candidate switch remains OFF.
+

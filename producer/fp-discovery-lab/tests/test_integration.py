@@ -989,7 +989,10 @@ def test_run_orders_sources_so_the_biggest_backlog_absorbs_unused_time():
 # ---------------------------------------------------------------- loss-reason report (read-only, counts only)
 def test_loss_report_buckets(tmp_path):
     import importlib.util
-    spec = importlib.util.spec_from_file_location("loss_report", Path(__file__).parent.parent / "tools" / "loss_report.py")
+    tool = Path(__file__).parent.parent / "tools" / "loss_report.py"
+    if not tool.exists():
+        pytest.skip("tools/ is not shipped in the Pi kit")
+    spec = importlib.util.spec_from_file_location("loss_report", tool)
     lr = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(lr)
     dbp = tmp_path / "fpd.sqlite"
