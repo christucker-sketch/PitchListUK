@@ -984,3 +984,46 @@ def test_run_orders_sources_so_the_biggest_backlog_absorbs_unused_time():
     srcs = ["cluemart", "eventeny", "localstalls", "marketsireland", "marketspread", "ukcraftfairs"]
     order = order_by_backlog(srcs, {"eventeny": 15658, "marketspread": 21, "ukcraftfairs": 40})
     assert order[-1] == "eventeny" and order[:3] == ["cluemart", "localstalls", "marketsireland"]
+
+
+# ---------------------------------------------------------------- loss-reason report (read-only, counts only)
+def test_loss_report_buckets(tmp_path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("loss_report", Path(__file__).parent.parent / "tools" / "loss_report.py")
+    lr = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lr)
+    dbp = tmp_path / "fpd.sqlite"
+    conn = dbm.connect(dbp)
+    now = time.time()
+    rows = [("robots", "skipped", None, "robots"), ("forbid", "failed", 403, "http 403"),
+            ("crash", "failed", None, "process:boom"), ("ok1", "done", 200, None), ("ok2", "done", 200, None)]
+    for i, (p, st, code, err) in enumerate(rows, 1):
+        conn.execute("INSERT INTO urls(id,url,host,reg_domain,purpose,generator,state,http_status,last_error,created_at) "
+                     "VALUES(?,?,?,?,?,?,?,?,?,?)", (i, f"https://a.example/{p}", "a.example", "example", "candidate",
+                                                      "t", st, code, err, now))
+    conn.execute("INSERT INTO assessments(url_id,assessed_at,classifier_version,label,reasons) VALUES(4,?,'v','rejected',?)",
+                 (now, json.dumps(["no_vendor_signal"])))
+    conn.execute("INSERT INTO assessments(url_id,assessed_at,classifier_version,label,reasons) VALUES(5,?,'v','uncertain',?)",
+                 (now, json.dumps(["currency_undated"])))
+    conn.execute("INSERT INTO opportunities(id,name,status) VALUES(1,'X','uncertain')")
+    conn.execute("INSERT INTO opportunity_sources(opportunity_id,url_id,match_method) VALUES(1,5,'new'),(1,4,'name_fuzzy')")
+    conn.close()
+    full = tmp_path / "export" / "full"
+    full.mkdir(parents=True)
+    (full / "current.jsonl").write_text("")
+    (full / "held.jsonl").write_text(json.dumps({"country_code": "US", "readiness_issues": ["stale_contradiction: x"]}) + "\n")
+    (full / "watch.jsonl").write_text("\n".join(json.dumps(r) for r in [
+        {"country_code": "US", "application_state": "UNKNOWN", "event_start": "2026-11-01",
+         "application_routes": [{"category": "craft"}]},
+        {"country_code": "US", "application_state": "UNKNOWN", "application_routes": [],
+         "watch": {"missing_evidence": ["current_season_dates"]}},
+        {"country_code": "GB", "application_state": "HISTORICAL"}]) + "\n")
+    out = lr.report(dbp, tmp_path / "export", today=TODAY)
+    r = out["rollup"]
+    assert r["blocked_source"] == 2 and r["parser_failure"] == 1
+    assert r["no_trader_relevance"] == 1          # the rejected page; the uncertain page is not counted at page stage
+    assert r["identity_ambiguity"] == 1 and r["freshness_conflict"] == 1
+    assert r["no_current_date"] == 1 and r["stale_or_closed"] == 1
+    assert r["route_candidate_awaiting_review (D-018)"] == 1
+    assert out["stage4_export_totals"] == {"held": 1, "watch": 3}
+    assert "example" not in json.dumps(out)  # counts only: no URLs, hosts or names leak

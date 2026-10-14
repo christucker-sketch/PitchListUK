@@ -84,3 +84,75 @@ Tests: Python 106, alerts 34, prune 3.
 6. **New organisers, venues, states and map points:** 0 so far, from this work.
 7. **US READY total:** 1,722 per Codex's latest customer snapshot. That is +52 against the 1,670 baseline (+50 net settled programme gain), **48 short of +100 (1,770)**, about 448 short of +500 and about 1,278 short of 3,000.
 
+## Structured-calendar sample: alignment report actions 3–5 (14 Oct, later)
+
+**Method.** One visit per site from Claude's workspace, not the Pi; no Serper, no paid search.
+- Producer user-agent (`FPDiscoveryLab`), robots.txt honoured, 1.2 s spacing.
+- Per site: the given page; `/wp-json/tribe/events/v1/events?start_date=2026-10-14`; JSON-LD `Event` blocks; `.ics` / `ical=1` links; vendor/application wording.
+- The sites were 18 US multi-event candidates: city and county special-events or vendor pages, downtown associations, a fairground, a farmers-market network, a state plaza and a living-history village, plus the two seed hosts.
+- For the one calendar that returned events, all 3 pages (124 events) were read, along with the two organiser pages its market events link to.
+
+**Correction to the earlier checkpoint.** coloradomarkets.com and oldtownchicago.org do *not* give the producer a Tribe route:
+- coloradomarkets.com disallows our user-agent in robots.txt;
+- oldtownchicago.org disallows `/wp-json/`.
+
+The earlier probe was not robots-checked under our user-agent. Neither host counts.
+
+### Funnel
+
+| Step | Count | Notes |
+| --- | --- | --- |
+| Sites checked | 18 | |
+| Reachable under robots | 12 | 5 robots-disallowed (incl. coloradomarkets, empirestateplaza.ny.gov, two city sites); 1 dead URL (404) |
+| Structured calendar detected | 3 | Tribe REST on 2 (one with 0 events); `.ics` link on 3; **JSON-LD `Event` on 0** |
+| Calendars with future events | **1** | Historic Manassas (VA), Tribe REST |
+| Events extracted | 124 | All future-dated; venue city/state on 36 |
+| …distinct event titles | 15 | 61 of the 124 are weekly occurrences of one farmers market |
+| …trader-relevant (market/fair/craft) | 3 titles → **2 opportunities** | (a) the Historic Manassas farmers/winter market; (b) ARTfactory's Holiday Market |
+| Trader route in the calendar entry | **0** | The descriptions are shopper copy ("artisan crafts… local vendors") and link to shopper pages |
+| Trader route one hop away (organiser page) | 1 | The winter-market application is a **Marketspread** link (marketspread.com/market/4809…/apply), a platform the Pi already covers at 99.8%. ARTfactory's page is robots-disallowed. |
+| **Expected net-new deliverable candidates** | **0–1** | The Marketspread route is very likely already held by the Pi |
+
+Separately, 7 of the 12 reachable pages *did* carry vendor/application wording (Monroe, Fairfax County, Mill City, Richmond IN, North Port, Allaire, Danish Festival). None of those 7 had a structured calendar. Where trader routes exist, they sit on hand-written organiser vendor pages, not in calendars.
+
+### Decision (action 5)
+
+**Do not build the calendar reader.** The sample does not show repeatable value:
+1. Structured calendars are uncommon on these sites: 2 of 12 have Tribe REST and none have JSON-LD.
+2. Where they exist, they list shopper events and recurring occurrences, not trader opportunities.
+3. They carry no D-018 route; the route lives one hop away, and here that hop led to a platform we already cover.
+
+The address/geocode value (map-ready venue fields) is real but adds no READY without a route.
+
+**No kit.** The lever that remains is the existing `organiser_pages` lane (kit 011i): official vendor-application pages, one per organiser, with exact-event or standing routes. I will add US organiser pages only once each one is checked by hand for a current route and date. That is small, linear work, not a volume lever. 3,000–5,000 US READY needs platform-scale sources, and none found so far is both legitimate and current.
+
+## Producer loss-reason report: action 6 (no crawling)
+
+`producer/fp-discovery-lab/tools/loss_report.py` (stdlib only; opens the database read-only) reads what the Pi already holds:
+- the frontier;
+- the latest assessment per page;
+- source attachment (merge method);
+- the last export.
+
+It prints counts only (no URLs, names or contacts), at four stages: fetch → page gate → identity → export gate, per country. It rolls these up into the report's eleven buckets: no current date, no trader relevance, no usable route, generic route, identity ambiguity, geography missing, duplicate, stale/closed, parser failure, blocked source, freshness conflict. It also shows the non-loss outcomes, including D-018 route candidates awaiting review.
+
+Each item is counted once, at the stage where it stopped. Uncertain pages are not counted at the page stage, because they carry on into watch records. There is a regression test (107 Python tests pass).
+
+The Pi run is a single read-only command (`loss-report.sh`, given to Chris), and its numbers will be posted here.
+
+## Learning-loop checkpoint 2 (seven questions), 14 Oct later
+
+1. **What did we try?** A bounded structured-calendar sample (18 sites, funnel above), and a producer loss-reason report tool (no crawling).
+2. **What converted to net-new READY?** **Nothing.** The calendar sample yields 0–1 expected candidates, so nothing was built or shipped.
+3. **Which source arms won and lost?** **Lost:** structured official calendars (Tribe REST, JSON-LD, ICS) as a route source. **Unchanged:** `organiser_pages` remains the only clean small lane.
+4. **Why did the losers fail?**
+   - Calendars are rare (2 of 12 reachable sites).
+   - They list shopper events and weekly occurrences.
+   - They hold no trader route.
+   - Their one route pointed back into an already-covered platform.
+   - 5 of 18 sites disallow our user-agent.
+5. **What gets more or less effort next?**
+   - **Less:** calendar extraction (stopped; no reader, no kit).
+   - **More:** the loss-reason numbers from the Pi decide the next producer change. If "no usable route" or "generic route" dominates watch, the lever is route discovery on already-held organisers, not new sources.
+6. **New organisers, venues, states and map points:** 0.
+7. **US READY total:** unchanged at 1,722 per Codex, **48 short of 1,770**. The 78 D-018 route candidates remain **OFF** pending Codex review.

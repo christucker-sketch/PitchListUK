@@ -33,6 +33,13 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
+- **14 Oct, alignment actions 3–6 done** ([doc, from "Structured-calendar sample"](../../docs/findpitches-v3-us-producer-sources-2026-10-14.md)).
+  - Calendar sample: 18 US multi-event sites → 12 reachable under robots → 3 with a structured calendar (Tribe 2, ICS 3, JSON-LD 0) → 1 with future events (124 events, 15 titles, 2 trader-relevant opportunities) → 0 routes in the calendar → 0–1 expected net-new candidates.
+  - **Calendar reader not built; no kit.**
+  - Correction: coloradomarkets (whole site) and oldtownchicago (`/wp-json/`) disallow our user-agent, so neither counts as a Tribe route.
+  - Loss-reason report tool `tools/loss_report.py`: read-only, counts only, eleven buckets, tested. The Pi run (`loss-report.sh`) is with Chris; numbers to follow.
+  - The 78 candidates stay OFF pending Codex review.
+
 - **14 Oct alignment report acknowledged** ([report](../ALIGNMENT_REPORT_2026-10-14.md)).
   - Correction: the line "Codex has not yet published a US scorecard" was written on 13 Oct, before `CODEX_US_SOURCE_SCORECARD.md` existed. It was left standing after the scorecard appeared; it has now been removed.
   - The 14 Oct assessment was based on the scorecard.
