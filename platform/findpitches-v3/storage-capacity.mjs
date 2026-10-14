@@ -11,7 +11,9 @@ export async function capacityStatus(db){
  const exists=await sql(db,"SELECT 1 ok FROM sqlite_master WHERE type='table' AND name='storage_capacity_samples'").first();
  const samples=exists?(await sql(db,'SELECT observed_at,file_size_bytes FROM storage_capacity_samples ORDER BY observed_at DESC LIMIT 2').all()).results:[];
  let growth=null;if(samples.length===2){const hours=(Date.parse(samples[0].observed_at)-Date.parse(samples[1].observed_at))/3600000;if(hours>0)growth=(samples[0].file_size_bytes-samples[1].file_size_bytes)/hours;}
- return {...state,as_of:new Date().toISOString(),growth_bytes_per_hour:growth,samples,scope:'V3 source/evidence database; separate customer/auth/billing storage excluded'};
+ const archiveTable=await sql(db,"SELECT 1 ok FROM sqlite_master WHERE type='table' AND name='source_document_archives'").first();
+ const archive=archiveTable?await sql(db,'SELECT COUNT(*) documents,COALESCE(SUM(a.serialized_bytes),0) original_payload_bytes FROM source_document_archives a JOIN source_documents d ON d.id=a.document_id WHERE d.document_json=a.wrapper_json').first():null;
+ return {...state,as_of:new Date().toISOString(),growth_bytes_per_hour:growth,growth_interpretation:growth===null?'insufficient_observations':growth<0?'net_reclaim_during_migration':'net_database_growth',archive,samples,scope:'V3 source/evidence database; separate customer/auth/billing storage excluded'};
 }
 export async function guardSourceCapacity(db,{now=new Date().toISOString()}={}){
  const r=await sql(db,'SELECT 1 capacity_probe').all(),state=capacityState(r.meta?.size_after);

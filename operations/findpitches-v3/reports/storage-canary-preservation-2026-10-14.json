@@ -1,0 +1,23 @@
+{
+  "schema": "findpitches-v3-storage-preservation-v1",
+  "started_at": "2026-10-14T15:03:00.003Z",
+  "as_of": "2026-10-14T15:09:27.661Z",
+  "baseline_as_of": "2026-10-13T17:15:54.694Z",
+  "receipts_compared": 25230,
+  "source_facts_compared": 218939,
+  "fixed_identity_tuples_compared": 7280,
+  "destructive_source_mutations": 0,
+  "fixed_identity_tuple_changes": 0,
+  "original_build_source_mutations": 0,
+  "customer_projection_rows": 0,
+  "publication_queue_rows": 0,
+  "source_publication_enabled": false,
+  "source_publication_api_denied": true,
+  "paid_queries_today": 0,
+  "paid_day": "2026-10-14",
+  "paid_queries_lifetime": 29,
+  "paid_bulk_enabled": false,
+  "paid_manually_paused": 1,
+  "pitchlist_deployment_unchanged": true,
+  "v2_schedules_unchanged": true
+}

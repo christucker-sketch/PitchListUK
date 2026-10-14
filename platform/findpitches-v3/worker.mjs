@@ -57,7 +57,7 @@ async function bodyJson(request) {
   const bytes=new Uint8Array(size);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.length;}
   return JSON.parse(new TextDecoder().decode(bytes));
 }
-export async function status(db,{role='api',now=new Date().toISOString()}={}) {
+export async function status(db,{role='api',now=new Date().toISOString(),capacityGuard=false,archiveWrites=false}={}) {
   const queries=[
     'SELECT producer_name,validation_status,COUNT(*) AS records,MAX(received_at) AS last_received_at FROM producer_records GROUP BY producer_name,validation_status',
     'SELECT stage,status,COUNT(*) AS jobs,MIN(available_at) AS oldest_available_at,MIN(lease_until) AS first_lease_expiry FROM jobs GROUP BY stage,status',
@@ -79,7 +79,7 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
     inventory:{shadow_ready:commercial.totals.ready,customer_visible_ready:0},publication_enabled:false,controlled_subscriber_testing_ready:false,
     legacy_dependencies:{normal_data_runtime:[],optional_operator_reference_probe:['live_uk_catalogue_audit']},
     interpretation:'Build 4 is owned by V3 and the native customer service is separate. Consult its restricted /preview/status for deployed auth/billing/inventory health. No public/customer publication or subscriber migration is enabled.'};
-  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),free_source_discovery:await catalogueStatus(db),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial,customer_application:customerApplication,storage_capacity:await capacityStatus(db)};
+  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),free_source_discovery:await catalogueStatus(db),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial,customer_application:customerApplication,storage_capacity:{...await capacityStatus(db),guard_enabled:capacityGuard,forward_archive_enabled:archiveWrites}};
 }
 export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
   if(!stage||!queue)return;
@@ -121,7 +121,7 @@ export default {
     bindEvidenceArchive(db,env.V3_EVIDENCE_BUCKET,{writeEnabled:env.V3_ARCHIVE_WRITES_ENABLED==='true'});
     try {
       if(request.method==='GET'&&path==='/health') { await sql(db,'SELECT publication_enabled FROM runtime_policy WHERE id=1').first();return json({service:'findpitches-v3',role,ok:true,mode:'shadow',publication_enabled:false}); }
-      if(request.method==='GET'&&path==='/status')return json(await status(db,{role}));
+      if(request.method==='GET'&&path==='/status')return json(await status(db,{role,capacityGuard:env.V3_CAPACITY_GUARD_ENABLED==='true',archiveWrites:env.V3_ARCHIVE_WRITES_ENABLED==='true'}));
       if(path==='/staging/ready'||path==='/staging/catalogue') {
         if(request.method!=='GET'||role!=='api')return json({error:'staging_read_only'},403);
         if(!await authorized(request,env.V3_STAGING_TOKEN))return json({error:'authorization_required'},401);
