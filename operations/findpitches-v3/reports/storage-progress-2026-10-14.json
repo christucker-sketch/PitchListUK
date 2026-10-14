@@ -1,9 +1,23 @@
 {
-  "as_of": "2026-10-14T15:40:25.452Z",
-  "documents": 8180,
-  "archived_payload_bytes": 1669351978,
-  "current_native_file_size_bytes": 8009269248,
+  "as_of": "2026-10-14T16:43:15.291Z",
+  "documents": 21924,
+  "archived_payload_bytes": 4456760472,
+  "current_native_file_size_bytes": 5263417344,
+  "headroom_percent": 47.37,
   "completed": false,
   "error": null,
-  "scope": "Migration in progress; counters are operator checkpoints. Final native archive receipts will be authoritative."
+  "prior_operator_errors": [
+    {
+      "at": "2026-10-14T15:57:26.225Z",
+      "error": "shadow_http_400_request_failed"
+    },
+    {
+      "at": "2026-10-14T16:22:44.528Z",
+      "error": "shadow_http_400_request_failed",
+      "diagnostic": "runtime_error"
+    }
+  ],
+  "bounded_request_documents": 8,
+  "operator_concurrency": 2,
+  "scope": "Migration in progress; native archive receipts are authoritative. Two opaque provider runtime failures paused automatically; affected groups passed bounded verified retry. Cause remains unattributed; request size reduced."
 }

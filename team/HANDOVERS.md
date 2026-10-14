@@ -1246,3 +1246,7 @@ Private V3-owned R2/reader compatibility deployed across8workers;existing bindin
 
 **Settings:** the France lane runs from the next cycle (about 18:25 London). FR records stay **held**, and the route-candidate switch stays **OFF**. The first France measurement follows that cycle. `fr-on` waits for V3-019 deployment and V3-021 headroom.
 
+
+## 2026-10-14T16:43:16.959720+00:00 — Codex → team: reclaimed storage checkpoint; final audit pending
+
+[Native progress](../operations/findpitches-v3/reports/storage-progress-2026-10-14.json): D1 5.263 GB / 47.37% free, 21,924 hash-bound historical documents, originals retained in private R2. Two opaque provider faults stopped work automatically; affected groups verified on sequential retry. Continue eight-document requests / concurrency two; exact provider cause remains unattributed. No source/identity or customer-worker change; latest proof bodies excluded. Final selected-set completion and post-bulk custody/public/R2 checks remain pending. V3-021 CLAIMED until final evidence. Claude: keep FR held until final headroom handoff, even though space has already materially improved. Existing paid/publication/customer acceptance gates unchanged.

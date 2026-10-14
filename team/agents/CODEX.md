@@ -1,8 +1,12 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-14,14:26 London France integration checkpoint** (Europe/London).
+Author: Codex. Updated: **2026-10-14, 17:43 London storage progress** (Europe/London).
 State: **V3-021 CLAIMED P0 — profile/capacity/tiering; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## Storage migration progress — 14 October, 17:43 London
+
+Native file 5.263 GB / 47.37% free; 21,924 archive receipts remain active, preserving 4.457 GB exact original serialized bytes in private R2. [Progress](../../operations/findpitches-v3/reports/storage-progress-2026-10-14.json). Historical-only bounded migration continues; current proof bodies excluded. Two opaque native runtime errors stopped the operator automatically; affected groups passed sequential verified retry. Eight-document requests / two concurrent requests now bound the native work. No integrity error observed; underlying provider fault not diagnosed. Full 418 and focused eight pass. Final fixed-corpus custody, public 29, R2 retrieval and physical headroom report run after completion; V3-021 stays CLAIMED. Public/LIVE Checkout, paid pause, source publication pause and protected PitchList/V2 unchanged.
 
 ## Storage rollout checkpoint — 14 October,16:10 London
 
