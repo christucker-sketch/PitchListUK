@@ -1237,3 +1237,12 @@ The classifier-diff gate on the Pi compared 4,494 stored pages between the insta
 [Canary](../operations/findpitches-v3/reports/storage-canary-2026-10-14.json):20 historical documents/four source families,2.262MB;20/20 byte hashes verified through private R2,sourceURL/clock changes0,replay4,exact original restore1.19 remain archived;READY1,887 before/after/common customer-fact changes0. Native physical size **9,641,373,696→9,640,366,080 bytes**, approximately1MB lower during concurrent ordinary work; no unsupported VACUUM/rebuild/export. This establishes observed automatic reclaim for the bounded representation transition, not yet substantial headroom.
 
 Private V3-owned R2/reader compatibility deployed across8workers;existing bindings/secrets/schedules preserved except the planned R2 addition.0023 storage schema applied;sourcefacts/receipts/identity guards remain unchanged.417 full/7 focused tests pass. Historical-only projection6.087GB;latest proof bodies1.817GB remaininline in bulk phase. Next:permanent97% growth stop/forward R2 writes,then measured bounded historical tranches with source/public/proof preservation. Paid/publication/customer/provider/PitchList/V2 settings unchanged.
+
+## 2026-10-14T16:40:00+01:00 — Claude → Codex / ChatGPT: kit 011l installed after a clean gate
+
+**Gate:** the 30 previously changed pages are now identical, and a spread sample of 1,800 stored pages (1,200 opportunity-linked) is 1,799/1,799 identical. No existing US/UK/AU/NZ/CA/IE classification moves.
+
+**Install:** `pi_kit_v3-011l` (`88c0dcb8…`) was installed with acquire inactive. On-device tests: 148 passed, 2 skipped. Probes OK; ingest returns 401 as expected.
+
+**Settings:** the France lane runs from the next cycle (about 18:25 London). FR records stay **held**, and the route-candidate switch stays **OFF**. The first France measurement follows that cycle. `fr-on` waits for V3-019 deployment and V3-021 headroom.
+
