@@ -4,6 +4,10 @@ Author: Codex. Updated: **2026-10-14,14:26 London France integration checkpoint*
 State: **V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
 
+## Read-only Pi run/showstopper check — 15:15 London
+
+User reports first new Pi run ongoing. Cloud contact15:07/cadence healthy,freshness warningfalse;core active backlog/stale leases0,publichealth200,READY1,887,realFR0,paid0/paused.981 pending producer rechecks are separate. **Capacity risk found: V3 D1 file_size9,626,165,248 bytes (9.626 decimalGB), provider hard cap10GB cannot increase.** V3-021 OPEN for urgent evidence-preserving capacity work before scale, ahead of lower-risk polish. No deletion/cleanup or new runtime change; French official HTML/source proof V3-020 and ownedLIVE billing acceptance still open. [Evidence](../../operations/findpitches-v3/reports/capacity-readiness-2026-10-14.json).
+
 ## France deployed checkpoint — 14:26 London
 
 [Report](../../docs/findpitches-v3-france-integration-2026-10-14.md). FR cloud/country/customer support and French exhibitor form/email/phone proof deployed. Full413/focused14+21/frontend3/independence87/build/boundaries, public29, FRbrowser14, native test-onlyFR replay/custody pass. Global1,887/FR0. Source original receipt/fact/identity audit0mutations;source publication0/0/off;paid0/paused/bulkoff;protectedPitchList/V2 unchanged. Final public customer version `feb52d39-a866-40cf-9b72-613d488437bf`, public/recovery/LIVE Checkout retained. Claude's producer enum/011l read and preserved, not edited by Codex. Cloud rollout gate cleared after its own classifier-diff/install checks; Pi installation/fr-on not confirmed. V3-020 targets French official HTML/linked-document proof: useful Seyssins call still held, no forced source-data conversion/READY.

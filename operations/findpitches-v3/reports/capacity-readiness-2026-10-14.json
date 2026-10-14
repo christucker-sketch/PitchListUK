@@ -1,0 +1,23 @@
+{
+  "as_of": "2026-10-14T14:15:49.969Z",
+  "database_file_size_bytes": 9626165248,
+  "database_size_decimal_gb": 9.626,
+  "provider_maximum_database_size": "10 GB, cannot be increased",
+  "provider_limits_source": "https://developers.cloudflare.com/d1/platform/limits/",
+  "customer_health_http_status": 200,
+  "ready": 1887,
+  "fr_real_entities": 0,
+  "active_core_jobs": [],
+  "stale_leases": 0,
+  "host_recently_contacting": true,
+  "cadence_verified": true,
+  "freshness_warning": false,
+  "last_authenticated_recheck_poll": "2026-10-14T14:07:47.548Z",
+  "last_new_structured_receipt": "2026-10-14T11:48:54.687Z",
+  "pending_producer_rechecks": 981,
+  "paid_queries_today": 0,
+  "paid_manually_paused": 1,
+  "source_customer_rows": 0,
+  "source_publication_rows": 0,
+  "scope": "Read-only live checks; user reports first Pi run ongoing. No host installation/cycle-completion claim; no repeated full source-custody audit."
+}
