@@ -288,6 +288,11 @@ def _export_root(cfg) -> Path:
     return Path(os.environ.get("FPD_EXPORT_DIR") or PROJECT_DIR / "integration_export")
 
 
+def order_by_backlog(srcs, backlog: dict) -> list:
+    """Smallest never-fetched backlog first; the biggest backlog runs last and absorbs unused time."""
+    return sorted(srcs, key=lambda s: (backlog.get(s, 0), s))
+
+
 def cmd_run(cfg, args):
     """Operate platform acquisition lanes: INDEX -> PLAN -> CRAWL (lane-restricted) -> RECORD per source."""
     from .pipeline import Engine
@@ -296,9 +301,20 @@ def cmd_run(cfg, args):
     srcs = SOURCE_IDS if args.source == "all" else [args.source]
     conn, run_id = _open(cfg, "run", args)
     status, out = "ok", {}
-    per = max(0.5, args.minutes / len(srcs))
+    # Time budget with roll-over: each source gets an equal share of the time still left, and a source whose
+    # queue empties early hands its unused time on. Sources are run smallest backlog first, so the platform with
+    # the largest never-fetched index (Eventeny) absorbs the slack instead of every lane getting a fixed 1/6.
+    if len(srcs) > 1:
+        from .sources import migrate as _mig
+        _mig(conn)
+        backlog = dict(conn.execute(
+            "SELECT p.platform, COUNT(*) FROM platform_index p LEFT JOIN urls u ON u.url=p.item_url "
+            "WHERE u.id IS NULL GROUP BY p.platform").fetchall())
+        srcs = order_by_backlog(srcs, backlog)
+    budget_end = time.time() + args.minutes * 60
     try:
-        for s in srcs:
+        for i, s in enumerate(srcs):
+            per = max(0.5, (budget_end - time.time()) / 60 / (len(srcs) - i))
             started = time.time()
             idx = None
             last_idx = dbm.kv_get(conn, f"index.{s}.at", 0)
@@ -310,7 +326,7 @@ def cmd_run(cfg, args):
             eng.frontier.allowed = {SOURCES[s]["generator"]}
             res = asyncio.run(eng.crawl(per * 60, args.max_fetches))
             finalize(conn, cfg.today)
-            out[s] = {"index": idx, "plan": plan, "crawl": res,
+            out[s] = {"index": idx, "plan": plan, "crawl": res, "minutes_allowed": round(per, 1),
                       "poll": record_poll(conn, s, run_id, started, plan, idx, "ok")}
     except KeyboardInterrupt:
         status = "interrupted"

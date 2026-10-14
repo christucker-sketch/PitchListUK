@@ -975,3 +975,12 @@ def test_d018_route_candidates_are_watch_records_and_off_by_default(tmp_path):
     cand = [x for x in feed if x["channel"] == "watch"]
     assert on["route_candidates"] == 1 and [x["opportunity_id"] for x in cand] == ["fdx1_" + "a" * 20]
     assert cand[0]["export_readiness"] == "WATCH" and all(not validate(x, RECORD_SCHEMA) for x in feed)
+
+
+def test_run_orders_sources_so_the_biggest_backlog_absorbs_unused_time():
+    """US scale (D-019): with a fixed 1/6 share per lane Eventeny got ~4 min a cycle although its index was only
+    ~40% visited while Marketspread/LocalStalls were ~100%. Biggest backlog now runs last and gets the slack."""
+    from fpd.cli import order_by_backlog
+    srcs = ["cluemart", "eventeny", "localstalls", "marketsireland", "marketspread", "ukcraftfairs"]
+    order = order_by_backlog(srcs, {"eventeny": 15658, "marketspread": 21, "ukcraftfairs": 40})
+    assert order[-1] == "eventeny" and order[:3] == ["cluemart", "localstalls", "marketsireland"]
