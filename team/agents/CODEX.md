@@ -1,8 +1,23 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-14T01:27:19+01:00** (Europe/London).
-State: **CLAIMED — V3-017 US learning loop active; V3-016 source-address map candidate validated; V3-010 owned LIVE acceptance pending**.
+Author: Codex. Updated: **2026-10-14, after the 07:40 London control read** (Europe/London).
+State: **V3-016 DONE and live; V3-017 CLAIMED, first +100 growth target open, current source arms stopped; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## Current checkpoint — 14 October 2026
+
+[Complete results and custody](../../docs/findpitches-v3-us-learning-map-readiness-2026-10-14.md) · [Runtime evidence](../../operations/findpitches-v3/reports/us-runtime-readiness-2026-10-14.json) · [Claude/Pi source scorecard](../CODEX_US_SOURCE_SCORECARD.md). Foundation committed/pushed as `e67dc946`; the commit containing this update records final controls, performance and handoff. Cloudflare deployment versions are recorded separately from Git source custody.
+
+- Latest customer proof snapshot **07:38 London:1,894 READY — US1,722/GB162/NZ5/AU4/CA1**. Settled programme result remains US1,670→1,720,68 gains/18 withheld/net50, only+2 exact event groups. Four later additions are not attributed to that programme. First1,770 target still open.
+- **211 reservations/68 imports/143 held**;483 primary-proof attempts and532 attributed attempts across six completed experiments are overlapping scopes. Interrupted archive custody retained. Prefix scheduling repaired; two low-yield/empty cohorts now pause even a previously productive arm. No paid acquisition added.
+- US map live: current **571 opportunities/132 positions/31 states**; coverage run stopped at200 free Census GETs, plus two separately reported canary/probe requests. UK123/12 retained. Original facts, identity and READY were not rewritten by mapping; expiry/revision/source-document changes invalidate bindings.
+- Guarded performance release completed; customer version **`a1d4515a-c176-4b7e-a294-fd6517e1d4c8`**, public/account recovery/LIVE Checkout on. Data samples8.8–14.3s→2.5–4.2s, no proof cache/clock extension. Full403/frontend3/independence87/build/boundaries passed; final API29/US32 and laterUK32 passed. Native eight-worker/eight-queue audit passed07:37 London.
+- Preservation02:36 London:25,230 receipts/218,939 facts/7,280 fixed tuples,0 destructive mutations/identity changes/source pipeline leakage, protected PitchList/V2 unchanged. Fresh07:40 control read: core due/leased/dead jobs0, commercial manual pause on/25day limit, bulk off/0queries today/lifetime29. Pi active/cadence flag true;589 rechecks pending, not falsely called complete.
+- Free/Pro disclosure candidate and tests are prepared **without activation**. Final rule remains ChatGPT/Chris-owned; genuine owned LIVE card/global entitlement/Portal acceptance remains separate. No source form submit, customer/provider object creation, message, Pi install, peer acknowledgement, protected merge or new launch authority claimed.
+
+**Next handoff:** Claude/Pi measured official multi-event operator/calendar extraction is the highest-value source hypothesis. Codex retains proof/control/runtime/map ownership and the unfinished US scale objective. Preserve all current pauses and immutable custody; do not revisit empty/stale templates to exhaust grants. Further latency improvement still merits profiling after the measured reduction.
+
+## Previous checkpoints
 
 **V3-013 deployed UX checkpoint — Codex, 2026-10-12T12:00:00+01:00:** [Evidence and remaining limits](../../docs/findpitches-v3-post-launch-ux-2026-10-12.md). Public/Checkout LIVE; Safari homepage confirmed by Chris. Homepage 11 rows/3 UK area links, static-shell/Finder read reductions, truthful unknown-coordinate state; quiet-client home data 3.32–3.69s and Finder 3.10–3.66s versus 10–12s before. Source latency remains variable (9.01s homepage outlier under parallel validation), GB/US proved venue coordinates 0 so real UK pins 0. Full 268/frontend 3/independence/boundaries/build, public 29/browser 25 in each state and desktop/mobile controls pass. Native 2026-10-12T10:53:45.860Z: READY 1782 (GB 127/US 1649/AU 2/NZ 4), Nashville 0, owned customer/Checkout/subscriptions 0; genuine LIVE customer/global Pro/Portal acceptance pending. Preservation 2026-10-12T10:39:36.198Z mutations 0/identity changes 0/PitchList/V2 unchanged; V3 paid queries 0/bulk off/manually paused. Current version `e351d86b-eb77-4b59-badd-4d4eeb682684`; exact routes/secrets/bindings preserved.
 

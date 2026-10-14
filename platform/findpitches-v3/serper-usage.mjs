@@ -2,8 +2,11 @@ import {sql} from './store.mjs';
 import {hash} from './contract.mjs';
 
 export const SERPER_TIMEZONE='Europe/London';
+// Reuse the formatter, never its result. Every invocation still evaluates the
+// supplied instant, including midnight/DST budget and source-expiry changes.
+const budgetDateFormatter=new Intl.DateTimeFormat('en-GB',{timeZone:SERPER_TIMEZONE,year:'numeric',month:'2-digit',day:'2-digit'});
 export function budgetDay(now) {
-  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:SERPER_TIMEZONE,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(now));
+  const parts=budgetDateFormatter.formatToParts(new Date(now));
   const part=name=>parts.find(p=>p.type===name).value;
   return `${part('year')}-${part('month')}-${part('day')}`;
 }

@@ -1,0 +1,262 @@
+{
+  "schema": "findpitches-v3-us-runtime-readiness-v1",
+  "inventory_as_of": "2026-10-14T06:38:20.337Z",
+  "customer_eligible_ready": 1894,
+  "ready_by_country": {
+    "US": 1722,
+    "NZ": 5,
+    "GB": 162,
+    "AU": 4,
+    "CA": 1
+  },
+  "ready_by_source_domain": {
+    "eventeny.com": 1725,
+    "localstalls.com": 10,
+    "myntimage.co.uk": 136,
+    "creativecrafts-online.co.uk": 7,
+    "dundeeheritagetrust.co.uk": 1,
+    "littlehummingbirdevents.co.uk": 14,
+    "northamptontowncouncil.gov.uk": 1
+  },
+  "current_map_coverage": {
+    "US": {
+      "ready": 1722,
+      "mapped_opportunities": 571,
+      "coverage_percent": 33.16,
+      "distinct_coordinate_positions": 132,
+      "mapped_source_regions": 31,
+      "unpinned": 1151
+    },
+    "GB": {
+      "ready": 162,
+      "mapped_opportunities": 123,
+      "coverage_percent": 75.93,
+      "distinct_coordinate_positions": 12,
+      "mapped_source_regions": 2,
+      "unpinned": 39
+    }
+  },
+  "growth_attribution": "The settled US programme remains 68 gains / 18 withheld / net 50 at 01:17 UTC. Four additional opportunities (US 2 / AU 2) observed at this later snapshot are not attributed to that programme. Individual current-proof changes also alter map coverage.",
+  "customer_release": {
+    "as_of": "2026-10-14T01:36:33.925Z",
+    "public": true,
+    "checkout": "live",
+    "recovery": true,
+    "bindings_preserved": true,
+    "routes_unchanged": true,
+    "version": "a1d4515a-c176-4b7e-a294-fd6517e1d4c8"
+  },
+  "source_releases": [
+    {
+      "role": "api",
+      "version": "93a8e79b-dc70-45cb-976a-61be67571d8e",
+      "completed_at": "2026-10-14T01:31:25.188Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "enrichment",
+      "version": "86796e8a-ebb6-43cc-8359-bf48b8996580",
+      "completed_at": "2026-10-14T01:31:46.879Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "readiness",
+      "version": "124b8e48-6360-4d6c-9df6-3f2fa384c2f5",
+      "completed_at": "2026-10-14T01:32:04.497Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "eligibility",
+      "version": "9b91c74b-3556-42f7-ad4b-fec8f3d97bd2",
+      "completed_at": "2026-10-14T01:32:22.941Z",
+      "bindings_and_schedules_preserved": true
+    }
+  ],
+  "verification": {
+    "final_public_api_checks": 29,
+    "final_us_map_checks": 32,
+    "uk_map_checks": 32,
+    "uk_map_as_of": "2026-10-14T06:37:43.329160+00:00",
+    "full_v3_tests_passed": 403,
+    "full_v3_tests_failed": 0,
+    "frontend_unit_tests_passed": 3,
+    "independence_files_checked": 87,
+    "certificate_bypass": false,
+    "synthetic_points": 0,
+    "messages_sent": 0,
+    "customer_provider_objects_created": 0
+  },
+  "performance": {
+    "scope": "six sequential anonymous reads, not a load benchmark",
+    "before": {
+      "as_of": "2026-10-14T01:23:55.527Z",
+      "scope": "six sequential anonymous reads, not a load benchmark",
+      "samples": [
+        {
+          "route": "/api/v3/home",
+          "status": 200,
+          "elapsed_ms": 11878,
+          "ok": true,
+          "rows": null,
+          "map_points": null
+        },
+        {
+          "route": "/api/v3/home",
+          "status": 200,
+          "elapsed_ms": 10950,
+          "ok": true,
+          "rows": null,
+          "map_points": null
+        },
+        {
+          "route": "/api/v3/home",
+          "status": 200,
+          "elapsed_ms": 10657,
+          "ok": true,
+          "rows": null,
+          "map_points": null
+        },
+        {
+          "route": "/api/v3/opportunities?market=US&page=1&page_size=25",
+          "status": 200,
+          "elapsed_ms": 8826,
+          "ok": true,
+          "rows": 25,
+          "map_points": 572
+        },
+        {
+          "route": "/api/v3/opportunities?market=US&page=1&page_size=25",
+          "status": 200,
+          "elapsed_ms": 14290,
+          "ok": true,
+          "rows": 25,
+          "map_points": 572
+        },
+        {
+          "route": "/api/v3/opportunities?market=US&page=1&page_size=25",
+          "status": 200,
+          "elapsed_ms": 9441,
+          "ok": true,
+          "rows": 25,
+          "map_points": 572
+        }
+      ]
+    },
+    "after": {
+      "as_of": "2026-10-14T01:34:04.823Z",
+      "scope": "six sequential anonymous reads, not a load benchmark",
+      "samples": [
+        {
+          "route": "/api/v3/home",
+          "status": 200,
+          "elapsed_ms": 3605,
+          "ok": true,
+          "rows": null,
+          "map_points": null
+        },
+        {
+          "route": "/api/v3/home",
+          "status": 200,
+          "elapsed_ms": 4169,
+          "ok": true,
+          "rows": null,
+          "map_points": null
+        },
+        {
+          "route": "/api/v3/home",
+          "status": 200,
+          "elapsed_ms": 3534,
+          "ok": true,
+          "rows": null,
+          "map_points": null
+        },
+        {
+          "route": "/api/v3/opportunities?market=US&page=1&page_size=25",
+          "status": 200,
+          "elapsed_ms": 2544,
+          "ok": true,
+          "rows": 25,
+          "map_points": 572
+        },
+        {
+          "route": "/api/v3/opportunities?market=US&page=1&page_size=25",
+          "status": 200,
+          "elapsed_ms": 3684,
+          "ok": true,
+          "rows": 25,
+          "map_points": 572
+        },
+        {
+          "route": "/api/v3/opportunities?market=US&page=1&page_size=25",
+          "status": 200,
+          "elapsed_ms": 3556,
+          "ok": true,
+          "rows": 25,
+          "map_points": 572
+        }
+      ]
+    },
+    "cross_request_proof_cache_added": false,
+    "source_expiry_extended": false
+  },
+  "resource_audit": {
+    "checked_at": "2026-10-14T06:37:34.128Z",
+    "shadow_workers_passed": 8,
+    "shadow_queues_passed": 8,
+    "source_publication_enabled": false,
+    "city_acquisition_enabled": false
+  },
+  "structured_delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "expected_discovery_interval_seconds": 10800,
+    "expected_export_lag_seconds": 3600,
+    "last_authenticated_recheck_poll": "2026-10-14T06:33:57.260Z",
+    "recent_poll_intervals_seconds": [
+      913.852,
+      951.421,
+      1354.275
+    ],
+    "host_recently_contacting": true,
+    "cadence_verified": true,
+    "freshness_warning": false,
+    "last_new_receipt_at": "2026-10-14T05:46:55.780Z",
+    "source_last_checked": "2026-10-14T05:35:32Z"
+  },
+  "rechecks": {
+    "pending_entities": 589,
+    "fresh_evidence_ack_eligible": 0,
+    "acknowledged_last_24h": 2164,
+    "latest_acknowledgement": "2026-10-14T06:03:42.931Z"
+  },
+  "core_jobs": {
+    "as_of": "2026-10-14T06:40:34.394Z",
+    "policy": {
+      "manual_paused": 1,
+      "daily_query_limit": 25
+    },
+    "core_jobs": []
+  },
+  "paid": {
+    "day": "2026-10-14",
+    "as_of": "2026-10-14T06:38:20.271Z",
+    "queries_attempted": 0,
+    "queries_reserved": 0,
+    "bulk_enabled": false,
+    "commercial_manually_paused": true,
+    "commercial_daily_limit": 25,
+    "global_limits": {
+      "queries_per_run": 4,
+      "queries_per_hour": 100,
+      "queries_per_day": 1000,
+      "credits_per_run": 4,
+      "credits_per_hour": 100,
+      "credits_per_day": 1000
+    },
+    "lifetime_v3_queries": 29
+  },
+  "source_customer_projection_rows": 0,
+  "source_publication_queue_rows": 0,
+  "free_pro_candidate_activated": false,
+  "genuine_owned_live_billing_acceptance": "pending; independent of runtime/browser/configuration proof"
+}

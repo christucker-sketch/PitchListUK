@@ -1,5 +1,27 @@
 # FindPitches V3 current shared status
 
+## Latest verified checkpoint — 14 October 2026
+
+Published by Codex. [Full report](../docs/findpitches-v3-us-learning-map-readiness-2026-10-14.md) · [Machine-readable runtime evidence](../operations/findpitches-v3/reports/us-runtime-readiness-2026-10-14.json) · [Source handoff](CODEX_US_SOURCE_SCORECARD.md). This section supersedes the older snapshots below; measurements have their own times.
+
+| Area | Verified state |
+| --- | --- |
+| Customer-ready inventory, 07:38 London | **1,894**: US1,722 / GB162 / NZ5 / AU4 / CA1. Application opportunities, not necessarily distinct festivals |
+| Settled US growth programme, 02:17 London | Original1,670 →1,720: **68 gains −18 withheld = net50**; exact US event groups1,035 →1,037. Later US2/AU2 additions are not attributed to this campaign. The 1,770 first target remains open |
+| US map, current proof at 07:38 London | **571/1,722 mapped (33.16%)**, 132 coordinate positions /31 states; honest exact-address interpolation, no city/state-centre pins. Coverage-run snapshot was572/1,720; current proof controls display |
+| UK map | **123/162 mapped at12 source-proved positions**,39 unpinned; desktop/mobile rechecked07:37 London |
+| Frontend and billing runtime | Public browsing, account recovery and existing LIVE Checkout **enabled**. Customer version `a1d4515a-c176-4b7e-a294-fd6517e1d4c8`; routes/DNS/native secrets and bindings preserved |
+| Performance | Six before/after anonymous data reads improved from **8.8–14.3s to2.5–4.2s**; not a load benchmark. No cross-request evidence cache or expiry extension |
+| Structured Pi producer, 07:38 London | Recent contact/cadence flag true, freshness warning false; last poll07:33, source check06:35 London.589 pending rechecks; acknowledgements are not READY proof |
+| Pipeline, 07:40 London | Core due/leased/dead reconcile/eligibility/enrichment/readiness jobs **0**; future WATCH schedule is separate |
+| Paid acquisition, 07:40 London | **Manually paused /bulk off /0 queries today**, lifetime V3 queries29. Commercial25/day ceiling and global4/run,100/hour,1,000/day retained; no US/global paid grant |
+| Validation | FullV3 **403/403**, frontend3, independence87/build/boundaries; final public API29/USmap32/UKmap32 pass; eight shadow workers/eight queues audited07:37 London |
+| Preservation, 02:36 London | 25,230 original receipts /218,939 facts /7,280 fixed identity tuples; **0 destructive mutations /0 silent identity changes /0 source customer or publication rows**. Protected PitchList/V2 unchanged |
+
+**Next work and ownership:** Codex retains V3-017 source growth and proof/runtime safeguards. Recent/parent source arms are stopped after poor yield; no blind replay or paid restart. Claude/Pi is asked to implement a measured official multi-event operator/calendar → trader-intake extraction lane, with venue/state/date/organiser evidence and expected yield before any install kit; no acknowledgement/install is assumed. ChatGPT/Chris still need to record the final Free/Pro identity rule before activating the tested candidate. Genuine owned LIVE Checkout → global Pro → Portal/cancellation acceptance remains a separate Chris/ChatGPT gate. Alerts, legacy subscriber migration, UKCF OptionB, destructive infrastructure work and protected/live merges remain closed.
+
+## Earlier checkpoints
+
 **D-019 free-growth checkpoint — Codex, 2026-10-13T19:44:00+01:00:** [Measured result](../docs/findpitches-v3-free-source-growth-2026-10-13.md): **1,820→1,840 customer-eligible READY,+20** (US+19 to1,670; CA+1; GB162/NZ5/AU2 unchanged), no loss. Exact event groups1,194→1,204,+10; no twenty-new-events claim. 48checks/48reservations, Eventeny20/30READY, LocalStalls0/18, **0additionalSerper**. Acquisition paused on unchanged40-job backlog guard during normal WATCH verification burst; queue is not claimed settled. Enrichment consumer1→3; current negative source receipts now retain their original clocks without repeat delivery fetch. Full387/growth30/delivery7 pass; only shadow enrichment versionac6378dd-3e41-4082-8028-e3da73a3ca23, native bindings/secrets/schedules preserved. Original receipt/fact digests and fixed tuples0mutations/identitychanges/sourcepipelineleakage; public/customer/Checkout unchanged. V3-017 remainsCLAIMED toward thousands; this bounded stopped-run checkpoint is complete. NextD-020USmapping, with free acquisition still paused until normal queue health permits review; finalFree/Pro policy and ownedLIVE acceptance remain pending separately.
 
 
@@ -176,3 +198,12 @@ Preservation at 13:06:51: zero mutations/identity changes/customer projection/pu
 [Restricted preview acceptance](../docs/findpitches-v3-native-operational-checkpoint-2026-10-10.md): API39/39, browser30/30, zero foreign requests/TLS bypass. All-types/geography/distance and actual eligibility CTA repairs deployed; unknown source types remain unknown. Full225, final focused26/frontend3 pass. Catalogue API median4.1s/p95 5.055s, browser4.2–20.2s under proxy/interception remain a performance concern. [19:21 preservation](../operations/findpitches-v3/reports/native-operational-preservation-2026-10-10.json) shows zero mutation/identity change/customer or publication rows/spend and unchanged protected UK Pitchlist/V2.
 
 [V3-001 checkpoint](../docs/findpitches-v3-lifecycle-final-cloud-2026-10-10.md) now proves all three fresh exact original-token acknowledgements and complete trace; three obsolete/replacement/edition resolutions still open, all withheld. [Real migration gate](../docs/findpitches-v3-live-migration-gate-2026-10-10.md) remains 57 canonical LIVE gaps/eight vendor exceptions. V3-004/005 remain DONE. ChatGPT can use these for V3-010; no launch, live billing/migration, publication or paid approval inferred.
+
+
+## 14 October Codex: source growth checkpoint and US maps delivered
+
+[Evidence/readiness](../docs/findpitches-v3-us-learning-map-readiness-2026-10-14.md). **01:17:48UTC:** customer-eligible1,890 (US1,720/GB162/NZ5/AU2/CA1); core queueclear, Pi cadence/recent contact verified. OriginalUS1,670→1,720 net50,68gains/18withheld; advisory exactUSgroups1,035→1,037,+2. +100target remains50away; current source arms stopped for new extraction/coverage hypothesis, not a paid restart. [Claude/Pi scorecard](CODEX_US_SOURCE_SCORECARD.md).
+
+**US map live:**572/1,720(33.26%),132coordinatepositions/141source-location strings,31states;200free Census coverage requests plus separate one-request canary/operator probe,0Serper. Honest address-range interpolation, immutable current-proof binding, no centre-point guesses. UK123opportunities/12venuepositions preserved. Public mapsUS32/UK32 and API/security/SEO29 pass closed and restored-LIVE. Existing public/Checkout/account recovery enabled; protected PitchList/V2/secrets/routes unchanged.
+
+Full403/frontend3/independence87/build/boundaries pass; final preservation01:36UTC25,230receipts/218,939facts/7,280fixedtuples,0source/identitymutations/sourcepipelineleakage. Paidmanualpause/bulkoff;14OctV3queries0/lifetime29 unchanged. FinalFree/Pro rule and ownedLIVEacceptance pending; tested review candidate prepared without activation. Processing-only performance release is complete; data samples improved8.8–14.3s→2.5–4.2s. The latest inventory/runtime section at the top supersedes this earlier snapshot.

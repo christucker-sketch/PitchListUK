@@ -34,9 +34,9 @@ export async function stagingCatalogue(db,{now=new Date().toISOString()}={}) {
     const r=current.get(p.entity_id),freshRoute=r?.ready&&usableRouteEligible(r.proof)&&['current','watch',null].includes(p.producer_channel)&&['READY','WATCH',null].includes(p.producer_export_readiness)&&(!p.source_last_checked||Date.parse(r.checked_at)>=Date.parse(p.source_last_checked));
     if(p.confidence_level==='LOW'||!freshRoute&&(p.producer_channel&&p.producer_channel!=='current'||p.producer_export_readiness&&p.producer_export_readiness!=='READY'))held.add(p.entity_id);
   }
-  const ready=rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready&&!held.has(r.id));
+  const evaluated=[...current.values()],ready=evaluated.filter(r=>r.commercial&&r.ready&&!held.has(r.id));
   return {schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now,publication_enabled:false,production_cutover_enabled:false,
-    shadow_ready:rows.map(r=>commercialEntity(r,now)).filter(r=>r.commercial&&r.ready).length,producer_policy_withheld:rows.filter(r=>held.has(r.id)).length,
+    shadow_ready:evaluated.filter(r=>r.commercial&&r.ready).length,producer_policy_withheld:rows.filter(r=>held.has(r.id)).length,
     items:ready.map(r=>({id:r.id,country:r.market,region:r.proof.facts.region_code??r.proof.address_coordinates?.source_address?.state??null,title:r.proof.facts.event_name,organiser:r.proof.facts.organiser,location:r.proof.facts.location,
       event_start:r.proof.facts.event_start,event_end:r.proof.facts.event_end,application_url:r.proof.facts.application_url,application_state:r.proof.facts.application_state,
       application_deadline:r.proof.facts.application_deadline??null,source_url:r.proof.event_source_url??r.proof.source_url??null,source_domain:r.domain,

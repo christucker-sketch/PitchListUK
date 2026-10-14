@@ -15,11 +15,13 @@ export function armScore(m) {
 export function allocateArms(total=50){if(!Number.isInteger(total)||total<1||total>100)throw Error('bounded_batch_1_to_100_required');const exploit=Math.floor(total*.7);return {exploit,explore:total-exploit};}
 export function rankArms(experiments) {
  const metrics=new Map();for(const experiment of experiments)for(const arm of experiment.arms){
-  const prior=metrics.get(arm.arm)??{arm:arm.arm,candidates:0,source_requests_observed:0,net_new_ready:0,new_organisers:0,new_venue_strings:0,new_states:0,duplicates:0,blocked:0,zero_batches:0};
+  const prior=metrics.get(arm.arm)??{arm:arm.arm,candidates:0,source_requests_observed:0,net_new_ready:0,new_organisers:0,new_venue_strings:0,new_states:0,duplicates:0,blocked:0,zero_batches:0,low_yield_streak:0,empty_extraction_streak:0};
   for(const key of ['candidates','source_requests_observed','net_new_ready','new_organisers','new_venue_strings','new_states','duplicates','blocked'])prior[key]+=arm[key]??0;
-  if(arm.checked>=20&&!arm.net_new_ready)prior.zero_batches++;metrics.set(arm.arm,prior);
+  if(arm.checked>=20){if(!arm.net_new_ready)prior.zero_batches++;prior.low_yield_streak=arm.net_new_ready/arm.checked<.1?prior.low_yield_streak+1:0;}
+  if(arm.source_requests_observed>0&&arm.checked===0)prior.empty_extraction_streak=!arm.net_new_ready?prior.empty_extraction_streak+1:0;
+  metrics.set(arm.arm,prior);
  }
- return [...metrics.values()].map(m=>({...m,score:armScore(m),paused:m.zero_batches>=2})).sort((a,b)=>b.score-a.score||a.arm.localeCompare(b.arm));
+ return [...metrics.values()].map(m=>({...m,score:armScore(m),paused:m.low_yield_streak>=2||m.empty_extraction_streak>=2})).sort((a,b)=>b.score-a.score||a.arm.localeCompare(b.arm));
 }
 export async function recordExperiment(db,record) {
  const id='doc_'+(await hash(['us_source_experiment',record.experiment_id,record.phase])).slice(0,40),text=stableJson(record),digest=await hash(text);
@@ -43,7 +45,9 @@ export async function runUSScale({credentialsFile,stateDirectory,outDirectory,se
  const experiments=[...prior],visitedSeeds=new Set(prior.length?seeds:[]),visitedParents=new Set(),attributed=new Set(start.items.filter(r=>r.country==='US'&&!baselineIDs.has(r.id)).map(r=>r.id)),knownOrg=new Set(start.items.map(r=>r.organiser)),knownVenue=new Set(start.items.map(r=>r.location)),knownStates=new Set(start.items.map(r=>sourceUSState(r.region)).filter(Boolean));let stop='bounded_batches_complete';
  for(let batch=0;batch<maxBatches;batch++) {
   if(await healthy(c.db)>40){stop='verification_backlog';break;}
-  const ranking=rankArms(experiments),winner=ranking.find(r=>!r.paused&&r.net_new_ready>0&&['eventeny_recent_applications','event_platform_parent_exploration'].includes(r.arm))?.arm??'eventeny_recent_applications';
+  const ranking=rankArms(experiments),repeatable=ranking.filter(r=>['eventeny_recent_applications','event_platform_parent_exploration'].includes(r.arm));
+  if(repeatable.length&&repeatable.every(r=>r.paused)){stop='source_arms_paused_require_new_hypothesis';break;}
+  const winner=repeatable.find(r=>!r.paused&&r.net_new_ready>0)?.arm??'eventeny_recent_applications';
   const run=await c.call('enrichment','/catalogue/start',{max_candidates:50}),experimentId='us_scale_'+run.id,allocation={...allocateArms(),exploit_arm:winner,previous_scorecard:ranking};
   const started={document_kind:'us_source_experiment',experiment_id:experimentId,phase:'started',recorded_at:new Date().toISOString(),run_id:run.id,target_market:'US',geography_is_target_only:true,
     allocation,maximum_candidates:50,maximum_source_requests_per_candidate:16,paid_queries:0,continuous_schedule_enabled:false,baseline_us_ready:baselineUS.length};
@@ -69,7 +73,7 @@ export async function runUSScale({credentialsFile,stateDirectory,outDirectory,se
    // A source arm with no links is not repeated without a new hypothesis.
    // Use the remaining exploration slots on a different public source path:
    // parent event pages expose sibling vendor forms, then each leaf is proved.
-   if(explore.length<explorationLimit&&reason==='bounded_batch_complete'){
+   if(explore.length<explorationLimit&&reason==='bounded_batch_complete'&&!ranking.find(r=>r.arm==='event_platform_parent_exploration')?.paused){
     const index=await c.call('enrichment','/catalogue/discover',{run_id:run.id,url:'https://www.eventeny.com/sitemap/events.xml',offset:batch*500,limit:500});pages.push({arm:'event_platform_parent_exploration',...index});
     // URL year text is discovery priority only; the leaf independently proves
     // actual current dates, country and trader route before import.

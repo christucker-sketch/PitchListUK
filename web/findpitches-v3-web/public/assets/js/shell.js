@@ -135,6 +135,11 @@
   /* ---------- opportunity card ---------- */
   // mode 'link' → title links to the full page; mode 'quick' → same link, but the page may intercept for a quick view.
   function card(o, opts = {}) {
+    // Prepared for the product-policy review. Current production responses
+    // never set identity_locked; activation belongs to the server rule.
+    if(o.identity_locked){const month=o.dates?.month?fmt(o.dates.month+'-15',o.market,{month:'long',year:'numeric'}):'Date proof available on Pro';
+      return `<article class="ocard identity-locked" data-id="${esc(o.id)}"><div class="oc-main"><h3>Verified opportunity</h3><p class="oc-where">${esc(o.location.label)} · ${esc(month)}</p><p class="oc-meta">${esc(o.application.label||o.application.status||'Current opportunity')}</p></div><div class="oc-side"><a class="btn btn-turf btn-sm" href="pricing.html">Unlock details with Pro</a></div></article>`;
+    }
     const cc = o.market, sp = o.type === 'sport', f = freshness(o, cc), on = state.saved.has(o.id), st = appStatus(o, cc);
     let dt;
     if (o.dates && o.dates.start) { const d = new Date(o.dates.start + 'T12:00:00Z'); dt = `<div class="date ${sp ? 'sport' : ''}" aria-hidden="true"><b>${d.getUTCDate()}</b><span>${fmt(o.dates.start, cc, { month: 'short' })}${o.dates.start.slice(0, 4) !== TODAY.slice(0, 4) ? ' ’' + o.dates.start.slice(2, 4) : ''}</span></div>`; }

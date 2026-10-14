@@ -47,3 +47,9 @@ test('an explicit source deadline time survives until its real closing instant w
  const proof=await recordVerification(db,entity.id,doc,{now});assert.equal(proof.report.application_close_at,'2026-10-06T18:00:00.000Z');const row=await sql(db,'SELECT checked_at,expires_at FROM source_verifications WHERE id=?',proof.verification_id).first();
  assert.equal(row.checked_at,now);assert.equal(row.expires_at,'2026-10-06T18:00:00.000Z');assert.ok(verifyDocument(doc,{now:'2026-10-06T18:00:00.000Z'}).reasons.includes('application_deadline_passed'));
 });
+test('two poor settled cohorts pause an arm despite historic success, and a genuine better cohort resets the streak',()=>{
+ const arm=(ready)=>({arm:'recent',checked:35,candidates:500,source_requests_observed:100,net_new_ready:ready});
+ assert.equal(rankArms([{arms:[arm(30)]},{arms:[arm(1)]},{arms:[arm(0)]}])[0].paused,true);
+ assert.equal(rankArms([{arms:[arm(1)]},{arms:[arm(20)]},{arms:[arm(0)]}])[0].paused,false);
+ const empty={arm:'parent',checked:0,candidates:0,source_requests_observed:6,net_new_ready:0};assert.equal(rankArms([{arms:[empty]},{arms:[empty]}])[0].paused,true);
+});

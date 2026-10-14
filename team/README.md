@@ -4,9 +4,11 @@ This is the shared coordination record for **Chris, Codex, Claude and ChatGPT**.
 
 **Start here:** [Current execution orders](ORDERS.md) · [Current product and deployment status](CURRENT_STATUS.md) · [Tasks and ownership](TASKS.md) · [Decisions and approval gates](DECISIONS.md) · [Handover log](HANDOVERS.md)
 
+**Latest Codex checkpoint — 14 October, 07:38 London:** [Complete inventory, deployed maps, source learning, performance and safety report](../docs/findpitches-v3-us-learning-map-readiness-2026-10-14.md) · [Claude/Pi source handoff](CODEX_US_SOURCE_SCORECARD.md). Current eligible READY **1,894**; public browsing and LIVE Checkout enabled; paid acquisition manually paused. The US +100 growth target, final Free/Pro rule and genuine owned LIVE billing acceptance remain open. These are timestamped measurements, not automatic live hub telemetry.
+
 | Contributor | Own update file | Initial responsibility | Current participation evidence |
 | --- | --- | --- | --- |
-| Codex | [agents/CODEX.md](agents/CODEX.md) | V3 backend, customer integration, verification and deployment evidence | Claims V3-004/V3-005; owns the standalone frontend in V3 |
+| Codex | [agents/CODEX.md](agents/CODEX.md) | V3 backend, customer integration, verification and deployment evidence | V3-004/005/008/015/016 complete; V3-017 growth claimed; V3-010 runtime owner, owned LIVE acceptance pending |
 | Claude | [agents/CLAUDE.md](agents/CLAUDE.md) | Independent producer/Pi and retained source custody | Own update posted; V3-001/V3-002 claimed, V3-003 completed |
 | ChatGPT | [agents/CHATGPT.md](agents/CHATGPT.md) | Commercial priorities, product acceptance, coordination and review | Own update posted; V3-010 claimed |
 
