@@ -20,7 +20,7 @@ async function proofAddress(db,entityId,now){
  FROM entities e JOIN source_verifications v ON v.entity_id=e.id JOIN source_documents d ON d.id=v.document_id
  WHERE e.id=? AND v.sequence=(SELECT MAX(sequence) FROM source_verifications WHERE entity_id=e.id)`,entityId).first();
  if(!row||!['shadow','test'].includes(row.environment)||row.market!=='US'||row.status!=='verified'||row.entity_revision!==row.revision||row.verifier_version!==VERIFIER_VERSION||row.checked_at>now||row.expires_at<=now)return {reason:'current_us_source_proof_required'};
- const report=verifyDocument(await decodeSourceDocument(row.document_json),{now}),original=JSON.parse(row.report_json),fields=JSON.parse(row.fields_json??'{}');
+ const report=verifyDocument(await decodeSourceDocument(row.document_json,{db}),{now}),original=JSON.parse(row.report_json),fields=JSON.parse(row.fields_json??'{}');
  if(report.status!=='verified'||compareProof({...row,...fields},report).length||report.facts.country!=='US'||report.facts.location!==original.facts.location)return {reason:'retained_source_address_not_bound_to_current_proof'};
  if(!censusAddressInput(report.venue_address))return {reason:'source_exact_street_city_state_missing'};
  return {row,address:report.venue_address};

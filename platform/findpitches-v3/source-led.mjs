@@ -321,7 +321,7 @@ export async function verifySourceLedCandidate(db,candidateId,{fetcher=fetch,now
       await sql(db,'UPDATE serper_usage SET candidates_imported=candidates_imported+1 WHERE id=?',c.usage_id).run();
     } else if(f.country&&!withinQuota){status='out_of_market';reason='proved_country_outside_target_quota';}
     else if(report.status==='quarantine'){status='quarantine';reason=['social','editorial','directory'].includes(report.page_kind)?report.page_kind:reason;}
-    await sql(db,'UPDATE source_led_candidate_progress SET status=?,record_id=?,actual_country=?,document_json=?,report_json=?,reason=?,checked_at=?,lease_until=NULL WHERE candidate_id=?',status,recordId,f.country??null,await encodeSourceDocument(document),stableJson(report),reason,now,c.id).run();
+    await sql(db,'UPDATE source_led_candidate_progress SET status=?,record_id=?,actual_country=?,document_json=?,report_json=?,reason=?,checked_at=?,lease_until=NULL WHERE candidate_id=?',status,recordId,f.country??null,await encodeSourceDocument(document,{db}),stableJson(report),reason,now,c.id).run();
     return {candidate_id:c.id,status,record_id:recordId,actual_country:f.country??null,proof_status:report.status,reasons:report.reasons};
   } catch {
     await sql(db,"UPDATE source_led_candidate_progress SET status='failed',reason='verification_requires_review',checked_at=?,lease_until=NULL WHERE candidate_id=?",now,c.id).run();await stopSourceLed(db,c.programme_id,'verification_requires_review',now);throw Error('source_led_verification_requires_review');

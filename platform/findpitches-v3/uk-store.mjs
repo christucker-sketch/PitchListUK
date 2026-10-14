@@ -38,7 +38,7 @@ export async function startUKRun(db,{max_visits=100,max_candidates=300}={},now=n
   await sql(db,"INSERT INTO uk_source_runs(id,status,max_visits,max_candidates,created_at,expires_at) VALUES (?,'active',?,?,?,?)",run.id,max_visits,max_candidates,now,run.expires_at).run();
   return {...run,paid_queries:0,standing_scheduler_enabled:false};
 }
-async function retain(db,document) {const id='doc_'+(await hash(document)).slice(0,40);await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',id,document.requested_url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document)).run();return id;}
+async function retain(db,document) {const id='doc_'+(await hash(document)).slice(0,40);await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',id,document.requested_url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document,{db})).run();return id;}
 async function reserveVisit(db,runId,url,now) {
   await active(db,runId,now);
   // The reservation commits before the network request. Failed requests consume it.
@@ -109,7 +109,7 @@ export async function importUKCandidate(db,candidateId,{now=new Date().toISOStri
   if(!c)throw Error('uk_candidate_missing');if(c.status!=='pending')return {candidate_id:candidateId,status:c.status,entity_id:c.entity_id,replay:true};
   await active(db,c.run_id,now);
   const documentRow=await sql(db,'SELECT document_json FROM source_documents WHERE id=?',c.source_document_id).first();
-  const document={...await decodeSourceDocument(documentRow.document_json),source_identifier:c.source_identifier};
+  const document={...await decodeSourceDocument(documentRow.document_json,{db}),source_identifier:c.source_identifier};
   if(Date.parse(now)-Date.parse(document.fetched_at)>300000){await stopUKRun(db,c.run_id,'shared_source_proof_expired');throw Error('uk_shared_source_proof_expired');}
   const proof=verifyDocument(document,{now});
   if((proof.status!=='verified'&&!qualifiedVeganWatch(proof,now))||proof.facts.country!=='GB'){await sql(db,"UPDATE uk_source_progress SET status='held',reason=?,checked_at=? WHERE candidate_id=? AND status='pending'",proof.reasons.join(',')||'verified_gb_required',now,candidateId).run();return {candidate_id:candidateId,status:'held',reason:proof.reasons};}

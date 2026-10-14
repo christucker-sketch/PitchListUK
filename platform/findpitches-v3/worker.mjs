@@ -1,3 +1,6 @@
+import {bindEvidenceArchive} from './evidence-archive.mjs';
+import {capacityStatus,guardSourceCapacity} from './storage-capacity.mjs';
+import {archiveHistoricalDocuments,restoreArchivedDocument} from './storage-migration.mjs';
 import {commercialStatus} from './commercial.mjs';
 import {startVenueMap,resolveVenueAddress,stopVenueMap} from './address-coordinate-store.mjs';
 import {startUKRun,discoverUKSource,importUKCandidate,stopUKRun,ukSourceStatus} from './uk-store.mjs';
@@ -76,7 +79,7 @@ export async function status(db,{role='api',now=new Date().toISOString()}={}) {
     inventory:{shadow_ready:commercial.totals.ready,customer_visible_ready:0},publication_enabled:false,controlled_subscriber_testing_ready:false,
     legacy_dependencies:{normal_data_runtime:[],optional_operator_reference_probe:['live_uk_catalogue_audit']},
     interpretation:'Build 4 is owned by V3 and the native customer service is separate. Consult its restricted /preview/status for deployed auth/billing/inventory health. No public/customer publication or subscriber migration is enabled.'};
-  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),free_source_discovery:await catalogueStatus(db),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial,customer_application:customerApplication};
+  return {service:'findpitches-v3',role,mode:'shadow',publication_enabled:false,now,producers,jobs,entities,readiness,gates,throughput,...leases[0],...conflicts[0],...cost[0],...leakage[0],serper:await serperStatus(db,now),source_led_programme:await sourceLedStatus(db,now),free_source_discovery:await catalogueStatus(db),legacy_recovery:await legacyRecoveryStatus(db),structured_delivery:await structuredDeliveryStatus(db,now),controlled_pilot:await pilotStatus(db,now),source_verification:await verificationStatus(db,now),commercial,customer_application:customerApplication,storage_capacity:await capacityStatus(db)};
 }
 export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
   if(!stage||!queue)return;
@@ -91,6 +94,8 @@ export async function wakeStage(env,stage,queue=env.NEXT_QUEUE) {
 }
 async function tick(env,{jobId=null,limit=10}={}) {
   const stage=env.V3_ROLE;if(!STAGES.includes(stage))throw new Error('stage_worker_required');
+  bindEvidenceArchive(env.FINDPITCHES_V3_DB,env.V3_EVIDENCE_BUCKET,{writeEnabled:env.V3_ARCHIVE_WRITES_ENABLED==='true'});
+  if(env.V3_CAPACITY_GUARD_ENABLED==='true'&&['enrichment','acquisition'].includes(stage)){try{await guardSourceCapacity(env.FINDPITCHES_V3_DB);}catch(e){if(e.message.startsWith('source_storage_'))return [];throw e;}}
   // Candidate loading and source-field selection are bounded per record, but costly
   // across many records in one invocation. Reconciliation uses one queue message.
   if(['reconcile','acquisition','enrichment'].includes(stage))limit=1;
@@ -113,6 +118,7 @@ export default {
     const url=new URL(request.url),path=url.pathname,role=env.V3_ROLE,db=env.FINDPITCHES_V3_DB;
     if(path==='/v1/opportunities')return json({error:'publication_disabled'},403);
     if(!db)return json({error:'v3_database_unavailable'},503);
+    bindEvidenceArchive(db,env.V3_EVIDENCE_BUCKET,{writeEnabled:env.V3_ARCHIVE_WRITES_ENABLED==='true'});
     try {
       if(request.method==='GET'&&path==='/health') { await sql(db,'SELECT publication_enabled FROM runtime_policy WHERE id=1').first();return json({service:'findpitches-v3',role,ok:true,mode:'shadow',publication_enabled:false}); }
       if(request.method==='GET'&&path==='/status')return json(await status(db,{role}));
@@ -124,6 +130,10 @@ export default {
       }
       const ingest=path==='/imports'||path==='/rechecks'||path==='/rechecks/ack';
       if(!await authorized(request,ingest?env.V3_INGEST_TOKEN:env.V3_OPERATOR_TOKEN))return json({error:'authorization_required'},401);
+      if(request.method==='POST'&&path==='/storage/archive'&&role==='api')return json(await archiveHistoricalDocuments(db,(await bodyJson(request)).document_ids));
+      if(request.method==='POST'&&path==='/storage/restore'&&role==='api')return json(await restoreArchivedDocument(db,(await bodyJson(request)).document_id));
+      if(request.method==='GET'&&path==='/storage/status'&&role==='api')return json(await capacityStatus(db));
+      if(request.method==='POST'&&env.V3_CAPACITY_GUARD_ENABLED==='true'&&(/\/(?:imports|import|verify|replay|discover|start|proposals)$/.test(path)))await guardSourceCapacity(db);
       if(request.method==='GET'&&path==='/commercial'&&role==='api')return json(await commercialStatus(db));
       if(request.method==='POST'&&path==='/lifecycle/repair'&&role==='reconcile') {
         const result=await repairLifecycleObservations(db,(await bodyJson(request)).entity_id);
@@ -271,6 +281,7 @@ export default {
       }
       return json({error:'route_not_found'},404);
     } catch(error) {
+      if(['source_storage_protective_pause','source_storage_capacity_unknown'].includes(error.message))return Response.json({error:error.message,retryable:true,accepted:0},{status:503,headers:{'Cache-Control':'no-store','Retry-After':'900'}});
       const known=/^[a-z][a-z0-9_:\-]+$/.test(error.message)?error.message:'request_failed';
       return json({error:known,diagnostic_code:safeFailureCode(error)},known==='request_size_limit'?413:400);
     }

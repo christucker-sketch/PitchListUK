@@ -125,7 +125,7 @@ export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500,by
     const access=await publicRobotsAllowed(url,{fetcher:observedFetcher});
     if(!access.allowed)return {run_id,reason:access.reason,routes:0,catalogues:[],candidates:[],source_requests_observed:requests.length};
     document=await fetchSourceDocument(url,{fetcher:observedFetcher,now});links={catalogues:[],routes:operatorPageLinks(document)};
-    await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)','doc_'+(await hash(document)).slice(0,40),url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document)).run();
+    await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)','doc_'+(await hash(document)).slice(0,40),url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document,{db})).run();
   }
   else throw Error('approved_public_catalogue_or_event_detail_required');
   if(document.reason)return {run_id,reason:document.reason,routes:0,catalogues:[],candidates:[],source_requests_observed:requests.length};
@@ -180,7 +180,7 @@ export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now
     const fetchMetrics={source_requests_observed:requestAudit.length,source_successful_responses:requestAudit.filter(r=>r.http_status>=200&&r.http_status<300).length};
     if(requestBudgetReached){report.status='partial';report.reasons.push('catalogue_candidate_source_request_limit');}
     checkpoint='document_retention';
-    await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,c.url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document)).run();
+    await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,c.url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document,{db})).run();
     if(report.status!=='verified'||!SUPPORTED_MARKETS.includes(report.facts.country)||targetMarket&&report.facts.country!==targetMarket) {
       const reason=targetMarket&&report.facts.country&&report.facts.country!==targetMarket?'verified_country_outside_operator_scope':report.reasons.join(',')||'supported_verified_country_required';
       await sql(db,"UPDATE catalogue_progress SET status='held',reason=?,document_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",reason,documentId,now,candidateId).run();

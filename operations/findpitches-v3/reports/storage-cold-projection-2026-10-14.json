@@ -1,0 +1,42 @@
+{
+  "as_of": "2026-10-14T14:48:57.154Z",
+  "latest_documents": 7276,
+  "latest_document_payload_bytes": 1816731495,
+  "total_profile_document_payload_bytes": 7903697676,
+  "historical_or_discovery_payload_bytes": 6086966181,
+  "document_counts_by_source_day": [
+    {
+      "day": "2026-10-07",
+      "documents": 2388
+    },
+    {
+      "day": "2026-10-08",
+      "documents": 10227
+    },
+    {
+      "day": "2026-10-09",
+      "documents": 3174
+    },
+    {
+      "day": "2026-10-10",
+      "documents": 3268
+    },
+    {
+      "day": "2026-10-11",
+      "documents": 3360
+    },
+    {
+      "day": "2026-10-12",
+      "documents": 3529
+    },
+    {
+      "day": "2026-10-13",
+      "documents": 8203
+    },
+    {
+      "day": "2026-10-14",
+      "documents": 3146
+    }
+  ],
+  "scope": "latest proof membership measured after logical profile; concurrent inserts may cause small differences"
+}
