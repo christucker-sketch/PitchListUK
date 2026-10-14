@@ -1,0 +1,9 @@
+{
+  "as_of": "2026-10-14T15:40:25.452Z",
+  "documents": 8180,
+  "archived_payload_bytes": 1669351978,
+  "current_native_file_size_bytes": 8009269248,
+  "completed": false,
+  "error": null,
+  "scope": "Migration in progress; counters are operator checkpoints. Final native archive receipts will be authoritative."
+}
