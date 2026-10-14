@@ -1027,3 +1027,24 @@ def test_loss_report_buckets(tmp_path):
     assert r["route_candidate_awaiting_review (D-018)"] == 1
     assert out["stage4_export_totals"] == {"held": 1, "watch": 3}
     assert "example" not in json.dumps(out)  # counts only: no URLs, hosts or names leak
+
+
+# ---------------------------------------------------------------- date-prefixed edition titles
+@pytest.mark.parametrize("name,start,end,want", [
+    ("November 14, 2026 Bulverde Market Day", "2026-11-14", None, "ok"),
+    ("October 31st, 2026 KIDS ONLY Bulverde Market Day", "2026-10-31", "2026-10-31", "ok"),
+    ("December 5 Katy Nutcracker Exchange", "2026-12-05", None, "ok"),
+    ("November 5th Wendell Market", "2026-11-05", None, "ok"),
+    # "3rd Coast Market Days" on another date: the title's date disagrees -> held, never re-dated or renamed
+    ("December 3rd Coast Market Days - Aransas Pass", "2026-12-05", None, "date_conflict"),
+    ("December 3rd Coast Market Days - Aransas Pass", "2026-12-03", None, "ok"),
+    ("September 12th, 2026 Bulverde Market Day", "2026-11-14", None, "date_conflict"),
+    ("November 14, 2026 Bulverde Market Day", None, None, "date_conflict"),   # nothing to verify against
+    ("Oct. 29-Nov. 15th, 2026", "2026-10-29", "2026-11-15", "bare_date"),
+    ("Jan 3 2027", "2027-01-03", None, "bare_date"),
+    ("Riverside Food Festival", "2026-07-04", None, None),
+    ("May Day Fair", "2026-05-04", None, None),   # 'May' + word, no digit: not a date prefix
+])
+def test_date_prefixed_names(name, start, end, want):
+    from fpd.integration.records import date_prefixed_name
+    assert date_prefixed_name(name, start, end) == want

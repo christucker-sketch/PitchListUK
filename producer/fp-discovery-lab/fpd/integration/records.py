@@ -36,8 +36,40 @@ _REV = {
 JUNK_NAME = re.compile(
     r"^(?:google\s+(?:docs|forms?)|untitled(?:\s+form)?|home(?:page)?|welcome|vendors?|vendor\s+(?:application|info\w*)|"
     r"apply(?:\s+now)?|application\s+form|events?|markets?|participate|get\s+involved|form|forms|what'?s\s+on|"
-    r"[\w.-]+\.(?:com|org|net|co\.uk|org\.uk|ca|com\.au|co\.nz|ie)|"
-    r"(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d.*)$", re.I)
+    r"[\w.-]+\.(?:com|org|net|co\.uk|org\.uk|ca|com\.au|co\.nz|ie))$", re.I)
+# Organisers often title each dated edition "November 14, 2026 Bulverde Market Day". The source's own title is kept
+# verbatim; it is usable only if real words follow the date AND that date agrees with the record's own event dates.
+# A bare date ("Oct. 29-Nov. 15th, 2026") is not a name.
+_MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+DATE_PREFIX = re.compile(r"^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b"
+                         r"(?:,?\s+(\d{4})\b)?[\s,:\-–—]*(.*)$", re.I | re.S)
+_WORD = re.compile(r"\b[A-Za-z][A-Za-z'’]+\b")
+_MONTH_WORD = re.compile(r"^(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|"
+                         r"sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|st|nd|rd|th)$", re.I)
+
+
+def date_prefixed_name(name: str, start: str | None, end: str | None) -> str | None:
+    """None if the name does not start with a date; else 'ok', 'bare_date' or 'date_conflict'."""
+    m = DATE_PREFIX.match(name.strip())
+    if not m:
+        return None
+    words = [w for w in _WORD.findall(m.group(4)) if not _MONTH_WORD.match(w)]
+    if len(words) < 2:
+        return "bare_date"
+    try:
+        start_d = dt.date.fromisoformat(start) if start else None
+        end_d = dt.date.fromisoformat(end) if end else start_d
+    except ValueError:
+        return "date_conflict"
+    if not start_d:
+        return "date_conflict"
+    year = int(m.group(3)) if m.group(3) else None
+    try:
+        named = [dt.date(year or y, _MONTHS.index(m.group(1).lower()) + 1, int(m.group(2)))
+                 for y in sorted({start_d.year, end_d.year})]
+    except ValueError:
+        return "date_conflict"
+    return "ok" if any(start_d <= d <= end_d for d in named) else "date_conflict"
 COUNCIL_ONLY = re.compile(r"^(?:[\w'’\- ]+ )?(?:city|county|district|borough|town|shire|regional|metropolitan)?\s*"
                           r"(?:council|shire|municipality)$", re.I)
 # "City of Kingston", "Shire of Kondinin", "Town of X", "Borough of Y": an authority's name, not an event.
@@ -454,8 +486,11 @@ def _gate(rec: dict, o: dict, today: dt.date, hint_only: bool, conflicts: list, 
     if conflicts:
         issues.append("geography_conflict: " + "; ".join(sorted(set(conflicts)))[:200])
     name = rec["event_name"]
-    if len(name) < 3 or JUNK_NAME.match(name.strip()) or name == "(unnamed)":
+    dated = date_prefixed_name(name, rec["event_start"], rec["event_end"])
+    if len(name) < 3 or JUNK_NAME.match(name.strip()) or name == "(unnamed)" or dated == "bare_date":
         issues.append("event_name_not_usable")
+    elif dated == "date_conflict":
+        issues.append("event_name_date_conflict (date in the title does not match the event dates)")
     elif COUNCIL_ONLY.match(name.strip()) or (AUTHORITY_ONLY.match(name.strip()) and not _EVENTISH.search(name)):
         issues.append("event_name_is_organiser_only")
     if rec["discovery_source"] in SUSPENDED_LANES:

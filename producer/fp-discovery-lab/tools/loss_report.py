@@ -63,7 +63,7 @@ def held_bucket(issues: list[str]) -> str:
             return "geography_conflict"
         if i.startswith(("event_name_not_usable", "event_name_is_organiser_only")):
             return "identity_ambiguity"
-        if i.startswith("stale_contradiction"):
+        if i.startswith(("stale_contradiction", "event_name_date_conflict")):
             return "freshness_conflict"
         if i.startswith(("insecure_source_url", "insecure_application_url", "invalid_source_url")):
             return "unsafe_or_invalid_url"

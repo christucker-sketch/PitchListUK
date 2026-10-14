@@ -66,7 +66,7 @@ c9011bdc333f74c2601c454c6b11ec716ca922673ac62724b09f75cb403b8f75  ./fpd/geo.py
 b36d5157356da83a05dabaddb55f595620aa42c066322e7ccb0727dc4adf86f3  ./fpd/integration/__init__.py
 1d16b795126aee97c998e2ec5738ce4517679a27c10042bff65c178f75e60192  ./fpd/integration/exporter.py
 50dfb641648e3c559ede5de780306430d01b9190d131d6de6267ea91bb1c6960  ./fpd/integration/identity.py
-0243ba57f77d7c5b93b78df6e6cefd1822a1d5d9df34a601994a1fa75835f6ce  ./fpd/integration/records.py
+48ef3e7a585d3888d610bb80057147986eb564180c3021cb2407c727e73ffe1f  ./fpd/integration/records.py
 898fbce312f916fd51cd0f53c1f4f6ad0345939381fa961d8d806bb3d9780b68  ./fpd/integration/schema.py
 715bce0ad341f0ee940b58bb2ec36a2fce3f6fa0c5fbec59ebb9f92295a52381  ./fpd/integration/v3docs.py
 4851e692645ce2b8074ec25f356aea317e4b8e18b1480f8aa02724bd46ef8623  ./fpd/integration/v3feed.py
@@ -96,6 +96,6 @@ b0af7b1560c1b4a1ef4d343ec45bbc2a53c3b6eef3b4e0212ed836b2f59bc366  ./tests/fixtur
 cc399676b06024df2ce67471f6e5600f43f899f59668af16fe617df92827a4a5  ./tests/fixtures/marketsireland_notmanaged.html
 c56830c2261640f3b53ac4f3bf13315589e95ebcd08a3e77abefb130586b9d35  ./tests/fixtures/marketsireland_open.html
 89920decd67516718809bf63c785723a6a70399379b60f9e32be86c8b075ff63  ./tests/test_core.py
-a5386f1c48fef8871dc8d126addef6ca0276370358413ba63b96752e597dacb8  ./tests/test_integration.py
+c93f0722b96f5482597cf62be01e086d2c927e8e55269479c72bee4704befac8  ./tests/test_integration.py
 069e3b51f995cff59941559d5a50a6ad133e3dabd7a376c2cd8704b6c1474cae  ./tools/custody_fetch.py
-a2ae29fb15e6a1542ce2a6a7143bd48f530f49747fa8f0cefb6ac4e9ad53743a  ./tools/loss_report.py
+907f8439aa20d5702581025feb13e46a4a5519ea9dd69e9bef18209b9b2bd226  ./tools/loss_report.py
