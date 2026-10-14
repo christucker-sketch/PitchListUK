@@ -2,6 +2,8 @@
 
 ## Latest verified checkpoint — 14 October 2026
 
+**Map backlog batch01 complete,12:25London:** [evidence](../operations/findpitches-v3/reports/us-map-backlog-batch01-2026-10-14.json). US READY1,719; **845 mapped(49.16%)**,+270 from575,304 positions/38 states;250 free provider attempts/376 cache hits,874 remaining. US public32/32 passed; post-batch12:32London custody0mutations/drift/paid/PitchList/V2 changes. Dense circles can overlap at the national view; real-click/browser checks choose an exposed marker, with keyboard/filter access retained. Batch02 is separately bounded250;1,000 target still open, no customer runtime deployment or paid-search change.
+
 **11:54 London live status supersedes the 07:38 inventory/map rows below:** [midday evidence](../operations/findpitches-v3/reports/commercial-status-2026-10-14-midday.json). **1,888 eligible READY — US1,719 /GB160 /NZ5 /AU3 /CA1**. Six withdrawals and no additions relative to the morning snapshot: GB2 lack Hummingbird source-document binding/trader purpose; AU1 latest source HTTP404; US3 latest proof disagrees with selected event/location, organiser or date. All six withheld, no forced repair or original-fact mutation. Current US map575 opportunities/132 positions; UK123/12.
 
 At11:55 London, homepage200, global LIVE Checkout available, public US Finder1,719/575map points with2.851s data response. Core due/leased/dead reconciliation/eligibility/enrichment/readiness jobs0; Pi contact/cadence healthy, freshness warning false,769 rechecks pending. Paid manually paused/bulk off/0V3queries today/lifetime29; commercial25day ceiling retained. Source customer/publication rows0/0 and publication pipeline off. These are read-only checks, not new deployment/load/billing acceptance.

@@ -69,7 +69,10 @@ def main():
                 check(device+'_source_coordinates_inside_map',page.locator('#map').evaluate('(svg)=>{const b=svg.viewBox.baseVal;return [...svg.querySelectorAll(".pin")].every(p=>{const x=+p.getAttribute("cx"),y=+p.getAttribute("cy");return Number.isFinite(x)&&Number.isFinite(y)&&x>=b.x&&x<=b.x+b.width&&y>=b.y&&y<=b.y+b.height;});}'))
                 note=page.locator('#mapNote').inner_text();unpinned=data['total']-len(points)
                 check(device+'_honest_unpinned_count',not unpinned or str(unpinned) in note and ('no verified coordinates' in note or 'no verified map position' in note))
-                grouped=page.locator('#map .pin').evaluate_all('(els)=>els.filter(e=>e.dataset.ids.includes(",")).map(e=>e.dataset.id)')
+                # Dense real-address maps can have overlapping circles. Choose
+                # a group a customer can actually click, using native hit
+                # testing; retain the real click and every geometry/ID check.
+                grouped=page.locator('#map .pin').evaluate_all('(els)=>els.filter(e=>{if(!e.dataset.ids.includes(","))return false;const b=e.getBoundingClientRect(),hit=document.elementFromPoint(b.x+b.width/2,b.y+b.height/2);return hit===e;}).map(e=>e.dataset.id)')
                 check(device+'_grouped_dates_available',bool(grouped))
                 pin=page.locator('#map .pin[data-id="'+grouped[0]+'"]');pin.click()
                 choices=page.locator('#mapOpportunities');choices.wait_for(state='visible');values=choices.locator('option').evaluate_all('(els)=>els.map(e=>e.value)')
