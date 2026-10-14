@@ -8,6 +8,9 @@ import {reconcileIdentity,attachReviewedIdentityKeys} from '../../platform/findp
 import {trustedOfficialSourceReview} from '../../platform/findpitches-v3/evidence.mjs';
 import {CCA_ORIGIN,CCA_BOOKING,fetchCCAProgramme} from '../../platform/findpitches-v3/creative-crafts.mjs';
 import {verifyDocument} from '../../platform/findpitches-v3/verification.mjs';
+import {bindEvidenceArchive} from '../../platform/findpitches-v3/evidence-archive.mjs';
+import {archiveHistoricalDocuments} from '../../platform/findpitches-v3/storage-migration.mjs';
+import {archiveBucket} from './storage-fixture.mjs';
 
 const EVENT=CCA_ORIGIN+'/craft-events/26/Lowther-Gardens,-Lytham-St-Annes',NEXT=CCA_BOOKING+'Next-Step.asp',DIRECTIONS=CCA_ORIGIN+'/craft-event-directions/',GEO='https://api.postcodes.io/postcodes/FY85QQ';
 const OLD='https://www.ukcraftfairs.com/craft-events/26557/x',LATER='2026-10-06T13:00:00.000Z';
@@ -63,6 +66,16 @@ test('actual reviewed source custody upgrades a probable replay while retaining 
   assert.equal((await sql(f.db,'SELECT outcome FROM reconciliation_decisions WHERE record_id=?',f.candidateId).first()).outcome,'PROBABLE_MATCH');
   await assert.rejects(sql(f.db,"UPDATE producer_records SET raw_json='{}' WHERE id=?",f.reviewId).run(),/immutable/);
   await assert.rejects(sql(f.db,"UPDATE source_documents SET document_json='{}' WHERE id=?",f.documentId).run(),/immutable/);
+});
+
+test('archived official review retains exact supersession lineage and fails closed if the archive is missing',async t=>{
+ const f=await reviewedFixture(t,{oldAuthority100:true}),bucket=archiveBucket();bindEvidenceArchive(f.db,bucket);
+ const facts=(await sql(f.db,'SELECT * FROM source_facts ORDER BY id').all()).results;
+ await archiveHistoricalDocuments(f.db,[f.documentId],{now:LATER});
+ assert.ok(await trustedOfficialSourceReview(f.db,f.entity.id,{candidateRecordId:f.candidateId}));
+ const replay=await reconcileRecord(f.db,f.candidateId,{now:LATER});assert.equal(replay.outcome,'REVIEWED_MATCH');assert.equal(replay.entity_id,f.entity.id);assert.equal(replay.original_decision.outcome,'PROBABLE_MATCH');
+ assert.deepEqual((await sql(f.db,'SELECT * FROM source_facts ORDER BY id').all()).results,facts);
+ bucket.objects.clear();assert.equal(await trustedOfficialSourceReview(f.db,f.entity.id,{candidateRecordId:f.candidateId}),null);
 });
 
 test('100-authority source supersession requires the immutable exact old/new-fact ledger, not just a reserved receipt',async t=>{

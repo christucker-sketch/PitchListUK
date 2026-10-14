@@ -5,7 +5,7 @@ import {catalogueUrl,fetchCatalogueDocument,catalogueLinks,platformRoute,eventAp
 import {fetchSourceDocument,safeSourceUrl} from './source-document.mjs';
 import {publicRobotsAllowed} from './source-robots.mjs';
 import {fetchProofDocument} from './proof-document.mjs';
-import {encodeSourceDocument} from './document-custody.mjs';
+import {encodeSourceDocument,decodeSourceDocument} from './document-custody.mjs';
 import {verifyDocument,applicationScope,compareProof} from './verification.mjs';
 import {reconcileRecord,evaluateReadiness,runStage,enrichEntity} from './pipeline.mjs';
 import {recordVerification,verificationGate,verifyEntitySource} from './verification-store.mjs';
@@ -70,7 +70,7 @@ export async function adoptCommittedCatalogueReceipt(db,{candidate_id,review},no
   if(!receipt)throw Error('catalogue_committed_identity_custody_required');
   const input=JSON.parse(receipt.normalized_json),provenance=Array.isArray(input.provenance)?input.provenance[0]:input.provenance;
   const source=await sql(db,'SELECT document_json FROM source_documents WHERE id=?',provenance?.source_document_id??'').first(),entity=await loadEntity(db,receipt.entity_id);
-  if(!source||!entity||JSON.parse(source.document_json).requested_url!==c.url||input.canonical_url!==c.url||(entity.application_url??entity.canonical_url)!==c.url||provenance.catalogue_document_id!==c.source_document_id)throw Error('catalogue_committed_source_custody_required');
+  if(!source||!entity||(await decodeSourceDocument(source.document_json,{db})).requested_url!==c.url||input.canonical_url!==c.url||(entity.application_url??entity.canonical_url)!==c.url||provenance.catalogue_document_id!==c.source_document_id)throw Error('catalogue_committed_source_custody_required');
   const audit={document_kind:'catalogue_committed_receipt_adoption',candidate_id,record_id:receipt.id,entity_id:receipt.entity_id,document_id:provenance.source_document_id,review,adopted_at:now,source_refetches:0,reservations_refunded:0};
   const result=await db.batch([
     sql(db,"UPDATE catalogue_progress SET record_id=?,document_id=?,entity_id=? WHERE candidate_id=? AND status='failed' AND record_id IS NULL AND document_id IS NULL AND entity_id IS NULL RETURNING candidate_id",receipt.id,provenance.source_document_id,receipt.entity_id,candidate_id),
@@ -87,7 +87,7 @@ export async function settleCommittedCatalogueReceipt(db,candidateId,now=new Dat
     JOIN reconciliation_decisions i ON i.record_id=r.id AND i.entity_id=l.entity_id JOIN source_documents d ON d.id=?
     WHERE r.id=? AND r.producer_name='platform-catalogue' AND l.entity_id=?`,c.document_id,c.record_id,c.entity_id).first();
   const entity=await loadEntity(db,c.entity_id);
-  if(!custody||!entity||JSON.parse(custody.document_json).requested_url!==(entity.application_url??entity.canonical_url))throw Error('catalogue_committed_custody_requires_review');
+  if(!custody||!entity||(await decodeSourceDocument(custody.document_json,{db})).requested_url!==(entity.application_url??entity.canonical_url))throw Error('catalogue_committed_custody_requires_review');
   // This only completes custody accounting, including an expired/WATCH result.
   // The normal gate recomputes current readiness; no source visit, new proof,
   // identity decision or budget refund is manufactured by recovery.

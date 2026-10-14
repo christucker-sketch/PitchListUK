@@ -1,6 +1,7 @@
 import { AUTHORITIES,FIELDS,hash,stableJson,publicHttps,validFieldValue } from './contract.mjs';
 import { sql,loadEntity } from './store.mjs';
 import {verifyDocument} from './verification.mjs';
+import {decodeSourceDocument} from './document-custody.mjs';
 
 // These describe a producer delivery, rather than a change to participation.
 // Keep every observation as source evidence without replacing a durable
@@ -39,7 +40,7 @@ export async function trustedOfficialSourceReview(db,entityId,{candidateRecordId
       if(!candidate||candidate.environment!==entity.environment||candidate.market!==entity.market||!candidate.normalized_json)continue;
       const input=JSON.parse(candidate.normalized_json),documentRow=await sql(db,'SELECT * FROM source_documents WHERE id=?',raw.document_id).first();
       if(!documentRow)continue;
-      const document=JSON.parse(documentRow.document_json);
+      const document=await decodeSourceDocument(documentRow.document_json,{db});
       if(document.document_kind!=='cca_official_bundle'||document.source_identifier!==raw.reviewed_source_identifier
         ||document.requested_url!==raw.reviewed_canonical_url||document.url!==raw.reviewed_canonical_url
         ||documentRow.source_url!==raw.reviewed_canonical_url||documentRow.fetched_at!==document.fetched_at)continue;

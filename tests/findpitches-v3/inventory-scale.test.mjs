@@ -13,6 +13,8 @@ import {evaluateReadiness,drainPipeline} from '../../platform/findpitches-v3/pip
 import {enqueue} from '../../platform/findpitches-v3/jobs.mjs';
 import {catalogueAdmissionStop,catalogueFamilyPause,catalogueGrowthStop,completedCatalogueOutcome} from '../../operations/findpitches-v3/catalogue-growth.mjs';
 import {safeFailureCode} from '../../platform/findpitches-v3/worker.mjs';
+import {bindEvidenceArchive} from '../../platform/findpitches-v3/evidence-archive.mjs';
+import {archiveBucket} from './storage-fixture.mjs';
 const now='2026-10-07T15:00:00.000Z';
 test('free catalogue admission guards pause without retrying a candidate or masking custody failures',()=>{
   assert.equal(catalogueAdmissionStop('shadow_http_400_catalogue_verification_backlog'),'verification_backlog');
@@ -70,8 +72,11 @@ test('operator country targeting can withhold a proved foreign event but never b
  assert.equal(result.status,'held');assert.equal(result.reason,'verified_country_outside_operator_scope');assert.equal(result.source_country,'US');assert.equal((await sql(db,'SELECT COUNT(*) n FROM producer_records').first()).n,0);assert.equal((await sql(db,'SELECT COUNT(*) n FROM entities').first()).n,0);
 });
 test('lost committed reconciliation response adopts only source-bound immutable custody',async t=>{
+  // Every body is archive-backed before fault injection and custody recovery.
+  const archived=archiveBucket();
   const db=await configured(t),run=await startCatalogueRun(db,{max_candidates:2},NOW),doc=documentFixture();
   const page=await discoverCataloguePage(db,{run_id:run.id,url:'https://www.eventeny.com/sitemap/event_elements.xml'},{now:NOW,fetcher:async()=>new Response('<urlset><url><loc>'+doc.url+'</loc></url></urlset>')}),id=page.candidates[0].id;
+  bindEvidenceArchive(db,archived,{writeEnabled:true});
   const batch=db.batch;let lost=false;
   db.batch=async statements=>{const result=await batch(statements);if(!lost&&(await sql(db,'SELECT COUNT(*) AS n FROM reconciliation_decisions').first()).n){lost=true;throw Error('lost_committed_identity_response');}return result;};
   await assert.rejects(verifyCatalogueCandidate(db,id,{now:NOW,fetcher:async()=>new Response(doc.html,{headers:{'content-type':'text/html'}})}),/lost_committed_identity_response/);db.batch=batch;
@@ -176,6 +181,7 @@ test('an uncertain budget update cannot leave a claimed candidate stuck or refun
 });
 test('interrupted committed catalogue custody settles without fetching, renewing proof, changing identity or refunding budget',async t=>{
   const db=await configured(t),run=await startCatalogueRun(db,{max_candidates:1},NOW),doc=documentFixture();
+  bindEvidenceArchive(db,archiveBucket(),{writeEnabled:true});
   const discovery=await discoverCataloguePage(db,{run_id:run.id,url:'https://www.eventeny.com/sitemap/event_elements.xml'},{now:NOW,fetcher:async()=>new Response('<urlset><url><loc>'+doc.url+'</loc></url></urlset>')});
   const id=discovery.candidates[0].id,prepare=db.prepare;
   db.prepare=query=>{if(query.startsWith("UPDATE catalogue_progress SET status='imported'"))throw Error('simulated_final_receipt_failure');return prepare(query);};

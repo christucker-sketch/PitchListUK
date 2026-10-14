@@ -1,6 +1,6 @@
 import {hash,stableJson} from './contract.mjs';
 import {sql} from './store.mjs';
-import {decodeSourceDocument} from './document-custody.mjs';
+import {encodeSourceDocument,decodeSourceDocument} from './document-custody.mjs';
 import {verifyDocument,compareProof,VERIFIER_VERSION} from './verification.mjs';
 import {censusAddressInput,censusPosition,fetchCensusPosition,validAddressCoordinates} from './address-coordinates.mjs';
 
@@ -29,7 +29,7 @@ export async function attachCachedAddress(db,{entityId,verificationId,address,no
  const key=await addressKey(address);if(!key)return {attached:false,reason:'source_exact_street_city_state_missing'};
  const cache=await sql(db,"SELECT c.*,d.document_json FROM address_coordinate_cache c JOIN source_documents d ON d.id=c.document_id WHERE c.address_hash=? AND c.status='matched' ORDER BY c.created_at DESC,c.id LIMIT 1",key).first();
  if(!cache||Date.parse(cache.created_at)<Date.parse(now)-180*86400000)return {attached:false,reason:'no_current_exact_address_cache'};
- const {position,reason}=censusPosition(address,JSON.parse(cache.document_json));if(!position)return {attached:false,reason};
+ const {position,reason}=censusPosition(address,await decodeSourceDocument(cache.document_json,{db}));if(!position)return {attached:false,reason};
  const v=await sql(db,'SELECT v.*,e.revision FROM source_verifications v JOIN entities e ON e.id=v.entity_id WHERE v.id=? AND v.entity_id=? AND v.sequence=(SELECT MAX(sequence) FROM source_verifications WHERE entity_id=e.id)',verificationId,entityId).first();
  if(!v||v.entity_revision!==v.revision||v.status!=='verified'||v.checked_at>now||v.expires_at<=now||JSON.parse(v.report_json).facts.location!==address.location)return {attached:false,reason:'source_proof_changed_during_coordinate_resolution'};
  const value={...position,entity_id:entityId,entity_revision:v.entity_revision,verification_id:v.sequence,source_document_id:v.document_id,source_checked_at:v.checked_at,source_expires_at:v.expires_at,geocode_document_id:cache.document_id};
@@ -56,7 +56,7 @@ export async function resolveVenueAddress(db,{run_id,entity_id}={}, {fetcher=fet
  if(!fetched.document)throw Error('coordinate_receipt_required');
  const documentId='doc_'+(await hash(fetched.document)).slice(0,40),cacheId='geo_cache_'+(await hash([key,documentId])).slice(0,40);
  await db.batch([
-  sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,fetched.document.url,await hash(fetched.document.json_text??''),now,stableJson(fetched.document)),
+  sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,fetched.document.url,await hash(fetched.document.json_text??''),now,await encodeSourceDocument(fetched.document,{db})),
   sql(db,'INSERT OR IGNORE INTO address_coordinate_cache VALUES (?,?,?,?,?,?,?)',cacheId,key,documentId,fetched.position?'matched':'held',fetched.reason??null,fetched.position?stableJson(fetched.position):null,now),
  ]);
  if(!fetched.position){if(/census_http_(?:403|429|5\d\d)|fetch_failed/.test(fetched.reason))await stopVenueMap(db,run_id,fetched.reason);return finish({entity_id,status:'held',reason:fetched.reason,provider_requests:1});}

@@ -4,6 +4,7 @@ import {verifyDocument}from'../../platform/findpitches-v3/verification.mjs';impo
 import {censusAddressInput,censusPosition,fetchCensusPosition,CENSUS_ENDPOINT}from'../../platform/findpitches-v3/address-coordinates.mjs';
 import {startVenueMap,resolveVenueAddress}from'../../platform/findpitches-v3/address-coordinate-store.mjs';
 import {sql}from'../../platform/findpitches-v3/store.mjs';import {stagingCatalogue}from'../../platform/findpitches-v3/staging.mjs';import {mapProof,search}from'../../platform/findpitches-v3/customer-catalogue.mjs';
+import {bindEvidenceArchive}from'../../platform/findpitches-v3/evidence-archive.mjs';import {archiveBucket}from'./storage-fixture.mjs';
 const address={country:'US',location:'River Hall, 1 River Street, Austin, Texas',street:'1 River Street',city:'Austin',state:'TX',postal_code:null};
 function receipt(a=address){const u=new URL(CENSUS_ENDPOINT);u.search=new URLSearchParams({address:censusAddressInput(a).query,benchmark:'Public_AR_Current',format:'json'});return {url:u.href,requested_url:u.href,http_status:200,fetched_at:NOW,json_text:JSON.stringify({result:{addressMatches:[{matchedAddress:'1 RIVER ST, AUSTIN, TX',coordinates:{x:-97.74,y:30.27},addressComponents:{fromAddress:'1',toAddress:'99',streetName:'RIVER',suffixType:'ST',city:'AUSTIN',state:'TX',zip:'78701'},tigerLine:{tigerLineId:'123456',side:'L'}}]}})};}
 const fetcher=async()=>new Response(receipt().json_text,{status:200});
@@ -30,6 +31,17 @@ test('bounded mapping adds immutable provenance, idempotent cache and never exte
  const row=mapProof(item,NOW);assert.equal(row.location.precision,'address');assert.equal(search([row],{market:'US'},{tier:'free'},NOW).map_points.length,1);
  assert.notEqual(mapProof({...item,verification_id:v.sequence+1},NOW).location.precision,'address');assert.notEqual(mapProof({...item,location:'Somewhere else'},NOW).location.precision,'address');
  const document={...documentFixture(),fetched_at:'2026-10-06T13:00:00.000Z'};await recordVerification(db,id,document,{now:document.fetched_at});assert.equal((await sql(db,'SELECT COUNT(*) n FROM venue_address_coordinates').first()).n,2);
+});
+test('source renewal reuses an archive-backed coordinate receipt without a provider request or source-clock extension',async t=>{
+ const {db,id}=await entityProof(t),bucket=archiveBucket();bindEvidenceArchive(db,bucket,{writeEnabled:true});
+ const run=await startVenueMap(db,{max_requests:1},NOW);let requests=0;
+ await resolveVenueAddress(db,{run_id:run.id,entity_id:id},{now:NOW,clock:()=>NOW,fetcher:async()=>{requests++;return fetcher();}});
+ const cache=await sql(db,'SELECT d.document_json FROM address_coordinate_cache c JOIN source_documents d ON d.id=c.document_id').first(),pointer=JSON.parse(cache.document_json);assert.equal(pointer.document_kind,'r2_source_custody_v1');
+ const now='2026-10-06T13:00:00.000Z';await recordVerification(db,id,{...documentFixture(),fetched_at:now},{now});
+ assert.equal(requests,1);assert.equal((await sql(db,'SELECT COUNT(*) n FROM venue_address_coordinates').first()).n,2);
+ const proof=await sql(db,'SELECT checked_at,expires_at FROM source_verifications WHERE entity_id=? ORDER BY sequence DESC LIMIT 1',id).first();assert.equal(proof.checked_at,now);assert.equal(proof.expires_at,'2026-10-07T13:00:00.000Z');
+ bucket.objects.delete(pointer.key);const later='2026-10-06T14:00:00.000Z';await assert.rejects(recordVerification(db,id,{...documentFixture(),fetched_at:later},{now:later}),/evidence_missing/);
+ assert.equal((await sql(db,'SELECT COUNT(*) n FROM venue_address_coordinates').first()).n,2);assert.equal(requests,1);
 });
 test('provider refusal pauses without retries, fabricated points or refunded reservations',async t=>{
  const {db,id}=await entityProof(t),run=await startVenueMap(db,{max_requests:1},NOW);const r=await resolveVenueAddress(db,{run_id:run.id,entity_id:id},{now:NOW,clock:()=>NOW,fetcher:async()=>new Response('',{status:429})});

@@ -1,9 +1,10 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {database,seed,NOW} from './helpers.mjs';import {sql} from '../../platform/findpitches-v3/store.mjs';
+import {database,seed,NOW} from './helpers.mjs';import {sql,loadEntity} from '../../platform/findpitches-v3/store.mjs';
 import {bindEvidenceArchive,archiveSerializedDocument,readArchivedDocument} from '../../platform/findpitches-v3/evidence-archive.mjs';
 import {encodeSourceDocument,decodeSourceDocument} from '../../platform/findpitches-v3/document-custody.mjs';
 import {archiveHistoricalDocuments,restoreArchivedDocument} from '../../platform/findpitches-v3/storage-migration.mjs';
-import {recordVerification} from '../../platform/findpitches-v3/verification-store.mjs';
+import {recordVerification,verificationGate,reverifyRetainedSource} from '../../platform/findpitches-v3/verification-store.mjs';
+import {evaluateReadiness} from '../../platform/findpitches-v3/pipeline.mjs';
 import {documentFixture} from './verification-fixture.mjs';
 import worker from '../../platform/findpitches-v3/worker.mjs';
 import {capacityState,CAPACITY_STOP_BYTES} from '../../platform/findpitches-v3/storage-capacity.mjs';
@@ -33,6 +34,20 @@ test('historical archive/restore preserves document metadata, source facts and i
 test('capacity warnings/stop use native size and unknown measurements never permit source growth',()=>{
  for(const [size,state]of [[6999999999,'normal'],[7000000000,'warning'],[8000000000,'high'],[9000000000,'critical'],[CAPACITY_STOP_BYTES,'protective_stop']])assert.equal(capacityState(size).state,state);
  assert.equal(capacityState(CAPACITY_STOP_BYTES-1).source_growth_allowed,true);assert.equal(capacityState(CAPACITY_STOP_BYTES).source_growth_allowed,false);assert.equal(capacityState(undefined).source_growth_allowed,false);assert.equal(capacityState(NaN).available,false);
+});
+
+test('archive-backed current proof replays with its original clock and still expires or invalidates on revision change',async t=>{
+ const db=database(t),b=bucket(),{entity}=await seed(db);bindEvidenceArchive(db,b,{writeEnabled:true});
+ await recordVerification(db,entity.id,documentFixture(),{now:NOW});
+ const before=await sql(db,'SELECT checked_at,expires_at FROM source_verifications WHERE entity_id=?',entity.id).first(),facts=(await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results;
+ assert.equal((await evaluateReadiness(db,entity.id,{now:NOW})).status,'ready');
+ await reverifyRetainedSource(db,entity.id,{now:'2026-10-06T13:00:00.000Z'});
+ assert.deepEqual(await sql(db,'SELECT checked_at,expires_at FROM source_verifications WHERE entity_id=? ORDER BY sequence DESC LIMIT 1',entity.id).first(),before);
+ const current=await loadEntity(db,entity.id);assert.equal((await verificationGate(db,{...current,revision:current.revision+1},{now:NOW})).status,'unverified');
+ await assert.rejects(reverifyRetainedSource(db,entity.id,{now:before.expires_at}),/document_expired/);
+ assert.notEqual((await evaluateReadiness(db,entity.id,{now:before.expires_at})).status,'ready');
+ assert.deepEqual((await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results,facts);
+ b.objects.clear();await assert.rejects(reverifyRetainedSource(db,entity.id,{now:NOW}),/evidence_missing/);
 });
 
 test('native capacity rejection returns retryable503 before a producer receipt and preserves read/recheck endpoints',async t=>{
