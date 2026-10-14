@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Store a free open-data source API key (France country pack) for the acquire service. Never echoes it.
+#   sudo fpd-set-source-key openagenda      (paste when prompted; input hidden)
+#   sudo fpd-set-source-key datatourisme
+#   sudo fpd-set-source-key --list          (shows which keys are set, never the values)
+# Keys live in /etc/fpd/source-keys.env (root, mode 600), loaded by systemd into fpd-acquire only.
+# They are NOT copied by fpd-backup / fpd-offsite-backup (re-run this after a rebuild).
+set -euo pipefail
+ETC=${FPD_ETC:-/etc/fpd}
+[[ $EUID -eq 0 || -n "${FPD_ETC:-}" ]] || { echo "run with sudo" >&2; exit 1; }
+F="$ETC/source-keys.env"
+case "${1:-}" in
+  openagenda)   VAR=OPENAGENDA_KEY ;;
+  datatourisme) VAR=DATATOURISME_KEY ;;
+  --list) for v in OPENAGENDA_KEY DATATOURISME_KEY; do
+            if [[ -f "$F" ]] && grep -q "^$v=" "$F"; then echo "$v: set"; else echo "$v: not set"; fi; done; exit 0 ;;
+  *) echo "usage: sudo fpd-set-source-key openagenda|datatourisme|--list" >&2; exit 2 ;;
+esac
+read -r -s -p "Paste the $1 API key (input hidden), then Enter: " RAW; echo
+if grep -qiE 'CLOUDFLARE|SERPER|V3_INGEST|V3_OPERATOR|SMTP2GO|PASSWORD' <<<"$RAW"; then echo "refused: that looks like a different credential" >&2; exit 1; fi
+KEY=$(tr -d '[:space:]' <<<"${RAW#*=}")
+[[ ${#KEY} -ge 16 && ${#KEY} -le 256 && "$KEY" =~ ^[A-Za-z0-9._~+/=-]+$ ]] || { echo "refused: does not look like an API key" >&2; exit 1; }
+umask 077
+TMP=$(mktemp "$ETC/.source-keys.XXXXXX")
+{ [[ -f "$F" ]] && grep -v "^$VAR=" "$F" || true; printf '%s=%s\n' "$VAR" "$KEY"; } > "$TMP"
+[[ -n "${FPD_ETC:-}" ]] || chown root:root "$TMP"
+chmod 0600 "$TMP"; mv -f "$TMP" "$F"
+unset RAW KEY
+echo "$VAR stored in $F (root only, mode 600; not in backups). Nothing uses it until the France kit is installed."

@@ -9,6 +9,7 @@ c1c54862ed40b0c6e70b153db9cee314b22eb84c30468c86275537d33425b6c2  ./bin/fpd-cycl
 d7cdbb76a63ca9a2488cda6587bceafd435bc99bec419816eb60e0c581a13d0d  ./bin/fpd-offsite-backup
 e9e4d8dbbbb5f936bceef3725bf7b91f52ccab9dde630779d3ec5489aa8d2248  ./bin/fpd-offsite-setup
 52e87b6abfacd93aa16d1c83c51ad61c3e7bc34726c6a0d58b9733046ba82f49  ./bin/fpd-rechecks-handoff
+465ed7bd02c20bcfabc3bf3e83f853533ce40de4bcf80e0291037fc78a858148  ./bin/fpd-set-source-key
 9ef9b6b1020b09b8fc1417bf67d08b697ccb9da2347275f4e591673fedcc36c0  ./bin/fpd-set-token
 f9ac309ab92d9517c583a7a2935e04f566ed95a27f46141c05665776a0c81888  ./bin/fpd-status
 f6e07dc4cf55d881ccb7ff5f2657aa2310e745a592e015ca2f90cfa35d8c5feb  ./bin/fpd-v3-feed
