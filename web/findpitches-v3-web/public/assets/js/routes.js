@@ -11,8 +11,8 @@
  */
 (function () {
   const FP = (window.FP = window.FP || {});
-  const MARKET_ORDER = ['GB', 'US', 'CA', 'AU', 'IE', 'NZ', 'SG', 'HK'];
-  const SLUG = { GB: 'uk', US: 'us', CA: 'ca', AU: 'au', IE: 'ie', NZ: 'nz', SG: 'sg', HK: 'hk' };
+  const MARKET_ORDER = ['GB', 'US', 'CA', 'AU', 'IE', 'NZ', 'SG', 'HK', 'FR'];
+  const SLUG = { GB: 'uk', US: 'us', CA: 'ca', AU: 'au', IE: 'ie', NZ: 'nz', SG: 'sg', HK: 'hk', FR: 'fr' };
   const FROM_SLUG = Object.fromEntries(Object.entries(SLUG).map(([k, v]) => [v, k]));
   const SITE = 'https://findpitches.com';
 

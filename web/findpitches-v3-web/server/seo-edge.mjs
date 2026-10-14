@@ -15,8 +15,8 @@ const window = { FP: {} };
  */
 (function () {
   const FP = (window.FP = window.FP || {});
-  const MARKET_ORDER = ['GB', 'US', 'CA', 'AU', 'IE', 'NZ', 'SG', 'HK'];
-  const SLUG = { GB: 'uk', US: 'us', CA: 'ca', AU: 'au', IE: 'ie', NZ: 'nz', SG: 'sg', HK: 'hk' };
+  const MARKET_ORDER = ['GB', 'US', 'CA', 'AU', 'IE', 'NZ', 'SG', 'HK', 'FR'];
+  const SLUG = { GB: 'uk', US: 'us', CA: 'ca', AU: 'au', IE: 'ie', NZ: 'nz', SG: 'sg', HK: 'hk', FR: 'fr' };
   const FROM_SLUG = Object.fromEntries(Object.entries(SLUG).map(([k, v]) => [v, k]));
   const SITE = 'https://findpitches.com';
 
@@ -143,6 +143,7 @@ const window = { FP: {} };
   // Per-market page policy. SG and HK terminology is provisional (not validated with keyword data), so they get a
   // market hub only: no intent or region landing pages until Chris approves a keyword set. Both remain noindex while building.
   const MARKET_POLICY = {
+    FR: { hub_only: true, note: 'France source integration: no translated SEO claims until inventory and keyword research are validated' },
     SG: { hub_only: true, note: 'Terminology provisional: hub page only until keyword research is done' },
     HK: { hub_only: true, note: 'Terminology provisional: hub page only until keyword research is done' }
   };

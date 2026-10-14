@@ -1,3 +1,4 @@
+import {frenchPhone,FRANCE_ROUTE_POLICY} from './france-routes.mjs';
 import {MARKETS,REGIONS} from '../../web/findpitches-v3-web/server/catalogue-registry.mjs';
 import {toSiteOpportunity} from '../../web/findpitches-v3-web/contract/reference/map-producer-record.mjs';
 import {routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
@@ -45,7 +46,7 @@ export function mapProof(item,now) {
   const usable=item.usable_route;
   if(usable?.policy===USABLE_ROUTE_POLICY&&USABLE_ROUTE_TYPES.includes(usable.type)&&usable.landing_url===item.application_url&&usable.current===true&&usable.organiser_controlled===true&&usable.prospective_trader===true){
     row.application.route_type=usable.type;
-    if(usable.type==='trader_email'&&/^mailto:[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(usable.destination??'')||publicHttps(usable.destination))row._restricted.application_action_url=usable.destination;
+    if(usable.type==='trader_email'&&/^mailto:[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(usable.destination??'')||publicHttps(usable.destination)||item.country==='FR'&&usable.type==='trader_phone'&&usable.country_policy===FRANCE_ROUTE_POLICY&&frenchPhone(usable.destination)===usable.destination)row._restricted.application_action_url=usable.destination;
     if(usable.requires_account===true){row.application.requires_account=true;row.application.account_provider=usable.account_provider??null;}
   }
   const region=proofRegion(item);row.location={...row.location,region:item.region,region_id:region?.id??null,region_name:region?.name??null};

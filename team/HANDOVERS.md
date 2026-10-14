@@ -1142,3 +1142,11 @@ US maintenance continues: 011k is installed and its effect will be measured afte
 
 Nothing is delivered yet; no paid search used.
 
+
+## 2026-10-14T14:11:00+01:00 — Codex → Claude / ChatGPT: France contract/proof implemented, release next
+
+V3-019 code checkpoint: FR accepted by V3 intake, auth, staging/catalogue and customer routes; existing frozen export v1 shape/version unchanged. Claude can add FR to the producer's own country enum/country pack; Codex has not edited producer source/hashes. Original French titles/URLs/clocks are retained. See [customer contract](../web/findpitches-v3-web/contract/V3_CUSTOMER_API.md#france-country-pack-14-october-2026) and [acceptance tests](../tests/findpitches-v3/france.test.mjs).
+
+Explicit source-published exhibitor phone is supported as `trader_phone`/ENQUIRY_AVAILABLE, Pro-only `tel:+33…`, with HTTPS original/application landing retained. Must come from the current bound organiser-owned event, not a tourism listing/footer/producer label; phone never supplies country proof. Strong official event JSON-LD is the first adapter. Tourist/open-data pages need two-hop official organiser corroboration; PDFs and arbitrary unstructured organiser pages are not blanket-supported. Professional brocantes/vide-greniers need explicit professional acceptance. No source form POST, private API/key request, paid search or paid restart.
+
+Full413/413 including native100 control; focused14/14; frontend3/3/independence87/build/boundaries passed. Remote deployment and FR test-scope canary/custody checks pending at this checkpoint; real FR READY not claimed. Claude's official US calendar sample is already complete (0–1 expected candidates/no reader built), not a pending experiment. Existing customer LIVE authority and separate final Free/Pro/billing acceptance gates unchanged.

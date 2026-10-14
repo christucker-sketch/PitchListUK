@@ -28,6 +28,7 @@ const slug = s => String(s).toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]
       postal: { label_mid: 'district', label: 'District', example: 'Wan Chai', kind: 'district', has_postcodes: false }, region_label: { singular: 'district', plural: 'districts' },
       vocab: { listings: 'Vendor booths', trader: 'vendor', traders: 'vendors', traders_short: 'vendors', fee: 'booth fee', apps: 'vendor applications', sport: 'event booths', pitch: 'booth' } }
   ];
+  MARKETS.push({ code: 'FR', route_slug: 'fr', display_code: 'FR', name: 'France', the: 'France', launch_status: 'building', locale: 'fr-FR', currency: 'EUR', date_format: 'DD/MM/YYYY', distance_unit: 'km', radius_options: [10,25,50,100,200], postal: {label_mid:'code postal',label:'Code postal',example:'75001',kind:'postal-code'}, region_label: {singular:'region',plural:'regions'}, vocab: {listings:'Exhibitor opportunities',trader:'exhibitor',traders:'exhibitors',traders_short:'exhibitors',fee:'stand fee',apps:'exhibitor applications',sport:'trade stands',pitch:'stand'} });
   const GB_PARENTS = { 'south-east': 'South East', 'south-west': 'South West', 'east-of-england': 'East of England', 'east-midlands': 'East Midlands', 'west-midlands': 'West Midlands', 'north-west': 'North West', 'north-east': 'North East', 'yorkshire-and-the-humber': 'Yorkshire and the Humber', 'london': 'London', 'wales': 'Wales', 'scotland': 'Scotland', 'northern-ireland': 'Northern Ireland', 'midlands': 'The Midlands' };
   const GB_COUNTIES = {
     'south-east': ['Kent', 'Surrey', 'West Sussex', 'East Sussex', 'Hampshire', 'Buckinghamshire', 'Oxfordshire', 'Berkshire', 'Isle of Wight'],
@@ -42,7 +43,7 @@ const slug = s => String(s).toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]
     'wales': ['Monmouthshire', 'Cardiff', 'Gwynedd', 'Pembrokeshire', 'Powys'],
     'northern-ireland': ['Belfast', 'County Antrim', 'County Down']
   };
-  const REGIONS = { GB: {}, US: {} };
+  const REGIONS = { GB: {}, US: {}, FR: {} };
   Object.entries(GB_PARENTS).forEach(([s, n]) => REGIONS.GB['gb/' + s] = { id: 'gb/' + s, name: n, slug: s, level: ['wales', 'scotland', 'northern-ireland'].includes(s) ? 'nation' : 'region', parent_id: null });
   Object.entries(GB_COUNTIES).forEach(([p, list]) => list.forEach(n => { const nm = n === 'West Midlands county' ? 'West Midlands (county)' : n; const s = n === 'West Midlands county' ? 'west-midlands-county' : slug(n); REGIONS.GB['gb/' + s] = { id: 'gb/' + s, name: nm, slug: s, level: 'county', parent_id: 'gb/' + p }; }));
   const GB_ALIAS = { 'Greater London': 'london', 'London': 'london', 'Scotland': 'scotland', 'Wales': 'wales', 'Northern Ireland': 'northern-ireland', 'South West England': 'south-west', 'Midlands': 'midlands', 'West Midlands': 'west-midlands-county',
@@ -50,4 +51,8 @@ const slug = s => String(s).toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]
   const STATE_NAMES = {AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',DC:'District of Columbia',FL:'Florida',GA:'Georgia',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MO:'Missouri',MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'};
   Object.entries(STATE_NAMES).forEach(([c, n]) => REGIONS.US['us/' + slug(n)] = { id: 'us/' + slug(n), name: n, slug: slug(n), level: 'state', parent_id: null, code: 'US-' + c });
   const US_BY_CODE = Object.fromEntries(Object.values(REGIONS.US).map(r => [r.code.slice(3), r.id]));
+// Only explicit source-published names/codes map to these regions. No city/postcode inference.
+const FR_REGIONS={ARA:'Auvergne-Rhône-Alpes',BFC:'Bourgogne-Franche-Comté',BRE:'Bretagne',CVL:'Centre-Val de Loire',COR:'Corse',GES:'Grand Est',HDF:'Hauts-de-France',IDF:'Île-de-France',NOR:'Normandie',NAQ:'Nouvelle-Aquitaine',OCC:'Occitanie',PDL:'Pays de la Loire',PAC:'Provence-Alpes-Côte d’Azur',GUA:'Guadeloupe',GF:'Guyane',LRE:'La Réunion',MTQ:'Martinique',MAY:'Mayotte'};
+Object.entries(FR_REGIONS).forEach(([code,name])=>{const s=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');REGIONS.FR['fr/'+s]={id:'fr/'+s,name,slug:s,level:'region',parent_id:null,code:'FR-'+code};});
+export const SUPPORTED_MARKETS=Object.freeze(MARKETS.map(m=>m.code));
 export {MARKETS,REGIONS};

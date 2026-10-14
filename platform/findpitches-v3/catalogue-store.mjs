@@ -1,3 +1,4 @@
+import {SUPPORTED_MARKETS} from '../../web/findpitches-v3-web/server/catalogue-registry.mjs';
 import {sql,ingestRecords,loadEntity} from './store.mjs';
 import {hash,stableJson,EXPORT_SCHEMA,platformId} from './contract.mjs';
 import {catalogueUrl,fetchCatalogueDocument,catalogueLinks,platformRoute,eventApplicationLinks,operatorPageLinks} from './source-catalogue.mjs';
@@ -146,7 +147,7 @@ export async function discoverCataloguePage(db,{run_id,url,offset=0,limit=500,by
   return {run_id,document_id:documentId,coverage:document.coverage??'complete_document',byte_offset,catalogues:links.catalogues,event_details:links.routes.filter(r=>r.kind==='event_detail').slice(offset,offset+limit),routes:applications.length,offset,next_offset:offset+limit<applications.length?offset+limit:null,candidates,source_requests_observed:requests.length};
 }
 export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now=new Date().toISOString(),targetMarket=null}={}) {
-  if(targetMarket!==null&&!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(targetMarket))throw Error('catalogue_operator_market_scope_invalid');
+  if(targetMarket!==null&&!SUPPORTED_MARKETS.includes(targetMarket))throw Error('catalogue_operator_market_scope_invalid');
   const c=await sql(db,'SELECT c.*,p.status,p.entity_id,p.record_id FROM catalogue_candidates c JOIN catalogue_progress p ON p.candidate_id=c.id WHERE c.id=?',candidateId).first();
   if(!c)throw Error('catalogue_candidate_missing');if(c.status!=='pending')return {candidate_id:candidateId,status:c.status,entity_id:c.entity_id,record_id:c.record_id,replay:true};
   await activeRun(db,c.run_id,now);
@@ -180,7 +181,7 @@ export async function verifyCatalogueCandidate(db,candidateId,{fetcher=fetch,now
     if(requestBudgetReached){report.status='partial';report.reasons.push('catalogue_candidate_source_request_limit');}
     checkpoint='document_retention';
     await sql(db,'INSERT OR IGNORE INTO source_documents VALUES (?,?,?,?,?)',documentId,c.url,document.content_hash??null,document.fetched_at,await encodeSourceDocument(document)).run();
-    if(report.status!=='verified'||!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(report.facts.country)||targetMarket&&report.facts.country!==targetMarket) {
+    if(report.status!=='verified'||!SUPPORTED_MARKETS.includes(report.facts.country)||targetMarket&&report.facts.country!==targetMarket) {
       const reason=targetMarket&&report.facts.country&&report.facts.country!==targetMarket?'verified_country_outside_operator_scope':report.reasons.join(',')||'supported_verified_country_required';
       await sql(db,"UPDATE catalogue_progress SET status='held',reason=?,document_id=?,checked_at=?,lease_until=NULL WHERE candidate_id=?",reason,documentId,now,candidateId).run();
       if(report.reasons.includes('source_http_429'))await stopCatalogueRun(db,c.run_id,'source_rate_limited');

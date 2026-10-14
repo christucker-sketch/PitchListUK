@@ -1,3 +1,4 @@
+import {SUPPORTED_MARKETS} from '../../web/findpitches-v3-web/server/catalogue-registry.mjs';
 export const EXPORT_SCHEMA = 'findpitches-discovery-export-v1';
 export const EVIDENCE_SCHEMA = 'findpitches-evidence-v1';
 export const FIELDS = Object.freeze(['event_name','organiser','location','region_code','event_start','event_end','application_deadline','canonical_url','application_url','application_state','lifecycle_state','recurring','source_platform','source_identifier']);
@@ -52,7 +53,7 @@ export function normalizeExport(raw, { producer='independent-structured', enviro
   const id=raw.opportunity_id ?? raw.producer_record_id;
   if (typeof id!=='string' || !id.trim() || id.length>256) errors.push('producer_record_id_required');
   const market=raw.country_code ?? raw.market;
-  if (!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(market)) errors.push('unsupported_market');
+  if (!SUPPORTED_MARKETS.includes(market)) errors.push('unsupported_market');
   const normalized={ schema_version:EVIDENCE_SCHEMA, producer_name:producer, producer_type:PRODUCERS[producer]?.type, producer_record_id:id, market, region_code:raw.region_code??null,
     environment, shadow_only:true, promotion_eligible:false, publication_eligible:false,
     event_name:raw.event_name??raw.title??null, organiser:raw.organiser??null, location:raw.location??raw.locality??raw.venue??null,

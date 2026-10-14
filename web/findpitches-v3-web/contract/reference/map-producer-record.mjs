@@ -5,7 +5,7 @@
 // Pure function, no I/O. Used by dev/stub-server.mjs to build its fixtures.
 
 const PLATFORM_NAMES = new Set(['ukcraftfairs.com', 'ukcraftfairs', 'cluemart', 'localstalls', 'eventeny', 'marketspread', 'entrythingy']);
-const CURRENCY = { GB: 'GBP', US: 'USD', CA: 'CAD', AU: 'AUD', IE: 'EUR', NZ: 'NZD', SG: 'SGD', HK: 'HKD' };
+const CURRENCY = { GB: 'GBP', US: 'USD', CA: 'CAD', AU: 'AUD', IE: 'EUR', NZ: 'NZD', SG: 'SGD', HK: 'HKD', FR: 'EUR' };
 
 // Producer opportunity_type → site event type (contract §3.4)
 export function siteType(rec) {

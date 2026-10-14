@@ -1,3 +1,4 @@
+import {SUPPORTED_MARKETS} from '../../web/findpitches-v3-web/server/catalogue-registry.mjs';
 import {hash} from './contract.mjs';
 import {stmt,cookies,opaqueToken,cookie,sessionCookie,previewCookie,safeNext,customerError,rateLimit,noteCustomerEvent} from './customer-security.mjs';
 import {mailCredentialIsProxyReference} from './customer-mail.mjs';
@@ -40,6 +41,6 @@ export async function logout(request,db,now) {const token=cookies(request)[sessi
 export async function updateProfile(db,customer,body) {
   const profile=JSON.parse(customer.profile_json),allowed=['business_name','contact_name','phone','market','base_postcode','specialty','regions','public_listing_opt_in'];
   for(const key of Object.keys(body)){if(!allowed.includes(key))throw customerError('validation');const value=body[key];if(key==='public_listing_opt_in'){if(typeof value!=='boolean')throw customerError('validation');}else if(key==='regions'){if(!Array.isArray(value)||value.length>30||value.some(v=>typeof v!=='string'||v.length>100))throw customerError('validation');}else if(value!==null&&(typeof value!=='string'||value.length>200))throw customerError('validation');profile[key]=value;}
-  if(profile.market&&!['GB','US','CA','AU','NZ','IE','SG','HK'].includes(profile.market))throw customerError('validation');
+  if(profile.market&&!SUPPORTED_MARKETS.includes(profile.market))throw customerError('validation');
   await stmt(db,'UPDATE customers SET profile_json=? WHERE id=?',JSON.stringify(profile),customer.id).run();return {...customer,profile_json:JSON.stringify(profile)};
 }

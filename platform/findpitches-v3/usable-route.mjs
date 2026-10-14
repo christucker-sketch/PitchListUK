@@ -1,8 +1,9 @@
+import {discoverFrenchRoutes,frenchRouteOptions,frenchPhone,FRANCE_ROUTE_POLICY} from './france-routes.mjs';
 import {parseHtml,nodes,first,text} from './source-dom.mjs';
 import {safeSourceUrl} from './source-document.mjs';
 import {stableJson} from './contract.mjs';
 export const USABLE_ROUTE_POLICY='global-prospective-trader-route-v1';
-export const USABLE_ROUTE_TYPES=['event_application','organiser_intake','standing_registration','trader_enquiry','trader_email','vendor_portal_registration'];
+export const USABLE_ROUTE_TYPES=['event_application','organiser_intake','standing_registration','trader_enquiry','trader_email','trader_phone','vendor_portal_registration'];
 const trader=/\b(?:vendors?|traders?|stallholders?|exhibitors?|artisans?|crafters?)\b/i;
 const purpose=/\b(?:applications?|apply|register|registration|enquir(?:y|ies)|intake|become|book a stall|trade with us|contact)\b/i;
 const restriction=/\b(?:closed|sold out|fully booked|waitlist|waiting list|invitation only|invite only|members? only|(?:existing|returning|approved) vendors? only|newsletter|volunteers?|performers?|sponsors? only|charit(?:y|ies) only|non[ -]?profits? only)\b/i;
@@ -32,7 +33,7 @@ function formProof(block,document){
 const removable=new Set(['vendor_application_not_proved','open_vendor_application_not_proved','event_application_route_missing_or_ambiguous']);
 export function usableRouteEligible(report){
  const r=report?.usable_route,f=report?.facts??{};
- return Boolean(r?.policy===USABLE_ROUTE_POLICY&&USABLE_ROUTE_TYPES.includes(r.type)&&r.current===true&&r.organiser_controlled===true&&r.prospective_trader===true&&safeSourceUrl(r.landing_url)&&safeSourceUrl(r.event_source_url)&&r.landing_url===f.application_url&&['OPEN_NOW','ROLLING','ENQUIRY_AVAILABLE'].includes(f.application_state)&&(!r.destination||safeSourceUrl(r.destination)||r.type==='trader_email'&&email(r.destination)));
+ return Boolean(r?.policy===USABLE_ROUTE_POLICY&&USABLE_ROUTE_TYPES.includes(r.type)&&r.current===true&&r.organiser_controlled===true&&r.prospective_trader===true&&safeSourceUrl(r.landing_url)&&safeSourceUrl(r.event_source_url)&&r.landing_url===f.application_url&&['OPEN_NOW','ROLLING','ENQUIRY_AVAILABLE'].includes(f.application_state)&&(r.type==='trader_phone'?f.country==='FR'&&r.country_policy===FRANCE_ROUTE_POLICY&&Boolean(r.destination)&&frenchPhone(r.destination)===r.destination:!r.destination||safeSourceUrl(r.destination)||r.type==='trader_email'&&email(r.destination)));
 }
 export function applyEventenyRegistration(document,report,{now}){
  if(report.profile!=='eventeny'||report.page_kind!=='event'||report.reasons.some(r=>r!=='open_vendor_application_not_proved')||!document.html)return report;
@@ -78,7 +79,7 @@ export function applyEventenyContact(document,report,documents,{now}){
 export function discoverUsableRoutes(document,report){
  if(document.reason||!document.html||report.page_kind!=='event'||!owner(report,document)||!['generic','official_vendor'].includes(report.profile)||report.reasons.some(r=>!removable.has(r)))return [];
  const root=main(parseHtml(document.html));if(!root)return [];
- const found=new Map();for(const block of blocks(root))for(const a of nodes(block,n=>n.tag==='a'&&n.attrs.href,{scoped:true})){
+ const found=new Map(discoverFrenchRoutes(document,report).map(r=>[r.url,r]));for(const block of blocks(root))for(const a of nodes(block,n=>n.tag==='a'&&n.attrs.href,{scoped:true})){
   const route=url(a.attrs.href,document.url);if(!route||route===document.url||origin(route)!==origin(document.url)||!purpose.test(text(a))||!trader.test(text(a))&&!trader.test(text(first(block,n=>/^h[1-4]$/.test(n.tag),{scoped:true}))))continue;
   if(/\/(?:login|sign-in|newsletter|subscribe|tickets?|directory)(?:\/|$)/i.test(new URL(route).pathname))continue;
   found.set(route,{url:route,invitation:text(block).slice(0,14000)});
@@ -87,6 +88,9 @@ export function discoverUsableRoutes(document,report){
 export function applyUsableRoute(document,report,{routeDocuments=[],now}){
  if(report.page_kind!=='event'||!document.html||!owner(report,document)||!['generic','official_vendor'].includes(report.profile)||report.reasons.some(r=>!removable.has(r)))return report;
  const eventYear=report.facts.event_start?.slice(0,4),currentYear=now.slice(0,4),routeLinks=discoverUsableRoutes(document,report),options=[];
+ const french=frenchRouteOptions(document,report,routeDocuments,{now});
+ if(french?.blocked)return {...report,status:'partial',reasons:[...report.reasons,'fr_exhibitor_scope_restricted_or_unproved']};
+ if(french)options.push(...french.options);
  for(const d of [document,...routeDocuments]){
   if(d.reason||!d.html||d.requested_url!==d.url||origin(d.url)!==origin(document.url)||d!==document&&!routeLinks.some(l=>l.url===d.url)||!Number.isFinite(Date.parse(d.fetched_at))||Date.parse(d.fetched_at)>Date.parse(now))continue;
   const content=main(parseHtml(d.html));if(!content||restriction.test(text(content)))continue;
@@ -109,7 +113,7 @@ export function applyUsableRoute(document,report,{routeDocuments=[],now}){
  // actionable enquiry, never a manufactured exact-event OPEN application.
  const originalState=report.facts.application_state;
  if(['CLOSED','WATCH'].includes(originalState))return report;
- const facts={...report.facts,application_url:route.landing_url,application_state:report.status==='verified'&&originalState==='OPEN_NOW'?'OPEN_NOW':'ENQUIRY_AVAILABLE'};
- const usable_route={policy:USABLE_ROUTE_POLICY,type:report.status==='verified'&&originalState==='OPEN_NOW'?'event_application':route.type,landing_url:route.landing_url,...route.destination?{destination:route.destination}:{},event_source_url:document.url,organiser_url:owner(report,document),organiser_controlled:true,prospective_trader:true,current:true};
+ const facts={...report.facts,application_url:route.landing_url,application_state:report.status==='verified'&&originalState==='OPEN_NOW'||route.open?'OPEN_NOW':'ENQUIRY_AVAILABLE',...route.deadline?{application_deadline:route.deadline}:{}};
+ const usable_route={policy:USABLE_ROUTE_POLICY,type:facts.application_state==='OPEN_NOW'?'event_application':route.type,landing_url:route.landing_url,...route.destination?{destination:route.destination}:{},event_source_url:document.url,organiser_url:owner(report,document),...french?{country_policy:FRANCE_ROUTE_POLICY}:{},organiser_controlled:true,prospective_trader:true,current:true};
  return {...report,facts,usable_route,status:'verified',reasons:[],application_scope_proof:{...report.application_scope_proof,trader_application:true},evidence:[...report.evidence,{kind:'organiser_prospective_trader_route',source_url:route.landing_url,excerpt:route.excerpt.slice(0,14000)},{kind:'global_usable_route_policy',source_url:document.url,excerpt:stableJson(usable_route)}]};
 }
