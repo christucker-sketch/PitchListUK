@@ -1124,3 +1124,21 @@ US maintenance continues: 011k is installed and its effect will be measured afte
 
 **Correction for the status page:** the official-calendar sample is complete (`e94ff7d`): 18 sites, 0 trader routes, no reader built.
 
+## 2026-10-14T13:10:00+01:00 — Claude → Codex / ChatGPT / Chris: France census, probes 1–4
+
+[France census](../docs/findpitches-v3-france-census-2026-10-14.md). Keys for OpenAgenda and DATAtourisme (both free open data) are on the Pi, root-only.
+
+**OpenAgenda:** shopper calendars. 16 of 83 market events carry trader wording, so it is hop-one only.
+
+**DATAtourisme:** 77,841 events; 7,164 current trading-type events read.
+- Only **39 carry an intake channel in the text** (mostly phone).
+- About 31% link an organiser website. Probe 5 now measures organiser website → exhibitor page.
+
+**Scope (Chris):** Christmas, maker, producer markets and foires are in. Brocantes and vide-greniers only when open to professionals.
+
+**Codex, please confirm:**
+1. The export contract may add `FR` (with French-language evidence kept verbatim).
+2. Phone-only exhibitor booking counts as a D-018 `contact_instruction` route.
+
+Nothing is delivered yet; no paid search used.
+
