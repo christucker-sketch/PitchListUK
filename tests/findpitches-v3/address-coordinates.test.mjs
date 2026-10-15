@@ -2,7 +2,8 @@ import test from'node:test';import assert from'node:assert/strict';
 import {database,seed,record,NOW}from'./helpers.mjs';import {documentFixture}from'./verification-fixture.mjs';
 import {verifyDocument}from'../../platform/findpitches-v3/verification.mjs';import {recordVerification}from'../../platform/findpitches-v3/verification-store.mjs';
 import {censusAddressInput,censusPosition,fetchCensusPosition,CENSUS_ENDPOINT}from'../../platform/findpitches-v3/address-coordinates.mjs';
-import {startVenueMap,resolveVenueAddress}from'../../platform/findpitches-v3/address-coordinate-store.mjs';
+import {startVenueMap,resolveVenueAddress,addressKey}from'../../platform/findpitches-v3/address-coordinate-store.mjs';
+import {hash,stableJson}from'../../platform/findpitches-v3/contract.mjs';import {encodeSourceDocument}from'../../platform/findpitches-v3/document-custody.mjs';
 import {sql}from'../../platform/findpitches-v3/store.mjs';import {stagingCatalogue}from'../../platform/findpitches-v3/staging.mjs';import {mapProof,search}from'../../platform/findpitches-v3/customer-catalogue.mjs';
 import {bindEvidenceArchive}from'../../platform/findpitches-v3/evidence-archive.mjs';import {archiveBucket}from'./storage-fixture.mjs';
 const address={country:'US',location:'River Hall, 1 River Street, Austin, Texas',street:'1 River Street',city:'Austin',state:'TX',postal_code:null};
@@ -42,6 +43,19 @@ test('source renewal reuses an archive-backed coordinate receipt without a provi
  const proof=await sql(db,'SELECT checked_at,expires_at FROM source_verifications WHERE entity_id=? ORDER BY sequence DESC LIMIT 1',id).first();assert.equal(proof.checked_at,now);assert.equal(proof.expires_at,'2026-10-07T13:00:00.000Z');
  bucket.objects.delete(pointer.key);const later='2026-10-06T14:00:00.000Z';await assert.rejects(recordVerification(db,id,{...documentFixture(),fetched_at:later},{now:later}),/evidence_missing/);
  assert.equal((await sql(db,'SELECT COUNT(*) n FROM venue_address_coordinates').first()).n,2);assert.equal(requests,1);
+});
+test('a newer differently spelled address receipt cannot eclipse the older exact request when renewing proof',async t=>{
+ const {db,id}=await entityProof(t);bindEvidenceArchive(db,archiveBucket(),{writeEnabled:true});
+ const run=await startVenueMap(db,{max_requests:1},NOW);await resolveVenueAddress(db,{run_id:run.id,entity_id:id},{now:NOW,clock:()=>NOW,fetcher});
+ const alternate={...address,street:'1 River St'},later='2026-10-06T12:10:00.000Z',doc={...receipt(alternate),fetched_at:later},position=censusPosition(alternate,doc).position;
+ assert.ok(position);assert.equal(await addressKey(alternate),await addressKey(address));
+ const documentId='doc_'+(await hash(doc)).slice(0,40);await sql(db,'INSERT INTO source_documents VALUES (?,?,?,?,?)',documentId,doc.url,await hash(doc.json_text),later,await encodeSourceDocument(doc,{db})).run();
+ await sql(db,'INSERT INTO address_coordinate_cache VALUES (?,?,?,?,?,?,?)','cache-alternate-query',await addressKey(alternate),documentId,'matched',null,stableJson(position),later).run();
+ const now='2026-10-06T13:00:00.000Z';await recordVerification(db,id,{...documentFixture(),fetched_at:now},{now});
+ assert.equal((await sql(db,'SELECT COUNT(*) n FROM venue_address_coordinates').first()).n,2);
+ const current=JSON.parse((await sql(db,'SELECT position_json FROM venue_address_coordinates ORDER BY created_at DESC LIMIT 1').first()).position_json);
+ assert.equal(new URL(current.source_url).searchParams.get('address'),censusAddressInput(address).query);assert.equal(current.source_checked_at,now);
+ assert.equal((await sql(db,'SELECT SUM(requests_reserved) n FROM venue_map_runs').first()).n,1);
 });
 test('provider refusal pauses without retries, fabricated points or refunded reservations',async t=>{
  const {db,id}=await entityProof(t),run=await startVenueMap(db,{max_requests:1},NOW);const r=await resolveVenueAddress(db,{run_id:run.id,entity_id:id},{now:NOW,clock:()=>NOW,fetcher:async()=>new Response('',{status:429})});

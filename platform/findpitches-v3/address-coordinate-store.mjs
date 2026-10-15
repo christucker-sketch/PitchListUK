@@ -2,7 +2,7 @@ import {hash,stableJson} from './contract.mjs';
 import {sql} from './store.mjs';
 import {encodeSourceDocument,decodeSourceDocument} from './document-custody.mjs';
 import {verifyDocument,compareProof,VERIFIER_VERSION} from './verification.mjs';
-import {censusAddressInput,censusPosition,fetchCensusPosition,validAddressCoordinates} from './address-coordinates.mjs';
+import {censusAddressInput,censusRequestURL,censusPosition,fetchCensusPosition,validAddressCoordinates} from './address-coordinates.mjs';
 
 export async function addressKey(address){const input=censusAddressInput(address);return input?hash(['US',input.house_number,input.street_name,input.city,input.state,input.zip]):null;}
 async function shadowGuard(db){const p=await sql(db,`SELECT (SELECT publication_enabled FROM runtime_policy WHERE id=1) publication,
@@ -27,7 +27,9 @@ async function proofAddress(db,entityId,now){
 }
 export async function attachCachedAddress(db,{entityId,verificationId,address,now=new Date().toISOString()}){
  const key=await addressKey(address);if(!key)return {attached:false,reason:'source_exact_street_city_state_missing'};
- const cache=await sql(db,"SELECT c.*,d.document_json FROM address_coordinate_cache c JOIN source_documents d ON d.id=c.document_id WHERE c.address_hash=? AND c.status='matched' ORDER BY c.created_at DESC,c.id LIMIT 1",key).first();
+ // The normalized address key can cover several literal request spellings.
+ // Select the original exact query before decoding/validating its receipt.
+ const cache=await sql(db,"SELECT c.*,d.document_json FROM address_coordinate_cache c JOIN source_documents d ON d.id=c.document_id WHERE c.address_hash=? AND d.source_url=? AND c.status='matched' ORDER BY c.created_at DESC,c.id LIMIT 1",key,censusRequestURL(address)).first();
  if(!cache||Date.parse(cache.created_at)<Date.parse(now)-180*86400000)return {attached:false,reason:'no_current_exact_address_cache'};
  const {position,reason}=censusPosition(address,await decodeSourceDocument(cache.document_json,{db}));if(!position)return {attached:false,reason};
  const v=await sql(db,'SELECT v.*,e.revision FROM source_verifications v JOIN entities e ON e.id=v.entity_id WHERE v.id=? AND v.entity_id=? AND v.sequence=(SELECT MAX(sequence) FROM source_verifications WHERE entity_id=e.id)',verificationId,entityId).first();

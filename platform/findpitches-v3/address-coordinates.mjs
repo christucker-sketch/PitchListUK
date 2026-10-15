@@ -11,6 +11,10 @@ export function censusAddressInput(address) {
  return {country:'US',street:address.street,house_number:Number(m[1]),street_name:norm(m[2]),city:norm(address.city),state:sourceUSState(address.state),zip,
   query:[address.street,address.city,sourceUSState(address.state),zip].filter(Boolean).join(', ')};
 }
+export function censusRequestURL(address) {
+ const input=censusAddressInput(address);if(!input)return null;
+ const url=new URL(CENSUS_ENDPOINT);url.search=new URLSearchParams({address:input.query,benchmark:'Public_AR_Current',format:'json'}).toString();return url.href;
+}
 export function censusPosition(address,document) {
  const input=censusAddressInput(address);if(!input||document?.http_status!==200||document.requested_url!==document.url)return {position:null,reason:'exact_source_address_required'};
  const u=new URL(document.url);if(u.origin+u.pathname!==CENSUS_ENDPOINT||u.searchParams.get('address')!==input.query||u.searchParams.get('benchmark')!=='Public_AR_Current'||u.searchParams.get('format')!=='json')return {position:null,reason:'census_request_not_bound_to_source_address'};
@@ -31,7 +35,7 @@ export function validAddressCoordinates(value,{country,location}={}) {
 }
 export async function fetchCensusPosition(address,{fetcher=fetch,now=new Date().toISOString()}={}) {
  const input=censusAddressInput(address);if(!input)return {position:null,reason:'source_address_not_geocodable',document:null};
- const url=new URL(CENSUS_ENDPOINT);url.search=new URLSearchParams({address:input.query,benchmark:'Public_AR_Current',format:'json'}).toString();
+ const url=new URL(censusRequestURL(address));
  const document={document_kind:'census_exact_address_receipt',requested_url:url.href,url:url.href,fetched_at:now};
  try{const response=await fetcher(url.href,{redirect:'manual',headers:{Accept:'application/json','User-Agent':'FindPitches-V3-Venue-Verification/1.0'},signal:AbortSignal.timeout(20000)});document.http_status=response.status;
   if(response.status!==200)return {position:null,reason:'census_http_'+response.status,document};
