@@ -1,68 +1,11 @@
 {
-  "as_of": "2026-10-15T06:14:41.050Z",
+  "as_of": "2026-10-15T06:22:24.006Z",
   "completed": true,
   "documents": 30497,
   "archived_payload_bytes": 6212304937,
-  "current_native_file_size_bytes": 3721924608,
+  "current_native_file_size_bytes": 3722117120,
   "headroom_percent": 62.78,
-  "migration_cursor_pass_complete": true,
-  "final_preservation_audit_pending": true,
-  "paid_queries_added": 0,
-  "exact_query_cache_recovery": {
-    "as_of": "2026-10-15T06:13:13.033Z",
-    "checked": 22,
-    "reattached": 22,
-    "provider_requests": 0,
-    "ready_before": 1858,
-    "ready_after": 1862,
-    "mapped_before": 1092,
-    "mapped_after": 1116,
-    "source_facts_changed": 0,
-    "identity_changes": 0,
-    "source_clock_extensions": 0,
-    "exact_request_cache_selection": true
-  },
-  "source_release": [
-    {
-      "role": "api",
-      "version": "e6c74587-d750-4ece-bcd7-b589c7e99a98",
-      "bindings_and_schedules_preserved": true
-    },
-    {
-      "role": "enrichment",
-      "version": "4988a3dc-bc30-4bb9-b089-fb9f9ea33610",
-      "bindings_and_schedules_preserved": true
-    },
-    {
-      "role": "readiness",
-      "version": "3d206adf-ab7a-4452-a265-253961b0a7bb",
-      "bindings_and_schedules_preserved": true
-    },
-    {
-      "role": "eligibility",
-      "version": "6f84d4b1-6a8e-4a01-81d6-4e622dd0a919",
-      "bindings_and_schedules_preserved": true
-    },
-    {
-      "role": "reconcile",
-      "version": "fc2f58fd-f2ed-4fc8-ae70-c2b3abbd280f",
-      "bindings_and_schedules_preserved": true
-    },
-    {
-      "role": "watch",
-      "version": "774eb3b0-0ff9-4167-9269-0f205c2c747a",
-      "bindings_and_schedules_preserved": true
-    },
-    {
-      "role": "acquisition",
-      "version": "e591c221-8d6f-4796-8b0a-e53255d559f6",
-      "bindings_and_schedules_preserved": true
-    },
-    {
-      "role": "ingest",
-      "version": "705bdedc-7cc3-4a54-bdaf-7f140e38539d",
-      "bindings_and_schedules_preserved": true
-    }
-  ],
-  "scope": "Native archive receipts and physical metadata; final fixed-corpus audit is still running."
+  "error": null,
+  "completion_report": "storage-completion-2026-10-15.json",
+  "scope": "Completed bounded historical tranche; native active archive receipts and physical metadata are authoritative."
 }

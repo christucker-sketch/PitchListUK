@@ -1,12 +1,20 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-14, 17:43 London storage progress** (Europe/London).
-State: **V3-021 CLAIMED P0 — profile/capacity/tiering; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
+Author: Codex. Updated: **2026-10-15, 07:22 London storage completion** (Europe/London).
+State: **V3-021 DONE — verified private R2 tiering and reclaimed headroom; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
 
 ## Final storage acceptance / exact-query map cache — 15 October, 07:10 London
 
 Overnight provider runtime error paused bulk automatically at4.069GB; pending groups passed sequential hash-verified replay this morning, remaining cold set resumed8/request/concurrency2. Current normal-operation baseline4.260GB; positive overnight growth is retained for final runway reporting. Native this morningREADY1,862 vs1,887,37removed/12added,one newer source-backed location display change; final proof/expiry attribution pending, no forced preservation of stale READY. Twenty-two still-eligible map pins lacked renewed bindings: all22 normalized-address keys selected a newer differently spelled request despite an older literal exact-match receipt being available. Fixed cache selection to the original exact request URL, retaining all strict source/result checks; full422/targeted64 pass. Source-only config-preserving release and zero-provider cached reattachment next. Paid0/source publicationoff/customerWorker unchanged. V3-021 staysCLAIMED until final measured headroom/custody/public/source-refresh accounting passes.
+
+## V3-021 complete — 07:22 London
+
+[Completion report](../../docs/findpitches-v3-storage-completion-2026-10-15.md) · [Native evidence](../../operations/findpitches-v3/reports/storage-completion-2026-10-15.json). Physical D1 9.663→3.722 GB, 62.78% / 6.278 GB free. 30,497 active historical archive receipts, 6.212 GB exact original bytes retained in private R2; all original hashes/clocks/IDs/lineage preserved. Native physical reclaim without export/VACUUM/rebuild/swap/delete. Permanent 70/80/90/97% guards and verified forward R2 writes enabled on eight source Workers; customer/auth/billing DB and customer Worker unchanged.
+
+Full422/targeted64/frontend3/independence87/build/boundaries/public29 pass. Final audit 25,230 receipts / 218,939 facts / 7,280 tuples:0source mutations/identity drift/original-build mutation/customer publication leakage/PitchList/V2 change. READY1,862, mapped1,116, archival customer facts0change; ordinary refreshed-source changes1. Archived cache replay0provider; separate current exact-address miss repaired with1boundedfreeCensus GET,0Serper. Three opaque provider faults paused automatically and recovered idempotently; exact cause remains unattributed, request envelope now8/concurrency2. Reader gap was corrected and native-tested before resumed archival. Overnight12.5h net growth190.9MB gives a provisional366.5MB/day and17.1days headroom; V3-022 tracks24–72h monitoring/hot-payload follow-up before unconstrained scale. No country sharding needed now.
+
+**Headroom handoff to Claude:** storage/cloud gates cleared for the existing bounded011l FR delivery rollout after its own host checks. Codex has not enabled fr-on or claimed real French READY. V3-020 official French organiser/council HTML and supporting-document/PDF proof is next. Paid/source publication/alerts/legacy migration and separate product/ownedLIVE acceptance gates unchanged; public FindPitches/LIVE Checkout stay live.
 
 ## Native archive reader compatibility passed — 18:06 London
 

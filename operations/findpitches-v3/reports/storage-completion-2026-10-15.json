@@ -1,0 +1,880 @@
+{
+  "schema": "findpitches-v3-storage-completion-v1",
+  "as_of": "2026-10-15T06:22:24.006Z",
+  "mode": "owned_source_storage_tiering_only",
+  "provider_cap_source": "https://developers.cloudflare.com/d1/platform/limits/",
+  "conservative_cap_bytes": 10000000000,
+  "initial_profile": [
+    {
+      "table": "source_documents",
+      "bytes": 7910570089,
+      "percent_of_file": 82.17
+    },
+    {
+      "table": "source_facts",
+      "bytes": 476123592,
+      "percent_of_file": 4.95
+    },
+    {
+      "table": "producer_records",
+      "bytes": 272049193,
+      "percent_of_file": 2.83
+    },
+    {
+      "table": "source_verifications",
+      "bytes": 170725020,
+      "percent_of_file": 1.77
+    },
+    {
+      "table": "selection_audit",
+      "bytes": 57670589,
+      "percent_of_file": 0.6
+    }
+  ],
+  "physical_size_initial_profile": 9626914816,
+  "physical_size_before_bulk": 9662803968,
+  "physical_size_after": 3722117120,
+  "physical_bytes_reclaimed": 5940686848,
+  "headroom_bytes": 6277882880,
+  "headroom_percent": 62.78,
+  "archive": {
+    "bucket": "findpitches-v3-evidence",
+    "private": true,
+    "key_namespace": "source-documents/v1/<sha256>.json.gz",
+    "format": "lossless gzip of exact original UTF-8 serialized JSON",
+    "binding": "V3_EVIDENCE_BUCKET",
+    "pointer_policy": "r2_source_custody_v1",
+    "hash": "SHA-256",
+    "documents": 30497,
+    "original_payload_bytes": 6212304937,
+    "events": [
+      {
+        "event": "archived",
+        "n": 30498
+      },
+      {
+        "event": "restored",
+        "n": 1
+      }
+    ],
+    "cutoff": "2026-10-14T14:48:57.154Z",
+    "current_proof_documents_excluded": true,
+    "new_source_body_writes_use_verified_archive": true,
+    "managed_public_domain_enabled": false,
+    "custom_public_domains": 0,
+    "final_retrieval_replays": 20,
+    "original_clock_and_identity_metadata_preserved": true,
+    "objects_deleted": 0
+  },
+  "canary": {
+    "schema": "findpitches-v3-storage-canary-v1",
+    "started_at": "2026-10-14T14:57:07.422Z",
+    "as_of": "2026-10-14T14:57:47.736Z",
+    "archived_documents": 20,
+    "domains": [
+      "www.eventeny.com",
+      "www.myntimage.co.uk",
+      "localstalls.com",
+      "www.creativecrafts-online.co.uk"
+    ],
+    "original_bytes": 2261897,
+    "byte_hash_matches": 20,
+    "metadata_clock_changes": 0,
+    "replayed_without_rewrites": 4,
+    "exact_restore_proved": 1,
+    "remaining_archived": 19,
+    "native_size_before": 9641373696,
+    "native_size_after": 9640366080,
+    "ready_before": 1887,
+    "ready_after": 1887,
+    "common_customer_fact_changes": 0,
+    "originals_kept_in_private_r2": true,
+    "source_facts_changed": 0,
+    "identity_changes": 0,
+    "paid_paused": true,
+    "publication_enabled": false,
+    "cert_bypass": false
+  },
+  "reader_compatibility_native_canary": {
+    "as_of": "2026-10-14T17:05:52.109Z",
+    "ready_before": 1887,
+    "ready_after": 1887,
+    "mapped_before": 1134,
+    "mapped_after": 1134,
+    "original_canary_mapped": 1134,
+    "map_bindings_repaired": 1,
+    "repair_provider_requests": 1,
+    "archived_cache_replay_provider_requests": 0,
+    "archived_cache_replay_verified": true,
+    "identity_changes": 0,
+    "source_facts_changed": 0,
+    "repair_interpretation": "Current source address had no exact-address cache match; one bounded free Census GET restored the pin. This is separate from the existing archived-cache replay, which used zero provider requests."
+  },
+  "exact_query_cache_acceptance": {
+    "as_of": "2026-10-15T06:13:13.033Z",
+    "checked": 22,
+    "reattached": 22,
+    "provider_requests": 0,
+    "ready_before": 1858,
+    "ready_after": 1862,
+    "mapped_before": 1092,
+    "mapped_after": 1116,
+    "source_facts_changed": 0,
+    "identity_changes": 0,
+    "source_clock_extensions": 0,
+    "exact_request_cache_selection": true
+  },
+  "preservation": {
+    "schema": "findpitches-v3-storage-preservation-v1",
+    "started_at": "2026-10-15T06:14:58.803Z",
+    "as_of": "2026-10-15T06:21:34.837Z",
+    "baseline_as_of": "2026-10-13T17:15:54.694Z",
+    "receipts_compared": 25230,
+    "source_facts_compared": 218939,
+    "fixed_identity_tuples_compared": 7280,
+    "destructive_source_mutations": 0,
+    "fixed_identity_tuple_changes": 0,
+    "original_build_source_mutations": 0,
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "source_publication_enabled": false,
+    "source_publication_api_denied": true,
+    "paid_queries_today": 0,
+    "paid_day": "2026-10-15",
+    "paid_queries_lifetime": 29,
+    "paid_bulk_enabled": false,
+    "paid_manually_paused": 1,
+    "pitchlist_deployment_unchanged": true,
+    "v2_schedules_unchanged": true
+  },
+  "map_health": {
+    "mapped_before_canary": 1134,
+    "mapped_current": 1116,
+    "lost_common_mapped": 0
+  },
+  "source_customer_facts_changed": 1,
+  "source_customer_facts_changed_by_archival": 0,
+  "ordinary_source_refresh_changes": [
+    {
+      "id": "ent_499122957479d2320744adaef6366bfa",
+      "country": "US",
+      "fields": [
+        "location"
+      ],
+      "prior_source_checked_at": "2026-10-14T00:11:33.276Z",
+      "current_source_checked_at": "2026-10-14T22:12:20.952Z",
+      "original_document_clock_matches": true,
+      "new_values_supported_by_newer_source_proof": true
+    }
+  ],
+  "ready_before_canary": 1887,
+  "ready_current": 1862,
+  "ready_by_country": {
+    "US": 1693,
+    "NZ": 4,
+    "GB": 160,
+    "AU": 4,
+    "CA": 1
+  },
+  "withdrawn_since_canary": [
+    {
+      "id": "ent_04a41443dd10341e1515a456a931d0cb",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_0d498deaf73a26e5ae31ab735817c649",
+      "country": "NZ",
+      "original_proof_expires_at": "2026-10-15T07:52:16.748Z",
+      "current_reasons": [
+        "source_http_503"
+      ],
+      "original_proof_expired": false
+    },
+    {
+      "id": "ent_1040cdbab0ba99564a8b80c5bf5b8236",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T23:19:59.508Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_137f5e0df324febd47342eb29313e82c",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T23:41:10.125Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_1c298e6881e853951b088dacb4f36f8a",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T02:34:53.822Z",
+      "current_reasons": [
+        "selected_application_deadline_disagrees_with_proof"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_28318fb38983e6e0077785a3b9e1ef86",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_2de5c6343aa9735be2fba674236caae0",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_2f66ee84ffefbf28b74220891b2960bb",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T07:48:53.134Z",
+      "current_reasons": [
+        "selected_location_disagrees_with_proof"
+      ],
+      "original_proof_expired": false
+    },
+    {
+      "id": "ent_31724380b724b9b2db15c8a1cd3be784",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_319e1f30bd2b63c8be502b51c6ebfc84",
+      "country": "NZ",
+      "original_proof_expires_at": "2026-10-15T07:52:18.845Z",
+      "current_reasons": [
+        "source_http_503"
+      ],
+      "original_proof_expired": false
+    },
+    {
+      "id": "ent_319fd66c5a2294bd111ae63be5599967",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_355821bbea881e01c581ea7ebaf8edd0",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T23:44:03.906Z",
+      "current_reasons": [
+        "selected_event_name_disagrees_with_proof",
+        "selected_location_disagrees_with_proof"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_39e893fa7994083602e1f157bbea7abe",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T21:30:11.022Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_441e59d9372154da4599961aa9979196",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_54c6db2db4163a63cbf0acb1be019bf5",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_5b93cfa21da3d7cd39aa82d533e3cf7b",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_6a0a186ab7bda1800489fa33c5f4ed8d",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_7006c487ad4bffe049f1f1c846847e02",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_75157a4eda257ceb60d01a3f50ca43fa",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T21:29:59.396Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_7a37cc6faab1537ab69cec7c4293914f",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_8761da98b6e44398137b4c7f91c3ba5e",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T23:28:40.074Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_94c2409947c06736ffae223004ded012",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_955fa299e2e62d722ed816880046fe2f",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_9a1979d209ce985a642dfbb7cec76f11",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T23:32:05.292Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_9e05b9f6ea84828a95767c0bcb26c129",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T16:58:20.480Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_a116e6d782f3d738b9bfc350b05211d8",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_a259e37a039c43ff34338e64f68f6314",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_ad5ffe0fd8daaa0bd064fecb03a65e56",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T23:32:49.707Z",
+      "current_reasons": [],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_b680a6139208a8d6bccd0f0fc7f6910f",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T21:43:25.280Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_c03d43f4c673b3a16dffb7051661ce7c",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T23:33:39.504Z",
+      "current_reasons": [
+        "event_cancelled_or_postponed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_c99ed9e1e3e76ee97c6b3a1cc0f31fce",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_cd34a4e29565fdf8c66a67407f8b4867",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-14T23:34:10.009Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_cf8d90086a25b3dd617cc5f66ae251a1",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_d287db0bfb3b7a84cdc73cffef51d894",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T02:34:59.027Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_dbb02b19404fd283fe0fd2bc88a3a89a",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_ee16a3086a3f0529beb1524cbb169fca",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    },
+    {
+      "id": "ent_f20288ee3998837a8ab204c570dc2a1f",
+      "country": "US",
+      "original_proof_expires_at": "2026-10-15T00:00:00.000Z",
+      "current_reasons": [
+        "source_verification_stale_or_revision_changed"
+      ],
+      "original_proof_expired": true
+    }
+  ],
+  "ordinary_freshness_interpretation": "Overnight membership and source-backed display changes are classified against current source/proof clocks. Original facts stay immutable; archival does not promote, rewrite source evidence or extend proof clocks.",
+  "capacity_controls": {
+    "guard_enabled": true,
+    "forward_archive_enabled": true,
+    "thresholds_percent": [
+      70,
+      80,
+      90,
+      97
+    ],
+    "hard_stop_bytes": 9700000000,
+    "unknown_capacity_fails_closed": true,
+    "retry_status": 503,
+    "retry_after_seconds": 900,
+    "customer_auth_billing_database_affected": false,
+    "status_endpoint": "/status",
+    "native_capacity": {
+      "available": true,
+      "file_size_bytes": 3722117120,
+      "conservative_cap_bytes": 10000000000,
+      "protective_stop_bytes": 9700000000,
+      "percent_used": 37.22,
+      "remaining_bytes": 6277882880,
+      "state": "normal",
+      "source_growth_allowed": true,
+      "warning_thresholds_percent": [
+        70,
+        80,
+        90,
+        97
+      ],
+      "as_of": "2026-10-15T06:21:37.579Z",
+      "growth_bytes_per_hour": -2152480768,
+      "growth_interpretation": "net_reclaim_during_migration",
+      "archive": {
+        "documents": 30497,
+        "original_payload_bytes": 6212304937
+      },
+      "samples": [
+        {
+          "observed_at": "2026-10-15T06:15:00.000Z",
+          "file_size_bytes": 3721924608
+        },
+        {
+          "observed_at": "2026-10-15T06:00:00.000Z",
+          "file_size_bytes": 4260044800
+        }
+      ],
+      "scope": "V3 source/evidence database; separate customer/auth/billing storage excluded"
+    }
+  },
+  "operator_execution": {
+    "compatibility_pause_and_fix": "Paused on direct-inline coordinate-cache/review-lineage readers; deployed archive-aware readers plus proof expiry/revision/custody regressions before resume.",
+    "prior_errors": [
+      {
+        "at": "2026-10-14T15:57:26.225Z",
+        "error": "shadow_http_400_request_failed"
+      },
+      {
+        "at": "2026-10-14T16:22:44.528Z",
+        "error": "shadow_http_400_request_failed",
+        "diagnostic": "runtime_error"
+      },
+      {
+        "at": "2026-10-14T17:24:24.069Z",
+        "error": "shadow_http_400_request_failed",
+        "diagnostic": "runtime_error"
+      }
+    ],
+    "final_request_documents": 8,
+    "final_concurrency": 2,
+    "all_failed_groups_recovered_by_verified_idempotent_resume": true,
+    "opaque_provider_fault_cause_not_identified": true
+  },
+  "source_release": [
+    {
+      "role": "api",
+      "version": "e6c74587-d750-4ece-bcd7-b589c7e99a98",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-15T06:11:39.905Z"
+    },
+    {
+      "role": "enrichment",
+      "version": "4988a3dc-bc30-4bb9-b089-fb9f9ea33610",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-15T06:12:01.283Z"
+    },
+    {
+      "role": "readiness",
+      "version": "3d206adf-ab7a-4452-a265-253961b0a7bb",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-15T06:12:22.362Z"
+    },
+    {
+      "role": "eligibility",
+      "version": "6f84d4b1-6a8e-4a01-81d6-4e622dd0a919",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-15T06:12:43.714Z"
+    },
+    {
+      "role": "reconcile",
+      "version": "fc2f58fd-f2ed-4fc8-ae70-c2b3abbd280f",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-15T06:13:05.080Z"
+    },
+    {
+      "role": "watch",
+      "version": "774eb3b0-0ff9-4167-9269-0f205c2c747a",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-15T06:13:26.034Z"
+    },
+    {
+      "role": "acquisition",
+      "version": "e591c221-8d6f-4796-8b0a-e53255d559f6",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-15T06:13:47.150Z"
+    },
+    {
+      "role": "ingest",
+      "version": "705bdedc-7cc3-4a54-bdaf-7f140e38539d",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-15T06:14:08.324Z"
+    }
+  ],
+  "validation": {
+    "full_v3_tests": 422,
+    "full_v3_passed": 422,
+    "focused_archive_and_guard": 9,
+    "archive_reader_compatibility_checks": 64,
+    "frontend_tests": 3,
+    "independence_files": 87,
+    "frontend_build": true,
+    "runtime_boundaries": true,
+    "public_checks": 29,
+    "public_passed": true,
+    "customer_objects_created": 0,
+    "messages_sent": 0,
+    "paid_queries_today": 0
+  },
+  "queue_health": {
+    "active_core": [],
+    "stale_leases": 0,
+    "structured_delivery": {
+      "cloud_ready": true,
+      "expected_interval_seconds": 900,
+      "contact_observation_started": true,
+      "last_authenticated_recheck_poll": "2026-10-15T06:09:13.823Z",
+      "expected_discovery_interval_seconds": 10800,
+      "expected_export_lag_seconds": 3600,
+      "recent_poll_intervals_seconds": [
+        918.836,
+        770.652,
+        917.849
+      ],
+      "host_recently_contacting": true,
+      "cadence_verified": true,
+      "freshness_warning": true,
+      "immutable_receipts": 17806,
+      "producer_ids": 2186,
+      "last_new_receipt_at": "2026-10-15T00:23:38.771Z",
+      "source_last_checked": "2026-10-14T23:55:30Z",
+      "rechecks": {
+        "pending_entities": 1207,
+        "fresh_evidence_ack_eligible": 0,
+        "by_country": [
+          {
+            "market": "AU",
+            "pending_entities": 44,
+            "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "CA",
+            "pending_entities": 15,
+            "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "GB",
+            "pending_entities": 39,
+            "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "IE",
+            "pending_entities": 1,
+            "oldest_requested_at": "2026-10-15T05:49:39.310Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "NZ",
+            "pending_entities": 62,
+            "oldest_requested_at": "2026-10-12T10:57:45.276Z",
+            "fresh_evidence_ack_eligible": 0
+          },
+          {
+            "market": "US",
+            "pending_entities": 1046,
+            "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+            "fresh_evidence_ack_eligible": 0
+          }
+        ],
+        "acknowledged_last_24h": 1791,
+        "latest_acknowledgement": "2026-10-15T00:40:27.284Z",
+        "obsolete_requests_resolved": 2,
+        "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+        "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+        "pagination_supported": true,
+        "oldest_request_preserved": true
+      },
+      "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+    }
+  },
+  "reclaim_method": "Observed native physical reclaim after bounded hash-verified storage-representation transitions; no unsupported VACUUM, full export, database swap, customer traffic cutover or infrastructure deletion.",
+  "rollback": "Restore exact verified original serialized bytes from private R2 through the tested bounded restore endpoint before rolling back archive-aware code. Preserve archive objects and receipts; capacity must permit restoring large cohorts.",
+  "hot_payload_growth": {
+    "as_of": "2026-10-15T06:10:31.957Z",
+    "baseline_completed_at": "2026-10-14T14:34:04.388Z",
+    "scope": "Logical payload deltas since initial profile, overlapping migration and ordinary overnight operation; not physical per-table growth attribution.",
+    "tables": [
+      {
+        "table": "source_facts",
+        "rows_before": 248948,
+        "rows_current": 287038,
+        "payload_before": 476123592,
+        "payload_current": 542265098,
+        "payload_delta": 66141506
+      },
+      {
+        "table": "producer_records",
+        "rows_before": 28269,
+        "rows_current": 31945,
+        "payload_before": 272049193,
+        "payload_current": 296523891,
+        "payload_delta": 24474698
+      },
+      {
+        "table": "source_verifications",
+        "rows_before": 32956,
+        "rows_current": 39239,
+        "payload_before": 170725020,
+        "payload_current": 191410162,
+        "payload_delta": 20685142
+      },
+      {
+        "table": "jobs",
+        "rows_before": 175850,
+        "rows_current": 204349,
+        "payload_before": 45378662,
+        "payload_current": 52671574,
+        "payload_delta": 7292912
+      }
+    ]
+  },
+  "growth_runway": {
+    "steady_state_estimate_available": false,
+    "observed_pause_interval": {
+      "from": "2026-10-14T17:30:00.000Z",
+      "to": "2026-10-15T06:00:00.000Z",
+      "elapsed_hours": 12.5,
+      "first_bytes": 4069138432,
+      "last_bytes": 4260044800,
+      "net_bytes": 190906368,
+      "observed_bytes_per_day": 366540227,
+      "provisional_headroom_days_at_observed_rate": 17.1,
+      "context": "12.5-hour pause in historical migration, normal producer/proof operation and verified forward R2 writes active. Short/bursty observation, not a steady-state or guaranteed forecast."
+    },
+    "reason": "An overnight pause provides a provisional positive-growth observation; 12.5 hours of potentially bursty source activity is not a validated steady-state forecast. Continue quarter-hour sampling over 24\u201372 hours. Migration slopes are kept separate.",
+    "planning_examples": [
+      {
+        "hot_growth_bytes_per_day": 20000000,
+        "headroom_days": 313
+      },
+      {
+        "hot_growth_bytes_per_day": 50000000,
+        "headroom_days": 125
+      }
+    ],
+    "examples_are_scenarios_not_measured_forecasts": true
+  },
+  "future_sharding": "Normalized/control/proof working set is small enough for current D1 after document tiering. Preserve separate customer DB; shard evidence/report ownership only if measured hot growth later requires it.",
+  "source_pipeline_publication_enabled": false,
+  "paid_manually_paused": true,
+  "paid_bulk_enabled": false,
+  "pitchlist_v2_unchanged": true,
+  "customer_public_and_existing_live_checkout_preserved": true,
+  "configuration": {
+    "as_of": "2026-10-15T06:21:37.054Z",
+    "workers": [
+      {
+        "role": "reconcile",
+        "name": "findpitches-v3-reconcile-shadow",
+        "guard_enabled": true,
+        "forward_archive_enabled": true,
+        "private_bucket": true,
+        "source_database": true
+      },
+      {
+        "role": "eligibility",
+        "name": "findpitches-v3-eligibility-shadow",
+        "guard_enabled": true,
+        "forward_archive_enabled": true,
+        "private_bucket": true,
+        "source_database": true
+      },
+      {
+        "role": "enrichment",
+        "name": "findpitches-v3-enrichment-shadow",
+        "guard_enabled": true,
+        "forward_archive_enabled": true,
+        "private_bucket": true,
+        "source_database": true
+      },
+      {
+        "role": "readiness",
+        "name": "findpitches-v3-readiness-shadow",
+        "guard_enabled": true,
+        "forward_archive_enabled": true,
+        "private_bucket": true,
+        "source_database": true
+      },
+      {
+        "role": "watch",
+        "name": "findpitches-v3-watch-shadow",
+        "guard_enabled": true,
+        "forward_archive_enabled": true,
+        "private_bucket": true,
+        "source_database": true
+      },
+      {
+        "role": "acquisition",
+        "name": "findpitches-v3-acquisition-shadow",
+        "guard_enabled": true,
+        "forward_archive_enabled": true,
+        "private_bucket": true,
+        "source_database": true
+      },
+      {
+        "role": "api",
+        "name": "findpitches-v3-api-shadow",
+        "guard_enabled": true,
+        "forward_archive_enabled": true,
+        "private_bucket": true,
+        "source_database": true
+      },
+      {
+        "role": "ingest",
+        "name": "findpitches-v3-ingest-shadow",
+        "guard_enabled": true,
+        "forward_archive_enabled": true,
+        "private_bucket": true,
+        "source_database": true
+      }
+    ],
+    "customer_version": "feb52d39-a866-40cf-9b72-613d488437bf",
+    "customer_version_unchanged": true
+  },
+  "certificate_bypass": false,
+  "ready_added_since_canary": 12,
+  "withdrawal_reason_counts_overlapping": {
+    "source_verification_stale_or_revision_changed": 30,
+    "source_http_503": 2,
+    "selected_application_deadline_disagrees_with_proof": 1,
+    "selected_location_disagrees_with_proof": 2,
+    "selected_event_name_disagrees_with_proof": 1,
+    "event_cancelled_or_postponed": 1
+  }
+}
