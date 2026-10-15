@@ -24,7 +24,9 @@ if [[ "${FPD_FR_MINUTES:-12}" != "0" ]]; then
   step "france: seed datatourisme (${FPD_FR_DT_CALLS:-20} API pages)"
   $PY -m fpd seed datatourisme --max-calls "${FPD_FR_DT_CALLS:-20}" | /usr/bin/jq -c '.enqueued.datatourisme' 2>/dev/null || { step "france seed failed"; rc=1; }
   step "france: crawl --minutes ${FPD_FR_MINUTES:-12} (datatourisme:fr lane only)"
-  $PY -u -m fpd crawl --minutes "${FPD_FR_MINUTES:-12}" --generators datatourisme:fr >/dev/null || { step "france crawl failed"; rc=1; }
+  # Many different council sites at once: lower concurrency than the platform lanes to keep memory well inside the unit cap.
+  FPD_CONCURRENCY="${FPD_FR_CONCURRENCY:-4}" $PY -u -m fpd crawl --minutes "${FPD_FR_MINUTES:-12}" --generators datatourisme:fr >/dev/null \
+    || { step "france crawl failed"; rc=1; }
 fi
 step "revisit-hubs (directory pages older than 7 days)"
 $PY -m fpd revisit-hubs --older-than-days 7 || { step "revisit-hubs failed"; rc=1; }

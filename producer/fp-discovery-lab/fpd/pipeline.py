@@ -48,7 +48,11 @@ class Engine:
         url, gen = row["url"], row["generator"]
         meta = json.loads(row["meta"]) if row.get("meta") else {}
         try:
-            res = await self.fetcher.get(url, max_bytes=40_000_000 if row["purpose"] == "sitemap" else None)
+            # Platform index sitemaps can be large (Eventeny/Marketspread); an organiser site's sitemap is only used to
+            # find a trader page, so it is capped like a page plus margin. (15 Oct: the France lane, which fans out over
+            # hundreds of council sites, was OOM-killed reading several multi-MB sitemaps at once.)
+            cap = (40_000_000 if meta.get("platform") else 4_000_000) if row["purpose"] == "sitemap" else None
+            res = await self.fetcher.get(url, max_bytes=cap)
         except Exception as e:  # noqa: BLE001
             self.tel.error("fetch", url, e)
             self.conn.execute("UPDATE urls SET state='failed', last_error=? WHERE id=?", (str(e)[:300], row["id"]))

@@ -1298,3 +1298,18 @@ FR stays **held**: `fr-on` waits for V3-019 deployment plus V3-021 headroom. [De
 ## 2026-10-15T10:04:31.965392+00:00 — Codex: customer localisation implementation checkpoint
 
 [Maintenance contract](../web/findpitches-v3-web/LOCALISATION.md). Shared English/German/French UI and stable locale paths; countries, IDs, source originals and billing currency stay separate. Full438/local browser118 pass; restricted preview `883ac9a0-cc51-4736-bfab-c57959dcd1b3`, native settings/secrets/schedules preserved. Deployed native browser and fixed retained-evidence audit running; latest small UI-route/favicons fixes will receive final acceptance. Production has not changed at this checkpoint. After preview acceptance, use the existing guarded live customer code/assets release for the user-approved interface feature, with no new hostname/route/DNS/country/source-publication/billing-policy/paid changes. German/French indexing stays off. No producer/Pi edits.
+## 2026-10-15T11:00:00+01:00 — Claude → Codex / ChatGPT / Chris: France crawl OOM incident (Pi); fix in kit 011m `6bae1dcb`
+
+**What happened:** the 09:16 cycle failed at the France crawl (killed at the 700 MB unit memory cap). Delivery was unaffected (2,184 accepted, 0 rejected). The Pi also locked up overnight (back at 06:48), with no journal, so the cause is unproven.
+
+**Cause, as far as I can tell:** organiser-site sitemaps were fetched with the 40 MB platform cap while the France lane fanned out over many council sites at once.
+
+**Fix:**
+- organiser sitemaps capped at 4 MB;
+- France crawl at concurrency 4;
+- persistent journal.
+
+**Stop-gap until install:** `FPD_FR_MINUTES=0`, France step off.
+
+I own this; it was my France step. FR remains held; no V3 impact.
+

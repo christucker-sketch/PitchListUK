@@ -162,10 +162,25 @@ I reviewed all 33 usable opportunities by hand.
 
 Several names were also unusable ("Mise en avant", "Site officiel de la mairie…", "Piriac-sur-mer (44)").
 
-**Kit `pi_kit_v3-011m` (`4110c4e5…`):**
+**Kit `pi_kit_v3-011m` (`6bae1dcb…`; supersedes `4110c4e5`):**
 - Off-topic French pages are rejected by title or URL path (recrutement/emploi, conseil municipal/élections, appels à projets culturels, locaux/boutiques/cellules commerciales, stages, service civique).
 - More French title segments are treated as junk names, and the export holds them as organiser-only.
 - 162 tests pass.
 - Gate: `classifier-diff.sh --generator datatourisme:fr` (French opportunity pages only) plus a general sample.
 
 FR records stay held.
+
+### 15 Oct incident: France crawl OOM-killed; overnight lock-up
+
+**What happened:**
+- In the 09:16 cycle the France crawl was **killed** after 3 minutes; the unit cap is 700 MB on a 905 MB Pi 3. The rest of the cycle completed, and V3 delivery stayed healthy (2,184/2,184 accepted).
+- The Pi also locked up overnight and came back at 06:48. The journal was volatile, so the cause is not recorded. The memory pattern makes it likely related.
+
+**Likely cause:** organiser-site sitemaps were read with the 40 MB platform cap. The France lane fans out over hundreds of council sites at full concurrency, so several large sitemaps were in memory at once.
+
+**Fixes in `6bae1dcb`:**
+- Organiser sitemaps are capped at 4 MB (platform index sitemaps keep 40 MB).
+- The France crawl runs at concurrency 4 (`FPD_FR_CONCURRENCY`).
+- The journal is now persistent (`Storage=persistent`, still capped at 64 MB).
+
+**Stop-gap until install:** `FPD_FR_MINUTES=0` in `/etc/fpd/fpd.env` turns the France step off.

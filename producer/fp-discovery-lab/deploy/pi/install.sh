@@ -125,7 +125,7 @@ if [[ $NO_SYSTEMD -eq 0 ]]; then
   else
     warn "no swap manager found; continuing without swap changes"
   fi
-  mkdir -p /etc/systemd/journald.conf.d
+  mkdir -p /etc/systemd/journald.conf.d /var/log/journal
   install -m 0644 "$KIT/config/journald-fpd.conf" /etc/systemd/journald.conf.d/fpd.conf
   systemctl restart systemd-journald
 fi
