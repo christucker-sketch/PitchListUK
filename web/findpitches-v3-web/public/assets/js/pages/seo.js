@@ -53,7 +53,7 @@
   if (filters.types) finderParams.type = filters.types.join(','); if (filters.sells) finderParams.sells = filters.sells; if (!d.region) finderParams.radius='any';
   const finderHref = R.draft.finder(d.market, finderParams);
   const lastChecked = search.results.map(o=>o.checked.last_checked).filter(Boolean).sort().pop();
-  const guide = CFG.guidance[d.market] || [];
+  const guide = CFG.guidance[d.market] || [translateUI('Check the organiser’s own requirements.')];
   const noData = search.coverage==='none';
 
   P.innerHTML = uiHTML`
@@ -69,7 +69,7 @@
   <div class="wrap section"><div class="lgrid">
     <div>
       ${noData ? FP.ui.coverageBuilding(d.market)
-        : M.count ? uiHTML`<div class="results"><h2>${d.intent?translateUI('Latest listings'):translateUI('Coming up')}${d.region?' in '+esc(M.place):''}</h2>${visible.map(o=>card(o)).join('')}${M.count>search.results.length?uiHTML`<a class="btn btn-line" href="${finderHref}">See all ${M.count} in the Finder →</a>`:''}</div>`
+        : M.count ? uiHTML`<div class="results"><h2>${d.intent?translateUI('Latest listings'):translateUI('Coming up')}${d.region?' '+translateUI('in')+' '+esc(M.place):''}</h2>${visible.map(o=>card(o)).join('')}${M.count>search.results.length?uiHTML`<a class="btn btn-line" href="${finderHref}">See all ${M.count} in the Finder →</a>`:''}</div>`
         : uiHTML`<div class="zero"><h2>Nothing live for this search right now</h2><p class="muted" style="margin:0">Organisers open applications all year. Try a wider area below. Email alerts are coming later.</p></div>`}
       ${L.map(g=>uiHTML`<section class="lblock"><h2>${esc(g.title)}</h2><div class="linkgrid">${g.links.map(l=>uiHTML`<a href="${R.draft.seo(l.path)}">${esc(l.label)}<small>${l.count}</small></a>`).join('')}</div></section>`).join('')}
       <section class="lblock faq"><h2>Questions</h2>${M.faq.map((f,i)=>uiHTML`<details ${i===0?'open':''}><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}</section>
@@ -78,7 +78,7 @@
       ${d.intent?uiHTML`<div class="card"><h3>${esc(d.intent.labels[d.market])}</h3><p class="muted" style="margin:0">${esc(d.intent.blurb)}</p></div>`:''}
       <div class="card"><h3>Before you apply</h3><p class="muted" style="margin:0 0 8px;font-size:.92rem">Organisers in ${esc(market.the)} often ask for:</p><ul>${guide.map(g=>uiHTML`<li>${esc(g)}</li>`).join('')}</ul></div>
       <div class="card"><h3>How FindPitches works</h3><p class="muted" style="margin:0;font-size:.92rem">${esc(M.intro[M.intro.length-1])}</p><a class="link" href="index.html#checked" style="display:inline-block;margin-top:8px">How we check listings</a></div>
-      ${M.hreflang.filter(h=>h.lang!=='x-default'&&h.lang!==market.locale).length?uiHTML`<div class="card"><h3>Also on FindPitches</h3>${M.hreflang.filter(h=>h.lang!=='x-default'&&h.lang!==market.locale).map(h=>{const pth=h.href.replace(R.SITE,''); const mm=st.m(R.marketOf(pth.split('/')[1])); return uiHTML`<a class="link" style="display:block;margin:4px 0" href="${R.draft.seo(pth)}">${esc(mm.name)}</a>`;}).join('')}</div>`:''}
+      ${M.hreflang.filter(h=>h.lang!=='x-default'&&h.href!==M.canonical).length?uiHTML`<div class="card"><h3>Also on FindPitches</h3>${M.hreflang.filter(h=>h.lang!=='x-default'&&h.href!==M.canonical).map(h=>{const pth=h.href.replace(R.SITE,'');const target=FP.i18n.route(pth);const mm=st.m(R.marketOf(target.path.split('/')[1]));const language=h.lang.split('-')[0];const label=language===FP.i18n.current?mm.name:(FP.i18n.languages[language]||language)+' — '+mm.name;return uiHTML`<a class="link" style="display:block;margin:4px 0" href="${pth}">${esc(label)}</a>`;}).join('')}</div>`:''}
     </aside>
   </div></div>
 `;

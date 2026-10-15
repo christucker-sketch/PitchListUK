@@ -7,6 +7,8 @@
 (function () {
   const FP = (window.FP = window.FP || {});
   const R = FP.routes, CFG = FP.seoConfig;
+  const uiText=(message,args=[])=>FP.i18n?FP.i18n.tr(message,args):message.replace(/\{(\d+)\}/g,(_,n)=>args[n]);
+  const linkPlace=r=>FP.i18n&&FP.i18n.current!=='en'?r.name:placeOf(r);
   const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
   const inPlace = name => /^the\s/i.test(name) ? 'the ' + name.slice(4) : name;
   // Regions like 'South East' read as 'the South East' mid-sentence.
@@ -217,20 +219,20 @@
     const keep = a => a.filter(Boolean);
     if (d.region) {
       const other = keep(intents.filter(i => !i.generic && (!d.intent || i.key !== d.intent.key)).map(i => L(i.labels[d.market], i, d.region)));
-      if (other.length) out.push({ title: `More ways to trade in ${placeOf(d.region)}`, links: other });
+      if (other.length) out.push({ title: uiText('More ways to trade in {0}',[linkPlace(d.region)]), links: other });
       const kids = keep(regions.filter(r => r.parent_id === d.region.id).map(r => L(r.name, pageIntent, r)));
-      if (kids.length) out.push({ title: `Areas in ${placeOf(d.region)}`, links: kids.sort((a, b) => a.label.localeCompare(b.label)) });
-      if (d.region.parent_id && regById[d.region.parent_id]) { const l = L(regById[d.region.parent_id].name, pageIntent, regById[d.region.parent_id]); if (l) out.push({ title: 'Wider area', links: [l] }); }
+      if (kids.length) out.push({ title: uiText('Areas in {0}',[linkPlace(d.region)]), links: kids.sort((a, b) => a.label.localeCompare(b.label)) });
+      if (d.region.parent_id && regById[d.region.parent_id]) { const l = L(regById[d.region.parent_id].name, pageIntent, regById[d.region.parent_id]); if (l) out.push({ title: uiText('Wider area'), links: [l] }); }
       const sib = keep(regions.filter(r => r.id !== d.region.id && r.parent_id === d.region.parent_id).map(r => L(r.name, pageIntent, r))).sort((a, b) => b.count - a.count).slice(0, 12);
-      if (sib.length) out.push({ title: d.intent ? `${d.intent.labels[d.market]} nearby` : 'Nearby', links: sib });
+      if (sib.length) out.push({ title: d.intent ? uiText('{0} nearby',[d.intent.labels[d.market]]) : uiText('Nearby'), links: sib });
     } else {
-      if (!d.intent) { const ints = keep(intents.map(i => L(i.labels[d.market], i, null))); if (ints.length) out.push({ title: 'Popular searches', links: ints }); }
+      if (!d.intent) { const ints = keep(intents.map(i => L(i.labels[d.market], i, null))); if (ints.length) out.push({ title: uiText('Popular searches'), links: ints }); }
       const top = keep(regions.filter(r => r.level !== 'county').map(r => L(r.name, pageIntent, r))).sort((a, b) => a.label.localeCompare(b.label));
       const lv = regions.find(r => r.level !== 'county'); // label from the taxonomy level, not the country
-      if (top.length) out.push({ title: lv && lv.level === 'state' ? 'By state' : 'By region', links: top });
+      if (top.length) out.push({ title: lv && lv.level === 'state' ? uiText('By state') : uiText('By region'), links: top });
       const counties = keep(regions.filter(r => r.level === 'county').map(r => L(r.name, pageIntent, r))).sort((a, b) => a.label.localeCompare(b.label));
-      if (counties.length) out.push({ title: 'By county', links: counties });
-      if (d.intent) { const ints = keep(intents.filter(i => i.key !== d.intent.key).map(i => L(i.labels[d.market], i, null))); if (ints.length) out.push({ title: 'Related searches', links: ints }); }
+      if (counties.length) out.push({ title: uiText('By county'), links: counties });
+      if (d.intent) { const ints = keep(intents.filter(i => i.key !== d.intent.key).map(i => L(i.labels[d.market], i, null))); if (ints.length) out.push({ title: uiText('Related searches'), links: ints }); }
     }
     return out;
   }

@@ -15,7 +15,7 @@
 (function () {
   const FP = (window.FP = window.FP || {});
 
-  const INTENTS = [
+  let INTENTS = [
     // generic: true → no filters, so intent × region would duplicate the region page. Those URLs 301 to the region page.
     { key: 'traders-wanted', filters: {}, generic: true,
       keywords: { GB: ['stall holders wanted', 'stallholders wanted', 'market traders wanted', 'traders wanted'], US: ['vendors wanted', 'vendor opportunities', 'looking for vendors'] },
@@ -63,7 +63,7 @@
   ];
 
   // Market-specific practical guidance (kept deliberately general: "organisers often ask for…").
-  const GUIDANCE = {
+  let GUIDANCE = {
     GB: ['public liability insurance (often £5m cover)', 'a food hygiene rating and council food business registration if you sell food', 'gas and electrical safety certificates for catering units', 'photos of your stall or unit'],
     US: ['a vendor or temporary event permit from the city or county', 'a state sales tax permit', 'a health department permit if you sell food', 'general liability insurance and photos of your booth'],
     CA: ['a municipal vendor or event permit', 'public health approval if you sell food', 'liability insurance'],
@@ -105,6 +105,13 @@
     'gb/midlands': 'Catch-all "Midlands" bucket in the source data. It overlaps East and West Midlands, so it isn’t a genuine area to target'
   };
 
+  // Presentation config only: keys, filters, paths and region/source names stay
+  // exact. The server module has no browser language and keeps its base config.
+  if(FP.i18n&&FP.i18n.current!=='en'){
+    const labels={'traders-wanted':'Traders wanted',festivals:'Festival opportunities',food:'Food trader opportunities',christmas:'Christmas and holiday opportunities',markets:'Market opportunities',craft:'Craft opportunities',sports:'Sports opportunities',council:'Council opportunities','street-trading':'Street trading opportunities'};
+    INTENTS=INTENTS.map(i=>({...i,labels:Object.fromEntries(Object.keys(i.labels).map(country=>[country,FP.i18n.tr(labels[i.key])])),blurb:FP.i18n.tr(i.blurb)}));
+    GUIDANCE=Object.fromEntries(Object.entries(GUIDANCE).map(([country,items])=>[country,items.map(item=>FP.i18n.tr(item))]));
+  }
   FP.seoConfig = {
     // ELIGIBILITY threshold (not the whole indexing decision): a page needs at least this many live listings before the
     // other indexability checks are even considered. Thin-content rule carried over from PitchList's SEO strategy.

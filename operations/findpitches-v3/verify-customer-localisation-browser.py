@@ -3,14 +3,14 @@ Native mode uses the existing restricted-preview relay with verified upstream TL
 """
 import argparse, datetime, json, os, importlib.util, sys
 sys.dont_write_bytecode=True
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlencode
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--base',default='http://127.0.0.1:8794');p.add_argument('--output',required=True);p.add_argument('--screenshots');a=p.parse_args()
     assert a.base in ['http://127.0.0.1:8794','http://127.0.0.1:8795','https://findpitches.com'],'owned_harness_preview_or_public_origin_required'
-    synthetic=a.base.endswith(':8794');checks=[];foreign=[];errors=[]
+    synthetic=a.base.endswith(':8794');checks=[];foreign=[];errors=[];completed=False
     public=a.base=='https://findpitches.com'
     report={'schema':'findpitches-v3-localisation-browser-v1','mode':'actual_public' if public else 'synthetic_local_worker' if synthetic else 'restricted_deployed_preview_via_verified_https_relay','checks':checks,'messages_sent':0,'payment_objects_created':0,'serper_queries':0,'certificate_bypass':False}
     def check(name,condition):
@@ -40,6 +40,8 @@ def main():
             check(device+': '+lang+' language and home',page.locator('html').get_attribute('lang')==lang and page.locator('#languageSelect').input_value()==lang)
             check(device+': '+lang+' navigation',word.lower() in page.locator('#fp-top').text_content().lower() and page.locator('#languageSelect').is_visible())
             check(device+': '+lang+' language control inside header',page.locator('#languageSelect').evaluate('(e)=>{const a=e.getBoundingClientRect(),b=e.closest(\"header\").getBoundingClientRect();return a.top>=b.top && a.bottom<=b.bottom;}'))
+            page.locator('#seoCols a').first.wait_for(timeout=90000)
+            check(device+': '+lang+' category links translated',('Standplätze' if lang=='de' else 'Exposants') in page.locator('#seoCols').inner_text())
             with page.expect_response(lambda r:'/api/v3/opportunities?' in r.url and 'market=GB' in r.url and r.request.method=='GET',timeout=90000) as actual:
                 visit('/lang/'+lang+'/uk/find-pitches/','#list .ocard h3 a')
             data=actual.value.json()
@@ -53,6 +55,8 @@ def main():
             check(device+': '+lang+' source language disclosure',page.locator('.source-language-note').is_visible())
             check(device+': '+lang+' locale canonical',('/lang/'+lang+'/uk/opportunity/'+oid+'/') in page.locator('link[rel=canonical]').first.get_attribute('href'))
             for path,selector in [('/uk/','#page h1'),('/pricing/','.plan'),('/account.html','#gSign'),('/saved.html','#gSign'),('/alerts.html','main h1'),('/organisers/','form')]:visit('/lang/'+lang+path,selector)
+            visit('/lang/'+lang+'/uk/','#page .side')
+            check(device+': '+lang+' practical guidance translated','public liability insurance' not in page.locator('#page .side').inner_text())
             visit('/lang/'+lang+'/account.html','#gSign');page.locator('#gSign').click();page.locator('#siEmail').wait_for()
             check(device+': '+lang+' translated sign-in modal',page.locator('#si').inner_text().find('Email me a sign-in link')<0 and page.locator('#siHelp').inner_text().find('15')>=0)
             page.locator('[data-close]').first.click()
@@ -64,7 +68,11 @@ def main():
             if a.screenshots:
                 out=Path(a.screenshots);out.mkdir(parents=True,exist_ok=True);page.screenshot(path=str(out/(device+'-'+lang+'.png')),full_page=True)
             check(device+': '+lang+' no horizontal page overflow',page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'))
-          visit('/lang/de/uk/find-pitches/?q=Kent','#list .ocard h3 a')
+          # Use a region actually present in the rendered source response;
+          # a guessed county may legitimately have zero current READY.
+          query={'sort':'recently_checked'}
+          if original['location'].get('region_name'):query['q']=original['location']['region_name']
+          visit('/lang/de/uk/find-pitches/?'+urlencode(query),'#list .ocard h3 a')
           before=page.evaluate('Object.fromEntries(new URLSearchParams(location.search))');page.locator('#languageSelect').select_option('fr');page.wait_for_url('**/lang/fr/**');page.locator('#list .ocard h3 a').first.wait_for(timeout=90000)
           check(device+': switching preserves country and filters',page.evaluate('Object.fromEntries(new URLSearchParams(location.search))')==before and page.evaluate("FP.state.market==='GB'"))
           page.locator('#languageSelect').select_option('en');page.wait_for_url('**/uk/find-pitches/**');page.locator('#languageSelect').wait_for()
@@ -78,7 +86,8 @@ def main():
           ctx.close()
         check('zero page errors',not errors);check('zero external browser requests',not foreign)
         if browser:browser.close()
+        completed=True
     finally:
-      report.update(as_of=datetime.datetime.now(datetime.timezone.utc).isoformat(),passed=bool(checks) and all(c['passed'] for c in checks) and not errors,total=len(checks),page_errors=errors,foreign_requests=len(foreign));Path(a.output).write_text(json.dumps(report,indent=2)+'\n')
+      report.update(as_of=datetime.datetime.now(datetime.timezone.utc).isoformat(),completed=completed,passed=completed and bool(checks) and all(c['passed'] for c in checks) and not errors,total=len(checks),page_errors=errors,foreign_requests=len(foreign));Path(a.output).write_text(json.dumps(report,indent=2)+'\n')
 
 if __name__=='__main__':main()

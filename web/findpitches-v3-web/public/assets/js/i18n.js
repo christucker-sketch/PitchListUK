@@ -65,7 +65,7 @@
     if (lang==='en') return indexable?{...value,hreflang:alternates}:value;
     const place=descriptor.region?.name || tr(selectedMarket.name,[],lang);
     const heading=tr('Checked opportunities in {0}',[place],lang);
-    return {...value,title:heading+' | FindPitches',h1:heading,
+    return {...value,place,title:heading+' | FindPitches',h1:heading,
       description:tr('Browse checked markets, festivals and trader opportunities in {0}. Apply directly with the organiser.',[place],lang),
       intro:[tr('Browse checked markets, festivals and trader opportunities in {0}. Apply directly with the organiser.',[place],lang),tr('Checked against event, organiser and application sources.',[],lang)],
       breadcrumbs:value.breadcrumbs.map((b,i)=>({...b,name:i===0?b.name:i===1?tr(selectedMarket.name,[],lang):tr(b.name,[],lang)})),

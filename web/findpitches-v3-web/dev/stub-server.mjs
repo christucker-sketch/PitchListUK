@@ -8,6 +8,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import {i18n} from '../server/i18n.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pub = path.join(root, 'public');
@@ -98,12 +99,16 @@ async function api(req, res, url) {
 }
 
 function serveStatic(req, res, url) {
-  let f = decodeURIComponent(url.pathname);
+  const route=i18n.route(url.pathname);
+  if(!route.valid)return send(res,404,'Not found',{'content-type':'text/plain'});
+  let f = decodeURIComponent(route.path);
   if (f === '/') f = '/index.html';
   const file = path.normalize(path.join(pub, f));
   if (!file.startsWith(pub) || !fs.existsSync(file) || fs.statSync(file).isDirectory())
     return send(res, 404, 'Not found', { 'content-type': 'text/plain' });
-  send(res, 200, fs.readFileSync(file), { 'content-type': TYPES[path.extname(file)] || 'application/octet-stream' });
+  let body=fs.readFileSync(file);
+  if(path.extname(file)==='.html')body=i18n.markup(body.toString('utf8'),route.language).replace(/<html lang="[^"]*"/,`<html lang="${route.language}"`).replace('<head>',`<head><base href="${route.prefix}/">`);
+  send(res, 200, body, { 'content-type': TYPES[path.extname(file)] || 'application/octet-stream' });
 }
 
 http.createServer((req, res) => {

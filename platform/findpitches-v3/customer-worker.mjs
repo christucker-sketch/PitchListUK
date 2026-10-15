@@ -123,7 +123,7 @@ async function html(request,env,now) {
   const recovery=['/account.html','/pricing.html','/pricing/','/saved.html','/alerts.html'].includes(path);
   // These documents contain no inventory facts. Their browser API requests
   // still read fresh proof; SEO/detail pages and sitemaps remain proof-bound.
-  const shellDocument=['/','/index.html','/finder.html','/organisers.html','/organisers/'].includes(path)||/^\/(?:uk|us|ca|au|ie|nz|sg|hk)\/find-pitches\/$/.test(path);
+  const shellDocument=['/','/index.html','/finder.html','/organisers.html','/organisers/'].includes(path)||/^\/(?:uk|us|ca|au|ie|nz|sg|hk|fr)\/find-pitches\/$/.test(path);
   const rows=recovery||shellDocument?[]:(await readCatalogue(env,now)).rows,ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
   if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));if(env.V3_LOCALISATION_ENABLED!=='false'&&env.V3_LOCALISATION_INDEXABLE==='true')entries.push(...entries.flatMap(entry=>['de','fr'].map(lang=>({...entry,path:i18n.pathFor(entry.path,lang)}))));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
   let d,template,routeQuery='';

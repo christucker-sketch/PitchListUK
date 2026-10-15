@@ -1,8 +1,15 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-15, 09:10 London Germany preparation** (Europe/London).
-State: **V3-023 preliminary Germany DONE — source plan/offline conformance/Claude handoff, no DE activation; V3-021 DONE — verified private R2 tiering and reclaimed headroom; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
+Author: Codex. Updated: **2026-10-15, 20:13 London — customer localisation complete** (Europe/London).
+State: **V3-024 DONE — shared German/French customer UI live, indexing held; V3-023 preliminary Germany DONE, DE intake off; V3-021 storage DONE; V3-019 France compatibility DONE; V3-020 French proof OPEN; V3-022 hot-growth OPEN; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+
+## Localisation complete — 20:13 London, 15 October
+
+**V3-024 DONE — German/French customer UI live:** [Completion/evidence](../../docs/findpitches-v3-customer-localisation-2026-10-15.md). Shared language picker, all customer screens, localised sign-in/hosted-flow handling and independent country selection; English URLs/source values/IDs/prices/global Pro unchanged. Full439, focused44, frontend3, independence93, local browser130 and final actual public desktop/mobile124 pass; zero browser errors/foreign requests. Public security/API/SEO29 passed with Checkout LIVE. Active public `e6c4f562-dd47-4e63-9658-1b2ff9ad2669`, preview `95f59b27-2475-4d7d-a2e9-8de9459c2746`. Native bindings exactly preserved, no route/DNS/PitchList/V2/schema/source changes; public/recovery/LIVE Checkout restored. Original-row audit15,811receipts/108,819facts/7,077IDs:0 destructive mutations/identity changes;0Serper/messages/payment objects/READY gains. German/French URLs noindex pending language/content/inventory review; DE country intake off; paid/source publication remain off. Latest native config reconfirmed 20:12 London; full public browser observation11:48 London. OwnedLIVE billing acceptance remains separate.
+
+[German live](https://findpitches.com/lang/de/) · [French live](https://findpitches.com/lang/fr/). Existing shared account/global Pro, source originals and country selection retained. New mail/Checkout provider payloads covered by mocks; no actual email/payment acceptance claimed. Claude's subsequent host-hardening handover reports011n installed, enforced memory/SSD fix and a small supervised test passed; France crawl resumed, FR export held pending24h clean cycles.172engine candidates are not V3READY; Codex did not independently inspect the Pi. Cloud/storage gates remain cleared. Continue V3-020 and V3-022 in their existing scope; no producer edits or additional paid authority.
 
 ## Localisation implementation checkpoint — 15 October
 

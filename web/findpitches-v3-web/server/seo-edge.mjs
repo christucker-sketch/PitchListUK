@@ -62,7 +62,7 @@ const window = { FP: {} };
 (function () {
   const FP = (window.FP = window.FP || {});
 
-  const INTENTS = [
+  let INTENTS = [
     // generic: true → no filters, so intent × region would duplicate the region page. Those URLs 301 to the region page.
     { key: 'traders-wanted', filters: {}, generic: true,
       keywords: { GB: ['stall holders wanted', 'stallholders wanted', 'market traders wanted', 'traders wanted'], US: ['vendors wanted', 'vendor opportunities', 'looking for vendors'] },
@@ -110,7 +110,7 @@ const window = { FP: {} };
   ];
 
   // Market-specific practical guidance (kept deliberately general: "organisers often ask for…").
-  const GUIDANCE = {
+  let GUIDANCE = {
     GB: ['public liability insurance (often £5m cover)', 'a food hygiene rating and council food business registration if you sell food', 'gas and electrical safety certificates for catering units', 'photos of your stall or unit'],
     US: ['a vendor or temporary event permit from the city or county', 'a state sales tax permit', 'a health department permit if you sell food', 'general liability insurance and photos of your booth'],
     CA: ['a municipal vendor or event permit', 'public health approval if you sell food', 'liability insurance'],
@@ -152,6 +152,13 @@ const window = { FP: {} };
     'gb/midlands': 'Catch-all "Midlands" bucket in the source data. It overlaps East and West Midlands, so it isn’t a genuine area to target'
   };
 
+  // Presentation config only: keys, filters, paths and region/source names stay
+  // exact. The server module has no browser language and keeps its base config.
+  if(FP.i18n&&FP.i18n.current!=='en'){
+    const labels={'traders-wanted':'Traders wanted',festivals:'Festival opportunities',food:'Food trader opportunities',christmas:'Christmas and holiday opportunities',markets:'Market opportunities',craft:'Craft opportunities',sports:'Sports opportunities',council:'Council opportunities','street-trading':'Street trading opportunities'};
+    INTENTS=INTENTS.map(i=>({...i,labels:Object.fromEntries(Object.keys(i.labels).map(country=>[country,FP.i18n.tr(labels[i.key])])),blurb:FP.i18n.tr(i.blurb)}));
+    GUIDANCE=Object.fromEntries(Object.entries(GUIDANCE).map(([country,items])=>[country,items.map(item=>FP.i18n.tr(item))]));
+  }
   FP.seoConfig = {
     // ELIGIBILITY threshold (not the whole indexing decision): a page needs at least this many live listings before the
     // other indexability checks are even considered. Thin-content rule carried over from PitchList's SEO strategy.
@@ -180,6 +187,8 @@ const window = { FP: {} };
 (function () {
   const FP = (window.FP = window.FP || {});
   const R = FP.routes, CFG = FP.seoConfig;
+  const uiText=(message,args=[])=>FP.i18n?FP.i18n.tr(message,args):message.replace(/\{(\d+)\}/g,(_,n)=>args[n]);
+  const linkPlace=r=>FP.i18n&&FP.i18n.current!=='en'?r.name:placeOf(r);
   const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
   const inPlace = name => /^the\s/i.test(name) ? 'the ' + name.slice(4) : name;
   // Regions like 'South East' read as 'the South East' mid-sentence.
@@ -390,20 +399,20 @@ const window = { FP: {} };
     const keep = a => a.filter(Boolean);
     if (d.region) {
       const other = keep(intents.filter(i => !i.generic && (!d.intent || i.key !== d.intent.key)).map(i => L(i.labels[d.market], i, d.region)));
-      if (other.length) out.push({ title: `More ways to trade in ${placeOf(d.region)}`, links: other });
+      if (other.length) out.push({ title: uiText('More ways to trade in {0}',[linkPlace(d.region)]), links: other });
       const kids = keep(regions.filter(r => r.parent_id === d.region.id).map(r => L(r.name, pageIntent, r)));
-      if (kids.length) out.push({ title: `Areas in ${placeOf(d.region)}`, links: kids.sort((a, b) => a.label.localeCompare(b.label)) });
-      if (d.region.parent_id && regById[d.region.parent_id]) { const l = L(regById[d.region.parent_id].name, pageIntent, regById[d.region.parent_id]); if (l) out.push({ title: 'Wider area', links: [l] }); }
+      if (kids.length) out.push({ title: uiText('Areas in {0}',[linkPlace(d.region)]), links: kids.sort((a, b) => a.label.localeCompare(b.label)) });
+      if (d.region.parent_id && regById[d.region.parent_id]) { const l = L(regById[d.region.parent_id].name, pageIntent, regById[d.region.parent_id]); if (l) out.push({ title: uiText('Wider area'), links: [l] }); }
       const sib = keep(regions.filter(r => r.id !== d.region.id && r.parent_id === d.region.parent_id).map(r => L(r.name, pageIntent, r))).sort((a, b) => b.count - a.count).slice(0, 12);
-      if (sib.length) out.push({ title: d.intent ? `${d.intent.labels[d.market]} nearby` : 'Nearby', links: sib });
+      if (sib.length) out.push({ title: d.intent ? uiText('{0} nearby',[d.intent.labels[d.market]]) : uiText('Nearby'), links: sib });
     } else {
-      if (!d.intent) { const ints = keep(intents.map(i => L(i.labels[d.market], i, null))); if (ints.length) out.push({ title: 'Popular searches', links: ints }); }
+      if (!d.intent) { const ints = keep(intents.map(i => L(i.labels[d.market], i, null))); if (ints.length) out.push({ title: uiText('Popular searches'), links: ints }); }
       const top = keep(regions.filter(r => r.level !== 'county').map(r => L(r.name, pageIntent, r))).sort((a, b) => a.label.localeCompare(b.label));
       const lv = regions.find(r => r.level !== 'county'); // label from the taxonomy level, not the country
-      if (top.length) out.push({ title: lv && lv.level === 'state' ? 'By state' : 'By region', links: top });
+      if (top.length) out.push({ title: lv && lv.level === 'state' ? uiText('By state') : uiText('By region'), links: top });
       const counties = keep(regions.filter(r => r.level === 'county').map(r => L(r.name, pageIntent, r))).sort((a, b) => a.label.localeCompare(b.label));
-      if (counties.length) out.push({ title: 'By county', links: counties });
-      if (d.intent) { const ints = keep(intents.filter(i => i.key !== d.intent.key).map(i => L(i.labels[d.market], i, null))); if (ints.length) out.push({ title: 'Related searches', links: ints }); }
+      if (counties.length) out.push({ title: uiText('By county'), links: counties });
+      if (d.intent) { const ints = keep(intents.filter(i => i.key !== d.intent.key).map(i => L(i.labels[d.market], i, null))); if (ints.length) out.push({ title: uiText('Related searches'), links: ints }); }
     }
     return out;
   }

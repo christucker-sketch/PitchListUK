@@ -11,9 +11,16 @@ import {localisationFixture} from './fixtures/customer-localisation.mjs';
 import {runtimeImports} from '../../operations/findpitches-v3/runtime-imports.mjs';
 import {previewReleaseConfig} from '../../operations/findpitches-v3/release-customer-preview.mjs';
 const browserI18n=lang=>{const ctx={window:{},location:{pathname:'/lang/'+lang+'/uk/find-pitches/'},URL,Intl};vm.createContext(ctx);for(const name of ['locales.js','i18n.js'])vm.runInContext(fs.readFileSync(new URL('../../web/findpitches-v3-web/public/assets/js/'+name,import.meta.url),'utf8'),ctx);return ctx.window.FP.i18n;};
+test('localised category links and practical guidance keep every original filter and route key',()=>{
+ const configs={};for(const lang of ['en','de','fr']){const ctx={window:{},location:{pathname:lang==='en'?'/':'/lang/'+lang+'/'},URL,Intl};vm.createContext(ctx);for(const file of ['locales.js','i18n.js','routes.js','seo/seo-config.js'])vm.runInContext(fs.readFileSync(new URL('../../web/findpitches-v3-web/public/assets/js/'+file,import.meta.url),'utf8'),ctx);configs[lang]=ctx.window.FP.seoConfig;}
+ const shape=c=>JSON.stringify(c.intentsFor('GB').map(({key,filters,slugs})=>({key,filters,slugs})));
+ for(const lang of ['de','fr']){assert.equal(shape(configs[lang]),shape(configs.en));assert.notEqual(configs[lang].intentsFor('GB')[0].labels.GB,configs.en.intentsFor('GB')[0].labels.GB);assert.notEqual(configs[lang].guidance.GB[0],configs.en.guidance.GB[0]);assert.deepEqual([...configs[lang].intentsFor('FR')],[]);}
+});
 test('boundary audit keeps real module dependencies visible while ignoring language copy ending in from',()=>{
  assert.deepEqual(runtimeImports('const c={"Searching from":"Suchen ab"};'),[]);
+ assert.deepEqual(runtimeImports("const path='/legacy/import';const body={kind:'import',environment:'shadow'};"),[]);
  assert.deepEqual(runtimeImports('import {a,\n b} from "./own.mjs";export {a} from "../outside.mjs";const p=import("foreign-package");import "side-effects";'),['./own.mjs','../outside.mjs','foreign-package','side-effects']);
+ assert.deepEqual(runtimeImports('import{a}/*comment*/from"../outside.mjs";const p=import(/*comment*/"foreign-package");export*from"node:fs";'),['../outside.mjs','foreign-package','node:fs']);
 });
 test('preview release refuses production, unknown bindings and shared/wrong databases',()=>{
  const state={worker:'findpitches-v3-customer-preview',database_name:'findpitches-v3-customer-preview',database_id:'preview-db'};
@@ -68,6 +75,7 @@ test('all localised static routes render translated SSR, honest noindex and loca
     const html=await r.text();assert.ok(html.includes('<html lang="'+lang+'"'));assert.ok(html.includes('<base href="/lang/'+lang+'/">'));assert.equal(r.headers.get('Content-Language'),lang);assert.equal(r.headers.get('X-Robots-Tag'),'noindex,nofollow');assert.ok(html.includes('/assets/js/i18n.js'));
   }
   for(const path of ['/lang/de/api/v3/session','/lang/fr/ops/preflight','/lang/zz/','/lang/fr/assets/js/config.js'])assert.equal((await worker.fetch(new Request('https://preview.example.org'+path,{headers:{Cookie:gate}}),env)).status,404,path);
+  assert.equal((await worker.fetch(new Request('https://preview.example.org/favicon.ico',{headers:{Cookie:gate}}),env)).status,204);
   const canonical=await worker.fetch(new Request('https://preview.example.org/lang/en/pricing.html',{headers:{Cookie:gate}}),env);assert.equal(canonical.status,301);assert.equal(canonical.headers.get('Location'),'/pricing.html');
 });
 test('same V3 evidence and Free/Pro redaction survive any presentation language',()=>{

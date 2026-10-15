@@ -1,0 +1,139 @@
+{
+  "schema": "findpitches-v3-customer-localisation-v1",
+  "as_of": "2026-10-15T19:13:14.267082+00:00",
+  "reported_london": "2026-10-15T20:13:14.267082+01:00",
+  "task": "V3-024",
+  "state": "live_customer_languages_indexing_held",
+  "languages": [
+    "en",
+    "de",
+    "fr"
+  ],
+  "urls": {
+    "de": "https://findpitches.com/lang/de/",
+    "fr": "https://findpitches.com/lang/fr/",
+    "france_in_french": "https://findpitches.com/lang/fr/fr/"
+  },
+  "catalog_messages_per_language": 1019,
+  "native": {
+    "as_of": "2026-10-15T19:12:19.967Z",
+    "native_bindings_equal_original": true,
+    "public": "true",
+    "checkout": "live",
+    "recovery": "true",
+    "localisation_indexing_explicitly_enabled": false,
+    "active_production_versions": [
+      {
+        "version_id": "e6c4f562-dd47-4e63-9658-1b2ff9ad2669",
+        "percentage": 100
+      }
+    ],
+    "active_preview_versions": [
+      {
+        "version_id": "95f59b27-2475-4d7d-a2e9-8de9459c2746",
+        "percentage": 100
+      }
+    ]
+  },
+  "release": {
+    "code_version": "db4dbffd-b4f3-4735-a6b1-bac59107fcd4",
+    "active_version": "e6c4f562-dd47-4e63-9658-1b2ff9ad2669",
+    "preview_version": "95f59b27-2475-4d7d-a2e9-8de9459c2746",
+    "routes_unchanged": true,
+    "dns_mutations": 0,
+    "pages_mutations": 0,
+    "database_migrations": 0,
+    "secret_values_replaced": false
+  },
+  "validation": {
+    "full_v3": {
+      "passed": 439,
+      "failed": 0,
+      "skipped": 0
+    },
+    "targeted": 44,
+    "frontend": 3,
+    "independence_files": 93,
+    "build_public_files": 56,
+    "boundaries_passed": true,
+    "browser_local": {
+      "as_of": "2026-10-15T10:32:49.996911+00:00",
+      "total": 130,
+      "completed": true,
+      "passed": true,
+      "page_errors": [],
+      "foreign_requests": 0
+    },
+    "browser_preview_earlier_checkpoint": {
+      "as_of": "2026-10-15T10:13:14.368866+00:00",
+      "total": 112,
+      "completed": true,
+      "passed": true,
+      "page_errors": [],
+      "foreign_requests": 0,
+      "note": "112-check restricted-preview checkpoint preceded final copy/category additions; final 124-check acceptance exercised the actual final public release."
+    },
+    "browser_public_final": {
+      "as_of": "2026-10-15T10:48:49.344135+00:00",
+      "total": 124,
+      "completed": true,
+      "passed": true,
+      "page_errors": [],
+      "foreign_requests": 0
+    },
+    "public_security_smoke_latest": {
+      "as_of": "2026-10-15T19:13:42.004Z",
+      "passed": true,
+      "customer_objects_created": 0,
+      "messages_sent": 0,
+      "certificate_bypass": false,
+      "expected_checkout_enabled": true,
+      "total": 29
+    }
+  },
+  "preservation": {
+    "schema": "findpitches-v3-customer-preview-preservation-v1",
+    "audit_page_size": 1000,
+    "method": "full_original_row_digests",
+    "as_of": "2026-10-15T10:33:04.379Z",
+    "receipts_compared": 15811,
+    "source_facts_compared": 108819,
+    "existing_identities_compared": 7077,
+    "destructive_source_mutations": 0,
+    "existing_identity_changes": 0,
+    "identity_comparison_key": "retained entity.id",
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "publication_api_denied": true,
+    "publication_enabled": false,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "live_v1_deployment_unchanged": true,
+    "v2_schedules": [],
+    "v2_schedules_unchanged": true
+  },
+  "activity": {
+    "serper_queries": 0,
+    "emails_sent": 0,
+    "payment_objects_created": 0,
+    "producer_changes": 0,
+    "pi_changes": 0,
+    "native_source_imports": 0,
+    "ready_gains": 0
+  },
+  "gates": {
+    "localised_indexing": false,
+    "germany_country_intake": false,
+    "paid_acquisition": false,
+    "source_pipeline_publication": false,
+    "existing_customer_public_app": true,
+    "existing_live_checkout": true,
+    "owned_live_billing_acceptance": "separate_pending"
+  },
+  "team_dependencies": {
+    "france_cloud_storage": "cleared_2026-10-15_07:22_London",
+    "france_host": "Claude_reports_011n_installed_memory_cgroup_SSD_fix_small_supervised_test_passed_crawl_resumed_FR_export_held_pending_24h_clean_cycles_172_candidates_not_READY",
+    "V3-020": "open_French_official_HTML_and_PDF_proof",
+    "V3-022": "open_hot_data_growth_monitoring"
+  }
+}
