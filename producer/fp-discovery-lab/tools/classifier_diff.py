@@ -81,11 +81,18 @@ def main() -> None:
     ap.add_argument("--sample", type=int, default=1500, help="other stored pages to compare (spread sample)")
     ap.add_argument("--ids-out", default=os.path.expanduser("~/classifier-diff-ids.txt"))
     ap.add_argument("--ids", help="compare exactly these url ids (comma-separated) instead of a sample")
+    ap.add_argument("--generator", help="compare the opportunity-backing pages of one lane (e.g. datatourisme:fr)")
     a = ap.parse_args()
     import sqlite3
     conn = sqlite3.connect(f"file:{a.db}?mode=ro", uri=True)
     if a.ids:
         linked, other = [int(x) for x in a.ids.split(",") if x.strip()], []
+    elif a.generator:
+        # the lane's pages that back an opportunity (the precision-critical set)
+        linked = [r[0] for r in conn.execute("SELECT id FROM urls WHERE generator=? AND state='done' AND cache_path IS NOT NULL "
+                                             "AND purpose!='sitemap' AND id IN (SELECT url_id FROM opportunity_sources) ORDER BY id",
+                                             (a.generator,))]
+        other = []
     else:
         linked, other = _sample(conn, a)
     ids = linked + other
@@ -125,7 +132,7 @@ def _compare(conn, a, ids, linked):
         for k in changed:
             c[f"changed_{k}"] += 1
         trans[f"{o.get('label')}/{o.get('state')} -> {n.get('label')}/{n.get('state')}"] += 1
-        if len(examples) < 30 and ("label" in changed or "state" in changed or "country" in changed):
+        if len(examples) < (80 if a.generator else 30) and ("label" in changed or "state" in changed or "country" in changed):
             url = conn.execute("SELECT url FROM urls WHERE id=?", (uid,)).fetchone()[0]
             examples.append(f"{uid:>7} {o.get('label')}/{o.get('state')}/{o.get('country')}/{o.get('start')} -> "
                             f"{n.get('label')}/{n.get('state')}/{n.get('country')}/{n.get('start')}  {n.get('reasons')}  {url[:90]}")

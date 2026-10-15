@@ -93,7 +93,8 @@ _EVENTISH = re.compile(r"\b(?:festival|fest|markets?|fair|fayre|show|parade|hunt
                        r"bazaar|celebration|night|day|week|database|vendors?)\b", re.I)
 # French authority names ("Mairie de Seyssins", "Ville de Gex", "Office de Tourisme Pays Basque") are organisers, not events.
 FR_AUTHORITY_ONLY = re.compile(r"^(?:mairie|ville|commune|communaut[ée]\s+(?:de\s+communes|d['’]agglom[ée]ration)|"
-                               r"office\s+(?:de\s+|du\s+)?tourisme|comit[ée]\s+des\s+f[êe]tes|conseil\s+(?:municipal|d[ée]partemental))\b", re.I)
+                               r"office\s+(?:de\s+|du\s+)?tourisme|comit[ée]\s+des\s+f[êe]tes|conseil\s+(?:municipal|d[ée]partemental)|"
+                               r"site\s+officiel|d[ée]marches|mise\s+en\s+avant|commerces?$|[\w'’\- ]+\s\(\d{2,3}\)$)", re.I)
 FR_EVENTISH = re.compile(r"\b(?:march[ée]s?|foires?|salons?|f[êe]tes?|no[ëe]l|brocantes?|braderies?|festivals?|vide[\s-]greniers?)\b", re.I)
 # Platform names are not organisers (UKCraftFairs/ClueMart listings name the platform where the organiser is hidden).
 PLATFORM_ORGANISERS = {"ukcraftfairs.com", "ukcraftfairs", "cluemart", "localstalls", "eventeny", "marketspread",

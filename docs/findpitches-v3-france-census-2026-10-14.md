@@ -127,3 +127,45 @@ About 31% of trading events carry an organiser homepage. **Probe 5 is next**: it
 - **CIAF (AU):** a correction I made to year inference also moved English dates near the top of the page. The English path now keeps its historical behaviour exactly.
 
 Both reproduce as identical to the installed engine locally. A regression test is added (150 Python tests). Rebuilt as `88c0dcb8`.
+
+## First France lane results (Pi, kit 011l, overnight 14–15 Oct)
+
+**DATAtourisme input:** 94 API pages read (9,300 events; 1 error), and the cursor is at page 94 of about 145 on the first national pass.
+
+**Crawl:** 1,774 organiser sites, about 3,100 candidate and 886 homepage pages fetched.
+
+**French opportunities: 117.**
+
+| State | Count |
+| --- | --- |
+| UNKNOWN | 52 |
+| OPEN_NOW | 28 |
+| HISTORICAL | 19 |
+| CLOSED_CURRENT_CYCLE | 11 |
+| ROLLING | 5 |
+| (blank) | 2 |
+
+I reviewed all 33 usable opportunities by hand.
+
+**About 25 are genuine exhibitor calls.** They are mostly Christmas markets, makers' markets and salons:
+- Amiens, Kilstett, Eckwersheim, Saint-Marcellin, Neuvic, Orry, Hochstatt, Piriac, Orthez, Seignosse, Puyravault;
+- the Toulouse makers' market and Marché Gourmand d'Occitanie;
+- Salon Habitat Déco Nancy, Salon du Chocolat, Vintage le Salon, and others.
+
+**About 8 are false positives:**
+- a council job ad;
+- a municipal-council candidates call;
+- a cultural-projects call;
+- a shop-premises call;
+- a brocante directory;
+- bare town homepages.
+
+Several names were also unusable ("Mise en avant", "Site officiel de la mairie…", "Piriac-sur-mer (44)").
+
+**Kit `pi_kit_v3-011m` (`4110c4e5…`):**
+- Off-topic French pages are rejected by title or URL path (recrutement/emploi, conseil municipal/élections, appels à projets culturels, locaux/boutiques/cellules commerciales, stages, service civique).
+- More French title segments are treated as junk names, and the export holds them as organiser-only.
+- 162 tests pass.
+- Gate: `classifier-diff.sh --generator datatourisme:fr` (French opportunity pages only) plus a general sample.
+
+FR records stay held.

@@ -250,3 +250,38 @@ def test_deadline_today_with_time_is_not_a_header_clock():
             "<a href='https://forms.gle/x'>Apply now</a></body></html>")
     x = classify(parse_html(html, "https://fallfest.example.com/vendors"), T, hint={"site_role": "organiser"})["extracted"]
     assert x["deadline"] == "2026-10-14" and x["state"] == "OPEN_NOW"
+
+
+# ---------------------------------------------------------------- first Pi run (15 Oct): off-topic pages and bad names
+_CALL = ("<p>Appel à candidatures : inscriptions des exposants, artisans et créateurs. Dossier de candidature avant le "
+         "15 novembre 2026 à l'adresse suivante : contact@mairie-exemple.fr. Marché le samedi 5 décembre 2026, 81000 Albi.</p>")
+
+
+@pytest.mark.parametrize("title,url", [
+    ("La mairie recrute", "https://www.villemoisson.fr/mairie/services-municipaux/la-mairie-recrute"),
+    ("Appel à candidatures Conseil Municipal des Jeunes", "https://reichshoffen.fr/appel-a-candidatures-conseil-municipal"),
+    ("Appels à projets culturels / Candidatures", "https://www.ville-gap.fr/appels-a-projets-culturels-candidatures/"),
+    ("Commerce", "https://www.aixenprovence.fr/Appel-a-candidature-Commerce"),
+    ("Local commercial à louer", "https://www.ville-exemple.fr/local-commercial"),
+])
+def test_offtopic_french_pages_rejected(title, url):
+    a = _cls_html(_CALL, url=url, title=title)
+    assert a["label"] == "rejected" and a["reasons"] == ["non_event_context"]
+
+
+def test_real_christmas_call_still_actionable():
+    a = _cls_html(_CALL, url="https://www.kilstett.fr/Actus/Marche-Noel-Kilstett-Appel-exposants", title="Marché de Noël de Kilstett")
+    assert a["label"] == "actionable" and a["extracted"]["name"] == "Marché de Noël de Kilstett"
+
+
+@pytest.mark.parametrize("name", ["Site officiel de la mairie de Villemoisson", "Mise en avant", "Piriac-sur-mer (44)",
+                                  "Démarches de la Ville de Toulon", "Commerce"])
+def test_french_junk_names_held(name):
+    from fpd.integration.records import FR_AUTHORITY_ONLY, FR_EVENTISH
+    assert FR_AUTHORITY_ONLY.match(name) and not FR_EVENTISH.search(name)
+
+
+def test_junk_title_segments_not_chosen_as_name():
+    a = _cls_html(_CALL, url="https://www.piriac-sur-mer.fr/actualites/marche-de-noel-appel-a-candidatures",
+                  title="Marché de Noël : appel à candidatures - Piriac-sur-mer (44)")
+    assert a["extracted"]["name"] == "Marché de Noël"

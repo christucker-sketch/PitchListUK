@@ -39,7 +39,9 @@ NAME_JUNK = re.compile(
     r"about(?:\s+us)?|faqs?|information|info|"
     r"accueil|bienvenue.*|inscriptions?|inscription\s+(?:exposants?|au\s+.*|en\s+ligne)|candidatures?|appel\s+[àa]\s+candidatures?|"
     r"formulaire.*|exposants?(?:\s+divers)?|devenir\s+exposant|contact(?:ez[\s-]nous)?|actualit[ée]s?|agenda|[ée]v[ée]nements?|"
-    r"tous\s+les\s+[ée]v[ée]nements|mairie\s+d[eu'’].*|ville\s+d[eu'’].*|commune\s+d[eu'’].*|office\s+de\s+tourisme.*)$",
+    r"tous\s+les\s+[ée]v[ée]nements|mairie\s+d[eu'’].*|ville\s+d[eu'’].*|commune\s+d[eu'’].*|office\s+de\s+tourisme.*|"
+    r"site\s+officiel.*|.*\bsite\s+officiel\b.*|mise\s+en\s+avant|d[ée]marches?.*|commerces?|accueil\s+.*|"
+    r"ville\s+(?:de\s+|d['’]|du\s+)?[\w'’\- ]+|commune\s+[\w'’\- ]+|[\w'’\- ]+\s\(\d{2,3}\)|[\w'’\- ]+\s-\s\d{5})$",
     re.I,
 )
 ORGANISER_RE = re.compile(
@@ -468,7 +470,11 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
     feats.update(online=online, interest_list=interest_list)
     # Scope (France, 14 Oct 2026): brocantes / vide-greniers / braderies are in only when professionals may take part.
     private_sellers = False
+    offtopic = False
     for _pk in PACKS:
+        if _pk.get("offtopic") and (re.search(_pk["offtopic"], title_blob, re.I) or re.search(_pk["offtopic"], _path, re.I)):
+            offtopic = True
+            feats["offtopic"] = True
         ev_rx, only_rx, pro_rx = _pk.get("private_sellers_event"), _pk.get("private_only"), _pk.get("pro_allowed")
         if ev_rx and re.search(ev_rx, title_blob + " " + heads_blob, re.I):
             if re.search(only_rx, body[:30_000], re.I) or not re.search(pro_rx, body[:30_000], re.I):
@@ -510,6 +516,8 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
         label, reasons = "rejected", ["online_event"]
     elif private_sellers:
         label, reasons = "rejected", ["private_sellers_event"]
+    elif offtopic:
+        label, reasons = "rejected", ["non_event_context"]
     elif on_platform_vendor_page and L.NON_VENDOR_ANCHOR.search(page.h1 or "") and not re.search(
             r"(vendor|exhibit|booth|stall|trader|concession|market|merchant|artisan|craft|food|artist|maker|retail|seller)",
             page.h1 or "", re.I):

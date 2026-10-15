@@ -222,6 +222,13 @@ PACK = {
         r"\b(?:tous\s+les|chaque)\s+(?:lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?|week-?ends?|semaines?|mois)\b|"
         r"\bhebdomadaire\b|\bmensuel(?:le)?\b",
     ],
+    # Off-topic French pages that carry participation words (first Pi run, 15 Oct: "la mairie recrute", a municipal-council
+    # candidates call, a cultural-projects call, a shop-premises call). Checked against the page TITLE/H1 and URL PATH.
+    "offtopic": r"recrut|offres?[\s_-]+d[\s_'’-]*emploi|\bemplois?\b|conseil[\s_-]+municipal|[ée]lections?|"
+                r"appels?[\s_-]+[àa][\s_-]+projets?[\s_-]+culturels?|r[ée]sidences?[\s_-]+d[\s_'’-]*artistes?|"
+                r"locaux?[\s_-]+commerciaux?|local[\s_-]+commercial|boutiques?[\s_-]+[àa][\s_-]+l[\s_'’-]*essai|"
+                r"cellules?[\s_-]+commerciales?|bail[\s_-]+commercial|appel[\s_-]+[àa][\s_-]+candidatures?[\s_-]+commerces?\b|"
+                r"stages?[\s_-]+(?:de|en)\b|service[\s_-]+civique|(?:/|^)commerce$",
     # Scope rule (brocantes / vide-greniers only when professionals may take part).
     "private_sellers_event": r"\b(?:brocantes?|vide[\s-]greniers?|braderies?|bourses?\s+aux\s+(?:jouets|v[êe]tements|livres)|troc)\b",
     "private_only": r"\br" + E + r"serv" + E + r"e?s?\s+aux\s+particuliers\b|\b(?:uniquement|exclusivement)\s+(?:pour\s+les\s+|aux\s+|des\s+)?particuliers\b|"

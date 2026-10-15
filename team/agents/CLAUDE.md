@@ -33,6 +33,8 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 ## Current work
 
+- **15 Oct, France first night:** 1,774 organiser sites and 117 FR opportunities (33 usable, about 25 genuine on hand review). Precision kit `pi_kit_v3-011m` (`4110c4e5…`) is prepared and waits for the Pi gate. FR held.
+
 - **14 Oct, France pack v1 + DATAtourisme lane: kit `pi_kit_v3-011l` (`88c0dcb8…`; builds `769bec3c`, `c6dfe9fd` withdrawn after Pi gate checks) **INSTALLED 14 Oct about 16:35 London** ([census + build](../../docs/findpitches-v3-france-census-2026-10-14.md)).
   - FR is added to the export enum, but records stay held until `sudo fpd-v3-feed fr-on` (Codex, V3-019).
   - The pre-install gate `classifier-diff.sh` (old vs new classifier on stored pages) runs before install.

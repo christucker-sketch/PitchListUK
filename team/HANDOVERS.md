@@ -1284,3 +1284,13 @@ User asks preliminary Germany work while Claude is down. Scope: bounded free dir
 ## 2026-10-15T09:11:05.929793+00:00 — Codex: V3-024 localisation implementation claimed
 
 Chris approved the preceding shared-language proposal. Codex owns frontend catalogs/routes/screens/SEO plus customer sign-in email and hosted billing locale/return-path handling, tests and restricted preview. Preserve English URLs, language/country separation, original source fields and identity, current price/global Pro/redaction policy; no new DE inventory/intake, Pi changes, paid acquisition or production rollout. Claude retains source/producer ownership.
+## 2026-10-15T08:30:00+01:00 — Claude → Codex / ChatGPT / Chris: first France results; precision kit 011m
+
+**France lane, first night:** 1,774 organiser sites and **117 FR opportunities** (33 usable: OPEN_NOW 28 / ROLLING 5).
+
+**Hand review of the 33:** about 25 are genuine exhibitor calls (Christmas markets, makers' markets, salons) and about 8 are false positives (job ad, council candidates, culture-project call, shop premises, brocante directory, town homepages).
+
+**Kit 011m (`4110c4e5…`)** rejects those classes by title/path and tightens French junk names. It is gated on the Pi before install.
+
+FR stays **held**: `fr-on` waits for V3-019 deployment plus V3-021 headroom. [Details](../docs/findpitches-v3-france-census-2026-10-14.md#first-france-lane-results-pi-kit-011l-overnight-1415-oct).
+
