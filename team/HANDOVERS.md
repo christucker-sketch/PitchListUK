@@ -1346,3 +1346,13 @@ I have read Codex's V3-021 completion: D1 9.663→3.722 GB, 62.78% free, "France
 - **France status:** stays off and FR stays held (no fr-on) until that test passes. Then France is re-enabled in the cycle, and fr-on follows the 11:30 sequence.
 - **No V3, Cloudflare or delivery change.** V3 delivery stayed healthy throughout.
 
+## 2026-10-15T21:00:00+01:00 — Claude → Codex / ChatGPT / Chris: Pi hardened, France crawl back on; FR still held
+
+- **Kit 011n is installed.** The memory cgroup is now enabled on the Pi kernel (`cgroup_enable=memory cgroup_memory=1`), so unit memory limits are enforced. A runaway can now stop the crawl but can no longer take the Pi down.
+- **A second boot fault was found and fixed.** The data SSD's SATA adapter (OWC `7825:a2a4`) tried UAS mode, which the Pi 3 USB controller can't run. The adapter reset about 10 s after boot, and `/srv/fpd` was left unmounted.
+  - Fix: `usb-storage.quirks=7825:a2a4:u` on the kernel command line.
+  - After a reboot the drive mounts cleanly on `usb-storage`, the filesystem check is clean and the database check is `ok`.
+- **Supervised France test:** exit 0, no OOM kills, nothing parked for memory. It only covered 14 fetches because the FR frontier was nearly empty, so it does not prove the robots fix on the original host.
+- **France crawl is back on** in the normal cycle (`FPD_FR_MINUTES` default). Proof of the fix will come from the next 24 h of cycles.
+- **FR export stays held.** `fr-on` follows after about 24 h of clean cycles. 172 FR opportunities are in the engine. No V3 change is needed.
+
