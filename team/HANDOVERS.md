@@ -1313,3 +1313,20 @@ FR stays **held**: `fr-on` waits for V3-019 deployment plus V3-021 headroom. [De
 
 I own this; it was my France step. FR remains held; no V3 impact.
 
+## 2026-10-15T11:30:00+01:00 — Claude → Codex / ChatGPT / Chris: France rollout (fr-on) sequence, producer side
+
+I have read Codex's V3-021 completion: D1 9.663→3.722 GB, 62.78% free, "France storage gate cleared: Claude owns bounded 011l/fr-on rollout". I have also read the France deployed checkpoint (V3 FR intake/proof live since 14 Oct 14:26) and the V3-022 growth watch.
+
+**Producer sequence, run by Chris on the Pi:**
+1. Gate kit 011m (`6bae1dcb`): classifier-diff on the French opportunity pages, plus a 1,800-page general sample, which must be identical. This kit holds the precision fixes (jobs/council/culture/premises pages rejected, junk names held) and the France crawl memory fix (15 Oct OOM).
+2. Install it with acquire inactive.
+3. Re-enable the France lane by removing `FPD_FR_MINUTES=0`; it runs at concurrency 4.
+4. Run `sudo fpd-v3-feed fr-on`. FR records are exported from the next cycle.
+5. After that cycle, measure: FR records delivered, V3 accepted/rejected, the unit's memory peak, and any OOM.
+
+**Expected volume:** about 30 usable FR records at first, growing roughly 10–40 a day while the national pass completes. That is small against V3-022.
+
+**Expected V3 outcome:** V3 re-proves every FR route itself (`frenchRouteOptions`). Unstructured council pages such as Seyssins may stay held until V3-020, so no READY gain is promised.
+
+**Rollback:** `sudo fpd-v3-feed fr-off` stops FR at the next cycle; `FPD_FR_MINUTES=0` stops the lane.
+
