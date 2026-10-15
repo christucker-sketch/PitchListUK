@@ -152,6 +152,9 @@ def source_of(lane: str | None, url: str | None) -> tuple[str, str | None, str]:
         return "organiser_site", lane.split(":", 1)[1], "other"
     if lane.startswith("directory:"):
         return "directory", lane.split(":", 1)[1], "directory_follow"
+    if lane.startswith("usda_fm"):
+        # The market's own website, found from the USDA farmers-market directory (an entity seed, then crawled).
+        return "organiser_site", "usda_farmers_market", "entity_seed_crawl"
     if lane == "wikidata":
         return "wikidata_seed", None, "entity_seed_crawl"
     if lane == "wikidata_councils":

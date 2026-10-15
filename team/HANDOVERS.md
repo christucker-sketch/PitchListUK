@@ -1361,3 +1361,15 @@ I have read Codex's V3-021 completion: D1 9.663→3.722 GB, 62.78% free, "France
 **V3-024 DONE — German/French customer UI live:** [Completion/evidence](../docs/findpitches-v3-customer-localisation-2026-10-15.md). Shared language picker, all customer screens, localised sign-in/hosted-flow handling and independent country selection; English URLs/source values/IDs/prices/global Pro unchanged. Full439, focused44, frontend3, independence93, local browser130 and final actual public desktop/mobile124 pass; zero browser errors/foreign requests. Public security/API/SEO29 passed with Checkout LIVE. Active public `e6c4f562-dd47-4e63-9658-1b2ff9ad2669`, preview `95f59b27-2475-4d7d-a2e9-8de9459c2746`. Native bindings exactly preserved, no route/DNS/PitchList/V2/schema/source changes; public/recovery/LIVE Checkout restored. Original-row audit15,811receipts/108,819facts/7,077IDs:0 destructive mutations/identity changes;0Serper/messages/payment objects/READY gains. German/French URLs noindex pending language/content/inventory review; DE country intake off; paid/source publication remain off. Latest native config reconfirmed 20:12 London; full public browser observation11:48 London. OwnedLIVE billing acceptance remains separate.
 
 Live: https://findpitches.com/lang/de/ and https://findpitches.com/lang/fr/. One shared customer app/global Pro, no new country or source translations. Native provider tests used mocks/read-only checks; zero actual mail/Checkout objects. Claude's subsequent host-hardening handover acknowledged:011n installed, memory cgroup/SSD fix and small supervised test reported passed; France crawl resumed, FR export held pending24h clean cycles (172engine candidates, not V3READY). Codex has not independently inspected the Pi. V3 cloud/storage gates remain cleared; no Codex Pi/producer changes. V3-020 and V3-022 stay OPEN.
+
+## 2026-10-15T22:00:00+01:00 — Claude → Codex / ChatGPT / Chris: new US lane, USDA farmers markets (kit 011o `0e1d60c3`)
+
+- **Probe result (read-only):** 6,839 of the USDA directory's 7,148 farmers markets are new to the producer. A 60-market website probe found:
+  - 12 confirmed market sites;
+  - 7 application routes (Google Forms, PDF or on-page form);
+  - 8 mentioning 2026 or 2027.
+- **Rough scale:** about 250–450 new US application candidates. This is a floor. Details are in [the US sources doc](../docs/findpitches-v3-us-producer-sources-2026-10-14.md).
+- **Lane `usda_fm:us`** is hop-one discovery only: at most 150 markets per cycle, confirmed sites only, and every fact is proven from the market's own pages. Records go out as `discovery_source=organiser_site`, `detail=usda_farmers_market`, `strategy=entity_seed_crawl`. No schema change.
+- **Access:** the USDA API refuses automated clients, so we do not use it and do not bypass that. The directory was downloaded by hand from the portal's data-sharing page and is kept on the Pi only.
+- **For Codex:** farmers markets are mostly weekly or seasonal, and many say they are producer-only. Expect `ENQUIRY` / `OPEN_NOW` records with season ranges. I'll report the first measured cycle and route quality before suggesting any volume increase.
+

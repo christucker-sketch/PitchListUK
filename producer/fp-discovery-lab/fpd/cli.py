@@ -44,7 +44,7 @@ def _close(cfg, conn, run_id, status="ok", notes=None, force_snapshot=False):
 
 def cmd_seed(cfg, args):
     from .frontier import Frontier
-    from .generators import datatourisme, osm, search, seeds, wikidata
+    from .generators import datatourisme, osm, search, seeds, usda_fm, wikidata
     conn, run_id = _open(cfg, "seed", args)
     tel = dbm.Telemetry(conn, run_id)
     fr = Frontier(conn, run_id, cfg.site_page_budget, cfg.max_depth)
@@ -63,6 +63,8 @@ def cmd_seed(cfg, args):
         out["search"] = search.run(conn, fr, tel, cfg, max_queries=args.max_queries)
     if which == "datatourisme":  # France lane (hop one); never part of 'all'
         out["datatourisme"] = datatourisme.run(conn, fr, tel, cfg, max_calls=args.max_calls)
+    if which == "usda_fm":  # US farmers-market lane (hop one, from the USDA list kept on the Pi); never part of 'all'
+        out["usda_fm"] = usda_fm.run(conn, fr, tel, cfg, max_markets=args.max_markets, max_seconds=args.max_seconds)
     tel.flush()
     print(json.dumps({"enqueued": out, "pending": fr.pending_count()}, indent=1))
     _close(cfg, conn, run_id)
@@ -408,8 +410,9 @@ def main(argv=None):
     sub = p.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("seed")
     s.add_argument("which", choices=["all", "curated", "directories", "platforms", "organisers", "wikidata", "councils", "osm", "search",
-                                     "datatourisme"])
+                                     "datatourisme", "usda_fm"])
     s.add_argument("--max-calls", type=int, default=20, help="datatourisme: API pages to read this run (100 events each)")
+    s.add_argument("--max-markets", type=int, default=150, help="usda_fm: markets to check this run")
     s.add_argument("--countries")
     s.add_argument("--max-queries", type=int, default=200)
     s.add_argument("--max-seconds", type=float, default=150)

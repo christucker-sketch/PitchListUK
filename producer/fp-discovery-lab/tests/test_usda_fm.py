@@ -1,0 +1,108 @@
+"""USDA farmers-market lane (15 Oct 2026): website discovery from the USDA directory, hop one only."""
+from __future__ import annotations
+
+import csv
+import json
+
+from fpd import db as dbm
+from fpd.frontier import Frontier
+from fpd.generators import usda_fm as U
+from fpd.integration.records import source_of
+
+FIELDS = ["listing_id", "name", "street", "city", "state", "zip", "lat", "lon", "updated", "org"]
+
+
+def _csv(tmp_path, rows):
+    p = tmp_path / "usda.csv"
+    with p.open("w", newline="") as f:
+        w = csv.DictWriter(f, FIELDS)
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: r.get(k, "") for k in FIELDS})
+    return p
+
+
+class FakeGet:
+    """Stand-in for PoliteGet: serves fixed pages, counts requests, allows everything."""
+
+    def __init__(self, pages):
+        self.pages, self.requests = pages, 0
+
+    def allowed(self, url):
+        return "blocked" not in url
+
+    def get(self, url, cap=U.PAGE_MAX):
+        self.requests += 1
+        if url not in self.pages:
+            return 404, url, ""
+        return 200, url, self.pages[url]
+
+
+class Cfg:
+    user_agent = "test"
+    data_dir = "/nonexistent"
+
+
+def test_names_and_candidate_domains():
+    assert U.core_name("Cedar River Farmers' Market - Winter") == "Cedar River Farmers' Market"
+    assert U.core_name("Hilltop Market (Saturdays)") == "Hilltop Market"
+    assert U.candidates("Kingfield Farmers' Market") == ["kingfieldfarmersmarket.org", "kingfieldfarmersmarket.com",
+                                                          "kingfieldmarket.org", "kingfieldmarket.com"]
+    assert not U.distinctive("Downtown Farmers Market - Saturday")   # nothing to tell it apart: skipped
+    assert U.distinctive("Waco Downtown Farmers Market")
+
+
+def test_site_must_name_this_market_in_its_title_and_its_place():
+    m = {"name": "Kingfield Farmers' Market", "city": "Minneapolis", "state": "MN", "zip": "55409"}
+    own = "<title>Kingfield Farmers Market</title><body>Sundays, 4310 Nicollet Ave, Minneapolis</body>"
+    directory = "<title>Twin Cities market directory</title><body>Kingfield Farmers Market, Minneapolis MN</body>"
+    elsewhere = "<title>Kingfield Farmers Market</title><body>Kingfield, Maine</body>"
+    parked = "<title>Kingfield Farmers Market</title><body>Minneapolis. This domain is for sale!</body>"
+    assert U.is_this_market(own, m)
+    assert not U.is_this_market(directory, m)      # a listing page is not the market's site
+    assert not U.is_this_market(elsewhere, m)      # same name, different place
+    assert not U.is_this_market(parked, m)
+
+
+def test_run_enqueues_confirmed_sites_once_and_resumes(tmp_path):
+    conn = dbm.connect(tmp_path / "fpd.sqlite")
+    conn.execute("INSERT INTO opportunities(name, country, region, locality, status) "
+                 "VALUES ('Oxford Farmers Market 2026', 'US', 'US-NC', 'Oxford', 'actionable')")
+    fr = Frontier(conn, 1, 30, 3)
+    tel = dbm.Telemetry(conn, 1)
+    p = _csv(tmp_path, [
+        {"listing_id": "1", "name": "Oxford Farmers Market", "city": "Oxford", "state": "NC", "updated": "2025-06-01"},
+        {"listing_id": "2", "name": "Kingfield Farmers' Market", "city": "Minneapolis", "state": "MN", "updated": "2025-05-01"},
+        {"listing_id": "3", "name": "Lake Harriet Farmers Market", "city": "Minneapolis", "state": "MN", "updated": "2024-05-01"},
+        {"listing_id": "4", "name": "Nowhere Valley Market", "city": "Nowhere", "state": "KS", "updated": "2023-01-01"},
+    ])
+    g = FakeGet({
+        "https://kingfieldfarmersmarket.org/": "<title>Kingfield Farmers Market</title><body>Minneapolis, MN</body>",
+        "https://lakeharrietfarmersmarket.com/": "<title>Minneapolis markets</title><body>Lake Harriet Farmers Market</body>",
+    })
+    live = {"kingfieldfarmersmarket.org", "lakeharrietfarmersmarket.com"}
+    r1 = U.run(conn, fr, tel, Cfg, max_markets=2, csv_path=str(p), getter=g, resolves=lambda h: h in live)
+    # recently-updated first: Oxford (already known), then Kingfield (confirmed)
+    assert r1["already_known"] == 1 and r1["confirmed"] == 1 and r1["enqueued"] == 1 and r1["cursor"]["pos"] == 2
+    r2 = U.run(conn, fr, tel, Cfg, max_markets=5, csv_path=str(p), getter=g, resolves=lambda h: h in live)
+    assert r2["not_this_market"] == 1 and r2["no_domain"] == 1 and r2["enqueued"] == 0   # Lake Harriet: directory only
+    rows = conn.execute("SELECT url, purpose, generator, meta FROM urls").fetchall()
+    assert [(r["url"], r["purpose"], r["generator"]) for r in rows] == [
+        ("https://kingfieldfarmersmarket.org/", "site_home", "usda_fm:us")]
+    meta = json.loads(rows[0]["meta"])
+    assert meta["country"] == "US" and meta["usda_state"] == "MN"
+    site = conn.execute("SELECT country_hint, entity_name FROM sites WHERE reg_domain='kingfieldfarmersmarket.org'").fetchone()
+    assert tuple(site) == ("US", "Kingfield Farmers' Market")
+    totals = dbm.kv_get(conn, "usda_fm.totals", {})
+    assert totals["checked"] == 4 and totals["confirmed"] == 1
+
+
+def test_run_without_the_list_does_nothing(tmp_path):
+    conn = dbm.connect(tmp_path / "fpd.sqlite")
+    r = U.run(conn, Frontier(conn, 1, 30, 3), dbm.Telemetry(conn, 1), Cfg, csv_path=str(tmp_path / "missing.csv"))
+    assert "skipped" in r
+
+
+def test_export_names_the_lane_as_organiser_site_from_usda():
+    assert source_of("usda_fm:us", "https://kingfieldfarmersmarket.org/") == (
+        "organiser_site", "usda_farmers_market", "entity_seed_crawl")

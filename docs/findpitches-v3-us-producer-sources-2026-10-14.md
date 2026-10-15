@@ -193,3 +193,33 @@ The Pi run is a single read-only command (`loss-report.sh`, given to Chris).
    - **More:** the loss-reason numbers from the Pi decide the next producer change. If "no usable route" or "generic route" dominates watch, the lever is route discovery on already-held organisers, not new sources.
 6. **New organisers, venues, states and map points:** 0.
 7. **US READY total:** unchanged at 1,722 per Codex, **48 short of 1,770**. The 78 D-018 route candidates remain **OFF** pending Codex review.
+
+## 15 Oct 2026: USDA farmers-market directory (lane `usda_fm:us`, kit `pi_kit_v3-011o`)
+
+**Access:**
+- The USDA Local Food Portal API turns away non-browser clients. Its `robots.txt` also returns 403, and a registered key changes nothing. We do not disguise the client.
+- Chris downloaded the farmers-market directory by hand from the portal's data-sharing page. It has 7,148 markets with names, addresses and coordinates, but **no websites or contacts**.
+- The file stays on the Pi only (`/srv/fpd/data/seeds/`), never in Git. A request for API access has been drafted for Chris to send to USDA.
+
+**Measured (read-only, on the Pi):**
+- **Overlap:** 309 of the 7,148 markets are already known to the producer, which leaves **6,839 new**.
+- **Freshness:** only 403 of the new markets were updated in 2024–26; the rest were last updated in 2023 or earlier.
+- **Website probe on 60 new markets** (half updated since 2024): obvious website names were tried, and a site counted only if its own title named the market and the page named its town, ZIP or state.
+  - 12 websites confirmed.
+  - 9 with a vendor page.
+  - 7 with an application route (Google Forms, a PDF or an on-page form).
+  - 6 with open wording.
+  - 8 mentioning 2026 or 2027.
+  - One route was a false positive: a city "Investment Application" PDF, which the classifier must reject.
+- **Yield by freshness:** about 1 in 3 recently updated markets had a confirmable site, against about 1 in 15 older ones.
+- **Rough scale:** about 250–450 new US application candidates, from a small sample. This is a floor, because markets that only have a Facebook page or a page on a council site are not found.
+
+**The lane** (`fpd/generators/usda_fm.py`) works like DATAtourisme, hop one only:
+- Each cycle checks up to 150 markets (`FPD_USDA_MARKETS`, 0 = off), within 300 s, at about one request per second, with robots.txt honoured.
+- A persistent cursor walks recently updated markets first.
+- Markets the producer already knows are skipped.
+- Confirmed homepages are enqueued with the market's name and place as hints.
+- Dates, place, trader route and state come only from the market's own pages, through the normal classifier and export gate. Records go out as `organiser_site` / `usda_farmers_market` / `entity_seed_crawl`.
+- Classification code is unchanged, so no classifier-diff is needed.
+- 170 Python tests pass, plus the shell tests (alerts 34, prune 3, source-key 8).
+
