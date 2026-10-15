@@ -1,0 +1,36 @@
+{
+  "scope": "Shared synthetic conformance vectors; parsing alone never establishes source proof or readiness",
+  "dates": [
+    {"input":"12.11.2026","expected":"2026-11-12"},
+    {"input":"1. Mai 2027","expected":"2027-05-01"},
+    {"input":"14. März 2027","expected":"2027-03-14"},
+    {"input":"14. Maerz 2027","expected":"2027-03-14"},
+    {"input":"14 Mär 2027","expected":"2027-03-14"},
+    {"input":"14. M&auml;rz 2027","expected":"2027-03-14"},
+    {"input":"29.02.2028","expected":"2028-02-29"},
+    {"input":"2027-02-26","expected":"2027-02-26"},
+    {"input":"31.12.2024","expected":"2024-12-31"},
+    {"input":"29.02.2027","expected":null},
+    {"input":"31.04.2027","expected":null},
+    {"input":"00.03.2027","expected":null},
+    {"input":"03.04.27","expected":null},
+    {"input":"3/4/2027","expected":null},
+    {"input":"3. Mai","expected":null},
+    {"input":"Stand: 13.01.2026","expected":null},
+    {"input":"Bewerbungsschluss: 12.11.2026","expected":null},
+    {"input":"2026-10-15T00:00:00+02:00","expected":null},
+    {"input":"14 Mar 2027","expected":null},
+    {"input":"","expected":null}
+  ],
+  "ranges": [
+    {"input":"26. bis 28. Februar 2027","expected":{"start":"2027-02-26","end":"2027-02-28"}},
+    {"input":"12. bis 14. März 2027","expected":{"start":"2027-03-12","end":"2027-03-14"}},
+    {"input":"12.03. - 29.03.2027","expected":{"start":"2027-03-12","end":"2027-03-29"}},
+    {"input":"26 Feb 2027 - 28 Feb 2027","expected":{"start":"2027-02-26","end":"2027-02-28"}},
+    {"input":"vom 27. Dezember 2026 bis 3. Januar 2027","expected":{"start":"2026-12-27","end":"2027-01-03"}},
+    {"input":"27.12. - 03.01.2027","expected":null},
+    {"input":"28. bis 30. Februar 2027","expected":null},
+    {"input":"18. Dezember - 20. Dezember","expected":null},
+    {"input":"Stand: 12.03. - 29.03.2027","expected":null}
+  ]
+}

@@ -1,8 +1,14 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-15, 07:22 London storage completion** (Europe/London).
-State: **V3-021 DONE — verified private R2 tiering and reclaimed headroom; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
+Author: Codex. Updated: **2026-10-15, 09:10 London Germany preparation** (Europe/London).
+State: **V3-023 preliminary Germany DONE — source plan/offline conformance/Claude handoff, no DE activation; V3-021 DONE — verified private R2 tiering and reclaimed headroom; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+
+## Germany preparation complete — 15 October, 09:10 London
+
+[Report](../../docs/findpitches-v3-germany-preparation-2026-10-15.md) · [sanitized inventory](../../operations/findpitches-v3/reports/germany-preparation-2026-10-15.json) · [Claude handoff](../CLAUDE_GERMANY_PREPARATION_HANDOFF.md).33 bounded direct GET attempts,19 HTML / 3 PDF originals privately hash-retained,0 Serper. LebensArt 26 distinct2027 calendar links/two event details and explicit new-exhibitor intake; Marktgilde 162 marketplaces is an unverified operator claim; Nürnberg 1 current 2027 trader application with linked PDFs/deadline. Existing generic verifier 0/5 verified offline; dedicated family proof and DE contracts/registry/producer enum remain future work. Offline German date/range helper,29 shared vectors and 16 country-qualified regions; 26 Germany/France/verification tests and boundary check pass.
+
+**No native imports, READY gains, DE activation, producer/Pi edits, deployments or live customer changes.** Highest-value next implementation is LebensArt repeatable family proof plus a Claude-owned DE pack, complemented by Nürnberg PDF proof. First proposed five-record free canary waits for country compatibility/proof/replay tests; unavailable evidence leaves slots held. No automatic DE rollout or paid grant. France cloud/storage gate stays cleared; V3-020 French proof and V3-022 capacity-growth follow-ups remain open.
 
 ## Germany preliminary work claimed — 15 October, 08:55 London
 

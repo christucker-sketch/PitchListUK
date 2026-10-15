@@ -1,0 +1,643 @@
+{
+  "task": "V3-023",
+  "phase": "preparation_only",
+  "generated_at": "2026-10-15T08:10:10.746909+00:00",
+  "source_observation_window": {
+    "first_at": "2026-10-15T07:56:49.507Z",
+    "last_at": "2026-10-15T08:01:44.740Z",
+    "clock": "UTC"
+  },
+  "limits_and_usage": {
+    "max_http_get_attempts": 40,
+    "http_get_attempts_used": 33,
+    "successful_html_documents": 19,
+    "successful_pdf_documents": 3,
+    "sample_rows": 25,
+    "rows_held_before_document_fetch": 3,
+    "robots_origins_checked": 10,
+    "robots_status_counts": {
+      "200": 7,
+      "301": 2,
+      "0": 1
+    },
+    "serper_queries": 0,
+    "form_submissions": 0,
+    "captcha_solves": 0,
+    "browser_asset_requests": 0,
+    "private_api_calls": 0,
+    "challenge_bypasses": 0
+  },
+  "compatibility_inspection": {
+    "producer_record_census_markets": [
+      "DE",
+      "AT",
+      "CH"
+    ],
+    "producer_records_found": 0,
+    "native_market_DE_enabled": false,
+    "customer_registry_DE_enabled": false,
+    "producer_export_enum_DE_enabled": false,
+    "generic_verifier_Germany_alias_present": true,
+    "generic_verifier_Deutschland_alias_present": false,
+    "producer_files_changed": false
+  },
+  "source_families": [
+    {
+      "rank": 1,
+      "family": "lebensart",
+      "calendar_year": 2027,
+      "unique_linked_events": 26,
+      "detail_pages_checked": 2,
+      "new_exhibitor_route_observed": true,
+      "route_kind": "organiser_intake_enquiry_or_registration",
+      "potential_note": "26 calendar candidates; not verified READY and remaining event pages not checked",
+      "blockers": [
+        "family_html_proof",
+        "venue_country_binding",
+        "current_event_to_standing_route_custody"
+      ]
+    },
+    {
+      "rank": 2,
+      "family": "marktgilde",
+      "operator_claimed_locations": 108,
+      "operator_claimed_marketplaces": 162,
+      "operator_claimed_market_days_per_week": 231,
+      "individual_market_details_verified": 0,
+      "new_trader_enquiry_observed": true,
+      "existing_vendor_portal_rejected": true,
+      "potential_note": "Published operator claims only, not verified entities or a READY forecast",
+      "blockers": [
+        "public_individual_market_and_schedule_proof",
+        "specific_venue_country_binding",
+        "standing_route_binding"
+      ]
+    },
+    {
+      "rank": 3,
+      "family": "municipal_nuernberg",
+      "application_candidates": 1,
+      "event_start": "2027-03-12",
+      "event_end": "2027-03-29",
+      "application_deadline": "2026-11-12",
+      "linked_pdfs_checked": 2,
+      "processing_fee_eur": 20,
+      "processing_fee_not_stall_price": true,
+      "closure_exception": "Good Friday",
+      "blockers": [
+        "official_html_linked_pdf_proof",
+        "venue_country_binding",
+        "edition_and_deadline_context"
+      ]
+    },
+    {
+      "rank": 4,
+      "family": "gartenkoenig",
+      "schedule_pdf_year": 2027,
+      "trader_route_proved": false,
+      "explicit_cancellation_negative_control": true,
+      "blockers": [
+        "prospective_trader_route_missing",
+        "event_year_vs_page_clock",
+        "identity_binding",
+        "cancellation_precedence"
+      ]
+    },
+    {
+      "family": "handgemacht",
+      "disposition": "source_integrity_review_hold",
+      "claim_is_current_inventory": false,
+      "note": "Over 350 lifetime events claimed; unrelated casino-promotional main-body passage observed, compromise not established",
+      "operator_claimed_lifetime_events_lower_bound": 350,
+      "operator_claim_since_year": 2004
+    },
+    {
+      "family": "handmade",
+      "disposition": "robots_fetch_network_failure_no_document_fetch"
+    },
+    {
+      "family": "municipal_munich",
+      "disposition": "soft_404_http_200_rejected",
+      "seed_origin": "candidate_path_probe_not_verified_call"
+    },
+    {
+      "family": "marktcom_directory_control",
+      "disposition": "directory_not_event_or_application_proof"
+    }
+  ],
+  "lebensart_calendar_links": [
+    {
+      "url": "https://www.lebensart-messe.de/luebeck.html",
+      "label": "Zur Veranstaltung Lübeck"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/metzingen.html",
+      "label": "Zur Veranstaltung Metzingen"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/potsdam.html",
+      "label": "Zur Veranstaltung Potsdam"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/neustadt-weinstrasse.html",
+      "label": "Zur Veranstaltung Entdecke den Garten - LebensArt Sonderveranstaltung"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/pirmasens.html",
+      "label": "Zur Veranstaltung Pirmasens"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/doebbelin.html",
+      "label": "Zur Veranstaltung Döbbelin"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/redefin.html",
+      "label": "Zur Veranstaltung Redefin"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/merzig.html",
+      "label": "Zur Veranstaltung Merzig"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/bad-neuenahr.html",
+      "label": "Zur Veranstaltung Bad Neuenahr"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/neustadt-dosse.html",
+      "label": "Zur Veranstaltung Neustadt (Dosse)"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/grossharthau.html",
+      "label": "Zur Veranstaltung Grossharthau"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/vietgest.html",
+      "label": "Zur Veranstaltung Vietgest"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/aschersleben.html",
+      "label": "Zur Veranstaltung Aschersleben"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/putbus.html",
+      "label": "Zur Veranstaltung Putbus"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/unterbessenbach.html",
+      "label": "Zur Veranstaltung Unterbessenbach"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/kluetz.html",
+      "label": "Zur Veranstaltung Klütz"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/usedom.html",
+      "label": "Zur Veranstaltung Usedom"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/luebben.html",
+      "label": "Zur Veranstaltung Lübben"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/liebenberg.html",
+      "label": "Zur Veranstaltung Liebenberg"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/schinna.html",
+      "label": "Zur Veranstaltung Schinna"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/schkopau.html",
+      "label": "Zur Veranstaltung Schkopau"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/moetzow.html",
+      "label": "Zur Veranstaltung Mötzow"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/deinste.html",
+      "label": "Zur Veranstaltung Deinste"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/burg-stargard.html",
+      "label": "Zur Veranstaltung Burg Stargard"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/weinheim.html",
+      "label": "Zur Veranstaltung Weinheim"
+    },
+    {
+      "url": "https://www.lebensart-messe.de/altjessnitz.html",
+      "label": "Zur Veranstaltung Altjeßnitz"
+    }
+  ],
+  "existing_generic_verifier_offline_baseline": [
+    {
+      "url": "https://www.lebensart-messe.de/luebeck.html",
+      "status": "unverified",
+      "profile": "generic",
+      "page_kind": "unproved",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "country": null,
+      "proved_fields": []
+    },
+    {
+      "url": "https://www.lebensart-messe.de/metzingen.html",
+      "status": "unverified",
+      "profile": "generic",
+      "page_kind": "unproved",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "country": null,
+      "proved_fields": []
+    },
+    {
+      "url": "https://www.nuernberg.de/internet/marktamt/ostermarkt.html",
+      "status": "unverified",
+      "profile": "generic",
+      "page_kind": "unproved",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "country": null,
+      "proved_fields": []
+    },
+    {
+      "url": "https://gartenkoenig.com/event/adventsmarkt_burg_park_ohrdurf/",
+      "status": "quarantine",
+      "profile": "generic",
+      "page_kind": "unrelated_event",
+      "reasons": [
+        "event_identity_not_bound_to_page"
+      ],
+      "country": null,
+      "proved_fields": []
+    },
+    {
+      "url": "https://stadt.muenchen.de/infos/christkindlmarkt-bewerbung.html",
+      "status": "unverified",
+      "profile": "generic",
+      "page_kind": "unproved",
+      "reasons": [
+        "single_event_source_data_missing"
+      ],
+      "country": null,
+      "proved_fields": []
+    }
+  ],
+  "validation": {
+    "targeted_tests_passed": 26,
+    "targeted_tests_failed": 0,
+    "shared_date_vectors": 20,
+    "shared_range_vectors": 9,
+    "boundary_check": "passed",
+    "full_runtime_suite": "not_rerun_no_runtime_changes",
+    "deployments": 0,
+    "private_original_document_hashes_verified": 22
+  },
+  "task_effects": {
+    "native_writes": 0,
+    "source_records_imported": 0,
+    "new_entities": 0,
+    "ready_gained": 0,
+    "source_fact_or_identity_mutations": 0,
+    "customer_or_publication_changes": 0,
+    "producer_or_pi_changes": 0,
+    "DE_intake_activated": false,
+    "DE_customer_activated": false,
+    "paid_acquisition_enabled": false
+  },
+  "evidence_custody": {
+    "raw_source_committed": false,
+    "raw_documents_retained_privately": true,
+    "hash_algorithm": "SHA-256",
+    "original_url_and_observation_time_retained": true,
+    "private_directory": "/workspace/.pitchlist-cloud/germany-preflight-2026-10-15",
+    "pdf_extraction": "local pdftotext; exact original PDF bytes preserved",
+    "sanitized_metadata_only": true
+  },
+  "documents": [
+    {
+      "family": "marktgilde",
+      "requested_url": "https://www.marktgilde.de/",
+      "url": "https://www.marktgilde.de/",
+      "http_status": 200,
+      "sha256": "ca7a9a06a33806d92816286f26d711163dbda964e98ea10b84b3aca1e7148de8",
+      "bytes": 105043,
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-15T07:56:49.507Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "handgemacht",
+      "requested_url": "https://www.handgemacht-maerkte.de/",
+      "url": "https://www.handgemacht-maerkte.de/",
+      "fetched_at": "2026-10-15T07:56:51.621Z",
+      "error": "robots_not_permitted_or_unavailable",
+      "disposition": "held_before_document_fetch"
+    },
+    {
+      "family": "handmade",
+      "requested_url": "https://www.handmade-messe.de/",
+      "url": "https://www.handmade-messe.de/",
+      "fetched_at": "2026-10-15T07:56:51.968Z",
+      "error": "robots_not_permitted_or_unavailable",
+      "disposition": "held_before_document_fetch"
+    },
+    {
+      "family": "lebensart",
+      "requested_url": "https://www.lebensart-messe.de/",
+      "url": "https://www.lebensart-messe.de/",
+      "http_status": 200,
+      "sha256": "f0d3989067bd6292eb923a3c68ed8fb22fa5afd68a5d1c65a73f94585fb3a26e",
+      "bytes": 78031,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T07:57:01.976Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "gartenkoenig",
+      "requested_url": "https://www.gartenkoenig.com/",
+      "url": "https://www.gartenkoenig.com/",
+      "fetched_at": "2026-10-15T07:57:06.287Z",
+      "error": "robots_not_permitted_or_unavailable",
+      "disposition": "held_before_document_fetch"
+    },
+    {
+      "family": "municipal_munich",
+      "requested_url": "https://stadt.muenchen.de/infos/christkindlmarkt-bewerbung.html",
+      "url": "https://stadt.muenchen.de/infos/christkindlmarkt-bewerbung.html",
+      "http_status": 200,
+      "sha256": "98ededeea00c0acb4d46d82a85d1f1633c3303ec2e43c0a81311f27235474232",
+      "bytes": 118346,
+      "content_type": "text/html;charset=UTF-8",
+      "fetched_at": "2026-10-15T07:57:07.481Z",
+      "disposition": "reject_soft_404"
+    },
+    {
+      "family": "marktcom_directory_control",
+      "requested_url": "https://www.marktcom.de/",
+      "url": "https://www.marktcom.de/",
+      "http_status": 200,
+      "sha256": "5f8ca9970d194e042348db04e9cfb98e7c4fa3e09ba706f7c6d22358e886739d",
+      "bytes": 69095,
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-15T07:57:13.094Z",
+      "disposition": "discovery_directory_only"
+    },
+    {
+      "family": "marktgilde",
+      "requested_url": "https://www.marktgilde.de/beschicker/standplaetze",
+      "url": "https://www.marktgilde.de/beschicker/standplaetze",
+      "http_status": 200,
+      "sha256": "60c05b009268ca996fe0e2a0d000ee5028b07ecdc6376915e1195872324c01df",
+      "bytes": 59027,
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-15T07:58:33.913Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "marktgilde",
+      "requested_url": "https://www.marktgilde.de/ueber-uns/marktuebersicht",
+      "url": "https://www.marktgilde.de/ueber-uns/marktuebersicht",
+      "http_status": 200,
+      "sha256": "21bbd18d4872417d29e383f345ced7c45181592eaad7384402a3fb36eb964f31",
+      "bytes": 53228,
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-15T07:58:35.645Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "marktgilde",
+      "requested_url": "https://www.marktgilde.de/beschicker/beschickerportal",
+      "url": "https://www.marktgilde.de/beschicker/beschickerportal",
+      "http_status": 200,
+      "sha256": "a4a408691e05c86d89b455ad68c76a234202cdece3e02bfcdaa9347e5e854659",
+      "bytes": 48080,
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-15T07:58:36.461Z",
+      "disposition": "existing_vendor_only_negative_control"
+    },
+    {
+      "family": "lebensart",
+      "requested_url": "https://www.lebensart-messe.de/aussteller-werden.html",
+      "url": "https://www.lebensart-messe.de/aussteller-werden.html",
+      "http_status": 200,
+      "sha256": "dc945c6f04ae580632823b10c22c67187bd1cdfaf9bfeddb6ce72a9ecd16616c",
+      "bytes": 23484,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T07:58:37.374Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "lebensart",
+      "requested_url": "https://www.lebensart-messe.de/alle-veranstaltungen.html",
+      "url": "https://www.lebensart-messe.de/alle-veranstaltungen.html",
+      "http_status": 200,
+      "sha256": "fc5cc4362aed408b4038d8390b40ce54721a02a41a4073dbd345ac2ba7de6420",
+      "bytes": 43051,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T07:58:39.920Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "lebensart",
+      "requested_url": "https://www.lebensart-messe.de/luebeck.html",
+      "url": "https://www.lebensart-messe.de/luebeck.html",
+      "http_status": 200,
+      "sha256": "22ecb1f6f5d72e326fcc9ff12d4560ba1bab0a3464721aba8fa8e99837a7613c",
+      "bytes": 55057,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T07:58:40.864Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "handgemacht",
+      "requested_url": "https://handgemacht-maerkte.de/",
+      "url": "https://handgemacht-maerkte.de/",
+      "http_status": 200,
+      "sha256": "1eaecb69b1f7d30df78a7ecfe0d4ebd01ef1ffcb3e37f1270fdf8429af0ff4b2",
+      "bytes": 67081,
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-15T07:58:42.964Z",
+      "disposition": "source_integrity_review_hold"
+    },
+    {
+      "family": "gartenkoenig",
+      "requested_url": "https://gartenkoenig.com/",
+      "url": "https://gartenkoenig.com/",
+      "http_status": 200,
+      "sha256": "b3858c1974da04c332d0bcbd9df2cacd8c3e780bc6e5f59ac690bbb721604ad1",
+      "bytes": 236491,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T07:58:44.396Z",
+      "disposition": "discovery_only_trader_route_unproved"
+    },
+    {
+      "family": "municipal_nuernberg",
+      "requested_url": "https://www.nuernberg.de/internet/marktamt/",
+      "url": "https://www.nuernberg.de/internet/marktamt/",
+      "http_status": 200,
+      "sha256": "183ff9bc2bfa9ad50535dd7b192e025d1f097cc2d73fdd96c8cf9d23cdf42676",
+      "bytes": 42326,
+      "content_type": "text/html",
+      "fetched_at": "2026-10-15T07:58:46.199Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "municipal_nuernberg",
+      "requested_url": "https://www.nuernberg.de/internet/marktamt/ostermarkt.html",
+      "url": "https://www.nuernberg.de/internet/marktamt/ostermarkt.html",
+      "http_status": 200,
+      "sha256": "74670d5dcf371a101d19cabe41e0512a632e4dcc77ce2748ec161781d967143e",
+      "bytes": 76699,
+      "content_type": "text/html",
+      "fetched_at": "2026-10-15T08:00:08.423Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "lebensart",
+      "requested_url": "https://www.lebensart-messe.de/metzingen.html",
+      "url": "https://www.lebensart-messe.de/metzingen.html",
+      "http_status": 200,
+      "sha256": "7fb4f29bbadeab2f08d1db7eab782d571ecdaf1027cd822fd9855b46e50c2154",
+      "bytes": 50480,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T08:00:10.240Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "gartenkoenig",
+      "requested_url": "https://gartenkoenig.com/event/adventsmarkt_burg_park_ohrdurf/",
+      "url": "https://gartenkoenig.com/event/adventsmarkt_burg_park_ohrdurf/",
+      "http_status": 200,
+      "sha256": "e74baee3caf1166b656641c35c103fcd46b1c04195704afccaf8eb0b66e94b32",
+      "bytes": 182380,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T08:00:13.891Z",
+      "disposition": "discovery_only_trader_route_unproved"
+    },
+    {
+      "family": "gartenkoenig",
+      "requested_url": "https://gartenkoenig.com/events",
+      "url": "https://gartenkoenig.com/events/",
+      "http_status": 200,
+      "sha256": "8b6122652e9c34d1c0f5e54830c1255571b94c12570a656a32f5c6148ec60e3c",
+      "bytes": 155476,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T08:00:14.990Z",
+      "disposition": "discovery_only_trader_route_unproved"
+    },
+    {
+      "family": "marktgilde",
+      "requested_url": "https://www.marktgilde.de/impressum",
+      "url": "https://www.marktgilde.de/impressum",
+      "http_status": 200,
+      "sha256": "245a6a31ea25e718f360e06bf383ab2fe2af2ee627fe6b92ef8ce78833b27418",
+      "bytes": 41046,
+      "content_type": "text/html; charset=utf-8",
+      "fetched_at": "2026-10-15T08:00:16.337Z",
+      "disposition": "official_source_candidate_not_imported"
+    },
+    {
+      "family": "municipal_nuernberg",
+      "requested_url": "https://www.nuernberg.de/imperia/md/maerkte/dokumente/spezialmaerkte/antrag_ostermarkt_2027.pdf",
+      "url": "https://www.nuernberg.de/imperia/md/maerkte/dokumente/spezialmaerkte/antrag_ostermarkt_2027.pdf",
+      "http_status": 200,
+      "sha256": "a8de81b77081fa84e0e9439e862a907fb63d152204fcaa5eb5a076d4ace031fb",
+      "bytes": 226033,
+      "content_type": "application/pdf",
+      "fetched_at": "2026-10-15T08:01:39.232Z",
+      "disposition": "linked_current_edition_pdf_candidate_not_imported"
+    },
+    {
+      "family": "municipal_nuernberg",
+      "requested_url": "https://www.nuernberg.de/imperia/md/maerkte/dokumente/spezialmaerkte/infoschreiben_ostermarkt_2027.pdf",
+      "url": "https://www.nuernberg.de/imperia/md/maerkte/dokumente/spezialmaerkte/infoschreiben_ostermarkt_2027.pdf",
+      "http_status": 200,
+      "sha256": "1e62423bb9419d58e79e0dcbdaeab18fc418ce3e928e265401aa84bde40984a3",
+      "bytes": 152325,
+      "content_type": "application/pdf",
+      "fetched_at": "2026-10-15T08:01:41.242Z",
+      "disposition": "linked_current_edition_pdf_candidate_not_imported"
+    },
+    {
+      "family": "gartenkoenig",
+      "requested_url": "https://gartenkoenig.com/wp-content/uploads/2026/10/Terminuebersicht-alle-Veranstaltungen-2027.pdf",
+      "url": "https://gartenkoenig.com/wp-content/uploads/2026/10/Terminuebersicht-alle-Veranstaltungen-2027.pdf",
+      "http_status": 200,
+      "sha256": "e1bca547e2abf9093fe8d76c07cab254338d5e3318ed4ac8d4097c4cf333d1ba",
+      "bytes": 827791,
+      "content_type": "application/pdf",
+      "fetched_at": "2026-10-15T08:01:42.810Z",
+      "disposition": "discovery_only_trader_route_unproved"
+    },
+    {
+      "family": "lebensart",
+      "requested_url": "https://www.lebensart-messe.de/impressum.html",
+      "url": "https://www.lebensart-messe.de/impressum.html",
+      "http_status": 200,
+      "sha256": "9929f605b93546e575febba7a8d3928d5c5a14f6210966014a76cd50d1b640e5",
+      "bytes": 15167,
+      "content_type": "text/html; charset=UTF-8",
+      "fetched_at": "2026-10-15T08:01:44.740Z",
+      "disposition": "official_source_candidate_not_imported"
+    }
+  ],
+  "robots_metadata": [
+    {
+      "origin": "https://www.marktgilde.de",
+      "status": 200,
+      "sha256": "c2caadb7a66bd25dfda4317ace46990a008823ef984820bebc658d49a603354f"
+    },
+    {
+      "origin": "https://www.handgemacht-maerkte.de",
+      "status": 301,
+      "sha256": "446a6087825fa73eadb045e5a2e9e2adf7df241b571228187728191d961dda1f"
+    },
+    {
+      "origin": "https://www.handmade-messe.de",
+      "status": 0,
+      "error": "fetch failed"
+    },
+    {
+      "origin": "https://www.lebensart-messe.de",
+      "status": 200,
+      "sha256": "2c34111244721d2939307996e61c08d2eb04980cb29ed3b864ded884a933e84f"
+    },
+    {
+      "origin": "https://www.gartenkoenig.com",
+      "status": 301,
+      "sha256": "9e17cb15dd75bbbd5dbb984eda674863c3b10ab72613cf8a39a00c3e11a8492a"
+    },
+    {
+      "origin": "https://stadt.muenchen.de",
+      "status": 200,
+      "sha256": "5661c2b633dd19e6a5a4cd5b4bcaa022e24eec30cd0d3aeeda02280d7ca24812"
+    },
+    {
+      "origin": "https://www.marktcom.de",
+      "status": 200,
+      "sha256": "e5c4b84484ee4216e9373be99380320c25dd94805f99f0a805846f087636553f"
+    },
+    {
+      "origin": "https://handgemacht-maerkte.de",
+      "status": 200,
+      "sha256": "22aa0adeed7730e6a83520a4013a3500ccb280a2f55c57b5a59183ffd05d611b"
+    },
+    {
+      "origin": "https://gartenkoenig.com",
+      "status": 200,
+      "sha256": "d41d2ed953af24ab09a28707409b9124328f394c55279da5cef8a65ae8ce8421"
+    },
+    {
+      "origin": "https://www.nuernberg.de",
+      "status": 200,
+      "sha256": "46db45a8aed76b7a95c9c675ef0a0df2a3166b4f82268d847f4cdcab31c8d932"
+    }
+  ],
+  "recommended_next_task": "LebensArt family proof plus independent producer DE pack; complement with Nürnberg linked PDF proof; do not activate runtime or host from this preparation"
+}
