@@ -285,3 +285,77 @@ def test_junk_title_segments_not_chosen_as_name():
     a = _cls_html(_CALL, url="https://www.piriac-sur-mer.fr/actualites/marche-de-noel-appel-a-candidatures",
                   title="Marché de Noël : appel à candidatures - Piriac-sur-mer (44)")
     assert a["extracted"]["name"] == "Marché de Noël"
+
+
+# ---------------------------------------------------------------- 15 Oct OOM: robots.txt must be read with a size cap
+def test_robots_txt_read_is_capped():
+    import asyncio
+    import httpx
+    from fpd import fetch as F
+    from fpd.config import Config
+    served = {"bytes": 0}
+
+    async def endless():
+        line = b"# " + b"x" * 1022 + b"\n"
+        while True:                     # a site that never stops sending robots.txt
+            served["bytes"] += len(line) * 64
+            if served["bytes"] > 50_000_000:
+                raise AssertionError("robots.txt read was not capped")
+            yield line * 64
+
+    def handler(request):
+        if request.url.path == "/robots.txt":
+            return httpx.Response(200, content=endless(), headers={"content-type": "text/plain"})
+        return httpx.Response(200, text="<html></html>")
+
+    cfg = Config.from_env()
+    f = F.Fetcher(cfg)
+    f.client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+    f._delay_for = lambda host: 0
+    ok = asyncio.run(f.allowed("https://mairie-exemple.fr/marche"))
+    asyncio.run(f.close())
+    assert ok is True and served["bytes"] < 2 * F.ROBOTS_MAX + 200_000
+
+
+def test_memory_error_is_not_swallowed_by_robots_or_fetch():
+    import asyncio
+    import httpx
+    import pytest
+    from fpd import fetch as F
+    from fpd.config import Config
+
+    def handler(request):
+        raise MemoryError()
+
+    f = F.Fetcher(Config.from_env())
+    f.client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+    f._delay_for = lambda host: 0
+    with pytest.raises(MemoryError):
+        asyncio.run(f.allowed("https://mairie-exemple.fr/"))
+    with pytest.raises(MemoryError):
+        asyncio.run(f.get("https://mairie-exemple.fr/", check_robots=False))
+
+
+def test_crawl_stops_on_memory_error_and_parks_the_url(tmp_path, monkeypatch):
+    import asyncio
+    import pytest
+    from fpd.config import Config
+    from fpd.pipeline import Engine
+    monkeypatch.setenv("FPD_DATA_DIR", str(tmp_path))
+    conn = dbm.connect(tmp_path / "fpd.sqlite")
+    conn.execute("INSERT INTO runs(started_at, command, args) VALUES (0,'crawl','{}')")
+    eng = Engine(Config.from_env(), conn, 1)
+    eng.frontier.add("https://mairie-exemple.fr/marche-de-noel", "candidate", "datatourisme:fr", 0.9, 0, budgeted=False)
+    eng.frontier.add("https://autre-exemple.fr/foire", "candidate", "datatourisme:fr", 0.8, 0, budgeted=False)
+
+    async def boom(row):
+        if "mairie" in row["url"]:
+            raise MemoryError()
+        await asyncio.sleep(5)
+
+    eng.process = boom
+    with pytest.raises(MemoryError):
+        asyncio.run(eng.crawl(30))
+    st = dict(conn.execute("SELECT url, state || ':' || COALESCE(last_error,'') FROM urls").fetchall())
+    assert st["https://mairie-exemple.fr/marche-de-noel"] == "failed:process:memory_exhausted"
+    assert st["https://autre-exemple.fr/foire"].startswith("pending")   # in-flight work handed back, not lost

@@ -53,6 +53,8 @@ class Engine:
             # hundreds of council sites, was OOM-killed reading several multi-MB sitemaps at once.)
             cap = (40_000_000 if meta.get("platform") else 4_000_000) if row["purpose"] == "sitemap" else None
             res = await self.fetcher.get(url, max_bytes=cap)
+        except MemoryError:
+            raise  # let the process die and free memory rather than limp on (15 Oct OOM)
         except Exception as e:  # noqa: BLE001
             self.tel.error("fetch", url, e)
             self.conn.execute("UPDATE urls SET state='failed', last_error=? WHERE id=?", (str(e)[:300], row["id"]))
@@ -98,6 +100,9 @@ class Engine:
             else:
                 self.tel.inc("fetch.non_html", generator=gen)
             self.conn.execute("COMMIT")
+        except MemoryError:
+            self.conn.execute("ROLLBACK")
+            raise
         except Exception as e:  # noqa: BLE001
             self.conn.execute("ROLLBACK")
             self.tel.error("process", url, e)
@@ -292,7 +297,14 @@ class Engine:
                     continue
                 done, _ = await asyncio.wait(list(tasks), timeout=0.5, return_when=asyncio.FIRST_COMPLETED)
                 for t in done:
-                    tasks.pop(t, None)
+                    row = tasks.pop(t, None)
+                    if isinstance(t.exception(), MemoryError):
+                        # Stop the crawl so the process exits and frees memory; park the URL so a restart does not
+                        # pick the same poison page straight back up (it stays visible in the loss report).
+                        if row:
+                            self.conn.execute("UPDATE urls SET state='failed', last_error='process:memory_exhausted' "
+                                              "WHERE id=?", (row["id"],))
+                        raise t.exception()
                     if t.exception():
                         self.tel.error("task", None, t.exception())
                 now = time.monotonic()
@@ -309,6 +321,12 @@ class Engine:
                     r = tasks[t]
                     self.conn.execute("UPDATE urls SET state='pending' WHERE id=? AND state='leased'", (r["id"],))
                     self.frontier.release_host(r["host"])
+        except BaseException:
+            for t, r in tasks.items():  # crawl aborted (e.g. MemoryError): hand in-flight URLs back to the frontier
+                if not t.done():
+                    t.cancel()
+                    self.conn.execute("UPDATE urls SET state='pending' WHERE id=? AND state='leased'", (r["id"],))
+            raise
         finally:
             await self.fetcher.close()
             self.tel.flush()

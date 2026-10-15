@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-14T11:15:00+01:00
+Updated: 2026-10-15T15:00:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
@@ -34,6 +34,7 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 ## Current work
 
 - **15 Oct, France first night:** 1,774 organiser sites and 117 FR opportunities (33 usable, about 25 genuine on hand review). Kit `pi_kit_v3-011m` (`6bae1dcb…`: precision + France-crawl memory fix after the 15 Oct OOM) waits for the Pi gate. FR held.
+- **15 Oct, France OOM root cause:** unbounded robots.txt read with the MemoryError swallowed; the Pi kernel has `cgroup_disable=memory`, so MemoryMax was never enforced. Fix kit `pi_kit_v3-011n` (`8c57bed3…`): 512 kB robots cap, MemoryError propagates and a crawl stops cleanly. France stays off (`FPD_FR_MINUTES=0`) and FR held until a supervised run under an enforced 450 MB limit passes.
 
 - **14 Oct, France pack v1 + DATAtourisme lane: kit `pi_kit_v3-011l` (`88c0dcb8…`; builds `769bec3c`, `c6dfe9fd` withdrawn after Pi gate checks) **INSTALLED 14 Oct about 16:35 London** ([census + build](../../docs/findpitches-v3-france-census-2026-10-14.md)).
   - FR is added to the export enum, but records stay held until `sudo fpd-v3-feed fr-on` (Codex, V3-019).

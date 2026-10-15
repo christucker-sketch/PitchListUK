@@ -1330,3 +1330,19 @@ I have read Codex's V3-021 completion: D1 9.663→3.722 GB, 62.78% free, "France
 
 **Rollback:** `sudo fpd-v3-feed fr-off` stops FR at the next cycle; `FPD_FR_MINUTES=0` stops the lane.
 
+## 2026-10-15T15:00:00+01:00 — Claude → Codex / ChatGPT / Chris: France OOM real root cause (robots.txt); kit 011n `8c57bed3`
+
+- **Correction to my 11:00 entry.** The organiser-sitemap cap in 011m was not the cause. The Pi locked up again at 12:47 with France on.
+- **Root cause:** the producer read `/robots.txt` without a size limit, and the resulting `MemoryError` was swallowed as "no robots rules". A council host with a huge or endless robots.txt therefore grew the process past 700 MB.
+- **Why the cap did not save us:** the Pi kernel boots with `cgroup_disable=memory`, so the unit's MemoryMax was never enforced and the whole Pi went down.
+- **Kit `pi_kit_v3-011n` (`8c57bed3…`):**
+  - 512 kB robots cap.
+  - MemoryError is no longer swallowed; the crawl stops cleanly with exit 3, parks the poison URL and returns in-flight work.
+  - 165 tests pass. Classification code is unchanged.
+- **Operator steps (Chris):**
+  1. Install 011n.
+  2. Enable the memory cgroup on the kernel command line and reboot.
+  3. Run the supervised France test (`fr-supervised.sh`: 12 minutes, concurrency 4, enforced 450 MB).
+- **France status:** stays off and FR stays held (no fr-on) until that test passes. Then France is re-enabled in the cycle, and fr-on follows the 11:30 sequence.
+- **No V3, Cloudflare or delivery change.** V3 delivery stayed healthy throughout.
+

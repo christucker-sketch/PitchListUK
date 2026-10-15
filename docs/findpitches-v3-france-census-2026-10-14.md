@@ -184,3 +184,28 @@ FR records stay held.
 - The journal is now persistent (`Storage=persistent`, still capped at 64 MB).
 
 **Stop-gap until install:** `FPD_FR_MINUTES=0` in `/etc/fpd/fpd.env` turns the France step off.
+
+### 15 Oct, afternoon: real root cause found (robots.txt); kit `pi_kit_v3-011n`
+
+The 011m sitemap cap was **not** the cause. With France still on, the Pi locked up again at 12:47. A supervised France run was then killed at 768 MB after 77 seconds.
+
+**What the diagnosis showed:**
+- A single-page diagnostic (concurrency 1, heap capped at 400 MB) showed ordinary pages at 88–122 MB RSS.
+- Peak RSS still reached the 400 MB cap. Nothing printed a MemoryError, so one was raised and swallowed.
+- **Root cause:** `Fetcher.allowed()` read `/robots.txt` with an unbounded `client.get()` + `r.text`, inside `except Exception: allow_all`. A French council host that serves an endless or very large robots.txt grew the process by hundreds of MB, and the resulting MemoryError was silently treated as "no robots rules".
+- **Why it took the whole Pi down:** the Pi kernel boots with `cgroup_disable=memory`. The controllers list only `cpuset cpu io pids`, so the unit's `MemoryMax=700M` was never enforced and the runaway hit the global OOM path.
+
+**Fixes in `pi_kit_v3-011n` (`8c57bed3…`):**
+- robots.txt is streamed and read up to 512,000 bytes, then stops. RFC 9309 asks parsers to handle at least 500 KiB.
+- `MemoryError` is no longer swallowed by the robots, fetch or process handlers.
+- A crawl that hits `MemoryError` stops, parks that URL as `process:memory_exhausted`, hands in-flight URLs back to the frontier, and exits with code 3. The cycle logs the step as failed and the next cycle starts a fresh process.
+- 165 tests pass, including the new tests for an endless robots.txt, MemoryError propagation, and crawl abort without lost work.
+- Classification code is unchanged, so no classifier-diff gate is needed.
+
+**Host change (operator):** enable the memory cgroup by appending `cgroup_enable=memory cgroup_memory=1` to `/boot/firmware/cmdline.txt`, then reboot. After that the unit's `MemoryMax`/`MemoryHigh` are enforced, so a future runaway is contained to the unit.
+
+**Rollout:**
+1. Install 011n.
+2. Enable the memory cgroup.
+3. Run a supervised 12-minute France crawl under an enforced 450 MB limit.
+4. Only then remove `FPD_FR_MINUTES=0`, and later `fr-on`.

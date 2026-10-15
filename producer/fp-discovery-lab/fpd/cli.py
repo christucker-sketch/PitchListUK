@@ -80,6 +80,12 @@ def cmd_crawl(cfg, args):
         res = asyncio.run(eng.crawl(args.minutes * 60, args.max_fetches))
     except KeyboardInterrupt:
         status, res = "interrupted", {"fetches": eng.fetches}
+    except MemoryError:
+        # The crawl stopped itself rather than let the Pi run out of memory (15 Oct). Record it and exit non-zero so
+        # fpd-cycle logs the step as failed and the alert digest shows it; the next cycle starts a fresh process.
+        _close(cfg, conn, run_id, "memory_exhausted")
+        print(json.dumps({"fetches": eng.fetches, "error": "memory_exhausted"}))
+        raise SystemExit(3)
     print(json.dumps(res))
     from .watch import finalize
     finalize(conn, cfg.today)

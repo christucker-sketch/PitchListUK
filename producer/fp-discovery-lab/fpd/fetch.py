@@ -43,6 +43,9 @@ class FetchResult:
             return self.body.decode("utf-8", errors="replace")
 
 
+ROBOTS_MAX = 512_000
+
+
 class Fetcher:
     def __init__(self, cfg: Config):
         self.cfg = cfg
@@ -96,8 +99,16 @@ class Fetcher:
                     try:
                         await self._wait_turn(sp.netloc)
                         try:
-                            r = await self.client.get(key + "/robots.txt", timeout=12)
-                            status, text = r.status_code, r.text
+                            # Read at most ROBOTS_MAX bytes (RFC 9309 asks crawlers to parse at least 500 KiB). An unbounded
+                            # read here took the Pi down on 15 Oct: a council site's /robots.txt grew the process past
+                            # 700 MB in about a minute, and the MemoryError was swallowed by the broad except below.
+                            async with self.client.stream("GET", key + "/robots.txt", timeout=12) as r:
+                                status, buf = r.status_code, bytearray()
+                                async for chunk in r.aiter_bytes():
+                                    buf += chunk
+                                    if len(buf) >= ROBOTS_MAX:
+                                        break
+                            text = bytes(buf[:ROBOTS_MAX]).decode("utf-8", errors="replace")
                         except (httpx.RemoteProtocolError, httpx.LocalProtocolError):
                             # malformed response headers (h11 is strict): read robots.txt with the lenient stdlib client
                             self.lenient_hosts.add(sp.netloc)
@@ -111,6 +122,8 @@ class Fetcher:
                             rp.allow_all = True
                         else:
                             rp.parse(text.splitlines())
+                    except MemoryError:
+                        raise  # never mistake memory exhaustion for an unreachable robots.txt (15 Oct)
                     except Exception:
                         rp.allow_all = True  # unreachable robots: treat as no rules (RFC 9309 §2.3.1.3 for 4xx)
                     self.robots[key] = rp
@@ -183,6 +196,8 @@ class Fetcher:
                     return fb
             res.error = f"{type(e).__name__}: {str(e)[:160]}"
             self.host_failures[host] = self.host_failures.get(host, 0) + 1
+        except MemoryError:
+            raise
         except Exception as e:  # noqa: BLE001
             res.error = f"{type(e).__name__}: {str(e)[:160]}"
         res.elapsed_ms = int((time.monotonic() - t0) * 1000)
