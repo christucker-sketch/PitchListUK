@@ -56,3 +56,7 @@ Evidence link or exact recorded instruction:
 Authorized scope and remaining gates:
 Affected task IDs and implementation evidence:
 ```
+
+## 15 October — customer localisation direction (Chris)
+
+Chris replied “lets make it happen” to the shared English/German/French localisation proposal: one application, language independent of country, source originals immutable, translated interface/formatting/customer journey, stable locale URLs and SEO, one account/global Pro. Implement and validate in restricted preview first. This approval does not grant DE source intake, inventory fabrication, translated source facts without retained translation provenance, revised subscription prices/currencies, paid discovery or production routing changes. V3-024 owns implementation.
