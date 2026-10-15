@@ -29,7 +29,7 @@
     marketPath: m => `/${SLUG[m]}/`,
     opportunityPath: (m, id) => `/${SLUG[m]}/opportunity/${encodeURIComponent(id)}/`,
     finderPath: m => `/${SLUG[m]}/find-pitches/`,
-    abs: path => SITE + path,
+    abs: path => SITE + (FP.i18n ? FP.i18n.pathFor(path, FP.i18n.current) : path),
     /* Draft (static file) links */
     draft: {
       finder: (m, params) => 'finder.html?' + new URLSearchParams(Object.assign({ cc: SLUG[m] }, params || {})).toString(),

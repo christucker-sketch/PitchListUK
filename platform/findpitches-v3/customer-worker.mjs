@@ -1,3 +1,4 @@
+import {i18n,customerLanguage,customerReturnPath,localisedDocument} from './customer-localisation.mjs';
 import {hash} from './contract.mjs';
 import {stmt,cookie,cookies,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent,same} from './customer-security.mjs';
 import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,consumeChallenge,requestLogin,logout,updateProfile} from './customer-auth.mjs';
@@ -58,14 +59,14 @@ async function api(request,env,now) {
         const redirect=text('',303,{Location:result.next});redirect.headers.append('Set-Cookie',result.cookie);if(!production(env))redirect.headers.append('Set-Cookie',await grantPreview(db,now));return redirect;
       }
       return response(await session(db,env,result.customer,now),200,[result.cookie]);}
-    catch(e){if(method==='GET'&&e.code==='invalid_link')return text('',303,{Location:'/account.html?signin=expired'});throw e;}
+    catch(e){if(method==='GET'&&e.code==='invalid_link')return text('',303,{Location:customerReturnPath('/account.html?signin=expired',i18n.language(q.lang))});throw e;}
   }
   if(method==='POST'&&p==='/session/logout')return response({},200,[await logout(request,db,now)]);
   if(method==='PATCH'&&p==='/session/profile')return response(await session(db,env,await updateProfile(db,needCustomer(customer),body),now));
   if(method==='GET'&&p==='/billing/plans'){marketOf(q.market??'GB');return response({plans:plans(q.market??'GB',env,q.currency)});}
   if(method==='POST'&&p==='/billing/checkout')return response(await checkout(db,env,needCustomer(customer),body,{now,origin:url.origin}));
   if(method==='POST'&&p==='/billing/confirm'){await confirmCheckout(db,env,needCustomer(customer),body,{now});return response(await session(db,env,customer,now));}
-  if(method==='POST'&&p==='/billing/portal')return response(await portal(db,env,needCustomer(customer),{origin:url.origin}));
+  if(method==='POST'&&p==='/billing/portal')return response(await portal(db,env,needCustomer(customer),{origin:url.origin,locale:customerLanguage(body.locale)}));
   // Saved IDs are customer-owned state, not a catalogue read. Expanded saved
   // records below still require a fresh source-proof snapshot and redaction.
   if(method==='GET'&&p==='/saved'&&!q.expand){needCustomer(customer);const saved=(await stmt(db,'SELECT entity_id FROM saved_opportunities WHERE customer_id=? ORDER BY saved_at DESC',customer.id).all()).results;return response({ids:saved.map(r=>r.entity_id)});}
@@ -110,8 +111,11 @@ async function api(request,env,now) {
 }
 
 async function html(request,env,now) {
-  const url=new URL(request.url),path=url.pathname;
-  if(path==='/favicon.ico')return text('',204);
+  const url=new URL(request.url),lr=i18n.route(url.pathname),lang=lr.language,path=lr.path;
+  if(!lr.valid||(lr.explicit&&env.V3_LOCALISATION_ENABLED==='false'))return text('Page not found',404);
+  if(lr.explicit&&/^\/(?:api|ops|preview|assets|health|robots\.txt|sitemap)/.test(path))return text('Page not found',404);
+  if(lr.explicit&&(url.pathname==='/lang/'+lang||lang==='en'))return text('',301,{Location:i18n.pathFor(path,lang)+url.search});
+  if(path==='/favicon.ico')return text(null,204);
   if(path==='/robots.txt')return text(production(env)&&env.V3_PUBLIC_ENABLED==='true'?'User-agent: *\nDisallow: /api/\nDisallow: /ops/\nDisallow: /preview/\nDisallow: /account.html\nDisallow: /saved.html\nDisallow: /alerts.html\nSitemap: https://findpitches.com/sitemap.xml\n':'User-agent: *\nDisallow: /\n',200,{'Content-Type':'text/plain'});
   if(path.startsWith('/assets/')){const asset=await env.ASSETS.fetch(request);return new Response(asset.body,{status:asset.status,headers:{...Object.fromEntries(asset.headers),...headers}});}
   const sitemap=path==='/sitemap.xml'||/^\/sitemap-[a-z]+\.xml$/.test(path);
@@ -121,27 +125,31 @@ async function html(request,env,now) {
   // still read fresh proof; SEO/detail pages and sitemaps remain proof-bound.
   const shellDocument=['/','/index.html','/finder.html','/organisers.html','/organisers/'].includes(path)||/^\/(?:uk|us|ca|au|ie|nz|sg|hk)\/find-pitches\/$/.test(path);
   const rows=recovery||shellDocument?[]:(await readCatalogue(env,now)).rows,ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
-  if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
+  if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));if(env.V3_LOCALISATION_ENABLED!=='false'&&env.V3_LOCALISATION_INDEXABLE==='true')entries.push(...entries.flatMap(entry=>['de','fr'].map(lang=>({...entry,path:i18n.pathFor(entry.path,lang)}))));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
   let d,template,routeQuery='';
   const staticPages={'/':'index.html','/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};
-  if(staticPages[path])template=staticPages[path];else {d=seo.resolve(path,{markets:ms,regions:rs});if(d.kind==='redirect')return text('',301,{Location:d.to});if(d.kind==='not_found')return text('Page not found',404);if(d.kind==='app'){const u=new URL(d.to,url);template=u.pathname.split('/').at(-1);routeQuery=u.searchParams.toString();}else{template='seo.html';routeQuery=new URLSearchParams({path:d.path}).toString();}}
-  const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=await asset.text(),meta='',title=null,robots=production(env)&&['index.html','organisers.html'].includes(template)?'index,follow':'noindex,follow';
+  if(staticPages[path])template=staticPages[path];else {d=seo.resolve(path,{markets:ms,regions:rs});if(d.kind==='redirect')return text('',301,{Location:i18n.pathFor(d.to,lang)});if(d.kind==='not_found')return text('Page not found',404);if(d.kind==='app'){const u=new URL(d.to,url);template=u.pathname.split('/').at(-1);routeQuery=u.searchParams.toString();}else{template='seo.html';routeQuery=new URLSearchParams({path:d.path}).toString();}}
+  const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=localisedDocument(await asset.text(),lang),meta='',title=null,robots=production(env)&&['index.html','organisers.html'].includes(template)?'index,follow':'noindex,follow';
   if(d&&d.kind==='page') {
-    const inv=inventory(rows,d.market,seoConfig.intentsFor(d.market),now),s=search(rows,{...seo.filters(d),page_size:12},null,now),m=ms.find(m=>m.code===d.market),M=seo.meta(d,{market:m,markets:ms,regions:rs[d.market],inventory:inv,inventories:{[d.market]:inv},search:s,visible:s.results,regionPath:ancestors(d.market,d.region?.id),today:budgetDay(now)});
+    const inv=inventory(rows,d.market,seoConfig.intentsFor(d.market),now),s=search(rows,{...seo.filters(d),page_size:12},null,now),m=ms.find(m=>m.code===d.market),originalMeta=seo.meta(d,{market:m,markets:ms,regions:rs[d.market],inventory:inv,inventories:{[d.market]:inv},search:s,visible:s.results,regionPath:ancestors(d.market,d.region?.id),today:budgetDay(now)}),M=i18n.meta(originalMeta,d,m,lang,env.V3_LOCALISATION_INDEXABLE==='true');
     title=M.title;robots=M.robots;meta=`<meta name="description" content="${esc(M.description)}"><link rel="canonical" href="${esc(M.canonical)}">`+M.hreflang.map(h=>`<link rel="alternate" hreflang="${esc(h.lang)}" href="${esc(h.href)}">`).join('')+M.jsonld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
   }
   if(template==='opportunity.html') {
     const query=new URLSearchParams(routeQuery||url.search),id=query.get('id'),row=rows.find(r=>r.id===id);if(!row) return text('Opportunity unavailable',404);
     title=row.title+' | FindPitches';robots=path===row.canonical_path?'index,follow':'noindex,follow';const ld=[{'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{name:'FindPitches',url:routes.abs('/')},{name:marketOf(row.market).name,url:routes.abs(routes.marketPath(row.market))},{name:row.title,url:routes.abs(row.canonical_path)}].map((r,i)=>({'@type':'ListItem',position:i+1,name:r.name,item:r.url}))}];
     if(row.dates.start)ld.push({'@context':'https://schema.org','@type':'Event',name:row.title,startDate:row.dates.start,...(row.dates.end?{endDate:row.dates.end}:{}),url:routes.abs(row.canonical_path),location:{'@type':'Place',name:row.location.label,address:row.location.label},organizer:{'@type':'Organization',name:row.organiser.name}});
-    meta=`<link rel="canonical" href="${esc(routes.abs(row.canonical_path))}">`+ld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
+    meta=`<link rel="canonical" href="${esc(routes.abs(i18n.pathFor(row.canonical_path,lang)))}">`+ld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
   }
+  const canonicalPath=path==='/index.html'?'/':path;
+  if(!meta.includes('rel=\"canonical\"'))meta+=`<link rel="canonical" href="${esc(routes.abs(i18n.pathFor(canonicalPath,lang)))}">`;
+  if(lang!=='en'){markup=markup.replace(/<meta\s+name="description"[^>]*>/gi,'');if(!meta.includes('name=\"description\"'))meta+=`<meta name="description" content="${esc(i18n.tr('Browse checked markets, festivals and trader opportunities. Apply directly with the organiser.',[],lang))}">`;}
   if(title)markup=markup.replace(/<title>[^<]*<\/title>/,`<title>${esc(title)}</title>`);
   // The copied shell reads route defaults from data, without inline executable
   // scripts. Relative Build 4 assets and links resolve from this owned origin.
+  if(lang!=='en'&&env.V3_LOCALISATION_INDEXABLE!=='true')robots='noindex,follow';
   if(!production(env))robots='noindex,nofollow';
-  markup=markup.replace(/<meta\s+name="robots"[^>]*>/gi,'').replace('<head>',`<head><base href="/"><meta name="fp-environment" content="${env.V3_CUSTOMER_MODE}"><meta name="fp-route-query" content="${esc(routeQuery)}">`+meta+`<meta name="robots" content="${robots}">`);
-  return text(markup,200,{'Content-Type':'text/html; charset=utf-8','X-Robots-Tag':robots});
+  markup=markup.replace(/<meta\s+name="robots"[^>]*>/gi,'').replace('<head>',`<head><base href="${lr.prefix}/"><meta name="fp-language" content="${lang}"><meta name="fp-localisation-enabled" content="${env.V3_LOCALISATION_ENABLED!=='false'}"><meta name="fp-localisation-indexable" content="${env.V3_LOCALISATION_INDEXABLE==='true'}"><meta name="fp-environment" content="${env.V3_CUSTOMER_MODE}"><meta name="fp-route-query" content="${esc(routeQuery)}">`+meta+`<meta name="robots" content="${robots}">`);
+  return text(markup,200,{'Content-Type':'text/html; charset=utf-8','X-Robots-Tag':robots,'Content-Language':lang});
 }
 
 export default {
@@ -168,7 +176,7 @@ export default {
           return text('',301,{Location:'https://findpitches.com'+u.pathname+u.search});
         if(u.origin==='https://www.findpitches.com'&&['GET','HEAD'].includes(request.method))return text('',301,{Location:'https://findpitches.com'+u.pathname+u.search});
         if(u.origin!==env.V3_PUBLIC_ORIGIN||u.origin!=='https://findpitches.com')throw customerError('forbidden',403);
-        if(env.V3_PUBLIC_ENABLED!=='true'&&!(env.V3_ACCOUNT_RECOVERY_ENABLED==='true'&&recoveryPath(p)))throw customerError('service_unavailable',503);
+        if(env.V3_PUBLIC_ENABLED!=='true'&&!(env.V3_ACCOUNT_RECOVERY_ENABLED==='true'&&recoveryPath(i18n.route(p).path)))throw customerError('service_unavailable',503);
         if(!p.startsWith('/assets/'))await rateLimit(db,'public/ip/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:120,seconds:60,now});
         if(p==='/api/v3/billing/checkout')await rateLimit(db,'checkout/ip/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:10,now});
       }

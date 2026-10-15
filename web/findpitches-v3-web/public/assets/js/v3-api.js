@@ -9,12 +9,13 @@
  */
 (function () {
   const FP = (window.FP = window.FP || {});
+  const translateUI=FP.i18n.tr, uiHTML=FP.i18n.html;
   const BASE = (window.FP_CONFIG && window.FP_CONFIG.apiBase) || '/api/v3';
 
   class ApiError extends Error {
     constructor(code, status, message, extra) { super(message || code); this.code = code; this.status = status; Object.assign(this, extra || {}); }
   }
-  const notAvailable = (what) => Promise.reject(new ApiError('not_available', 501, `${what} isn’t available here.`));
+  const notAvailable = (what) => Promise.reject(new ApiError('not_available', 501, translateUI("{0} isn’t available here.",[what])));
 
   function csrfToken() {
     const m = document.cookie.match(/(?:^|;\s*)fp_csrf=([^;]+)/);
@@ -41,13 +42,13 @@
         body: body !== undefined ? JSON.stringify(body) : undefined
       });
     } catch (e) {
-      throw new ApiError('network_error', 0, 'We couldn’t reach FindPitches. Check your connection and try again.');
+      throw new ApiError('network_error', 0, translateUI('We couldn’t reach FindPitches. Check your connection and try again.'));
     }
     let data = null;
     try { data = await res.json(); } catch (e) { data = null; }
     if (!res.ok || !data || data.ok === false) {
       throw new ApiError((data && data.error) || 'internal_error', res.status,
-        (data && data.message) || 'Something went wrong. Please try again.', data && data.fields ? { fields: data.fields } : {});
+        (data && translateUI(data.message)) || translateUI('Something went wrong. Please try again.'), data && data.fields ? { fields: data.fields } : {});
     }
     return data;
   }
@@ -58,8 +59,8 @@
 
   // Event-type labels are presentation config (contract §3.4), shipped with the site.
   const TYPES = {
-    christmas_market: 'Christmas market', holiday_market: 'Holiday market', food_festival: 'Food festival', festival: 'Festival',
-    market: 'Market', street_trading: 'Street trading', show: 'Show', concession: 'Concession', event: 'Event', sport: 'Sports & stadiums'
+    christmas_market: translateUI('Christmas market'), holiday_market: translateUI('Holiday market'), food_festival: translateUI('Food festival'), festival: translateUI('Festival'),
+    market: translateUI('Market'), street_trading: translateUI('Street trading'), show: translateUI('Show'), concession: translateUI('Concession'), event: translateUI('Event'), sport: translateUI('Sports & stadiums')
   };
 
   FP.v3Api = {
@@ -100,7 +101,7 @@
     session: {
       async get() { return call('GET', '/session'); },
       async requestLink({ email }) {
-        const r = await send('POST', '/session/link', { email, next: location.pathname + location.search });
+        const r = await send('POST', '/session/link', { email, next: location.pathname + location.search, locale: FP.i18n.current });
         return { sent: true, email, dev_link: r.dev_link || null };
       },
       async completeLink({ token }) { return send('POST', '/session/verify', { token }); },
@@ -124,12 +125,12 @@
     },
     billing: {
       async plans({ market, currency } = {}) { return (await call('GET', '/billing/plans' + qs({ market: market || 'GB',currency }))).plans; },
-      async startCheckout({ plan_id, market, currency }) { const r = await send('POST', '/billing/checkout', { plan_id, market,...(currency?{currency}:{}) }); return { checkout_url: r.checkout_url }; },
+      async startCheckout({ plan_id, market, currency }) { const r = await send('POST', '/billing/checkout', { plan_id, market, locale: FP.i18n.current,...(currency?{currency}:{}) }); return { checkout_url: r.checkout_url }; },
       async confirmCheckout({ session_id }) { return send('POST', '/billing/confirm', { session_id }); },
-      async portal() { return (await send('POST', '/billing/portal')).url; },
+      async portal() { return (await send('POST', '/billing/portal', {locale:FP.i18n.current})).url; },
       // Plan changes and cancellation happen in the payment provider's hosted portal (billing.portal).
-      getCheckout: () => notAvailable('Checkout details'), completeCheckout: () => notAvailable('Checkout'),
-      cancel: () => notAvailable('Cancelling here'), resume: () => notAvailable('Resuming here')
+      getCheckout: () => notAvailable(translateUI('Checkout details')), completeCheckout: () => notAvailable(translateUI('Checkout')),
+      cancel: () => notAvailable(translateUI('Cancelling here')), resume: () => notAvailable(translateUI('Resuming here'))
     },
     organisers: {
       async submitListing(form) { return send('POST', '/inbox/organiser_submission', form); },

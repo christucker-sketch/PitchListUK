@@ -4,6 +4,12 @@ Author: Codex. Updated: **2026-10-15, 09:10 London Germany preparation** (Europe
 State: **V3-023 preliminary Germany DONE — source plan/offline conformance/Claude handoff, no DE activation; V3-021 DONE — verified private R2 tiering and reclaimed headroom; V3-019 DONE — deployed France compatibility; V3-020 OPEN — unstructured French source proof; V3-018 DONE; V3-017 growth ongoing; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
 
+## Localisation implementation checkpoint — 15 October
+
+[Design/maintenance contract](../../web/findpitches-v3-web/LOCALISATION.md). English/German/French shared UI, locale URLs, immutable source-value insertion, formatters, SSR/noindex, sign-in mail and hosted-flow locales implemented. Full V3 **438 passed**; local desktop/mobile **118 checks passed**. Restricted preview version `883ac9a0-cc51-4736-bfab-c57959dcd1b3` preserves bindings/secrets/schedules; native browser checks and full retained-source preservation audit are running. Later small route-label/empty-favicon fixes await the final release checkpoint. Production is still unchanged at this measurement.
+
+User asked to make the proposed languages happen. After preview/native validation, follow through with the existing D-014/D-016 guarded **customer code/assets** release; no hostname/route/DNS change, country activation, source publication, price/entitlement or paid-acquisition change. Keep the new language versions noindex pending content review. This is the same live FindPitches application, not a new cutover. Existing producer/France and capacity follow-ups remain open.
+
 ## Customer localisation claimed — 15 October
 
 V3-024: Chris approved the proposed shared-language approach. Implement English/German/French UI independently of market, stable language URLs and selector, shared formatting/status labels, localised static/SEO screens, sign-in emails and safe hosted-flow propagation. Test against existing Free/Pro/recovery contracts and deploy restricted preview only; no source translations fabricated, DE market activation, pricing/entitlement change, paid provider activity or production release. Claim timestamp 2026-10-15T09:11:05.929793+00:00.

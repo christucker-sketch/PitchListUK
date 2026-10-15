@@ -1,3 +1,4 @@
+import {customerLanguage,i18n,signInMail} from './customer-localisation.mjs';
 import {SUPPORTED_MARKETS} from '../../web/findpitches-v3-web/server/catalogue-registry.mjs';
 import {hash} from './contract.mjs';
 import {stmt,cookies,opaqueToken,cookie,sessionCookie,previewCookie,safeNext,customerError,rateLimit,noteCustomerEvent} from './customer-security.mjs';
@@ -18,13 +19,13 @@ export async function issueChallenge(db,{email,next,now}) {
   const token=opaqueToken();await stmt(db,'INSERT INTO login_challenges VALUES (?,?,?,?,NULL,?)',await hash(token),emailAddress(email),safeNext(next),new Date(Date.parse(now)+900000).toISOString(),now).run();return token;
 }
 export async function requestLogin(request,env,body,{now,fetcher=fetch}={}) {
-  const email=emailAddress(body.email),db=env.V3_CUSTOMER_DB;
+  const email=emailAddress(body.email),db=env.V3_CUSTOMER_DB,locale=customerLanguage(body.locale??i18n.route(safeNext(body.next)).language);
   await rateLimit(db,'login/ip/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:20,now});
   await rateLimit(db,'login/email/'+email,{limit:5,now});
   if(!env.V3_EMAIL_API_KEY||!env.V3_EMAIL_FROM||mailCredentialIsProxyReference(env.V3_EMAIL_API_KEY))throw customerError('service_unavailable',503);
   let sender;try{sender=emailAddress(env.V3_EMAIL_FROM);}catch{throw customerError('service_unavailable',503);}
-  const token=await issueChallenge(db,{email,next:body.next,now}),link=new URL('/api/v3/session/verify',request.url);link.searchParams.set('token',token);
-  const response=await fetcher('https://api.smtp2go.com/v3/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_key:env.V3_EMAIL_API_KEY,sender,to:[email],subject:'Sign in to FindPitches',text_body:`Your one-time FindPitches sign-in link expires in 15 minutes:\n${link}\nIf you did not request it, ignore this email.`}),signal:AbortSignal.timeout(20000)});
+  const token=await issueChallenge(db,{email,next:body.next,now}),link=new URL('/api/v3/session/verify',request.url);link.searchParams.set('token',token);link.searchParams.set('lang',locale);
+  const response=await fetcher('https://api.smtp2go.com/v3/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_key:env.V3_EMAIL_API_KEY,sender,to:[email],...signInMail(locale,link)}),signal:AbortSignal.timeout(20000)});
   const result=await response.json();if(!response.ok||result.data?.succeeded!==1){await stmt(db,'DELETE FROM login_challenges WHERE token_hash=?',await hash(token)).run();throw customerError('service_unavailable',503);}
   await noteCustomerEvent(db,'auth_link','sent',now);return {sent:true};
 }

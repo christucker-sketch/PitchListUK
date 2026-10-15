@@ -2,6 +2,7 @@
    opportunity card, status, units, analytics abstraction, accessible modal/toast, coverage-building state. */
 (function () {
   const FP = (window.FP = window.FP || {});
+  const translateUI=FP.i18n.tr, uiHTML=FP.i18n.html;
   const api = () => FP.api;
   const CFG = window.FP_CONFIG || {};
   const $ = (s, r) => (r || document).querySelector(s);
@@ -9,10 +10,13 @@
   const qs = new URLSearchParams(location.search);
   const routeQuery = new URLSearchParams(document.querySelector('meta[name="fp-route-query"]')?.content || '');
   for (const [key, value] of routeQuery) if (!qs.has(key)) qs.set(key, value);
+  document.documentElement.lang=FP.i18n.current;
+  const staticWalker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);const staticNodes=[];while(staticWalker.nextNode())if(!staticWalker.currentNode.parentElement.closest('script,style,code,pre'))staticNodes.push(staticWalker.currentNode);for(const n of staticNodes)n.textContent=translateUI(n.textContent);
+  for(const el of document.querySelectorAll('[aria-label],[title],[placeholder],[alt]'))for(const a of ['aria-label','title','placeholder','alt'])if(el.hasAttribute(a))el.setAttribute(a,translateUI(el.getAttribute(a)));
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const LOGO = (fill = '#0E4B2C') => `<svg width="32" height="32" viewBox="0 0 34 34" aria-hidden="true" focusable="false"><rect x="1" y="5" width="32" height="24" rx="6" fill="${fill}"/><path d="M17 5v24M1 12.5h5v9H1M33 12.5h-5v9h5" stroke="#fff" stroke-width="1.6" fill="none"/><circle cx="17" cy="17" r="4.2" stroke="#fff" stroke-width="1.6" fill="none"/><circle cx="17" cy="17" r="1.8" fill="#FF5A2E"/></svg>`;
-  const STAR = on => `<svg width="20" height="20" viewBox="0 0 24 24" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg>`;
+  const LOGO = (fill = '#0E4B2C') => uiHTML`<svg width="32" height="32" viewBox="0 0 34 34" aria-hidden="true" focusable="false"><rect x="1" y="5" width="32" height="24" rx="6" fill="${fill}"/><path d="M17 5v24M1 12.5h5v9H1M33 12.5h-5v9h5" stroke="#fff" stroke-width="1.6" fill="none"/><circle cx="17" cy="17" r="4.2" stroke="#fff" stroke-width="1.6" fill="none"/><circle cx="17" cy="17" r="1.8" fill="#FF5A2E"/></svg>`;
+  const STAR = on => uiHTML`<svg width="20" height="20" viewBox="0 0 24 24" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg>`;
 
   // Draft explanations are not part of the V3 site; kept as a no-op so page code stays unchanged.
   const draftNote = () => '';
@@ -54,19 +58,19 @@
   const units = FP.units = {
     toKm: (v, unit) => unit === 'mi' ? v * KM_PER_MI : v,
     fromKm: (km, unit) => unit === 'mi' ? km / KM_PER_MI : km,
-    word: (unit, n) => unit === 'mi' ? (n === 1 ? 'mile' : 'miles') : (n === 1 ? 'kilometre' : 'kilometres'),
+    word: (unit, n) => unit === 'mi' ? translateUI(n === 1 ? 'mile' : 'miles') : translateUI(n === 1 ? 'kilometre' : 'kilometres'),
     short: unit => unit === 'mi' ? 'mi' : 'km',
     fmt(km, market) { if (km == null) return ''; const u = (state.m(market) || {}).distance_unit || 'km'; const v = units.fromKm(km, u); return (v < 1 ? '<1' : Math.round(v)) + ' ' + units.short(u); }
   };
 
   /* ---------- formatting ---------- */
   const TODAY = CFG.today || '2026-09-25';
-  const loc = mk => (state.m(mk) || {}).locale || 'en-GB';
+  const loc = mk => FP.i18n.locale(state.m(mk));
   const fmt = (iso, mk, o) => { if (!iso) return ''; try { return new Intl.DateTimeFormat(loc(mk), Object.assign({ timeZone: 'UTC' }, o)).format(new Date(String(iso).slice(0, 10) + 'T12:00:00Z')); } catch (e) { return iso; } };
   const days = iso => Math.round((new Date(String(iso).slice(0, 10) + 'T12:00:00Z') - new Date(TODAY + 'T12:00:00Z')) / 864e5);
   function when(o, mk) {
     const cc = mk || o.market, d = o.dates || {};
-    if (!d.start) return d.recurring ? 'Regular · no fixed dates listed' : 'No dates listed yet';
+    if (!d.start) return d.recurring ? translateUI('Regular · no fixed dates listed') : translateUI('No dates listed yet');
     const sameYear = d.start.slice(0, 4) === TODAY.slice(0, 4);
     if (!d.end || d.end === d.start) return fmt(d.start, cc, { weekday: 'short', day: 'numeric', month: 'short', year: sameYear ? undefined : 'numeric' });
     return fmt(d.start, cc, { day: 'numeric', month: 'short' }) + ' – ' + fmt(d.end, cc, { day: 'numeric', month: 'short', year: d.end.slice(0, 4) === TODAY.slice(0, 4) ? undefined : 'numeric' });
@@ -74,61 +78,61 @@
   function freshness(o, mk) {
     const cc = mk || o.market, ch = o.checked || {};
     // Some listings only carry the date of the batch they were checked in, not their own check date.
-    if (ch.snapshot && !ch.last_checked) return { cls: '', text: 'Checked by ' + fmt(ch.snapshot, cc, { day: 'numeric', month: 'short' }), long: 'Checked on or before ' + fmt(ch.snapshot, cc, { day: 'numeric', month: 'long', year: 'numeric' }) };
-    if (!ch.last_checked) return { cls: '', text: 'Check date unknown', long: 'We don’t have a check date for this listing' };
+    if (ch.snapshot && !ch.last_checked) return { cls: '', text: translateUI('Checked by ') + fmt(ch.snapshot, cc, { day: 'numeric', month: 'short' }), long: translateUI('Checked on or before ') + fmt(ch.snapshot, cc, { day: 'numeric', month: 'long', year: 'numeric' }) };
+    if (!ch.last_checked) return { cls: '', text: translateUI('Check date unknown'), long: translateUI('We don’t have a check date for this listing') };
     const a = -days(ch.last_checked);
-    const long = 'Last checked ' + fmt(ch.last_checked, cc, { day: 'numeric', month: 'long', year: 'numeric' });
-    return a <= 30 ? { cls: 'fresh-g', text: `Checked ${a === 0 ? 'today' : a === 1 ? 'yesterday' : a + ' days ago'}`, long } : a <= 60 ? { cls: 'fresh-a', text: `Checked ${a} days ago`, long } : { cls: '', text: `Checked ${a} days ago`, long };
+    const long = translateUI('Last checked ') + fmt(ch.last_checked, cc, { day: 'numeric', month: 'long', year: 'numeric' });
+    return a <= 30 ? { cls: 'fresh-g', text: translateUI("Checked {0}",[a === 0 ? translateUI('today') : a === 1 ? translateUI('yesterday') : translateUI('{0} days ago',[a])]), long } : a <= 60 ? { cls: 'fresh-a', text: translateUI("Checked {0} days ago",[a]), long } : { cls: '', text: translateUI("Checked {0} days ago",[a]), long };
   }
-  const SELLS = { food: 'Food', craft: 'Crafts', market: 'Market goods', general: 'General' };
-  const SELLS_LC = { food: 'food', craft: 'crafts', market: 'market goods', general: 'general traders' };
+  const SELLS = { food: translateUI('Food'), craft: translateUI('Crafts'), market: translateUI('Market goods'), general: translateUI('General') };
+  const SELLS_LC = { food: 'food', craft: 'crafts', market: translateUI('market goods'), general: translateUI('general traders') };
   const wantsList = o => (o.sells || []).map(s => SELLS_LC[s]).filter(Boolean); // as given by the data; empty = not stated
   // Live listings carry open-ended offerings ("Street food", "Jamaican jerk"); the draft uses fixed sells keys.
   const offeringList = o => (Array.isArray(o.offerings) && o.offerings.length ? o.offerings.map(x => String(x).toLowerCase()) : wantsList(o));
-  const TYPE_PLURAL_LC = { christmas_market: 'Christmas markets', holiday_market: 'holiday markets', food_festival: 'food festivals', festival: 'festivals', market: 'markets', street_trading: 'street trading pitches', show: 'shows', concession: 'concessions', event: 'events', sport: 'sports events' };
+  const TYPE_PLURAL_LC = { christmas_market: translateUI('Christmas markets'), holiday_market: translateUI('holiday markets'), food_festival: translateUI('food festivals'), festival: 'festivals', market: 'markets', street_trading: translateUI('street trading pitches'), show: 'shows', concession: 'concessions', event: 'events', sport: translateUI('sports events') };
   const typePluralLc = t => TYPE_PLURAL_LC[t] || 'listings';
-  const TYPE_PLURAL = { christmas_market: 'Christmas markets', holiday_market: 'Holiday markets', food_festival: 'Food festivals', festival: 'Festivals', market: 'Markets', street_trading: 'Street trading pitches', show: 'Shows', concession: 'Concessions', event: 'Events', sport: 'Sports events' };
-  const listJoin = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+  const TYPE_PLURAL = { christmas_market: translateUI('Christmas markets'), holiday_market: translateUI('Holiday markets'), food_festival: translateUI('Food festivals'), festival: translateUI('Festivals'), market: translateUI('Markets'), street_trading: translateUI('Street trading pitches'), show: translateUI('Shows'), concession: translateUI('Concessions'), event: translateUI('Events'), sport: translateUI('Sports events') };
+  const listJoin = a => FP.i18n.list(a);
   const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
 
   // Application status comes from the API (derived from evidence); unknown is shown as nothing on cards.
   function appStatus(o, mk) {
     const a = o.application || { status: 'unknown' }, cc = mk || o.market;
     const d = a.deadline ? fmt(a.deadline, cc, { day: 'numeric', month: 'short' }) : '';
-    if(['enquire','open_now','open','rolling'].includes(a.status)&&['standing_registration','vendor_portal_registration'].includes(a.route_type))return {cls:'enquire',short:'Vendor registration',long:'Register with the organiser’s vendor intake. Registration does not guarantee a place at this event.'};
-    if(a.status==='enquire'&&a.route_type==='organiser_intake')return {cls:'enquire',short:'Join vendor intake',long:'Use the organiser’s current vendor intake to ask about trading at this event. Acceptance is decided by the organiser.'};
-    if(a.status==='enquire'&&a.requires_account)return {cls:'enquire',short:'Contact organiser',long:`Use the vendor enquiry route. A ${a.account_provider||'provider'} account is required; an enquiry does not guarantee a trading place.`};
+    if(['enquire','open_now','open','rolling'].includes(a.status)&&['standing_registration','vendor_portal_registration'].includes(a.route_type))return {cls:'enquire',short:translateUI('Vendor registration'),long:translateUI('Register with the organiser’s vendor intake. Registration does not guarantee a place at this event.')};
+    if(a.status==='enquire'&&a.route_type==='organiser_intake')return {cls:'enquire',short:translateUI('Join vendor intake'),long:translateUI('Use the organiser’s current vendor intake to ask about trading at this event. Acceptance is decided by the organiser.')};
+    if(a.status==='enquire'&&a.requires_account)return {cls:'enquire',short:translateUI('Contact organiser'),long:translateUI('Use the vendor enquiry route. A {0} account is required; an enquiry does not guarantee a trading place.',[a.account_provider||'provider'])};
     switch (a.status) {
       // Evidence-based states from the V3 data (contract §3.2). Shown only when the source says so.
-      case 'open_now': return { cls: 'open', short: 'Taking applications', long: 'The organiser’s page says applications are open. No closing date is published, so apply soon.' };
-      case 'rolling': return { cls: 'open', short: 'Apply any time', long: 'This organiser takes applications all year round.' };
-      case 'enquire': return { cls: 'enquire', short: 'Contact organiser', long: 'Use the organiser’s trader enquiry route to ask about a pitch.' };
-      case 'opens_later': return { cls: 'opens_later', short: a.opens_on ? `Opens ${fmt(a.opens_on, cc, { day: 'numeric', month: 'short' })}` : 'Opens later', long: a.opens_on ? `Applications open on ${fmt(a.opens_on, cc, { day: 'numeric', month: 'long', year: 'numeric' })}.` : 'Applications open later. Save it and check back.' };
-      case 'open': return { cls: 'open', short: `Apply by ${d}`, long: LIVE && a.basis === 'deadline'
+      case 'open_now': return { cls: 'open', short: translateUI('Taking applications'), long: translateUI('The organiser’s page says applications are open. No closing date is published, so apply soon.') };
+      case 'rolling': return { cls: 'open', short: translateUI('Apply any time'), long: translateUI('This organiser takes applications all year round.') };
+      case 'enquire': return { cls: 'enquire', short: translateUI('Contact organiser'), long: translateUI('Use the organiser’s trader enquiry route to ask about a pitch.') };
+      case 'opens_later': return { cls: 'opens_later', short: a.opens_on ? translateUI("Opens {0}",[fmt(a.opens_on, cc, { day: 'numeric', month: 'short' })]) : translateUI('Opens later'), long: a.opens_on ? translateUI("Applications open on {0}.",[fmt(a.opens_on, cc, { day: 'numeric', month: 'long', year: 'numeric' })]) : translateUI('Applications open later. Save it and check back.') };
+      case 'open': return { cls: 'open', short: translateUI("Apply by {0}",[d]), long: LIVE && a.basis === 'deadline'
         // Live: we know a future deadline, not that applications have opened. Say only what's known.
-        ? `The listed application deadline is ${fmt(a.deadline, cc, { day: 'numeric', month: 'long', year: 'numeric' })}. Check the organiser’s page to confirm applications are open.`
-        : `Applications appear open. Apply by ${fmt(a.deadline, cc, { day: 'numeric', month: 'long', year: 'numeric' })}.` };
-      case 'closing_soon': return { cls: 'closing_soon', short: a.days_left === 0 ? 'Closes today' : `Closes ${d}`, long: `Closing soon: apply by ${fmt(a.deadline, cc, { day: 'numeric', month: 'long' })} (${a.days_left === 0 ? 'today' : a.days_left + (a.days_left === 1 ? ' day' : ' days') + ' left'}).` };
-      case 'closed': return { cls: 'closed', short: 'Deadline passed', long: `The listed deadline (${fmt(a.deadline, cc, { day: 'numeric', month: 'long' })}) has passed. Some organisers still take late applications: check with them.` };
-      case 'ended': return { cls: 'ended', short: 'Finished', long: 'This event has finished. Save it to apply again next time.' };
-      default: return { cls: 'unknown', short: '', long: 'No application deadline listed. Check the organiser’s page for how and when to apply.' };
+        ? translateUI("The listed application deadline is {0}. Check the organiser’s page to confirm applications are open.",[fmt(a.deadline, cc, { day: 'numeric', month: 'long', year: 'numeric' })])
+        : translateUI("Applications appear open. Apply by {0}.",[fmt(a.deadline, cc, { day: 'numeric', month: 'long', year: 'numeric' })]) };
+      case 'closing_soon': return { cls: 'closing_soon', short: a.days_left === 0 ? translateUI('Closes today') : translateUI("Closes {0}",[d]), long: translateUI("Closing soon: apply by {0} ({1}).",[fmt(a.deadline, cc, { day: 'numeric', month: 'long' }),a.days_left === 0 ? translateUI('today') : translateUI('{0} days left',[a.days_left])]) };
+      case 'closed': return { cls: 'closed', short: translateUI('Deadline passed'), long: translateUI("The listed deadline ({0}) has passed. Some organisers still take late applications: check with them.",[fmt(a.deadline, cc, { day: 'numeric', month: 'long' })]) };
+      case 'ended': return { cls: 'ended', short: translateUI('Finished'), long: translateUI('This event has finished. Save it to apply again next time.') };
+      default: return { cls: 'unknown', short: '', long: translateUI('No application deadline listed. Check the organiser’s page for how and when to apply.') };
     }
   }
 
   // Plain-English description of a search/alert: "Food opportunities within 25 miles of Maidstone"
   function describeQuery(q, placeLabel) {
     const m = state.m(q.market); const u = m.distance_unit;
-    let what = 'All opportunities';
+    let what = translateUI('All opportunities');
     if (q.types && q.types.length) what = listJoin(q.types.map((t, i) => i ? (TYPE_PLURAL[t] || t).toLowerCase() : (TYPE_PLURAL[t] || t)));
-    else if (q.organiser_types && q.organiser_types.includes('council')) what = 'Council-run opportunities';
-    if (q.sells) what = (q.types && q.types.length ? what + ' for ' + SELLS_LC[q.sells] : cap(SELLS_LC[q.sells] === 'general traders' ? 'general' : SELLS_LC[q.sells]) + ' opportunities');
+    else if (q.organiser_types && q.organiser_types.includes('council')) what = translateUI('Council-run opportunities');
+    if (q.sells) what = (q.types && q.types.length ? translateUI('{0} for {1}',[what,SELLS_LC[q.sells]]) : translateUI('{0} opportunities',[SELLS_LC[q.sells]]));
     let where;
     const place = placeLabel || q.place_label || q.q || '';
     const r = q.radius_km == null || q.radius_km === 'any' ? null : Math.round(units.fromKm(+q.radius_km, u));
-    if (place && r) where = `within ${r} ${units.word(u, r)} of ${place}`;
-    else if (place) where = `in ${place}`;
-    else where = `in ${m.the}`;
-    const when = { '30': 'in the next 30 days', '90': 'in the next 3 months', xmas: 'this Christmas season', '2027': 'in 2027' }[q.when] || '';
+    if (place && r) where = translateUI("within {0} {1} of {2}",[r,units.word(u, r),place]);
+    else if (place) where = translateUI("in {0}",[place]);
+    else where = translateUI("in {0}",[m.the]);
+    const when = { '30': translateUI('in the next 30 days'), '90': translateUI('in the next 3 months'), xmas: translateUI('this Christmas season'), '2027': translateUI('in 2027') }[q.when] || '';
     return [what, where, when].filter(Boolean).join(' ');
   }
 
@@ -137,32 +141,32 @@
   function card(o, opts = {}) {
     // Prepared for the product-policy review. Current production responses
     // never set identity_locked; activation belongs to the server rule.
-    if(o.identity_locked){const month=o.dates?.month?fmt(o.dates.month+'-15',o.market,{month:'long',year:'numeric'}):'Date proof available on Pro';
-      return `<article class="ocard identity-locked" data-id="${esc(o.id)}"><div class="oc-main"><h3>Verified opportunity</h3><p class="oc-where">${esc(o.location.label)} · ${esc(month)}</p><p class="oc-meta">${esc(o.application.label||o.application.status||'Current opportunity')}</p></div><div class="oc-side"><a class="btn btn-turf btn-sm" href="pricing.html">Unlock details with Pro</a></div></article>`;
+    if(o.identity_locked){const month=o.dates?.month?fmt(o.dates.month+'-15',o.market,{month:'long',year:'numeric'}):translateUI('Date proof available on Pro');
+      return uiHTML`<article class="ocard identity-locked" data-id="${esc(o.id)}"><div class="oc-main"><h3>Verified opportunity</h3><p class="oc-where">${esc(o.location.label)} · ${esc(month)}</p><p class="oc-meta">${esc(o.application.label||o.application.status||translateUI('Current opportunity'))}</p></div><div class="oc-side"><a class="btn btn-turf btn-sm" href="pricing.html">Unlock details with Pro</a></div></article>`;
     }
     const cc = o.market, sp = o.type === 'sport', f = freshness(o, cc), on = state.saved.has(o.id), st = appStatus(o, cc);
     let dt;
-    if (o.dates && o.dates.start) { const d = new Date(o.dates.start + 'T12:00:00Z'); dt = `<div class="date ${sp ? 'sport' : ''}" aria-hidden="true"><b>${d.getUTCDate()}</b><span>${fmt(o.dates.start, cc, { month: 'short' })}${o.dates.start.slice(0, 4) !== TODAY.slice(0, 4) ? ' ’' + o.dates.start.slice(2, 4) : ''}</span></div>`; }
-    else dt = `<div class="date ong" aria-hidden="true"><span>${o.dates && o.dates.recurring ? 'Regular' : 'No date'}</span></div>`;
+    if (o.dates && o.dates.start) { const d = new Date(o.dates.start + 'T12:00:00Z'); dt = uiHTML`<div class="date ${sp ? 'sport' : ''}" aria-hidden="true"><b>${d.getUTCDate()}</b><span>${fmt(o.dates.start, cc, { month: 'short' })}${o.dates.start.slice(0, 4) !== TODAY.slice(0, 4) ? ' ’' + o.dates.start.slice(2, 4) : ''}</span></div>`; }
+    else dt = uiHTML`<div class="date ong" aria-hidden="true"><span>${o.dates && o.dates.recurring ? translateUI('Regular') : translateUI('No date')}</span></div>`;
     let dist = '';
-    if (o.distance_km != null) dist = ['place','venue','address'].includes(o.location.precision) ? ` · <b>${units.fmt(o.distance_km, cc)}</b>` : ` · <span class="muted">${esc(o.location.region_name || o.location.region || 'area')}-wide listing</span>`;
-    const wl = offeringList(o); const wantsTxt = wl.length ? 'Wants ' + listJoin(wl.slice(0, 3)) + (wl.length > 3 ? ' and more' : '') : '';
+    if (o.distance_km != null) dist = ['place','venue','address'].includes(o.location.precision) ? uiHTML` · <b>${units.fmt(o.distance_km, cc)}</b>` : uiHTML` · <span class="muted">${esc(o.location.region_name || o.location.region || 'area')}-wide listing</span>`;
+    const wl = offeringList(o); const wantsTxt = wl.length ? translateUI('Wants ') + listJoin(wl.slice(0, 3)) + (wl.length > 3 ? translateUI(' and more') : '') : '';
     const past = st.cls === 'ended';
-    return `<article class="ocard${past ? ' past' : ''}" data-id="${esc(o.id)}">${dt}
+    return uiHTML`<article class="ocard${past ? ' past' : ''}" data-id="${esc(o.id)}">${dt}
       <div class="oc-main">
         <h3><a href="${R.draft.opportunity(o.id)}" data-open="${esc(o.id)}">${esc(o.title)}</a></h3>
-        <p class="oc-where">${esc(o.location.label)}${dist}<span class="oc-when${o.dates && o.dates.start ? '' : ' muted'}"><span aria-hidden="true"> · </span>${esc(o.dates && o.dates.start ? when(o, cc) : o.dates && o.dates.recurring ? 'Regular, no fixed dates listed' : 'No dates listed yet')}</span></p>
-        <p class="oc-meta">${o.type_label ? `<span class="ty ${sp ? 'sport' : ''}">${esc(o.type_label)}</span>` : ''}${wantsTxt ? `<span>${esc(wantsTxt)}</span>` : ''}<span class="fresh ${f.cls}" title="${esc(f.long)}"><i aria-hidden="true"></i>${esc(f.text)}</span></p>
+        <p class="oc-where">${esc(o.location.label)}${dist}<span class="oc-when${o.dates && o.dates.start ? '' : ' muted'}"><span aria-hidden="true"> · </span>${esc(o.dates && o.dates.start ? when(o, cc) : o.dates && o.dates.recurring ? translateUI('Regular, no fixed dates listed') : translateUI('No dates listed yet'))}</span></p>
+        <p class="oc-meta">${o.type_label ? uiHTML`<span class="ty ${sp ? 'sport' : ''}">${esc(translateUI(o.type_label))}</span>` : ''}${wantsTxt ? uiHTML`<span>${esc(wantsTxt)}</span>` : ''}<span class="fresh ${f.cls}" title="${esc(f.long)}"><i aria-hidden="true"></i>${esc(f.text)}</span></p>
       </div>
-      <div class="oc-side">${st.short ? `<span class="status ${st.cls}"><i aria-hidden="true"></i>${esc(st.short)}</span>` : ''}
-        <button type="button" class="star" data-save="${esc(o.id)}" aria-pressed="${on}" aria-label="${on ? 'Remove from saved' : 'Save'}: ${esc(o.title)}">${STAR(on)}</button></div></article>`;
+      <div class="oc-side">${st.short ? uiHTML`<span class="status ${st.cls}"><i aria-hidden="true"></i>${esc(st.short)}</span>` : ''}
+        <button type="button" class="star" data-save="${esc(o.id)}" aria-pressed="${on}" aria-label="${on ? translateUI('Remove from saved') : translateUI('Save')}: ${esc(o.title)}">${STAR(on)}</button></div></article>`;
   }
 
   /* ---------- toast (polite live region) with optional action ---------- */
   function toast(t, opts = {}) {
     let el = $('#fp-toast');
     if (!el) { el = document.createElement('div'); el.id = 'fp-toast'; el.className = 'toast'; el.setAttribute('role', 'status'); el.setAttribute('aria-live', 'polite'); document.body.appendChild(el); }
-    el.innerHTML = `<span>${esc(t)}</span>${opts.action ? `<button type="button">${esc(opts.action.label)}</button>` : ''}`;
+    el.innerHTML = uiHTML`<span>${esc(t)}</span>${opts.action ? uiHTML`<button type="button">${esc(opts.action.label)}</button>` : ''}`;
     if (opts.action) el.querySelector('button').onclick = () => { el.hidden = true; opts.action.onClick(); };
     el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, opts.action ? 6000 : 3200);
   }
@@ -172,8 +176,8 @@
   function modal(html, { onOpen, label } = {}) {
     const opener = document.activeElement; const id = 'dlg' + (++modalSeq);
     const m = document.createElement('div'); m.className = 'modal';
-    m.innerHTML = `<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="${id}-t">${html}</div>`;
-    const h = m.querySelector('h2'); if (h) { h.id = id + '-t'; h.tabIndex = -1; } else m.querySelector('.dialog').setAttribute('aria-label', label || 'Dialog');
+    m.innerHTML = uiHTML`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="${id}-t">${html}</div>`;
+    const h = m.querySelector('h2'); if (h) { h.id = id + '-t'; h.tabIndex = -1; } else m.querySelector('.dialog').setAttribute('aria-label', label || translateUI('Dialog'));
     const close = () => { m.remove(); document.removeEventListener('keydown', key, true); if (opener && opener.focus && document.contains(opener)) opener.focus(); };
     const key = e => {
       if (e.key === 'Escape') { e.stopPropagation(); close(); return; }
@@ -197,13 +201,13 @@
   // Sign-in by magic link (simulated: the "email" is shown on screen as a button).
   function signIn(reason) {
     return new Promise(resolve => {
-      modal(`<div class="dh"><h2>Sign in to FindPitches</h2><button class="x" data-close aria-label="Close">×</button></div>
+      modal(uiHTML`<div class="dh"><h2>Sign in to FindPitches</h2><button class="x" data-close aria-label="Close">×</button></div>
         <p class="muted" style="margin:0 0 16px">${esc(reason || 'Enter your email and we’ll send you a sign-in link. No password needed.')}</p>
         <form id="si" novalidate><div class="field"><label for="siEmail">Email address</label><input class="input" id="siEmail" type="email" autocomplete="email" placeholder="you@yourstall.com" required></div>
         <button class="btn btn-turf" style="width:100%;margin-top:12px" type="submit">Email me a sign-in link</button>
         <p class="muted" style="font-size:.84rem;margin:10px 0 0">New here? The same link creates your free account.</p></form>
         <div id="siSent" hidden><p style="margin:6px 0 0" role="status">Check your inbox: we’ve sent a link to <b id="siTo"></b>.</p>
-          <p class="muted" id="siHelp" style="font-size:.86rem;margin:8px 0 0">It works once and expires in 20 minutes. You can close this window.</p>
+          <p class="muted" id="siHelp" style="font-size:.86rem;margin:8px 0 0">It works once and expires in 15 minutes. You can close this window.</p>
           <div id="siMock" hidden>${draftNote('no email is sent. Use the button below as if you’d clicked the link in the email.')}
           <button class="btn btn-flag" style="width:100%;margin-top:12px" id="siOpen" type="button">Open the sign-in link</button></div>
           <div id="siDev" hidden><p class="notice warn" style="margin:12px 0 0;font-size:.86rem">Local development: no email provider is configured, so the link is shown here instead.</p>
@@ -219,7 +223,7 @@
               track('signin_link_requested'); }
             catch (x) { fieldError(inp, x.message); }
           });
-          m.querySelector('#siOpen').addEventListener('click', async () => { const s = await api().session.completeLink({ token }); state.session = s; const ids = await api().saved.ids(); state.saved = new Set(ids); close(); renderHeader(); toast('Signed in as ' + s.user.email); track('signed_in'); resolve(s); document.dispatchEvent(new CustomEvent('fp:session', { detail: s })); });
+          m.querySelector('#siOpen').addEventListener('click', async () => { const s = await api().session.completeLink({ token }); state.session = s; const ids = await api().saved.ids(); state.saved = new Set(ids); close(); renderHeader(); toast(translateUI('Signed in as ') + s.user.email); track('signed_in'); resolve(s); document.dispatchEvent(new CustomEvent('fp:session', { detail: s })); });
         }
       });
     });
@@ -227,40 +231,40 @@
   async function requireSignIn(reason) { if (state.session && state.session.signed_in) return state.session; return signIn(reason); }
   function proActionLabel() {
     const a=state.session?.access;
-    return a?.checkout_allowed===false ? 'Review billing' : a?.trial_eligible===false ? 'Subscribe to Pro' : 'Try Pro free for 7 days';
+    return a?.checkout_allowed===false ? translateUI('Review billing') : a?.trial_eligible===false ? translateUI('Subscribe to Pro') : translateUI('Try Pro free for 7 days');
   }
   function upgrade(reason, context, marketCode) {
     track('upgrade_viewed', { context: context || 'generic' });
     if (!state.proIn(marketCode)) {
       const m = state.m(marketCode);
-      return modal(`<div class="dh"><h2>Pro isn’t available in ${esc(m.the)} yet</h2><button class="x" data-close aria-label="Close">×</button></div>
-        <p style="margin:0 0 14px">${m.launch_status === 'live' ? `Pricing for ${esc(m.the)} hasn’t been set yet, so Pro can’t be bought there.` : `FindPitches opens in ${esc(m.name)} soon.`}${LIVE ? '' : ' Searching and saving stay free.'}</p>
+      return modal(uiHTML`<div class="dh"><h2>Pro isn’t available in ${esc(m.the)} yet</h2><button class="x" data-close aria-label="Close">×</button></div>
+        <p style="margin:0 0 14px">${m.launch_status === 'live' ? translateUI("Pricing for {0} hasn’t been set yet, so Pro can’t be bought there.",[esc(m.the)]) : translateUI("FindPitches opens in {0} soon.",[esc(m.name)])}${LIVE ? '' : translateUI(' Searching and saving stay free.')}</p>
         <button class="btn btn-turf" style="width:100%" type="button" data-close>OK</button>`);
     }
-    modal(`<div class="dh"><h2>See where to apply with Pro</h2><button class="x" data-close aria-label="Close">×</button></div>
-      <p class="muted" style="margin:0 0 14px">${esc(reason || 'Pro shows the organiser’s application page for every listing worldwide. Email alerts are coming later.')}</p>
-      <ul style="margin:0 0 16px;padding-left:18px;line-height:1.8">${LIVE ? '<li>Search every checked listing</li><li>Full details and the organiser’s application page</li><li>Save listings to your account</li>' : '<li>The organiser’s application page and source for every listing</li><li>Alerts for new pitches that match you</li><li>Export your shortlist</li>'}</ul>
+    modal(uiHTML`<div class="dh"><h2>See where to apply with Pro</h2><button class="x" data-close aria-label="Close">×</button></div>
+      <p class="muted" style="margin:0 0 14px">${esc(reason || translateUI('Pro shows the organiser’s application page for every listing worldwide. Email alerts are coming later.'))}</p>
+      <ul style="margin:0 0 16px;padding-left:18px;line-height:1.8">${LIVE ? uiHTML('<li>Search every checked listing</li><li>Full details and the organiser’s application page</li><li>Save listings to your account</li>') : uiHTML('<li>The organiser’s application page and source for every listing</li><li>Alerts for new pitches that match you</li><li>Export your shortlist</li>')}</ul>
       <a class="btn btn-flag" style="width:100%" href="pricing.html?from=${encodeURIComponent(context || 'generic')}">${proActionLabel()}</a>
-      <p class="muted" style="font-size:.82rem;margin:10px 0 0;text-align:center">${LIVE ? 'Cancel any time.' : 'Search and saving stay free. Cancel any time.'}</p>`);
+      <p class="muted" style="font-size:.82rem;margin:10px 0 0;text-align:center">${LIVE ? translateUI('Cancel any time.') : translateUI('Search and saving stay free. Cancel any time.')}</p>`);
   }
 
   async function toggleSave(id) {
-    const s = await requireSignIn('Save pitches to your account and come back to them from any device.'); if (!s) return;
+    const s = await requireSignIn(translateUI('Save pitches to your account and come back to them from any device.')); if (!s) return;
     const on = state.saved.has(id);
     try { if (on) { await api().saved.remove(id); state.saved.delete(id); } else { await api().saved.add(id); state.saved.add(id); } }
     catch (e) { toast(e.message); return; }
     track(on ? 'opportunity_unsaved' : 'opportunity_saved', { id });
     syncSaveButtons(id);
     renderHeader();
-    toast(on ? 'Removed from saved' : 'Saved to your list', on ? { action: { label: 'Undo', onClick: () => toggleSave(id) } } : { action: { label: 'View saved', onClick: () => location.href = 'saved.html' } });
+    toast(on ? translateUI('Removed from saved') : translateUI('Saved to your list'), on ? { action: { label: translateUI('Undo'), onClick: () => toggleSave(id) } } : { action: { label: translateUI('View saved'), onClick: () => location.href = 'saved.html' } });
     document.dispatchEvent(new CustomEvent('fp:saved', { detail: { id, saved: !on } }));
   }
   function syncSaveButtons(id) {
     const on = state.saved.has(id);
     document.querySelectorAll(`[data-save="${CSS.escape(id)}"]`).forEach(b => {
       b.setAttribute('aria-pressed', String(on));
-      if (b.classList.contains('star')) { b.innerHTML = STAR(on); b.setAttribute('aria-label', (on ? 'Remove from saved' : 'Save') + (b.getAttribute('aria-label') || '').replace(/^[^:]*/, '')); }
-      else b.textContent = on ? '★ Saved' : '☆ Save';
+      if (b.classList.contains('star')) { b.innerHTML = STAR(on); b.setAttribute('aria-label', (on ? translateUI('Remove from saved') : translateUI('Save')) + (b.getAttribute('aria-label') || '').replace(/^[^:]*/, '')); }
+      else b.textContent = on ? translateUI('★ Saved') : translateUI('☆ Save');
     });
   }
 
@@ -269,38 +273,38 @@
     const cc = o.market, m = state.m(cc), st = appStatus(o, cc);
     const wants = offeringList(o);
     let where = esc(o.location.label);
-    if (o.distance_km != null && ['place','venue','address'].includes(o.location.precision)) where += `<br><small class="muted">${units.fmt(o.distance_km, cc)} from ${esc(opts.from || 'your search')}</small>`;
-    else if (o.location.precision === 'address') where += `<br><small class="muted">Street address verified; map position is approximate</small>`;
-    else if (o.location.precision === 'venue') where += `<br><small class="muted">Venue coordinates verified</small>`;
-    else if (o.location.precision && o.location.precision !== 'place') where += `<br><small class="muted">Area-wide listing: exact site given by the organiser</small>`;
+    if (o.distance_km != null && ['place','venue','address'].includes(o.location.precision)) where += uiHTML`<br><small class="muted">${units.fmt(o.distance_km, cc)} from ${esc(opts.from || translateUI('your search'))}</small>`;
+    else if (o.location.precision === 'address') where += uiHTML`<br><small class="muted">Street address verified; map position is approximate</small>`;
+    else if (o.location.precision === 'venue') where += uiHTML`<br><small class="muted">Venue coordinates verified</small>`;
+    else if (o.location.precision && o.location.precision !== 'place') where += uiHTML`<br><small class="muted">Area-wide listing: exact site given by the organiser</small>`;
     const rows = [
-      ['When', esc(when(o, cc))],
-      ['Where', where],
-      ['Looking for', wants.length ? esc(cap(listJoin(wants))) : '<span class="muted">Not stated</span>'],
-      [cap(m.vocab.fee), esc(o.fee && o.fee.text ? o.fee.text : LIVE ? 'Check the organiser’s page' : 'Not listed: ask the organiser')],
-      ['Organiser', esc(o.organiser.name || 'Named on the organiser’s page') + (o.organiser.type_label ? `<br><small class="muted">${esc(o.organiser.type_label)}</small>` : '')],
-      ['Applications', st.cls === 'unknown' ? 'No deadline listed' : `<span class="status ${st.cls}"><i aria-hidden="true"></i>${esc(st.short)}</span>`]
+      [translateUI('When'), esc(when(o, cc))],
+      [translateUI('Where'), where],
+      [translateUI('Looking for'), wants.length ? esc(cap(listJoin(wants))) : uiHTML('<span class="muted">Not stated</span>')],
+      [cap(m.vocab.fee), esc(o.fee && o.fee.text ? o.fee.text : LIVE ? translateUI('Check the organiser’s page') : translateUI('Not listed: ask the organiser'))],
+      [translateUI('Organiser'), esc(o.organiser.name || translateUI('Named on the organiser’s page')) + (o.organiser.type_label ? uiHTML`<br><small class="muted">${esc(translateUI(o.organiser.type_label))}</small>` : '')],
+      [translateUI('Applications'), st.cls === 'unknown' ? translateUI('No deadline listed') : uiHTML`<span class="status ${st.cls}"><i aria-hidden="true"></i>${esc(st.short)}</span>`]
     ];
-    return `<dl class="facts${opts.cols ? ' c' + opts.cols : ''}">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`;
+    return uiHTML`<dl class="facts${opts.cols ? ' c' + opts.cols : ''}">${rows.map(([k, v]) => uiHTML`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>`;
   }
   function applyPanel(o) {
     const st = appStatus(o, o.market), s = state.session || { signed_in: false };
-    const org = o.organiser.name ? esc(o.organiser.name) : 'the organiser';
-    if (st.cls === 'ended') return `<div class="applybox"><p class="ab-status"><span class="status ended"><i aria-hidden="true"></i>Finished</span></p><p>This event has finished. Save it and we’ll show it again when next year’s dates are listed.</p></div>`;
+    const org = o.organiser.name ? esc(o.organiser.name) : translateUI('the organiser');
+    if (st.cls === 'ended') return uiHTML`<div class="applybox"><p class="ab-status"><span class="status ended"><i aria-hidden="true"></i>Finished</span></p><p>This event has finished. Save it and we’ll show it again when next year’s dates are listed.</p></div>`;
     // Locked users can't see the organiser's page, so don't tell them to check it.
-    const leadText = o.access.locked && st.cls === 'unknown' ? 'No application deadline listed.' : st.long;
-    const lead = `<p class="ab-status">${st.cls === 'unknown' ? '<b>How to apply</b>' : `<span class="status ${st.cls}"><i aria-hidden="true"></i>${esc(st.short)}</span>`}</p><p class="ab-lead">${esc(leadText)}</p>`;
+    const leadText = o.access.locked && st.cls === 'unknown' ? translateUI('No application deadline listed.') : st.long;
+    const lead = uiHTML`<p class="ab-status">${st.cls === 'unknown' ? uiHTML('<b>How to apply</b>') : uiHTML`<span class="status ${st.cls}"><i aria-hidden="true"></i>${esc(st.short)}</span>`}</p><p class="ab-lead">${esc(leadText)}</p>`;
     if (!o.access.locked) {
-      if (!o.access.application_url) return `<div class="applybox">${lead}<p>${org} hasn’t published an application link. Contact them through their listing.</p></div>`;
-      const routeType=o.application?.route_type,cta=routeType==='trader_phone'?'Call organiser':routeType==='trader_email'?'Email organiser':['standing_registration','vendor_portal_registration'].includes(routeType)?'Register with organiser':['trader_enquiry','organiser_intake'].includes(routeType)?'Contact organiser':`Apply on ${org === 'the organiser' ? 'the organiser’s' : org + '’s'} site`;
-      return `<div class="applybox">${lead}<a class="btn btn-turf ab-cta" href="${esc(o.access.application_action_url||o.access.application_url)}" ${routeType==='trader_phone'?'':'target="_blank" rel="noopener"'} data-apply="${esc(o.id)}">${cta}${routeType==='trader_phone'?'':'<span class="sr"> (opens in a new tab)</span> ↗'}</a>
+      if (!o.access.application_url) return uiHTML`<div class="applybox">${lead}<p>${org} hasn’t published an application link. Contact them through their listing.</p></div>`;
+      const routeType=o.application?.route_type,cta=FP.i18n.applicationLabel(routeType);
+      return uiHTML`<div class="applybox">${lead}<a class="btn btn-turf ab-cta" href="${esc(o.access.application_action_url||o.access.application_url)}" ${routeType==='trader_phone'?'':'target="_blank" rel="noopener"'} data-apply="${esc(o.id)}">${cta}${routeType==='trader_phone'?'':uiHTML('<span class="sr"> (opens in a new tab)</span> ↗')}</a>
         <p class="ab-small">You apply directly with ${org}. FindPitches checks listings but doesn’t take applications or guarantee a place.</p>
-        ${o.access.source_url && o.access.source_url !== o.access.application_url ? `<p class="ab-small"><a href="${esc(o.access.source_url)}" target="_blank" rel="noopener" data-source="${esc(o.id)}">View the original listing on ${esc(o.access.source_domain || 'the organiser’s site')}<span class="sr"> (opens in a new tab)</span></a></p>` : ''}</div>`;
+        ${o.access.source_url && o.access.source_url !== o.access.application_url ? uiHTML`<p class="ab-small"><a href="${esc(o.access.source_url)}" target="_blank" rel="noopener" data-source="${esc(o.id)}">View the original listing on ${esc(o.access.source_domain || translateUI('the organiser’s site'))}<span class="sr"> (opens in a new tab)</span></a></p>` : ''}</div>`;
     }
-    return `<div class="applybox locked">${lead}
-      ${state.proIn(o.market) ? `<div class="ab-lock"><p><b>Where to apply is part of Pro.</b> Everything else on this listing is free. Pro shows the organiser’s application page for this and every listing${o.access.source_domain_hint ? ` (this one is on a <b>${esc(o.access.source_domain_hint)}</b> site)` : ''}.</p>
-      <button type="button" class="btn btn-flag ab-cta" data-unlock="apply" data-for-market="${esc(o.market)}">${s.signed_in ? proActionLabel() : 'See where to apply'}</button></div>`
-      : `<p class="ab-small">Where to apply is part of Pro, which isn’t available in ${esc(state.m(o.market).the)} yet. Everything else on this listing is free.</p>`}</div>`;
+    return uiHTML`<div class="applybox locked">${lead}
+      ${state.proIn(o.market) ? uiHTML`<div class="ab-lock"><p><b>Where to apply is part of Pro.</b> Everything else on this listing is free. Pro shows the organiser’s application page for this and every listing${o.access.source_domain_hint ? uiHTML` (this one is on a <b>${esc(o.access.source_domain_hint)}</b> site)` : ''}.</p>
+      <button type="button" class="btn btn-flag ab-cta" data-unlock="apply" data-for-market="${esc(o.market)}">${s.signed_in ? proActionLabel() : translateUI('See where to apply')}</button></div>`
+      : uiHTML`<p class="ab-small">Where to apply is part of Pro, which isn’t available in ${esc(state.m(o.market).the)} yet. Everything else on this listing is free.</p>`}</div>`;
   }
   document.addEventListener('click', e => {
     const a = e.target.closest('[data-apply]'); if (a) track('application_clicked', { id: a.dataset.apply });
@@ -310,12 +314,12 @@
 
   /* ---------- create an alert from any search (Finder, listing page, SEO page) ---------- */
   async function createAlert(query, { placeLabel } = {}) {
-    if(!state.session?.capabilities?.alerts_delivery)return toast('Email alerts are coming later. You can save opportunities now.');
-    const s = await requireSignIn('Sign in to get alerts for new pitches that match this search.'); if (!s) return;
-    if (!state.entitled) return upgrade('Alerts are part of Pro. We’ll email you when a new checked listing matches this search.', 'alert');
+    if(!state.session?.capabilities?.alerts_delivery)return toast(translateUI('Email alerts are coming later. You can save opportunities now.'));
+    const s = await requireSignIn(translateUI('Sign in to get alerts for new pitches that match this search.')); if (!s) return;
+    if (!state.entitled) return upgrade(translateUI('Alerts are part of Pro. We’ll email you when a new checked listing matches this search.'), 'alert');
     const q = Object.assign({}, query, placeLabel ? { place_label: placeLabel } : {});
     const desc = describeQuery(q, placeLabel);
-    modal(`<div class="dh"><h2>Create an alert</h2><button class="x" data-close aria-label="Close">×</button></div>
+    modal(uiHTML`<div class="dh"><h2>Create an alert</h2><button class="x" data-close aria-label="Close">×</button></div>
       <p style="margin:0 0 14px">We’ll email you when a new checked listing matches:</p>
       <p class="alertdesc">${esc(desc)}</p>
       <form id="alForm" novalidate style="display:grid;gap:14px">
@@ -328,7 +332,7 @@
       onOpen(m, close) {
         m.querySelector('#alForm').onsubmit = async e => {
           e.preventDefault(); const frequency = m.querySelector('input[name=freq]:checked').value;
-          try { await api().alerts.create({ name: desc, query: q, frequency }); close(); track('alert_created', { market: q.market, frequency }); toast('Alert created: ' + desc, { action: { label: 'Manage alerts', onClick: () => location.href = 'alerts.html' } }); }
+          try { await api().alerts.create({ name: desc, query: q, frequency }); close(); track('alert_created', { market: q.market, frequency }); toast(translateUI('Alert created: ') + desc, { action: { label: translateUI('Manage alerts'), onClick: () => location.href = 'alerts.html' } }); }
           catch (x) { toast(x.message); }
         };
       }
@@ -338,17 +342,17 @@
   /* ---------- coverage-building market state (shared by Finder, SEO pages, etc.) ---------- */
   function coverageBuilding(mkCode, opts = {}) {
     const m = state.m(mkCode); const live = state.live;
-    const search = m.postal.kind === 'district' ? 'district or place name (Hong Kong doesn’t use postcodes)' : m.postal.label_mid + ' or town';
-    return `<section class="coverage" aria-labelledby="cv-${m.code}">
+    const search = m.postal.kind === 'district' ? translateUI('district or place name (Hong Kong doesn’t use postcodes)') : m.postal.label_mid + translateUI(' or town');
+    return uiHTML`<section class="coverage" aria-labelledby="cv-${m.code}">
       <div class="cv-top"><span class="status building" style="background:rgba(255,244,218,.95)"><i aria-hidden="true"></i>Coming soon</span>
         <h2 id="cv-${m.code}">FindPitches is coming to ${esc(m.name)}</h2>
         <p>We’re building checked listings for ${esc(m.the)} now. There’s nothing to show yet, and we won’t show listings until they’ve been checked.</p></div>
       <div class="cv-body">
         <div><h3 style="font-size:1rem;margin:0 0 10px">What FindPitches ${esc(m.name)} will do</h3>
-          <div class="facts3"><div><small>Search by</small><b>${esc(cap(search))}</b></div><div><small>Distances in</small><b>${m.distance_unit === 'km' ? 'Kilometres' : 'Miles'}</b></div>
+          <div class="facts3"><div><small>Search by</small><b>${esc(cap(search))}</b></div><div><small>Distances in</small><b>${m.distance_unit === 'km' ? translateUI('Kilometres') : translateUI('Miles')}</b></div>
             <div><small>Fees shown in</small><b>${esc(m.currency)}</b></div><div><small>You’ll find</small><b>${esc(m.vocab.listings)}</b></div></div>
           <p class="muted" style="font-size:.9rem;margin:12px 0 0">Markets, fairs, festivals, shows and sporting events looking for ${esc(m.vocab.traders)}, each straight from the organiser.</p>
-          ${live.length ? `<div class="cv-links"><span class="muted" style="font-size:.88rem;align-self:center">Search now in:</span>${live.map(x => `<a class="btn btn-line btn-sm" href="${R.draft.finder(x.code)}">${esc(x.name)}</a>`).join('')}</div>` : ''}
+          ${live.length ? uiHTML`<div class="cv-links"><span class="muted" style="font-size:.88rem;align-self:center">Search now in:</span>${live.map(x => uiHTML`<a class="btn btn-line btn-sm" href="${R.draft.finder(x.code)}">${esc(x.name)}</a>`).join('')}</div>` : ''}
         </div>
         <form class="wlform" data-market="${m.code}" novalidate>
           <h3 style="font-size:1rem;margin:0 0 6px">Hear when ${esc(m.name)} opens</h3>
@@ -361,7 +365,7 @@
   document.addEventListener('submit', async e => {
     const f = e.target.closest('.wlform'); if (!f) return; e.preventDefault();
     const inp = f.querySelector('input'); const mk = f.dataset.market;
-    try { await api().waitlist.join({ email: inp.value.trim(), market: mk }); track('waitlist_joined', { market: mk }); f.innerHTML = `<p class="okmsg" role="status">✓ Done. We’ll email ${esc(inp.value.trim())} when ${esc(state.m(mk).name)} opens.</p>`; }
+    try { await api().waitlist.join({ email: inp.value.trim(), market: mk }); track('waitlist_joined', { market: mk }); f.innerHTML = uiHTML`<p class="okmsg" role="status">✓ Done. We’ll email ${esc(inp.value.trim())} when ${esc(state.m(mk).name)} opens.</p>`; }
     catch (x) { fieldError(inp, x.message); }
   });
 
@@ -374,7 +378,8 @@
     const trialLeft = tier === 'trial' && s.access.trial_ends ? Math.max(0, days(s.access.trial_ends)) : null;
     const main = document.querySelector('main');
     if (main && !main.id) main.id = 'main'; if (main) main.tabIndex = -1;
-    top.innerHTML = `
+    const languageControl=FP.i18n.enabled ? uiHTML`<label class="language-select"><span class="sr">${translateUI('Language')}</span><select id="languageSelect" aria-label="${translateUI('Language')}" title="${translateUI('Language affects the interface, not the country or your subscription.')}">${Object.entries(FP.i18n.languages).map(([code,name])=>uiHTML`<option value="${code}" ${code===FP.i18n.current?'selected':''} lang="${code}">${name}</option>`).join('')}</select></label>` : '';
+    top.innerHTML = uiHTML`
       <a class="skip" href="#${main ? main.id : 'main'}">Skip to content</a>
       <header class="nav"><div class="wrap">
         <a class="logo" href="index.html" aria-label="FindPitches home">${LOGO()}FindPitches</a>
@@ -384,14 +389,14 @@
           <a href="organisers.html"${cur('organisers')}>For organisers</a>
           <a href="pricing.html"${cur('pricing')}>Pricing</a>
         </nav>
-        <div class="right">
+        <div class="right">${languageControl}
           <div style="position:relative"><button class="navbtn" id="ccBtn" aria-haspopup="true" aria-expanded="false" aria-controls="ccPop" aria-label="Country: ${esc(c ? c.name : '')}. Change country"><span class="code">${esc(c ? c.display_code : 'UK')}</span><span class="cc-name">${esc(c ? c.name : '')}</span></button>
-            <div class="pop" id="ccPop" hidden><div class="hd">Where do you trade? You can switch any time.</div>${state.markets.map(k => `<button class="item" type="button" data-market="${k.code}" aria-current="${k.code === (c && c.code)}"><span><span class="code">${esc(k.display_code)}</span> ${esc(k.name)}</span><small class="${k.launch_status === 'live' ? 'live' : ''}">${k.launch_status === 'live' ? 'Live' : 'Coming soon'}</small></button>`).join('')}</div></div>
-          <a class="navbtn" href="saved.html" aria-label="Saved pitches${state.saved.size ? ' (' + state.saved.size + ')' : ''}"${cur('saved')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" focusable="false"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg><span class="saved-label">Saved</span>${state.saved.size ? `<span class="count" aria-hidden="true">${state.saved.size}</span>` : ''}</a>
-          ${s.signed_in ? `<div style="position:relative"><button class="navbtn" id="acBtn" aria-haspopup="true" aria-expanded="false" aria-controls="acPop" aria-label="Account: ${esc(s.user.email)}, ${tier === 'free' ? 'Free plan' : tier === 'trial' ? 'Pro trial' : 'Pro plan'}"><span class="avatar" aria-hidden="true">${esc((s.user.email || '?')[0])}</span><span class="tier ${tier}">${tier === 'free' ? 'Free' : tier === 'trial' ? `Trial · ${trialLeft}d left` : 'Pro'}</span></button>
-            <div class="pop" id="acPop" hidden><div class="hd">${esc(s.user.email)}</div><a href="account.html">Account &amp; plan</a>${LIVE ? "" : `<a href="alerts.html">Alerts</a>`}<a href="saved.html">Saved pitches</a><button class="item" type="button" id="signOut">Sign out</button></div></div>`
-            : `<button class="navbtn" type="button" id="signInBtn">Sign in</button>`}
-          ${state.entitled || !state.proAvailable ? '' : `<a class="btn btn-flag btn-sm gopro" href="pricing.html">Try Pro</a>`}
+            <div class="pop" id="ccPop" hidden><div class="hd">Where do you trade? You can switch any time.</div>${state.markets.map(k => uiHTML`<button class="item" type="button" data-market="${k.code}" aria-current="${k.code === (c && c.code)}"><span><span class="code">${esc(k.display_code)}</span> ${esc(k.name)}</span><small class="${k.launch_status === 'live' ? 'live' : ''}">${k.launch_status === 'live' ? translateUI('Live') : translateUI('Coming soon')}</small></button>`).join('')}</div></div>
+          <a class="navbtn" href="saved.html" aria-label="Saved pitches${state.saved.size ? ' (' + state.saved.size + ')' : ''}"${cur('saved')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" focusable="false"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg><span class="saved-label">Saved</span>${state.saved.size ? uiHTML`<span class="count" aria-hidden="true">${state.saved.size}</span>` : ''}</a>
+          ${s.signed_in ? uiHTML`<div style="position:relative"><button class="navbtn" id="acBtn" aria-haspopup="true" aria-expanded="false" aria-controls="acPop" aria-label="Account: ${esc(s.user.email)}, ${tier === 'free' ? translateUI('Free plan') : tier === 'trial' ? translateUI('Pro trial') : translateUI('Pro plan')}"><span class="avatar" aria-hidden="true">${esc((s.user.email || '?')[0])}</span><span class="tier ${tier}">${tier === 'free' ? translateUI('Free') : tier === 'trial' ? translateUI("Trial · {0}d left",[trialLeft]) : 'Pro'}</span></button>
+            <div class="pop" id="acPop" hidden><div class="hd">${esc(s.user.email)}</div><a href="account.html">Account &amp; plan</a>${LIVE ? "" : uiHTML`<a href="alerts.html">Alerts</a>`}<a href="saved.html">Saved pitches</a><button class="item" type="button" id="signOut">Sign out</button></div></div>`
+            : uiHTML`<button class="navbtn" type="button" id="signInBtn">Sign in</button>`}
+          ${state.entitled || !state.proAvailable ? '' : uiHTML`<a class="btn btn-flag btn-sm gopro" href="pricing.html">Try Pro</a>`}
         </div></div></header>`;
     const pop = (b, p) => { const B = $(b), P = $(p); if (!B) return;
       B.onclick = e => { e.stopPropagation(); const o = P.hidden; closePops(); P.hidden = !o; B.setAttribute('aria-expanded', String(o)); if (o) { const f = P.querySelector('[aria-current="true"]') || P.querySelector('button,a'); f && f.focus(); } };
@@ -406,6 +411,7 @@
       if (document.body.dataset.page === 'finder') { ['q', 'radius', 'month'].forEach(k => u.searchParams.delete(k)); }
       if (u.searchParams.has('cc') || document.body.dataset.page === 'finder') u.searchParams.set('cc', R.slugOf(to));
       location.href = u.toString(); });
+    const languageSelect=$('#languageSelect'); if(languageSelect)languageSelect.onchange=()=>{const lang=languageSelect.value;store.set('language',lang);location.href=FP.i18n.pathFor(location.pathname+location.search,lang);};
     const si = $('#signInBtn'); if (si) si.onclick = () => signIn();
     const so = $('#signOut'); if (so) so.onclick = async () => { await api().session.signOut(); track('signed_out'); location.reload(); };
   }
@@ -415,10 +421,10 @@
 
   function renderFooter() {
     const f = $('#fp-foot'); if (!f) return;
-    f.innerHTML = `<footer class="foot"><div class="wrap top">
+    f.innerHTML = uiHTML`<footer class="foot"><div class="wrap top">
       <div><a class="logo" href="index.html">${LOGO('#145E39')}FindPitches</a><p style="margin:14px 0 0;max-width:24em">Checked places to trade at markets, festivals, shows and sporting events, straight from the organiser.</p></div>
-      <div><h2 class="fh">Markets</h2><ul>${state.markets.map(c => `<li><a href="${LIVE ? R.draft.finder(c.code) : R.draft.seo(R.marketPath(c.code))}">${esc(c.name)}</a>${c.launch_status === 'live' ? '' : ' <span class="soon">· coming soon</span>'}</li>`).join('')}</ul></div>
-      <div><h2 class="fh">For traders</h2><ul><li><a href="finder.html">Find pitches</a></li>${LIVE ? '' : `<li><a href="${R.draft.seo(R.marketPath(state.m().launch_status === 'live' ? state.market : (state.live[0] || {}).code || 'GB'))}">Browse by place &amp; type</a></li><li><a href="finder.html?type=sport">Sports event pitches</a></li>`}<li><a href="saved.html">Saved pitches</a></li>${LIVE ? '' : '<li><a href="alerts.html">Alerts</a></li>'}<li><a href="pricing.html">Pricing</a></li></ul></div>
+      <div><h2 class="fh">Markets</h2><ul>${state.markets.map(c => uiHTML`<li><a href="${LIVE ? R.draft.finder(c.code) : R.draft.seo(R.marketPath(c.code))}">${esc(c.name)}</a>${c.launch_status === 'live' ? '' : uiHTML(' <span class="soon">· coming soon</span>')}</li>`).join('')}</ul></div>
+      <div><h2 class="fh">For traders</h2><ul><li><a href="finder.html">Find pitches</a></li>${LIVE ? '' : uiHTML`<li><a href="${R.draft.seo(R.marketPath(state.m().launch_status === 'live' ? state.market : (state.live[0] || {}).code || 'GB'))}">Browse by place &amp; type</a></li><li><a href="finder.html?type=sport">Sports event pitches</a></li>`}<li><a href="saved.html">Saved pitches</a></li>${LIVE ? '' : uiHTML('<li><a href="alerts.html">Alerts</a></li>')}<li><a href="pricing.html">Pricing</a></li></ul></div>
       <div><h2 class="fh">FindPitches</h2><ul><li><a href="organisers.html">For organisers</a></li><li><a href="index.html#checked">How we check listings</a></li><li><a href="account.html">Your account</a></li></ul></div>
       </div><div class="wrap bottom"><span>© 2026 FindPitches</span><span>We list opportunities and link to organisers. Organisers choose their traders.</span></div></footer>`;
   }
@@ -436,19 +442,19 @@
       const markets=home?metadata.markets:metadata;
       state.home=home?metadata:null;
       const ids = REAL ? (session && session.signed_in ? await api().saved.ids() : []) : draftIds;
-      state.markets = markets; state.session = session; state.saved = new Set(session.signed_in ? ids : []);
+      state.markets = markets.map(FP.i18n.market); state.session = session; state.saved = new Set(session.signed_in ? ids : []);
       // Can Pro be bought in this country right now? (No price is ever invented: unpriced or not-yet-open markets say so.)
       const live = markets.filter(m => m.launch_status === 'live');
       state.proBuyable = {};
       // Optional upgrade controls must not delay search/listing rendering.
-      FP.plansReady=Promise.all(live.map(m => api().billing.plans({ market: m.code }).catch(() => []))).then(plans=>{live.forEach((m, i) => { const pro = plans[i].find(p => p.id !== 'free'); state.proBuyable[m.code] = !!(pro && pro.price != null&&pro.checkout_enabled!==false); });renderHeader();});
+      FP.plansReady=Promise.all(live.map(m => api().billing.plans({ market: m.code }).catch(() => []))).then(plans=>{live.forEach((m, i) => { const pro = plans[i].find(p => p.id !== 'free'); state.proBuyable[m.code] = !!(pro && pro.price != null&&pro.checkout_enabled!==false); });const globalPlan=plans.flat().find(p=>p.id!=='free'&&p.scope==='global'&&p.price!=null&&p.checkout_enabled!==false);if(globalPlan)state.markets.forEach(m=>{state.proBuyable[m.code]=true;});renderHeader();});
     } catch (e) {
       if (REAL && !state.markets.length) {
         // The site can't work without the market list (backend or config problem). Say so plainly and
         // stop here, rather than rendering pages with missing data.
         console.warn('FindPitches unavailable:', e && e.code);
         const main = document.getElementById('main');
-        if (main) main.innerHTML = `<section class="phead"><div class="wrap"><h1>FindPitches is temporarily unavailable</h1><p>We couldn’t load the site just now. Please try again in a few minutes.</p><p><button class="btn btn-turf" type="button" data-reload>Try again</button></p></div></section>`;
+        if (main) main.innerHTML = uiHTML`<section class="phead"><div class="wrap"><h1>FindPitches is temporarily unavailable</h1><p>We couldn’t load the site just now. Please try again in a few minutes.</p><p><button class="btn btn-turf" type="button" data-reload>Try again</button></p></div></section>`;
         return new Promise(() => {});
       }
       console.error(e);

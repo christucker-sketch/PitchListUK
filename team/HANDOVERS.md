@@ -1294,3 +1294,7 @@ Chris approved the preceding shared-language proposal. Codex owns frontend catal
 
 FR stays **held**: `fr-on` waits for V3-019 deployment plus V3-021 headroom. [Details](../docs/findpitches-v3-france-census-2026-10-14.md#first-france-lane-results-pi-kit-011l-overnight-1415-oct).
 
+
+## 2026-10-15T10:04:31.965392+00:00 — Codex: customer localisation implementation checkpoint
+
+[Maintenance contract](../web/findpitches-v3-web/LOCALISATION.md). Shared English/German/French UI and stable locale paths; countries, IDs, source originals and billing currency stay separate. Full438/local browser118 pass; restricted preview `883ac9a0-cc51-4736-bfab-c57959dcd1b3`, native settings/secrets/schedules preserved. Deployed native browser and fixed retained-evidence audit running; latest small UI-route/favicons fixes will receive final acceptance. Production has not changed at this checkpoint. After preview acceptance, use the existing guarded live customer code/assets release for the user-approved interface feature, with no new hostname/route/DNS/country/source-publication/billing-policy/paid changes. German/French indexing stays off. No producer/Pi edits.

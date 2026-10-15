@@ -58,6 +58,24 @@ function provider(e,c,currency='GBP'){
  state.sub=(patch={})=>({id:'sub_owned',object:'subscription',customer:state.owner.id,livemode:true,status:'active',current_period_end:Math.floor(Date.now()/1000)+86400,cancel_at_period_end:false,metadata:{...state.owner.metadata},items:{data:[{quantity:1,price:state.price}]},...patch});return state;
 }
 async function link(db,c,p){await stmt(db,'INSERT INTO stripe_customers VALUES (?,?,1,?)',c.id,p.owner.id,now()).run();}
+for(const locale of ['de','fr'])test(locale+' hosted billing language keeps approved GBP price, global ownership and one checkout reservation',async t=>{
+ const db=setup(t),e=env(db),c=await native(db),p=provider(e,c);await link(db,c,p);
+ const options={now:now(),origin:e.V3_PUBLIC_ORIGIN,fetcher:p.fetch},body={plan_id:'pro_monthly',currency:'GBP',locale};
+ const first=await liveCheckout(db,e,c,body,options),calls=p.calls.filter(c=>c.path==='/checkout/sessions');
+ assert.equal(calls.length,1);const params=calls[0].body;assert.equal(params.get('locale'),locale);assert.equal(params.get('line_items[0][price]'),'price_GBP');assert.equal(params.get('subscription_data[trial_period_days]'),'7');
+ assert.equal(params.get('success_url'),e.V3_PUBLIC_ORIGIN+'/lang/'+locale+'/account.html?checkout=success&session_id={CHECKOUT_SESSION_ID}');
+ assert.equal(params.get('cancel_url'),e.V3_PUBLIC_ORIGIN+'/lang/'+locale+'/pricing.html?checkout=cancelled');
+ assert.equal((await liveCheckout(db,e,c,{...body,locale:'en'},options)).checkout_url,first.checkout_url);assert.equal(p.calls.filter(c=>c.path==='/checkout/sessions').length,1);
+ e.V3_CHECKOUT_ENABLED='disabled';await livePortal(db,e,c,{origin:e.V3_PUBLIC_ORIGIN,locale,fetcher:p.fetch});const portal=p.calls.find(c=>c.path==='/billing_portal/sessions').body;assert.equal(portal.get('locale'),locale);assert.equal(portal.get('return_url'),e.V3_PUBLIC_ORIGIN+'/lang/'+locale+'/account.html');
+ e.V3_CHECKOUT_ENABLED='live';const count=p.calls.length;await assert.rejects(liveCheckout(db,e,c,{...body,locale:'zz'},options),/validation/);assert.equal(p.calls.length,count);
+});
+test('production language opt-out and account recovery remain independent of inventory',async t=>{
+ const db=setup(t),e=env(db);const request=path=>new Request(e.V3_PUBLIC_ORIGIN+path);
+ e.V3_LOCALISATION_ENABLED='false';assert.equal((await worker.fetch(request('/lang/de/account.html'),e)).status,404);
+ e.V3_LOCALISATION_ENABLED='true';e.V3_PUBLIC_ENABLED='false';e.V3_READY_API.fetch=()=>{throw Error('source_down');};
+ const r=await worker.fetch(request('/lang/fr/account.html'),e);assert.equal(r.status,200);assert.equal(r.headers.get('Content-Language'),'fr');
+ assert.ok((await r.text()).includes('Votre compte'));assert.equal((await worker.fetch(request('/account.html'),e)).status,200);
+});
 test('production database rejects TEST objects, wrong customer ownership and mode conversion',async t=>{
  const db=setup(t),c=await native(db);
  assert.throws(()=>db.sqlite.prepare('INSERT INTO stripe_customers VALUES (?,?,0,?)').run(c.id,'cus_bad',now()),/CHECK/);

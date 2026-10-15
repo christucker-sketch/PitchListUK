@@ -1,3 +1,4 @@
+import {customerLanguage,customerReturnPath} from './customer-localisation.mjs';
 // D-014/D-016: isolated new-customer LIVE billing. Preview billing stays TEST-only.
 import {hash} from './contract.mjs';
 import {stmt,customerError,hmac,same,readText,noteCustomerEvent} from './customer-security.mjs';
@@ -92,6 +93,7 @@ export async function liveCustomerAccess(db,env,customer,{now,refresh=false,fetc
 }
 export async function liveCheckout(db,env,customer,body,{now,origin,fetcher=fetch}={}) {
   if(env.V3_CHECKOUT_ENABLED!=='live')throw customerError('service_unavailable',503);
+  const locale=customerLanguage(body.locale);
   if(body.plan_id!=='pro_monthly'||!LIVE_PRICES[body.currency])throw customerError('validation');
   returnOrigin(origin,env);
   const p=livePricePolicy(env).find(p=>p.currency===body.currency),stripe=liveStripeClient(env,fetcher);await productProof(stripe,env);
@@ -107,7 +109,7 @@ export async function liveCheckout(db,env,customer,body,{now,origin,fetcher=fetc
   if(attempt.currency!==p.currency||attempt.price_id!==p.id)throw customerError('checkout_currency_locked',409);
   if(attempt.completed_at)throw customerError('subscription_exists',409);
   if(attempt.checkout_url)return {checkout_url:attempt.checkout_url};
-  const r=await stripe('/checkout/sessions',{method:'POST',idempotencyKey:reservation.attempt_id,params:{mode:'subscription',customer:link.stripe_id,client_reference_id:customer.id,'line_items[0][price]':p.id,'line_items[0][quantity]':1,'subscription_data[metadata][findpitches_v3_customer_id]':customer.id,'subscription_data[metadata][findpitches_v3_runtime]':'production_public',...(subs.length?{}:{'subscription_data[trial_period_days]':7}),expires_at:Math.floor(Date.parse(reservation.expires_at)/1000),success_url:origin+'/account.html?checkout=success&session_id={CHECKOUT_SESSION_ID}',cancel_url:origin+'/pricing.html?checkout=cancelled'}});
+  const r=await stripe('/checkout/sessions',{method:'POST',idempotencyKey:reservation.attempt_id,params:{mode:'subscription',customer:link.stripe_id,client_reference_id:customer.id,'line_items[0][price]':p.id,'line_items[0][quantity]':1,'subscription_data[metadata][findpitches_v3_customer_id]':customer.id,'subscription_data[metadata][findpitches_v3_runtime]':'production_public',...(subs.length?{}:{'subscription_data[trial_period_days]':7}),expires_at:Math.floor(Date.parse(reservation.expires_at)/1000),locale,success_url:origin+customerReturnPath('/account.html?checkout=success&session_id={CHECKOUT_SESSION_ID}',locale),cancel_url:origin+customerReturnPath('/pricing.html?checkout=cancelled',locale)}});
   if(!/^cs_live_[A-Za-z0-9]+$/.test(r.id??'')||r.customer!==link.stripe_id||r.client_reference_id!==customer.id||r.mode!=='subscription'||!r.url?.startsWith('https://checkout.stripe.com/'))throw customerError('forbidden',403);
   await stmt(db,'UPDATE checkout_attempts SET stripe_session_id=?,checkout_url=? WHERE id=?',r.id,r.url,attempt.id).run();await noteCustomerEvent(db,'checkout','live_created',now);return {checkout_url:r.url};
 }
@@ -118,12 +120,13 @@ export async function liveConfirmCheckout(db,env,customer,body,{now,fetcher=fetc
   const subs=await syncLiveSubscriptions(db,env,customer,{now,fetcher});if(!subs.some(r=>r.id===s.subscription))throw customerError('forbidden',403);
   await stmt(db,'UPDATE checkout_attempts SET completed_at=? WHERE customer_id=? AND stripe_session_id=?',now,customer.id,s.id).run();return liveCustomerAccess(db,env,customer,{now});
 }
-export async function livePortal(db,env,customer,{origin,fetcher=fetch}={}) {
+export async function livePortal(db,env,customer,{origin,locale='en',fetcher=fetch}={}) {
+  locale=customerLanguage(locale);
   returnOrigin(origin,env);const stripe=liveStripeClient(env,fetcher),link=await nativeOwner(db,stripe,customer);if(!link)throw customerError('not_found',404);
   // Cancellation stays available during catalogue/provider reconciliation faults
   // and when new Checkout is closed. Canonical customer ownership is sufficient.
   if(!/^bpc_[A-Za-z0-9]+$/.test(env.STRIPE_PORTAL_CONFIGURATION_ID??''))throw customerError('service_unavailable',503);
-  const r=await stripe('/billing_portal/sessions',{method:'POST',params:{customer:link.stripe_id,configuration:env.STRIPE_PORTAL_CONFIGURATION_ID,return_url:origin+'/account.html'}});
+  const r=await stripe('/billing_portal/sessions',{method:'POST',params:{customer:link.stripe_id,configuration:env.STRIPE_PORTAL_CONFIGURATION_ID,locale,return_url:origin+customerReturnPath('/account.html',locale)}});
   if(!r.url?.startsWith('https://billing.stripe.com/'))throw customerError('service_unavailable',503);return {url:r.url};
 }
 export async function liveWebhook(request,env,{now=new Date().toISOString(),fetcher=fetch}={}) {

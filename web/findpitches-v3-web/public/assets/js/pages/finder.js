@@ -1,5 +1,6 @@
 // Page script for finder.html (moved out of the HTML so the CSP can forbid inline scripts).
 (async function(){
+  const translateUI=FP.i18n.tr, uiHTML=FP.i18n.html;
   const U = FP.ui, {esc,fmt,card,factsHTML,applyPanel,freshness,units,describeQuery,createAlert,qs,TYPE_PLURAL,SELLS,cap} = U;
   const api = FP.api, G = window.FP_GEO, NS = 'http://www.w3.org/2000/svg', track = FP.track, R = FP.routes;
   const $ = s=>document.querySelector(s), $$ = s=>[...document.querySelectorAll(s)];
@@ -20,11 +21,11 @@
   const REGS = MAP==='us' ? await api.meta.regions({market:MK,registry_only:true}) : []; const ID2CODE = Object.fromEntries(REGS.filter(x=>x.code).map(x=>[x.id,x.code.slice(3)]));
 
   /* ---------- controls driven by market config ---------- */
-  $('#qLbl').textContent = C.postal.kind==='district' ? 'District or place' : CAN.radius ? `${C.postal.label} or town` : `Place or ${C.region_label.singular}`;
-  $('#q').placeholder = CAN.radius ? 'e.g. ' + C.postal.example : 'Town or ' + C.region_label.singular;
+  $('#qLbl').textContent = C.postal.kind==='district' ? translateUI('District or place') : CAN.radius ? translateUI("{0} or town",[C.postal.label]) : translateUI("Place or {0}",[C.region_label.singular]);
+  $('#q').placeholder = CAN.radius ? 'e.g. ' + C.postal.example : translateUI('Town or ') + C.region_label.singular;
   if (C.postal.kind==='district') $('#q').setAttribute('autocomplete','address-level2');
   $('#q').value = S.q;
-  if (CAN.radius) { $('#radius').innerHTML = C.radius_options.map(v=>`<option value="${v}">${v} ${units.word(UNIT,v)}</option>`).join('') + `<option value="any">Anywhere in ${esc(C.the)}</option>`; if(![...$('#radius').options].some(o=>o.value===S.radius)) S.radius=DEF_R; $('#radius').value = S.radius; }
+  if (CAN.radius) { $('#radius').innerHTML = C.radius_options.map(v=>uiHTML`<option value="${v}">${v} ${units.word(UNIT,v)}</option>`).join('') + uiHTML`<option value="any">Anywhere in ${esc(C.the)}</option>`; if(![...$('#radius').options].some(o=>o.value===S.radius)) S.radius=DEF_R; $('#radius').value = S.radius; }
   else { $('#radiusF').remove(); S.radius = 'any'; }
   $('#sells').value = S.sells; $('#when').value = S.when;
   const radiusKm = () => CAN.radius && S.radius!=='any' ? Math.round(units.toKm(+S.radius, UNIT)*10)/10 : undefined;
@@ -37,30 +38,30 @@
     history.replaceState(null,'',u.toString());
   }
   const moreCount = () => [S.sells, CAN.radius && S.radius!==DEF_R, S.when].filter(Boolean).length;
-  const setMoreTxt = () => { const n=moreCount(); $('#moreTxt').textContent = n ? `More filters · ${n} set` : 'More filters'; };
+  const setMoreTxt = () => { const n=moreCount(); $('#moreTxt').textContent = n ? translateUI("More filters · {0} set",[n]) : translateUI('More filters'); };
 
   /* ---------- copy ---------- */
   function heading(loc){
     const one = S.types.size===1 ? [...S.types][0] : null;
     let what = one ? (TYPE_PLURAL[one]||T[one]) : C.vocab.listings;
-    if (!one && S.sells==='food') what = `Food ${C.vocab.traders_short} wanted`;
-    if (loc.kind==='point') return S.radius==='any' || !CAN.radius ? `${what} across ${C.the}` : `${what} near ${loc.label}`;
-    if (loc.kind==='region') return `${what} in ${loc.label}`;
-    if (loc.kind==='unresolved') return `${what} in ${loc.label}`;
-    return `${what} across ${C.the}`;
+    if (!one && S.sells==='food') what = translateUI("Food {0} wanted",[C.vocab.traders_short]);
+    if (loc.kind==='point') return S.radius==='any' || !CAN.radius ? translateUI("{0} across {1}",[what,C.the]) : translateUI("{0} near {1}",[what,loc.label]);
+    if (loc.kind==='region') return translateUI("{0} in {1}",[what,loc.label]);
+    if (loc.kind==='unresolved') return translateUI("{0} in {1}",[what,loc.label]);
+    return translateUI("{0} across {1}",[what,C.the]);
   }
-  const sortWord = s => ({nearest:'nearest first',soonest:'soonest first',recently_checked:'most recently checked first',az:'A to Z'})[s];
+  const sortWord = s => ({nearest:translateUI('nearest first'),soonest:translateUI('soonest first'),recently_checked:translateUI('most recently checked first'),az:translateUI('A to Z')})[s];
 
   /* ---------- search ---------- */
   async function search({append=false, reason='search', focusFirstNew=false}={}){
     if (busy && !append) { /* newest request wins */ }
     busy = true;
-    if (!append) { S.page=1; selected=null; $('#list').setAttribute('aria-busy','true'); if(!last) $('#list').innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>'; }
+    if (!append) { S.page=1; selected=null; $('#list').setAttribute('aria-busy','true'); if(!last) $('#list').innerHTML = uiHTML('<div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>'); }
     syncUrl(); setMoreTxt();
     const params = Object.assign(query(), { sort:S.sort||undefined, month:S.month||undefined, page:S.page, page_size:PAGE });
     let r; const my = (search.seq = (search.seq||0)+1);
     try { r = await api.opportunities.search(params); }
-    catch(e){ busy=false; $('#list').removeAttribute('aria-busy'); $('#list').innerHTML=`<div class="zero" role="alert"><h2>Search didn’t work</h2><p class="muted">${esc(e.message)}. Try again in a moment.</p><button class="btn btn-line btn-sm" type="button" id="retry">Try again</button></div>`; $('#retry').onclick=()=>search(); return; }
+    catch(e){ busy=false; $('#list').removeAttribute('aria-busy'); $('#list').innerHTML=uiHTML`<div class="zero" role="alert"><h2>Search didn’t work</h2><p class="muted">${esc(e.message)}. Try again in a moment.</p><button class="btn btn-line btn-sm" type="button" id="retry">Try again</button></div>`; $('#retry').onclick=()=>search(); return; }
     if (my !== search.seq) return; // a newer search replaced this one
     busy=false; $('#list').removeAttribute('aria-busy');
     const prevCount = shown.length;
@@ -69,42 +70,42 @@
     $('#sort').value = S.sort || r.sort; $('#sort').querySelector('[value=nearest]').disabled = r.location.kind!=='point';
     renderHead(r); renderChips(r); renderFilters(r); renderView();
     const s = $('#sum'); s.classList.remove('updated'); void s.offsetWidth; if(!U.RM && reason!=='init') s.classList.add('updated');
-    $('#status').textContent = append ? `Showing ${shown.length} of ${r.total}.` : `${r.total} ${r.total===1?'result':'results'}. ${heading(r.location)}, ${sortWord(r.sort)}.`;
+    $('#status').textContent = append ? translateUI("Showing {0} of {1}.",[shown.length,r.total]) : `${r.total} ${r.total===1?'result':'results'}. ${heading(r.location)}, ${sortWord(r.sort)}.`;
     if (append && focusFirstNew) { const el = $$('#list .ocard')[prevCount]; if (el) el.querySelector('h3 a').focus(); }
   }
 
   function renderHead(r){
     const loc=r.location;
     $('#h1').textContent = heading(loc); document.title = heading(loc) + ' | FindPitches';
-    let sum = `<b>${r.total}</b> checked ${r.total===1?'listing':'listings'}`;
+    let sum = uiHTML`<b>${FP.i18n.number(r.total)}</b> ${translateUI(r.total===1?'verified opportunity':'verified opportunities')}`;
     // The radius and place are shown in the heading and the filter chip below, so the summary stays short.
-    if (r.next_start && r.total) sum += ` · next on ${esc(fmt(r.next_start,MK,{weekday:'short',day:'numeric',month:'short'}))}`;
+    if (r.next_start && r.total) sum += translateUI(" · next on {0}",[esc(fmt(r.next_start,MK,{weekday:'short',day:'numeric',month:'short'}))]);
     $('#sum').innerHTML = sum;
     const h=$('#lochint'), dn = t => U.draftNote(t,{inline:true});
-    const draft = CAN.geocoder==='draft_postcode_areas' ? dn('distance is measured from the postcode area centre.') : CAN.geocoder==='draft_zip_to_state' ? dn('ZIP Codes match to their state until listings are geocoded.') : '';
-    if (loc.kind==='point') h.innerHTML = `Searching from <b>${esc(loc.label)}</b>${draft}`;
-    else if (loc.kind==='region') h.innerHTML = `Showing <b>${esc(loc.label)}</b>${CAN.radius?'':`. ${esc(C.name)} listings are grouped by ${esc(C.region_label.singular)} for now.`}${draft}`;
-    else if (loc.kind==='unresolved') h.innerHTML = `Showing listings whose location includes “<b>${esc(loc.label)}</b>”.`;
-    else if (loc.kind==='unknown') h.innerHTML = `<div class="notice warn" role="alert">We couldn’t find “${esc(loc.query)}”, so this shows all of ${esc(C.the)}. Try a ${esc(C.postal.label_mid)} like ${esc(C.postal.example)}${CAN.radius?' or a town name':' or a '+esc(C.region_label.singular)+' name'}.</div>`;
-    else h.innerHTML = CAN.radius ? `Add your ${esc(C.postal.label_mid)} to see what’s near you.` : `Search by place name or ${esc(C.region_label.singular)}.`;
+    const draft = CAN.geocoder==='draft_postcode_areas' ? dn(translateUI('distance is measured from the postcode area centre.')) : CAN.geocoder==='draft_zip_to_state' ? dn(translateUI('ZIP Codes match to their state until listings are geocoded.')) : '';
+    if (loc.kind==='point') h.innerHTML = uiHTML`Searching from <b>${esc(loc.label)}</b>${draft}`;
+    else if (loc.kind==='region') h.innerHTML = uiHTML`Showing <b>${esc(loc.label)}</b>${CAN.radius?'':translateUI(". {0} listings are grouped by {1} for now.",[esc(C.name),esc(C.region_label.singular)])}${draft}`;
+    else if (loc.kind==='unresolved') h.innerHTML = uiHTML`Showing listings whose location includes “<b>${esc(loc.label)}</b>”.`;
+    else if (loc.kind==='unknown') h.innerHTML = uiHTML`<div class="notice warn" role="alert">We couldn’t find “${esc(loc.query)}”, so this shows all of ${esc(C.the)}. Try a ${esc(C.postal.label_mid)} like ${esc(C.postal.example)}${CAN.radius?translateUI(' or a town name'):translateUI(' or a ')+esc(C.region_label.singular)+' name'}.</div>`;
+    else h.innerHTML = CAN.radius ? translateUI("Add your {0} to see what’s near you.",[esc(C.postal.label_mid)]) : translateUI("Search by place name or {0}.",[esc(C.region_label.singular)]);
   }
 
   function renderChips(r){
     const counts=r.facets.types, all=Object.values(counts).reduce((a,b)=>a+b,0)+(r.facets.unclassified_types||0);
     const order = Object.keys(T).filter(k=>counts[k]||S.types.has(k)).sort((a,b)=>(a==='sport')-(b==='sport')||(counts[b]||0)-(counts[a]||0));
-    $('#chips').innerHTML = `<button type="button" class="chip" data-t="" aria-pressed="${!S.types.size}">All types <small>${all}</small></button><span class="sep" aria-hidden="true"></span>` +
-      order.map(k=>`<button type="button" class="chip ${k==='sport'?'sport':''}" data-t="${k}" aria-pressed="${S.types.has(k)}">${esc(T[k])} <small>${counts[k]||0}</small></button>`).join('');
+    $('#chips').innerHTML = uiHTML`<button type="button" class="chip" data-t="" aria-pressed="${!S.types.size}">All types <small>${all}</small></button><span class="sep" aria-hidden="true"></span>` +
+      order.map(k=>uiHTML`<button type="button" class="chip ${k==='sport'?'sport':''}" data-t="${k}" aria-pressed="${S.types.has(k)}">${esc(T[k])} <small>${counts[k]||0}</small></button>`).join('');
   }
 
   // Every active filter as a removable chip, so it's always clear why results look the way they do.
   function renderFilters(r){
     const F=[];
-    if (S.q && r.location.kind!=='unknown') F.push(['q', r.location.kind==='point' && CAN.radius && S.radius!=='any' ? `Within ${S.radius} ${units.short(UNIT)} of ${r.location.label}` : `In ${r.location.label||S.q}`]);
+    if (S.q && r.location.kind!=='unknown') F.push(['q', r.location.kind==='point' && CAN.radius && S.radius!=='any' ? translateUI("Within {0} {1} of {2}",[S.radius,units.short(UNIT),r.location.label]) : translateUI("In {0}",[r.location.label||S.q])]);
     if (S.sells) F.push(['sells', $('#sells').selectedOptions[0].textContent]);
     if (S.when) F.push(['when', $('#when').selectedOptions[0].textContent]);
     if (S.month) F.push(['month', fmt(S.month+'-15',MK,{month:'long',year:'numeric'})]);
     S.types.forEach(t=>F.push(['type:'+t, T[t]]));
-    $('#afilters').innerHTML = F.length ? `<span class="sr">Active filters:</span>` + F.map(([k,l])=>`<button type="button" class="afilter" data-rm="${esc(k)}" aria-label="Remove filter: ${esc(l)}">${esc(l)}<span aria-hidden="true">×</span></button>`).join('') + (F.length>1?`<button type="button" class="clearall" id="clearAll">Clear all</button>`:'') : '';
+    $('#afilters').innerHTML = F.length ? uiHTML`<span class="sr">Active filters:</span>` + F.map(([k,l])=>uiHTML`<button type="button" class="afilter" data-rm="${esc(k)}" aria-label="Remove filter: ${esc(l)}">${esc(l)}<span aria-hidden="true">×</span></button>`).join('') + (F.length>1?uiHTML`<button type="button" class="clearall" id="clearAll">Clear all</button>`:'') : '';
   }
   function removeFilter(k){
     if (k==='q') { S.q=''; $('#q').value=''; }
@@ -125,24 +126,24 @@
   function renderList(){
     const r = last, L = $('#list');
     if (!r.total) return renderZero(r);
-    let html=''; shown.forEach((o,i)=>{ html+=card(o); if(i===4 && !st.entitled && st.proAvailable) html+=`<div class="upsell"><div><b>Found one you like?</b><p>Everything here is free to browse. Pro adds the organiser’s application page for every listing, with email alerts coming later.</p></div><a class="btn btn-flag" href="pricing.html">${U.proActionLabel()}</a></div>`; });
+    let html=''; shown.forEach((o,i)=>{ html+=card(o); if(i===4 && !st.entitled && st.proAvailable) html+=uiHTML`<div class="upsell"><div><b>Found one you like?</b><p>Everything here is free to browse. Pro adds the organiser’s application page for every listing, with email alerts coming later.</p></div><a class="btn btn-flag" href="pricing.html">${U.proActionLabel()}</a></div>`; });
     if (r.total > PAGE) { const pct = Math.round(100*shown.length/r.total);
-      html += `<div class="pager"><p>Showing ${shown.length} of ${r.total}</p><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>${r.total>shown.length?`<button class="btn btn-line" type="button" id="more">Show ${Math.min(PAGE,r.total-shown.length)} more</button>`:''}</div>`; }
+      html += uiHTML`<div class="pager"><p>Showing ${shown.length} of ${r.total}</p><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>${r.total>shown.length?uiHTML`<button class="btn btn-line" type="button" id="more">Show ${Math.min(PAGE,r.total-shown.length)} more</button>`:''}</div>`; }
     L.innerHTML = html;
     $$('#list .ocard').forEach(el=>el.setAttribute('aria-current',String(el.dataset.id===selected)));
   }
 
   function renderZero(r){
     const sugs=[];
-    if (S.types.size) sugs.push(['types','Show all types']);
-    if (S.when||S.month) sugs.push(['time','Any time']);
-    if (S.sells) sugs.push(['sells','Anything, not just '+$('#sells').selectedOptions[0].textContent.toLowerCase()]);
+    if (S.types.size) sugs.push(['types',translateUI('Show all types')]);
+    if (S.when||S.month) sugs.push(['time',translateUI('Any time')]);
+    if (S.sells) sugs.push(['sells',translateUI('Anything, not just ')+$('#sells').selectedOptions[0].textContent.toLowerCase()]);
     const opts=C.radius_options, next=opts.find(v=>v>+S.radius);
-    if (CAN.radius && r.location.kind==='point' && S.radius!=='any') sugs.push(next?['widen',`Widen to ${next} ${units.word(UNIT,next)}`]:['anywhere',`Anywhere in ${C.the}`]);
-    if (S.q) sugs.push(['anywhere',`Search all of ${C.the}`]);
-    $('#list').innerHTML = `<div class="zero"><h2>No listings match this search yet</h2>
+    if (CAN.radius && r.location.kind==='point' && S.radius!=='any') sugs.push(next?['widen',translateUI("Widen to {0} {1}",[next,units.word(UNIT,next)])]:['anywhere',translateUI("Anywhere in {0}",[C.the])]);
+    if (S.q) sugs.push(['anywhere',translateUI("Search all of {0}",[C.the])]);
+    $('#list').innerHTML = uiHTML`<div class="zero"><h2>No listings match this search yet</h2>
       <p class="muted" style="margin:0">${esc(describeQuery(query(), r.location.label))}. New listings are checked and added every week.</p>
-      <div class="sugs">${sugs.map(([k,l])=>`<button class="btn btn-line btn-sm" type="button" data-sug="${k}">${esc(l)}</button>`).join('')}<button class="btn btn-turf btn-sm" type="button" data-sug="alert">Alert me when one appears</button></div></div>`;
+      <div class="sugs">${sugs.map(([k,l])=>uiHTML`<button class="btn btn-line btn-sm" type="button" data-sug="${k}">${esc(l)}</button>`).join('')}<button class="btn btn-turf btn-sm" type="button" data-sug="alert">Alert me when one appears</button></div></div>`;
   }
   function applySuggestion(k){
     if (k==='alert') return makeAlert();
@@ -164,30 +165,30 @@
       const pts=(r.map_points||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&Math.abs(p.lat)<90&&Math.abs(p.lng)<=180);
       let extra='';
       if (loc.kind==='point' && rk){ const [x,y]=projUK(loc.lat,loc.lng); const rpx=M.k*(rk/6371)/Math.cos(loc.lat*Math.PI/180); const w=Math.max(rpx*2.5,120); vb=`${x-w/2} ${y-w*0.6} ${w} ${w*1.2}`; z=M.W/w;
-        extra=`<circle class="radius" cx="${x}" cy="${y}" r="${rpx}" style="stroke-width:${1.2/z}px;stroke-dasharray:${4/z} ${4/z}"/><circle class="home" cx="${x}" cy="${y}" r="${7/z}" style="stroke-width:${2/z}px"/>`; }
+        extra=uiHTML`<circle class="radius" cx="${x}" cy="${y}" r="${rpx}" style="stroke-width:${1.2/z}px;stroke-dasharray:${4/z} ${4/z}"/><circle class="home" cx="${x}" cy="${y}" r="${7/z}" style="stroke-width:${2/z}px"/>`; }
       else if(pts.length&&!ukWhole){
         const positions=pts.map(p=>projUK(p.lat,p.lng)),xs=positions.map(p=>p[0]),ys=positions.map(p=>p[1]),left=Math.min(...xs),right=Math.max(...xs),top=Math.min(...ys),bottom=Math.max(...ys);
         const w=Math.max(120,right-left+40,(bottom-top+40)*M.W/M.H),h=w*M.H/M.W;vb=`${(left+right-w)/2} ${(top+bottom-h)/2} ${w} ${h}`;z=M.W/w;
       }
       // Scale strokes by hand: vector-effect on this large path mis-renders its fill when zoomed in Chromium.
-      svg.insertAdjacentHTML('beforeend',`<path class="land" d="${M.svg}" style="stroke-width:${1/z}px"/>`+extra);
+      svg.insertAdjacentHTML('beforeend',uiHTML`<path class="land" d="${M.svg}" style="stroke-width:${1/z}px"/>`+extra);
       svg.setAttribute('viewBox',vb);
       const groups=new Map();pts.forEach(p=>{const key=p.lat+','+p.lng;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(p);});
       groups.forEach(group=>{ const p=group.find(p=>ids.has(p.id))||group[0], visible=group.some(p=>ids.has(p.id)),[x,y]=projUK(p.lat,p.lng),c=document.createElementNS(NS,'circle');
         c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',(group.length>1?10:visible?6:3.8)/z);c.style.strokeWidth=1.4/z;
-        c.setAttribute('class','pin'+(p.type==='sport'?' sport':'')+(visible?'':' dim')+(group.some(p=>p.id===selected)?' hot':''));c.dataset.id=p.id;c.dataset.ids=group.map(p=>p.id).join(',');c.dataset.n=group.length>1?`${group.length} opportunities at this venue`:p.title;
+        c.setAttribute('class','pin'+(p.type==='sport'?' sport':'')+(visible?'':' dim')+(group.some(p=>p.id===selected)?' hot':''));c.dataset.id=p.id;c.dataset.ids=group.map(p=>p.id).join(',');c.dataset.n=group.length>1?translateUI("{0} opportunities at this venue",[group.length]):p.title;
         c.setAttribute('tabindex','0');c.setAttribute('role','button');c.setAttribute('aria-label',c.dataset.n);svg.appendChild(c);
         if(group.length>1){const label=document.createElementNS(NS,'text');label.setAttribute('x',x);label.setAttribute('y',y+3.2/z);label.setAttribute('text-anchor','middle');label.setAttribute('font-size',9/z);label.setAttribute('fill','#fff');label.setAttribute('font-weight','700');label.setAttribute('pointer-events','none');label.setAttribute('aria-hidden','true');label.textContent=group.length;svg.appendChild(label);}
       });
-      $('#mapTitle').innerHTML=`<b>${esc(loc.kind==='point'?loc.label:C.name)}</b>${pts.length&&loc.kind!=='point'?` <button id="mapExtent" type="button" class="btn btn-line btn-sm">${ukWhole?'Show venues':'Whole UK'}</button>`:''}`; $('#mapCount').textContent=`${pts.length} listings at ${groups.size} ${groups.size===1?'venue':'venues'}`;
+      $('#mapTitle').innerHTML=uiHTML`<b>${esc(loc.kind==='point'?loc.label:C.name)}</b>${pts.length&&loc.kind!=='point'?uiHTML` <button id="mapExtent" type="button" class="btn btn-line btn-sm">${ukWhole?translateUI('Show venues'):translateUI('Whole UK')}</button>`:''}`; $('#mapCount').textContent=translateUI("{0} listings at {1} {2}",[pts.length,groups.size,groups.size===1?translateUI('venue'):translateUI('venues')]);
       const extent=$('#mapExtent');if(extent)extent.onclick=()=>{ukWhole=!ukWhole;renderMap();};
       const unpinned=Math.max(0,r.total-pts.length);
-      $('#mapNote').innerHTML=pts.length?`<span class="legend"><span><i></i>Listing</span><span><i class="sp"></i>Sports event</span></span> Numbered pins have several opportunities. Select a pin to choose one.${unpinned?` ${unpinned} ${unpinned===1?'listing has':'listings have'} no verified coordinates and ${unpinned===1?'remains':'remain'} in the list.`:''}`:`No verified coordinates are available for these ${r.total} listings yet. All results remain in the list; we do not guess map positions.`;
-      svg.setAttribute('aria-label',`Map of ${pts.length} listings${loc.kind==='point'?' around '+loc.label:''}. The list has every result.`);
+      $('#mapNote').innerHTML=pts.length?uiHTML`<span class="legend"><span><i></i>Listing</span><span><i class="sp"></i>Sports event</span></span> Numbered pins have several opportunities. Select a pin to choose one.${unpinned?translateUI(" {0} {1} no verified coordinates and {2} in the list.",[unpinned,unpinned===1?translateUI('listing has'):translateUI('listings have'),unpinned===1?translateUI('remains'):translateUI('remain')]):''}`:translateUI("No verified coordinates are available for these {0} listings yet. All results remain in the list; we do not guess map positions.",[r.total]);
+      svg.setAttribute('aria-label',translateUI("Map of {0} listings{1}. The list has every result.",[pts.length,loc.kind==='point'?' around '+loc.label:'']));
     } else if (MAP==='us'){
       const M=G.us; svg.setAttribute('viewBox',`0 0 ${M.W} ${M.H}`);
       const counts={}; Object.entries(r.facets.regions).forEach(([id,n])=>{ const c=ID2CODE[id]; if(c) counts[c]=(counts[c]||0)+n; }); const max=Math.max(1,...Object.values(counts)), sel=r.location.kind==='region'?(r.location.region_code||ID2CODE[r.location.region_id]||''):'';
-      Object.entries(M.states).forEach(([ab,s])=>{ const p=document.createElementNS(NS,'path'); p.setAttribute('d',s.d); const c=counts[ab]||0; p.setAttribute('class','st'+(sel===ab?' sel':'')); p.style.fill=c?`rgba(20,94,57,${(0.08+0.5*c/max).toFixed(2)})`:'#fff'; p.dataset.st=ab; p.dataset.n=`${s.n}: ${c} ${c===1?'listing':'listings'}`; svg.appendChild(p); });
+      Object.entries(M.states).forEach(([ab,s])=>{ const p=document.createElementNS(NS,'path'); p.setAttribute('d',s.d); const c=counts[ab]||0; p.setAttribute('class','st'+(sel===ab?' sel':'')); p.style.fill=c?`rgba(20,94,57,${(0.08+0.5*c/max).toFixed(2)})`:'#fff'; p.dataset.st=ab; p.dataset.n=`${s.n}: ${c} ${c===1?translateUI('listing'):translateUI('listings')}`; svg.appendChild(p); });
       // Only the proof-filtered API supplies pins. Albers USA is the same
       // projection used to generate these local outlines, including AK/HI.
       const project=p=>window.FP_US_PROJECTION.projectUS(p.lat,p.lng,M.projection);
@@ -198,16 +199,16 @@
       const groups=new Map();pts.forEach(p=>{const key=p.lat+','+p.lng;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(p);});
       groups.forEach(group=>{const p=group.find(p=>ids.has(p.id))||group[0],visible=group.some(p=>ids.has(p.id)),[x,y]=project(p),c=document.createElementNS(NS,'circle');
         c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',(group.length>1?10:visible?6:3.8)/z);c.style.strokeWidth=1.4/z;
-        c.setAttribute('class','pin'+(p.type==='sport'?' sport':'')+(visible?'':' dim')+(group.some(p=>p.id===selected)?' hot':''));c.dataset.id=p.id;c.dataset.ids=group.map(p=>p.id).join(',');c.dataset.n=group.length>1?`${group.length} opportunities at this address`:p.title;
+        c.setAttribute('class','pin'+(p.type==='sport'?' sport':'')+(visible?'':' dim')+(group.some(p=>p.id===selected)?' hot':''));c.dataset.id=p.id;c.dataset.ids=group.map(p=>p.id).join(',');c.dataset.n=group.length>1?translateUI("{0} opportunities at this address",[group.length]):p.title;
         c.setAttribute('tabindex','0');c.setAttribute('role','button');c.setAttribute('aria-label',c.dataset.n);svg.appendChild(c);
         if(group.length>1){const label=document.createElementNS(NS,'text');label.setAttribute('x',x);label.setAttribute('y',y+3.2/z);label.setAttribute('text-anchor','middle');label.setAttribute('font-size',9/z);label.setAttribute('fill','#fff');label.setAttribute('font-weight','700');label.setAttribute('pointer-events','none');label.setAttribute('aria-hidden','true');label.textContent=group.length;svg.appendChild(label);}
       });
-      $('#mapTitle').innerHTML=`<b>${esc(sel?r.location.label:C.name)}</b>${sel?' · <a href="#" id="allStates">All states</a>':''}${pts.length?` <button id="mapExtent" type="button" class="btn btn-line btn-sm">${usWhole?'Show addresses':'Whole US'}</button>`:''}`;
-      $('#mapCount').textContent=`${pts.length} listings at ${groups.size} mapped ${groups.size===1?'address':'addresses'}`;
+      $('#mapTitle').innerHTML=uiHTML`<b>${esc(sel?r.location.label:C.name)}</b>${sel?uiHTML(' · <a href="#" id="allStates">All states</a>'):''}${pts.length?uiHTML` <button id="mapExtent" type="button" class="btn btn-line btn-sm">${usWhole?translateUI('Show addresses'):translateUI('Whole US')}</button>`:''}`;
+      $('#mapCount').textContent=translateUI("{0} listings at {1} mapped {2}",[pts.length,groups.size,groups.size===1?translateUI('address'):translateUI('addresses')]);
       const extent=$('#mapExtent');if(extent)extent.onclick=()=>{usWhole=!usWhole;renderMap();};
       const unpinned=Math.max(0,r.total-pts.length);
-      $('#mapNote').textContent=pts.length?`Markers use source coordinates or matched street addresses. Address matches are approximate positions along the street. Numbered markers have several opportunities. Darker states have more listings.${unpinned?` ${unpinned} listings have no verified map position and remain in the list.`:''}`:`No verified coordinates are available for these ${r.total} listings yet. All results remain in the list; we do not guess map positions. Darker states have more listings.`;
-      svg.setAttribute('aria-label',`Map of ${pts.length} source-proved US locations, with states shaded by number of listings${sel?', '+r.location.label+' selected':''}. Search by state or ZIP Code above.`);
+      $('#mapNote').textContent=pts.length?translateUI("Markers use source coordinates or matched street addresses. Address matches are approximate positions along the street. Numbered markers have several opportunities. Darker states have more listings.{0}",[unpinned?translateUI(" {0} listings have no verified map position and remain in the list.",[unpinned]):'']):translateUI("No verified coordinates are available for these {0} listings yet. All results remain in the list; we do not guess map positions. Darker states have more listings.",[r.total]);
+      svg.setAttribute('aria-label',translateUI("Map of {0} source-proved US locations, with states shaded by number of listings{1}. Search by state or ZIP Code above.",[pts.length,sel?', '+r.location.label+' selected':'']));
       const a=$('#allStates'); if(a) a.onclick=e=>{e.preventDefault();S.q='';$('#q').value='';track('filters_changed',{removed:'q'});search({reason:'filter'});};
     }
     renderMapSel();
@@ -217,8 +218,8 @@
     if (!o) { box.hidden=true; return; }
     const full = shown.find(x=>x.id===selected);
     const point=last.map_points.find(p=>p.id===selected),group=point?last.map_points.filter(p=>p.lat===point.lat&&p.lng===point.lng):[];
-    const chooser=group.length>1?`<label for="mapOpportunities">Opportunities at this venue</label><select id="mapOpportunities">${group.map(p=>`<option value="${esc(p.id)}"${p.id===selected?' selected':''}>${esc(p.title)}${p.start?' · '+esc(fmt(p.start,MK)):''}</option>`).join('')}</select>`:'';
-    box.innerHTML=`<div><b>${esc(o.title)}</b><span>${full?esc(U.when(full,MK)) + ' · ' + esc(full.location.label):'Further down the list'}</span>${chooser}</div><div class="acts"><button class="btn btn-turf btn-sm" type="button" data-qv="${esc(o.id)}">Details</button><button class="x" type="button" id="selX" aria-label="Clear selection">×</button></div>`;
+    const chooser=group.length>1?uiHTML`<label for="mapOpportunities">Opportunities at this venue</label><select id="mapOpportunities">${group.map(p=>uiHTML`<option value="${esc(p.id)}"${p.id===selected?' selected':''}>${esc(p.title)}${p.start?' · '+esc(fmt(p.start,MK)):''}</option>`).join('')}</select>`:'';
+    box.innerHTML=uiHTML`<div><b>${esc(o.title)}</b><span>${full?esc(U.when(full,MK)) + ' · ' + esc(full.location.label):translateUI('Further down the list')}</span>${chooser}</div><div class="acts"><button class="btn btn-turf btn-sm" type="button" data-qv="${esc(o.id)}">Details</button><button class="x" type="button" id="selX" aria-label="Clear selection">×</button></div>`;
     box.hidden=false; $('#selX').onclick=()=>select(null);
     const choices=$('#mapOpportunities');if(choices)choices.onchange=()=>select(choices.value,{scroll:false});
   }
@@ -233,36 +234,36 @@
   function renderSeason(){
     const r=last, ms=[]; const t=new Date(U.TODAY+'T12:00:00Z'); for(let i=0;i<12;i++){ const d=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+i,15)); ms.push(d.toISOString().slice(0,7)); }
     const c=r.facets.months, max=Math.max(1,...ms.map(m=>c[m]||0));
-    $('#months').innerHTML=ms.map(m=>`<button type="button" class="mo" data-m="${m}" aria-label="${fmt(m+'-15',MK,{month:'long',year:'numeric'})}: ${c[m]||0} listings"><b aria-hidden="true">${c[m]||0}</b><div class="bar" style="height:${Math.round(4+150*(c[m]||0)/max)}px"></div><span aria-hidden="true">${fmt(m+'-15',MK,{month:'short'})}</span></button>`).join('');
-    $('#calNote').textContent = r.facets.undated ? `${r.facets.undated} more ${r.facets.undated===1?'listing is':'listings are'} regular or year-round (street trading, weekly markets) and aren’t shown by month.` : '';
+    $('#months').innerHTML=ms.map(m=>uiHTML`<button type="button" class="mo" data-m="${m}" aria-label="${fmt(m+'-15',MK,{month:'long',year:'numeric'})}: ${c[m]||0} listings"><b aria-hidden="true">${c[m]||0}</b><div class="bar" style="height:${Math.round(4+150*(c[m]||0)/max)}px"></div><span aria-hidden="true">${fmt(m+'-15',MK,{month:'short'})}</span></button>`).join('');
+    $('#calNote').textContent = r.facets.undated ? translateUI("{0} more {1} regular or year-round (street trading, weekly markets) and aren’t shown by month.",[r.facets.undated,r.facets.undated===1?translateUI('listing is'):translateUI('listings are')]) : '';
   }
 
   /* ---------- coverage-building market ---------- */
   function renderCoverage(r){
     $('#strip').hidden = true; $('#ctrls').hidden = true; $('#afilters').innerHTML='';
-    $('#h1').textContent = `Find pitches in ${C.name}`; document.title = `${C.name}: coming soon | FindPitches`;
+    $('#h1').textContent = translateUI("Find pitches in {0}",[C.name]); document.title = translateUI("{0}: coming soon | FindPitches",[C.name]);
     $("#sum").innerHTML = "";
     $('#fmain').className='fmain v-list nomap'; $('#mapwrap').hidden=true; $('#cal').hidden=true;
     $('#list').innerHTML = U.coverageBuilding(MK);
-    $('#status').textContent = `${C.name} is coming soon. No listings yet.`;
+    $('#status').textContent = translateUI("{0} is coming soon. No listings yet.",[C.name]);
   }
 
   /* ---------- quick view drawer (focus-trapped; Escape closes; focus returns) ---------- */
   let opener=null;
   async function openDrawer(id, from){
     opener=document.activeElement; select(id,{scroll:false});
-    const D=$('#drawer'); D.innerHTML='<div class="skel" style="height:40px;margin-bottom:12px"></div><div class="skel" style="height:220px"></div>'; D.hidden=false; $('#scrim').hidden=false; document.body.style.overflow='hidden';
-    let o; try { o = await api.opportunities.get(id); } catch(e){ D.innerHTML=`<div class="dtop"><span></span><button class="x" type="button" data-closedrawer aria-label="Close">×</button></div><h2 id="dName" tabindex="-1">Listing not available</h2><p class="muted">It may have been removed. <a href="finder.html">Back to search</a></p>`; $('#dName').focus(); return; }
+    const D=$('#drawer'); D.innerHTML=uiHTML('<div class="skel" style="height:40px;margin-bottom:12px"></div><div class="skel" style="height:220px"></div>'); D.hidden=false; $('#scrim').hidden=false; document.body.style.overflow='hidden';
+    let o; try { o = await api.opportunities.get(id); } catch(e){ D.innerHTML=uiHTML`<div class="dtop"><span></span><button class="x" type="button" data-closedrawer aria-label="Close">×</button></div><h2 id="dName" tabindex="-1">Listing not available</h2><p class="muted">It may have been removed. <a href="finder.html">Back to search</a></p>`; $('#dName').focus(); return; }
     const inList = shown.find(x=>x.id===id); if (inList) o.distance_km = inList.distance_km;
     const f=freshness(o,MK), on=st.saved.has(o.id), sp=o.type==='sport';
     track('opportunity_opened',{id, market:MK, from: from||'finder_list', locked:o.access.locked});
-    D.innerHTML=`<div class="dtop"><span class="ty ${sp?'sport':''}">${esc(o.type_label)}</span><button class="x" type="button" data-closedrawer aria-label="Close quick view">×</button></div>
+    D.innerHTML=uiHTML`<div class="dtop"><span class="ty ${sp?'sport':''}">${esc(translateUI(o.type_label))}</span><button class="x" type="button" data-closedrawer aria-label="Close quick view">×</button></div>
       <h2 id="dName" tabindex="-1">${esc(o.title)}</h2><p class="muted" style="margin:0">${esc(o.location.label)}</p>
       ${factsHTML(o,{from:last&&last.location.label})}
       ${applyPanel(o)}
-      ${o.notes?`<p class="dnote">${esc(o.notes)}</p>`:''}
+      ${o.notes?uiHTML`<p class="dnote">${esc(o.notes)}</p>`:''}
       <p class="fresh ${f.cls}"><i aria-hidden="true"></i>${esc(f.long)}</p>
-      <div class="dfoot"><button class="btn btn-line" type="button" data-save="${esc(o.id)}" aria-pressed="${on}">${on?'★ Saved':'☆ Save'}</button><a class="btn btn-line" href="${R.draft.opportunity(o.id)}">Full listing</a></div>`;
+      <div class="dfoot"><button class="btn btn-line" type="button" data-save="${esc(o.id)}" aria-pressed="${on}">${on?translateUI('★ Saved'):translateUI('☆ Save')}</button><a class="btn btn-line" href="${R.draft.opportunity(o.id)}">Full listing</a></div>`;
     $('#dName').focus();
   }
   function closeDrawer(){ if($('#drawer').hidden) return; $('#drawer').hidden=true; $('#scrim').hidden=true; document.body.style.overflow=''; if(opener && document.contains(opener)) opener.focus(); }
@@ -283,7 +284,7 @@
   $('#moreBtn').onclick=()=>{ const o=$('#sform').classList.toggle('open'); $('#moreBtn').setAttribute('aria-expanded',String(o)); };
   $('#sort').onchange=e=>{ S.sort=e.target.value; track('sort_changed',{sort:S.sort}); search({reason:'sort'}); };
   $('#alertBtn').onclick=makeAlert;
-  $$('[data-view]').forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; track('view_changed',{view:S.view}); syncUrl(); renderView(); $('#status').textContent = {list:'Showing the list.',map:'Showing the map.',season:'Showing listings by month.'}[S.view]; });
+  $$('[data-view]').forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; track('view_changed',{view:S.view}); syncUrl(); renderView(); $('#status').textContent = {list:translateUI('Showing the list.'),map:translateUI('Showing the map.'),season:translateUI('Showing listings by month.')}[S.view]; });
   document.addEventListener('click',e=>{
     const t=e.target;
     if (t.closest('[data-closedrawer]')||t===$('#scrim')) return closeDrawer();
@@ -304,7 +305,7 @@
   $('#map').addEventListener('mousemove',e=>{ const p=e.target.closest('.pin,.st'); if(!p){tip.hidden=true;return;} tip.textContent=p.dataset.n; tip.hidden=false; tip.style.left=Math.min(e.clientX+12,innerWidth-250)+'px'; tip.style.top=(e.clientY+12)+'px'; if(p.classList.contains('pin')) $$('#list .ocard').forEach(r=>r.classList.toggle('hot',(p.dataset.ids||p.dataset.id).split(',').includes(r.dataset.id))); });
   $('#map').addEventListener('mouseleave',()=>{tip.hidden=true;$$('#list .ocard.hot').forEach(r=>r.classList.remove('hot'));});
   document.addEventListener('fp:session',()=>search({reason:'session'}));
-  document.addEventListener('fp:saved',e=>{ const b=document.querySelector(`#drawer [data-save]`); if(b){ const on=st.saved.has(b.dataset.save); b.textContent=on?'★ Saved':'☆ Save'; } });
+  document.addEventListener('fp:saved',e=>{ const b=document.querySelector(`#drawer [data-save]`); if(b){ const on=st.saved.has(b.dataset.save); b.textContent=on?translateUI('★ Saved'):translateUI('☆ Save'); } });
 
   search({reason:'init'});
 })();

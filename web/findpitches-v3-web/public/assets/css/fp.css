@@ -280,3 +280,8 @@ main:focus{outline:none}
 @media (max-width:760px){.chip{min-height:38px}.seg button{min-height:38px}.btn-sm{min-height:40px}}
 @media (max-width:400px){.nav .wrap{gap:4px}.logo{font-size:.92rem;gap:5px}.logo svg{width:26px;height:26px}.nav .right{gap:4px}.navbtn{padding:0 7px;height:40px}.navbtn .code{font-size:.9rem;padding:0 4px}}
 @media (max-width:420px){.btn{white-space:normal;text-align:center;line-height:1.2}}
+
+/* Language is independent of country; native labels remain legible on narrow screens. */
+.language-select select{font:600 .82rem var(--body);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:8px;padding:7px 3px;max-width:94px;min-height:38px}.language-select{display:flex;align-items:center}.nav .right{flex-wrap:wrap}.source-language-note{font-size:.88rem}
+
+.nav .wrap{height:auto;min-height:66px;padding-block:8px}html:not([lang="en"]) .nav .cc-name{display:none}

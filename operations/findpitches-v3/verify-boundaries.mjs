@@ -1,18 +1,19 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {runtimeImports} from './runtime-imports.mjs';
 
 const root=fileURLToPath(new URL('../../',import.meta.url));
 function files(directory){return fs.readdirSync(directory,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(path.join(directory,e.name)):[path.join(directory,e.name)]);}
 const runtimeFiles=[...files(path.join(root,'platform/findpitches-v3')),...files(path.join(root,'web/findpitches-v3-web/server')),...files(path.join(root,'web/findpitches-v3-web/contract/reference'))];
 for(const file of runtimeFiles) {
   const text=fs.readFileSync(file,'utf8');
-  for(const match of text.matchAll(/(?:from\s*|import\s*\()(['"])([^'"]+)\1/g)) {
-    const target=path.resolve(path.dirname(file),match[2]);
+  for(const specifier of runtimeImports(text)) {
+    const target=path.resolve(path.dirname(file),specifier);
     const owned=target.startsWith(path.join(root,'platform/findpitches-v3')+path.sep)||[
-      'web/findpitches-v3-web/server/seo-edge.mjs','web/findpitches-v3-web/server/catalogue-registry.mjs','web/findpitches-v3-web/contract/reference/map-producer-record.mjs'
+      'web/findpitches-v3-web/server/seo-edge.mjs','web/findpitches-v3-web/server/i18n.mjs','web/findpitches-v3-web/server/catalogue-registry.mjs','web/findpitches-v3-web/contract/reference/map-producer-record.mjs'
     ].some(p=>target===path.join(root,p));
-    if(!match[2].startsWith('.')||!owned)throw new Error('runtime_import_outside_v3:'+file);
+    if(!specifier.startsWith('.')||!owned)throw new Error('runtime_import_outside_v3:'+file);
   }
   // This one fixed anonymous GET is an operator audit probe of the user's live
   // UK source, not a V2 database/customer-module dependency or publication path.

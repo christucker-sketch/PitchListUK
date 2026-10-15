@@ -1,3 +1,4 @@
+import {customerLanguage,customerReturnPath} from './customer-localisation.mjs';
 import {hash} from './contract.mjs';
 import {stmt,customerError,hmac,same,noteCustomerEvent,readText} from './customer-security.mjs';
 import {subscriberAssociation,validateRecognizedSubscriber,recordRecognitionDecision} from './customer-recognition.mjs';
@@ -63,6 +64,7 @@ export async function customerAccess(db,env,customer,{now,market=null,refresh=fa
   return {...entitlement(subs,{now,market}),...await billing()};
 }
 export async function checkout(db,env,customer,body,{now,origin,fetcher=fetch}={}) {
+  const locale=customerLanguage(body.locale);
   if(body.market!=='GB'||body.plan_id!=='pro_monthly')throw customerError('price_not_set',409);
   if(env.V3_CHECKOUT_ENABLED!=='test')throw customerError('service_unavailable',503);
   // Even an expired recognized account needs an explicit renewal path. Never
@@ -84,7 +86,7 @@ export async function checkout(db,env,customer,body,{now,origin,fetcher=fetch}={
   if(attempt?.completed_at)throw customerError('subscription_exists',409);
   await stmt(db,'INSERT OR IGNORE INTO checkout_attempts(id,customer_id,market,created_at) VALUES (?,?,?,?)',attemptId,customer.id,'GB',now).run();
   const result=await stripe('/checkout/sessions',{method:'POST',idempotencyKey:attemptId,params:{mode:'subscription',customer:link.stripe_id,client_reference_id:customer.id,'line_items[0][price]':env.STRIPE_PRICE_ID,'line_items[0][quantity]':1,'subscription_data[metadata][findpitches_v3_customer_id]':customer.id,
-    ...(subs.length?{}:{'subscription_data[trial_period_days]':7}),expires_at:Math.floor(Date.parse(reservation.expires_at)/1000),success_url:origin+'/account.html?checkout=success&session_id={CHECKOUT_SESSION_ID}',cancel_url:origin+'/pricing.html?checkout=cancelled'}});
+    ...(subs.length?{}:{'subscription_data[trial_period_days]':7}),expires_at:Math.floor(Date.parse(reservation.expires_at)/1000),locale,success_url:origin+customerReturnPath('/account.html?checkout=success&session_id={CHECKOUT_SESSION_ID}',locale),cancel_url:origin+customerReturnPath('/pricing.html?checkout=cancelled',locale)}});
   if(!result.url?.startsWith('https://checkout.stripe.com/'))throw customerError('service_unavailable',503);
   await stmt(db,'UPDATE checkout_attempts SET stripe_session_id=?,checkout_url=? WHERE id=?',result.id,result.url,attemptId).run();await noteCustomerEvent(db,'checkout','test_created',now);return {checkout_url:result.url};
 }
@@ -95,11 +97,12 @@ export async function confirmCheckout(db,env,customer,body,{now,fetcher=fetch}={
   const subs=await syncSubscriptions(db,env,customer,{now,fetcher});if(!subs.some(s=>s.id===session.subscription))throw customerError('forbidden',403);
   await stmt(db,'UPDATE checkout_attempts SET completed_at=? WHERE customer_id=? AND stripe_session_id=?',now,customer.id,session.id).run();return customerAccess(db,env,customer,{now});
 }
-export async function portal(db,env,customer,{origin,fetcher=fetch}={}) {
+export async function portal(db,env,customer,{origin,locale='en',fetcher=fetch}={}) {
+  locale=customerLanguage(locale);
   const link=await stmt(db,'SELECT * FROM stripe_customers WHERE customer_id=?',customer.id).first();if(!link)throw customerError('not_found',404);
   await syncSubscriptions(db,env,customer,{now:new Date().toISOString(),fetcher});
   if(!env.STRIPE_PORTAL_CONFIGURATION_ID?.startsWith('bpc_'))throw customerError('service_unavailable',503);
-  const result=await stripeClient(env,fetcher)('/billing_portal/sessions',{method:'POST',params:{customer:link.stripe_id,return_url:origin+'/account.html',configuration:env.STRIPE_PORTAL_CONFIGURATION_ID}});
+  const result=await stripeClient(env,fetcher)('/billing_portal/sessions',{method:'POST',params:{customer:link.stripe_id,locale,return_url:origin+customerReturnPath('/account.html',locale),configuration:env.STRIPE_PORTAL_CONFIGURATION_ID}});
   if(!result.url?.startsWith('https://billing.stripe.com/'))throw customerError('service_unavailable',503);return {url:result.url};
 }
 export async function webhook(request,env,{now=new Date().toISOString(),fetcher=fetch}={}) {
