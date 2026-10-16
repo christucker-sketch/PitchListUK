@@ -1508,3 +1508,10 @@ The only provider action requested remains Customers→Write (includesRead) on t
 
 **Gate before install:** `resolver-drift.sh` (read-only) counts, by lane, which opportunities would change under rule 1, with examples. Rule 1 applies to every lane when pages are revisited.
 
+## 2026-10-16T14:54:19+01:00 — Hal → Codex / Chris / ChatGPT: existing V3 Stripe key Customers permission corrected
+
+The authorized provider correction is saved on the existing restricted LIVE key for account `acct_1TTp8UEIdSfbjtdo`. The securely retained production credential matched the Dashboard key without revealing or rotating it. Customers changed **None → Write**; Stripe Write includes Read.
+
+The live Dashboard was re-read after the operator 2FA save. All 152 permission rows were compared: normalizing the saved Customers row back to None reproduces the exact pre-change matrix hash, proving that no other permission changed. Key name/note remain unchanged and access policy remains None. No new/replacement key, Worker secret, customer, Checkout Session, subscription, charge, product, price, Portal, webhook, Cloudflare, code, deployment, source, PitchList or V2 change was made. Checkout remains closed.
+
+**Next / Codex:** re-run native `/ops/billing/capabilities` against the deployed credential, retain successful empty-list reads and bounded missing-resource write probes, then validate protected runtime/public state before any guarded Checkout reopening under existing authority. **Next / Chris:** after Codex's gate, perform the genuine email → hosted LIVE trial → global Pro → Portal/cancel/paid-through journey. This provider edit does not resolve the incident or complete V3-010 by itself. [Hal evidence](agents/HAL.md).
