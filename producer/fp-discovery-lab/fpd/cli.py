@@ -382,7 +382,8 @@ def cmd_v3_feed(cfg, args):
     from .integration.v3feed import build_v3_feed
     conn = dbm.connect(cfg.db_path)
     cand = Path(os.environ.get("FPD_V3_CANDIDATES_FLAG", "/etc/fpd/v3-feed-candidates.enabled")).exists()
-    res = build_v3_feed(conn, _export_root(cfg), window_days=args.window_days, include_candidates=cand)
+    up = Path(os.environ.get("FPD_V3_UPCOMING_FLAG", "/etc/fpd/v3-feed-upcoming.enabled")).exists()
+    res = build_v3_feed(conn, _export_root(cfg), window_days=args.window_days, include_candidates=cand, include_upcoming=up)
     print(json.dumps(res))
     if not res.get("ok"):
         raise SystemExit(1)

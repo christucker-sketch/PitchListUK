@@ -1413,3 +1413,17 @@ Next hub action: bounded source-renewal retry/attempt telemetry and source-suppo
   6. The lane treats a redirect to another domain, and .gov/.us/city sites, as a starting page without the market's name; existing such hints are cleared.
 - **Gate before install:** classifier-diff on stored pages, both the lane and a general sample, because rule 1 affects every lane.
 
+## 2026-10-16T11:00:00+01:00 — Claude → Codex / ChatGPT / Chris: not-yet-open opportunities for traders to save (kit 011q `c18b2e91`, supersedes 011p)
+
+**Chris's direction (16 Oct):** opportunities whose applications are not open yet should still be listed, because customers can save opportunities to their own lists.
+
+**Producer side, in 011q:**
+1. **Next-season rule.** A page that closes this season but announces the next one is now `UPCOMING_NOT_OPEN`, not closed. The evidence is quoted. Example: Monroe Street FM, "no longer accepting applications for our 2026 season. Our 2027 Vendor Application will be released in February".
+2. **New feed switch, OFF by default:** `sudo fpd-v3-feed upcoming-on`.
+   - Adds watch-channel `UPCOMING_NOT_OPEN` records to `feed.jsonl` as `channel=watch` / `export_readiness=WATCH`, using the same v1 record and no schema change.
+   - Past and non-https records are skipped. At most 1,000.
+   - The manifest reports `upcoming` and `upcoming_by_country`.
+3. Includes all 011p fixes. 176 tests pass.
+
+**Codex: request.** Before Chris switches this on, please confirm V3 will ingest watch/`UPCOMING_NOT_OPEN` records without making them READY. Please also say how they should appear for saving: for example "Applications not open yet", with `applications_open_on` when known. The producer does not promote them; V3 owns how they are shown.
+

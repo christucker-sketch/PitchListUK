@@ -131,7 +131,8 @@ def test_no_longer_accepting_is_a_closure_not_an_open_signal():
             "Vendor Application will be released in February.</p><a href='/s/MSFM_Vendor-Application_2026.pdf'>2026 Vendor "
             "Application</a></body>")
     x = _state(html, "https://www.monroestreetfarmersmarket.org/vendors")
-    assert x["state"] not in ("OPEN_NOW", "ROLLING")
+    # closed for 2026, but the 2027 application is announced: a not-yet-open opportunity traders can save (Chris, 16 Oct)
+    assert x["state"] == "UPCOMING_NOT_OPEN" and "2027" in x["state_evidence"]
 
 
 def test_marketspread_apply_page_closed_with_its_own_date_range():

@@ -136,6 +136,17 @@ def derive_state(*, label: str, vendor: str, body: str, title_blob: str, today: 
                                  else f"Not yet open: {q(not_yet_ms)} ({date_txt})")
         out["missing"] = ["open_application"] + ([] if opens_on else ["opening_date"])
         return out
+    # ---- 1b. closed for this season, but the NEXT season's opening is announced ----
+    # "no longer accepting applications for our 2026 season. Our 2027 Vendor Application will be released in February"
+    # is a not-yet-open opportunity a trader can save and follow, not a dead one (Chris, 16 Oct).
+    nxt = [m for m in not_yet_ms if any(int(y) > today.year for y in re.findall(r"\b(20\d\d)\b", _snip(m.string, m, 60)))]
+    if closed_ms and nxt and not opened_ms:
+        out["state"] = "UPCOMING_NOT_OPEN"
+        out["state_evidence"] = f"Closed for this season; next season announced: {q(nxt)} ({date_txt})"
+        out["missing"] = ["open_application"] + ([] if opens_on else ["opening_date"])
+        if opens_on:
+            out["opens_on"] = opens_on.isoformat()
+        return out
     # ---- 2. explicitly closed or deadline passed ----
     deadline_passed = bool(deadline and deadline < today and not up_deadline)
     if (closed_ms and not opened_ms) or deadline_passed:

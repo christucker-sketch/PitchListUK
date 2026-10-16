@@ -112,8 +112,36 @@ def _candidates(root: Path, exclude: set, now: float, limit: int) -> tuple[list[
     return out, skipped
 
 
+def _upcoming(root: Path, exclude: set, now: float, limit: int) -> tuple[list[dict], dict]:
+    """Not-yet-open opportunities (watch / UPCOMING_NOT_OPEN) that a trader can save and follow until applications
+    open. Sent as channel=watch, unchanged: V3 decides how (and whether) to show them."""
+    import datetime as dt
+    today = dt.datetime.fromtimestamp(now, dt.timezone.utc).date().isoformat()
+    out, skipped = [], {"past": 0, "insecure_url": 0, "schema": 0, "limit": 0}
+    for r in _iter_jsonl(Path(root) / "full" / "watch.jsonl"):
+        oid = r.get("opportunity_id")
+        if not oid or oid in exclude or r.get("channel") != "watch" or r.get("application_state") != "UPCOMING_NOT_OPEN":
+            continue
+        if (r.get("event_end") or r.get("event_start") or "9999") < today:
+            skipped["past"] += 1
+            continue
+        if not (_https(r.get("source_url")) and _https(r.get("application_url"))
+                and all(_https(x.get("url")) for x in r.get("application_routes") or [])):
+            skipped["insecure_url"] += 1
+            continue
+        if validate(r, RECORD_SCHEMA):
+            skipped["schema"] += 1
+            continue
+        if len(out) >= limit:
+            skipped["limit"] += 1
+            continue
+        out.append(r)
+    return out, skipped
+
+
 def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int = 45,
-                  include_candidates: bool = False, max_candidates: int = 500) -> dict:
+                  include_candidates: bool = False, max_candidates: int = 500,
+                  include_upcoming: bool = False, max_upcoming: int = 1000) -> dict:
     root = Path(root)
     now = time.time() if now is None else now
     conn.executescript(STATE_SQL)
@@ -158,10 +186,13 @@ def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int =
     candidates, cand_skipped = ([], {})
     if include_candidates:
         candidates, cand_skipped = _candidates(root, cur_ids | {r["opportunity_id"] for r in lifecycle}, now, max_candidates)
+    upcoming, up_skipped = ([], {})
+    if include_upcoming:
+        upcoming, up_skipped = _upcoming(root, cur_ids | {r["opportunity_id"] for r in lifecycle + candidates}, now, max_upcoming)
     out_dir = root / "v3"
     out_dir.mkdir(parents=True, exist_ok=True)
     tmp = out_dir / f".feed.{os.getpid()}.tmp"
-    lines = [json.dumps(r, ensure_ascii=False, sort_keys=True) for r in current + lifecycle + candidates]
+    lines = [json.dumps(r, ensure_ascii=False, sort_keys=True) for r in current + lifecycle + candidates + upcoming]
     body = ("\n".join(lines) + "\n").encode("utf-8") if lines else b""
     with open(tmp, "wb") as f:
         f.write(body)
@@ -184,6 +215,8 @@ def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int =
         "route_candidates_by_country": dict(Counter(r.get("country_code") for r in candidates)),
         "route_candidates_by_route_type": dict(Counter(x["route_type"] for r in candidates for x in r["application_routes"])),
         "route_candidates_skipped": cand_skipped,
+        "upcoming": len(upcoming), "upcoming_enabled": include_upcoming,
+        "upcoming_by_country": dict(Counter(r.get("country_code") for r in upcoming)), "upcoming_skipped": up_skipped,
     }
     mtmp = out_dir / f".manifest.{os.getpid()}.tmp"
     mtmp.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -192,4 +225,5 @@ def build_v3_feed(conn, root: Path, now: float | None = None, window_days: int =
     return {"ok": True, **{k: manifest[k] for k in ("records", "current", "lifecycle", "lifecycle_by_channel",
                                                     "lifecycle_by_event", "skipped", "backfilled_ids",
                                                     "left_current_this_run", "route_candidates",
-                                                    "route_candidates_by_country", "route_candidates_by_route_type")}}
+                                                    "route_candidates_by_country", "route_candidates_by_route_type",
+                                                    "upcoming", "upcoming_by_country")}}

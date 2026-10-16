@@ -977,6 +977,32 @@ def test_d018_route_candidates_are_watch_records_and_off_by_default(tmp_path):
     assert cand[0]["export_readiness"] == "WATCH" and all(not validate(x, RECORD_SCHEMA) for x in feed)
 
 
+def test_not_yet_open_records_can_be_sent_for_saving_and_are_off_by_default(tmp_path):
+    """Chris 16 Oct: traders can save opportunities to their own lists, so UPCOMING_NOT_OPEN records are worth sending
+    (as channel=watch, never READY) when switched on. Past ones are not."""
+    from fpd.integration.v3feed import build_v3_feed
+    conn = dbm.connect(tmp_path / "e.sqlite")
+    _seed(conn, 1)
+    root = tmp_path / "integration_export"
+    Exporter(conn, Cfg(tmp_path), root, TODAY).run("full")
+    rec = _read(root / "full" / "current.jsonl")[0]
+
+    def w(oid, **kw):
+        return {**rec, "opportunity_id": oid, "channel": "watch", "export_readiness": "WATCH",
+                "application_state": "UPCOMING_NOT_OPEN", **kw}
+    rows = [w("fdx1_" + "e" * 20, event_start=None, event_end=None, applications_open_on="2027-02-01"),   # sent
+            w("fdx1_" + "f" * 20, event_start="2026-01-01", event_end="2026-01-02"),                     # past
+            w("fdx1_" + "g" * 20, application_state="UNKNOWN")]                                          # not upcoming
+    (root / "full" / "watch.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    t0 = dt.datetime(2026, 10, 16, tzinfo=dt.timezone.utc).timestamp()
+    off = build_v3_feed(conn, root, now=t0)
+    assert off["upcoming"] == 0 and len(_read(root / "v3" / "feed.jsonl")) == 1
+    on = build_v3_feed(conn, root, now=t0 + 100, include_upcoming=True)
+    up = [x for x in _read(root / "v3" / "feed.jsonl") if x["channel"] == "watch"]
+    assert on["upcoming"] == 1 and [x["opportunity_id"] for x in up] == ["fdx1_" + "e" * 20]
+    assert up[0]["export_readiness"] == "WATCH" and not validate(up[0], RECORD_SCHEMA)
+
+
 def test_run_orders_sources_so_the_biggest_backlog_absorbs_unused_time():
     """US scale (D-019): with a fixed 1/6 share per lane Eventeny got ~4 min a cycle although its index was only
     ~40% visited while Marketspread/LocalStalls were ~100%. Biggest backlog now runs last and gets the slack."""

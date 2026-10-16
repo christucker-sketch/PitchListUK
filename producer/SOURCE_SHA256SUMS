@@ -9,7 +9,7 @@ acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.m
 e57a2f3b3d01b4df99015ccc517a0c41bf0801b27f3310ec62050b0ec7f1b718  ./deploy/pi-tests/prune.test.sh
 a400ce419909cc89513aacc55c1040ae60f196d5e19016ffd3b45fb8e9006801  ./deploy/pi-tests/source-key.test.sh
 e93d44f3d2137d9e2bdec4686b2e6e00dd8a103dcea700bf0b2dcace31104308  ./deploy/pi/README.md
-ae5d5059497f4cc79646f54db0de0db58428483fe1714e3e03091f7a9b0da06f  ./deploy/pi/SHA256SUMS
+405d3b9bdc026bdd7195f8cc994d2a501188949e4f2f0fabf14fbbd0f678f2b1  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
 9db7faa390203d02b54efaf8d4a34e2ccc91afaf49b16460416ef2eb4d6a5772  ./deploy/pi/bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./deploy/pi/bin/fpd-alert-setup
@@ -24,7 +24,7 @@ e9e4d8dbbbb5f936bceef3725bf7b91f52ccab9dde630779d3ec5489aa8d2248  ./deploy/pi/bi
 465ed7bd02c20bcfabc3bf3e83f853533ce40de4bcf80e0291037fc78a858148  ./deploy/pi/bin/fpd-set-source-key
 9ef9b6b1020b09b8fc1417bf67d08b697ccb9da2347275f4e591673fedcc36c0  ./deploy/pi/bin/fpd-set-token
 f9ac309ab92d9517c583a7a2935e04f566ed95a27f46141c05665776a0c81888  ./deploy/pi/bin/fpd-status
-069e48f3726c59f0d014ca0e2cee056fb4ebfe31e71d8a0c7f90fcec360cd64c  ./deploy/pi/bin/fpd-v3-feed
+6163259252aa4610f3fc5982dbcfb1b000d2f7a680ad2c44f3f08e0b3b8e1e6c  ./deploy/pi/bin/fpd-v3-feed
 9f95c36112cb44ec268d79fe680845406a2ee3cca6f1fb651fca95680b21d463  ./deploy/pi/bin/fpd-v3-prune
 dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./deploy/pi/build-kit.sh
 0fe991441144dbcf4b32be9c733792cea2c1e357edb86ebad5e70d4c130cd714  ./deploy/pi/config/constraints.txt
@@ -51,7 +51,7 @@ e4d7be8671618a186e23da6d73b5a4f79f143e17e5c4a6851b257ff5a6642183  ./deploy/pi/sy
 6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279  ./fpd/__main__.py
 a3103c49b4b7b770d3e904a7c90c92d64e13052c1a52fd77cbc724e2d794af4e  ./fpd/adapters.py
 d46d84eff6113812d44286b65a3e65fad4263e2b2f68fcb49ed5112e3de640d9  ./fpd/classify.py
-b1aafc5f53e17b0dcbc6d46b69f2aa8e80a34bcfba94dccb4dd9ad57782644ff  ./fpd/cli.py
+914739240feaea7b373ecaa36d7acbe1c232b82e91e8084e70b68a4768d7edd7  ./fpd/cli.py
 6c29b18b5c8c183a381037c501cbd2197e6b4bf97cb073e7139cf10b9a80d1e1  ./fpd/config.py
 460f84a266a9bb1e1c82a01917bcef76b9f40a3838eb0aafe0d5812ea98bf1e0  ./fpd/countries.py
 2c9c667a7e6740c9e3097635f76f7c5eaed463e33e0c128276c0251bfb0fc052  ./fpd/dates.py
@@ -73,7 +73,7 @@ b36d5157356da83a05dabaddb55f595620aa42c066322e7ccb0727dc4adf86f3  ./fpd/integrat
 ee92a916f3d31d92d6e21a7165969c291c1aa6ae31e6f63f4d9e9cc26f2b57b6  ./fpd/integration/records.py
 d470bb4c6e163d23be7c348cd86a244722e0b7a3857640325da1c719974c2e2e  ./fpd/integration/schema.py
 715bce0ad341f0ee940b58bb2ec36a2fce3f6fa0c5fbec59ebb9f92295a52381  ./fpd/integration/v3docs.py
-4851e692645ce2b8074ec25f356aea317e4b8e18b1480f8aa02724bd46ef8623  ./fpd/integration/v3feed.py
+54e9c53d9e3a6cddf81d5ff7ca4656261aee4958b60efb1e52b40b414781be66  ./fpd/integration/v3feed.py
 e9a818f4415fe9ed5d183b518e2e5a1b925d8b8b335d8d04e8feeea2c104ad23  ./fpd/lexicon.py
 bb9e0e36f2aa07433e67e57a9ba83386af9321e3ced3c883845e0c23f3d966f4  ./fpd/packs/__init__.py
 b3a0f826fc70c4798b0e017b57598446d1e82047263911559f7e0733a95c845f  ./fpd/packs/fr.py
@@ -84,7 +84,7 @@ c5515167fc1033972c764fc1919c296dd72e1e94ea7eaa2677a4822cee7bfb78  ./fpd/parse.py
 bda44b5ee5895487e844a75d5eec4e447df42bb56467fb0cf7abade67d8dd8cc  ./fpd/resolve.py
 4d55ae8adb2ece050b911c55f06d5e3428524902224840627b33ca0576e447df  ./fpd/seeds.json
 a5abe0828288d05ddc7b8600df6bb031a1ad59ca9463a0eadcd128890051b152  ./fpd/sources.py
-03f890a4a90506c218a5a372aabb64b97b4a2fbdce13628e3561c1b35f96843a  ./fpd/state.py
+bba49921772cca80581186f80b1740638eed86036641509864a5b0dad18943fa  ./fpd/state.py
 c5ed9703618abb3b8e49c6ea865787807006006ac0952e05403cf1548066fda8  ./fpd/storage.py
 36fb7eaa5fb9891133fab6d7ec445c330f8997bad02c1f3a221b385caa6f72b8  ./fpd/urlutil.py
 7944917e417b816f3ad68e0f433824f0cc68647ba525205f1cc9e0b1d8aabe33  ./fpd/watch.py
@@ -107,8 +107,8 @@ cc399676b06024df2ce67471f6e5600f43f899f59668af16fe617df92827a4a5  ./tests/fixtur
 c56830c2261640f3b53ac4f3bf13315589e95ebcd08a3e77abefb130586b9d35  ./tests/fixtures/marketsireland_open.html
 89920decd67516718809bf63c785723a6a70399379b60f9e32be86c8b075ff63  ./tests/test_core.py
 b31328004a9242ab0623ac10337ff9603c8cf35f6982d44b0d2195fecf46b465  ./tests/test_fr_pack.py
-ea235873a3063cab1a792643befd550381c0d6522047fca855c3d000f22f34ab  ./tests/test_integration.py
-07fdfff378d81e8bfd65740d871e0e3500bcaf5ec51d170d748c74f77ffdf615  ./tests/test_usda_fm.py
+f131796369bf63637fb48e4d199a97375d51862f89a5c8cf9ae23d8f5baa4007  ./tests/test_integration.py
+0f05fd4f560293cb40f3081c817c9e80d71b566e3d0d1402380a3b182fa601d7  ./tests/test_usda_fm.py
 9636728e373f754a826af3bbbdc96a219ffe5f895097456b89f9a9620d2e4e44  ./tools/classifier_diff.py
 069e3b51f995cff59941559d5a50a6ad133e3dabd7a376c2cd8704b6c1474cae  ./tools/custody_fetch.py
 907f8439aa20d5702581025feb13e46a4a5519ea9dd69e9bef18209b9b2bd226  ./tools/loss_report.py
