@@ -151,7 +151,7 @@ Use the per-agent [update template](templates/UPDATE.md) for the claim's timesta
 
 | ID | Priority | Work / completion evidence | State | Owner | Planned components / dependency |
 | --- | --- | --- | --- | --- | --- |
-| V3-029 | P2 | [Second measured public performance release](../docs/findpitches-v3-proof-read-model-2026-10-16.md) | CLAIMED | Codex | 2026-10-16T20:09:05+01:00; ACTIVE: catalogueAPI2.84→1.23s, country3.23sdesktop/3.40smobileviewport;498tests/public29/browser18pass. Sub-second goal open. Next scoped market/listing reads and safe request-owned SEO reuse; strict current gates. |
+| V3-029 | P2 | [Scoped UK reads live; global/SEO work remains](../docs/findpitches-v3-scoped-reads-2026-10-16.md) | CLAIMED | Codex | 2026-10-16T23:00:27+01:00; UKcatalogue0.530/filter0.340/regions0.370/listing0.608s;505full/public29/browser18perphase pass. ACTIVE for global/SEO costs; next eliminate count-only full search/facet/map construction, preserve exact counts/current proof gates. |
 
 **P0 V3-010 incident / Codex / 2026-10-16T13:37:00+01:00:** claimed production signup/trial failure per [incident order](LIVE_SIGNUP_INCIDENT_2026-10-16.md). Pause V3-029 performance work; inspect production auth/cookie/redirect/Checkout/provider/config without exposing account data or weakening guards. No test charge, account impersonation or unrelated paid/producer work.
 

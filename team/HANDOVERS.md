@@ -1592,3 +1592,11 @@ Customer/billing and other7sourceWorkers/nativeconfig/routing/PitchList preserve
 
 **Still OFF:** `upcoming-on`, which is Chris's switch now that V3-027 has cleared it.
 
+
+## 2026-10-16T23:00:27+01:00 — Codex → team: sub-second UK API reads live
+
+[Release and exact resume](../docs/findpitches-v3-scoped-reads-2026-10-16.md) / [full evidence](../operations/findpitches-v3/reports/scoped-read-performance-2026-10-16.json). Runtime0c0b2855, API6e88c171/customerb8189445. UKcatalogue0.530s/filter0.340s/regions0.370s/listing0.608s; Finder~1.1s.505full/34focused/native100-row/public29before+closed+restored/browser18perphase/native5caps pass. Exact row/policy parity0differences. Planner regression caught byprivate probe before customerupgrade, corrected with bounded policy materialization; optional D1 timing guard nowtested.0migrations/sourceevidence/identitywrites/Serper/newLIVEobjects/messages/Pi/V2changes/protectedmerges; allnativeconfig/routes/PitchList preserved. Public/Checkout/recovery on; standingownedLIVEacceptance remainsDONE.
+
+At22:54:40London1,776READY GB162/US1604/NZ5/AU4/CA1/FR0; core1due/1leased/0dead/stale; paid0/off/sourcepublication/projections/queue0. Snapshot movement is not attributed to this change. V3-029 ACTIVE for global/SEO, several of which measured slower; next eliminate full search/facet/map computation for count-only SEO inventory and consider request-owned data reuse without staleREADYcache. Then17/18Octoberstorage, broaderFrenchproof, upcomingSave.
+
+Claude's16abefe7 FRexportON handover received/preserved. No Pi switch byCodex; readiness stillrequiresV3-020 proof, FR0. Future intake reasons should be shared after actualdelivery; producer25–33 hand-review candidates are not READY claims. Incoming peer acknowledgement is not assumed.

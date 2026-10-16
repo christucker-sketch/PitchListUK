@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T20:09:05+01:00 — second performance release LIVE; sub-second goal remains open** (Europe/London).
-State: **V3-010/V3-030 DONE; V3-029 ACTIVE (sub-second catalogue goal remains open). Public/sign-in/Checkout/recovery on.**
+Author: Codex. Updated: **2026-10-16T23:00:27+01:00 — scoped UK reads LIVE/sub-second; global/SEO work remains open** (Europe/London).
+State: **V3-010/V3-030 DONE; V3-029 ACTIVE for global/SEO work. Ordinary UK reads meet the sub-second target in measured samples. Public/sign-in/Checkout/recovery on.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,16 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Scoped UK reads deployed / exact resume — 2026-10-16T23:00:27+01:00
+
+[Results, design and current queue](../../docs/findpitches-v3-scoped-reads-2026-10-16.md) / [complete sanitized evidence](../../operations/findpitches-v3/reports/scoped-read-performance-2026-10-16.json). Runtimecode0c0b2855/sourceAPI6e88c171/customerb8189445. UKcatalogue1.079→0.530s/filter1.126→0.340s/regions1.086→0.370s/listing1.088→0.608s. Finder2.28→1.13sdesktop/2.16→1.15smobileviewport.505full/34focused/native100-rowcontrol/public29before+closed+restored/browser18perphase/boundaries/native5caps/canonicalpricesglobaltrialmail pass.0same-snapshot row/policy differences, no migrations/originalwrites. Private-probe7–8s planner regression caught before customerupgrade; materialized current-policy query now67–86msnativeD1. Optional timing guard tested healthy500ms pass and impossible1ms stop after1read.
+
+**V3-029 ACTIVE: UK ordinary goal met; global/SEO still1.4–1.8sAPI/~4srender. Exact next work:** SEO inventory currently constructs full search/facets/map payloads even when only intent/region counts are needed. Profile and replace redundant count work with exact semantics, then evaluate request-owned SEO data reuse; keep global counts, current proof/revision/holds/producer clocks/expiry and Free/Pro gates. No unconditional READY cache. Several global paths measured slower this short sample; no unsupported speedup claimed. Do not reopen billing or start unrelated threads.
+
+At22:54:40London1,776READY US1604/GB162/NZ5/AU4/CA1/FR0; core1due/1leased/0dead/stale, paid0/off/manualpause, sourcepublication/projections/queue0. Public/sign-in/Checkout/recovery on; newCheckout brieflyclosed22:50:58–22:51:51 only. FinalcodeETag matches testedbundle; allnativeconfigs/secrets/schedules/routes/DNS/PitchList/other7sourceWorkers preserved. No newLIVEobjects/messages/Serper/originalsource/identitywrites/Pi/V2/protectedmerge. LIVE acceptance remainsDONE; genericreopenhelperfalse flag means no newjourney thisrun. Full new historical custody audit not repeated. READY varied between live snapshots; no quality gain/loss or withdrawal cause claimed.
+
+Claude16abefe7 FRexportON update preserved/acknowledged; upcoming-on stilloperatorowned, FRproof/reasoncodes stayV3-020 and FRREADY0. Ordered queue: billingDONE;performanceACTIVE(global/SEO);storageWAITING17/18October09:45London;FrenchproofWAITING;upcomingSaveDEFERRED.
 
 ## Scoped policy planner correction — 2026-10-16T22:47:54+01:00
 
