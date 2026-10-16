@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## Scoped policy planner correction — 2026-10-16T22:47:54+01:00
+
+API-first private probes caught a D1 join-plan regression before any customer upgrade: filtering inside the receipt join took7–8s, including2.1m rows read. Customer still uses its old global path and Checkout remainson. Candidate fix materializes the bounded current-policy SELECT before applying scope; live operator GB query duration82–108ms/71k rows/162READY/161,697bytes, exact policy/hold semantics retained. Focused regression covers materialization/record-ID lookup plan; final full suite running. Correct source API before proceeding with guarded customer release. No migrations/source writes/paid queries. Claude's FR-on handover16abefe7 received/preserved; France still requires V3-020 proof and no customer READY is inferred from producer counts.
+
 ## Scoped-read implementation verified — 2026-10-16T22:43:11+01:00
 
 [Design/contract/parity](../../docs/findpitches-v3-scoped-reads-2026-10-16.md). Full504/focused33/boundaries pass, native100-row preservation included. Live same-snapshot EXCEPT:GB162/US1637/detail162/batch1,0missing/extra. No migrations/evidence/identity writes. API-first compatible source release then guarded customer upgrade next; no public improvement/deployment claimed yet. Fresh22:40:32London1,777READY, paid0/off, sourcepublication0. Public/Checkout/recovery currentlyon, protected native baseline captured. V3-029 remainsACTIVE; unrelated priorities unchanged.

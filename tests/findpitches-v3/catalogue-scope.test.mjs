@@ -61,3 +61,12 @@ test('unexpected partial snapshots, mismatched content and invalid private metad
  }
  const legacy={V3_STAGING_TOKEN:'fixture',V3_READY_API:{fetch:async()=>Response.json(snapshot(undefined))}};assert.equal((await readCatalogue(legacy,NOW,{market:'GB'})).rows.length,1); // safe global old-source fallback, caller still filters country
 });
+
+test('scoped policy materializes current winners before entity filtering and preserves exact winners',async t=>{
+ const {structuredPolicyRead,LATEST_STRUCTURED_POLICY_SQL}=await import('../../platform/findpitches-v3/staging.mjs'),{db}=await fixture(t),scope=catalogueScope({market:'GB'}),{query,values}=structuredPolicyRead(scope);
+ const expected=(await sql(db,LATEST_STRUCTURED_POLICY_SQL).all()).results.filter(row=>db.sqlite.prepare('SELECT market FROM entities WHERE id=?').get(row.entity_id).market==='GB');
+ assert.deepEqual((await sql(db,query,...values).all()).results,expected);
+ const plan=(await sql(db,'EXPLAIN QUERY PLAN '+query,...values).all()).results.map(r=>r.detail);
+ assert.ok(plan.some(s=>s==='MATERIALIZE current_policy'),JSON.stringify(plan));
+ assert.ok(plan.some(s=>/SEARCH er USING INDEX sqlite_autoindex_entity_records_1 \(record_id=\?\)/.test(s)),JSON.stringify(plan));
+});

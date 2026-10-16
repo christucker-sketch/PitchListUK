@@ -29,10 +29,17 @@ export const LATEST_STRUCTURED_POLICY_SQL=`SELECT er.entity_id,
     WHERE p.producer_name='independent-structured' AND p.environment='shadow' AND p.validation_status='accepted'
     AND NOT EXISTS(SELECT 1 FROM producer_records n WHERE n.producer_name='independent-structured' AND n.producer_record_id=p.producer_record_id AND n.environment='shadow' AND n.validation_status='accepted'
       AND (COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')>COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') OR COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')=COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') AND (n.received_at>p.received_at OR n.received_at=p.received_at AND n.id>p.id)))`;
-export async function stagingCatalogue(db,{now=new Date().toISOString(),scope={kind:'full'}}={}) {
+export function structuredPolicyRead(scope){
   const {where,values}=scopeCondition(scope);
+  if(scope.kind==='full')return {query:LATEST_STRUCTURED_POLICY_SQL,values};
+  // Evaluate the already-bounded current-policy result first. Pushing the
+  // market predicate into the receipt join makes D1 probe every selected
+  // entity for each producer receipt, despite using the intended index.
+  return {query:`WITH current_policy AS MATERIALIZED (${LATEST_STRUCTURED_POLICY_SQL}) SELECT * FROM current_policy WHERE entity_id IN (SELECT e.id FROM entities e WHERE e.environment='shadow' AND ${where})`,values};
+}
+export async function stagingCatalogue(db,{now=new Date().toISOString(),scope={kind:'full'}}={}) {
+  const {query:policySql,values}=structuredPolicyRead(scope);
   if(scope.kind==='market'&&!SUPPORTED_MARKETS.includes(scope.market))throw Error('catalogue_scope_invalid');
-  const policySql=LATEST_STRUCTURED_POLICY_SQL+(scope.kind==='full'?'':` AND er.entity_id IN (SELECT e.id FROM entities e WHERE e.environment='shadow' AND ${where})`);
   const [rows,policy]=await Promise.all([customerCatalogueRows(db,{scope}),sql(db,policySql,...values).all()]);
   const current=new Map(rows.map(r=>[r.id,commercialEntity(r,now)]));
   const held=new Set();for(const p of policy.results){
