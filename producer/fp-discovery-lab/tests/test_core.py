@@ -131,6 +131,23 @@ def test_resolution_merges_duplicates(tmp_path):
     assert tuple(row) == (2, 2)
 
 
+def test_reassessing_the_primary_page_refreshes_name_and_dates(tmp_path):
+    """16 Oct: corrected names/dates never reached existing opportunities (fields were only filled when empty)."""
+    conn = dbm.connect(tmp_path / "t.sqlite")
+    fr = Frontier(conn, 1)
+    r = Resolver(conn, 1)
+    url = "https://www.lambfieldshow.co.uk/traders"
+    u1 = fr.add(url, "candidate", "test")
+    a1 = cl(UK_SHOW, url)
+    o1, _ = r.upsert(u1, url, 1, a1)
+    a2 = json.loads(json.dumps(a1))
+    a2["extracted"].update(name="Lambfield County Show", start_date="2026-12-05", end_date="2026-12-06")
+    o2, m2 = r.upsert(u1, url, 2, a2)
+    assert o2 == o1 and m2 == "same_page"
+    row = conn.execute("SELECT name, start_date, end_date FROM opportunities WHERE id=?", (o1,)).fetchone()
+    assert tuple(row) == ("Lambfield County Show", "2026-12-05", "2026-12-06")
+
+
 def test_edition_guard(tmp_path):
     conn = dbm.connect(tmp_path / "t.sqlite")
     fr = Frontier(conn, 1)

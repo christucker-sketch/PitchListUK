@@ -9,7 +9,7 @@ c4e413615f425435b1a76957a07504c28b903bcb1bca540e99621cbec2c8f246  ./deploy/pi-te
 e57a2f3b3d01b4df99015ccc517a0c41bf0801b27f3310ec62050b0ec7f1b718  ./deploy/pi-tests/prune.test.sh
 a400ce419909cc89513aacc55c1040ae60f196d5e19016ffd3b45fb8e9006801  ./deploy/pi-tests/source-key.test.sh
 e93d44f3d2137d9e2bdec4686b2e6e00dd8a103dcea700bf0b2dcace31104308  ./deploy/pi/README.md
-ce7eeb1ead6d8cce1dd76a9e1f1e42ae778f413554d617707e7a072f41043f40  ./deploy/pi/SHA256SUMS
+7a417d5cffb7afed20d0e9dd3ab1ad0ebf401c9c5a73ac6c9e831f96f3c7ff46  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
 f6434635e66704e039c3939dc891b34b6bfd94cd150c8f7ea98d7540fce5bf8c  ./deploy/pi/bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./deploy/pi/bin/fpd-alert-setup
@@ -70,7 +70,7 @@ ecd2ba5baad0adeda5ff43ed98a683e36b893ba0cf4bb9903ffe634ccdc324c8  ./fpd/geo.py
 b36d5157356da83a05dabaddb55f595620aa42c066322e7ccb0727dc4adf86f3  ./fpd/integration/__init__.py
 1d16b795126aee97c998e2ec5738ce4517679a27c10042bff65c178f75e60192  ./fpd/integration/exporter.py
 50dfb641648e3c559ede5de780306430d01b9190d131d6de6267ea91bb1c6960  ./fpd/integration/identity.py
-ee92a916f3d31d92d6e21a7165969c291c1aa6ae31e6f63f4d9e9cc26f2b57b6  ./fpd/integration/records.py
+ff9e365fac65cb21d4b14a28d23906b753ea34c5168944ad567f74ba6367a1fa  ./fpd/integration/records.py
 d470bb4c6e163d23be7c348cd86a244722e0b7a3857640325da1c719974c2e2e  ./fpd/integration/schema.py
 715bce0ad341f0ee940b58bb2ec36a2fce3f6fa0c5fbec59ebb9f92295a52381  ./fpd/integration/v3docs.py
 54e9c53d9e3a6cddf81d5ff7ca4656261aee4958b60efb1e52b40b414781be66  ./fpd/integration/v3feed.py
@@ -81,7 +81,7 @@ c5515167fc1033972c764fc1919c296dd72e1e94ea7eaa2677a4822cee7bfb78  ./fpd/parse.py
 7176d19db8eac6fb9bf1a65ede48764942f0d2fdb841094f03a340231fa9810c  ./fpd/pipeline.py
 2f78bdfc6d0833d3b8576f63a514d5127fc42e8f33eee77c81bb6fbfac15e905  ./fpd/report.py
 7d0baa7cab68a680e85b755ee49f5450d3161a02d27dcc8407f324c238cd2106  ./fpd/report2.py
-bda44b5ee5895487e844a75d5eec4e447df42bb56467fb0cf7abade67d8dd8cc  ./fpd/resolve.py
+629a59dd3087dfb678de671bce1822019c8b9db6855f937c0a35dc5c110d6733  ./fpd/resolve.py
 4d55ae8adb2ece050b911c55f06d5e3428524902224840627b33ca0576e447df  ./fpd/seeds.json
 a5abe0828288d05ddc7b8600df6bb031a1ad59ca9463a0eadcd128890051b152  ./fpd/sources.py
 bba49921772cca80581186f80b1740638eed86036641509864a5b0dad18943fa  ./fpd/state.py
@@ -105,7 +105,7 @@ b0af7b1560c1b4a1ef4d343ec45bbc2a53c3b6eef3b4e0212ed836b2f59bc366  ./tests/fixtur
 8c861b6edeec1ecc5be49e11c80dacad695941b9d6829e1bf6fe5d296b39a006  ./tests/fixtures/marketsireland_belfast.html
 cc399676b06024df2ce67471f6e5600f43f899f59668af16fe617df92827a4a5  ./tests/fixtures/marketsireland_notmanaged.html
 c56830c2261640f3b53ac4f3bf13315589e95ebcd08a3e77abefb130586b9d35  ./tests/fixtures/marketsireland_open.html
-89920decd67516718809bf63c785723a6a70399379b60f9e32be86c8b075ff63  ./tests/test_core.py
+8251f1b782a2e2db342a73ec4ec01849d0e0bf95295fc3585969e9b5cc15a6de  ./tests/test_core.py
 b31328004a9242ab0623ac10337ff9603c8cf35f6982d44b0d2195fecf46b465  ./tests/test_fr_pack.py
 f131796369bf63637fb48e4d199a97375d51862f89a5c8cf9ae23d8f5baa4007  ./tests/test_integration.py
 dbf78ab5f935d02442e76a970d4d100bed2d8b038cbf2ff587a6612a59aae14a  ./tests/test_usda_fm.py

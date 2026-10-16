@@ -232,10 +232,15 @@ class Resolver:
             upd = {}
             better = STATUS_RANK[a["label"]] > STATUS_RANK.get(o["status"], 0) or (
                 a["label"] == o["status"] and a["score"] > (o["confidence"] or 0))
+            # A re-assessment of the opportunity's own primary page is the newest evidence for it: its name, dates and
+            # apply link replace the old ones (16 Oct: corrected names/dates never reached existing opportunities, because
+            # fields were only ever filled when empty).
+            fresh = method == "same_page" and o.get("primary_url") == url
             for f in ("organiser", "region", "locality", "venue", "start_date", "end_date", "recurrence",
                       "deadline", "fees", "apply_url", "name"):
                 v = ex.get(f)
-                if v and (not o.get(f) or (better and f in ("start_date", "end_date", "deadline", "apply_url"))):
+                if v and (not o.get(f) or (better and f in ("start_date", "end_date", "deadline", "apply_url"))
+                          or (fresh and f in ("name", "start_date", "end_date", "deadline", "apply_url") and _s(v) != o.get(f))):
                     upd[f] = _s(v)
             if ex.get("country") and not o.get("country"):
                 upd["country"] = ex["country"]

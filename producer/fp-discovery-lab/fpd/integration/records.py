@@ -134,6 +134,16 @@ PLATFORM_HOMES = {"marketspread.com", "managemymarket.com", "eventeny.com", "jot
                   "zapplication.org", "cognitoforms.com", "formstack.com", "wufoo.com", "typeform.com", "mymarket.org"}
 
 
+def tidy_name(name) -> str:
+    """Drop page-section segments from a title-derived name ("Join Us | Meadows Farmers Market" -> "Meadows Farmers
+    Market"); names stored before 16 Oct were never re-derived."""
+    from ..classify import NAME_JUNK, PAGE_SEGMENT, SEPARATORS
+    name = (name or "").strip()
+    segs = [x.strip() for x in SEPARATORS.split(name) if x.strip()]
+    keep = [x for x in segs if not (NAME_JUNK.match(x) or PAGE_SEGMENT.match(x))]
+    return " | ".join(keep) if len(segs) > 1 and keep and len(keep) < len(segs) else name
+
+
 def bare_platform_home(url) -> bool:
     if not isinstance(url, str):
         return False
@@ -437,7 +447,7 @@ def _record(o, ss, exs, routes, pids, nkey, oid, how, anchors, today, suppress) 
         "location": ", ".join(loc_parts) if loc_parts else None,
         "venue": o["venue"],
         "geography_basis": sorted(basis),
-        "event_name": (o["name"] or "").strip() or "(unnamed)",
+        "event_name": tidy_name(o["name"]) or "(unnamed)",
         "organiser": o["organiser"],
         "opportunity_type": types[0] if types else None,
         "event_types": types,

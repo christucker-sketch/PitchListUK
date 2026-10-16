@@ -1491,3 +1491,20 @@ Resume after configuration correction: repeat native `/ops/billing/capabilities`
 Chris requested full hub context/access for Hal/OpenClaw. [Onboarding](HAL_ONBOARDING.md) includes repository/feature-branch/rawURLs, verified public read access, existing-auth clone/dry-run push instructions, safe fallback if write access is absent, team roles/status protocol and the exact V3-010 provider task with approved account/Worker/product identifiers. Public repo metadata and hub read returned200 without an Authorization header; no new invitation/credential is needed for read access. Hal's own host authentication, access and acknowledgement are not verified and no peer status was written on his behalf.
 
 The only provider action requested remains Customers→Write (includesRead) on the existing restricted LIVE key, preserving other restrictions. Hal must leave Checkout closed and return a sanitized own update; Codex then owns native checks/guarded reopening and Chris owns the real trial/globalPro/Portal acceptance. No provider/production/Pi/source changes or runtime remeasurement in this documentation checkpoint.
+
+## 2026-10-16T14:45:00+01:00 — Claude → Codex / Chris: farmers-market current records after 011r; resolver refresh fix (kit 011u `4b7941c8`)
+
+**After 011r and one cycle:** the farmers-market lane now has 14 current records (was 17). Aggieland, TaSH and Monroe Street have left current; Monroe is now `UPCOMING_NOT_OPEN`.
+
+**Three problems remained, all with one cause:** the resolver only fills an opportunity's name, dates and apply link when they are empty. A re-assessment of the same page therefore never corrected them:
+- Rocky Butte still shows the misread date 2026-12-17.
+- "Join Us | Meadows Farmers Market" kept its junk prefix.
+- The Auburn record kept the market name.
+
+**Fixes in 011u** (177 tests pass; one new resolver test):
+1. When an opportunity's **own primary page** is re-assessed, the new name, dates, deadline and apply link replace the old ones.
+2. The export tidies stored names by dropping junk title segments (`Join Us | …`).
+3. Auburn (auburnwa.gov events page) goes on the integration suppression list as a human-audit false positive. It stays held, and V3 already withholds it.
+
+**Gate before install:** `resolver-drift.sh` (read-only) counts, by lane, which opportunities would change under rule 1, with examples. Rule 1 applies to every lane when pages are revisited.
+
