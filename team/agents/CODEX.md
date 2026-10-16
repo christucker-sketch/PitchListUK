@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## V3-029 SEO count computation claimed — 2026-10-16T23:51:21+01:00
+
+Continuing the strict ordered queue without waiting between completed issues. Claimed components: customer catalogue filtering/count/region computation, customer count route, exact differential tests and read-only local/public performance tooling; then a config-preserving customer-only release. Current live proof inputs and all identity/time/holds/Free-Pro safeguards stay unchanged. No cross-request READY cache, source/API/Pi/V2/billing policy changes or paid queries. After this measured checkpoint, prepare storage samples due17/18October and inspect actual French intake/proof under V3-020; upcoming/Save remains deferred until prior tasks stable.
+
 ## Scoped UK reads deployed / exact resume — 2026-10-16T23:00:27+01:00
 
 [Results, design and current queue](../../docs/findpitches-v3-scoped-reads-2026-10-16.md) / [complete sanitized evidence](../../operations/findpitches-v3/reports/scoped-read-performance-2026-10-16.json). Runtimecode0c0b2855/sourceAPI6e88c171/customerb8189445. UKcatalogue1.079→0.530s/filter1.126→0.340s/regions1.086→0.370s/listing1.088→0.608s. Finder2.28→1.13sdesktop/2.16→1.15smobileviewport.505full/34focused/native100-rowcontrol/public29before+closed+restored/browser18perphase/boundaries/native5caps/canonicalpricesglobaltrialmail pass.0same-snapshot row/policy differences, no migrations/originalwrites. Private-probe7–8s planner regression caught before customerupgrade; materialized current-policy query now67–86msnativeD1. Optional timing guard tested healthy500ms pass and impossible1ms stop after1read.
