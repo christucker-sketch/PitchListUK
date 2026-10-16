@@ -5,6 +5,7 @@ import { selectRecordFacts,proposeFact,trustedOfficialSourceReview } from './evi
 import { enqueue,jobStatement,claimJob,finishJob,failJob } from './jobs.mjs';
 import {verificationGate} from './verification-store.mjs';
 import {usableRouteEligible} from './usable-route.mjs';
+import {sourceDatePast} from './source-calendar.mjs';
 
 export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}={}) {
   const existing=await sql(db,'SELECT * FROM reconciliation_decisions WHERE record_id=?',recordId).first();
@@ -92,7 +93,7 @@ export function assessEligibility(entity,{now=new Date().toISOString(),conflicts
   if(qualityHolds) { status='review';reasons=['source_qualification_requires_review']; }
   else if(conflicts) { status='review';reasons=['unresolved_evidence_conflict']; }
   else if(entity.lifecycle_state==='WITHDRAWN'||entity.application_state==='CLOSED') { status='closed';reasons=['source_declared_closed']; }
-  else if(entity.event_end&&Number.isFinite(Date.parse(entity.event_end))&&Date.parse(entity.event_end)<Date.parse(now)) { status='closed';reasons=['past_event_end']; }
+  else if(entity.event_end&&sourceDatePast(entity.event_end,now)) { status='closed';reasons=['past_event_end']; }
   else if((['WATCH','UNKNOWN','ENQUIRY_AVAILABLE'].includes(entity.application_state)||!entity.application_state)&&!(proof?.status==='verified'&&usableRouteEligible(proof)&&['WATCH','UNKNOWN','ENQUIRY_AVAILABLE'].includes(entity.application_state))) { status='watch';reasons=['application_state_requires_recheck']; }
   else if(!entity.event_name||!(entity.application_url||entity.canonical_url)) { status='review';reasons=['insufficient_source_evidence']; }
   return {status,reasons,score:status==='eligible'?1:status==='watch'?.5:0};

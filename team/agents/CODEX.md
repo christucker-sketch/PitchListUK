@@ -8,6 +8,11 @@ Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runt
 
 
 
+
+## V3-025 implementation checkpoint — 2026-10-16T09:13:10+01:00
+
+Full V3 450/450; focused 31; runtime boundaries pass. [Renewal policy](../../docs/findpitches-v3-source-renewal-policy.md): append-only attempt custody, 5/15/60-minute retries then daily cooldown, exact-host retry cap, unchanged active-proof TTL/closure/identity guards and original-expiry reevaluation. Eventeny vendor-scoped visible GMT closing times now retained and checked; date-only values remain calendar precision, no invented source timezone. Four retained real source samples parse to exact published instants. Native affected baseline:487receipts/6,567facts/116priorproofs+documents/116IDs; READY1,760. Additive0024 and eight config-preserving source Worker releases next, then eight-record canary and at most160directrequests across105originallywithdrawn entities. No source/native recovery or deployment gain claimed yet; no customer/Pi/provider/routing/paid changes.
+
 ## V3-025 claimed — 2026-10-16T08:55:14+01:00
 
 Repair bounded source renewal and date precision, then audit targeted recovery. Own V3 source fetch/verification/storage/pipeline/status plus tests/operator reports. Keep original receipts/proofs/identity immutable; failed transport attempts cannot extend positive TTL or override closure/identity evidence. No producer/Pi/customer/billing/routing/paid changes. Source-only additive migration and guarded reversible shadow release follow full tests and native custody baseline. French proof V3-020 and growth V3-022 remain open.

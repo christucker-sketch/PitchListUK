@@ -30,5 +30,10 @@ export async function fetchSourceDocument(url,{fetcher=fetch,now=new Date().toIS
       return {...meta,content_type:contentType,html,content_hash:await hash(html)};
     }
     return {reason:'source_redirect_limit',requested_url:url,fetched_at:now};
-  } catch {return {reason:'source_fetch_failed',requested_url:url,fetched_at:now};}
+  } catch(error) {
+    // Fixed diagnostic vocabulary only: exception messages can contain URLs,
+    // private headers or provider data and must never be copied into telemetry.
+    const kind=['AbortError','TimeoutError'].includes(error?.name)?'timeout':error?.message==='verification_source_request_budget'?'request_budget':error instanceof TypeError?'transport':'fetch_exception';
+    return {reason:'source_fetch_failed',requested_url:url,fetched_at:now,fetch_error_kind:kind};
+  }
 }

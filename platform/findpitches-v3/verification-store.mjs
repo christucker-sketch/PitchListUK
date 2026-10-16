@@ -5,6 +5,8 @@ import {fetchProofDocument} from './proof-document.mjs';
 import {encodeSourceDocument,decodeSourceDocument} from './document-custody.mjs';
 import {verifyDocument,compareProof,applicationScope,provedEventSourceUrl,eventenyParentId,VERIFIER_VERSION} from './verification.mjs';
 import {attachCachedAddress} from './address-coordinate-store.mjs';
+import {proofExpiry} from './source-calendar.mjs';
+import {renewalAdmission,retryableDocument,recordRenewalFailure,recordRenewalResult,renewalStatus} from './source-renewal.mjs';
 
 export function verificationUrl(entity) {
   // Prefer the retained event detail over an old footer application link.
@@ -66,9 +68,8 @@ export async function recordVerification(db,entityId,document,{now=new Date().to
   entity=await loadEntity(db,entityId);
   report.reasons=[...new Set([...report.reasons,...compareProof(entity,report)])];
   if(identityReasons.length||report.reasons.some(r=>/disagrees_with_proof|identity_mismatch|market_mismatch/.test(r)))report.status='quarantine';
-  let expiry=Date.parse(checked)+24*3600000;
-  if(report.facts.application_deadline)expiry=Math.min(expiry,Date.parse(report.application_close_at??report.facts.application_deadline+'T00:00:00Z'));
-  const expires=new Date(expiry).toISOString(),documentId='doc_'+(await hash(document)).slice(0,40);
+  const expires=proofExpiry(report,checked),documentId='doc_'+(await hash(document)).slice(0,40);
+  report.expiry_policy={version:'source-calendar-v1',calendar:'Europe/London',deadline_precision:report.application_close_at?'source_zoned_instant':report.facts.application_deadline?'calendar_date':'not_provided',closing_instant_inferred:false};
   const id='ver_'+(await hash([entityId,entity.revision,documentId,report])).slice(0,40),custody=await encodeSourceDocument(document,{db});
   await db.batch([
     sql(db,'INSERT OR IGNORE INTO source_documents(id,source_url,content_hash,fetched_at,document_json) VALUES (?,?,?,?,?)',documentId,originalRoute,document.content_hash??null,checked,custody),
@@ -84,8 +85,20 @@ export async function verifyEntitySource(db,entityId,{now=new Date().toISOString
   let observed=0,budgetReached=false;const bounded=maxSourceRequests===null?fetcher:async(...args)=>{if(observed>=maxSourceRequests){budgetReached=true;throw Error('verification_source_request_budget');}observed++;return fetcher(...args);};
   const entity=await loadEntity(db,entityId);if(!entity||!['test','shadow'].includes(entity.environment))throw Error('shadow_entity_required');
   const original=verificationUrl(entity);if(!original)throw Error('entity_original_source_required');
+  const active=await sql(db,'SELECT id,checked_at FROM source_verifications WHERE entity_id=? ORDER BY sequence DESC LIMIT 1',entityId).first();
+  const admission=await renewalAdmission(db,entity,original,now);
+  if(!admission.allowed)return {entity_id:entityId,entity_revision:entity.revision,verification_id:active?.id??null,attempt_id:admission.attempt.id,skipped:admission.reason,retry_at:admission.retry_at??admission.attempt.retry_at,source_requests_observed:0,source_request_budget_reached:false,report:{status:'unverified',reasons:[admission.reason],facts:{}}};
   const document=await fetchProofDocument(original,{fetcher:bounded,now,sourceIdentifier:entity.source_identifier});
-  const result=await recordVerification(db,entityId,document,{now});
+  let result;
+  if(retryableDocument(document)){
+    if(active&&Date.parse(document.fetched_at)<Date.parse(active.checked_at))throw Error('older_verification_cannot_supersede_newer_proof');
+    const attempt=await recordRenewalFailure(db,entity,document,{now,activeVerificationId:active?.id??null});
+    result={entity_id:entityId,entity_revision:entity.revision,verification_id:active?.id??null,attempt_id:attempt.id,retry_at:attempt.retry_at,retry_exhausted:attempt.retry_exhausted,report:verifyDocument(document,{now}),proposals:[],active_proof_unchanged:true};
+  }else{
+    result=await recordVerification(db,entityId,document,{now});
+    const receipt=await sql(db,'SELECT document_id,entity_revision FROM source_verifications WHERE id=?',result.verification_id).first();
+    result.attempt_id=await recordRenewalResult(db,{...entity,revision:receipt.entity_revision},receipt.document_id,result.verification_id,document.fetched_at,original);
+  }
   const requests=d=>Array.isArray(d.documents)?d.documents.reduce((n,x)=>n+requests(x),0):['unsafe_original_source_url','source_event_postcode_required'].includes(d.reason)?0:d.redirect_chain?.length??1;
   return {...result,source_requests_observed:maxSourceRequests===null?requests(document):observed,source_request_budget_reached:budgetReached};
 }
@@ -100,5 +113,5 @@ export async function verificationStatus(db,now) {
   const rows=(await sql(db,`SELECT CASE WHEN v.entity_revision<>e.revision OR julianday(v.expires_at)<=julianday(?) THEN 'expired_or_changed' ELSE v.status END AS status,COUNT(*) AS entities
     FROM source_verifications v JOIN entities e ON e.id=v.entity_id WHERE v.sequence=(SELECT MAX(sequence) FROM source_verifications WHERE entity_id=v.entity_id) GROUP BY 1`,now).all()).results;
   const missing=await sql(db,'SELECT COUNT(*) AS unverified_entities FROM entities e WHERE NOT EXISTS(SELECT 1 FROM source_verifications v WHERE v.entity_id=e.id)').first();
-  return {version:VERIFIER_VERSION,required_for_readiness:true,refresh_hours:24,...missing,latest:rows};
+  return {version:VERIFIER_VERSION,required_for_readiness:true,refresh_hours:24,...missing,latest:rows,renewal:await renewalStatus(db,now)};
 }

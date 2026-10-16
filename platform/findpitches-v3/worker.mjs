@@ -1,5 +1,6 @@
 import {bindEvidenceArchive} from './evidence-archive.mjs';
 import {capacityStatus,guardSourceCapacity} from './storage-capacity.mjs';
+import {renewalRetryCurrent} from './source-renewal.mjs';
 import {archiveHistoricalDocuments,restoreArchivedDocument} from './storage-migration.mjs';
 import {commercialStatus} from './commercial.mjs';
 import {startVenueMap,resolveVenueAddress,stopVenueMap} from './address-coordinate-store.mjs';
@@ -103,9 +104,11 @@ async function tick(env,{jobId=null,limit=10}={}) {
   for(let i=0;i<limit;i++) {
     const handlers=stage==='acquisition'?{acquisition:p=>acquireCity(env.FINDPITCHES_V3_DB,p,env,{runId:p.run_id})}:stage==='enrichment'?{enrichment:async p=>{
       const entity=await loadEntity(env.FINDPITCHES_V3_DB,p.entity_id),gate=await verificationGate(env.FINDPITCHES_V3_DB,entity);
+      if(p.source_retry_attempt_id&&!await renewalRetryCurrent(env.FINDPITCHES_V3_DB,entity,p.source_retry_attempt_id))return {phase:'superseded_source_retry_skipped'};
       // Unchanged exports extend neither positive nor negative source clocks.
-      if(entity.environment==='shadow'&&sourceFetchRequired(gate,{refreshVerificationId:p.refresh_verification_id}))await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id);
-      return enrichEntity(env.FINDPITCHES_V3_DB,p.entity_id,{proposals:p.proposals??[],recheckToken:p.recheck_token});
+      let result;
+      if(entity.environment==='shadow'&&(p.source_retry_attempt_id||sourceFetchRequired(gate,{refreshVerificationId:p.refresh_verification_id})))result=await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id,{...(p.source_retry_attempt_id?{maxSourceRequests:3}:{})});
+      return enrichEntity(env.FINDPITCHES_V3_DB,p.entity_id,{proposals:p.proposals??[],recheckToken:result?.attempt_id??p.recheck_token??p.source_retry_attempt_id});
     }}:{};
     const result=await runStage(env.FINDPITCHES_V3_DB,stage,{jobId,clock:()=>new Date(),handlers});
     results.push(result);if(result.phase!=='complete'||jobId)break;
@@ -201,7 +204,7 @@ export default {
       if(request.method==='POST'&&path==='/verification/verify'&&role==='enrichment') {
         const body=await bodyJson(request);if(typeof body.entity_id!=='string')throw Error('entity_id_required');
         const result=await verifyEntitySource(db,body.entity_id,{maxSourceRequests:body.max_source_requests??null});
-        await enqueue(db,'readiness',result.verification_id,{entity_id:body.entity_id});
+        await enqueue(db,'readiness',result.attempt_id??result.verification_id,{entity_id:body.entity_id});
         ctx?.waitUntil(wakeStage(env,'readiness').catch(()=>{}));return json(result);
       }
       if(request.method==='POST'&&path==='/verification/replay'&&role==='enrichment') {

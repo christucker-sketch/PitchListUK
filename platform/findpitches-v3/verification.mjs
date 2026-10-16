@@ -1,4 +1,5 @@
 import {stableJson} from './contract.mjs';
+import {sourceDatePast,sourceWindowOpen,eventenyVisibleClosing} from './source-calendar.mjs';
 import {parseHtml,nodes,first,text,hasClass,decode} from './source-dom.mjs';
 import {safeSourceUrl} from './source-document.mjs';
 import {verifyUKBundle} from './uk-sources.mjs';
@@ -176,7 +177,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
     if(eventNameEditionConflict(facts))report.reasons.push('contradictory_event_name_edition');
     if(facts.event_start&&[...heading.matchAll(/\b(20\d{2})\b/g)].some(m=>m[1]!==facts.event_start.slice(0,4)&&m[1]!==facts.event_end?.slice(0,4)))report.reasons.push('contradictory_heading_edition');
     if(/Event(?:Cancelled|Postponed)/.test(String(event.eventStatus??'')))report.reasons.push('event_cancelled_or_postponed');
-    if(facts.event_end&&facts.event_end<now.slice(0,10))report.reasons.push('stale_edition');
+    if(facts.event_end&&sourceDatePast(facts.event_end,now))report.reasons.push('stale_edition');
     const controls=nodes(main,n=>['a','button'].includes(n.tag),{scoped:true});
     const headingState=report.profile==='eventeny'&&/\bwaitlist(?:ed)?\b/i.test(heading)?'WAITLIST':report.profile==='eventeny'&&/^(?:closed|sold out|fully booked)\b/i.test(heading)?'CLOSED':null;
     const state=headingState??nodes(main,n=>['a','button','p','span','div'].includes(n.tag)&&text(n).length<=80,{scoped:true}).map(n=>explicitState(text(n))).find(Boolean);
@@ -190,9 +191,12 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
       facts.application_url=route(document.url,document.url);facts.application_deadline=[...deadlines][0]??null;
       const preciseEnds=own.map(o=>o.availabilityEnds);
       if(preciseEnds.length&&preciseEnds.every(s=>typeof s==='string'&&/^\d{4}-\d\d-\d\dT.+(?:Z|[+-]\d\d:?\d\d)$/.test(s)&&Number.isFinite(Date.parse(s))))report.application_close_at=new Date(Math.min(...preciseEnds.map(s=>Date.parse(s)))).toISOString();
+      const visibleClosing=eventenyVisibleClosing(body,preciseEnds);
+      if(visibleClosing.contradiction)report.reasons.push('contradictory_visible_application_close');
+      if(visibleClosing.instant)report.application_close_at=visibleClosing.instant;
       const visible=body.match(/Deadline:\s*([A-Z][a-z]{2,8}\s+\d{1,2},\s*20\d{2})/);
       if(visible&&facts.application_deadline){const date=new Date(visible[1]+' 12:00:00 UTC');if(Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)!==facts.application_deadline)report.reasons.push('contradictory_visible_application_deadline');}
-      if(!state&&states.size===1&&states.has('InStock')&&own.every(o=>o.availabilityStarts&&Date.parse(o.availabilityStarts)<=Date.parse(now)&&o.availabilityEnds&&Date.parse(o.availabilityEnds)>Date.parse(now))&&/start application/i.test(body))facts.application_state='OPEN_NOW';
+      if(!state&&states.size===1&&states.has('InStock')&&own.every(o=>sourceWindowOpen(o.availabilityStarts,report.application_close_at??o.availabilityEnds,now))&&/start application/i.test(body))facts.application_state='OPEN_NOW';
       report.evidence.push({kind:'vendor_id_scoped_offers',excerpt:stableJson(own).slice(0,14000)});
     } else if(report.profile==='localstalls') {
       const links=controls.filter(n=>n.tag==='a'&&/^submit application$/i.test(text(n))).map(n=>route(n.attrs.href,document.url)).filter(Boolean);
@@ -230,7 +234,7 @@ export function verifyDocument(document,{now=new Date().toISOString()}={}) {
       if(report.profile==='ukcraftfairs'&&/contact (?:the )?organiser/i.test(body))facts.application_state='ENQUIRY_AVAILABLE';
     }
     if(facts.application_deadline&&facts.event_end&&facts.application_deadline>facts.event_end)report.reasons.push('contradictory_application_deadline_after_event');
-    if(facts.application_deadline&&(report.application_close_at?Date.parse(report.application_close_at)<=Date.parse(now):facts.application_deadline<now.slice(0,10))){facts.application_state='CLOSED';report.reasons.push('application_deadline_passed');}
+    if(facts.application_deadline&&sourceDatePast(report.application_close_at??facts.application_deadline,now)){facts.application_state='CLOSED';report.reasons.push('application_deadline_passed');}
     if(facts.application_state!=='OPEN_NOW')report.reasons.push(state==='WAITLIST'?'waitlist_only':facts.application_state==='CLOSED'?'application_closed':'open_vendor_application_not_proved');
     report.reasons=[...new Set(report.reasons)];
     report.status=report.reasons.some(r=>/stale_edition|contradictory_|event_cancelled/.test(r))?'quarantine':report.reasons.length?'partial':'verified';
