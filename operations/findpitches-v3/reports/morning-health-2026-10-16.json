@@ -1,0 +1,132 @@
+{
+  "schema": "findpitches-v3-morning-health-v1",
+  "as_of": "2026-10-16T07:34:30.497Z",
+  "timezone": "Europe/London",
+  "ready": 1760,
+  "ready_by_country": {
+    "US": 1590,
+    "NZ": 5,
+    "GB": 160,
+    "AU": 4,
+    "CA": 1
+  },
+  "comparison": {
+    "baseline_as_of": "2026-10-15T10:15:23.741Z",
+    "baseline_ready": 1862,
+    "net_ready_delta": -102,
+    "net_country_deltas": {
+      "US": -103,
+      "NZ": 1
+    },
+    "gross_additions_and_removals": "unmeasured",
+    "withdrawal_attribution": "pending_record_level_comparison_do_not_infer_all_losses_from_aggregate_stale_count"
+  },
+  "storage": {
+    "available": true,
+    "file_size_bytes": 3944353792,
+    "conservative_cap_bytes": 10000000000,
+    "protective_stop_bytes": 9700000000,
+    "percent_used": 39.44,
+    "remaining_bytes": 6055646208,
+    "state": "normal",
+    "source_growth_allowed": true,
+    "warning_thresholds_percent": [
+      70,
+      80,
+      90,
+      97
+    ],
+    "as_of": "2026-10-16T07:35:03.263Z",
+    "growth_bytes_per_hour": 0,
+    "growth_interpretation": "net_database_growth",
+    "archive": {
+      "documents": 30497,
+      "original_payload_bytes": 6212304937
+    },
+    "samples": [
+      {
+        "observed_at": "2026-10-16T07:30:00.000Z",
+        "file_size_bytes": 3944353792
+      },
+      {
+        "observed_at": "2026-10-16T07:15:00.000Z",
+        "file_size_bytes": 3944353792
+      }
+    ],
+    "scope": "V3 source/evidence database; separate customer/auth/billing storage excluded",
+    "guard_enabled": true,
+    "forward_archive_enabled": true
+  },
+  "producer": {
+    "last_contact": "2026-10-16T07:30:19.189Z",
+    "last_new_receipt": "2026-10-16T05:57:37.012Z",
+    "source_last_checked": "2026-10-16T05:47:23Z",
+    "cadence_verified": true,
+    "freshness_warning": false,
+    "pending_rechecks": 336,
+    "acknowledged_last_24h": 2966
+  },
+  "core_active_or_dead_jobs": [],
+  "stale_leases": 0,
+  "paid": {
+    "v3_today_queries": 0,
+    "recent_daily_rows": [],
+    "bulk_enabled": false,
+    "commercial_manual_paused": 1,
+    "scope": "V3 telemetry only; this check does not audit the whole Serper account or legacy schedulers"
+  },
+  "source_pipeline": {
+    "publication_enabled": false,
+    "customer_projection_rows": 0,
+    "publication_rows": 0
+  },
+  "public_checks": {
+    "as_of": "2026-10-16T07:34:31.650Z",
+    "checks": [
+      {
+        "route": "/health",
+        "status": 200,
+        "language": null,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "route": "/",
+        "status": 200,
+        "language": "en",
+        "robots": "index,follow"
+      },
+      {
+        "route": "/lang/de/",
+        "status": 200,
+        "language": "de",
+        "robots": "noindex,follow"
+      },
+      {
+        "route": "/lang/fr/",
+        "status": 200,
+        "language": "fr",
+        "robots": "noindex,follow"
+      },
+      {
+        "route": "/api/v3/billing/plans?market=US&currency=EUR",
+        "status": 200,
+        "language": null,
+        "robots": "noindex, nofollow",
+        "checkout_enabled": true
+      }
+    ]
+  },
+  "france": {
+    "cloud_ready": true,
+    "ready": 0,
+    "producer_export": "held_per_latest_Claude_handover_pending_24h_clean_cycles",
+    "producer_candidates_last_reported": 172,
+    "host_not_directly_inspected": true
+  },
+  "germany": {
+    "ui_live": true,
+    "country_intake": false
+  },
+  "source_mutations": "no_full_original_row_custody_audit_repeated_this_morning",
+  "scope": "read-only operational checks; no deployment, source import, acquisition, host action or mail/payment creation"
+}

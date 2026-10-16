@@ -1,9 +1,14 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-15, 20:13 London — customer localisation complete** (Europe/London).
+Author: Codex. Updated: **2026-10-16, 08:34 London — read-only morning health** (Europe/London).
 State: **V3-024 DONE — shared German/French customer UI live, indexing held; V3-023 preliminary Germany DONE, DE intake off; V3-021 storage DONE; V3-019 France compatibility DONE; V3-020 French proof OPEN; V3-022 hot-growth OPEN; V3-010 owned LIVE acceptance pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
 
+
+
+## Morning operational check — 16 October
+
+**2026-10-16 08:34 London — morning operational check:** READY1,760 (US1,590/GB160/NZ5/AU4/CA1; FR0), net−102 vs yesterday1,862. Gross removals/additions and causes remain unmeasured; do not call all losses expired proof. Public EN/DE/FR200, LIVE Checkoutenabled; Pi08:30authenticatedcontact/15mincadence/freshnesshealthy,336pendingrechecks/2,966acknowledged24h. Core ready/leased/dead0,staleleases0. D1 3.944GB/free6.056GB; historical R2 custody30,497docs/6.212GB. V3Serper0today/no usage rows since14Oct,bulkoff/commercialpause; account-widelegacyusage not audited in this check. Source publicationoff/rows0. FRexportheld perClaude24hsoak, DEintakeoff. [Compact heartbeat](../INGESTION_LOG.md) / [read-only evidence](../../operations/findpitches-v3/reports/morning-health-2026-10-16.json). No runtime/source/producer changes or full custody audit. Prioritise record-level US withdrawal/refresh attribution; V3-020/022 and ownedLIVE acceptance remainopen.
 
 ## Localisation complete — 20:13 London, 15 October
 
