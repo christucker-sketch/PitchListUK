@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T10:42:07+01:00 — continuation checkpoints deployed and verified** (Europe/London).
-State: **V3-026/027 DONE; V3-020 council proof checkpoint delivered, broader corpus active; V3-022 24h measurement/design delivered, 48/72h follow-up active; V3-028 customer upcoming/Save OPEN; V3-010 owned LIVE acceptance remains separately pending**.
+Author: Codex. Updated: **2026-10-16T13:55:22+01:00 — P0 signup diagnosed, guarded runtime deployed, external permission action pending** (Europe/London).
+State: **V3-010 BLOCKED on existing Stripe Customers Write permission and genuine owned LIVE acceptance; new Checkout closed, public/sign-in/recovery on. V3-029 performance paused. Source continuation checkpoints remain delivered.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -10,9 +10,9 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
-## P0 diagnosed / configuration action pending — 2026-10-16T13:47:17+01:00
+## P0 native diagnosis and guarded release — 2026-10-16T13:55:22+01:00
 
-[Incident evidence and action](../../docs/findpitches-v3-live-signup-incident-2026-10-16.md): real link/session succeeds, Checkout fails before provider customer/reservation. Retained production key lacks Stripe **Customers Read/Write** (`more_permissions_required`); canonical product/three-price/Portal reads pass. Only new Checkout closed13:42London; browsing/sign-in/recovery remain available. Hal/Chris must change existing restricted LIVE key Customers toWrite; no new key/product/account. Native capability checks/safe telemetry/authenticated pricing notice and launch permission gate implemented; full472/finalfocused24/frontend3/independence93/build56/boundaries pass; public closed29 before release. Guarded release/native credential proof in progress, not claimed complete. V3-010 still open; V3-029 paused; no provider objects/messages/charges/source/Pi/V2 changes.
+[Incident / action / full evidence](../../docs/findpitches-v3-live-signup-incident-2026-10-16.md): the actual deployed credential lacks **Customers Read and Write** (HTTP403 `more_permissions_required`). Real sign-in consumed once/linked active session; no provider customer/reservation existed. **Hal/Chris must set CustomersWrite on the existing V3 restricted LIVE key**, preserving other restrictions; no new key/account/product. New Checkout stays closed; browsing/sign-in/recovery on. Safe provider telemetry, native capability probes, launch permission gate and clear authenticated pricing are deployed as `b4fb82d0-7728-49a2-9890-a9883175939d` (code67237e20). Full473/frontend3/independence93/build56/boundaries,6local EN/FR/DE desktop/mobile combinations, final public29 and exact pricing-asset hash pass. Native Customer permission checks remain intentionally RED, so no reopening/real trial acceptance claim.0providerobjects/messages/charges/Serper/source/Pi/V2 changes; PitchList/routes/DNS/native bindings/settings/schedules preserved. V3-029 paused. Resume only after existing-key permission correction; then native check, guarded reopening and Chris owned trial/globalPro/Portal acceptance.
 
 ## P0 LIVE signup incident claimed — 2026-10-16T13:37:00+01:00
 

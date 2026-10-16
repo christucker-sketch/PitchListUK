@@ -1,0 +1,145 @@
+{
+  "schema": "findpitches-v3-live-signup-incident-v1",
+  "as_of": "2026-10-16T13:55:22+01:00",
+  "state": "blocked_existing_stripe_customer_permissions",
+  "production_journey": {
+    "magic_link_consumed": 1,
+    "pricing_continuations": 1,
+    "linked_active_sessions": 1,
+    "original_service_unavailable_events": 2
+  },
+  "native_capabilities": {
+    "as_of": "2026-10-16T12:53:14.994Z",
+    "http_status": 503,
+    "ok": false,
+    "provider": "stripe",
+    "mode": "live",
+    "settings_validated": true,
+    "permissions_observed": false,
+    "checks": [
+      {
+        "capability": "customers_read",
+        "permitted": false,
+        "operation": "customers_get",
+        "status": 403,
+        "code": "more_permissions_required",
+        "request_id": "req_CtQPPkX2InfS4P"
+      },
+      {
+        "capability": "customers_write",
+        "permitted": false,
+        "operation": "customers_post",
+        "status": 403,
+        "code": "more_permissions_required",
+        "request_id": "req_gQO8u2nCeTmcwC"
+      },
+      {
+        "capability": "subscriptions_read",
+        "permitted": true,
+        "operation": "subscriptions_get",
+        "status": 200,
+        "code": "empty_list",
+        "request_id": null
+      },
+      {
+        "capability": "checkout_write",
+        "permitted": true,
+        "operation": "checkout_post",
+        "status": 404,
+        "code": "resource_missing",
+        "request_id": "req_DAx8UDSxw43yyP"
+      },
+      {
+        "capability": "portal_write",
+        "permitted": true,
+        "operation": "portal_post",
+        "status": 400,
+        "code": "resource_missing",
+        "request_id": "req_BMM8I68zgyZWrH"
+      }
+    ],
+    "customer_objects_created": 0,
+    "checkout_sessions_created": 0,
+    "subscriptions_created": 0,
+    "owned_trial_journey_proven": false
+  },
+  "release": {
+    "as_of": "2026-10-16T12:53:00.472Z",
+    "worker": "findpitches-v3-customer-production",
+    "release_method": "version_upload_and_deploy",
+    "deployment_id": "4985dce6-c5ce-4e8d-bfd7-1d66f8b3bf99",
+    "version_ids": [
+      "b4fb82d0-7728-49a2-9890-a9883175939d"
+    ],
+    "checkout_enabled": false,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "all_native_bindings_and_settings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "pitchlist_unchanged": true,
+    "database_migrations": 0,
+    "secret_values_replaced": false,
+    "source_identity_writes": 0
+  },
+  "validation": {
+    "full_v3": {
+      "passed": 473,
+      "failed": 0,
+      "skipped": 0
+    },
+    "frontend_contract": {
+      "passed": 3,
+      "failed": 0
+    },
+    "frontend_independence_files": 93,
+    "frontend_built_files": 56,
+    "runtime_boundaries_passed": true,
+    "public_security_api_seo": {
+      "as_of": "2026-10-16T12:53:38.223Z",
+      "passed": 29,
+      "failed": 0,
+      "checkout_enabled": false
+    },
+    "authenticated_local_browser": {
+      "passed": true,
+      "language_device_combinations": 6,
+      "languages": [
+        "en",
+        "fr",
+        "de"
+      ],
+      "real_customer_impersonation": false
+    },
+    "deployed_pricing_asset": {
+      "as_of": "2026-10-16T12:53:31.828Z",
+      "http_status": 200,
+      "public_asset_matches_checked_source": true,
+      "authenticated_notice_present": true,
+      "new_provider_objects_created": 0
+    }
+  },
+  "customer_billing_storage": {
+    "as_of": "2026-10-16T12:53:03.593Z",
+    "provider_customer_links": 0,
+    "checkout_attempts": 0,
+    "checkout_reservations": 0,
+    "subscriptions": 0
+  },
+  "safety": {
+    "investigation_provider_objects_created": 0,
+    "investigation_messages_sent": 0,
+    "charges_created": 0,
+    "serper_queries_used": 0,
+    "source_tables_written": false,
+    "source_custody_audit_repeated": false,
+    "source_workers_changed": false,
+    "producer_changed": false,
+    "v2_modified": false,
+    "pitchlist_modified": false,
+    "secret_values_replaced": false
+  },
+  "remaining_action": "Set Customers to Write (includes Read) on the existing V3 restricted LIVE Stripe key; preserve other restrictions. Recheck native capabilities before reopening. No new key/account/product needed.",
+  "owned_live_acceptance_proven": false,
+  "performance_profile": "V3-029 paused for this P0"
+}

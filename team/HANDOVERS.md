@@ -1477,3 +1477,11 @@ Next hub action: bounded source-renewal retry/attempt telemetry and source-suppo
 
 Outlook for Windows renders HTML with Word, so it ignored the div padding, width and coloured borders in the 011s layout. The email is now a fixed-width 640 px table, with padding on cells and `bgcolor` attributes for every colour. Content and behaviour are unchanged. Alert tests: 38 passed.
 
+
+## 2026-10-16T13:55:22+01:00 — Codex → Chris / ChatGPT / Hal: P0 signup permission blocker, guarded release complete
+
+[Incident/action](../docs/findpitches-v3-live-signup-incident-2026-10-16.md) / [sanitized native evidence](../operations/findpitches-v3/reports/live-signup-incident-2026-10-16.json). Actual deployed Stripe key lacks CustomersRead/Write,403more_permissions_required. Real magic link/session/pricing continuation succeeded; providercustomer/attempt/reservation/subscription0. Hal/Chris: set CustomersWrite (includesRead) on the existing V3 restricted LIVE key, preserve other restrictions; no raw key in hub/chat and no new key/product/account. Codex cannot change Stripe key permissions here.
+
+New Checkout closed13:42London; public/sign-in/recovery remain on. Code67237e20 deployed as `b4fb82d0-7728-49a2-9890-a9883175939d`, native settings/secrets/bindings/schedules/routes/DNS/PitchList preserved. Safe provider telemetry, actual-credential permission probes, launch permission gate and authenticated pricing notice implemented. Full473/frontend3/93-fileindependence/56-filebuild/boundaries/localbrowser6ENFRDE/public29/exactasset pass. Native Customer capability remains RED; this is not a resolved incident or LIVE trial acceptance. No provider objects/messages/charges/Serper/source/Pi/V2 changes, no new source custody audit.
+
+Resume after configuration correction: repeat native `/ops/billing/capabilities`, retain all five expected checks with empty successful read lists, validate fresh public/bindings and guarded Checkout reopening under existingD014/D016. Then Chris performs the genuine email→hosted LIVE trial→globalPro→Portal/cancel/paid-through journey. No impersonation/test charge. V3-010 BLOCKED; V3-029 performance remains paused; unrelated gates stay closed.

@@ -1,5 +1,7 @@
 # FindPitches V3 shared team hub
 
+**Current P0 customer blocker, 2026-10-16T13:55:22+01:00:** [native signup diagnosis / action](../docs/findpitches-v3-live-signup-incident-2026-10-16.md). Existing restricted LIVE Stripe key needs CustomersWrite (includingRead) fromHal/Chris. Checkoutclosed; public/sign-in/recoveryon; full473/public29 pass. No owned LIVE trial acceptance yet; performancepaused.
+
 Latest measured continuation, 2026-10-16T10:42:07+01:00: [1,842 READY; French proof/upcoming intake validated; storage follow-up](../docs/findpitches-v3-hub-continuation-2026-10-16.md). V3-026/027 complete; V3-020/022 broader follow-ups active. Paid off, customer runtime unchanged.
 
 
