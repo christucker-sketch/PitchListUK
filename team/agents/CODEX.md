@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## V3-029 continuation claim — 2026-10-16T19:51:00+01:00
+
+Continuing the measured bottleneck: bounded per-entity compact proof heads, maintained atomically from immutable verification inserts; current entity revision, latest proof sequence, holds/conflicts/selected facts, producer source-clock policy and time gates stay live on reads. No cross-request READY cache. Claimed components: commercial proof/query module, additive V3-only derived-table migration/triggers, staging timing diagnostics, focused parity/corruption/expiry tests, guarded source-API-only release and public before/after report. Billing/customer bundle unchanged unless direct instrumentation proves necessary. No paid/source acquisition, Pi, V2 or PitchList changes. Preserve and reuse the completed first performance baseline.
+
 ## Performance checkpoint / exact next work — 2026-10-16T19:43:13+01:00
 
 [Before/after / deployment / remaining bottleneck](../../docs/findpitches-v3-performance-2026-10-16.md) / [full sanitized timings](../../operations/findpitches-v3/reports/performance-readiness-2026-10-16.json). Codebb9d09a9; sourceAPIba82ad84/customerc7974bb8. Desktop country18.71→5.49s, category22.02→5.39s, listing11.69→4.69s; catalogueAPI3.48→2.38s. Full485/frontend3/98-file independence/60-file build/boundaries/public29before+after/browser18perphase pass. Ten→four catalogue queries; policyD1CPU858→44ms;2,206 exact old/newpolicy rows/0difference in one live snapshot. One additive3.8MB-window index; original schemas/evidence/identity/proof gates preserved, no stale cache. Native billing LIVE with successful empty LIVE write capability and unchanged trial/cancel/price/invoice/metadata; no Hal/key change required.
