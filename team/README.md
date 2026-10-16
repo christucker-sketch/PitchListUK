@@ -1,3 +1,5 @@
+**Latest customer checkpoint — 2026-10-16T19:12:24+01:00:** [V3-030 native billing LIVE/DONE](../docs/findpitches-v3-native-billing-2026-10-16.md); public/sign-in/Checkout/recovery on. Full482/localbrowser38/genuineStripeTEST/public29before+after/publicbrowser6 pass; PitchList/shared Stripe preserved. V3-010 owned functional acceptance DONE. **V3-029 performance ACTIVE**, followed by scheduled17/18October storage, French proof, upcoming/Save. Earlier Portal-choice-pending/ACTIVE billing text below is superseded.
+
 **Current priority — 2026-10-16T18:53:05+01:00:** [Native FindPitches Billing approved](FINDPITCHES_NATIVE_BILLING_PAGE_ORDER_2026-10-16.md); Codex V3-030 ACTIVE. [Strict ordered backlog](CODEX_OPEN_TASK_CONSOLIDATION_ORDER_2026-10-16.md). Earlier Portal-choice-pending text is superseded; owned LIVE acceptance is complete.
 
 # FindPitches V3 shared team hub

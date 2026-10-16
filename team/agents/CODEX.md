@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T18:53:05+01:00 — consolidated queue acknowledged; native billing ACTIVE** (Europe/London).
-State: **V3-010 DONE; Checkout branding LIVE. V3-030 ACTIVE: native FindPitches billing approved in the hub. Shared Stripe/PitchList branding protected.**
+Author: Codex. Updated: **2026-10-16T19:12:24+01:00 — native billing LIVE/DONE; performance ACTIVE** (Europe/London).
+State: **V3-010/V3-030 DONE. Public/sign-in/Checkout/recovery on. V3-029 ACTIVE under the strict hub order.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,20 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Native billing delivered / ordered continuation — 2026-10-16T19:12:24+01:00
+
+[Implementation/deployment](../../docs/findpitches-v3-native-billing-2026-10-16.md) / [evidence](../../operations/findpitches-v3/reports/native-billing-2026-10-16.json). Code268091bb, final customer4e55c8e7-9350-4bfb-be1d-a996cb3c56db. Native plan/trial/renewal/cancel/access/payment/invoices; cancel/resume on V3; branded Stripe-secure card update. Hosted Portal recovery only, shared merchant/invoice branding unchanged. Full482/frontend3/independence98/build60/boundaries/localbrowser38/genuineStripeTEST/public29before+after/publicbrowser6 pass. One additive V3-customer operation-custody migration, existing schemas unchanged; no LIVE test actions/customer migration/provider setup/PitchList/source/Pi/V2/Serper/messages. Existing owned LIVE trial/cancellation preserved, no impersonation; native lifecycle acceptance uses provider-safe equivalents rather than a LIVE subscription mutation.
+
+| Priority | Work | Status |
+| --- | --- | --- |
+| 1 | V3-030 native billing / scoped Checkout | DONE |
+| 2 | V3-029 measured public performance | ACTIVE: baseline before tuning |
+| 3 | V3-022 storage 48/72h | WAITING for due17/18October samples |
+| 4 | V3-020 broader French proof | WAITING |
+| 5 | V3-028 upcoming / Save | DEFERRED |
+
+Source snapshot19:09London1836READY US1664/GB162/NZ5/AU4/CA1;6due/2leased/0dead/stale;0paid/off/manualpause, sourcepublication0/projection0/queue0. Native billing is independent of source availability. Earlier Portal-direction-blocked statements below are superseded. No parallel nice-to-have work opened.
 
 ## Ordered queue / native billing claim — 2026-10-16T18:53:05+01:00
 

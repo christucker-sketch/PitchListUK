@@ -1,0 +1,423 @@
+{
+  "schema": "findpitches-v3-native-billing-v1",
+  "as_of": "2026-10-16T19:12:24+01:00",
+  "state": "native_billing_live",
+  "code_commit": "268091bbc3f18328f5263fb2058c52e3f8f0a41f",
+  "release": {
+    "as_of": "2026-10-16T18:08:42.398Z",
+    "worker": "findpitches-v3-customer-production",
+    "release_method": "version_upload_and_deploy",
+    "deployment_id": "f8b125f8-c886-41ec-8475-7548407f4a30",
+    "version_ids": [
+      "2f61595b-54c4-4d93-b879-5345534f0e52"
+    ],
+    "checkout_enabled": false,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "all_native_bindings_and_settings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "pitchlist_unchanged": true,
+    "database_migrations": 0,
+    "secret_values_replaced": false,
+    "source_identity_writes": 0
+  },
+  "checkout_reopened": {
+    "as_of": "2026-10-16T18:10:27.093Z",
+    "checkout_enabled": true,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "worker": "findpitches-v3-customer-production",
+    "deployment_id": "4eb0786b-63c6-4ee7-9110-a261b8db450d",
+    "version_id": "4e55c8e7-9350-4bfb-be1d-a996cb3c56db",
+    "previous_version_id": "2f61595b-54c4-4d93-b879-5345534f0e52",
+    "only_changed_flag": "V3_CHECKOUT_ENABLED",
+    "native_settings_bindings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "schedules_unchanged": true,
+    "pitchlist_unchanged": true,
+    "code_assets_changed": false,
+    "secret_values_replaced": false,
+    "database_migrations": 0,
+    "source_tables_written": false,
+    "provider_objects_created_by_checks": 0,
+    "messages_sent_by_checks": 0,
+    "serper_queries": 0,
+    "public_checks_passed": 29,
+    "public_checks_failed": 0,
+    "owned_live_journey_proven": false
+  },
+  "migration": {
+    "as_of": "2026-10-16T18:07:52.294Z",
+    "database": "findpitches-v3-customer-production",
+    "migration": "0002_native_billing.sql",
+    "additive_only": true,
+    "existing_schema_sha256": "0283d39e84c908d24f0452cd17f9e5640d698350f8d841b7eab34a1eb775397d",
+    "existing_schema_unchanged": true,
+    "added": [
+      {
+        "type": "trigger",
+        "name": "billing_operation_owner_immutable"
+      },
+      {
+        "type": "trigger",
+        "name": "billing_operation_owner_required"
+      },
+      {
+        "type": "table",
+        "name": "billing_operations"
+      },
+      {
+        "type": "index",
+        "name": "billing_operations_customer"
+      }
+    ],
+    "counts": {
+      "operations": 0,
+      "customers": 1,
+      "subscriptions": 1,
+      "pending_webhooks": 0
+    }
+  },
+  "validation": {
+    "full_v3": {
+      "passed": 482,
+      "failed": 0,
+      "skipped": 0
+    },
+    "frontend_passed": 3,
+    "independence_files": 98,
+    "built_files": 60,
+    "runtime_boundaries_passed": true,
+    "native_worker_browser_fixture": {
+      "as_of": "2026-10-16T18:04:43.192909+00:00",
+      "scope": "local_native_worker_sqlite_and_mocked_stripe_only",
+      "passed": true,
+      "checks": [
+        {
+          "name": "desktop_en_native_account_navigation",
+          "passed": true
+        },
+        {
+          "name": "desktop_en_canonical_plan_price_card_invoice",
+          "passed": true
+        },
+        {
+          "name": "desktop_en_cancel_preserves_access",
+          "passed": true
+        },
+        {
+          "name": "desktop_en_resume_returns",
+          "passed": true
+        },
+        {
+          "name": "fixture_secure_setup_return",
+          "passed": true
+        },
+        {
+          "name": "desktop_en_no_script_errors_or_foreign_calls",
+          "passed": true
+        },
+        {
+          "name": "desktop_en_fits_viewport",
+          "passed": true
+        },
+        {
+          "name": "desktop_fr_native_account_navigation",
+          "passed": true
+        },
+        {
+          "name": "desktop_fr_canonical_plan_price_card_invoice",
+          "passed": true
+        },
+        {
+          "name": "desktop_fr_cancel_preserves_access",
+          "passed": true
+        },
+        {
+          "name": "desktop_fr_resume_returns",
+          "passed": true
+        },
+        {
+          "name": "desktop_fr_no_script_errors_or_foreign_calls",
+          "passed": true
+        },
+        {
+          "name": "desktop_fr_fits_viewport",
+          "passed": true
+        },
+        {
+          "name": "desktop_de_native_account_navigation",
+          "passed": true
+        },
+        {
+          "name": "desktop_de_canonical_plan_price_card_invoice",
+          "passed": true
+        },
+        {
+          "name": "desktop_de_cancel_preserves_access",
+          "passed": true
+        },
+        {
+          "name": "desktop_de_resume_returns",
+          "passed": true
+        },
+        {
+          "name": "desktop_de_no_script_errors_or_foreign_calls",
+          "passed": true
+        },
+        {
+          "name": "desktop_de_fits_viewport",
+          "passed": true
+        },
+        {
+          "name": "mobile_en_native_account_navigation",
+          "passed": true
+        },
+        {
+          "name": "mobile_en_canonical_plan_price_card_invoice",
+          "passed": true
+        },
+        {
+          "name": "mobile_en_cancel_preserves_access",
+          "passed": true
+        },
+        {
+          "name": "mobile_en_resume_returns",
+          "passed": true
+        },
+        {
+          "name": "mobile_en_no_script_errors_or_foreign_calls",
+          "passed": true
+        },
+        {
+          "name": "mobile_en_fits_viewport",
+          "passed": true
+        },
+        {
+          "name": "mobile_fr_native_account_navigation",
+          "passed": true
+        },
+        {
+          "name": "mobile_fr_canonical_plan_price_card_invoice",
+          "passed": true
+        },
+        {
+          "name": "mobile_fr_cancel_preserves_access",
+          "passed": true
+        },
+        {
+          "name": "mobile_fr_resume_returns",
+          "passed": true
+        },
+        {
+          "name": "mobile_fr_no_script_errors_or_foreign_calls",
+          "passed": true
+        },
+        {
+          "name": "mobile_fr_fits_viewport",
+          "passed": true
+        },
+        {
+          "name": "mobile_de_native_account_navigation",
+          "passed": true
+        },
+        {
+          "name": "mobile_de_canonical_plan_price_card_invoice",
+          "passed": true
+        },
+        {
+          "name": "mobile_de_cancel_preserves_access",
+          "passed": true
+        },
+        {
+          "name": "mobile_de_resume_returns",
+          "passed": true
+        },
+        {
+          "name": "mobile_de_no_script_errors_or_foreign_calls",
+          "passed": true
+        },
+        {
+          "name": "mobile_de_fits_viewport",
+          "passed": true
+        },
+        {
+          "name": "signed_out_has_no_plan_or_card",
+          "passed": true
+        }
+      ],
+      "live_customer_access": false,
+      "live_writes": 0,
+      "card_details_collected_by_v3": false,
+      "tls_bypass": false
+    },
+    "genuine_stripe_test_provider_equivalent": {
+      "as_of": "2026-10-16T18:05:06.254Z",
+      "passed": true,
+      "scope": "genuine_stripe_test_api_and_hosted_card_form_provider_safe_equivalent",
+      "setup_succeeded": true,
+      "owned_customer_and_attached_card_verified": true,
+      "trial_days": 7,
+      "canonical_trial_and_period_preserved": true,
+      "cancel_at_period_end_passed": true,
+      "resume_passed": true,
+      "subscription_default_payment_method_update_passed": true,
+      "invoice_receipt_passed": true,
+      "amount_paid": 0,
+      "live_objects_created": 0,
+      "live_subscriptions_changed": 0,
+      "shared_branding_changed": false,
+      "test_subscription_cancelled_after_test": true
+    },
+    "genuine_hosted_test_card_setup": {
+      "passed": true,
+      "sandbox": true,
+      "setup_page_visible": true,
+      "test_card_submitted_to_stripe_only": true,
+      "clean_owned_return": true,
+      "return_intercepted_before_production_api": true,
+      "live_objects_created": 0,
+      "tls_bypass": false
+    },
+    "public_anonymous_browser": {
+      "as_of": "2026-10-16T18:09:58.030368+00:00",
+      "passed": true,
+      "scope": "real_public_origin_anonymous_only",
+      "checks": [
+        {
+          "device": "desktop",
+          "locale": "en",
+          "signed_out_private_gate": true,
+          "script_errors": 0,
+          "foreign_requests": 0,
+          "noindex": true,
+          "no_horizontal_overflow": true
+        },
+        {
+          "device": "desktop",
+          "locale": "fr",
+          "signed_out_private_gate": true,
+          "script_errors": 0,
+          "foreign_requests": 0,
+          "noindex": true,
+          "no_horizontal_overflow": true
+        },
+        {
+          "device": "desktop",
+          "locale": "de",
+          "signed_out_private_gate": true,
+          "script_errors": 0,
+          "foreign_requests": 0,
+          "noindex": true,
+          "no_horizontal_overflow": true
+        },
+        {
+          "device": "mobile",
+          "locale": "en",
+          "signed_out_private_gate": true,
+          "script_errors": 0,
+          "foreign_requests": 0,
+          "noindex": true,
+          "no_horizontal_overflow": true
+        },
+        {
+          "device": "mobile",
+          "locale": "fr",
+          "signed_out_private_gate": true,
+          "script_errors": 0,
+          "foreign_requests": 0,
+          "noindex": true,
+          "no_horizontal_overflow": true
+        },
+        {
+          "device": "mobile",
+          "locale": "de",
+          "signed_out_private_gate": true,
+          "script_errors": 0,
+          "foreign_requests": 0,
+          "noindex": true,
+          "no_horizontal_overflow": true
+        }
+      ],
+      "certificate_bypass": false,
+      "live_objects_created": 0,
+      "messages_sent": 0,
+      "serper_queries": 0
+    },
+    "public_before_checks": 29,
+    "public_after_checks": 29,
+    "native_existing_capabilities_passed": 5,
+    "additional_live_read_permissions": {
+      "checks": [
+        {
+          "permission": "payment_methods_read",
+          "permitted": true,
+          "owned_object_verified": true
+        },
+        {
+          "permission": "setup_intents_read",
+          "permitted": true,
+          "empty_pre_epoch_list": true
+        }
+      ]
+    }
+  },
+  "acceptance_scope": {
+    "owned_live_signup_portal_cancel_already_proven": true,
+    "native_live_customer_actions_exercised_by_engineering": false,
+    "native_lifecycle_acceptance": "local native worker end-to-end plus genuine Stripe TEST provider-safe equivalent",
+    "live_subscription_changes_by_engineering": 0,
+    "existing_trial_and_cancellation_preserved": true,
+    "future_actual_trial_expiry_observed": false
+  },
+  "source_snapshot": {
+    "as_of": "2026-10-16T18:09:52.404Z",
+    "ready": 1836,
+    "ready_by_country": {
+      "GB": 162,
+      "US": 1664,
+      "CA": 1,
+      "AU": 4,
+      "IE": 0,
+      "NZ": 5,
+      "SG": 0,
+      "HK": 0,
+      "FR": 0
+    },
+    "safety": {
+      "publication_enabled": 0,
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "core_due": 6,
+      "core_leased": 2,
+      "core_dead": 0,
+      "stale_leases": 0,
+      "paid_queries_today": 0,
+      "paid_bulk_enabled": 0,
+      "commercial_manual_paused": 1
+    }
+  },
+  "safety": {
+    "shared_account_branding_changed": false,
+    "stripe_account_created": false,
+    "customer_migration": false,
+    "live_objects_created_by_engineering": 0,
+    "pitchlist_changed": false,
+    "v2_changed": false,
+    "producer_pi_changed": false,
+    "source_tables_written": false,
+    "full_source_custody_audit_repeated": false,
+    "serper_queries": 0,
+    "messages_sent_by_engineering": 0,
+    "card_data_handled_by_v3": false,
+    "native_settings_bindings_secrets_routes_dns_schedules_preserved": true
+  },
+  "limitations": [
+    "Stripe legal merchant and invoice branding remain shared-account settings.",
+    "Optional card/invoice failures do not disable cancellation; availability is explicit.",
+    "Native customer actions proven by safe equivalents; no impersonation or LIVE subscription mutation for testing.",
+    "Storage 48/72-hour samples are due 17/18 October, not measured early."
+  ]
+}

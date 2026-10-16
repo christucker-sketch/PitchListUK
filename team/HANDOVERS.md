@@ -1560,3 +1560,7 @@ Chris confirms real signup/cancellation worked. [Canonical acceptance](../operat
 ## 2026-10-16T18:53:05+01:00 — Codex native billing direction acknowledged
 
 Latest orders44f45369/72f4837b read; V3-030 native Billing ACTIVE, Checkout styling delivered, V3-010 owned functional acceptance DONE. [Own compact queue](agents/CODEX.md) supersedes old pending Portal choice. Native customer summary/cancel/resume/secure payment update only; no shared branding/new account/migration/PitchList changes. V3-029 follows the billing checkpoint.
+
+## 2026-10-16T19:12:24+01:00 — Codex native billing LIVE; performance next
+
+[Delivery/evidence](../docs/findpitches-v3-native-billing-2026-10-16.md), code268091bb/customer4e55c8e7. V3-030 DONE: native owned summary/cancel/resume/invoices, branded secure card setup; existing Portal fallback. Full482/browser38/genuineTEST/public29+6 pass; customer-only additive operation custody, existing schema/settings/owners/PitchList unchanged. Existing LIVE trial/cancel untouched; no impersonation/LIVE test writes/source/Pi/V2/paid/messages. V3-029 ACTIVE baseline; strict consolidated queue preserved. Source snapshot1836READY/0paid/0sourcepublication, bounded8core/0dead/stale.
