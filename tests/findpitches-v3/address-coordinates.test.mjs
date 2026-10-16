@@ -1,3 +1,4 @@
+import {INVENTORY_SQL,LEGACY_INVENTORY_SQL} from '../../platform/findpitches-v3/commercial.mjs';
 import test from'node:test';import assert from'node:assert/strict';
 import {database,seed,record,NOW}from'./helpers.mjs';import {documentFixture}from'./verification-fixture.mjs';
 import {verifyDocument}from'../../platform/findpitches-v3/verification.mjs';import {recordVerification}from'../../platform/findpitches-v3/verification-store.mjs';
@@ -23,6 +24,8 @@ test('bounded mapping adds immutable provenance, idempotent cache and never exte
  const {db,id}=await entityProof(t),before=await sql(db,'SELECT checked_at,expires_at FROM source_verifications WHERE entity_id=?',id).first(),facts=(await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results;
  const run=await startVenueMap(db,{max_requests:1,max_entities:10},NOW);let requests=0;
  const result=await resolveVenueAddress(db,{run_id:run.id,entity_id:id},{now:NOW,clock:()=>NOW,fetcher:async()=>{requests++;return fetcher();}});assert.equal(result.status,'mapped');
+ const optimized=JSON.parse((await sql(db,INVENTORY_SQL,'').first()).proof_json),legacy=JSON.parse((await sql(db,LEGACY_INVENTORY_SQL,'').first()).proof_json);
+ assert.deepEqual(optimized,legacy);assert.ok(optimized.address_coordinates);assert.equal(JSON.parse((await sql(db,'SELECT proof_json FROM customer_proof_heads').first()).proof_json).address_coordinates,undefined);
  assert.equal((await resolveVenueAddress(db,{run_id:run.id,entity_id:id},{now:NOW,clock:()=>NOW,fetcher})).replay,true);assert.equal(requests,1);
  const r2=await startVenueMap(db,{max_requests:1,max_entities:10},NOW);assert.equal((await resolveVenueAddress(db,{run_id:r2.id,entity_id:id},{now:NOW,clock:()=>NOW,fetcher:()=>{throw Error('must reuse cache');}})).cached,true);
  assert.deepEqual(await sql(db,'SELECT checked_at,expires_at FROM source_verifications WHERE entity_id=?',id).first(),before);assert.deepEqual((await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results,facts);

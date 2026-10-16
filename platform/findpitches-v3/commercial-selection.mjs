@@ -1,0 +1,7 @@
+// Exact live-table derivations, cached atomically only when their inputs change.
+export function selectionFieldsSql(entity='e.id'){return `(SELECT json_group_object(f.field_name,json(f.value_json)) FROM selected_facts f WHERE f.entity_id=e.id)`.replaceAll('e.id',entity);}
+export function selectionRecordsSql(entity='e.id'){return `(SELECT json_group_array(f.record_id) FROM selected_facts f WHERE f.entity_id=e.id)`.replaceAll('e.id',entity);}
+export function selectionProducersSql(entity='e.id'){return `(SELECT json_group_array(DISTINCT p.producer_name) FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1'))`.replaceAll('e.id',entity);}
+export function selectionOriginSql(entity='e.id'){return `(SELECT p.producer_name FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.validation_status='accepted' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1')
+  AND COALESCE(json_extract(p.normalized_json,'$.provenance.diagnostic'),0)<>1 AND COALESCE(json_extract(p.normalized_json,'$.provenance[0].diagnostic'),0)<>1
+  ORDER BY p.received_at,p.id LIMIT 1)`.replaceAll('e.id',entity);}

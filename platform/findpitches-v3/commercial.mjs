@@ -1,3 +1,5 @@
+import {selectionFieldsSql,selectionProducersSql,selectionOriginSql} from './commercial-selection.mjs';
+import {compactProofSql,inventoryProofSql} from './commercial-proof.mjs';
 import {sql} from './store.mjs';
 import {assessEligibility} from './pipeline.mjs';
 import {compareProof,applicationScope,VERIFIER_VERSION,calendarDate} from './verification.mjs';
@@ -6,35 +8,43 @@ import {ukSourceStatus} from './uk-store.mjs';
 import {usableRouteEligible} from './usable-route.mjs';
 
 export const COMMERCIAL_PRODUCERS=['independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1'];
-export const INVENTORY_SQL=`SELECT e.*,
+export const LEGACY_INVENTORY_SQL=`SELECT e.*,
  EXISTS(SELECT 1 FROM selected_facts s JOIN producer_records p ON p.id=s.record_id
   WHERE s.entity_id=e.id AND s.field_name='application_state' AND s.value_json='"WATCH"'
   AND p.producer_name='independent-structured' AND json_extract(p.raw_json,'$.application_state')='UPCOMING_NOT_OPEN') AS producer_upcoming_not_open,
- (SELECT json_group_object(f.field_name,json(f.value_json)) FROM selected_facts f WHERE f.entity_id=e.id) AS fields_json,
- (SELECT json_group_array(DISTINCT p.producer_name) FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1')) AS producers_json,
- (SELECT p.producer_name FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.validation_status='accepted' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1')
-  AND COALESCE(json_extract(p.normalized_json,'$.provenance.diagnostic'),0)<>1 AND COALESCE(json_extract(p.normalized_json,'$.provenance[0].diagnostic'),0)<>1
-  ORDER BY p.received_at,p.id LIMIT 1) AS origin,
+ ${selectionFieldsSql()} AS fields_json,
+ ${selectionProducersSql()} AS producers_json,
+ ${selectionOriginSql()} AS origin,
  (SELECT COUNT(*) FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=e.id) AS quality_holds,
  (SELECT COUNT(*) FROM conflicts c WHERE c.entity_id=e.id AND c.resolved=0) AS conflicts,
  r.status AS cached_readiness,r.entity_revision AS readiness_revision,
  v.sequence AS proof_sequence,v.entity_revision AS proof_revision,v.status AS proof_status,
- json_object('status',v.status,'application_close_at',json_extract(v.report_json,'$.application_close_at'),'usable_route',json(json_extract(v.report_json,'$.usable_route')),'facts',json(json_extract(v.report_json,'$.facts')),'reasons',json(json_extract(v.report_json,'$.reasons')),'profile',json_extract(v.report_json,'$.profile'),'source_url',json_extract(v.report_json,'$.source_url'),
-    'venue_coordinate_policy',json_extract(v.report_json,'$.venue_coordinate_policy'),'venue_coordinates',json(json_extract(v.report_json,'$.venue_coordinates')),
-    'address_coordinates',json((SELECT a.position_json FROM venue_address_coordinates a WHERE a.entity_id=e.id AND a.entity_revision=e.revision AND a.verification_sequence=v.sequence LIMIT 1)),
-    'coordinate_evidence',json((SELECT json_group_array(json_object('kind','venue_coordinate_country_proof','source_url',json_extract(x.value,'$.source_url'),'excerpt',json_extract(x.value,'$.excerpt'))) FROM json_each(v.report_json,'$.evidence') x WHERE json_extract(x.value,'$.kind')='venue_coordinate_country_proof' AND json_extract(v.report_json,'$.venue_coordinate_policy') IS NULL)),
-    'application_heading',COALESCE(json_extract(v.report_json,'$.application_heading'),(SELECT json_extract(h.value,'$.excerpt') FROM json_each(v.report_json,'$.evidence') h WHERE json_extract(h.value,'$.kind')='main_heading' LIMIT 1)),'application_scope_proof',json_object('trader_application',json_extract(v.report_json,'$.application_scope_proof.trader_application'),'restricted_audience',json_extract(v.report_json,'$.application_scope_proof.restricted_audience'),'guaranteed_vendor_space',json_extract(v.report_json,'$.application_scope_proof.guaranteed_vendor_space'),
-      'application_role',json_extract(v.report_json,'$.application_scope_proof.application_role'),
-      'age_restricted',json_extract(v.report_json,'$.application_scope_proof.age_restricted'),
-      'event_date_assertions',json(json_extract(v.report_json,'$.application_scope_proof.event_date_assertions')),
-      'application_description',CASE WHEN (json_type(v.report_json,'$.application_scope_proof.event_date_assertions') IS NULL OR json_type(v.report_json,'$.application_scope_proof.application_role') IS NULL) THEN
-        (SELECT json_extract(d.value,'$.excerpt') FROM json_each(v.report_json,'$.application_scope_proof.evidence') d WHERE json_extract(d.value,'$.kind')='application_description' LIMIT 1) END),'event_source_url',COALESCE(json_extract(v.report_json,'$.event_source_url'),
-      (SELECT CASE WHEN json_valid(json_extract(d.value,'$.excerpt')) THEN json_extract(json_extract(d.value,'$.excerpt'),'$.url') END FROM json_each(v.report_json,'$.evidence') d WHERE json_extract(d.value,'$.kind')='event_json_ld' LIMIT 1)),
-    'application_landing_url',json_extract(v.report_json,'$.application_landing_url'),'evidence',json((SELECT json_group_array(json_object('kind',json_extract(x.value,'$.kind'))) FROM json_each(v.report_json,'$.evidence') x))) AS proof_json,
+ ${inventoryProofSql()} AS proof_json,
  v.checked_at,v.expires_at,v.verifier_version
  FROM entities e LEFT JOIN readiness r ON r.entity_id=e.id
  LEFT JOIN source_verifications v ON v.sequence=(SELECT MAX(sequence) FROM source_verifications WHERE entity_id=e.id)
  WHERE e.id>? ORDER BY e.id LIMIT 250`;
+// One bounded head per entity, tied to the actual latest immutable verification.
+// Missing derived rows fall back to the original expression; never stale READY.
+export const INVENTORY_SQL=LEGACY_INVENTORY_SQL.replace(
+  inventoryProofSql(),
+  `json_set(COALESCE(h.proof_json,${compactProofSql()}),'$.address_coordinates',json((SELECT a.position_json FROM venue_address_coordinates a WHERE a.entity_id=e.id AND a.entity_revision=e.revision AND a.verification_sequence=v.sequence LIMIT 1)))`
+).replace(' WHERE e.id>? ORDER BY',
+  ' LEFT JOIN customer_proof_heads h ON h.entity_id=e.id AND h.verification_sequence=v.sequence\n LEFT JOIN customer_selection_heads sh ON sh.entity_id=e.id\n LEFT JOIN customer_origin_heads oh ON oh.entity_id=e.id\n WHERE e.id>? ORDER BY')
+ .replace(selectionFieldsSql(),`COALESCE(sh.fields_json,${selectionFieldsSql()})`)
+ .replace(selectionProducersSql(),`COALESCE(oh.producers_json,${selectionProducersSql()})`)
+ .replace(selectionOriginSql(),`CASE WHEN oh.entity_id IS NOT NULL THEN oh.origin ELSE ${selectionOriginSql()} END`)
+ .replace('(SELECT COUNT(*) FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=e.id)',
+  '(SELECT COUNT(*) FROM json_each(COALESCE(sh.selected_record_ids_json,(SELECT json_group_array(f.record_id) FROM selected_facts f WHERE f.entity_id=e.id))) f JOIN legacy_quality_holds h ON h.record_id=f.value)');
+// Customer contract already caps a snapshot at 20,000 distinct entities. Read
+// that bounded snapshot once, with an overflow sentinel, rather than paging
+// proof payloads over several serial D1 RPCs. Operator pagination is unchanged.
+export async function customerCatalogueRows(db){
+ const query=INVENTORY_SQL.replace('WHERE e.id>? ORDER BY e.id LIMIT 250',"WHERE e.environment='shadow' AND r.status='ready' ORDER BY e.id LIMIT 20001");
+ const rows=(await sql(db,query).all()).results??[];
+ if(rows.length>20000)throw Error('customer_catalogue_capacity_exceeded');
+ return rows;
+}
 export async function commercialRows(db,{market=null,onlyCachedReady=false,after='',pageSize=250}={}) {
   if(market&&!/^[A-Z]{2}$/.test(market))throw Error('commercial_market_invalid');
   if(!Number.isInteger(pageSize)||pageSize<1||pageSize>1000)throw Error('commercial_page_size_invalid');

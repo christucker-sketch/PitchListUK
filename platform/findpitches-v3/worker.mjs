@@ -1,3 +1,4 @@
+import {timedReadDatabase,catalogueServerTiming} from './read-timing.mjs';
 import {bindEvidenceArchive} from './evidence-archive.mjs';
 import {capacityStatus,guardSourceCapacity} from './storage-capacity.mjs';
 import {renewalRetryCurrent} from './source-renewal.mjs';
@@ -128,7 +129,11 @@ export default {
       if(path==='/staging/ready'||path==='/staging/catalogue') {
         if(request.method!=='GET'||role!=='api')return json({error:'staging_read_only'},403);
         if(!await authorized(request,env.V3_STAGING_TOKEN))return json({error:'authorization_required'},401);
-        if(path==='/staging/catalogue')return json(await stagingCatalogue(db));
+        if(path==='/staging/catalogue'){
+          const metrics={},started=performance.now(),catalogue=await stagingCatalogue(timedReadDatabase(db,metrics));
+          metrics.read_ms=performance.now()-started;const serialized=performance.now(),body=JSON.stringify(catalogue);metrics.serialize_ms=performance.now()-serialized;
+          return new Response(body,{headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Server-Timing':catalogueServerTiming(metrics)}});
+        }
         return json(await stagingReady(db,{market:url.searchParams.get('market'),after:url.searchParams.get('after')??'',limit:Number(url.searchParams.get('limit')??50),region:url.searchParams.get('region'),location:url.searchParams.get('location')}));
       }
       const ingest=path==='/imports'||path==='/rechecks'||path==='/rechecks/ack';

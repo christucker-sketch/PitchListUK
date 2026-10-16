@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## Bounded catalogue summaries implemented — 2026-10-16T20:02:00+01:00
+
+[Design and completed migration/parity evidence](../../docs/findpitches-v3-proof-read-model-2026-10-16.md). Both additive migrations applied to owned shadow D1; old schema hashes unchanged, no evidence/identity writes. One live snapshot each:1,818 proof rows/0differences;1,817 proof+selection+attribution+hold rows/0differences.34focused tests pass; final full suite running. D1 read duration1.13–1.23s→0.35–0.53s, four→two queries. **API still previous version; public speed/release not yet claimed.** Protected Worker/routing/PitchList baseline captured. Next: wait final full pass, guarded source-API-only release, public/browser/timing checks, publish final evidence. No customer/billing/Pi/V2/paid changes.
+
 ## V3-029 continuation claim — 2026-10-16T19:51:00+01:00
 
 Continuing the measured bottleneck: bounded per-entity compact proof heads, maintained atomically from immutable verification inserts; current entity revision, latest proof sequence, holds/conflicts/selected facts, producer source-clock policy and time gates stay live on reads. No cross-request READY cache. Claimed components: commercial proof/query module, additive V3-only derived-table migration/triggers, staging timing diagnostics, focused parity/corruption/expiry tests, guarded source-API-only release and public before/after report. Billing/customer bundle unchanged unless direct instrumentation proves necessary. No paid/source acquisition, Pi, V2 or PitchList changes. Preserve and reuse the completed first performance baseline.
