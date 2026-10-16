@@ -1,6 +1,6 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T19:43:13+01:00 — native billing DONE; first measured performance release LIVE** (Europe/London).
+Author: Codex. Updated: **2026-10-16T20:09:05+01:00 — second performance release LIVE; sub-second goal remains open** (Europe/London).
 State: **V3-010/V3-030 DONE; V3-029 ACTIVE (sub-second catalogue goal remains open). Public/sign-in/Checkout/recovery on.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
@@ -9,6 +9,16 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Current proof read model deployed / exact resume — 2026-10-16T20:09:05+01:00
+
+[Measured release and safety](../../docs/findpitches-v3-proof-read-model-2026-10-16.md) / [complete sanitized evidence](../../operations/findpitches-v3/reports/proof-read-performance-2026-10-16.json). Code3c85d655; sourceAPIa29b9d03. Fresh catalogueAPI2.84→1.23s/filter3.17→1.43s/home2.81→1.31s/listing2.19→1.13s; internal source-read497–587ms/D1259–320ms. Browser18pass: country3.23sdesktop/3.40smobileviewport versus prior5.49/6.18s. Full498/public29before+after/boundaries pass. Additive bounded proof/selection/origin heads; current proof/identity/holds/producer clocks/time gates remain live,0same-snapshot differences. Two queries rather than four; no unconditional READY cache. Two migrations' fixed physical steps16,936,960bytes include concurrent activity and are not daily growth.
+
+**V3-029 ACTIVE:** ordinary API1.09–1.59s/combinedSEO2.14s; not declared sub-second. Next highest value: scope market and single-listing reads so they do not transfer/map the whole inventory, then evaluate safe reuse of request-owned SEO data. Retain global count semantics, current proof/revision/holds/source-clock/expiry and Free/Pro redaction. Worker CPU and full binding/transport are not separately measured;0ms serialization is timer-resolution limited. Do not reopen billing or add unrelated threads.
+
+At20:06:21London1,784READY US1,612/GB162/NZ5/AU4/CA1/FR0; core7due/4leased/0dead/stale; paid0/off/manualpause, sourcepublication/projections/queue0. Customer c7974bb8/native billing/public/Checkout/recovery unchanged, other7sourceWorkers/settings/schedules/routes/DNS/PitchList preserved. No source evidence/identity writes by work, newLIVEobjects/messages/Serper/V2/Pi changes/protectedmerge. Native100-row preservation passes; full historical custody audit not repeated.
+
+Ordered queue: billingDONE; performanceACTIVE; storageWAITING17/18October09:45London (account for fixed migrations); French proofWAITING; upcoming/SaveDEFERRED.
 
 ## Bounded catalogue summaries implemented — 2026-10-16T20:02:00+01:00
 
