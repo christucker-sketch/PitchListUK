@@ -6,7 +6,12 @@ const LIMIT=4*1048576,ENCODE_AT=900000;
 async function read(stream,limit){const reader=stream.getReader(),parts=[];let size=0;try{for(;;){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>limit){await reader.cancel();throw Error('source_custody_size_limit');}parts.push(value);}}finally{reader.releaseLock();}const bytes=new Uint8Array(size);let off=0;for(const p of parts){bytes.set(p,off);off+=p.length;}return bytes;}
 function base64(bytes){let raw='';for(let i=0;i<bytes.length;i+=16384)raw+=String.fromCharCode(...bytes.subarray(i,i+16384));return btoa(raw);}
 export async function encodeSourceDocument(document,{db=null}={}){
- const raw=stableJson(document),bytes=new TextEncoder().encode(raw);if(bytes.length>LIMIT)throw Error('source_custody_size_limit');if(bytes.length<ENCODE_AT)return archiveWritesEnabled(db)?archiveSerializedDocument(raw,evidenceBucket(db)):raw;
+ const raw=stableJson(document),bytes=new TextEncoder().encode(raw);if(bytes.length>LIMIT)throw Error('source_custody_size_limit');
+ // R2 holds the bounded exact original independently of D1's cell limit.
+ // Scanned PDFs are already compressed and cannot reliably shrink below 1MB.
+ // Older inline/gzip/archive wrappers remain readable without any rewrite.
+ if(archiveWritesEnabled(db))return archiveSerializedDocument(raw,evidenceBucket(db));
+ if(bytes.length<ENCODE_AT)return raw;
  const compressed=await read(new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip')),1048576);
  const encoded=stableJson({document_kind:'lossless_source_custody',encoding:'gzip-base64-v1',requested_url:document.requested_url,url:document.url,fetched_at:document.fetched_at,content_hash:document.content_hash,uncompressed_bytes:bytes.length,uncompressed_hash:await hash(raw),gzip_base64:base64(compressed)});return archiveWritesEnabled(db)?archiveSerializedDocument(encoded,evidenceBucket(db)):encoded;
 }
