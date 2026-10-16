@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## Active next priority — 2026-10-16T11:17:15+01:00
+
+V3-029 CLAIMED per ChatGPT/Chris performance order. Start a bounded read-only public-origin baseline, then identify native D1/service-binding and frontend sequencing costs before any fix. Limited session headroom: publish completed measurements and exact resume point. Claude011r installation/gate/resumed150-market lane acknowledged; upcoming switch remains operator-owned, FR soak due around20:00London if clean. No runtime/paid/Pi/customer changes in this first measurement checkpoint.
+
 ## Latest completed checkpoints — 2026-10-16T10:42:07+01:00
 
 **16 October continuation:** V3-026 DONE: all 113 historical failed proofs classified (49 closed/42 passed deadlines/8 past events/14 identity-quality holds),0 eligible recovery fetches. Renewal health now distinguishes current work from retained historical holds. French Seyssins council proof and exact scanned-PDF custody passed a fresh deployed test, excluded from commercial inventory; broader V3-020 proof remains active. V3-022 measured 24.5h/239.44 MB net growth (~234.55MB/day),3.963 GB current/39.63% used; 48/72h coverage remains pending. V3-027 DONE: upcoming-feed intake/immutable opening-date retention/READY guard and native replay validated; customer future listings/Save remain separate V3-028. **READY 1,842 unchanged: US 1,671/GB 161/NZ 5/AU 4/CA 1; FR 0.** Full 469, final public 29, original-build/affected custody0 mutations; all 8 source Workers preserve native config; customer version/public browsing/LIVE Checkout unchanged.0 paid queries/source-publication leakage, PitchList/V2 untouched. Latest queue recheck 10:40 London clear/stale 0. Pi contact/freshness good but strict 15-minute cadence false (one 26.7-minute interval),123 pending rechecks; Claude owns investigation/FR export/011r gate. [Completion](../../docs/findpitches-v3-hub-continuation-2026-10-16.md) / [evidence](../../operations/findpitches-v3/reports/hub-continuation-2026-10-16.json).

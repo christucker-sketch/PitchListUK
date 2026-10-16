@@ -145,3 +145,10 @@ Use the per-agent [update template](templates/UPDATE.md) for the claim's timesta
 | --- | --- | --- | --- | --- | --- |
 | V3-027 | P1 | [Upcoming feed intake safety and display contract](../docs/findpitches-v3-upcoming-feed-contract-2026-10-16.md) | DONE | Codex | Original UPCOMING_NOT_OPEN/opens_on retained, internalWATCH; explicit guard prevents standing-enquiry/old READY-cache promotion. Full469/native acceptance+replay0growth/0customer visibility. Shadow intake cleared; producer classifier/install gate stays Claude-owned. Customer upcoming/Save is V3-028, not enabled by this release. |
 | V3-028 | P1 | Source-proved upcoming catalogue and saved-item support | OPEN | Unclaimed | Follow [contract](../docs/findpitches-v3-upcoming-feed-contract-2026-10-16.md): prove event identity/edition/future dates/geography and exact not-open statement; separate upcoming from READY, source-supported opening date only, extend customer projection and Save validation. No raw WATCH exposure, automatic OPEN/alerts or Free/Pro change. Need real delivered evidence; V3-027 intake guard is complete. |
+
+
+## Performance priority — 2026-10-16T11:17:15+01:00
+
+| ID | Priority | Work / completion evidence | State | Owner | Planned components / dependency |
+| --- | --- | --- | --- | --- | --- |
+| V3-029 | P1 | [Live customer performance profile and measured optimisation](PERFORMANCE_PROFILE_ORDER_2026-10-16.md) | CLAIMED | Codex | Claimed 2026-10-16T11:17:15+01:00; first bounded public-origin route/API baseline and source-path trace before runtime changes. Cover shell/Finder/filter/country/category/detail/map/account and sequential calls; label unavailable Worker/D1/R2 component timings. Save resumable evidence before the session limit; no paid/source-publication/FR/DE/PitchList/V2 or customer feature changes. |
