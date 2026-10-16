@@ -229,7 +229,7 @@ test('new Checkout carries owned FindPitches branding while canonical reads and 
  const body={plan_id:'pro_monthly',currency:'GBP',branding_settings:{display_name:'untrusted',logo:'https://foreign.example/logo.png'},on_behalf_of:'acct_foreign'};
  const first=await liveCheckout(db,e,c,body,options);assert.equal((await liveCheckout(db,e,c,body,options)).checkout_url,first.checkout_url);
  const creates=calls.filter(r=>r.path==='/checkout/sessions'&&r.method==='POST');assert.equal(creates.length,1);
- const params=creates[0].body;assert.equal(creates[0].version,'2025-09-30.clover');assert.equal(params.get('branding_settings[display_name]'),'FindPitches');assert.equal(params.get('branding_settings[background_color]'),'#F3F5F0');assert.equal(params.get('branding_settings[button_color]'),'#0E4B2C');
+ const params=creates[0].body;assert.equal(creates[0].version,'2025-09-30.clover');assert.equal(params.get('adaptive_pricing[enabled]'),'false');assert.equal(params.get('branding_settings[display_name]'),'FindPitches');assert.equal(params.get('branding_settings[background_color]'),'#F3F5F0');assert.equal(params.get('branding_settings[button_color]'),'#0E4B2C');
  for(const name of ['logo','icon']){
   assert.equal(params.get('branding_settings['+name+'][type]'),'url');assert.equal(params.get('branding_settings['+name+'][url]'),'https://findpitches.com/assets/brand/findpitches-'+name+'.png');
   const png=fs.readFileSync(new URL('../../web/findpitches-v3-web/public/assets/brand/findpitches-'+name+'.png',import.meta.url));assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a');assert.ok(png.length<512000);assert.ok(png.readUInt32BE(16)>=128&&png.readUInt32BE(20)>=128);

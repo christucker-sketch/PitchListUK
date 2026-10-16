@@ -4,6 +4,9 @@ export const CHECKOUT_API_VERSION='2025-09-30.clover';
 export function checkoutBranding(origin) {
   if(origin!=='https://findpitches.com')throw Error('owned_checkout_brand_origin_required');
   return {
+    // D-016 fixes the selected GBP/USD/EUR price; never let account-level
+    // Adaptive Pricing substitute a location-derived conversion and fee.
+    'adaptive_pricing[enabled]':false,
     'branding_settings[display_name]':'FindPitches',
     'branding_settings[background_color]':'#F3F5F0',
     'branding_settings[button_color]':'#0E4B2C',
