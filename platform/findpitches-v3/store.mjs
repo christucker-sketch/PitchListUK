@@ -40,7 +40,12 @@ export async function loadEntity(db,id) {
   if(!entity)return null;
   const rows=(await sql(db,'SELECT * FROM selected_facts WHERE entity_id=?',id).all()).results??[];
   const fields=Object.fromEntries(rows.map(row=>[row.field_name,JSON.parse(row.value_json)]));
-  return {...entity,...fields,fields,selections:Object.fromEntries(rows.map(row=>[row.field_name,row]))};
+  // Preserve the original producer distinction behind WATCH. A standing
+  // enquiry route cannot silently turn an explicitly not-open edition READY.
+  const state=fields.application_state==='WATCH'?rows.find(r=>r.field_name==='application_state'):null;
+  const original=state?await sql(db,"SELECT producer_name,json_extract(raw_json,'$.application_state') application_state FROM producer_records WHERE id=?",state.record_id).first():null;
+  const upcoming=original?.producer_name==='independent-structured'&&original.application_state==='UPCOMING_NOT_OPEN';
+  return {...entity,...fields,producer_upcoming_not_open:Boolean(upcoming),fields,selections:Object.fromEntries(rows.map(row=>[row.field_name,row]))};
 }
 export async function linkedEntity(db,recordId) {
   const link=await sql(db,'SELECT entity_id FROM entity_records WHERE record_id=?',recordId).first();

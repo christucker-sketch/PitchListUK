@@ -7,6 +7,9 @@ import {usableRouteEligible} from './usable-route.mjs';
 
 export const COMMERCIAL_PRODUCERS=['independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1'];
 export const INVENTORY_SQL=`SELECT e.*,
+ EXISTS(SELECT 1 FROM selected_facts s JOIN producer_records p ON p.id=s.record_id
+  WHERE s.entity_id=e.id AND s.field_name='application_state' AND s.value_json='"WATCH"'
+  AND p.producer_name='independent-structured' AND json_extract(p.raw_json,'$.application_state')='UPCOMING_NOT_OPEN') AS producer_upcoming_not_open,
  (SELECT json_group_object(f.field_name,json(f.value_json)) FROM selected_facts f WHERE f.entity_id=e.id) AS fields_json,
  (SELECT json_group_array(DISTINCT p.producer_name) FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1')) AS producers_json,
  (SELECT p.producer_name FROM entity_records er JOIN producer_records p ON p.id=er.record_id WHERE er.entity_id=e.id AND p.validation_status='accepted' AND p.producer_name IN ('independent-structured','legacy_v2','city-search','source-led-search','platform-catalogue','uk-official','legacy-global-uk','legacy_mk1')
@@ -52,7 +55,7 @@ export function commercialEntity(row,now) {
   const applicationProof=fresh&&!scope.reasons.length&&Boolean(proof.facts?.application_url)&&(['OPEN_NOW','ROLLING'].includes(proof.facts?.application_state)||usableRouteEligible(proof))&&!reasons.some(r=>/vendor_application_not_proved|application_route_missing|waitlist_only|application_closed|application_deadline_passed|selected_application_.*disagrees/.test(r));
   const stale=Boolean(row.proof_sequence&&!fresh||fields.event_end&&calendarDate(fields.event_end)<budgetDay(now)||fields.application_deadline&&(proof.application_close_at?Date.parse(proof.application_close_at)<=Date.parse(now):calendarDate(fields.application_deadline)<budgetDay(now)));
   let domain='missing';try{domain=new URL(proof.source_url??fields.canonical_url??fields.application_url).hostname.replace(/^www\./,'');}catch{}
-  return {...row,fields,proof,reasons,domain,commercial:row.environment==='shadow'&&COMMERCIAL_PRODUCERS.includes(row.origin),verified,ready,quarantined,blocked,watch:!ready&&!quarantined&&!blocked,
+  return {...row,fields,proof,reasons:row.producer_upcoming_not_open?[...new Set([...reasons,'producer_applications_not_open_yet'])]:reasons,domain,commercial:row.environment==='shadow'&&COMMERCIAL_PRODUCERS.includes(row.origin),verified,ready,quarantined,blocked,watch:!ready&&!quarantined&&!blocked,
     awaiting_verification:!fresh||row.proof_status==='unverified',missing_application_proof:!applicationProof,stale_expired:stale,verification_checked:Boolean(row.proof_sequence)};
 }
 export function inventoryFromRows(rows,{now=new Date().toISOString()}={}) {

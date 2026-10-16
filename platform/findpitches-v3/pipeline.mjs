@@ -94,6 +94,7 @@ export function assessEligibility(entity,{now=new Date().toISOString(),conflicts
   else if(conflicts) { status='review';reasons=['unresolved_evidence_conflict']; }
   else if(entity.lifecycle_state==='WITHDRAWN'||entity.application_state==='CLOSED') { status='closed';reasons=['source_declared_closed']; }
   else if(entity.event_end&&sourceDatePast(entity.event_end,now)) { status='closed';reasons=['past_event_end']; }
+  else if(entity.producer_upcoming_not_open) { status='watch';reasons=['producer_applications_not_open_yet']; }
   else if((['WATCH','UNKNOWN','ENQUIRY_AVAILABLE'].includes(entity.application_state)||!entity.application_state)&&!(proof?.status==='verified'&&usableRouteEligible(proof)&&['WATCH','UNKNOWN','ENQUIRY_AVAILABLE'].includes(entity.application_state))) { status='watch';reasons=['application_state_requires_recheck']; }
   else if(!entity.event_name||!(entity.application_url||entity.canonical_url)) { status='review';reasons=['insufficient_source_evidence']; }
   return {status,reasons,score:status==='eligible'?1:status==='watch'?.5:0};
