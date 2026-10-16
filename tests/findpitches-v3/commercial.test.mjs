@@ -4,11 +4,19 @@ import {database,seed,record,NOW} from './helpers.mjs';
 import {documentFixture} from './verification-fixture.mjs';
 import {recordVerification} from '../../platform/findpitches-v3/verification-store.mjs';
 import {evaluateReadiness} from '../../platform/findpitches-v3/pipeline.mjs';
-import {commercialStatus,inventoryFromRows,commercialEntity} from '../../platform/findpitches-v3/commercial.mjs';
+import {commercialStatus,inventoryFromRows,commercialEntity,commercialRows} from '../../platform/findpitches-v3/commercial.mjs';
 import {sql} from '../../platform/findpitches-v3/store.mjs';
 import {structuredPriority,growthMetrics} from '../../operations/findpitches-v3/commercial-growth.mjs';
 
 const row=changes=>({id:'entity',market:'US',environment:'shadow',revision:14,origin:'independent-structured',producers_json:'["independent-structured","legacy_v2"]',fields_json:JSON.stringify({...record(),event_start:'2026-11-21',event_end:'2026-11-22'}),proof_sequence:1,proof_revision:14,verifier_version:'source-proof-v1',proof_status:'verified',proof_json:JSON.stringify({facts:{country:'US',application_url:record().application_url,application_state:'OPEN_NOW'},reasons:[]}),checked_at:NOW,expires_at:'2026-10-07T12:00:00.000Z',cached_readiness:'ready',readiness_revision:14,quality_holds:0,conflicts:0,...changes});
+test('bounded larger catalogue pages preserve every row/proof and the final page without changing selected facts',async t=>{
+ const db=database(t);for(let i=0;i<3;i++)await seed(db,record({opportunity_id:'page-fixture-'+i,event_name:'Distinct page event '+i,canonical_url:'https://www.eventeny.com/events/vendor/?id='+i,application_url:'https://www.eventeny.com/events/vendor/?id='+i}),{environment:'shadow'});
+ const before=JSON.stringify((await sql(db,'SELECT * FROM field_selections ORDER BY entity_id,field_name').all()).results);
+ const narrow=await commercialRows(db,{pageSize:1}),wide=await commercialRows(db,{pageSize:1000});assert.equal(narrow.length,3);assert.deepEqual(wide,narrow);
+ assert.deepEqual(await commercialRows(db,{after:narrow[0].id,pageSize:1000}),narrow.slice(1));
+ for(const size of [0,1001,1.5,'1000'])await assert.rejects(commercialRows(db,{pageSize:size}),/commercial_page_size_invalid/);
+ assert.equal(JSON.stringify((await sql(db,'SELECT * FROM field_selections ORDER BY entity_id,field_name').all()).results),before);
+});
 test('commercial origins sum uniquely; overlapping provenance and test controls do not inflate READY',()=>{
   const r=inventoryFromRows([row({}),row({id:'legacy',origin:'legacy_v2',producers_json:'["legacy_v2"]'}),row({id:'control',environment:'test'})],{now:NOW});
   assert.equal(r.totals.ready,2);assert.equal(r.scope.test_control_excluded,1);assert.equal(r.by_origin['independent-structured'].ready,1);assert.equal(r.by_origin.legacy_v2.ready,1);assert.equal(r.by_source_membership.legacy_v2.ready,2);assert.equal(r.ready_by_country.US,2);

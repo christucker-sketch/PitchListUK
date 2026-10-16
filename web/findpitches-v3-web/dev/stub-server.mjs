@@ -9,6 +9,7 @@ import vm from 'node:vm';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import {i18n} from '../server/i18n.mjs';
+import {seo,seoConfig} from '../server/seo-edge.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pub = path.join(root, 'public');
@@ -59,6 +60,14 @@ async function api(req, res, url) {
     if (req.method === 'GET' && p === '/markets') {const markets=await API.meta.markets();return ok(q.registry_only==='true'?{markets:markets.map(m=>({...m,opportunity_count:null})),inventory_available:false}:{markets});}
     if (req.method === 'GET' && p === '/stats') return ok(await API.meta.stats());
     if (req.method === 'GET' && p === '/regions') {const regions=await API.meta.regions({market:q.market});return ok(q.registry_only==='true'?{regions:regions.map(r=>({...r,opportunity_count:null})),inventory_available:false}:{regions});}
+    if (req.method === 'GET' && p === '/seo/page') {
+      if(typeof q.path!=='string'||q.path.length>300||!q.path.startsWith('/')||q.path.startsWith('//'))return json(res,400,{ok:false,error:'validation'});
+      const markets=await API.meta.markets(),regions={};for(const m of markets)regions[m.code]=await API.meta.regions({market:m.code});
+      const d=seo.resolve(q.path,{markets,regions});if(d.kind!=='page')return json(res,404,{ok:false,error:'not_found'});
+      const market=markets.find(m=>m.code===d.market),others=(d.type==='market'||d.type==='intent')&&market.launch_status==='live'?markets.filter(m=>m.launch_status==='live'&&m.code!==d.market):[],inventories={};
+      for(const code of [d.market,...others.map(m=>m.code)])inventories[code]=await API.seo.inventory({market:code,intents:seoConfig.intentsFor(code)});
+      return ok({page:{markets,regions:regions[d.market],inventory:inventories[d.market],inventories,search:await API.opportunities.search({...seo.filters(d),sort:'soonest',page_size:12})}});
+    }
     if (req.method === 'GET' && p === '/geo/resolve') return ok({ location: await API.geo.resolve({ market: q.market, q: q.q }) });
     if (req.method === 'GET' && p === '/opportunities') return ok(await API.opportunities.search(Object.assign({}, q, { types: list(q.types), organiser_types: list(q.organiser_types) })));
     if (req.method === 'GET' && p === '/opportunities/count') return ok(await API.opportunities.count(Object.assign({}, q, { types: list(q.types), organiser_types: list(q.organiser_types) })));

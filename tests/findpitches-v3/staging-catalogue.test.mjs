@@ -25,6 +25,15 @@ async function append(f,changes,received_at){
 }
 const before=async db=>JSON.stringify((await sql(db,'SELECT * FROM field_selections ORDER BY entity_id,field_name').all()).results);
 
+test('indexed current-policy lookup exactly preserves the old source-clock/arrival/ID winner',async t=>{
+ const f=await fixture(t);await append(f,{last_checked:'2026-10-06T12:01:00.000Z',confidence:{level:'LOW'}},'2026-10-06T12:02:00.000Z');
+ await append(f,{provenance:[{description:'late stale receipt'}]},'2026-10-06T12:03:00.000Z');
+ const old=LATEST_STRUCTURED_POLICY_SQL.replace("n.producer_name='independent-structured' AND n.producer_record_id=p.producer_record_id AND n.environment='shadow'","n.producer_name=p.producer_name AND n.producer_record_id=p.producer_record_id AND n.environment=p.environment");
+ assert.deepEqual((await sql(f.db,LATEST_STRUCTURED_POLICY_SQL).all()).results,(await sql(f.db,old).all()).results);
+ assert.equal((await stagingCatalogue(f.db,{now:NOW})).producer_policy_withheld,1);
+ assert.equal((await sql(f.db,"SELECT COUNT(*) AS n FROM sqlite_schema WHERE type='index' AND name='structured_customer_policy_lookup'").first()).n,1);
+});
+
 test('compact policy retains nullable legacy metadata and withholds every unsuitable producer disposition',async t=>{
   for(const changes of [{confidence:{level:'LOW'}},{channel:'watch'},{channel:'held'},{channel:'retired'},{export_readiness:'WATCH'},{export_readiness:'QUARANTINED'}]){
     const f=await fixture(t),original=await before(f.db);

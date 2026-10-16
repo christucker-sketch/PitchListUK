@@ -10,7 +10,7 @@
   // Regions are needed to resolve paths (and GB for legacy /areas/ URLs)
   const seg0 = path.replace(/^https?:\/\/[^/]+/,'').split('/').filter(Boolean)[0] || '';
   const mk0 = R.marketOf(seg0) || 'GB';
-  const regionsFor = {}; for (const m of new Set([mk0,'GB'])) regionsFor[m] = await api.meta.regions({market:m});
+  const regionsFor = {}; await Promise.all([...new Set([mk0,'GB'])].map(async m=>{regionsFor[m]=await api.meta.regions({market:m,registry_only:true});}));
   const d = SEO.resolve(path, { markets: st.markets, regions: regionsFor });
 
   if (d.kind==='redirect') return renderRedirect(d);
@@ -18,20 +18,12 @@
   if (d.kind==='not_found') return render404(d);
 
   /* ---------- data for the page (all via FP.api) ---------- */
+  // One fresh snapshot produces results, true region counts and cross-country
+  // inventory together. No repeated history traversal or stale client cache.
+  const {inventory,search,inventories,regions,markets}=await api.seo.page(path);
+  st.markets=markets.map(FP.i18n.market);
   const market = st.m(d.market); if (st.market!==d.market) { st.market = d.market; } FP.ui.renderHeader();
-  const regions = regionsFor[d.market] || await api.meta.regions({market:d.market});
-  const invFor = m => api.seo.inventory({market:m, intents: CFG.intentsFor(m).map(i=>({key:i.key, filters:i.filters}))});
   const filters = SEO.filters(d);
-  const others = (d.type==='market' || d.type==='intent') && market.launch_status==='live' ? st.markets.filter(x=>x.launch_status==='live' && x.code!==d.market) : [];
-  // These reads are independent. Do not make visitors wait for each country's
-  // inventory before starting their own results request.
-  const [inventory, search, otherInventories] = await Promise.all([
-    invFor(d.market),
-    api.opportunities.search(Object.assign({}, filters, { sort:'soonest', page_size:12 })),
-    Promise.all(others.map(m=>invFor(m.code)))
-  ]);
-  const inventories = { [d.market]: inventory };
-  otherInventories.forEach((inv,i)=>inventories[others[i].code]=inv);
   const regById = Object.fromEntries(regions.map(r=>[r.id,r]));
   const regionPath = []; if (d.region) { let r=d.region; while(r){ regionPath.unshift(r); r=r.parent_id?regById[r.parent_id]:null; } }
   const visible = search.results; // exactly what the page shows (ItemList mirrors this)

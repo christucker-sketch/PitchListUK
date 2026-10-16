@@ -24,12 +24,12 @@ export const LATEST_STRUCTURED_POLICY_SQL=`SELECT er.entity_id,
     json_extract(p.normalized_json,'$.confidence.level') AS confidence_level,
     json_extract(p.normalized_json,'$.producer_channel') AS producer_channel,
     json_extract(p.normalized_json,'$.producer_export_readiness') AS producer_export_readiness
-    FROM entity_records er JOIN producer_records p ON p.id=er.record_id
+    FROM entity_records er JOIN producer_records p INDEXED BY structured_customer_policy_lookup ON p.id=er.record_id
     WHERE p.producer_name='independent-structured' AND p.environment='shadow' AND p.validation_status='accepted'
-    AND NOT EXISTS(SELECT 1 FROM producer_records n WHERE n.producer_name=p.producer_name AND n.producer_record_id=p.producer_record_id AND n.environment=p.environment AND n.validation_status='accepted'
+    AND NOT EXISTS(SELECT 1 FROM producer_records n WHERE n.producer_name='independent-structured' AND n.producer_record_id=p.producer_record_id AND n.environment='shadow' AND n.validation_status='accepted'
       AND (COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')>COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') OR COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')=COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') AND (n.received_at>p.received_at OR n.received_at=p.received_at AND n.id>p.id)))`;
 export async function stagingCatalogue(db,{now=new Date().toISOString()}={}) {
-  const [rows,policy]=await Promise.all([commercialRows(db,{onlyCachedReady:true}),sql(db,LATEST_STRUCTURED_POLICY_SQL).all()]);
+  const [rows,policy]=await Promise.all([commercialRows(db,{onlyCachedReady:true,pageSize:1000}),sql(db,LATEST_STRUCTURED_POLICY_SQL).all()]);
   const current=new Map(rows.map(r=>[r.id,commercialEntity(r,now)]));
   const held=new Set();for(const p of policy.results){
     const r=current.get(p.entity_id),freshRoute=r?.ready&&usableRouteEligible(r.proof)&&['current','watch',null].includes(p.producer_channel)&&['READY','WATCH',null].includes(p.producer_export_readiness)&&(!p.source_last_checked||Date.parse(r.checked_at)>=Date.parse(p.source_last_checked));

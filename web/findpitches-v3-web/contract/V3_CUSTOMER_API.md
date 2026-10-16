@@ -217,3 +217,16 @@ The existing hosted Portal remains an explicit recovery fallback; it is not the 
 subscription-management destination. Native billing is production-only for now; preview
 TEST flows retain their established Portal contract. Existing Stripe legal merchant and
 invoice branding remain account-level and have not been changed.
+
+### Combined SEO page read
+
+`GET /api/v3/seo/page?path=/uk/` (or another canonical country/category/region
+page) returns `{page:{as_of,markets,regions,inventory,inventories,search}}` from
+one fresh, filtered source-proof snapshot. `search` uses the same route filters,
+soonest order and twelve-result page as the existing SEO page. Region and
+cross-market counts share that snapshot. Free/Pro redaction is identical to
+`GET /opportunities`, and all responses are private/no-store. Unknown or non-SEO
+paths fail closed. Static registry reads may resolve routes before this call;
+registry counts are not treated as inventory. The existing inventory/search
+endpoints remain available to older clients. No client or cross-request proof
+cache is introduced.

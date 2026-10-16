@@ -94,6 +94,7 @@
       async byIds(ids) { return (await send('POST', '/opportunities/by-ids', { ids })).items; }
     },
     seo: {
+      async page(path) { return (await call('GET', '/seo/page'+qs({path}))).page; },
       async inventory({ market, intents }) {
         return send('POST', '/seo/inventory', { market, intents: (intents || []).map(i => ({ key: i.key, filters: i.filters || {} })) });
       }

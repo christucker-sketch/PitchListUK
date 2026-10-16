@@ -93,6 +93,14 @@ async function api(request,env,now) {
   }
   const snapshot=await readCatalogue(env,now),rows=snapshot.rows,access=await customerAccess(db,env,customer,{now,refresh:true});
   if(method==='GET'&&p==='/home')return response(homepage(rows,access,now,snapshot.as_of));
+  if(method==='GET'&&p==='/seo/page'){
+    if(typeof q.path!=='string'||q.path.length>300||!q.path.startsWith('/')||q.path.startsWith('//')||/[?\\#\r\n]/.test(q.path))throw customerError('validation');
+    const ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)])),d=seo.resolve(q.path,{markets:ms,regions:rs});
+    if(d.kind!=='page')throw customerError('not_found',404);
+    const market=ms.find(m=>m.code===d.market),others=(d.type==='market'||d.type==='intent')&&market.launch_status==='live'?ms.filter(m=>m.launch_status==='live'&&m.code!==d.market):[],inventories={};
+    for(const code of [d.market,...others.map(m=>m.code)])inventories[code]=inventory(rows,code,seoConfig.intentsFor(code),now);
+    return response({page:{as_of:snapshot.as_of,markets:ms,regions:rs[d.market],inventory:inventories[d.market],inventories,search:search(rows,{...seo.filters(d),sort:'soonest',page_size:12},access,now)}});
+  }
   if(method==='GET'&&p==='/markets')return response({markets:markets(rows)});
   if(method==='GET'&&p==='/stats')return response({as_of:snapshot.as_of,total:rows.length,sports:rows.filter(r=>r.type==='sport').length,markets:Object.fromEntries(markets(rows).map(m=>[m.code,{count:m.opportunity_count,regions:regions(m.code,rows).filter(r=>r.opportunity_count).length}]))});
   if(method==='GET'&&p==='/regions')return response({regions:regions(q.market,rows)});

@@ -35,9 +35,10 @@ export const INVENTORY_SQL=`SELECT e.*,
  FROM entities e LEFT JOIN readiness r ON r.entity_id=e.id
  LEFT JOIN source_verifications v ON v.sequence=(SELECT MAX(sequence) FROM source_verifications WHERE entity_id=e.id)
  WHERE e.id>? ORDER BY e.id LIMIT 250`;
-export async function commercialRows(db,{market=null,onlyCachedReady=false,after=''}={}) {
+export async function commercialRows(db,{market=null,onlyCachedReady=false,after='',pageSize=250}={}) {
   if(market&&!/^[A-Z]{2}$/.test(market))throw Error('commercial_market_invalid');
-  const query=INVENTORY_SQL.replace('WHERE e.id>? ORDER BY',`WHERE ${market?'e.market=? AND ':''}${onlyCachedReady?"e.environment='shadow' AND r.status='ready' AND ":''}e.id>? ORDER BY`);
+  if(!Number.isInteger(pageSize)||pageSize<1||pageSize>1000)throw Error('commercial_page_size_invalid');
+  const query=INVENTORY_SQL.replace('WHERE e.id>? ORDER BY',`WHERE ${market?'e.market=? AND ':''}${onlyCachedReady?"e.environment='shadow' AND r.status='ready' AND ":''}e.id>? ORDER BY`).replace('LIMIT 250','LIMIT '+pageSize);
   const rows=[];for(;;){const page=(await sql(db,query,...(market?[market,after]:[after])).all()).results??[];if(!page.length)break;rows.push(...page);after=page.at(-1).id;}return rows;
 }
 const pct=(n,d)=>d?Number((100*n/d).toFixed(2)):null;
