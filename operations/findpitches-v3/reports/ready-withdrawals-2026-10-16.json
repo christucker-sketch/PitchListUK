@@ -1,0 +1,102 @@
+{
+  "schema": "findpitches-v3-ready-withdrawal-audit-v1",
+  "reported_at": "2026-10-16T07:46:38.232775+00:00",
+  "timezone": "Europe/London",
+  "baseline_as_of": "2026-10-15T06:03:22.301Z",
+  "current_as_of": "2026-10-16T07:39:58.394Z",
+  "baseline_scope": "Exact retained per-entity catalogue from15Oct07:03London:1862; the later15Oct11:15aggregate was also1862 but supplies no per-entity baseline. Gross movements here use the earlier exact retained set.",
+  "baseline_ready": 1862,
+  "current_ready": 1760,
+  "gross_removed": 116,
+  "gross_added": 14,
+  "net_delta": -102,
+  "gross_country_movements": {
+    "US": {
+      "removed": 114,
+      "added": 11,
+      "net": -103
+    },
+    "GB": {
+      "removed": 1,
+      "added": 1,
+      "net": 0
+    },
+    "NZ": {
+      "removed": 1,
+      "added": 2,
+      "net": 1
+    }
+  },
+  "exclusive_withdrawal_causes": {
+    "source_refetch_failure": 72,
+    "date_boundary_only": 16,
+    "changed_or_inconsistent_source_proof": 25,
+    "closed_or_cancelled_signal": 3
+  },
+  "source_refetch_failures": {
+    "domain": "eventeny.com",
+    "unspecified_transport_fetch_failures": 64,
+    "http_502": 6,
+    "http_504": 2,
+    "underlying_cause_of_unspecified_64": "not_observable_existing_fetch_catch_discards_exception",
+    "prior_positive_still_current_at_failed_attempt": 52,
+    "prior_positive_already_expired_at_failed_attempt": 20,
+    "next_watch_jobs": 72,
+    "earliest_next_check": "2026-10-16T23:45:54.600Z",
+    "latest_next_check": "2026-10-17T00:54:24.505Z",
+    "handling_problem": "Failed fetch is saved as latest unverified proof; enrichment/readiness complete and normal WATCH schedules next day rather than short bounded transport retry."
+  },
+  "date_boundary_cases": {
+    "sole_blocker_application_deadline_date_today": 15,
+    "sole_blocker_event_end_date_today": 1,
+    "all_deadline_date_today_expired_at_UTC_midnight": 32,
+    "additional_deadline_cases_with_independent_holds": 17,
+    "overlap_note": "32 is not an additional disjoint cause.15 are solely date-cutoff;17 also have source/state/deadline disagreements and are included in changed_or_inconsistent_source_proof. Never auto-promote those17.",
+    "evidence": "A fresh read-only sample of the15 still explicitly OPEN_NOW and verified on16Oct; current store expiry uses16Oct00:00UTC for a date without source closing time."
+  },
+  "other_holds": {
+    "changed_or_inconsistent_source_proof": {
+      "application_open_no_longer_proved": 16,
+      "changed_title_or_edition_name": 5,
+      "deadline_disagreement": 3,
+      "index_or_parent_binding_problem": 1
+    },
+    "closed_or_cancelled_signal": {
+      "source_cancelled_or_postponed": 1,
+      "source_application_closed_and_deadline_passed": 1,
+      "producer_selected_closed": 1
+    }
+  },
+  "read_only_source_canary": {
+    "as_of": "2026-10-16T07:42:55.468Z",
+    "documents": 4,
+    "source_requests": 4,
+    "all_http_200": true,
+    "all_verified": true,
+    "failed_fetch_cases_sampled": 3,
+    "failed_fetch_sample_successes": 3,
+    "date_only_cases_sampled": 1,
+    "sample_justifies_bulk_recovery": false,
+    "no_new_native_verifications_or_ready_promotions": true
+  },
+  "audit_integrity": {
+    "all116_entity_ids_present": true,
+    "latest_proof_revision_matches_entity_revision": true,
+    "latest_readiness_revision_matches_entity_revision": true,
+    "all116_reasons_categorised": true,
+    "baseline_catalogue_sha256": "952aea0a69928a51e348bf7db2c0d34e8ecd4303c27205223209fc62a75b8b7b",
+    "after_catalogue_sha256": "a1f3e8a16900f086245a081c1a9a762d2f4ed5feb98e2c768aa92cc92491a0bc"
+  },
+  "work_performed": {
+    "mode": "read_only_audit_plus_four_bounded_direct_source_reads",
+    "source_writes": 0,
+    "original_facts_mutated": 0,
+    "identity_changes": 0,
+    "native_ready_promotions": 0,
+    "serper_queries": 0,
+    "deployments": 0,
+    "producer_or_pi_changes": 0,
+    "full_corpus_preservation_audit_repeated": false
+  },
+  "recommended_priority": "Bounded per-domain retry/backoff and safe attempt-vs-proof separation; precise deadline/event-date semantics without inventing closing instants; targeted provenance-preserving rechecks and verified loss/recovery alerts. Keep source/identity/publication/paid safeguards."
+}

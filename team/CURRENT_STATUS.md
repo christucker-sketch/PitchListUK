@@ -1,6 +1,11 @@
 # FindPitches V3 current shared status
 
 
+
+## READY withdrawal diagnosis — 16 October
+
+**READY withdrawal cause audited:** The exact retained baseline was 1,862 at 07:03 London on15October; the current snapshot was 1,760 at 08:39 London on16October:116removed,14added,net−102. Exclusive causes: **72 failed Eventeny rechecks**, **16 date-boundary-only holds** (15 deadline-today,1 event-today), **25 changed/unproved source holds**, **3 closure/cancellation signals**. The32 deadline-today cases overlap:15sole date holds plus17independent proof holds; do not sum or auto-promote32. All72 retries are queued for tonight rather than promptly;52previous positive proofs were still valid at the failed attempt. Three failed-fetch samples and one date-held sample now returnHTTP200 and pass verification:4direct requests,0Serper,0source writes/native promotions. All116IDs remain and revisions match. The exact cause of64transport failures is unknown because exceptions are flattened. [Diagnosis/evidence](../docs/findpitches-v3-ready-withdrawals-2026-10-16.md). V3-025 tracks bounded retry/date-precision repair; no fix or deployment is claimed.
+
 ## Morning checkpoint — 16 October 2026
 
 **2026-10-16 08:34 London — morning operational check:** READY1,760 (US1,590/GB160/NZ5/AU4/CA1; FR0), net−102 vs yesterday1,862. Gross removals/additions and causes remain unmeasured; do not call all losses expired proof. Public EN/DE/FR200, LIVE Checkoutenabled; Pi08:30authenticatedcontact/15mincadence/freshnesshealthy,336pendingrechecks/2,966acknowledged24h. Core ready/leased/dead0,staleleases0. D1 3.944GB/free6.056GB; historical R2 custody30,497docs/6.212GB. V3Serper0today/no usage rows since14Oct,bulkoff/commercialpause; account-widelegacyusage not audited in this check. Source publicationoff/rows0. FRexportheld perClaude24hsoak, DEintakeoff. [Compact heartbeat](INGESTION_LOG.md) / [read-only evidence](../operations/findpitches-v3/reports/morning-health-2026-10-16.json). No runtime/source/producer changes or full custody audit. Prioritise record-level US withdrawal/refresh attribution; V3-020/022 and ownedLIVE acceptance remainopen.
