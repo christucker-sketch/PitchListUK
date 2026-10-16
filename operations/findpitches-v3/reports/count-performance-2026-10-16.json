@@ -1,6 +1,6 @@
 {
   "schema": "findpitches-v3-count-performance-v1",
-  "as_of": "2026-10-16T22:58:10.866266",
+  "as_of": "2026-10-16T22:58:10.866266+00:00",
   "code_commit": "03614d73",
   "state": "deployed_customer_only_remaining_read_and_browser_costs_open",
   "computation": {

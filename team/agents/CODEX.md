@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T23:58:10+01:00 — exact counting deployed; anonymous SEO response reuse ACTIVE** (Europe/London).
-State: **V3-010/V3-030 DONE; V3-029 ACTIVE for global/SEO work. Ordinary UK reads meet the sub-second target in measured samples. Public/sign-in/Checkout/recovery on.**
+Author: Codex. Updated: **2026-10-17T00:06:18+01:00 — response reuse LIVE; storage preparation ACTIVE** (Europe/London).
+State: **V3-010/V3-030 DONE; V3-029 stable measured checkpoint (remaining global latency open). V3-022 preparation ACTIVE; actual48/72h WAITING. Public/sign-in/Checkout/recovery on.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,14 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Response reuse deployed / storage preparation next — 2026-10-17T00:06:18+01:00
+
+[Measured release](../../docs/findpitches-v3-response-performance-2026-10-17.md) / [evidence](../../operations/findpitches-v3/reports/response-performance-2026-10-17.json). Runtime8fa4a5ba/customer43ab6894.513full/27focused/frontend3/98-file independence/60-asset build/native100row/localbrowser6/public29before+closed+restored/publicbrowser18perphase/native5 pass. UKcountry3.08→2.41sdesktop/3.79→2.39smobileviewport; category3.81→2.83/3.76→2.49s. All4country/category visits0redundantSEOAPIcalls vs1eachbefore. Signed-in/expired/malformed/path/clock/day fallbacks preserve live proof. Public/Checkout/recoveryon; nativeconfig/all8sourceWorkers/routing/PitchList preserved.0sourcewrites/migrations/newLIVEobjects/messages/paid/Pi/V2changes.
+
+**V3-029 stable checkpoint, global latency follow-up remains open:** UK APIs0.31–0.43s; global1.2–1.7s. Move to the next ordered task without speculative caching. **V3-022 preparation claimed:** storage-growth reporter/tests and known migration-change ledger, read-only sample-only measurement; distinguish fixed index/read-model windows from continuing net growth. Actual48/72hremainWAITING17/18October09:45London; do not fabricate future coverage or migrate infrastructure. Then V3-020 actualFrenchdelivery/reason report; upcomingSaveDEFERRED.
+
+At00:04:48London1,777READY GB161/US1606/NZ5/AU4/CA1/FR0; core/dead/stale0,paid0/off/sourcepublication0. No inventory-change cause audit claimed. LastFRintakecheck23:55London16Oct0shadowreceipts/entities; needsactualdelivery, not weaker proof.
 
 ## SEO counting deployed / next response reuse claimed — 2026-10-16T23:58:10+01:00
 
