@@ -152,3 +152,5 @@ Use the per-agent [update template](templates/UPDATE.md) for the claim's timesta
 | ID | Priority | Work / completion evidence | State | Owner | Planned components / dependency |
 | --- | --- | --- | --- | --- | --- |
 | V3-029 | P1 | [Live customer performance profile and measured optimisation](PERFORMANCE_PROFILE_ORDER_2026-10-16.md) | CLAIMED | Codex | Claimed 2026-10-16T11:17:15+01:00; first bounded public-origin route/API baseline and source-path trace before runtime changes. Cover shell/Finder/filter/country/category/detail/map/account and sequential calls; label unavailable Worker/D1/R2 component timings. Save resumable evidence before the session limit; no paid/source-publication/FR/DE/PitchList/V2 or customer feature changes. |
+
+**P0 V3-010 incident / Codex / 2026-10-16T13:37:00+01:00:** claimed production signup/trial failure per [incident order](LIVE_SIGNUP_INCIDENT_2026-10-16.md). Pause V3-029 performance work; inspect production auth/cookie/redirect/Checkout/provider/config without exposing account data or weakening guards. No test charge, account impersonation or unrelated paid/producer work.

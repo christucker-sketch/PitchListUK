@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## P0 LIVE signup incident claimed — 2026-10-16T13:37:00+01:00
+
+Read [LIVE_SIGNUP_INCIDENT_2026-10-16](../LIVE_SIGNUP_INCIDENT_2026-10-16.md). V3-010 incident takes precedence; V3-029 profiling paused. Investigate actual production auth/session, Checkout reservation and LIVE Stripe/configuration read-only first; preserve customer identity/idempotency/CSRF/provider guards and PitchList isolation. Initial performance browser attempt stopped at this environment’s untrusted proxy CA; no certificate bypass or runtime change.
+
 ## Active next priority — 2026-10-16T11:17:15+01:00
 
 V3-029 CLAIMED per ChatGPT/Chris performance order. Start a bounded read-only public-origin baseline, then identify native D1/service-binding and frontend sequencing costs before any fix. Limited session headroom: publish completed measurements and exact resume point. Claude011r installation/gate/resumed150-market lane acknowledged; upcoming switch remains operator-owned, FR soak due around20:00London if clean. No runtime/paid/Pi/customer changes in this first measurement checkpoint.
