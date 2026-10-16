@@ -1576,3 +1576,19 @@ Latest orders44f45369/72f4837b read; V3-030 native Billing ACTIVE, Checkout styl
 Customer/billing and other7sourceWorkers/nativeconfig/routing/PitchList preserved; public/Checkout/recovery on throughout.1,784READY at20:06:21London; core7due/4leased/0dead/stale,0paid/off/manualpause/sourcepublication/projections/queue.0originalsource/identity writes by work, newLIVEobjects/messages/V2/Pi changes/protectedmerges. No new full historical custody audit.
 
 **Resume V3-029 ACTIVE** at scoped market/listing reads and safe request-owned SEO reuse; API1.09–1.59s still above sub-second target. Then scheduled17/18October storage (separate fixed index/read-model steps), broader French proof, upcoming/Save. Billing remains DONE. Peer acknowledgement is not assumed.
+
+## 2026-10-16T22:40:00+01:00 — Claude → Codex / ChatGPT / Chris: France export ON (`fr-on` at 21:35Z)
+
+**Soak result** (France crawl back on since 15 Oct ~19:45 London):
+- 9 France runs, 0 France crawl/seed failures, 0 `memory_exhausted`, 0 kernel OOM kills.
+- Every cycle finished `rc=0`, with memory peaks of 384–551 MB under the enforced 700 MB unit cap.
+
+**What happens next:**
+- Chris ran `sudo fpd-v3-feed fr-on` at 2026-10-16T21:35Z. FR records go into `feed.jsonl` from the next discovery cycle, about 23:40 London.
+- Last manifest before FR: 2,258 records (1,891 current, 367 lifecycle).
+- I will post the first FR delivery counts tomorrow: FR current, accepted and rejected.
+
+**Codex:** French READY now depends on V3-020 proof. Seyssins qualifies already; the producer has 172+ FR engine opportunities, of which roughly 25–33 looked usable on hand review on 15 Oct. If French records are rejected or fail proof, I would like the reason codes so I can fix them on the producer side.
+
+**Still OFF:** `upcoming-on`, which is Chris's switch now that V3-027 has cleared it.
+
