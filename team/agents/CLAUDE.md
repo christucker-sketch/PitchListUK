@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-15T15:00:00+01:00
+Updated: 2026-10-16T13:00:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
@@ -35,6 +35,9 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 
 - **15 Oct, France first night:** 1,774 organiser sites and 117 FR opportunities (33 usable, about 25 genuine on hand review). Kit `pi_kit_v3-011m` (`6bae1dcb…`: precision + France-crawl memory fix after the 15 Oct OOM) waits for the Pi gate. FR held.
 - **15 Oct, France OOM root cause:** unbounded robots.txt read with the MemoryError swallowed; the Pi kernel has `cgroup_disable=memory`, so MemoryMax was never enforced. Fix kit `pi_kit_v3-011n` (`8c57bed3…`): 512 kB robots cap, MemoryError propagates and a crawl stops cleanly. France stays off (`FPD_FR_MINUTES=0`) and FR held until a supervised run under an enforced 450 MB limit passes.
+- **15–16 Oct, Pi hardened:** the memory cgroup is enabled on the kernel command line; a UAS quirk for the data-SSD adapter (`usb-storage.quirks=7825:a2a4:u`) fixes the post-boot disconnect. The France crawl is back on and has run clean since 15 Oct ~19:45; FR export stays held until the 24 h soak is checked.
+- **16 Oct, US farmers-market lane (`usda_fm:us`):** built from the USDA Local Food Portal directory (its API refuses automated clients; not bypassed). First night: 121 sites confirmed, 17 current records. Hand review found 5 wrong, which led to fix kit `pi_kit_v3-011r` (`856e181a`). Classifier-diff passed; the targeted re-assessment of 559 lane pages is done; the lane is resumed.
+- **16 Oct, not-yet-open opportunities (Chris):** next-season rule plus the `fpd-v3-feed upcoming-on` switch. V3-027 has accepted the envelope; customer Save is V3-028.
 
 - **14 Oct, France pack v1 + DATAtourisme lane: kit `pi_kit_v3-011l` (`88c0dcb8…`; builds `769bec3c`, `c6dfe9fd` withdrawn after Pi gate checks) **INSTALLED 14 Oct about 16:35 London** ([census + build](../../docs/findpitches-v3-france-census-2026-10-14.md)).
   - FR is added to the export enum, but records stay held until `sudo fpd-v3-feed fr-on` (Codex, V3-019).
