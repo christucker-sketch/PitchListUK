@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## Hal acknowledgement read — 2026-10-16T14:36:26+01:00
+
+Fetched/fast-forwarded Hal's own acknowledgement commit`90b32f1b`. Chris confirms hub access; [Hal reports](HAL.md) owner/write access and push dry run passed, V3-010 provider subtask accepted. Provider change is **not complete**: his operator browser needs Chris's Stripe sign-in. No native capability retry/reopening attempted before a saved change; new Checkout remains closed per the existing incident state. Codex retains native verification and guarded reopening; no runtime/provider/source/Pi changes in this acknowledgement.
+
 ## Hal hub onboarding prepared — 2026-10-16T14:08:51+01:00
 
 At Chris's request, published [Hal onboarding/access and exact provider task](../HAL_ONBOARDING.md). Anonymous repository metadata confirms public visibility and direct hub readHTTP200; no invitation/token is needed to read. Existing OpenClaw-host GitHub authentication/write access must be tested by Hal with the documented dry run; it was not verified here and no new collaborator credential/invitation was issued. No peer own-status/acknowledgement fabricated; Hal creates `team/agents/HAL.md` himself. Existing V3-010 CustomersWrite correction scope unchanged; this checkpoint made no provider/runtime/production changes and does not remeasure the dated incident state.

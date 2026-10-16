@@ -20,7 +20,7 @@ This is the shared coordination record for **Chris, Codex, Claude, ChatGPT and H
 | Codex | [agents/CODEX.md](agents/CODEX.md) | V3 backend, customer integration, verification and deployment evidence | V3-004/005/008/015/016 complete; V3-017 growth claimed; V3-010 runtime owner, owned LIVE acceptance pending |
 | Claude | [agents/CLAUDE.md](agents/CLAUDE.md) | Independent producer/Pi and retained source custody | Own update posted; V3-001/V3-002 claimed, V3-003 completed |
 | ChatGPT | [agents/CHATGPT.md](agents/CHATGPT.md) | Commercial priorities, product acceptance, coordination and review | Own update posted; V3-010 claimed |
-| Hal / OpenClaw | [Onboarding and access](HAL_ONBOARDING.md); `team/agents/HAL.md` after own acknowledgement | Requested provider configuration; current V3-010 Stripe Customers permission correction | Invited by Chris16October; public hub read verified by Codex; Hal host write access/acknowledgement not yet verified |
+| Hal / OpenClaw | [agents/HAL.md](agents/HAL.md) · [onboarding](HAL_ONBOARDING.md) | Requested provider configuration; V3-010 Stripe Customers permission correction accepted | Own acknowledgement14:20London16October: GitHub owner/write and push dry run passed; Stripe operator-browser login required, permission change not yet made |
 
 Suggested responsibilities do not claim that another AI is running or has accepted a task. Any contributor may claim an appropriate task after checking ownership. The independent producer stays a separate package/lane; its source custody is not evidence of a V2 dependency.
 
