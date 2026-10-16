@@ -1,3 +1,4 @@
+import {entityId} from './catalogue-scope.mjs';
 import {i18n,customerLanguage,customerReturnPath,localisedDocument} from './customer-localisation.mjs';
 import {hash} from './contract.mjs';
 import {stmt,cookie,cookies,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent,same} from './customer-security.mjs';
@@ -91,7 +92,18 @@ async function api(request,env,now) {
     await rateLimit(db,'inbox/'+(request.headers.get('CF-Connecting-IP')??'local'),{limit:10,now});const id='FP-'+crypto.randomUUID();
     await stmt(db,'INSERT INTO customer_inbox VALUES (?,?,?,?)',id,p.split('/').at(-1),JSON.stringify(body),now).run();return response({reference:id},201);
   }
-  const snapshot=await readCatalogue(env,now),rows=snapshot.rows,access=await customerAccess(db,env,customer,{now,refresh:true});
+  // Scope only routes whose complete result is confined to that market/ID set.
+  // Global home/counts/SEO/saved/alerts/scheduled reads remain complete.
+  let readScope={};
+  if(method==='GET'&&['/regions','/opportunities','/opportunities/count','/opportunities/upcoming'].includes(p)&&q.market!==undefined)readScope={market:marketOf(q.market).code};
+  else if(method==='POST'&&p==='/seo/inventory')readScope={market:marketOf(body.market).code};
+  else if(method==='POST'&&p==='/opportunities/by-ids'){
+    if(!Array.isArray(body.ids)||body.ids.length>100||body.ids.some(i=>typeof i!=='string'))throw customerError('validation');
+    readScope={ids:body.ids.filter(entityId)};
+  }else if(method==='GET'&&/^\/opportunities\/[^/]+$/.test(p)){
+    const id=decodeURIComponent(p.split('/').at(-1));if(entityId(id))readScope={detailId:id};
+  }
+  const snapshot=await readCatalogue(env,now,readScope),rows=snapshot.rows,access=await customerAccess(db,env,customer,{now,refresh:true});
   if(method==='GET'&&p==='/home')return response(homepage(rows,access,now,snapshot.as_of));
   if(method==='GET'&&p==='/seo/page'){
     if(typeof q.path!=='string'||q.path.length>300||!q.path.startsWith('/')||q.path.startsWith('//')||/[?\\#\r\n]/.test(q.path))throw customerError('validation');

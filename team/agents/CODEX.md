@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## Scoped-read implementation verified — 2026-10-16T22:43:11+01:00
+
+[Design/contract/parity](../../docs/findpitches-v3-scoped-reads-2026-10-16.md). Full504/focused33/boundaries pass, native100-row preservation included. Live same-snapshot EXCEPT:GB162/US1637/detail162/batch1,0missing/extra. No migrations/evidence/identity writes. API-first compatible source release then guarded customer upgrade next; no public improvement/deployment claimed yet. Fresh22:40:32London1,777READY, paid0/off, sourcepublication0. Public/Checkout/recovery currentlyon, protected native baseline captured. V3-029 remainsACTIVE; unrelated priorities unchanged.
+
 ## V3-029 scoped-read claim — 2026-10-16T22:36:02+01:00
 
 Continuing the remaining measured whole-inventory transfer/mapping cost. Claimed components: shared private catalogue scope contract, bounded SQL/filtering/current producer policy, customer API selection/client, focused output-parity/fail-closed tests, guarded API then customer release and public timing evidence. Market searches/counts/regions/inventory use a proved subset; listing detail retains the complete target country for identical related listings. Global home/markets/stats/combined SEO/sitemaps remain global. Old global source responses remain a safe compatibility fallback; an unexpected partial response must fail closed. No cross-request cache, proof/identity weakening, paid/source acquisition, Pi/V2/PitchList/billing behaviour changes.

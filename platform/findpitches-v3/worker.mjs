@@ -1,3 +1,4 @@
+import {scopeFromParams} from './catalogue-scope.mjs';
 import {timedReadDatabase,catalogueServerTiming} from './read-timing.mjs';
 import {bindEvidenceArchive} from './evidence-archive.mjs';
 import {capacityStatus,guardSourceCapacity} from './storage-capacity.mjs';
@@ -130,7 +131,7 @@ export default {
         if(request.method!=='GET'||role!=='api')return json({error:'staging_read_only'},403);
         if(!await authorized(request,env.V3_STAGING_TOKEN))return json({error:'authorization_required'},401);
         if(path==='/staging/catalogue'){
-          const metrics={},started=performance.now(),catalogue=await stagingCatalogue(timedReadDatabase(db,metrics));
+          const metrics={},started=performance.now(),catalogue=await stagingCatalogue(timedReadDatabase(db,metrics),{scope:scopeFromParams(url.searchParams)});
           metrics.read_ms=performance.now()-started;const serialized=performance.now(),body=JSON.stringify(catalogue);metrics.serialize_ms=performance.now()-serialized;
           return new Response(body,{headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Server-Timing':catalogueServerTiming(metrics)}});
         }

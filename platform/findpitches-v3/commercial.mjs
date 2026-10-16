@@ -1,3 +1,4 @@
+import {scopeCondition} from './catalogue-scope.mjs';
 import {selectionFieldsSql,selectionProducersSql,selectionOriginSql} from './commercial-selection.mjs';
 import {compactProofSql,inventoryProofSql} from './commercial-proof.mjs';
 import {sql} from './store.mjs';
@@ -39,9 +40,10 @@ export const INVENTORY_SQL=LEGACY_INVENTORY_SQL.replace(
 // Customer contract already caps a snapshot at 20,000 distinct entities. Read
 // that bounded snapshot once, with an overflow sentinel, rather than paging
 // proof payloads over several serial D1 RPCs. Operator pagination is unchanged.
-export async function customerCatalogueRows(db){
- const query=INVENTORY_SQL.replace('WHERE e.id>? ORDER BY e.id LIMIT 250',"WHERE e.environment='shadow' AND r.status='ready' ORDER BY e.id LIMIT 20001");
- const rows=(await sql(db,query).all()).results??[];
+export async function customerCatalogueRows(db,{scope={kind:'full'}}={}){
+ const {where,values}=scopeCondition(scope);
+ const query=INVENTORY_SQL.replace('WHERE e.id>? ORDER BY e.id LIMIT 250',`WHERE e.environment='shadow' AND r.status='ready' AND ${where} ORDER BY e.id LIMIT 20001`);
+ const rows=(await sql(db,query,...values).all()).results??[];
  if(rows.length>20000)throw Error('customer_catalogue_capacity_exceeded');
  return rows;
 }

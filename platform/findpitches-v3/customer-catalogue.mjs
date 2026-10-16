@@ -1,3 +1,4 @@
+import {catalogueScope,scopeParams,scopeMatches,scopedItemsMatch} from './catalogue-scope.mjs';
 import {frenchPhone,FRANCE_ROUTE_POLICY} from './france-routes.mjs';
 import {MARKETS,REGIONS} from '../../web/findpitches-v3-web/server/catalogue-registry.mjs';
 import {toSiteOpportunity} from '../../web/findpitches-v3-web/contract/reference/map-producer-record.mjs';
@@ -57,11 +58,12 @@ export function mapProof(item,now) {
   row.organiser.verified=true;row.organiser.type_label=null;row.type_label=types[row.type]??'Event';row.canonical_path=routes.opportunityPath(row.market,row.id);row.distance_km=null;
   row._proof={expires_at:item.proof_expires_at,revision:item.entity_revision,verification_id:item.verification_id};return row;
 }
-export async function readCatalogue(env,now) {
+export async function readCatalogue(env,now,options={}) {
   if(!env.V3_READY_API||!env.V3_STAGING_TOKEN)throw customerError('service_unavailable',503);
-  const response=await env.V3_READY_API.fetch('https://v3-internal.invalid/staging/catalogue',{headers:{Authorization:'Bearer '+env.V3_STAGING_TOKEN}});
+  const scope=catalogueScope(options),params=scopeParams(scope),path='https://v3-internal.invalid/staging/catalogue'+(params.size?'?'+params:'');
+  const response=await env.V3_READY_API.fetch(path,{headers:{Authorization:'Bearer '+env.V3_STAGING_TOKEN}});
   if(!response.ok)throw customerError('service_unavailable',503);const snapshot=await response.json();
-  if(snapshot.schema!=='findpitches-v3-customer-proof-snapshot-v1'||snapshot.publication_enabled!==false||snapshot.production_cutover_enabled!==false||!Array.isArray(snapshot.items)||snapshot.items.length>20000||new Set(snapshot.items.map(i=>i.id)).size!==snapshot.items.length||!Number.isFinite(Date.parse(snapshot.as_of))||Math.abs(Date.parse(snapshot.as_of)-Date.parse(now))>120000)throw customerError('service_unavailable',503);
+  if(!scopeMatches(snapshot.scope,scope)||snapshot.schema!=='findpitches-v3-customer-proof-snapshot-v1'||snapshot.publication_enabled!==false||snapshot.production_cutover_enabled!==false||!Array.isArray(snapshot.items)||!scopedItemsMatch(snapshot.scope,snapshot.items)||snapshot.items.length>20000||new Set(snapshot.items.map(i=>i.id)).size!==snapshot.items.length||!Number.isFinite(Date.parse(snapshot.as_of))||Math.abs(Date.parse(snapshot.as_of)-Date.parse(now))>120000)throw customerError('service_unavailable',503);
   return {...snapshot,rows:snapshot.items.map(i=>mapProof(i,now)).filter(Boolean)};
 }
 export function present(row,access={tier:'free'}) {

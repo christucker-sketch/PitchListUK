@@ -248,3 +248,20 @@ test('new Checkout carries owned FindPitches branding while canonical reads and 
  const portal=calls.find(r=>r.path==='/billing_portal/sessions');assert.equal(portal.body.get('configuration'),'bpc_fixture');assert.equal(portal.body.get('return_url'),'https://findpitches.com/account.html');assert.ok(![...portal.body.keys()].some(k=>k.startsWith('branding_settings')));
  assert.throws(()=>checkoutBranding('https://foreign.example'),/owned_checkout_brand_origin_required/);
 });
+
+test('scoped customer routes keep exact search/count/regions/batch/detail results including similar listings; global totals remain global',async t=>{
+ const db=setup(t),e=env(db);let scoped=false;const requested=[];
+ const items=[{...proof('US'),region:'OR'},{...proof('US'),region:'OR',id:'ent_'+'2'.repeat(32),title:'Another River Festival'},{...proof('GB'),id:'ent_'+'3'.repeat(32)}];
+ e.V3_READY_API.fetch=async url=>{const params=new URL(url).searchParams;requested.push(params.toString());let selected=items,scope;
+  if(scoped&&params.has('market')){scope={kind:'market',market:params.get('market')};selected=items.filter(i=>i.country===scope.market);}
+  if(scoped&&params.has('detail_id')){scope={kind:'detail',id:params.get('detail_id')};selected=items.filter(i=>i.country===items.find(r=>r.id===scope.id)?.country);}
+  if(scoped&&params.has('ids')){scope={kind:'ids',ids:JSON.parse(params.get('ids'))};selected=items.filter(i=>scope.ids.includes(i.id));}
+  return Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',scope,as_of:now(),publication_enabled:false,production_cutover_enabled:false,items:selected});};
+ const session=await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/api/v3/session'),e),csrf=session.headers.get('set-cookie').split(';')[0],value=csrf.slice('fp_csrf='.length);
+ const cases=[['/opportunities?market=GB'],['/opportunities/count?market=US'],['/regions?market=GB'],['/opportunities/upcoming?market=US'],['/opportunities/'+items[0].id],['/opportunities/by-ids',{ids:[items[0].id,items[2].id,'missing',items[0].id]}],['/seo/inventory',{market:'GB',intents:[]}]];
+ const tidy=x=>JSON.parse(JSON.stringify(x,(k,v)=>['as_of','generated_at'].includes(k)?undefined:v));
+ const call=async(path,body)=>{const response=await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/api/v3'+path,body?{method:'POST',headers:{Origin:e.V3_PUBLIC_ORIGIN,Cookie:csrf,'x-csrf-token':value,'Content-Type':'application/json'},body:JSON.stringify(body)}:{}),e);assert.equal(response.status,200);return tidy(await response.json());};
+ for(const [path,body] of cases){scoped=false;const before=await call(path,body);scoped=true;const after=await call(path,body);assert.deepEqual(after,before,path);if(path==='/opportunities/'+items[0].id){assert.equal(after.opportunity.similar.length,1);assert.equal(after.opportunity.similar[0].id,items[1].id);assert.equal(after.opportunity.access.application_url,null);}}
+ assert.ok(requested.some(q=>q.startsWith('market=GB')));assert.ok(requested.some(q=>q.startsWith('detail_id=')));assert.ok(requested.some(q=>q.startsWith('ids=')));
+ for(const path of ['/home','/markets','/stats','/seo/page?path=%2Fuk%2F']){const result=await call(path);assert.equal(requested.at(-1),'');if(path==='/stats')assert.equal(result.total,3);}
+});

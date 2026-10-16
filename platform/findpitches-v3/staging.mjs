@@ -1,3 +1,4 @@
+import {scopeCondition} from './catalogue-scope.mjs';
 import {SUPPORTED_MARKETS} from '../../web/findpitches-v3-web/server/catalogue-registry.mjs';
 import {commercialRows,customerCatalogueRows,commercialEntity} from './commercial.mjs';
 import {sql} from './store.mjs';
@@ -28,15 +29,18 @@ export const LATEST_STRUCTURED_POLICY_SQL=`SELECT er.entity_id,
     WHERE p.producer_name='independent-structured' AND p.environment='shadow' AND p.validation_status='accepted'
     AND NOT EXISTS(SELECT 1 FROM producer_records n WHERE n.producer_name='independent-structured' AND n.producer_record_id=p.producer_record_id AND n.environment='shadow' AND n.validation_status='accepted'
       AND (COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')>COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') OR COALESCE(json_extract(n.normalized_json,'$.last_checked'),'')=COALESCE(json_extract(p.normalized_json,'$.last_checked'),'') AND (n.received_at>p.received_at OR n.received_at=p.received_at AND n.id>p.id)))`;
-export async function stagingCatalogue(db,{now=new Date().toISOString()}={}) {
-  const [rows,policy]=await Promise.all([customerCatalogueRows(db),sql(db,LATEST_STRUCTURED_POLICY_SQL).all()]);
+export async function stagingCatalogue(db,{now=new Date().toISOString(),scope={kind:'full'}}={}) {
+  const {where,values}=scopeCondition(scope);
+  if(scope.kind==='market'&&!SUPPORTED_MARKETS.includes(scope.market))throw Error('catalogue_scope_invalid');
+  const policySql=LATEST_STRUCTURED_POLICY_SQL+(scope.kind==='full'?'':` AND er.entity_id IN (SELECT e.id FROM entities e WHERE e.environment='shadow' AND ${where})`);
+  const [rows,policy]=await Promise.all([customerCatalogueRows(db,{scope}),sql(db,policySql,...values).all()]);
   const current=new Map(rows.map(r=>[r.id,commercialEntity(r,now)]));
   const held=new Set();for(const p of policy.results){
     const r=current.get(p.entity_id),freshRoute=r?.ready&&usableRouteEligible(r.proof)&&['current','watch',null].includes(p.producer_channel)&&['READY','WATCH',null].includes(p.producer_export_readiness)&&(!p.source_last_checked||Date.parse(r.checked_at)>=Date.parse(p.source_last_checked));
     if(p.confidence_level==='LOW'||!freshRoute&&(p.producer_channel&&p.producer_channel!=='current'||p.producer_export_readiness&&p.producer_export_readiness!=='READY'))held.add(p.entity_id);
   }
   const evaluated=[...current.values()],ready=evaluated.filter(r=>r.commercial&&r.ready&&!held.has(r.id));
-  return {schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now,publication_enabled:false,production_cutover_enabled:false,
+  return {schema:'findpitches-v3-customer-proof-snapshot-v1',scope,as_of:now,publication_enabled:false,production_cutover_enabled:false,
     shadow_ready:evaluated.filter(r=>r.commercial&&r.ready).length,producer_policy_withheld:rows.filter(r=>held.has(r.id)).length,
     items:ready.map(r=>({id:r.id,country:r.market,region:r.proof.facts.region_code??r.proof.address_coordinates?.source_address?.state??null,title:r.proof.facts.event_name,organiser:r.proof.facts.organiser,location:r.proof.facts.location,
       event_start:r.proof.facts.event_start,event_end:r.proof.facts.event_end,application_url:r.proof.facts.application_url,application_state:r.proof.facts.application_state,
