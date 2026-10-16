@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## Hal hub onboarding prepared — 2026-10-16T14:08:51+01:00
+
+At Chris's request, published [Hal onboarding/access and exact provider task](../HAL_ONBOARDING.md). Anonymous repository metadata confirms public visibility and direct hub readHTTP200; no invitation/token is needed to read. Existing OpenClaw-host GitHub authentication/write access must be tested by Hal with the documented dry run; it was not verified here and no new collaborator credential/invitation was issued. No peer own-status/acknowledgement fabricated; Hal creates `team/agents/HAL.md` himself. Existing V3-010 CustomersWrite correction scope unchanged; this checkpoint made no provider/runtime/production changes and does not remeasure the dated incident state.
+
 ## P0 native diagnosis and guarded release — 2026-10-16T13:55:22+01:00
 
 [Incident / action / full evidence](../../docs/findpitches-v3-live-signup-incident-2026-10-16.md): the actual deployed credential lacks **Customers Read and Write** (HTTP403 `more_permissions_required`). Real sign-in consumed once/linked active session; no provider customer/reservation existed. **Hal/Chris must set CustomersWrite on the existing V3 restricted LIVE key**, preserving other restrictions; no new key/account/product. New Checkout stays closed; browsing/sign-in/recovery on. Safe provider telemetry, native capability probes, launch permission gate and clear authenticated pricing are deployed as `b4fb82d0-7728-49a2-9890-a9883175939d` (code67237e20). Full473/frontend3/independence93/build56/boundaries,6local EN/FR/DE desktop/mobile combinations, final public29 and exact pricing-asset hash pass. Native Customer permission checks remain intentionally RED, so no reopening/real trial acceptance claim.0providerobjects/messages/charges/Serper/source/Pi/V2 changes; PitchList/routes/DNS/native bindings/settings/schedules preserved. V3-029 paused. Resume only after existing-key permission correction; then native check, guarded reopening and Chris owned trial/globalPro/Portal acceptance.

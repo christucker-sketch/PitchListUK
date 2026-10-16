@@ -5,7 +5,7 @@
 Latest measured continuation, 2026-10-16T10:42:07+01:00: [1,842 READY; French proof/upcoming intake validated; storage follow-up](../docs/findpitches-v3-hub-continuation-2026-10-16.md). V3-026/027 complete; V3-020/022 broader follow-ups active. Paid off, customer runtime unchanged.
 
 
-This is the shared coordination record for **Chris, Codex, Claude and ChatGPT**. Keep updates here on **`findpitches-v3/greenfield`**. There is no separate status branch to drift away from the implementation, and no protected/live branch merge is needed to update this hub.
+This is the shared coordination record for **Chris, Codex, Claude, ChatGPT and Hal/OpenClaw**. Keep updates here on **`findpitches-v3/greenfield`**. There is no separate status branch to drift away from the implementation, and no protected/live branch merge is needed to update this hub.
 
 **Start here:** [Current execution orders](ORDERS.md) · [Current product and deployment status](CURRENT_STATUS.md) · [Tasks and ownership](TASKS.md) · [Decisions and approval gates](DECISIONS.md) · [Handover log](HANDOVERS.md)
 
@@ -20,6 +20,7 @@ This is the shared coordination record for **Chris, Codex, Claude and ChatGPT**.
 | Codex | [agents/CODEX.md](agents/CODEX.md) | V3 backend, customer integration, verification and deployment evidence | V3-004/005/008/015/016 complete; V3-017 growth claimed; V3-010 runtime owner, owned LIVE acceptance pending |
 | Claude | [agents/CLAUDE.md](agents/CLAUDE.md) | Independent producer/Pi and retained source custody | Own update posted; V3-001/V3-002 claimed, V3-003 completed |
 | ChatGPT | [agents/CHATGPT.md](agents/CHATGPT.md) | Commercial priorities, product acceptance, coordination and review | Own update posted; V3-010 claimed |
+| Hal / OpenClaw | [Onboarding and access](HAL_ONBOARDING.md); `team/agents/HAL.md` after own acknowledgement | Requested provider configuration; current V3-010 Stripe Customers permission correction | Invited by Chris16October; public hub read verified by Codex; Hal host write access/acknowledgement not yet verified |
 
 Suggested responsibilities do not claim that another AI is running or has accepted a task. Any contributor may claim an appropriate task after checking ownership. The independent producer stays a separate package/lane; its source custody is not evidence of a V2 dependency.
 
@@ -71,7 +72,7 @@ protected/live merges remain closed. Preserve source facts and identity. Never p
 or customer data in GitHub. Report a missing capability honestly.
 ```
 
-For Claude, its own file is `team/agents/CLAUDE.md`. For ChatGPT it is `team/agents/CHATGPT.md`; for Codex it is `team/agents/CODEX.md`.
+For Claude, its own file is `team/agents/CLAUDE.md`. For ChatGPT it is `team/agents/CHATGPT.md`; for Codex it is `team/agents/CODEX.md`. Hal/OpenClaw starts with [the onboarding/access guide](HAL_ONBOARDING.md) and creates `team/agents/HAL.md` after his own acknowledgement.
 
 This folder provides shared persistence, not automatic inter-AI messaging or background polling. Each AI must have GitHub/repository access and be instructed to read it. The checkpoint-push rule plus `team/tools/hub-sync.sh` removes the need for manual status-file copying **when that AI environment has GitHub push authentication**. If an AI environment has no GitHub write credential, that one-time capability still has to be configured; the helper deliberately does not embed or create credentials. If an AI has read-only access, it can prepare an update for Chris or an authorized contributor to commit; it must not claim that an unpushed update is shared.
 
