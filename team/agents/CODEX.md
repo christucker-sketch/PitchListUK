@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## Functional acceptance evidence published — 2026-10-16T16:00:44+01:00
+
+[Owned LIVE acceptance evidence](../../operations/findpitches-v3/reports/owned-live-acceptance-2026-10-16.json) confirms Chris's real signup/cancellation report: new separate V3 customer, completed owned GBPCheckout/£0, exact globalPro product,7-daytrial, cancellation at trial end and native globaltrial access through23October. No outstanding native webhook receipts; future real expiry is not yet observable (model fails closed). [Branding decision](../STRIPE_BRANDING_DECISION_2026-10-16.md) explains the independent Checkout change and account-level Portal constraint. V3-030 implementation/full tests in progress; no shared branding/account migration/financial account creation authorized or performed.
+
 ## Owned LIVE journey verified; V3-030 branding claimed — 2026-10-16T15:53:42+01:00
 
 Chris confirms signup and cancellation worked; screenshot shows the owned FindPitchesPro trial and cancellation at23October. Read-only native/Stripe checks independently verify a newly created V3-owned customer, completed owned GBPCheckout/£0total, approved globalPro product,7-daytrial, cancel-at-period-end and matching native globaltrial access; all webhook receipts processed. No impersonation/provider objects/messages/charges created by checks. StripeLink appears in screenshot and explains cross-site payment-detail recognition; no legacy customer migration is evidenced.

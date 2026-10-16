@@ -1,0 +1,46 @@
+{
+  "schema": "findpitches-v3-owned-live-acceptance-v1",
+  "as_of": "2026-10-16T14:50:05.433Z",
+  "user_confirmation": "Owner reports genuine signup and cancellation succeeded; supplied hosted Portal screenshot.",
+  "owned_test_participants": 1,
+  "new_v3_customer_separate_from_pitchlist": true,
+  "provider_customer_created_on_test_day": true,
+  "hosted_live_checkout": {
+    "complete": true,
+    "canonical_ownership_verified": true,
+    "native_confirmed": true,
+    "currency": "GBP",
+    "amount_total": 0
+  },
+  "subscription": {
+    "approved_findpitches_product_and_price": true,
+    "trial_days": 7,
+    "status": "trialing",
+    "trial_end_date": "2026-10-23",
+    "cancel_at_period_end": true,
+    "native_cache_matches": true,
+    "native_entitlement_tier": "trial",
+    "native_entitlement_scope": "global",
+    "access_retained_to_period_end": true,
+    "expiry_model_fails_closed": true,
+    "actual_future_expiry_observed": false
+  },
+  "billing_portal": {
+    "id_matches": true,
+    "active": true,
+    "is_default": false,
+    "headline": "Manage your FindPitches Pro subscription",
+    "cancel_mode": "at_period_end"
+  },
+  "native_pending_webhooks": 0,
+  "recognition_explanation": "Screenshot shows Stripe Link; provider/browser recognition can cross sites. No V1/V2 customer migration or shared V3 customer ownership was found.",
+  "remaining_issue": "Hosted Checkout/Portal inherit PitchList account branding. Per-session Checkout isolation is in progress; Portal branding requires a product/provider decision.",
+  "investigation": {
+    "read_only": true,
+    "customer_impersonation": false,
+    "provider_objects_created": 0,
+    "messages_sent": 0,
+    "charges_created": 0,
+    "source_tables_written": false
+  }
+}
