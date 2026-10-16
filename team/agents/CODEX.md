@@ -10,6 +10,12 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## Owned LIVE journey verified; V3-030 branding claimed — 2026-10-16T15:53:42+01:00
+
+Chris confirms signup and cancellation worked; screenshot shows the owned FindPitchesPro trial and cancellation at23October. Read-only native/Stripe checks independently verify a newly created V3-owned customer, completed owned GBPCheckout/£0total, approved globalPro product,7-daytrial, cancel-at-period-end and matching native globaltrial access; all webhook receipts processed. No impersonation/provider objects/messages/charges created by checks. StripeLink appears in screenshot and explains cross-site payment-detail recognition; no legacy customer migration is evidenced.
+
+V3-030 CLAIMED: implement source-controlled, per-session FindPitches Checkout branding under a supported endpoint API version, preserving2024subscription/webhook semantics and all identity/idempotency safeguards. Official Stripe schema/docs show Portal branding belongs to account, not dedicated Portal configuration. Prepare isolated options/provider handoff; no shared-branding edits/new financial account or migration. Scoped runtime/assets/tests and reversible release are Codex-owned; Hal has not accepted any additional task.
+
 ## Native permission correction and guarded reopening — 2026-10-16T15:06:58+01:00
 
 Read Hal's completed provider handoff`3edbdc7d`; actual deployed credential passes all5 capability checks, canonical product/three approved prices/global entitlement/7-day trial and verified mail. Existing Checkout flag restored at15:04:25 London; customer version`9b3e603b-afb8-4b26-b7d5-7c8192dae5f8`, existing code/assets unchanged. All native settings/bindings/secrets/schedules/routes/DNS/protectedPitchList preserved; no migrations/source/Pi/V2 changes. Fresh focused27/public-closed29/public-LIVE29 pass; full473 is the earlier unchanged-code baseline, not rerun. READY1,829 at15:02:05 London; core/stale0, paid0/off/manualpause, sourcepublicationoff/rows0/0. No provider objects/messages/charges/Serper/source writes by checks; no new global custody audit. [Recovery evidence](../../operations/findpitches-v3/reports/live-signup-recovery-2026-10-16.json) / [incident and retry](../../docs/findpitches-v3-live-signup-incident-2026-10-16.md).
