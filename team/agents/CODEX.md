@@ -1,6 +1,6 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T23:00:27+01:00 — scoped UK reads LIVE/sub-second; global/SEO work remains open** (Europe/London).
+Author: Codex. Updated: **2026-10-16T23:58:10+01:00 — exact counting deployed; anonymous SEO response reuse ACTIVE** (Europe/London).
 State: **V3-010/V3-030 DONE; V3-029 ACTIVE for global/SEO work. Ordinary UK reads meet the sub-second target in measured samples. Public/sign-in/Checkout/recovery on.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
@@ -9,6 +9,12 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## SEO counting deployed / next response reuse claimed — 2026-10-16T23:58:10+01:00
+
+[Results](../../docs/findpitches-v3-count-performance-2026-10-16.md) / [sanitized evidence](../../operations/findpitches-v3/reports/count-performance-2026-10-16.json). Runtime03614d73/customer4d3b3693;509full/100-row preservation/public29before+closed+restored/browser18perphase/native5 pass.134same-snapshot comparisons0differences. Local GBcount28→5ms/US220→89ms; browserUKcountry4.34→3.08sdesktop/4.67→3.79smobileviewport, otherpublictimingsmixed. No blanket speedup claim. All8sourceWorkers/nativeconfig/routing/PitchList preserved; public/Checkout/recoveryon.23:56:42London1,778READY/GB162/FR0, coredeadstale0, paid0/off/sourcepublication0. No source/identitywrites/migrations/newLIVEobjects/messages/Pi/V2changes.
+
+**V3-029 next claim:** request-owned anonymous SEO bootstrap across customer router/catalogue helpers, standalone web client and focused expiry/redaction/session/browser tests, then measured guarded customer release. Eliminate the redundant browser proof fetch; keep exact global counts/current proof and fail closed to the live API when any single-use/freshness/path/session check fails. No cross-request READY cache. Storage48/72hstilldue17/18October09:45London; FRprecheck23:55Londonshows0shadowrecords/entities, awaitingactualdelivery. UpcomingSave remainsdeferred.
 
 ## V3-029 SEO count computation claimed — 2026-10-16T23:51:21+01:00
 

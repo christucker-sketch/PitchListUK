@@ -21,6 +21,24 @@ These are Node computation times on identical live inputs, not Cloudflare Worker
 
 ## Release checkpoint
 
-Implementation verified locally; full suite and guarded customer-only release are in progress. Fresh public/browser baselines have been retained privately. No deployed improvement is claimed by this implementation checkpoint. Final measurements and custody will replace this section after release.
+Customer-only runtime code **03614d73** is deployed. Final version **4d3b3693-9271-4a8a-8dea-16dc35595d78**, deployment **b1d8b55a-302d-490c-988f-23fec605d7b3**. Tested code ETag matches after Checkout restoration. All eight source Workers, native settings/secrets/schedules, routes/DNS, customer storage and protected PitchList deployment are unchanged. No migration or source/identity write. New Checkout alone was closed 23:55:41–23:56:32 London; public/sign-in/recovery remained on.
+
+**509/509 full V3 tests pass, zero failed/skipped**, including native 100-row preservation. Public29 before,29 closed and29 restored;18 browser samples per phase;5 native billing capabilities and canonical product/prices/global trial/mail checks pass. Static frontend assets/design are unchanged; its unchanged unit suite was not rerun.
+
+Fresh anonymous browser useful-content times:
+
+| Page | Desktop before → after | Mobile viewport before → after |
+| --- | ---: | ---: |
+| UK country | 4.343 → 3.077 s | 4.671 → 3.789 s |
+| UK category | 3.676 → 3.810 s | 4.463 → 3.760 s |
+| Finder | 1.139 → 1.192 s | 1.689 → 1.152 s |
+
+The public API medians remain variable; country1.586→1.619s, category1.484→1.803s and home1.758→1.490s. These short live samples do not establish a general public latency improvement; the identical-input Node measurements isolate the reduced computation. Browser categories and several unrelated paths did not improve consistently. Worker CPU/service-binding transport is not independently measured.
+
+At **23:56:42 London**,1,778 READY (GB162/US1606/NZ5/AU4/CA1/FR0), core/dead/stale0, pending customer webhooks0. Paid0/off/manualpause; unused source publication/projections/queue0. SourceDB4,090,863,616bytes. This is a dated inventory snapshot, not a performance gain. No new LIVE objects/messages/Serper/Pi/V2/protected merges or full historical custody audit.
+
+[Complete sanitized timings/custody/validation](../operations/findpitches-v3/reports/count-performance-2026-10-16.json).
+
+**V3-029 remains ACTIVE:** remove the redundant browser proof read for anonymous SEO pages using a short-lived, single-use response from that same HTML request, with expiry/redaction/session safeguards. Never reuse proof across independent requests or bypass Pro checks.
 
 Billing remains DONE. The ordered follow-ups are the remaining measured V3-029 costs, scheduled storage observations on 17/18 October around 09:45 London, real French delivery/proof, then upcoming/Save when earlier tasks are stable. Public browsing and existing subscribers remain available during reversible releases; only new Checkout is briefly closed for the customer deployment.
