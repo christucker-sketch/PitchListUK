@@ -1,7 +1,8 @@
 import {entityId} from './catalogue-scope.mjs';
 import {i18n,customerLanguage,customerReturnPath,localisedDocument} from './customer-localisation.mjs';
 import {hash} from './contract.mjs';
-import {stmt,cookie,cookies,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent,same} from './customer-security.mjs';
+import {stmt,cookie,cookies,sessionCookie,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent,same} from './customer-security.mjs';
+import {seoResponseData} from './customer-response.mjs';
 import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,consumeChallenge,requestLogin,logout,updateProfile} from './customer-auth.mjs';
 import * as previewBilling from './customer-billing.mjs';
 import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook,verifyLiveBillingSettings,verifyLiveBillingCapabilities,recordLiveStripeFailure} from './customer-live-billing.mjs';
@@ -21,6 +22,11 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;
 const jsonld=value=>JSON.stringify(value).replace(/</g,'\\u003c');
 export const FRONTEND_SOURCE='24ad4b61cfc64b7338d5ab44efa816479ad1a57e7e0740893fb338b39c8b3e05';
 const production=env=>env.V3_CUSTOMER_MODE==='production_public';
+function seoPage(rows,d,ms,rs,access,now,asOf) {
+  const market=ms.find(m=>m.code===d.market),others=(d.type==='market'||d.type==='intent')&&market.launch_status==='live'?ms.filter(m=>m.launch_status==='live'&&m.code!==d.market):[],inventories={};
+  for(const code of [d.market,...others.map(m=>m.code)])inventories[code]=inventory(rows,code,seoConfig.intentsFor(code),now);
+  return {as_of:asOf,markets:ms,regions:rs[d.market],inventory:inventories[d.market],inventories,search:search(rows,{...seo.filters(d),sort:'soonest',page_size:12},access,now)};
+}
 const customerAccess=(db,env,...args)=>(production(env)?liveCustomerAccess:previewBilling.customerAccess)(db,env,...args);
 const plans=(market,env,currency)=>production(env)?livePlans(market,env,currency):previewBilling.plans(market,env);
 const checkout=(db,env,...args)=>(production(env)?liveCheckout:previewBilling.checkout)(db,env,...args);
@@ -109,9 +115,7 @@ async function api(request,env,now) {
     if(typeof q.path!=='string'||q.path.length>300||!q.path.startsWith('/')||q.path.startsWith('//')||/[?\\#\r\n]/.test(q.path))throw customerError('validation');
     const ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)])),d=seo.resolve(q.path,{markets:ms,regions:rs});
     if(d.kind!=='page')throw customerError('not_found',404);
-    const market=ms.find(m=>m.code===d.market),others=(d.type==='market'||d.type==='intent')&&market.launch_status==='live'?ms.filter(m=>m.launch_status==='live'&&m.code!==d.market):[],inventories={};
-    for(const code of [d.market,...others.map(m=>m.code)])inventories[code]=inventory(rows,code,seoConfig.intentsFor(code),now);
-    return response({page:{as_of:snapshot.as_of,markets:ms,regions:rs[d.market],inventory:inventories[d.market],inventories,search:search(rows,{...seo.filters(d),sort:'soonest',page_size:12},access,now)}});
+    return response({page:seoPage(rows,d,ms,rs,access,now,snapshot.as_of)});
   }
   if(method==='GET'&&p==='/markets')return response({markets:markets(rows)});
   if(method==='GET'&&p==='/stats')return response({as_of:snapshot.as_of,total:rows.length,sports:rows.filter(r=>r.type==='sport').length,markets:Object.fromEntries(markets(rows).map(m=>[m.code,{count:m.opportunity_count,regions:regions(m.code,rows).filter(r=>r.opportunity_count).length}]))});
@@ -157,7 +161,7 @@ async function html(request,env,now) {
   // These documents contain no inventory facts. Their browser API requests
   // still read fresh proof; SEO/detail pages and sitemaps remain proof-bound.
   const shellDocument=['/','/index.html','/finder.html','/organisers.html','/organisers/'].includes(path)||/^\/(?:uk|us|ca|au|ie|nz|sg|hk|fr)\/find-pitches\/$/.test(path);
-  const rows=recovery||shellDocument?[]:(await readCatalogue(env,now)).rows,ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
+  const snapshot=recovery||shellDocument?null:await readCatalogue(env,now),rows=snapshot?.rows??[],ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
   if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));if(env.V3_LOCALISATION_ENABLED!=='false'&&env.V3_LOCALISATION_INDEXABLE==='true')entries.push(...entries.flatMap(entry=>['de','fr'].map(lang=>({...entry,path:i18n.pathFor(entry.path,lang)}))));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
   let d,template,routeQuery='';
   const staticPages={'/':'index.html','/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/billing.html':'billing.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};
@@ -166,6 +170,13 @@ async function html(request,env,now) {
   if(d&&d.kind==='page') {
     const inv=inventory(rows,d.market,seoConfig.intentsFor(d.market),now),s=search(rows,{...seo.filters(d),page_size:12},null,now),m=ms.find(m=>m.code===d.market),originalMeta=seo.meta(d,{market:m,markets:ms,regions:rs[d.market],inventory:inv,inventories:{[d.market]:inv},search:s,visible:s.results,regionPath:ancestors(d.market,d.region?.id),today:budgetDay(now)}),M=i18n.meta(originalMeta,d,m,lang,env.V3_LOCALISATION_INDEXABLE==='true');
     title=M.title;robots=M.robots;meta=`<meta name="description" content="${esc(M.description)}"><link rel="canonical" href="${esc(M.canonical)}">`+M.hreflang.map(h=>`<link rel="alternate" hreflang="${esc(h.lang)}" href="${esc(h.href)}">`).join('')+M.jsonld.map(j=>`<script type="application/ld+json">${jsonld(j)}</script>`).join('');
+    // The page already consumed one current proof snapshot. Give anonymous
+    // browsers its exact Free response once, bounded by every source expiry.
+    // Any session cookie (even invalid) excludes this optimisation entirely.
+    if(production(env)&&!Object.hasOwn(cookies(request),sessionCookie)){
+      const page=seoPage(rows,d,ms,rs,null,now,snapshot.as_of),initial=seoResponseData({path:d.path,page,rows,now});
+      if(initial)meta+=`<script id="fp-seo-response" type="application/json">${jsonld(initial)}</script>`;
+    }
   }
   if(template==='opportunity.html') {
     const query=new URLSearchParams(routeQuery||url.search),id=query.get('id'),row=rows.find(r=>r.id===id);if(!row) return text('Opportunity unavailable',404);

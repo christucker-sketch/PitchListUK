@@ -230,3 +230,14 @@ paths fail closed. Static registry reads may resolve routes before this call;
 registry counts are not treated as inventory. The existing inventory/search
 endpoints remain available to older clients. No client or cross-request proof
 cache is introduced.
+
+Anonymous production SEO HTML may include `script#fp-seo-response` with type
+`application/json` and schema `findpitches-v3-anonymous-seo-response-v1`. Its
+`page` is the same Free-redacted combined response, derived from the **same HTML
+request's current proof snapshot**, never a saved catalogue. The client consumes
+it once only for its exact canonical path, within ten seconds of capture and
+before every underlying proof/explicit application-close expiry. London midnight,
+invalid clocks, malformed/missing data or a signed-in session force a live API
+read. Any session cookie suppresses this HTML optimisation. No application/source
+URLs, private proof data or customer/session values are embedded. The HTML and
+API remain private/no-store; later reads always use the live API.

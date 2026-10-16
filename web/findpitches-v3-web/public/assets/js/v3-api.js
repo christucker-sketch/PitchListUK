@@ -57,6 +57,21 @@
   const prime = () => (primed = primed || (csrfToken() ? Promise.resolve() : call('GET', '/session').catch(() => {})));
   const send = async (method, path, body = {}) => { await prime(); return call(method, path, body); };
 
+  function takeSeoResponse(path) {
+    const node=document.getElementById('fp-seo-response');if(!node)return null;
+    // Consume once, including invalid/expired data. Never keep a browser cache.
+    node.remove();
+    try {
+      const data=JSON.parse(node.textContent),now=Date.now(),created=Date.parse(data.created_at),expires=Date.parse(data.expires_at);
+      const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(now));
+      const part=type=>parts.find(p=>p.type===type).value,day=part('year')+'-'+part('month')+'-'+part('day');
+      if(FP.state?.session?.signed_in||data.schema!=='findpitches-v3-anonymous-seo-response-v1'||data.path!==path||
+        !Number.isFinite(created)||!Number.isFinite(expires)||now<created||now>=expires||expires-created>10000||data.london_day!==day||
+        !data.page||!Array.isArray(data.page.search?.results)||!data.page.search.results.every(r=>r.access?.locked===true&&r.access.application_url===null&&r.access.source_url===null))return null;
+      return data.page;
+    }catch{return null;}
+  }
+
   // Event-type labels are presentation config (contract §3.4), shipped with the site.
   const TYPES = {
     christmas_market: translateUI('Christmas market'), holiday_market: translateUI('Holiday market'), food_festival: translateUI('Food festival'), festival: translateUI('Festival'),
@@ -94,7 +109,7 @@
       async byIds(ids) { return (await send('POST', '/opportunities/by-ids', { ids })).items; }
     },
     seo: {
-      async page(path) { return (await call('GET', '/seo/page'+qs({path}))).page; },
+      async page(path) { return takeSeoResponse(path)??(await call('GET', '/seo/page'+qs({path}))).page; },
       async inventory({ market, intents }) {
         return send('POST', '/seo/inventory', { market, intents: (intents || []).map(i => ({ key: i.key, filters: i.filters || {} })) });
       }

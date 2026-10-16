@@ -23,6 +23,21 @@ test('combined SEO read produces results and true cross-market/region counts fro
  assert.equal((await call('https://foreign.example/')).status,400);assert.equal((await call('/account.html')).status,404);
  failed=true;assert.equal((await call('/uk/')).status,500);assert.equal((await stmt(db,'SELECT COUNT(*) AS n FROM customers').first()).n,0);assert.equal((await stmt(db,'SELECT COUNT(*) AS n FROM stripe_customers').first()).n,0);
 });
+test('anonymous SEO HTML carries one redacted response from its current proof read; session cookies bypass it',async t=>{
+ const db=setup(t),e=env(db),asOf=now();let reads=0;
+ const gb=proof('GB'),us={...proof('US'),id:'ent_'+'2'.repeat(32)},expired={...proof('GB'),id:'ent_'+'3'.repeat(32),proof_expires_at:'2020-01-01T00:00:00Z'};
+ e.V3_READY_API.fetch=async()=>{reads++;return Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:asOf,publication_enabled:false,production_cutover_enabled:false,items:[gb,us,expired]});};
+ const get=(p,headers={})=>worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+p,{headers}),e);
+ const r=await get('/uk/'),markup=await r.text(),data=JSON.parse(markup.match(/<script id="fp-seo-response" type="application\/json">(.*?)<\/script>/s)[1]);
+ assert.equal(r.status,200);assert.equal(reads,1);assert.equal(r.headers.get('cache-control'),'private, no-store');
+ assert.equal(data.path,'/uk/');assert.equal(data.page.inventory.market_total,1);assert.equal(data.page.inventories.US.market_total,1);
+ assert.equal(data.page.search.results[0].access.locked,true);assert.ok(!JSON.stringify(data).includes('organiser.example.org'));
+ assert.ok(!JSON.stringify(data).includes('_proof'));assert.ok(!JSON.stringify(data).includes('_restricted'));
+ const api=(await (await get('/api/v3/seo/page?path=%2Fuk%2F')).json()).page;
+ assert.deepEqual(data.page.search,api.search);assert.deepEqual(data.page.markets,api.markets);
+ for(const p of ['/uk/','/lang/fr/uk/']){const withCookie=await get(p,{cookie:'__Host-fp_v3_session=invalid'});assert.equal(withCookie.status,200);assert.ok(!(await withCookie.text()).includes('id="fp-seo-response"'));}
+ assert.equal((await stmt(db,'SELECT COUNT(*) AS n FROM customers').first()).n,0);
+});
 test('brand and Finder shells do not read inventory; homepage data still fails closed and uses one fresh snapshot',async t=>{
  const db=setup(t),e=env(db);let reads=0,failed=false;
  e.V3_READY_API.fetch=async()=>{reads++;if(failed)throw Error('source_unavailable');return Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now(),publication_enabled:false,production_cutover_enabled:false,items:[proof('GB'),{...proof('US'),id:'ent_'+'2'.repeat(32),proof_expires_at:'2020-01-01T00:00:00Z'}]});};
