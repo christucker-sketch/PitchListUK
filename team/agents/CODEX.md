@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## V3-029 scoped-read claim — 2026-10-16T22:36:02+01:00
+
+Continuing the remaining measured whole-inventory transfer/mapping cost. Claimed components: shared private catalogue scope contract, bounded SQL/filtering/current producer policy, customer API selection/client, focused output-parity/fail-closed tests, guarded API then customer release and public timing evidence. Market searches/counts/regions/inventory use a proved subset; listing detail retains the complete target country for identical related listings. Global home/markets/stats/combined SEO/sitemaps remain global. Old global source responses remain a safe compatibility fallback; an unexpected partial response must fail closed. No cross-request cache, proof/identity weakening, paid/source acquisition, Pi/V2/PitchList/billing behaviour changes.
+
 ## Current proof read model deployed / exact resume — 2026-10-16T20:09:05+01:00
 
 [Measured release and safety](../../docs/findpitches-v3-proof-read-model-2026-10-16.md) / [complete sanitized evidence](../../operations/findpitches-v3/reports/proof-read-performance-2026-10-16.json). Code3c85d655; sourceAPIa29b9d03. Fresh catalogueAPI2.84→1.23s/filter3.17→1.43s/home2.81→1.31s/listing2.19→1.13s; internal source-read497–587ms/D1259–320ms. Browser18pass: country3.23sdesktop/3.40smobileviewport versus prior5.49/6.18s. Full498/public29before+after/boundaries pass. Additive bounded proof/selection/origin heads; current proof/identity/holds/producer clocks/time gates remain live,0same-snapshot differences. Two queries rather than four; no unconditional READY cache. Two migrations' fixed physical steps16,936,960bytes include concurrent activity and are not daily growth.
