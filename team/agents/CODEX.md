@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T15:06:58+01:00 — native Stripe correction verified; guarded Checkout restoration passed; owned acceptance pending** (Europe/London).
-State: **V3-010 runtime permission blocker cleared, CheckoutLIVE/public/sign-in/recoveryon; genuine owned trial/globalPro/Portal acceptance pending. V3-029 performance paused. Source continuation checkpoints remain delivered.**
+Author: Codex. Updated: **2026-10-16T16:26:37+01:00 — owned LIVE functional acceptance passed; independent Checkout branding delivered; Portal direction pending** (Europe/London).
+State: **V3-010 functional acceptance DONE. V3-030 new Checkout branding live; Portal direction BLOCKED on operator choice. Public/sign-in/Checkout/recovery on. V3-029 remains claimed and can resume after this checkpoint.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,14 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Checkout styling delivered / Portal direction pending — 2026-10-16T16:26:37+01:00
+
+[Delivery and TEST preview](../../docs/findpitches-v3-checkout-branding-2026-10-16.md) / [native evidence](../../operations/findpitches-v3/reports/checkout-branding-2026-10-16.json). Code`db60244a`, final customer`fc4eaef4-36a6-4de9-bf72-6643da9e6700`; new CheckoutLIVE/FindPitches/green/cream; per-session branding only. Explicit AdaptivePricingoff preserves chosen GBP/USD/EUR price after hosted TEST exposed a conversion menu. Canonical reads/webhooks remain2024; only createCheckout uses documented2025-09-30.clover. Full474/frontend3/96-file independence/58-file build/boundaries/hostedTEST/native5/public29 pass. Two temporary TEST sessions expired; one owned TEST product/price created, no existing TEST product edits, no Test customer/sub/payment/form submission and no new LIVE test objects/messages/Serper/source writes. Native settings/secrets/schedules/routes/DNS/customer history/PitchList/V2 preserved; sourcepaid/publicationoff, queue bounded/processing with0dead/stale. First guarded restore reclosed on incomplete native agreement; retry capturedclosed→live and allpublicchecks passed, codeETag unchanged.
+
+[Owned LIVE acceptance](../../operations/findpitches-v3/reports/owned-live-acceptance-2026-10-16.json) independently confirms Chris's signup/cancellation: new V3 customer, £0trialCheckout, exact£4.99globalPro/7days, cancellationatperiodend/accessuntil23October. Future actual expiry not observed; model failsclosed. FunctionalV3-010 complete; branding is separateV3-030. StripeLink in screenshot explains cross-site payment recognition alongside the existing signed-in email; no legacy customer migration.
+
+**Portal remains account-branded.** [Choice requested](../STRIPE_BRANDING_DECISION_2026-10-16.md): separate FindPitches Stripe account (recommendation), V3-owned billing UI, or retain appearance temporarily. No answer/permission for shared branding, financial account creation or migration is assumed; Hal has not accepted further work. V3-030 remainsblocked on that direction. V3-029 profiling is otherwise resumable after this published checkpoint; original source/storage/French tasks retain their scopes.
 
 ## Functional acceptance evidence published — 2026-10-16T16:00:44+01:00
 

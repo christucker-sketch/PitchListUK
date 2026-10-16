@@ -1,6 +1,6 @@
 # FindPitches V3 shared team hub
 
-**Current customer checkpoint, 2026-10-16T15:06:58+01:00:** [Stripe blocker cleared / Checkout restored / owned acceptance pending](../docs/findpitches-v3-live-signup-incident-2026-10-16.md). Hal's in-place permission fix native-verified; CheckoutLIVE/public/sign-in/recoveryon. Fresh focused27/public29 pass, existing runtime code unchanged. Chris's genuine trial/globalPro/Portal acceptance remains open; performancepaused.
+**Current customer checkpoint, 2026-10-16T16:26:37+01:00:** [Owned LIVE signup/cancellation confirmed; scoped Checkout branding live](../docs/findpitches-v3-checkout-branding-2026-10-16.md). FunctionalV3-010 acceptance passed, full474/public29/hostedTEST pass; public/sign-in/Checkout/recoveryon. Portal account branding still needs [a direction](STRIPE_BRANDING_DECISION_2026-10-16.md), preserving PitchList. Paid/source publication off.
 
 Latest measured continuation, 2026-10-16T10:42:07+01:00: [1,842 READY; French proof/upcoming intake validated; storage follow-up](../docs/findpitches-v3-hub-continuation-2026-10-16.md). V3-026/027 complete; V3-020/022 broader follow-ups active. Paid off, customer runtime unchanged.
 

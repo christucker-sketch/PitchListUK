@@ -1,0 +1,202 @@
+{
+  "schema": "findpitches-v3-isolated-checkout-branding-v1",
+  "as_of": "2026-10-16T16:26:37+01:00",
+  "state": "new_checkout_live_portal_account_decision_pending",
+  "code_commit": "db60244a",
+  "checkout_creation_api_version": "2025-09-30.clover",
+  "canonical_reads_and_webhook_contract": "2024-06-20",
+  "styling": {
+    "display_name": "FindPitches",
+    "button_color": "#0e4b2c",
+    "background_color": "#f3f5f0",
+    "logo": {
+      "type": "url",
+      "url": "https://findpitches.com/assets/brand/findpitches-logo.png"
+    },
+    "icon": {
+      "type": "url",
+      "url": "https://findpitches.com/assets/brand/findpitches-icon.png"
+    }
+  },
+  "adaptive_pricing_enabled": false,
+  "selected_currency_preserved": true,
+  "assets_verified": [
+    {
+      "name": "icon",
+      "status": 200,
+      "hash_matches": true,
+      "sha256": "e6a540b4bee7336825a4e1b04628c6a59685edb4b7c9aa23408fcbf4bc2eeb05"
+    },
+    {
+      "name": "logo",
+      "status": 200,
+      "hash_matches": true,
+      "sha256": "eab2f935802f773b04a28ead1e201f8e40508b54b9fd75a737af7b8064c17e32"
+    }
+  ],
+  "release": {
+    "as_of": "2026-10-16T15:13:01.283Z",
+    "worker": "findpitches-v3-customer-production",
+    "release_method": "version_upload_and_deploy",
+    "deployment_id": "fddc6f34-aca1-4919-b707-d4286f9f3f6c",
+    "version_ids": [
+      "9e9372a1-fc80-47e9-bf4c-1e17b08e9ffe"
+    ],
+    "checkout_enabled": false,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "all_native_bindings_and_settings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "pitchlist_unchanged": true,
+    "database_migrations": 0,
+    "secret_values_replaced": false,
+    "source_identity_writes": 0
+  },
+  "checkout_reopening": {
+    "as_of": "2026-10-16T15:22:25.689Z",
+    "checkout_enabled": true,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "worker": "findpitches-v3-customer-production",
+    "deployment_id": "0556cf5a-98b7-4b43-9418-81742e15200a",
+    "version_id": "fc4eaef4-36a6-4de9-bf72-6643da9e6700",
+    "previous_version_id": "f5a97ac7-c742-47bb-a1d2-6e9720a1cd44",
+    "only_changed_flag": "V3_CHECKOUT_ENABLED",
+    "native_settings_bindings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "schedules_unchanged": true,
+    "pitchlist_unchanged": true,
+    "code_assets_changed": false,
+    "secret_values_replaced": false,
+    "database_migrations": 0,
+    "source_tables_written": false,
+    "provider_objects_created_by_checks": 0,
+    "messages_sent_by_checks": 0,
+    "serper_queries": 0,
+    "public_checks_passed": 29,
+    "public_checks_failed": 0,
+    "owned_live_journey_proven": false
+  },
+  "activation_checks": [
+    {
+      "at": "2026-10-16T15:21:50.430Z",
+      "status": 200,
+      "public_enabled": true,
+      "checkout_enabled": false,
+      "email_configured": true,
+      "billing_mode": "live",
+      "pending_webhooks": 0
+    },
+    {
+      "at": "2026-10-16T15:21:57.417Z",
+      "status": 200,
+      "public_enabled": true,
+      "checkout_enabled": true,
+      "email_configured": true,
+      "billing_mode": "live",
+      "pending_webhooks": 0
+    }
+  ],
+  "validation": {
+    "full_v3": {
+      "passed": 474,
+      "failed": 0,
+      "skipped": 0
+    },
+    "frontend_contract_passed": 3,
+    "independence_files": 96,
+    "built_public_files": 58,
+    "runtime_boundaries_passed": true,
+    "hosted_test": {
+      "passed": true,
+      "sandbox": true,
+      "findpitches_label_visible": true,
+      "cream_background_visible": true,
+      "green_button_visible": true,
+      "fixed_gbp_499_observed_in_preview": true,
+      "no_conversion_fee_offered": true,
+      "customer_not_created": true,
+      "form_submitted": false,
+      "certificate_bypass": false,
+      "fresh_anonymous_profile": true,
+      "sessions_expired": true
+    },
+    "public_before": {
+      "passed": 29,
+      "failed": 0
+    },
+    "public_after": {
+      "passed": 29,
+      "failed": 0
+    },
+    "native_capability_checks_passed": 5
+  },
+  "owned_live_acceptance_evidence": "owned-live-acceptance-2026-10-16.json",
+  "portal": {
+    "dedicated_findpitches_configuration_preserved": true,
+    "shared_pitchlist_account_branding_unchanged": true,
+    "account_level_business_name_and_merchant_disclosure_unchanged": true,
+    "requires_direction": "separate account / V3 billing UI / temporarily retain Portal appearance",
+    "choice_received": false
+  },
+  "provider_test_objects": {
+    "checkout_sessions_created": 2,
+    "checkout_sessions_expired": 2,
+    "owned_test_products_created": 1,
+    "owned_test_prices_created": 1,
+    "customer_objects_created": 0,
+    "subscriptions_created": 0,
+    "charges_created": 0,
+    "live_objects_created": 0,
+    "legacy_test_products_modified": false
+  },
+  "source_health": {
+    "as_of": "2026-10-16T15:21:42.115Z",
+    "ready": 1829,
+    "ready_by_country": {
+      "GB": 161,
+      "US": 1658,
+      "CA": 1,
+      "AU": 4,
+      "IE": 0,
+      "NZ": 5,
+      "SG": 0,
+      "HK": 0,
+      "FR": 0
+    },
+    "safety": {
+      "publication_enabled": 0,
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "core_due": 1,
+      "core_leased": 1,
+      "core_dead": 0,
+      "stale_leases": 0,
+      "paid_queries_today": 0,
+      "paid_bulk_enabled": 0,
+      "commercial_manual_paused": 1
+    },
+    "queue_trend": {
+      "earlier_as_of": "2026-10-16T15:08:11.758Z",
+      "earlier_outstanding": 89,
+      "current_outstanding": 2,
+      "dead": 0,
+      "stale": 0,
+      "assessment": "bounded and declining; billing release does not dispatch or alter source jobs"
+    }
+  },
+  "safety": {
+    "shared_stripe_branding_modified": false,
+    "live_keys_products_prices_webhooks_portal_configuration_modified": false,
+    "pitchlist_modified": false,
+    "v2_modified": false,
+    "source_tables_written": false,
+    "source_custody_audit_repeated": false,
+    "serper_queries": 0,
+    "messages_sent": 0,
+    "existing_trial_cancellation_preserved": true
+  },
+  "guarded_restore_note": "First restore did not pass native state check and automatically reclosed only new Checkout. Verified unchanged script ETag; bounded fresh native reads on retry observed closed -> live before successful public checks. Source work was bounded/processing with no dead/stale jobs; no acquisition or provenance controls changed."
+}

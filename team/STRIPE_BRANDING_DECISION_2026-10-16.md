@@ -4,6 +4,8 @@ The owner completed the real signup and cancellation journey. Read-only native/p
 
 [Sanitized acceptance evidence](../operations/findpitches-v3/reports/owned-live-acceptance-2026-10-16.json).
 
+**Update 2026-10-16T16:26:37+01:00:** independent Checkout styling is now deployed and new Checkout reopened. Full474/public29/hostedTEST pass; explicit AdaptivePricingoff preserves the selected price. [Delivery and preview](../docs/findpitches-v3-checkout-branding-2026-10-16.md). Portal/account direction remains unanswered; no account setup or shared brand change is authorized by silence.
+
 ## Scoped Checkout change already being built
 
 New V3 hosted Checkout sessions will explicitly set FindPitches display name, the approved existing logo/mark, cream background and dark green buttons. No Stripe account branding or PitchList setting changes. Existing sessions retain their original appearance and idempotency history.
