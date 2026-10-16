@@ -29,3 +29,5 @@ This is a Sandbox preview with empty synthetic placeholders. Its legal merchant 
 The hosted Portal remains on its dedicated FindPitches configuration and still inherits shared PitchList account branding. Stripe exposes no independent Portal colour/logo override on that configuration. The live PitchList service must remain protected, so no shared branding edit or new account/migration has been performed.
 
 [Decision and implementation consequences](../team/STRIPE_BRANDING_DECISION_2026-10-16.md): separate FindPitches Stripe account (recommended for complete provider separation), own V3 billing management, or retain the Portal appearance temporarily. A session question requests the choice; no answer is assumed. A separate account must preserve the existing trial/history with explicit account-aware ownership and credentials rather than swapping the current key. Hal has not accepted an additional setup task yet.
+
+Published source-custody note: the pre-push local currency fix `db60244a` was rebased onto hub updates as `7d458b22`; the implementation is identical. Subsequent native billing and performance releases retain that Checkout policy.

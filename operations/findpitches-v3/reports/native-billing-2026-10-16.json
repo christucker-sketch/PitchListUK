@@ -370,7 +370,9 @@
     "native_lifecycle_acceptance": "local native worker end-to-end plus genuine Stripe TEST provider-safe equivalent",
     "live_subscription_changes_by_engineering": 0,
     "existing_trial_and_cancellation_preserved": true,
-    "future_actual_trial_expiry_observed": false
+    "future_actual_trial_expiry_observed": false,
+    "live_empty_subscription_update_probe": true,
+    "live_billing_state_changed": false
   },
   "source_snapshot": {
     "as_of": "2026-10-16T18:09:52.404Z",
@@ -419,5 +421,19 @@
     "Optional card/invoice failures do not disable cancellation; availability is explicit.",
     "Native customer actions proven by safe equivalents; no impersonation or LIVE subscription mutation for testing.",
     "Storage 48/72-hour samples are due 17/18 October, not measured early."
-  ]
+  ],
+  "additional_live_write_capability": {
+    "as_of": "2026-10-16T18:36:16.107Z",
+    "scope": "exact_existing_v3_owned_cancelled_trial_empty_update_only",
+    "http_status": 200,
+    "permitted": true,
+    "code": "accepted_empty_update",
+    "owned_customer_and_subscription_verified": true,
+    "request_parameters": 0,
+    "subscription_billing_state_unchanged": true,
+    "trial_cancellation_price_period_invoice_and_metadata_preserved": true,
+    "new_live_objects": 0,
+    "charges_or_trial_changes": 0,
+    "shared_pitchlist_objects_touched": false
+  }
 }

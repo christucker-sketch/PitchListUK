@@ -1,0 +1,5232 @@
+{
+  "schema": "findpitches-v3-performance-checkpoint-v1",
+  "as_of": "2026-10-16T19:43:13+01:00",
+  "state": "first_measured_optimisation_live_subsecond_goal_still_open",
+  "code_commit": "bb9d09a9",
+  "source_api_release": {
+    "role": "api",
+    "name": "findpitches-v3-api-shadow",
+    "uploaded_version_id": "ba82ad84-900f-4e00-a401-c7552c63d844",
+    "deployment_id": "2d406db3-ec14-4131-ab8c-4aba754cbc34",
+    "bindings_and_schedules_preserved": true,
+    "completed_at": "2026-10-16T18:30:07.404Z"
+  },
+  "customer_release": {
+    "as_of": "2026-10-16T18:30:41.903Z",
+    "worker": "findpitches-v3-customer-production",
+    "release_method": "version_upload_and_deploy",
+    "deployment_id": "3295045f-851e-404a-813e-0ef46ca1b32c",
+    "version_ids": [
+      "4ae82009-d364-448d-b46c-e7dbc44117af"
+    ],
+    "checkout_enabled": false,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "all_native_bindings_and_settings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "pitchlist_unchanged": true,
+    "database_migrations": 0,
+    "secret_values_replaced": false,
+    "source_identity_writes": 0
+  },
+  "checkout_reopened": {
+    "as_of": "2026-10-16T18:31:43.996Z",
+    "checkout_enabled": true,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "worker": "findpitches-v3-customer-production",
+    "deployment_id": "b52143dc-f4c5-426e-9890-3b920bc376c0",
+    "version_id": "c7974bb8-6e55-4587-8be2-91c3f1550d14",
+    "previous_version_id": "4ae82009-d364-448d-b46c-e7dbc44117af",
+    "only_changed_flag": "V3_CHECKOUT_ENABLED",
+    "native_settings_bindings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "schedules_unchanged": true,
+    "pitchlist_unchanged": true,
+    "code_assets_changed": false,
+    "secret_values_replaced": false,
+    "database_migrations": 0,
+    "source_tables_written": false,
+    "provider_objects_created_by_checks": 0,
+    "messages_sent_by_checks": 0,
+    "serper_queries": 0,
+    "public_checks_passed": 29,
+    "public_checks_failed": 0,
+    "owned_live_journey_proven": false
+  },
+  "source_index_migration": {
+    "as_of": "2026-10-16T18:25:52.729Z",
+    "database": "findpitches-v3-shadow",
+    "migration": "0025_structured_customer_policy_index.sql",
+    "additive_index_only": true,
+    "existing_schema_hash": "4f2da04d7053cd9661db10c32574e19648cd7713d322a0688cc6bcaebd9995c1",
+    "existing_schema_unchanged": true,
+    "policy_parity_single_database_snapshot": {
+      "before_rows": 2206,
+      "after_rows": 2206,
+      "missing": 0,
+      "extra": 0
+    },
+    "plan": [
+      "SCAN p USING INDEX structured_customer_policy_lookup",
+      "CORRELATED SCALAR SUBQUERY 1",
+      "SEARCH n USING INDEX structured_customer_policy_lookup (producer_record_id=? AND <expr>>?)",
+      "SEARCH er USING INDEX sqlite_autoindex_entity_records_1 (record_id=?)"
+    ],
+    "database_bytes_before": 4024373248,
+    "database_bytes_after": 4028170240,
+    "source_evidence_rewrites": 0,
+    "identity_changes": 0,
+    "paid_or_publication_controls_changed": false
+  },
+  "api_comparison": [
+    {
+      "path_name": "homepage",
+      "before_p50_ms": 197.62,
+      "after_p50_ms": 182.35,
+      "before_p95_ms": 258.74,
+      "after_p95_ms": 335.36,
+      "p50_reduction_percent": 7.7,
+      "before_bytes": 37481,
+      "after_bytes": 37481
+    },
+    {
+      "path_name": "finder",
+      "before_p50_ms": 140.24,
+      "after_p50_ms": 134.05,
+      "before_p95_ms": 213.12,
+      "after_p95_ms": 344.23,
+      "p50_reduction_percent": 4.4,
+      "before_bytes": 13679,
+      "after_bytes": 13679
+    },
+    {
+      "path_name": "country",
+      "before_p50_ms": 3606.58,
+      "after_p50_ms": 2341.39,
+      "before_p95_ms": 3846.99,
+      "after_p95_ms": 2931.95,
+      "p50_reduction_percent": 35.1,
+      "before_bytes": 7610,
+      "after_bytes": 7610
+    },
+    {
+      "path_name": "category",
+      "before_p50_ms": 3385.16,
+      "after_p50_ms": 2374.38,
+      "before_p95_ms": 3657.12,
+      "after_p95_ms": 2783.07,
+      "p50_reduction_percent": 29.9,
+      "before_bytes": 5543,
+      "after_bytes": 5543
+    },
+    {
+      "path_name": "listing",
+      "before_p50_ms": 3513.41,
+      "after_p50_ms": 2652.22,
+      "before_p95_ms": 3801.92,
+      "after_p95_ms": 3195.54,
+      "p50_reduction_percent": 24.5,
+      "before_bytes": 4676,
+      "after_bytes": 4676
+    },
+    {
+      "path_name": "account",
+      "before_p50_ms": 145.28,
+      "after_p50_ms": 194.4,
+      "before_p95_ms": 180.62,
+      "after_p95_ms": 211.49,
+      "p50_reduction_percent": -33.8,
+      "before_bytes": 2254,
+      "after_bytes": 2254
+    },
+    {
+      "path_name": "billing",
+      "before_p50_ms": 114.48,
+      "after_p50_ms": 215.32,
+      "before_p95_ms": 119.97,
+      "after_p95_ms": 448.07,
+      "p50_reduction_percent": -88.1,
+      "before_bytes": 2258,
+      "after_bytes": 2258
+    },
+    {
+      "path_name": "home_api",
+      "before_p50_ms": 3430.96,
+      "after_p50_ms": 2703.28,
+      "before_p95_ms": 3471.63,
+      "after_p95_ms": 3008.28,
+      "p50_reduction_percent": 21.2,
+      "before_bytes": 100484,
+      "after_bytes": 100484
+    },
+    {
+      "path_name": "catalogue_api",
+      "before_p50_ms": 3482.73,
+      "after_p50_ms": 2382.6,
+      "before_p95_ms": 3645.96,
+      "after_p95_ms": 2818.72,
+      "p50_reduction_percent": 31.6,
+      "before_bytes": 53194,
+      "after_bytes": 53194
+    },
+    {
+      "path_name": "filter_api",
+      "before_p50_ms": 3580.78,
+      "after_p50_ms": 2556.28,
+      "before_p95_ms": 3960.09,
+      "after_p95_ms": 2597.28,
+      "p50_reduction_percent": 28.6,
+      "before_bytes": 1721,
+      "after_bytes": 1721
+    },
+    {
+      "path_name": "map_api",
+      "before_p50_ms": 3505.51,
+      "after_p50_ms": 2452.33,
+      "before_p95_ms": 4199.95,
+      "after_p95_ms": 2874.24,
+      "p50_reduction_percent": 30.0,
+      "before_bytes": 227344,
+      "after_bytes": 220865
+    },
+    {
+      "path_name": "markets_api",
+      "before_p50_ms": 3406.66,
+      "after_p50_ms": 2513.6,
+      "before_p95_ms": 3667.04,
+      "after_p95_ms": 2750.62,
+      "p50_reduction_percent": 26.2,
+      "before_bytes": 6050,
+      "after_bytes": 6050
+    },
+    {
+      "path_name": "regions_api",
+      "before_p50_ms": 3470.74,
+      "after_p50_ms": 2536.58,
+      "before_p95_ms": 3884.85,
+      "after_p95_ms": 2702.73,
+      "p50_reduction_percent": 26.9,
+      "before_bytes": 10851,
+      "after_bytes": 10851
+    },
+    {
+      "path_name": "listing_api",
+      "before_p50_ms": 3503.2,
+      "after_p50_ms": 2297.79,
+      "before_p95_ms": 3806.35,
+      "after_p95_ms": 2786.24,
+      "p50_reduction_percent": 34.4,
+      "before_bytes": 5368,
+      "after_bytes": 5368
+    }
+  ],
+  "browser_comparison": [
+    {
+      "device": "desktop",
+      "path_name": "homepage",
+      "before_ms": 4707,
+      "after_ms": 3504,
+      "reduction_percent": 25.6
+    },
+    {
+      "device": "desktop",
+      "path_name": "finder",
+      "before_ms": 4968,
+      "after_ms": 3344,
+      "reduction_percent": 32.7
+    },
+    {
+      "device": "desktop",
+      "path_name": "filter_interaction",
+      "before_ms": 4375,
+      "after_ms": 2316,
+      "reduction_percent": 47.1
+    },
+    {
+      "device": "desktop",
+      "path_name": "country",
+      "before_ms": 18713,
+      "after_ms": 5490,
+      "reduction_percent": 70.7
+    },
+    {
+      "device": "desktop",
+      "path_name": "category",
+      "before_ms": 22018,
+      "after_ms": 5390,
+      "reduction_percent": 75.5
+    },
+    {
+      "device": "desktop",
+      "path_name": "listing",
+      "before_ms": 11690,
+      "after_ms": 4686,
+      "reduction_percent": 59.9
+    },
+    {
+      "device": "desktop",
+      "path_name": "map",
+      "before_ms": 4206,
+      "after_ms": 2746,
+      "reduction_percent": 34.7
+    },
+    {
+      "device": "desktop",
+      "path_name": "account",
+      "before_ms": 835,
+      "after_ms": 603,
+      "reduction_percent": 27.8
+    },
+    {
+      "device": "desktop",
+      "path_name": "billing",
+      "before_ms": 475,
+      "after_ms": 565,
+      "reduction_percent": -18.9
+    },
+    {
+      "device": "mobile",
+      "path_name": "homepage",
+      "before_ms": 4327,
+      "after_ms": 3454,
+      "reduction_percent": 20.2
+    },
+    {
+      "device": "mobile",
+      "path_name": "finder",
+      "before_ms": 3690,
+      "after_ms": 3162,
+      "reduction_percent": 14.3
+    },
+    {
+      "device": "mobile",
+      "path_name": "filter_interaction",
+      "before_ms": 3940,
+      "after_ms": 2970,
+      "reduction_percent": 24.6
+    },
+    {
+      "device": "mobile",
+      "path_name": "country",
+      "before_ms": 20008,
+      "after_ms": 6181,
+      "reduction_percent": 69.1
+    },
+    {
+      "device": "mobile",
+      "path_name": "category",
+      "before_ms": 19042,
+      "after_ms": 5905,
+      "reduction_percent": 69.0
+    },
+    {
+      "device": "mobile",
+      "path_name": "listing",
+      "before_ms": 10865,
+      "after_ms": 5627,
+      "reduction_percent": 48.2
+    },
+    {
+      "device": "mobile",
+      "path_name": "map",
+      "before_ms": 4813,
+      "after_ms": 3356,
+      "reduction_percent": 30.3
+    },
+    {
+      "device": "mobile",
+      "path_name": "account",
+      "before_ms": 549,
+      "after_ms": 580,
+      "reduction_percent": -5.6
+    },
+    {
+      "device": "mobile",
+      "path_name": "billing",
+      "before_ms": 829,
+      "after_ms": 618,
+      "reduction_percent": 25.5
+    }
+  ],
+  "measurements": {
+    "public_before": {
+      "schema": "findpitches-v3-public-read-profile-v1",
+      "started_at": "2026-10-16T18:13:58.739Z",
+      "phase": "baseline",
+      "origin": "https://findpitches.com",
+      "samples_per_path": 5,
+      "results": [
+        {
+          "name": "homepage",
+          "path": "/",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 257.05,
+              "total_ms": 258.74,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 226.32,
+              "total_ms": 227.44,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 179.79,
+              "total_ms": 182.11,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 196.67,
+              "total_ms": 197.62,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 174.89,
+              "total_ms": 176.1,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 197.62,
+          "p95_ms": 258.74,
+          "first_ms": 258.74,
+          "repeats_p50_ms": 182.11,
+          "body_bytes": 37481
+        },
+        {
+          "name": "finder",
+          "path": "/finder.html?cc=uk",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 212.67,
+              "total_ms": 213.12,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 130.44,
+              "total_ms": 131.28,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 139.11,
+              "total_ms": 140.24,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 127.08,
+              "total_ms": 127.67,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 157.26,
+              "total_ms": 157.66,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 140.24,
+          "p95_ms": 213.12,
+          "first_ms": 213.12,
+          "repeats_p50_ms": 131.28,
+          "body_bytes": 13679
+        },
+        {
+          "name": "country",
+          "path": "/uk/",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3605.38,
+              "total_ms": 3606.58,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3709.29,
+              "total_ms": 3709.78,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3165.55,
+              "total_ms": 3165.89,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3846.61,
+              "total_ms": 3846.99,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3032.42,
+              "total_ms": 3032.96,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3606.58,
+          "p95_ms": 3846.99,
+          "first_ms": 3606.58,
+          "repeats_p50_ms": 3165.89,
+          "body_bytes": 7610
+        },
+        {
+          "name": "category",
+          "path": "/uk/christmas-market-stalls/",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3656.18,
+              "total_ms": 3657.12,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3384.26,
+              "total_ms": 3385.16,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3652.39,
+              "total_ms": 3652.97,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3368.6,
+              "total_ms": 3369.35,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3354.43,
+              "total_ms": 3355.1,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3385.16,
+          "p95_ms": 3657.12,
+          "first_ms": 3657.12,
+          "repeats_p50_ms": 3369.35,
+          "body_bytes": 5543
+        },
+        {
+          "name": "listing",
+          "path": "/uk/opportunity/ent_94a16b40124e8044efb05e356f1604d1/",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3642.39,
+              "total_ms": 3642.86,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3027.88,
+              "total_ms": 3028.47,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3800.49,
+              "total_ms": 3801.92,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3512.96,
+              "total_ms": 3513.41,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3280.46,
+              "total_ms": 3282.94,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3513.41,
+          "p95_ms": 3801.92,
+          "first_ms": 3642.86,
+          "repeats_p50_ms": 3282.94,
+          "body_bytes": 4676
+        },
+        {
+          "name": "account",
+          "path": "/account.html",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 179.38,
+              "total_ms": 180.62,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 124.04,
+              "total_ms": 124.62,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 170.99,
+              "total_ms": 172.3,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 110.04,
+              "total_ms": 110.41,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 144.96,
+              "total_ms": 145.28,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 145.28,
+          "p95_ms": 180.62,
+          "first_ms": 180.62,
+          "repeats_p50_ms": 124.62,
+          "body_bytes": 2254
+        },
+        {
+          "name": "billing",
+          "path": "/billing.html",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 95.18,
+              "total_ms": 95.56,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 114.14,
+              "total_ms": 114.48,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 119.62,
+              "total_ms": 119.97,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 107.5,
+              "total_ms": 107.83,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 117.24,
+              "total_ms": 117.62,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 114.48,
+          "p95_ms": 119.97,
+          "first_ms": 95.56,
+          "repeats_p50_ms": 114.48,
+          "body_bytes": 2258
+        },
+        {
+          "name": "home_api",
+          "path": "/api/v3/home",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3470.24,
+              "total_ms": 3471.63,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3429.58,
+              "total_ms": 3430.96,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3284.23,
+              "total_ms": 3286.08,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3432.4,
+              "total_ms": 3435.28,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3229.67,
+              "total_ms": 3232.25,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3430.96,
+          "p95_ms": 3471.63,
+          "first_ms": 3471.63,
+          "repeats_p50_ms": 3286.08,
+          "body_bytes": 100484
+        },
+        {
+          "name": "catalogue_api",
+          "path": "/api/v3/opportunities?market=GB&limit=30",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3481.92,
+              "total_ms": 3482.73,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3348.95,
+              "total_ms": 3350.95,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3644.29,
+              "total_ms": 3645.96,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3500.2,
+              "total_ms": 3501.18,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2976.78,
+              "total_ms": 2977.59,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3482.73,
+          "p95_ms": 3645.96,
+          "first_ms": 3482.73,
+          "repeats_p50_ms": 3350.95,
+          "body_bytes": 53194
+        },
+        {
+          "name": "filter_api",
+          "path": "/api/v3/opportunities?market=GB&q=market&limit=30",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3580.42,
+              "total_ms": 3580.78,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3697.57,
+              "total_ms": 3698.71,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3959.71,
+              "total_ms": 3960.09,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3317.63,
+              "total_ms": 3317.95,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3362.22,
+              "total_ms": 3362.55,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3580.78,
+          "p95_ms": 3960.09,
+          "first_ms": 3580.78,
+          "repeats_p50_ms": 3362.55,
+          "body_bytes": 1721
+        },
+        {
+          "name": "map_api",
+          "path": "/api/v3/opportunities?market=US&limit=30&view=map",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2982.54,
+              "total_ms": 3005.43,
+              "body_bytes": 227344,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3497.45,
+              "total_ms": 3505.51,
+              "body_bytes": 227344,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3692.13,
+              "total_ms": 3694.6,
+              "body_bytes": 227344,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3295.19,
+              "total_ms": 3297.6,
+              "body_bytes": 227344,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 4197.43,
+              "total_ms": 4199.95,
+              "body_bytes": 227344,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3505.51,
+          "p95_ms": 4199.95,
+          "first_ms": 3005.43,
+          "repeats_p50_ms": 3505.51,
+          "body_bytes": 227344
+        },
+        {
+          "name": "markets_api",
+          "path": "/api/v3/markets",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2937.84,
+              "total_ms": 2938.17,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3666.35,
+              "total_ms": 3667.04,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3406.09,
+              "total_ms": 3406.66,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3480.98,
+              "total_ms": 3481.93,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3376.41,
+              "total_ms": 3377.19,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3406.66,
+          "p95_ms": 3667.04,
+          "first_ms": 2938.17,
+          "repeats_p50_ms": 3406.66,
+          "body_bytes": 6050
+        },
+        {
+          "name": "regions_api",
+          "path": "/api/v3/regions?market=GB",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3494.63,
+              "total_ms": 3495.18,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3884.5,
+              "total_ms": 3884.85,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3198.68,
+              "total_ms": 3199,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3231.38,
+              "total_ms": 3232.31,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3470.3,
+              "total_ms": 3470.74,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3470.74,
+          "p95_ms": 3884.85,
+          "first_ms": 3495.18,
+          "repeats_p50_ms": 3232.31,
+          "body_bytes": 10851
+        },
+        {
+          "name": "listing_api",
+          "path": "/api/v3/opportunities/ent_94a16b40124e8044efb05e356f1604d1",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3502.89,
+              "total_ms": 3503.2,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 3805.78,
+              "total_ms": 3806.35,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3501.87,
+              "total_ms": 3502.41,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3605.31,
+              "total_ms": 3606.69,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3370.14,
+              "total_ms": 3370.54,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3503.2,
+          "p95_ms": 3806.35,
+          "first_ms": 3503.2,
+          "repeats_p50_ms": 3502.41,
+          "body_bytes": 5368
+        }
+      ],
+      "passed": true,
+      "cache_context": "first observed request and sequential repeats; isolate cold starts are not forced or claimed",
+      "worker_cpu_time": "not exposed",
+      "component_timing": "only provider Server-Timing when present; separate D1 trace required",
+      "live_customer_access": false,
+      "writes": 0,
+      "serper_queries": 0,
+      "completed_at": "2026-10-16T18:18:56.275Z",
+      "attempted_http_requests": 73,
+      "measurement_note": "70 successful samples; two seed requests and one failed category-path attempt before correcting the diagnostic URL. Completed samples retained on resume."
+    },
+    "public_after": {
+      "schema": "findpitches-v3-public-read-profile-v1",
+      "started_at": "2026-10-16T18:31:45.748Z",
+      "phase": "after",
+      "origin": "https://findpitches.com",
+      "samples_per_path": 5,
+      "results": [
+        {
+          "name": "homepage",
+          "path": "/",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 162.88,
+              "total_ms": 182.35,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 220.03,
+              "total_ms": 221.57,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 332.2,
+              "total_ms": 335.36,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 153.2,
+              "total_ms": 154.19,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 172.15,
+              "total_ms": 173.98,
+              "body_bytes": 37481,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 182.35,
+          "p95_ms": 335.36,
+          "first_ms": 182.35,
+          "repeats_p50_ms": 173.98,
+          "body_bytes": 37481
+        },
+        {
+          "name": "finder",
+          "path": "/finder.html?cc=uk",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 130.81,
+              "total_ms": 131.33,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 129.04,
+              "total_ms": 129.67,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 343.41,
+              "total_ms": 344.23,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 133.5,
+              "total_ms": 134.05,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 134.74,
+              "total_ms": 135.2,
+              "body_bytes": 13679,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 134.05,
+          "p95_ms": 344.23,
+          "first_ms": 131.33,
+          "repeats_p50_ms": 134.05,
+          "body_bytes": 13679
+        },
+        {
+          "name": "country",
+          "path": "/uk/",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2729.76,
+              "total_ms": 2730.4,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2279.17,
+              "total_ms": 2279.79,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2340.78,
+              "total_ms": 2341.39,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2075.86,
+              "total_ms": 2076.32,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2931.6,
+              "total_ms": 2931.95,
+              "body_bytes": 7610,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2341.39,
+          "p95_ms": 2931.95,
+          "first_ms": 2730.4,
+          "repeats_p50_ms": 2279.79,
+          "body_bytes": 7610
+        },
+        {
+          "name": "category",
+          "path": "/uk/christmas-market-stalls/",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2782.69,
+              "total_ms": 2783.07,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2455.71,
+              "total_ms": 2457.41,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2125.04,
+              "total_ms": 2125.52,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2256.17,
+              "total_ms": 2258.65,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2373.13,
+              "total_ms": 2374.38,
+              "body_bytes": 5543,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2374.38,
+          "p95_ms": 2783.07,
+          "first_ms": 2783.07,
+          "repeats_p50_ms": 2258.65,
+          "body_bytes": 5543
+        },
+        {
+          "name": "listing",
+          "path": "/uk/opportunity/ent_94a16b40124e8044efb05e356f1604d1/",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2645.21,
+              "total_ms": 2645.58,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2432.07,
+              "total_ms": 2432.42,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3194.8,
+              "total_ms": 3195.54,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2651.21,
+              "total_ms": 2652.22,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2696.74,
+              "total_ms": 2697.46,
+              "body_bytes": 4676,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2652.22,
+          "p95_ms": 3195.54,
+          "first_ms": 2645.58,
+          "repeats_p50_ms": 2652.22,
+          "body_bytes": 4676
+        },
+        {
+          "name": "account",
+          "path": "/account.html",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 211.11,
+              "total_ms": 211.49,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 202.46,
+              "total_ms": 203.02,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 193.72,
+              "total_ms": 194.4,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 159.35,
+              "total_ms": 160,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 153.8,
+              "total_ms": 154.19,
+              "body_bytes": 2254,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 194.4,
+          "p95_ms": 211.49,
+          "first_ms": 211.49,
+          "repeats_p50_ms": 160,
+          "body_bytes": 2254
+        },
+        {
+          "name": "billing",
+          "path": "/billing.html",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 187.66,
+              "total_ms": 187.99,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 214.99,
+              "total_ms": 215.32,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 447.74,
+              "total_ms": 448.07,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 195.92,
+              "total_ms": 196.4,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 230.54,
+              "total_ms": 230.97,
+              "body_bytes": 2258,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 215.32,
+          "p95_ms": 448.07,
+          "first_ms": 187.99,
+          "repeats_p50_ms": 215.32,
+          "body_bytes": 2258
+        },
+        {
+          "name": "home_api",
+          "path": "/api/v3/home",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 3007.19,
+              "total_ms": 3008.28,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2702.28,
+              "total_ms": 2703.28,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2755.75,
+              "total_ms": 2756.83,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2374.21,
+              "total_ms": 2377.94,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2596.26,
+              "total_ms": 2598.14,
+              "body_bytes": 100484,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2703.28,
+          "p95_ms": 3008.28,
+          "first_ms": 3008.28,
+          "repeats_p50_ms": 2598.14,
+          "body_bytes": 100484
+        },
+        {
+          "name": "catalogue_api",
+          "path": "/api/v3/opportunities?market=GB&limit=30",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2740.26,
+              "total_ms": 2741.11,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2381.82,
+              "total_ms": 2382.6,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2187.3,
+              "total_ms": 2188.88,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2818.19,
+              "total_ms": 2818.72,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2016.66,
+              "total_ms": 2019.43,
+              "body_bytes": 53194,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2382.6,
+          "p95_ms": 2818.72,
+          "first_ms": 2741.11,
+          "repeats_p50_ms": 2188.88,
+          "body_bytes": 53194
+        },
+        {
+          "name": "filter_api",
+          "path": "/api/v3/opportunities?market=GB&q=market&limit=30",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2581.55,
+              "total_ms": 2582.08,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2555.76,
+              "total_ms": 2556.28,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2417.17,
+              "total_ms": 2417.48,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2596.94,
+              "total_ms": 2597.28,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2514.92,
+              "total_ms": 2515.31,
+              "body_bytes": 1721,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2556.28,
+          "p95_ms": 2597.28,
+          "first_ms": 2582.08,
+          "repeats_p50_ms": 2515.31,
+          "body_bytes": 1721
+        },
+        {
+          "name": "map_api",
+          "path": "/api/v3/opportunities?market=US&limit=30&view=map",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2776.77,
+              "total_ms": 2782.84,
+              "body_bytes": 220865,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2443.62,
+              "total_ms": 2452.33,
+              "body_bytes": 220865,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2863.18,
+              "total_ms": 2874.24,
+              "body_bytes": 220865,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2228.46,
+              "total_ms": 2236.65,
+              "body_bytes": 220865,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2385.25,
+              "total_ms": 2394.76,
+              "body_bytes": 220865,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2452.33,
+          "p95_ms": 2874.24,
+          "first_ms": 2782.84,
+          "repeats_p50_ms": 2394.76,
+          "body_bytes": 220865
+        },
+        {
+          "name": "markets_api",
+          "path": "/api/v3/markets",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2432.89,
+              "total_ms": 2433.29,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2592.19,
+              "total_ms": 2592.51,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2750.26,
+              "total_ms": 2750.62,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2513.23,
+              "total_ms": 2513.6,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2442.54,
+              "total_ms": 2442.95,
+              "body_bytes": 6050,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2513.6,
+          "p95_ms": 2750.62,
+          "first_ms": 2433.29,
+          "repeats_p50_ms": 2513.6,
+          "body_bytes": 6050
+        },
+        {
+          "name": "regions_api",
+          "path": "/api/v3/regions?market=GB",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2200.22,
+              "total_ms": 2200.72,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2566.69,
+              "total_ms": 2567.49,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2250.42,
+              "total_ms": 2250.85,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2702.41,
+              "total_ms": 2702.73,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2536.23,
+              "total_ms": 2536.58,
+              "body_bytes": 10851,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2536.58,
+          "p95_ms": 2702.73,
+          "first_ms": 2200.72,
+          "repeats_p50_ms": 2536.58,
+          "body_bytes": 10851
+        },
+        {
+          "name": "listing_api",
+          "path": "/api/v3/opportunities/ent_94a16b40124e8044efb05e356f1604d1",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2454.85,
+              "total_ms": 2455.17,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2266.18,
+              "total_ms": 2266.53,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 2297.35,
+              "total_ms": 2297.79,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 2186.82,
+              "total_ms": 2187.24,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 2785.52,
+              "total_ms": 2786.24,
+              "body_bytes": 5368,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 2297.79,
+          "p95_ms": 2786.24,
+          "first_ms": 2455.17,
+          "repeats_p50_ms": 2266.53,
+          "body_bytes": 5368
+        },
+        {
+          "name": "seo_page_api",
+          "path": "/api/v3/seo/page?path=%2Fuk%2F",
+          "samples": [
+            {
+              "sequence": 1,
+              "status": 200,
+              "ttfb_ms": 2735.55,
+              "total_ms": 2736.35,
+              "body_bytes": 60693,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 2,
+              "status": 200,
+              "ttfb_ms": 2701,
+              "total_ms": 2702.5,
+              "body_bytes": 60693,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 3,
+              "status": 200,
+              "ttfb_ms": 3934.49,
+              "total_ms": 3935.12,
+              "body_bytes": 60693,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 4,
+              "status": 200,
+              "ttfb_ms": 3904.11,
+              "total_ms": 3905.31,
+              "body_bytes": 60693,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            },
+            {
+              "sequence": 5,
+              "status": 200,
+              "ttfb_ms": 3318.35,
+              "total_ms": 3319.61,
+              "body_bytes": 60693,
+              "cache_control": "private, no-store",
+              "cache_status": null,
+              "server_timing": null
+            }
+          ],
+          "p50_ms": 3319.61,
+          "p95_ms": 3935.12,
+          "first_ms": 2736.35,
+          "repeats_p50_ms": 3319.61,
+          "body_bytes": 60693
+        }
+      ],
+      "passed": true,
+      "cache_context": "first observed request and sequential repeats; isolate cold starts are not forced or claimed",
+      "worker_cpu_time": "not exposed",
+      "component_timing": "only provider Server-Timing when present; separate D1 trace required",
+      "live_customer_access": false,
+      "writes": 0,
+      "serper_queries": 0,
+      "attempted_http_requests": 76,
+      "completed_at": "2026-10-16T18:34:12.499Z"
+    },
+    "browser_before": {
+      "started_at": "2026-10-16T18:19:45.555663+00:00",
+      "completed_at": "2026-10-16T18:22:16.807827+00:00",
+      "samples": [
+        {
+          "device": "desktop",
+          "path_name": "homepage",
+          "status": 200,
+          "document_ms": 802,
+          "ready_ms": 4707,
+          "navigation": {
+            "ttfb_ms": 199,
+            "document_bytes": 10568,
+            "dom_interactive_ms": 792,
+            "dom_content_loaded_ms": 792
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 644
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 644
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/home",
+              "type": "fetch",
+              "start_ms": 666,
+              "duration_ms": 3656,
+              "ttfb_ms": 3641,
+              "transfer_bytes": 11455,
+              "encoded_bytes": 11155
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 667,
+              "duration_ms": 361,
+              "ttfb_ms": 347,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 4327,
+              "duration_ms": 178,
+              "ttfb_ms": 135,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 4327,
+              "duration_ms": 203,
+              "ttfb_ms": 160,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 4355,
+              "duration_ms": 135,
+              "ttfb_ms": 119,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            }
+          ],
+          "resource_count": 31,
+          "resource_encoded_bytes": 1256891,
+          "render_tail_estimate_ms": 177
+        },
+        {
+          "device": "desktop",
+          "path_name": "finder",
+          "status": 200,
+          "document_ms": 630,
+          "ready_ms": 4968,
+          "navigation": {
+            "ttfb_ms": 105,
+            "document_bytes": 4354,
+            "dom_interactive_ms": 616,
+            "dom_content_loaded_ms": 616
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 548
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 548
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 611,
+              "duration_ms": 93,
+              "ttfb_ms": 84,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 612,
+              "duration_ms": 104,
+              "ttfb_ms": 95,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 718,
+              "duration_ms": 373,
+              "ttfb_ms": 358,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 718,
+              "duration_ms": 376,
+              "ttfb_ms": 362,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 723,
+              "duration_ms": 3915,
+              "ttfb_ms": 3905,
+              "transfer_bytes": 7357,
+              "encoded_bytes": 7057
+            }
+          ],
+          "resource_count": 22,
+          "resource_encoded_bytes": 324249,
+          "render_tail_estimate_ms": 202
+        },
+        {
+          "device": "desktop",
+          "path_name": "filter_interaction",
+          "ready_ms": 4375,
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 611,
+              "duration_ms": 93,
+              "ttfb_ms": 84,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 612,
+              "duration_ms": 104,
+              "ttfb_ms": 95,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 718,
+              "duration_ms": 373,
+              "ttfb_ms": 358,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 718,
+              "duration_ms": 376,
+              "ttfb_ms": 362,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 723,
+              "duration_ms": 3915,
+              "ttfb_ms": 3905,
+              "transfer_bytes": 7357,
+              "encoded_bytes": 7057
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 5036,
+              "duration_ms": 4283,
+              "ttfb_ms": 4270,
+              "transfer_bytes": 966,
+              "encoded_bytes": 666
+            }
+          ],
+          "resource_count": 24,
+          "resource_encoded_bytes": 324915,
+          "render_tail_estimate_ms": 0
+        },
+        {
+          "device": "desktop",
+          "path_name": "country",
+          "status": 200,
+          "document_ms": 4221,
+          "ready_ms": 18713,
+          "navigation": {
+            "ttfb_ms": 3646,
+            "document_bytes": 2489,
+            "dom_interactive_ms": 4203,
+            "dom_content_loaded_ms": 4204
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 4164
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 7624
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 4182,
+              "duration_ms": 3381,
+              "ttfb_ms": 3374,
+              "transfer_bytes": 1378,
+              "encoded_bytes": 1078
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 4182,
+              "duration_ms": 131,
+              "ttfb_ms": 124,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7567,
+              "duration_ms": 129,
+              "ttfb_ms": 105,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7568,
+              "duration_ms": 135,
+              "ttfb_ms": 115,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 7576,
+              "duration_ms": 3384,
+              "ttfb_ms": 3372,
+              "transfer_bytes": 1776,
+              "encoded_bytes": 1476
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 10970,
+              "duration_ms": 6856,
+              "ttfb_ms": 6839,
+              "transfer_bytes": 6560,
+              "encoded_bytes": 6260
+            },
+            {
+              "path": "/api/v3/seo/inventory",
+              "type": "fetch",
+              "start_ms": 10974,
+              "duration_ms": 7434,
+              "ttfb_ms": 7422,
+              "transfer_bytes": 593,
+              "encoded_bytes": 293
+            },
+            {
+              "path": "/api/v3/seo/inventory",
+              "type": "fetch",
+              "start_ms": 10975,
+              "duration_ms": 7330,
+              "ttfb_ms": 7312,
+              "transfer_bytes": 1003,
+              "encoded_bytes": 703
+            }
+          ],
+          "resource_count": 25,
+          "resource_encoded_bytes": 229741,
+          "render_tail_estimate_ms": 115
+        },
+        {
+          "device": "desktop",
+          "path_name": "category",
+          "status": 200,
+          "document_ms": 3581,
+          "ready_ms": 22018,
+          "navigation": {
+            "ttfb_ms": 3327,
+            "document_bytes": 1894,
+            "dom_interactive_ms": 3576,
+            "dom_content_loaded_ms": 3576
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 3548
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 7072
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 3572,
+              "duration_ms": 3472,
+              "ttfb_ms": 3464,
+              "transfer_bytes": 1378,
+              "encoded_bytes": 1078
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 3573,
+              "duration_ms": 117,
+              "ttfb_ms": 111,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7046,
+              "duration_ms": 182,
+              "ttfb_ms": 174,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7046,
+              "duration_ms": 139,
+              "ttfb_ms": 130,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 7049,
+              "duration_ms": 5811,
+              "ttfb_ms": 5803,
+              "transfer_bytes": 1776,
+              "encoded_bytes": 1476
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 12864,
+              "duration_ms": 8536,
+              "ttfb_ms": 8528,
+              "transfer_bytes": 1057,
+              "encoded_bytes": 757
+            },
+            {
+              "path": "/api/v3/seo/inventory",
+              "type": "fetch",
+              "start_ms": 12865,
+              "duration_ms": 9014,
+              "ttfb_ms": 9007,
+              "transfer_bytes": 593,
+              "encoded_bytes": 293
+            },
+            {
+              "path": "/api/v3/seo/inventory",
+              "type": "fetch",
+              "start_ms": 12866,
+              "duration_ms": 8389,
+              "ttfb_ms": 8377,
+              "transfer_bytes": 1006,
+              "encoded_bytes": 706
+            }
+          ],
+          "resource_count": 24,
+          "resource_encoded_bytes": 201712,
+          "render_tail_estimate_ms": 139
+        },
+        {
+          "device": "desktop",
+          "path_name": "listing",
+          "status": 200,
+          "document_ms": 3826,
+          "ready_ms": 11690,
+          "navigation": {
+            "ttfb_ms": 3555,
+            "document_bytes": 1616,
+            "dom_interactive_ms": 3819,
+            "dom_content_loaded_ms": 3819
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 3716
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 7488
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 3778,
+              "duration_ms": 3680,
+              "ttfb_ms": 3674,
+              "transfer_bytes": 1377,
+              "encoded_bytes": 1077
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 3778,
+              "duration_ms": 106,
+              "ttfb_ms": 100,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7460,
+              "duration_ms": 219,
+              "ttfb_ms": 202,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7460,
+              "duration_ms": 125,
+              "ttfb_ms": 109,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities/ent_94a16b40124e8044efb05e356f1604d1",
+              "type": "fetch",
+              "start_ms": 7463,
+              "duration_ms": 4129,
+              "ttfb_ms": 4112,
+              "transfer_bytes": 1145,
+              "encoded_bytes": 845
+            }
+          ],
+          "resource_count": 21,
+          "resource_encoded_bytes": 289715,
+          "render_tail_estimate_ms": 98
+        },
+        {
+          "device": "desktop",
+          "path_name": "map",
+          "status": 200,
+          "document_ms": 356,
+          "ready_ms": 4206,
+          "navigation": {
+            "ttfb_ms": 115,
+            "document_bytes": 4379,
+            "dom_interactive_ms": 347,
+            "dom_content_loaded_ms": 348
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 308
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 308
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 340,
+              "duration_ms": 103,
+              "ttfb_ms": 89,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 340,
+              "duration_ms": 124,
+              "ttfb_ms": 109,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 466,
+              "duration_ms": 156,
+              "ttfb_ms": 148,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 466,
+              "duration_ms": 165,
+              "ttfb_ms": 157,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 469,
+              "duration_ms": 111,
+              "ttfb_ms": 105,
+              "transfer_bytes": 1302,
+              "encoded_bytes": 1002
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 584,
+              "duration_ms": 3466,
+              "ttfb_ms": 3451,
+              "transfer_bytes": 43754,
+              "encoded_bytes": 43454
+            }
+          ],
+          "resource_count": 24,
+          "resource_encoded_bytes": 361624,
+          "render_tail_estimate_ms": 45
+        },
+        {
+          "device": "desktop",
+          "path_name": "account",
+          "status": 200,
+          "document_ms": 781,
+          "ready_ms": 835,
+          "navigation": {
+            "ttfb_ms": 482,
+            "document_bytes": 864,
+            "dom_interactive_ms": 775,
+            "dom_content_loaded_ms": 775
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 644
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 644
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 684,
+              "duration_ms": 101,
+              "ttfb_ms": 95,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 684,
+              "duration_ms": 110,
+              "ttfb_ms": 103,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            }
+          ],
+          "resource_count": 15,
+          "resource_encoded_bytes": 163935,
+          "render_tail_estimate_ms": 41
+        },
+        {
+          "device": "desktop",
+          "path_name": "billing",
+          "status": 200,
+          "document_ms": 272,
+          "ready_ms": 475,
+          "navigation": {
+            "ttfb_ms": 101,
+            "document_bytes": 864,
+            "dom_interactive_ms": 267,
+            "dom_content_loaded_ms": 268
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 268
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 268
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 267,
+              "duration_ms": 108,
+              "ttfb_ms": 98,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 267,
+              "duration_ms": 98,
+              "ttfb_ms": 87,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 377,
+              "duration_ms": 104,
+              "ttfb_ms": 98,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            }
+          ],
+          "resource_count": 17,
+          "resource_encoded_bytes": 185570,
+          "render_tail_estimate_ms": 0
+        },
+        {
+          "device": "mobile",
+          "path_name": "homepage",
+          "status": 200,
+          "document_ms": 439,
+          "ready_ms": 4327,
+          "navigation": {
+            "ttfb_ms": 107,
+            "document_bytes": 10566,
+            "dom_interactive_ms": 428,
+            "dom_content_loaded_ms": 428
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 404
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 404
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/home",
+              "type": "fetch",
+              "start_ms": 419,
+              "duration_ms": 3807,
+              "ttfb_ms": 3796,
+              "transfer_bytes": 11400,
+              "encoded_bytes": 11100
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 419,
+              "duration_ms": 110,
+              "ttfb_ms": 98,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            }
+          ],
+          "resource_count": 28,
+          "resource_encoded_bytes": 1255845,
+          "render_tail_estimate_ms": 101
+        },
+        {
+          "device": "mobile",
+          "path_name": "finder",
+          "status": 200,
+          "document_ms": 343,
+          "ready_ms": 3690,
+          "navigation": {
+            "ttfb_ms": 110,
+            "document_bytes": 4378,
+            "dom_interactive_ms": 337,
+            "dom_content_loaded_ms": 337
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 264
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 264
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 330,
+              "duration_ms": 102,
+              "ttfb_ms": 95,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 330,
+              "duration_ms": 112,
+              "ttfb_ms": 104,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 444,
+              "duration_ms": 112,
+              "ttfb_ms": 102,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 444,
+              "duration_ms": 133,
+              "ttfb_ms": 121,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 448,
+              "duration_ms": 3179,
+              "ttfb_ms": 3166,
+              "transfer_bytes": 7357,
+              "encoded_bytes": 7057
+            }
+          ],
+          "resource_count": 21,
+          "resource_encoded_bytes": 301746,
+          "render_tail_estimate_ms": 63
+        },
+        {
+          "device": "mobile",
+          "path_name": "filter_interaction",
+          "ready_ms": 3940,
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 330,
+              "duration_ms": 102,
+              "ttfb_ms": 95,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 330,
+              "duration_ms": 112,
+              "ttfb_ms": 104,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 444,
+              "duration_ms": 112,
+              "ttfb_ms": 102,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 444,
+              "duration_ms": 133,
+              "ttfb_ms": 121,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 448,
+              "duration_ms": 3179,
+              "ttfb_ms": 3166,
+              "transfer_bytes": 7357,
+              "encoded_bytes": 7057
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 3773,
+              "duration_ms": 3858,
+              "ttfb_ms": 3846,
+              "transfer_bytes": 966,
+              "encoded_bytes": 666
+            }
+          ],
+          "resource_count": 24,
+          "resource_encoded_bytes": 324856,
+          "render_tail_estimate_ms": 0
+        },
+        {
+          "device": "mobile",
+          "path_name": "country",
+          "status": 200,
+          "document_ms": 4103,
+          "ready_ms": 20008,
+          "navigation": {
+            "ttfb_ms": 3846,
+            "document_bytes": 2510,
+            "dom_interactive_ms": 4096,
+            "dom_content_loaded_ms": 4096
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 4056
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 7248
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 4094,
+              "duration_ms": 3132,
+              "ttfb_ms": 3121,
+              "transfer_bytes": 1378,
+              "encoded_bytes": 1078
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 4095,
+              "duration_ms": 113,
+              "ttfb_ms": 103,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7228,
+              "duration_ms": 106,
+              "ttfb_ms": 95,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7228,
+              "duration_ms": 132,
+              "ttfb_ms": 120,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 7231,
+              "duration_ms": 4100,
+              "ttfb_ms": 4092,
+              "transfer_bytes": 1776,
+              "encoded_bytes": 1476
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 11338,
+              "duration_ms": 8420,
+              "ttfb_ms": 8410,
+              "transfer_bytes": 6560,
+              "encoded_bytes": 6260
+            },
+            {
+              "path": "/api/v3/seo/inventory",
+              "type": "fetch",
+              "start_ms": 11340,
+              "duration_ms": 8264,
+              "ttfb_ms": 8258,
+              "transfer_bytes": 592,
+              "encoded_bytes": 292
+            },
+            {
+              "path": "/api/v3/seo/inventory",
+              "type": "fetch",
+              "start_ms": 11341,
+              "duration_ms": 8285,
+              "ttfb_ms": 8279,
+              "transfer_bytes": 1006,
+              "encoded_bytes": 706
+            }
+          ],
+          "resource_count": 25,
+          "resource_encoded_bytes": 229727,
+          "render_tail_estimate_ms": 133
+        },
+        {
+          "device": "mobile",
+          "path_name": "category",
+          "status": 200,
+          "document_ms": 4140,
+          "ready_ms": 19042,
+          "navigation": {
+            "ttfb_ms": 3923,
+            "document_bytes": 1894,
+            "dom_interactive_ms": 4134,
+            "dom_content_loaded_ms": 4134
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 4084
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 7652
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 4109,
+              "duration_ms": 3519,
+              "ttfb_ms": 3513,
+              "transfer_bytes": 1378,
+              "encoded_bytes": 1078
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 4109,
+              "duration_ms": 127,
+              "ttfb_ms": 120,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7632,
+              "duration_ms": 120,
+              "ttfb_ms": 110,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7632,
+              "duration_ms": 127,
+              "ttfb_ms": 117,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 7636,
+              "duration_ms": 3537,
+              "ttfb_ms": 3530,
+              "transfer_bytes": 1776,
+              "encoded_bytes": 1476
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 11177,
+              "duration_ms": 7280,
+              "ttfb_ms": 7271,
+              "transfer_bytes": 1057,
+              "encoded_bytes": 757
+            },
+            {
+              "path": "/api/v3/seo/inventory",
+              "type": "fetch",
+              "start_ms": 11179,
+              "duration_ms": 7447,
+              "ttfb_ms": 7440,
+              "transfer_bytes": 593,
+              "encoded_bytes": 293
+            },
+            {
+              "path": "/api/v3/seo/inventory",
+              "type": "fetch",
+              "start_ms": 11180,
+              "duration_ms": 7808,
+              "ttfb_ms": 7800,
+              "transfer_bytes": 1007,
+              "encoded_bytes": 707
+            }
+          ],
+          "resource_count": 24,
+          "resource_encoded_bytes": 201794,
+          "render_tail_estimate_ms": 54
+        },
+        {
+          "device": "mobile",
+          "path_name": "listing",
+          "status": 200,
+          "document_ms": 3976,
+          "ready_ms": 10865,
+          "navigation": {
+            "ttfb_ms": 3760,
+            "document_bytes": 1616,
+            "dom_interactive_ms": 3971,
+            "dom_content_loaded_ms": 3971
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 3928
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 7304
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 3969,
+              "duration_ms": 3317,
+              "ttfb_ms": 3309,
+              "transfer_bytes": 1378,
+              "encoded_bytes": 1078
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 3969,
+              "duration_ms": 115,
+              "ttfb_ms": 108,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7288,
+              "duration_ms": 101,
+              "ttfb_ms": 89,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 7288,
+              "duration_ms": 127,
+              "ttfb_ms": 115,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities/ent_94a16b40124e8044efb05e356f1604d1",
+              "type": "fetch",
+              "start_ms": 7291,
+              "duration_ms": 3495,
+              "ttfb_ms": 3486,
+              "transfer_bytes": 1145,
+              "encoded_bytes": 845
+            }
+          ],
+          "resource_count": 21,
+          "resource_encoded_bytes": 289593,
+          "render_tail_estimate_ms": 79
+        },
+        {
+          "device": "mobile",
+          "path_name": "map",
+          "status": 200,
+          "document_ms": 473,
+          "ready_ms": 4813,
+          "navigation": {
+            "ttfb_ms": 98,
+            "document_bytes": 4379,
+            "dom_interactive_ms": 466,
+            "dom_content_loaded_ms": 466
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 216
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 216
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 463,
+              "duration_ms": 126,
+              "ttfb_ms": 112,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 463,
+              "duration_ms": 139,
+              "ttfb_ms": 125,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 605,
+              "duration_ms": 196,
+              "ttfb_ms": 189,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 605,
+              "duration_ms": 160,
+              "ttfb_ms": 152,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 608,
+              "duration_ms": 135,
+              "ttfb_ms": 130,
+              "transfer_bytes": 1302,
+              "encoded_bytes": 1002
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 748,
+              "duration_ms": 3698,
+              "ttfb_ms": 3683,
+              "transfer_bytes": 43713,
+              "encoded_bytes": 43413
+            }
+          ],
+          "resource_count": 24,
+          "resource_encoded_bytes": 361554,
+          "render_tail_estimate_ms": 235
+        },
+        {
+          "device": "mobile",
+          "path_name": "account",
+          "status": 200,
+          "document_ms": 339,
+          "ready_ms": 549,
+          "navigation": {
+            "ttfb_ms": 116,
+            "document_bytes": 864,
+            "dom_interactive_ms": 333,
+            "dom_content_loaded_ms": 333
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 280
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 280
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 332,
+              "duration_ms": 109,
+              "ttfb_ms": 97,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 333,
+              "duration_ms": 121,
+              "ttfb_ms": 109,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 457,
+              "duration_ms": 95,
+              "ttfb_ms": 86,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            }
+          ],
+          "resource_count": 17,
+          "resource_encoded_bytes": 186692,
+          "render_tail_estimate_ms": 0
+        },
+        {
+          "device": "mobile",
+          "path_name": "billing",
+          "status": 200,
+          "document_ms": 617,
+          "ready_ms": 829,
+          "navigation": {
+            "ttfb_ms": 95,
+            "document_bytes": 864,
+            "dom_interactive_ms": 612,
+            "dom_content_loaded_ms": 612
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 236
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 236
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 608,
+              "duration_ms": 104,
+              "ttfb_ms": 98,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 608,
+              "duration_ms": 116,
+              "ttfb_ms": 109,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 727,
+              "duration_ms": 111,
+              "ttfb_ms": 102,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            }
+          ],
+          "resource_count": 16,
+          "resource_encoded_bytes": 163261,
+          "render_tail_estimate_ms": 0
+        }
+      ]
+    },
+    "browser_after": {
+      "started_at": "2026-10-16T18:35:31.077107+00:00",
+      "completed_at": "2026-10-16T18:36:41.225153+00:00",
+      "samples": [
+        {
+          "device": "desktop",
+          "path_name": "homepage",
+          "status": 200,
+          "document_ms": 659,
+          "ready_ms": 3504,
+          "navigation": {
+            "ttfb_ms": 238,
+            "document_bytes": 10615,
+            "dom_interactive_ms": 647,
+            "dom_content_loaded_ms": 647
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 604
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 604
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/home",
+              "type": "fetch",
+              "start_ms": 630,
+              "duration_ms": 2505,
+              "ttfb_ms": 2498,
+              "transfer_bytes": 11458,
+              "encoded_bytes": 11158
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 630,
+              "duration_ms": 115,
+              "ttfb_ms": 101,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 3137,
+              "duration_ms": 170,
+              "ttfb_ms": 135,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 3138,
+              "duration_ms": 173,
+              "ttfb_ms": 138,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 3162,
+              "duration_ms": 137,
+              "ttfb_ms": 125,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            }
+          ],
+          "resource_count": 31,
+          "resource_encoded_bytes": 1256891,
+          "render_tail_estimate_ms": 193
+        },
+        {
+          "device": "desktop",
+          "path_name": "finder",
+          "status": 200,
+          "document_ms": 519,
+          "ready_ms": 3344,
+          "navigation": {
+            "ttfb_ms": 110,
+            "document_bytes": 4387,
+            "dom_interactive_ms": 512,
+            "dom_content_loaded_ms": 512
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 292
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 292
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 505,
+              "duration_ms": 133,
+              "ttfb_ms": 125,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 506,
+              "duration_ms": 120,
+              "ttfb_ms": 111,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 641,
+              "duration_ms": 152,
+              "ttfb_ms": 136,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 643,
+              "duration_ms": 133,
+              "ttfb_ms": 119,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 647,
+              "duration_ms": 2201,
+              "ttfb_ms": 2190,
+              "transfer_bytes": 7357,
+              "encoded_bytes": 7057
+            }
+          ],
+          "resource_count": 22,
+          "resource_encoded_bytes": 324387,
+          "render_tail_estimate_ms": 393
+        },
+        {
+          "device": "desktop",
+          "path_name": "filter_interaction",
+          "ready_ms": 2316,
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 505,
+              "duration_ms": 133,
+              "ttfb_ms": 125,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 506,
+              "duration_ms": 120,
+              "ttfb_ms": 111,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 641,
+              "duration_ms": 152,
+              "ttfb_ms": 136,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 643,
+              "duration_ms": 133,
+              "ttfb_ms": 119,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 647,
+              "duration_ms": 2201,
+              "ttfb_ms": 2190,
+              "transfer_bytes": 7357,
+              "encoded_bytes": 7057
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 3428,
+              "duration_ms": 2236,
+              "ttfb_ms": 2213,
+              "transfer_bytes": 966,
+              "encoded_bytes": 666
+            }
+          ],
+          "resource_count": 24,
+          "resource_encoded_bytes": 325053,
+          "render_tail_estimate_ms": 0
+        },
+        {
+          "device": "desktop",
+          "path_name": "country",
+          "status": 200,
+          "document_ms": 2672,
+          "ready_ms": 5490,
+          "navigation": {
+            "ttfb_ms": 2358,
+            "document_bytes": 2489,
+            "dom_interactive_ms": 2665,
+            "dom_content_loaded_ms": 2665
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 2536
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 2968
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 2571,
+              "duration_ms": 366,
+              "ttfb_ms": 361,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 2571,
+              "duration_ms": 357,
+              "ttfb_ms": 350,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2939,
+              "duration_ms": 127,
+              "ttfb_ms": 117,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2939,
+              "duration_ms": 136,
+              "ttfb_ms": 125,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 2943,
+              "duration_ms": 135,
+              "ttfb_ms": 129,
+              "transfer_bytes": 1768,
+              "encoded_bytes": 1468
+            },
+            {
+              "path": "/api/v3/seo/page",
+              "type": "fetch",
+              "start_ms": 3085,
+              "duration_ms": 2174,
+              "ttfb_ms": 2168,
+              "transfer_bytes": 9485,
+              "encoded_bytes": 9185
+            }
+          ],
+          "resource_count": 23,
+          "resource_encoded_bytes": 231473,
+          "render_tail_estimate_ms": 133
+        },
+        {
+          "device": "desktop",
+          "path_name": "category",
+          "status": 200,
+          "document_ms": 2553,
+          "ready_ms": 5390,
+          "navigation": {
+            "ttfb_ms": 2298,
+            "document_bytes": 1894,
+            "dom_interactive_ms": 2547,
+            "dom_content_loaded_ms": 2548
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 2480
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 2688
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 2547,
+              "duration_ms": 107,
+              "ttfb_ms": 101,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 2547,
+              "duration_ms": 116,
+              "ttfb_ms": 110,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2666,
+              "duration_ms": 119,
+              "ttfb_ms": 110,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2666,
+              "duration_ms": 120,
+              "ttfb_ms": 110,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 2668,
+              "duration_ms": 127,
+              "ttfb_ms": 119,
+              "transfer_bytes": 1766,
+              "encoded_bytes": 1466
+            },
+            {
+              "path": "/api/v3/seo/page",
+              "type": "fetch",
+              "start_ms": 2800,
+              "duration_ms": 2083,
+              "ttfb_ms": 2074,
+              "transfer_bytes": 4147,
+              "encoded_bytes": 3847
+            }
+          ],
+          "resource_count": 22,
+          "resource_encoded_bytes": 203654,
+          "render_tail_estimate_ms": 507
+        },
+        {
+          "device": "desktop",
+          "path_name": "listing",
+          "status": 200,
+          "document_ms": 2365,
+          "ready_ms": 4686,
+          "navigation": {
+            "ttfb_ms": 2144,
+            "document_bytes": 1616,
+            "dom_interactive_ms": 2360,
+            "dom_content_loaded_ms": 2360
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 2336
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 2492
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 2350,
+              "duration_ms": 98,
+              "ttfb_ms": 94,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 2350,
+              "duration_ms": 111,
+              "ttfb_ms": 106,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2463,
+              "duration_ms": 134,
+              "ttfb_ms": 124,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2464,
+              "duration_ms": 136,
+              "ttfb_ms": 126,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities/ent_94a16b40124e8044efb05e356f1604d1",
+              "type": "fetch",
+              "start_ms": 2467,
+              "duration_ms": 2054,
+              "ttfb_ms": 2046,
+              "transfer_bytes": 1145,
+              "encoded_bytes": 845
+            }
+          ],
+          "resource_count": 22,
+          "resource_encoded_bytes": 312042,
+          "render_tail_estimate_ms": 55
+        },
+        {
+          "device": "desktop",
+          "path_name": "map",
+          "status": 200,
+          "document_ms": 417,
+          "ready_ms": 2746,
+          "navigation": {
+            "ttfb_ms": 148,
+            "document_bytes": 4377,
+            "dom_interactive_ms": 410,
+            "dom_content_loaded_ms": 410
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 352
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 352
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 406,
+              "duration_ms": 139,
+              "ttfb_ms": 133,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 406,
+              "duration_ms": 127,
+              "ttfb_ms": 120,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 547,
+              "duration_ms": 147,
+              "ttfb_ms": 128,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 548,
+              "duration_ms": 145,
+              "ttfb_ms": 128,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 552,
+              "duration_ms": 127,
+              "ttfb_ms": 120,
+              "transfer_bytes": 1302,
+              "encoded_bytes": 1002
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 683,
+              "duration_ms": 1998,
+              "ttfb_ms": 1976,
+              "transfer_bytes": 42974,
+              "encoded_bytes": 42674
+            }
+          ],
+          "resource_count": 23,
+          "resource_encoded_bytes": 338474,
+          "render_tail_estimate_ms": 65
+        },
+        {
+          "device": "desktop",
+          "path_name": "account",
+          "status": 200,
+          "document_ms": 406,
+          "ready_ms": 603,
+          "navigation": {
+            "ttfb_ms": 161,
+            "document_bytes": 864,
+            "dom_interactive_ms": 399,
+            "dom_content_loaded_ms": 399
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 392
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 392
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 397,
+              "duration_ms": 155,
+              "ttfb_ms": 149,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 398,
+              "duration_ms": 155,
+              "ttfb_ms": 149,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            }
+          ],
+          "resource_count": 15,
+          "resource_encoded_bytes": 164029,
+          "render_tail_estimate_ms": 50
+        },
+        {
+          "device": "desktop",
+          "path_name": "billing",
+          "status": 200,
+          "document_ms": 365,
+          "ready_ms": 565,
+          "navigation": {
+            "ttfb_ms": 156,
+            "document_bytes": 864,
+            "dom_interactive_ms": 360,
+            "dom_content_loaded_ms": 360
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 344
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 344
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 359,
+              "duration_ms": 138,
+              "ttfb_ms": 127,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 359,
+              "duration_ms": 122,
+              "ttfb_ms": 110,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            }
+          ],
+          "resource_count": 15,
+          "resource_encoded_bytes": 162953,
+          "render_tail_estimate_ms": 68
+        },
+        {
+          "device": "mobile",
+          "path_name": "homepage",
+          "status": 200,
+          "document_ms": 613,
+          "ready_ms": 3454,
+          "navigation": {
+            "ttfb_ms": 238,
+            "document_bytes": 10566,
+            "dom_interactive_ms": 607,
+            "dom_content_loaded_ms": 607
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 612
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 612
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/home",
+              "type": "fetch",
+              "start_ms": 605,
+              "duration_ms": 2497,
+              "ttfb_ms": 2488,
+              "transfer_bytes": 11404,
+              "encoded_bytes": 11104
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 605,
+              "duration_ms": 103,
+              "ttfb_ms": 95,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            }
+          ],
+          "resource_count": 28,
+          "resource_encoded_bytes": 1255994,
+          "render_tail_estimate_ms": 352
+        },
+        {
+          "device": "mobile",
+          "path_name": "finder",
+          "status": 200,
+          "document_ms": 829,
+          "ready_ms": 3162,
+          "navigation": {
+            "ttfb_ms": 327,
+            "document_bytes": 4387,
+            "dom_interactive_ms": 822,
+            "dom_content_loaded_ms": 823
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 484
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 484
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 819,
+              "duration_ms": 117,
+              "ttfb_ms": 111,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 820,
+              "duration_ms": 108,
+              "ttfb_ms": 101,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 939,
+              "duration_ms": 151,
+              "ttfb_ms": 140,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 939,
+              "duration_ms": 126,
+              "ttfb_ms": 113,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 943,
+              "duration_ms": 2163,
+              "ttfb_ms": 2154,
+              "transfer_bytes": 7359,
+              "encoded_bytes": 7059
+            }
+          ],
+          "resource_count": 21,
+          "resource_encoded_bytes": 301908,
+          "render_tail_estimate_ms": 56
+        },
+        {
+          "device": "mobile",
+          "path_name": "filter_interaction",
+          "ready_ms": 2970,
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 819,
+              "duration_ms": 117,
+              "ttfb_ms": 111,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 820,
+              "duration_ms": 108,
+              "ttfb_ms": 101,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 939,
+              "duration_ms": 151,
+              "ttfb_ms": 140,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 939,
+              "duration_ms": 126,
+              "ttfb_ms": 113,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 943,
+              "duration_ms": 2163,
+              "ttfb_ms": 2154,
+              "transfer_bytes": 7359,
+              "encoded_bytes": 7059
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 3239,
+              "duration_ms": 2894,
+              "ttfb_ms": 2884,
+              "transfer_bytes": 966,
+              "encoded_bytes": 666
+            }
+          ],
+          "resource_count": 24,
+          "resource_encoded_bytes": 325018,
+          "render_tail_estimate_ms": 0
+        },
+        {
+          "device": "mobile",
+          "path_name": "country",
+          "status": 200,
+          "document_ms": 2862,
+          "ready_ms": 6181,
+          "navigation": {
+            "ttfb_ms": 2620,
+            "document_bytes": 2510,
+            "dom_interactive_ms": 2855,
+            "dom_content_loaded_ms": 2855
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 2864
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 2984
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 2854,
+              "duration_ms": 101,
+              "ttfb_ms": 94,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 2854,
+              "duration_ms": 112,
+              "ttfb_ms": 97,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2968,
+              "duration_ms": 159,
+              "ttfb_ms": 149,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2969,
+              "duration_ms": 160,
+              "ttfb_ms": 152,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 2971,
+              "duration_ms": 148,
+              "ttfb_ms": 142,
+              "transfer_bytes": 1768,
+              "encoded_bytes": 1468
+            },
+            {
+              "path": "/api/v3/seo/page",
+              "type": "fetch",
+              "start_ms": 3122,
+              "duration_ms": 2637,
+              "ttfb_ms": 2629,
+              "transfer_bytes": 9516,
+              "encoded_bytes": 9216
+            }
+          ],
+          "resource_count": 23,
+          "resource_encoded_bytes": 231542,
+          "render_tail_estimate_ms": 302
+        },
+        {
+          "device": "mobile",
+          "path_name": "category",
+          "status": 200,
+          "document_ms": 3068,
+          "ready_ms": 5905,
+          "navigation": {
+            "ttfb_ms": 2857,
+            "document_bytes": 1894,
+            "dom_interactive_ms": 3058,
+            "dom_content_loaded_ms": 3059
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 3020
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 3216
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 3053,
+              "duration_ms": 107,
+              "ttfb_ms": 94,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 3053,
+              "duration_ms": 140,
+              "ttfb_ms": 103,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 3196,
+              "duration_ms": 137,
+              "ttfb_ms": 121,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 3196,
+              "duration_ms": 128,
+              "ttfb_ms": 111,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 3198,
+              "duration_ms": 140,
+              "ttfb_ms": 122,
+              "transfer_bytes": 1766,
+              "encoded_bytes": 1466
+            },
+            {
+              "path": "/api/v3/seo/page",
+              "type": "fetch",
+              "start_ms": 3345,
+              "duration_ms": 2485,
+              "ttfb_ms": 2479,
+              "transfer_bytes": 4147,
+              "encoded_bytes": 3847
+            }
+          ],
+          "resource_count": 22,
+          "resource_encoded_bytes": 203740,
+          "render_tail_estimate_ms": 75
+        },
+        {
+          "device": "mobile",
+          "path_name": "listing",
+          "status": 200,
+          "document_ms": 2307,
+          "ready_ms": 5627,
+          "navigation": {
+            "ttfb_ms": 2040,
+            "document_bytes": 1616,
+            "dom_interactive_ms": 2300,
+            "dom_content_loaded_ms": 2301
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 2204
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 2452
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 2299,
+              "duration_ms": 131,
+              "ttfb_ms": 124,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 2300,
+              "duration_ms": 119,
+              "ttfb_ms": 107,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2432,
+              "duration_ms": 135,
+              "ttfb_ms": 126,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 2433,
+              "duration_ms": 172,
+              "ttfb_ms": 164,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/opportunities/ent_94a16b40124e8044efb05e356f1604d1",
+              "type": "fetch",
+              "start_ms": 2436,
+              "duration_ms": 2760,
+              "ttfb_ms": 2754,
+              "transfer_bytes": 1145,
+              "encoded_bytes": 845
+            }
+          ],
+          "resource_count": 21,
+          "resource_encoded_bytes": 289649,
+          "render_tail_estimate_ms": 431
+        },
+        {
+          "device": "mobile",
+          "path_name": "map",
+          "status": 200,
+          "document_ms": 495,
+          "ready_ms": 3356,
+          "navigation": {
+            "ttfb_ms": 280,
+            "document_bytes": 4377,
+            "dom_interactive_ms": 491,
+            "dom_content_loaded_ms": 491
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 424
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 424
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 487,
+              "duration_ms": 112,
+              "ttfb_ms": 103,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 487,
+              "duration_ms": 123,
+              "ttfb_ms": 111,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 613,
+              "duration_ms": 412,
+              "ttfb_ms": 402,
+              "transfer_bytes": 647,
+              "encoded_bytes": 347
+            },
+            {
+              "path": "/api/v3/billing/plans",
+              "type": "fetch",
+              "start_ms": 613,
+              "duration_ms": 415,
+              "ttfb_ms": 405,
+              "transfer_bytes": 642,
+              "encoded_bytes": 342
+            },
+            {
+              "path": "/api/v3/regions",
+              "type": "fetch",
+              "start_ms": 615,
+              "duration_ms": 411,
+              "ttfb_ms": 403,
+              "transfer_bytes": 1302,
+              "encoded_bytes": 1002
+            },
+            {
+              "path": "/api/v3/opportunities",
+              "type": "fetch",
+              "start_ms": 1030,
+              "duration_ms": 2261,
+              "ttfb_ms": 2243,
+              "transfer_bytes": 42992,
+              "encoded_bytes": 42692
+            }
+          ],
+          "resource_count": 23,
+          "resource_encoded_bytes": 338431,
+          "render_tail_estimate_ms": 65
+        },
+        {
+          "device": "mobile",
+          "path_name": "account",
+          "status": 200,
+          "document_ms": 379,
+          "ready_ms": 580,
+          "navigation": {
+            "ttfb_ms": 140,
+            "document_bytes": 864,
+            "dom_interactive_ms": 374,
+            "dom_content_loaded_ms": 374
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 356
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 356
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 373,
+              "duration_ms": 160,
+              "ttfb_ms": 150,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 373,
+              "duration_ms": 171,
+              "ttfb_ms": 162,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            }
+          ],
+          "resource_count": 15,
+          "resource_encoded_bytes": 164075,
+          "render_tail_estimate_ms": 36
+        },
+        {
+          "device": "mobile",
+          "path_name": "billing",
+          "status": 200,
+          "document_ms": 413,
+          "ready_ms": 618,
+          "navigation": {
+            "ttfb_ms": 175,
+            "document_bytes": 864,
+            "dom_interactive_ms": 408,
+            "dom_content_loaded_ms": 409
+          },
+          "paint": [
+            {
+              "name": "first-paint",
+              "ms": 296
+            },
+            {
+              "name": "first-contentful-paint",
+              "ms": 296
+            }
+          ],
+          "api_requests": [
+            {
+              "path": "/api/v3/markets",
+              "type": "fetch",
+              "start_ms": 407,
+              "duration_ms": 157,
+              "ttfb_ms": 149,
+              "transfer_bytes": 1381,
+              "encoded_bytes": 1081
+            },
+            {
+              "path": "/api/v3/session",
+              "type": "fetch",
+              "start_ms": 408,
+              "duration_ms": 141,
+              "ttfb_ms": 132,
+              "transfer_bytes": 450,
+              "encoded_bytes": 150
+            }
+          ],
+          "resource_count": 15,
+          "resource_encoded_bytes": 163020,
+          "render_tail_estimate_ms": 54
+        }
+      ]
+    },
+    "sql_before": {
+      "schema": "findpitches-v3-catalogue-sql-profile-v1",
+      "started_at": "2026-10-16T18:14:33.901Z",
+      "scope": "read_only_remote_d1_api_not_service_binding",
+      "samples": [
+        {
+          "sequence": 1,
+          "queries": [
+            {
+              "kind": "structured_policy",
+              "total_api_ms": 1711.04,
+              "d1_duration_ms": 1107.1431,
+              "rows_read": 96615,
+              "rows_written": 0,
+              "rows_returned": 2206
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1773.07,
+              "d1_duration_ms": 159.4115,
+              "rows_read": 26508,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 636.95,
+              "d1_duration_ms": 163.9963,
+              "rows_read": 25839,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 573.31,
+              "d1_duration_ms": 158.3437,
+              "rows_read": 24741,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 462.17,
+              "d1_duration_ms": 146.0627,
+              "rows_read": 25732,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 571.42,
+              "d1_duration_ms": 153.0556,
+              "rows_read": 25487,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 462.34,
+              "d1_duration_ms": 151.0229,
+              "rows_read": 26044,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 476.83,
+              "d1_duration_ms": 162.7841,
+              "rows_read": 25561,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 724.7,
+              "d1_duration_ms": 74.7206,
+              "rows_read": 10196,
+              "rows_written": 0,
+              "rows_returned": 101
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 182.71,
+              "d1_duration_ms": 1.3345,
+              "rows_read": 6,
+              "rows_written": 0,
+              "rows_returned": 0
+            }
+          ],
+          "elapsed_ms": 6053.07,
+          "query_count": 10,
+          "d1_duration_ms": 2277.875,
+          "rows_read": 286729,
+          "ready": 1817,
+          "proof_payload_bytes": 2996244,
+          "visible_identity_revision_hash": "b84365b8a4631e9c069c6c8c2d75509bf57814bb773b6ac362b793db5a45a04b"
+        },
+        {
+          "sequence": 2,
+          "queries": [
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 484.23,
+              "d1_duration_ms": 119.8867,
+              "rows_read": 26508,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "structured_policy",
+              "total_api_ms": 1412.49,
+              "d1_duration_ms": 858.1525,
+              "rows_read": 96615,
+              "rows_written": 0,
+              "rows_returned": 2206
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1038.88,
+              "d1_duration_ms": 182.0968,
+              "rows_read": 25839,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 503.91,
+              "d1_duration_ms": 175.0481,
+              "rows_read": 24741,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 407.11,
+              "d1_duration_ms": 194.5058,
+              "rows_read": 25732,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 545.66,
+              "d1_duration_ms": 151.5566,
+              "rows_read": 25487,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 373.4,
+              "d1_duration_ms": 144.5033,
+              "rows_read": 26044,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 435.37,
+              "d1_duration_ms": 138.3545,
+              "rows_read": 25561,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 345.57,
+              "d1_duration_ms": 52.6517,
+              "rows_read": 10196,
+              "rows_written": 0,
+              "rows_returned": 101
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 195.75,
+              "d1_duration_ms": 1.7057,
+              "rows_read": 6,
+              "rows_written": 0,
+              "rows_returned": 0
+            }
+          ],
+          "elapsed_ms": 4467.12,
+          "query_count": 10,
+          "d1_duration_ms": 2018.4616999999996,
+          "rows_read": 286729,
+          "ready": 1817,
+          "proof_payload_bytes": 2996244,
+          "visible_identity_revision_hash": "b84365b8a4631e9c069c6c8c2d75509bf57814bb773b6ac362b793db5a45a04b"
+        },
+        {
+          "sequence": 3,
+          "queries": [
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1430.93,
+              "d1_duration_ms": 172.5214,
+              "rows_read": 26508,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "structured_policy",
+              "total_api_ms": 1432.78,
+              "d1_duration_ms": 984.2038,
+              "rows_read": 96615,
+              "rows_written": 0,
+              "rows_returned": 2206
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 475.12,
+              "d1_duration_ms": 136.767,
+              "rows_read": 25839,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 473.97,
+              "d1_duration_ms": 117.0315,
+              "rows_read": 24741,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 608.05,
+              "d1_duration_ms": 205.783,
+              "rows_read": 25732,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 567.78,
+              "d1_duration_ms": 133.465,
+              "rows_read": 25487,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 409.71,
+              "d1_duration_ms": 175.867,
+              "rows_read": 26044,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 427.99,
+              "d1_duration_ms": 119.7485,
+              "rows_read": 25488,
+              "rows_written": 0,
+              "rows_returned": 250
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 279.04,
+              "d1_duration_ms": 52.1084,
+              "rows_read": 10338,
+              "rows_written": 0,
+              "rows_returned": 102
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 152.77,
+              "d1_duration_ms": 1.4356,
+              "rows_read": 6,
+              "rows_written": 0,
+              "rows_returned": 0
+            }
+          ],
+          "elapsed_ms": 4966.26,
+          "query_count": 10,
+          "d1_duration_ms": 2098.9311999999995,
+          "rows_read": 286798,
+          "ready": 1818,
+          "proof_payload_bytes": 2997103,
+          "visible_identity_revision_hash": "6a425e09332799e380b4793e6a555d0425f64165fe2777c800e47df25750952c"
+        }
+      ],
+      "writes": 0,
+      "serper_queries": 0,
+      "completed_at": "2026-10-16T18:14:49.438Z",
+      "passed": true
+    },
+    "sql_after": {
+      "schema": "findpitches-v3-catalogue-sql-profile-v1",
+      "started_at": "2026-10-16T18:26:31.607Z",
+      "scope": "read_only_remote_d1_api_not_service_binding",
+      "samples": [
+        {
+          "sequence": 1,
+          "queries": [
+            {
+              "kind": "structured_policy",
+              "total_api_ms": 913.55,
+              "d1_duration_ms": 41.4698,
+              "rows_read": 49370,
+              "rows_written": 0,
+              "rows_returned": 2206
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1092.92,
+              "d1_duration_ms": 491.7685,
+              "rows_read": 103321,
+              "rows_written": 0,
+              "rows_returned": 1000
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1094.11,
+              "d1_duration_ms": 478.7838,
+              "rows_read": 85499,
+              "rows_written": 0,
+              "rows_returned": 833
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 190,
+              "d1_duration_ms": 1.4375,
+              "rows_read": 12,
+              "rows_written": 0,
+              "rows_returned": 0
+            }
+          ],
+          "elapsed_ms": 2572.45,
+          "query_count": 4,
+          "d1_duration_ms": 1013.4595999999999,
+          "rows_read": 238202,
+          "ready": 1799,
+          "proof_payload_bytes": 2939560,
+          "visible_identity_revision_hash": "e89889f2b71df3c8b6f115a5be1af7e02f7ea1e0f7c74416d418e60ab54365d8"
+        },
+        {
+          "sequence": 2,
+          "queries": [
+            {
+              "kind": "structured_policy",
+              "total_api_ms": 1004.31,
+              "d1_duration_ms": 43.839,
+              "rows_read": 49370,
+              "rows_written": 0,
+              "rows_returned": 2206
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1138.82,
+              "d1_duration_ms": 514.9154,
+              "rows_read": 103319,
+              "rows_written": 0,
+              "rows_returned": 1000
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1173.67,
+              "d1_duration_ms": 402.9478,
+              "rows_read": 85430,
+              "rows_written": 0,
+              "rows_returned": 832
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 167.59,
+              "d1_duration_ms": 2.7369,
+              "rows_read": 12,
+              "rows_written": 0,
+              "rows_returned": 0
+            }
+          ],
+          "elapsed_ms": 2619.44,
+          "query_count": 4,
+          "d1_duration_ms": 964.4390999999999,
+          "rows_read": 238131,
+          "ready": 1798,
+          "proof_payload_bytes": 2937156,
+          "visible_identity_revision_hash": "946c9a087407c79230273dbdd11f78769d28e78b457dcbe5bdf639d17c1664f5"
+        },
+        {
+          "sequence": 3,
+          "queries": [
+            {
+              "kind": "structured_policy",
+              "total_api_ms": 852.17,
+              "d1_duration_ms": 42.4767,
+              "rows_read": 49370,
+              "rows_written": 0,
+              "rows_returned": 2206
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1084.79,
+              "d1_duration_ms": 519.9372,
+              "rows_read": 103319,
+              "rows_written": 0,
+              "rows_returned": 1000
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 1095.74,
+              "d1_duration_ms": 565.9251,
+              "rows_read": 85429,
+              "rows_written": 0,
+              "rows_returned": 832
+            },
+            {
+              "kind": "commercial_inventory_page",
+              "total_api_ms": 176.31,
+              "d1_duration_ms": 2.0259,
+              "rows_read": 12,
+              "rows_written": 0,
+              "rows_returned": 0
+            }
+          ],
+          "elapsed_ms": 2485.28,
+          "query_count": 4,
+          "d1_duration_ms": 1130.3649,
+          "rows_read": 238130,
+          "ready": 1798,
+          "proof_payload_bytes": 2937156,
+          "visible_identity_revision_hash": "946c9a087407c79230273dbdd11f78769d28e78b457dcbe5bdf639d17c1664f5"
+        }
+      ],
+      "writes": 0,
+      "serper_queries": 0,
+      "completed_at": "2026-10-16T18:26:39.334Z",
+      "passed": true
+    }
+  },
+  "validation": {
+    "full_v3_passed": 485,
+    "full_v3_failed": 0,
+    "full_v3_skipped": 0,
+    "frontend_passed": 3,
+    "independence_files": 98,
+    "built_files": 60,
+    "runtime_boundaries_passed": true,
+    "public_before_checks": 29,
+    "public_after_checks": 29,
+    "browser_route_samples_before": 18,
+    "browser_route_samples_after": 18,
+    "script_errors_or_foreign_requests": 0,
+    "held_and_expired_records_still_withheld": true,
+    "read_pages_and_source_clock_tie_parity_tests_passed": true
+  },
+  "components": {
+    "d1": "native per-query duration/rows_read from three remote API traces per phase; API transport reported separately",
+    "worker_execution_cpu": "not exposed; not estimated from wall time",
+    "service_binding": "not independently instrumented in this checkpoint",
+    "r2": "no R2 read in synchronous stagingCatalogue implementation; source renewal/storage activity is separate",
+    "serialization_and_render": "browser API timelines and a rough render-tail estimate; not a pure CPU measurement",
+    "cache": "private/no-store preserved; no cross-request proof cache; browser request guard disables HTTP cache in both phases",
+    "cold_warm": "fresh anonymous profiles and first/repeat GETs; backend cold isolates not forced or asserted"
+  },
+  "final_health": {
+    "as_of": "2026-10-16T18:38:43.713Z",
+    "public_enabled": true,
+    "checkout_enabled": true,
+    "account_recovery_preserved": true,
+    "ready": 1784,
+    "ready_by_country": {
+      "GB": 162,
+      "US": 1612,
+      "CA": 1,
+      "AU": 4,
+      "IE": 0,
+      "NZ": 5,
+      "SG": 0,
+      "HK": 0,
+      "FR": 0
+    },
+    "safety": {
+      "source_publication": 0,
+      "source_projections": 0,
+      "source_publication_queue": 0,
+      "due": 1,
+      "leased": 0,
+      "dead": 0,
+      "stale": 0,
+      "paid_queries_today": 0,
+      "bulk": 0,
+      "paid_paused": 1
+    },
+    "native_customer_counts": {
+      "native_billing_operations": 0,
+      "native_provider_customers": 1,
+      "native_subscriptions": 1,
+      "pending_webhooks": 0
+    },
+    "source_database_bytes": 4031287296,
+    "pitchlist_deployment_unchanged": true,
+    "source_original_or_identity_writes": 0,
+    "full_source_custody_audit_repeated": false
+  },
+  "inventory_caveat": "Live source renewals/expiry continued during measurements. The 1836->1784 READY drift is not a controlled quality/yield comparison and is not attributed to the optimisation. Original source records were not written; policy parity was proven in one database snapshot. No claim of a new full source-custody audit or a completed withdrawal-cause audit.",
+  "billing_live_empty_update_capability": {
+    "as_of": "2026-10-16T18:36:16.107Z",
+    "scope": "exact_existing_v3_owned_cancelled_trial_empty_update_only",
+    "http_status": 200,
+    "permitted": true,
+    "code": "accepted_empty_update",
+    "owned_customer_and_subscription_verified": true,
+    "request_parameters": 0,
+    "subscription_billing_state_unchanged": true,
+    "trial_cancellation_price_period_invoice_and_metadata_preserved": true,
+    "new_live_objects": 0,
+    "charges_or_trial_changes": 0,
+    "shared_pitchlist_objects_touched": false
+  },
+  "remaining_work": {
+    "priority_2": "V3-029 remains ACTIVE. Ordinary catalogue p50 is still 2.3-2.7 seconds; next investigate bounded current-proof/selected-field read materialisation and RPC/serialization costs, preserving latest-verification, revision, hold, conflict, source-clock, expiry and Free/Pro safeguards.",
+    "priority_3": "48/72-hour storage samples due 17/18 October; index migration added an observed ~3.8MB fixed window step, not a new daily rate. No PostgreSQL/sharding migration.",
+    "priority_4": "French proof after priorities 1-3 are stable; real corpus/source custody required.",
+    "priority_5": "Upcoming/Save deferred."
+  },
+  "safety": {
+    "serper_queries": 0,
+    "new_customer_or_subscription_objects": 0,
+    "shared_stripe_branding_changed": false,
+    "stripe_key_or_permissions_changed": false,
+    "billing_semantic_state_changed": false,
+    "source_original_or_identity_writes": 0,
+    "source_original_custody_audit_repeated": false,
+    "source_publication_enabled": false,
+    "pitchlist_or_v2_changed": false,
+    "paid_acquisition_enabled": false,
+    "protected_branch_merge": false
+  }
+}

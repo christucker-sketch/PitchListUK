@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T19:12:24+01:00 — native billing LIVE/DONE; performance ACTIVE** (Europe/London).
-State: **V3-010/V3-030 DONE. Public/sign-in/Checkout/recovery on. V3-029 ACTIVE under the strict hub order.**
+Author: Codex. Updated: **2026-10-16T19:43:13+01:00 — native billing DONE; first measured performance release LIVE** (Europe/London).
+State: **V3-010/V3-030 DONE; V3-029 ACTIVE (sub-second catalogue goal remains open). Public/sign-in/Checkout/recovery on.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,14 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Performance checkpoint / exact next work — 2026-10-16T19:43:13+01:00
+
+[Before/after / deployment / remaining bottleneck](../../docs/findpitches-v3-performance-2026-10-16.md) / [full sanitized timings](../../operations/findpitches-v3/reports/performance-readiness-2026-10-16.json). Codebb9d09a9; sourceAPIba82ad84/customerc7974bb8. Desktop country18.71→5.49s, category22.02→5.39s, listing11.69→4.69s; catalogueAPI3.48→2.38s. Full485/frontend3/98-file independence/60-file build/boundaries/public29before+after/browser18perphase pass. Ten→four catalogue queries; policyD1CPU858→44ms;2,206 exact old/newpolicy rows/0difference in one live snapshot. One additive3.8MB-window index; original schemas/evidence/identity/proof gates preserved, no stale cache. Native billing LIVE with successful empty LIVE write capability and unchanged trial/cancel/price/invoice/metadata; no Hal/key change required.
+
+**V3-029 remains ACTIVE, not declared fast enough:** ordinary catalogue p50 still2.3–2.7s. Exact resume: current-proof/selected-field read materialisation plus RPC/serialization measurement. Retain current verification/sequence/revision, unresolved holds/conflicts, latest producer/source-clock, deadline/expiry/lifecycle and Free/Pro safeguards; no unconditional READY cache. Current profilers committed; detailed baseline/after samples linked. Worker CPU/binding timings are explicitly unavailable rather than inferred.
+
+Ordered queue:1billingDONE;2performanceACTIVE;3storageWAITING for17/18October48/72h measurements;4French proofWAITING;5upcoming/SaveDEFERRED. No extra map/DE/SEO embellishment/acquisition thread opened. At19:38:43London1784READY US1612/GB162/NZ5/AU4/CA1, core1due/0leased/dead/stale, paid0/off/manualpause, sourcepublication0/rows0/0, nativewebhookspending0. Inventory moved during live renewals/expiry; no quality/yield gain/loss or completed withdrawal-cause audit is claimed from this performance experiment. V2/PitchList/producer/Pi untouched. No protected merge, Serper, new LIVE billing object, marketing/auth send or full new custody audit.
 
 ## Native billing delivered / ordered continuation — 2026-10-16T19:12:24+01:00
 
