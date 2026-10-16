@@ -55,7 +55,7 @@ for line in open(ids_file):
         x = a["extracted"]
         out = {"id": uid, "label": a["label"], "state": x.get("state"), "country": x.get("country"),
                "start": x.get("start_date"), "routes": sorted({rt["type"] for rt in x.get("routes") or []}),
-               "reasons": a["reasons"][:3]}
+               "reasons": a["reasons"][:3], "ev": (x.get("state_evidence") or "")[:170]}
     except Exception as e:  # noqa: BLE001
         out = {"id": uid, "error": repr(e)[:200]}
     print(json.dumps(out), flush=True)
@@ -135,7 +135,8 @@ def _compare(conn, a, ids, linked):
         if len(examples) < (80 if a.generator else 30) and ("label" in changed or "state" in changed or "country" in changed):
             url = conn.execute("SELECT url FROM urls WHERE id=?", (uid,)).fetchone()[0]
             examples.append(f"{uid:>7} {o.get('label')}/{o.get('state')}/{o.get('country')}/{o.get('start')} -> "
-                            f"{n.get('label')}/{n.get('state')}/{n.get('country')}/{n.get('start')}  {n.get('reasons')}  {url[:90]}")
+                            f"{n.get('label')}/{n.get('state')}/{n.get('country')}/{n.get('start')}  {n.get('reasons')}  {url[:90]}"
+                            f"\n          old: {o.get('ev')}\n          new: {n.get('ev')}")
     print(json.dumps({"pages": len(ids), "opportunity_linked": len(linked), **c}, indent=1))
     print("== transitions (old label/state -> new label/state)")
     for t, k in trans.most_common(25):

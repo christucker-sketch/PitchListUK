@@ -378,7 +378,7 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
     def _partial(m):
         after = body[m.end(): m.end() + 60]
         before = body[max(0, m.start() - 80): m.start()]
-        return bool(re.match(r"\s*(?:at\s+this\s+time\s+)?for\s+(?!(?:the\s+)?20\d\d|this|next|our|the\s+(?:20\d\d|current|upcoming))[a-z]", after, re.I)) or \
+        return bool(re.match(r"\s*(?:at\s+this\s+time\s+)?(?:for|from)\s+(?!(?:the\s+)?20\d\d|this|next|our|the\s+(?:20\d\d|current|upcoming))[a-z]", after, re.I)) or \
             bool(re.search(r"\b(?:some|certain|the\s+following|several)\s+(?:vendor\s+)?(?:categories|categor)", before + m.group(0), re.I))
     if closed:
         part = [m for m in closed if _partial(m)]

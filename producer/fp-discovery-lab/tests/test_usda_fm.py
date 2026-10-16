@@ -174,3 +174,13 @@ def test_redirect_to_a_city_site_is_a_starting_point_without_the_market_name(tmp
     row = conn.execute("SELECT purpose FROM urls").fetchone()
     assert row["purpose"] == "candidate"
     assert conn.execute("SELECT entity_name FROM sites WHERE reg_domain='auburnwa.gov'").fetchone()[0] is None
+
+
+def test_not_accepting_applications_from_one_category_is_not_a_closure():
+    html = ("<title>Infinity Con 2027 - Vendor Application</title><body><h1>Infinity Con 2027 vendor booths</h1>"
+            "<p>July 10-11, 2027, Convention Center, Springfield, IL. Vendor application deadline July 1, 2027.</p>"
+            "<p>Booth fees are not refundable. At this time Infinity Con is not accepting applications from bands, musical "
+            "artists or any artists selling only prints.</p><a href='https://www.eventeny.com/events/vendor/apply/?id=1'>Apply</a>"
+            "</body>")
+    x = _state(html, "https://www.infinitycon.example/vendors")
+    assert x["state"] not in ("CLOSED_CURRENT_CYCLE", "HISTORICAL")

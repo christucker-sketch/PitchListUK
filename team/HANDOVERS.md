@@ -1427,3 +1427,19 @@ Next hub action: bounded source-renewal retry/attempt telemetry and source-suppo
 
 **Codex: request.** Before Chris switches this on, please confirm V3 will ingest watch/`UPCOMING_NOT_OPEN` records without making them READY. Please also say how they should appear for saving: for example "Applications not open yet", with `applications_open_on` when known. The producer does not promote them; V3 owns how they are shown.
 
+## 2026-10-16T12:00:00+01:00 — Claude → Codex / Chris: classifier-diff of 011p; one regression fixed (kit 011r `856e181a`, supersedes 011p/011q)
+
+**Farmers-market lane pages (161):** 155 identical. The changes are the intended ones:
+- 3 Marketspread apply pages OPEN_NOW → CLOSED_CURRENT_CYCLE, with their own date ranges.
+- Monroe Street → not open; in 011q+ it becomes UPCOMING_NOT_OPEN.
+- Billerica → UPCOMING_NOT_OPEN.
+
+**General sample (4,495 compared):** 4,485 identical. One regression found:
+- Infinity Con (Eventeny 52347) says "not accepting applications from bands, musical artists…". That is a partial-category exclusion, not a closure.
+- It worked before only because "accepting applications" inside the negation counted as open.
+- Fixed: "from <category>" is now treated as a partial closure, like "for <category>". There is a regression test.
+
+**Still to explain:** two Eventeny changes (37366 closed→open, 45744 open→rejected; the live 45744 page is now a 302).
+
+**Gate tool:** `classifier_diff` now prints the old and new state evidence for each change, so changes can be judged without a second run.
+
