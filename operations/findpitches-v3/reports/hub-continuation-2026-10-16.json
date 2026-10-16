@@ -1,0 +1,320 @@
+{
+  "schema": "findpitches-v3-hub-continuation-v1",
+  "as_of": "2026-10-16T09:38:51.912Z",
+  "status_as_of": "2026-10-16T09:38:57.165Z",
+  "total_commercial_ready": 1842,
+  "ready_by_country": {
+    "US": 1671,
+    "NZ": 5,
+    "GB": 161,
+    "AU": 4,
+    "CA": 1
+  },
+  "ready_change": {
+    "before": 1842,
+    "after": 1842,
+    "added": 0,
+    "removed": 0
+  },
+  "historical_failed_audit": {
+    "as_of": "2026-10-16T09:01:42.254Z",
+    "inspected": 113,
+    "dispositions": {
+      "past_deadline": 42,
+      "closed_withdrawn": 49,
+      "past_event": 8,
+      "identity_quality_hold": 14
+    },
+    "future_recheck_candidates": 0,
+    "recovery_fetches": 0,
+    "ready_promotions": 0,
+    "prior_source_proofs_found": 113,
+    "matched_prior_source_deadlines": 42,
+    "matched_prior_source_past_event_dates": 8
+  },
+  "renewal": {
+    "as_of": "2026-10-16T09:38:57.165Z",
+    "health": "healthy",
+    "last_24h": {
+      "attempts": 174,
+      "transient_failures": 2,
+      "source_results": 172,
+      "exhausted_attempts": 0
+    },
+    "waiting": {
+      "entities": 0,
+      "exhausted_entities": null,
+      "next_retry_at": null
+    },
+    "reasons": [
+      {
+        "reason": "source_http_429",
+        "diagnostic": null,
+        "attempts": 2
+      }
+    ],
+    "previously_ready_latest_failed_receipts": 113,
+    "historical_failed_receipts": {
+      "total": 113,
+      "action_needed": 0,
+      "held": 113,
+      "dispositions": {
+        "closed_withdrawn": 49,
+        "past_deadline": 42,
+        "past_event": 8,
+        "identity_quality_hold": 14
+      },
+      "basis": "Current selected facts and unresolved holds; triage only, not a new source verification. Historical failures remain immutable and visible. Held records remain withheld."
+    },
+    "limits": {
+      "failure_attempts_before_daily_cooldown": 4,
+      "short_retry_delays_seconds": [
+        300,
+        900,
+        3600
+      ],
+      "retry_entities_per_domain_per_15min": 16
+    },
+    "interpretation": "Attempts are separate from proof. A failed retrieval never renews proof TTL, clears identity/closure holds or proves READY. Processing completion is not source renewal success."
+  },
+  "france_native_canary": {
+    "schema": "findpitches-v3-fr-council-native-proof-v1",
+    "as_of": "2026-10-16T09:28:20.566Z",
+    "scope": "one_test_environment_record_from_fresh_official_sources_not_commercial_inventory",
+    "direct_source_requests": 3,
+    "serper_queries": 0,
+    "proof_status": "verified",
+    "application_state": "ENQUIRY_AVAILABLE",
+    "route_type": "trader_email",
+    "native_readiness": "ready",
+    "archived_original_round_trip": true,
+    "archived_original_bytes": 3283999,
+    "original_pdf_hash": "4c64eb0823c1ab124ff1e06314c436358c86e97c88177ad059be81abd59413bb",
+    "original_receipt_mutations": 0,
+    "original_fact_mutations": 0,
+    "identity_changes": 0,
+    "replay_new_entities": 0,
+    "source_clock_or_ttl_extension": 0,
+    "test_records_in_customer_catalogue": 0,
+    "commercial_fr_ready": 0,
+    "total_commercial_ready": 1842,
+    "guard": {
+      "publication": 0,
+      "bulk": 0,
+      "paused": 1,
+      "customers": 0,
+      "published": 0
+    }
+  },
+  "upcoming_native_canary": {
+    "schema": "findpitches-v3-upcoming-native-canary-v1",
+    "as_of": "2026-10-16T09:37:28.529Z",
+    "accepted": 1,
+    "replayed": 1,
+    "original_application_state_retained": true,
+    "original_opening_date_retained": true,
+    "internal_state": "WATCH",
+    "native_readiness": "watch",
+    "not_open_guard": true,
+    "replay_entity_growth": 0,
+    "source_mutations": 0,
+    "identity_changes": 0,
+    "source_fetches": 0,
+    "serper_queries": 0,
+    "customer_visible_test_or_upcoming_records": 0,
+    "customer_upcoming_display_enabled": false,
+    "total_commercial_ready": 1842
+  },
+  "storage_capacity": {
+    "available": true,
+    "file_size_bytes": 3963478016,
+    "conservative_cap_bytes": 10000000000,
+    "protective_stop_bytes": 9700000000,
+    "percent_used": 39.63,
+    "remaining_bytes": 6036521984,
+    "state": "normal",
+    "source_growth_allowed": true,
+    "warning_thresholds_percent": [
+      70,
+      80,
+      90,
+      97
+    ],
+    "as_of": "2026-10-16T09:39:18.656Z",
+    "growth_bytes_per_hour": 245760,
+    "growth_interpretation": "net_database_growth",
+    "archive": {
+      "documents": 30497,
+      "original_payload_bytes": 6212304937
+    },
+    "samples": [
+      {
+        "observed_at": "2026-10-16T09:30:00.000Z",
+        "file_size_bytes": 3963322368
+      },
+      {
+        "observed_at": "2026-10-16T09:15:00.000Z",
+        "file_size_bytes": 3963260928
+      }
+    ],
+    "scope": "V3 source/evidence database; separate customer/auth/billing storage excluded",
+    "guard_enabled": true,
+    "forward_archive_enabled": true
+  },
+  "structured_delivery": {
+    "cloud_ready": true,
+    "host_recently_contacting": true,
+    "cadence_verified": false,
+    "freshness_warning": false,
+    "last_authenticated_poll": "2026-10-16T09:26:06.011Z",
+    "source_last_checked": "2026-10-16T08:36:32Z",
+    "pending_rechecks": 123,
+    "recent_poll_intervals_seconds": [
+      767.1,
+      1601.386,
+      918.375
+    ]
+  },
+  "core_queues": [
+    {
+      "stage": "enrichment",
+      "status": "leased",
+      "jobs": 1,
+      "oldest_available_at": "2026-10-16T09:38:41.213Z",
+      "first_lease_expiry": "2026-10-16T09:42:53.218Z"
+    },
+    {
+      "stage": "readiness",
+      "status": "leased",
+      "jobs": 1,
+      "oldest_available_at": "2026-10-16T09:38:51.543Z",
+      "first_lease_expiry": "2026-10-16T09:42:57.016Z"
+    }
+  ],
+  "stale_leases": 0,
+  "guard": {
+    "source_publication_enabled": false,
+    "source_customer_rows": 0,
+    "source_publication_rows": 0,
+    "paid_queries_today": 0,
+    "bulk_enabled": false,
+    "commercial_manual_paused": 1
+  },
+  "original_build_preservation": {
+    "schema": "findpitches-v3-customer-preview-preservation-v1",
+    "audit_page_size": 250,
+    "method": "full_original_row_digests",
+    "as_of": "2026-10-16T09:22:12.188Z",
+    "receipts_compared": 15811,
+    "source_facts_compared": 108819,
+    "existing_identities_compared": 7077,
+    "destructive_source_mutations": 0,
+    "existing_identity_changes": 0,
+    "identity_comparison_key": "retained entity.id",
+    "customer_projection_rows": 0,
+    "publication_queue_rows": 0,
+    "publication_api_denied": true,
+    "publication_enabled": false,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "live_v1_deployment_unchanged": true,
+    "v2_schedules": [],
+    "v2_schedules_unchanged": true
+  },
+  "affected_cohort_preservation": {
+    "compared": {
+      "producer_records": 782,
+      "source_facts": 10586,
+      "source_verifications": 113,
+      "source_documents": 113
+    },
+    "original_row_mutations": 0,
+    "identity_changes": 0,
+    "customer_version_preserved": true,
+    "guard": {
+      "publication": 0,
+      "bulk": 0,
+      "paused": 1,
+      "customer_rows": 0,
+      "publication_rows": 0
+    }
+  },
+  "source_workers": [
+    {
+      "role": "api",
+      "version": "64092828-fbde-49e1-a73b-6a66670eab93",
+      "completed_at": "2026-10-16T09:33:50.582Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "enrichment",
+      "version": "6d6db814-095f-4284-b3ed-0f5e6fe7d791",
+      "completed_at": "2026-10-16T09:34:12.291Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "readiness",
+      "version": "0c4c1cd4-bf36-4265-96f0-da52b03bb60a",
+      "completed_at": "2026-10-16T09:34:34.302Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "eligibility",
+      "version": "8a8f0811-d3c2-4e94-90b9-b8f2caa6f8fc",
+      "completed_at": "2026-10-16T09:34:55.879Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "reconcile",
+      "version": "a013fb8f-b6b0-4472-970a-f0afc613fb32",
+      "completed_at": "2026-10-16T09:35:17.181Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "watch",
+      "version": "f00f890d-9b2c-4999-a158-357c7f0db922",
+      "completed_at": "2026-10-16T09:35:38.966Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "acquisition",
+      "version": "5c2b20f1-fc68-47d1-98e4-fcb64bc35ae6",
+      "completed_at": "2026-10-16T09:36:04.211Z",
+      "bindings_and_schedules_preserved": true
+    },
+    {
+      "role": "ingest",
+      "version": "030b2e68-6e5e-4d3e-89ba-8c7d249b4cf6",
+      "completed_at": "2026-10-16T09:36:23.838Z",
+      "bindings_and_schedules_preserved": true
+    }
+  ],
+  "customer_active_version": [
+    {
+      "version_id": "e6c4f562-dd47-4e63-9658-1b2ff9ad2669",
+      "percentage": 100
+    }
+  ],
+  "full_v3_tests": {
+    "passed": 469,
+    "failed": 0,
+    "skipped": 0
+  },
+  "customer_runtime_deployed_by_this_work": false,
+  "producer_or_pi_changes_by_codex": false,
+  "pitchlist_v2_writes": false,
+  "notes": "Commercial READY excludes test canaries. FR source-proof canary READY is not French commercial inventory. Upcoming remains WATCH and is not customer-published.48/72h storage coverage and broader French proof remain open.",
+  "queue_recheck": {
+    "as_of": "2026-10-16T09:40:45.784Z",
+    "rows": [],
+    "stale_leases": 0
+  },
+  "public_smoke": {
+    "as_of": "2026-10-16T09:37:43.699Z",
+    "passed": true,
+    "checks": 29,
+    "messages_sent": 0,
+    "customer_objects_created": 0,
+    "expected_checkout_enabled": true
+  }
+}

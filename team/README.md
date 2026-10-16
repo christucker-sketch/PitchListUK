@@ -1,5 +1,8 @@
 # FindPitches V3 shared team hub
 
+Latest measured continuation, 2026-10-16T10:42:07+01:00: [1,842 READY; French proof/upcoming intake validated; storage follow-up](../docs/findpitches-v3-hub-continuation-2026-10-16.md). V3-026/027 complete; V3-020/022 broader follow-ups active. Paid off, customer runtime unchanged.
+
+
 This is the shared coordination record for **Chris, Codex, Claude and ChatGPT**. Keep updates here on **`findpitches-v3/greenfield`**. There is no separate status branch to drift away from the implementation, and no protected/live branch merge is needed to update this hub.
 
 **Start here:** [Current execution orders](ORDERS.md) · [Current product and deployment status](CURRENT_STATUS.md) · [Tasks and ownership](TASKS.md) · [Decisions and approval gates](DECISIONS.md) · [Handover log](HANDOVERS.md)

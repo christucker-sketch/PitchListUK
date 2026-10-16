@@ -1,0 +1,19 @@
+{
+  "schema": "findpitches-v3-upcoming-native-canary-v1",
+  "as_of": "2026-10-16T09:37:28.529Z",
+  "accepted": 1,
+  "replayed": 1,
+  "original_application_state_retained": true,
+  "original_opening_date_retained": true,
+  "internal_state": "WATCH",
+  "native_readiness": "watch",
+  "not_open_guard": true,
+  "replay_entity_growth": 0,
+  "source_mutations": 0,
+  "identity_changes": 0,
+  "source_fetches": 0,
+  "serper_queries": 0,
+  "customer_visible_test_or_upcoming_records": 0,
+  "customer_upcoming_display_enabled": false,
+  "total_commercial_ready": 1842
+}

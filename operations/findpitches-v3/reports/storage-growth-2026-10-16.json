@@ -1,0 +1,181 @@
+{
+  "schema": "findpitches-v3-storage-growth-v1",
+  "started_at": "2026-10-16T09:16:36.233Z",
+  "scope": "V3 source/evidence D1 only; customer/auth/billing database excluded",
+  "capacity": {
+    "available": true,
+    "file_size_bytes": 3963260928,
+    "conservative_cap_bytes": 10000000000,
+    "protective_stop_bytes": 9700000000,
+    "percent_used": 39.63,
+    "remaining_bytes": 6036739072,
+    "state": "normal",
+    "source_growth_allowed": true,
+    "warning_thresholds_percent": [
+      70,
+      80,
+      90,
+      97
+    ]
+  },
+  "window": {
+    "available": true,
+    "first": {
+      "observed_at": "2026-10-15T08:45:00.000Z",
+      "file_size_bytes": 3723821056
+    },
+    "last": {
+      "observed_at": "2026-10-16T09:15:00.000Z",
+      "file_size_bytes": 3963260928
+    },
+    "samples": 99,
+    "elapsed_hours": 24.5,
+    "physical_delta_bytes": 239439872,
+    "net_bytes_per_day": 234553344,
+    "includes_large_reclaim": false,
+    "coverage_24h": true,
+    "coverage_48h": false,
+    "coverage_72h": false,
+    "linear_scenario_days_to_70_percent": 12.946901631042191,
+    "linear_scenario_days_to_97_percent": 24.458142332006148,
+    "interpretation": "Observed net physical change in the stated sample interval. Linear headroom scenarios are not steady-state forecasts; missing future coverage is not measured. Reclaim windows have no growth projection."
+  },
+  "tables": [
+    {
+      "table": "source_facts",
+      "measured_at": "2026-10-16T09:16:38.793Z",
+      "records": 330778,
+      "logical_payload_bytes": 616578843,
+      "column_bytes": {
+        "id": 19134445,
+        "record_id": 14554397,
+        "field_name": 4249270,
+        "value_json": 8132096,
+        "source_url": 17946853,
+        "evidence_json": 293850438,
+        "provenance_json": 250772672,
+        "created_at": 7938672
+      }
+    },
+    {
+      "table": "producer_records",
+      "measured_at": "2026-10-16T09:16:39.764Z",
+      "records": 35562,
+      "logical_payload_bytes": 321506299,
+      "column_bytes": {
+        "id": 1564743,
+        "producer_name": 688842,
+        "producer_type": 398437,
+        "producer_record_id": 1131791,
+        "environment": 212418,
+        "market": 71120,
+        "content_hash": 2275968,
+        "raw_json": 184201235,
+        "normalized_json": 129752490,
+        "validation_status": 284496,
+        "errors_json": 71271,
+        "received_at": 853488
+      }
+    },
+    {
+      "table": "source_verifications",
+      "measured_at": "2026-10-16T09:16:41.222Z",
+      "records": 47005,
+      "logical_payload_bytes": 217086299,
+      "column_bytes": {
+        "id": 2068220,
+        "entity_id": 1692180,
+        "document_id": 2068220,
+        "verifier_version": 705075,
+        "status": 418267,
+        "report_json": 207878097,
+        "checked_at": 1128120,
+        "expires_at": 1128120
+      }
+    },
+    {
+      "table": "jobs",
+      "measured_at": "2026-10-16T09:16:41.899Z",
+      "records": 239271,
+      "logical_payload_bytes": 61571047,
+      "column_bytes": {
+        "id": 8613802,
+        "stage": 2091984,
+        "dedupe_key": 15049539,
+        "payload_json": 16696377,
+        "status": 1891833,
+        "available_at": 5742504,
+        "lease_until": 0,
+        "lease_token": 0,
+        "last_error": 0,
+        "created_at": 5742504,
+        "updated_at": 5742504
+      }
+    },
+    {
+      "table": "source_documents",
+      "measured_at": "2026-10-16T09:16:50.491Z",
+      "records": 51335,
+      "logical_payload_bytes": 1740996311,
+      "column_bytes": {
+        "id": 2258740,
+        "source_url": 2915453,
+        "content_hash": 3131840,
+        "fetched_at": 1232040,
+        "document_json": 1731458238
+      }
+    }
+  ],
+  "read_only": true,
+  "source_or_customer_mutations": 0,
+  "physical_table_index_attribution_available": false,
+  "completed_at": "2026-10-16T09:16:50.491Z",
+  "logical_payload_definition": "UTF-8 TEXT/BLOB payload, excluding physical integer cells, B-tree pages and indices; deltas are not physical per-table growth attribution.",
+  "previous_logical_checkpoint": [
+    {
+      "table": "source_facts",
+      "records": 330778,
+      "payload_bytes": 616578843,
+      "prior_as_of": "2026-10-15T06:10:31.957Z",
+      "prior_records": 287038,
+      "prior_payload_bytes": 542265098,
+      "payload_delta": 74313745
+    },
+    {
+      "table": "producer_records",
+      "records": 35562,
+      "payload_bytes": 321506299,
+      "prior_as_of": "2026-10-15T06:10:31.957Z",
+      "prior_records": 31945,
+      "prior_payload_bytes": 296523891,
+      "payload_delta": 24982408
+    },
+    {
+      "table": "source_verifications",
+      "records": 47005,
+      "payload_bytes": 217086299,
+      "prior_as_of": "2026-10-15T06:10:31.957Z",
+      "prior_records": 39239,
+      "prior_payload_bytes": 191410162,
+      "payload_delta": 25676137
+    },
+    {
+      "table": "jobs",
+      "records": 239271,
+      "payload_bytes": 61571047,
+      "prior_as_of": "2026-10-15T06:10:31.957Z",
+      "prior_records": 204349,
+      "prior_payload_bytes": 52671574,
+      "payload_delta": 8899473
+    },
+    {
+      "table": "source_documents",
+      "records": 51335,
+      "payload_bytes": 1740996311,
+      "prior_as_of": null,
+      "prior_records": null,
+      "prior_payload_bytes": null,
+      "payload_delta": null
+    }
+  ]
+}

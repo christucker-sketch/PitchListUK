@@ -1,0 +1,29 @@
+{
+  "schema": "findpitches-v3-fr-council-native-proof-v1",
+  "as_of": "2026-10-16T09:28:20.566Z",
+  "scope": "one_test_environment_record_from_fresh_official_sources_not_commercial_inventory",
+  "direct_source_requests": 3,
+  "serper_queries": 0,
+  "proof_status": "verified",
+  "application_state": "ENQUIRY_AVAILABLE",
+  "route_type": "trader_email",
+  "native_readiness": "ready",
+  "archived_original_round_trip": true,
+  "archived_original_bytes": 3283999,
+  "original_pdf_hash": "4c64eb0823c1ab124ff1e06314c436358c86e97c88177ad059be81abd59413bb",
+  "original_receipt_mutations": 0,
+  "original_fact_mutations": 0,
+  "identity_changes": 0,
+  "replay_new_entities": 0,
+  "source_clock_or_ttl_extension": 0,
+  "test_records_in_customer_catalogue": 0,
+  "commercial_fr_ready": 0,
+  "total_commercial_ready": 1842,
+  "guard": {
+    "publication": 0,
+    "bulk": 0,
+    "paused": 1,
+    "customers": 0,
+    "published": 0
+  }
+}

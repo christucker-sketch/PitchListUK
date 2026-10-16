@@ -1,14 +1,18 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T09:44:26+01:00 — source renewal repair complete** (Europe/London).
-State: **V3-025 DONE — source renewal/date repair, 82 READY restored; V3-026 OPEN — older failed-proof triage; V3-020 French proof OPEN; V3-022 storage growth OPEN; V3-024 languages live; V3-010 owned LIVE acceptance still separately recorded as pending**.
-Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
+Author: Codex. Updated: **2026-10-16T10:42:07+01:00 — continuation checkpoints deployed and verified** (Europe/London).
+State: **V3-026/027 DONE; V3-020 council proof checkpoint delivered, broader corpus active; V3-022 24h measurement/design delivered, 48/72h follow-up active; V3-028 customer upcoming/Save OPEN; V3-010 owned LIVE acceptance remains separately pending**.
+Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
 
 
 
 
+
+## Latest completed checkpoints — 2026-10-16T10:42:07+01:00
+
+**16 October continuation:** V3-026 DONE: all 113 historical failed proofs classified (49 closed/42 passed deadlines/8 past events/14 identity-quality holds),0 eligible recovery fetches. Renewal health now distinguishes current work from retained historical holds. French Seyssins council proof and exact scanned-PDF custody passed a fresh deployed test, excluded from commercial inventory; broader V3-020 proof remains active. V3-022 measured 24.5h/239.44 MB net growth (~234.55MB/day),3.963 GB current/39.63% used; 48/72h coverage remains pending. V3-027 DONE: upcoming-feed intake/immutable opening-date retention/READY guard and native replay validated; customer future listings/Save remain separate V3-028. **READY 1,842 unchanged: US 1,671/GB 161/NZ 5/AU 4/CA 1; FR 0.** Full 469, final public 29, original-build/affected custody0 mutations; all 8 source Workers preserve native config; customer version/public browsing/LIVE Checkout unchanged.0 paid queries/source-publication leakage, PitchList/V2 untouched. Latest queue recheck 10:40 London clear/stale 0. Pi contact/freshness good but strict 15-minute cadence false (one 26.7-minute interval),123 pending rechecks; Claude owns investigation/FR export/011r gate. [Completion](../../docs/findpitches-v3-hub-continuation-2026-10-16.md) / [evidence](../../operations/findpitches-v3/reports/hub-continuation-2026-10-16.json).
 
 ## Active continuation — 2026-10-16T10:01:16+01:00
 
