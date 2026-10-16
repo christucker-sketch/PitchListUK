@@ -71,7 +71,13 @@ export function present(row,access={tier:'free'}) {
   const {_restricted,_proof,confidence,...out}=row,entitled=['pro','trial'].includes(access.tier)&&(access.scope==='global'||access.market===row.market);
   return {...out,access:entitled?{locked:false,..._restricted}:{locked:true,source_domain_hint:_restricted.source_domain?.match(/\.[a-z]+$/)?.[0]??null,source_url:null,application_url:null},is_current:true};
 }
-export function regions(market,rows) {marketOf(market);return allRegions(market).map(r=>({...r,code:r.code??null,opportunity_count:rows.filter(o=>o.market===market&&ancestors(market,o.location.region_id).some(x=>x.id===r.id)).length}));}
+export function regions(market,rows) {
+  marketOf(market);const counts=new Map();
+  // Count each proved region and its parents once per row. Keep registry order,
+  // zero-count regions and unknown locations exactly as the search contract.
+  for(const row of rows)if(row.market===market)for(const region of ancestors(market,row.location.region_id))counts.set(region.id,(counts.get(region.id)??0)+1);
+  return allRegions(market).map(r=>({...r,code:r.code??null,opportunity_count:counts.get(r.id)??0}));
+}
 export function markets(rows) {return MARKETS.map(m=>({...m,opportunity_count:rows.filter(o=>o.market===m.code).length,search:{radius:false,region:allRegions(m.code).length>0,geocoder:'none'}}));}
 export function resolveLocation(market,q) {
   marketOf(market);if(!q)return {kind:'none',label:null};if(typeof q!=='string'||q.length>200)throw customerError('validation');
@@ -79,7 +85,7 @@ export function resolveLocation(market,q) {
   return match?{kind:'region',label:match.name,region_id:match.id,region_code:match.code??null}:{kind:'unresolved',label:q};
 }
 const csv=value=>Array.isArray(value)?value:typeof value==='string'?value.split(',').filter(Boolean):[];
-export function search(rows,p,access,now) {
+function searchSelection(rows,p,now) {
   const market=marketOf(p.market),location=resolveLocation(market.code,p.region??p.q),today=budgetDay(now);
   for(const k of ['q_text','q','region','month','when','sort'])if(p[k]!==undefined&&(typeof p[k]!=='string'||p[k].length>200))throw customerError('validation');
   if(p.radius_km&&p.radius_km!=='any'||p.sort==='nearest')throw customerError('radius_unavailable',400);
@@ -92,12 +98,27 @@ export function search(rows,p,access,now) {
   if(csv(p.organiser_types).length)list=list.filter(o=>csv(p.organiser_types).includes(o.organiser.type));
   if(p.month){if(!/^\d{4}-\d{2}$/.test(p.month))throw customerError('validation');list=list.filter(o=>o.dates.start?.slice(0,7)===p.month);}
   if(p.when){const end=new Date(today+'T12:00:00Z');if(['30','90'].includes(p.when)){end.setUTCDate(end.getUTCDate()+Number(p.when));list=list.filter(o=>o.dates.start&&o.dates.start<=end.toISOString().slice(0,10)&&(o.dates.end??o.dates.start)>=today);}else if(p.when==='xmas')list=list.filter(o=>o.dates.start?.slice(0,4)===today.slice(0,4)&&['11','12'].includes(o.dates.start.slice(5,7)));else if(/^20\d{2}$/.test(p.when))list=list.filter(o=>o.dates.start?.slice(0,4)===p.when);else throw customerError('validation');}
+  return {market,location,today,list};
+}
+function typedSelection(list,p) {const selected=csv(p.types);return selected.length?list.filter(o=>selected.includes(o.type)):list;}
+function searchOptions(p) {
+  const sort=p.sort??'soonest';if(!['soonest','recently_checked','az'].includes(sort))throw customerError('validation');
+  const page=Number(p.page??1),size=Number(p.page_size??25);if(!Number.isInteger(page)||page<1||page>100000||!Number.isInteger(size)||size<1||size>100)throw customerError('validation');
+  return {sort,page,size};
+}
+// Identical selection and request validation, without sorting, presentation,
+// facets or map payloads. Counts never depend on the requested page or access.
+export function countSearch(rows,p,now) {
+  const {list}=searchSelection(rows,p,now),selected=typedSelection(list,p);searchOptions(p);return selected.length;
+}
+export function search(rows,p,access,now) {
+  const {market,location,today,list:selection}=searchSelection(rows,p,now);
+  let list=selection;
   const counts=(items,key)=>{const out={};for(const item of items){const value=key(item);if(value)out[value]=(out[value]??0)+1;}return out;};
   const facets={types:counts(list,o=>o.type),unclassified_types:list.filter(o=>!o.type).length,months:counts(list,o=>o.dates.start?.slice(0,7)),undated:list.filter(o=>!o.dates.start).length,regions:Object.fromEntries(regions(market.code,list).map(r=>[r.id,r.opportunity_count]))};
-  if(csv(p.types).length)list=list.filter(o=>csv(p.types).includes(o.type));
-  const sort=p.sort??'soonest';if(!['soonest','recently_checked','az'].includes(sort))throw customerError('validation');
+  list=typedSelection(list,p);
+  const {sort,page,size}=searchOptions(p);
   list.sort((a,b)=>(sort==='az'?a.title.localeCompare(b.title):sort==='recently_checked'?String(b.checked.last_checked??'').localeCompare(a.checked.last_checked??''):String(a.dates.start??'9999').localeCompare(b.dates.start??'9999'))||a.id.localeCompare(b.id));
-  const page=Number(p.page??1),size=Number(p.page_size??25);if(!Number.isInteger(page)||page<1||page>100000||!Number.isInteger(size)||size<1||size>100)throw customerError('validation');
   const map_points=list.filter(o=>['venue','address'].includes(o.location.precision)&&Number.isFinite(o.location.lat)&&Number.isFinite(o.location.lng)&&Math.abs(o.location.lat)<90&&Math.abs(o.location.lng)<=180).map(o=>({id:o.id,title:o.title,type:o.type,lat:o.location.lat,lng:o.location.lng,precision:o.location.precision,start:o.dates.start,end:o.dates.end}));
   return {market:market.code,market_status:market.launch_status,coverage:rows.some(o=>o.market===market.code)?'available':'none',location,total:list.length,page,page_size:size,sort,next_start:list.map(o=>o.dates.start).filter(d=>d&&d>=today).sort()[0]??null,results:list.slice((page-1)*size,page*size).map(o=>present(o,access)),facets,map_points};
 }
@@ -113,7 +134,7 @@ export function homepage(rows,access,now,as_of=now) {
 export function inventory(rows,market,intents,now) {
   marketOf(market);if(!Array.isArray(intents)||intents.length>30)throw customerError('validation');
   const out={market,generated_at:now,market_total:rows.filter(o=>o.market===market).length,intents:{},regions:Object.fromEntries(regions(market,rows).filter(r=>r.opportunity_count).map(r=>[r.id,r.opportunity_count])),combos:{}};
-  for(const i of intents){if(typeof i.key!=='string'||!/^[a-z-]{1,50}$/.test(i.key)||!i.filters||typeof i.filters!=='object')throw customerError('validation');out.intents[i.key]=search(rows,{...i.filters,market},null,now).total;for(const region of Object.keys(out.regions)){const n=search(rows,{...i.filters,market,region},null,now).total;if(n)out.combos[i.key+'|'+region]=n;}}
+  for(const i of intents){if(typeof i.key!=='string'||!/^[a-z-]{1,50}$/.test(i.key)||!i.filters||typeof i.filters!=='object')throw customerError('validation');out.intents[i.key]=countSearch(rows,{...i.filters,market},now);for(const region of Object.keys(out.regions)){const n=countSearch(rows,{...i.filters,market,region},now);if(n)out.combos[i.key+'|'+region]=n;}}
   return out;
 }
 export async function recordInventoryChanges(db,rows,now) {

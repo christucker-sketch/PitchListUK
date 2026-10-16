@@ -7,7 +7,7 @@ import * as previewBilling from './customer-billing.mjs';
 import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook,verifyLiveBillingSettings,verifyLiveBillingCapabilities,recordLiveStripeFailure} from './customer-live-billing.mjs';
 import {reviewSubscriberAssociation} from './customer-recognition.mjs';
 import {nativeBillingSummary,nativeBillingChange,nativePaymentStart,nativePaymentConfirm} from './customer-native-billing.mjs';
-import {readCatalogue,present,search,marketOf,markets,regions,allRegions,resolveLocation,inventory,ancestors,recordInventoryChanges,homepage,upcoming} from './customer-catalogue.mjs';
+import {readCatalogue,present,search,countSearch,marketOf,markets,regions,allRegions,resolveLocation,inventory,ancestors,recordInventoryChanges,homepage,upcoming} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
 import {budgetDay} from './serper-usage.mjs';
 import {verifyNativeMailSettings,mailCredentialIsProxyReference} from './customer-mail.mjs';
@@ -118,7 +118,7 @@ async function api(request,env,now) {
   if(method==='GET'&&p==='/regions')return response({regions:regions(q.market,rows)});
   if(method==='GET'&&p==='/geo/resolve')return response({location:resolveLocation(q.market,q.q)});
   if(method==='GET'&&p==='/opportunities')return response(search(rows,q,access,now));
-  if(method==='GET'&&p==='/opportunities/count')return response({total:search(rows,q,access,now).total});
+  if(method==='GET'&&p==='/opportunities/count')return response({total:countSearch(rows,q,now)});
   if(method==='GET'&&p==='/opportunities/changes'){needCustomer(customer);const after=Number(q.after??0);if(!Number.isSafeInteger(after)||after<0)throw customerError('validation');const changes=(await stmt(db,'SELECT sequence,entity_id,kind,occurred_at FROM preview_inventory_changes WHERE sequence>? ORDER BY sequence LIMIT 100',after).all()).results;return response({changes,next_cursor:changes.at(-1)?.sequence??after,as_of:now});}
   if(method==='GET'&&p==='/opportunities/upcoming') {
     return response({items:upcoming(rows,{market:q.market,type:q.type,limit:Number(q.limit??10)},now).map(r=>present(r,access))});
