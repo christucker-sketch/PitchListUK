@@ -170,7 +170,11 @@
     "market_report_tests_passed": 3,
     "storage_tests_passed": 4,
     "latest_deployed_runtime_full_tests": 513,
-    "full_final_with_operator_tests": "running"
+    "full_final_with_operator_tests": {
+      "passed": 518,
+      "failed": 0,
+      "skipped": 0
+    }
   },
   "work": {
     "operator_only": true,
