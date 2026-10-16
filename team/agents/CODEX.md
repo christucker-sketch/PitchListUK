@@ -7,6 +7,11 @@ Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runt
 
 
 
+
+## V3-025 claimed — 2026-10-16T08:55:14+01:00
+
+Repair bounded source renewal and date precision, then audit targeted recovery. Own V3 source fetch/verification/storage/pipeline/status plus tests/operator reports. Keep original receipts/proofs/identity immutable; failed transport attempts cannot extend positive TTL or override closure/identity evidence. No producer/Pi/customer/billing/routing/paid changes. Source-only additive migration and guarded reversible shadow release follow full tests and native custody baseline. French proof V3-020 and growth V3-022 remain open.
+
 ## READY withdrawal diagnosis — 2026-10-16T08:46:38+01:00
 
 **READY withdrawal cause audited:** The exact retained baseline was 1,862 at 07:03 London on15October; the current snapshot was 1,760 at 08:39 London on16October:116removed,14added,net−102. Exclusive causes: **72 failed Eventeny rechecks**, **16 date-boundary-only holds** (15 deadline-today,1 event-today), **25 changed/unproved source holds**, **3 closure/cancellation signals**. The32 deadline-today cases overlap:15sole date holds plus17independent proof holds; do not sum or auto-promote32. All72 retries are queued for tonight rather than promptly;52previous positive proofs were still valid at the failed attempt. Three failed-fetch samples and one date-held sample now returnHTTP200 and pass verification:4direct requests,0Serper,0source writes/native promotions. All116IDs remain and revisions match. The exact cause of64transport failures is unknown because exceptions are flattened. [Diagnosis/evidence](../../docs/findpitches-v3-ready-withdrawals-2026-10-16.md). V3-025 tracks bounded retry/date-precision repair; no fix or deployment is claimed.
