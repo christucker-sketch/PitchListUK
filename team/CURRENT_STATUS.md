@@ -2,6 +2,11 @@
 
 
 
+
+## Source renewal recovery complete — 16 October 2026
+
+**V3-025 DONE: 82 READY opportunities recovered.** [Completion and evidence](../docs/findpitches-v3-source-renewal-recovery-2026-10-16.md). At **09:38 London on 16 October**, READY was **1,842**: US 1,671 / GB 161 / NZ 5 / AU 4 / CA 1. All 105 targeted entities were checked using 117 of 160 source requests and zero Serper queries. 82 returned to READY; 22 source-closed applications and one deadline disagreement remain withheld. No new entities or recovery-period losses. Bounded renewal retries, immutable attempt custody, original TTL/identity/closure safeguards and source-supported deadline clocks are deployed. Full 451 tests, public 29 checks and both original-build/affected-cohort custody audits pass with zero source mutations or identity changes. Customer Worker, provider configuration, routes, PitchList and V2 remain unchanged; public browsing and LIVE Checkout stay enabled. **113 older failed-proof receipts outside this cohort remain flagged for V3-026**, already excluded from READY; recoverability is unknown. French proof V3-020 and storage monitoring V3-022 remain open. Paid acquisition/source publication stay off; FR export held and DE intake off.
+
 ## READY withdrawal diagnosis — 16 October
 
 **READY withdrawal cause audited:** The exact retained baseline was 1,862 at 07:03 London on15October; the current snapshot was 1,760 at 08:39 London on16October:116removed,14added,net−102. Exclusive causes: **72 failed Eventeny rechecks**, **16 date-boundary-only holds** (15 deadline-today,1 event-today), **25 changed/unproved source holds**, **3 closure/cancellation signals**. The32 deadline-today cases overlap:15sole date holds plus17independent proof holds; do not sum or auto-promote32. All72 retries are queued for tonight rather than promptly;52previous positive proofs were still valid at the failed attempt. Three failed-fetch samples and one date-held sample now returnHTTP200 and pass verification:4direct requests,0Serper,0source writes/native promotions. All116IDs remain and revisions match. The exact cause of64transport failures is unknown because exceptions are flattened. [Diagnosis/evidence](../docs/findpitches-v3-ready-withdrawals-2026-10-16.md). V3-025 tracks bounded retry/date-precision repair; no fix or deployment is claimed.

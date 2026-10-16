@@ -1,13 +1,20 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16, 08:34 London — read-only morning health** (Europe/London).
-State: **V3-024 DONE — shared German/French customer UI live, indexing held; V3-023 preliminary Germany DONE, DE intake off; V3-021 storage DONE; V3-019 France compatibility DONE; V3-020 French proof OPEN; V3-022 hot-growth OPEN; V3-010 owned LIVE acceptance pending**.
+Author: Codex. Updated: **2026-10-16T09:44:26+01:00 — source renewal repair complete** (Europe/London).
+State: **V3-025 DONE — source renewal/date repair, 82 READY restored; V3-026 OPEN — older failed-proof triage; V3-020 French proof OPEN; V3-022 storage growth OPEN; V3-024 languages live; V3-010 owned LIVE acceptance still separately recorded as pending**.
 Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runtime owner (ChatGPT coordinator); V3-013 UX complete; V3-014 source-coordinate map complete; variable catalogue latency remains a follow-up; V3-011 supply proof work paused for launch acceptance.
 
 
 
 
 
+
+
+## V3-025 complete — 2026-10-16T09:44:26+01:00
+
+**V3-025 DONE: 82 READY opportunities recovered.** [Completion and evidence](../../docs/findpitches-v3-source-renewal-recovery-2026-10-16.md). At **09:38 London on 16 October**, READY was **1,842**: US 1,671 / GB 161 / NZ 5 / AU 4 / CA 1. All 105 targeted entities were checked using 117 of 160 source requests and zero Serper queries. 82 returned to READY; 22 source-closed applications and one deadline disagreement remain withheld. No new entities or recovery-period losses. Bounded renewal retries, immutable attempt custody, original TTL/identity/closure safeguards and source-supported deadline clocks are deployed. Full 451 tests, public 29 checks and both original-build/affected-cohort custody audits pass with zero source mutations or identity changes. Customer Worker, provider configuration, routes, PitchList and V2 remain unchanged; public browsing and LIVE Checkout stay enabled. **113 older failed-proof receipts outside this cohort remain flagged for V3-026**, already excluded from READY; recoverability is unknown. French proof V3-020 and storage monitoring V3-022 remain open. Paid acquisition/source publication stay off; FR export held and DE intake off.
+
+Implementation commits `52dd0328` and `aa289a94`. Final enrichment version `1f874f58-4e91-48bc-8283-01e3249ce2d3`; source API `e2ff3fa9-64e7-4d30-b814-bac309f23454`. See the report for all eight source versions/rollback custody. First R2-omitting upload was rejected before activation; later release configuration uses actual active-version bindings. The initial broad digest read hit an opaque provider 500; reduced targeted baseline reads with bounded read-only retries completed the full original-build audit. No unsafe escalation or permission block; no source-original rollback/deletion. Next recommendation: classify the 113 historical failed receipts for future eligibility before another bounded recheck; do not count them as recoverable. French source proof and growth follow-ups remain separate open work.
 
 ## V3-025 implementation checkpoint — 2026-10-16T09:13:10+01:00
 

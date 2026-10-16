@@ -1,0 +1,342 @@
+{
+  "schema": "findpitches-v3-source-renewal-recovery-v1",
+  "as_of": "2026-10-16T08:38:04.638Z",
+  "reported_at": "2026-10-16T08:42:42.033750+00:00",
+  "task": "V3-025",
+  "state": "deployed_bounded_recovery_complete",
+  "source_code_commits": [
+    "52dd0328",
+    "aa289a94"
+  ],
+  "validation": {
+    "full_v3": {
+      "passed": 451,
+      "failed": 0,
+      "skipped": 0
+    },
+    "initial_focused": 31,
+    "final_fetch_and_route_focused": 30,
+    "boundaries_passed": true,
+    "public_smoke": {
+      "as_of": "2026-10-16T08:38:36.281Z",
+      "passed": true,
+      "checks": 29,
+      "live_checkout": true,
+      "customer_objects_created": 0,
+      "messages_sent": 0
+    },
+    "natural_rate_limit_retries": {
+      "as_of": "2026-10-16T08:40:25.088Z",
+      "cases": [
+        {
+          "reason": "source_http_429",
+          "attempted_at": "2026-10-16T08:22:04.849Z",
+          "retry_at": "2026-10-16T08:37:04.849Z",
+          "recovered_at": "2026-10-16T08:37:31.621Z"
+        },
+        {
+          "reason": "source_http_429",
+          "attempted_at": "2026-10-16T08:22:14.862Z",
+          "retry_at": "2026-10-16T08:37:14.862Z",
+          "recovered_at": "2026-10-16T08:37:37.571Z"
+        }
+      ]
+    }
+  },
+  "recovery": {
+    "as_of": "2026-10-16T08:37:01.931Z",
+    "planned_entities": 105,
+    "checked": 105,
+    "skipped_ready": 0,
+    "requests": 117,
+    "request_budget": 160,
+    "stop": "bounded_cohort_complete",
+    "before_ready": 1760,
+    "after_ready": 1842,
+    "recovered_cohort_ready": 82,
+    "total_ready_added": 82,
+    "total_ready_removed": 0,
+    "paid_queries": 0,
+    "added_by_country": {
+      "US": 81,
+      "GB": 1
+    }
+  },
+  "recovery_groups": {
+    "failed_fetch": {
+      "checked": 72,
+      "ready": 66,
+      "held": 6,
+      "source_requests": 80
+    },
+    "deadline_today": {
+      "checked": 32,
+      "ready": 15,
+      "held": 17,
+      "source_requests": 32
+    },
+    "event_today": {
+      "checked": 1,
+      "ready": 1,
+      "held": 0,
+      "source_requests": 5
+    }
+  },
+  "remaining_held": {
+    "closed_by_current_source": 22,
+    "source_deadline_disagreement": 1,
+    "all_remain_withheld": true
+  },
+  "commercial": {
+    "ready": 1842,
+    "ready_by_country": {
+      "US": 1671,
+      "NZ": 5,
+      "GB": 161,
+      "AU": 4,
+      "CA": 1
+    },
+    "ready_gained_by_source": {
+      "eventeny.com": 81,
+      "littlehummingbirdevents.co.uk": 1
+    },
+    "source_ready_with_coordinate_evidence_before": 1068,
+    "source_ready_with_coordinate_evidence_after": 1102,
+    "net_remaining_vs_15Oct1862": -20,
+    "source_pipeline_publication_enabled": false
+  },
+  "preservation": {
+    "affected_cohort": {
+      "compared": {
+        "producer_records": 487,
+        "source_facts": 6567,
+        "source_verifications": 116,
+        "source_documents": 116
+      },
+      "original_row_mutations": 0,
+      "identity_changes": 0,
+      "customer_version_preserved": true,
+      "guard": {
+        "publication": 0,
+        "bulk": 0,
+        "paused": 1,
+        "customer_rows": 0,
+        "publication_rows": 0
+      }
+    },
+    "affected_cohort_as_of": "2026-10-16T08:38:27.884Z",
+    "original_build": {
+      "schema": "findpitches-v3-customer-preview-preservation-v1",
+      "audit_page_size": 250,
+      "method": "full_original_row_digests",
+      "as_of": "2026-10-16T08:29:09.557Z",
+      "receipts_compared": 15811,
+      "source_facts_compared": 108819,
+      "existing_identities_compared": 7077,
+      "destructive_source_mutations": 0,
+      "existing_identity_changes": 0,
+      "identity_comparison_key": "retained entity.id",
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "publication_api_denied": true,
+      "publication_enabled": false,
+      "paid_queries_today": 0,
+      "paid_bulk_enabled": false,
+      "live_v1_deployment_unchanged": true,
+      "v2_schedules": [],
+      "v2_schedules_unchanged": true
+    },
+    "original_build_note": "Complete original-build comparison finished09:29London before bulk recovery ended; final affected-cohort comparison separately covers all487receipts/6567facts/116priorproofs/documents/IDs after recovery."
+  },
+  "native_release": {
+    "migration": "0024_source_renewal_attempts.sql",
+    "additive_only": true,
+    "source_workers": [
+      {
+        "role": "api",
+        "uploaded_version_id": "e2ff3fa9-64e7-4d30-b814-bac309f23454",
+        "deployment_id": "82c1587a-9276-4ee8-b166-ee74870b01b7",
+        "bindings_and_schedules_preserved": true,
+        "completed_at": "2026-10-16T08:17:26.388Z"
+      },
+      {
+        "role": "enrichment",
+        "uploaded_version_id": "3d8eab0a-56e1-464f-a8f3-06297622c801",
+        "deployment_id": "1331e9fb-6e0a-4361-ac02-9df8d9001578",
+        "bindings_and_schedules_preserved": true,
+        "completed_at": "2026-10-16T08:17:43.593Z"
+      },
+      {
+        "role": "readiness",
+        "uploaded_version_id": "692cc02c-8001-4309-96d9-14d0f104e720",
+        "deployment_id": "d1d3062b-0a33-4dd8-acc7-8abad9c2fd0e",
+        "bindings_and_schedules_preserved": true,
+        "completed_at": "2026-10-16T08:18:05.091Z"
+      },
+      {
+        "role": "eligibility",
+        "uploaded_version_id": "66634794-b6d8-44e7-8e4a-7b0725359cd8",
+        "deployment_id": "90d2b31d-e986-4628-8632-ea13d2d157b7",
+        "bindings_and_schedules_preserved": true,
+        "completed_at": "2026-10-16T08:18:27.007Z"
+      },
+      {
+        "role": "reconcile",
+        "uploaded_version_id": "f9e71dc6-9271-4379-9597-fd0ba05396b4",
+        "deployment_id": "cecf3f32-8020-4d15-beb8-310f5b11eb65",
+        "bindings_and_schedules_preserved": true,
+        "completed_at": "2026-10-16T08:18:48.362Z"
+      },
+      {
+        "role": "watch",
+        "uploaded_version_id": "f5c4f285-2e5d-4811-82f3-f694f7654dad",
+        "deployment_id": "12f249b8-ec02-4a13-a1b7-c5af908541e1",
+        "bindings_and_schedules_preserved": true,
+        "completed_at": "2026-10-16T08:19:09.935Z"
+      },
+      {
+        "role": "acquisition",
+        "uploaded_version_id": "6eb78c9c-4307-4348-a760-bbd83f9a18a9",
+        "deployment_id": "376fe4b2-4347-46c8-9c6b-bfd140d389ef",
+        "bindings_and_schedules_preserved": true,
+        "completed_at": "2026-10-16T08:19:32.270Z"
+      },
+      {
+        "role": "ingest",
+        "uploaded_version_id": "ad3a6892-4a53-4587-8946-21ebc73eef84",
+        "deployment_id": "89133993-0c92-4b99-b377-fc577a5f8552",
+        "bindings_and_schedules_preserved": true,
+        "completed_at": "2026-10-16T08:19:53.594Z"
+      }
+    ],
+    "final_enrichment_patch": {
+      "role": "enrichment",
+      "uploaded_version_id": "1f874f58-4e91-48bc-8283-01e3249ce2d3",
+      "deployment_id": "175d04a4-0d25-43ab-a0b9-2a6ee850b3ef",
+      "bindings_and_schedules_preserved": true,
+      "completed_at": "2026-10-16T08:27:20.022Z"
+    },
+    "customer_worker_changed": false,
+    "customer_migrations": 0,
+    "secret_values_replaced": false,
+    "routes_or_dns_changed": false,
+    "initial_unactivated_candidate_rejected_for_missing_R2": true,
+    "release_uses_active_version_bindings": true
+  },
+  "renewal_health": {
+    "as_of": "2026-10-16T08:38:04.638Z",
+    "health": "degraded",
+    "last_24h": {
+      "attempts": 137,
+      "transient_failures": 2,
+      "source_results": 135,
+      "exhausted_attempts": 0
+    },
+    "waiting": {
+      "entities": 0,
+      "exhausted_entities": null,
+      "next_retry_at": null
+    },
+    "reasons": [
+      {
+        "reason": "source_http_429",
+        "diagnostic": null,
+        "attempts": 2
+      }
+    ],
+    "previously_ready_latest_failed_receipts": 113,
+    "limits": {
+      "failure_attempts_before_daily_cooldown": 4,
+      "short_retry_delays_seconds": [
+        300,
+        900,
+        3600
+      ],
+      "retry_entities_per_domain_per_15min": 16
+    },
+    "interpretation": "Attempts are separate from proof. A failed retrieval never renews proof TTL, clears identity/closure holds or proves READY. Processing completion is not source renewal success."
+  },
+  "remaining_legacy_failed_proof_audit": {
+    "entities": 113,
+    "outside_original_105_cohort": true,
+    "not_additional_overnight_withdrawals": true,
+    "already_excluded_from_READY": "before_this_recovery",
+    "recoverability": "unmeasured_requires_future-date_and_source-proof_audit",
+    "followup": "V3-026"
+  },
+  "health": {
+    "active_core_jobs": [],
+    "stale_leases": 0,
+    "producer_recently_contacting": true,
+    "producer_cadence_verified": true,
+    "producer_freshness_warning": false,
+    "last_producer_poll": "2026-10-16T08:31:19.150Z",
+    "pending_producer_rechecks": 385,
+    "paid_queries_today": 0,
+    "paid_bulk_enabled": false,
+    "commercial_manual_paused": 1,
+    "source_customer_rows": 0,
+    "source_publication_rows": 0,
+    "source_publication_enabled": false,
+    "storage": {
+      "available": true,
+      "file_size_bytes": 3947040768,
+      "conservative_cap_bytes": 10000000000,
+      "protective_stop_bytes": 9700000000,
+      "percent_used": 39.47,
+      "remaining_bytes": 6052959232,
+      "state": "normal",
+      "source_growth_allowed": true,
+      "warning_thresholds_percent": [
+        70,
+        80,
+        90,
+        97
+      ],
+      "as_of": "2026-10-16T08:38:36.775Z",
+      "growth_bytes_per_hour": 2195456,
+      "growth_interpretation": "net_database_growth",
+      "archive": {
+        "documents": 30497,
+        "original_payload_bytes": 6212304937
+      },
+      "samples": [
+        {
+          "observed_at": "2026-10-16T08:30:00.000Z",
+          "file_size_bytes": 3945697280
+        },
+        {
+          "observed_at": "2026-10-16T08:15:00.000Z",
+          "file_size_bytes": 3945148416
+        }
+      ],
+      "scope": "V3 source/evidence database; separate customer/auth/billing storage excluded",
+      "guard_enabled": true,
+      "forward_archive_enabled": true
+    }
+  },
+  "other_gates": {
+    "France_export": "held_per_latest_Claude_host_handover",
+    "France_READY": 0,
+    "Germany_country_intake": false,
+    "publication_enablement": false,
+    "paid_acquisition_enabled": false,
+    "producer_or_pi_changes": 0,
+    "V2_mutations": 0,
+    "protected_branch_merges": 0
+  },
+  "storage_growth_checkpoint": {
+    "samples": 96,
+    "from": {
+      "observed_at": "2026-10-15T08:45:00.000Z",
+      "file_size_bytes": 3723821056
+    },
+    "to": {
+      "observed_at": "2026-10-16T08:30:00.000Z",
+      "file_size_bytes": 3945697280
+    },
+    "hours": 23.75,
+    "net_bytes": 221876224,
+    "interpretation": "Observed physical growth over this sampled window; not a guaranteed steady-state forecast. V3-022 remains open."
+  }
+}
