@@ -2,6 +2,18 @@ import {sql} from './store.mjs';
 import {hash} from './contract.mjs';
 import {enqueue} from './jobs.mjs';
 import {encodeSourceDocument} from './document-custody.mjs';
+import {sourceDatePast} from './source-calendar.mjs';
+export function historicalFailureDisposition(entity,now){
+ if(entity.environment!=='shadow')return 'noncommercial';
+ if(entity.quality_holds||entity.conflicts)return 'identity_quality_hold';
+ if(['CLOSED','WITHDRAWN'].includes(entity.application_state))return 'closed_withdrawn';
+ if(sourceDatePast(entity.event_end??entity.event_start,now))return 'past_event';
+ if(sourceDatePast(entity.application_deadline,now))return 'past_deadline';
+ if(!entity.event_end&&!entity.event_start)return 'date_unknown';
+ if(!entity.application_url)return 'application_route_missing';
+ if(!entity.organiser||!entity.location)return 'missing_core_fields';
+ return 'future_recheck_candidate';
+}
 export const RENEWAL_DELAYS=[300,900,3600];
 export const RENEWAL_FAILURES=new Set(['source_fetch_failed','source_http_408','source_http_429','source_http_500','source_http_502','source_http_503','source_http_504']);
 export function retryableDocument(document){return document.fetch_error_kind!=='request_budget'&&RENEWAL_FAILURES.has(document.reason);}
@@ -51,9 +63,15 @@ export async function renewalStatus(db,now){
  const totals=await sql(db,`SELECT COUNT(*) attempts,COALESCE(SUM(outcome='transient_failure'),0) transient_failures,COALESCE(SUM(outcome='source_result'),0) source_results,COALESCE(SUM(retry_exhausted),0) exhausted_attempts FROM source_renewal_attempts WHERE attempted_at>=?`,since).first();
  const waiting=await sql(db,`SELECT COUNT(*) entities,SUM(a.retry_exhausted) exhausted_entities,MIN(a.retry_at) next_retry_at FROM source_renewal_attempts a WHERE a.outcome='transient_failure' AND a.sequence=(SELECT MAX(sequence) FROM source_renewal_attempts WHERE entity_id=a.entity_id)`).first();
  const reasons=(await sql(db,"SELECT reason,diagnostic,COUNT(*) attempts FROM source_renewal_attempts WHERE outcome='transient_failure' AND attempted_at>=? GROUP BY reason,diagnostic",since).all()).results;
- const legacy=await sql(db,`SELECT COUNT(*) entities FROM source_verifications v WHERE v.status='unverified'
+ const legacy=(await sql(db,`SELECT e.environment,
+  (SELECT json_group_object(field_name,json(value_json)) FROM selected_facts WHERE entity_id=e.id) fields_json,
+  (SELECT COUNT(*) FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=e.id) quality_holds,
+  (SELECT COUNT(*) FROM conflicts c WHERE c.entity_id=e.id AND c.resolved=0) conflicts
+  FROM source_verifications v JOIN entities e ON e.id=v.entity_id WHERE v.status='unverified'
   AND v.sequence=(SELECT MAX(sequence) FROM source_verifications WHERE entity_id=v.entity_id)
   AND EXISTS(SELECT 1 FROM json_each(v.report_json,'$.reasons') j WHERE j.value IN ('source_fetch_failed','source_http_408','source_http_429','source_http_500','source_http_502','source_http_503','source_http_504'))
-  AND EXISTS(SELECT 1 FROM commercial_readiness_history h WHERE h.entity_id=v.entity_id AND h.status='ready')`).first();
- return {as_of:now,health:waiting.entities||legacy.entities?'degraded':'healthy',last_24h:totals,waiting,reasons,previously_ready_latest_failed_receipts:legacy.entities,limits:{failure_attempts_before_daily_cooldown:4,short_retry_delays_seconds:RENEWAL_DELAYS,retry_entities_per_domain_per_15min:16},interpretation:'Attempts are separate from proof. A failed retrieval never renews proof TTL, clears identity/closure holds or proves READY. Processing completion is not source renewal success.'};
+  AND EXISTS(SELECT 1 FROM commercial_readiness_history h WHERE h.entity_id=v.entity_id AND h.status='ready')`).all()).results;
+ const dispositions={};for(const row of legacy){const key=historicalFailureDisposition({...JSON.parse(row.fields_json??'{}'),...row},now);dispositions[key]=(dispositions[key]??0)+1;}
+ const actionNeeded=['future_recheck_candidate','date_unknown','application_route_missing','missing_core_fields'].reduce((n,k)=>n+(dispositions[k]??0),0);
+ return {as_of:now,health:waiting.entities||actionNeeded?'degraded':'healthy',last_24h:totals,waiting,reasons,previously_ready_latest_failed_receipts:legacy.length,historical_failed_receipts:{total:legacy.length,action_needed:actionNeeded,held:legacy.length-actionNeeded,dispositions,basis:'Current selected facts and unresolved holds; triage only, not a new source verification. Historical failures remain immutable and visible. Held records remain withheld.'},limits:{failure_attempts_before_daily_cooldown:4,short_retry_delays_seconds:RENEWAL_DELAYS,retry_entities_per_domain_per_15min:16},interpretation:'Attempts are separate from proof. A failed retrieval never renews proof TTL, clears identity/closure holds or proves READY. Processing completion is not source renewal success.'};
 }

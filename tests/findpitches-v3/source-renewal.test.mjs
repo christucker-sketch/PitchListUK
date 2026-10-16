@@ -6,7 +6,7 @@ import {verifyDocument} from '../../platform/findpitches-v3/verification.mjs';
 import {recordVerification,verifyEntitySource,verificationGate} from '../../platform/findpitches-v3/verification-store.mjs';
 import {evaluateReadiness,assessEligibility} from '../../platform/findpitches-v3/pipeline.mjs';
 import {loadEntity,sql} from '../../platform/findpitches-v3/store.mjs';
-import {renewalAdmission,renewalRetryCurrent,renewalStatus} from '../../platform/findpitches-v3/source-renewal.mjs';
+import {historicalFailureDisposition,renewalAdmission,renewalRetryCurrent,renewalStatus} from '../../platform/findpitches-v3/source-renewal.mjs';
 import {calendarHorizon,eventenyVisibleClosing,sourceDatePast,sourceWindowOpen} from '../../platform/findpitches-v3/source-calendar.mjs';
 import {fetchSourceDocument} from '../../platform/findpitches-v3/source-document.mjs';
 import {fetchProofDocument} from '../../platform/findpitches-v3/proof-document.mjs';
@@ -14,7 +14,21 @@ import {fetchProofDocument} from '../../platform/findpitches-v3/proof-document.m
 const at=n=>new Date(Date.parse(NOW)+n*60000).toISOString();
 const bad=async()=>new Response('',{status:502});
 const count=async(db,table)=>(await sql(db,'SELECT COUNT(*) n FROM '+table).first()).n;
+test('historical failure triage preserves independent holds and cannot count missing proof as recoverable',()=>{
+ const now='2026-10-16T09:00:00Z',base={environment:'shadow',event_end:'2026-12-20',application_deadline:'2026-11-15',application_url:'https://example.org/apply',application_state:'OPEN_NOW',organiser:'Source organiser',location:'Source venue'};
+ for(const [patch,expected] of [[{},'future_recheck_candidate'],[{application_state:'CLOSED'},'closed_withdrawn'],[{application_deadline:'2026-10-15'},'past_deadline'],[{event_end:'2026-10-15'},'past_event'],[{event_end:null},'date_unknown'],[{application_url:null},'application_route_missing'],[{organiser:null},'missing_core_fields'],[{conflicts:1},'identity_quality_hold'],[{quality_holds:1},'identity_quality_hold'],[{environment:'test'},'noncommercial']])assert.equal(historicalFailureDisposition({...base,...patch},now),expected);
+ assert.equal(historicalFailureDisposition({...base,application_deadline:'2026-10-16'},now),'future_recheck_candidate');
+});
 async function positive(db){const s=await seed(db,record(),{environment:'shadow'});const proof=await recordVerification(db,s.entity.id,documentFixture(),{now:NOW});await evaluateReadiness(db,s.entity.id,{now:NOW});return {...s,proof};}
+
+test('status keeps historical failed proofs visible while distinguishing current action from held past events',async t=>{
+ const db=database(t),{entity}=await positive(db);
+ await recordVerification(db,entity.id,{requested_url:entity.application_url,url:entity.application_url,fetched_at:at(1),reason:'source_fetch_failed'},{now:at(1)});
+ const before=(await sql(db,'SELECT * FROM source_verifications ORDER BY sequence').all()).results;
+ const current=await renewalStatus(db,at(1));assert.equal(current.health,'degraded');assert.equal(current.previously_ready_latest_failed_receipts,1);assert.equal(current.historical_failed_receipts.action_needed,1);
+ const past=await renewalStatus(db,'2026-12-01T12:00:00Z');assert.equal(past.health,'healthy');assert.equal(past.historical_failed_receipts.total,1);assert.equal(past.historical_failed_receipts.dispositions.past_event,1);assert.equal(past.historical_failed_receipts.action_needed,0);
+ assert.deepEqual((await sql(db,'SELECT * FROM source_verifications ORDER BY sequence').all()).results,before);
+});
 
 test('failed renewal preserves exact active proof and its TTL, then expires without inventing evidence',async t=>{
  const db=database(t),{entity,proof}=await positive(db),before=await sql(db,'SELECT * FROM source_verifications WHERE id=?',proof.verification_id).first(),facts=(await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results;
