@@ -5,6 +5,7 @@ import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,c
 import * as previewBilling from './customer-billing.mjs';
 import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook,verifyLiveBillingSettings,verifyLiveBillingCapabilities,recordLiveStripeFailure} from './customer-live-billing.mjs';
 import {reviewSubscriberAssociation} from './customer-recognition.mjs';
+import {nativeBillingSummary,nativeBillingChange,nativePaymentStart,nativePaymentConfirm} from './customer-native-billing.mjs';
 import {readCatalogue,present,search,marketOf,markets,regions,allRegions,resolveLocation,inventory,ancestors,recordInventoryChanges,homepage,upcoming} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
 import {budgetDay} from './serper-usage.mjs';
@@ -13,7 +14,7 @@ import {verifyNativeMailSettings,mailCredentialIsProxyReference} from './custome
 const CSP="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'";
 const headers={'Content-Security-Policy':CSP,'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','Strict-Transport-Security':'max-age=31536000','X-Robots-Tag':'noindex, nofollow','Cache-Control':'private, no-store'};
 const response=(data,status=200,setCookies=[])=>{const h=new Headers({...headers,'Content-Type':'application/json'});for(const c of setCookies)h.append('Set-Cookie',c);return new Response(JSON.stringify({ok:true,...data}),{status,headers:h});};
-const error=e=>response({ok:false,error:e.code??'internal_error',message:({auth_required:'Sign in to continue.',upgrade_required:'Pro is required for this feature.',service_unavailable:'This service is temporarily unavailable.',csrf_failed:'Refresh the page and try again.',rate_limited:'Please wait before trying again.',not_found:'This opportunity is unavailable.',subscription_exists:'Manage your existing subscription in billing.',checkout_currency_locked:'You already opened Checkout in another currency. Finish it or wait for it to expire before switching.'})[e.code]??'Please check your request and try again.'},e.status??500);
+const error=e=>response({ok:false,error:e.code??'internal_error',message:({auth_required:'Sign in to continue.',upgrade_required:'Pro is required for this feature.',service_unavailable:'This service is temporarily unavailable.',billing_state_changed:'Billing has changed. Refresh the page before trying again.',billing_review_required:'We could not verify your billing. No change has been confirmed.',csrf_failed:'Refresh the page and try again.',rate_limited:'Please wait before trying again.',not_found:'This opportunity is unavailable.',subscription_exists:'Manage your existing subscription in billing.',checkout_currency_locked:'You already opened Checkout in another currency. Finish it or wait for it to expire before switching.'})[e.code]??'Please check your request and try again.'},e.status??500);
 const text=(value,status=200,extra={})=>new Response(value,{status,headers:{...headers,...extra}});
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const jsonld=value=>JSON.stringify(value).replace(/</g,'\\u003c');
@@ -26,7 +27,7 @@ const confirmCheckout=(db,env,...args)=>(production(env)?liveConfirmCheckout:pre
 const portal=(db,env,...args)=>(production(env)?livePortal:previewBilling.portal)(db,env,...args);
 const webhook=(request,env,...args)=>(production(env)?liveWebhook:previewBilling.webhook)(request,env,...args);
 const {stripeClient,syncSubscriptions}=previewBilling;
-const recoveryPath=p=>p.startsWith('/assets/')||['/account.html','/pricing.html','/pricing/','/api/v3/session','/api/v3/session/link','/api/v3/session/verify','/api/v3/session/logout','/api/v3/session/profile','/api/v3/billing/plans','/api/v3/billing/portal','/api/v3/billing/confirm','/api/v3/saved'].includes(p)||p==='/api/v3/markets';
+const recoveryPath=p=>p.startsWith('/assets/')||['/account.html','/billing.html','/pricing.html','/pricing/','/api/v3/session','/api/v3/session/link','/api/v3/session/verify','/api/v3/session/logout','/api/v3/session/profile','/api/v3/billing/plans','/api/v3/billing/portal','/api/v3/billing/confirm','/api/v3/billing/summary','/api/v3/billing/change','/api/v3/billing/payment','/api/v3/billing/payment/confirm','/api/v3/saved'].includes(p)||p==='/api/v3/markets';
 
 async function session(db,env,customer,now) {
   const profile=customer?JSON.parse(customer.profile_json):null;
@@ -67,6 +68,18 @@ async function api(request,env,now) {
   if(method==='POST'&&p==='/billing/checkout')return response(await checkout(db,env,needCustomer(customer),body,{now,origin:url.origin}));
   if(method==='POST'&&p==='/billing/confirm'){await confirmCheckout(db,env,needCustomer(customer),body,{now});return response(await session(db,env,customer,now));}
   if(method==='POST'&&p==='/billing/portal')return response(await portal(db,env,needCustomer(customer),{origin:url.origin,locale:customerLanguage(body.locale)}));
+  if(['/billing/summary','/billing/change','/billing/payment','/billing/payment/confirm'].includes(p)){
+    needCustomer(customer);if(!production(env))throw customerError('service_unavailable',503);
+    const options={now,origin:url.origin};
+    if(method==='GET'&&p==='/billing/summary')return response({billing:await nativeBillingSummary(db,env,customer,options)});
+    if(method==='POST'){
+      await rateLimit(db,'billing-management/'+customer.id,{limit:20,now});
+      if(p==='/billing/change')return response({billing:await nativeBillingChange(db,env,customer,body,options)});
+      if(p==='/billing/payment')return response(await nativePaymentStart(db,env,customer,body,options));
+      if(p==='/billing/payment/confirm')return response({billing:await nativePaymentConfirm(db,env,customer,body,options)});
+    }
+    throw customerError('not_found',404);
+  }
   // Saved IDs are customer-owned state, not a catalogue read. Expanded saved
   // records below still require a fresh source-proof snapshot and redaction.
   if(method==='GET'&&p==='/saved'&&!q.expand){needCustomer(customer);const saved=(await stmt(db,'SELECT entity_id FROM saved_opportunities WHERE customer_id=? ORDER BY saved_at DESC',customer.id).all()).results;return response({ids:saved.map(r=>r.entity_id)});}
@@ -116,18 +129,18 @@ async function html(request,env,now) {
   if(lr.explicit&&/^\/(?:api|ops|preview|assets|health|robots\.txt|sitemap)/.test(path))return text('Page not found',404);
   if(lr.explicit&&(url.pathname==='/lang/'+lang||lang==='en'))return text('',301,{Location:i18n.pathFor(path,lang)+url.search});
   if(path==='/favicon.ico')return text(null,204);
-  if(path==='/robots.txt')return text(production(env)&&env.V3_PUBLIC_ENABLED==='true'?'User-agent: *\nDisallow: /api/\nDisallow: /ops/\nDisallow: /preview/\nDisallow: /account.html\nDisallow: /saved.html\nDisallow: /alerts.html\nSitemap: https://findpitches.com/sitemap.xml\n':'User-agent: *\nDisallow: /\n',200,{'Content-Type':'text/plain'});
+  if(path==='/robots.txt')return text(production(env)&&env.V3_PUBLIC_ENABLED==='true'?'User-agent: *\nDisallow: /api/\nDisallow: /ops/\nDisallow: /preview/\nDisallow: /account.html\nDisallow: /billing.html\nDisallow: /saved.html\nDisallow: /alerts.html\nSitemap: https://findpitches.com/sitemap.xml\n':'User-agent: *\nDisallow: /\n',200,{'Content-Type':'text/plain'});
   if(path.startsWith('/assets/')){const asset=await env.ASSETS.fetch(request);return new Response(asset.body,{status:asset.status,headers:{...Object.fromEntries(asset.headers),...headers}});}
   const sitemap=path==='/sitemap.xml'||/^\/sitemap-[a-z]+\.xml$/.test(path);
   if(sitemap&&!production(env))return text(path==='/sitemap.xml'?'<?xml version="1.0"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></sitemapindex>':seo.sitemapXml([],budgetDay(now)),200,{'Content-Type':'application/xml'});
-  const recovery=['/account.html','/pricing.html','/pricing/','/saved.html','/alerts.html'].includes(path);
+  const recovery=['/account.html','/billing.html','/pricing.html','/pricing/','/saved.html','/alerts.html'].includes(path);
   // These documents contain no inventory facts. Their browser API requests
   // still read fresh proof; SEO/detail pages and sitemaps remain proof-bound.
   const shellDocument=['/','/index.html','/finder.html','/organisers.html','/organisers/'].includes(path)||/^\/(?:uk|us|ca|au|ie|nz|sg|hk|fr)\/find-pitches\/$/.test(path);
   const rows=recovery||shellDocument?[]:(await readCatalogue(env,now)).rows,ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
   if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));if(env.V3_LOCALISATION_ENABLED!=='false'&&env.V3_LOCALISATION_INDEXABLE==='true')entries.push(...entries.flatMap(entry=>['de','fr'].map(lang=>({...entry,path:i18n.pathFor(entry.path,lang)}))));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
   let d,template,routeQuery='';
-  const staticPages={'/':'index.html','/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};
+  const staticPages={'/':'index.html','/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/billing.html':'billing.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};
   if(staticPages[path])template=staticPages[path];else {d=seo.resolve(path,{markets:ms,regions:rs});if(d.kind==='redirect')return text('',301,{Location:i18n.pathFor(d.to,lang)});if(d.kind==='not_found')return text('Page not found',404);if(d.kind==='app'){const u=new URL(d.to,url);template=u.pathname.split('/').at(-1);routeQuery=u.searchParams.toString();}else{template='seo.html';routeQuery=new URLSearchParams({path:d.path}).toString();}}
   const asset=await env.ASSETS.fetch(new URL('/'+template,url).href);if(!asset.ok)return text('Page unavailable',503);let markup=localisedDocument(await asset.text(),lang),meta='',title=null,robots=production(env)&&['index.html','organisers.html'].includes(template)?'index,follow':'noindex,follow';
   if(d&&d.kind==='page') {

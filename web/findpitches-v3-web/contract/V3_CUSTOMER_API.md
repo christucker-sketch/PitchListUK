@@ -183,3 +183,37 @@ Original French source text, URLs and clocks stay immutable. A producer label/co
 For a source-published exhibitor booking number on the bound official event, `application.route_type` is `trader_phone`, `application.status` is `enquire`, and Pro `access.application_action_url` is a validated `tel:+33…`. `application_url` remains the HTTPS evidence landing page. `usable_route.country_policy` is `fr-official-exhibitor-route-v1`. Free responses withhold the number/action, email and original/application URLs; existing global Pro applies across countries. A phone prefix never establishes country, and generic footer numbers do not establish a route. No source form is submitted by verification.
 
 No D1 migration, producer schema/version change, paid grant, publication switch or customer entitlement-policy change is required. The producer owner must add FR to its own v1 country enum before delivering real French exports.
+
+### Native production billing (16 October 2026)
+
+`account.html` now opens `billing.html`, independently of inventory/source availability.
+All responses below are private/no-store and require the signed V3 customer. Mutations
+require same-origin CSRF and have a per-customer rate limit. Client-supplied customer,
+subscription, price, card or account IDs are rejected.
+
+- `GET /api/v3/billing/summary` → `{billing:{has_billing_account,subscription,access,payment_method,invoices,optional}}`.
+  Canonical owner/product/price validation must pass before subscription/actions/access
+  are returned. `subscription` includes status, currency, amount (minor units), interval,
+  trial_end, period_end, cancel_at_period_end, access_until, can_cancel, can_resume,
+  can_update_payment and a ten-minute signed `revision`. A card summary has only brand,
+  last4 and expiry; bank/other methods expose no account details. Optional invoice/card
+  failures never block cancellation; their availability is explicit. Invoices are bounded
+  to the latest twelve and filtered to validated V3 subscriptions. Dates are ISO UTC.
+- `POST /billing/change` with `{action:'cancel'|'resume',revision}` → `{billing}`.
+  Only canonical eligible subscriptions may change. No immediate cancellation, price,
+  trial or entitlement rewrite. Stale/forged state fails with `billing_state_changed`.
+  Persisted operation custody and provider idempotency protect retries.
+- `POST /billing/payment` with `{revision,locale}` → `{checkout_url}`.
+  Branded Stripe Checkout **setup** mode collects cards. It creates neither another
+  subscription nor a charge/trial. No card fields pass through V3. The operation is
+  bound to its existing customer and subscription in V3 storage.
+- `POST /billing/payment/confirm` with `{session_id}` → `{billing}`. This is called
+  after returning to `billing.html?payment=return`. V3 verifies stored session ownership,
+  completed setup, succeeded SetupIntent, metadata and the attached payment method,
+  then updates only the validated subscription's default payment method. A consumed
+  or superseded old setup cannot silently replace a newer choice.
+
+The existing hosted Portal remains an explicit recovery fallback; it is not the normal
+subscription-management destination. Native billing is production-only for now; preview
+TEST flows retain their established Portal contract. Existing Stripe legal merchant and
+invoice branding remain account-level and have not been changed.

@@ -63,7 +63,6 @@
     st.market=mk; st.session=await api.session.get(); U.renderHeader(); $('#pOk').textContent=translateUI('✓ Saved'); setTimeout(()=>$('#pOk').textContent='',2500); };
   $('#so').onclick=async()=>{ await api.session.signOut(); track('signed_out'); location.href='index.html'; };
   const pt=$('#portal');
-  if(pt && api.live) pt.onclick=async()=>{ pt.disabled=true; pt.textContent=translateUI('Opening billing…');
-    try{ location.href=await api.billing.portal(); }catch(e){ pt.disabled=false; pt.textContent=translateUI('Manage billing'); toast(e.message||translateUI('Billing is unavailable right now.')); } };
+  if(pt) pt.onclick=()=>{ location.href='billing.html'; };
 
 })();

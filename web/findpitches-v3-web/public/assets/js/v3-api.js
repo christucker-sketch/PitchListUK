@@ -128,7 +128,11 @@
       async startCheckout({ plan_id, market, currency }) { const r = await send('POST', '/billing/checkout', { plan_id, market, locale: FP.i18n.current,...(currency?{currency}:{}) }); return { checkout_url: r.checkout_url }; },
       async confirmCheckout({ session_id }) { return send('POST', '/billing/confirm', { session_id }); },
       async portal() { return (await send('POST', '/billing/portal', {locale:FP.i18n.current})).url; },
-      // Plan changes and cancellation happen in the payment provider's hosted portal (billing.portal).
+      async summary() { return (await call('GET', '/billing/summary')).billing; },
+      async change(action, revision) { return (await send('POST', '/billing/change', {action, revision})).billing; },
+      async updatePayment(revision) { return (await send('POST', '/billing/payment', {revision, locale:FP.i18n.current})).checkout_url; },
+      async confirmPayment(session_id) { return (await send('POST', '/billing/payment/confirm', {session_id})).billing; },
+      // Hosted Portal remains an explicit recovery fallback only.
       getCheckout: () => notAvailable(translateUI('Checkout details')), completeCheckout: () => notAvailable(translateUI('Checkout')),
       cancel: () => notAvailable(translateUI('Cancelling here')), resume: () => notAvailable(translateUI('Resuming here'))
     },

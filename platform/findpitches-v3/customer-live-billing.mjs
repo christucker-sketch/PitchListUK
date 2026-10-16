@@ -31,7 +31,7 @@ export function livePlans(market,env,currency) {
 export function liveStripeClient(env,fetcher=fetch) {
   if(env.V3_CUSTOMER_MODE!=='production_public'||env.V3_STRIPE_MODE!=='live'||! /^(sk|rk)_live_/.test(env.STRIPE_SECRET_KEY??''))throw customerError('service_unavailable',503);
   return async(path,{method='GET',params={},idempotencyKey}={})=>{
-    if(!/^\/(prices|products|customers|subscriptions|checkout\/sessions|billing_portal\/sessions)(\/|$)/.test(path)&&!(method==='GET'&&/^\/billing_portal\/configurations\/bpc_[A-Za-z0-9]+$/.test(path)))throw customerError('forbidden',403);
+    if(!/^\/(prices|products|customers|subscriptions|checkout\/sessions|billing_portal\/sessions)(\/|$)/.test(path)&&!(method==='GET'&&/^\/(invoices|payment_methods|setup_intents)(\/|$)/.test(path))&&!(method==='GET'&&/^\/billing_portal\/configurations\/bpc_[A-Za-z0-9]+$/.test(path)))throw customerError('forbidden',403);
     const form=new URLSearchParams();for(const [k,v] of Object.entries(params))if(v!==undefined&&v!==null)form.set(k,String(v));
     // Only Checkout creation needs the version supporting per-session branding.
     // Canonical subscription reads and webhook interpretation retain the pinned
@@ -94,7 +94,7 @@ export async function verifyLiveBillingCapabilities(env,{fetcher=fetch}={}) {
   }
   return {provider:'stripe',mode:'live',settings_validated:true,permissions_observed:checks.every(c=>c.permitted),checks,customer_objects_created:0,checkout_sessions_created:0,subscriptions_created:0,owned_trial_journey_proven:false};
 }
-async function nativeOwner(db,stripe,customer) {
+export async function nativeOwner(db,stripe,customer) {
   const link=await stmt(db,'SELECT * FROM stripe_customers WHERE customer_id=?',customer.id).first();
   if(!link)return null;
   const owner=await stripe('/customers/'+encodeURIComponent(link.stripe_id));
