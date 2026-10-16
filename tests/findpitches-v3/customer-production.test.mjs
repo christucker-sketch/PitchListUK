@@ -196,7 +196,7 @@ test('missing Stripe Customer permission fails before reservation, records safe 
  assert.ok(!JSON.stringify(events).includes(login.customer.email));assert.ok(!JSON.stringify(events).includes(e.STRIPE_SECRET_KEY));
 });
 test('native capability checks expose missing Customer read/write despite valid products, without creating provider objects',async t=>{
- const db=setup(t),e=env(db),c=await native(db),p=provider(e,c),calls=[];let denied=true;
+ const db=setup(t),e=env(db),c=await native(db),p=provider(e,c),calls=[];let denied=true,missingReads=false;
  const fetcher=async(url,options)=>{
   const u=new URL(url),path=u.pathname.slice(3);calls.push({path,method:options.method,body:new URLSearchParams(options.body)});
   if(path.startsWith('/products/')||path.startsWith('/prices/')){
@@ -204,12 +204,18 @@ test('native capability checks expose missing Customer read/write despite valid 
    return Response.json(price?{...p.price,id:price.id,currency:price.currency.toLowerCase(),unit_amount:price.amount}:p.product);
   }
   if(path.startsWith('/billing_portal/configurations/'))return Response.json({id:e.STRIPE_PORTAL_CONFIGURATION_ID,active:true,livemode:true,is_default:false,features:{subscription_cancel:{enabled:true,mode:'at_period_end'},subscription_update:{enabled:false},customer_update:{enabled:false},payment_method_update:{enabled:true},invoice_history:{enabled:true}}});
-  assert.ok(path.includes('NoSuch')||u.searchParams.get('customer')?.includes('NoSuch')||new URLSearchParams(options.body).get('customer')?.includes('NoSuch'));
+  if(options.method==='GET'&&['/customers','/subscriptions'].includes(path)){
+   assert.equal(u.searchParams.get('created[lte]'),'0');assert.equal(u.searchParams.get('limit'),'1');
+   if(missingReads)return Response.json({error:{code:'resource_missing'}},{status:404});
+   return denied&&path==='/customers'?Response.json({error:{code:'more_permissions_required'}},{status:403}):Response.json({object:'list',data:[],has_more:false});
+  }
+  assert.ok(path.includes('NoSuch')||new URLSearchParams(options.body).get('customer')?.includes('NoSuch'));
   const forbidden=denied&&path.startsWith('/customers/');return Response.json({error:{code:forbidden?'more_permissions_required':'resource_missing',message:'never disclose this'}},{status:forbidden?403:404,headers:{'Request-Id':'req_capabilityfixture'}});
  };
  let r=await verifyLiveBillingCapabilities(e,{fetcher});assert.equal(r.settings_validated,true);assert.equal(r.permissions_observed,false);assert.deepEqual(r.checks.filter(c=>!c.permitted).map(c=>c.capability),['customers_read','customers_write']);assert.equal(r.customer_objects_created,0);assert.equal(r.checkout_sessions_created,0);assert.equal(r.owned_trial_journey_proven,false);
- assert.ok(calls.filter(c=>c.method==='POST'&&c.path.startsWith('/customers/')).every(c=>c.body.size===0));assert.ok(!calls.some(c=>c.path==='/customers'||c.path==='/checkout/sessions'));
+ assert.ok(calls.filter(c=>c.method==='POST'&&c.path.startsWith('/customers/')).every(c=>c.body.size===0));assert.ok(!calls.some(c=>c.method==='POST'&&(c.path==='/customers'||c.path==='/checkout/sessions')));
  denied=false;r=await verifyLiveBillingCapabilities(e,{fetcher});assert.equal(r.permissions_observed,true);assert.equal(r.owned_trial_journey_proven,false);
+ missingReads=true;r=await verifyLiveBillingCapabilities(e,{fetcher});assert.equal(r.permissions_observed,false);assert.deepEqual(r.checks.filter(c=>!c.permitted).map(c=>c.capability),['customers_read','subscriptions_read']);missingReads=false;
  t.mock.method(globalThis,'fetch',fetcher);
  assert.equal((await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/ops/billing/capabilities',{method:'POST'}),e)).status,403);
  const request=()=>new Request(e.V3_PUBLIC_ORIGIN+'/ops/billing/capabilities',{method:'POST',headers:{Authorization:'Bearer '+e.V3_PRODUCTION_OPERATOR_TOKEN}});

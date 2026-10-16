@@ -66,23 +66,26 @@ export async function verifyLiveBillingSettings(env,{fetcher=fetch}={}) {
   if(portal.id!==env.STRIPE_PORTAL_CONFIGURATION_ID||!portal.active||portal.is_default||!portal.features?.subscription_cancel?.enabled||portal.features.subscription_cancel.mode!=='at_period_end'||portal.features?.customer_update?.enabled||portal.features?.subscription_update?.enabled||!portal.features?.payment_method_update?.enabled||!portal.features?.invoice_history?.enabled)throw customerError('billing_review_required',409);
   return {provider:'stripe',mode:'live',credential_validated:true,product_id:env.V3_LIVE_PRODUCT_ID,prices:policy.map(({id,currency,amount})=>({id,currency,amount,interval:'month'})),portal_id:portal.id,portal_cancel_at_period_end:true,webhook_secret_configured:true,entitlement:'global',trial_days:7,checkout_enabled:env.V3_CHECKOUT_ENABLED==='live',customer_objects_created:0};
 }
-// Operator-only permission checks against deliberately nonexistent resources.
-// Empty updates cannot create customers/Checkout; the Portal probe names a
-// nonexistent customer. A missing-resource error proves only that the request
-// passed permissions, not that a genuine hosted trial journey has succeeded.
+// Operator-only probes: impossible pre-epoch list filters return no customer
+// data; empty updates cannot create customers/Checkout; the Portal probe names
+// a nonexistent customer. These observe permission denials, not a completed
+// genuine hosted trial. In particular a nonexistent GET can return 404 before
+// read permission is checked, so read probes require successful empty lists.
 export async function verifyLiveBillingCapabilities(env,{fetcher=fetch}={}) {
   await verifyLiveBillingSettings(env,{fetcher});
   const stripe=liveStripeClient(env,fetcher),customer='cus_FindPitchesV3CapabilityCheckNoSuchCustomer';
   const probes=[
-    ['customers_read','/customers/'+customer,{}],
+    ['customers_read','/customers',{params:{'created[lte]':0,limit:1}}],
     ['customers_write','/customers/'+customer,{method:'POST'}],
-    ['subscriptions_read','/subscriptions',{params:{customer,limit:1}}],
+    ['subscriptions_read','/subscriptions',{params:{'created[lte]':0,limit:1}}],
     ['checkout_write','/checkout/sessions/cs_live_FindPitchesV3CapabilityCheckNoSuchSession',{method:'POST'}],
     ['portal_write','/billing_portal/sessions',{method:'POST',params:{customer,configuration:env.STRIPE_PORTAL_CONFIGURATION_ID}}]
   ],checks=[];
   for(const [capability,path,options] of probes){
-    try{await stripe(path,options);throw customerError('billing_review_required',409);}
-    catch(e){if(!e.stripeDiagnostic)throw e;checks.push({capability,permitted:e.stripeDiagnostic.code==='resource_missing'&&[400,404].includes(e.stripeDiagnostic.status),...e.stripeDiagnostic});}
+    try{const value=await stripe(path,options);
+      if(!capability.endsWith('_read')||value.object!=='list'||value.data.length!==0||value.has_more!==false)throw customerError('billing_review_required',409);
+      checks.push({capability,permitted:true,operation:path.slice(1)+'_get',status:200,code:'empty_list',request_id:null});}
+    catch(e){if(!e.stripeDiagnostic)throw e;checks.push({capability,permitted:!capability.endsWith('_read')&&e.stripeDiagnostic.code==='resource_missing'&&[400,404].includes(e.stripeDiagnostic.status),...e.stripeDiagnostic});}
   }
   return {provider:'stripe',mode:'live',settings_validated:true,permissions_observed:checks.every(c=>c.permitted),checks,customer_objects_created:0,checkout_sessions_created:0,subscriptions_created:0,owned_trial_journey_proven:false};
 }
