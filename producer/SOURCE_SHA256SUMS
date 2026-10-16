@@ -9,9 +9,9 @@ c4e413615f425435b1a76957a07504c28b903bcb1bca540e99621cbec2c8f246  ./deploy/pi-te
 e57a2f3b3d01b4df99015ccc517a0c41bf0801b27f3310ec62050b0ec7f1b718  ./deploy/pi-tests/prune.test.sh
 a400ce419909cc89513aacc55c1040ae60f196d5e19016ffd3b45fb8e9006801  ./deploy/pi-tests/source-key.test.sh
 e93d44f3d2137d9e2bdec4686b2e6e00dd8a103dcea700bf0b2dcace31104308  ./deploy/pi/README.md
-7a1459a39baa69d0485482e5a068ac8308a828e0e4456eb74769bf0c686de0b9  ./deploy/pi/SHA256SUMS
+ce7eeb1ead6d8cce1dd76a9e1f1e42ae778f413554d617707e7a072f41043f40  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
-760559ec17a69db5c358c1e79a4b3024381a1f81440c79299165312a1b417449  ./deploy/pi/bin/fpd-alert-check
+f6434635e66704e039c3939dc891b34b6bfd94cd150c8f7ea98d7540fce5bf8c  ./deploy/pi/bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./deploy/pi/bin/fpd-alert-setup
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./deploy/pi/bin/fpd-backup
 e53bfba4b928df19d3e94e6002343732fc121355a6b5532f03554398217fcaf2  ./deploy/pi/bin/fpd-cycle

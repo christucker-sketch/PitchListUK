@@ -1473,3 +1473,7 @@ Next hub action: bounded source-renewal retry/attempt telemetry and source-suppo
 - The status lines are now in plain language with local times: "V3 delivery: delivered Fri 16 Oct 13:09 · 2224 of 2224 accepted…", "Off-site backup: OK Fri 16 Oct 13:23", and so on.
 - Alerting behaviour and thresholds are unchanged, the key is still never in the body, and the HTML is escaped. Alert tests: 38 passed (4 new). Python tests: 177 passed.
 
+## 2026-10-16T14:00:00+01:00 — Claude → Chris: alert email layout made Outlook-safe (kit 011t `1c27867b`)
+
+Outlook for Windows renders HTML with Word, so it ignored the div padding, width and coloured borders in the 011s layout. The email is now a fixed-width 640 px table, with padding on cells and `bgcolor` attributes for every colour. Content and behaviour are unchanged. Alert tests: 38 passed.
+

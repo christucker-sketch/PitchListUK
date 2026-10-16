@@ -118,6 +118,9 @@ render_html() {
 import html, os, re
 subj, body = os.environ["ALERT_SUBJ"], os.environ["ALERT_BODY"]
 e = html.escape
+# Outlook for Windows renders HTML with Word: padding/margins on <div>, max-width and rounded corners are ignored.
+# So the layout is tables with padding on <td> and colours given as bgcolor attributes as well as styles.
+FONT = "font-family:Segoe UI,Helvetica,Arial,sans-serif;"
 KIND = [("PROBLEM", "#c62828", "Problem"), ("STILL WRONG", "#ef6c00", "Still wrong"), ("RESOLVED", "#2e7d32", "Resolved"),
         ("OVERNIGHT", "#546e7a", "Overnight"), ("daily: all OK", "#2e7d32", "Daily summary"), ("daily", "#ef6c00", "Daily summary"),
         ("Pi restarted", "#ef6c00", "Pi restarted"), ("test", "#1565c0", "Test")]
@@ -126,16 +129,29 @@ colour, label = next(((c, l) for k, c, l in KIND if title.startswith(k)), ("#455
 title = re.sub(r"^(?:PROBLEM|STILL WRONG|RESOLVED|OVERNIGHT|daily):\s*", "", title) or title
 SECTION = {"New problems": "#c62828", "Still wrong": "#ef6c00", "Resolved": "#2e7d32", "Open problems": "#ef6c00",
            "During quiet hours": "#546e7a"}
-out, rows, intro = [], [], []
+
+
+def para(text, size=14, colour_="#263238", top=0, bottom=12, bold=False):
+    return ('<tr><td style="%spadding:%dpx 24px %dpx 24px;font-size:%dpx;line-height:%dpx;color:%s;%s">%s</td></tr>'
+            % (FONT, top, bottom, size, int(size * 1.5), colour_, "font-weight:bold;" if bold else "", text))
+
+
+def card(text, c):
+    return ('<tr><td style="padding:0 24px 8px 24px">'
+            '<table role="presentation" width="100%%" cellpadding="0" cellspacing="0" border="0"><tr>'
+            '<td width="4" bgcolor="%s" style="background:%s;width:4px;font-size:1px">&nbsp;</td>'
+            '<td bgcolor="#f5f7f8" style="%sbackground:#f5f7f8;padding:10px 14px;font-size:14px;line-height:21px;color:#263238">%s</td>'
+            '</tr></table></td></tr>' % (c, c, FONT, text))
+
+
+rows_out, status = [], []
 for b in [b.strip("\n") for b in re.split(r"\n\s*\n", body) if b.strip()]:
     lines = b.split("\n")
     head = next((k for k in SECTION if lines[0].startswith(k)), None)
     if head:
         c = SECTION[head]
-        items = "".join(
-            '<div style="border-left:4px solid %s;background:#fafafa;padding:8px 12px;margin:6px 0;font-size:14px;line-height:1.45">%s</div>'
-            % (c, e(x[2:] if x.startswith("- ") else x)) for x in lines[1:] if x.strip())
-        out.append('<h3 style="margin:18px 0 6px;font-size:15px;color:%s">%s</h3>%s' % (c, e(lines[0].rstrip(":")), items))
+        rows_out.append(para(e(lines[0].rstrip(":")), 15, c, 14, 8, True))
+        rows_out += [card(e(x[2:] if x.startswith("- ") else x), c) for x in lines[1:] if x.strip()]
         continue
     kv = [re.match(r"^([A-Za-z][\w /-]{1,30}):\s+(.*)$", x) for x in lines]
     if all(kv):
@@ -143,27 +159,36 @@ for b in [b.strip("\n") for b in re.split(r"\n\s*\n", body) if b.strip()]:
             k, v = m.group(1), m.group(2)
             if k == "All current problems":
                 n = v.strip()
-                out.append('<p style="margin:16px 0"><span style="background:%s;color:#fff;border-radius:12px;padding:3px 10px;'
-                           'font-size:13px;font-weight:600">Open problems: %s</span></p>' % ("#2e7d32" if n == "0" else "#ef6c00", e(n)))
+                chip = "#2e7d32" if n == "0" else "#ef6c00"
+                rows_out.append('<tr><td style="padding:12px 24px 4px 24px"><table role="presentation" cellpadding="0" cellspacing="0" border="0">'
+                                '<tr><td bgcolor="%s" style="%sbackground:%s;color:#ffffff;padding:4px 12px;font-size:13px;font-weight:bold">'
+                                'Open problems: %s</td></tr></table></td></tr>' % (chip, FONT, chip, e(n)))
             else:
                 bad = re.search(r"FAILED|failed|(?<!no )under-voltage|[1-9]\d* rejected", v)
-                rows.append('<tr><td style="padding:5px 14px 5px 0;color:#607d8b;white-space:nowrap;vertical-align:top">%s</td>'
-                            '<td style="padding:5px 0;color:%s">%s</td></tr>' % (e(k), "#c62828" if bad else "#263238", e(v)))
+                status.append('<tr><td valign="top" style="%spadding:6px 16px 6px 0;font-size:14px;color:#607d8b;white-space:nowrap">%s</td>'
+                              '<td valign="top" style="%spadding:6px 0;font-size:14px;line-height:20px;color:%s">%s</td></tr>'
+                              % (FONT, e(k), FONT, "#c62828" if bad else "#263238", e(v)))
         continue
-    intro.append('<p style="margin:0 0 12px;font-size:14px;line-height:1.5">%s</p>' % e(b).replace("\n", "<br>"))
-table = ('<h3 style="margin:22px 0 6px;font-size:15px;color:#37474f">Pi status</h3>'
-         '<table style="border-collapse:collapse;font-size:14px;line-height:1.4">%s</table>' % "".join(rows)) if rows else ""
+    rows_out.append(para(e(b).replace("\n", "<br>"), top=4))
+if status:
+    rows_out.append(para("Pi status", 15, "#37474f", 18, 6, True))
+    rows_out.append('<tr><td style="padding:0 24px 16px 24px"><table role="presentation" cellpadding="0" cellspacing="0" border="0">%s</table></td></tr>'
+                    % "".join(status))
 print(
-    '<!doctype html><html><body style="margin:0;background:#eceff1;font-family:Segoe UI,Helvetica,Arial,sans-serif;color:#263238">'
-    '<div style="max-width:640px;margin:0 auto;background:#ffffff">'
-    '<div style="background:%s;color:#ffffff;padding:14px 20px">'
-    '<div style="font-size:12px;opacity:.85;text-transform:uppercase;letter-spacing:.06em">%s</div>'
-    '<div style="font-size:17px;font-weight:600;margin-top:2px">%s</div></div>'
-    '<div style="padding:16px 20px 8px">%s%s%s</div>'
-    '<div style="padding:12px 20px 18px;font-size:12px;color:#90a4ae;border-top:1px solid #eceff1">'
+    '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#eceff1">'
+    '<table role="presentation" width="100%%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eceff1" style="background:#eceff1">'
+    '<tr><td align="center" style="padding:16px 8px">'
+    '<table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:640px;background:#ffffff">'
+    '<tr><td bgcolor="%s" style="%sbackground:%s;padding:16px 24px">'
+    '<div style="font-size:12px;line-height:16px;color:#ffffff;text-transform:uppercase;letter-spacing:1px">%s</div>'
+    '<div style="font-size:18px;line-height:24px;color:#ffffff;font-weight:bold">%s</div></td></tr>'
+    '<tr><td style="font-size:1px;line-height:12px">&nbsp;</td></tr>'
+    '%s'
+    '<tr><td style="%spadding:12px 24px 18px 24px;font-size:12px;line-height:18px;color:#90a4ae;border-top:1px solid #eceff1">'
     'FindPitches Pi health alerts &middot; quiet 22:00&ndash;07:00 (held, then sent) &middot; details on the Pi: '
-    '<code>sudo fpd-alert-check --show</code></div></div></body></html>'
-    % (colour, e(label), e(title), "".join(intro), "".join(out), table))
+    'sudo fpd-alert-check --show</td></tr>'
+    '</table></td></tr></table></body></html>'
+    % (colour, FONT, colour, e(label), e(title), "".join(rows_out), FONT))
 PY
 }
 
