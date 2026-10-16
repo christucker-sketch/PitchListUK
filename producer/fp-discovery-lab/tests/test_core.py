@@ -511,3 +511,19 @@ def test_dundee_heritage_event_uses_header_dates_not_other_events_on_page():
     # after the event the same page is not an open call
     late = adapters.apply(page, classify(page, dt.date(2026, 12, 1)), dt.date(2026, 12, 1), "dundeeheritagetrust.co.uk")
     assert late["extracted"].get("state") != "OPEN_NOW"
+
+
+def test_reused_platform_page_for_a_different_event_is_not_renamed(tmp_path):
+    conn = dbm.connect(tmp_path / "t.sqlite")
+    fr = Frontier(conn, 1)
+    r = Resolver(conn, 1)
+    url = "https://www.lambfieldshow.co.uk/traders"
+    u1 = fr.add(url, "candidate", "test")
+    a1 = cl(UK_SHOW, url)
+    a1["extracted"]["name"] = "Yakima World's Vintage Fair"
+    o1, _ = r.upsert(u1, url, 1, a1)
+    before = tuple(conn.execute("SELECT name, start_date FROM opportunities WHERE id=?", (o1,)).fetchone())
+    a2 = json.loads(json.dumps(a1))
+    a2["extracted"].update(name="Y Artisan Fair", start_date="2026-12-05")
+    r.upsert(u1, url, 2, a2)
+    assert tuple(conn.execute("SELECT name, start_date FROM opportunities WHERE id=?", (o1,)).fetchone()) == before

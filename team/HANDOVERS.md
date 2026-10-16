@@ -1515,3 +1515,28 @@ The authorized provider correction is saved on the existing restricted LIVE key 
 The live Dashboard was re-read after the operator 2FA save. All 152 permission rows were compared: normalizing the saved Customers row back to None reproduces the exact pre-change matrix hash, proving that no other permission changed. Key name/note remain unchanged and access policy remains None. No new/replacement key, Worker secret, customer, Checkout Session, subscription, charge, product, price, Portal, webhook, Cloudflare, code, deployment, source, PitchList or V2 change was made. Checkout remains closed.
 
 **Next / Codex:** re-run native `/ops/billing/capabilities` against the deployed credential, retain successful empty-list reads and bounded missing-resource write probes, then validate protected runtime/public state before any guarded Checkout reopening under existing authority. **Next / Chris:** after Codex's gate, perform the genuine email → hosted LIVE trial → global Pro → Portal/cancel/paid-through journey. This provider edit does not resolve the incident or complete V3-010 by itself. [Hal evidence](agents/HAL.md).
+## 2026-10-16T15:15:00+01:00 — Claude → Codex / Chris: resolver-refresh gate result; same-event guard added (kit 011v `8c2f1ede`, supersedes 011u)
+
+**Drift report on the Pi (read-only):** of 6,476 opportunities, 337 (5%) hold a value that differs from the latest assessment of their own primary page.
+
+| Lane | Opportunities |
+| --- | --- |
+| platform | 319 |
+| directory | 8 |
+| wikidata | 8 |
+| datatourisme | 2 |
+
+| Field | Opportunities |
+| --- | --- |
+| start_date | 205 |
+| name | 88 |
+| deadline | 73 |
+| end_date | 9 |
+| apply_url | 1 |
+
+**Most changes are corrections:** the next edition's dates and deadlines ("Liberty Antiques Festival" → "… April 2027", "The Pink Bride - Cookeville - 01/24/26" → "01/24/27"), weekly next dates, and fuller names.
+
+**One case shows a page reused for a different event:** "Yakima World's Vintage Fair" → "Y Artisan Fair". Renaming that in place would be a silent identity change. **011v adds a guard:** the refresh applies only while the page still names the same event, judged by token-set similarity ≥ 60 on distinctive words; years, numbers and generic words are ignored. Otherwise nothing changes, as before.
+
+179 tests pass, including the new guard test. The drift report now also lists the blocked cases. The Auburn suppression and the farmers-market re-assessment follow the install.
+

@@ -108,6 +108,15 @@ def is_generic(key: str) -> bool:
     return len([t for t in toks if t not in GENERIC_TOKENS]) == 0
 
 
+_GENERIC_EVENT_WORD = re.compile(r"(?:19|20)\d\d|\d+|the|and|of|at|a|in|on|to|events?|market|fair|festival|show|us|join|"
+                                r"booking|vendors?|application")
+
+
+def _event_words(name) -> str:
+    """Distinctive words of an event name, for 'is this still the same event?' (years, numbers, generic words dropped)."""
+    return " ".join(w for w in re.sub(r"[^a-z0-9 ]", " ", (name or "").lower()).split() if not _GENERIC_EVENT_WORD.fullmatch(w))
+
+
 class Resolver:
     def __init__(self, conn, run_id: int):
         self.conn = conn
@@ -235,7 +244,11 @@ class Resolver:
             # A re-assessment of the opportunity's own primary page is the newest evidence for it: its name, dates and
             # apply link replace the old ones (16 Oct: corrected names/dates never reached existing opportunities, because
             # fields were only ever filled when empty).
-            fresh = method == "same_page" and o.get("primary_url") == url
+            # ...but only while it is still the same event: a platform page reused for a different event ("Yakima World's
+            # Vintage Fair" -> "Y Artisan Fair") must not silently rename and re-date this opportunity.
+            same_event = not o.get("name") or not ex.get("name") or \
+                fuzz.token_set_ratio(_event_words(ex.get("name")), _event_words(o.get("name"))) >= 60
+            fresh = method == "same_page" and o.get("primary_url") == url and same_event
             for f in ("organiser", "region", "locality", "venue", "start_date", "end_date", "recurrence",
                       "deadline", "fees", "apply_url", "name"):
                 v = ex.get(f)
