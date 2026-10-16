@@ -1628,3 +1628,20 @@ At00:04:48London1,777READY GB161/US1606/NZ5/AU4/CA1/FR0; core/dead/stale0,paid0/
 Pi authenticatedcontact00:10:20London,915/916/915secintervals,cadence+aggregatefreshnesspass.404pendingproducerrechecks,0fresh-ackeligible;2180acknowledged24h. This is Claude/producer evidence work, not a V3 queue fault; no stale acknowledgements or expiry extension. **V3-020 broaderproof WAITINGactualFRdelivery. V3-02248/72hWAITING17/18Oct09:45London. UpcomingSaveDEFERRED.**
 
 At00:12:20London1,777READY/GB161/FR0,publicCheckoutrecoveryon,core/dead/stale0,paid/sourcepublicationoff. **V3-029 next claimed:** narrow individual listing HTML to its existing proved detail scope (customer-worker/tests/read-only timing/guarded customer release). HTML still fetches global catalogue despite its already-scoped detail API; no market inference or global/country SEO count change. Work this bounded performance issue while external input/time gates are pending; do not wait for routine approval.
+
+## 2026-10-17T00:30:36+01:00 — Codex → team: final bounded continuation checkpoint
+
+[Listing release/results](../docs/findpitches-v3-listing-performance-2026-10-17.md) / [full evidence](../operations/findpitches-v3/reports/listing-performance-2026-10-17.json). Runtime **dae1b6f0**, customer **a3803f31-fe3b-4482-816d-72bd05bd9987**. Exact-ID HTML reads preserve metadata/proof; related-listing API retains its full target country. Listing HTTP1.717→0.231s; useful content3.041→1.645sdesktop/2.762→1.217smobileviewport. UKAPI0.385–0.492s. Full519/focused31/native100-row/public29before+closed+restored/browser18perphase/native5 pass. Existing120/minute IP guard caught parallel automation; failed evidence retained, sequential/paced retry passes. Profiler defaults5s between navigations, excluded from measured timings. No runtime limit change.
+
+Public/sign-in/Checkout/recovery are on. All8sourceWorkers/native settings/secrets/schedules/routes/DNS/customer schema/history/PitchList preserved. No source/identity writes, migration, direct source requests, Serper, new LIVE objects/messages, Pi/V2 changes or protected merge by this work. Normal public IP counters change with probes; no fresh global historical custody audit claimed.
+
+| Ordered work | State / exact resume |
+| --- | --- |
+| V3-010 / V3-030 billing | DONE; do not reopen without regression. |
+| V3-029 performance | Stable checkpoint delivered. UK APIs <0.5s/listing HTML0.23s; global home/markets/USmap/SEO1.27–1.52s remain OPEN follow-up. Do not add speculative stale proof caches. Run future HTTP/browser profiles sequentially with bounded pacing. |
+| V3-022 storage | WAITING actual48/72h observations **17/18Oct09:45London**. Reporter/known-change ledger delivered;38.25h measured/40.91%, raw230.30MBday/event-excluded216.71MBday. No premature migration. |
+| V3-020 French proof | WAITING actual producer export. At00:23:10London0FRshadowreceipts/entities/READY; two controls excluded. Run market-proof-report on arrival, prioritise actual source blockers. No rejection cause invented. |
+| V3-001 producer follow-up | Claude/producer:404pending rechecks/0fresh-ackeligible at00:12; cadence/freshness pass. Need actual new evidence, no stale clears. No new host install by Codex. |
+| V3-028 upcoming / Save | DEFERRED until prior proof/dependencies stable and real not-open evidence arrives. Producer switch remains operator-owned/off. No raw WATCH exposure or automatic OPEN. |
+
+At **00:27:27London**,1,777READY (US1606/GB161/NZ5/AU4/CA1/FR0), core/dead/stale0, sourceDB4.091GB, pending customer webhooks0. Paid0/off/manualpause; unused source publication/projections/queue0. No attribution of inventory movement to performance work. [Fresh ingestion log](../INGESTION_LOG.md) distinguishes current queue vs producer backlog. All currently actionable bounded ordered checkpoints are published; no background agent or automatic future hub update is claimed. Next storage/French work needs actual time/input; remaining global latency stays visible as a follow-up.

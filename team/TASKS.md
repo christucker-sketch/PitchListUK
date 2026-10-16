@@ -151,7 +151,7 @@ Use the per-agent [update template](templates/UPDATE.md) for the claim's timesta
 
 | ID | Priority | Work / completion evidence | State | Owner | Planned components / dependency |
 | --- | --- | --- | --- | --- | --- |
-| V3-029 | P2 | [Single-use SEO response reuse LIVE](../docs/findpitches-v3-response-performance-2026-10-17.md) | CLAIMED | Codex | Stable checkpoint 2026-10-17T00:06:18+01:00:513full/public29/browser18perphase pass,0redundantSEOAPIreads. UKAPI0.31–0.43s; country/category2.4–2.8s. Remainingglobal1.2–1.7s latency open; ordered storage/French work proceeds after this stable checkpoint. Next customer-worker/test/release claim: scoped listing HTML while storage/French inputs pending; current detail API already scoped, no global count/identity/proof change. |
+| V3-029 | P2 | [Listing HTML0.23s / stable measured checkpoint](../docs/findpitches-v3-listing-performance-2026-10-17.md) | CLAIMED | Codex | 2026-10-17T00:30:36+01:00: runtime dae1b6f0 LIVE; full519/public29/browser18 pass. Exact-ID HTML, unchanged country detail API/related lists; UKAPI0.39–0.49s. Remainingglobal1.27–1.52s latency OPEN follow-up. Preserve rate limit: sequence HTTP/browser probes with5s pacing. Storage/French input/time dependencies next. |
 
 **P0 V3-010 incident / Codex / 2026-10-16T13:37:00+01:00:** claimed production signup/trial failure per [incident order](LIVE_SIGNUP_INCIDENT_2026-10-16.md). Pause V3-029 performance work; inspect production auth/cookie/redirect/Checkout/provider/config without exposing account data or weakening guards. No test charge, account impersonation or unrelated paid/producer work.
 

@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-17T00:15:30+01:00 — French delivery dependency measured; listing HTML scope ACTIVE** (Europe/London).
-State: **Billing DONE; V3-029 listing HTML scope ACTIVE. Storage48/72h and broaderFrenchproof WAITING for elapsed time/actualdelivery. Public/sign-in/Checkout/recovery on.**
+Author: Codex. Updated: **2026-10-17T00:30:36+01:00 — listing read release LIVE; storage/French dependencies explicit** (Europe/London).
+State: **Billing DONE; measured performance checkpoint delivered (remaining global latency OPEN). Storage48/72h and French proof WAITING for actual time/delivery; upcoming/Save DEFERRED. Public/sign-in/Checkout/recovery on.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,23 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Final continuation checkpoint — 2026-10-17T00:30:36+01:00
+
+[Listing release/results](../../docs/findpitches-v3-listing-performance-2026-10-17.md) / [full evidence](../../operations/findpitches-v3/reports/listing-performance-2026-10-17.json). Runtime **dae1b6f0**, customer **a3803f31-fe3b-4482-816d-72bd05bd9987**. Exact-ID HTML reads preserve metadata/proof; related-listing API retains its full target country. Listing HTTP1.717→0.231s; useful content3.041→1.645sdesktop/2.762→1.217smobileviewport. UKAPI0.385–0.492s. Full519/focused31/native100-row/public29before+closed+restored/browser18perphase/native5 pass. Existing120/minute IP guard caught parallel automation; failed evidence retained, sequential/paced retry passes. Profiler defaults5s between navigations, excluded from measured timings. No runtime limit change.
+
+Public/sign-in/Checkout/recovery are on. All8sourceWorkers/native settings/secrets/schedules/routes/DNS/customer schema/history/PitchList preserved. No source/identity writes, migration, direct source requests, Serper, new LIVE objects/messages, Pi/V2 changes or protected merge by this work. Normal public IP counters change with probes; no fresh global historical custody audit claimed.
+
+| Ordered work | State / exact resume |
+| --- | --- |
+| V3-010 / V3-030 billing | DONE; do not reopen without regression. |
+| V3-029 performance | Stable checkpoint delivered. UK APIs <0.5s/listing HTML0.23s; global home/markets/USmap/SEO1.27–1.52s remain OPEN follow-up. Do not add speculative stale proof caches. Run future HTTP/browser profiles sequentially with bounded pacing. |
+| V3-022 storage | WAITING actual48/72h observations **17/18Oct09:45London**. Reporter/known-change ledger delivered;38.25h measured/40.91%, raw230.30MBday/event-excluded216.71MBday. No premature migration. |
+| V3-020 French proof | WAITING actual producer export. At00:23:10London0FRshadowreceipts/entities/READY; two controls excluded. Run market-proof-report on arrival, prioritise actual source blockers. No rejection cause invented. |
+| V3-001 producer follow-up | Claude/producer:404pending rechecks/0fresh-ackeligible at00:12; cadence/freshness pass. Need actual new evidence, no stale clears. No new host install by Codex. |
+| V3-028 upcoming / Save | DEFERRED until prior proof/dependencies stable and real not-open evidence arrives. Producer switch remains operator-owned/off. No raw WATCH exposure or automatic OPEN. |
+
+At **00:27:27London**,1,777READY (US1606/GB161/NZ5/AU4/CA1/FR0), core/dead/stale0, sourceDB4.091GB, pending customer webhooks0. Paid0/off/manualpause; unused source publication/projections/queue0. No attribution of inventory movement to performance work. [Fresh ingestion log](../INGESTION_LOG.md) distinguishes current queue vs producer backlog. All currently actionable bounded ordered checkpoints are published; no background agent or automatic future hub update is claimed. Next storage/French work needs actual time/input; remaining global latency stays visible as a follow-up.
 
 ## French intake checkpoint / next listing HTML scope claimed — 2026-10-17T00:15:30+01:00
 
