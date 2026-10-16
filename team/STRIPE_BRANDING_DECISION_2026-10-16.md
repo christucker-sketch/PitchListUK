@@ -39,3 +39,5 @@ Hal owns provider custody only after his own acknowledgement of a concrete task.
 - Portal configuration and account branding: https://docs.stripe.com/customer-management/configure-portal
 - Portal configuration fields: https://docs.stripe.com/api/customer_portal/configurations/create
 - Official Stripe OpenAPI schema: https://github.com/stripe/openapi/blob/master/openapi/spec3.json
+
+**Direction recorded 2026-10-16T18:53:05+01:00:** [native FindPitches billing order](FINDPITCHES_NATIVE_BILLING_PAGE_ORDER_2026-10-16.md) records Chris's approval to keep the existing account and implement native subscription management. This supersedes the earlier pending choice; shared branding/account migration remain forbidden. Codex V3-030 ACTIVE.

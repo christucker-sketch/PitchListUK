@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T16:26:37+01:00 — owned LIVE functional acceptance passed; independent Checkout branding delivered; Portal direction pending** (Europe/London).
-State: **V3-010 functional acceptance DONE. V3-030 new Checkout branding live; Portal direction BLOCKED on operator choice. Public/sign-in/Checkout/recovery on. V3-029 remains claimed and can resume after this checkpoint.**
+Author: Codex. Updated: **2026-10-16T18:53:05+01:00 — consolidated queue acknowledged; native billing ACTIVE** (Europe/London).
+State: **V3-010 DONE; Checkout branding LIVE. V3-030 ACTIVE: native FindPitches billing approved in the hub. Shared Stripe/PitchList branding protected.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,20 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Ordered queue / native billing claim — 2026-10-16T18:53:05+01:00
+
+Read [consolidated order](../CODEX_OPEN_TASK_CONSOLIDATION_ORDER_2026-10-16.md) and [native billing direction](../FINDPITCHES_NATIVE_BILLING_PAGE_ORDER_2026-10-16.md). This supersedes earlier Portal-choice-blocked text; Chris's native UI choice is recorded in the hub. No new Stripe account/shared branding edit/customer migration.
+
+| Priority | Work | Status |
+| --- | --- | --- |
+| 1 | V3-030 native billing; Checkout styling already delivered | ACTIVE |
+| 2 | V3-029 measured public performance | WAITING for billing checkpoint |
+| 3 | V3-022 48/72h storage measurements | WAITING for scheduled samples (17/18 October) |
+| 4 | V3-020 broader French source proof | WAITING |
+| 5 | V3-028 upcoming listings / Save | DEFERRED |
+
+Claimed components: customer billing API/router, owned Stripe management layer, frontend billing/account/client/localisation, contract, focused safeguards/tests and guarded production release/evidence. Implement canonical owned summary/cancel/resume and Stripe-secure payment updates; no raw card data. Discover narrow restricted-key permissions safely; Hal only if missing. Preserve global Pro/trial/webhooks/CSRF/idempotency and Portal emergency fallback. No producer/Pi/source/V2 work or paid acquisition.
 
 ## Checkout styling delivered / Portal direction pending — 2026-10-16T16:26:37+01:00
 
