@@ -50,11 +50,12 @@ export function verifyFrenchCouncilBundle(bundle,{now,version,applicationPolicy}
   const main=scope(source);if(!main)throw Error('event_content_scope_missing');
   const heading=text(first(main,n=>n.tag==='h1',{scoped:true})),body=text(main),s=fold(body);
   if(!/^marche de noel\s*:\s*appel a candidatures$/.test(fold(heading)))throw Error('official_event_identity_not_proved');
-  if(/\b(?:liste d['’]attente|(?:marche|stands?|places?|inscriptions?) (?:est |sont )?complet(?:e|es|s)?|annule|candidatures? fermees?|inscriptions? closes?|reserve aux particuliers|particuliers uniquement)\b/.test(s))throw Error('fr_call_closed_restricted_or_waitlisted');
+  if(/\b(?:liste d['’]attente|(?:marche|stands?|places?|inscriptions?) (?:est |sont )?complet(?:e|es|s)?|annule|(?:candidatures?|inscriptions?) (?:(?:sont |actuellement )?(?:fermees?|closes?|suspendues?)|(?:ne sont )?pas (?:encore )?ouvertes)|reserve aux particuliers|particuliers uniquement)\b/.test(s))throw Error('fr_call_closed_restricted_or_waitlisted');
   const intro=nodes(main,n=>n.tag==='p'&&/la ville de seyssins organisera/.test(fold(text(n))),{scoped:true});
   if(intro.length!==1)throw Error('single_event_source_data_missing');
-  const original=text(intro[0]),summary=fold(original),edition=[...summary.matchAll(/\bedition (20\d{2})\b/g)],day=summary.match(/\ble (dimanche|lundi|mardi|mercredi|jeudi|vendredi|samedi) (\d{1,2})(?:er)? (\w+)\b/);
+  const original=text(intro[0]),summary=fold(original),edition=[...summary.matchAll(/\bedition (20\d{2})\b/g)],days=[...summary.matchAll(/\ble (dimanche|lundi|mardi|mercredi|jeudi|vendredi|samedi) (\d{1,2})(?:er)? (\w+)\b/g)],day=days[0];
   if(edition.length!==1||!day)throw Error('verified_event_date_missing');
+  if(days.length!==1||[...summary.matchAll(/\b(20\d{2})\b/g)].some(m=>m[1]!==edition[0][1]))throw Error('contradictory_event_dates');
   const eventDate=date(day[2],day[3],edition[0][1]);if(!eventDate||new Date(eventDate+'T12:00Z').getUTCDay()!==weekdays.indexOf(day[1]))throw Error('contradictory_event_weekday');
   const eventName=original.match(/marché de Noël de Seyssins/i)?.[0],venue=original.match(/parvis de l[’']Hôtel de ville/i)?.[0];
   if(!eventName||!venue||!summary.includes('la ville de seyssins organisera un marche de noel'))throw Error('verified_event_venue_or_owner_missing');
@@ -62,7 +63,8 @@ export function verifyFrenchCouncilBundle(bundle,{now,version,applicationPolicy}
   const communes=JSON.parse(geo.raw_json);if(!Array.isArray(communes)||communes.length!==1||communes[0].nom!=='Seyssins'||communes[0].code!=='38486'||communes[0].codeDepartement!=='38'||communes[0].codeRegion!=='84'||!communes[0].codesPostaux?.includes('38180'))throw Error('official_commune_identity_mismatch');
   const instructions=nodes(main,n=>n.tag==='p'&&/transmettre votre dossier de candidature/.test(fold(text(n))),{scoped:true});
   if(instructions.length!==1)throw Error('specific_trader_application_instruction_missing');
-  const instruction=text(instructions[0]),instructionFold=fold(instruction),deadline=instructionFold.match(/avant le (\d{1,2})(?:er)? (\w+) (20\d{2})\b/),emails=[...instruction.matchAll(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)].map(m=>m[0].toLowerCase());
+  const instruction=text(instructions[0]),instructionFold=fold(instruction),deadlines=[...instructionFold.matchAll(/avant le (\d{1,2})(?:er)? (\w+) (20\d{2})\b/g)],deadline=deadlines[0],emails=[...instruction.matchAll(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)].map(m=>m[0].toLowerCase());
+  if(deadlines.length>1||/date limite|jusqu['’]au/.test(instructionFold))throw Error('contradictory_application_deadlines');
   const until=deadline&&date(deadline[1],deadline[2],deadline[3]);
   if(!until||new Set(emails).size!==1||emails[0]!=='marchedenoel@mairie-seyssins.fr'||!summary.includes('artisan, createur ou producteur local')||!s.includes('si vous etes professionnel'))throw Error('current_trader_application_not_proved');
   if(until>eventDate)throw Error('contradictory_application_deadline_after_event');
