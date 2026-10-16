@@ -1,0 +1,189 @@
+{
+  "schema": "findpitches-v3-french-intake-checkpoint-v1",
+  "intake": {
+    "schema": "findpitches-v3-market-proof-report-v1",
+    "as_of": "2026-10-16T23:13:22.946Z",
+    "market": "FR",
+    "state": "awaiting_first_delivery",
+    "immutable_receipts": [],
+    "latest_delivery_units": {},
+    "validation_reason_counts": {},
+    "commercial_entities": 0,
+    "excluded_test_entities": 2,
+    "excluded_other_entities": 0,
+    "current_customer_ready": 0,
+    "ready_by_origin_producer": {},
+    "unattributed_ready_entities": 0,
+    "proof_status": {},
+    "verification": {
+      "verified": 0,
+      "awaiting_current": 0,
+      "watch": 0,
+      "quarantined": 0,
+      "blocked": 0,
+      "stale_or_expired": 0,
+      "missing_application_proof": 0
+    },
+    "held_reason_counts": {},
+    "source_families": {},
+    "source_domains": {},
+    "transport": {
+      "last_authenticated_poll": "2026-10-16T23:10:20.906Z",
+      "recent_poll_intervals_seconds": [
+        915.131,
+        916.364,
+        915.446
+      ],
+      "last_import_batch": {
+        "received_at": "2026-10-16T20:51:47.681Z",
+        "records": 8,
+        "accepted": 8,
+        "inserted": 0,
+        "duplicates": 8,
+        "rejected": 0,
+        "source_last_checked": "2026-10-16T14:38:46Z"
+      },
+      "scope": "Global structured transport; an import batch is not proof that a complete FR export was delivered."
+    },
+    "read_only": true,
+    "original_source_or_identity_writes": 0,
+    "source_gets": 0,
+    "serper_queries": 0,
+    "interpretation": "Receipts are immutable versions; latest delivery units use transport time, not proof/source-clock authority. Customer READY comes from the current scoped catalogue after producer-policy, identity, proof and expiry gates. These are sequential live reads, not an atomic database snapshot; not_in_current_customer_snapshot can reflect producer-policy/time gates or concurrent changes and is not an inferred root cause. Verification flags/reasons can overlap. No arrival, READY gain or source-fetch execution is inferred from a producer switch.",
+    "customer_snapshot_as_of": "2026-10-16T23:13:23.124Z",
+    "producer_policy_withheld": 0,
+    "private_catalogue_gets": 1,
+    "completed_at": "2026-10-16T23:13:25.324Z"
+  },
+  "producer_health": {
+    "as_of": "2026-10-16T23:12:18.862Z",
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": "2026-10-16T23:10:20.906Z",
+    "expected_discovery_interval_seconds": 10800,
+    "expected_export_lag_seconds": 3600,
+    "recent_poll_intervals_seconds": [
+      915.131,
+      916.364,
+      915.446
+    ],
+    "host_recently_contacting": true,
+    "cadence_verified": true,
+    "freshness_warning": false,
+    "immutable_receipts": 22689,
+    "producer_ids": 2260,
+    "last_new_receipt_at": "2026-10-16T20:51:36.814Z",
+    "source_last_checked": "2026-10-16T20:41:28Z",
+    "rechecks": {
+      "pending_entities": 404,
+      "fresh_evidence_ack_eligible": 0,
+      "by_country": [
+        {
+          "market": "AU",
+          "pending_entities": 15,
+          "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "CA",
+          "pending_entities": 14,
+          "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "GB",
+          "pending_entities": 68,
+          "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "IE",
+          "pending_entities": 1,
+          "oldest_requested_at": "2026-10-16T20:04:50.137Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "NZ",
+          "pending_entities": 5,
+          "oldest_requested_at": "2026-10-12T10:57:45.276Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "US",
+          "pending_entities": 301,
+          "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+          "fresh_evidence_ack_eligible": 0
+        }
+      ],
+      "acknowledged_last_24h": 2180,
+      "latest_acknowledgement": "2026-10-16T21:08:29.329Z",
+      "obsolete_requests_resolved": 2,
+      "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+      "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+      "pagination_supported": true,
+      "oldest_request_preserved": true
+    },
+    "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+  },
+  "customer_health": {
+    "as_of": "2026-10-16T23:12:20.115Z",
+    "public_enabled": true,
+    "checkout_enabled": true,
+    "account_recovery_preserved": true,
+    "ready": 1777,
+    "ready_by_country": {
+      "GB": 161,
+      "US": 1606,
+      "CA": 1,
+      "AU": 4,
+      "IE": 0,
+      "NZ": 5,
+      "SG": 0,
+      "HK": 0,
+      "FR": 0
+    },
+    "safety": {
+      "source_publication": 0,
+      "source_projections": 0,
+      "source_publication_queue": 0,
+      "due": 0,
+      "leased": 0,
+      "dead": 0,
+      "stale": 0,
+      "paid_queries_today": 0,
+      "bulk": 0,
+      "paid_paused": 1
+    },
+    "native_customer_counts": {
+      "native_billing_operations": 0,
+      "native_provider_customers": 1,
+      "native_subscriptions": 1,
+      "pending_webhooks": 0
+    },
+    "source_database_bytes": 4090884096,
+    "pitchlist_deployment_unchanged": true,
+    "source_original_or_identity_writes": 0,
+    "full_source_custody_audit_repeated": false
+  },
+  "validation": {
+    "market_report_tests_passed": 3,
+    "storage_tests_passed": 4,
+    "latest_deployed_runtime_full_tests": 513,
+    "full_final_with_operator_tests": "running"
+  },
+  "work": {
+    "operator_only": true,
+    "direct_source_requests": 0,
+    "serper_queries": 0,
+    "source_or_identity_writes": 0,
+    "runtime_config_changes": 0,
+    "new_live_billing_objects_or_messages": 0
+  },
+  "remaining_dependencies": [
+    "First actual FR structured delivery; no FR rejection/proof failure exists to attribute yet.",
+    "404 producer rechecks require linked fresh accepted evidence; none currently acknowledgeable.",
+    "Storage actual48/72hour observations due17/18October09:45Europe/London.",
+    "Upcoming-not-open export remains producer/operator-owned and off."
+  ]
+}

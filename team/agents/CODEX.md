@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-17T00:08:53+01:00 — storage preparation delivered; actual French intake check ACTIVE** (Europe/London).
-State: **Billing DONE; performance stable (global latency follow-up open); storage48/72h WAITING17/18October09:45London; V3-020 intake diagnostics ACTIVE. Public/sign-in/Checkout/recovery on.**
+Author: Codex. Updated: **2026-10-17T00:15:30+01:00 — French delivery dependency measured; listing HTML scope ACTIVE** (Europe/London).
+State: **Billing DONE; V3-029 listing HTML scope ACTIVE. Storage48/72h and broaderFrenchproof WAITING for elapsed time/actualdelivery. Public/sign-in/Checkout/recovery on.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,14 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## French intake checkpoint / next listing HTML scope claimed — 2026-10-17T00:15:30+01:00
+
+[FRdelivery/proof/producer health](../../docs/findpitches-v3-french-intake-2026-10-17.md) / [evidence](../../operations/findpitches-v3/reports/french-intake-2026-10-17.json). At00:13:22LondonFRshadowreceipts/entities/customerREADY0,2testcontrols excluded; no rejection/parser failure to attribute. Read-only reporter separates versions/latest transport/actualproof/currentgatedREADY, safe reason-code/source-family tallies and explicit sequential-read attribution gaps.3focused/4storage tests pass; finalfullsuitewithoperatorchangesrunning. No source fetch/repair/identity/Serper/runtime/Pi/V2change.
+
+Pi authenticatedcontact00:10:20London,915/916/915secintervals,cadence+aggregatefreshnesspass.404pendingproducerrechecks,0fresh-ackeligible;2180acknowledged24h. This is Claude/producer evidence work, not a V3 queue fault; no stale acknowledgements or expiry extension. **V3-020 broaderproof WAITINGactualFRdelivery. V3-02248/72hWAITING17/18Oct09:45London. UpcomingSaveDEFERRED.**
+
+At00:12:20London1,777READY/GB161/FR0,publicCheckoutrecoveryon,core/dead/stale0,paid/sourcepublicationoff. **V3-029 next claimed:** narrow individual listing HTML to its existing proved detail scope (customer-worker/tests/read-only timing/guarded customer release). HTML still fetches global catalogue despite its already-scoped detail API; no market inference or global/country SEO count change. Work this bounded performance issue while external input/time gates are pending; do not wait for routine approval.
 
 ## Storage preparation delivered / French intake report claimed — 2026-10-17T00:08:53+01:00
 
