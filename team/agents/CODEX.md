@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Tasks: V3-004/005/008 complete; V3-010 runt
 
 
 
+## Active continuation — 2026-10-16T10:01:16+01:00
+
+V3-026 CLAIMED: classify older failed-proof records, recover only defensible current candidates with bounded free source fetches. French council/organiser proof V3-020 and storage follow-up V3-022 follow in that order. Existing source evidence/identity/customer runtime and paid/publication safeguards remain unchanged.
+
 ## V3-025 complete — 2026-10-16T09:44:26+01:00
 
 **V3-025 DONE: 82 READY opportunities recovered.** [Completion and evidence](../../docs/findpitches-v3-source-renewal-recovery-2026-10-16.md). At **09:38 London on 16 October**, READY was **1,842**: US 1,671 / GB 161 / NZ 5 / AU 4 / CA 1. All 105 targeted entities were checked using 117 of 160 source requests and zero Serper queries. 82 returned to READY; 22 source-closed applications and one deadline disagreement remain withheld. No new entities or recovery-period losses. Bounded renewal retries, immutable attempt custody, original TTL/identity/closure safeguards and source-supported deadline clocks are deployed. Full 451 tests, public 29 checks and both original-build/affected-cohort custody audits pass with zero source mutations or identity changes. Customer Worker, provider configuration, routes, PitchList and V2 remain unchanged; public browsing and LIVE Checkout stay enabled. **113 older failed-proof receipts outside this cohort remain flagged for V3-026**, already excluded from READY; recoverability is unknown. French proof V3-020 and storage monitoring V3-022 remain open. Paid acquisition/source publication stay off; FR export held and DE intake off.
