@@ -4,7 +4,9 @@ import {fetchSourceDocument} from './source-document.mjs';import {fetchMyntBundl
 import {hummingbirdURL,fetchHummingbirdBundle} from './hummingbird.mjs';
 import {veganEventURL,fetchVeganBundle} from './vegan-events.mjs';
 import {discoverUsableRoutes,eventenyContactRoute,eventenySignupRoute} from './usable-route.mjs';
+import {SEYSSINS_CALL,fetchFrenchCouncilBundle} from './france-council.mjs';
 export async function fetchProofDocument(url,{fetcher=fetch,now=new Date().toISOString(),sourceIdentifier=null}={}) {
+  if(url===SEYSSINS_CALL)return fetchFrenchCouncilBundle(url,{fetcher,now});
   if(myntVenueUrl(url)&&sourceIdentifier)return fetchMyntBundle(url,sourceIdentifier,{fetcher,now});
   if(ccaVenueUrl(url)&&sourceIdentifier)return fetchCCABundle(url,sourceIdentifier,{fetcher,now});
   if(dundeeFoodURL(url))return fetchDundeeBundle(url,{fetcher,now});

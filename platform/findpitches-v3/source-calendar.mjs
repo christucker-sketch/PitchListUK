@@ -45,6 +45,7 @@ export function eventenyVisibleClosing(body,ends){
 }
 export function proofExpiry(report,checked){
  let expiry=Date.parse(checked)+86400000;
+ if(isSourceInstant(report.source_recheck_before))expiry=Math.min(expiry,Date.parse(report.source_recheck_before));
  if(isSourceInstant(report.application_close_at))expiry=Math.min(expiry,Date.parse(report.application_close_at));
  else if(isCalendarDate(report.facts?.application_deadline))expiry=Math.min(expiry,calendarHorizon(report.facts.application_deadline));
  if(isCalendarDate(report.facts?.event_end))expiry=Math.min(expiry,calendarHorizon(report.facts.event_end));
