@@ -1,0 +1,27 @@
+{
+  "schema": "findpitches-v3-storage-change-events-v1",
+  "purpose": "Measured windows include concurrent activity; exclude surrounding sample intervals, never subtract these bytes as pure schema attribution. Quarter-hour sampling clock uncertainty is conservatively fifteen minutes either side.",
+  "events": [
+    {
+      "id": "0025_structured_customer_policy_index.sql",
+      "observed_at": "2026-10-16T18:25:52.729Z",
+      "measured_window_delta_bytes": 3796992,
+      "uncertainty_minutes": 15,
+      "evidence": "performance-readiness-2026-10-16.json"
+    },
+    {
+      "id": "0026_customer_proof_heads.sql",
+      "observed_at": "2026-10-16T18:56:23.730Z",
+      "measured_window_delta_bytes": 8589312,
+      "uncertainty_minutes": 15,
+      "evidence": "proof-read-performance-2026-10-16.json"
+    },
+    {
+      "id": "0027_customer_selection_heads.sql",
+      "observed_at": "2026-10-16T19:00:39.809Z",
+      "measured_window_delta_bytes": 8347648,
+      "uncertainty_minutes": 15,
+      "evidence": "proof-read-performance-2026-10-16.json"
+    }
+  ]
+}

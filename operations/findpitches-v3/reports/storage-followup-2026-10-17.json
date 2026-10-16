@@ -1,0 +1,147 @@
+{
+  "schema": "findpitches-v3-storage-growth-v1",
+  "started_at": "2026-10-16T23:07:35.148Z",
+  "scope": "V3 source/evidence D1 only; customer/auth/billing database excluded",
+  "capacity": {
+    "available": true,
+    "file_size_bytes": 4090884096,
+    "conservative_cap_bytes": 10000000000,
+    "protective_stop_bytes": 9700000000,
+    "percent_used": 40.91,
+    "remaining_bytes": 5909115904,
+    "state": "normal",
+    "source_growth_allowed": true,
+    "warning_thresholds_percent": [
+      70,
+      80,
+      90,
+      97
+    ]
+  },
+  "window": {
+    "available": true,
+    "first": {
+      "observed_at": "2026-10-15T08:45:00.000Z",
+      "file_size_bytes": 3723821056
+    },
+    "last": {
+      "observed_at": "2026-10-16T23:00:00.000Z",
+      "file_size_bytes": 4090863616
+    },
+    "samples": 154,
+    "elapsed_hours": 38.25,
+    "physical_delta_bytes": 367042560,
+    "net_bytes_per_day": 230301214.11764705,
+    "includes_large_reclaim": false,
+    "coverage_24h": true,
+    "coverage_48h": false,
+    "coverage_72h": false,
+    "linear_scenario_days_to_70_percent": 12.631787093028123,
+    "linear_scenario_days_to_97_percent": 24.35556375805574,
+    "interpretation": "Observed net physical change in the stated sample interval. Linear headroom scenarios are not steady-state forecasts; missing future coverage is not measured. Reclaim windows have no growth projection."
+  },
+  "change_excluded_window": {
+    "available": true,
+    "retained_intervals": 147,
+    "retained_hours": 36.75,
+    "retained_net_bytes": 331837440,
+    "retained_net_bytes_per_day": 216710164.89795917,
+    "retained_large_reclaim": false,
+    "declared_change_events": [
+      {
+        "id": "0025_structured_customer_policy_index.sql",
+        "observed_at": "2026-10-16T18:25:52.729Z",
+        "measured_window_delta_bytes": 3796992,
+        "uncertainty_minutes": 15,
+        "evidence": "performance-readiness-2026-10-16.json"
+      },
+      {
+        "id": "0026_customer_proof_heads.sql",
+        "observed_at": "2026-10-16T18:56:23.730Z",
+        "measured_window_delta_bytes": 8589312,
+        "uncertainty_minutes": 15,
+        "evidence": "proof-read-performance-2026-10-16.json"
+      },
+      {
+        "id": "0027_customer_selection_heads.sql",
+        "observed_at": "2026-10-16T19:00:39.809Z",
+        "measured_window_delta_bytes": 8347648,
+        "uncertainty_minutes": 15,
+        "evidence": "proof-read-performance-2026-10-16.json"
+      }
+    ],
+    "measured_change_window_bytes": 20733952,
+    "excluded_intervals": [
+      {
+        "from": "2026-10-16T18:00:00.000Z",
+        "to": "2026-10-16T18:15:00.000Z",
+        "hours": 0.25,
+        "net_bytes": 2580480,
+        "change_ids": [
+          "0025_structured_customer_policy_index.sql"
+        ]
+      },
+      {
+        "from": "2026-10-16T18:15:00.000Z",
+        "to": "2026-10-16T18:30:00.000Z",
+        "hours": 0.25,
+        "net_bytes": 6402048,
+        "change_ids": [
+          "0025_structured_customer_policy_index.sql"
+        ]
+      },
+      {
+        "from": "2026-10-16T18:30:00.000Z",
+        "to": "2026-10-16T18:45:00.000Z",
+        "hours": 0.25,
+        "net_bytes": 2924544,
+        "change_ids": [
+          "0025_structured_customer_policy_index.sql",
+          "0026_customer_proof_heads.sql"
+        ]
+      },
+      {
+        "from": "2026-10-16T18:45:00.000Z",
+        "to": "2026-10-16T19:00:00.000Z",
+        "hours": 0.25,
+        "net_bytes": 11214848,
+        "change_ids": [
+          "0026_customer_proof_heads.sql",
+          "0027_customer_selection_heads.sql"
+        ]
+      },
+      {
+        "from": "2026-10-16T19:00:00.000Z",
+        "to": "2026-10-16T19:15:00.000Z",
+        "hours": 0.25,
+        "net_bytes": 10514432,
+        "change_ids": [
+          "0026_customer_proof_heads.sql",
+          "0027_customer_selection_heads.sql"
+        ]
+      },
+      {
+        "from": "2026-10-16T19:15:00.000Z",
+        "to": "2026-10-16T19:30:00.000Z",
+        "hours": 0.25,
+        "net_bytes": 1568768,
+        "change_ids": [
+          "0027_customer_selection_heads.sql"
+        ]
+      }
+    ],
+    "interpretation": "Entire sampled intervals overlapping declared changes and timestamp uncertainty are excluded once. The remaining net rate is not pure organic attribution or a steady-state forecast. Measured change-window bytes also include concurrent activity and are never simply subtracted from raw growth."
+  },
+  "table_payload_measured": false,
+  "tables": [],
+  "read_only": true,
+  "source_or_customer_mutations": 0,
+  "physical_table_index_attribution_available": false,
+  "coverage_due_at": {
+    "24h": "2026-10-16T08:45:00.000Z",
+    "48h": "2026-10-17T08:45:00.000Z",
+    "72h": "2026-10-18T08:45:00.000Z"
+  },
+  "completed_at": "2026-10-16T23:07:35.157Z",
+  "logical_payload_definition": "UTF-8 TEXT/BLOB payload, excluding physical integer cells, B-tree pages and indices; deltas are not physical per-table growth attribution."
+}

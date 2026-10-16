@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-17T00:06:18+01:00 — response reuse LIVE; storage preparation ACTIVE** (Europe/London).
-State: **V3-010/V3-030 DONE; V3-029 stable measured checkpoint (remaining global latency open). V3-022 preparation ACTIVE; actual48/72h WAITING. Public/sign-in/Checkout/recovery on.**
+Author: Codex. Updated: **2026-10-17T00:08:53+01:00 — storage preparation delivered; actual French intake check ACTIVE** (Europe/London).
+State: **Billing DONE; performance stable (global latency follow-up open); storage48/72h WAITING17/18October09:45London; V3-020 intake diagnostics ACTIVE. Public/sign-in/Checkout/recovery on.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,12 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Storage preparation delivered / French intake report claimed — 2026-10-17T00:08:53+01:00
+
+[Storage checkpoint](../../docs/findpitches-v3-storage-followup-2026-10-17.md): at00:07:35London4.091GB/40.91%,38.25hactualcoverage/154samples. Raw230.30MB/day; migration-window-excluded216.71MB/day over36.75h. Three measured fixed windows20.734MB, not pure schema attribution. Whole overlapping intervals excluded once, no arbitrary byte subtraction. Reporter supports sample-only reads and due-time metadata;4focused tests pass. No runtime/schema/config/source/customer/Pi/V2change or paidquery.
+
+**V3-022 actual48/72h remains WAITING17/18October09:45London.** Need actual observations before verdict/migration recommendation; no migration/deletion authority inferred. V3-029 remainsstable, global latencyfollowupopen; billingDONE. **Next V3-020 claimed:** read-only market intake/proof reason-code reporter and focused tests/actualFRmeasurement, using existing current catalogue/proof/producer gates, no raw receipts or personal data exported. Broader verification acts only on real delivered sources; firstFRdelivery stillawaited. UpcomingSave remainsDEFERRED until prior proof/dependencies stable.
 
 ## Response reuse deployed / storage preparation next — 2026-10-17T00:06:18+01:00
 
