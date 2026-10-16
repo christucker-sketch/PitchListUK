@@ -161,11 +161,11 @@ async function html(request,env,now) {
   // These documents contain no inventory facts. Their browser API requests
   // still read fresh proof; SEO/detail pages and sitemaps remain proof-bound.
   const shellDocument=['/','/index.html','/finder.html','/organisers.html','/organisers/'].includes(path)||/^\/(?:uk|us|ca|au|ie|nz|sg|hk|fr)\/find-pitches\/$/.test(path);
-  // Detail metadata needs the listing's proved country, not the whole global
-  // catalogue. Select by canonical entity ID; the URL's country is no proof.
+  // Detail HTML metadata needs only this entity. The browser's detail API
+  // still reads its country for related listings. The URL country is no proof.
   // Country/category SEO and sitemaps still require complete global counts.
   const listingId=path==='/opportunity.html'?url.searchParams.get('id'):path.match(/^\/[^/]+\/opportunity\/(ent_[a-f0-9]{32})\/$/)?.[1];
-  const snapshot=recovery||shellDocument?null:await readCatalogue(env,now,entityId(listingId)?{detailId:listingId}:{}),rows=snapshot?.rows??[],ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
+  const snapshot=recovery||shellDocument?null:await readCatalogue(env,now,entityId(listingId)?{ids:[listingId]}:{}),rows=snapshot?.rows??[],ms=markets(rows),rs=Object.fromEntries(ms.map(m=>[m.code,regions(m.code,rows)]));
   if(sitemap){const entries=ms.flatMap(m=>seo.pages(m,inventory(rows,m.code,seoConfig.intentsFor(m.code),now),rs[m.code]).filter(p=>p.indexable));entries.push(...rows.map(row=>({path:row.canonical_path})));if(env.V3_LOCALISATION_ENABLED!=='false'&&env.V3_LOCALISATION_INDEXABLE==='true')entries.push(...entries.flatMap(entry=>['de','fr'].map(lang=>({...entry,path:i18n.pathFor(entry.path,lang)}))));return text(seo.sitemapXml(entries,budgetDay(now)),200,{'Content-Type':'application/xml'});}
   let d,template,routeQuery='';
   const staticPages={'/':'index.html','/index.html':'index.html','/finder.html':'finder.html','/opportunity.html':'opportunity.html','/seo.html':'seo.html','/pricing.html':'pricing.html','/pricing/':'pricing.html','/account.html':'account.html','/billing.html':'billing.html','/saved.html':'saved.html','/alerts.html':'alerts.html','/organisers.html':'organisers.html','/organisers/':'organisers.html'};

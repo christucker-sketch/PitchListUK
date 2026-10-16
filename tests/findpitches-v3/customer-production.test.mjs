@@ -280,17 +280,17 @@ test('scoped customer routes keep exact search/count/regions/batch/detail result
  assert.ok(requested.some(q=>q.startsWith('market=GB')));assert.ok(requested.some(q=>q.startsWith('detail_id=')));assert.ok(requested.some(q=>q.startsWith('ids=')));
  for(const path of ['/home','/markets','/stats','/seo/page?path=%2Fuk%2F']){const result=await call(path);assert.equal(requested.at(-1),'');if(path==='/stats')assert.equal(result.total,3);}
 });
-test('listing HTML uses the proved detail scope with identical metadata and expiry guards; country SEO remains global',async t=>{
+test('listing HTML uses the exact ID scope with identical metadata and expiry guards; country SEO remains global',async t=>{
  const db=setup(t),e=env(db),gb=proof('GB'),us={...proof('US'),id:'ent_'+'2'.repeat(32)},other={...proof('GB'),id:'ent_'+'3'.repeat(32)};
  const items=[gb,us,other],requests=[];let narrow=false;
- e.V3_READY_API.fetch=async url=>{const p=new URL(url).searchParams,id=p.get('detail_id');requests.push(p.toString());
-  const country=items.find(r=>r.id===id)?.country,scope=narrow&&id?{kind:'detail',id}:{kind:'full'};
-  return Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now(),publication_enabled:false,production_cutover_enabled:false,scope,items:narrow&&id?items.filter(r=>r.country===country):items});};
+ e.V3_READY_API.fetch=async url=>{const p=new URL(url).searchParams,ids=p.has('ids')?JSON.parse(p.get('ids')):null;requests.push(p.toString());
+  const scope=narrow&&ids?{kind:'ids',ids}:{kind:'full'};
+  return Response.json({schema:'findpitches-v3-customer-proof-snapshot-v1',as_of:now(),publication_enabled:false,production_cutover_enabled:false,scope,items:narrow&&ids?items.filter(r=>ids.includes(r.id)):items});};
  const call=p=>worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+p),e);
  for(const [path,id] of [['/uk/opportunity/'+gb.id+'/',gb.id],['/us/opportunity/'+us.id+'/',us.id],['/opportunity.html?id='+gb.id,gb.id],['/lang/fr/uk/opportunity/'+gb.id+'/',gb.id]]){
   narrow=false;const before=await call(path);assert.equal(before.status,200);const markup=await before.text();
   narrow=true;const after=await call(path);assert.equal(after.status,200);assert.equal(await after.text(),markup);
-  assert.equal(requests.at(-1),'detail_id='+id);assert.equal(after.headers.get('cache-control'),'private, no-store');
+  assert.deepEqual(JSON.parse(new URLSearchParams(requests.at(-1)).get('ids')),[id]);assert.equal(after.headers.get('cache-control'),'private, no-store');
  }
  assert.equal((await call('/uk/')).status,200);assert.equal(requests.at(-1),'');
  gb.proof_expires_at='2020-01-01T00:00:00Z';assert.equal((await call('/uk/opportunity/'+gb.id+'/')).status,404);
