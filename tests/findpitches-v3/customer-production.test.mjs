@@ -7,6 +7,7 @@ import {issueChallenge,consumeChallenge} from '../../platform/findpitches-v3/cus
 import {livePricePolicy,livePlans,liveEntitlement,liveStripeClient,validateLivePrice,syncLiveSubscriptions,liveCustomerAccess,liveCheckout,livePortal,liveConfirmCheckout,liveWebhook,verifyLiveBillingSettings,verifyLiveBillingCapabilities} from '../../platform/findpitches-v3/customer-live-billing.mjs';
 import {mapProof,present} from '../../platform/findpitches-v3/customer-catalogue.mjs';
 import worker from '../../platform/findpitches-v3/customer-worker.mjs';
+import {checkoutBranding} from '../../platform/findpitches-v3/customer-branding.mjs';
 
 const now=()=>new Date().toISOString(),future=()=>new Date(Date.now()+86400000).toISOString();
 function setup(t){const db=openLocalD1(':memory:',{migrationsDirectory:new URL('../../operations/findpitches-v3/customer-production-migrations/',import.meta.url)});t.after(()=>db.close());return db;}
@@ -220,4 +221,22 @@ test('native capability checks expose missing Customer read/write despite valid 
  assert.equal((await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/ops/billing/capabilities',{method:'POST'}),e)).status,403);
  const request=()=>new Request(e.V3_PUBLIC_ORIGIN+'/ops/billing/capabilities',{method:'POST',headers:{Authorization:'Bearer '+e.V3_PRODUCTION_OPERATOR_TOKEN}});
  denied=true;assert.equal((await worker.fetch(request(),e)).status,503);denied=false;assert.equal((await worker.fetch(request(),e)).status,200);
+});
+test('new Checkout carries owned FindPitches branding while canonical reads and Portal retain the original API contract',async t=>{
+ const db=setup(t),e=env(db),c=await native(db),p=provider(e,c),calls=[];
+ const fetcher=async(url,options)=>{calls.push({path:new URL(url).pathname.slice(3),method:options.method,version:options.headers['Stripe-Version'],body:new URLSearchParams(options.body)});return p.fetch(url,options);};
+ const options={now:now(),origin:e.V3_PUBLIC_ORIGIN,fetcher};
+ const body={plan_id:'pro_monthly',currency:'GBP',branding_settings:{display_name:'untrusted',logo:'https://foreign.example/logo.png'},on_behalf_of:'acct_foreign'};
+ const first=await liveCheckout(db,e,c,body,options);assert.equal((await liveCheckout(db,e,c,body,options)).checkout_url,first.checkout_url);
+ const creates=calls.filter(r=>r.path==='/checkout/sessions'&&r.method==='POST');assert.equal(creates.length,1);
+ const params=creates[0].body;assert.equal(creates[0].version,'2025-09-30.clover');assert.equal(params.get('branding_settings[display_name]'),'FindPitches');assert.equal(params.get('branding_settings[background_color]'),'#F3F5F0');assert.equal(params.get('branding_settings[button_color]'),'#0E4B2C');
+ for(const name of ['logo','icon']){
+  assert.equal(params.get('branding_settings['+name+'][type]'),'url');assert.equal(params.get('branding_settings['+name+'][url]'),'https://findpitches.com/assets/brand/findpitches-'+name+'.png');
+  const png=fs.readFileSync(new URL('../../web/findpitches-v3-web/public/assets/brand/findpitches-'+name+'.png',import.meta.url));assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a');assert.ok(png.length<512000);assert.ok(png.readUInt32BE(16)>=128&&png.readUInt32BE(20)>=128);
+ }
+ assert.equal(params.get('on_behalf_of'),null);assert.equal(params.get('customer'),'cus_owned');assert.equal(params.get('client_reference_id'),c.id);assert.equal(params.get('line_items[0][price]'),'price_GBP');assert.equal(params.get('subscription_data[trial_period_days]'),'7');assert.ok(!params.toString().includes('foreign.example'));
+ await liveStripeClient(e,fetcher)('/checkout/sessions/cs_live_owned');await livePortal(db,e,c,{origin:e.V3_PUBLIC_ORIGIN,fetcher});
+ assert.ok(calls.filter(r=>r!==creates[0]).every(r=>r.version==='2024-06-20'));assert.ok(!calls.some(r=>r.path.startsWith('/accounts')));
+ const portal=calls.find(r=>r.path==='/billing_portal/sessions');assert.equal(portal.body.get('configuration'),'bpc_fixture');assert.equal(portal.body.get('return_url'),'https://findpitches.com/account.html');assert.ok(![...portal.body.keys()].some(k=>k.startsWith('branding_settings')));
+ assert.throws(()=>checkoutBranding('https://foreign.example'),/owned_checkout_brand_origin_required/);
 });

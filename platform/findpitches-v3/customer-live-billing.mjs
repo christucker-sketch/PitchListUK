@@ -1,4 +1,5 @@
 import {customerLanguage,customerReturnPath} from './customer-localisation.mjs';
+import {CHECKOUT_API_VERSION,checkoutBranding} from './customer-branding.mjs';
 // D-014/D-016: isolated new-customer LIVE billing. Preview billing stays TEST-only.
 import {hash} from './contract.mjs';
 import {stmt,customerError,hmac,same,readText,noteCustomerEvent} from './customer-security.mjs';
@@ -32,7 +33,11 @@ export function liveStripeClient(env,fetcher=fetch) {
   return async(path,{method='GET',params={},idempotencyKey}={})=>{
     if(!/^\/(prices|products|customers|subscriptions|checkout\/sessions|billing_portal\/sessions)(\/|$)/.test(path)&&!(method==='GET'&&/^\/billing_portal\/configurations\/bpc_[A-Za-z0-9]+$/.test(path)))throw customerError('forbidden',403);
     const form=new URLSearchParams();for(const [k,v] of Object.entries(params))if(v!==undefined&&v!==null)form.set(k,String(v));
-    const r=await fetcher('https://api.stripe.com/v1'+path+(method==='GET'&&form.size?'?'+form:''),{method,headers:{Authorization:'Bearer '+env.STRIPE_SECRET_KEY,'Stripe-Version':'2024-06-20',...(method!=='GET'?{'Content-Type':'application/x-www-form-urlencoded'}:{}),...(idempotencyKey?{'Idempotency-Key':idempotencyKey}:{})},...(method==='GET'?{}:{body:form.toString()}),signal:AbortSignal.timeout(20000)});
+    // Only Checkout creation needs the version supporting per-session branding.
+    // Canonical subscription reads and webhook interpretation retain the pinned
+    // 2024 contract, including current_period_end and existing entitlement rules.
+    const apiVersion=method==='POST'&&path==='/checkout/sessions'?CHECKOUT_API_VERSION:'2024-06-20';
+    const r=await fetcher('https://api.stripe.com/v1'+path+(method==='GET'&&form.size?'?'+form:''),{method,headers:{Authorization:'Bearer '+env.STRIPE_SECRET_KEY,'Stripe-Version':apiVersion,...(method!=='GET'?{'Content-Type':'application/x-www-form-urlencoded'}:{}),...(idempotencyKey?{'Idempotency-Key':idempotencyKey}:{})},...(method==='GET'?{}:{body:form.toString()}),signal:AbortSignal.timeout(20000)});
     const value=await r.json();if(!r.ok){
       const e=customerError('service_unavailable',503);
       // Provider messages and request URLs can contain customer data or key
@@ -144,7 +149,7 @@ export async function liveCheckout(db,env,customer,body,{now,origin,fetcher=fetc
   if(attempt.currency!==p.currency||attempt.price_id!==p.id)throw customerError('checkout_currency_locked',409);
   if(attempt.completed_at)throw customerError('subscription_exists',409);
   if(attempt.checkout_url)return {checkout_url:attempt.checkout_url};
-  const r=await stripe('/checkout/sessions',{method:'POST',idempotencyKey:reservation.attempt_id,params:{mode:'subscription',customer:link.stripe_id,client_reference_id:customer.id,'line_items[0][price]':p.id,'line_items[0][quantity]':1,'subscription_data[metadata][findpitches_v3_customer_id]':customer.id,'subscription_data[metadata][findpitches_v3_runtime]':'production_public',...(subs.length?{}:{'subscription_data[trial_period_days]':7}),expires_at:Math.floor(Date.parse(reservation.expires_at)/1000),locale,success_url:origin+customerReturnPath('/account.html?checkout=success&session_id={CHECKOUT_SESSION_ID}',locale),cancel_url:origin+customerReturnPath('/pricing.html?checkout=cancelled',locale)}});
+  const r=await stripe('/checkout/sessions',{method:'POST',idempotencyKey:reservation.attempt_id,params:{...checkoutBranding(origin),mode:'subscription',customer:link.stripe_id,client_reference_id:customer.id,'line_items[0][price]':p.id,'line_items[0][quantity]':1,'subscription_data[metadata][findpitches_v3_customer_id]':customer.id,'subscription_data[metadata][findpitches_v3_runtime]':'production_public',...(subs.length?{}:{'subscription_data[trial_period_days]':7}),expires_at:Math.floor(Date.parse(reservation.expires_at)/1000),locale,success_url:origin+customerReturnPath('/account.html?checkout=success&session_id={CHECKOUT_SESSION_ID}',locale),cancel_url:origin+customerReturnPath('/pricing.html?checkout=cancelled',locale)}});
   if(!/^cs_live_[A-Za-z0-9]+$/.test(r.id??'')||r.customer!==link.stripe_id||r.client_reference_id!==customer.id||r.mode!=='subscription'||!r.url?.startsWith('https://checkout.stripe.com/'))throw customerError('forbidden',403);
   await stmt(db,'UPDATE checkout_attempts SET stripe_session_id=?,checkout_url=? WHERE id=?',r.id,r.url,attempt.id).run();await noteCustomerEvent(db,'checkout','live_created',now);return {checkout_url:r.url};
 }
