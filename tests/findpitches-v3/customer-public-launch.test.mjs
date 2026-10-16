@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {launchSettings,assertLaunchEvidence,assertOwnedRoutes} from '../../operations/findpitches-v3/launch-customer-public.mjs';
+import {launchSettings,assertLaunchEvidence,assertOwnedRoutes,assertLiveCapabilityEvidence} from '../../operations/findpitches-v3/launch-customer-public.mjs';
 test('public launch stages retain every credential/source binding and cannot enable Checkout while opening browsing',()=>{
  const b={bindings:['V3_PUBLIC_ENABLED','V3_ACCOUNT_RECOVERY_ENABLED','V3_CHECKOUT_ENABLED'].map(name=>({name,type:'plain_text',text:'false'})).concat([{name:'V3_EMAIL_API_KEY',type:'secret_text'},{name:'STRIPE_SECRET_KEY',type:'secret_text'},{name:'V3_CUSTOMER_DB',type:'d1',id:'live-db'}])};
  const browse=launchSettings(b,'browse');assert.equal(browse.changes.V3_CHECKOUT_ENABLED,'disabled');assert.equal(browse.changes.V3_PUBLIC_ENABLED,'true');assert.equal(browse.changes.V3_ACCOUNT_RECOVERY_ENABLED,'true');assert.deepEqual(launchSettings(b,'checkout').changes,{V3_CHECKOUT_ENABLED:'live'});
@@ -12,4 +12,10 @@ test('launch refuses stale, incomplete, mutated or spending/backlogged checkpoin
 test('routing rejects PitchList/foreign paths, different scripts and duplicate exact routes',()=>{
  const own={pattern:'findpitches.com/*',script:'findpitches-v3-customer-production'};assertOwnedRoutes([]);assertOwnedRoutes([own,{...own,pattern:'www.findpitches.com/*'}]);
  for(const bad of [[{...own,pattern:'pitchlist.uk/*'}],[{...own,script:'pitchlistuk'}],[own,own],[{...own,pattern:'*.findpitches.com/*'}]])assert.throws(()=>assertOwnedRoutes(bad),/unexpected_findpitches_route/);
+});
+test('Checkout launch requires native read/write capability evidence, not only valid catalogue prices',()=>{
+ const good={mode:'live',settings_validated:true,permissions_observed:true,customer_objects_created:0,checkout_sessions_created:0,subscriptions_created:0,checks:['customers_read','customers_write','subscriptions_read','checkout_write','portal_write'].map(capability=>({capability,permitted:true,code:'resource_missing',status:404}))};
+ assertLiveCapabilityEvidence(good);
+ for(const alter of [r=>r.permissions_observed=false,r=>r.checks.pop(),r=>r.checks[0].code='more_permissions_required',r=>r.checks[1].permitted=false,r=>r.checks[1]=r.checks[0],r=>r.customer_objects_created=1,r=>r.mode='test',r=>r.settings_validated=false]){const bad=structuredClone(good);alter(bad);assert.throws(()=>assertLiveCapabilityEvidence(bad),/native_live_billing_permissions_required/);}
+ assert.throws(()=>assertLiveCapabilityEvidence({settings_validated:true}),/native_live_billing_permissions_required/);
 });

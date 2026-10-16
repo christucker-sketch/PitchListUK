@@ -33,10 +33,22 @@ export function liveStripeClient(env,fetcher=fetch) {
     if(!/^\/(prices|products|customers|subscriptions|checkout\/sessions|billing_portal\/sessions)(\/|$)/.test(path)&&!(method==='GET'&&/^\/billing_portal\/configurations\/bpc_[A-Za-z0-9]+$/.test(path)))throw customerError('forbidden',403);
     const form=new URLSearchParams();for(const [k,v] of Object.entries(params))if(v!==undefined&&v!==null)form.set(k,String(v));
     const r=await fetcher('https://api.stripe.com/v1'+path+(method==='GET'&&form.size?'?'+form:''),{method,headers:{Authorization:'Bearer '+env.STRIPE_SECRET_KEY,'Stripe-Version':'2024-06-20',...(method!=='GET'?{'Content-Type':'application/x-www-form-urlencoded'}:{}),...(idempotencyKey?{'Idempotency-Key':idempotencyKey}:{})},...(method==='GET'?{}:{body:form.toString()}),signal:AbortSignal.timeout(20000)});
-    const value=await r.json();if(!r.ok)throw customerError('service_unavailable',503);
+    const value=await r.json();if(!r.ok){
+      const e=customerError('service_unavailable',503);
+      // Provider messages and request URLs can contain customer data or key
+      // fragments. Retain only a fixed operation, known code and request ID.
+      const family=path.startsWith('/checkout/sessions')?'checkout':path.startsWith('/billing_portal/')?'portal':path.split('/')[1];
+      const codes=['more_permissions_required','permission_denied','resource_missing','parameter_missing','parameter_unknown','idempotency_key_in_use','rate_limit','api_key_expired'];
+      e.stripeDiagnostic={operation:family+'_'+method.toLowerCase(),status:r.status,code:codes.includes(value.error?.code)?value.error.code:'provider_error',request_id:/^req_[A-Za-z0-9]{1,80}$/.test(r.headers.get('request-id')??'')?r.headers.get('request-id'):null};
+      throw e;
+    }
     if(value.object==='list'?(!Array.isArray(value.data)||value.data.some(o=>o.livemode!==true)):value.livemode!==true)throw customerError('forbidden',403);
     return value;
   };
+}
+export async function recordLiveStripeFailure(db,e,now) {
+  const d=e.stripeDiagnostic;if(!d)return;
+  await noteCustomerEvent(db,'stripe_live_error',[d.operation,d.status,d.code,d.request_id??'none'].join(':'),now);
 }
 function returnOrigin(origin,env) {if(origin!==env.V3_PUBLIC_ORIGIN||origin!=='https://findpitches.com')throw customerError('forbidden',403);return origin;}
 async function productProof(stripe,env) {
@@ -53,6 +65,26 @@ export async function verifyLiveBillingSettings(env,{fetcher=fetch}={}) {
   const portal=await stripe('/billing_portal/configurations/'+env.STRIPE_PORTAL_CONFIGURATION_ID);
   if(portal.id!==env.STRIPE_PORTAL_CONFIGURATION_ID||!portal.active||portal.is_default||!portal.features?.subscription_cancel?.enabled||portal.features.subscription_cancel.mode!=='at_period_end'||portal.features?.customer_update?.enabled||portal.features?.subscription_update?.enabled||!portal.features?.payment_method_update?.enabled||!portal.features?.invoice_history?.enabled)throw customerError('billing_review_required',409);
   return {provider:'stripe',mode:'live',credential_validated:true,product_id:env.V3_LIVE_PRODUCT_ID,prices:policy.map(({id,currency,amount})=>({id,currency,amount,interval:'month'})),portal_id:portal.id,portal_cancel_at_period_end:true,webhook_secret_configured:true,entitlement:'global',trial_days:7,checkout_enabled:env.V3_CHECKOUT_ENABLED==='live',customer_objects_created:0};
+}
+// Operator-only permission checks against deliberately nonexistent resources.
+// Empty updates cannot create customers/Checkout; the Portal probe names a
+// nonexistent customer. A missing-resource error proves only that the request
+// passed permissions, not that a genuine hosted trial journey has succeeded.
+export async function verifyLiveBillingCapabilities(env,{fetcher=fetch}={}) {
+  await verifyLiveBillingSettings(env,{fetcher});
+  const stripe=liveStripeClient(env,fetcher),customer='cus_FindPitchesV3CapabilityCheckNoSuchCustomer';
+  const probes=[
+    ['customers_read','/customers/'+customer,{}],
+    ['customers_write','/customers/'+customer,{method:'POST'}],
+    ['subscriptions_read','/subscriptions',{params:{customer,limit:1}}],
+    ['checkout_write','/checkout/sessions/cs_live_FindPitchesV3CapabilityCheckNoSuchSession',{method:'POST'}],
+    ['portal_write','/billing_portal/sessions',{method:'POST',params:{customer,configuration:env.STRIPE_PORTAL_CONFIGURATION_ID}}]
+  ],checks=[];
+  for(const [capability,path,options] of probes){
+    try{await stripe(path,options);throw customerError('billing_review_required',409);}
+    catch(e){if(!e.stripeDiagnostic)throw e;checks.push({capability,permitted:e.stripeDiagnostic.code==='resource_missing'&&[400,404].includes(e.stripeDiagnostic.status),...e.stripeDiagnostic});}
+  }
+  return {provider:'stripe',mode:'live',settings_validated:true,permissions_observed:checks.every(c=>c.permitted),checks,customer_objects_created:0,checkout_sessions_created:0,subscriptions_created:0,owned_trial_journey_proven:false};
 }
 async function nativeOwner(db,stripe,customer) {
   const link=await stmt(db,'SELECT * FROM stripe_customers WHERE customer_id=?',customer.id).first();
@@ -85,7 +117,7 @@ export async function syncLiveSubscriptions(db,env,customer,{now,fetcher=fetch}=
 export async function liveCustomerAccess(db,env,customer,{now,refresh=false,fetcher=fetch}={}) {
   if(!customer)return {tier:'free',status:'none',scope:'global',has_billing_account:false};
   let subs=(await stmt(db,'SELECT * FROM stripe_subscriptions WHERE customer_id=?',customer.id).all()).results,unverified=false;
-  if(refresh&&(subs.length===0||subs.some(s=>Date.parse(s.checked_at)<=Date.parse(now)-60000))){try{subs=await syncLiveSubscriptions(db,env,customer,{now,fetcher});}catch{unverified=true;await noteCustomerEvent(db,'stripe_live_sync','failed',now);}}
+  if(refresh&&(subs.length===0||subs.some(s=>Date.parse(s.checked_at)<=Date.parse(now)-60000))){try{subs=await syncLiveSubscriptions(db,env,customer,{now,fetcher});}catch(e){unverified=true;await recordLiveStripeFailure(db,e,now);await noteCustomerEvent(db,'stripe_live_sync','failed',now);}}
   const link=await stmt(db,'SELECT * FROM stripe_customers WHERE customer_id=?',customer.id).first(),pending=subs.some(blocking);
   let policy=[];try{policy=livePricePolicy(env);}catch{if(subs.length)unverified=true;}
   const access=unverified?{tier:'free',status:'unverified',scope:'global'}:liveEntitlement(subs,{now,policy});

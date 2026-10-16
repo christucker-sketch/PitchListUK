@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {openLocalD1} from '../../operations/findpitches-v3/local-d1.mjs';
 import {stmt,hmac} from '../../platform/findpitches-v3/customer-security.mjs';
 import {issueChallenge,consumeChallenge} from '../../platform/findpitches-v3/customer-auth.mjs';
-import {livePricePolicy,livePlans,liveEntitlement,liveStripeClient,validateLivePrice,syncLiveSubscriptions,liveCustomerAccess,liveCheckout,livePortal,liveConfirmCheckout,liveWebhook,verifyLiveBillingSettings} from '../../platform/findpitches-v3/customer-live-billing.mjs';
+import {livePricePolicy,livePlans,liveEntitlement,liveStripeClient,validateLivePrice,syncLiveSubscriptions,liveCustomerAccess,liveCheckout,livePortal,liveConfirmCheckout,liveWebhook,verifyLiveBillingSettings,verifyLiveBillingCapabilities} from '../../platform/findpitches-v3/customer-live-billing.mjs';
 import {mapProof,present} from '../../platform/findpitches-v3/customer-catalogue.mjs';
 import worker from '../../platform/findpitches-v3/customer-worker.mjs';
 
@@ -167,4 +167,51 @@ test('production billing preflight checks all canonical LIVE variants and Portal
  const req=new Request('https://findpitches-v3-customer-production.fixture.workers.dev/ops/billing/verify',{method:'POST'});assert.equal((await worker.fetch(req,e)).status,403);
  unsafePortal=false;t.mock.method(globalThis,'fetch',fetcher);const allowed=new Request(req.url,{method:'POST',headers:{Authorization:'Bearer '+e.V3_PRODUCTION_OPERATOR_TOKEN}});assert.equal((await worker.fetch(allowed,e)).status,200);
  assert.equal((await worker.fetch(allowed,{...e,V3_CUSTOMER_MODE:'restricted_shadow_preview'})).status,401);
+});
+test('real-link shaped GET consumes once, sets a secure session and returns an authenticated pricing continuation without starting billing',async t=>{
+ const db=setup(t),e=env(db),token=await issueChallenge(db,{email:'journey-fixture@example.org',next:'/pricing.html?from=trial',now:now()});
+ const r=await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/api/v3/session/verify?token='+token),e);
+ assert.equal(r.status,303);assert.equal(r.headers.get('location'),'/pricing.html?from=trial');
+ const cookie=r.headers.get('set-cookie');assert.match(cookie,/^__Host-fp_v3_session=[a-f0-9]{64}; Path=\/; Secure; SameSite=Lax; Max-Age=604800; HttpOnly$/);
+ const session=await (await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/api/v3/session',{headers:{Cookie:cookie.split(';')[0]}}),e)).json();
+ assert.equal(session.signed_in,true);assert.equal(session.access.tier,'free');assert.equal(session.access.checkout_allowed,true);
+ assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS n FROM stripe_customers').get().n,0);assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS n FROM checkout_attempts').get().n,0);
+ const replay=await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/api/v3/session/verify?token='+token),e);assert.match(replay.headers.get('location'),/signin=expired/);assert.equal(replay.headers.get('set-cookie'),null);
+});
+test('missing Stripe Customer permission fails before reservation, records safe provider diagnostics and never exposes provider text',async t=>{
+ const db=setup(t),e=env(db),login=await consumeChallenge(db,await issueChallenge(db,{email:'permission-fixture@example.org',now:now()}),now()),p=provider(e,login.customer);
+ const providerFetch=p.fetch,keys=[];
+ t.mock.method(globalThis,'fetch',async(url,options)=>{
+  if(new URL(url).pathname==='/v1/customers'&&options.method==='POST'){keys.push(options.headers['Idempotency-Key']);return Response.json({error:{code:'more_permissions_required',message:'unsafe provider text '+e.STRIPE_SECRET_KEY+' '+login.customer.email}},{status:403,headers:{'Request-Id':'req_permissionfixture'}});}
+  return providerFetch(url,options);
+ });
+ const session=await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/api/v3/session',{headers:{Cookie:login.cookie.split(';')[0]}}),e),csrf=session.headers.get('set-cookie').split(';')[0],csrfValue=csrf.slice('fp_csrf='.length);
+ for(let i=0;i<2;i++){
+  const r=await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/api/v3/billing/checkout',{method:'POST',headers:{Origin:e.V3_PUBLIC_ORIGIN,Cookie:login.cookie.split(';')[0]+'; '+csrf,'x-csrf-token':csrfValue,'Content-Type':'application/json'},body:JSON.stringify({plan_id:'pro_monthly',currency:'GBP'})}),e);
+  assert.equal(r.status,503);assert.deepEqual(await r.json(),{ok:false,error:'service_unavailable',message:'This service is temporarily unavailable.'});
+ }
+ assert.equal(new Set(keys).size,1);assert.equal(keys.length,2);
+ for(const table of ['stripe_customers','checkout_attempts','checkout_reservations'])assert.equal(db.sqlite.prepare('SELECT COUNT(*) AS n FROM '+table).get().n,0);
+ const events=db.sqlite.prepare("SELECT outcome FROM customer_operation_events WHERE kind='stripe_live_error'").all();assert.deepEqual(events.map(v=>v.outcome),Array(2).fill('customers_post:403:more_permissions_required:req_permissionfixture'));
+ assert.ok(!JSON.stringify(events).includes(login.customer.email));assert.ok(!JSON.stringify(events).includes(e.STRIPE_SECRET_KEY));
+});
+test('native capability checks expose missing Customer read/write despite valid products, without creating provider objects',async t=>{
+ const db=setup(t),e=env(db),c=await native(db),p=provider(e,c),calls=[];let denied=true;
+ const fetcher=async(url,options)=>{
+  const u=new URL(url),path=u.pathname.slice(3);calls.push({path,method:options.method,body:new URLSearchParams(options.body)});
+  if(path.startsWith('/products/')||path.startsWith('/prices/')){
+   const price=livePricePolicy(e).find(v=>path==='/prices/'+v.id);
+   return Response.json(price?{...p.price,id:price.id,currency:price.currency.toLowerCase(),unit_amount:price.amount}:p.product);
+  }
+  if(path.startsWith('/billing_portal/configurations/'))return Response.json({id:e.STRIPE_PORTAL_CONFIGURATION_ID,active:true,livemode:true,is_default:false,features:{subscription_cancel:{enabled:true,mode:'at_period_end'},subscription_update:{enabled:false},customer_update:{enabled:false},payment_method_update:{enabled:true},invoice_history:{enabled:true}}});
+  assert.ok(path.includes('NoSuch')||u.searchParams.get('customer')?.includes('NoSuch')||new URLSearchParams(options.body).get('customer')?.includes('NoSuch'));
+  const forbidden=denied&&path.startsWith('/customers/');return Response.json({error:{code:forbidden?'more_permissions_required':'resource_missing',message:'never disclose this'}},{status:forbidden?403:404,headers:{'Request-Id':'req_capabilityfixture'}});
+ };
+ let r=await verifyLiveBillingCapabilities(e,{fetcher});assert.equal(r.settings_validated,true);assert.equal(r.permissions_observed,false);assert.deepEqual(r.checks.filter(c=>!c.permitted).map(c=>c.capability),['customers_read','customers_write']);assert.equal(r.customer_objects_created,0);assert.equal(r.checkout_sessions_created,0);assert.equal(r.owned_trial_journey_proven,false);
+ assert.ok(calls.filter(c=>c.method==='POST'&&c.path.startsWith('/customers/')).every(c=>c.body.size===0));assert.ok(!calls.some(c=>c.path==='/customers'||c.path==='/checkout/sessions'));
+ denied=false;r=await verifyLiveBillingCapabilities(e,{fetcher});assert.equal(r.permissions_observed,true);assert.equal(r.owned_trial_journey_proven,false);
+ t.mock.method(globalThis,'fetch',fetcher);
+ assert.equal((await worker.fetch(new Request(e.V3_PUBLIC_ORIGIN+'/ops/billing/capabilities',{method:'POST'}),e)).status,403);
+ const request=()=>new Request(e.V3_PUBLIC_ORIGIN+'/ops/billing/capabilities',{method:'POST',headers:{Authorization:'Bearer '+e.V3_PRODUCTION_OPERATOR_TOKEN}});
+ denied=true;assert.equal((await worker.fetch(request(),e)).status,503);denied=false;assert.equal((await worker.fetch(request(),e)).status,200);
 });

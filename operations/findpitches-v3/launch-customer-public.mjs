@@ -16,6 +16,10 @@ export function assertLaunchEvidence(report,now=Date.now()){
  for(const t of [report.preservation.as_of,report.native_validation.as_of,report.source_health.as_of])if(!Number.isFinite(Date.parse(t))||Date.parse(t)>now||now-Date.parse(t)>1800000)throw Error('fresh_baseline_required');
 }
 export function assertOwnedRoutes(routes){if(routes.some(r=>!PATTERNS.includes(r.pattern)||r.script!==NAME)||new Set(routes.map(r=>r.pattern)).size!==routes.length)throw Error('unexpected_findpitches_route');}
+export function assertLiveCapabilityEvidence(report){
+ const expected=['customers_read','customers_write','subscriptions_read','checkout_write','portal_write'];
+ if(report?.mode!=='live'||report.settings_validated!==true||report.permissions_observed!==true||report.customer_objects_created!==0||report.checkout_sessions_created!==0||report.subscriptions_created!==0||!Array.isArray(report.checks)||report.checks.length!==expected.length||expected.some(n=>report.checks.filter(c=>c.capability===n&&c.permitted===true&&c.code==='resource_missing'&&[400,404].includes(c.status)).length!==1))throw Error('native_live_billing_permissions_required');
+}
 export async function launchCustomerPublic({credentialsFile,productionDirectory,checkpointFile,stage,fetcher=proxyFetch()}){
  const credentials=readCredentials(credentialsFile),api=cloudflareClient(credentials,{fetcher}),read=n=>JSON.parse(fs.readFileSync(path.join(productionDirectory,n))),state=read('resources.json'),secrets=read('secrets-private.json'),plan=read('routing-plan.json'),evidence=JSON.parse(fs.readFileSync(checkpointFile));assertLaunchEvidence(evidence);
  if(state.account_id!==api.account||state.worker!==NAME||state.database_name!==NAME||plan.zone_id!==ZONE||plan.zone_name!=='findpitches.com'||plan.prior_routes.length||plan.applied||!/^https:\/\/findpitches-v3-customer-production\.[a-z0-9-]+\.workers\.dev$/.test(state.url))throw Error('owned_unmodified_routing_plan_required');
@@ -30,6 +34,7 @@ export async function launchCustomerPublic({credentialsFile,productionDirectory,
  const script='/workers/scripts/'+NAME, before=await api.accountRequest(script+'/settings');if(before.bindings.find(b=>b.name==='V3_CUSTOMER_DB')?.id!==state.database_id||before.bindings.find(b=>b.name==='V3_READY_API')?.service!=='findpitches-v3-api-shadow')throw Error('owned_native_bindings_required');
  let routes=await api.request('/zones/'+ZONE+'/workers/routes');assertOwnedRoutes(routes);
  if(stage==='checkout'){
+  assertLiveCapabilityEvidence(await ops('/ops/billing/capabilities','POST'));
   const smoke=read('public-smoke.json');if(!smoke.passed||Date.now()-Date.parse(smoke.as_of)>900000||!Number.isFinite(Date.parse(smoke.as_of))||Date.parse(smoke.as_of)>Date.now()||routes.length!==2||!native.public_enabled)throw Error('fresh_real_origin_smoke_required');
  }else if(stage!=='browse')throw Error('explicit_launch_stage_required');
  const {changes,settings}=launchSettings(before,stage),journal={requested_at:new Date().toISOString(),stage,native,mail,billing,before_settings:before,prior_routes:routes,changes,routes_written:[],completed:false},file=path.join(productionDirectory,'launch-'+stage+'-private.json'),save=()=>fs.writeFileSync(file,JSON.stringify(journal,null,2)+'\n',{mode:0o600});save();

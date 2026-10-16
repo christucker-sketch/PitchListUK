@@ -21,7 +21,8 @@
     const current = s.signed_in ? a.tier : null;
     const flash = $('#note').dataset.flash ? uiHTML`<div class="notice info" style="max-width:900px;margin-bottom:18px" role="status">${esc($('#note').dataset.flash)}</div>` : '';
     $('#note').innerHTML = flash + (!globalPro&&m.launch_status!=='live' ? uiHTML`<div class="notice warn" style="max-width:900px;margin-bottom:18px">FindPitches isn’t open in ${esc(m.name)} yet, so there’s nothing to buy. <a href="${R.draft.finder(pc)}">Get notified when it opens</a>.</div>`
-      : current==='trial' ? uiHTML`<div class="notice info" style="max-width:900px;margin-bottom:18px" role="status">You’re on the Pro free trial: ${Math.max(0,days(a.trial_ends))} days left. <a href="account.html">Manage your plan</a></div>` : '');
+      : current==='trial' ? uiHTML`<div class="notice info" style="max-width:900px;margin-bottom:18px" role="status">You’re on the Pro free trial: ${Math.max(0,days(a.trial_ends))} days left. <a href="account.html">Manage your plan</a></div>`
+      : s.signed_in ? uiHTML`<div class="notice info" style="max-width:900px;margin-bottom:18px" role="status">${translateUI('Signed in as')} <b>${esc(s.user.email)}</b></div>` : '');
     $('#plans').innerHTML=plans.map(p=>{
       const isPro=p.id!=='free', unpriced=p.price==null, live=globalPro||m.launch_status==='live';
       const btn = isPro

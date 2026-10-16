@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## P0 diagnosed / configuration action pending — 2026-10-16T13:47:17+01:00
+
+[Incident evidence and action](../../docs/findpitches-v3-live-signup-incident-2026-10-16.md): real link/session succeeds, Checkout fails before provider customer/reservation. Retained production key lacks Stripe **Customers Read/Write** (`more_permissions_required`); canonical product/three-price/Portal reads pass. Only new Checkout closed13:42London; browsing/sign-in/recovery remain available. Hal/Chris must change existing restricted LIVE key Customers toWrite; no new key/product/account. Native capability checks/safe telemetry/authenticated pricing notice and launch permission gate implemented; full472/finalfocused24/frontend3/independence93/build56/boundaries pass; public closed29 before release. Guarded release/native credential proof in progress, not claimed complete. V3-010 still open; V3-029 paused; no provider objects/messages/charges/source/Pi/V2 changes.
+
 ## P0 LIVE signup incident claimed — 2026-10-16T13:37:00+01:00
 
 Read [LIVE_SIGNUP_INCIDENT_2026-10-16](../LIVE_SIGNUP_INCIDENT_2026-10-16.md). V3-010 incident takes precedence; V3-029 profiling paused. Investigate actual production auth/session, Checkout reservation and LIVE Stripe/configuration read-only first; preserve customer identity/idempotency/CSRF/provider guards and PitchList isolation. Initial performance browser attempt stopped at this environment’s untrusted proxy CA; no certificate bypass or runtime change.

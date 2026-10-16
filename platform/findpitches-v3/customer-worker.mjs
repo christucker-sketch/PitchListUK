@@ -3,7 +3,7 @@ import {hash} from './contract.mjs';
 import {stmt,cookie,cookies,operator,csrfValue,requireCsrf,customerError,readBody,rateLimit,noteCustomerEvent,same} from './customer-security.mjs';
 import {previewAllowed,grantPreview,signedCustomer,needCustomer,issueChallenge,consumeChallenge,requestLogin,logout,updateProfile} from './customer-auth.mjs';
 import * as previewBilling from './customer-billing.mjs';
-import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook,verifyLiveBillingSettings} from './customer-live-billing.mjs';
+import {liveCustomerAccess,livePlans,liveCheckout,liveConfirmCheckout,livePortal,liveWebhook,verifyLiveBillingSettings,verifyLiveBillingCapabilities,recordLiveStripeFailure} from './customer-live-billing.mjs';
 import {reviewSubscriberAssociation} from './customer-recognition.mjs';
 import {readCatalogue,present,search,marketOf,markets,regions,allRegions,resolveLocation,inventory,ancestors,recordInventoryChanges,homepage,upcoming} from './customer-catalogue.mjs';
 import {seo,seoConfig,routes} from '../../web/findpitches-v3-web/server/seo-edge.mjs';
@@ -165,6 +165,7 @@ export default {
         if(p==='/ops/preflight'&&request.method==='GET'){const snapshot=await readCatalogue(env,now),counts=await stmt(db,`SELECT (SELECT COUNT(*) FROM customers) AS customers,(SELECT COUNT(*) FROM stripe_webhook_receipts WHERE processed_at IS NULL) AS pending_webhooks`).first();return response({mode:env.V3_CUSTOMER_MODE,public_enabled:env.V3_PUBLIC_ENABLED==='true',billing_mode:env.V3_STRIPE_MODE,checkout_enabled:env.V3_CHECKOUT_ENABLED==='live',ready:snapshot.rows.length,ready_by_country:Object.fromEntries(markets(snapshot.rows).map(m=>[m.code,m.opportunity_count])),email_configured:!!env.V3_EMAIL_API_KEY&&!mailCredentialIsProxyReference(env.V3_EMAIL_API_KEY),counts});}
         if(p==='/ops/email/verify'&&request.method==='POST')return response(await verifyNativeMailSettings(env));
         if(p==='/ops/billing/verify'&&request.method==='POST')return response(await verifyLiveBillingSettings(env));
+        if(p==='/ops/billing/capabilities'&&request.method==='POST'){const result=await verifyLiveBillingCapabilities(env);return response({ok:result.permissions_observed,...result},result.permissions_observed?200:503);}
         throw customerError('not_found',404);
       }
       if(production(env)){
@@ -208,7 +209,7 @@ export default {
       if(p.startsWith('/api/v3/'))return await api(request,env,now);
       if(request.method!=='GET'&&request.method!=='HEAD')throw customerError('not_found',404);
       return await html(request,env,now);
-    }catch(e){try{await noteCustomerEvent(db,'request',e.code??'internal_error',now);}catch{}return error(e);}
+    }catch(e){try{await recordLiveStripeFailure(db,e,now);await noteCustomerEvent(db,'request',e.code??'internal_error',now);}catch{}return error(e);}
   },
   async scheduled(_event,env,ctx) {if(env.V3_CUSTOMER_MODE==='restricted_shadow_preview'||production(env)&&env.V3_PUBLIC_ENABLED==='true')ctx.waitUntil(readCatalogue(env,new Date().toISOString()).then(s=>recordInventoryChanges(env.V3_CUSTOMER_DB,s.rows,new Date().toISOString())).catch(()=>noteCustomerEvent(env.V3_CUSTOMER_DB,'inventory_sync','failed')));}
 };
