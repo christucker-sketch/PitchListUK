@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-16T13:55:22+01:00 — P0 signup diagnosed, guarded runtime deployed, external permission action pending** (Europe/London).
-State: **V3-010 BLOCKED on existing Stripe Customers Write permission and genuine owned LIVE acceptance; new Checkout closed, public/sign-in/recovery on. V3-029 performance paused. Source continuation checkpoints remain delivered.**
+Author: Codex. Updated: **2026-10-16T15:06:58+01:00 — native Stripe correction verified; guarded Checkout restoration passed; owned acceptance pending** (Europe/London).
+State: **V3-010 runtime permission blocker cleared, CheckoutLIVE/public/sign-in/recoveryon; genuine owned trial/globalPro/Portal acceptance pending. V3-029 performance paused. Source continuation checkpoints remain delivered.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,12 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Native permission correction and guarded reopening — 2026-10-16T15:06:58+01:00
+
+Read Hal's completed provider handoff`3edbdc7d`; actual deployed credential passes all5 capability checks, canonical product/three approved prices/global entitlement/7-day trial and verified mail. Existing Checkout flag restored at15:04:25 London; customer version`9b3e603b-afb8-4b26-b7d5-7c8192dae5f8`, existing code/assets unchanged. All native settings/bindings/secrets/schedules/routes/DNS/protectedPitchList preserved; no migrations/source/Pi/V2 changes. Fresh focused27/public-closed29/public-LIVE29 pass; full473 is the earlier unchanged-code baseline, not rerun. READY1,829 at15:02:05 London; core/stale0, paid0/off/manualpause, sourcepublicationoff/rows0/0. No provider objects/messages/charges/Serper/source writes by checks; no new global custody audit. [Recovery evidence](../../operations/findpitches-v3/reports/live-signup-recovery-2026-10-16.json) / [incident and retry](../../docs/findpitches-v3-live-signup-incident-2026-10-16.md).
+
+User session question requests reloadpricing→hostedStripeCheckout; if signup completes, confirmtrial/ProandPortal. **Do not mark V3-010 complete** before real owned hosted/globalPro/Portal/cancel/paid-through proof; Codex can verify canonical native receipts after Chris's action without impersonation. V3-029 remains paused.
 
 ## Hal acknowledgement read — 2026-10-16T14:36:26+01:00
 

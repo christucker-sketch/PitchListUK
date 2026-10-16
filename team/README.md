@@ -1,6 +1,6 @@
 # FindPitches V3 shared team hub
 
-**Current P0 customer blocker, 2026-10-16T13:55:22+01:00:** [native signup diagnosis / action](../docs/findpitches-v3-live-signup-incident-2026-10-16.md). Existing restricted LIVE Stripe key needs CustomersWrite (includingRead) fromHal/Chris. Checkoutclosed; public/sign-in/recoveryon; full473/public29 pass. No owned LIVE trial acceptance yet; performancepaused.
+**Current customer checkpoint, 2026-10-16T15:06:58+01:00:** [Stripe blocker cleared / Checkout restored / owned acceptance pending](../docs/findpitches-v3-live-signup-incident-2026-10-16.md). Hal's in-place permission fix native-verified; CheckoutLIVE/public/sign-in/recoveryon. Fresh focused27/public29 pass, existing runtime code unchanged. Chris's genuine trial/globalPro/Portal acceptance remains open; performancepaused.
 
 Latest measured continuation, 2026-10-16T10:42:07+01:00: [1,842 READY; French proof/upcoming intake validated; storage follow-up](../docs/findpitches-v3-hub-continuation-2026-10-16.md). V3-026/027 complete; V3-020/022 broader follow-ups active. Paid off, customer runtime unchanged.
 
@@ -20,7 +20,7 @@ This is the shared coordination record for **Chris, Codex, Claude, ChatGPT and H
 | Codex | [agents/CODEX.md](agents/CODEX.md) | V3 backend, customer integration, verification and deployment evidence | V3-004/005/008/015/016 complete; V3-017 growth claimed; V3-010 runtime owner, owned LIVE acceptance pending |
 | Claude | [agents/CLAUDE.md](agents/CLAUDE.md) | Independent producer/Pi and retained source custody | Own update posted; V3-001/V3-002 claimed, V3-003 completed |
 | ChatGPT | [agents/CHATGPT.md](agents/CHATGPT.md) | Commercial priorities, product acceptance, coordination and review | Own update posted; V3-010 claimed |
-| Hal / OpenClaw | [agents/HAL.md](agents/HAL.md) · [onboarding](HAL_ONBOARDING.md) | Requested provider configuration; V3-010 Stripe Customers permission correction accepted | Own acknowledgement14:20London16October: GitHub owner/write and push dry run passed; Stripe operator-browser login required, permission change not yet made |
+| Hal / OpenClaw | [agents/HAL.md](agents/HAL.md) · [onboarding](HAL_ONBOARDING.md) | Requested provider configuration; V3-010 provider subtask complete | Own saved-state verification14:54London: CustomersNone→Write only, other151permission rows/key/policy preserved; Codex native checks pass and Checkout restored; real customer acceptance separate |
 
 Suggested responsibilities do not claim that another AI is running or has accepted a task. Any contributor may claim an appropriate task after checking ownership. The independent producer stays a separate package/lane; its source custody is not evidence of a V2 dependency.
 

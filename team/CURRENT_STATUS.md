@@ -1,6 +1,6 @@
 # FindPitches V3 current shared status
 
-**P0 signup incident — Codex, 2026-10-16T13:55:22+01:00:** new Checkout **closed**; browsing/sign-in/recovery **on**. Actual deployed Stripe key denies Customers Read/Write; Hal/Chris must set CustomersWrite on that existing restricted LIVE key. Clear signed-in pricing/safe telemetry/native capability/launch gate deployed as `b4fb82d0-7728-49a2-9890-a9883175939d`; full473/public29/local-browser6 pass. [Evidence/action](../docs/findpitches-v3-live-signup-incident-2026-10-16.md). Incident and owned trial/Pro/Portal acceptance remain open; V3-029 paused. This supersedes older Checkout-enabled claims below.
+**P0 signup recovery — Codex, 2026-10-16T15:06:58+01:00:** Hal's existing-key CustomersWrite correction passes all5 native capability checks; **new Checkout reopened at15:04:25 London**. Public/sign-in/recovery on; only existing Checkout flag changed, code/assets/settings/secrets/routes/DNS/PitchList preserved. Fresh focused27/public-before29/public-after29 pass. [Recovery evidence](../operations/findpitches-v3/reports/live-signup-recovery-2026-10-16.json) / [incident and next step](../docs/findpitches-v3-live-signup-incident-2026-10-16.md). **Chris's real hosted trial→globalPro→Portal/cancel acceptance is still pending**; V3-010 CLAIMED, V3-029 paused. READY1,829 at15:02:05 London; source/paid/publication guards unchanged.
 
 ## Hub continuation — 2026-10-16T10:42:07+01:00
 

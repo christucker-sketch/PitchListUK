@@ -1,0 +1,184 @@
+{
+  "schema": "findpitches-v3-live-signup-recovery-v1",
+  "as_of": "2026-10-16T15:06:58+01:00",
+  "state": "provider_blocker_cleared_checkout_restored_owned_acceptance_pending",
+  "authority": "Existing D-014/D-016; restoration of previously approved customer Checkout only",
+  "hal_provider_handoff": {
+    "commit": "3edbdc7d",
+    "saved_at": "2026-10-16T14:50:33+01:00",
+    "verified_at": "2026-10-16T14:54:19+01:00",
+    "permission_changed": "Customers None -> Write, including Read",
+    "permission_rows_verified": 152,
+    "other_permissions_unchanged": true,
+    "key_rotated": false
+  },
+  "native_capabilities": {
+    "as_of": "2026-10-16T13:59:45.034Z",
+    "http_status": 200,
+    "ok": true,
+    "provider": "stripe",
+    "mode": "live",
+    "settings_validated": true,
+    "permissions_observed": true,
+    "checks": [
+      {
+        "capability": "customers_read",
+        "permitted": true,
+        "operation": "customers_get",
+        "status": 200,
+        "code": "empty_list",
+        "request_id": null
+      },
+      {
+        "capability": "customers_write",
+        "permitted": true,
+        "operation": "customers_post",
+        "status": 404,
+        "code": "resource_missing",
+        "request_id": "req_6rLtiRZU5WpuUx"
+      },
+      {
+        "capability": "subscriptions_read",
+        "permitted": true,
+        "operation": "subscriptions_get",
+        "status": 200,
+        "code": "empty_list",
+        "request_id": null
+      },
+      {
+        "capability": "checkout_write",
+        "permitted": true,
+        "operation": "checkout_post",
+        "status": 404,
+        "code": "resource_missing",
+        "request_id": "req_LQHCHHEYoVaB0h"
+      },
+      {
+        "capability": "portal_write",
+        "permitted": true,
+        "operation": "portal_post",
+        "status": 400,
+        "code": "resource_missing",
+        "request_id": "req_9TlcN0OCWEMzNr"
+      }
+    ],
+    "customer_objects_created": 0,
+    "checkout_sessions_created": 0,
+    "subscriptions_created": 0,
+    "owned_trial_journey_proven": false
+  },
+  "native_provider_preflight": {
+    "as_of": "2026-10-16T14:02:05.585Z",
+    "canonical_product_and_three_prices_verified": true,
+    "global_entitlement": true,
+    "first_trial_days": 7,
+    "mail_credential_validated": true,
+    "sender_domain_verified": true,
+    "customer_storage_counts": {
+      "mode": "production_public",
+      "schema_version": 1,
+      "provider_customer_links": 0,
+      "checkout_attempts": 0,
+      "checkout_reservations": 0,
+      "subscriptions": 0,
+      "pending_webhooks": 0
+    },
+    "code_before_reopen": "b4fb82d0-7728-49a2-9890-a9883175939d"
+  },
+  "checkout_restoration": {
+    "as_of": "2026-10-16T14:04:25.150Z",
+    "checkout_enabled": true,
+    "public_enabled": true,
+    "account_recovery_enabled": true,
+    "worker": "findpitches-v3-customer-production",
+    "deployment_id": "b6bcd7e8-2011-4a32-a09f-89499fea2976",
+    "version_id": "9b3e603b-afb8-4b26-b7d5-7c8192dae5f8",
+    "previous_version_id": "b4fb82d0-7728-49a2-9890-a9883175939d",
+    "only_changed_flag": "V3_CHECKOUT_ENABLED",
+    "native_settings_bindings_preserved": true,
+    "routes_unchanged": true,
+    "dns_unchanged": true,
+    "schedules_unchanged": true,
+    "pitchlist_unchanged": true,
+    "code_assets_changed": false,
+    "secret_values_replaced": false,
+    "database_migrations": 0,
+    "source_tables_written": false,
+    "provider_objects_created_by_checks": 0,
+    "messages_sent_by_checks": 0,
+    "serper_queries": 0,
+    "public_checks_passed": 29,
+    "public_checks_failed": 0,
+    "owned_live_journey_proven": false
+  },
+  "validation": {
+    "fresh_focused_tests": {
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0
+    },
+    "public_before": {
+      "as_of": "2026-10-16T14:01:33.523Z",
+      "passed": 29,
+      "failed": 0,
+      "checkout_enabled": false
+    },
+    "public_after": {
+      "as_of": "2026-10-16T14:04:24.960Z",
+      "passed": 29,
+      "failed": 0,
+      "checkout_enabled": true
+    },
+    "earlier_full_v3_suite": {
+      "as_of": "2026-10-16T12:52:02.950565+00:00",
+      "passed": 473,
+      "failed": 0,
+      "skipped": 0,
+      "rerun_for_flag_only_restore": false
+    },
+    "runtime_code_or_assets_changed": false
+  },
+  "source_snapshot": {
+    "as_of": "2026-10-16T14:02:05.585Z",
+    "customer_eligible_ready": 1829,
+    "ready_by_country": {
+      "GB": 161,
+      "US": 1658,
+      "CA": 1,
+      "AU": 4,
+      "IE": 0,
+      "NZ": 5,
+      "SG": 0,
+      "HK": 0,
+      "FR": 0
+    },
+    "safety": {
+      "publication_enabled": 0,
+      "customer_projection_rows": 0,
+      "publication_queue_rows": 0,
+      "core_due": 0,
+      "core_leased": 0,
+      "core_dead": 0,
+      "stale_leases": 0,
+      "paid_queries_today": 0,
+      "paid_bulk_enabled": 0,
+      "commercial_manual_paused": 1
+    },
+    "source_tables_written": false,
+    "full_source_custody_audit_repeated": false
+  },
+  "safety": {
+    "provider_objects_created_by_checks": 0,
+    "messages_sent_by_checks": 0,
+    "charges_created_by_checks": 0,
+    "serper_queries": 0,
+    "source_workers_changed": false,
+    "producer_changed": false,
+    "v2_modified": false,
+    "pitchlist_modified": false,
+    "secret_values_replaced": false
+  },
+  "owned_live_journey_proven": false,
+  "next_action": "Chris retries pricing -> real hosted LIVE Checkout -> seven-day trial -> global Pro -> Billing Portal/cancel/paid-through; Codex verifies canonical owned receipts without impersonation.",
+  "performance_profile": "V3-029 paused pending owned acceptance"
+}

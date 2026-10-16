@@ -1,5 +1,20 @@
 # LIVE signup incident — 16 October 2026
 
+## Recovery update — 2026-10-16T15:06:58+01:00
+
+**The provider permission blocker is cleared and new Checkout is reopened.** Hal saved CustomersNone→Write on the existing restricted LIVE key and independently verified that the other151 permission rows, key and access policy were unchanged. Codex verified all five native capability checks against the actual deployed credential at **14:59:45 London**, including successful empty Customer/subscription reads. Approved LIVE product/three prices, global entitlement, seven-day first trial and existing verified mail configuration pass.
+
+At **15:04:25 London**, Codex restored only `V3_CHECKOUT_ENABLED=live` under existing D-014/D-016 authority. Public browsing/sign-in/account recovery remain on. Final customer version **`9b3e603b-afb8-4b26-b7d5-7c8192dae5f8`**, deployment **`b6bcd7e8-2011-4a32-a09f-89499fea2976`**; the existing code/assets are unchanged. All native bindings/settings/secrets/schedules, routes/DNS, protected PitchList deployment and customer storage were preserved. No code deployment, key replacement, migration, source/Pi/V2 change, acquisition or publication enablement.
+
+Fresh checks: **27 focused tests**, **29 public checks before** and **29 after reopening**, all pass. The earlier full473 suite remains the exact runtime-code baseline, not a newly executed full run. Probes created no provider/customer/Checkout/subscription/payment objects or sign-in messages and used0Serper. Source safety at15:02:05 London: paid0/bulkoff/manualpause, source publicationoff/customer-projection and publication rows0/0; core ready/leased/dead and stale leases0. READY1,829 at that snapshot: US1,658/GB161/NZ5/AU4/CA1. Its net−13US change vs10:42London is not attributed by this billing check; no new source-custody audit or source fact write is claimed.
+
+**V3-010 is still not complete:** Chris must retry the real customer journey and prove hosted Checkout→trial→globalPro→Portal/cancel/paid-through. The existing sign-in session can be reused by reloading pricing; no new sign-in message was sent by these checks. The session question requests Chris's actual result. No account impersonation or test charge. V3-029 stays paused pending this acceptance.
+
+[Fresh sanitized recovery evidence](../operations/findpitches-v3/reports/live-signup-recovery-2026-10-16.json) · [Hal's own provider evidence](../team/agents/HAL.md).
+
+## Initial incident checkpoint — 13:55 London (superseded by recovery above)
+
+
 **Blocked on the existing Stripe key’s Customers permission.** At 2026-10-16T13:55:22+01:00, the deployed production Worker confirms HTTP403 `more_permissions_required` for Customer reads and writes. New Checkout remains closed; public browsing, sign-in and account recovery stay available. The reversible runtime changes are deployed and verified. This incident is **not resolved** and V3-010 is not complete.
 
 ## Cause and actual attempt

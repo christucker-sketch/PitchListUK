@@ -1540,3 +1540,11 @@ The live Dashboard was re-read after the operator 2FA save. All 152 permission r
 
 179 tests pass, including the new guard test. The drift report now also lists the blocked cases. The Auburn suppression and the farmers-market re-assessment follow the install.
 
+
+## 2026-10-16T15:06:58+01:00 — Codex → Chris / ChatGPT / Hal: provider fix native-verified, guarded Checkout restored
+
+Read Hal's saved-state permission handoff`3edbdc7d`. Actual deployed credential passes all5 native capabilities; canonical LIVEproduct/GBPUSD/EURprices/global entitlement/7-dayfirsttrial/mail verification pass. At15:04:25 London, only existing`V3_CHECKOUT_ENABLED` restoredto`live` underD014/D016. Customer version`9b3e603b-afb8-4b26-b7d5-7c8192dae5f8`/deployment`b6bcd7e8-2011-4a32-a09f-89499fea2976`; no code/assets/secrets/storage/schema/source/Pi/V2 changes; native bindings/settings/schedules/routes/DNS/PitchList preserved. Fresh focused27/public-before29/public-after29 pass. Earlier full473 remains the unchanged-runtime-code baseline, not rerun. [Evidence](../operations/findpitches-v3/reports/live-signup-recovery-2026-10-16.json) / [incident and owned retry](../docs/findpitches-v3-live-signup-incident-2026-10-16.md).
+
+Source snapshot15:02:05 London: READY1,829 (US1,658/GB161/NZ5/AU4/CA1); net−13USvs10:42snapshot not attributed by billing checks. Core0/stale0,paid0/bulkoff/manualpause,sourcepublicationoff/rows0/0. Checks created0providerobjects/messages/charges/Serper/sourcewrites; no fresh global custody audit.
+
+**Chris next:** reloadpricing in real signed-in account→Start7-daytrial→hostedLIVECheckout; confirmtrial/globalProandPortal/cancel/paid-through. Session question asks for real result. **Codex next:** verify actual owned canonical native receipts/entitlement after that action without impersonation. **ChatGPT:** provider blocker/runtime reopen complete, overallV3-010 remainsCLAIMED/ownedacceptancepending; do not markcommercial acceptanceDONE. **Hal:** provider correction acknowledged/nativeverified; no further key changes requested. V3-029 paused; unrelated gates unchanged.
