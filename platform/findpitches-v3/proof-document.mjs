@@ -11,6 +11,11 @@ export async function fetchProofDocument(url,{fetcher=fetch,now=new Date().toISO
   if(hummingbirdURL(url)&&sourceIdentifier)return fetchHummingbirdBundle(url,sourceIdentifier,{fetcher,now});
   if(veganEventURL(url))return fetchVeganBundle(url,sourceIdentifier,{fetcher,now});
   const source=await fetchSourceDocument(url,{fetcher,now}),report=verifyDocument(source,{now}),postcode=sourceEventPostcode(report);
+  // A complete, vendor-scoped current application already supplies proof.
+  // Contact/signup expansion is for unproved routes, not an extra requirement
+  // on every positive application renewal. Identity comparison still runs in
+  // recordVerification against this exact retained original page.
+  if(report.profile==='eventeny'&&report.status==='verified'&&['OPEN_NOW','ROLLING'].includes(report.facts.application_state)&&report.facts.application_url===source.url)return source;
   const contact=eventenyContactRoute(source,report,{now});
   if(contact&&!report.usable_route){
     const login=await fetchSourceDocument(contact,{fetcher,now}),documents=[source,login],signup=eventenySignupRoute(login,contact);

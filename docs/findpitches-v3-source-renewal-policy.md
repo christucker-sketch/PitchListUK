@@ -25,3 +25,5 @@ For genuinely date-only values, the existing Europe/London customer/reporting ca
 ## Deployment and rollback
 
 Migration 0024 adds only attempt custody, immutable triggers and a retry-admission counter table. It does not alter original evidence, identity, customer/billing storage, producer contracts, publication or paid controls. All source Worker releases preserve native bindings, secrets, schedules and retained versions. Rollback deploys prior source versions and leaves the additive tables/evidence intact; no deletion is necessary. The customer Worker, provider settings, routes, DNS, V2 and live PitchList remain untouched.
+
+Release tooling must obtain bindings from the currently deployed version, not assume `/settings` represents active traffic: an unactivated upload can change that settings view. Copy the active D1/R2/queue/secret metadata exactly, explicitly include the owned R2 binding in the upload configuration, compare uploaded bindings before activation, and retain the prior active version for rollback. A rejected unactivated candidate is never a rollback target.

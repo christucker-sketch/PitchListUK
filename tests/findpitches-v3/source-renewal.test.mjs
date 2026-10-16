@@ -9,6 +9,7 @@ import {loadEntity,sql} from '../../platform/findpitches-v3/store.mjs';
 import {renewalAdmission,renewalRetryCurrent,renewalStatus} from '../../platform/findpitches-v3/source-renewal.mjs';
 import {calendarHorizon,eventenyVisibleClosing,sourceDatePast,sourceWindowOpen} from '../../platform/findpitches-v3/source-calendar.mjs';
 import {fetchSourceDocument} from '../../platform/findpitches-v3/source-document.mjs';
+import {fetchProofDocument} from '../../platform/findpitches-v3/proof-document.mjs';
 
 const at=n=>new Date(Date.parse(NOW)+n*60000).toISOString();
 const bad=async()=>new Response('',{status:502});
@@ -92,4 +93,10 @@ test('event dates and calendar horizons respect the operational day and daylight
  assert.equal(calendarHorizon('2026-10-16'),Date.parse('2026-10-16T23:00:00Z'));assert.equal(calendarHorizon('2026-10-25'),Date.parse('2026-10-26T00:00:00Z'));assert.equal(calendarHorizon('2026-03-29'),Date.parse('2026-03-29T23:00:00Z'));assert.equal(calendarHorizon('2026-02-30'),null);
  assert.equal(sourceDatePast('2026-10-16','2026-10-16T12:00Z'),false);assert.equal(sourceDatePast('2026-10-16T10:00:00-04:00','2026-10-16T14:00Z'),true);
  const e={event_name:'Source event',application_url:'https://example.org/apply',application_state:'OPEN_NOW',event_end:'2026-10-16'};assert.equal(assessEligibility(e,{now:'2026-10-16T12:00Z'}).status,'eligible');assert.equal(assessEligibility(e,{now:'2026-10-16T23:00Z'}).status,'closed');
+});
+
+test('a complete vendor application uses one source GET and does not expand unrelated contact routes',async()=>{
+ const fixture=documentFixture({body:'<a href="/events/vendor/?id=999">Contact organiser</a>'});let calls=0;
+ const document=await fetchProofDocument(fixture.url,{now:NOW,fetcher:async url=>{calls++;assert.equal(url,fixture.url);return new Response(fixture.html,{headers:{'content-type':'text/html'}});}});
+ assert.equal(calls,1);assert.equal(verifyDocument(document,{now:NOW}).status,'verified');
 });
