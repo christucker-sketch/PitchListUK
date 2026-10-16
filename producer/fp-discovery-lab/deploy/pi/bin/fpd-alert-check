@@ -88,13 +88,83 @@ problems() {
   [[ -n $mem && $mem -lt 60 ]] && printf 'memory_low\tOnly %s MB memory available\n' "$mem"
 }
 
+when() { date -d "$1" '+%a %d %b %H:%M' 2>/dev/null || echo "$1"; }   # any timestamp -> local "Fri 16 Oct 13:22"
+
 summary() {
-  echo "Host: $HOST   $(date -d "@$NOW" '+%a %d %b %Y %H:%M %Z')   up $(uptime -p 2>/dev/null | sed 's/^up //')"
-  [[ -r $STATUS ]] && jq -r '"Delivery: \(.status) at \(.checked_at), \(.accepted)/\(.records) accepted, \(.rejected) rejected; pending rechecks \(.pending_rechecks); source age \(((.source_age_seconds//0)/360|floor)/10)h"' "$STATUS" 2>/dev/null
-  echo "Discovery: last run $(systemctl show fpd-acquire -p ExecMainStartTimestamp --value 2>/dev/null) result=$(systemctl show fpd-acquire -p Result --value 2>/dev/null); next $(systemctl show fpd-acquire.timer -p NextElapseUSecRealtime --value 2>/dev/null)"
-  [[ -r $OFFSITE ]] && jq -r '"Off-site backup: ok=\(.ok) at \(.at)"' "$OFFSITE" 2>/dev/null
-  command -v vcgencmd >/dev/null && echo "Power: throttled=$(vcgencmd get_throttled | cut -d= -f2) (0x0 = never since boot)  $(vcgencmd measure_temp)"
-  echo "Disk: $(df -h --output=used,size "$SRV" 2>/dev/null | tail -1 | awk '{print $1" / "$2}')"
+  echo "Host: $HOST · $(date -d "@$NOW" '+%a %d %b %Y %H:%M %Z') · up $(uptime -p 2>/dev/null | sed 's/^up //')"
+  if [[ -r $STATUS ]]; then
+    local d; d=$(jq -r '[.status, .checked_at, (.accepted|tostring), (.records|tostring), (.rejected|tostring),
+                         (.pending_rechecks|tostring), ((((.source_age_seconds//0)/360)|floor)/10|tostring)] | join("\t")' "$STATUS" 2>/dev/null)
+    if [[ -n $d ]]; then
+      local st at acc rec rej pend age; IFS=$'\t' read -r st at acc rec rej pend age <<<"$d"
+      echo "V3 delivery: $st $(when "$at") · $acc of $rec accepted, $rej rejected · rechecks pending $pend · source data ${age}h old"
+    fi
+  fi
+  local last next res; last=$(systemctl show fpd-acquire -p ExecMainStartTimestamp --value 2>/dev/null)
+  next=$(systemctl show fpd-acquire.timer -p NextElapseUSecRealtime --value 2>/dev/null); res=$(systemctl show fpd-acquire -p Result --value 2>/dev/null)
+  echo "Discovery cycle: last $(when "$last") (${res:-unknown}) · next $(when "$next")"
+  [[ -r $OFFSITE ]] && echo "Off-site backup: $(jq -r 'if .ok then "OK" else "FAILED" end' "$OFFSITE" 2>/dev/null) $(when "$(jq -r .at "$OFFSITE" 2>/dev/null)")"
+  if command -v vcgencmd >/dev/null; then
+    local th; th=$(vcgencmd get_throttled | cut -d= -f2)
+    echo "Power: $([[ $th == 0x0 ]] && echo "OK (no under-voltage since boot)" || echo "under-voltage/throttling seen since boot (throttled=$th)") · CPU $(vcgencmd measure_temp | grep -oE '[0-9.]+' | head -1)°C"
+  fi
+  echo "Disk: $(df -h --output=used,size "$SRV" 2>/dev/null | tail -1 | awk '{print $1" used of "$2}')"
+}
+
+# Plain-text body -> simple HTML email (inline styles: mail clients drop <style>). The text stays as the fallback part.
+render_html() {
+  command -v python3 >/dev/null || return 1
+  ALERT_SUBJ="$1" ALERT_BODY="$2" python3 -I - <<'PY'
+import html, os, re
+subj, body = os.environ["ALERT_SUBJ"], os.environ["ALERT_BODY"]
+e = html.escape
+KIND = [("PROBLEM", "#c62828", "Problem"), ("STILL WRONG", "#ef6c00", "Still wrong"), ("RESOLVED", "#2e7d32", "Resolved"),
+        ("OVERNIGHT", "#546e7a", "Overnight"), ("daily: all OK", "#2e7d32", "Daily summary"), ("daily", "#ef6c00", "Daily summary"),
+        ("Pi restarted", "#ef6c00", "Pi restarted"), ("test", "#1565c0", "Test")]
+title = re.sub(r"^\[[^\]]+\]\s*", "", subj)
+colour, label = next(((c, l) for k, c, l in KIND if title.startswith(k)), ("#455a64", "Notice"))
+title = re.sub(r"^(?:PROBLEM|STILL WRONG|RESOLVED|OVERNIGHT|daily):\s*", "", title) or title
+SECTION = {"New problems": "#c62828", "Still wrong": "#ef6c00", "Resolved": "#2e7d32", "Open problems": "#ef6c00",
+           "During quiet hours": "#546e7a"}
+out, rows, intro = [], [], []
+for b in [b.strip("\n") for b in re.split(r"\n\s*\n", body) if b.strip()]:
+    lines = b.split("\n")
+    head = next((k for k in SECTION if lines[0].startswith(k)), None)
+    if head:
+        c = SECTION[head]
+        items = "".join(
+            '<div style="border-left:4px solid %s;background:#fafafa;padding:8px 12px;margin:6px 0;font-size:14px;line-height:1.45">%s</div>'
+            % (c, e(x[2:] if x.startswith("- ") else x)) for x in lines[1:] if x.strip())
+        out.append('<h3 style="margin:18px 0 6px;font-size:15px;color:%s">%s</h3>%s' % (c, e(lines[0].rstrip(":")), items))
+        continue
+    kv = [re.match(r"^([A-Za-z][\w /-]{1,30}):\s+(.*)$", x) for x in lines]
+    if all(kv):
+        for m in kv:
+            k, v = m.group(1), m.group(2)
+            if k == "All current problems":
+                n = v.strip()
+                out.append('<p style="margin:16px 0"><span style="background:%s;color:#fff;border-radius:12px;padding:3px 10px;'
+                           'font-size:13px;font-weight:600">Open problems: %s</span></p>' % ("#2e7d32" if n == "0" else "#ef6c00", e(n)))
+            else:
+                bad = re.search(r"FAILED|failed|(?<!no )under-voltage|[1-9]\d* rejected", v)
+                rows.append('<tr><td style="padding:5px 14px 5px 0;color:#607d8b;white-space:nowrap;vertical-align:top">%s</td>'
+                            '<td style="padding:5px 0;color:%s">%s</td></tr>' % (e(k), "#c62828" if bad else "#263238", e(v)))
+        continue
+    intro.append('<p style="margin:0 0 12px;font-size:14px;line-height:1.5">%s</p>' % e(b).replace("\n", "<br>"))
+table = ('<h3 style="margin:22px 0 6px;font-size:15px;color:#37474f">Pi status</h3>'
+         '<table style="border-collapse:collapse;font-size:14px;line-height:1.4">%s</table>' % "".join(rows)) if rows else ""
+print(
+    '<!doctype html><html><body style="margin:0;background:#eceff1;font-family:Segoe UI,Helvetica,Arial,sans-serif;color:#263238">'
+    '<div style="max-width:640px;margin:0 auto;background:#ffffff">'
+    '<div style="background:%s;color:#ffffff;padding:14px 20px">'
+    '<div style="font-size:12px;opacity:.85;text-transform:uppercase;letter-spacing:.06em">%s</div>'
+    '<div style="font-size:17px;font-weight:600;margin-top:2px">%s</div></div>'
+    '<div style="padding:16px 20px 8px">%s%s%s</div>'
+    '<div style="padding:12px 20px 18px;font-size:12px;color:#90a4ae;border-top:1px solid #eceff1">'
+    'FindPitches Pi health alerts &middot; quiet 22:00&ndash;07:00 (held, then sent) &middot; details on the Pi: '
+    '<code>sudo fpd-alert-check --show</code></div></div></body></html>'
+    % (colour, e(label), e(title), "".join(intro), "".join(out), table))
+PY
 }
 
 send() {  # send SUBJECT BODY -> 0 on confirmed acceptance
@@ -102,8 +172,10 @@ send() {  # send SUBJECT BODY -> 0 on confirmed acceptance
   if [[ ${FPD_ALERT_DRY_RUN:-0} == 1 ]]; then printf -- '--- DRY RUN email\nSubject: %s\n%s\n' "$subj" "$2"; return 0; fi
   [[ -n ${SMTP2GO_API_KEY:-} && -n ${ALERT_FROM:-} && -n ${ALERT_TO:-} ]] || { echo "fpd-alert: alert.env incomplete" >&2; return 1; }
   tmp=$(mktemp -d); body=$tmp/body.json
-  jq -n --arg f "$ALERT_FROM" --arg t "$ALERT_TO" --arg s "$subj" --arg b "$2" \
-    '{sender:$f, to:($t|split(",")|map(gsub("^\\s+|\\s+$";""))), subject:$s, text_body:$b}' > "$body"
+  local h; h=$(render_html "$subj" "$2" 2>/dev/null) || h=""
+  jq -n --arg f "$ALERT_FROM" --arg t "$ALERT_TO" --arg s "$subj" --arg b "$2" --arg h "$h" \
+    '{sender:$f, to:($t|split(",")|map(gsub("^\\s+|\\s+$";""))), subject:$s, text_body:$b}
+     + (if $h == "" then {} else {html_body:$h} end)' > "$body"
   code=$(printf 'header = "X-Smtp2go-Api-Key: %s"\n' "$SMTP2GO_API_KEY" | \
     curl -sS --max-time 25 -K - -H 'Content-Type: application/json' --data-binary @"$body" -o "$tmp/resp" -w '%{http_code}' \
     https://api.smtp2go.com/v3/email/send 2>"$tmp/err")

@@ -1463,3 +1463,13 @@ Next hub action: bounded source-renewal retry/attempt telemetry and source-suppo
 - **26.7-minute delivery interval:** most likely the 011o/011r installs, which restart `fpd-v3-delivery`, plus today's maintenance. If it recurs outside install windows I'll investigate. The 123 producer rechecks are the Pi's own queue (300 per cycle), not cloud backlog.
 - **France:** the 24 h soak ends about 20:00 London. `fr-on` follows only if the evening cycles are clean, and I'll post when it happens.
 
+## 2026-10-16T13:45:00+01:00 — Claude → Chris: readable Pi alert emails (kit 011s `1d3fcae1`)
+
+- At Chris's request, alert emails now carry an HTML part next to the existing plain text, which stays as the fallback:
+  - a coloured header (problem, still wrong, resolved, overnight or daily);
+  - one card per problem;
+  - an open-problems badge;
+  - a "Pi status" table that highlights failures in red.
+- The status lines are now in plain language with local times: "V3 delivery: delivered Fri 16 Oct 13:09 · 2224 of 2224 accepted…", "Off-site backup: OK Fri 16 Oct 13:23", and so on.
+- Alerting behaviour and thresholds are unchanged, the key is still never in the body, and the HTML is escaped. Alert tests: 38 passed (4 new). Python tests: 177 passed.
+

@@ -141,4 +141,8 @@ ok "cleared overnight problem listed" 'jq -r .text_body $T/ctl/last_body.json | 
 ok "overnight cleared after send" '[[ $(jq ".overnight|length" $T/state/state.json) == 0 ]]'
 Q3=$(date -d "2026-10-13 22:15" +%s); status "$(iso $Q3)" 0 0 600; run $Q3
 ok "resolution at 22:15 held" '[[ $(sends) == $((b1+1)) ]]'
+ok "html part present" 'jq -e .html_body $T/ctl/last_body.json >/dev/null'
+ok "html has sections and status table" 'jq -r .html_body $T/ctl/last_body.json | grep -q "During quiet hours" && jq -r .html_body $T/ctl/last_body.json | grep -q "Pi status"'
+ok "html is escaped" '! jq -r .html_body $T/ctl/last_body.json | grep -q "(previous export left intact)<"'
+ok "key not in html" '! jq -r .html_body $T/ctl/last_body.json | grep -q "$KEY"'
 echo "alert-check tests: $pass passed, $fail failed"; [[ $fail == 0 ]]
