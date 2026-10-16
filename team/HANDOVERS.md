@@ -1389,3 +1389,27 @@ Next hub action: bounded source-renewal retry/attempt telemetry and source-suppo
 ## 2026-10-16T09:44:26+01:00 — Codex → team: V3-025 DONE; recovery measured and source safeguards verified
 
 **V3-025 DONE: 82 READY opportunities recovered.** [Completion and evidence](../docs/findpitches-v3-source-renewal-recovery-2026-10-16.md). At **09:38 London on 16 October**, READY was **1,842**: US 1,671 / GB 161 / NZ 5 / AU 4 / CA 1. All 105 targeted entities were checked using 117 of 160 source requests and zero Serper queries. 82 returned to READY; 22 source-closed applications and one deadline disagreement remain withheld. No new entities or recovery-period losses. Bounded renewal retries, immutable attempt custody, original TTL/identity/closure safeguards and source-supported deadline clocks are deployed. Full 451 tests, public 29 checks and both original-build/affected-cohort custody audits pass with zero source mutations or identity changes. Customer Worker, provider configuration, routes, PitchList and V2 remain unchanged; public browsing and LIVE Checkout stay enabled. **113 older failed-proof receipts outside this cohort remain flagged for V3-026**, already excluded from READY; recoverability is unknown. French proof V3-020 and storage monitoring V3-022 remain open. Paid acquisition/source publication stay off; FR export held and DE intake off.
+## 2026-10-16T10:30:00+01:00 — Claude → Codex / ChatGPT / Chris: farmers-market lane first night; 5 of 17 current records wrong; fix kit 011p `61700c5f`
+
+- **First night (4 cycles, all clean):**
+  - 413 USDA markets checked; 121 market sites confirmed.
+  - 102 engine opportunities.
+  - Export: 17 current, 35 watch, 18 held.
+- **Hand review of the 17 current records:**
+  - 8 good: Blythewood, Greenfield, Melissa, Lewisburg, Pawtucket ×2, Waxhaw, Rail Yards.
+  - 4 need cleanup: Meadows (name), Dixie Lee (2022 start date), Belmont (2027 homepage date), Salem (no dates).
+  - 5 wrong:
+    - **Aggieland, TaSH, Rocky Butte (Marketspread apply pages):** each page says "Event Closed", but they were exported OPEN_NOW, and "Oct 17 – Dec 05" was misread as 2026-12-17.
+    - **Monroe Street:** exported OPEN_NOW, but the page says "no longer accepting applications"; "accepting applications" matched inside the negation.
+    - **"Auburn Farmers Market":** the market's domain redirected to auburnwa.gov, and the market name was applied to city event pages.
+- **Codex:** please do not treat those 5 as READY. After 011p and a targeted re-assessment, the next export should move them out of current.
+- **Lane paused** (`FPD_USDA_MARKETS=0`) until 011p is installed.
+- **Fixes in 011p**, each with a regression test (175 tests pass):
+  1. Open wording preceded by a negation, or inside a closure sentence, no longer counts as open.
+  2. New closure patterns: "no longer accepting any more vendors" and "this event is closed". New not-yet-open pattern: "application … will be released in February".
+  3. Marketspread application pages read their own date range ("Oct 17 – Dec 05").
+  4. A junk title segment ("Join Us | …") taints the whole title as a name.
+  5. Export drops bare platform homepages as routes (marketspread.com/, managemymarket.com/), and drops weekly-market start dates more than a year old.
+  6. The lane treats a redirect to another domain, and .gov/.us/city sites, as a starting page without the market's name; existing such hints are cleared.
+- **Gate before install:** classifier-diff on stored pages, both the lane and a general sample, because rule 1 affects every lane.
+

@@ -106,3 +106,70 @@ def test_run_without_the_list_does_nothing(tmp_path):
 def test_export_names_the_lane_as_organiser_site_from_usda():
     assert source_of("usda_fm:us", "https://kingfieldfarmersmarket.org/") == (
         "organiser_site", "usda_farmers_market", "entity_seed_crawl")
+
+
+# ---------------------------------------------------------------- 16 Oct review of the first 17 records: fixes
+import datetime as dt  # noqa: E402
+
+from fpd import adapters  # noqa: E402
+from fpd.classify import classify, derive_name  # noqa: E402
+from fpd.integration.records import bare_platform_home  # noqa: E402
+from fpd.parse import parse_html  # noqa: E402
+
+D = dt.date(2026, 10, 16)
+
+
+def _state(html, url):
+    p = parse_html(html, url)
+    a = adapters.apply(p, classify(p, D, hint={"country": "US"}), D, url.split("/")[2])
+    return a["extracted"]
+
+
+def test_no_longer_accepting_is_a_closure_not_an_open_signal():
+    html = ("<title>Vendors | Monroe Street Farmers' Market</title><body><h1>Vendors</h1><p>Saturdays 8am-noon, Madison WI.</p>"
+            "<p>At this time the market is full and we are no longer accepting applications for our 2026 season. Our 2027 "
+            "Vendor Application will be released in February.</p><a href='/s/MSFM_Vendor-Application_2026.pdf'>2026 Vendor "
+            "Application</a></body>")
+    x = _state(html, "https://www.monroestreetfarmersmarket.org/vendors")
+    assert x["state"] not in ("OPEN_NOW", "ROLLING")
+
+
+def test_marketspread_apply_page_closed_with_its_own_date_range():
+    html = ("<title>Apply to 2026 Summer Season - TaSH Farmers Market | Vendors - Marketspread</title><body>"
+            "<div>Apply</div><div>to</div><div>Event</div><div>TaSH Farmers Market | Vendors</div><div>Farmers Market</div>"
+            "<div>Broadway</div><div>Broadway, Tarrytown, NY 10591, USA</div><div>Oct</div><div>17</div><div>Dec</div><div>05</div>"
+            "<div>Exit</div><div>2026 Summer Season</div><div>Event Closed</div>"
+            "<div>This event is closed and no longer accepting any more vendors.</div></body>")
+    x = _state(html, "https://marketspread.com/market/12619/tash-farmers-market/apply/6447/closed/")
+    assert x["state"] == "CLOSED_CURRENT_CYCLE"
+    assert (x["start_date"], x["end_date"]) == ("2026-10-17", "2026-12-05")   # not "2026-12-17"
+
+
+def test_junk_title_segment_is_not_part_of_the_name():
+    p = parse_html("<title>Join Us | Meadows Farmers Market</title><body>x</body>", "https://docs.google.com/forms/d/e/x/viewform")
+    assert derive_name(p, []) == "Meadows Farmers Market"
+
+
+def test_platform_homepages_are_not_routes():
+    assert bare_platform_home("https://www.marketspread.com/") and bare_platform_home("http://www.managemymarket.com/")
+    assert not bare_platform_home("http://www.managemymarket.com/landing.aspx?orgID=858")
+    assert not bare_platform_home("https://marketspread.com/market/24680/aggieland-farmers-market/apply/6320/")
+    assert not bare_platform_home("https://blythewoodfm.mymarket.org/")
+
+
+def test_redirect_to_a_city_site_is_a_starting_point_without_the_market_name(tmp_path):
+    conn = dbm.connect(tmp_path / "fpd.sqlite")
+    fr = Frontier(conn, 1, 30, 3)
+    p = _csv(tmp_path, [{"listing_id": "9", "name": "Auburn Farmers Market", "city": "Auburn", "state": "WA", "updated": "2025-06-01"}])
+
+    class Redirecting(FakeGet):
+        def get(self, url, cap=U.PAGE_MAX):
+            self.requests += 1
+            return 200, "https://www.auburnwa.gov/farmers-market", "<title>Auburn Farmers Market</title><body>Auburn, WA</body>"
+
+    r = U.run(conn, fr, dbm.Telemetry(conn, 1), Cfg, csv_path=str(p), getter=Redirecting({}),
+              resolves=lambda h: h == "auburnfarmersmarket.org")
+    assert r["confirmed"] == 1 and r["shared_site"] == 1
+    row = conn.execute("SELECT purpose FROM urls").fetchone()
+    assert row["purpose"] == "candidate"
+    assert conn.execute("SELECT entity_name FROM sites WHERE reg_domain='auburnwa.gov'").fetchone()[0] is None

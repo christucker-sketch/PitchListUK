@@ -290,7 +290,7 @@ def marketspread(page: Page, a: dict, today: dt.date) -> dict | None:
     ('2026 Application- 3/1/2026 - 2/28/2027'). Markets without an application link are listings only."""
     m = re.search(r"marketspread\.com/market/(\d+)/([^/?#]+)/?$", page.url)
     if not m:
-        return None
+        return marketspread_apply(page, a, today)
     mid = m.group(1)
     ex = a["extracted"]
     ex["platform_ids"] = {"marketspread_market": int(mid)}
@@ -371,6 +371,35 @@ def marketspread(page: Page, a: dict, today: dt.date) -> dict | None:
     a["label"] = "actionable" if ex["state"] in ("OPEN_NOW", "ROLLING") else "uncertain"
     a["reasons"] = ["platform_adapter:marketspread"]
     a["evidence"].insert(0, {"kind": "state", "text": f"{ex['state']}: {ex['state_evidence']}"})
+    return a
+
+
+def marketspread_apply(page: Page, a: dict, today: dt.date) -> dict | None:
+    """Marketspread application pages (/market/<id>/<slug>/apply/<n>/[login|closed|intro]/) show the event's date range
+    as a year-less header ('Oct\\n17\\nDec\\n05\\nExit'); the generic date reader took '17 Dec' from it (15 Oct:
+    three markets exported with 2026-12-17). Read the range properly; closure wording is left to the classifier."""
+    if not re.search(r"marketspread\.com/market/\d+/[^/]+/apply/", page.url):
+        return None
+    ex = a["extracted"]
+    hm = re.search(r"\n(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\n(\d{1,2})\n"
+                   r"(?:(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\n(\d{1,2})\n)?Exit\b", "\n" + page.text)
+    if not hm:
+        return None
+    try:
+        s = dt.date(today.year, _MON[hm.group(1).lower()], int(hm.group(2)))
+        if s < today - dt.timedelta(days=60):
+            s = s.replace(year=s.year + 1)
+        e = None
+        if hm.group(3):
+            e = dt.date(s.year, _MON[hm.group(3).lower()], int(hm.group(4)))
+            if e < s:
+                e = e.replace(year=e.year + 1)
+    except ValueError:
+        return None
+    ex.update(start_date=s.isoformat(), end_date=e.isoformat() if e and e != s else None, date_source="platform_header")
+    if isinstance(ex.get("state_evidence"), str):
+        ex["state_evidence"] = re.sub(r"\(event [0-9-]+(?:–[0-9-]+)?\)", f"(event {s.isoformat()}" + (f"–{e.isoformat()}" if e and e != s else "") + ")",
+                                      ex["state_evidence"])
     return a
 
 

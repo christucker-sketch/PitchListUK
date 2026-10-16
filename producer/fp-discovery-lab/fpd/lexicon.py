@@ -125,7 +125,8 @@ CLOSED_PATTERNS = [
     r"\b(?:vendor|trader|stallholder|exhibitor)?\s*(?:spaces|applications?|registration)\s+(?:are|is)\s+currently\s+(?:closed|full)\b",
     r"\b(?:applications?|registration|bookings?)\s+(?:have|has)\s+(?:now\s+)?closed\b",
     r"\bdeadline\s+has\s+passed\b",
-    r"\bno\s+longer\s+(?:accepting|taking)\s+(?:applications|vendors|traders|stallholders|bookings)\b",
+    r"\bno\s+longer\s+(?:accepting|taking)\s+(?:any\s+(?:more|new|further)\s+)?(?:applications|vendors|traders|stallholders|bookings)\b",
+    r"\bthis\s+event\s+is\s+(?:now\s+)?closed\b",
     r"\b(?:vendor|trader|stall|exhibitor|pitch)\s+(?:spaces?\s+)?(?:are\s+)?(?:fully\s+booked|sold\s+out)\b",
     r"\bwe\s+are\s+(?:now\s+)?(?:fully\s+booked|full)\b",
     r"\bapplication\s+(?:period|window)\s+(?:is\s+|has\s+)?(?:now\s+)?(?:closed|ended)\b",
@@ -149,6 +150,7 @@ NOT_YET_OPEN_PATTERNS = [
     r"\b(?:applications?|bookings?|registrations?|expressions?\s+of\s+interest)\s+(?:will\s+)?(?:open|opening|re-?open)s?\s+(?:on|from|in)\s+(?:early\s+|late\s+|mid[\s-])?(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\d)",
     r"\bregister\s+your\s+interest\b",
     r"\b(?:applications?|application\s+forms?|booking\s+forms?|vendor\s+forms?)\b[^.\n]{0,30}\bwill\s+become\s+available\b",
+    r"\b(?:vendor\s+)?applications?\b[^.\n]{0,30}\bwill\s+be\s+(?:released|posted|published|available)\b",
     r"\b(?:know|notified|notify\s+you|hear)\s+when\s+(?:vendor\s+|trader\s+)?applications?\s+(?:open|are\s+open|go\s+live|launch)",
     r"\b(?:applications?|bookings?|registrations?|stall\s+bookings?|vendor\s+applications?)\s+(?:are\s+|for\s+20\d\d\s+)?coming\s+soon\b",
 ]

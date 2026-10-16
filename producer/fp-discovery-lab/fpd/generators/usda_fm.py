@@ -39,6 +39,8 @@ GENERIC = {"farmers", "farmer", "market", "markets", "farm", "community", "fresh
            "certified", "public", "local", "main", "street", "square", "park", "village", "town"}
 PARKED = re.compile(r"domain (?:is )?for sale|buy this domain|parked free|this domain may be for sale|godaddy\.com/forsale|"
                     r"hugedomains|sedo\.com|dan\.com", re.I)
+# Domains shared by many things (government, municipal, parks, chambers): never name the whole site after one market.
+SHARED_SITE = re.compile(r"(?:\.gov|\.us|\.mil)$|^(?:cityof|townof|villageof|countyof|boroughof)|chamber|parksandrec", re.I)
 ROBOTS_MAX = 512_000
 PAGE_MAX = 1_000_000
 
@@ -189,7 +191,11 @@ def run(conn, frontier, tel, cfg, max_markets: int = 150, max_seconds: float = 3
     cur = kv_get(conn, "usda_fm.cursor", {"pos": 0, "passes": 0})
     totals = kv_get(conn, "usda_fm.totals", {})
     out = {"checked": 0, "already_known": 0, "no_domain": 0, "robots_blocked": 0, "not_this_market": 0,
-           "confirmed": 0, "enqueued": 0}
+           "confirmed": 0, "shared_site": 0, "enqueued": 0}
+    # Undo the market-name hint on government/municipal sites confirmed before 16 Oct (one statement; idempotent).
+    for (rd,) in conn.execute("SELECT reg_domain FROM sites WHERE origin_generator=? AND entity_name IS NOT NULL", (GENERATOR,)).fetchall():
+        if SHARED_SITE.search(rd):
+            conn.execute("UPDATE sites SET entity_name=NULL WHERE reg_domain=?", (rd,))
     known = Known(conn)
     g = getter or PoliteGet(cfg.user_agent)
     deadline = time.monotonic() + max_seconds
@@ -230,11 +236,17 @@ def run(conn, frontier, tel, cfg, max_markets: int = 150, max_seconds: float = 3
             rd = reg_domain(hit)
             if not rd:
                 continue
-            frontier.ensure_site(rd, GENERATOR, country="US", entity_name=m["name"][:150])
+            # The market's own domain carries the market's name for every page on it. A redirect to another domain
+            # (usually a city or county website) does not: there the page is a starting point only (15 Oct: Auburn
+            # FM -> auburnwa.gov, whose events pages were then named "Auburn Farmers Market").
+            shared = rd != reg_domain(f"https://{h}/") or bool(SHARED_SITE.search(rd))
+            out["shared_site"] += shared
+            frontier.ensure_site(rd, GENERATOR, country="US", entity_name=None if shared else m["name"][:150])
             meta = {"country": "US", "usda_listing": m.get("listing_id"), "usda_market": m["name"][:150],
-                    "usda_city": m.get("city"), "usda_state": m.get("state")}
-            if frontier.add(hit, "site_home", GENERATOR, priority=0.7, depth=0, anchor=f"USDA farmers market: {m['name']}"[:300],
-                            meta=meta, budgeted=False):
+                    "usda_city": m.get("city"), "usda_state": m.get("state"), "shared_site": shared or None}
+            if frontier.add(hit, "candidate" if shared else "site_home", GENERATOR, priority=0.7, depth=0,
+                            anchor=f"USDA farmers market: {m['name']}"[:300], meta={k: v for k, v in meta.items() if v is not None},
+                            budgeted=False):
                 out["enqueued"] += 1
             kv_set(conn, "usda_fm.cursor", cur)
     finally:

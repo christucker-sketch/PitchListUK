@@ -128,6 +128,19 @@ def iso_ts(x) -> str | None:
         return None
 
 
+# An application platform's own homepage is not an application route (15 Oct: "https://www.marketspread.com/",
+# "http://www.managemymarket.com/" were exported as routes).
+PLATFORM_HOMES = {"marketspread.com", "managemymarket.com", "eventeny.com", "jotform.com", "docs.google.com", "forms.gle",
+                  "zapplication.org", "cognitoforms.com", "formstack.com", "wufoo.com", "typeform.com", "mymarket.org"}
+
+
+def bare_platform_home(url) -> bool:
+    if not isinstance(url, str):
+        return False
+    m = re.match(r"^https?://(?:www\.)?([^/?#]+)(/[^?#]*)?(?:\?[^#]*)?$", url.strip(), re.I)
+    return bool(m and m.group(1).lower() in PLATFORM_HOMES and (m.group(2) or "/") in ("/", "/index.html", "/default.aspx"))
+
+
 def iso_date(x) -> str | None:
     if not x or not isinstance(x, str):
         return None
@@ -376,7 +389,7 @@ def _record(o, ss, exs, routes, pids, nkey, oid, how, anchors, today, suppress) 
                 rts.append({"route_id": rid, "url": clean_url(src), "route_type": "trader_email", "platform": None,
                             "category": r["category"], "label": _clip(f"{addr} — {r['label'] or ''}".rstrip(" —"), 120)})
             continue
-        if not r["url"] or not re.match(r"^https?://", r["url"]):
+        if not r["url"] or not re.match(r"^https?://", r["url"]) or bare_platform_home(r["url"]):
             continue
         rid = idn.route_id(r["url"], r["category"])
         if not rid or rid in seen:
@@ -384,7 +397,7 @@ def _record(o, ss, exs, routes, pids, nkey, oid, how, anchors, today, suppress) 
         seen.add(rid)
         rts.append({"route_id": rid, "url": clean_url(r["url"]), "route_type": r["route_type"] or "unknown",
                     "platform": r["platform"], "category": r["category"], "label": _clip(r["label"], 120)})
-    apply_url = clean_url(o["apply_url"])
+    apply_url = None if bare_platform_home(o["apply_url"]) else clean_url(o["apply_url"])
     region = o["region"] if isinstance(o["region"], str) else None
     loc_parts = [x for x in (o["venue"], o["locality"], region) if x]
     recurring = True if (o["recurrence_evidence"] or o["recurrence"]) else None
@@ -402,6 +415,11 @@ def _record(o, ss, exs, routes, pids, nkey, oid, how, anchors, today, suppress) 
     else:
         level = "LOW"
     date_basis = pex.get("date_source") or None
+    start_iso, end_iso = iso_date(o["start_date"]), iso_date(o["end_date"])
+    if o["state"] == "ROLLING" and start_iso and start_iso < (today - dt.timedelta(days=365)).isoformat() \
+            and not (end_iso and end_iso >= today.isoformat()):
+        # A weekly market's start date from an old season (15 Oct: Dixie Lee FM exported "2022-01-07") is not this season's.
+        start_iso, end_iso, date_basis = None, None, None
     rec = {
         "schema_version": SCHEMA_VERSION,
         "opportunity_id": oid,
@@ -429,8 +447,8 @@ def _record(o, ss, exs, routes, pids, nkey, oid, how, anchors, today, suppress) 
         "open_strength": o["open_strength"] if o["open_strength"] in ("explicit", "implicit") else None,
         "recurring": recurring,
         "recurrence_evidence": _clip(o["recurrence_evidence"]),
-        "event_start": iso_date(o["start_date"]),
-        "event_end": iso_date(o["end_date"]),
+        "event_start": start_iso,
+        "event_end": end_iso,
         "event_date_basis": date_basis,
         "application_deadline": iso_date(o["deadline"]),
         "applications_open_on": iso_date(o["opens_on"]),

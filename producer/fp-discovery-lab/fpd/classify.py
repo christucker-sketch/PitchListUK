@@ -44,6 +44,9 @@ NAME_JUNK = re.compile(
     r"ville\s+(?:de\s+|d['’]|du\s+)?[\w'’\- ]+|commune\s+[\w'’\- ]+|[\w'’\- ]+\s\(\d{2,3}\)|[\w'’\- ]+\s-\s\d{5})$",
     re.I,
 )
+# Page-section words that appear as a title segment ("Join Us | Meadows Farmers Market"): never part of a name.
+PAGE_SEGMENT = re.compile(r"^(?:join\s+us|visit\s+us|shop|calendar|location|hours|news|events?|our\s+vendors|meet\s+our\s+vendors|"
+                          r"vendor\s+(?:info|fees|faqs?|signup|sign[\s-]up)|become\s+a\s+vendor|for\s+vendors|how\s+to\s+become\s+a\s+vendor)$", re.I)
 ORGANISER_RE = re.compile(
     r"\b(?:organi[sz]ed|hosted|presented|run|produced|managed|brought\s+to\s+you)\s+by\s+(?:the\s+)?"
     r"([A-Z][\w&'.]*(?:\s+(?:of|and|&|the|for|[A-Z][\w&'.-]*)){0,7})"
@@ -100,9 +103,11 @@ def derive_name(page: Page, evs: list[dict], hint_name: str | None = None) -> st
     for src in (page.og.get("title"), page.title, page.h1, page.og.get("site_name")):
         src = clean_name(src)
         if src:
-            for seg in [src] + SEPARATORS.split(src):
+            segs = [clean_name(x) for x in SEPARATORS.split(src)]
+            tainted = len(segs) > 1 and any(x and (NAME_JUNK.match(x) or PAGE_SEGMENT.match(x)) for x in segs)
+            for seg in ([] if tainted else [src]) + segs:
                 seg = clean_name(seg)
-                if seg and 3 <= len(seg) <= 120 and not NAME_JUNK.match(seg):
+                if seg and 3 <= len(seg) <= 120 and not NAME_JUNK.match(seg) and not PAGE_SEGMENT.match(seg):
                     cands.append(seg)
     if not cands:
         return hint_name
@@ -359,7 +364,15 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
     closed = [m for rx in L.CLOSED_RE for m in [rx.search(body)] if m]
     if re.search(r"/closedform\b", url):
         closed.append(re.search(r"closedform", url))
-    opened = [m for rx in L.OPEN_RE for m in [rx.search(body)] if m]
+    # "we are no longer accepting applications" is a closure, not an open signal (15 Oct: Monroe Street FM was exported
+    # as open because "accepting applications" matched inside the closure sentence).
+    _neg = re.compile(r"(?:\bno\s+longer|\bnot(?:\s+(?:currently|yet))?|n['’]t|\bnever|\bstopped)\s+(?:\w+\s+)?$", re.I)
+    opened = [m for rx in L.OPEN_RE for m in rx.finditer(body)
+              if not _neg.search(body[max(0, m.start() - 30): m.start()]) and not any(c.start() <= m.start() < c.end() for c in closed)]
+    _first: dict = {}
+    for m in opened:
+        _first.setdefault(m.re, m)                                          # one (first usable) match per pattern
+    opened = list(_first.values())
     # "not accepting new applications for jewellery, pottery or baked goods" / "some categories are full"
     # closes only some categories; it is not a closure of the opportunity.
     def _partial(m):
