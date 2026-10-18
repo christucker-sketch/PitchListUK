@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-17T00:30:36+01:00 — listing read release LIVE; storage/French dependencies explicit** (Europe/London).
-State: **Billing DONE; measured performance checkpoint delivered (remaining global latency OPEN). Storage48/72h and French proof WAITING for actual time/delivery; upcoming/Save DEFERRED. Public/sign-in/Checkout/recovery on.**
+Author: Codex. Updated: **2026-10-18T15:35:35+01:00 — live read-only check; actual storage verdict complete; French delivery confirmed** (Europe/London).
+State: **Billing DONE; performance checkpoint stable/global follow-up OPEN; V3-022 timed storage verdict DONE with efficiency follow-up; V3-020 French proof ACTIVE against 29 delivered entities; upcoming/Save DEFERRED. Public/sign-in/Checkout/recovery on; paid paused.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,16 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Live return check — 2026-10-18T15:35:35+01:00
+
+[Fresh measurements / exact resume](../../docs/findpitches-v3-live-checkin-2026-10-18.md) / [aggregate evidence](../../operations/findpitches-v3/reports/live-checkin-2026-10-18.json). At15:30:37London **1,701 READY** (US1532/GB159/NZ5/AU4/CA1/FR0), net−76/−4.3% vs17Oct00:27 (US−74/GB−2). No gross withdrawal/addition or record-level cause reconstruction performed. Public200, LIVECheckout/recovery enabled, billingwebhooks0; single homepage0.554s/UKAPI0.499s/globalhome1.324s observations. No new mail/payment journey; prior owned acceptance and519-test runtime baseline retained, not rerun.
+
+**V3-022 timed verdict DONE:** actual48/72h endpoints and312samples/77.75h measured; D1 4.404GB/44.04%, raw210.05MBday/event-excluded203.10MBday. D1+R2 acceptable now; growth needs efficiency work before scaling. At raw observed rate70%warning12.4days/97%stop25.2days are scenarios, not forecasts. Full logical table comparison included. No migration/deletion started.
+
+**V3-020 French proof ACTIVE:** 29accepted producerIDs/29commercial entities/93versions;0latestrejected/0customerREADY,2tests excluded. Transport works; all29missingapplicationproof, generic profiles20unverified/9quarantine. Source-specific organiser/council/form/PDF proof next; no unsupported facts/promotion. Prior WAITINGfirstdelivery statements superseded.
+
+Pi cadence/freshness pass; latest contact15:18:58London; **912pending rechecks/0fresh-ackeligible**,2186acks24h. Need producer fresh evidence, not stale clearing; growing backlog and catalogue withdrawal attribution remain commercial concerns. Corejobs0due/leased/dead/stale. Paidmanualpause/bulkoff/noV3usagerows16–18Oct; account-wideSerpernotaudited. Unusedsourcepublication/projections/queue0. No source/identity/runtime/provider/Pi/V2/PitchList changes or full historical custody audit. RemainingglobalperformanceOPEN; upcomingSaveDEFERRED.
 
 ## Final continuation checkpoint — 2026-10-17T00:30:36+01:00
 

@@ -1,0 +1,655 @@
+{
+  "schema": "findpitches-v3-live-checkin-v1",
+  "completed_at": "2026-10-18T14:34:39.506498+00:00",
+  "inventory": {
+    "as_of": "2026-10-18T14:30:37.752Z",
+    "customer_ready": 1701,
+    "by_country": {
+      "GB": 159,
+      "US": 1532,
+      "CA": 1,
+      "AU": 4,
+      "IE": 0,
+      "NZ": 5,
+      "SG": 0,
+      "HK": 0,
+      "FR": 0
+    },
+    "baseline_as_of": "2026-10-16T23:27:27.000Z",
+    "baseline_ready": 1777,
+    "net_change": -76,
+    "net_country_change": {
+      "US": -74,
+      "GB": -2
+    },
+    "gross_arrivals_removals_attributed": false,
+    "decline_cause_attributed": false
+  },
+  "public_runtime": {
+    "as_of": "2026-10-18T14:32:11.270Z",
+    "config": {
+      "V3_ACCOUNT_RECOVERY_ENABLED": "true",
+      "V3_CHECKOUT_ENABLED": "live",
+      "V3_CUSTOMER_MODE": "production_public",
+      "V3_PUBLIC_ENABLED": "true",
+      "V3_STRIPE_MODE": "live"
+    },
+    "secretsPresent": [
+      {
+        "name": "V3_EMAIL_API_KEY",
+        "bound": true
+      },
+      {
+        "name": "STRIPE_SECRET_KEY",
+        "bound": true
+      },
+      {
+        "name": "STRIPE_WEBHOOK_SECRET",
+        "bound": true
+      }
+    ],
+    "pending_webhooks": 0
+  },
+  "public_probes": {
+    "as_of": "2026-10-18T14:32:12.325Z",
+    "probes": [
+      {
+        "route": "/",
+        "status": 200,
+        "seconds": 0.554,
+        "html": true
+      },
+      {
+        "route": "/api/v3/opportunities?market=GB&page_size=1",
+        "status": 200,
+        "seconds": 0.499,
+        "total": 159
+      }
+    ]
+  },
+  "global_home_seconds": 1.324,
+  "source_guards": {
+    "as_of": "2026-10-18T14:31:15.615Z",
+    "guards": {
+      "source_publication": 0,
+      "source_projections": 0,
+      "source_publication_queue": 0,
+      "due": 0,
+      "leased": 0,
+      "dead": 0,
+      "stale": 0,
+      "bulk": 0,
+      "paid_paused": 1
+    },
+    "spend": []
+  },
+  "producer": {
+    "as_of": "2026-10-18T14:31:08.378Z",
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": "2026-10-18T14:18:58.683Z",
+    "expected_discovery_interval_seconds": 10800,
+    "expected_export_lag_seconds": 3600,
+    "recent_poll_intervals_seconds": [
+      925.956,
+      924.65,
+      921.049
+    ],
+    "host_recently_contacting": true,
+    "cadence_verified": true,
+    "freshness_warning": false,
+    "immutable_receipts": 27086,
+    "producer_ids": 2361,
+    "last_new_receipt_at": "2026-10-18T11:44:48.872Z",
+    "source_last_checked": "2026-10-18T11:34:24Z",
+    "rechecks": {
+      "pending_entities": 912,
+      "fresh_evidence_ack_eligible": 0,
+      "by_country": [
+        {
+          "market": "AU",
+          "pending_entities": 103,
+          "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "CA",
+          "pending_entities": 12,
+          "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "FR",
+          "pending_entities": 8,
+          "oldest_requested_at": "2026-10-17T23:56:54.912Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "GB",
+          "pending_entities": 111,
+          "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "IE",
+          "pending_entities": 3,
+          "oldest_requested_at": "2026-10-18T11:57:28.010Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "NZ",
+          "pending_entities": 15,
+          "oldest_requested_at": "2026-10-12T10:57:45.276Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "US",
+          "pending_entities": 660,
+          "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+          "fresh_evidence_ack_eligible": 0
+        }
+      ],
+      "acknowledged_last_24h": 2186,
+      "latest_acknowledgement": "2026-10-18T12:01:08.571Z",
+      "obsolete_requests_resolved": 2,
+      "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+      "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+      "pagination_supported": true,
+      "oldest_request_preserved": true
+    },
+    "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+  },
+  "france": {
+    "schema": "findpitches-v3-market-proof-report-v1",
+    "as_of": "2026-10-18T14:31:08.312Z",
+    "market": "FR",
+    "state": "intake_observed",
+    "immutable_receipts": [
+      {
+        "producer_name": "independent-structured",
+        "validation_status": "accepted",
+        "receipts": 93,
+        "producer_ids": 29,
+        "first_received_at": "2026-10-16T23:56:19.046Z",
+        "last_received_at": "2026-10-18T11:44:48.872Z"
+      }
+    ],
+    "latest_delivery_units": {
+      "independent-structured": {
+        "accepted": 29,
+        "rejected": 0
+      }
+    },
+    "validation_reason_counts": {},
+    "commercial_entities": 29,
+    "excluded_test_entities": 2,
+    "excluded_other_entities": 0,
+    "current_customer_ready": 0,
+    "ready_by_origin_producer": {},
+    "unattributed_ready_entities": 0,
+    "proof_status": {
+      "unverified": 20,
+      "quarantine": 9
+    },
+    "verification": {
+      "verified": 0,
+      "awaiting_current": 21,
+      "watch": 4,
+      "quarantined": 12,
+      "blocked": 13,
+      "stale_or_expired": 1,
+      "missing_application_proof": 29
+    },
+    "held_reason_counts": {
+      "event_content_scope_missing": 5,
+      "awaiting_current_verification": 21,
+      "unresolved_conflict": 9,
+      "single_event_source_data_missing": 14,
+      "event_identity_not_bound_to_page": 1,
+      "source_http_403": 1,
+      "platform_index_is_not_an_opportunity": 6,
+      "editorial_page_is_discovery_only": 2,
+      "invalid_structured_source_data": 1,
+      "stale_or_expired": 1
+    },
+    "source_families": {
+      "generic": {
+        "entities": 29,
+        "customer_ready": 0
+      }
+    },
+    "source_domains": {
+      "reichshoffen.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "voreppe.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "salon-cheval-angers.com": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "kilstett.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "laverpilliere.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "artilect.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "gamefair.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "ville-gannat.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "salonhabitatdeco-nancy.com": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "ville-montivilliers.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "plouarzel.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "lesbrocantes71.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "seignosse.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "agrimax-expo.com": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "comitedesfetesorry.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "fr.marchedenoel.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "hochstatt-asso.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "ville-gap.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "podensac.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "saint-genis-pouilly.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "sipac-amiens.com": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "docs.google.com": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "vintage.production-directe.com": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "villefontaine.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "festivaldurire-rotaryb2b.com": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "saint-marcellin.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "eckwersheim.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "marchegourmandoccitanie.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      },
+      "renaze53.fr": {
+        "entities": 1,
+        "customer_ready": 0
+      }
+    },
+    "transport": {
+      "last_authenticated_poll": "2026-10-18T14:18:58.683Z",
+      "recent_poll_intervals_seconds": [
+        925.956,
+        924.65,
+        921.049
+      ],
+      "last_import_batch": {
+        "received_at": "2026-10-18T11:44:58.981Z",
+        "records": 7,
+        "accepted": 7,
+        "inserted": 0,
+        "duplicates": 7,
+        "rejected": 0,
+        "source_last_checked": "2026-10-18T06:05:15Z"
+      },
+      "scope": "Global structured transport; an import batch is not proof that a complete FR export was delivered."
+    },
+    "read_only": true,
+    "original_source_or_identity_writes": 0,
+    "source_gets": 0,
+    "serper_queries": 0,
+    "interpretation": "Receipts are immutable versions; latest delivery units use transport time, not proof/source-clock authority. Customer READY comes from the current scoped catalogue after producer-policy, identity, proof and expiry gates. These are sequential live reads, not an atomic database snapshot; not_in_current_customer_snapshot can reflect producer-policy/time gates or concurrent changes and is not an inferred root cause. Verification flags/reasons can overlap. No arrival, READY gain or source-fetch execution is inferred from a producer switch.",
+    "customer_snapshot_as_of": "2026-10-18T14:31:08.500Z",
+    "producer_policy_withheld": 0,
+    "private_catalogue_gets": 1,
+    "completed_at": "2026-10-18T14:31:15.991Z"
+  },
+  "source_storage": {
+    "schema": "findpitches-v3-storage-growth-v1",
+    "started_at": "2026-10-18T14:32:42.234Z",
+    "scope": "V3 source/evidence D1 only; customer/auth/billing database excluded",
+    "capacity": {
+      "available": true,
+      "file_size_bytes": 4404322304,
+      "conservative_cap_bytes": 10000000000,
+      "protective_stop_bytes": 9700000000,
+      "percent_used": 44.04,
+      "remaining_bytes": 5595677696,
+      "state": "normal",
+      "source_growth_allowed": true,
+      "warning_thresholds_percent": [
+        70,
+        80,
+        90,
+        97
+      ]
+    },
+    "window": {
+      "available": true,
+      "first": {
+        "observed_at": "2026-10-15T08:45:00.000Z",
+        "file_size_bytes": 3723821056
+      },
+      "last": {
+        "observed_at": "2026-10-18T14:30:00.000Z",
+        "file_size_bytes": 4404285440
+      },
+      "samples": 312,
+      "elapsed_hours": 77.75,
+      "physical_delta_bytes": 680464384,
+      "net_bytes_per_day": 210046883.80707395,
+      "includes_large_reclaim": false,
+      "coverage_24h": true,
+      "coverage_48h": true,
+      "coverage_72h": true,
+      "linear_scenario_days_to_70_percent": 12.357611067365822,
+      "linear_scenario_days_to_97_percent": 25.21188412804081,
+      "interpretation": "Observed net physical change in the stated sample interval. Linear headroom scenarios are not steady-state forecasts; missing future coverage is not measured. Reclaim windows have no growth projection."
+    },
+    "change_excluded_window": {
+      "available": true,
+      "retained_intervals": 305,
+      "retained_hours": 76.25,
+      "retained_net_bytes": 645259264,
+      "retained_net_bytes_per_day": 203097997.84918034,
+      "retained_large_reclaim": false,
+      "declared_change_events": [
+        {
+          "id": "0025_structured_customer_policy_index.sql",
+          "observed_at": "2026-10-16T18:25:52.729Z",
+          "measured_window_delta_bytes": 3796992,
+          "uncertainty_minutes": 15,
+          "evidence": "performance-readiness-2026-10-16.json"
+        },
+        {
+          "id": "0026_customer_proof_heads.sql",
+          "observed_at": "2026-10-16T18:56:23.730Z",
+          "measured_window_delta_bytes": 8589312,
+          "uncertainty_minutes": 15,
+          "evidence": "proof-read-performance-2026-10-16.json"
+        },
+        {
+          "id": "0027_customer_selection_heads.sql",
+          "observed_at": "2026-10-16T19:00:39.809Z",
+          "measured_window_delta_bytes": 8347648,
+          "uncertainty_minutes": 15,
+          "evidence": "proof-read-performance-2026-10-16.json"
+        }
+      ],
+      "measured_change_window_bytes": 20733952,
+      "excluded_intervals": [
+        {
+          "from": "2026-10-16T18:00:00.000Z",
+          "to": "2026-10-16T18:15:00.000Z",
+          "hours": 0.25,
+          "net_bytes": 2580480,
+          "change_ids": [
+            "0025_structured_customer_policy_index.sql"
+          ]
+        },
+        {
+          "from": "2026-10-16T18:15:00.000Z",
+          "to": "2026-10-16T18:30:00.000Z",
+          "hours": 0.25,
+          "net_bytes": 6402048,
+          "change_ids": [
+            "0025_structured_customer_policy_index.sql"
+          ]
+        },
+        {
+          "from": "2026-10-16T18:30:00.000Z",
+          "to": "2026-10-16T18:45:00.000Z",
+          "hours": 0.25,
+          "net_bytes": 2924544,
+          "change_ids": [
+            "0025_structured_customer_policy_index.sql",
+            "0026_customer_proof_heads.sql"
+          ]
+        },
+        {
+          "from": "2026-10-16T18:45:00.000Z",
+          "to": "2026-10-16T19:00:00.000Z",
+          "hours": 0.25,
+          "net_bytes": 11214848,
+          "change_ids": [
+            "0026_customer_proof_heads.sql",
+            "0027_customer_selection_heads.sql"
+          ]
+        },
+        {
+          "from": "2026-10-16T19:00:00.000Z",
+          "to": "2026-10-16T19:15:00.000Z",
+          "hours": 0.25,
+          "net_bytes": 10514432,
+          "change_ids": [
+            "0026_customer_proof_heads.sql",
+            "0027_customer_selection_heads.sql"
+          ]
+        },
+        {
+          "from": "2026-10-16T19:15:00.000Z",
+          "to": "2026-10-16T19:30:00.000Z",
+          "hours": 0.25,
+          "net_bytes": 1568768,
+          "change_ids": [
+            "0027_customer_selection_heads.sql"
+          ]
+        }
+      ],
+      "interpretation": "Entire sampled intervals overlapping declared changes and timestamp uncertainty are excluded once. The remaining net rate is not pure organic attribution or a steady-state forecast. Measured change-window bytes also include concurrent activity and are never simply subtracted from raw growth."
+    },
+    "table_payload_measured": true,
+    "tables": [
+      {
+        "table": "source_facts",
+        "measured_at": "2026-10-18T14:32:51.307Z",
+        "records": 397218,
+        "logical_payload_bytes": 727484481,
+        "column_bytes": {
+          "id": 22974705,
+          "record_id": 17477757,
+          "field_name": 5099730,
+          "value_json": 9720759,
+          "source_url": 21641711,
+          "evidence_json": 337407086,
+          "provenance_json": 303629501,
+          "created_at": 9533232
+        },
+        "baseline_as_of": "2026-10-16T09:16:38.793Z",
+        "records_delta": 66440,
+        "logical_payload_delta": 110905638
+      },
+      {
+        "table": "producer_records",
+        "measured_at": "2026-10-18T14:32:52.958Z",
+        "records": 41240,
+        "logical_payload_bytes": 360461963,
+        "column_bytes": {
+          "id": 1814575,
+          "producer_name": 813758,
+          "producer_type": 455217,
+          "producer_record_id": 1273849,
+          "environment": 246482,
+          "market": 82476,
+          "content_hash": 2639360,
+          "raw_json": 207145142,
+          "normalized_json": 144588797,
+          "validation_status": 329920,
+          "errors_json": 82627,
+          "received_at": 989760
+        },
+        "baseline_as_of": "2026-10-16T09:16:39.764Z",
+        "records_delta": 5678,
+        "logical_payload_delta": 38955664
+      },
+      {
+        "table": "source_verifications",
+        "measured_at": "2026-10-18T14:32:58.141Z",
+        "records": 63344,
+        "logical_payload_bytes": 275632889,
+        "column_bytes": {
+          "id": 2787136,
+          "entity_id": 2280384,
+          "document_id": 2787136,
+          "verifier_version": 950160,
+          "status": 570582,
+          "report_json": 263216979,
+          "checked_at": 1520256,
+          "expires_at": 1520256
+        },
+        "baseline_as_of": "2026-10-16T09:16:41.222Z",
+        "records_delta": 16339,
+        "logical_payload_delta": 58546590
+      },
+      {
+        "table": "jobs",
+        "measured_at": "2026-10-18T14:32:59.818Z",
+        "records": 312971,
+        "logical_payload_bytes": 81206484,
+        "column_bytes": {
+          "id": 11267002,
+          "stage": 2739464,
+          "dedupe_key": 20608275,
+          "payload_json": 21576635,
+          "status": 2481196,
+          "available_at": 7511304,
+          "lease_until": 0,
+          "lease_token": 0,
+          "last_error": 0,
+          "created_at": 7511304,
+          "updated_at": 7511304
+        },
+        "baseline_as_of": "2026-10-16T09:16:41.899Z",
+        "records_delta": 73700,
+        "logical_payload_delta": 19635437
+      },
+      {
+        "table": "source_documents",
+        "measured_at": "2026-10-18T14:33:08.696Z",
+        "records": 67908,
+        "logical_payload_bytes": 1753243033,
+        "column_bytes": {
+          "id": 2987952,
+          "source_url": 3913383,
+          "content_hash": 4134080,
+          "fetched_at": 1629792,
+          "document_json": 1740577826
+        },
+        "baseline_as_of": "2026-10-16T09:16:50.491Z",
+        "records_delta": 16573,
+        "logical_payload_delta": 12246722
+      }
+    ],
+    "read_only": true,
+    "source_or_customer_mutations": 0,
+    "physical_table_index_attribution_available": false,
+    "coverage_due_at": {
+      "24h": "2026-10-16T08:45:00.000Z",
+      "48h": "2026-10-17T08:45:00.000Z",
+      "72h": "2026-10-18T08:45:00.000Z"
+    },
+    "completed_at": "2026-10-18T14:33:08.696Z",
+    "logical_payload_definition": "UTF-8 TEXT/BLOB payload, excluding physical integer cells, B-tree pages and indices; deltas are not physical per-table growth attribution."
+  },
+  "exact_storage_windows": [
+    {
+      "hours": 48.0,
+      "first": {
+        "observed_at": "2026-10-15T08:45:00.000Z",
+        "file_size_bytes": 3723821056
+      },
+      "last": {
+        "observed_at": "2026-10-17T08:45:00.000Z",
+        "file_size_bytes": 4169998336
+      },
+      "physical_delta_bytes": 446177280,
+      "net_bytes_per_day": 223088640.0
+    },
+    {
+      "hours": 72.0,
+      "first": {
+        "observed_at": "2026-10-15T08:45:00.000Z",
+        "file_size_bytes": 3723821056
+      },
+      "last": {
+        "observed_at": "2026-10-18T08:45:00.000Z",
+        "file_size_bytes": 4369846272
+      },
+      "physical_delta_bytes": 646025216,
+      "net_bytes_per_day": 215341738.66666666
+    }
+  ],
+  "verification_scope": {
+    "read_only_live_checks": true,
+    "new_paid_queries": 0,
+    "source_or_identity_writes": 0,
+    "runtime_or_provider_configuration_changes": 0,
+    "new_mail_or_billing_objects": 0,
+    "v2_or_pitchlist_changes": 0,
+    "historical_custody_audit_repeated": false,
+    "full_test_suite_repeated": false,
+    "account_wide_serper_audit_performed": false,
+    "note": "Normal public request rate-limit counters can change. Site/billing enablement and webhook queue were checked; no new sign-in/Checkout/payment/cancellation journey was run."
+  }
+}
