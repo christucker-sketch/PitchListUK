@@ -1,0 +1,192 @@
+{
+  "schema": "findpitches-v3-france-conversion-diagnosis-v1",
+  "published_at": "2026-10-18T21:12:11+01:00",
+  "market_snapshot_as_of": "2026-10-18T20:09:18.962Z",
+  "commercial_entities": 29,
+  "customer_ready": 1,
+  "customer_conversion_percent": 3.45,
+  "source_verified": 3,
+  "source_verified_percent": 10.34,
+  "verified_producer_withheld": 2,
+  "other_unproved": 26,
+  "new_ready_from_this_diagnostic": 0,
+  "case_studies": [
+    {
+      "case": "Angers horse show",
+      "source": "https://www.salon-cheval-angers.com/exposer-au-salon-du-cheval-angers/",
+      "problem": "Selected region is Bretagne and start is 14 November. The event call names Angers and 13\u201315 November 2026.",
+      "supported_correction": "Government commune49007 is region52 (Pays de la Loire); current call starts13November.",
+      "owner_action": "Producer event-scoped date/geography extraction; explicit source-backed correction/reconciliation, not a silent identity reassignment.",
+      "state": "confirmed_field_disagreements"
+    },
+    {
+      "case": "Plouarzel Saveurs & D\u00e9co",
+      "source": "https://www.plouarzel.fr/saveurs-et-deco.html",
+      "problem": "Selected organiser is Google Docs. Official call explicitly says Plouarzel animation organises the24\u201325October2026event.",
+      "supported_correction": "Form service is not event organiser. Preserve the official-page organiser evidence separately from form hosting.",
+      "owner_action": "Producer organiser fallback; V3 Google Forms bundle proof must account for dynamic/disabled static controls without declaring applications open on reachability alone.",
+      "state": "confirmed_organiser_disagreement"
+    },
+    {
+      "case": "La Verpilli\u00e8re Christmas market",
+      "source": "https://www.laverpilliere.fr/evenement/jusquau-20-novembre-reservez-votre-stand-au-marche-de-noel-2026/",
+      "problem": "Selected start is25September, but source describes25September\u201320November as the registration window; the market is6December2026.",
+      "supported_correction": "Keep event date6December and submission deadline20November distinct from registration-window metadata.",
+      "owner_action": "Producer date-role extraction; fresh supported correction through reconciliation. Do not treat the source application-window start as an expired event.",
+      "state": "confirmed_date_role_error"
+    },
+    {
+      "case": "Saint-Marcellin Christmas market",
+      "source": "https://www.saint-marcellin.fr/inscriptions-au-marche-de-noel-2026/",
+      "problem": "Selected title is the generic municipal site name; the source names the Christmas market on19December2026.",
+      "supported_correction": "Extract the named event from scoped article content, not site branding. Current source/route/organiser/geography and identity binding still need proof.",
+      "owner_action": "Producer title extraction and Codex official-call/PDF bundle proof; no inferred event identity or automatic title rewrite.",
+      "state": "confirmed_site_title_contamination"
+    },
+    {
+      "case": "Nancy Habitat D\u00e9co / M\u00e9tiers d\u2019Art / Antiquaires",
+      "source": "https://www.salonhabitatdeco-nancy.com/exposer-au-salon-habitat-deco-metiers-dart-et-antiquaires/",
+      "problem": "Selected location is an incomplete Vand fragment; organiser/end date are absent. A linked2027Calypso candidature form is reachable and has24enabled static controls.",
+      "supported_correction": "Official venue page and event-bound form must supply supported facts. A form is not current event/geography proof by itself.",
+      "owner_action": "Prioritise reusable official-event + Calypso candidature reader; resolve actual locality and dates with source evidence.",
+      "state": "promising_source_requires_complete_proof"
+    },
+    {
+      "case": "March\u00e9 Gourmand d\u2019Occitanie",
+      "source": "https://www.marchegourmandoccitanie.fr/vous-souhaitez-devenir-exposant",
+      "problem": "Selected state is OPEN_NOW and location only Occitanie. The organiser application landing describes a first-contact form; the source call has8enabled form controls and a submit.",
+      "supported_correction": "First contact supports an enquiry route only after binding current event, organiser, location and dates; do not automatically label OPEN_NOW.",
+      "owner_action": "Codex official-event + GL Events enquiry bundle; producer state/field corrections where actually proved.",
+      "state": "promising_enquiry_requires_event_proof"
+    },
+    {
+      "case": "Kilstett and Hochstatt",
+      "source": "See published French source-conversion report",
+      "problem": "Both are source-verified but original producer LOW-confidence gates still withhold them.",
+      "supported_correction": "Inspect genuinely missing required-field/organiser confidence against current evidence; retain original LOW receipts.",
+      "owner_action": "Producer actual correction plus fresh export; no confidence bypass/cache-clock refresh.",
+      "state": "verified_but_producer_withheld",
+      "entities": 2
+    }
+  ],
+  "fresh_source_qualification": {
+    "as_of": "2026-10-18T20:08:10.111Z",
+    "source_requests": 6,
+    "outcomes": [
+      {
+        "name": "nancy-call",
+        "http_status": 200,
+        "reason": null,
+        "hash": "26266f5eb4b5f3c0fee22c7e793333b3b5f035d3fc4a7e0883f34f50e1f43c6c",
+        "forms": 0,
+        "enabled_controls": 0,
+        "has_submit": false,
+        "contains_closed": false,
+        "content_chars": 2270
+      },
+      {
+        "name": "nancy-application",
+        "http_status": 200,
+        "reason": null,
+        "hash": "15e2e1087f8c41f39cd6315dfd552215fba94a6a629f0be15ed6fa7fee13da38",
+        "forms": 1,
+        "enabled_controls": 24,
+        "has_submit": false,
+        "contains_closed": false,
+        "content_chars": 4962
+      },
+      {
+        "name": "nancy-venue",
+        "http_status": 200,
+        "reason": null,
+        "hash": "c9ae5f7f611de9170f9ab619690925841557bd29ccfbecc42375f03f6abaaaca",
+        "forms": 0,
+        "enabled_controls": 0,
+        "has_submit": false,
+        "contains_closed": false,
+        "content_chars": 3238
+      },
+      {
+        "name": "gourmand-call",
+        "http_status": 200,
+        "reason": null,
+        "hash": "b2d2247447235f9c9f997ebd786ec043e6b36bc3e65a8be092a8b852ea5cfb54",
+        "forms": 1,
+        "enabled_controls": 8,
+        "has_submit": true,
+        "contains_closed": false,
+        "content_chars": 1181
+      },
+      {
+        "name": "gourmand-application",
+        "http_status": 200,
+        "reason": null,
+        "hash": "d88ce07a3141cfa8054ea69b73d82e82d6c471e27ad180ef3ee0f2f7bd16179f",
+        "forms": 0,
+        "enabled_controls": 0,
+        "has_submit": false,
+        "contains_closed": false,
+        "content_chars": 219
+      },
+      {
+        "name": "plouarzel-application",
+        "http_status": 200,
+        "reason": null,
+        "hash": "ee800d3703039d2e3d9e31c6db1041a5635a92b75386c809212a29ce54973939",
+        "forms": 1,
+        "enabled_controls": 0,
+        "has_submit": false,
+        "contains_closed": false,
+        "content_chars": 1334
+      }
+    ]
+  },
+  "independent_commune_checks": [
+    {
+      "name": "Angers",
+      "matches": [
+        {
+          "nom": "Angers",
+          "code": "49007",
+          "codeDepartement": "49",
+          "codeRegion": "52",
+          "_score": 1
+        }
+      ]
+    },
+    {
+      "name": "Plouarzel",
+      "matches": [
+        {
+          "nom": "Plouarzel",
+          "code": "29177",
+          "codeDepartement": "29",
+          "codeRegion": "53",
+          "_score": 1
+        }
+      ]
+    },
+    {
+      "name": "La Verpilli\u00e8re",
+      "matches": [
+        {
+          "nom": "La Verpilli\u00e8re",
+          "code": "38537",
+          "codeDepartement": "38",
+          "codeRegion": "84",
+          "_score": 0.05974729399996175
+        }
+      ]
+    }
+  ],
+  "additional_direct_source_requests": 9,
+  "source_request_ceiling": 20,
+  "serper_queries": 0,
+  "original_fact_writes": 0,
+  "identity_writes": 0,
+  "producer_host_changes": 0,
+  "runtime_changes": 0,
+  "tests": "No implementation change; report arithmetic, case/source binding, request ceiling and credential/contact exclusion validated. Prior541-test runtime baseline not rerun.",
+  "interpretation": "Not every unproved record is a bad source. Genuine calls can fail because of producer field errors, missing scoped multi-document proof, or existing source/identity/confidence gates. Sample case studies are not a census of recoverable READY, and forms are candidate routes rather than proof of an open application.",
+  "next_priority": "Use evidence-backed producer corrections and reusable official-event/application bundles. Do not promise scale from two held calls or rerun the same generic verifier."
+}

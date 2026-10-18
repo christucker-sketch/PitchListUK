@@ -1,6 +1,6 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-18T17:27:42+01:00 — French conversion and renewal recovery deployed** (Europe/London).
+Author: Codex. Updated: **2026-10-18T21:12:11+01:00 — French conversion defects and source-family handover** (Europe/London).
 State: **V3-031 bounded checkpoint DONE; V3-020 French proof ACTIVE; V3-032 actual 24/48h measurement BLOCKED on elapsed time. Billing DONE; remaining global performance OPEN; upcoming/Save DEFERRED. Public/Checkout on; paid paused.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
@@ -9,6 +9,12 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## France conversion diagnosis delivered — 2026-10-18T21:12:11+01:00
+
+[Source-backed cases and exact next work](../../docs/findpitches-v3-france-conversion-diagnosis-2026-10-18.md) / [aggregate evidence](../../operations/findpitches-v3/reports/france-conversion-diagnosis-2026-10-18.json). At21:09London FR29entities/3sourceverified/**1customerREADY(3.45%)**, unchanged. Do not attribute the26unproved solely to unsuitable sources: Angers wrongregion/start, Plouarzel organiserGoogleDocs, LaVerpillière applicationwindow mistakeneventdate, SaintMarcellin site-title contamination are concrete extraction problems. Eight named cases include2LOWholds and promisingNancy/GL Eventsenquiry; not8guaranteedrecoveries.
+
+9/20additionalfreeGETs: Nancy currentCalypso24enabledcontrols, GLfirst-contactroute (notOPENproof), GoogleFormsstaticdisabledcontrols (notreadyproof),3officialcommunes.0Serper/imports/promotions/runtime/Pi/producer/source/identitychanges. No fullsuite rerun; prior541baseline retained. V3-033DONE. **V3-020next:** real producer corrections and reusable official-event/application bundles. Existingproducer100/directform95/official90/extracted60selection bars arbitrary repair; no global authority bump/LOWbypass/overwrite. Documented audited additive correction need remains open. V3-032 measured24/48hstilltime-dependent. Public/billing/V2/PitchList untouched.
 
 ## French conversion feedback / source diagnosis claimed — 2026-10-18T21:07:33+01:00
 
