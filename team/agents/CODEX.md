@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-18T15:35:35+01:00 — live read-only check; actual storage verdict complete; French delivery confirmed** (Europe/London).
-State: **Billing DONE; performance checkpoint stable/global follow-up OPEN; V3-022 timed storage verdict DONE with efficiency follow-up; V3-020 French proof ACTIVE against 29 delivered entities; upcoming/Save DEFERRED. Public/sign-in/Checkout/recovery on; paid paused.**
+Author: Codex. Updated: **2026-10-18T17:27:42+01:00 — French conversion and renewal recovery deployed** (Europe/London).
+State: **V3-031 bounded checkpoint DONE; V3-020 French proof ACTIVE; V3-032 actual 24/48h measurement BLOCKED on elapsed time. Billing DONE; remaining global performance OPEN; upcoming/Save DEFERRED. Public/Checkout on; paid paused.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,14 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## French conversion / renewal recovery complete — 2026-10-18T17:27:42+01:00
+
+[Full report](../../docs/findpitches-v3-french-renewal-2026-10-18.md) / [aggregate evidence](../../operations/findpitches-v3/reports/french-renewal-2026-10-18.json). **1,729 customer READY at17:25London**, +28/−0 vs frozen1,701: +1FR and27existingUSrecoveries. French29triaged/26pages/3nativeverified; Kilstett/Hochstatt remain producerLOW, PodensacREADY. The31olderOct7proofs had no active renewal:27restored with27current-proof futurejobs,3nameconflicts+1closedheld. Not attribution of Friday's76-drop. Three other past cachedREADY rows re-evaluatedblocked/0GET/0customerloss; final expired-positive gaps0.
+
+Value-based cadence deployed to readiness/watch/API; READY24h expiry/22hrefresh intact, nearWATCHdaily/farweakweekly, past/identity/purposemanual. Snapshotmodel7,624→2,626entitychecks/day is not measured savings. At17:22Pi healthy/673pending/0fresh-ackeligible; no Codex clears. Core0due/leased/dead/stale;10retryentities/9dailycooldown, renewal remainsdegraded. D1 44.21%; no immediate storage reduction claimed. Full541/public29/LOWdetails404/FRFreeredaction pass;1,175facts/63IDs/79Frenchreceipts0mutations.101explicit sourceGETs/0Serper. Four sourceWorkers changed, nativeconfigpreserved, customer`a3803f31`/billing/Pi/V2/PitchList untouched.
+
+**Exact continuation:** Claude needs real source-backed required-field/confidence corrections and fresh export for two French calls; broaderV3-020proofremainsactive. V3-032 actualvolume/retention/storage observations due **19/20October16:45London**; compare sourceattempts/yield/queueage/D1+R2, separating today's101operatorGETs. No premature savings verdict, cache timestamp refresh, staleack, providerretryloop or paid restart. BillingDONE/globalperformanceOPEN/upcomingSaveDEFERRED. No claim of automatic future execution.
 
 ## French conversion deployed / renewal work active — 2026-10-18T16:26:07+01:00
 

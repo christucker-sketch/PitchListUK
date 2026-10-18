@@ -1,0 +1,259 @@
+{
+  "schema": "findpitches-v3-french-renewal-v1",
+  "published_at": "2026-10-18T17:27:42+01:00",
+  "customer_snapshot": {
+    "as_of": "2026-10-18T16:25:06.137Z",
+    "ready": 1729,
+    "ready_by_country": {
+      "US": 1559,
+      "NZ": 5,
+      "GB": 159,
+      "AU": 4,
+      "FR": 1,
+      "CA": 1
+    },
+    "baseline_ready": 1701,
+    "added": 28,
+    "removed": 0,
+    "gains": {
+      "FR": 1,
+      "US": 27
+    },
+    "definition": "Current customer catalogue after all source, revision, expiry, producer-confidence and identity gates; distinct application opportunities, not necessarily distinct festivals."
+  },
+  "french": {
+    "as_of": "2026-10-18T15:18:47.581Z",
+    "entities_triaged": 29,
+    "original_source_pages_inspected": 26,
+    "native_source_targets": 3,
+    "source_verified": 3,
+    "customer_ready_gained": 1,
+    "producer_low_confidence_withheld": 2,
+    "other_unproved_entities": 26,
+    "direct_source_requests": 61,
+    "direct_request_ceiling": 120,
+    "native_requests_included": 12,
+    "remaining_blockers": "Producer confidence/required-field proof for two verified calls; missing single-event/application proof, identity conflicts, index/editorial/wrong-purpose pages and passed/full editions elsewhere. Flags overlap."
+  },
+  "expired_positive_recovery": {
+    "as_of": "2026-10-18T16:13:08.975Z",
+    "existing_entities_checked": 31,
+    "customer_ready_recovered": 27,
+    "title_disagreement_quarantined": 3,
+    "closed_or_passed_deadline_quarantined": 1,
+    "direct_source_requests": 31,
+    "recovered_with_current_proof_refresh_job": 27,
+    "old_source_check_date": "2026-10-07",
+    "attribution": "These old renewal gaps predate Friday; no claim that they caused the 17-to-18 October 76-record decline.",
+    "recovered_entity_sha256": [
+      "08f2f106c2dc2427aeb3a0a3edb6aa234340d6717147278bfcddeb635a4fd6eb",
+      "15a140db2b4596cdc56e6fa26e43af621ce9fd634e5191192cab2e1c0d5571c3",
+      "1f64fd292f6ac387e9163f085ae59f7b6671acc8180420c2844130bad77df581",
+      "384d44ddc70c065ddeea8ea17e0fe0155173d80145f3d11bac79cb6fedd16f81",
+      "41ce5be4bf956f808658eba8d1e894bc4d76e62918a940f12868cb74baca2284",
+      "64017d4984c25afb411e4f1a3bc1e3efbe2570bc35af224c4cb75c2f78b351cd",
+      "67bd1bb0d5017d6a67a2ad1ebd9bbbac1a24a038afc5a95a2e50b99767b54f23",
+      "688548a6661b6760bf5d0522ca5715e15c51405e5c1a6a48dabc5069a8249a91",
+      "6ead84bf9369f99df57912f687f558067b51c9e1ec2de530e8078384125977e0",
+      "7788ae955f56388fa01cc0b194ce630c5ce53f148d834ec9c35a2b4bf3d28128",
+      "809858e85ff43de36b98480a506c7ee23295b572543f0426471e44764884f250",
+      "80d1dc30b8af8bc5d42444418e9facd4c33f47f7ba719aa0f854ee49aad5197d",
+      "818f6ddbb0230ca2c69bb66817a937bc98f7cfa5bee803bb46dc460f3ef237d8",
+      "835158d351f87105d0c17b9322199bb7adcde95188ff3e03d80f6a66cf8ccc69",
+      "89b5bee7255f6ddc022a2efce717ab8f50e4d9002ae75c8faa04ebd556f372b4",
+      "93b297fd11d204b5bcaaad38e4f1ab5c9a615e814e53b59069db3adb274d78d8",
+      "9680435e22d67cd9a3c5f6ffa68d03c116e1867a42832540d3ed211d26346fb9",
+      "96dbf9cc2962772ef341bf5a73a33ae55324caaab08d30709671a4408140bbed",
+      "a24f8249b25da453f52f09b7165c7a8158747ddc045acc0a66725a07f86517bd",
+      "a55f326736c0d0cadf4a263a3d60ebabe9ce2fdd4ee959638192fe74bb157259",
+      "b874df3370a34c638fc995df04c5ab1294a3766528b9ade1c4337be22c29d048",
+      "ee1cbe14b634d40de0d109498967b73ffda855b128c27dd7614709b83ef9050d",
+      "ef25d1e43689743dce4ab0f363fd82dbdc2cd56105715e8594d0f1c652dd728e",
+      "f0c7406bbb061aacfba435f958f1e6631a66810e110a9cb3af98416df04ca493",
+      "f2f7fa78f67e6838574245569217aa304b7671acb73c74092b063c4d0ab1d6ad",
+      "f585dafc6b03ae967e4c06b6d954edc7d408ac53db3677aa39243e8c40cdd8fb",
+      "fad14716791bdc94a9839c277f8b9ea781fa92c69ca8b3f16af23547fc1486c3"
+    ],
+    "cohort_fingerprint_interpretation": "SHA-256 of existing entity ID for reproducible later retention checks; no original fields, contact details or raw exports included."
+  },
+  "past_cached_ready_review": {
+    "as_of": "2026-10-18T16:24:45.489Z",
+    "past_cached_ready_entities_reviewed": 3,
+    "current_status": [
+      {
+        "status": "blocked",
+        "n": 3
+      }
+    ],
+    "original_facts_compared": 36,
+    "identities_compared": 3,
+    "source_mutations": 0,
+    "identity_changes": 0,
+    "source_requests": 0,
+    "serper_queries": 0
+  },
+  "renewal_policy": {
+    "deployed": true,
+    "version": "source-watch-value-v1",
+    "ready_proof_ttl_unchanged": true,
+    "ready_early_refresh_hours": 2,
+    "nonready_near_event_days": 14,
+    "nonready_near_recheck_hours": 24,
+    "nonready_other_recheck_hours": 168,
+    "manual_review_never_acknowledged": true,
+    "post_release_policy_jobs_observed": 6,
+    "post_release_job_observation_as_of": "2026-10-18T15:44:47.413Z",
+    "scenario": {
+      "before_entity_rechecks_per_day": 7623.727272727273,
+      "after_entity_rechecks_per_day": 2626.012987012987,
+      "review_or_new_evidence_entities": 2590,
+      "not_yet_assessed": 0,
+      "interpretation": "Policy scenario for these states, excluding unassessed entities. Entity rechecks are not HTTP requests; supporting fetches/retries vary. This is not measured post-deployment saving or an inventory/expiry change."
+    },
+    "measured_savings_available": false,
+    "next_measurements_london": [
+      "2026-10-19T16:45:00+01:00",
+      "2026-10-20T16:45:00+01:00"
+    ]
+  },
+  "producer": {
+    "as_of": "2026-10-18T16:22:26.895Z",
+    "last_authenticated_poll": "2026-10-18T16:15:56.804Z",
+    "cadence_verified": true,
+    "freshness_warning": false,
+    "pending_rechecks": 673,
+    "fresh_evidence_ack_eligible": 0,
+    "acknowledged_last_24h": 2184,
+    "requests_cleared_by_this_work": 0,
+    "earlier_interval_warning_seconds": 1465.857,
+    "interpretation": "Latest cadence is healthy; one earlier 24.4-minute interval was observed. Pending count changes reflect autonomous producer/runtime activity, not Codex acknowledgement."
+  },
+  "operations": {
+    "core_as_of": "2026-10-18T16:25:08.157Z",
+    "core": {
+      "due": 0,
+      "leased": 0,
+      "dead": 0
+    },
+    "stale_leases_at_status": 0,
+    "expired_cached_ready_positive_proofs_final": 0,
+    "renewal_health_at_status": "degraded",
+    "waiting_retry_entities": 10,
+    "daily_cooldown_entities": 9,
+    "last_24h_attempts_at_status": {
+      "attempts": 7522,
+      "transient_failures": 93,
+      "source_results": 7429,
+      "exhausted_attempts": 9
+    },
+    "storage_at_status": {
+      "bytes": 4421124096,
+      "percent": 44.21
+    },
+    "source_publication_enabled": false,
+    "source_customer_rows": 0,
+    "source_publication_rows": 0,
+    "paid_manual_paused": true,
+    "paid_bulk_enabled": false,
+    "v3_paid_queries_today": 0,
+    "serper_queries_used_by_this_work": 0
+  },
+  "request_accounting": {
+    "french": 61,
+    "venue_canary_including_redirects": 9,
+    "expired_recovery": 31,
+    "past_readiness_review": 0,
+    "total_direct_source_requests": 101,
+    "renewal_lane_requests": 40,
+    "renewal_lane_ceiling": 160,
+    "serper_queries": 0,
+    "scope": "Explicit operator work only; normal standing direct-source verification continued independently."
+  },
+  "custody": {
+    "original_french_receipts_compared": 79,
+    "original_facts_compared": 1175,
+    "identity_tuples_compared": 63,
+    "destructive_source_mutations": 0,
+    "silent_identity_changes": 0,
+    "scope": "French 767 facts/29 IDs, recovery 372/31, past-derived review 36/3. Bounded affected cohorts; not a fresh whole-database historical audit."
+  },
+  "validation": {
+    "full_tests_passed": 541,
+    "full_tests_failed": 0,
+    "full_tests_skipped": 0,
+    "native_100_row_control_in_full_suite": true,
+    "public_checks_passed": 29,
+    "public_as_of": "2026-10-18T16:23:10.499Z",
+    "free_fr_redaction_passed": true,
+    "low_confidence_french_details_404": 2,
+    "new_customer_objects": 0,
+    "messages_sent": 0,
+    "runtime_boundaries": "passed"
+  },
+  "source_worker_releases": [
+    {
+      "as_of": "2026-10-18T16:22:26.095Z",
+      "worker": "findpitches-v3-enrichment-shadow",
+      "version_id": "d168e195-0586-4fd1-9166-b5b7f3ae64e9",
+      "previous_version_id": "025843e5-0f9e-4146-86ca-f8ac9cf90146",
+      "deployment_id": "d4edad26-6bf2-4012-9ada-2f7b82c1a6d8",
+      "bindings_and_runtime_preserved": true,
+      "schedules_and_settings_preserved": true,
+      "secret_values_replaced": false,
+      "migrations": 0,
+      "customer_or_legacy_changes": 0
+    },
+    {
+      "as_of": "2026-10-18T15:40:56.052Z",
+      "worker": "findpitches-v3-readiness-shadow",
+      "version_id": "4fbb60d0-0b65-4d69-84c0-96c265ff4150",
+      "previous_version_id": "0c4c1cd4-bf36-4265-96f0-da52b03bb60a",
+      "deployment_id": "877e346e-9230-4931-9cb0-7b1879cf9f23",
+      "bindings_and_runtime_preserved": true,
+      "schedules_and_settings_preserved": true,
+      "secret_values_replaced": false,
+      "migrations": 0,
+      "customer_or_legacy_changes": 0
+    },
+    {
+      "as_of": "2026-10-18T15:41:18.376Z",
+      "worker": "findpitches-v3-watch-shadow",
+      "version_id": "3c9d66a1-eb0f-41ca-92e3-8fb5c393000a",
+      "previous_version_id": "f00f890d-9b2c-4999-a158-357c7f0db922",
+      "deployment_id": "1b8ec74b-c32f-418a-a596-65a38f892e2a",
+      "bindings_and_runtime_preserved": true,
+      "schedules_and_settings_preserved": true,
+      "secret_values_replaced": false,
+      "migrations": 0,
+      "customer_or_legacy_changes": 0
+    },
+    {
+      "as_of": "2026-10-18T16:12:15.205Z",
+      "worker": "findpitches-v3-api-shadow",
+      "version_id": "05a26977-a70d-47f3-8cb9-cb67d592c5f4",
+      "previous_version_id": "48b98d72-c360-4341-9ec6-84abe0bd2ce4",
+      "deployment_id": "02af7759-1729-4587-b397-e8efe1d12f14",
+      "bindings_and_runtime_preserved": true,
+      "schedules_and_settings_preserved": true,
+      "secret_values_replaced": false,
+      "migrations": 0,
+      "customer_or_legacy_changes": 0
+    }
+  ],
+  "runtime_code_commits": {
+    "french": "ec2947bd",
+    "french_closure_hardening": "eb8e8b77",
+    "renewal_policy": "01c228d4",
+    "expiry_telemetry": "35eaf20e"
+  },
+  "customer_runtime": {
+    "worker_version": "a3803f31-fe3b-4482-816d-72bd05bd9987",
+    "changed": false,
+    "public_browsing_and_live_checkout": "remain enabled under existing D-014/D-016 authority"
+  },
+  "v2_or_pitchlist_changes": 0,
+  "producer_host_changes": 0,
+  "migrations": 0,
+  "infrastructure_deletions": 0,
+  "protected_branch_merges": 0
+}
