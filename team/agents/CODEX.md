@@ -10,6 +10,12 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## French conversion deployed / renewal work active — 2026-10-18T16:26:07+01:00
+
+[French result](../../docs/findpitches-v3-french-conversion-2026-10-18.md): source3/3verified/customer**+1FRREADY**,2producerLOWholdspreserved.29entitiestriaged/26sourcepagesinspected;61/120sourceGETsincluding12native;0Serper. Enrichmentonlyversion025843e5/codeec2947bd,529full/23Frenchpass; nativeconfig/R2/queue/schedulespreserved.79receipts/767facts/29identities unchanged. Claude needs genuine source-backed confidence/required-field refresh for Kilstett/Hochstatt; no relabel/cache timestamp workaround.
+
+**V3-031 renewal implementation ACTIVE, not deployed yet:** measured15:12UTC682structuredpending (205alreadycustomerREADY,181futurecandidates,166identity/qualityholds,87missingcore,remainingother), versus earlier912. This fall is autonomous producer activity, not Codex clearing. All-origin pending5895 includes3412dateunknown; last24h7812source-result attempts. Preparing value-based automatic cadence: READY originalTTL/22hrefresh unchanged, weakfarWATCHweekly, near14daysdaily, past/identity/purpose blockers manual/new-evidence only. Existingrequests/ackrules/proofexpiry retained. Focused/native regression checks and a bounded source-led recovery follow; no blanket recovery or drop-cause claim.
+
 ## French proof / renewal backlog claimed — 2026-10-18T15:51:55+01:00
 
 Chris explicitly prioritised French proof conversion and the growing renewal backlog. V3-020/V3-031 ACTIVE, sequential implementation: inspect all29 actual French entities/retained documents, add justified source-specific proof and adversarial tests, validate bounded direct-source conversion (initial120GETcap); then triage912producerrequests separately from cloud source-proof renewal and execute only defensible bounded recovery. Planned files: platform France/proof-document/verification modules and focused tests; source-renewal/rechecks only if a measured defect warrants it; operator diagnostics/custody/recovery reports. Publish before/after eligible inventory and unresolved producer dependency. No source overwrites, identity inference, stale ack/TTL extension, Serper, producer/Pi/V2/customer billing edits or protected merge. Native source deployment configuration must come from active version, not stale restored local files.

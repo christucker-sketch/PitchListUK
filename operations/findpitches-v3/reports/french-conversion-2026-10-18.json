@@ -1,0 +1,65 @@
+{
+  "schema": "findpitches-v3-french-conversion-v1",
+  "as_of": "2026-10-18T15:18:47.581Z",
+  "code_commit": "ec2947bd",
+  "release": {
+    "as_of": "2026-10-18T15:14:49.486Z",
+    "worker": "findpitches-v3-enrichment-shadow",
+    "version_id": "025843e5-0f9e-4146-86ca-f8ac9cf90146",
+    "previous_version_id": "6d6db814-095f-4284-b3ed-0f5e6fe7d791",
+    "deployment_id": "cd91c122-3b86-494a-9c63-20cc9dfa396b",
+    "bindings_and_runtime_preserved": true,
+    "schedules_and_settings_preserved": true,
+    "secret_values_replaced": false,
+    "migrations": 0,
+    "customer_or_legacy_changes": 0
+  },
+  "commercial_french_entities": 29,
+  "source_targets_checked": 3,
+  "native_source_requests": 12,
+  "total_french_diagnostic_and_native_source_requests": 61,
+  "source_request_ceiling": 120,
+  "verified_sources": 3,
+  "customer_ready_gained": 1,
+  "customer_ready_total": 1,
+  "producer_low_confidence_withheld": 2,
+  "other_unproved_entities": 26,
+  "source_families": {
+    "generic": {
+      "entities": 26,
+      "customer_ready": 0
+    },
+    "fr_official_call": {
+      "entities": 3,
+      "customer_ready": 1
+    }
+  },
+  "customer_application_state": "ENQUIRY_AVAILABLE",
+  "location_precision": "locality; exact venue/coordinates not inferred",
+  "custody": {
+    "as_of": "2026-10-18T15:18:51.673Z",
+    "records": {
+      "compared": 79,
+      "mutations": 0
+    },
+    "facts": {
+      "compared": 767,
+      "mutations": 0
+    },
+    "identities": {
+      "compared": 29,
+      "mutations": 0
+    }
+  },
+  "validation": {
+    "full_tests_passed": 529,
+    "full_tests_failed": 0,
+    "focused_french_tests_passed": 23,
+    "runtime_boundaries": "passed"
+  },
+  "serper_queries": 0,
+  "source_or_identity_overwrites": 0,
+  "customer_worker_or_billing_changes": 0,
+  "v2_or_pitchlist_changes": 0,
+  "producer_dependency": "Kilstett and Hochstatt latest exports remain LOW confidence. Current source proof does not bypass that gate; Claude needs a genuine source-backed confidence/required-field correction and fresh export."
+}
