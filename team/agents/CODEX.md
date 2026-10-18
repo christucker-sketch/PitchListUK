@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## French conversion feedback / source diagnosis claimed — 2026-10-18T21:07:33+01:00
+
+Chris considers1FrenchREADY disappointing. Agreed: do not treat the US renewal gain as French progress. V3-033 bounded read-only review now separates genuine-source producer field defects from V3 proof gaps and unsuitable discoveries. Existing evidence includes Angers wrongly assignedBretagne and Plouarzel organiserGoogleDocs. Planned report/source-backed correction handover and repeatable platform qualification, maximum20freeGETs/0Serper; no producer/Pi/runtime/customer/selection edits or confidence bypass.
+
 ## French conversion / renewal recovery complete — 2026-10-18T17:27:42+01:00
 
 [Full report](../../docs/findpitches-v3-french-renewal-2026-10-18.md) / [aggregate evidence](../../operations/findpitches-v3/reports/french-renewal-2026-10-18.json). **1,729 customer READY at17:25London**, +28/−0 vs frozen1,701: +1FR and27existingUSrecoveries. French29triaged/26pages/3nativeverified; Kilstett/Hochstatt remain producerLOW, PodensacREADY. The31olderOct7proofs had no active renewal:27restored with27current-proof futurejobs,3nameconflicts+1closedheld. Not attribution of Friday's76-drop. Three other past cachedREADY rows re-evaluatedblocked/0GET/0customerloss; final expired-positive gaps0.
