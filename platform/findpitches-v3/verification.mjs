@@ -13,6 +13,7 @@ import {verifyClueMart,verifyMarketsIreland} from './international-sources.mjs';
 import {VENUE_COORDINATE_POLICY,eventVenueCoordinates,sourceVenueAddress} from './source-coordinates.mjs';
 import {applyUsableRoute,applyEventenyRegistration,applyEventenyContact,usableRouteEligible} from './usable-route.mjs';
 import {verifyFrenchCouncilBundle} from './france-council.mjs';
+import {verifyFrenchCallBundle} from './france-calls.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
 export const APPLICATION_POLICY_VERSION='current-application-v1.11';
@@ -115,6 +116,7 @@ function eventenyScopeProof(main,heading) {
 
 // Discovery metadata (including search market/city) is deliberately absent from parsing.
 export function verifyDocument(document,{now=new Date().toISOString()}={}) {
+  if(document.document_kind==='fr_official_call_bundle')return verifyFrenchCallBundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
   if(document.document_kind==='fr_council_source_bundle')return verifyFrenchCouncilBundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
   if(document.document_kind==='global_usable_route_bundle'){
     if(!Array.isArray(document.documents)||document.documents.length<1||document.documents.length>3)return {status:'unverified',facts:{},reasons:['usable_route_bundle_invalid']};

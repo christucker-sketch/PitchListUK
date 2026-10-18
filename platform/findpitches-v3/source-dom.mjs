@@ -1,9 +1,16 @@
 // Bounded inert HTML reader. Scripts are data, never evaluated; malformed/deep input fails closed.
 const VOID=new Set('area base br col embed hr img input link meta param source track wbr'.split(' '));
 const ENTITIES={amp:'&',quot:'"',apos:"'",lt:'<',gt:'>',nbsp:' ',ndash:'–',mdash:'—',rsquo:'’',lsquo:'‘',rdquo:'”',ldquo:'“',hellip:'…',bull:'•'};
+// Common French named entities occur in council article bodies, including
+// uppercase headings. Decode their actual characters; do not fold case or
+// interpret dates from the spelling of an entity name.
+for(const [name,value] of Object.entries({agrave:'à',acirc:'â',auml:'ä',aelig:'æ',ccedil:'ç',eacute:'é',egrave:'è',ecirc:'ê',euml:'ë',icirc:'î',iuml:'ï',ocirc:'ô',ouml:'ö',oelig:'œ',ugrave:'ù',ucirc:'û',uuml:'ü',yuml:'ÿ'})){
+  ENTITIES[name]=value;ENTITIES[name[0].toUpperCase()+name.slice(1)]=value.toUpperCase();
+}
+Object.assign(ENTITIES,{laquo:'«',raquo:'»',euro:'€',middot:'·'});
 export function decode(value) {
   return String(value??'').replace(/&(#x[\da-f]+|#\d+|[a-z]+);/gi,(all,key)=>{
-    if(key[0]!=='#')return ENTITIES[key.toLowerCase()]??all;
+    if(key[0]!=='#')return ENTITIES[key]??ENTITIES[key.toLowerCase()]??all;
     const n=key[1].toLowerCase()==='x'?parseInt(key.slice(2),16):Number(key.slice(1));return n>0&&n<=0x10ffff?String.fromCodePoint(n):' ';
   });
 }
