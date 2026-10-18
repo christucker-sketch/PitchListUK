@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## French proof / renewal backlog claimed — 2026-10-18T15:51:55+01:00
+
+Chris explicitly prioritised French proof conversion and the growing renewal backlog. V3-020/V3-031 ACTIVE, sequential implementation: inspect all29 actual French entities/retained documents, add justified source-specific proof and adversarial tests, validate bounded direct-source conversion (initial120GETcap); then triage912producerrequests separately from cloud source-proof renewal and execute only defensible bounded recovery. Planned files: platform France/proof-document/verification modules and focused tests; source-renewal/rechecks only if a measured defect warrants it; operator diagnostics/custody/recovery reports. Publish before/after eligible inventory and unresolved producer dependency. No source overwrites, identity inference, stale ack/TTL extension, Serper, producer/Pi/V2/customer billing edits or protected merge. Native source deployment configuration must come from active version, not stale restored local files.
+
 ## Live return check — 2026-10-18T15:35:35+01:00
 
 [Fresh measurements / exact resume](../../docs/findpitches-v3-live-checkin-2026-10-18.md) / [aggregate evidence](../../operations/findpitches-v3/reports/live-checkin-2026-10-18.json). At15:30:37London **1,701 READY** (US1532/GB159/NZ5/AU4/CA1/FR0), net−76/−4.3% vs17Oct00:27 (US−74/GB−2). No gross withdrawal/addition or record-level cause reconstruction performed. Public200, LIVECheckout/recovery enabled, billingwebhooks0; single homepage0.554s/UKAPI0.499s/globalhome1.324s observations. No new mail/payment journey; prior owned acceptance and519-test runtime baseline retained, not rerun.
