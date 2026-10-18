@@ -6,6 +6,7 @@ import { enqueue,jobStatement,claimJob,finishJob,failJob } from './jobs.mjs';
 import {verificationGate} from './verification-store.mjs';
 import {usableRouteEligible} from './usable-route.mjs';
 import {sourceDatePast} from './source-calendar.mjs';
+import {automaticWatchDecision,operationalWatchEvidence} from './source-renewal.mjs';
 
 export async function reconcileRecord(db,recordId,{now=new Date().toISOString()}={}) {
   const existing=await sql(db,'SELECT * FROM reconciliation_decisions WHERE record_id=?',recordId).first();
@@ -139,13 +140,9 @@ export async function evaluateReadiness(db,id,{now=new Date().toISOString()}={})
     ON CONFLICT(entity_id) DO UPDATE SET entity_revision=excluded.entity_revision,status=excluded.status,reasons_json=excluded.reasons_json,snapshot_hash=excluded.snapshot_hash,evaluated_at=excluded.evaluated_at RETURNING entity_revision`,id,entity.revision,status,stableJson(reasons),snapshotHash,now,id,entity.revision)];
   if(['shadow','test'].includes(entity.environment))statements.push(sql(db,`INSERT INTO shadow_projections(entity_id,entity_revision,payload_json,updated_at) SELECT ?,?,?,? WHERE EXISTS(SELECT 1 FROM entities WHERE id=? AND revision=?)
     ON CONFLICT(entity_id) DO UPDATE SET entity_revision=excluded.entity_revision,payload_json=excluded.payload_json,updated_at=excluded.updated_at`,id,entity.revision,stableJson(payload),now,id,entity.revision));
-  // Ready events also need time-based rechecks: eligibility can expire without a fact revision.
-  const future=Number.isFinite(Date.parse(entity.event_end))&&Date.parse(entity.event_end)>Date.parse(now)?Math.min(Date.parse(now)+86400000,Date.parse(entity.event_end)+86400000):Date.parse(now)+86400000;
-  // Renew proved READY before its 24-hour TTL. Within the final two hours of a
-  // fixed deadline, wait for expiry instead of repeatedly fetching the same page.
-  const expiry=Date.parse(verification.expires_at),early=expiry-2*3600000;
-  const refresh=status==='ready'&&Number.isFinite(expiry),at=refresh?(early>Date.parse(now)+300000?early:expiry):future;
-  statements.push(await jobStatement(db,'watch',id+':'+entity.revision+':'+(refresh?verification.verification_id:now.slice(0,10)),{entity_id:id,...(refresh?{refresh_verification_id:verification.verification_id}:{})},now,new Date(at).toISOString()));
+  const watch=automaticWatchDecision(entity,{now,assessedAt:now,readinessStatus:status,verification:await operationalWatchEvidence(db,id,verification),conflicts:conflict.n,qualityHolds:quality.n});
+  const refresh=status==='ready'&&Number.isFinite(Date.parse(verification.expires_at));
+  if(watch.schedule)statements.push(await jobStatement(db,'watch',id+':'+entity.revision+':'+(refresh?verification.verification_id:watch.policy+':'+watch.at),{entity_id:id,...(refresh?{refresh_verification_id:verification.verification_id}:{})},now,watch.at));
   const result=await db.batch(statements);
   if(result[0]?.results?.length!==1)throw new Error('readiness_revision_raced');
   return {status,reasons,snapshot_hash:snapshotHash};
@@ -163,12 +160,22 @@ export async function runStage(db,stage,{now=new Date().toISOString(),jobId=null
     else if(stage==='enrichment')result=await enrichEntity(db,payload.entity_id,{proposals:payload.proposals??[],now,recheckToken:payload.recheck_token});
     else if(stage==='readiness')result=await evaluateReadiness(db,payload.entity_id,{now});
     else if(stage==='watch') {
+      const entity=await loadEntity(db,payload.entity_id),gate=await verificationGate(db,entity,{now});
       if(payload.refresh_verification_id) {
-        const entity=await loadEntity(db,payload.entity_id),gate=await verificationGate(db,entity,{now});
         if(gate.verification_id!==payload.refresh_verification_id) {
           await finishJob(db,job,clock?clock().toISOString():now);
           return {phase:'complete',stage,job_id:job.id,result:{phase:'superseded_refresh_skipped'}};
         }
+      }
+      const readiness=await sql(db,'SELECT status,entity_revision,evaluated_at FROM readiness WHERE entity_id=?',entity.id).first();
+      const holds=await sql(db,`SELECT (SELECT COUNT(*) FROM conflicts WHERE entity_id=? AND resolved=0) conflicts,
+        (SELECT COUNT(*) FROM selected_facts f JOIN legacy_quality_holds h ON h.record_id=f.record_id WHERE f.entity_id=?) quality_holds`,entity.id,entity.id).first();
+      const decision=automaticWatchDecision(entity,{now,assessedAt:readiness?.entity_revision===entity.revision?readiness.evaluated_at:null,readinessStatus:readiness?.entity_revision===entity.revision?readiness.status:null,verification:await operationalWatchEvidence(db,entity.id,gate),conflicts:holds.conflicts,qualityHolds:holds.quality_holds,scheduledRefresh:!!payload.refresh_verification_id});
+      if(!decision.schedule||Date.parse(decision.at)>Date.parse(now)){
+        if(decision.schedule)await enqueue(db,'watch',entity.id+':'+entity.revision+':'+decision.policy+':'+decision.at,payload,now,decision.at);
+        else await evaluateReadiness(db,entity.id,{now});
+        await finishJob(db,job,clock?clock().toISOString():now);
+        return {phase:'complete',stage,job_id:job.id,result:{phase:decision.schedule?'automatic_recheck_deferred':'automatic_recheck_review_required',reason:decision.reason,not_before:decision.at??null,producer_request_cleared:false}};
       }
       // A reviewed past, no-longer-produced ID is not refreshable. Do not
       // recreate obsolete work unless genuinely newer linked producer evidence

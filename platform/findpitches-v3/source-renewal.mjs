@@ -3,6 +3,34 @@ import {hash} from './contract.mjs';
 import {enqueue} from './jobs.mjs';
 import {encodeSourceDocument} from './document-custody.mjs';
 import {sourceDatePast} from './source-calendar.mjs';
+export const AUTOMATIC_WATCH_POLICY=Object.freeze({version:'source-watch-value-v1',ready_proof_ttl_unchanged:true,ready_early_refresh_hours:2,nonready_near_event_days:14,nonready_near_recheck_hours:24,nonready_other_recheck_hours:168,manual_review_never_acknowledged:true});
+export async function operationalWatchEvidence(db,entityId,gate){
+ if(!gate.reasons?.includes('source_verification_stale_or_revision_changed'))return gate;
+ const row=await sql(db,"SELECT json_extract(report_json,'$.reasons') reasons_json,checked_at FROM source_verifications WHERE entity_id=? ORDER BY sequence DESC LIMIT 1",entityId).first();
+ // Retained negative reasons may stop pointless automatic work. They never
+ // change the unverified gate, supply current facts or extend its expiry.
+ return {...gate,retained_reasons:JSON.parse(row?.reasons_json??'[]'),retained_checked_at:row?.checked_at??null};
+}
+const REVIEW_ONLY_REASONS=new Set(['social_page_is_discovery_only','platform_index_is_not_an_opportunity','editorial_page_is_discovery_only','application_is_not_a_trader_opportunity','application_restricted_audience_requires_review','trader_application_purpose_not_proved','sponsor_trading_entitlement_not_proved']);
+// Operational cadence only. Never creates proof, extends expiry, changes facts,
+// closes a producer request or treats a held entity as customer eligible.
+export function automaticWatchDecision(entity,{now,assessedAt=null,readinessStatus=null,verification={},conflicts=0,qualityHolds=0,scheduledRefresh=false}){
+ const clock=Date.parse(now);if(!Number.isFinite(clock))throw Error('valid_watch_clock_required');
+ const stop=reason=>({schedule:false,reason,policy:AUTOMATIC_WATCH_POLICY.version});
+ // A start date alone cannot prove the end of a multi-day/recurring event.
+ if(entity.event_end&&sourceDatePast(entity.event_end,now))return stop('past_event_requires_new_evidence');
+ if(conflicts||qualityHolds)return stop('identity_or_quality_review_required');
+ if([...(verification.reasons??[]),...(verification.retained_reasons??[])].some(r=>REVIEW_ONLY_REASONS.has(r)))return stop('source_purpose_review_required');
+ const at=(time,reason)=>({schedule:true,at:new Date(time).toISOString(),reason,policy:AUTOMATIC_WATCH_POLICY.version});
+ if(readinessStatus==='ready'){
+  if(scheduledRefresh)return at(clock,'ready_proof_refresh');
+  const expiry=Date.parse(verification.expires_at),early=expiry-2*3600000;
+  return at(Number.isFinite(expiry)?Math.max(clock,early>clock+300000?early:expiry):clock,'ready_proof_refresh');
+ }
+ const base=Date.parse(verification.checked_at??verification.retained_checked_at??assessedAt);if(!readinessStatus||!Number.isFinite(base)||base>clock)return at(clock,'unassessed_source_requires_recheck');
+ const near=[entity.event_start,entity.event_end,entity.application_deadline].filter(Boolean).some(d=>{const t=Date.parse(d);return Number.isFinite(t)&&t>=clock-86400000&&t<=clock+14*86400000;});
+ return at(base+(near?24:168)*3600000,near?'near_event_watch':'unproved_discovery_watch');
+}
 export function historicalFailureDisposition(entity,now){
  if(entity.environment!=='shadow')return 'noncommercial';
  if(entity.quality_holds||entity.conflicts)return 'identity_quality_hold';
@@ -61,7 +89,13 @@ export async function recordRenewalResult(db,entity,documentId,verificationId,no
 export async function renewalStatus(db,now){
  const since=new Date(Date.parse(now)-86400000).toISOString();
  const totals=await sql(db,`SELECT COUNT(*) attempts,COALESCE(SUM(outcome='transient_failure'),0) transient_failures,COALESCE(SUM(outcome='source_result'),0) source_results,COALESCE(SUM(retry_exhausted),0) exhausted_attempts FROM source_renewal_attempts WHERE attempted_at>=?`,since).first();
- const waiting=await sql(db,`SELECT COUNT(*) entities,SUM(a.retry_exhausted) exhausted_entities,MIN(a.retry_at) next_retry_at FROM source_renewal_attempts a WHERE a.outcome='transient_failure' AND a.sequence=(SELECT MAX(sequence) FROM source_renewal_attempts WHERE entity_id=a.entity_id)`).first();
+ const latestFailures=await sql(db,`SELECT COUNT(*) entities FROM source_renewal_attempts a WHERE a.outcome='transient_failure' AND a.sequence=(SELECT MAX(sequence) FROM source_renewal_attempts WHERE entity_id=a.entity_id)`).first();
+ const waiting=await sql(db,`SELECT COUNT(*) entities,COALESCE(SUM(a.retry_exhausted),0) exhausted_entities,MIN(a.retry_at) next_retry_at
+  FROM source_renewal_attempts a JOIN entities e ON e.id=a.entity_id
+  LEFT JOIN source_verifications v ON v.sequence=(SELECT MAX(sequence) FROM source_verifications WHERE entity_id=a.entity_id)
+  WHERE a.outcome='transient_failure' AND a.sequence=(SELECT MAX(sequence) FROM source_renewal_attempts WHERE entity_id=a.entity_id)
+  AND a.entity_revision=e.revision AND NOT(v.id IS NOT NULL AND (a.active_verification_id IS NULL OR v.id<>a.active_verification_id) AND julianday(v.checked_at)>=julianday(a.attempted_at))`).first();
+ waiting.superseded_latest_failures_retained=latestFailures.entities-waiting.entities;
  const reasons=(await sql(db,"SELECT reason,diagnostic,COUNT(*) attempts FROM source_renewal_attempts WHERE outcome='transient_failure' AND attempted_at>=? GROUP BY reason,diagnostic",since).all()).results;
  const legacy=(await sql(db,`SELECT e.environment,
   (SELECT json_group_object(field_name,json(value_json)) FROM selected_facts WHERE entity_id=e.id) fields_json,
@@ -73,5 +107,5 @@ export async function renewalStatus(db,now){
   AND EXISTS(SELECT 1 FROM commercial_readiness_history h WHERE h.entity_id=v.entity_id AND h.status='ready')`).all()).results;
  const dispositions={};for(const row of legacy){const key=historicalFailureDisposition({...JSON.parse(row.fields_json??'{}'),...row},now);dispositions[key]=(dispositions[key]??0)+1;}
  const actionNeeded=['future_recheck_candidate','date_unknown','application_route_missing','missing_core_fields'].reduce((n,k)=>n+(dispositions[k]??0),0);
- return {as_of:now,health:waiting.entities||actionNeeded?'degraded':'healthy',last_24h:totals,waiting,reasons,previously_ready_latest_failed_receipts:legacy.length,historical_failed_receipts:{total:legacy.length,action_needed:actionNeeded,held:legacy.length-actionNeeded,dispositions,basis:'Current selected facts and unresolved holds; triage only, not a new source verification. Historical failures remain immutable and visible. Held records remain withheld.'},limits:{failure_attempts_before_daily_cooldown:4,short_retry_delays_seconds:RENEWAL_DELAYS,retry_entities_per_domain_per_15min:16},interpretation:'Attempts are separate from proof. A failed retrieval never renews proof TTL, clears identity/closure holds or proves READY. Processing completion is not source renewal success.'};
+ return {as_of:now,health:waiting.entities||actionNeeded?'degraded':'healthy',last_24h:totals,waiting,reasons,previously_ready_latest_failed_receipts:legacy.length,historical_failed_receipts:{total:legacy.length,action_needed:actionNeeded,held:legacy.length-actionNeeded,dispositions,basis:'Current selected facts and unresolved holds; triage only, not a new source verification. Historical failures remain immutable and visible. Held records remain withheld.'},limits:{failure_attempts_before_daily_cooldown:4,short_retry_delays_seconds:RENEWAL_DELAYS,retry_entities_per_domain_per_15min:16},automatic_watch_policy:AUTOMATIC_WATCH_POLICY,interpretation:'Attempts are separate from proof. A failed retrieval never renews proof TTL, clears identity/closure holds or proves READY. Processing completion is not source renewal success.'};
 }

@@ -23,11 +23,11 @@ test('bounded retries dead-letter and explicit requeue work without resetting co
   assert.equal((await requeueDead(db,job.id,NOW)).meta.changes,1);assert.equal((await requeueDead(db,job.id,NOW)).meta.changes,0);
   const lease=await claimJob(db,'eligibility',{now:NOW});await finishJob(db,lease,NOW);assert.equal((await requeueDead(db,job.id,NOW)).meta.changes,0);
 });
-test('watch requests producer rechecks and reassesses time-dependent closure without changing source facts',async t=>{
+test('watch reassesses past-event closure without creating repeated producer demand or changing source facts',async t=>{
   const db=database(t),{entity}=await seed(db);const later='2026-12-01T12:00:00.000Z';
   assert.equal((await runStage(db,'watch',{now:later})).phase,'complete');await drainPipeline(db,{now:later});
   assert.equal((await sql(db,'SELECT status FROM readiness WHERE entity_id=?',entity.id).first()).status,'blocked');
-  assert.ok(await sql(db,'SELECT * FROM recheck_requests WHERE entity_id=?',entity.id).first());
+  assert.equal(await sql(db,'SELECT * FROM recheck_requests WHERE entity_id=?',entity.id).first(),null);
   assert.equal((await sql(db,"SELECT COUNT(*) AS n FROM source_facts WHERE field_name='event_name'").first()).n,1);
 });
 test('READY proof refresh runs before expiry, crosses completed daily jobs and skips superseded refreshes',async t=>{

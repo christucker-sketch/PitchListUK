@@ -68,6 +68,11 @@ test('successful source proof supersedes old retry pointers without another sour
  const doc={...documentFixture(),fetched_at:at(65)},result=await verifyEntitySource(db,entity.id,{now:at(65),fetcher:async()=>new Response(doc.html,{headers:{'content-type':'text/html'}})});
  assert.equal(result.report.status,'verified');assert.equal(await renewalRetryCurrent(db,await loadEntity(db,entity.id),fail.attempt_id),false);assert.equal((await renewalStatus(db,at(65))).waiting.entities,0);
 });
+test('renewal status excludes superseded proof/revision pointers without erasing failure history',async t=>{
+ const db=database(t),{entity}=await positive(db);await verifyEntitySource(db,entity.id,{now:at(60),fetcher:bad});assert.equal((await renewalStatus(db,at(60))).waiting.entities,1);
+ await recordVerification(db,entity.id,{...documentFixture(),fetched_at:at(65)},{now:at(65)});const status=await renewalStatus(db,at(65));assert.equal(status.waiting.entities,0);assert.equal(status.waiting.superseded_latest_failures_retained,1);assert.equal(status.last_24h.transient_failures,1);
+ const failed=await verifyEntitySource(db,entity.id,{now:at(70),fetcher:bad});assert.equal((await renewalStatus(db,at(70))).waiting.entities,1);await sql(db,'UPDATE entities SET revision=revision+1 WHERE id=?',entity.id).run();assert.equal((await renewalStatus(db,at(71))).waiting.entities,0);assert.equal(await renewalRetryCurrent(db,await loadEntity(db,entity.id),failed.attempt_id),false);
+});
 
 test('404, closure and identity revision holds cannot fall back to previous positive proof',async t=>{
  const db=database(t),{entity}=await positive(db);

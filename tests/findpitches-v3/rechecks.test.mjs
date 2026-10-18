@@ -83,7 +83,10 @@ test('reviewed obsolete past work has separate immutable custody, no fresh ack, 
   assert.equal(await sql(db,'SELECT * FROM recheck_requests WHERE entity_id=?',entity.id).first(),null);
   const NEWER='2026-10-09T12:00:00.000Z';await ingestRecords(db,[record({event_start:'2026-10-05',event_end:'2026-10-05',last_checked:NEWER,lifecycle_event:'UNCHANGED'})],{now:NEWER,environment:'shadow'});await drainPipeline(db,{now:NEWER});
   await enqueue(db,'watch','genuinely-new-watch',{entity_id:entity.id},NEWER);await runStage(db,'watch',{now:NEWER});
-  assert.equal((await sql(db,'SELECT * FROM recheck_requests WHERE entity_id=?',entity.id).first()).requested_at,NEWER);
+  // A genuinely fresh receipt is retained, but still names a past event.
+  // It does not justify restarting endless automatic polling of that edition.
+  assert.equal(await sql(db,'SELECT * FROM recheck_requests WHERE entity_id=?',entity.id).first(),null);
+  assert.equal((await sql(db,"SELECT MAX(json_extract(normalized_json,'$.last_checked')) checked FROM producer_records WHERE producer_name='independent-structured'").first()).checked,NEWER);
 });
 test('obsolete operator resolution refuses current dates, wrong editions, future assessments and ingest-only credentials',async t=>{
   const db=database(t),{entity,recordId}=await seed(db,record(),{environment:'shadow'});
