@@ -74,3 +74,27 @@ test('vehicle finance and specials pages carry a strong negative signal', () => 
   assert.ok(scored.score < 0);
   assert.ok(extracted.evidence.some(item => item.type === 'negative_phrase'));
 });
+
+
+test('press release navigation text does not poison a real event vendor page', () => {
+  const extracted = extractEvidence({
+    body: '<html><body><h1>Wedding Show Exhibitors 2027</h1><p>Vendor application is now open for exhibitors in Buckinghamshire.</p><a href="/apply">Vendor application</a><footer><a href="/press">Press Releases</a></footer></body></html>',
+    sourceUrl: 'https://weddingshow.test/exhibit',
+    location: 'Buckinghamshire',
+    market: 'GB',
+    now: new Date('2026-09-30T00:00:00Z')
+  });
+  assert.ok(!extracted.evidence.some(item => item.type === 'negative_phrase' && /release/.test(String(item.value))));
+  assert.ok(extracted.evidence.some(item => item.type === 'application_phrase'));
+});
+
+test('lead news-release wording still rejects an unrelated vendor-wording article', () => {
+  const extracted = extractEvidence({
+    body: '<html><body><p>News release: crypto services are now available to traders in Connecticut.</p><h2>Vendor application</h2></body></html>',
+    sourceUrl: 'https://example.test/news',
+    location: 'Connecticut',
+    market: 'US',
+    now: new Date('2026-09-30T00:00:00Z')
+  });
+  assert.ok(extracted.evidence.some(item => item.type === 'negative_phrase' && item.value === 'news_or_press_release_page'));
+});

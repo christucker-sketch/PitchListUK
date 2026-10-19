@@ -26,8 +26,10 @@ export async function runCustomerPromotionBatch(db, { limit = 12 } = {}) {
     const enrichment = parse(row.enrichment_json);
     const result = await promoteCustomerOpportunity(db, candidate, enrichment);
     outcomes.inspected += 1;
-    if (result.promoted) outcomes.promoted += 1;
-    else outcomes.not_ready += 1;
+    if (result.promoted) {
+      outcomes.promoted += 1;
+      await recordSourceRouteUsable(db, row.id, new Date().toISOString()).catch(() => {});
+    } else outcomes.not_ready += 1;
     await db.prepare(`INSERT INTO customer_promotion_disposition (candidate_id,source_last_checked,enrichment_last_checked,disposition,reason,inspected_at)
       VALUES (?,?,?,?,?,?) ON CONFLICT(candidate_id) DO UPDATE SET source_last_checked=excluded.source_last_checked,
       enrichment_last_checked=excluded.enrichment_last_checked,disposition=excluded.disposition,reason=excluded.reason,inspected_at=excluded.inspected_at`)
@@ -37,3 +39,23 @@ export async function runCustomerPromotionBatch(db, { limit = 12 } = {}) {
 }
 
 function parse(value){try{return JSON.parse(value||'{}');}catch{return {};}}
+
+
+async function recordSourceRouteUsable(db, candidateId, timestamp) {
+  const row=await db.prepare('SELECT market, geography_json FROM candidates WHERE id=?').bind(candidateId).first();
+  let geography={};
+  try { geography=JSON.parse(row?.geography_json||'{}'); } catch {}
+  const route=String(geography?.source_route||'').trim();
+  if(!route)return;
+  await db.prepare(
+    `UPDATE source_routes
+        SET last_seen=?,
+            usable_count=usable_count+1,
+            reputation_score=CASE
+              WHEN candidate_count<=0 THEN 100
+              ELSE MIN(100,100.0*(usable_count+1)/candidate_count)
+            END,
+            status=CASE WHEN usable_count+1>=2 THEN 'productive' ELSE status END
+      WHERE market=? AND route_url=?`
+  ).bind(timestamp,row.market,route).run();
+}

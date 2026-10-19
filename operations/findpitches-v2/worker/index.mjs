@@ -1,8 +1,10 @@
 import { enabledMarkets } from '../../../platform/findpitches-v2/markets/registry.mjs';
 import { discoverBatch } from '../../../platform/findpitches-v2/acquisition/discover-batch.mjs';
 import { persistDiscoveryBatch } from '../../../platform/findpitches-v2/acquisition/storage.mjs';
+import { runSourceFirstBatch } from '../../../platform/findpitches-v2/acquisition/source-first.mjs';
+import { seedSourceRoutesFromValidated } from '../../../platform/findpitches-v2/acquisition/source-registry.mjs';
 import { runClassificationBatch } from '../../../platform/findpitches-v2/classifier/run-batch.mjs';
-import { createHttpFetchProvider } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
+import { createHttpFetchProvider, DEFAULT_PDF_TIMEOUT_MS } from '../../../platform/findpitches-v2/providers/fetch/http.mjs';
 import { createRevalidator } from '../../../platform/findpitches-v2/revalidation/index.mjs';
 import { createSerperSearchProvider } from '../../../platform/findpitches-v2/providers/search/serper.mjs';
 import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
@@ -14,12 +16,15 @@ import { runObservedPdfRecovery, getPdfRecoveryTelemetry } from '../../../platfo
 const SERVICE = 'findpitches-v2-shadow';
 const QUERY_LIMIT = 8;
 const CLASSIFIER_CRON = '* * * * *';
+const BASELINE_ACQUISITION_CRON = '*/5 * * * *';
 const PDF_RECOVERY_CRON = '7,22,37,52 * * * *';
+const SOURCE_FIRST_CRON = '11,41 * * * *';
+const SOURCE_FIRST_BATCH_LIMIT = 4;
 const CLASSIFIER_BATCH_LIMIT = 24;
-const CLASSIFIER_RULESET_VERSION = '2026-09-26-quality-rules-v3';
+const CLASSIFIER_RULESET_VERSION = '2026-09-30-quality-rules-v4';
 const RECLASSIFY_BATCH_LIMIT = 24;
 const REVALIDATOR_BATCH_LIMIT = 6;
-const CUSTOMER_PROMOTION_BATCH_LIMIT = 12;
+const CUSTOMER_PROMOTION_BATCH_LIMIT = 48;
 
 export default {
   async fetch(request, env) {
@@ -45,6 +50,12 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
+    if (event?.cron === SOURCE_FIRST_CRON) {
+      ctx.waitUntil(runSourceFirstTick(env)
+        .then(result => console.log('findpitches_v2_source_first_tick', JSON.stringify(result)))
+        .catch(error => console.error('findpitches_v2_source_first_tick_failed', String(error?.stack || error))));
+      return;
+    }
     if (event?.cron === PDF_RECOVERY_CRON) {
       ctx.waitUntil(runObservedPdfRecovery(env.FINDPITCHES_DB, runNativePdfRecovery, {cron:event.cron})
         .then(result => console.log('findpitches_v2_pdf_recovery_tick', JSON.stringify(result)))
@@ -60,11 +71,16 @@ export default {
       return;
     }
 
-    ctx.waitUntil(
-      runShadowTick(env, { trigger: 'cron' })
-        .then(result => console.log('findpitches_v2_acquisition_tick', JSON.stringify(result)))
-        .catch(error => console.error('findpitches_v2_acquisition_tick_failed', String(error?.stack || error)))
-    );
+    if (event?.cron === BASELINE_ACQUISITION_CRON) {
+      ctx.waitUntil(
+        runPairedAcquisitionTick(env)
+          .then(result => console.log('findpitches_v2_acquisition_tick', JSON.stringify(result)))
+          .catch(error => console.error('findpitches_v2_acquisition_tick_failed', String(error?.stack || error)))
+      );
+      return;
+    }
+
+    console.log('findpitches_v2_unhandled_cron', String(event?.cron || 'unknown'));
   }
 };
 
@@ -79,6 +95,11 @@ async function health(env) {
       database: 'isolated',
       search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
       publication_enabled: false,
+      us_city_discovery_profile: 'official_first_v1',
+      source_first: { enabled: true, market: 'US', cron: SOURCE_FIRST_CRON, batch_limit: SOURCE_FIRST_BATCH_LIMIT, search_api_used: false },
+      acquisition_crons: { baseline: BASELINE_ACQUISITION_CRON, us_city: BASELINE_ACQUISITION_CRON, mode: 'paired_baseline_then_city' },
+      customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
+      pdf_fetch_timeout_ms: DEFAULT_PDF_TIMEOUT_MS,
       legacy_runtime_dependency: false,
       local_runtime_dependency: false
     });
@@ -93,7 +114,7 @@ async function health(env) {
 
 async function status(env) {
   const now = new Date().toISOString();
-  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates, enrichmentStates, enrichedStored, pdfRecoveryTick] = await Promise.all([
+  const [runs, candidates, jobs, publication, classification, customerReady, latestRun, marketRows, catalogueMeta, candidateStates, schedulerStates, classifierStates, customerPromotionStates, enrichmentStates, enrichedStored, pdfRecoveryTick, sourceFirstTelemetry] = await Promise.all([
     count(env, 'acquisition_runs'),
     count(env, 'candidates'),
     count(env, 'scheduler_jobs'),
@@ -131,6 +152,8 @@ async function status(env) {
     env.FINDPITCHES_DB.prepare(
       `SELECT
          SUM(CASE WHEN status = 'ready' THEN 1 ELSE 0 END) AS ready,
+         SUM(CASE WHEN status = 'ready' AND query_group = 0 THEN 1 ELSE 0 END) AS baseline_ready,
+         SUM(CASE WHEN status = 'ready' AND query_group = 1 THEN 1 ELSE 0 END) AS city_ready,
          SUM(CASE WHEN status = 'leased' THEN 1 ELSE 0 END) AS leased,
          SUM(CASE WHEN status = 'leased' AND lease_until IS NOT NULL AND lease_until <= ? THEN 1 ELSE 0 END) AS expired
        FROM scheduler_jobs`
@@ -167,7 +190,8 @@ async function status(env) {
        FROM enrichment_queue`
     ).bind(now).first(),
     env.FINDPITCHES_DB.prepare('SELECT COUNT(*) AS count FROM candidate_enrichment').first(),
-    getPdfRecoveryTelemetry(env.FINDPITCHES_DB)
+    getPdfRecoveryTelemetry(env.FINDPITCHES_DB),
+    getSourceFirstTelemetry(env.FINDPITCHES_DB, now)
   ]);
 
   return Response.json({
@@ -176,11 +200,15 @@ async function status(env) {
     mode: env.FINDPITCHES_V2_MODE || 'unknown',
     search_configured: Boolean(String(env.FINDPITCHES_SEARCH_API_KEY || '').trim()),
     publication_enabled: false,
+    customer_promotion_batch_limit: CUSTOMER_PROMOTION_BATCH_LIMIT,
     pdf_recovery: pdfRecoveryTick,
+    source_first: sourceFirstTelemetry,
     catalogue: catalogueMeta || null,
     counts: { runs, candidates, scheduler_jobs: jobs, publication_queue: publication, classification_queue: classification, customer_ready: customerReady },
     scheduler: {
       ready: Number(schedulerStates?.ready || 0),
+      baseline_ready: Number(schedulerStates?.baseline_ready || 0),
+      city_ready: Number(schedulerStates?.city_ready || 0),
       leased: Number(schedulerStates?.leased || 0),
       expired: Number(schedulerStates?.expired || 0)
     },
@@ -249,6 +277,8 @@ async function statusText(env) {
     `enrichment_dead: ${Number(data.enrichment?.dead || 0)}`,
     `enrichment_enriched: ${Number(data.enrichment?.enriched || 0)}`,
     `scheduler_ready: ${Number(data.scheduler?.ready || 0)}`,
+    `scheduler_baseline_ready: ${Number(data.scheduler?.baseline_ready || 0)}`,
+    `scheduler_city_ready: ${Number(data.scheduler?.city_ready || 0)}`,
     `scheduler_leased: ${Number(data.scheduler?.leased || 0)}`,
     `scheduler_expired: ${Number(data.scheduler?.expired || 0)}`,
     `publication_queue: ${Number(data.counts?.publication_queue || 0)}`,
@@ -322,7 +352,15 @@ async function count(env, table) {
   return Number(row?.count || 0);
 }
 
-export async function runShadowTick(env, { trigger = 'unknown', now = new Date() } = {}) {
+export async function runPairedAcquisitionTick(env,{now=new Date()}={}){
+  const baseline=await runShadowTick(env,{trigger:'cron_baseline',queryGroup:0,now})
+    .catch(error=>({ok:false,phase:'baseline_tick_failed',error:String(error?.message||error)}));
+  const city=await runShadowTick(env,{trigger:'cron_city',queryGroup:1,now:new Date()})
+    .catch(error=>({ok:false,phase:'city_tick_failed',error:String(error?.message||error)}));
+  return Object.freeze({ok:Boolean(baseline?.ok||city?.ok),service:SERVICE,mode:'paired_acquisition',baseline,city,publication_attempted:false});
+}
+
+export async function runShadowTick(env, { trigger = 'unknown', now = new Date(), queryGroup = null } = {}) {
   const timestamp = now.toISOString();
   const catalogue = await ensureSchedulerCatalogue(env.FINDPITCHES_DB, { now });
   const recoveredExpiredLeases = await recoverExpiredSchedulerLeases(env.FINDPITCHES_DB, { now });
@@ -341,13 +379,17 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
     };
   }
 
-  const job = await env.FINDPITCHES_DB.prepare(
+  const groupFilter=Number.isInteger(queryGroup)?' AND query_group = ?':'';
+  const statement=env.FINDPITCHES_DB.prepare(
     `SELECT id, market, region_code, location, query_group, attempts
        FROM scheduler_jobs
-      WHERE status = 'ready' AND available_at <= ?
+      WHERE status = 'ready' AND available_at <= ?${groupFilter}
       ORDER BY available_at ASC, id ASC
       LIMIT 1`
-  ).bind(timestamp).first();
+  );
+  const job = Number.isInteger(queryGroup)
+    ? await statement.bind(timestamp,queryGroup).first()
+    : await statement.bind(timestamp).first();
 
   if (!job) {
     return { ok: true, service: SERVICE, trigger, phase: 'idle', catalogue, recovered_expired_leases: recoveredExpiredLeases, at: timestamp };
@@ -373,8 +415,9 @@ export async function runShadowTick(env, { trigger = 'unknown', now = new Date()
       market: job.market,
       region_code: job.region_code,
       location: job.location,
-      query_limit: QUERY_LIMIT,
-      query_rotation: Number(job.attempts || 1) * QUERY_LIMIT
+      query_limit: Number(job.query_group)===1 && job.market==='US' ? 4 : QUERY_LIMIT,
+      discovery_profile: Number(job.query_group)===1 && job.market==='US' ? 'us_official_first' : 'baseline',
+      query_rotation: Number(job.attempts || 1) * (Number(job.query_group)===1 && job.market==='US' ? 4 : QUERY_LIMIT)
     }, {
       searchProvider
     });
@@ -580,5 +623,91 @@ async function getCustomerLocationQuality(env) {
     missing_source_backed_location:Number(row?.projected || 0)-Number(row?.source_backed_location || 0),
     event_dates:Number(row?.event_dates || 0),
     application_deadlines:Number(row?.application_deadlines || 0)
+  });
+}
+
+
+export async function runSourceFirstTick(env, { now = new Date() } = {}) {
+  const seeded = await seedSourceRoutesFromValidated(env.FINDPITCHES_DB, { market:'US', limit:250, now });
+  const promoted = await env.FINDPITCHES_DB.prepare(
+    `UPDATE source_routes
+        SET status='approved'
+      WHERE market='US' AND status='discovered'
+        AND domain IN (
+          SELECT domain FROM source_reputation
+           WHERE market='US' AND candidate_count >= 2
+             AND reputation_score >= 50
+        )`
+  ).run();
+  const acquisition = await runSourceFirstBatch(env.FINDPITCHES_DB, {
+    fetchProvider:createHttpFetchProvider(),
+    market:'US',
+    limit:SOURCE_FIRST_BATCH_LIMIT,
+    now
+  });
+  return Object.freeze({
+    ok:true,
+    service:SERVICE,
+    engine:'findpitches-v2-source-first',
+    seeded,
+    routes_promoted:Number(promoted?.meta?.changes||0),
+    acquisition,
+    search_api_used:false,
+    publication_attempted:false,
+    at:now.toISOString()
+  });
+}
+
+
+async function getSourceFirstTelemetry(db, now) {
+  const routes=await db.prepare(
+    `SELECT
+       COUNT(*) AS total,
+       SUM(CASE WHEN market='US' THEN 1 ELSE 0 END) AS us_total,
+       SUM(CASE WHEN market='US' AND status='discovered' THEN 1 ELSE 0 END) AS us_discovered,
+       SUM(CASE WHEN market='US' AND status='approved' THEN 1 ELSE 0 END) AS us_approved,
+       SUM(CASE WHEN market='US' AND status='productive' THEN 1 ELSE 0 END) AS us_productive,
+       SUM(CASE WHEN market='US' AND status IN ('approved','productive') AND (next_check IS NULL OR next_check<=?) THEN 1 ELSE 0 END) AS us_due,
+       SUM(CASE WHEN market='US' AND last_checked IS NOT NULL THEN 1 ELSE 0 END) AS us_checked,
+       SUM(CASE WHEN market='US' THEN candidate_count ELSE 0 END) AS route_candidates,
+       SUM(CASE WHEN market='US' THEN usable_count ELSE 0 END) AS route_usable,
+       SUM(CASE WHEN market='US' THEN rejection_count ELSE 0 END) AS route_rejected
+     FROM source_routes`
+  ).bind(now).first();
+  const reputation=await db.prepare(
+    `SELECT COUNT(*) AS domains,
+       SUM(CASE WHEN candidate_count>=2 AND reputation_score>=50 THEN 1 ELSE 0 END) AS qualifying_domains,
+       ROUND(AVG(CASE WHEN candidate_count>=2 THEN reputation_score END),1) AS avg_established_score
+     FROM source_reputation WHERE market='US'`
+  ).first();
+  const sourceCandidates=await db.prepare(
+    `SELECT COUNT(*) AS discovered,
+       SUM(CASE WHEN status='validated' THEN 1 ELSE 0 END) AS validated,
+       SUM(CASE WHEN status='rejected' THEN 1 ELSE 0 END) AS rejected,
+       SUM(CASE WHEN status='held' THEN 1 ELSE 0 END) AS held
+     FROM candidates
+     WHERE market='US' AND geography_json LIKE '%"source_route":%'`
+  ).first();
+  return Object.freeze({
+    enabled:true, market:'US', search_api_used:false,
+    routes:{
+      total:Number(routes?.us_total||0),
+      discovered:Number(routes?.us_discovered||0),
+      approved:Number(routes?.us_approved||0),
+      productive:Number(routes?.us_productive||0),
+      due:Number(routes?.us_due||0),
+      checked:Number(routes?.us_checked||0)
+    },
+    reputation:{
+      domains:Number(reputation?.domains||0),
+      qualifying_domains:Number(reputation?.qualifying_domains||0),
+      avg_established_score:Number(reputation?.avg_established_score||0)
+    },
+    candidates:{
+      discovered:Number(sourceCandidates?.discovered||0),
+      validated:Number(sourceCandidates?.validated||0),
+      held:Number(sourceCandidates?.held||0),
+      rejected:Number(sourceCandidates?.rejected||0)
+    }
   });
 }

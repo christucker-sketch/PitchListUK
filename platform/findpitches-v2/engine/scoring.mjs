@@ -38,6 +38,11 @@ export function scoreCandidate({ evidence = [], sourceUrl, applicationUrl } = {}
     reasons.push('negative_page_signal:-50');
   }
 
+  if (counts.get('market_conflict')) {
+    score -= 60;
+    reasons.push('market_conflict:-60');
+  }
+
   return Object.freeze({ score, reasons: Object.freeze(reasons) });
 }
 

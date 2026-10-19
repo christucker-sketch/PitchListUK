@@ -2,7 +2,7 @@ name: FindPitches v2 CI
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, synchronize]
     paths:
       - 'platform/findpitches-v2/**'
       - 'operations/findpitches-v2/**'
@@ -74,3 +74,144 @@ jobs:
             echo "FindPitches v2 must not modify production datasets or homepage during shadow development." >&2
             exit 1
           fi
+
+
+  practical-v2-impact:
+    name: practical-v2-impact
+    if: github.event_name == 'workflow_dispatch' || github.event.action == 'ready_for_review'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Check out candidate
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prove live v2 remains isolated and publication-off
+        shell: bash
+        run: |
+          set -euo pipefail
+          health="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .database == "isolated" and .mode == "shadow" and .publication_enabled == false' <<< "$health" >/dev/null
+
+      - name: Measure practical-v2 impact read-only
+        run: node operations/findpitches-v2/measure-practical-v2-impact.mjs
+
+      - name: Benchmark legacy UK customer-ready catalogue
+        run: node operations/findpitches-v2/benchmark-legacy-uk-product.mjs | tee legacy-uk-benchmark.json
+
+      - name: Audit legacy UK overlap with v2
+        run: node operations/findpitches-v2/audit-gb-legacy-overlap.mjs
+
+      - name: Preview legacy UK seed revalidation
+        run: node operations/findpitches-v2/preview-gb-legacy-revalidation.mjs
+
+      - name: Audit current practical readiness by market
+        run: node operations/findpitches-v2/audit-practical-readiness.mjs | tee practical-readiness-audit.json
+
+      - name: Preview GB place recall read-only
+        run: node operations/findpitches-v2/preview-gb-place-recall.mjs
+
+      - name: Preview GB classifier recheck read-only
+        run: node operations/findpitches-v2/preview-gb-classifier-recheck.mjs
+
+      - name: Preview integrated GB recovery pipeline read-only
+        run: node operations/findpitches-v2/preview-gb-integrated-recovery.mjs
+
+      - name: Diagnose GB localities against OS Open Names read-only
+        run: node operations/findpitches-v2/diagnose-gb-os-places.mjs
+
+      - name: Rank remaining GB recovery candidates read-only
+        run: node operations/findpitches-v2/rank-gb-recovery-candidates.mjs
+
+      - name: Preview ranked GB recovery candidates read-only
+        run: node operations/findpitches-v2/preview-gb-ranked-recovery.mjs
+
+      - name: Snapshot current strict US customer-visible inventory
+        env:
+          FINDPITCHES_D1_DATABASE_ID: 6732bcc9-a172-4d38-ad4d-7660ed13392f
+        run: node operations/findpitches-v2/scripts/run-us-customer-visible-audit.mjs us-customer-visible-audit.json
+
+      - name: Upload practical-v2 impact
+        uses: actions/upload-artifact@v4
+        with:
+          name: practical-v2-impact-${{ github.run_id }}
+          path: |
+            practical-v2-impact.json
+            legacy-uk-benchmark.json
+            gb-legacy-overlap.json
+            gb-legacy-revalidation-preview.json
+            practical-readiness-audit.json
+            gb-place-recall-preview.json
+            gb-classifier-recheck-preview.json
+            gb-integrated-recovery-preview.json
+            gb-os-places-diagnostic.json
+            gb-recovery-ranking.json
+            gb-ranked-recovery-preview.json
+            us-customer-visible-audit.json
+          retention-days: 14
+
+
+  deploy-enrichment-head:
+    name: deploy-enrichment-head
+    needs: verify
+    if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && github.event.pull_request.number == 1872 && contains(github.event.pull_request.body || '', '[deploy-enrichment-head-once]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: findpitches-production
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      ENRICHMENT_CONFIG: operations/findpitches-v2-enrichment/wrangler.jsonc
+
+    steps:
+      - name: Check out PR head exactly
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Compile enrichment worker
+        run: npx --yes wrangler@4.127.1 deploy --dry-run --config "$ENRICHMENT_CONFIG"
+
+      - name: Prove API remains isolated and publication-off
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl --silent --show-error --fail-with-body --max-time 15 https://api.findpitches.com/health)"
+          jq -e '.ok == true and .database == "isolated" and .mode == "shadow" and .publication_enabled == false' <<< "$body" >/dev/null
+
+      - name: Deploy enrichment worker only
+        run: npx --yes wrangler@4.127.1 deploy --config "$ENRICHMENT_CONFIG"
+
+      - name: Prove enrichment runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          ok=false
+          for attempt in $(seq 1 12); do
+            health="$(curl --silent --show-error --fail-with-body --max-time 15 https://findpitches-v2-enrichment.ctucker.workers.dev/health || true)"
+            status="$(curl --silent --show-error --fail-with-body --max-time 15 https://findpitches-v2-enrichment.ctucker.workers.dev/status || true)"
+            if jq -e '.ok == true and .service == "findpitches-v2-enrichment" and .database == "isolated" and .serper_configured == false and .enrichment_ruleset == "2026-09-30-practical-location-v3" and .batch_limit == 20 and .minimum_ruleset_refresh_limit == 12' <<< "$health" >/dev/null 2>&1 &&
+               jq -e '.ok == true and .service == "findpitches-v2-enrichment"' <<< "$status" >/dev/null 2>&1; then
+              ok=true
+              break
+            fi
+            sleep 3
+          done
+          [[ "$ok" == "true" ]] || { printf '%s\n%s\n' "$health" "$status" >&2; exit 1; }
+          jq '{enrichment_ruleset,queue,enriched,practical_location,ruleset_meta}' <<< "$status"
