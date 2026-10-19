@@ -1,5 +1,6 @@
 // Storage adapter for customer-ready projections.
 // Deliberately targets a separate customer_opportunities table rather than raw candidates.
+import { customerVisibilityArgs, customerVisibilityClause } from './visibility.mjs';
 
 export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocument = {}, { locationEvidenceUrl = null } = {}) {
   requireDb(db);
@@ -31,23 +32,44 @@ export async function upsertCustomerOpportunity(db, opportunity = {}, searchDocu
   return opportunity.id;
 }
 
-export async function getCustomerOpportunity(db, id) {
+// ---------------------------------------------------------------------------------------------
+// Read-time visibility policy.
+//
+// A row in customer_opportunities is only returned while ALL of these hold at read time:
+//   1. its source candidate still exists and is 'validated' or 'published'
+//      (revalidation moves cancelled/closed events to 'held'; rejected/held candidates disappear);
+//   2. a newer revision of the candidate has not been inspected and found not customer-ready
+//      (customer_promotion_disposition.disposition = 'not_ready' for the candidate's current last_checked);
+//   3. the application deadline, if known, is today or later;
+//   4. the event end date, if known, is today or later; a non-recurring event with a known start date
+//      in the past and no end date is treated as finished;
+//   5. last_checked is within the freshness window (FINDPITCHES_CUSTOMER_MAX_AGE_DAYS, default 60);
+//   6. the record still passes assessCustomerReadiness() (URL block rules, required fields incl.
+//      location) — applied in service.mjs after the query;
+//   7. (location gate, PR #1865) it has a nonblank event location AND a source URL proving it
+//      (location_evidence_url). Legacy rows promoted before location evidence existed fail closed.
+// Promotion (run-batch.mjs) is unchanged; these checks make stale projections invisible without
+// deleting anything.
+// ---------------------------------------------------------------------------------------------
+export async function getCustomerOpportunity(db, id, visibility = {}) {
   requireDb(db);
-  return db.prepare("SELECT * FROM customer_opportunities WHERE id = ? AND NULLIF(TRIM(location),'') IS NOT NULL AND NULLIF(TRIM(location_evidence_url),'') IS NOT NULL").bind(String(id)).first();
+  return db.prepare(`SELECT o.* FROM customer_opportunities o ${customerVisibilityClause()} AND o.id = ?`)
+    .bind(...customerVisibilityArgs(visibility), String(id)).first();
 }
 
-export async function searchCustomerOpportunities(db, query = {}) {
+export async function searchCustomerOpportunities(db, query = {}, visibility = {}) {
   requireDb(db);
-  // This is the read-time safety gate for legacy rows promoted before location evidence existed.
-  const where=["NULLIF(TRIM(location),'') IS NOT NULL", "NULLIF(TRIM(location_evidence_url),'') IS NOT NULL"], args=[];
-  if (query.market) { where.push('market = ?'); args.push(query.market); }
-  if (query.region_code) { where.push('region_code = ?'); args.push(query.region_code); }
+  const where=[], args=[];
+  if (query.market) { where.push('o.market = ?'); args.push(query.market); }
+  if (query.region_code) { where.push('o.region_code = ?'); args.push(query.region_code); }
   for (const term of [query.q, query.offering, query.cuisine].filter(Boolean)) {
-    where.push('LOWER(search_text) LIKE ?'); args.push(`%${String(term).toLowerCase()}%`);
+    where.push('LOWER(o.search_text) LIKE ?'); args.push(`%${String(term).toLowerCase()}%`);
   }
+  // Over-fetch slightly: service.mjs drops rows that fail the in-code readiness check, then trims to limit.
   const limit=Math.max(1,Math.min(100,Number(query.limit)||25));
-  const sql=`SELECT * FROM customer_opportunities ${where.length?'WHERE '+where.join(' AND '):''} ORDER BY last_checked DESC, id ASC LIMIT ?`;
-  return db.prepare(sql).bind(...args,limit).all();
+  const fetchLimit=Math.min(200, limit * 2 + 10);
+  const sql=`SELECT o.* FROM customer_opportunities o ${customerVisibilityClause()} ${where.length?'AND '+where.join(' AND '):''} ORDER BY o.last_checked DESC, o.id ASC LIMIT ?`;
+  return db.prepare(sql).bind(...customerVisibilityArgs(visibility), ...args, fetchLimit).all();
 }
 
 function requireDb(db){if(!db?.prepare)throw new Error('findpitches_customer_store_db_missing');}

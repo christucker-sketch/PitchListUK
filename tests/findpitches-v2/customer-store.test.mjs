@@ -18,7 +18,7 @@ test('search combines customer market region and adaptive terms',async()=>{
  await searchCustomerOpportunities(db,{market:'GB',region_code:'GB-ENG-KENT',offering:'jerk chicken',limit:20});
  assert.match(db.calls[0].sql,/market = \?/);
  assert.match(db.calls[0].sql,/region_code = \?/);
- assert.match(db.calls[0].sql,/LOWER\(search_text\) LIKE \?/);
+ assert.match(db.calls[0].sql,/LOWER\(o\.search_text\) LIKE \?/);
  assert.ok(db.calls[0].args.includes('%jerk chicken%'));
  assert.match(db.calls[0].sql,/location_evidence_url/);
 });
@@ -27,9 +27,9 @@ test('reads never expose legacy customer rows without location evidence',async()
  const db=dbSpy();
  const {getCustomerOpportunity}=await import('../../platform/findpitches-v2/customer/store.mjs');
  await getCustomerOpportunity(db,'legacy-id');
- assert.match(db.calls[0].sql,/NULLIF\(TRIM\(location_evidence_url\)/);
+ assert.match(db.calls[0].sql,/NULLIF\(TRIM\(o\.location_evidence_url\)/);
  await searchCustomerOpportunities(db,{market:'GB'});
- assert.match(db.calls[1].sql,/NULLIF\(TRIM\(location_evidence_url\)/);
+ assert.match(db.calls[1].sql,/NULLIF\(TRIM\(o\.location_evidence_url\)/);
 });
 
 test('upsert persists the event location source URL',async()=>{

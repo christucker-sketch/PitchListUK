@@ -8,6 +8,7 @@ import { createSerperSearchProvider } from '../../../platform/findpitches-v2/pro
 import { ensureSchedulerCatalogue } from '../../../platform/findpitches-v2/scheduler/catalogue.mjs';
 import { recordRunFailure } from '../../../platform/findpitches-v2/storage/d1.mjs';
 import { runCustomerPromotionBatch } from '../../../platform/findpitches-v2/customer/run-batch.mjs';
+import { routeCustomerApi } from '../../../platform/findpitches-v2/customer/http.mjs';
 import { runNativePdfRecovery } from '../../../platform/findpitches-v2/pdf-recovery/native.mjs';
 import { runObservedPdfRecovery, getPdfRecoveryTelemetry } from '../../../platform/findpitches-v2/pdf-recovery/telemetry.mjs';
 
@@ -40,6 +41,11 @@ export default {
     if (request.method === 'GET' && url.pathname === '/sample') {
       return sample(env, url);
     }
+
+    // Protected customer API (server-to-server only; see platform/findpitches-v2/customer/auth.mjs).
+    // Read-only: it does not touch acquisition, classification, enrichment, promotion or publication.
+    const customer = await routeCustomerApi(request, env);
+    if (customer) return customer;
 
     return Response.json({ ok: false, service: SERVICE, error: 'not_found' }, { status: 404 });
   },
