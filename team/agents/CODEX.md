@@ -1,7 +1,7 @@
 # Codex status
 
-Author: Codex. Updated: **2026-10-18T21:12:11+01:00 — French conversion defects and source-family handover** (Europe/London).
-State: **V3-031 bounded checkpoint DONE; V3-020 French proof ACTIVE; V3-032 actual 24/48h measurement BLOCKED on elapsed time. Billing DONE; remaining global performance OPEN; upcoming/Save DEFERRED. Public/Checkout on; paid paused.**
+Author: Codex. Updated: **2026-10-20T16:38:20+01:00 — full read-only team/runtime check and measured renewal follow-up** (Europe/London).
+State: **V3-020 French implementation ACTIVE/unreleased; V3-032 actual24h+47.5h observed,48h due20Oct16:45London. Billing DONE; remaining global performance OPEN; upcoming/Save DEFERRED. Public/Checkout on; paid paused.**
 Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 growth, V3-020 French proof, V3-022 storage follow-up; V3-026/027 complete. V3-010 customer runtime remains live with owned LIVE acceptance coordinated separately by ChatGPT/Chris. Customer upcoming/Save is tracked as V3-028.
 
 
@@ -9,6 +9,16 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+
+## Full current status / real automation progress — 2026-10-20T16:38:20+01:00
+
+[Full team report](../../docs/findpitches-v3-team-status-2026-10-20.md) / [sanitized measurements](../../operations/findpitches-v3/reports/team-status-2026-10-20.json). CustomerREADY**1679 at16:22London**,12newUS−62withheld=net−50vs1729; all62IDs remain. Currentdate/stateholds40/proof-quality22, not reconstructedfirstwithdrawal causes.26/27SundayrecoveriesstillREADY;1selected/source-deadline mismatchheld. FR30/3sourceverified/1customerREADY, fourknownfielddefects stillpresent. No newerimplementationrelease since18Oct; this was a read-only update, not unattended French engineering.
+
+**Measured operational gains:** producerpending673→128(−81%);45newproducerIDs/3176versions, freshnesshealthy, one24mingap=strictcadencefalse. Matched23hsource-renewalattempts7474→2187→2137(−71.4%, observational/nonpaid/nonHTTPcount). D1actual47.5h/191samples≈115.72MBday vs earlier203.10; first24h128.59MB. SourceD1**46.49%/5.35GBfree**. V3-032exact48hendpointdue**today16:45London**, not yet observed. Coredue/leased/dead/stale0, expiredpositivegaps0;7dailycooldown retries remain=renewaldegraded.
+
+Public29pass; EN/DE/FRlanguage200, LIVECheckouton/customer`a3803f31`unchanged; US844/1522+UK123/146map points, APIonly/notnewbrowserbenchmark. V3stored1account/1trialcancel-at-end/0newaccounts/0activepaidsubscriptions; no newStripeinvoiceaudit/testmail/customerflow. V3Serper0rows18–20Oct/paused; nativelegacyUSUKCAflagsfalse/V2schedulerempty. Noaccount-widecreditaudit orlegacyedits. Bounded79originalreceipts/1163facts/62IDs0mutations, notwholehistory. Lastfull541on18Oct notrerun; no source/identity/runtime/provider/Pi/V2businesschanges today. Normalpublicsecuritycounters mayincrement.
+
+**Resume:** V3-020source-backedproducerfixes+reusableFrenchproof remains highest commercial priority; investigate22proof/qualitywithdrawals including8calendarbindingholds. V3-03248hactualobservation whenavailable, no fabricatedfuturecoverage. BillingDONE/globalperformanceOPEN/upcomingSaveDEFERRED; no newpaidprogramme or sourcefieldoverwrite.
 
 ## France conversion diagnosis delivered — 2026-10-18T21:12:11+01:00
 

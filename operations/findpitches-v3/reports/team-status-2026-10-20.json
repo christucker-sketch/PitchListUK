@@ -1,0 +1,537 @@
+{
+  "schema": "findpitches-v3-team-status-v1",
+  "published_at": "2026-10-20T16:38:20+01:00",
+  "timezone": "Europe/London",
+  "customer_inventory": {
+    "as_of": "2026-10-20T15:22:44.031Z",
+    "ready": 1679,
+    "ready_by_country": {
+      "US": 1522,
+      "NZ": 5,
+      "GB": 146,
+      "AU": 4,
+      "FR": 1,
+      "CA": 1
+    },
+    "before_as_of": "2026-10-18T16:25:06.137Z",
+    "before_ready": 1729,
+    "added": 12,
+    "removed": 62,
+    "net_change": -50,
+    "net_change_percent": -2.89,
+    "added_by_country": {
+      "US": 12
+    },
+    "removed_by_country": {
+      "US": 49,
+      "GB": 13
+    },
+    "ready_by_origin": [
+      {
+        "origin": "independent-structured",
+        "ready": 430
+      },
+      {
+        "origin": "legacy_mk1",
+        "ready": 1
+      },
+      {
+        "origin": "legacy_v2",
+        "ready": 279
+      },
+      {
+        "origin": "platform-catalogue",
+        "ready": 828
+      },
+      {
+        "origin": "source-led-search",
+        "ready": 3
+      },
+      {
+        "origin": "uk-official",
+        "ready": 138
+      }
+    ],
+    "added_identity_type": [
+      {
+        "kind": "new_entity",
+        "entities": 12
+      }
+    ],
+    "internal_source_ready": 1681,
+    "producer_policy_withheld": 2,
+    "definition": "Current eligible customer catalogue after all source, revision, identity, expiry and producer-policy gates. Counts distinct application opportunities, not necessarily distinct festivals."
+  },
+  "withdrawals": {
+    "as_of": "2026-10-20T15:26:01.253Z",
+    "removed_entities_inspected": 62,
+    "identities_still_present": 62,
+    "exclusive_current_dispositions": {
+      "closed_cancelled_waitlist": 17,
+      "identity_or_quality_hold": 5,
+      "application_deadline_passed": 21,
+      "other_verification_or_expiry_hold": 8,
+      "event_ended": 2,
+      "source_proof_quarantine": 8,
+      "source_retrieval_failure": 1
+    },
+    "overlapping_current_reasons": {
+      "selected_application_state_disagrees_with_proof": 34,
+      "dundee_exact_food_event_required": 1,
+      "trader_application_purpose_not_proved": 9,
+      "application_deadline_passed": 27,
+      "application_closed": 27,
+      "hummingbird_current_reviewed_calendar_binding_required": 8,
+      "event_application_route_missing_or_ambiguous": 1,
+      "open_vendor_application_not_proved": 7,
+      "selected_event_name_disagrees_with_proof": 1,
+      "selected_application_deadline_disagrees_with_proof": 7,
+      "source_http_404": 1
+    },
+    "recovered_cohort": {
+      "total": 27,
+      "currently_customer_ready": 26,
+      "currently_withheld": [
+        {
+          "proof_status": "quarantine",
+          "reasons": [
+            "selected_application_deadline_disagrees_with_proof"
+          ],
+          "event_end": "2026-11-07",
+          "application_deadline": "2026-10-24",
+          "application_state": "OPEN_NOW"
+        }
+      ]
+    },
+    "interpretation": "Current-disposition attribution, using selected source dates first, then closure/identity/proof states. Categories are exclusive; reason flags overlap. Not a reconstruction of each first withdrawal transition; deadlines/events and other holds can coexist."
+  },
+  "producer": {
+    "as_of": "2026-10-20T15:22:44.027Z",
+    "last_authenticated_poll": "2026-10-20T15:18:24.056Z",
+    "source_last_checked": "2026-10-20T14:28:47Z",
+    "last_new_receipt": "2026-10-20T14:47:10.854Z",
+    "host_recently_contacting": true,
+    "freshness_warning": false,
+    "strict_cadence_verified": false,
+    "recent_poll_intervals_seconds": [
+      922.968,
+      1443.825,
+      923.258
+    ],
+    "pending_rechecks_before": 673,
+    "pending_rechecks_now": 128,
+    "pending_recheck_reduction_percent": 80.98,
+    "acknowledged_last_24h": 1145,
+    "fresh_evidence_ack_eligible": 0,
+    "delivery_delta": {
+      "baseline_at": "2026-10-18T16:22:26.895Z",
+      "now_at": "2026-10-20T15:22:44.027Z",
+      "additional_immutable_versions": 3176,
+      "additional_producer_ids": 45
+    },
+    "requests_cleared_by_this_check": 0,
+    "interpretation": "Fresh contact/delivery is observed. One24.1-minute gap leaves the strict cadence flag false; no current outage is indicated. Recheck acknowledgement and new producer IDs are not customer READY proof."
+  },
+  "renewal": {
+    "as_of": "2026-10-20T15:22:44.027Z",
+    "health": "degraded",
+    "last_24h": {
+      "attempts": 2348,
+      "transient_failures": 38,
+      "source_results": 2310,
+      "exhausted_attempts": 7
+    },
+    "waiting": {
+      "entities": 7,
+      "exhausted_entities": 7,
+      "next_retry_at": "2026-10-20T17:55:24.329Z",
+      "superseded_latest_failures_retained": 0
+    },
+    "expired_cached_ready_positive_proofs": 0,
+    "core_due_leased_dead_jobs": 0,
+    "stale_leases": 0,
+    "matched_attempt_windows": [
+      {
+        "name": "before_policy",
+        "from": "2026-10-17T16:00:00.000Z",
+        "to": "2026-10-18T15:00:00.000Z",
+        "hours": 23,
+        "source_result": 7384,
+        "transient_failure": 90,
+        "total": 7474
+      },
+      {
+        "name": "post_day1",
+        "from": "2026-10-18T16:00:00.000Z",
+        "to": "2026-10-19T15:00:00.000Z",
+        "hours": 23,
+        "source_result": 2161,
+        "transient_failure": 26,
+        "total": 2187
+      },
+      {
+        "name": "post_day2",
+        "from": "2026-10-19T16:00:00.000Z",
+        "to": "2026-10-20T15:00:00.000Z",
+        "hours": 23,
+        "source_result": 2099,
+        "transient_failure": 38,
+        "total": 2137
+      }
+    ],
+    "matched_attempt_reduction_percent": 71.40754616002141,
+    "interpretation": "Measured native renewal attempts, not provider queries or an HTTP request count. Windows each contain23completed hours, excluding release boundary hours. Uncontrolled before/after observations; source mix, withdrawals, delivery and operator checks vary. READY TTL was not extended."
+  },
+  "storage": {
+    "as_of": "2026-10-20T15:23:14.109Z",
+    "capacity": {
+      "available": true,
+      "file_size_bytes": 4649238528,
+      "conservative_cap_bytes": 10000000000,
+      "protective_stop_bytes": 9700000000,
+      "percent_used": 46.49,
+      "remaining_bytes": 5350761472,
+      "state": "normal",
+      "source_growth_allowed": true,
+      "warning_thresholds_percent": [
+        70,
+        80,
+        90,
+        97
+      ]
+    },
+    "window": {
+      "available": true,
+      "first": {
+        "observed_at": "2026-10-18T15:45:00.000Z",
+        "file_size_bytes": 4420206592
+      },
+      "last": {
+        "observed_at": "2026-10-20T15:15:00.000Z",
+        "file_size_bytes": 4649238528
+      },
+      "samples": 191,
+      "elapsed_hours": 47.5,
+      "physical_delta_bytes": 229031936,
+      "net_bytes_per_day": 115721399.24210525,
+      "includes_large_reclaim": false,
+      "coverage_24h": true,
+      "coverage_48h": false,
+      "coverage_72h": false,
+      "linear_scenario_days_to_70_percent": 20.313973797377617,
+      "linear_scenario_days_to_97_percent": 43.64587280381138,
+      "interpretation": "Observed net physical change in the stated sample interval. Linear headroom scenarios are not steady-state forecasts; missing future coverage is not measured. Reclaim windows have no growth projection."
+    },
+    "checkpoints": {
+      "24h": {
+        "due_at": "2026-10-19T15:45:00.000Z",
+        "observed": true,
+        "sample_at": "2026-10-19T15:45:00.000Z",
+        "window": {
+          "available": true,
+          "first": {
+            "observed_at": "2026-10-18T15:45:00.000Z",
+            "file_size_bytes": 4420206592
+          },
+          "last": {
+            "observed_at": "2026-10-19T15:45:00.000Z",
+            "file_size_bytes": 4548792320
+          },
+          "samples": 97,
+          "elapsed_hours": 24,
+          "physical_delta_bytes": 128585728,
+          "net_bytes_per_day": 128585728,
+          "includes_large_reclaim": false,
+          "coverage_24h": true,
+          "coverage_48h": false,
+          "coverage_72h": false,
+          "linear_scenario_days_to_70_percent": 18.2816670913898,
+          "linear_scenario_days_to_97_percent": 39.279331777784854,
+          "interpretation": "Observed net physical change in the stated sample interval. Linear headroom scenarios are not steady-state forecasts; missing future coverage is not measured. Reclaim windows have no growth projection."
+        }
+      },
+      "48h": {
+        "due_at": "2026-10-20T15:45:00.000Z",
+        "observed": false
+      }
+    },
+    "earlier_event_excluded_reference_mb_per_day": 203.1,
+    "read_only": true,
+    "interpretation": "Net physical D1 growth, not an isolated causal savings estimate or per-table/index attribution. Actual24h is available;48h endpoint is due20October16:45London. No migration or deletion performed."
+  },
+  "france": {
+    "as_of": "2026-10-20T15:26:36.091Z",
+    "entities": 30,
+    "customer_ready": 1,
+    "source_verified": 3,
+    "producer_low_withheld": 2,
+    "unchanged_known_extraction_defects": 4,
+    "new_reusable_proof_release_since_previous_session": false,
+    "next_work": "Source-bound producer date/region/organiser/title repairs and reusable official-event/application-bundle verification. No generic keyword promotion, confidence bypass or original-field overwrite."
+  },
+  "frontend": {
+    "observations": {
+      "as_of": "2026-10-20T15:28:18.078Z",
+      "observations": [
+        {
+          "path": "/",
+          "status": 200,
+          "duration_ms": 560
+        },
+        {
+          "path": "/fr/",
+          "status": 200,
+          "duration_ms": 2075
+        },
+        {
+          "path": "/de/",
+          "status": 404,
+          "duration_ms": 1827
+        },
+        {
+          "path": "/api/v3/opportunities?market=GB&page_size=1",
+          "status": 200,
+          "duration_ms": 782,
+          "total": 146,
+          "map_points": 123,
+          "free_redaction": true
+        },
+        {
+          "path": "/api/v3/opportunities?market=US&page_size=1",
+          "status": 200,
+          "duration_ms": 1340,
+          "total": 1522,
+          "map_points": 844,
+          "free_redaction": true
+        }
+      ]
+    },
+    "language_observations": {
+      "as_of": "2026-10-20T15:29:05.016Z",
+      "observations": [
+        {
+          "language": "de",
+          "path": "/lang/de/",
+          "status": 200,
+          "html_language_matches": true,
+          "duration_ms": 388
+        },
+        {
+          "language": "fr",
+          "path": "/lang/fr/",
+          "status": 200,
+          "html_language_matches": true,
+          "duration_ms": 281
+        }
+      ],
+      "interpretation": "/lang/de and /lang/fr are language routes. /de is a disabled Germany market route, not the German language homepage."
+    },
+    "public_smoke": {
+      "as_of": "2026-10-20T15:23:29.137Z",
+      "passed": true,
+      "checks_passed": 29,
+      "customer_objects_created": 0,
+      "emails_sent": 0
+    },
+    "customer_worker_version": "a3803f31-fe3b-4482-816d-72bd05bd9987",
+    "live_checkout_enabled": true,
+    "source_and_customer_runtime_released_by_this_check": false,
+    "map_interpretation": "Map points count current opportunities with eligible venue/address coordinates, not distinct marker positions. Public API checks only; no fresh browser-click benchmark."
+  },
+  "billing": {
+    "as_of": "2026-10-20T15:25:13.369Z",
+    "counts": {
+      "accounts": 1,
+      "new_accounts_since_baseline": 0,
+      "pending_webhooks": 0,
+      "webhook_receipts_with_errors": 0,
+      "saved_items": 0
+    },
+    "subscriptions": [
+      {
+        "status": "trialing",
+        "currency": "GBP",
+        "cancel_at_period_end": 1,
+        "subscriptions": 1
+      }
+    ],
+    "scope": "V3 production database aggregates; includes owned test activity. Not an invoice/revenue or account-wide Stripe audit."
+  },
+  "paid": {
+    "v3_since_18_october": {
+      "as_of": "2026-10-20T15:28:18.400Z",
+      "since_london_day": "2026-10-18",
+      "usage_rows": [],
+      "scope": "V3 only; account-wide or legacy credits not re-audited."
+    },
+    "manual_paused": true,
+    "bulk_enabled": false,
+    "commercial_daily_query_limit": 25,
+    "global_limits": {
+      "queries_per_run": 4,
+      "queries_per_hour": 100,
+      "queries_per_day": 1000,
+      "credits_per_run": 4,
+      "credits_per_hour": 100,
+      "credits_per_day": 1000
+    },
+    "legacy_read_only": {
+      "as_of": "2026-10-20T15:29:04.346Z",
+      "read_only": true,
+      "global_flags": {
+        "GLOBAL_CA_CONTROLLER_CUTOVER_ENABLED": "false",
+        "GLOBAL_CONTROLLER_CUTOVER_ENABLED": "false",
+        "GLOBAL_UK_CONTROLLER_CUTOVER_ENABLED": "false"
+      },
+      "workflow_names": [
+        {
+          "binding": "GLOBAL_ACQUISITION",
+          "workflow_name": "findpitches-global-acquisition-shadow"
+        }
+      ],
+      "v2_schedules": {
+        "schedules": []
+      },
+      "latest_workflow_observation": {
+        "returned": 0,
+        "status_counts": {},
+        "most_recent_created_at": null,
+        "scope": "First bounded page of20instances; not a complete account-wide paid-provider audit."
+      }
+    },
+    "scope": "V3 ledger and current named legacy flags/scheduler checked; no complete account-wide Serper billing audit."
+  },
+  "validation": {
+    "latest_full_suite_passed": 541,
+    "latest_full_suite_date": "2026-10-18",
+    "full_suite_rerun_today": false,
+    "public_checks_today": 29,
+    "bounded_original_custody": {
+      "as_of": "2026-10-20T15:26:41.063Z",
+      "original_facts_compared": 1163,
+      "identity_tuples_compared": 62,
+      "source_mutations": 0,
+      "identity_changes": 0,
+      "original_receipts_compared": 79,
+      "receipt_mutations": 0
+    },
+    "source_pipeline_publication_enabled": false,
+    "source_customer_rows": 0,
+    "source_publication_rows": 0,
+    "customer_free_and_held_record_checks": "passed within public smoke scope; no full catalogue manual quality audit today"
+  },
+  "engineering_activity": {
+    "new_implementation_release_since_previous_session": false,
+    "native_deployments": {
+      "as_of": "2026-10-20T15:24:15.186Z",
+      "versions": [
+        {
+          "name": "findpitches-v3-ingest-shadow",
+          "deployment_id": "0dbf4f53-a5a8-43fe-8df3-7a3d3dd547d8",
+          "created_on": "2026-10-16T09:36:17.083603Z",
+          "versions": [
+            {
+              "version_id": "030b2e68-6e5e-4d3e-89ba-8c7d249b4cf6",
+              "percentage": 100
+            }
+          ]
+        },
+        {
+          "name": "findpitches-v3-reconcile-shadow",
+          "deployment_id": "91dd3f40-dd86-4f24-9d3d-f53cb80902ac",
+          "created_on": "2026-10-16T09:35:11.970888Z",
+          "versions": [
+            {
+              "version_id": "a013fb8f-b6b0-4472-970a-f0afc613fb32",
+              "percentage": 100
+            }
+          ]
+        },
+        {
+          "name": "findpitches-v3-eligibility-shadow",
+          "deployment_id": "b832f9e3-5a90-405c-a9c2-ffd4905fc937",
+          "created_on": "2026-10-16T09:34:50.494343Z",
+          "versions": [
+            {
+              "version_id": "8a8f0811-d3c2-4e94-90b9-b8f2caa6f8fc",
+              "percentage": 100
+            }
+          ]
+        },
+        {
+          "name": "findpitches-v3-enrichment-shadow",
+          "deployment_id": "d4edad26-6bf2-4012-9ada-2f7b82c1a6d8",
+          "created_on": "2026-10-18T16:22:20.918434Z",
+          "versions": [
+            {
+              "version_id": "d168e195-0586-4fd1-9166-b5b7f3ae64e9",
+              "percentage": 100
+            }
+          ]
+        },
+        {
+          "name": "findpitches-v3-readiness-shadow",
+          "deployment_id": "877e346e-9230-4931-9cb0-7b1879cf9f23",
+          "created_on": "2026-10-18T15:40:50.799127Z",
+          "versions": [
+            {
+              "version_id": "4fbb60d0-0b65-4d69-84c0-96c265ff4150",
+              "percentage": 100
+            }
+          ]
+        },
+        {
+          "name": "findpitches-v3-watch-shadow",
+          "deployment_id": "1b8ec74b-c32f-418a-a596-65a38f892e2a",
+          "created_on": "2026-10-18T15:41:13.053138Z",
+          "versions": [
+            {
+              "version_id": "3c9d66a1-eb0f-41ca-92e3-8fb5c393000a",
+              "percentage": 100
+            }
+          ]
+        },
+        {
+          "name": "findpitches-v3-acquisition-shadow",
+          "deployment_id": "ed849b3f-2ff6-46e2-affc-f837933872a6",
+          "created_on": "2026-10-16T09:35:58.206893Z",
+          "versions": [
+            {
+              "version_id": "5c2b20f1-fc68-47d1-98e4-fcb64bc35ae6",
+              "percentage": 100
+            }
+          ]
+        },
+        {
+          "name": "findpitches-v3-api-shadow",
+          "deployment_id": "02af7759-1729-4587-b397-e8efe1d12f14",
+          "created_on": "2026-10-18T16:12:09.81858Z",
+          "versions": [
+            {
+              "version_id": "05a26977-a70d-47f3-8cb9-cb67d592c5f4",
+              "percentage": 100
+            }
+          ]
+        },
+        {
+          "name": "findpitches-v3-customer-production",
+          "deployment_id": "0d3cd5c8-0652-47fa-857c-90a73f4c4e16",
+          "created_on": "2026-10-16T23:22:30.73038Z",
+          "versions": [
+            {
+              "version_id": "a3803f31-fe3b-4482-816d-72bd05bd9987",
+              "percentage": 100
+            }
+          ]
+        }
+      ]
+    },
+    "source_or_identity_edits_by_this_check": 0,
+    "producer_host_edits_by_this_check": 0,
+    "customer_or_billing_mutations_by_this_check": 0,
+    "v2_or_pitchlist_edits_by_this_check": 0,
+    "infrastructure_deletions": 0,
+    "protected_branch_merges": 0,
+    "interpretation": "Deployed automation continued between sessions. No newer shared-branch implementation or native V3 runtime release is evidenced. Unpublished external-session work is unknown."
+  }
+}
