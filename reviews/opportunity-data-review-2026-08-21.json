@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 2,
   "created_at": "2026-08-21T12:00:00Z",
   "baseline": {
     "production_count": 300,
@@ -46,18 +46,20 @@
     {"name":"St Ives Food and Drink Festival traders","source_url":"https://stivesfoodanddrinkfestival.co.uk/traders-2025/","reason":"stale_2025_event"}
   ],
   "proposed_additions": [
-    {"dirty_ordinal":1,"name":"King's Grove medieval trader application","organiser":"England's Medieval Festival","area":"East Sussex","source_url":"https://www.englandsmedievalfestival.com/medieval/participants-info/Traders/","application_or_contact_url":"https://www.englandsmedievalfestival.com/medieval/participants-info/Traders/Medieval-trader-application.html","evidence":"official organiser trader page and direct application","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":4,"name":"Bristol docks and parks trader pitches","organiser":"Bristol City Council","area":"Bristol","source_url":"https://www.bristol.gov.uk/business/food-business/pitches-for-traders-in-bristols-city-docks-and-parks","application_or_contact_url":"https://www.bristol.gov.uk/business/food-business/pitches-for-traders-in-bristols-city-docks-and-parks#main-content","evidence":"official council pitch page","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":6,"name":"Cheshire East street trading","organiser":"Cheshire East Council","area":"Cheshire","source_url":"https://www.cheshireeast.gov.uk/business/licensing/other_licences/street_trading/street_trading.aspx","application_or_contact_url":"https://www.gov.uk/apply-for-a-licence/street-trading-licence/cheshire-east/apply-1","evidence":"official council page and GOV.UK application","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":8,"name":"Cumberland and Carlisle street trading","organiser":"Cumberland Council","area":"Cumbria","source_url":"https://www.cumberland.gov.uk/business-and-licensing/licensing/road-and-street-licences-and-permits/street-trading","application_or_contact_url":"https://www.gov.uk/apply-for-a-licence/street-trading-licence/carlisle/apply-1","evidence":"official council page and GOV.UK application","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":16,"name":"Rushmoor street trading","organiser":"Rushmoor Borough Council","area":"Hampshire","source_url":"https://www.rushmoor.gov.uk/business-licensing-and-skills/licensing-and-registration/street-trading/","application_or_contact_url":"https://www.rushmoor.gov.uk/media/mu5gea5o/application-form-street-trading-regular-trader-accessible-1.pdf","evidence":"official council page and direct application PDF","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":17,"name":"Tendring street trading","organiser":"Tendring District Council","area":"Essex","source_url":"https://www.tendringdc.gov.uk/content/street-trading","application_or_contact_url":"https://tendring-self.achieveservice.com/ssauth/register","evidence":"official council page and self-service application","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":27,"name":"Caerphilly street trading application","organiser":"Caerphilly County Borough Council","area":"Wales","source_url":"https://www.caerphilly.gov.uk/caerphillydocs/licensing/street_trading_application_form.aspx","application_or_contact_url":"https://www.caerphilly.gov.uk/caerphillydocs/licensing/street_trading_application_form.aspx","evidence":"official council application page","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":34,"name":"Dundee street trader licence","organiser":"Dundee City Council","area":"Scotland","source_url":"https://www.dundeecity.gov.uk/licensing/street-trader-licence","application_or_contact_url":"https://my.dundeecity.gov.uk/en/service/Street_Trader_Licence_Application","evidence":"official council licence page and application","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":35,"name":"East Cambridgeshire street trading consent","organiser":"East Cambridgeshire District Council","area":"Cambridgeshire","source_url":"https://eastcambs.gov.uk/services/licensing-and-permits/street-trading/street-trading-consent","application_or_contact_url":"https://eastcambs-self.achieveservice.com/en/AchieveForms/","evidence":"official council consent page and application service","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":38,"name":"Liverpool street trader licence","organiser":"Liverpool City Council","area":"North West","source_url":"https://liverpool.gov.uk/business/licences-and-permits/street-trading-licences/street-trader-licence/","application_or_contact_url":"https://liverpool.gov.uk/business/licences-and-permits/street-trading-licences/street-trader-licence/#main","evidence":"official council licence and application guidance","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":39,"name":"Nottingham Winter Wonderland 2026 trader application","organiser":"Nottingham Winter Wonderland","area":"Nottingham","source_url":"https://nottinghamwinterwonderland.co.uk/traders/","application_or_contact_url":"https://nottinghamwinterwonderland.co.uk/traders/#","evidence":"official event trader application page","status":"candidate_pending_final_live_check"},
-    {"dirty_ordinal":54,"name":"West Norfolk street trading licence","organiser":"Borough Council of King's Lynn & West Norfolk","area":"Norfolk","source_url":"https://www.west-norfolk.gov.uk/info/20008/licences_and_permits/501/street_trading_licence","application_or_contact_url":"https://www.west-norfolk.gov.uk/myaccounts","evidence":"official council licence page and account application route","status":"candidate_pending_final_live_check"}
+    {"dirty_ordinal":1,"name":"King's Grove 2026 trader application","organiser":"England's Medieval Festival","area":"East Sussex","type":"open_event_market_or_festival_trader_application","source_url":"https://www.englandsmedievalfestival.com/medieval/participants-info/Traders/","application_or_contact_url":"https://www.englandsmedievalfestival.com/medieval/participants-info/Traders/Medieval-trader-application.html","evidence":"official organiser page explicitly invites trader applications for 29-31 August 2026 and provides a direct application","live_checked_at":"2026-08-21T13:50:00Z","status":"candidate_pending_explicit_approval"},
+    {"dirty_ordinal":39,"name":"Nottingham Winter Wonderland 2026 trader application","organiser":"Nottingham Winter Wonderland","area":"Nottingham","type":"open_event_market_or_festival_trader_application","source_url":"https://nottinghamwinterwonderland.co.uk/traders/","application_or_contact_url":"https://nottinghamwinterwonderland.co.uk/traders/","evidence":"official event page explicitly accepts 2026 market-trader applications through its current form","live_checked_at":"2026-08-21T13:50:00Z","status":"candidate_pending_explicit_approval"}
+  ],
+  "classified_non_additions": [
+    {"dirty_ordinal":4,"name":"Bristol docks and parks trader pitches","area":"Bristol","type":"directory_generic_guidance_stale_or_insufficient","source_url":"https://www.bristol.gov.uk/business/food-business/pitches-for-traders-in-bristols-city-docks-and-parks","reason":"official page says applications are closed until further notice"},
+    {"dirty_ordinal":6,"name":"Cheshire East street trading","area":"Cheshire","type":"general_council_licence_or_permission_information","source_url":"https://www.cheshireeast.gov.uk/business/licensing/other_licences/street_trading/street_trading.aspx","reason":"licence route without evidence of an available named pitch"},
+    {"dirty_ordinal":8,"name":"Cumberland and Carlisle street trading","area":"Cumbria","type":"general_council_licence_or_permission_information","source_url":"https://www.cumberland.gov.uk/business-and-licensing/licensing/road-and-street-licences-and-permits/street-trading","reason":"permission route without evidence of an available named pitch"},
+    {"dirty_ordinal":16,"name":"Rushmoor street trading","area":"Hampshire","type":"general_council_licence_or_permission_information","source_url":"https://www.rushmoor.gov.uk/business-licensing-and-skills/licensing-and-registration/street-trading/","reason":"licence form without evidence of an available named pitch"},
+    {"dirty_ordinal":17,"name":"Tendring street trading","area":"Essex","type":"general_council_licence_or_permission_information","source_url":"https://www.tendringdc.gov.uk/content/street-trading","reason":"consent route without evidence of an available named pitch"},
+    {"dirty_ordinal":27,"name":"Caerphilly street trading application","area":"Wales","type":"general_council_licence_or_permission_information","source_url":"https://www.caerphilly.gov.uk/caerphillydocs/licensing/street_trading_application_form.aspx","reason":"licence form without evidence of an available named pitch"},
+    {"dirty_ordinal":34,"name":"Dundee street trader licence","area":"Scotland","type":"general_council_licence_or_permission_information","source_url":"https://www.dundeecity.gov.uk/licensing/street-trader-licence","reason":"licence route without evidence of an available named pitch"},
+    {"dirty_ordinal":35,"name":"East Cambridgeshire street trading consent","area":"Cambridgeshire","type":"general_council_licence_or_permission_information","source_url":"https://eastcambs.gov.uk/services/licensing-and-permits/street-trading/street-trading-consent","reason":"consent route without evidence of an available named pitch"},
+    {"dirty_ordinal":38,"name":"Liverpool street trader licence","area":"North West","type":"general_council_licence_or_permission_information","source_url":"https://liverpool.gov.uk/business/licences-and-permits/street-trading-licences/street-trader-licence/","reason":"licence guidance without evidence of an available named pitch"},
+    {"dirty_ordinal":54,"name":"West Norfolk street trading licence","area":"Norfolk","type":"general_council_licence_or_permission_information","source_url":"https://www.west-norfolk.gov.uk/info/20008/licences_and_permits/501/street_trading_licence","reason":"licence route without evidence of an available named pitch"}
   ],
   "repair_candidates": [
     {"dirty_ordinal":9,"name":"Dover street trading","source_url":"https://www.dover.gov.uk/Business/Licensing/Other-Licences/Street-Trading.aspx","reason":"name_organiser_and_application_route_need_repair"},
@@ -94,10 +96,25 @@
   "coverage_projection": {
     "before": 300,
     "remove": 29,
-    "add_if_all_12_pass_final_review": 12,
-    "after": 283,
-    "weak_region_effect": {"Cumbria": 1, "East Sussex": 1, "Hampshire": 1, "North West": 1, "County Durham": 0, "North East": 0, "Tyne and Wear": 0, "Northumberland": 0, "South Yorkshire": 0, "Dorset": -1, "Buckinghamshire": 0},
-    "opportunity_type_effect": {"street_trading_pitch": 9, "christmas_market": 1, "food_festival": -5, "market": -6, "farmers_market": -5},
-    "note": "The lower total is deliberate removal of contamination/stale rows. These candidates do not repair the North East gap."
+    "add_if_both_genuine_candidates_are_approved": 2,
+    "after": 273,
+    "addition_region_effect": {"East Sussex": 1, "Nottingham": 1, "County Durham": 0, "North East": 0, "Tyne and Wear": 0, "Northumberland": 0},
+    "addition_type_effect": {"confirmed_available_trading_pitch": 0, "open_event_market_or_festival_trader_application": 2, "general_council_licence_or_permission_information": 0},
+    "note": "The 29 removals and two additions remain unapproved. Nine council permission pages and the closed Bristol pitch page are explicitly excluded from additions. North East coverage is unchanged."
+  },
+  "controlled_staging_run": {
+    "report":"data/growth/database-growth-2026-08-21T13-42-56-597Z.json",
+    "serper_queries":8,
+    "search_candidates":40,
+    "fetched_and_classified":5,
+    "genuinely_new_customer_ready":0,
+    "north_east_genuine_opportunities":0,
+    "findings":[
+      {"name":"Redcar and Cleveland permit renewal","classification":"general_council_licence_or_permission_information","status":"needs_work_after_safety_correction"},
+      {"name":"Stockton street-trading consent","classification":"general_council_licence_or_permission_information","status":"needs_work"},
+      {"name":"Hartlepool street-trading licence","classification":"general_council_licence_or_permission_information","status":"needs_work"},
+      {"name":"Durham street trading","classification":"general_council_licence_or_permission_information","status":"needs_work"},
+      {"name":"Bishop Auckland Food Festival","classification":"directory_generic_guidance_stale_or_insufficient","status":"rejected_expired"}
+    ]
   }
 }
