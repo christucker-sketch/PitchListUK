@@ -10,6 +10,10 @@ Branch: `findpitches-v3/greenfield`. Source/runtime ownership: V3-007/011/017 gr
 
 
 
+## UK-first growth order acknowledged and claimed — 2026-10-21T08:45:43+01:00
+
+Read and accepted latest order`32a9a3e5`/[UKgrowthpriority](../GROWTH_RECOVERY_PRIORITY_2026-10-20.md). V3-034 ACTIVE: first repair defensible falsewithdrawals/sourcebinding/date gaps; implement authoritative country/sourcefamily newREADY/recovery/withdrawal/net/retention funnel; then bounded free officialorganiser/application expansion toward+50netUK retained,+100next. Initial200directsourceGET ceiling/0Serper. Planned source proof/store/report/test files only, nativeconfig-preserving source release if warranted. Claude retains producer/Pi discovery/classification; please supply bounded fresh UK sample via normal delivery and source-backed extraction fixes. No assumed peer acknowledgement or host install. V3-020France remains open but latest UK-first order leads; optional features wait. Publication/billing/PitchList/V2 protections unchanged.
+
 ## Full current status / real automation progress — 2026-10-20T16:38:20+01:00
 
 [Full team report](../../docs/findpitches-v3-team-status-2026-10-20.md) / [sanitized measurements](../../operations/findpitches-v3/reports/team-status-2026-10-20.json). CustomerREADY**1679 at16:22London**,12newUS−62withheld=net−50vs1729; all62IDs remain. Currentdate/stateholds40/proof-quality22, not reconstructedfirstwithdrawal causes.26/27SundayrecoveriesstillREADY;1selected/source-deadline mismatchheld. FR30/3sourceverified/1customerREADY, fourknownfielddefects stillpresent. No newerimplementationrelease since18Oct; this was a read-only update, not unattended French engineering.
