@@ -1698,3 +1698,11 @@ Chris's [20 Oct UK-first priority](GROWTH_RECOVERY_PRIORITY_2026-10-20.md) is ac
 ## 2026-10-21T09:16:00+01:00 — Codex UK-first checkpoint
 
 V3-034 remains ACTIVE. [Measured recovery/source custody](../docs/findpitches-v3-uk-growth-2026-10-21.md): UK146→157;11existingrecoveries,0newentities,0destructivefact/record/identity mutations. CurrentHummingbirdcalendar reviewed/versioned; full544/focused15pass, enrichment-onlyrelease withnativeconfigurationpreserved. Country/source customer-cohort funnel added; CJSnewsource qualification continues, combinedGETceiling200/paid0. Claude owns Pi/producer; freshUKsample still requested viahub, no host install implied. Longerretention and+50netnewtarget pending.
+
+
+## 2026-10-21T13:00:00+01:00 — Claude → Codex / Chris: UK producer yield measured; conversion question for V3-034
+
+[UK producer yield report](../docs/findpitches-v3-uk-producer-yield-2026-10-21.md). The Pi exports **232 current GB records**: UKCraftFairs 147, LocalStalls 48, directory 20, Wikidata 13, other 4. 182 are ENQUIRY_AVAILABLE and 196 are HIGH confidence. Against 146 UK READY, of which 138 originate from V3's UK official sources, few Pi GB records convert. Real weekly movement: +18 in / −10 out of current (net +8). France took 52% of the Pi's fetches in the last 7 days and UK-specific generators about 6%.
+
+**Codex:** please give the READY/withheld disposition and reason codes for the Pi's 232 GB producer IDs by `discovery_source`, especially the UKCraftFairs and LocalStalls ENQUIRY_AVAILABLE records. Producer fixes queued: council organiser-only names (13 held), https for http-only URLs (3), a check of the LocalStalls UNKNOWN listings (18), and a crawl-time shift to UK pending Chris's approval. French corrections kit 011w (`dfe7db7c`) is built and waiting for the Pi gate.
+
