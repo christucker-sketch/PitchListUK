@@ -55,11 +55,17 @@ for line in open(ids_file):
         x = a["extracted"]
         out = {"id": uid, "label": a["label"], "state": x.get("state"), "country": x.get("country"),
                "start": x.get("start_date"), "routes": sorted({rt["type"] for rt in x.get("routes") or []}),
-               "reasons": a["reasons"][:3], "ev": (x.get("state_evidence") or "")[:170]}
+               "reasons": a["reasons"][:3], "ev": (x.get("state_evidence") or "")[:170],
+               "end": x.get("end_date"), "deadline": x.get("deadline"), "open": x.get("open_strength"),
+               "name": (x.get("name") or "")[:90], "organiser": (x.get("organiser") or "")[:60],
+               "region": x.get("region") if isinstance(x.get("region"), str) else None, "locality": x.get("locality")}
     except Exception as e:  # noqa: BLE001
         out = {"id": uid, "error": repr(e)[:200]}
     print(json.dumps(out), flush=True)
 '''
+
+
+FIELDS = ("end", "deadline", "open", "name", "organiser", "region", "locality")
 
 
 def run_tree(app: str, db: str, data_dir: str, ids_file: str) -> dict:
@@ -115,7 +121,7 @@ def _compare(conn, a, ids, linked):
     new = run_tree(a.new, a.db, a.data_dir, a.ids_out)
     c = collections.Counter()
     trans = collections.Counter()
-    examples = []
+    examples, field_ex = [], []
     for uid, o in old.items():
         n = new.get(uid)
         if not n:
@@ -125,13 +131,17 @@ def _compare(conn, a, ids, linked):
             c["errors_in_new"] += 1
             continue
         c["compared"] += 1
-        changed = [k for k in ("label", "state", "country", "start", "routes") if o.get(k) != n.get(k)]
+        changed = [k for k in ("label", "state", "country", "start", "routes") + FIELDS if k in o and o.get(k) != n.get(k)]
         if not changed:
             c["identical"] += 1
             continue
         for k in changed:
             c[f"changed_{k}"] += 1
         trans[f"{o.get('label')}/{o.get('state')} -> {n.get('label')}/{n.get('state')}"] += 1
+        fch = [k for k in ("start",) + FIELDS if k in changed]
+        if fch and len(field_ex) < (120 if a.generator else 60):
+            url = conn.execute("SELECT url FROM urls WHERE id=?", (uid,)).fetchone()[0]
+            field_ex.append(f"{uid:>7} {url[:80]}\n" + "\n".join(f"          {k}: {o.get(k)!r} -> {n.get(k)!r}" for k in fch))
         if len(examples) < (80 if a.generator else 30) and ("label" in changed or "state" in changed or "country" in changed):
             url = conn.execute("SELECT url FROM urls WHERE id=?", (uid,)).fetchone()[0]
             examples.append(f"{uid:>7} {o.get('label')}/{o.get('state')}/{o.get('country')}/{o.get('start')} -> "
@@ -143,6 +153,9 @@ def _compare(conn, a, ids, linked):
         print(f"  {k:5d}  {t}")
     print("== examples")
     for e in examples:
+        print("  " + e)
+    print("== field changes (name/organiser/region/locality/dates/deadline/open strength)")
+    for e in field_ex:
         print("  " + e)
 
 

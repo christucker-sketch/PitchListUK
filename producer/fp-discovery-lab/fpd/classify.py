@@ -24,8 +24,11 @@ from urllib.parse import urlsplit
 
 from . import lexicon as L
 from .packs import PACKS
-from .dates import extract_dates, parse_iso, year_counts
+from .dates import DateMention, extract_dates, parse_iso, year_counts
+from rapidfuzz import fuzz
+
 from .geo import infer_geo
+from .packs.fr import communes_in, region_of_department
 from .parse import Page, jsonld_events
 from .state import derive_state, route_category
 from .urlutil import is_social, reg_domain
@@ -95,7 +98,7 @@ def derive_name(page: Page, evs: list[dict], hint_name: str | None = None) -> st
     for ev in evs:
         n = clean_name(ev.get("name"))
         if n and 3 < len(n) < 150 and not NAME_JUNK.match(n):
-            return n
+            return _uncall(n) or n
     hint_name = clean_name(hint_name)
     if hint_name and GENERIC_ANCHOR.match(hint_name):
         hint_name = None
@@ -109,8 +112,14 @@ def derive_name(page: Page, evs: list[dict], hint_name: str | None = None) -> st
                 seg = clean_name(seg)
                 if seg and 3 <= len(seg) <= 120 and not NAME_JUNK.match(seg) and not PAGE_SEGMENT.match(seg):
                     cands.append(seg)
+                    called = _uncall(seg)
+                    if called:
+                        cands.append(called)
     if not cands:
         return hint_name
+    # The hint is usually the site's own name ("Saint Marcellin, site officiel de la ville"). It only names the event
+    # when it reads like an event; otherwise a title that does name the event must win (21 Oct, Saint-Marcellin).
+    hint_eventish = bool(hint_name) and _eventish(hint_name)
 
     def score(s):
         sc = 0.0
@@ -123,16 +132,34 @@ def derive_name(page: Page, evs: list[dict], hint_name: str | None = None) -> st
         if len(s.split()) == 1 and s.isupper():
             sc -= 1.5  # acronyms like 'NGSF'
         if hint_name and (s.lower() in hint_name.lower() or hint_name.lower() in s.lower()):
-            sc += 1.5
+            sc += 1.5 if hint_eventish else 0.0
+        if L.APPLICATION_CALL.search(s):
+            sc -= 1.5  # the trader call's wording, not the event's name; its _uncall() form competes instead
         sc -= abs(len(s) - 32) / 60
         if s.lower() in {"eventeny", "marketspread", "jotform", "google docs"}:
             sc -= 5
         return sc
 
     best = max(cands, key=score)
-    if hint_name and score(best) < 0.5:
+    if hint_name and score(best) < 0.5 and (hint_eventish or not _eventish(best)):
         return hint_name
     return best
+
+
+def _eventish(s: str) -> bool:
+    return any(rx.search(s) for rx in L.EVENT_TYPES_RE.values())
+
+
+def _uncall(s: str) -> str | None:
+    """'[jusqu'au 20 novembre] Réservez votre stand au Marché de Noël 2026 !' -> 'Marché de Noël 2026';
+    'Inscriptions au marché de Noël 2026' -> 'Marché de Noël 2026'. None unless call wording was removed and what
+    remains still names an event."""
+    if not L.APPLICATION_CALL.search(s):
+        return None
+    rest = re.sub(r"\s*!+$", "", L.CALL_PREFIX.sub("", s)).strip(" -–:")
+    if rest == s or len(rest) < 4 or not _eventish(rest):
+        return None
+    return rest[0].upper() + rest[1:]
 
 
 def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int = 0) -> dict:
@@ -303,12 +330,26 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
     for ev in evs:
         ld_start = ld_start or parse_iso(ev.get("startDate"))
         ld_end = ld_end or parse_iso(ev.get("endDate"))
+    # 21 Oct (La Verpillière): a calendar entry titled as the trader call ("Réservez votre stand au Marché de Noël
+    # 2026", 25 Sep - 20 Nov) carries the APPLICATION WINDOW, and the page names the event's own later date
+    # ("rendez-vous le dimanche 6 décembre 2026"). The window's end is the stated closing date; its dates are not
+    # the event's. Applied only when the page itself states an event date after the window.
+    ld_window = None
+    if ld_start and evs and L.APPLICATION_CALL.search(clean_name(evs[0].get("name")) or ""):
+        w_end = ld_end or ld_start
+        after = [d for d in event_dates if d.start > w_end]
+        if after:
+            ld_window = (ld_start, w_end)
+            event_dates = [d for d in event_dates if not (ld_start <= d.start <= w_end)]
+            ld_start = ld_end = None
     upcoming = sorted([d for d in event_dates if (d.end or d.start) >= today], key=lambda d: d.start)
     past = sorted([d for d in event_dates if (d.end or d.start) < today], key=lambda d: d.start)
+    date_pos = None
     if ld_start and (ld_end or ld_start) >= today:
         start, end, date_src = ld_start, ld_end, "jsonld"
     elif upcoming:
         start, end, date_src = upcoming[0].start, upcoming[0].end, "text"
+        date_pos = upcoming[0].pos
         evidence.append({"kind": "date", "text": _snip(body, upcoming[0].pos, upcoming[0].endpos, 60)})
     elif ld_start:
         start, end, date_src = ld_start, ld_end, "jsonld_past"
@@ -318,12 +359,16 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
         start = end = None
         date_src = None
     deadline = None
+    if ld_window:
+        deadlines.append(DateMention(ld_window[1], None, 0, 0, True, "application window end"))
+        evidence.append({"kind": "date", "text": f"(calendar entry {ld_window[0].isoformat()}–{ld_window[1].isoformat()} "
+                                                 f"is the application window, titled as the trader call)"})
     up_dead = sorted([d.start for d in deadlines if d.start >= today])
     if up_dead:
         deadline = up_dead[0]
     elif deadlines:
         deadline = max(d.start for d in deadlines)
-    for d in deadlines[:1]:
+    for d in [d for d in deadlines if d.endpos][:1]:
         evidence.append({"kind": "deadline", "text": _snip(body, d.pos, d.endpos, 80)})
     recurrence = None
     for rx in L.RECURRENCE_RE:
@@ -605,12 +650,50 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
         m = ORGANISER_RE.search(body[:30_000])
         if m:
             organiser = m.group(1).strip()[:120]
+    if not organiser:
+        # Pack phrases ("Plouarzel animation organisera son 24ème salon", "organisé par le Comité des fêtes de X").
+        for rx in L.ORGANISER_PHRASES_RE:
+            for m in rx.finditer(body[:30_000]):
+                cand = re.sub(r"\s+", " ", m.group(1)).strip(" -–,")
+                # ...about an event: "organisera son 24ème salon", not a homepage news item about a parents' café
+                about_event = _eventish(body[m.start(): m.end() + 80])
+                if about_event and 3 <= len(cand) <= 80 and not L.NOT_ORGANISER_START.match(cand) \
+                        and not L.PLATFORM_ORGANISER_RE.match(cand):
+                    organiser = cand
+                    break
+            if organiser:
+                break
     if not organiser and hint.get("organiser"):
         organiser = hint["organiser"]
     if not organiser:
         site = page.og.get("site_name")
-        if site and name and site.strip().lower() != name.strip().lower() and not NAME_JUNK.match(site):
+        if site and name and site.strip().lower() != name.strip().lower() and not NAME_JUNK.match(site) \
+                and fuzz.token_set_ratio(site.lower(), name.lower()) < 80:  # the event's own site name is not an organiser
             organiser = site
+    if organiser and L.PLATFORM_ORGANISER_RE.match(organiser.strip()):
+        organiser = None  # a form/hosting provider's name (e.g. a linked Google Form's "Google Docs") is not the organiser
+    if not organiser:
+        # "Marché de Noël de Hochstatt – Comité des Fêtes de Hochstatt": the title's other segment names the association.
+        for seg in SEPARATORS.split(clean_name(page.title) or ""):
+            seg = clean_name(seg)
+            if seg and seg != name and L.FR_ORG_SEGMENT.match(seg) and len(seg) <= 80:
+                organiser = seg
+                break
+    if in_scope and geo.get("country") == "FR":
+        # Event-scoped commune (21 Oct, Angers): the commune in the event's own name or date sentence beats a region
+        # NAME seen elsewhere on the page. A postcode+commune match stays authoritative.
+        scope_txt = (name or "") + " | " + (body[max(0, date_pos - 160): date_pos + 40] if date_pos is not None else "")
+        found = communes_in(scope_txt)
+        deps = {d for _, d in found}
+        if len(deps) == 1 and not any(w.startswith("postcode+commune") for w in geo["why"].get("FR", [])):
+            com, dep = found[0]
+            reg = region_of_department(dep)
+            if reg and geo.get("region") != reg[1]:
+                geo["why"].setdefault("FR", []).append(f"commune in event name/date: {com} ({dep}); was region {geo.get('region')!r}")
+                geo["region"] = reg[1]
+                geo["locality"] = com
+            elif reg and not geo.get("locality"):
+                geo["locality"] = com
 
     st = derive_state(label=label, vendor=("strong" if (vendor == "strong" or on_platform_vendor_page) else vendor),
                       body=body, title_blob=title_blob, today=today, start=start, end=end, date_src=date_src,

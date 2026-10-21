@@ -366,3 +366,32 @@ CONTACT_INSTRUCTION_RE = [re.compile(p, re.I) for p in extra("contact_instructio
 for _pk in __import__("fpd.packs", fromlist=["PACKS"]).PACKS:
     APPLICATION_PLATFORMS.update(_pk.get("platforms", {}))
     TICKETING_ONLY |= set(_pk.get("ticketing_only", []))
+
+# ---------------------------------------------------------------- 21 Oct: titles that are the trader call, organisers
+# A title/JSON-LD event that is the call for traders rather than the event itself ("Call for vendors: Winter Fair",
+# "[jusqu'au 20 novembre] Réservez votre stand au Marché de Noël 2026 !").
+APPLICATION_CALL = extend_re(re.compile(
+    r"\bcall\s+for\s+(?:vendors|traders|stallholders|exhibitors|makers|artisans|crafters)\b|"
+    r"\b(?:vendor|trader|stallholder|exhibitor)\s+applications?\b|\bbook\s+(?:a|your)\s+(?:stall|pitch|table)\b|"
+    r"\bapply\s+to\s+(?:trade|exhibit|sell)\b", re.I), "application_call")
+# Leading call wording removed from a title to leave the event's name; only applied when an event word remains.
+CALL_PREFIX = re.compile(
+    r"^\s*(?:\[[^\]]{1,40}\]\s*)?(?:"
+    r"call\s+for\s+(?:vendors|traders|stallholders|exhibitors|makers)\s*(?:[:\-–]\s*|(?:for|at)\s+(?:the\s+)?)?|"
+    r"book\s+(?:a|your)\s+(?:stall|pitch|table)\s+at\s+(?:the\s+)?|apply\s+to\s+(?:trade|exhibit|sell)\s+at\s+(?:the\s+)?|"
+    + "|".join(extra("call_prefix")) + r")", re.I)
+# Organiser phrases in a pack's language (case-sensitive: an organiser name starts with a capital).
+ORGANISER_PHRASES_RE = [re.compile(p) for p in extra("organiser_phrases")]
+# Sentence openers that the French organiser phrase can catch but that are not names.
+NOT_ORGANISER_START = re.compile(r"^(?:Cette|Ce|Cet|Chaque|Comme|Pour|Nous|Il|Elle|Ils|Elles|On|Depuis|En|Et|Mais|Aussi|"
+                                 r"Puis|Ensuite|Qui|Que|Lors|Dans|Notre|Votre|Vous|Le\s+salon|La\s+f[êe]te|Le\s+march[ée])\b")
+# Form, document and hosting providers are never the organiser (11 Oct audit fixed platforms; 21 Oct Plouarzel
+# recorded "Google Docs" from the linked form's og:site_name).
+PLATFORM_ORGANISER_RE = re.compile(
+    r"^(?:google(?:\s+(?:docs|forms?|drive|sites|agenda|calendar))?|docs\.google\.com|forms\.gle|jotform|typeform|"
+    r"microsoft\s+forms|office\s*365|wufoo|cognito\s+forms|formstack|123formbuilder|survey\s*monkey|tally|paperform|"
+    r"airtable|helloasso|billetweb|weezevent|eventbrite|facebook|instagram|linktree|wordpress(?:\.com)?|wix(?:\.com)?|"
+    r"squarespace|canva|calam[ée]o|issuu|yumpu|dropbox|onedrive|sharepoint|padlet|framaforms|zoho\s+forms)$", re.I)
+# A French title segment that names an organising body ("Comité des Fêtes de Hochstatt").
+FR_ORG_SEGMENT = re.compile(r"^(?:comit[ée]\s+des\s+f[êe]tes|association|amicale|union\s+(?:commerciale|des\s+commer[cç]ants)|"
+                            r"office\s+(?:de\s+|du\s+)?tourisme|mairie|ville|commune|syndicat\s+d['’]initiative)\b", re.I)

@@ -14,7 +14,7 @@ from urllib.parse import urlsplit
 
 from .. import __version__
 from ..countries import AU_STATES, CA_PROVINCES, COUNTRIES, US_STATES
-from ..lexicon import CLASSIFIER_VERSION
+from ..lexicon import CLASSIFIER_VERSION, PLATFORM_ORGANISER_RE
 from ..urlutil import reg_domain
 from . import identity as idn
 from .schema import SCHEMA_VERSION, USABLE_STATES
@@ -112,7 +112,7 @@ def clean_organiser(org):
     if not isinstance(org, str):
         return org
     o = re.sub(r"\s+", " ", org).strip()
-    if o.lower() in PLATFORM_ORGANISERS:
+    if o.lower() in PLATFORM_ORGANISERS or PLATFORM_ORGANISER_RE.match(o):
         return None
     o = ORG_SUFFIX.sub("", o).strip()
     o = re.sub(r"\s+Open$", "", o).strip()

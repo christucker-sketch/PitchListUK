@@ -33,8 +33,23 @@ from .packs.fr import MONTH_FR_RE, MONTHS_FR, WEEKDAY_FR  # noqa: E402
 
 _D_FR = r"(\d{1,2})(?:er|e|è|ème|eme)?"
 _WD_FR = rf"(?:{WEEKDAY_FR}\s+)?"
-RE_FR = re.compile(rf"\b{_WD_FR}{_D_FR}(?:\s*(?:au|et|-|–|—|&|à)\s*{_WD_FR}{_D_FR})?\s+{MONTH_FR_RE}(?:\s+{Y})?(?![\w])",
-                   re.I)
+# "les 13, 14 et 15 novembre 2026" (21 Oct, Angers): a comma list of days before the last one; the middle days are
+# skipped, the range is first..last.
+RE_FR = re.compile(rf"\b{_WD_FR}{_D_FR}(?:\s*,\s*{_WD_FR}\d{{1,2}}(?:er|e|è|ème|eme)?(?=\s*(?:,|et|&)))*"
+                   rf"(?:\s*(?:au|et|-|–|—|&|à)\s*{_WD_FR}{_D_FR})?\s+{MONTH_FR_RE}(?:\s+{Y})?(?![\w])", re.I)
+_WEEKDAYS_FR = {"lundi": 0, "mardi": 1, "mercredi": 2, "jeudi": 3, "vendredi": 4, "samedi": 5, "dimanche": 6}
+
+
+def _weekday_year(raw: str, mo: int, day: str, today: dt.date) -> int | None:
+    """Year for a yearless French date that names its weekday ("vendredi 30 octobre"): the one year in
+    today.year-1 .. today.year+1 where that day falls on that weekday. A date names its weekday on a page about
+    one particular edition, so this is the source's own statement, not a guess. None if no unique fit."""
+    m = re.match(r"\s*(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b", raw, re.I)
+    if not m:
+        return None
+    want = _WEEKDAYS_FR[m.group(1).lower()]
+    fits = [y for y in (today.year - 1, today.year, today.year + 1) if (d := _mk(y, mo, day)) and d.weekday() == want]
+    return fits[0] if len(fits) == 1 else None
 
 
 @dataclass
@@ -90,6 +105,8 @@ def extract_dates(text: str, today: dt.date, day_first: bool = True) -> list[Dat
         has_year = bool(yr)
         # French announcements put the edition year in a nearby sentence ("Rejoignez l'édition 2026"): wider window.
         y = int(yr) if yr else _infer_year(text, m.start(), today, win=400)
+        if not y and mo:
+            y = _weekday_year(m.group(0), mo, d1, today)
         if not y or not mo:
             continue
         s = _mk(y, mo, d1)

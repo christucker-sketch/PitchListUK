@@ -21,6 +21,7 @@ import unicodedata
 
 from rapidfuzz import fuzz
 
+from .lexicon import EVENT_TYPES_RE, PLATFORM_ORGANISER_RE
 from .urlutil import reg_domain
 
 STOP = {
@@ -110,6 +111,15 @@ def is_generic(key: str) -> bool:
 
 _GENERIC_EVENT_WORD = re.compile(r"(?:19|20)\d\d|\d+|the|and|of|at|a|in|on|to|events?|market|fair|festival|show|us|join|"
                                 r"booking|vendors?|application")
+
+
+# Fields a fresh re-assessment of the opportunity's own primary page replaces (16 Oct: name/dates/deadline/apply link;
+# 21 Oct: organiser and event-scoped region/locality, after the Angers region and Plouarzel organiser corrections).
+REFRESH_FIELDS = ("name", "start_date", "end_date", "deadline", "apply_url", "organiser", "region", "locality")
+
+
+def _names_event(name) -> bool:
+    return bool(name) and any(rx.search(name) for rx in EVENT_TYPES_RE.values())
 
 
 def _event_words(name) -> str:
@@ -248,12 +258,20 @@ class Resolver:
             # Vintage Fair" -> "Y Artisan Fair") must not silently rename and re-date this opportunity.
             same_event = not o.get("name") or not ex.get("name") or \
                 fuzz.token_set_ratio(_event_words(ex.get("name")), _event_words(o.get("name"))) >= 60
+            # 21 Oct (Saint-Marcellin): an old name that names no event at all (the site's own title, "Saint Marcellin,
+            # site officiel de la ville") cannot be compared; the same primary page with the same start date is the same
+            # event, so its corrected name may replace it.
+            if not same_event and not _names_event(o.get("name")) and _names_event(ex.get("name")) \
+                    and (not o.get("start_date") or o.get("start_date") == ex.get("start_date")):
+                same_event = True
             fresh = method == "same_page" and o.get("primary_url") == url and same_event
             for f in ("organiser", "region", "locality", "venue", "start_date", "end_date", "recurrence",
                       "deadline", "fees", "apply_url", "name"):
                 v = ex.get(f)
-                if v and (not o.get(f) or (better and f in ("start_date", "end_date", "deadline", "apply_url"))
-                          or (fresh and f in ("name", "start_date", "end_date", "deadline", "apply_url") and _s(v) != o.get(f))):
+                # A form/hosting provider recorded as organiser ("Google Docs") counts as no organiser.
+                empty = not o.get(f) or (f == "organiser" and bool(PLATFORM_ORGANISER_RE.match(o.get(f) or "")))
+                if v and (empty or (better and f in ("start_date", "end_date", "deadline", "apply_url"))
+                          or (fresh and f in REFRESH_FIELDS and _s(v) != o.get(f))):
                     upd[f] = _s(v)
             if ex.get("country") and not o.get("country"):
                 upd["country"] = ex["country"]

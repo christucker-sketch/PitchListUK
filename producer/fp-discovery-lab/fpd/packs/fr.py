@@ -9,6 +9,8 @@ exhibitor intake are in scope; brocantes / vide-greniers / braderies only when p
 """
 from __future__ import annotations
 
+import re
+
 A = r"['’]"          # apostrophe, straight or typographic
 E = r"[ée]"          # e with or without acute accent (sites are inconsistent)
 
@@ -31,8 +33,8 @@ WEEKDAY_FR = r"(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)"
 _CONNECT = r"(?:de|du|des|en|sur|sous|l[eè]s|le|la|les|et|aux?|d['’])"
 # Same line only ("20111\nGo" on a US listing is a ZIP followed by a button, not "20111 Go").
 POSTCODE_COMMUNE = (r"\b(?:F-)?((?:0[1-9]|[1-8]\d|9[0-5]|2[AB])\d{3}|97[1-6]\d{2})[ \t\u00a0]+"
-                    r"((?:(?:Saint|Sainte|St|Ste|Le|La|Les|L['’])[ \u00a0]?)?[A-ZÀ-Ý][A-Za-zÀ-ÿ'’\-]+(?:[ \u00a0]" + _CONNECT +
-                    r"[ \u00a0]?[A-ZÀ-Ýa-zà-ÿ][A-Za-zÀ-ÿ'’\-]+){0,2})")
+                    r"((?:(?:Saint|Sainte|St|Ste|Le|La|Les|L['’])[ \u00a0]?)?[A-ZÀ-Ý][A-Za-zÀ-ÿŒœÆæ'’\-]+(?:[ \u00a0]" + _CONNECT +
+                    r"[ \u00a0]?[A-ZÀ-Ýa-zà-ÿŒœÆæ][A-Za-zÀ-ÿŒœÆæ'’\-]+){0,2})")
 # French function words: postcode / phone / "France" only count as French evidence on a French-language page.
 FRENCH_TEXT = r"\b(?:le|la|les|des|du|et|pour|avec|une|est|vous|nous|sur|dans|aux|au|votre|vos|ou|sont)\b"
 PHONE_FR = r"(?<![\d+])(?:\+33\s?\(?0?\)?\s?[1-9]|0[1-9])(?:[\s.\-]?\d{2}){4}(?!\d)"
@@ -161,6 +163,10 @@ PACK = {
         r"\b(?:inscriptions?|candidatures?|r" + E + r"servations?)\s+(?:sont\s+|est\s+)?(?:ouvertes?|en\s+cours)\b(?!\s+(?:le|à\s+partir|d[eè]s|en\s+\w+\s+20))",
         r"\bil\s+reste\s+(?:encore\s+)?des\s+(?:places|emplacements|stands)\b",
         r"\b(?:exposants?|artisans?|cr" + E + r"ateurs?|producteurs?)\s+recherch" + E + r"s\b",
+        # 21 Oct (Kilstett): "Appel aux exposants", "La Commune recherche des créateurs, artisans" are the call itself.
+        r"\bappel\s+(?:aux|[àa])\s+(?:exposants|candidatures|artisans|cr" + E + r"ateurs|commer[cç]ants|producteurs)\b",
+        r"\b(?:recherche|recherchons|cherche|cherchons)\s+(?:encore\s+)?(?:des|de\s+nouveaux|d" + A + r"autres)\s+"
+        r"(?:exposants|artisans|cr" + E + r"ateurs|producteurs|commer[cç]ants)\b",
     ],
     "recurrence": [
         r"\b(?:tous\s+les|chaque)\s+(?:lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?|week-?ends?|mois)\b",
@@ -217,6 +223,30 @@ PACK = {
         r"(?:le|à\s+partir\s+d[ue]|d[eè]s\s+le|en|au)?\s*([^.\n]{0,40})",
         r"ouverture\s+des\s+(?:inscriptions|candidatures)\s+(?:le|à\s+partir\s+d[ue]|d[eè]s\s+le|en)?\s*([^.\n]{0,40})",
     ],
+    # A page or JSON-LD event whose title is the trader call itself, not the event ("[jusqu'au 20 novembre] Réservez
+    # votre stand au Marché de Noël 2026 !", "Inscriptions au marché de Noël 2026"): its dates can be the application
+    # window, and its title needs the call wording removed to name the event.
+    "application_call": [
+        r"\br" + E + r"servez\s+votre\s+(?:stand|emplacement|place|table)\b",
+        r"\b(?:inscriptions?|candidatures?)\s+(?:des\s+|pour\s+les\s+)?(?:exposants?|commer[cç]ants|artisans|cr" + E + r"ateurs)\b",
+        r"^\s*(?:\[[^\]]{1,40}\]\s*)?inscriptions?\s+(?:au|aux|[àa]\s+la|[àa]\s+l" + A + r"|pour\s+l[ea])\b",
+        r"\bappel\s+(?:aux|[àa])\s+(?:exposants|candidatures)\b", r"\bdevenez\s+exposant\b",
+        r"^\s*(?:exposer|devenir\s+exposant)\s+(?:au|aux|[àa]\s+la|[àa]\s+l" + A + r")\s",
+    ],
+    "call_prefix": [
+        r"r" + E + r"servez\s+votre\s+(?:stand|emplacement|place|table)\s+(?:au|aux|[àa]\s+la|[àa]\s+l" + A + r"|pour\s+l[ea]|pour\s+les)\s*",
+        r"inscriptions?\s+(?:des\s+exposants\s+)?(?:au|aux|[àa]\s+la|[àa]\s+l" + A + r"|pour\s+l[ea]|pour\s+les)\s*",
+        r"appel\s+(?:aux|[àa])\s+(?:exposants|candidatures)\s*(?:[:\-–]\s*|pour\s+(?:le|la|les|l" + A + r")\s*)?",
+        r"(?:devenez|devenir)\s+exposant\s+(?:au|aux|[àa]\s+la|[àa]\s+l" + A + r")\s*",
+        r"exposer\s+(?:au|aux|[àa]\s+la|[àa]\s+l" + A + r")\s*",
+    ],
+    # "Plouarzel animation organisera son 24ème salon", "organisé par le Comité des fêtes de Hochstatt". Case-sensitive:
+    # the organiser starts with a capital; sentence openers that are not names are refused in classify.
+    "organiser_phrases": [
+        r"(?:^|[\n.!?»:]\s*)([A-ZÀ-Ý][\w'’&\-]*(?:\s+(?:de|du|des|d['’]|la|le|les|et|&|[A-Za-zÀ-ÿ][\w'’&\-]*)){0,4})"
+        r"\s+(?:organise|organisera|organisent|organiseront|vous\s+propose|propose)\s+(?:son|sa|ses|leur|le|la|les|un|une|cette|ce)\b",
+        r"\borganis" + E + r"e?s?\s+par\s+(?:le\s+|la\s+|les\s+|l['’])?([A-ZÀ-Ý][\w'’&\-]*(?:\s+(?:de|du|des|d['’]|la|le|les|et|&|[A-ZÀ-Ý][\w'’&\-]*)){0,6})",
+    ],
     "annual": [r"\b\d{1,3}\s*(?:e|è|ème|eme|ième|ieme)\s+" + E + r"dition\b|\bchaque\s+ann" + E + r"e\b|\btous\s+les\s+ans\b|\bannuel(?:le)?\b"],
     "recur_market": [
         r"\b(?:tous\s+les|chaque)\s+(?:lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?|week-?ends?|semaines?|mois)\b|"
@@ -238,3 +268,61 @@ PACK = {
                    r"\bprofessionnels?\s+(?:accept" + E + r"s|admis|bienvenus|autoris" + E + r"s)\b|\bouvert(?:e|es)?\s+aux\s+(?:professionnels|pros)\b|"
                    r"\bbrocanteurs?\s+professionnels?\b|\bantiquaires\b",
 }
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Event-scoped commune -> département (21 Oct, Angers case). A region NAME found anywhere on a page is weak evidence
+# (the Salon du Cheval d'Angers page quotes an exhibitor's "clients basés en Bretagne"), whereas the commune named in
+# the event's own title or date sentence ("Parc des Expositions - Angers les 13, 14 et 15 novembre") is where it is.
+# Préfectures plus large communes only, and only names that are not ordinary French words (no Tours, Sens, Vienne,
+# Valence, Gap). classify() looks these up after a preposition/dash, case-sensitively, in the event name and date
+# sentence only -- never in the whole page.
+FR_COMMUNES = {
+    "Bourg-en-Bresse": "01", "Laon": "02", "Saint-Quentin": "02", "Soissons": "02", "Moulins": "03", "Vichy": "03",
+    "Montluçon": "03", "Digne-les-Bains": "04", "Nice": "06", "Cannes": "06", "Antibes": "06", "Grasse": "06",
+    "Menton": "06", "Privas": "07", "Annonay": "07", "Charleville-Mézières": "08", "Sedan": "08", "Foix": "09",
+    "Pamiers": "09", "Troyes": "10", "Carcassonne": "11", "Narbonne": "11", "Rodez": "12", "Millau": "12",
+    "Marseille": "13", "Aix-en-Provence": "13", "Arles": "13", "Martigues": "13", "Aubagne": "13", "Caen": "14",
+    "Lisieux": "14", "Bayeux": "14", "Aurillac": "15", "Angoulême": "16", "Cognac": "16", "La Rochelle": "17",
+    "Saintes": "17", "Rochefort": "17", "Royan": "17", "Bourges": "18", "Vierzon": "18", "Tulle": "19", "Brive-la-Gaillarde": "19",
+    "Ajaccio": "2A", "Bastia": "2B", "Dijon": "21", "Beaune": "21", "Saint-Brieuc": "22", "Lannion": "22", "Dinan": "22",
+    "Guéret": "23", "Périgueux": "24", "Bergerac": "24", "Sarlat-la-Canéda": "24", "Besançon": "25", "Montbéliard": "25",
+    "Pontarlier": "25", "Montélimar": "26", "Romans-sur-Isère": "26", "Évreux": "27", "Vernon": "27", "Chartres": "28",
+    "Dreux": "28", "Quimper": "29", "Brest": "29", "Morlaix": "29", "Concarneau": "29", "Nîmes": "30", "Alès": "30",
+    "Toulouse": "31", "Auch": "32", "Bordeaux": "33", "Arcachon": "33", "Libourne": "33", "Mérignac": "33",
+    "Montpellier": "34", "Béziers": "34", "Sète": "34", "Rennes": "35", "Saint-Malo": "35", "Fougères": "35",
+    "Vitré": "35", "Châteauroux": "36", "Amboise": "37", "Chinon": "37", "Grenoble": "38", "Bourgoin-Jallieu": "38",
+    "Voiron": "38", "Lons-le-Saunier": "39", "Dole": "39", "Mont-de-Marsan": "40", "Dax": "40", "Blois": "41",
+    "Vendôme": "41", "Saint-Étienne": "42", "Roanne": "42", "Le Puy-en-Velay": "43", "Nantes": "44",
+    "Saint-Nazaire": "44", "La Baule-Escoublac": "44", "Orléans": "45", "Montargis": "45", "Cahors": "46", "Agen": "47",
+    "Mende": "48", "Angers": "49", "Cholet": "49", "Saumur": "49", "Saint-Lô": "50", "Cherbourg-en-Cotentin": "50",
+    "Granville": "50", "Châlons-en-Champagne": "51", "Reims": "51", "Épernay": "51", "Chaumont": "52", "Langres": "52",
+    "Laval": "53", "Nancy": "54", "Lunéville": "54", "Vandœuvre-lès-Nancy": "54", "Bar-le-Duc": "55", "Verdun": "55",
+    "Vannes": "56", "Lorient": "56", "Metz": "57", "Thionville": "57", "Sarreguemines": "57", "Forbach": "57",
+    "Nevers": "58", "Lille": "59", "Roubaix": "59", "Tourcoing": "59", "Dunkerque": "59", "Valenciennes": "59",
+    "Douai": "59", "Beauvais": "60", "Compiègne": "60", "Alençon": "61", "Arras": "62", "Calais": "62",
+    "Boulogne-sur-Mer": "62", "Lens": "62", "Clermont-Ferrand": "63", "Pau": "64", "Bayonne": "64", "Biarritz": "64",
+    "Tarbes": "65", "Lourdes": "65", "Perpignan": "66", "Strasbourg": "67", "Haguenau": "67", "Sélestat": "67",
+    "Colmar": "68", "Mulhouse": "68", "Lyon": "69", "Villeurbanne": "69", "Vesoul": "70", "Mâcon": "71",
+    "Chalon-sur-Saône": "71", "Le Mans": "72", "Chambéry": "73", "Aix-les-Bains": "73", "Annecy": "74",
+    "Annemasse": "74", "Thonon-les-Bains": "74", "Chamonix-Mont-Blanc": "74", "Paris": "75", "Rouen": "76",
+    "Le Havre": "76", "Dieppe": "76", "Melun": "77", "Meaux": "77", "Fontainebleau": "77", "Versailles": "78",
+    "Niort": "79", "Amiens": "80", "Abbeville": "80", "Albi": "81", "Castres": "81", "Montauban": "82", "Toulon": "83",
+    "Fréjus": "83", "Hyères": "83", "Draguignan": "83", "Avignon": "84", "Carpentras": "84", "Orange": "84",
+    "La Roche-sur-Yon": "85", "Les Sables-d'Olonne": "85", "Poitiers": "86", "Châtellerault": "86", "Limoges": "87",
+    "Épinal": "88", "Auxerre": "89", "Belfort": "90", "Évry-Courcouronnes": "91", "Nanterre": "92", "Bobigny": "93",
+    "Créteil": "94", "Cergy": "95",
+}
+_FR_COMMUNE_RE = re.compile(
+    r"(?:\b(?:[àa]|de|au|sur|en)\s+|d['’]|[\-–—,]\s*)(" + "|".join(sorted((re.escape(c) for c in FR_COMMUNES), key=len, reverse=True))
+    + r")(?![\w\-])")
+
+
+def communes_in(text: str) -> list[tuple[str, str]]:
+    """[(commune, département)] for listed communes named after a preposition, apostrophe or dash in `text`."""
+    return [(m.group(1), FR_COMMUNES[m.group(1)]) for m in _FR_COMMUNE_RE.finditer(text or "")]
+
+
+def region_of_department(dep: str) -> tuple[str, str] | None:
+    code = _DEPT_REGION.get(dep)
+    return (code, REGIONS[code][0]) if code else None
