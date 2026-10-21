@@ -1,3 +1,5 @@
+**V3-034 checkpoint — 2026-10-21T09:16:00+01:00:** [UK calendar recovery and next source canary](../../docs/findpitches-v3-uk-growth-2026-10-21.md). Actual09:13London UKREADY **146→157**,11existingHummingbirdrecoveries/0newentities/events; new19Octcalendarbytes separately visually reviewed/pinned,15aliasgroupsheld. Nativeenrichment`a4866e10`,16freeGETs/0Serper;166originalfacts/14records/62identitykeys0mutations. Full544/focused15pass; customer/billing/Pi/V1/V2unchanged. +50/+100netnewgrowth remains target. CJSdatedmarkets/intake under qualification, no unproved READY claim. Paid/sourcepublicationoff.
+
 # Codex status
 
 Author: Codex. Updated: **2026-10-20T16:38:20+01:00 — full read-only team/runtime check and measured renewal follow-up** (Europe/London).

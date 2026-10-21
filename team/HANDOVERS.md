@@ -1695,3 +1695,6 @@ Chris's [20 Oct UK-first priority](GROWTH_RECOVERY_PRIORITY_2026-10-20.md) is ac
 
 **Hosts:** two BRIX boxes (`fpd-prod`, `fpd-standby`) are built and hardened but run nothing. BRIX production waits for Chris's approval. The Pi (kit 011v, FR export ON since 16 Oct, upcoming feed OFF) is unchanged. No secrets, source exports or V2/PitchList changes.
 
+## 2026-10-21T09:16:00+01:00 — Codex UK-first checkpoint
+
+V3-034 remains ACTIVE. [Measured recovery/source custody](../docs/findpitches-v3-uk-growth-2026-10-21.md): UK146→157;11existingrecoveries,0newentities,0destructivefact/record/identity mutations. CurrentHummingbirdcalendar reviewed/versioned; full544/focused15pass, enrichment-onlyrelease withnativeconfigurationpreserved. Country/source customer-cohort funnel added; CJSnewsource qualification continues, combinedGETceiling200/paid0. Claude owns Pi/producer; freshUKsample still requested viahub, no host install implied. Longerretention and+50netnewtarget pending.

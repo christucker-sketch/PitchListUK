@@ -1,0 +1,27 @@
+{
+  "schema": "findpitches-v3-uk-growth-calendar-checkpoint-v1",
+  "as_of": "2026-10-21T08:13:28.981Z",
+  "uk_customer_ready_before": 146,
+  "uk_customer_ready_after": 157,
+  "existing_identity_recoveries": 11,
+  "new_entities": 0,
+  "genuinely_new_events": 0,
+  "paid_queries": 0,
+  "native_direct_source_requests": 16,
+  "held_calendar_groups": 15,
+  "original_custody_compared": {
+    "facts": 166,
+    "records": 14,
+    "identity": 62
+  },
+  "source_mutations": 0,
+  "identity_key_mutations": 0,
+  "full_tests": 544,
+  "focused_tests": 15,
+  "enrichment_version": "a4866e10-5329-43dc-951c-34f5c2badcb7",
+  "customer_runtime_changed": false,
+  "bindings_and_runtime_preserved": true,
+  "schedules_and_settings_preserved": true,
+  "next": "Bounded CJS official dated-market source proof; not yet deployed or counted as READY.",
+  "retention": "Immediate post-import membership only; longer retention remains to be measured."
+}

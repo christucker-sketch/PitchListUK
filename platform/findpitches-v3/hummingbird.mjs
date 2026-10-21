@@ -2,16 +2,16 @@
 // published trader widget, linked visitor venue and independent postal receipt.
 // A new calendar image requires a new evidence review; no OCR/query inference.
 import {hash,stableJson} from './contract.mjs';
+import {HUMMINGBIRD_CALENDAR,HUMMINGBIRD_CALENDAR_SHA256,HUMMINGBIRD_CALENDARS,hummingbirdCalendar} from './hummingbird-calendars.mjs';
+export {HUMMINGBIRD_CALENDAR,HUMMINGBIRD_CALENDAR_SHA256,HUMMINGBIRD_CALENDARS,hummingbirdCalendar};
 import {parseHtml,nodes,first,text,hasClass} from './source-dom.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
 import {fetchUKPostcode,postcodeProof,ukPostcode} from './uk-event-geography.mjs';
 
-export const HUMMINGBIRD_ADAPTER_VERSION='hummingbird-reviewed-calendar-trader-widget-v2';
+export const HUMMINGBIRD_ADAPTER_VERSION='hummingbird-reviewed-calendar-trader-widget-v3';
 export const HUMMINGBIRD_TRADE='https://www.littlehummingbirdevents.co.uk/trade-with-us';
 export const HUMMINGBIRD_VENUES='https://www.littlehummingbirdevents.co.uk/venues';
-export const HUMMINGBIRD_CALENDAR='https://static.wixstatic.com/media/a95187_a494dd88463c4e2cbf516b66696adfd1~mv2.png/v1/fill/w_929,h_689,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/2026%20Events%20Calendar.png';
-export const HUMMINGBIRD_CALENDAR_SHA256='f4022bcaacc84ac671b5574efad81a7abbd7694629d5091d4f5b422248850fbe';
-const CALENDAR_BYTES=93230,WIDGET='comp-m60lzk8q',SUBMIT='comp-m60my6rk',FORMS_APP='14ce1214-b278-a7e4-1373-00cebd1bef7c';
+const WIDGET='comp-m60lzk8q',SUBMIT='comp-m60my6rk',FORMS_APP='14ce1214-b278-a7e4-1373-00cebd1bef7c';
 const clean=v=>String(v??'').replace(/[\u200b-\u200d\ufeff]/g,'').replace(/\s+/g,' ').trim();
 const norm=v=>clean(v).toLowerCase().replace(/[’‘]/g,"'");
 const sameURL=(a,b)=>{try{const x=new URL(a),y=new URL(b);return x.href.replace(/\/$/,'')===y.href.replace(/\/$/,'')&&!x.username&&!x.password&&!x.search&&!x.hash;}catch{return false;}};
@@ -25,37 +25,16 @@ const VENUES=Object.freeze({
  'HESSLE TOWN HALL':Object.freeze({label:'HESSLE TOWN HALL',name:'Hessle Town Hall',url:'https://www.hessletowncouncil.gov.uk/contact/',postcode:'HU130RR',programme:'https://www.hessletowncouncil.gov.uk/council_events/community-makers-market-2/'}),
  'HULL MINSTER':Object.freeze({label:'HULL MINSTER',name:'Hull Minster',url:'https://hullminster.org/',physical_country:true}),
 });
-// Exact transcription of the official image updated 09.10.26, visually reviewed
-// on 13 October. Titles retain the literal calendar venue label, without adding
-// an invented market/festival title. HORNSEA's shortened December label is held.
-const ROWS=Object.freeze([
- ['2026-10-16','HORNSEA VILLAGE'],['2026-10-18','THORESBY'],['2026-10-18','FLEMINGATE SHOPPING CENTRE'],
- ['2026-10-25','RUFFORD ABBEY'],['2026-10-25','HESSLE TOWN HALL'],['2026-10-30','RUFFORD ABBEY NIGHT'],['2026-10-31','HULL MINSTER'],
- ['2026-11-01','HUMBER BRIDGE'],['2026-11-06','VANTOM VILLAGE','2026-11-08'],['2026-11-08','DRIFFIELD SHOWGROUND'],
- ['2026-11-13','HULL CITY CENTRE MAKERS'],['2026-11-14','LEEDS CORN X CHRISTMAS'],['2026-11-15','CUSWORTH HALL'],['2026-11-15','HESSLE TOWN HALL'],
- ['2026-11-19','HULL CITY CENTRE XMAS LIGHTS SWITCH ON'],['2026-11-20','HORNSEA VILLAGE'],['2026-11-21','HULL CITY CENTRE XMAS WEEKEND','2026-11-22'],
- ['2026-11-22','TEMPLE NEWSAM ESTATE'],['2026-11-22','FLEMINGATE SHOPPING CENTRE'],['2026-11-28','ANIMAL EDUCATION CENTRE, HULL'],
- ['2026-11-29','RUFFORD ABBEY'],['2026-11-29','DRIFFIELD SHOWGROUND'],['2026-12-05','WITHERNSEA VICTORIAN CHRISTMAS'],['2026-12-05','HULL MINSTER'],
- ['2026-12-06','HUMBER BRIDGE'],['2026-12-11','HULL CITY CENTRE MAKERS'],['2026-12-12','LINCOLNSHIRE SHOWGROUND EXO CENTRE'],
- ['2026-12-13','FLEMINGATE SHOPPING CENTRE'],['2026-12-18','HORNSEA'],['2026-12-20','HUMBER BRIDGE'],
-].map(([date,label,end_date=date])=>Object.freeze({date,end_date,label,source_identifier:'little-hummingbird:'+encodeURIComponent(label)+':'+date+(end_date===date?'':':'+end_date)})));
 export const hummingbirdURL=u=>sameURL(u,HUMMINGBIRD_TRADE);
 export const hummingbirdVenue=label=>VENUES[label]??null;
-export const hummingbirdGroups=()=>ROWS.map(r=>({...r}));
-export const hummingbirdGroup=identifier=>{const r=ROWS.find(r=>r.source_identifier===identifier);return r?{...r}:null;};
-export function hummingbirdIdentifier(label,date){const r=ROWS.find(r=>r.label===label&&r.date===date);if(!r)throw Error('hummingbird_reviewed_dated_group_required');return r.source_identifier;}
+export const hummingbirdGroups=(calendarUrl=HUMMINGBIRD_CALENDAR)=>(hummingbirdCalendar(calendarUrl)?.rows??[]).map(r=>({...r}));
+export const hummingbirdGroup=(identifier,calendarUrl=null)=>{const r=(calendarUrl?hummingbirdCalendar(calendarUrl)?.rows??[]:HUMMINGBIRD_CALENDARS.flatMap(c=>c.rows)).find(r=>r.source_identifier===identifier);return r?{...r}:null;};
+export function hummingbirdIdentifier(label,date){const r=HUMMINGBIRD_CALENDARS.flatMap(c=>c.rows).find(r=>r.label===label&&r.date===date);if(!r)throw Error('hummingbird_reviewed_dated_group_required');return r.source_identifier;}
 
 // SHA-256 over retained raw bytes is synchronous because source verifiers are
 // synchronous. Supplied content_hash fields never substitute for this check.
-const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
-export function hummingbirdRawSHA256(bytes){
- const padded=new Uint8Array(Math.ceil((bytes.length+9)/64)*64);padded.set(bytes);padded[bytes.length]=128;const view=new DataView(padded.buffer);view.setUint32(padded.length-8,Math.floor(bytes.length*8/4294967296));view.setUint32(padded.length-4,bytes.length*8);
- const h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19],w=new Uint32Array(64),rotate=(x,n)=>(x>>>n)|(x<<(32-n));
- for(let off=0;off<padded.length;off+=64){for(let i=0;i<16;i++)w[i]=view.getUint32(off+i*4);for(let i=16;i<64;i++){const a=w[i-15],b=w[i-2];w[i]=(rotate(a,7)^rotate(a,18)^(a>>>3))+w[i-16]+(rotate(b,17)^rotate(b,19)^(b>>>10))+w[i-7];}
-  let[a,b,c,d,e,f,g,j]=h;for(let i=0;i<64;i++){const t1=(j+(rotate(e,6)^rotate(e,11)^rotate(e,25))+((e&f)^(~e&g))+K[i]+w[i])|0,t2=((rotate(a,2)^rotate(a,13)^rotate(a,22))+((a&b)^(a&c)^(b&c)))|0;j=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;}for(const[i,v]of[a,b,c,d,e,f,g,j].entries())h[i]=(h[i]+v)|0;
- }return h.map(v=>(v>>>0).toString(16).padStart(8,'0')).join('');
-}
-const sha256=hummingbirdRawSHA256;
+import {rawSHA256 as sha256} from './raw-sha256.mjs';
+export {rawSHA256 as hummingbirdRawSHA256} from './raw-sha256.mjs';
 function docRoot(doc,url){if(doc?.reason||doc?.http_status!==200||!sameURL(doc?.requested_url,url)||!sameURL(doc?.url,url)||typeof doc.html!=='string')throw Error('hummingbird_source_document_binding_required');return parseHtml(doc.html);}
 function inactive(root,node){return nodes(root,n=>n.start<=node.start&&n.end>=node.end&&(n.attrs?.disabled!==undefined||n.attrs?.readonly!==undefined||n.attrs?.hidden!==undefined||n.attrs?.['aria-disabled']==='true'||n.attrs?.['aria-hidden']==='true'||/display\s*:\s*none|visibility\s*:\s*hidden/i.test(n.attrs?.style??''))).length>0;}
 function scriptJSON(root,id){const s=nodes(root,n=>n.tag==='script'&&n.attrs.id===id&&n.attrs.type==='application/json');if(s.length!==1)throw Error('hummingbird_published_widget_binding_required');try{return JSON.parse(text(s[0],{scoped:false}));}catch{throw Error('hummingbird_published_widget_binding_required');}}
@@ -78,16 +57,20 @@ function traderWidget(doc){
  // The reviewed image has no such marks. Changed/unconditional notices still hold.
  let restrictions=norm(body).replace(/events marked as 'sold out' can still be booked, you will be placed on the waiting list\./g,'').replace(/we do get some trader dropouts at most events for various reasons, so we always keep an updated waiting list\./g,'').replace(/if you are placed on the waiting list, we will confirm this and you will be informed of a pitch when\/if one becomes available\./g,'').replace(/events shown as 'sold out' refer to trader pitches only\./g,'');
  if(/\b(?:sold out|fully booked|wait(?:ing)?\s*list|not accepting (?:traders?|applications?|bookings?)|(?:applications?|bookings?|registration) (?:are |is )?(?:closed|not open)|(?:event|market|fair)s? (?:are |is )?(?:cancelled|canceled|postponed)|members? only|invitation only)\b/.test(restrictions))throw Error('hummingbird_restricted_or_closed_applications');
- const images=nodes(root,n=>n.tag==='img'&&n.attrs.id==='img_comp-mhetx5qm'&&n.attrs.src===HUMMINGBIRD_CALENDAR,{scoped:true});
+ const images=nodes(root,n=>n.tag==='img'&&n.attrs.id==='img_comp-mhetx5qm'&&hummingbirdCalendar(n.attrs.src),{scoped:true});
  if(images.length!==1||inactive(root,images[0]))throw Error('hummingbird_current_reviewed_calendar_binding_required');
- return {widget_id:WIDGET,submit_id:SUBMIT,labels:fields.map(f=>f[0]),published_script:scripts.find(u=>u.includes('/forms-viewer/')),booking_basis:'Dated booking request; organiser confirmation and deposit required. Sold-out rows are waiting list only.'};
+ return {calendar_url:images[0].attrs.src,widget_id:WIDGET,submit_id:SUBMIT,labels:fields.map(f=>f[0]),published_script:scripts.find(u=>u.includes('/forms-viewer/')),booking_basis:'Dated booking request; organiser confirmation and deposit required. Sold-out rows are waiting list only.'};
 }
-function reviewedImage(doc){
- if(doc?.reason||doc?.http_status!==200||doc.requested_url!==HUMMINGBIRD_CALENDAR||doc.url!==HUMMINGBIRD_CALENDAR||doc.content_type!=='image/avif'||typeof doc.image_base64!=='string'||doc.image_base64.length>140000)throw Error('hummingbird_calendar_raw_receipt_required');
+export function reviewedHummingbirdImage(doc){
+ const review=hummingbirdCalendar(doc?.requested_url);
+ if(!review||doc?.reason||doc?.http_status!==200||doc.url!==review.url||typeof doc.image_base64!=='string'||doc.image_base64.length>1398104)throw Error('hummingbird_calendar_raw_receipt_required');
  let raw;try{raw=atob(doc.image_base64);}catch{throw Error('hummingbird_calendar_raw_receipt_required');}
- const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));if(bytes.length!==CALENDAR_BYTES||sha256(bytes)!==HUMMINGBIRD_CALENDAR_SHA256)throw Error('hummingbird_calendar_changed_requires_review');
- return {sha256:HUMMINGBIRD_CALENDAR_SHA256,byte_count:bytes.length,source_updated:'2026-10-09',reviewed_at:'2026-10-13',reviewer:'codex',review_kind:'visual_exact_dated_rows',sold_out_marks:false};
+ const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0)),digest=sha256(bytes);
+ const representation=review.representations.find(r=>r.content_type===doc.content_type&&r.bytes===bytes.length&&r.sha256===digest);
+ if(!representation)throw Error('hummingbird_calendar_changed_requires_review');
+ return {sha256:digest,byte_count:bytes.length,source_updated:review.source_updated,reviewed_at:review.reviewed_at,reviewer:review.reviewer,review_kind:'visual_exact_dated_rows',sold_out_marks:review.sold_out_marks};
 }
+
 function operatorVenue(doc,venue){
  const root=docRoot(doc,HUMMINGBIRD_VENUES),paragraphs=nodes(root,n=>['p','h2','h3'].includes(n.tag),{scoped:true});
  const name=venue.name.toUpperCase(),labels=paragraphs.filter(n=>clean(text(n)).toUpperCase().startsWith(name));if(labels.length!==1)throw Error('hummingbird_named_operator_venue_required');
@@ -135,7 +118,7 @@ function currentVenueProgramme(doc,venue,row){
  if(/sold out|fully booked|wait(?:ing)?\s*list|cancelled|canceled|postponed|applications? (?:are )?closed/i.test(restrictions))throw Error('hummingbird_restricted_or_closed_applications');
  return {calendar_label:row.label,official_venue:venue.name,date_from_reviewed_calendar:row.date,programme_excerpt:excerpt,official_route:route,binding_basis:'Exact literal reviewed calendar venue, named official visitor venue and current venue programme; original labels retained.'};
 }
-export function hummingbirdProgrammeBinding(document,label,date){const row=ROWS.find(r=>r.label===label&&r.date===date),venue=hummingbirdVenue(label);if(!row||!venue?.programme)throw Error('hummingbird_exact_venue_programme_required');return currentVenueProgramme(document,venue,row);}
+export function hummingbirdProgrammeBinding(document,label,date){const row=HUMMINGBIRD_CALENDARS.flatMap(c=>c.rows).find(r=>r.label===label&&r.date===date),venue=hummingbirdVenue(label);if(!row||!venue?.programme)throw Error('hummingbird_exact_venue_programme_required');return currentVenueProgramme(document,venue,row);}
 function thoresbyContact(doc,address){
  const root=docRoot(doc,VENUES.THORESBY.contact),visitor=venueAddress({...doc,requested_url:VENUES.THORESBY.url,url:VENUES.THORESBY.url},VENUES.THORESBY);
  const office=nodes(root,n=>n.tag==='p',{scoped:true}).map(n=>clean(text(n))).filter(s=>/^All post should be directed to Thoresby Estate Office, Thoresby Park, Newark, Nottinghamshire\. NG22 9EQ\b/.test(s));
@@ -144,12 +127,13 @@ function thoresbyContact(doc,address){
 export function verifyHummingbirdBundle(document,{now=new Date().toISOString(),version='source-proof-v1',applicationPolicy='current-application-v1.1'}={}){
  const report={version,application_policy:applicationPolicy,adapter_version:HUMMINGBIRD_ADAPTER_VERSION,profile:'littlehummingbird',page_kind:'unproved',source_url:document?.url,checked_at:document?.fetched_at,status:'unverified',facts:{},reasons:[],evidence:[]};
  try{
-  if(document?.reason)throw Error(document.reason);const row=hummingbirdGroup(document?.source_identifier),venue=row&&hummingbirdVenue(row.label);
-  if(!row||!hummingbirdURL(document.requested_url)||!hummingbirdURL(document.url)||document.adapter_version!==HUMMINGBIRD_ADAPTER_VERSION||!Array.isArray(document.documents))throw Error('hummingbird_reviewed_event_identity_required');
+  if(document?.reason)throw Error(document.reason);let row=hummingbirdGroup(document?.source_identifier);const venue=row&&hummingbirdVenue(row.label);
+  if(!row||!hummingbirdURL(document.requested_url)||!hummingbirdURL(document.url)||![HUMMINGBIRD_ADAPTER_VERSION,'hummingbird-reviewed-calendar-trader-widget-v2'].includes(document.adapter_version)||!Array.isArray(document.documents))throw Error('hummingbird_reviewed_event_identity_required');
   if(!venue)throw Error('hummingbird_calendar_venue_alias_requires_proof');
   const docs=document.documents,clocks=docs.map(d=>Date.parse(d.fetched_at)),expected=3+(venue.link?1:0)+(venue.postcode?1:0)+(venue.contact?1:0)+(venue.programme?1:0);if(docs.length!==expected||clocks.some(c=>!Number.isFinite(c)||c>Date.parse(now))||document.fetched_at!==new Date(Math.min(...clocks)).toISOString())throw Error('hummingbird_source_bundle_freshness_invalid');
   const one=url=>{const ds=docs.filter(d=>sameURL(d.url,url));if(ds.length!==1)throw Error('hummingbird_source_document_binding_required');return ds[0];};
-  const trade=one(HUMMINGBIRD_TRADE),widget=traderWidget(trade),image=one(HUMMINGBIRD_CALENDAR),calendar=reviewedImage(image),operator=venue.link?one(HUMMINGBIRD_VENUES):null,visitor=one(venue.url),address=venueAddress(visitor,venue),programme=venue.programme?one(venue.programme):null,binding=operator?operatorVenue(operator,venue):programme?currentVenueProgramme(programme,venue,row):{calendar_label:row.label,official_venue:venue.name,binding_basis:'Exact literal reviewed calendar label and named official physical venue address.'},geo=venue.postcode?docs.find(d=>d.document_kind==='uk_postcode_receipt'||d.json_text):null,country=venue.postcode?postcodeProof(geo,address.postcode,{now}):address.country==='GB'?{country:'GB',nation:address.nation,basis:address.country_basis}:null;
+  const trade=one(HUMMINGBIRD_TRADE),widget=traderWidget(trade),image=one(widget.calendar_url),calendar=reviewedHummingbirdImage(image),operator=venue.link?one(HUMMINGBIRD_VENUES):null,visitor=one(venue.url),address=venueAddress(visitor,venue),programme=venue.programme?one(venue.programme):null,binding=operator?operatorVenue(operator,venue):programme?currentVenueProgramme(programme,venue,row):{calendar_label:row.label,official_venue:venue.name,binding_basis:'Exact literal reviewed calendar label and named official physical venue address.'},geo=venue.postcode?docs.find(d=>d.document_kind==='uk_postcode_receipt'||d.json_text):null,country=venue.postcode?postcodeProof(geo,address.postcode,{now}):address.country==='GB'?{country:'GB',nation:address.nation,basis:address.country_basis}:null;
+  row=hummingbirdGroup(document.source_identifier,widget.calendar_url);if(!row)throw Error('hummingbird_event_removed_from_current_calendar');
   if(!country)throw Error('hummingbird_exact_venue_country_proof_required');const office=venue.contact?thoresbyContact(one(venue.contact),address):null;
   report.page_kind='event';report.facts={event_name:row.label,organiser:'Little Hummingbird Events',location:venue.physical_country?address.address:venue.name+', '+address.address+', '+country.nation,event_start:row.date,event_end:row.end_date,country:'GB',...venue.physical_country?{}:{region_code:country.region??country.nation},canonical_url:HUMMINGBIRD_TRADE,source_platform:'littlehummingbird',source_identifier:row.source_identifier,application_url:HUMMINGBIRD_TRADE,application_state:'UNKNOWN'};
   report.application_heading='Little Hummingbird Events trader booking form';report.application_scope_proof={trader_application:true,restricted_audience:false,guaranteed_vendor_space:false,application_role:'trader'};report.nation=country.nation;
@@ -158,10 +142,11 @@ export function verifyHummingbirdBundle(document,{now=new Date().toISOString(),v
  }catch(e){report.reasons=[/^[a-z_]+$/.test(e.message)?e.message:'hummingbird_source_structure_changed'];report.status=/identity|visitor_office|postcode_changed/.test(report.reasons[0])?'quarantine':'unverified';}
  return report;
 }
-async function fetchCalendar({fetcher,now}){
- const meta={requested_url:HUMMINGBIRD_CALENDAR,url:HUMMINGBIRD_CALENDAR,fetched_at:now,document_kind:'hummingbird_calendar_image'};
- try{const r=await fetcher(HUMMINGBIRD_CALENDAR,{redirect:'manual',headers:{Accept:'image/avif,image/webp,image/png','User-Agent':'FindPitches-V3-Shadow-Verification/1.0'},signal:AbortSignal.timeout(12000)});if(!r.ok)return {...meta,http_status:r.status,reason:'hummingbird_calendar_http_failure'};
-  const content_type=r.headers.get('content-type')?.split(';')[0];if(content_type!=='image/avif')return {...meta,http_status:r.status,content_type,reason:'hummingbird_calendar_representation_changed'};
+async function fetchCalendar({fetcher,now,url}){
+ if(!hummingbirdCalendar(url))throw Error('hummingbird_current_reviewed_calendar_binding_required');
+ const meta={requested_url:url,url,fetched_at:now,document_kind:'hummingbird_calendar_image'};
+ try{const r=await fetcher(url,{redirect:'manual',headers:{Accept:'image/avif,image/webp,image/png','User-Agent':'FindPitches-V3-Shadow-Verification/1.0'},signal:AbortSignal.timeout(12000)});if(!r.ok)return {...meta,http_status:r.status,reason:'hummingbird_calendar_http_failure'};
+  const content_type=r.headers.get('content-type')?.split(';')[0];if(!hummingbirdCalendar(url).representations.some(r=>r.content_type===content_type))return {...meta,http_status:r.status,content_type,reason:'hummingbird_calendar_representation_changed'};
   const parts=[],reader=r.body.getReader();let size=0;try{for(;;){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>1048576){await reader.cancel();return {...meta,reason:'hummingbird_calendar_size_limit'};}parts.push(value);}}finally{reader.releaseLock();}
   const bytes=new Uint8Array(size);let offset=0;for(const p of parts){bytes.set(p,offset);offset+=p.length;}let raw='';for(let i=0;i<bytes.length;i+=16384)raw+=String.fromCharCode(...bytes.subarray(i,i+16384));return {...meta,http_status:r.status,content_type,bytes:size,image_base64:btoa(raw),content_hash:sha256(bytes)};
  }catch{return {...meta,reason:'hummingbird_calendar_fetch_failed'};}
@@ -169,9 +154,9 @@ async function fetchCalendar({fetcher,now}){
 export async function fetchHummingbirdProgramme({fetcher=fetch,now=new Date().toISOString(),visit=null,url=HUMMINGBIRD_TRADE,sourceIdentifier=null}={}){
  if(!hummingbirdURL(url)||sourceIdentifier&&!hummingbirdGroup(sourceIdentifier))throw Error('hummingbird_reviewed_event_identity_required');
  const read=async u=>{const doc=await fetchSourceDocument(u,{fetcher,now});if(visit)await visit(doc);return doc;},trade=await read(HUMMINGBIRD_TRADE),operator=await read(HUMMINGBIRD_VENUES),held=[],bundles=[];
- try{traderWidget(trade);}catch(e){return {bundles,held:[{source_identifier:sourceIdentifier,reason:e.message}]};}
- const image=await fetchCalendar({fetcher,now});if(visit)await visit(image);try{reviewedImage(image);}catch(e){return {bundles,held:[{source_identifier:sourceIdentifier,reason:e.message}]};}
- const selected=ROWS.filter(r=>!sourceIdentifier||r.source_identifier===sourceIdentifier),cached=new Map();
+ let widget;try{widget=traderWidget(trade);}catch(e){return {bundles,held:[{source_identifier:sourceIdentifier,reason:e.message}]};}
+ const image=await fetchCalendar({fetcher,now,url:widget.calendar_url});if(visit)await visit(image);try{reviewedHummingbirdImage(image);}catch(e){return {bundles,held:[{source_identifier:sourceIdentifier,reason:e.message}]};}
+ const selected=hummingbirdGroups(widget.calendar_url).filter(r=>!sourceIdentifier||r.source_identifier===sourceIdentifier),cached=new Map();
  for(const row of selected){const venue=hummingbirdVenue(row.label);if(!venue){held.push({source_identifier:row.source_identifier,reason:'hummingbird_calendar_venue_alias_requires_proof'});continue;}if(row.end_date<now.slice(0,10)){held.push({source_identifier:row.source_identifier,reason:'stale_edition'});continue;}
   if(!cached.has(venue.url)){try{if(venue.link)operatorVenue(operator,venue);const visitor=await read(venue.url),address=venueAddress(visitor,venue),geo=venue.postcode?await fetchUKPostcode(address.postcode,{fetcher,now}):null;if(visit&&geo)await visit(geo);const contact=venue.contact?await read(venue.contact):null,programme=venue.programme?await read(venue.programme):null;cached.set(venue.url,[trade,...venue.link?[operator]:[],image,visitor,...geo?[geo]:[],...contact?[contact]:[],...programme?[programme]:[]]);}catch(e){cached.set(venue.url,{reason:/^[a-z_]+$/.test(e.message)?e.message:'hummingbird_venue_proof_missing'});}}
   const documents=cached.get(venue.url);if(!Array.isArray(documents)){held.push({source_identifier:row.source_identifier,reason:documents.reason});continue;}

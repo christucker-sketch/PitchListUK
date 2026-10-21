@@ -4,7 +4,9 @@ import {
  HUMMINGBIRD_ADAPTER_VERSION,HUMMINGBIRD_TRADE,HUMMINGBIRD_CALENDAR,HUMMINGBIRD_CALENDAR_SHA256,
  hummingbirdGroups,hummingbirdGroup,hummingbirdIdentifier,hummingbirdVenue,hummingbirdRawSHA256,
  hummingbirdVisitorAddress,hummingbirdProgrammeBinding,verifyHummingbirdBundle,
+ reviewedHummingbirdImage,hummingbirdCalendar,
 } from '../../platform/findpitches-v3/hummingbird.mjs';
+import {HUMMINGBIRD_LEGACY_CALENDAR} from '../../platform/findpitches-v3/hummingbird-calendars.mjs';
 
 // Synthetic source shapes only. No production receipts or reviewed image bytes
 // are committed; successful live image custody is a separate operational check.
@@ -24,7 +26,7 @@ const hessleProgramme=html=>doc('https://www.hessletowncouncil.gov.uk/council_ev
 const hessleMarket=`<main><div class="event_information">Event Information Date 10am - 3pm at Hessle Town Hall, HU13 0RR</div><p>Hosted by Little Hummingbird Events</p><a href="${HUMMINGBIRD_TRADE}">To apply for a stand at the Community Makers Market, please click here.</a></main>`;
 
 test('reviewed calendar preserves 30 distinct identities, literal aliases and two unsplit ranges',()=>{
- const groups=hummingbirdGroups();assert.equal(groups.length,30);assert.equal(new Set(groups.map(r=>r.source_identifier)).size,30);
+ const groups=hummingbirdGroups(HUMMINGBIRD_LEGACY_CALENDAR);assert.equal(groups.length,30);assert.equal(new Set(groups.map(r=>r.source_identifier)).size,30);
  assert.equal(groups.filter(r=>hummingbirdVenue(r.label)).length,14);
  const ranges=groups.filter(r=>r.date!==r.end_date);assert.deepEqual(ranges.map(r=>[r.label,r.date,r.end_date]),[['VANTOM VILLAGE','2026-11-06','2026-11-08'],['HULL CITY CENTRE XMAS WEEKEND','2026-11-21','2026-11-22']]);
  assert.equal(hummingbirdIdentifier('HORNSEA VILLAGE','2026-10-16'),'little-hummingbird:HORNSEA%20VILLAGE:2026-10-16');
@@ -81,4 +83,31 @@ test('fabricated raw image cannot pass using the trusted digest field or shared 
 test('disabled trader controls, duplicate widgets and newer bundle clocks fail before any image promotion',()=>{
  for(const [from,to] of [['<form>','<form disabled>'],['id="input_comp-m60m84ko"','readonly id="input_comp-m60m84ko"'],['aria-disabled="false"','aria-disabled="true"'],['</main>','<div id="comp-m60lzk8q"></div></main>']]){const b=badImageBundle();b.documents[0].html=b.documents[0].html.replace(from,to);const r=verifyHummingbirdBundle(b,{now:NOW});assert.notEqual(r.status,'verified');assert.ok(!r.reasons.includes('hummingbird_calendar_changed_requires_review'));}
  const b=badImageBundle();b.documents[1].fetched_at='2026-10-12T12:00:00.000Z';assert.deepEqual(verifyHummingbirdBundle(b,{now:NOW}).reasons,['hummingbird_source_bundle_freshness_invalid']);
+});
+
+
+test('current calendar is a separate exact review; removed events do not inherit the previous calendar',()=>{
+ const old=hummingbirdCalendar(HUMMINGBIRD_LEGACY_CALENDAR),current=hummingbirdCalendar(HUMMINGBIRD_CALENDAR);
+ assert.equal(old.source_updated,'2026-10-09');assert.equal(current.source_updated,'2026-10-19');
+ assert.equal(old.rows.length,30);assert.equal(current.rows.length,26);assert.equal(hummingbirdGroups().length,26);
+ assert.equal(old.representations.length,1);assert.equal(current.representations.length,2);
+ for(const r of current.rows)assert.deepEqual(hummingbirdGroup(r.source_identifier,HUMMINGBIRD_LEGACY_CALENDAR),r);
+ const removed=hummingbirdIdentifier('ANIMAL EDUCATION CENTRE, HULL','2026-11-28');assert.ok(hummingbirdGroup(removed,HUMMINGBIRD_LEGACY_CALENDAR));assert.equal(hummingbirdGroup(removed,HUMMINGBIRD_CALENDAR),null);
+ assert.equal(hummingbirdCalendar(HUMMINGBIRD_CALENDAR.replace('370321','999999')),null);
+ assert.ok(Object.isFrozen(current)&&Object.isFrozen(current.rows)&&Object.isFrozen(current.representations));
+});
+
+test('both reviewed representations require their own raw digest and exact parent-bound URL',()=>{
+ for(const content_type of ['image/avif','image/png']){
+  const review=hummingbirdCalendar(HUMMINGBIRD_CALENDAR).representations.find(r=>r.content_type===content_type);
+  const d={requested_url:HUMMINGBIRD_CALENDAR,url:HUMMINGBIRD_CALENDAR,http_status:200,content_type,image_base64:Buffer.alloc(review.bytes).toString('base64'),content_hash:review.sha256};
+  assert.throws(()=>reviewedHummingbirdImage(d),/calendar_changed_requires_review/);
+  assert.throws(()=>reviewedHummingbirdImage({...d,url:HUMMINGBIRD_LEGACY_CALENDAR}),/raw_receipt_required/);
+  assert.throws(()=>reviewedHummingbirdImage({...d,image_base64:'x'.repeat(1398105)}),/raw_receipt_required/);
+ }
+});
+
+test('a changed live calendar URL cannot fall back to a retained reviewed image',()=>{
+ const b=badImageBundle();b.documents[0].html=b.documents[0].html.replace(HUMMINGBIRD_CALENDAR,HUMMINGBIRD_CALENDAR.replace('370321','999999'));
+ assert.deepEqual(verifyHummingbirdBundle(b,{now:NOW}).reasons,['hummingbird_current_reviewed_calendar_binding_required']);
 });
