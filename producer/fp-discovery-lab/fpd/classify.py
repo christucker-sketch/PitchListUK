@@ -25,8 +25,6 @@ from urllib.parse import urlsplit
 from . import lexicon as L
 from .packs import PACKS
 from .dates import DateMention, extract_dates, parse_iso, year_counts
-from rapidfuzz import fuzz
-
 from .geo import infer_geo
 from .packs.fr import communes_in, region_of_department
 from .parse import Page, jsonld_events
@@ -119,7 +117,9 @@ def derive_name(page: Page, evs: list[dict], hint_name: str | None = None) -> st
         return hint_name
     # The hint is usually the site's own name ("Saint Marcellin, site officiel de la ville"). It only names the event
     # when it reads like an event; otherwise a title that does name the event must win (21 Oct, Saint-Marcellin).
-    hint_eventish = bool(hint_name) and _eventish(hint_name)
+    # (Gate 21 Oct: dropping the bonus for every non-event hint renamed ~100 pages for no gain, so it is dropped only
+    # for a hint that is a site/authority title.)
+    hint_eventish = bool(hint_name) and not L.SITE_TITLE_HINT.search(hint_name)
 
     def score(s):
         sc = 0.0
@@ -667,8 +667,7 @@ def classify(page: Page, today: dt.date, hint: dict | None = None, html_len: int
         organiser = hint["organiser"]
     if not organiser:
         site = page.og.get("site_name")
-        if site and name and site.strip().lower() != name.strip().lower() and not NAME_JUNK.match(site) \
-                and fuzz.token_set_ratio(site.lower(), name.lower()) < 80:  # the event's own site name is not an organiser
+        if site and name and site.strip().lower() != name.strip().lower() and not NAME_JUNK.match(site):
             organiser = site
     if organiser and L.PLATFORM_ORGANISER_RE.match(organiser.strip()):
         organiser = None  # a form/hosting provider's name (e.g. a linked Google Form's "Google Docs") is not the organiser

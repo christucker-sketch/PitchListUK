@@ -31,10 +31,17 @@ def test_comma_list_of_days_is_one_range():
 
 
 def test_yearless_date_with_weekday_gets_its_year_from_the_weekday():
-    far = "x " * 400  # no year anywhere near the date
-    d = extract_dates(far + "Date limite d’inscription : vendredi 30 octobre ! " + far, T)
-    assert [x.start.isoformat() for x in d] == ["2026-10-30"]
+    far = "x " * 400  # no year near the date; the page states 2026 elsewhere
+    d = extract_dates("Marché de Noël 2026. " + far + "Date limite d’inscription : vendredi 30 octobre ! " + far, T)
+    assert [x.start.isoformat() for x in d if not x.has_year] == ["2026-10-30"]
     assert extract_dates(far + "les 5 et 6 décembre" + far, T) == []  # no weekday, no year: still not guessed
+
+
+def test_weekday_year_needs_the_page_to_state_that_year():
+    """Gate 21 Oct: a 2020 workshop list ("samedi 14 novembre", footer ©2020) must not become 14 Nov 2026."""
+    far = "x " * 400
+    page = "Ateliers 2025 " + far + "Céline : samedi 14 novembre à 10h30 " + far + "©2020 par Association Diapason"
+    assert [x.start.isoformat() for x in extract_dates(page, T)] == []
 
 
 # ---------------------------------------------------------------- Kilstett: deadline makes the call explicit

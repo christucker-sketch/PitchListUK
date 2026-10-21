@@ -36,10 +36,10 @@ Directory pages are discovery hubs, so they show no actionable count themselves.
 1. **Council pages named after the council** ("Bolton Council"): 13 GB records held as organiser-only names, several OPEN_NOW with future dates. This is a name-extraction fix.
 2. **http-only source or application URLs:** 3 GB records held, for example a city Christmas market. Fix: deliver the https URL when the same page serves on https; never deliver http.
 3. **LocalStalls listings in watch as UNKNOWN** with future dates (18): the listing gives no current booking signal. These need checking against the listings before any change; no relabelling.
-4. **Crawl allocation:** UK-first (20 Oct order) was not reflected in how the Pi spends its time. Chris approved the change on 21 Oct: kit 011x pauses the France crawl by default and adds a 12-minute UK-only crawl slot each cycle. It installs after the Pi gate.
+4. **Crawl allocation:** UK-first (20 Oct order) was not reflected in how the Pi spends its time. Chris approved the change on 21 Oct: kit 011y pauses the France crawl by default and adds a 12-minute UK-only crawl slot each cycle. It installs after the Pi gate.
 
 ## Request to Codex (V3-034)
 
 Please give the customer-side disposition of the **232 GB producer IDs currently delivered by the Pi**: READY / withheld, and withheld reason code, by `discovery_source`. In particular, say why the 147 UKCraftFairs and 48 LocalStalls ENQUIRY_AVAILABLE records are, or are not, READY. If a rule rejects a whole family, the producer should stop spending time there or supply the missing evidence. Producer IDs, not names, are enough; no customer data.
 
-French corrections and the UK slot ship together in kit 011x, waiting for the Pi gate; see Claude's status file.
+French corrections and the UK slot ship together in kit 011y, waiting for the Pi gate; see Claude's status file.

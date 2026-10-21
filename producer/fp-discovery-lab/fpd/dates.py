@@ -40,16 +40,18 @@ RE_FR = re.compile(rf"\b{_WD_FR}{_D_FR}(?:\s*,\s*{_WD_FR}\d{{1,2}}(?:er|e|è|èm
 _WEEKDAYS_FR = {"lundi": 0, "mardi": 1, "mercredi": 2, "jeudi": 3, "vendredi": 4, "samedi": 5, "dimanche": 6}
 
 
-def _weekday_year(raw: str, mo: int, day: str, today: dt.date) -> int | None:
+def _weekday_year(raw: str, mo: int, day: str, today: dt.date, page_years: set[int]) -> int | None:
     """Year for a yearless French date that names its weekday ("vendredi 30 octobre"): the one year in
-    today.year-1 .. today.year+1 where that day falls on that weekday. A date names its weekday on a page about
-    one particular edition, so this is the source's own statement, not a guess. None if no unique fit."""
+    today.year-1 .. today.year+1 where that day falls on that weekday, AND which the page itself states somewhere
+    (Kilstett: "dimanche 13 décembre 2026" ... "vendredi 30 octobre"). Without that corroboration an old page's
+    weekdays fit some nearby year by coincidence (gate 21 Oct: a 2020 workshop list, "samedi 14 novembre", fitted
+    2026). None if no unique corroborated fit."""
     m = re.match(r"\s*(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b", raw, re.I)
     if not m:
         return None
     want = _WEEKDAYS_FR[m.group(1).lower()]
     fits = [y for y in (today.year - 1, today.year, today.year + 1) if (d := _mk(y, mo, day)) and d.weekday() == want]
-    return fits[0] if len(fits) == 1 else None
+    return fits[0] if len(fits) == 1 and fits[0] in page_years else None
 
 
 @dataclass
@@ -99,6 +101,7 @@ def extract_dates(text: str, today: dt.date, day_first: bool = True) -> list[Dat
             out.append(DateMention(d, None, m.start(), m.end(), True, m.group(0)))
             taken.append((m.start(), m.end()))
 
+    page_years = {int(y) for y in RE_YEAR.findall(text)}
     for m in RE_FR.finditer(text):
         d1, d2, mon, yr = m.group(1), m.group(2), m.group(3), m.group(4)
         mo = _month(mon)
@@ -106,7 +109,7 @@ def extract_dates(text: str, today: dt.date, day_first: bool = True) -> list[Dat
         # French announcements put the edition year in a nearby sentence ("Rejoignez l'édition 2026"): wider window.
         y = int(yr) if yr else _infer_year(text, m.start(), today, win=400)
         if not y and mo:
-            y = _weekday_year(m.group(0), mo, d1, today)
+            y = _weekday_year(m.group(0), mo, d1, today, page_years)
         if not y or not mo:
             continue
         s = _mk(y, mo, d1)
