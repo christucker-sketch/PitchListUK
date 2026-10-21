@@ -3,6 +3,7 @@
 import {fetchSourceDocument} from './source-document.mjs';import {fetchMyntBundle,myntVenueUrl} from './uk-sources.mjs';import {fetchCCABundle,ccaVenueUrl} from './creative-crafts.mjs';import {dundeeFoodURL,fetchDundeeBundle} from './dundeeheritage.mjs';import {verifyDocument} from './verification.mjs';import {fetchUKPostcode,sourceEventPostcode} from './uk-event-geography.mjs';import {hash} from './contract.mjs';
 import {hummingbirdURL,fetchHummingbirdBundle} from './hummingbird.mjs';
 import {veganEventURL,fetchVeganBundle} from './vegan-events.mjs';
+import {cjsEventURL,fetchCJSBundle} from './cjs-events.mjs';
 import {discoverUsableRoutes,eventenyContactRoute,eventenySignupRoute} from './usable-route.mjs';
 import {SEYSSINS_CALL,fetchFrenchCouncilBundle} from './france-council.mjs';
 import {frenchCall,fetchFrenchCallBundle} from './france-calls.mjs';
@@ -14,6 +15,7 @@ export async function fetchProofDocument(url,{fetcher=fetch,now=new Date().toISO
   if(dundeeFoodURL(url))return fetchDundeeBundle(url,{fetcher,now});
   if(hummingbirdURL(url)&&sourceIdentifier)return fetchHummingbirdBundle(url,sourceIdentifier,{fetcher,now});
   if(veganEventURL(url))return fetchVeganBundle(url,sourceIdentifier,{fetcher,now});
+  if(cjsEventURL(url)&&sourceIdentifier)return fetchCJSBundle(url,sourceIdentifier,{fetcher,now});
   const source=await fetchSourceDocument(url,{fetcher,now}),report=verifyDocument(source,{now}),postcode=sourceEventPostcode(report);
   // A complete, vendor-scoped current application already supplies proof.
   // Contact/signup expansion is for unproved routes, not an extra requirement

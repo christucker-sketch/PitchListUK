@@ -6,6 +6,7 @@ import {myntVenues,myntVenueUrl,parseMyntVenue,fetchMyntBundle} from './uk-sourc
 import {CCA_BOOKING,CCA_ADAPTER_VERSION,ccaVenueUrl,fetchCCAProgramme} from './creative-crafts.mjs';
 import {HUMMINGBIRD_TRADE,HUMMINGBIRD_ADAPTER_VERSION,fetchHummingbirdProgramme} from './hummingbird.mjs';
 import {VEGAN_HOME,VEGAN_ADAPTER_VERSION,fetchVeganProgramme} from './vegan-events.mjs';
+import {CJS_EVENTS,CJS_ADAPTER_VERSION,fetchCJSProgramme} from './cjs-events.mjs';
 import {verifyDocument} from './verification.mjs';
 import {recordVerification,verificationUrl,verificationGate,verifyEntitySource} from './verification-store.mjs';
 import {reconcileRecord,evaluateReadiness,runStage,enrichEntity} from './pipeline.mjs';
@@ -64,17 +65,17 @@ export function ukSourceReader(db,run_id,{fetcher=fetch,now=new Date().toISOStri
   const visit=async d=>{if(reservationFailure)throw reservationFailure;await retain(db,d);if(d.reason==='source_http_429'||d.reason==='postcode_http_429'){await stopUKRun(db,run_id,'source_rate_limited');throw Error('uk_source_rate_limited');}};
   return {fetcher:fetchBounded,visit};
 }
-export async function discoverUKSource(db,{run_id,url},{fetcher=fetch,now=new Date().toISOString()}={}) {
+export async function discoverUKSource(db,{run_id,url,event_urls=null},{fetcher=fetch,now=new Date().toISOString()}={}) {
   await active(db,run_id,now);
-  if(url!=='https://www.myntimage.co.uk/events/'&&!myntVenueUrl(url)&&url!==CCA_BOOKING&&!ccaVenueUrl(url)&&url!==HUMMINGBIRD_TRADE&&url!==VEGAN_HOME)throw Error('approved_uk_source_required');
+  if(url!=='https://www.myntimage.co.uk/events/'&&!myntVenueUrl(url)&&url!==CCA_BOOKING&&!ccaVenueUrl(url)&&url!==HUMMINGBIRD_TRADE&&url!==VEGAN_HOME&&url!==CJS_EVENTS)throw Error('approved_uk_source_required');
   const replayWhere=url===CCA_BOOKING?"run_id=? AND family=?":"run_id=? AND url=?",replayValue=url===CCA_BOOKING?'creativecrafts':url;
   const prior=await sql(db,`SELECT source_document_id FROM uk_source_candidates WHERE ${replayWhere} LIMIT 1`,run_id,replayValue).first();
   if(prior)return {run_id,url,replay:true,candidates:(await sql(db,`SELECT c.id,c.source_identifier,p.status,p.reason FROM uk_source_candidates c JOIN uk_source_progress p ON p.candidate_id=c.id WHERE ${replayWhere.replace('run_id','c.run_id').replace('family','c.family').replace('url','c.url')}`,run_id,replayValue).all()).results};
   const {fetcher:fetchBounded,visit}=ukSourceReader(db,run_id,{fetcher,now});
   try {
-    if(url===CCA_BOOKING||ccaVenueUrl(url)||url===HUMMINGBIRD_TRADE||url===VEGAN_HOME) {
-      const family=url===HUMMINGBIRD_TRADE?'littlehummingbird':url===VEGAN_HOME?'veganeventsuk':'creativecrafts';
-      const programme=family==='littlehummingbird'?await fetchHummingbirdProgramme({fetcher:fetchBounded,now,visit}):family==='veganeventsuk'?await fetchVeganProgramme({fetcher:fetchBounded,now,visit}):await fetchCCAProgramme({fetcher:fetchBounded,now,visit,url:url===CCA_BOOKING?null:url}),candidates=[];
+    if(url===CCA_BOOKING||ccaVenueUrl(url)||url===HUMMINGBIRD_TRADE||url===VEGAN_HOME||url===CJS_EVENTS) {
+      const family=url===CJS_EVENTS?'cjseventswarwickshire':url===HUMMINGBIRD_TRADE?'littlehummingbird':url===VEGAN_HOME?'veganeventsuk':'creativecrafts';
+      const programme=family==='cjseventswarwickshire'?await fetchCJSProgramme({eventURLs:event_urls,fetcher:fetchBounded,now,visit}):family==='littlehummingbird'?await fetchHummingbirdProgramme({fetcher:fetchBounded,now,visit}):family==='veganeventsuk'?await fetchVeganProgramme({fetcher:fetchBounded,now,visit}):await fetchCCAProgramme({fetcher:fetchBounded,now,visit,url:url===CCA_BOOKING?null:url}),candidates=[];
       if(programme.bundles.length>100)throw Error('uk_venue_candidate_limit');
       for(const bundle of programme.bundles) {
         const proof=verifyDocument(bundle,{now}),documentId=await retain(db,bundle);
@@ -117,7 +118,7 @@ export async function importUKCandidate(db,candidateId,{now=new Date().toISOStri
   if(!claim.results.length)throw Error('uk_candidate_claimed');
   try {
     const budget=await sql(db,"UPDATE uk_source_runs SET checked=checked+1 WHERE id=? AND status='active' AND checked<max_candidates RETURNING checked",c.run_id).all();if(!budget.results.length)throw Error('uk_candidate_limit');
-    if(!['myntimage','creativecrafts','littlehummingbird','veganeventsuk'].includes(c.family)||proof.facts.source_platform!==c.family||proof.facts.source_identifier!==c.source_identifier)throw Error('uk_source_family_identity_required');
+    if(!['myntimage','creativecrafts','littlehummingbird','veganeventsuk','cjseventswarwickshire'].includes(c.family)||proof.facts.source_platform!==c.family||proof.facts.source_identifier!==c.source_identifier)throw Error('uk_source_family_identity_required');
     const f=proof.facts,record={schema_version:EXPORT_SCHEMA,opportunity_id:c.family+':'+c.source_identifier,country_code:'GB',...Object.fromEntries(Object.entries(f).filter(([k])=>k!=='country')),lifecycle_state:'NEW',last_checked:document.fetched_at,source_fingerprint:document.content_hash,evidence:proof.evidence,
       provenance:[{producer:'uk-official',adapter_version:document.adapter_version,source_document_id:c.source_document_id,source_identifier:c.source_identifier,source_url:c.url,paid_queries:0}]};
     const imported=await ingestRecords(db,[record],{producer:'uk-official',environment:'shadow',now});if(imported.rejected)throw Error('uk_source_record_invalid');
@@ -147,5 +148,5 @@ export async function ukSourceStatus(db) {
   const outcomes=(await sql(db,'SELECT c.run_id,c.family,p.status,p.reason,p.identity_outcome,COUNT(*) AS candidates FROM uk_source_candidates c JOIN uk_source_progress p ON p.candidate_id=c.id GROUP BY c.run_id,c.family,p.status,p.reason,p.identity_outcome').all()).results??[];
   const visits=await sql(db,'SELECT COUNT(*) AS direct_source_visits,SUM(CASE WHEN reason IS NOT NULL THEN 1 ELSE 0 END) AS failed_visits FROM uk_source_visits').first();
   const reviews=(await sql(db,'SELECT run_id,COUNT(*) AS reviewed_existing_entities,SUM(readiness_at_review=\'ready\') AS ready_at_review FROM official_source_review_outcomes GROUP BY run_id').all()).results??[];
-  return {producer:'uk-official',paid_queries:0,standing_scheduler_enabled:false,adapter_versions:['myntimage-dated-stalls-v1',CCA_ADAPTER_VERSION,HUMMINGBIRD_ADAPTER_VERSION,VEGAN_ADAPTER_VERSION],runs,outcomes,reviewed_source_matches:reviews,...visits,visit_definition:'Actual adapter HTTP requests, including venue, embedded application, venue directions and public country lookup. Research visits are reported separately.'};
+  return {producer:'uk-official',paid_queries:0,standing_scheduler_enabled:false,adapter_versions:['myntimage-dated-stalls-v1',CCA_ADAPTER_VERSION,HUMMINGBIRD_ADAPTER_VERSION,VEGAN_ADAPTER_VERSION,CJS_ADAPTER_VERSION],runs,outcomes,reviewed_source_matches:reviews,...visits,visit_definition:'Actual adapter HTTP requests, including venue, embedded application, venue directions and public country lookup. Research visits are reported separately.'};
 }
