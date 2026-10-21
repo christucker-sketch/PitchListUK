@@ -273,6 +273,31 @@ def cmd_rechecks(cfg, args):
     _close(cfg, conn, run_id)
 
 
+def cmd_refresh_current(cfg, args):
+    """Re-queue the primary pages of current (actionable) opportunities that have not been fetched for a while.
+
+    21 Oct (V3 conversion report: 44 of 47 withheld LocalStalls records stale): current records were only ever refreshed
+    when V3 asked (rechecks, READY records only) or by chance, so a withheld record's page never moved on. Platform
+    listings (dates change weekly) are refreshed after --platform-days, organiser pages after --days. Bounded per
+    cycle; one country can go first (UK-first). Domains in --skip are left alone (UKCraftFairs: V3 cannot verify them)."""
+    from .frontier import PLATFORM_DOMAINS
+    conn, run_id = _open(cfg, "refresh-current", args)
+    now = time.time()
+    skip = {d.strip() for d in (args.skip or "").split(",") if d.strip()}
+    rows = conn.execute(
+        "SELECT u.id, u.reg_domain, u.fetched_at, o.country FROM opportunities o JOIN urls u ON u.url = o.primary_url "
+        "WHERE o.status = 'actionable' AND u.state = 'done' AND u.fetched_at < ?", (now - args.platform_days * 86400,)).fetchall()
+    due = [r for r in rows if r["reg_domain"] not in skip and
+           r["fetched_at"] < now - (args.platform_days if r["reg_domain"] in PLATFORM_DOMAINS else args.days) * 86400]
+    due.sort(key=lambda r: (r["country"] != args.first, r["fetched_at"]))
+    pick = due[: args.max]
+    conn.executemany("UPDATE urls SET state='pending', priority=MAX(priority, 0.85), attempts=0 WHERE id=? AND state='done'",
+                     [(r["id"],) for r in pick])
+    print(json.dumps({"due": len(due), "requeued": len(pick), "first_country": args.first,
+                      "requeued_first_country": sum(1 for r in pick if r["country"] == args.first)}))
+    _close(cfg, conn, run_id)
+
+
 def cmd_revisit_hubs(cfg, args):
     """Re-queue directory/association hub pages not read for a while, so newly listed members are discovered."""
     conn, run_id = _open(cfg, "revisit-hubs", args)
@@ -433,6 +458,13 @@ def main(argv=None):
     rb.add_argument("--only-signal", action="store_true",
                     help="only re-assess pages that previously showed any vendor signal (fast iteration)")
     rb.set_defaults(func=cmd_rebuild)
+    rc = sub.add_parser("refresh-current", help="re-queue stale primary pages of current opportunities (bounded)")
+    rc.add_argument("--max", type=int, default=150)
+    rc.add_argument("--platform-days", type=float, default=3.0)
+    rc.add_argument("--days", type=float, default=7.0)
+    rc.add_argument("--first", default="GB", help="country whose records are refreshed first")
+    rc.add_argument("--skip", default="ukcraftfairs.com", help="comma-separated registered domains not to refresh")
+    rc.set_defaults(func=cmd_refresh_current)
     r = sub.add_parser("report")
     r.add_argument("--out")
     r.set_defaults(func=cmd_report)

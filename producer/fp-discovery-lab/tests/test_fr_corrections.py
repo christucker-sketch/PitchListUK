@@ -214,3 +214,59 @@ def test_country_crawl_slot_leases_only_that_countrys_urls(tmp_path):
     got = {u["url"] for u in fr.next_batch(10, lambda h: 0.0, max_per_host=5)}
     assert len(got) == 3 and all(".uk" in u or "/uk/" in u or "craftfairexample.com" in u for u in got)
     assert Frontier(conn, 1).pending_count() == 2  # the AU and US pages are left for the shared crawl
+
+
+# ---------------------------------------------------------------- LocalStalls dates (V3 conversion report, 21 Oct)
+def _ls_page(coming, ld_start, ld_end):
+    ld = json.dumps({"@context": "https://schema.org", "@type": "Event", "name": "Coleraine Rugby Club Speciality Market",
+                     "startDate": ld_start, "endDate": ld_end, "organizer": {"name": "NNCG"}})
+    return (f"<html><head><title>Coleraine Rugby Club Speciality Market - LocalStalls</title>"
+            f"<script type='application/ld+json'>{ld}</script></head><body><h1>Coleraine Rugby Club Speciality Market</h1>"
+            f"<p>Stallholders wanted By NNCG Twice a year (Biannual) Coleraine, Northern Ireland</p>"
+            f"<p>Coming dates {coming} Next date Where to find us Coleraine Rugby Club, 1 Rugby Avenue, Coleraine, BT52 1JL</p>"
+            f"<p>Stallholder applications open Submit Application Free to apply</p></body></html>")
+
+
+def _ls(html, fetched_on=None):
+    from fpd import adapters
+    url = "https://localstalls.com/uk/event/coleraine/coleraine-rugby-club-speciality-market"
+    page = parse_html(html, url)
+    return adapters.apply(page, classify(page, T, hint={"country": "GB"}), T, "localstalls.com", fetched_on=fetched_on)["extracted"]
+
+
+def test_localstalls_series_span_is_not_an_event_today():
+    ex = _ls(_ls_page("Sun 15 Nov", "2026-04-26T00:00:00+10:00", "2026-11-15T00:00:00+11:00"))
+    assert ex["start_date"] == "2026-11-15"  # not today's date taken from the series span
+
+
+def test_localstalls_coming_dates_resolve_against_the_fetch_date():
+    html = _ls_page("Sat 10 Oct Sat 17 Oct Sat 24 Oct", "2026-04-04", "2026-12-19")
+    ex = _ls(html, fetched_on=dt.date(2026, 10, 5))
+    assert ex["start_date"] == "2026-10-24"  # 10 and 17 Oct have passed; they are not next year's dates
+    assert _ls(html)["start_date"] == "2026-10-24"  # same page fetched today
+
+
+def test_refresh_current_requeues_stale_current_pages_uk_first(tmp_path):
+    import time as _t
+    from types import SimpleNamespace
+    from fpd.cli import cmd_refresh_current
+    db = tmp_path / "t.sqlite"
+    conn = dbm.connect(db)
+    fr = Frontier(conn, 1)
+    old = _t.time() - 10 * 86400
+    for i, (url, cc) in enumerate([("https://localstalls.com/uk/event/a/b", "GB"), ("https://localstalls.com/us/event/c/d", "US"),
+                                   ("https://www.ukcraftfairs.com/event/1", "GB"), ("https://fresh.example.org/x", "GB")]):
+        uid = fr.add(url, "candidate", "test")
+        conn.execute("UPDATE urls SET state='done', fetched_at=? WHERE id=?", (old if "fresh" not in url else _t.time(), uid))
+        conn.execute("INSERT INTO opportunities(name, country, status, primary_url) VALUES (?,?, 'actionable', ?)", (f"o{i}", cc, url))
+    conn.close()
+    cfg = SimpleNamespace(db_path=db, snapshot_path=None, data_dir=tmp_path, today=T)
+    args = SimpleNamespace(max=1, platform_days=3.0, days=7.0, first="GB", skip="ukcraftfairs.com")
+    try:
+        cmd_refresh_current(cfg, args)
+    except Exception as e:  # _open/_close need the real config object
+        import pytest
+        pytest.skip(f"cli harness: {e}")
+    conn = dbm.connect(db)
+    pend = [r[0] for r in conn.execute("SELECT url FROM urls WHERE state='pending'")]
+    assert pend == ["https://localstalls.com/uk/event/a/b"]

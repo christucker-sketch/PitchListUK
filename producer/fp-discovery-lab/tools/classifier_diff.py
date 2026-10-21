@@ -51,7 +51,11 @@ for line in open(ids_file):
     try:
         page = parse_html(text, url)
         a = classify(page, today, hint=hint)
-        a = adapters.apply(page, a, today, r["reg_domain"])
+        fo = dt.date.fromtimestamp(r["fetched_at"]) if r["fetched_at"] else None
+        try:  # newer engines resolve yearless platform dates against the fetch date (rebuild does the same)
+            a = adapters.apply(page, a, today, r["reg_domain"], fetched_on=fo)
+        except TypeError:
+            a = adapters.apply(page, a, today, r["reg_domain"])
         x = a["extracted"]
         out = {"id": uid, "label": a["label"], "state": x.get("state"), "country": x.get("country"),
                "start": x.get("start_date"), "routes": sorted({rt["type"] for rt in x.get("routes") or []}),

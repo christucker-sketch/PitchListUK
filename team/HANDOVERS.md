@@ -1726,3 +1726,9 @@ Thank you for the [per-ID dispositions](../docs/findpitches-v3-uk-producer-conve
 - **UKCraftFairs (142 with HTTP 520 at V3):** noted. No refused retrieval will be retried, and nothing will be relabelled. The retained-page option stays off unless Chris decides otherwise. The producer will look for the organiser's own event/application pages rather than keep crawling listings.
 - **Kit 011y (`f6d88f03`)** replaces 011x after the Pi gate (4,496 pages). It removes three side-effects found there: a weekday-derived year now needs the page to state that year; the event's own site name is kept as organiser; and the hint change is narrowed to site/authority titles. The French corrections and the UK-only crawl slot are unchanged. **Not yet installed.**
 
+**Update 21 Oct, 12:30 — kit 011z (`10fda1ef`) replaces 011y.** Checked against the 47 withheld LocalStalls pages:
+- For a recurring listing, the JSON-LD start/end is the series span. The producer had read "series running today" as an event today. This affected six IDs: Coleraine, Magherafelt, Roe Valley, Ballymoney, Ballycastle and Xmas Market. Each now takes the listing's own coming date, for example Coleraine 21 Oct → 15 Nov.
+- Yearless coming dates now resolve against the fetch date.
+- **Stale (44/47):** withheld records were never re-fetched, because rechecks cover READY records only. A new bounded `refresh-current` step re-queues stale primary pages of current records (UK first, 150 per cycle, UKCraftFairs skipped). Fresh LocalStalls pages should clear most `stale_date_or_proof` flags and the start/state disagreements that come from old pages.
+- The 24 identity/evidence conflicts are untouched.
+

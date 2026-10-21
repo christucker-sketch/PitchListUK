@@ -102,7 +102,7 @@ def _ls_organiser(page: Page, t: str) -> str | None:
     return name or None
 
 
-def localstalls(page: Page, a: dict, today: dt.date) -> dict | None:
+def localstalls(page: Page, a: dict, today: dt.date, fetched_on: dt.date | None = None) -> dict | None:
     """LocalStalls event pages show a fixed block: 'Stallholders wanted', 'Coming dates <Sat 10 Oct> ...',
     'Stallholder applications open / Submit Application' (or only 'Contact event manager').
     'Coming dates' carry no year: they are the platform's own upcoming list, so each is resolved to its
@@ -115,14 +115,20 @@ def localstalls(page: Page, a: dict, today: dt.date) -> dict | None:
     cc = _LS_CC[m.group(1)]
     name = re.sub(r"\s*-\s*LocalStalls\s*$", "", page.title).strip() or ex.get("name")
     cd = re.search(r"Coming dates (.{0,300}?)(?:Where to find us|Contact event manager|$)", t)
-    dates = []
+    # 21 Oct (V3 conversion report, 19 LocalStalls start-date disagreements): the yearless 'Coming dates' were upcoming
+    # when the page was FETCHED, so they resolve against the fetch date, then anything already past is dropped. (Resolving
+    # a weeks-old page against today turned a passed 'Sat 10 Oct' into 10 Oct next year.)
+    ref = fetched_on or today
+    coming = []
     if cd:
         for d, mon in re.findall(r"\b(\d{1,2}) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b", cd.group(1)):
-            nd = _next_occurrence(int(d), _MON[mon.lower()], today)
-            if nd:
-                dates.append(nd)
-    # Event JSON-LD carries explicit-year dates; prefer them (no year inference) and keep the coming-dates list.
-    ld_end = None
+            nd = _next_occurrence(int(d), _MON[mon.lower()], ref)
+            if nd and nd >= today:
+                coming.append(nd)
+    # Event JSON-LD carries explicit-year dates, but for a recurring listing it is the SERIES span (Coleraine: 26 Apr -
+    # 15 Nov) -- a series running today is not an event today. Only a JSON-LD start still ahead is an event date, and
+    # the platform's own coming-dates list wins when it has entries.
+    ld_dates, ld_end = [], None
     for d in page.jsonld:
         if str(d.get("@type", "")).lower().endswith("event"):
             try:
@@ -133,11 +139,12 @@ def localstalls(page: Page, a: dict, today: dt.date) -> dict | None:
                 ed = dt.date.fromisoformat(str(d.get("endDate", ""))[:10])
             except ValueError:
                 ed = None
-            if (ed or sd) >= today:
-                dates.append(max(sd, today) if ed and sd < today <= ed else sd)
+            if sd >= today:
+                ld_dates.append(sd)
                 if ed and ed > sd and ld_end is None:
                     ld_end = ed
-    ld_used = bool(ld_end) or any(str(d.get("@type", "")).lower().endswith("event") for d in page.jsonld)
+    dates = coming or ld_dates
+    ld_used = not coming and bool(ld_dates)
     dates = sorted(set(dates))
     org = _ls_organiser(page, t)
     open_m = re.search(r"Stallholder applications open", t) or re.search(r"Submit Application", t)
@@ -608,10 +615,12 @@ ADAPTERS = {"ukcraftfairs.com": _chain(ukcraftfairs, _uk_ids), "dundeeheritagetr
             "marketsireland.ie": _chain(marketsireland, _mi_ids)}
 
 
-def apply(page: Page, a: dict, today: dt.date, reg_domain: str) -> dict:
+def apply(page: Page, a: dict, today: dt.date, reg_domain: str, fetched_on: dt.date | None = None) -> dict:
+    """fetched_on: when the stored page was fetched (re-assessment of an older page); adapters that resolve yearless
+    platform dates use it as their reference date."""
     fn = ADAPTERS.get(reg_domain)
     if fn:
-        out = fn(page, a, today)
+        out = fn(page, a, today, fetched_on) if fn is localstalls else fn(page, a, today)
         if out is not None:
             out.setdefault("features", {})["adapter"] = fn.__name__
             return out

@@ -416,7 +416,8 @@ class Engine:
             hint["site_next_date"] = site["next_date"]
         hint["site_role"] = site["role"] if site else "organiser"
         a = classify(page, self.cfg.today, hint=hint)
-        a = adapters.apply(page, a, self.cfg.today, row["reg_domain"])
+        fetched_on = dt.date.fromtimestamp(row["fetched_at"]) if row.get("fetched_at") else None
+        a = adapters.apply(page, a, self.cfg.today, row["reg_domain"], fetched_on=fetched_on)
         self._learn_site_date(row["reg_domain"], site["role"] if site else "organiser", a)
         if row["purpose"] == "directory":
             # Aggregators are for discovery; verification happens on organiser/platform pages.

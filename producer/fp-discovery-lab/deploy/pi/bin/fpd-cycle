@@ -16,6 +16,8 @@ step "run --source all --minutes ${FPD_RUN_MINUTES:-25}"
 $PY -u -m fpd run --source all --minutes "${FPD_RUN_MINUTES:-25}" >/dev/null || { step "run failed"; rc=1; }
 step "revisit"
 $PY -u -m fpd revisit >/dev/null || { step "revisit failed"; rc=1; }
+step "refresh-current (stale pages behind current records; UK first; max ${FPD_REFRESH_MAX:-150})"
+$PY -m fpd refresh-current --max "${FPD_REFRESH_MAX:-150}" || { step "refresh-current failed"; rc=1; }
 step "seed curated (adds only directories not seeded before)"
 $PY -m fpd seed curated >/dev/null || { step "seed failed"; rc=1; }
 # France crawl PAUSED by default (21 Oct, Chris): 52% of the Pi's fetches for one customer READY. Existing French
