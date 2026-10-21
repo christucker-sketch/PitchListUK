@@ -244,7 +244,7 @@ PACK = {
     # the organiser starts with a capital; sentence openers that are not names are refused in classify.
     "organiser_phrases": [
         r"(?:^|[\n.!?»:]\s*)([A-ZÀ-Ý][\w'’&\-]*(?:\s+(?:de|du|des|d['’]|la|le|les|et|&|[A-Za-zÀ-ÿ][\w'’&\-]*)){0,4})"
-        r"\s+(?:organise|organisera|organisent|organiseront|vous\s+propose|propose)\s+(?:son|sa|ses|leur|le|la|les|un|une|cette|ce)\b",
+        r"\s+(?:organise|organisera|organisent|organiseront)\s+(?:son|sa|ses|leur|le|la|les|un|une|cette|ce)\b",
         r"\borganis" + E + r"e?s?\s+par\s+(?:le\s+|la\s+|les\s+|l['’])?([A-ZÀ-Ý][\w'’&\-]*(?:\s+(?:de|du|des|d['’]|la|le|les|et|&|[A-ZÀ-Ý][\w'’&\-]*)){0,6})",
     ],
     "annual": [r"\b\d{1,3}\s*(?:e|è|ème|eme|ième|ieme)\s+" + E + r"dition\b|\bchaque\s+ann" + E + r"e\b|\btous\s+les\s+ans\b|\bannuel(?:le)?\b"],

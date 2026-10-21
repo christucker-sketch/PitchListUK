@@ -119,7 +119,8 @@ def derive_name(page: Page, evs: list[dict], hint_name: str | None = None) -> st
     # when it reads like an event; otherwise a title that does name the event must win (21 Oct, Saint-Marcellin).
     # (Gate 21 Oct: dropping the bonus for every non-event hint renamed ~100 pages for no gain, so it is dropped only
     # for a hint that is a site/authority title.)
-    hint_eventish = bool(hint_name) and not L.SITE_TITLE_HINT.search(hint_name)
+    # ...and only when some candidate does name an event (a council page with no event title keeps its old behaviour).
+    hint_eventish = bool(hint_name) and not (L.SITE_TITLE_HINT.search(hint_name) and any(_eventish(c) for c in cands))
 
     def score(s):
         sc = 0.0

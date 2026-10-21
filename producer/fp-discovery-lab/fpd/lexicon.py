@@ -394,7 +394,7 @@ PLATFORM_ORGANISER_RE = re.compile(
     r"squarespace|canva|calam[ée]o|issuu|yumpu|dropbox|onedrive|sharepoint|padlet|framaforms|zoho\s+forms)$", re.I)
 # A French title segment that names an organising body ("Comité des Fêtes de Hochstatt").
 FR_ORG_SEGMENT = re.compile(r"^(?:comit[ée]\s+des\s+f[êe]tes|association|amicale|union\s+(?:commerciale|des\s+commer[cç]ants)|"
-                            r"office\s+(?:de\s+|du\s+)?tourisme|mairie|ville|commune|syndicat\s+d['’]initiative)\b", re.I)
+                            r"office\s+(?:de\s+|du\s+)?tourisme|mairie|ville|commune|syndicat\s+d['’]initiative)\s", re.I)
 # A site-level hint that is the website's/authority's own title, not an event ("Saint Marcellin, site officiel de la
 # ville", "Ville de X", "X City Council", "Official website of X"): it must not outrank an event title.
 SITE_TITLE_HINT = re.compile(r"\bsite\s+officiel\b|\bsite\s+de\s+la\s+(?:ville|commune|mairie)\b|^(?:ville|mairie|commune)\s+(?:de|d['’]|du)\b|"
