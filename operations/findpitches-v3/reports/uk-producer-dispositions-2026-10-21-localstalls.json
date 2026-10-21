@@ -1,0 +1,2713 @@
+{
+  "schema": "findpitches-v3-uk-producer-conversion-v1",
+  "as_of": "2026-10-21T10:59:13.006Z",
+  "cloud_latest_gb_ids": 260,
+  "producer_current_ready_ids": 232,
+  "customer_ready_producer_ids": 8,
+  "distinct_customer_ready_entities": 8,
+  "by_discovery_source": {
+    "localstalls": {
+      "producer_ids": 48,
+      "customer_ready_ids": 4,
+      "withheld_ids": 44,
+      "reasons": {
+        "current_source_proof_required": 43,
+        "current_trader_route_proof_required": 43,
+        "single_event_source_data_missing": 12,
+        "stale_date_or_proof": 40,
+        "unresolved_identity_or_evidence_conflict": 24,
+        "event_application_route_missing_or_ambiguous": 16,
+        "open_vendor_application_not_proved": 16,
+        "selected_application_state_disagrees_with_proof": 16,
+        "selected_event_end_disagrees_with_proof": 11,
+        "selected_event_start_disagrees_with_proof": 19,
+        "selected_organiser_disagrees_with_proof": 6,
+        "source_edition_identity_mismatch": 2,
+        "source_event_postcode_country_not_proved": 3,
+        "source_http_404": 2,
+        "selected_event_name_disagrees_with_proof": 2,
+        "verified_venue_missing": 2
+      }
+    },
+    "eventeny": {
+      "producer_ids": 1,
+      "customer_ready_ids": 0,
+      "withheld_ids": 1,
+      "reasons": {
+        "application_restricted_audience_requires_review": 1,
+        "current_source_proof_required": 1,
+        "current_trader_route_proof_required": 1,
+        "stale_date_or_proof": 1
+      }
+    },
+    "ukcraftfairs": {
+      "producer_ids": 147,
+      "customer_ready_ids": 4,
+      "withheld_ids": 143,
+      "reasons": {
+        "current_source_proof_required": 143,
+        "current_trader_route_proof_required": 143,
+        "source_http_520": 142,
+        "stale_date_or_proof": 123,
+        "cca_bundle_structure_changed": 1,
+        "trader_application_purpose_not_proved": 1,
+        "unresolved_identity_or_evidence_conflict": 1
+      }
+    },
+    "wikidata_seed": {
+      "producer_ids": 13,
+      "customer_ready_ids": 0,
+      "withheld_ids": 13,
+      "reasons": {
+        "current_source_proof_required": 10,
+        "current_trader_route_proof_required": 10,
+        "event_content_scope_missing": 5,
+        "invalid_structured_source_data": 1,
+        "producer_low_confidence": 9,
+        "stale_date_or_proof": 10,
+        "single_event_source_data_missing": 4,
+        "editorial_page_is_discovery_only": 1,
+        "unresolved_identity_or_evidence_conflict": 1,
+        "unresolved_or_unlinked_identity": 3
+      }
+    },
+    "directory": {
+      "producer_ids": 20,
+      "customer_ready_ids": 0,
+      "withheld_ids": 20,
+      "reasons": {
+        "current_source_proof_required": 18,
+        "current_trader_route_proof_required": 18,
+        "event_content_scope_missing": 6,
+        "stale_date_or_proof": 18,
+        "source_response_size_limit": 1,
+        "producer_low_confidence": 12,
+        "single_event_source_data_missing": 8,
+        "unresolved_or_unlinked_identity": 2,
+        "invalid_structured_source_data": 1,
+        "editorial_page_is_discovery_only": 3
+      }
+    },
+    "council": {
+      "producer_ids": 1,
+      "customer_ready_ids": 0,
+      "withheld_ids": 1,
+      "reasons": {
+        "current_source_proof_required": 1,
+        "current_trader_route_proof_required": 1,
+        "producer_low_confidence": 1,
+        "source_http_404": 1,
+        "stale_date_or_proof": 1
+      }
+    },
+    "organiser_site": {
+      "producer_ids": 2,
+      "customer_ready_ids": 0,
+      "withheld_ids": 2,
+      "reasons": {
+        "current_source_proof_required": 2,
+        "current_trader_route_proof_required": 2,
+        "producer_low_confidence": 1,
+        "single_event_source_data_missing": 1,
+        "stale_date_or_proof": 2,
+        "dundee_exact_food_event_required": 1,
+        "trader_application_purpose_not_proved": 1,
+        "unresolved_identity_or_evidence_conflict": 1
+      }
+    }
+  },
+  "details": [
+    {
+      "producer_id": "fdx1_028c4bda0d8776c00c4b",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_038aeec909bdca6caeaf",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_038c7488801be9534f18",
+      "discovery_source": "eventeny",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "application_restricted_audience_requires_review",
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_0633ad2a37e39e100778",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_06bfbacddd7544ce350d",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_07145c9f9a87f62667f2",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "invalid_structured_source_data",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_0c06ef34eb51c446579a",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_0c620e46136a24fc2267",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_0cb40c602eb58cae1740",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_0f0e78fc1451dbeb7e5e",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_122a62ba51fff2fd0184",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1362d4b42aba189a34e7",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_15ae99d0361bd72492fa",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_17770543e2199f32fc53",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_179abefc1d1979a9c97d",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_18effe24aa231a05473e",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_195c30ac85db782581c6",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1a5dd9bb7460050e5e12",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1a6f68c3498248e513fe",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1a928fbb7fc64e8f2c62",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1bab50b214bdbe6857ab",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1bdaa0707edb2570a008",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1bdfb9499af140047144",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1d906f98ddc9a009e15d",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_1f1d9aa1e3dac99bd552",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_2205df7509a4221eaf2e",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_22ca000556da646d5d05",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "editorial_page_is_discovery_only",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_2381b531b167a7756b54",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_25f2df23634e2f1deca7",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_26742ddc37b4b7614a46",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_292ed9a8107b4bdb861e",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_2943b7c1b3b78c518c62",
+      "discovery_source": "localstalls",
+      "disposition": "READY",
+      "reasons": []
+    },
+    {
+      "producer_id": "fdx1_2b6591ae21104d880c70",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_2c1a3539131eceff6b48",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_2c606467ed6b6dd3efef",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_314ac525f0a931671cb3",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_324bc5234611f151dbf4",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_324e48cbcde7d7448da4",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_32a83f6d2d4f0692eba2",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_32d31e216bd956fede9e",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing"
+      ]
+    },
+    {
+      "producer_id": "fdx1_330357edd313fdb54ca7",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_334a3c0e9c5f574ba390",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_response_size_limit",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_349007f7e3c13f37254b",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_organiser_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_358eb35bb622c4c13843",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_3639cf6922f6dbfad95c",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_3925d87d76f95bc1a18c",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_start_disagrees_with_proof",
+        "source_edition_identity_mismatch",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_3d3fb09a1ac0be6053e7",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_3ed9cfea4bf351af2a40",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_3f2d6dc165ab0f50fc39",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_3fdf30094bd42813fb46",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_41011f070d66a35237b8",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_42bc3dd8f938152994d3",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_43710ab4c0a0ca864792",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_43d331b272bcadcfd834",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_43fe71116d3fa91d2e91",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_441c04f515767625dd2d",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_44f0b20166355caadd4f",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_47307e6ff59b07685582",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_4a8234b77233171b4267",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_4aed42b91eab07e134c1",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing"
+      ]
+    },
+    {
+      "producer_id": "fdx1_4c99b31aca904725541d",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_event_postcode_country_not_proved",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_4d4f07ee4993a50711ea",
+      "discovery_source": "localstalls",
+      "disposition": "READY",
+      "reasons": []
+    },
+    {
+      "producer_id": "fdx1_4e6e7ec1d32c10e41732",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_50391f30aa2cac74e1ad",
+      "discovery_source": "localstalls",
+      "disposition": "READY",
+      "reasons": []
+    },
+    {
+      "producer_id": "fdx1_50a73605453c57e61d54",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_51b71a746aadc19f86e8",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5228d09df2ad02a97b4b",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_524beaefb0ec25693805",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_529cc6ac5b41420df784",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_54e4b3c754c19bf15968",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_404",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_55450936593ac581113c",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_57312598322ed8cad9a1",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_575b4d8d519160e80b02",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_57fc2a507f1f27a8cfc0",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_586309e3347eb48c9f23",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5889b6360fb9360ae87d",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5a1d8e54464156ebe72e",
+      "discovery_source": "localstalls",
+      "disposition": "READY",
+      "reasons": []
+    },
+    {
+      "producer_id": "fdx1_5a50324fde0a6e5d4939",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "unresolved_or_unlinked_identity"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5edf4eeceecbe7ce8c18",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5ef82b5186b86999af90",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5f2f495b31bdd29c0501",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5f434f1f05c08654a1b1",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5fbb8a061cb4c814d731",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_5fd5a8421a31e1f36813",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_6203dab773562fed880c",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_621b5023823ff8b39890",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_62a08ffef542c37485bc",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_name_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_630f673f4d0e59dcacf0",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_63cb67136c3563421f41",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_organiser_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_653c147635d4560f85ad",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_organiser_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_659fd22288085eaa18a1",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_668b292c7129a704220b",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_673da6ab2dc23a18fff9",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "selected_organiser_disagrees_with_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_6845ff11d43d54618815",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "cca_bundle_structure_changed",
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "stale_date_or_proof",
+        "trader_application_purpose_not_proved"
+      ]
+    },
+    {
+      "producer_id": "fdx1_688783ea1fd31b2df35f",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_6a0dc074f2e42ca87b21",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_6aaa63427a902bf1d08b",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_6b4e8744b99f13721696",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_6c91942b9a98eb0ed160",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_6f3d36f62b78582f8c29",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_6fe59c6eae5d86b4a34d",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "READY",
+      "reasons": []
+    },
+    {
+      "producer_id": "fdx1_707ff5345f79ca1767d8",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_70bdd8b13a9a4daf8b2e",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_71a48324003eaed08baa",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "invalid_structured_source_data",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_71febe2b623f3bd33c66",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_725881f196f8eda42dde",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_74589ef9445d72242da6",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_7475d2b22d16b656ef67",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_74cf17d5991696148106",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_75e9828373070be832e0",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_778c169cd6acd9f51c0e",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_79dca5ef73d4fbc5b770",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_7afc369913d502ff2bfc",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "READY",
+      "reasons": []
+    },
+    {
+      "producer_id": "fdx1_7b19c9eb834b266419bb",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_7c3ce3219be04435b986",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_7e3f9fcca5199dbb85d7",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_7e93fedae5bb1ede9e1a",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_7ed4a65a0fbebaffeaa5",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_8021e0d284160159a491",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_847beb74b6aeef2680fb",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_84d1bc4be81e1818af3b",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_85b89578eea94924fbf1",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_85c5c067f97dc5cae761",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_8710784766d01148c14a",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_8888e10eae760a596f76",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_start_disagrees_with_proof",
+        "source_event_postcode_country_not_proved",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_8aa5320a596dfd66fb7c",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_8c86fa3ce73f18febd2b",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_404",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_8cfa537eed0873c39311",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "producer_low_confidence",
+        "unresolved_or_unlinked_identity"
+      ]
+    },
+    {
+      "producer_id": "fdx1_8ede705a57f4294852dd",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_8f9f5a032c97be6e0ce8",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_9152132dda3196cd20fc",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_91cb88d851f1a1251d33",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_91f255934cf652d9cc38",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_943ea95a602d29ef4436",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_949078ed053128ed8077",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_94cfb7a8a9252fe15cac",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "editorial_page_is_discovery_only",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_95d81ed563d2bebe3009",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_organiser_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_96fa5a670e1af3468230",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_start_disagrees_with_proof",
+        "source_edition_identity_mismatch",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_973b2f63e8416db76147",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_9a79c927da17a21ec784",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing"
+      ]
+    },
+    {
+      "producer_id": "fdx1_9b37f65ea78eba613355",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_9b5fbb69fc16d42680ae",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_9d5fd1cef87b45aa6138",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_9f7b533ca0b8e1754d03",
+      "discovery_source": "council",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "source_http_404",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_a1663f833db5f741971c",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_a63b6a1c3180dfb63041",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "editorial_page_is_discovery_only",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_a7403bcc843e46997aa0",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "stale_date_or_proof",
+        "verified_venue_missing"
+      ]
+    },
+    {
+      "producer_id": "fdx1_a7b34f63e36d17285c08",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_a87f56c7947f5ab4049b",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "selected_organiser_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_a8d4fe53fdfe10270c17",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_a9793336a8320f354dd2",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_name_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_aaf1f7b6f106a731a8fd",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ab24284415e57568be48",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ab68509b603ddb35391b",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_abc79b366de7a953e1c6",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ac288714a1dac8690c59",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_aff0895d9085ffcaaced",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b009336914824d4eabed",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b0c1a2ee514a6c1775ad",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b1923b237aa512f566bb",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_content_scope_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b1de6479df3c129b4e28",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b253058893e0bc031e39",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "producer_low_confidence",
+        "unresolved_or_unlinked_identity"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b339e4e8e9bb0bc0bcac",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b515939b39c0ad6cf4ba",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b5882df480fd9426467f",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b95b2757b8ef120d90f1",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_b9af1cd3f87ff78fe4d8",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "producer_low_confidence",
+        "unresolved_or_unlinked_identity"
+      ]
+    },
+    {
+      "producer_id": "fdx1_bbd3db9408d069f20878",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "stale_date_or_proof",
+        "verified_venue_missing"
+      ]
+    },
+    {
+      "producer_id": "fdx1_bc0af646763de58f853e",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_be1e84219b09f13c29a7",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_bed0ba7a844763d8d119",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_bfcee84f66a1c15ce717",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_c01e2bbe7a985fbd6cd8",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_c10dadf30c130bb44472",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_c48f572d6e3f78b4ba80",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_c5bea29c4aac8401fb1c",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_c7ba2649e45aac3f8e90",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_c87f6c105b26b47de2a1",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_c94d7b1d54bdb1f4904b",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_c9fe70fd160a11f42856",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ca23b63bc8c2212e7e7c",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ca99a0f197eed1b9a0a3",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_cadf330d0515352c6c93",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ccd00cf75ad284d39591",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ccdc9d4990dfdaff35af",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_cce3e4746874a662fab3",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_cdc91539fb3768364caa",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_cdfa0f6ff11660ee4855",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ce7c2ea8a21fc092e4f7",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_cef3120876e78b7225dd",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_cf65713cf5b6837a9373",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_cfbe4c9dd32a561cccd9",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d0a9b36b11ba018e1ebc",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d0bae22a0e3d87fcd59b",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d11299c74c6d3924ea80",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "source_event_postcode_country_not_proved",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d21c6a8efae19e9b5a3c",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d2a712825251e1b4f267",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d2d9bfa02ecfcd86ae34",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d3797bb2346cf9d3e6da",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d475feceff8ebf807bdf",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "READY",
+      "reasons": []
+    },
+    {
+      "producer_id": "fdx1_d4e7576bd344588f51b0",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_d88c9abd5e35392c140c",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "READY",
+      "reasons": []
+    },
+    {
+      "producer_id": "fdx1_d8a77b4bc0624a230f2c",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_db7fc04cc96cd1a2c321",
+      "discovery_source": "organiser_site",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_dd22a8d93a5398848dd0",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_dd6f14a9de54dd843d45",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_de566336781d79b4ac19",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_e04bcd6ac160cbfd54f5",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_e0b49bbcaebe4df04b94",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "editorial_page_is_discovery_only",
+        "producer_low_confidence",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_e1bdfde71a49a40d7168",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_e3d57d57c51cc3f247f3",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_e43803f4c3d5da3c9f36",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_e4be1ac9d663ac521c29",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_e4c60e195a55fd30d9e7",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_e766ea56a9e4e3115ed9",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ea96fd6e3e2a3dd18fa0",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ebef9565cce2c01ab0c8",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "unresolved_or_unlinked_identity"
+      ]
+    },
+    {
+      "producer_id": "fdx1_eee86a81618d2a775397",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_f124543deaaea7cd1e88",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_f1335710a30fbb64cbc2",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_f352be811dee2e089e97",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_f58709653e7d712b0d4f",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_f61347d57daca827e714",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_f7502399dc00faf90efc",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_f99fbbda87e6d1422514",
+      "discovery_source": "directory",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_fb574ebcd266f9b09de1",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_fbed1a0a5318dccbb255",
+      "discovery_source": "localstalls",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof",
+        "selected_event_end_disagrees_with_proof",
+        "selected_event_start_disagrees_with_proof",
+        "stale_date_or_proof",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    },
+    {
+      "producer_id": "fdx1_fc7965d6bdd2b28219cd",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_fce6ffab5c6ae9da3f3f",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_fcf8f324455f708fea00",
+      "discovery_source": "ukcraftfairs",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "source_http_520",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_fd42e300e5ea2f83845b",
+      "discovery_source": "wikidata_seed",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "producer_low_confidence",
+        "single_event_source_data_missing",
+        "stale_date_or_proof"
+      ]
+    },
+    {
+      "producer_id": "fdx1_ff1c2be246ebfbb7b467",
+      "discovery_source": "organiser_site",
+      "disposition": "WITHHELD",
+      "reasons": [
+        "current_source_proof_required",
+        "current_trader_route_proof_required",
+        "dundee_exact_food_event_required",
+        "stale_date_or_proof",
+        "trader_application_purpose_not_proved",
+        "unresolved_identity_or_evidence_conflict"
+      ]
+    }
+  ],
+  "read_only": true,
+  "source_fetches": 0,
+  "paid_queries": 0,
+  "interpretation": "Latest accepted per-producer source clock (then receipt/id tie breakers), current export READY, joined to the actual customer snapshot. Producer IDs and distinct entities are different units. Reason flags overlap; source/origin membership is not exclusive attribution. Census equality alone does not prove identity-set equality with a Pi snapshot whose ID manifest was not supplied."
+}

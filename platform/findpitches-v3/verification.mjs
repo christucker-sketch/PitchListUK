@@ -15,6 +15,7 @@ import {VENUE_COORDINATE_POLICY,eventVenueCoordinates,sourceVenueAddress} from '
 import {applyUsableRoute,applyEventenyRegistration,applyEventenyContact,usableRouteEligible} from './usable-route.mjs';
 import {verifyFrenchCouncilBundle} from './france-council.mjs';
 import {verifyFrenchCallBundle} from './france-calls.mjs';
+import {verifyLocalStallsEnquiry} from './localstalls-enquiry.mjs';
 
 export const VERIFIER_VERSION='source-proof-v1';
 export const APPLICATION_POLICY_VERSION='current-application-v1.11';
@@ -117,6 +118,7 @@ function eventenyScopeProof(main,heading) {
 
 // Discovery metadata (including search market/city) is deliberately absent from parsing.
 export function verifyDocument(document,{now=new Date().toISOString()}={}) {
+  if(document.document_kind==='localstalls_enquiry_bundle')return verifyLocalStallsEnquiry(document,verifyDocument(document.documents?.[0]??{reason:'source_document_missing'},{now}),{now});
   if(document.document_kind==='fr_official_call_bundle')return verifyFrenchCallBundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
   if(document.document_kind==='fr_council_source_bundle')return verifyFrenchCouncilBundle(document,{now,version:VERIFIER_VERSION,applicationPolicy:APPLICATION_POLICY_VERSION});
   if(document.document_kind==='global_usable_route_bundle'){

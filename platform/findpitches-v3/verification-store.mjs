@@ -8,6 +8,7 @@ import {attachCachedAddress} from './address-coordinate-store.mjs';
 import {proofExpiry} from './source-calendar.mjs';
 import {renewalAdmission,retryableDocument,recordRenewalFailure,recordRenewalResult,renewalStatus} from './source-renewal.mjs';
 import {cjsEventURL} from './cjs-events.mjs';
+import {localstallsEventURL} from './localstalls-enquiry.mjs';
 
 export function verificationUrl(entity) {
   // Prefer the retained event detail over an old footer application link.
@@ -25,8 +26,9 @@ export async function verificationGate(db,entity,{now=new Date().toISOString()}=
   const comparison=compareProof(entity,report),scope=applicationScope(report),reasons=[...new Set([...report.reasons,...comparison,...scope.reasons])];
   return {status:(comparison.length||scope.reasons.some(r=>r.startsWith('contradictory_')))&&row.status==='verified'?'quarantine':scope.reasons.length&&row.status==='verified'?'partial':row.status,reasons,verification_id:row.id,profile:report.profile,facts:report.facts,usable_route:report.usable_route??null,application_heading:scope.heading,application_audience:scope.audience,checked_at:row.checked_at,expires_at:row.expires_at};
 }
-// CJS needs eight bound supporting reads. Other retry ceilings stay at three.
-export function retrySourceRequestLimit(entity){return entity.source_platform==='cjseventswarwickshire'&&cjsEventURL(verificationUrl(entity))?8:3;}
+// Supporting evidence belongs inside the same bounded retry: eight CJS reads,
+// four for a UK LocalStalls event/contact/postcode bundle; other sources three.
+export function retrySourceRequestLimit(entity){const url=verificationUrl(entity);return entity.source_platform==='cjseventswarwickshire'&&cjsEventURL(url)?8:entity.source_platform==='localstalls'&&localstallsEventURL(url)?4:3;}
 export function sourceFetchRequired(gate,{now=new Date().toISOString(),refreshVerificationId=null}={}) {
   if(refreshVerificationId&&refreshVerificationId===gate.verification_id)return true;
   if(gate.status!=='unverified')return false;

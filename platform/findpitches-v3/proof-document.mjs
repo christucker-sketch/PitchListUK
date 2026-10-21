@@ -7,6 +7,7 @@ import {cjsEventURL,fetchCJSBundle} from './cjs-events.mjs';
 import {discoverUsableRoutes,eventenyContactRoute,eventenySignupRoute} from './usable-route.mjs';
 import {SEYSSINS_CALL,fetchFrenchCouncilBundle} from './france-council.mjs';
 import {frenchCall,fetchFrenchCallBundle} from './france-calls.mjs';
+import {localstallsEventURL,fetchLocalStallsEnquiry} from './localstalls-enquiry.mjs';
 export async function fetchProofDocument(url,{fetcher=fetch,now=new Date().toISOString(),sourceIdentifier=null}={}) {
   if(url===SEYSSINS_CALL)return fetchFrenchCouncilBundle(url,{fetcher,now});
   if(frenchCall(url))return fetchFrenchCallBundle(url,{fetcher,now});
@@ -17,6 +18,11 @@ export async function fetchProofDocument(url,{fetcher=fetch,now=new Date().toISO
   if(veganEventURL(url))return fetchVeganBundle(url,sourceIdentifier,{fetcher,now});
   if(cjsEventURL(url)&&sourceIdentifier)return fetchCJSBundle(url,sourceIdentifier,{fetcher,now});
   const source=await fetchSourceDocument(url,{fetcher,now}),report=verifyDocument(source,{now}),postcode=sourceEventPostcode(report);
+  if(localstallsEventURL(source.url)&&report.profile==='localstalls'&&report.reasons.includes('open_vendor_application_not_proved')){
+    let primary=source;
+    if(postcode&&(!report.facts.country||report.facts.country==='GB')){const geo=await fetchUKPostcode(postcode,{fetcher,now}),documents=[source,geo];primary={document_kind:'uk_event_geography_bundle',requested_url:source.requested_url,url:source.url,fetched_at:new Date(Math.min(...documents.map(d=>Date.parse(d.fetched_at)))).toISOString(),content_hash:await hash(documents.map(d=>d.content_hash??d.reason)),documents};}
+    return fetchLocalStallsEnquiry(primary,verifyDocument(primary,{now}),{fetcher,now});
+  }
   // A complete, vendor-scoped current application already supplies proof.
   // Contact/signup expansion is for unproved routes, not an extra requirement
   // on every positive application renewal. Identity comparison still runs in

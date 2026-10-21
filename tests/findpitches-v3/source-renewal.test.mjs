@@ -14,9 +14,11 @@ import {fetchProofDocument} from '../../platform/findpitches-v3/proof-document.m
 const at=n=>new Date(Date.parse(NOW)+n*60000).toISOString();
 const bad=async()=>new Response('',{status:502});
 const count=async(db,table)=>(await sql(db,'SELECT COUNT(*) n FROM '+table).first()).n;
-test('only owned CJS events get the required eight-read retry bundle; other sources keep three',()=>{
+test('only owned CJS and UK LocalStalls events get their supporting retry reads; other sources keep three',()=>{
  const canonical_url='https://www.cjseventswarwickshire.co.uk/events/example-market-1st-november-2026';assert.equal(retrySourceRequestLimit({source_platform:'cjseventswarwickshire',canonical_url}),8);
  for(const e of [{source_platform:'other',canonical_url},{source_platform:'cjseventswarwickshire',canonical_url:'https://example.org/events/other'},{source_platform:'cjseventswarwickshire',canonical_url:'https://www.cjseventswarwickshire.co.uk/events'},record()])assert.equal(retrySourceRequestLimit(e),3);
+ const local='https://localstalls.com/uk/event/example/current-fair';assert.equal(retrySourceRequestLimit({source_platform:'localstalls',canonical_url:local}),4);
+ for(const e of [{source_platform:'other',canonical_url:local},{source_platform:'localstalls',canonical_url:'https://localstalls.com/uk/events/'},{source_platform:'localstalls',canonical_url:local.replace('/uk/','/au/')},{source_platform:'localstalls',canonical_url:local+'?other=1'}])assert.equal(retrySourceRequestLimit(e),3);
 });
 test('historical failure triage preserves independent holds and cannot count missing proof as recoverable',()=>{
  const now='2026-10-16T09:00:00Z',base={environment:'shadow',event_end:'2026-12-20',application_deadline:'2026-11-15',application_url:'https://example.org/apply',application_state:'OPEN_NOW',organiser:'Source organiser',location:'Source venue'};

@@ -1,8 +1,10 @@
 # Codex — current status
 
-Updated: **2026-10-21T11:43:00+01:00**. **ACTIVE: V3-034, CJS renewal safety then bounded LocalStalls cloud conversion**, under [the single current execution order](../CURRENT_EXECUTION_ORDER.md). Latest measured inventory remains **UK204/global1738 at10:10London**; not yet remeasured this session. CJS discovery stays paused on render errors; 47-new cohort actual24h observation due22Oct09:40London. Producer kit **011z prepared, installation not evidenced**. France, performance/maps/SEO/Save DEFERRED. Billing/storage DONE/monitor. Paid and UKCF OptionB OFF; existing public/Checkout unchanged.
+Updated: **2026-10-21T12:01:58+01:00**. **ACTIVE V3-034: CJS renewal safety/actual24h observation, then remaining LocalStalls cloud conversion**, under [the single current queue](../CURRENT_EXECUTION_ORDER.md). Latest measured **21Oct11:59London: UK207/global1740**. [Full result](../../docs/findpitches-v3-localstalls-conversion-2026-10-21.md).
 
-Acknowledged incoming `081e466e`/`216b510a` and Claude producer changes through `0fc0ae42`. Owned next work: read-only current CJS cohort/proof/retry health, then at most **32 additional free source GETs** against bounded non-conflicted LocalStalls cases; source-specific cloud proof/tests only if justified, no producer edits or forced field selection. Report genuinely new/recovered/held separately. Actual results will replace this claim; no installation, future retention or peer acknowledgement assumed.
+LocalStalls bounded canary **4checked→3existingREADY/1organiser mismatch quarantined**; no new IDs or confirmed recoveries, no forced fact/identity changes. UK cumulative+61 comprises47new/eightconfirmedrecoveries/sixexistingfirst-observed. CJS47/47retained2.31h; source dailycooldown/acquisitionpause, original expiry intact; actual24h due22Oct09:40London. Strict50genuinely-new target remains3short; +100open.
+
+Cloud producer census232→**8READY/224withheld**, LocalStalls4/48; producerpending230/0freshackeligible. Claude kit011z prepared, host installation not evidenced. Full571/public29/directcohort4pass, original235facts/25records/22keys/4entities0changes plus unchanged CJS scopes;31/32freeGETs/0Serper. Final enrichment98609292 preserves nativeconfiguration; customer/billing/Pi/V1/V2unchanged. Paid/UKCFOptionB/sourcepublicationOFF, existing public/CheckoutON. France, optional features and global performance DEFERRED; billing/storage DONE/monitor.
 
 ---
 

@@ -1,0 +1,711 @@
+{
+  "schema": "findpitches-v3-uk-localstalls-checkpoint-v1",
+  "as_of": "2026-10-21T10:59:14.933Z",
+  "customer_ready": 1740,
+  "ready_by_country": {
+    "AU": 4,
+    "CA": 1,
+    "FR": 1,
+    "GB": 207,
+    "NZ": 5,
+    "US": 1522
+  },
+  "uk_ready_by_source": {
+    "cjseventswarwickshire": 47,
+    "creativecrafts": 6,
+    "eventeny": 2,
+    "littlehummingbird": 11,
+    "localstalls": 4,
+    "myntimage": 136,
+    "northamptontowncouncil.gov.uk": 1
+  },
+  "checkin_funnel": {
+    "schema": "findpitches-v3-customer-inventory-funnel-v1",
+    "from": "2026-10-21T10:41:40.000Z",
+    "to": "2026-10-21T10:59:14.933Z",
+    "elapsed_hours": 0.29303694444444445,
+    "total": {
+      "before": 1737,
+      "after": 1740,
+      "retained": 1737,
+      "new_entities_ready": 0,
+      "recoveries": 0,
+      "prior_visibility_unproven": 3,
+      "withdrawals": 0,
+      "net": 3,
+      "retention_percent": 100
+    },
+    "by_country_source": [
+      {
+        "country": "AU",
+        "source_family": "localstalls",
+        "before": 4,
+        "after": 4,
+        "retained": 4,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "CA",
+        "source_family": "eventeny",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "FR",
+        "source_family": "podensac.fr",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "cjseventswarwickshire",
+        "before": 47,
+        "after": 47,
+        "retained": 47,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "creativecrafts",
+        "before": 6,
+        "after": 6,
+        "retained": 6,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "eventeny",
+        "before": 2,
+        "after": 2,
+        "retained": 2,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "littlehummingbird",
+        "before": 11,
+        "after": 11,
+        "retained": 11,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "localstalls",
+        "before": 1,
+        "after": 4,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 3,
+        "withdrawals": 0,
+        "net": 3,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "myntimage",
+        "before": 136,
+        "after": 136,
+        "retained": 136,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "northamptontowncouncil.gov.uk",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "NZ",
+        "source_family": "localstalls",
+        "before": 5,
+        "after": 5,
+        "retained": 5,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "US",
+        "source_family": "eventeny",
+        "before": 1522,
+        "after": 1522,
+        "retained": 1522,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      }
+    ],
+    "distinct_new_event_groups": 0,
+    "event_group_definition": "Advisory exact country/title/date/organiser/location tuple; no entity identity is changed."
+  },
+  "since_morning_funnel": {
+    "schema": "findpitches-v3-customer-inventory-funnel-v1",
+    "from": "2026-10-21T07:46:05.885Z",
+    "to": "2026-10-21T10:59:14.933Z",
+    "elapsed_hours": 3.21918,
+    "total": {
+      "before": 1680,
+      "after": 1740,
+      "retained": 1677,
+      "new_entities_ready": 47,
+      "recoveries": 10,
+      "prior_visibility_unproven": 6,
+      "withdrawals": 3,
+      "net": 60,
+      "retention_percent": 99.82142857142857
+    },
+    "by_country_source": [
+      {
+        "country": "AU",
+        "source_family": "localstalls",
+        "before": 4,
+        "after": 4,
+        "retained": 4,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "CA",
+        "source_family": "eventeny",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "FR",
+        "source_family": "podensac.fr",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "cjseventswarwickshire",
+        "before": 0,
+        "after": 47,
+        "retained": 0,
+        "new_entities_ready": 47,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 47,
+        "retention_percent": null
+      },
+      {
+        "country": "GB",
+        "source_family": "creativecrafts",
+        "before": 6,
+        "after": 6,
+        "retained": 6,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "eventeny",
+        "before": 2,
+        "after": 2,
+        "retained": 2,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "littlehummingbird",
+        "before": 0,
+        "after": 11,
+        "retained": 0,
+        "new_entities_ready": 0,
+        "recoveries": 8,
+        "prior_visibility_unproven": 3,
+        "withdrawals": 0,
+        "net": 11,
+        "retention_percent": null
+      },
+      {
+        "country": "GB",
+        "source_family": "localstalls",
+        "before": 1,
+        "after": 4,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 3,
+        "withdrawals": 0,
+        "net": 3,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "myntimage",
+        "before": 136,
+        "after": 136,
+        "retained": 136,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "northamptontowncouncil.gov.uk",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "NZ",
+        "source_family": "localstalls",
+        "before": 5,
+        "after": 5,
+        "retained": 5,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "US",
+        "source_family": "eventeny",
+        "before": 1523,
+        "after": 1522,
+        "retained": 1520,
+        "new_entities_ready": 0,
+        "recoveries": 2,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 3,
+        "net": -1,
+        "retention_percent": 99.80302035456336
+      }
+    ],
+    "distinct_new_event_groups": 47,
+    "event_group_definition": "Advisory exact country/title/date/organiser/location tuple; no entity identity is changed."
+  },
+  "localstalls": {
+    "checked": 4,
+    "current_verified": 3,
+    "held": 1,
+    "held_reasons": [
+      "selected_organiser_disagrees_with_proof"
+    ],
+    "customer_ready_gained": 3,
+    "new_entities": 0,
+    "confirmed_recoveries": 0,
+    "prior_customer_visibility_unproven": 3,
+    "state": "ENQUIRY_AVAILABLE",
+    "application_submissions": 0,
+    "messages_sent": 0,
+    "requires_browser_javascript_and_recaptcha": true,
+    "delivery_to_organiser_not_tested": true,
+    "future_renewal_jobs": 3,
+    "earliest_renewal": "2026-10-22T08:52:53.192Z",
+    "custody_compared": {
+      "facts": 235,
+      "records": 25,
+      "identity_keys": 22,
+      "entities": 4
+    },
+    "custody_changes": {
+      "facts": 0,
+      "records": 0,
+      "identity_keys": 0,
+      "entities": 0
+    }
+  },
+  "cjs": {
+    "cohort": 47,
+    "customer_retained": 47,
+    "observed_cohort_hours": 2.3077852777777776,
+    "actual_24h_due": "2026-10-22T08:40:46.906Z",
+    "retention_24h_proven": false,
+    "discovery_paused": true,
+    "latest_transient_attempts": [
+      {
+        "reason": "source_render_incomplete",
+        "attempted_at": "2026-10-21T10:25:25.353Z",
+        "retry_at": "2026-10-22T10:25:25.353Z",
+        "retry_exhausted": 1
+      }
+    ],
+    "custody_changes": {
+      "facts": 0,
+      "records": 0,
+      "identity_keys": 0,
+      "entities": 0
+    }
+  },
+  "producer_conversion": {
+    "as_of": "2026-10-21T10:59:13.006Z",
+    "current_ready_labelled_ids": 232,
+    "customer_ready_producer_ids": 8,
+    "withheld_ids": 224,
+    "by_source": {
+      "localstalls": {
+        "producer_ids": 48,
+        "customer_ready_ids": 4,
+        "withheld_ids": 44
+      },
+      "eventeny": {
+        "producer_ids": 1,
+        "customer_ready_ids": 0,
+        "withheld_ids": 1
+      },
+      "ukcraftfairs": {
+        "producer_ids": 147,
+        "customer_ready_ids": 4,
+        "withheld_ids": 143
+      },
+      "wikidata_seed": {
+        "producer_ids": 13,
+        "customer_ready_ids": 0,
+        "withheld_ids": 13
+      },
+      "directory": {
+        "producer_ids": 20,
+        "customer_ready_ids": 0,
+        "withheld_ids": 20
+      },
+      "council": {
+        "producer_ids": 1,
+        "customer_ready_ids": 0,
+        "withheld_ids": 1
+      },
+      "organiser_site": {
+        "producer_ids": 2,
+        "customer_ready_ids": 0,
+        "withheld_ids": 2
+      }
+    }
+  },
+  "producer_rechecks": {
+    "pending_entities": 239,
+    "fresh_evidence_ack_eligible": 0,
+    "by_country": [
+      {
+        "market": "AU",
+        "pending_entities": 7,
+        "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "CA",
+        "pending_entities": 6,
+        "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "FR",
+        "pending_entities": 11,
+        "oldest_requested_at": "2026-10-17T23:56:54.912Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "GB",
+        "pending_entities": 31,
+        "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "NZ",
+        "pending_entities": 3,
+        "oldest_requested_at": "2026-10-12T10:57:45.276Z",
+        "fresh_evidence_ack_eligible": 0
+      },
+      {
+        "market": "US",
+        "pending_entities": 181,
+        "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+        "fresh_evidence_ack_eligible": 0
+      }
+    ],
+    "acknowledged_last_24h": 1280,
+    "latest_acknowledgement": "2026-10-21T09:20:30.548Z",
+    "obsolete_requests_resolved": 2,
+    "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+    "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+    "pagination_supported": true,
+    "oldest_request_preserved": true
+  },
+  "source_budget": {
+    "maximum": 32,
+    "local_gets": 15,
+    "native_reserved": 16
+  },
+  "serper_today": {
+    "reserved": 0,
+    "attempted": 0,
+    "observed_credits": null
+  },
+  "source_policy": {
+    "source_publication": 0,
+    "bulk": 0,
+    "paid_paused": 1,
+    "source_customer_rows": 0,
+    "publication_rows": 0
+  },
+  "due_or_dead_jobs": [],
+  "enrichment_release": {
+    "as_of": "2026-10-21T10:56:24.203Z",
+    "worker": "findpitches-v3-enrichment-shadow",
+    "version_id": "98609292-3be9-45c5-a89d-1ea0247ea19b",
+    "previous_version_id": "9d1deb34-45a4-4800-ab35-c0bb190a094c",
+    "deployment_id": "5a508847-0e3e-41bf-9dfe-8e8c1e2e4fd6",
+    "bindings_and_runtime_preserved": true,
+    "schedules_and_settings_preserved": true,
+    "secret_values_replaced": false,
+    "migrations": 0,
+    "customer_or_legacy_changes": 0
+  },
+  "full_v3_tests": 571,
+  "public_smoke": {
+    "schema": "findpitches-v3-public-smoke-v1",
+    "started_at": "2026-10-21T10:57:14.244Z",
+    "passed": true,
+    "checks": [
+      {
+        "name": "json_/health",
+        "passed": true
+      },
+      {
+        "name": "public_production_health",
+        "passed": true
+      },
+      {
+        "name": "owned_homepage_/",
+        "passed": true
+      },
+      {
+        "name": "truthful_homepage_/",
+        "passed": true
+      },
+      {
+        "name": "owned_homepage_/index.html",
+        "passed": true
+      },
+      {
+        "name": "truthful_homepage_/index.html",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/session",
+        "passed": true
+      },
+      {
+        "name": "anonymous_free_no_alert_delivery",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/opportunities",
+        "passed": true
+      },
+      {
+        "name": "GB_real_ready_redacted",
+        "passed": true
+      },
+      {
+        "name": "GB_no_duplicate_or_held_identity",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/opportunities",
+        "passed": true
+      },
+      {
+        "name": "US_real_ready_redacted",
+        "passed": true
+      },
+      {
+        "name": "US_no_duplicate_or_held_identity",
+        "passed": true
+      },
+      {
+        "name": "public_event_identity_indexable",
+        "passed": true
+      },
+      {
+        "name": "held_ent_dda1403e0c99eb5b1c1871f37c325cb2",
+        "passed": true
+      },
+      {
+        "name": "held_ent_93d86b9d0147d8aa91ea8eea541d86b8",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/account.html",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/pricing.html",
+        "passed": true
+      },
+      {
+        "name": "private_noindex_/alerts.html",
+        "passed": true
+      },
+      {
+        "name": "json_/api/v3/billing/plans",
+        "passed": true
+      },
+      {
+        "name": "global_eur_price_checkout_state",
+        "passed": true
+      },
+      {
+        "name": "unsafe_signin_csrf_rejected",
+        "passed": true
+      },
+      {
+        "name": "operator_private",
+        "passed": true
+      },
+      {
+        "name": "preview_provisioning_unavailable",
+        "passed": true
+      },
+      {
+        "name": "unsigned_live_webhook_rejected",
+        "passed": true
+      },
+      {
+        "name": "public_robots_private_paths",
+        "passed": true
+      },
+      {
+        "name": "proof_filtered_sitemap",
+        "passed": true
+      },
+      {
+        "name": "www_redirect_to_owned_apex",
+        "passed": true
+      }
+    ],
+    "country_counts": {
+      "GB": 207,
+      "US": 1522
+    },
+    "customer_objects_created": 0,
+    "messages_sent": 0,
+    "certificate_bypass": false,
+    "expected_checkout_enabled": true,
+    "as_of": "2026-10-21T10:57:24.363Z"
+  },
+  "public_cohort": {
+    "as_of": "2026-10-21T10:58:31.749Z",
+    "passed": true,
+    "checks": [
+      {
+        "expected": "ready_free_redacted",
+        "passed": true
+      },
+      {
+        "expected": "ready_free_redacted",
+        "passed": true
+      },
+      {
+        "expected": "ready_free_redacted",
+        "passed": true
+      },
+      {
+        "expected": "held_not_visible",
+        "passed": true
+      }
+    ],
+    "messages_sent": 0,
+    "customer_objects_created": 0
+  },
+  "pi_kit_installation": "Not evidenced by this cloud checkpoint. 011z is recorded as prepared in the hub.",
+  "v1_v2_changes": 0,
+  "customer_and_billing_runtime_changes": 0
+}
