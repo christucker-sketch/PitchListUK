@@ -1,3 +1,9 @@
+# CURRENT AUTHORITY — 21 October 2026
+
+**Follow [CURRENT_EXECUTION_ORDER.md](CURRENT_EXECUTION_ORDER.md) for all present work, priorities, owners and acceptance.** Everything below this notice is historical/reference material only; where it conflicts, the current execution order wins. Do not treat older OPEN/WAITING labels as live instructions.
+
+---
+
 # FindPitches V3 — current execution orders
 
 ## 13 October next-task queue — current priority order
