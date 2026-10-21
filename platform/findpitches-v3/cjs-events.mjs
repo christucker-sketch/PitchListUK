@@ -2,7 +2,7 @@
 // Standing registration is ENQUIRY_AVAILABLE, never guaranteed event capacity.
 import {hash,stableJson} from './contract.mjs';
 import {parseHtml,nodes,first,text} from './source-dom.mjs';
-import {sourceRSCObjects} from './source-rsc.mjs';
+import {sourceRSCObjects,sourceRSCServerError} from './source-rsc.mjs';
 import {fetchSourceDocument} from './source-document.mjs';
 import {fetchUKPostcode,postcodeProof,ukPostcode} from './uk-event-geography.mjs';
 import {rawSHA256} from './raw-sha256.mjs';
@@ -91,11 +91,15 @@ async function readAux(url,kind,{fetcher,now}){
 export async function fetchCJSProgramme({eventURLs,fetcher=fetch,now=new Date().toISOString(),visit=null}={}){
  if(!Array.isArray(eventURLs)||eventURLs.length<1||eventURLs.length>10||new Set(eventURLs).size!==eventURLs.length||eventURLs.some(u=>!cjsEventURL(u)))throw Error('cjs_bounded_specific_event_list_required');
  const read=async u=>{const d=await fetchSourceDocument(u,{fetcher,now});if(visit)await visit(d);return d;},home=await read(CJS_HOME),trade=await read(CJS_TRADE),scripts=[];
+ // A 200 response may contain an explicit Next server-render failure instead
+ // of the actual page. It proves neither closure nor a new positive result.
+ // Preserve the real HTTP response and clocks, and use normal bounded retry.
+ if([home,trade].some(d=>!d.reason&&d.http_status===200&&d.html&&nodes(parseHtml(d.html),n=>n.tag==='main').length===0&&sourceRSCServerError(d.html)))return {bundles:[],held:[],reason:'source_render_incomplete',documents:[home,trade]};
  for(const s of CJS_INTAKE_SCRIPTS){const d=await readAux(s.url,'cjs_intake_script',{fetcher,now});if(visit)await visit(d);scripts.push(d);}
  const upload=await readAux(CJS_ORIGIN+'/api/files','cjs_upload_route_receipt',{fetcher,now});if(visit)await visit(upload);parseCJSIntake(home,trade,scripts,upload);
  const bundles=[],held=[],geos=new Map();for(const url of eventURLs){try{const source=await read(url),event=parseCJSEvent(source);if(event.end<now.slice(0,10)){held.push({url,reason:'stale_edition'});continue;}if(!geos.has(event.postcode)){const d=await fetchUKPostcode(event.postcode,{fetcher,now});if(visit)await visit(d);geos.set(event.postcode,d);}const documents=[source,home,trade,...scripts,upload,geos.get(event.postcode)];bundles.push({document_kind:'cjs_official_bundle',adapter_version:CJS_ADAPTER_VERSION,requested_url:url,url:source.url,source_identifier:event.source_identifier,fetched_at:new Date(Math.min(...documents.map(d=>Date.parse(d.fetched_at)))).toISOString(),content_hash:await hash(documents),documents});}catch(e){held.push({url,reason:/^[a-z_]+$/.test(e.message)?e.message:'cjs_source_structure_changed'});}}
  return {bundles,held};
 }
 export async function fetchCJSBundle(url,sourceIdentifier,{fetcher=fetch,now=new Date().toISOString()}={}){
- const p=await fetchCJSProgramme({eventURLs:[url],fetcher,now});return p.bundles.find(b=>b.source_identifier===sourceIdentifier)??{requested_url:url,url,fetched_at:now,reason:p.held[0]?.reason??'cjs_source_event_identity_mismatch'};
+ const p=await fetchCJSProgramme({eventURLs:[url],fetcher,now});return p.bundles.find(b=>b.source_identifier===sourceIdentifier)??{requested_url:url,url,fetched_at:now,reason:p.reason??p.held[0]?.reason??'cjs_source_event_identity_mismatch',...p.documents?{documents:p.documents}:{}};
 }

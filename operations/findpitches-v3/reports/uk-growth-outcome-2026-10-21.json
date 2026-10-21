@@ -1,0 +1,438 @@
+{
+  "schema": "findpitches-v3-uk-growth-outcome-v1",
+  "published_at": "2026-10-21T09:14:56.002941+00:00",
+  "customer_snapshot_as_of": "2026-10-21T09:10:20.845Z",
+  "customer_ready": 1738,
+  "ready_by_country": {
+    "AU": 4,
+    "CA": 1,
+    "FR": 1,
+    "GB": 204,
+    "NZ": 5,
+    "US": 1523
+  },
+  "uk": {
+    "before": 146,
+    "after": 204,
+    "net": 58,
+    "genuinely_new_entities_and_exact_dated_events": 47,
+    "confirmed_prior_customer_ready_recoveries": 8,
+    "existing_ids_prior_customer_visibility_unproven": 3,
+    "withdrawals": 0,
+    "original_146_retained": 146,
+    "ready_by_source": {
+      "cjseventswarwickshire": 47,
+      "creativecrafts": 6,
+      "eventeny": 2,
+      "littlehummingbird": 11,
+      "localstalls": 1,
+      "myntimage": 136,
+      "northamptontowncouncil.gov.uk": 1
+    }
+  },
+  "customer_funnel": {
+    "schema": "findpitches-v3-customer-inventory-funnel-v1",
+    "from": "2026-10-21T07:46:05.885Z",
+    "to": "2026-10-21T09:10:20.845Z",
+    "elapsed_hours": 1.4041555555555556,
+    "total": {
+      "before": 1680,
+      "after": 1738,
+      "retained": 1678,
+      "new_entities_ready": 47,
+      "recoveries": 10,
+      "prior_visibility_unproven": 3,
+      "withdrawals": 2,
+      "net": 58,
+      "retention_percent": 99.88095238095238
+    },
+    "by_country_source": [
+      {
+        "country": "AU",
+        "source_family": "localstalls",
+        "before": 4,
+        "after": 4,
+        "retained": 4,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "CA",
+        "source_family": "eventeny",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "FR",
+        "source_family": "podensac.fr",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "cjseventswarwickshire",
+        "before": 0,
+        "after": 47,
+        "retained": 0,
+        "new_entities_ready": 47,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 47,
+        "retention_percent": null
+      },
+      {
+        "country": "GB",
+        "source_family": "creativecrafts",
+        "before": 6,
+        "after": 6,
+        "retained": 6,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "eventeny",
+        "before": 2,
+        "after": 2,
+        "retained": 2,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "littlehummingbird",
+        "before": 0,
+        "after": 11,
+        "retained": 0,
+        "new_entities_ready": 0,
+        "recoveries": 8,
+        "prior_visibility_unproven": 3,
+        "withdrawals": 0,
+        "net": 11,
+        "retention_percent": null
+      },
+      {
+        "country": "GB",
+        "source_family": "localstalls",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "myntimage",
+        "before": 136,
+        "after": 136,
+        "retained": 136,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "northamptontowncouncil.gov.uk",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "NZ",
+        "source_family": "localstalls",
+        "before": 5,
+        "after": 5,
+        "retained": 5,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "US",
+        "source_family": "eventeny",
+        "before": 1523,
+        "after": 1523,
+        "retained": 1521,
+        "new_entities_ready": 0,
+        "recoveries": 2,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 2,
+        "net": 0,
+        "retention_percent": 99.86868023637557
+      }
+    ],
+    "distinct_new_event_groups": 47,
+    "event_group_definition": "Advisory exact country/title/date/organiser/location tuple; no entity identity is changed."
+  },
+  "pilot": {
+    "source_family": "cjseventswarwickshire",
+    "intended_event_pages": 60,
+    "event_pages_checked": 50,
+    "new_customer_ready": 47,
+    "conversion_percent": 94,
+    "address_proof_holds": 3,
+    "uninspected_due_safety_stop": 10,
+    "identity_outcomes": {
+      "NEW_ENTITY": 47
+    },
+    "application_state": "ENQUIRY_AVAILABLE",
+    "standing_scheduler_enabled": false,
+    "paid_queries": 0,
+    "programme_paused": true,
+    "native_stop_reason": "source_structure_or_custody_review",
+    "confirmed_root_cause": "Explicit Next server-render errors in HTTP200 shared home/intake pages, no main content. Not proof of closure or current usable intake. Last good unexpired proof is retained under existing policy. No 24h retention claim."
+  },
+  "retention": {
+    "as_of": "2026-10-21T09:10:20.845Z",
+    "cjs": {
+      "cohort": 47,
+      "retained": 47,
+      "whole_cohort_observed_minutes": 29.56565,
+      "from": "2026-10-21T08:40:46.906Z"
+    },
+    "hummingbird": {
+      "cohort": 11,
+      "retained": 11,
+      "from": "2026-10-21T08:13:28.981Z"
+    },
+    "previous_recovery": {
+      "cohort": 27,
+      "retained": 26
+    },
+    "new_cohort_custody": {
+      "facts": 0,
+      "records": 0,
+      "identity_keys": 0,
+      "entities": 0
+    },
+    "next_24h_cjs_due_at": "2026-10-22T08:40:46.906Z"
+  },
+  "idempotence": {
+    "as_of": "2026-10-21T08:51:31.851Z",
+    "idempotent_replay": true,
+    "before_cohort_ready": 47,
+    "after_cohort_ready": 47,
+    "entity_growth": 0,
+    "source_requests": 0
+  },
+  "automatic_failure_protection": {
+    "as_of": "2026-10-21T09:11:55.089Z",
+    "attempted_at": "2026-10-21T09:08:23.611Z",
+    "next_retry_at": "2026-10-21T09:23:23.611Z",
+    "retry_exhausted": false,
+    "reason": "source_render_incomplete",
+    "source_requests_observed_from_retained_receipts": 2,
+    "retained_http_statuses": [
+      200,
+      200
+    ],
+    "original_proof_row_unchanged": true
+  },
+  "source_requests": {
+    "native_discovery_and_validation_plus_one_automatic_retry": 129,
+    "local_http_reservations": 51,
+    "local_concurrent_counter_safety_reserve": 2,
+    "conservative_accounted": 182,
+    "working_ceiling": 200,
+    "definition": "Operator work plus the one observed retry created by the validation probe. Includes public postcode/image/script/form-route/redirect reads. Separate from unrelated ongoing V3 maintenance. Local safety reserve avoids claiming an exact account-wide request audit."
+  },
+  "custody": {
+    "hummingbird_original": {
+      "facts_compared": 166,
+      "producer_records_compared": 14,
+      "identity_keys_compared": 62,
+      "mutations": 0
+    },
+    "cjs_preexisting": {
+      "compared": {
+        "facts": 16,
+        "records": 4,
+        "identity_keys": 14,
+        "entities": 3
+      },
+      "mutations": {
+        "facts": 0,
+        "records": 0,
+        "identity_keys": 0,
+        "entities": 0
+      }
+    },
+    "cjs_new_cohort": {
+      "compared": {
+        "facts": 564,
+        "records": 47,
+        "identity_keys": 159,
+        "entities": 47
+      },
+      "mutations": {
+        "facts": 0,
+        "records": 0,
+        "identity_keys": 0,
+        "entities": 0
+      }
+    },
+    "scope": "Affected originals and the new cohort across the stated checkpoints, not an all-history audit of every V3 record."
+  },
+  "health": {
+    "as_of": "2026-10-21T09:10:24.030Z",
+    "core_due_leased_dead": [],
+    "expired_cached_ready_positive_proofs": 0,
+    "renewal_health": "degraded",
+    "renewal_waiting": {
+      "entities": 7,
+      "exhausted_entities": 6,
+      "next_retry_at": "2026-10-21T09:23:23.611Z",
+      "superseded_latest_failures_retained": 0
+    },
+    "source_policy": {
+      "source_publication": 0,
+      "source_customer_rows": 0,
+      "source_publication_queue": 0,
+      "bulk": 0,
+      "paid_paused": 1
+    },
+    "serper_today": {
+      "reserved": 0,
+      "attempted": 0
+    },
+    "producer_as_of": "2026-10-21T08:52:49.815Z",
+    "producer_pending_rechecks": 493,
+    "producer_host_recent": true,
+    "producer_cadence": true,
+    "producer_freshness_warning": false
+  },
+  "producer_conversion": {
+    "as_of": "2026-10-21T08:47:36.770Z",
+    "cloud_current_ready_labelled_ids": 232,
+    "customer_ready_ids": 5,
+    "withheld_ids": 227,
+    "localstalls_direct_sample": {
+      "records": 2,
+      "ready": 0,
+      "native_imports": 0,
+      "source_requests": 3,
+      "reasons": [
+        "event_application_route_missing_or_ambiguous",
+        "open_vendor_application_not_proved",
+        "selected_application_state_disagrees_with_proof"
+      ]
+    }
+  },
+  "storage_48h": {
+    "observed": true,
+    "net_MB_per_day": 114.515968,
+    "latest_percent_used": 47.12,
+    "observation_report": "renewal-efficiency-48h-2026-10-21.json"
+  },
+  "validation": {
+    "full_v3_tests": 561,
+    "focused_tests": 29,
+    "public_checks": 29,
+    "public_passed": true,
+    "public_customer_objects_created": 0,
+    "messages_sent": 0
+  },
+  "releases": [
+    {
+      "as_of": "2026-10-21T09:09:03.028Z",
+      "worker": "findpitches-v3-enrichment-shadow",
+      "version_id": "4593e491-4986-4808-97b2-cc0067c2493a",
+      "previous_version_id": "574fec4a-e814-43a1-aa05-dea596af5c7c",
+      "deployment_id": "f1cacb45-252f-4f46-a534-5c41f8fa99d3",
+      "bindings_and_runtime_preserved": true,
+      "schedules_and_settings_preserved": true,
+      "secret_values_replaced": false,
+      "migrations": 0,
+      "customer_or_legacy_changes": 0
+    },
+    {
+      "as_of": "2026-10-21T08:32:11.282Z",
+      "worker": "findpitches-v3-api-shadow",
+      "version_id": "2b30a56a-7c39-4da8-9096-22c05c89f595",
+      "previous_version_id": "fe33fdd6-5048-4aa6-9015-7d0b4c09a748",
+      "deployment_id": "395e38e3-59cb-4fab-be9b-37a3a5446fc8",
+      "bindings_and_runtime_preserved": true,
+      "schedules_and_settings_preserved": true,
+      "secret_values_replaced": false,
+      "migrations": 0,
+      "customer_or_legacy_changes": 0
+    },
+    {
+      "as_of": "2026-10-21T08:24:10.974Z",
+      "worker": "findpitches-v3-readiness-shadow",
+      "version_id": "630d81b1-0ffc-4853-918a-8e6edf23535b",
+      "previous_version_id": "4fbb60d0-0b65-4d69-84c0-96c265ff4150",
+      "deployment_id": "c1e6675f-e7c8-43c6-8b89-46bb9514ca9d",
+      "bindings_and_runtime_preserved": true,
+      "schedules_and_settings_preserved": true,
+      "secret_values_replaced": false,
+      "migrations": 0,
+      "customer_or_legacy_changes": 0
+    },
+    {
+      "as_of": "2026-10-21T08:24:32.945Z",
+      "worker": "findpitches-v3-watch-shadow",
+      "version_id": "2345d648-1c69-4791-9a6b-5e93cbbffff4",
+      "previous_version_id": "3c9d66a1-eb0f-41ca-92e3-8fb5c393000a",
+      "deployment_id": "6583f29d-0392-464e-9396-6a75d128b37d",
+      "bindings_and_runtime_preserved": true,
+      "schedules_and_settings_preserved": true,
+      "secret_values_replaced": false,
+      "migrations": 0,
+      "customer_or_legacy_changes": 0
+    }
+  ],
+  "customer_worker_versions_unchanged": [
+    {
+      "version_id": "a3803f31-fe3b-4482-816d-72bd05bd9987",
+      "percentage": 100
+    }
+  ],
+  "customer_runtime_or_billing_configuration_changed": false,
+  "v2_pitchlist_pi_brix_changed_by_codex": false,
+  "source_migrations": 0,
+  "recommendation": "Keep paid and CJS acquisition paused. Observe source rendering/normal renewal and actual24h retention. Then prioritise LocalStalls proof/date-state conversion, preserving identity/confidence holds. The strict50-genuinely-new target is still3short; +100 and sustained daily growth remain open."
+}

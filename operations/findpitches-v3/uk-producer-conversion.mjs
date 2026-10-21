@@ -1,0 +1,17 @@
+// Read-only join of current producer IDs to actual customer eligibility.
+// The published rows contain opaque producer IDs/reason codes only.
+import {commercialRows,commercialEntity} from '../../platform/findpitches-v3/commercial.mjs';
+export async function ukProducerConversion(c){
+ const latest=(await c.db.prepare(`WITH ranked AS (SELECT p.*,ROW_NUMBER() OVER(PARTITION BY producer_record_id ORDER BY COALESCE(json_extract(normalized_json,'$.last_checked'),'') DESC,received_at DESC,id DESC) n FROM producer_records p WHERE producer_name='independent-structured' AND environment='shadow' AND market='GB' AND validation_status='accepted') SELECT p.id,p.producer_record_id,p.received_at,p.raw_json,er.entity_id FROM ranked p LEFT JOIN entity_records er ON er.record_id=p.id WHERE p.n=1`).all()).results;
+ const snapshot=await c.catalogue(),rows=await commercialRows(c.db,{market:'GB',pageSize:1000}),now=snapshot.as_of,byId=new Map(rows.map(r=>[r.id,commercialEntity(r,now)])),readyIds=new Set(snapshot.items.map(r=>r.id)),current=latest.filter(r=>JSON.parse(r.raw_json).export_readiness==='READY'),families={},details=[];
+ for(const record of current){
+  const raw=JSON.parse(record.raw_json),r=byId.get(record.entity_id),ready=readyIds.has(record.entity_id),family=raw.discovery_source??'unknown',reasons=[];
+  if(!ready){if(!record.entity_id)reasons.push('unresolved_or_unlinked_identity');else if(!r)reasons.push('entity_not_in_gb_corpus');else{
+   reasons.push(...r.reasons.filter(x=>/^[a-z][a-z0-9_]{0,100}$/.test(x)));
+   if(r.conflicts)reasons.push('unresolved_identity_or_evidence_conflict');if(r.quality_holds)reasons.push('retained_legacy_quality_hold');if(r.awaiting_verification)reasons.push('current_source_proof_required');if(r.missing_application_proof)reasons.push('current_trader_route_proof_required');if(r.stale_expired)reasons.push('stale_date_or_proof');if(r.ready&&!ready)reasons.push('customer_producer_policy_hold');
+  }if(raw.confidence?.level==='LOW')reasons.push('producer_low_confidence');if(!reasons.length)reasons.push('readiness_assessment_or_required_field_hold');}
+  const unique=[...new Set(reasons)].sort();families[family]??={producer_ids:0,customer_ready_ids:0,withheld_ids:0,reasons:{}};const f=families[family];f.producer_ids++;f[ready?'customer_ready_ids':'withheld_ids']++;for(const reason of unique)f.reasons[reason]=(f.reasons[reason]??0)+1;
+  if(!/^fdx1_[a-f0-9]{20}$/.test(record.producer_record_id))throw Error('opaque_producer_ids_required');details.push({producer_id:record.producer_record_id,discovery_source:family,disposition:ready?'READY':'WITHHELD',reasons:unique});
+ }
+ return {schema:'findpitches-v3-uk-producer-conversion-v1',as_of:now,cloud_latest_gb_ids:latest.length,producer_current_ready_ids:current.length,customer_ready_producer_ids:details.filter(r=>r.disposition==='READY').length,distinct_customer_ready_entities:new Set(current.filter(r=>readyIds.has(r.entity_id)).map(r=>r.entity_id)).size,by_discovery_source:families,details,read_only:true,source_fetches:0,paid_queries:0,interpretation:'Latest accepted per-producer source clock (then receipt/id tie breakers), current export READY, joined to the actual customer snapshot. Producer IDs and distinct entities are different units. Reason flags overlap; source/origin membership is not exclusive attribution. Census equality alone does not prove identity-set equality with a Pi snapshot whose ID manifest was not supplied.'};
+}

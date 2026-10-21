@@ -23,5 +23,10 @@
   "bindings_and_runtime_preserved": true,
   "schedules_and_settings_preserved": true,
   "next": "Bounded CJS official dated-market source proof; not yet deployed or counted as READY.",
-  "retention": "Immediate post-import membership only; longer retention remains to be measured."
+  "retention": "Immediate post-import membership only; longer retention remains to be measured.",
+  "later_customer_history_classification": {
+    "confirmed_prior_customer_ready_recoveries": 8,
+    "existing_ids_with_unproven_prior_customer_ready": 3,
+    "note": "The initial existing_identity_recoveries label referred to recovery/verification of existing source identities. The later strict customer-history funnel does not claim all eleven had previously been customer READY."
+  }
 }

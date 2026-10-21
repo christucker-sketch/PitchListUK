@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import {database,seed,record,NOW} from './helpers.mjs';
 import {documentFixture} from './verification-fixture.mjs';
 import {verifyDocument} from '../../platform/findpitches-v3/verification.mjs';
-import {recordVerification,verifyEntitySource,verificationGate} from '../../platform/findpitches-v3/verification-store.mjs';
+import {recordVerification,verifyEntitySource,verificationGate,retrySourceRequestLimit} from '../../platform/findpitches-v3/verification-store.mjs';
 import {evaluateReadiness,assessEligibility} from '../../platform/findpitches-v3/pipeline.mjs';
 import {loadEntity,sql} from '../../platform/findpitches-v3/store.mjs';
-import {historicalFailureDisposition,renewalAdmission,renewalRetryCurrent,renewalStatus} from '../../platform/findpitches-v3/source-renewal.mjs';
+import {historicalFailureDisposition,renewalAdmission,renewalRetryCurrent,renewalStatus,retryableDocument,recordRenewalFailure} from '../../platform/findpitches-v3/source-renewal.mjs';
 import {calendarHorizon,eventenyVisibleClosing,sourceDatePast,sourceWindowOpen} from '../../platform/findpitches-v3/source-calendar.mjs';
 import {fetchSourceDocument} from '../../platform/findpitches-v3/source-document.mjs';
 import {fetchProofDocument} from '../../platform/findpitches-v3/proof-document.mjs';
@@ -14,6 +14,10 @@ import {fetchProofDocument} from '../../platform/findpitches-v3/proof-document.m
 const at=n=>new Date(Date.parse(NOW)+n*60000).toISOString();
 const bad=async()=>new Response('',{status:502});
 const count=async(db,table)=>(await sql(db,'SELECT COUNT(*) n FROM '+table).first()).n;
+test('only owned CJS events get the required eight-read retry bundle; other sources keep three',()=>{
+ const canonical_url='https://www.cjseventswarwickshire.co.uk/events/example-market-1st-november-2026';assert.equal(retrySourceRequestLimit({source_platform:'cjseventswarwickshire',canonical_url}),8);
+ for(const e of [{source_platform:'other',canonical_url},{source_platform:'cjseventswarwickshire',canonical_url:'https://example.org/events/other'},{source_platform:'cjseventswarwickshire',canonical_url:'https://www.cjseventswarwickshire.co.uk/events'},record()])assert.equal(retrySourceRequestLimit(e),3);
+});
 test('historical failure triage preserves independent holds and cannot count missing proof as recoverable',()=>{
  const now='2026-10-16T09:00:00Z',base={environment:'shadow',event_end:'2026-12-20',application_deadline:'2026-11-15',application_url:'https://example.org/apply',application_state:'OPEN_NOW',organiser:'Source organiser',location:'Source venue'};
  for(const [patch,expected] of [[{},'future_recheck_candidate'],[{application_state:'CLOSED'},'closed_withdrawn'],[{application_deadline:'2026-10-15'},'past_deadline'],[{event_end:'2026-10-15'},'past_event'],[{event_end:null},'date_unknown'],[{application_url:null},'application_route_missing'],[{organiser:null},'missing_core_fields'],[{conflicts:1},'identity_quality_hold'],[{quality_holds:1},'identity_quality_hold'],[{environment:'test'},'noncommercial']])assert.equal(historicalFailureDisposition({...base,...patch},now),expected);
@@ -41,6 +45,14 @@ test('failed renewal preserves exact active proof and its TTL, then expires with
  assert.equal((await verificationGate(db,await loadEntity(db,entity.id),{now:at(1440)})).status,'unverified');
  assert.equal((await evaluateReadiness(db,entity.id,{now:at(1440)})).status,'watch');
  for(const q of ['UPDATE source_renewal_attempts SET reason=\'fixed\'','DELETE FROM source_renewal_attempts'])await assert.rejects(sql(db,q).run(),/immutable/);
+});
+test('200 render errors use bounded retry custody while preserving the old proof and its original expiry',async t=>{
+ const db=database(t),{entity,proof}=await positive(db),before=await sql(db,'SELECT * FROM source_verifications WHERE id=?',proof.verification_id).first(),facts=(await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results;
+ const document={requested_url:entity.application_url,url:entity.application_url,fetched_at:at(60),reason:'source_render_incomplete',documents:[{url:entity.application_url,http_status:200,fetched_at:at(60),html:'<script>render error, no event proof</script>'}]};assert.equal(retryableDocument(document),true);
+ const result=await recordRenewalFailure(db,entity,document,{now:at(60),activeVerificationId:proof.verification_id});assert.equal(result.retry_at,at(65));assert.equal((await renewalAdmission(db,entity,entity.application_url,at(61))).reason,'source_retry_backoff');
+ assert.equal(await count(db,'source_verifications'),1);assert.deepEqual(await sql(db,'SELECT * FROM source_verifications WHERE id=?',proof.verification_id).first(),before);assert.deepEqual((await sql(db,'SELECT * FROM source_facts ORDER BY id').all()).results,facts);
+ assert.equal((await evaluateReadiness(db,entity.id,{now:at(60)})).status,'ready');assert.equal((await evaluateReadiness(db,entity.id,{now:before.expires_at})).status,'watch');
+ const attempt=await sql(db,'SELECT reason FROM source_renewal_attempts WHERE id=?',result.id).first();assert.equal(attempt.reason,'source_render_incomplete');assert.equal(retryableDocument({reason:'source_render_incomplete',fetch_error_kind:'request_budget'}),false);
 });
 
 test('a failed first visit creates immutable attempt custody and WATCH, never source proof',async t=>{

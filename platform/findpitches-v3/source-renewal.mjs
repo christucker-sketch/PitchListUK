@@ -43,7 +43,7 @@ export function historicalFailureDisposition(entity,now){
  return 'future_recheck_candidate';
 }
 export const RENEWAL_DELAYS=[300,900,3600];
-export const RENEWAL_FAILURES=new Set(['source_fetch_failed','source_http_408','source_http_429','source_http_500','source_http_502','source_http_503','source_http_504']);
+export const RENEWAL_FAILURES=new Set(['source_fetch_failed','source_render_incomplete','source_http_408','source_http_429','source_http_500','source_http_502','source_http_503','source_http_504']);
 export function retryableDocument(document){return document.fetch_error_kind!=='request_budget'&&RENEWAL_FAILURES.has(document.reason);}
 export async function renewalRetryCurrent(db,entity,attemptId){
  const latest=await sql(db,'SELECT id,entity_revision,outcome,active_verification_id,attempted_at FROM source_renewal_attempts WHERE entity_id=? ORDER BY sequence DESC LIMIT 1',entity.id).first();

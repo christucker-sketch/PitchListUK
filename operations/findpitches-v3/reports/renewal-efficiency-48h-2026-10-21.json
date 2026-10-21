@@ -1,0 +1,97 @@
+{
+  "schema": "findpitches-v3-renewal-efficiency-48h-v1",
+  "measured_at": "2026-10-21T08:24:04.903Z",
+  "exact_48h": {
+    "available": true,
+    "first": {
+      "observed_at": "2026-10-18T15:45:00.000Z",
+      "file_size_bytes": 4420206592
+    },
+    "last": {
+      "observed_at": "2026-10-20T15:45:00.000Z",
+      "file_size_bytes": 4649238528
+    },
+    "samples": 193,
+    "elapsed_hours": 48,
+    "physical_delta_bytes": 229031936,
+    "net_bytes_per_day": 114515968,
+    "includes_large_reclaim": false,
+    "coverage_24h": true,
+    "coverage_48h": true,
+    "coverage_72h": false,
+    "linear_scenario_days_to_70_percent": 19.981807532727665,
+    "linear_scenario_days_to_97_percent": 43.55930547607125,
+    "interpretation": "Observed net physical change in the stated sample interval. Linear headroom scenarios are not steady-state forecasts; missing future coverage is not measured. Reclaim windows have no growth projection."
+  },
+  "capacity": {
+    "available": true,
+    "file_size_bytes": 4711763968,
+    "conservative_cap_bytes": 10000000000,
+    "protective_stop_bytes": 9700000000,
+    "percent_used": 47.12,
+    "remaining_bytes": 5288236032,
+    "state": "normal",
+    "source_growth_allowed": true,
+    "warning_thresholds_percent": [
+      70,
+      80,
+      90,
+      97
+    ]
+  },
+  "latest_observed_window": {
+    "available": true,
+    "first": {
+      "observed_at": "2026-10-18T15:45:00.000Z",
+      "file_size_bytes": 4420206592
+    },
+    "last": {
+      "observed_at": "2026-10-21T08:15:00.000Z",
+      "file_size_bytes": 4711407616
+    },
+    "samples": 259,
+    "elapsed_hours": 64.5,
+    "physical_delta_bytes": 291201024,
+    "net_bytes_per_day": 108353869.39534883,
+    "includes_large_reclaim": false,
+    "coverage_24h": true,
+    "coverage_48h": true,
+    "coverage_72h": false,
+    "linear_scenario_days_to_70_percent": 21.118175518503673,
+    "linear_scenario_days_to_97_percent": 46.036528827590935,
+    "interpretation": "Observed net physical change in the stated sample interval. Linear headroom scenarios are not steady-state forecasts; missing future coverage is not measured. Reclaim windows have no growth projection."
+  },
+  "renewal_observation": {
+    "as_of": "2026-10-21T08:24:05.083Z",
+    "health": "degraded",
+    "expired_positive_gaps": 0,
+    "waiting": {
+      "entities": 6,
+      "exhausted_entities": 6,
+      "next_retry_at": "2026-10-21T20:44:23.558Z",
+      "superseded_latest_failures_retained": 0
+    },
+    "last_24h_attempts": {
+      "attempts": 2578,
+      "transient_failures": 29,
+      "source_results": 2549,
+      "exhausted_attempts": 6
+    }
+  },
+  "producer_request_observation": {
+    "as_of": "2026-10-21T08:24:05.083Z",
+    "all_scopes": 5702,
+    "commercial_independent_producer": 492,
+    "commercial_independent_dispositions": {
+      "identity_or_quality_review_required": 89,
+      "proof_application_closed": 2,
+      "currently_customer_ready": 363,
+      "core_source_fields_missing": 2,
+      "source_declared_closed": 26,
+      "past_event_requires_new_evidence": 7,
+      "event_date_missing": 1,
+      "future_source_proof_gap": 2
+    }
+  },
+  "interpretation": "Actual 48-hour physical D1 observations. Renewal attempts are not HTTP or paid query counts. No isolated causal savings attribution; no proof TTL extension, request clearing, migration or deletion. Producer-specific backlog differs from all V3 requests."
+}

@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {sourceRSCRecords,sourceRSCObjects} from '../../platform/findpitches-v3/source-rsc.mjs';
+import {sourceRSCRecords,sourceRSCObjects,sourceRSCServerError} from '../../platform/findpitches-v3/source-rsc.mjs';
 const script=body=>`<script>self.__next_f.push(${JSON.stringify([1,body])})</script>`;
 test('split RSC streams are inert JSON; reference strings never substitute for source objects',()=>{
  const raw='a:["$","Event",null,{"event":{"id":"source-id"}}]\nb:{"event":"$a:props:event"}\n';const html='<script>self.__next_f.push([0])</script>'+script(raw.slice(0,24))+script(raw.slice(24));assert.equal(sourceRSCRecords(html).length,2);assert.deepEqual(sourceRSCObjects(html,'event'),[{id:'source-id'}]);
@@ -9,4 +9,8 @@ test('RSC rejects executable expressions, duplicate records, invalid JSON and bo
  assert.throws(()=>sourceRSCRecords(script('1:{"a":1}\n1:{"a":2}\n')),/duplicate_record/);
  assert.throws(()=>sourceRSCRecords(script('1:{"a":}\n')),/record_json/);
  assert.throws(()=>sourceRSCRecords(script('1:'+JSON.stringify(Array.from({length:105}).reduce(a=>[a],0))+'\n')),/structure_limit/);
+});
+test('a typed server-error record is distinct from event data or arbitrary error text',()=>{
+ assert.equal(sourceRSCServerError(script('a:E{"digest":"123456789"}\n')),true);
+ for(const raw of ['a:{"digest":"123456789"}\n','a:E{"digest":null}\n','a:E{"message":"private error text"}\n','a:Einvalid\n'])assert.equal(sourceRSCServerError(script(raw)),false);
 });

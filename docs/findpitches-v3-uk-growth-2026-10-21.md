@@ -1,5 +1,7 @@
 # UK-first growth — 21 October 2026
 
+**Later history correction:** the eleven existing-ID promotions below comprise eight confirmed prior customer-READY recoveries and three with unproven earlier customer visibility. See the [complete outcome](findpitches-v3-uk-growth-outcome-2026-10-21.md); none is a genuinely new entity.
+
 First measured checkpoint: **157 UK customer-ready opportunities**, up from 146.
 At 09:13 London, the current Hummingbird calendar restored **11 existing identities**.
 These are recoveries, with **zero new entities/events claimed**. The +50/+100 net

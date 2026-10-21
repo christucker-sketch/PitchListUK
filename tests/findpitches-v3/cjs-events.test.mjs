@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {CJS_ORIGIN,CJS_HOME,CJS_TRADE,CJS_INTAKE_SCRIPTS,CJS_ADAPTER_VERSION,cjsEventURL,parseCJSEvent,parseCJSIntake,verifyCJSBundle,fetchCJSProgramme} from '../../platform/findpitches-v3/cjs-events.mjs';
+import {CJS_ORIGIN,CJS_HOME,CJS_TRADE,CJS_INTAKE_SCRIPTS,CJS_ADAPTER_VERSION,cjsEventURL,parseCJSEvent,parseCJSIntake,verifyCJSBundle,fetchCJSProgramme,fetchCJSBundle} from '../../platform/findpitches-v3/cjs-events.mjs';
 import {compareProof,verifyDocument,applicationScope} from '../../platform/findpitches-v3/verification.mjs';
 const NOW='2026-10-21T12:00:00Z',url=CJS_ORIGIN+'/events/example-market-1st-november-2026';
 const event=()=>({id:'0123456789abcdef',name:'Example Market',slug:'example-market-1st-november-2026',links:{canonical:'/events/example-market-1st-november-2026/',slug:'/events/example-market-1st-november-2026/',view:CJS_ORIGIN+'/events/0123456789abcdef/'},startDate:{timestamp:Date.parse('2026-11-01')/1000,formatted:'01/11/2026'},endDate:{timestamp:Date.parse('2026-11-02')/1000,formatted:'02/11/2026'},formattedDate:'Sunday 1st to Monday 2nd November 2026',location:{name:'Example Hall',formattedAddress:'Example Hall, Example Town, CV8 1QJ',postcode:'CV8 1QJ',town:{name:'Example Town',lat:1,lng:1},lat:2,lng:2},cancelled:false,clientType:{name:'Public'},eventType:{name:'Retail market'}});
@@ -37,4 +37,9 @@ test('CJS proof dispatch and identity checks remain fail-closed for fabricated b
 });
 test('CJS bounded batches reject excessive, duplicate or unapproved URLs before any network request',async()=>{
  let calls=0;const fetcher=async()=>{calls++;throw Error('not expected');};for(const eventURLs of [[],Array(11).fill(url),[url,url],['https://example.org/events/other']])await assert.rejects(fetchCJSProgramme({eventURLs,fetcher}));assert.equal(calls,0);
+});
+test('explicit 200 server-render failures stop acquisition after two retained shared reads, without claiming event proof',async()=>{
+ const html=`<title>Publisher</title><script>self.__next_f.push(${JSON.stringify([1,'a:E{"digest":"123456789"}\n'])})</script>`,calls=[],fetcher=async u=>{calls.push(u);return new Response(html,{headers:{'content-type':'text/html'}});};
+ const programme=await fetchCJSProgramme({eventURLs:[url],fetcher,now:NOW});assert.equal(programme.reason,'source_render_incomplete');assert.equal(programme.bundles.length,0);assert.deepEqual(calls,[CJS_HOME,CJS_TRADE]);assert.ok(programme.documents.every(d=>d.http_status===200&&d.fetched_at===NOW));
+ calls.length=0;const document=await fetchCJSBundle(url,'cjs:0123456789abcdef',{fetcher,now:NOW});assert.equal(document.reason,'source_render_incomplete');assert.equal(document.documents.length,2);assert.equal(verifyDocument(document,{now:NOW}).status,'unverified');assert.equal(calls.length,2);
 });

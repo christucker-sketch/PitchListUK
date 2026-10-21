@@ -1,6 +1,6 @@
 // Inert Next/React source records. JSON only; never eval, JS execution or reference guessing.
 import {parseHtml,nodes,text} from './source-dom.mjs';
-export function sourceRSCRecords(html){
+function stream(html){
  const root=parseHtml(html),chunks=[];let size=0;
  for(const script of nodes(root,n=>n.tag==='script'&&!n.attrs.src)){
   const raw=text(script,{scoped:false}).trim();if(!raw.startsWith('self.__next_f.push('))continue;
@@ -10,7 +10,15 @@ export function sourceRSCRecords(html){
   if(!Array.isArray(value)||value.length!==2||value[0]!==1||typeof value[1]!=='string')throw Error('source_rsc_data_chunks_required');
   size+=value[1].length;if(size>1048576||chunks.length>=100)throw Error('source_rsc_size_limit');chunks.push(value[1]);
  }
- const records=[],ids=new Set();for(const line of chunks.join('').split('\n')){
+ return chunks.join('');
+}
+export function sourceRSCServerError(html){
+ for(const line of stream(html).split('\n')){const match=line.match(/^[\da-f]+:E(\{.*\})$/);if(!match)continue;
+  try{const value=JSON.parse(match[1]);if(typeof value.digest==='string'&&/^[a-zA-Z0-9_-]{1,100}$/.test(value.digest))return true;}catch{}
+ }return false;
+}
+export function sourceRSCRecords(html){
+ const records=[],ids=new Set();for(const line of stream(html).split('\n')){
   const m=line.match(/^([\da-f]+):([\[{].*)$/);if(!m)continue;
   if(ids.has(m[1]))throw Error('source_rsc_duplicate_record');ids.add(m[1]);
   try{records.push(JSON.parse(m[2]));}catch{throw Error('source_rsc_record_json_required');}

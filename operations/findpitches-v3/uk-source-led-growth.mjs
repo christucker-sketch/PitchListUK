@@ -29,11 +29,12 @@ export async function runUKSourceLedGrowth({credentialsFile,stateDirectory,outDi
    }
    const snapshot=await c.catalogue(),sourceReady=snapshot.items.filter(r=>r.source_domain===new URL(CJS_ORIGIN).hostname.replace(/^www\./,''));save('latest-catalogue-private.json',snapshot);
    const compared=changedCustody(custody,await ukSourceCustody(c.db,existing));if(Object.values(compared).some(Boolean))throw Error('uk_source_integrity_failure');
-   await guard(c.db,new Date().toISOString());console.log(JSON.stringify({events_requested:Math.min(start+10,eventURLs.length),outcomes:outcomes.length,source_customer_ready:sourceReady.length,gb_customer_ready:snapshot.items.filter(r=>r.country==='GB').length,paid_queries:0}));
-   if(start===0&&sourceReady.length===0){stop='zero_customer_ready_after_canary';break;}
+   const runIds=new Set(outcomes.map(r=>r.entity_id)),previousIds=new Set(before.items.map(r=>r.id)),gained=sourceReady.filter(r=>runIds.has(r.id)&&!previousIds.has(r.id)).length;
+   await guard(c.db,new Date().toISOString());console.log(JSON.stringify({events_requested:Math.min(start+10,eventURLs.length),outcomes:outcomes.length,source_customer_ready:sourceReady.length,run_customer_ready_gained:gained,gb_customer_ready:snapshot.items.filter(r=>r.country==='GB').length,paid_queries:0}));
+   if(start===0&&gained===0){stop='zero_customer_ready_after_canary';break;}
    if(start>=10&&outcomes.filter(r=>r.readiness==='ready').length<outcomes.length/2){stop='poor_verified_ready_yield';break;}
   }
- }catch(e){stop=/^[a-z_]+$/.test(e.message)?e.message:'uk_custody_or_source_review';error=e;}
+ }catch(e){const native=e.message.match(/^shadow_http_\d+_(cjs_[a-z_]+|uk_[a-z_]+)$/)?.[1];stop=native??(/^[a-z_]+$/.test(e.message)?e.message:'uk_custody_or_source_review');error=e;}
  finally{await c.call('enrichment','/uk/stop',{run_id:run.id,reason:stop.slice(0,80)});}
  const after=await c.catalogue(),created=(await c.db.prepare('SELECT id,created_at FROM entities WHERE environment=\'shadow\' AND market=\'GB\'').all()).results,mutations=changedCustody(custody,await ukSourceCustody(c.db,existing)),funnel=customerInventoryFunnel(before,after,{createdAt:Object.fromEntries(created.map(r=>[r.id,r.created_at]))}),native=await c.db.prepare('SELECT visits_reserved,status,stop_reason FROM uk_source_runs WHERE id=?').bind(run.id).first();
  save('after-catalogue-private.json',after);save('funnel-private.json',funnel);save('after-custody-private.json',await ukSourceCustody(c.db,existing));

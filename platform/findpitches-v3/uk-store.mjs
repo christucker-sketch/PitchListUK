@@ -76,6 +76,7 @@ export async function discoverUKSource(db,{run_id,url,event_urls=null},{fetcher=
     if(url===CCA_BOOKING||ccaVenueUrl(url)||url===HUMMINGBIRD_TRADE||url===VEGAN_HOME||url===CJS_EVENTS) {
       const family=url===CJS_EVENTS?'cjseventswarwickshire':url===HUMMINGBIRD_TRADE?'littlehummingbird':url===VEGAN_HOME?'veganeventsuk':'creativecrafts';
       const programme=family==='cjseventswarwickshire'?await fetchCJSProgramme({eventURLs:event_urls,fetcher:fetchBounded,now,visit}):family==='littlehummingbird'?await fetchHummingbirdProgramme({fetcher:fetchBounded,now,visit}):family==='veganeventsuk'?await fetchVeganProgramme({fetcher:fetchBounded,now,visit}):await fetchCCAProgramme({fetcher:fetchBounded,now,visit,url:url===CCA_BOOKING?null:url}),candidates=[];
+      if(programme.reason)throw Error(programme.reason);
       if(programme.bundles.length>100)throw Error('uk_venue_candidate_limit');
       for(const bundle of programme.bundles) {
         const proof=verifyDocument(bundle,{now}),documentId=await retain(db,bundle);

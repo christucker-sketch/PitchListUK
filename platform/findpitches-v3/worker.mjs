@@ -12,7 +12,7 @@ import {stagingReady,stagingCatalogue} from './staging.mjs';
 import {producerRechecks,acknowledgeProducerRecheck,resolveObsoleteProducerRequest} from './rechecks.mjs';
 import {fetchCatalogueDocument} from './source-catalogue.mjs';
 import {startCatalogueRun,resumeReviewedCatalogueRun,discoverCataloguePage,verifyCatalogueCandidate,recoverUncommittedCatalogueLease,settleCommittedCatalogueReceipt,adoptCommittedCatalogueReceipt,stopCatalogueRun,catalogueStatus} from './catalogue-store.mjs';
-import {verifyEntitySource,reverifyRetainedSource,sourceFetchRequired,verificationGate,verificationStatus} from './verification-store.mjs';
+import {verifyEntitySource,reverifyRetainedSource,sourceFetchRequired,verificationGate,verificationStatus,retrySourceRequestLimit} from './verification-store.mjs';
 import { hash } from './contract.mjs';
 export function safeFailureCode(error) {
   const message=String(error?.message??'');
@@ -109,7 +109,7 @@ async function tick(env,{jobId=null,limit=10}={}) {
       if(p.source_retry_attempt_id&&!await renewalRetryCurrent(env.FINDPITCHES_V3_DB,entity,p.source_retry_attempt_id))return {phase:'superseded_source_retry_skipped'};
       // Unchanged exports extend neither positive nor negative source clocks.
       let result;
-      if(entity.environment==='shadow'&&(p.source_retry_attempt_id||sourceFetchRequired(gate,{refreshVerificationId:p.refresh_verification_id})))result=await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id,{...(p.source_retry_attempt_id?{maxSourceRequests:3}:{})});
+      if(entity.environment==='shadow'&&(p.source_retry_attempt_id||sourceFetchRequired(gate,{refreshVerificationId:p.refresh_verification_id})))result=await verifyEntitySource(env.FINDPITCHES_V3_DB,p.entity_id,{...(p.source_retry_attempt_id?{maxSourceRequests:retrySourceRequestLimit(entity)}:{})});
       return enrichEntity(env.FINDPITCHES_V3_DB,p.entity_id,{proposals:p.proposals??[],recheckToken:result?.attempt_id??p.recheck_token??p.source_retry_attempt_id});
     }}:{};
     const result=await runStage(env.FINDPITCHES_V3_DB,stage,{jobId,clock:()=>new Date(),handlers});
