@@ -18,14 +18,16 @@ step "revisit"
 $PY -u -m fpd revisit >/dev/null || { step "revisit failed"; rc=1; }
 step "seed curated (adds only directories not seeded before)"
 $PY -m fpd seed curated >/dev/null || { step "seed failed"; rc=1; }
-if [[ "${FPD_FR_MINUTES:-12}" != "0" ]]; then
+# France crawl PAUSED by default (21 Oct, Chris): 52% of the Pi's fetches for one customer READY. Existing French
+# records stay in the export and are still revisited; set FPD_FR_MINUTES in /etc/fpd/fpd.env to resume discovery.
+if [[ "${FPD_FR_MINUTES:-0}" != "0" ]]; then
   # France lane (international directive, 14 Oct 2026): DATAtourisme names organiser websites (hop one); the crawl
   # proves dates/place/trader route from the organiser's own pages (hop two). Needs DATATOURISME_KEY; skips without.
   step "france: seed datatourisme (${FPD_FR_DT_CALLS:-20} API pages)"
   $PY -m fpd seed datatourisme --max-calls "${FPD_FR_DT_CALLS:-20}" | /usr/bin/jq -c '.enqueued.datatourisme' 2>/dev/null || { step "france seed failed"; rc=1; }
-  step "france: crawl --minutes ${FPD_FR_MINUTES:-12} (datatourisme:fr lane only)"
+  step "france: crawl --minutes ${FPD_FR_MINUTES} (datatourisme:fr lane only)"
   # Many different council sites at once: lower concurrency than the platform lanes to keep memory well inside the unit cap.
-  FPD_CONCURRENCY="${FPD_FR_CONCURRENCY:-4}" $PY -u -m fpd crawl --minutes "${FPD_FR_MINUTES:-12}" --generators datatourisme:fr >/dev/null \
+  FPD_CONCURRENCY="${FPD_FR_CONCURRENCY:-4}" $PY -u -m fpd crawl --minutes "${FPD_FR_MINUTES}" --generators datatourisme:fr >/dev/null \
     || { step "france crawl failed"; rc=1; }
 fi
 if [[ "${FPD_USDA_MARKETS:-150}" != "0" ]]; then
@@ -34,6 +36,12 @@ if [[ "${FPD_USDA_MARKETS:-150}" != "0" ]]; then
   step "usda: seed farmers markets (${FPD_USDA_MARKETS:-150} markets, max ${FPD_USDA_SECONDS:-300}s)"
   $PY -m fpd seed usda_fm --max-markets "${FPD_USDA_MARKETS:-150}" --max-seconds "${FPD_USDA_SECONDS:-300}" \
     | /usr/bin/jq -c '.enqueued.usda_fm' 2>/dev/null || { step "usda seed failed"; rc=1; }
+fi
+if [[ "${FPD_UK_MINUTES:-12}" != "0" ]]; then
+  # UK-first (Chris, 20-21 Oct): a crawl slot for UK URLs only (UK seeds/directories/platform listings, UK organiser
+  # sites, .uk hosts), so UK pages are not starved by higher-volume lanes in the shared crawl below.
+  step "uk: crawl --minutes ${FPD_UK_MINUTES:-12} --country GB"
+  $PY -u -m fpd crawl --minutes "${FPD_UK_MINUTES:-12}" --country GB >/dev/null || { step "uk crawl failed"; rc=1; }
 fi
 step "revisit-hubs (directory pages older than 7 days)"
 $PY -m fpd revisit-hubs --older-than-days 7 || { step "revisit-hubs failed"; rc=1; }

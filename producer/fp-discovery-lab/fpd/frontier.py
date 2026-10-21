@@ -29,6 +29,20 @@ class Frontier:
         self.in_flight_hosts: dict[str, int] = defaultdict(int)
         # When set, only these generators (acquisition lanes) are crawled: used to run one source.
         self.allowed: set[str] | None = None
+        # When set, only URLs for this country are crawled (21 Oct, UK-first): the generator's country hint, the site's
+        # country hint, or (GB) a .uk host. Used for a per-country crawl slot; the general crawl is unchanged.
+        self.country: str | None = None
+        self._cc_gens: list[str] = []
+        self._cc_at = 0.0
+        self._cc_drained: set[str] = set()
+
+    def _country_clause(self) -> tuple[str, tuple]:
+        if not self.country:
+            return "", ()
+        cc = self.country.upper()
+        tld = " OR host LIKE '%.uk'" if cc == "GB" else ""
+        return (" AND (json_extract(meta, '$.country') = ? OR reg_domain IN (SELECT reg_domain FROM sites WHERE country_hint = ?)"
+                + tld + ")", (cc, cc))
 
     # ---------- enqueue ----------
     def ensure_site(self, rd: str, generator: str, role: str | None = None, country: str | None = None,
@@ -86,8 +100,17 @@ class Frontier:
         return cur.rowcount
 
     def _refill(self, generator: str | None = None, n: int = 300) -> None:
+        cw, cp = self._country_clause()
         if generator:
             gens = [generator]
+        elif self.country:
+            # The country filter is a scan (json/sites lookups): work out which lanes hold any of this country's pending
+            # URLs every 5 minutes, and stop re-querying a lane once a refill came back short (drained) until then.
+            if time.time() - self._cc_at > 300:
+                self._cc_gens = [r[0] for r in self.conn.execute(
+                    "SELECT DISTINCT generator FROM urls WHERE state='pending'" + cw, cp)]
+                self._cc_at, self._cc_drained = time.time(), set()
+            gens = [g for g in self._cc_gens if g not in self._cc_drained]
         else:
             gens = [r[0] for r in self.conn.execute("SELECT DISTINCT generator FROM urls WHERE state='pending'")]
         if self.allowed is not None:
@@ -99,8 +122,10 @@ class Frontier:
             have = {r["id"] for r in q}
             rows = self.conn.execute(
                 "SELECT id, url, host, reg_domain, purpose, generator, priority, depth, parent_id, anchor, meta, attempts "
-                "FROM urls WHERE state='pending' AND generator=? ORDER BY priority DESC, id LIMIT ?", (g, n)
+                "FROM urls WHERE state='pending' AND generator=?" + cw + " ORDER BY priority DESC, id LIMIT ?", (g, *cp, n)
             ).fetchall()
+            if self.country and len(rows) < n:
+                self._cc_drained.add(g)
             for r in rows:
                 if r["id"] not in have:
                     q.append(dict(r))
@@ -172,8 +197,9 @@ class Frontier:
         self.in_flight_hosts[host] = max(0, self.in_flight_hosts[host] - 1)
 
     def pending_count(self) -> int:
+        cw, cp = self._country_clause()
         if self.allowed is not None:
             q = ",".join("?" * len(self.allowed)) or "''"
-            return self.conn.execute(f"SELECT COUNT(*) FROM urls WHERE state='pending' AND generator IN ({q})",
-                                     tuple(self.allowed)).fetchone()[0]
-        return self.conn.execute("SELECT COUNT(*) FROM urls WHERE state='pending'").fetchone()[0]
+            return self.conn.execute(f"SELECT COUNT(*) FROM urls WHERE state='pending' AND generator IN ({q})" + cw,
+                                     tuple(self.allowed) + cp).fetchone()[0]
+        return self.conn.execute("SELECT COUNT(*) FROM urls WHERE state='pending'" + cw, cp).fetchone()[0]

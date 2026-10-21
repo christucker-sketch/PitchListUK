@@ -77,6 +77,8 @@ def cmd_crawl(cfg, args):
     if args.generators:
         # Country/lane-restricted crawl (e.g. the France lane: --generators datatourisme:fr).
         eng.frontier.allowed = set(args.generators.split(","))
+    if getattr(args, "country", None):
+        eng.frontier.country = args.country.upper()  # per-country crawl slot (21 Oct: UK-first)
     status = "ok"
     try:
         res = asyncio.run(eng.crawl(args.minutes * 60, args.max_fetches))
@@ -422,6 +424,7 @@ def main(argv=None):
     c.add_argument("--minutes", type=float, default=10)
     c.add_argument("--max-fetches", type=int)
     c.add_argument("--generators", help="comma-separated acquisition lanes to crawl (default: all)")
+    c.add_argument("--country", help="crawl only URLs for this country code (generator/site hint, or .uk for GB)")
     c.set_defaults(func=cmd_crawl)
     rb = sub.add_parser("rebuild")
     rb.add_argument("--max-seconds", type=float, default=150)

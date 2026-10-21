@@ -190,3 +190,20 @@ def test_platform_organiser_and_region_are_corrected_on_refresh(tmp_path):
                       {"name": "Salon du Cheval d'Angers 2026", "organiser": "Les Garennes", "region": "Pays de la Loire",
                        "locality": "Angers"})
     assert (o["organiser"], o["region"], o["locality"]) == ("Les Garennes", "Pays de la Loire", "Angers")
+
+
+# ---------------------------------------------------------------- UK-only crawl slot (21 Oct)
+def test_country_crawl_slot_leases_only_that_countrys_urls(tmp_path):
+    conn = dbm.connect(tmp_path / "t.sqlite")
+    fr = Frontier(conn, 1)
+    fr.add("https://www.bramleyfair.co.uk/traders", "candidate", "wikidata")                 # .uk host
+    fr.add("https://localstalls.com/uk/event/x/1", "candidate", "platform:localstalls", meta={"country": "GB"})
+    fr.ensure_site("craftfairexample.com", "organiser:x", country="GB")
+    fr.add("https://craftfairexample.com/stalls", "candidate", "organiser:x")                # site hint GB
+    fr.add("https://localstalls.com/au/event/y/2", "candidate", "platform:localstalls", meta={"country": "AU"})
+    fr.add("https://www.eventeny.com/events/vendor/?id=9", "candidate", "platform:eventeny")
+    fr.country = "GB"
+    assert fr.pending_count() == 3
+    got = {u["url"] for u in fr.next_batch(10, lambda h: 0.0, max_per_host=5)}
+    assert len(got) == 3 and all(".uk" in u or "/uk/" in u or "craftfairexample.com" in u for u in got)
+    assert Frontier(conn, 1).pending_count() == 2  # the AU and US pages are left for the shared crawl
