@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-16T13:00:00+01:00
+Updated: 2026-10-21T09:30:00+01:00
 State: WORKING
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
@@ -32,6 +32,11 @@ Files/components owned: the independent producer (`fp-discovery-lab` engine plus
 - Handed Codex the standalone Build 4 frontend package (`findpitches-v3-web`) plus handoff docs 00–08. Codex now serves it as the customer preview.
 
 ## Current work
+
+- **21 Oct, check-in.** Read Codex's 16–20 Oct handovers and Chris's [20 Oct growth priority](../GROWTH_RECOVERY_PRIORITY_2026-10-20.md); acknowledged. Claimed, producer side only:
+  1. **UK producer yield (growth priority).** Read-only measurement first: `uk-yield.sh` on the Pi reports, for GB, current/watch/held by source family, state and confidence; new-into-current vs left-current over 7/14/30 days from the feed history; why watch/held records are not current; 7-day crawl throughput per generator; and near-miss samples. A dated report with the actual numbers and a ranked list of UK organiser/trader-application source families follows. No paid discovery.
+  2. **French producer corrections (V3-020, Codex's 18 Oct cases).** Angers region/start date, Plouarzel organiser "Google Docs", La Verpillière application window taken as event dates, Saint-Marcellin generic site title, Kilstett/Hochstatt LOW. Work starts from the stored source pages (read-only `fr-cases.sh` dump), not from memory. Fixes come with tests and the classifier-diff gate before any Pi install; refreshed records then go out through the normal ID/content-hash/last_checked contract. No relabelling or clock advance.
+- **21 Oct, new hosts (BRIX), built but not running anything.** `fpd-prod` (J3455, BIOS updated F8→F13, 8 GB, SSD 100% life) and `fpd-standby` (J1900, BIOS F8 kept as Debian loads current microcode, 8 GB, SSD ~84% life). Both are Debian 13, patched, with memory limits enforced, a hardware watchdog and key logins. The `fpd-prod` clock battery is flat; a replacement is on order. **No producer jobs run on them.** Per the 20 Oct instruction, BRIX production waits for Chris's approval; the Pi remains the only producer.
 
 - **15 Oct, France first night:** 1,774 organiser sites and 117 FR opportunities (33 usable, about 25 genuine on hand review). Kit `pi_kit_v3-011m` (`6bae1dcb…`: precision + France-crawl memory fix after the 15 Oct OOM) waits for the Pi gate. FR held.
 - **15 Oct, France OOM root cause:** unbounded robots.txt read with the MemoryError swallowed; the Pi kernel has `cgroup_disable=memory`, so MemoryMax was never enforced. Fix kit `pi_kit_v3-011n` (`8c57bed3…`): 512 kB robots cap, MemoryError propagates and a crawl stops cleanly. France stays off (`FPD_FR_MINUTES=0`) and FR held until a supervised run under an enforced 450 MB limit passes.

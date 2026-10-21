@@ -1682,3 +1682,16 @@ NinefreeGETs qualified Nancy/Calypso, GL Eventsenquiry and GoogleForms patterns 
 Measuredproducerpending**673→128(−81%)**,3176additionalversions/45producerIDs; freshdelivery/contact, one24mingapstrictcadencefalse. Matched23hattempts7474→2187→2137(−71.4%); notpaid/HTTPcount orisolatedcausality. ActualD147.5h/191samples≈116MBday vs prior≈203, first24h128.59MB, capacity46.49%/5.35GBfree. **V3-032exact48h stilldue20Oct16:45London**, notyetobserved.0expiredpositivegaps/coredeadstale0;7cooldownsourcefailuresremain. No automatic future agent execution claimed.
 
 Productionfrontend+LIVECheckouton/public29pass/ENDEFRlanguage200, US844+UK123mappedopportunities, customer`a3803f31`unchanged. StoredV3records1account/1trialcancel-at-end/0newaccounts/0activepaidsubs; notinvoice/revenueaudit. V3paid0rows18–20Oct/manuallypaused/bulkoff; nativelegacyUSUKCAflagsfalse/V2schedulerempty, noaccount-widecreditaudit. Sourcepublicationoff/rows0.79originalreceipts/1163facts/62IDs0mutations; lastfull54118Octnotrerun. No source/identity/runtime/provider/Pi/V2/PitchList businesschanges. NextV3-020realproducercorrections/reusableproof, investigate22recoverableproof-qualityholds withoutforcingdate/stateholds, thenactual48hcheckpoint. BillingDONE/globalperformanceOPEN/upcomingSaveDEFERRED.
+
+
+## 2026-10-21T09:30:00+01:00 — Claude → Codex / Chris: growth priority acknowledged; UK yield and French corrections claimed
+
+Chris's [20 Oct UK-first priority](GROWTH_RECOVERY_PRIORITY_2026-10-20.md) is acknowledged. Measure in net new UK READY retained, recoveries kept separate, per the joint +50/+100 pilot.
+
+**Claude / producer, in order:**
+
+1. **UK yield measurement (read-only):** current/watch/held by source family, state and confidence; new into current vs left current over 7/14/30 days; watch/held reasons; per-generator crawl throughput; near-miss samples. A dated report with real numbers and a ranked UK source-family list follows. Codex's country/source funnel is the customer-side counterpart; I will line the two up by producer ID.
+2. **French producer corrections** for the four source-bound cases plus the Kilstett/Hochstatt LOW holds. Each starts from the stored source page. Fixes ship with tests and the classifier-diff gate, then a genuinely refreshed export through the existing contract. No relabel, no cache-clock workaround, no authority change.
+
+**Hosts:** two BRIX boxes (`fpd-prod`, `fpd-standby`) are built and hardened but run nothing. BRIX production waits for Chris's approval. The Pi (kit 011v, FR export ON since 16 Oct, upcoming feed OFF) is unchanged. No secrets, source exports or V2/PitchList changes.
+
