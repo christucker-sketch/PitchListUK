@@ -1,10 +1,10 @@
 # Codex — current status
 
-Updated: **2026-10-21T12:01:58+01:00**. **ACTIVE V3-034: CJS renewal safety/actual24h observation, then remaining LocalStalls cloud conversion**, under [the single current queue](../CURRENT_EXECUTION_ORDER.md). Latest measured **21Oct11:59London: UK207/global1740**. [Full result](../../docs/findpitches-v3-localstalls-conversion-2026-10-21.md).
+Updated: **2026-10-22T09:24:13+01:00**. **ACTIVE V3-034: UK source retention/conversion; producer freshness blocker handed to Claude's ownership.** [Single queue](../CURRENT_EXECUTION_ORDER.md) · [22Oct read-only report](../../docs/findpitches-v3-morning-status-2026-10-22.md).
 
-LocalStalls bounded canary **4checked→3existingREADY/1organiser mismatch quarantined**; no new IDs or confirmed recoveries, no forced fact/identity changes. UK cumulative+61 comprises47new/eightconfirmedrecoveries/sixexistingfirst-observed. CJS47/47retained2.31h; source dailycooldown/acquisitionpause, original expiry intact; actual24h due22Oct09:40London. Strict50genuinely-new target remains3short; +100open.
+Measured **22Oct09:13London: UK205/global1714**,0newREADY/26withdrawals vs21Oct11:59:US23/UK2/FR1. Current reasons8USdeadlineclosed/1cancelled/14field-applicationholds,2UKsourcebinding,1FRHTTP521; all26IDs retained, no forced repairs. UK cumulative+59=47new/eightconfirmedrecoveries/fourexistingpriorvisibilityunproven. CJS47/47retained23.55h/46newproofs; one oldproofexpires09:32 duringbackoff, actual24h09:40notyetproven. LocalStalls3/3newREADYretained.
 
-Cloud producer census232→**8READY/224withheld**, LocalStalls4/48; producerpending230/0freshackeligible. Claude kit011z prepared, host installation not evidenced. Full571/public29/directcohort4pass, original235facts/25records/22keys/4entities0changes plus unchanged CJS scopes;31/32freeGETs/0Serper. Final enrichment98609292 preserves nativeconfiguration; customer/billing/Pi/V1/V2unchanged. Paid/UKCFOptionB/sourcepublicationOFF, existing public/CheckoutON. France, optional features and global performance DEFERRED; billing/storage DONE/monitor.
+Pi poll/cadencehealthy09:09, **no import after21Oct13:02 or sourcecheck after12:42London**; discovery/export freshnessstalled/host causeunknown. Producerpending1087(US965/UK42)/0freshackeligible vs final21Octledger239; earlier230prosewasanearliermeasurement. Claude kit012a prepared, gate/installunverified. Coreclear/expiredpositivegaps0/scopedCJS+Localoriginalfacts/identitychanges0. Paid0/off/sourcepublication0; public+Checkoutreadchecks200, no runtime/Pi/V1/V2/businesschanges. France/optionalfeaturesDEFERRED; billing/storageDONE/monitor. Lastfull571implementationacceptance retained, no newtest/deployclaim.
 
 ---
 

@@ -1,0 +1,475 @@
+{
+  "schema": "findpitches-v3-morning-checkpoint-v1",
+  "as_of": "2026-10-22T08:13:54.662Z",
+  "customer_ready": 1714,
+  "ready_by_country": {
+    "AU": 4,
+    "CA": 1,
+    "GB": 205,
+    "NZ": 5,
+    "US": 1499
+  },
+  "uk_ready_by_source": {
+    "cjseventswarwickshire": 47,
+    "creativecrafts": 6,
+    "eventeny": 2,
+    "littlehummingbird": 9,
+    "localstalls": 4,
+    "myntimage": 136,
+    "northamptontowncouncil.gov.uk": 1
+  },
+  "overnight_funnel": {
+    "schema": "findpitches-v3-customer-inventory-funnel-v1",
+    "from": "2026-10-21T10:59:14.933Z",
+    "to": "2026-10-22T08:13:54.662Z",
+    "elapsed_hours": 21.244369166666665,
+    "total": {
+      "before": 1740,
+      "after": 1714,
+      "retained": 1714,
+      "new_entities_ready": 0,
+      "recoveries": 0,
+      "prior_visibility_unproven": 0,
+      "withdrawals": 26,
+      "net": -26,
+      "retention_percent": 98.50574712643679
+    },
+    "by_country_source": [
+      {
+        "country": "AU",
+        "source_family": "localstalls",
+        "before": 4,
+        "after": 4,
+        "retained": 4,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "CA",
+        "source_family": "eventeny",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "FR",
+        "source_family": "podensac.fr",
+        "before": 1,
+        "after": 0,
+        "retained": 0,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 1,
+        "net": -1,
+        "retention_percent": 0
+      },
+      {
+        "country": "GB",
+        "source_family": "cjseventswarwickshire",
+        "before": 47,
+        "after": 47,
+        "retained": 47,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "creativecrafts",
+        "before": 6,
+        "after": 6,
+        "retained": 6,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "eventeny",
+        "before": 2,
+        "after": 2,
+        "retained": 2,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "littlehummingbird",
+        "before": 11,
+        "after": 9,
+        "retained": 9,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 2,
+        "net": -2,
+        "retention_percent": 81.81818181818181
+      },
+      {
+        "country": "GB",
+        "source_family": "localstalls",
+        "before": 4,
+        "after": 4,
+        "retained": 4,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "myntimage",
+        "before": 136,
+        "after": 136,
+        "retained": 136,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "GB",
+        "source_family": "northamptontowncouncil.gov.uk",
+        "before": 1,
+        "after": 1,
+        "retained": 1,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "NZ",
+        "source_family": "localstalls",
+        "before": 5,
+        "after": 5,
+        "retained": 5,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 0,
+        "net": 0,
+        "retention_percent": 100
+      },
+      {
+        "country": "US",
+        "source_family": "eventeny",
+        "before": 1522,
+        "after": 1499,
+        "retained": 1499,
+        "new_entities_ready": 0,
+        "recoveries": 0,
+        "prior_visibility_unproven": 0,
+        "withdrawals": 23,
+        "net": -23,
+        "retention_percent": 98.48883048620236
+      }
+    ],
+    "distinct_new_event_groups": 0,
+    "event_group_definition": "Advisory exact country/title/date/organiser/location tuple; no entity identity is changed."
+  },
+  "cjs": {
+    "cohort": 47,
+    "retained": 47,
+    "observed_hours": 23.552154444444444,
+    "actual_24h_due": "2026-10-22T08:40:46.906Z",
+    "new_proof_rows": 46,
+    "current_proofs": 47,
+    "earliest_expiry": "2026-10-22T08:32:37.957Z",
+    "latest_transient_failures": 1,
+    "custody_changes": {
+      "facts": 0,
+      "records": 0,
+      "identity_keys": 0,
+      "entities": 0
+    },
+    "retention_24h_proven": false
+  },
+  "localstalls_canary": {
+    "previous_ready": 3,
+    "retained": 3,
+    "custody_changes": {
+      "facts": 0,
+      "records": 0,
+      "identity_keys": 0,
+      "entities": 0
+    }
+  },
+  "delivery": {
+    "cloud_ready": true,
+    "expected_interval_seconds": 900,
+    "contact_observation_started": true,
+    "last_authenticated_recheck_poll": "2026-10-22T08:09:12.401Z",
+    "expected_discovery_interval_seconds": 10800,
+    "expected_export_lag_seconds": 3600,
+    "recent_poll_intervals_seconds": [
+      934.425,
+      933.119,
+      930.221
+    ],
+    "host_recently_contacting": true,
+    "cadence_verified": true,
+    "freshness_warning": true,
+    "immutable_receipts": 31733,
+    "producer_ids": 2431,
+    "last_new_receipt_at": "2026-10-21T12:02:22.745Z",
+    "source_last_checked": "2026-10-21T11:42:22Z",
+    "rechecks": {
+      "pending_entities": 1087,
+      "fresh_evidence_ack_eligible": 0,
+      "by_country": [
+        {
+          "market": "AU",
+          "pending_entities": 44,
+          "oldest_requested_at": "2026-10-09T13:27:04.255Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "CA",
+          "pending_entities": 9,
+          "oldest_requested_at": "2026-10-09T18:44:04.688Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "FR",
+          "pending_entities": 14,
+          "oldest_requested_at": "2026-10-17T23:56:54.912Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "GB",
+          "pending_entities": 42,
+          "oldest_requested_at": "2026-10-09T13:33:17.963Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "IE",
+          "pending_entities": 2,
+          "oldest_requested_at": "2026-10-21T12:00:29.141Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "NZ",
+          "pending_entities": 11,
+          "oldest_requested_at": "2026-10-12T10:57:45.276Z",
+          "fresh_evidence_ack_eligible": 0
+        },
+        {
+          "market": "US",
+          "pending_entities": 965,
+          "oldest_requested_at": "2026-10-08T15:03:36.957Z",
+          "fresh_evidence_ack_eligible": 0
+        }
+      ],
+      "acknowledged_last_24h": 417,
+      "latest_acknowledgement": "2026-10-21T12:19:03.242Z",
+      "obsolete_requests_resolved": 2,
+      "latest_obsolete_resolution": "2026-10-11T13:33:36.402Z",
+      "producer_completion": "Acknowledge only linked fresh accepted exports. V3 source verification and customer readiness are separate; a recheck acknowledgement never promotes a record.",
+      "pagination_supported": true,
+      "oldest_request_preserved": true
+    },
+    "interpretation": "15-minute transport and 3-hour discovery plus up to 1-hour export lag are separate. The aggregate export warning uses 4 hours and never extends individual source-proof expiry. Diagnostic probes and pagination pages do not count as host contact."
+  },
+  "producer_new_versions_since_checkpoint": 125,
+  "producer_ids_with_new_versions": 125,
+  "paid": [],
+  "no_usage_rows_means_zero_reserved_or_attempted": true,
+  "source_policy": {
+    "source_publication": 0,
+    "bulk": 0,
+    "paid_paused": 1,
+    "source_customer_rows": 0,
+    "publication_rows": 0
+  },
+  "core_due_or_dead_jobs": [],
+  "paid_source_fetches": 0,
+  "direct_source_fetches": 0,
+  "runtime_changes": 0,
+  "v1_v2_changes": 0,
+  "withdrawal_current_reasons": {
+    "us_deadline_closed": 8,
+    "uk_source_document_binding": 2,
+    "us_selected_location_disagreement": 6,
+    "us_current_application_not_proved": 6,
+    "us_selected_organiser_disagreement": 1,
+    "us_selected_event_date_disagreement": 1,
+    "us_cancelled_or_postponed": 1,
+    "fr_source_http_521": 1
+  },
+  "withdrawn_entities_inspected_and_still_retained": 26,
+  "producer_import_diagnostic": {
+    "as_of": "2026-10-22T08:16:38.369Z",
+    "latest_import_contacts": [
+      {
+        "kind": "import",
+        "received_at": "2026-10-21T12:02:56.881Z",
+        "records": 2,
+        "accepted": 2,
+        "inserted": 0,
+        "duplicates": 2,
+        "rejected": 0,
+        "source_last_checked": "2026-10-18T05:59:27Z"
+      },
+      {
+        "kind": "import",
+        "received_at": "2026-10-21T12:02:55.982Z",
+        "records": 25,
+        "accepted": 25,
+        "inserted": 0,
+        "duplicates": 25,
+        "rejected": 0,
+        "source_last_checked": "2026-10-21T02:24:30Z"
+      },
+      {
+        "kind": "import",
+        "received_at": "2026-10-21T12:02:51.470Z",
+        "records": 25,
+        "accepted": 25,
+        "inserted": 0,
+        "duplicates": 25,
+        "rejected": 0,
+        "source_last_checked": "2026-10-21T02:18:09Z"
+      },
+      {
+        "kind": "import",
+        "received_at": "2026-10-21T12:02:46.691Z",
+        "records": 25,
+        "accepted": 25,
+        "inserted": 0,
+        "duplicates": 25,
+        "rejected": 0,
+        "source_last_checked": "2026-10-21T05:14:52Z"
+      },
+      {
+        "kind": "import",
+        "received_at": "2026-10-21T12:02:41.610Z",
+        "records": 25,
+        "accepted": 25,
+        "inserted": 0,
+        "duplicates": 25,
+        "rejected": 0,
+        "source_last_checked": "2026-10-21T02:17:14Z"
+      },
+      {
+        "kind": "import",
+        "received_at": "2026-10-21T12:02:36.582Z",
+        "records": 25,
+        "accepted": 25,
+        "inserted": 0,
+        "duplicates": 25,
+        "rejected": 0,
+        "source_last_checked": "2026-10-21T08:41:07Z"
+      }
+    ],
+    "contacts_since_yesterday_1200_london": [
+      {
+        "kind": "import",
+        "contacts": 98,
+        "records": 2427,
+        "accepted": 2427,
+        "rejected": 0,
+        "last_contact": "2026-10-21T12:02:56.881Z"
+      },
+      {
+        "kind": "rechecks",
+        "contacts": 82,
+        "records": 0,
+        "accepted": 0,
+        "rejected": 0,
+        "last_contact": "2026-10-22T08:09:12.401Z"
+      }
+    ],
+    "expired_cached_ready_positive_proofs": 0,
+    "hummingbird_withdrawals": 2,
+    "hummingbird_latest": [
+      {
+        "checked_at": "2026-10-22T06:15:24.077Z",
+        "expires_at": "2026-10-23T06:15:24.077Z",
+        "reasons": [
+          "hummingbird_source_document_binding_required"
+        ],
+        "document_envelope_kind": "r2_source_custody_v1"
+      },
+      {
+        "checked_at": "2026-10-22T06:13:21.615Z",
+        "expires_at": "2026-10-23T06:13:21.615Z",
+        "reasons": [
+          "hummingbird_source_document_binding_required"
+        ],
+        "document_envelope_kind": "r2_source_custody_v1"
+      }
+    ],
+    "readiness_assessments": [
+      {
+        "status": "watch",
+        "reasons": [
+          "hummingbird_source_document_binding_required",
+          "trader_application_purpose_not_proved"
+        ],
+        "evaluated_at": "2026-10-22T06:15:30.047Z"
+      },
+      {
+        "status": "watch",
+        "reasons": [
+          "hummingbird_source_document_binding_required",
+          "trader_application_purpose_not_proved"
+        ],
+        "evaluated_at": "2026-10-22T06:13:26.215Z"
+      }
+    ]
+  },
+  "public_health": {
+    "as_of": "2026-10-22T08:14:20.873Z",
+    "status": 200,
+    "mode": "production_public",
+    "publication_enabled": true
+  },
+  "billing_readiness": {
+    "as_of": "2026-10-22T08:20:21.831Z",
+    "http_status": 200,
+    "global_pro_checkout_enabled": true,
+    "scope": "global",
+    "customer_objects_created": 0,
+    "messages_sent": 0
+  },
+  "previous_final_ledger_pending_rechecks": 239,
+  "previous_earlier_prose_pending_rechecks": 230,
+  "recheck_baseline_note": "230 was the earlier 21 October observation; the final published JSON at10:59UTC reports239. Use239 for the same-checkpoint comparison.",
+  "kit_prepared_in_hub": "012a (1ff616af); host gate/install not evidenced.",
+  "uk_growth_since_146_baseline": {
+    "net": 59,
+    "genuinely_new_cjs": 47,
+    "confirmed_hummingbird_recoveries_retained": 8,
+    "existing_prior_visibility_unproven_retained": 4
+  },
+  "hummingbird_negative_envelope_limitation": "Both archived negatives decoded successfully; documents are empty. The retained reason does not establish the underlying HTTP failure or calendar change.",
+  "operator_check_scope": "Read-only own-service, D1 and R2. Zero direct source-site GETs by this check; background renewals fetched sources separately."
+}
