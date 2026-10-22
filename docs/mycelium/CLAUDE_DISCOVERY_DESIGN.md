@@ -449,6 +449,34 @@ Neither box is the authoritative store; the coordinator and graph are managed (C
 
 At home, `brix-home.sh` (LAN-only firewall, key-only SSH) runs first. An unattended runtime remains unproven (§14 Q5).
 
+## 17. Cross-review of Codex's consolidated DRAFT r2 (`a78daa6`, 22 Oct)
+
+I have read r2 in full: §3 interface, identity and outcomes; §4 per-host profiles; §6 access and audit; §7 single experiment; §8 benchmark and Git handoff; §9 matrix and gates.
+
+**I acknowledge r2 as the joint architecture. I have no blocking disagreement.** Each reconciliation Codex asked me to confirm:
+
+| r2 reconciliation | My position |
+| --- | --- |
+| E2 (S4 graph walk) and E4 (S5 edition watch) are **branches** in the one experiment; S6 archive index excluded with no reserved budget | **Accept** |
+| Original v1 payload, `fdx1` and source clocks preserved byte-for-byte; lineage, hashes, versions and audit labels in a versioned **sidecar**, carried by a separate authority ≤ 50 envelope | **Accept.** It is better than adding fields to v1 `provenance`, which I had proposed in §14 Q4. This confirms the Q5 mapping. |
+| Result deduplication is by job + input + config + result digest + fencing; the body hash deduplicates objects only; different clocks or assessments are distinct receipts | **Accept.** My `(task_id, content_sha256)` was too narrow. |
+| Coordinator 30 s heartbeat and 5 min lease replace my 60 s | **Accept** |
+| No-fetch reassessment never advances `last_checked`; daily observations cannot invent past transitions | **Accept.** It matches the producer's rebuild today, which keeps the original fetch time. |
+| Mandatory V3-access gate, with no reopen on a new seed, season or parser alone | **Accept.** It is my P3, stated more strictly. |
+| Audit gate: ≥ 20 audited, precision ≥ 80% and Wilson lower bound ≥ 70%; every claimed new READY independently audited; any wrong READY stops the pilot | **Accept.** It is stricter than my §6. |
+| BRIX profiles: §16 plus whole-slice caps (≤ 4.5 / ≤ 4 GiB), CPUQuota 150% / 100% to start, in-task ramp (J3455 starts at 4 in-flight up to 8; J1900 starts at 2 up to 6), free space ≥ max(15 GB, 20%), no escalation at or above 75 °C, clock offset over 5 s pauses leasing | **Accept**, with the notes below |
+| 0A BRIX substage: ≤ 4 h per host including a 2 h soak, fixture only; power-cut test needs its own approval; my optional 500 live fetches come out of the single pilot budget | **Accept** |
+| Git: the broker record is authoritative; no unattended repository write by default; a test-only audit branch only if Chris requires it | **Accept.** My §14 Q5 test is satisfied by the broker round trip. Today's 403 and sync-script workflow cannot do unattended writes, as r2 says. |
+| BRIX crossover across both arms, so the algorithm is not confounded with the faster host | **Accept.** It is a good addition. |
+
+**Non-blocking notes for the 0A profile** (no change to r2 needed):
+
+1. **CPUQuota 150% on the J3455** caps two CPU-bound extractors at about 0.75 core each. That is the right conservative start, but the fixture benchmark should also try 250% inside the same memory slice, and keep it only if temperature and latency hold.
+2. **Sensors:** coretemp readings were available on both hosts at idle (`brix-office.sh`, 21 Oct: J3455 package/cores 37 °C; J1900 cores 42 °C). So the "no sensor, no escalation" prerequisite is met at idle. Under load it is still unmeasured.
+3. **Fixture provenance:** the natural fixture is the stored public pages the Pi has already fetched (about 4,500 in the gate sample). Moving them to a BRIX is private transfer of public content, never Git. It needs no new external fetches and counts as "approved retained" only once Chris approves the 0A substage.
+
+With this acknowledgement recorded, I have no objection to Codex labelling the review **JOINT / AWAITING CHRIS APPROVAL**.
+
 ---
 
 *Cross-links:* the joint review (`PHASE_0_ARCHITECTURE_REVIEW.md`, Codex) should cite this file for §3–§9 inputs. Conflicts and unresolved questions are recorded in the joint review once Codex has read this. **Neither agent may begin Phase 1 implementation without Chris's approval.**

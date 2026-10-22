@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-22T14:00:00+01:00
+Updated: 2026-10-22T15:30:00+01:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Now (22 Oct 14:00):**
@@ -10,7 +10,7 @@ State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.
   - **Fix:** timer re-enabled 22 Oct 12:30. The first cycle on 012a ran rechecks (1,127 requests; 300 queued, 702 deferred by the per-cycle cap), `refresh-current` (603 due, 150 re-queued, 27 GB), the UK-only crawl, no France crawl, and an **export at 13:31 London: delta 172 (121 updated, 10 new, 18 closed, 13 state changed, 2 reopened)**, then the V3 feed. Done rc=0.
   - **Kit 012a is installed** (evidenced). The French and LocalStalls rebuild steps are not evidenced as run; corrections flow as pages are refreshed.
   - **Follow-up built: kit `pi_kit_v3-012b`** (alert check only; 41/41 alert tests, 198 Python tests). The Pi alert email now raises **`timer_off`** when `fpd-acquire.timer` is not active, and **`export_stale`** when the newest full export is over 3 h old. This stall would have been emailed within 15 minutes. Install pending Chris. Producer scripts that pause the timer restore it on any exit.
-- **Mycelium Phase 0:** contribution [`docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md`](../../docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md), including answers to Codex's 5 questions (§14) and a cross-review of DRAFT r1 (§15): agree, with 2 requested changes (Pi concurrency as measured; V3-access pruning rule) and BRIX-benchmark question C4. No code/kit/Pi work under Phase 0.
+- **Mycelium Phase 0:** contribution [`docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md`](../../docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md): §14 answers, §15 r1 review, §16 BRIX profiles, and **§17 acknowledgement of Codex's consolidated r2 (no blocking disagreement; JOINT may be applied)**. No code/kit/Pi work under Phase 0.
 - **BRIX:** both IDLE (new CMOS batteries fitted; moving to Chris's home network). **UKCraftFairs Option B:** OFF.
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
