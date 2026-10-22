@@ -1,5 +1,5 @@
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./bin/fpd
-f6434635e66704e039c3939dc891b34b6bfd94cd150c8f7ea98d7540fce5bf8c  ./bin/fpd-alert-check
+965759e61480fce8f9885f01ebebccc56a3dded89c1bcd5b3e6117bac78186b3  ./bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./bin/fpd-alert-setup
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./bin/fpd-backup
 d8ae6bc871ffc40adc9a6019173c1ebf9a71a93ea3bd8d7608e8158f856dd6af  ./bin/fpd-cycle
@@ -22,7 +22,7 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./build-kit.sh
 d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./delivery/producer-delivery.mjs
 6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./delivery/producer-delivery.test.mjs
 b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./delivery/producer-runner.mjs
-ff1a36b62713703ccf8ff0832e6f576a5cd49dba3c3a8263d1072fc0e95e93ad  ./fpd-app.tgz
+0a30b92e1d678cbb8e2066ad6c67fc5d986c39d5133ccadda04e3d894397d667  ./fpd-app.tgz
 75633e2a53e162d9a111faa6fee63d2937fc3ed96cce88e9a5dbd29b4ac74643  ./install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./lib/evidence.py
 c5f37b2ec3a06cfb21cef14f48622aec23b3882e477a836a2bcafd4b06a65b91  ./systemd/fpd-acquire.service

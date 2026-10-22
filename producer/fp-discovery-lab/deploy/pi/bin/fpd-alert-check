@@ -43,6 +43,15 @@ problems() {
       | grep -E 'FAILED|failed|export_failed|Traceback|Error' | clean | tail -4 | tr '\n' ' ')
     printf 'acquire_failed\tDiscovery cycle FAILED (ended %s). %s\n' "$at" "${why:-see: journalctl -u fpd-acquire}"
   fi
+  # discovery timer and export freshness (22 Oct: a maintenance step left the timer stopped for ~24h; delivery kept
+  # polling, so V3 saw a heartbeat with a stale export and nothing here noticed)
+  [[ $(systemctl is-active fpd-acquire.timer 2>/dev/null) == active ]] || \
+    printf 'timer_off\tDiscovery timer is OFF: no discovery cycles or exports will run. Fix: sudo systemctl enable --now fpd-acquire.timer\n'
+  local cur=$SRV/export/full/current.jsonl
+  if [[ -f $cur ]]; then
+    a=$(( NOW - $(stat -c %Y "$cur") )); [[ $a -gt 10800 ]] && \
+      printf 'export_stale\tNewest full export is %sh old (a cycle normally exports about hourly)\n' "$(hrs $a)"
+  fi
   # delivery
   if [[ -r $STATUS ]]; then
     local st; st=$(jq -c '{checked_at,rejected:(.rejected//0),cf:(.consecutive_failures//0),error,age:(.source_age_seconds//null),status}' "$STATUS" 2>/dev/null)

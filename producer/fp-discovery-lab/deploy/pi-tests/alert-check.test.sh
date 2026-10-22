@@ -25,7 +25,8 @@ case "$1" in
           *Timestamp) echo "Sun 2026-10-11 15:21:31 BST" ;;
           *) echo "" ;;
         esac ;;
-  is-active) cat $C/delivery_active 2>/dev/null || echo active ;;
+  is-active) if [[ ${2:-} == fpd-acquire.timer ]]; then cat $C/timer_active 2>/dev/null || echo active
+             else cat $C/delivery_active 2>/dev/null || echo active; fi ;;
   list-units) cat $C/failed_units 2>/dev/null ;;
 esac
 EOF
@@ -145,4 +146,14 @@ ok "html part present" 'jq -e .html_body $T/ctl/last_body.json >/dev/null'
 ok "html has sections and status table" 'jq -r .html_body $T/ctl/last_body.json | grep -q "During quiet hours" && jq -r .html_body $T/ctl/last_body.json | grep -q "Pi status"'
 ok "html is escaped" '! jq -r .html_body $T/ctl/last_body.json | grep -q "(previous export left intact)<"'
 ok "key not in html" '! jq -r .html_body $T/ctl/last_body.json | grep -q "$KEY"'
+# 16. discovery timer left off (22 Oct incident) and a stale export: both raised outside quiet hours
+sed -i "s/^ALERT_QUIET=.*/ALERT_QUIET='off'/" $T/alert.env
+rm -f $T/state/state.json; mkdir -p $T/srv/export/full
+W=$(date -d "2026-10-14 13:00" +%s); touch -d "@$W" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst"; offsite true "$(iso $W)" null
+touch -d "@$((W-4*3600))" $T/srv/export/full/current.jsonl; echo inactive > $T/ctl/timer_active
+status "$(iso $W)" 0 0 600; b2=$(sends); run $W
+ok "timer off raised" '[[ $(sends) == $((b2+1)) ]] && jq -r .text_body $T/ctl/last_body.json | grep -q "Discovery timer is OFF"'
+ok "stale export raised" 'jq -r .text_body $T/ctl/last_body.json | grep -q "Newest full export is 4.0h old"'
+echo active > $T/ctl/timer_active; touch -d "@$((W+3600-600))" $T/srv/export/full/current.jsonl; status "$(iso $((W+3600)))" 0 0 600; run $((W+3600))
+ok "fresh export and timer on: no new problem" '! grep -q "Discovery timer is OFF" $T/out || [[ "$(subj)" == *RESOLVED* ]]'
 echo "alert-check tests: $pass passed, $fail failed"; [[ $fail == 0 ]]
