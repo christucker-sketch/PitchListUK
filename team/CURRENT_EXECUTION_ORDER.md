@@ -1,4 +1,6 @@
 # CURRENT EXECUTION ORDER — UK-first growth (21 October 2026)
+> **MYCELIUM PHASE 0 — DESIGN ONLY (22 Oct 2026):** See [the joint architecture commission](MYCELIUM_PHASE0_COMMISSION_2026-10-22.md). Codex and Claude must produce one reviewed design, with no implementation or spending until Chris approves it. The live UK growth and producer freshness work in this queue takes operational priority.
+
 Authority: Chris via ChatGPT. This file supersedes conflicting priorities in earlier orders and historical agent status entries. Preserve past decisions/evidence; do not delete the history.
 
 **One business objective:** sustained positive NET NEW, current, source-proved customer READY opportunities, starting in the UK. Track truly new event/edition identities separately from recoveries, visibility-first-seen, versions, and withdrawals. Keep the +50 genuinely new retained UK milestone and then +100; do not claim the first is complete until 50 NEW have passed the required observation. Prior20OctbaselineUK146; latest measured22Oct09:13LondonUK205/global1714, net−2UK/−23US/−1FR vs21Oct11:59. UK cumulative+59=47newCJS/eightconfirmedrecoveries/fourexistingpriorvisibilityunproven. [Morning report](../docs/findpitches-v3-morning-status-2026-10-22.md). Figures are dated checkpoints, not live guarantees.
