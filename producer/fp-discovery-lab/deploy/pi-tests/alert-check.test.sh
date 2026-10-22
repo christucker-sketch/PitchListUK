@@ -150,10 +150,16 @@ ok "key not in html" '! jq -r .html_body $T/ctl/last_body.json | grep -q "$KEY"'
 sed -i "s/^ALERT_QUIET=.*/ALERT_QUIET='off'/" $T/alert.env
 rm -f $T/state/state.json; mkdir -p $T/srv/export/full
 W=$(date -d "2026-10-14 13:00" +%s); touch -d "@$W" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst"; offsite true "$(iso $W)" null
-touch -d "@$((W-4*3600))" $T/srv/export/full/current.jsonl; echo inactive > $T/ctl/timer_active
+touch -d "@$((W-5*3600))" $T/srv/export/full/current.jsonl; echo inactive > $T/ctl/timer_active
 status "$(iso $W)" 0 0 600; b2=$(sends); run $W
 ok "timer off raised" '[[ $(sends) == $((b2+1)) ]] && jq -r .text_body $T/ctl/last_body.json | grep -q "Discovery timer is OFF"'
-ok "stale export raised" 'jq -r .text_body $T/ctl/last_body.json | grep -q "Newest full export is 4.0h old"'
+ok "stale export raised" 'jq -r .text_body $T/ctl/last_body.json | grep -q "Newest full export is 5.0h old"'
 echo active > $T/ctl/timer_active; touch -d "@$((W+3600-600))" $T/srv/export/full/current.jsonl; status "$(iso $((W+3600)))" 0 0 600; run $((W+3600))
+touch -d "@$((W+3600-3*3600-40*60))" $T/srv/export/full/current.jsonl
+touch -d "@$((W+3600-5*3600))" $T/srv/export/full/current.jsonl; FPD_ALERT_NOW=$((W+3600)) bash "$CHECK" --show > $T/show 2>&1
+ok "show lists a 5h-old export" 'grep -q "Newest full export is 5.0h old" $T/show'
+touch -d "@$((W+3600-3*3600-40*60))" $T/srv/export/full/current.jsonl
+ok "normal 3h40m gap is not stale" '! FPD_ALERT_NOW=$((W+3600)) bash "$CHECK" --show 2>/dev/null | grep -q "Newest full export"'
+touch -d "@$((W+3600-600))" $T/srv/export/full/current.jsonl
 ok "fresh export and timer on: no new problem" '! grep -q "Discovery timer is OFF" $T/out || [[ "$(subj)" == *RESOLVED* ]]'
 echo "alert-check tests: $pass passed, $fail failed"; [[ $fail == 0 ]]

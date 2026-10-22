@@ -49,8 +49,10 @@ problems() {
     printf 'timer_off\tDiscovery timer is OFF: no discovery cycles or exports will run. Fix: sudo systemctl enable --now fpd-acquire.timer\n'
   local cur=$SRV/export/full/current.jsonl
   if [[ -f $cur ]]; then
-    a=$(( NOW - $(stat -c %Y "$cur") )); [[ $a -gt 10800 ]] && \
-      printf 'export_stale\tNewest full export is %sh old (a cycle normally exports about hourly)\n' "$(hrs $a)"
+    # cycles start every 3 h (+ up to 15 min jitter) and export about an hour in: normal gaps reach ~3.6 h, so alert at
+    # 4.5 h, i.e. once a cycle has clearly been missed (22 Oct: 3 h would have raised false alarms on normal cycles)
+    a=$(( NOW - $(stat -c %Y "$cur") )); [[ $a -gt 16200 ]] && \
+      printf 'export_stale\tNewest full export is %sh old (cycles run every 3 hours; at least one has been missed)\n' "$(hrs $a)"
   fi
   # delivery
   if [[ -r $STATUS ]]; then
