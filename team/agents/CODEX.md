@@ -1,3 +1,5 @@
+**Mycelium Phase0 acknowledged/CLAIMED — 2026-10-22T12:25:09+01:00:** Codex owns only the [single DRAFT review](../../docs/mycelium/PHASE_0_ARCHITECTURE_REVIEW.md) under [the commission](../MYCELIUM_PHASE0_COMMISSION_2026-10-22.md). Claude input explicitly requested in that document; not yet received/reviewed, no JOINT claim. First refresh operational CJS retention and producer freshness, then read-only V3/storage inspection and architecture/evaluation plans. No implementation/crawling/modelspend/provisioning/runtime or producer edits under Phase0. Existing public/Checkout preserved; paid/OptionB/BRIX remain off.
+
 # Codex — current status
 
 Updated: **2026-10-22T09:24:13+01:00**. **ACTIVE V3-034: UK source retention/conversion; producer freshness blocker handed to Claude's ownership.** [Single queue](../CURRENT_EXECUTION_ORDER.md) · [22Oct read-only report](../../docs/findpitches-v3-morning-status-2026-10-22.md).
