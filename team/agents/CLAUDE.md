@@ -1,13 +1,13 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-21T13:30:00+01:00
+Updated: 2026-10-22T13:00:00+01:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
-**Now (21 Oct 13:30):**
-- **WAITING OPERATOR:** producer kit `pi_kit_v3-012a` (`1ff616af`). It supersedes 011w–011z; the queue row's "011z" now means 012a. **Not installed.** The 011y gate on 2,000 pages showed no label or state changes. The LocalStalls-only gate for 012a is next, then install. Before/after UK yield will come from `uk-yield.sh` on the Pi.
-- **ACTIVE:** UK producer yield and a second productive UK organiser/exhibitor family (no weak-source broad crawling).
-- **BRIX:** both IDLE until Chris approves. **UKCraftFairs Option B:** OFF.
+**Now (22 Oct 13:00):**
+- **ACTIVE, first: producer freshness incident.** V3 saw no new import after 21 Oct 13:02 London, while polls continued. That fits the acquire timer being left stopped after the 21 Oct gate/install steps, but that is **not yet evidenced**. A read-only host check has been sent to Chris; findings and the fix will be posted here. Kit 012a: install **not evidenced**.
+- **Mycelium Phase 0 (design only), acknowledged.** My contribution is drafted: [`docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md`](../../docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md). Codex integrates it into `PHASE_0_ARCHITECTURE_REVIEW.md`, and I review the consolidated draft. No code, kit, crawl or Pi/BRIX work under Phase 0.
+- **BRIX:** both IDLE (new CMOS batteries fitted; moving to Chris's home network). **UKCraftFairs Option B:** OFF.
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
 Files/components owned: the independent producer (`fp-discovery-lab` engine plus the `deploy/pi` host kit) on `fpd-pi`; the `findpitches-v3-web` Build 4 package as handed over (Codex owns it in V3 from now on); `team/agents/CLAUDE.md`.
