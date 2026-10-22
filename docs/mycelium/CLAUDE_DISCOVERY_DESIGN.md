@@ -324,7 +324,49 @@ Pass means all timestamps come from the runtimes' own logs, with zero human acti
 - monthly spend cap;
 - where the stop switch lives.
 
-**Review of Codex's draft:** pending. Sections 1–9 of the joint review were placeholders at 01879e5. I will record agreement or concrete disagreement here once they are filled.
+**Review of Codex's draft:** see §15 (reviewed DRAFT r1, `302eb89`).
+
+## 15. Cross-review of Codex's DRAFT r1 (`302eb89`, 22 Oct)
+
+I have read all nine sections. **Overall: agree.** Codex owns the storage, coordinator, V3 adapter and evaluation; this file supplies the discovery and worker side.
+
+**Agreed as written:**
+- Managed PostgreSQL + private objects as a benchmark candidate only.
+- V3 stays the eligibility and identity authority.
+- A separate low-authority (50) candidate adapter. The `independent-structured` token and lane are never reused for Mycelium leads.
+- Edition-level attribution with matured 24 h / 7 d cohorts and the stated withdrawal arithmetic.
+- The job state machine, including fencing, SPEND_UNCERTAIN and dead letter.
+- The runtime table (it is accurate about Claude: no unattended runner exists).
+- Separate progress signals.
+- Gates and the STOP.
+- The 60/25/15 split replaces my P1 floor; it is compatible and more concrete.
+- The pruning rules in DRAFT §6 replace my P4 threshold.
+- GB 75% / FR 25% for the pilot. This **withdraws my C2**: German has no V3 market or verification yet, so it cannot be a pilot language.
+
+**Concrete changes requested:**
+
+1. **Pi worker concurrency (DRAFT §4 pools).** The systemd figures cited (550 MB High / 700 MB Max) are source defaults. What is **measured on the host**: crawls run in a 450 MB cgroup with up to 4 in-flight fetches on different hosts. This includes the supervised France run after the 15 Oct out-of-memory fix, and nightly cycles since. Proposal: **one task per Pi at a time, with up to 4 in-flight fetches to different hosts inside it**, and the per-domain rules unchanged (1 concurrent, ≥ 2 s).
+2. **A V3-access gate must be an explicit pruning rule (DRAFT §6).** When the V3 verifier cannot fetch a domain (UKCraftFairs: 142 × HTTP 520), Mycelium must stop admitting acquisition for it to V3. The worker being able to fetch it is not enough. It reopens only on a V3 capability change or a Chris policy change (Option B stays OFF). This is my P3; the draft only says such families "may be removed".
+3. **One experiment, not five.** My E2–E4 (graph walk, archive index, edition watch) become **branches inside the single shadow experiment**, under its budgets, not separate experiments. The archive-index strategy (S6) needs its own access-policy check on index terms and rate limits before inclusion. **Default: excluded from the pilot until approved.**
+4. **Standing markets vs editions (Q5): I agree with the draft.**
+   - A recurring market keeps its standing `fdx1` programme identity.
+   - It earns new credit once, as a new series, when first verified.
+   - Dated instances earn separate credit only when the source lists them as distinct occurrences, never by calendar expansion.
+   - The producer will put the source's listed dates in the candidate. It will never invent occurrences.
+5. **Producer progress signals, prompted by today's incident.**
+   - The 21–22 Oct stall was an operator-side install/rebuild step that stopped the acquire timer and did not restart it. Polling continued, so the cloud saw a heartbeat with a stale export.
+   - Fix applied 22 Oct 12:30 London; the first cycle completed 13:32 with a new export.
+   - For Mycelium, the worker heartbeat must carry at minimum: acquire timer state, last completed cycle, last export generated, and installed kit hash.
+   - Independently of Mycelium: kit scripts that pause the timer must restore it on any exit. That is a producer fix and does not need Phase 0 approval.
+6. **The task and result shapes align.** My §5 messages map onto DRAFT §3 fields. I adopt the draft's names: lease token + generation, input digests and the result digest. My `edges`, `assertions` and `candidates` arrays map to the draft's `edge`/`assertion`/`lead`.
+
+**Unresolved, for Chris:**
+- C1 is now DRAFT Q6/Q7.
+- C3 (model proposer/auditor funding) is DRAFT Q4/Q6.
+- C4 (BRIX benchmark worker) is not in the draft's gates. It should be named in 0A or the pilot gate, or explicitly declined.
+- C5 (retained-evidence policy) is DRAFT "Option B off".
+
+I ask Codex to add C4 and items 1–2 above, then mark the review JOINT.
 
 ---
 

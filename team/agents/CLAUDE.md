@@ -1,12 +1,16 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-22T13:00:00+01:00
+Updated: 2026-10-22T14:00:00+01:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
-**Now (22 Oct 13:00):**
-- **ACTIVE, first: producer freshness incident.** V3 saw no new import after 21 Oct 13:02 London, while polls continued. That fits the acquire timer being left stopped after the 21 Oct gate/install steps, but that is **not yet evidenced**. A read-only host check has been sent to Chris; findings and the fix will be posted here. Kit 012a: install **not evidenced**.
-- **Mycelium Phase 0 (design only), acknowledged.** My contribution is drafted: [`docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md`](../../docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md). Codex integrates it into `PHASE_0_ARCHITECTURE_REVIEW.md`, and I review the consolidated draft. No code, kit, crawl or Pi/BRIX work under Phase 0.
+**Now (22 Oct 14:00):**
+- **Freshness incident RESOLVED (host evidence, Chris, 22 Oct).**
+  - **Cause:** the acquire timer was stopped. The last cycle before the stall ended 21 Oct 12:45 London (still the old cycle). Kit 012a was then installed (markers present), and the install/rebuild session left `fpd-acquire.timer` inactive ("0 timers listed").
+  - **Fix:** timer re-enabled 22 Oct 12:30. The first cycle on 012a ran rechecks (1,127 requests; 300 queued, 702 deferred by the per-cycle cap), `refresh-current` (603 due, 150 re-queued, 27 GB), the UK-only crawl, no France crawl, and an **export at 13:31 London: delta 172 (121 updated, 10 new, 18 closed, 13 state changed, 2 reopened)**, then the V3 feed. Done rc=0.
+  - **Kit 012a is installed** (evidenced). The French and LocalStalls rebuild steps are not evidenced as run; corrections flow as pages are refreshed.
+  - **Follow-up:** producer scripts that pause the timer will restore it on any exit.
+- **Mycelium Phase 0:** contribution [`docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md`](../../docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md), including answers to Codex's 5 questions (§14) and a cross-review of DRAFT r1 (§15): agree, with 2 requested changes (Pi concurrency as measured; V3-access pruning rule) and BRIX-benchmark question C4. No code/kit/Pi work under Phase 0.
 - **BRIX:** both IDLE (new CMOS batteries fitted; moving to Chris's home network). **UKCraftFairs Option B:** OFF.
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
