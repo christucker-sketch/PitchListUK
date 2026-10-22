@@ -49,7 +49,7 @@ Each is a measurement, not an opinion:
    - The crawl runs inside a 450 MB memory cgroup, after a 15 Oct out-of-memory crash from an unbounded robots read.
    - About one core is busy, on SQLite over a USB SSD.
    - Re-classifying 4,500 stored pages takes about 25 minutes per engine (the two-engine gate took about 50).
-   - BRIX J3455 and J1900: 8 GB each, IDLE pending Chris's approval.
+   - BRIX J3455 and J1900: 8 GB each, **allocated to Mycelium by Chris (22 Oct)**, powered off and moving to his home network; nothing installed. Profiles in §16.
 
 ## 3. Discovery strategies (independent and globally extensible)
 
@@ -128,7 +128,7 @@ The worker is stateless apart from a bounded local cache; the coordinator (Codex
   | Profile | RAM cap | Concurrency | Throughput | Role |
   | --- | --- | --- | --- | --- |
   | Pi 3 | 450 MB cgroup | 4 | about 2,200 fetches/day observed | One lane at a time |
-  | BRIX J3455 | 8 GB RAM; cgroup TBD | 8–16 (proposed) | GAP | Benchmark first; Chris approval |
+  | BRIX J3455 / J1900 | Per-host profiles in §16 (the Pi's 450 MB cap does **not** apply) | Proposed starting points in §16 | GAP until benchmarked | Mycelium worker; benchmark first, as an approved step |
   | Cloud worker | — | — | — | Not proposed in Phase 0 |
 
   No worker holds the authoritative database (commission rule).
@@ -237,7 +237,7 @@ Every experiment logs, per branch: fetches, candidates, duplicates, route rate, 
   - concurrency 4;
   - raw cache LRU sized to the SSD; SSD capacity is a GAP to measure.
   - Re-classifying 4,500 pages takes about 25 minutes, so reassessment must be incremental and scheduled off-peak.
-- **BRIX:** a candidate worker host only after a benchmark (throughput, memory, thermal on a fanless J3455) and Chris's approval. **No authoritative database on home hardware.**
+- **BRIX:** allocated to Mycelium (Chris, 22 Oct). Worker profiles and the benchmark plan are in §16; execution is a separately approved step. **No authoritative database on home hardware.**
 - **Storage:**
   - raw evidence goes to object storage by hash, and rejected pages are compacted to extracts (today's policy);
   - durable graph and knowledge are kept separate from fetch logs (commission rule; Codex's storage section).
@@ -262,7 +262,7 @@ Every experiment logs, per branch: fetches, candidates, duplicates, route rate, 
 - **C1.** The budget split between exploitation and exploration, and the pruning threshold (P1, P4).
 - **C2.** Which second language goes first after UK English: French (existing pack, poor conversion so far) or German (prepared, intake off).
 - **C3.** Whether an LLM-based hypothesis proposer or auditor (S7, §6) may ever be funded, with what monthly cap.
-- **C4.** Whether BRIX may host a benchmark-only worker in Phase 0A/0B.
+- **C4.** ~~Whether BRIX may host a benchmark-only worker.~~ **Settled by Chris on 22 Oct:** both BRIX are allocated to Mycelium. What remains is engineering: the §16 benchmark is to be approved as the next step.
 - **C5.** The retained-evidence policy for sources V3 cannot fetch. It is OFF today; this design assumes OFF.
 
 ## 14. Answers to Codex's interface questions (review draft, 22 Oct)
@@ -363,10 +363,91 @@ I have read all nine sections. **Overall: agree.** Codex owns the storage, coord
 **Unresolved, for Chris:**
 - C1 is now DRAFT Q6/Q7.
 - C3 (model proposer/auditor funding) is DRAFT Q4/Q6.
-- C4 (BRIX benchmark worker) is not in the draft's gates. It should be named in 0A or the pilot gate, or explicitly declined.
+- C4 is settled: BRIX allocated to Mycelium (Chris, 22 Oct). The §16 worker benchmark should be a named step in Codex's gates.
 - C5 (retained-evidence policy) is DRAFT "Option B off".
 
-I ask Codex to add C4 and items 1–2 above, then mark the review JOINT.
+I ask Codex to add items 1–2 above and the §16 benchmark step, then mark the review JOINT.
+
+## 16. BRIX worker profiles (design only; Chris allocated both to Mycelium, 22 Oct)
+
+**Measured facts** (from `brix-office.sh` and SMART checks that Chris ran, 21 Oct):
+
+| | fpd-prod: GB-BPCE-3455 | fpd-standby: GB-BXBT-1900 |
+| --- | --- | --- |
+| CPU | Celeron J3455, 4 cores (Apollo Lake) | Celeron J1900, 4 cores (Bay Trail) |
+| RAM visible to Linux | 7.6 GiB | 7.7 GiB |
+| SSD | ADATA SU650 120 GB: 100% life, about 0.35 TB written | Kingston A400 120 GB: about 84% life, about 6.5 TB written |
+| Idle temperature | 37 °C | 42 °C |
+| BIOS | F13 (updated) | F8 (Debian loads current microcode) |
+| Common to both | Debian 13; memory cgroup enforced; hardware watchdog on; key logins; clock synced; standard utilities; restore-on-power on; new CMOS batteries | — |
+
+No throughput, load or thermal measurement exists yet: **GAP**. The Pi's 450 MB cap is a Pi envelope and is **not** applied here.
+
+**Proposed roles:**
+- **J3455:** the primary Mycelium worker (fetch + extract). It is the stronger CPU, and its SSD is barely used.
+- **J1900:** a second worker and the **reassessment/regression runner**, for CPU-bound jobs such as re-classifying stored evidence after a parser change, which is the classifier-diff gate today. It also takes over the fetch role if the J3455 fails.
+
+Neither box is the authoritative store; the coordinator and graph are managed (Codex §4).
+
+**Starting limits, to be tuned only after the benchmark:**
+
+| Setting | J3455 | J1900 | Why |
+| --- | --- | --- | --- |
+| Reserved for OS, page cache, watchdog, SSH | ≥ 2 GiB | ≥ 2 GiB | Cache matters for SQLite/LRU reads; a hang triggers the watchdog reboot |
+| Worker service (systemd cgroup) | MemoryHigh 3 GiB / MemoryMax 4 GiB | MemoryHigh 2.5 GiB / MemoryMax 3.5 GiB | Headroom under 8 GB; the J1900 is older and slower |
+| Processes | 1 fetch/coordinator process + 2 extraction processes | 1 + 2 (or 3 extraction for reassessment-only runs) | Parsing and classification is the CPU cost; fetch is mostly I/O wait |
+| In-flight fetches | ≤ 8, all to different hosts | ≤ 6, all to different hosts | Per-host rules unchanged: 1 concurrent, ≥ 2 s, robots, the same as the Pi |
+| Local evidence cache (LRU) | ≤ 30 GB | ≤ 20 GB | Cache only; objects live in managed storage |
+| SSD write budget | ≤ 30 GB/day | ≤ 15 GB/day | The A400 already has 6.5 TB written; protect it |
+
+**Backpressure** (in the worker, not trusted to the queue):
+- Stop claiming new tasks when any of these holds:
+  - 5-minute load is above 3.5;
+  - CPU package is at or above 80 °C;
+  - free disk is under 15 GB;
+  - worker RSS is at or above MemoryHigh;
+  - the local result outbox holds more than 200 unsent results.
+- Resume below the thresholds with hysteresis.
+- Every pause is reported in the heartbeat, with its reason.
+
+**Heartbeat fields**, which also cover the "real progress" requirement (the 21–22 Oct Pi lesson):
+- host;
+- kit hash;
+- service state;
+- last task completed;
+- last fetch;
+- last result accepted by the coordinator;
+- load and temperature;
+- free disk;
+- RSS;
+- pause reason.
+
+**Benchmark plan (to approve as one step; nothing runs before approval):**
+
+1. **Offline:** replay a fixed corpus of already stored public pages. There are about 4,500 on the Pi, all previously fetched, so this makes no new external requests. Run it through the extractor at 1, 2, 3 and 4 processes. Record:
+   - pages per second;
+   - p95 parse/classify time;
+   - RSS per process;
+   - CPU temperature over a 2-hour soak;
+   - SSD bytes written.
+2. **Recovery:** kill the worker and power-cut mid-task. Check:
+   - the lease expires and the task is re-queued;
+   - there is no duplicate result;
+   - the watchdog and restore-on-power bring the box back.
+3. **Live fetch (bounded):** only if separately approved. A small task list under the normal per-host rules, at most 500 fetches. Measure throughput at 2, 4 and 8 in-flight fetches.
+
+**Pass:**
+- no out-of-memory kills;
+- temperature steady below 80 °C;
+- no duplicate settled results;
+- limits set from the measured 70th-percentile load, not the hardware maximum.
+
+**Access and install mechanism.** I have no shell on either box. Installs follow the Pi pattern:
+1. Claude builds a kit with checksums.
+2. Chris copies it and runs the documented commands.
+3. Chris pastes the output back.
+
+At home, `brix-home.sh` (LAN-only firewall, key-only SSH) runs first. An unattended runtime remains unproven (§14 Q5).
 
 ---
 
