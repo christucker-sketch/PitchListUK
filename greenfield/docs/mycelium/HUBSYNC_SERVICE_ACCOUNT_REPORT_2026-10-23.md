@@ -43,3 +43,10 @@ It does not change the account, paths, key or behaviour. The expected score is w
 6. **On any failure:** stop and report. Roll back by deleting the drop-in and running `daemon-reload`, which is the known-good unit above. Never fall back to root.
 
 No AI invocation, no force push, and no production task changes; `fpd-standby` is untouched.
+
+## Progress (Chris approved; host evidence, 23 Oct about 15:48 London)
+
+- **Steps 1–2:** timer stopped; drop-in installed; `daemon-reload` run. **`systemd-analyze security`: 8.3 EXPOSED → 1.5 OK.**
+- **Step 3:** a read-only poll under the hardened unit succeeded (SSH `ls-remote` to GitHub works): "no change at d2f6705c", 0 errors.
+- **Step 4, prepared:** T-0004 (`to: hubsync`) and T-0005 (`to: codex`) are in this commit. The next manual poll must answer T-0004 only, then a second poll must add nothing. After that the timer is re-enabled and the 24 h observation restarts.
+
