@@ -95,4 +95,9 @@
   - Second poll: **2 s, "no change at 34331ec1"**, with no fetch.
   - Status ok, 0 errors.
 - **Step 3 (write demo), prepared:** synthetic task [`team/sync-test/tasks/T-0001.json`](../../../team/sync-test/tasks/T-0001.json). It needs Chris to re-add the deploy key **with write access**, because GitHub cannot change an existing deploy key's permission. Then one manual poll should answer it, and a second poll should add nothing.
+- **Step 3 done, write demo (deploy key re-added with write access):**
+  - One manual poll logged the 2 new hub commits and the changed paths, wrote the result for T-0001 and **pushed `91cc565c`**. That commit contains only `team/sync-test/results/T-0001.json`; its recorded task blob `6b2981fb` was verified against GitHub.
+  - A second poll gave **"no change at 91cc565c"**, with nothing added (idempotence, no self-loop). 1 push today.
+  - A live concurrent-writer race was not staged on GitHub, because the test hook is refused for github.com by design. That path is covered by the offline tests.
+- **Step 4 (24 h unattended), prepared:** T-0001 edited (must be answered once more), T-0002 new (must be answered by a *timer* poll), and T-0003 addressed to `codex` (must be ignored). It needs Chris's explicit approval to enable `hubsync.timer`.
 
