@@ -1,0 +1,21 @@
+[Unit]
+Description=Mycelium hub watcher: one poll of the GitHub hub (no AI calls)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=hubsync
+Group=hubsync
+Environment=HOME=/var/lib/hubsync HUBSYNC_HOME=/var/lib/hubsync
+EnvironmentFile=-/etc/hubsync.env
+ExecStart=/usr/local/bin/hubsync poll
+TimeoutStartSec=4min
+Nice=10
+MemoryMax=256M
+CPUQuota=50%
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/hubsync

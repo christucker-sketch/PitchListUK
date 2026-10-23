@@ -1,0 +1,11 @@
+[Unit]
+Description=Mycelium hub watcher every 5 minutes (installed DISABLED; enable only with Chris's approval)
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=5min
+RandomizedDelaySec=30s
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target
