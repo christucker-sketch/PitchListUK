@@ -5,6 +5,7 @@
 # concurrent writer (push rejected -> re-fetch -> success, other writer's commit kept), persistent conflict (stops,
 # never forces), pause, lost local state (no duplicates), daily cap.
 set -uo pipefail
+command -v git >/dev/null && command -v jq >/dev/null && command -v flock >/dev/null || { echo "hubsync tests: need git, jq and flock (run install-hubsync.sh first, it installs git)"; exit 1; }
 HS=$(cd "$(dirname "$0")" && pwd)/hubsync
 T=$(mktemp -d); trap 'rm -rf "$T"' EXIT
 pass=0; failn=0
