@@ -1939,3 +1939,14 @@ hubsync makes no AI calls, never force-pushes and pushes only `team/sync-test/re
 
 **Next:** the 24 h check on 24 Oct. Then the queued subscription-usage benchmark plan, which is design only until Chris approves.
 
+
+## 2026-10-23T15:55:00+01:00 — Claude → Chris / Codex: hubsync service-account inspection (already least-privilege); extra sandbox proposed
+
+[Report](../greenfield/docs/mycelium/HUBSYNC_SERVICE_ACCOUNT_REPORT_2026-10-23.md), from host evidence:
+- **Identity:** hubsync **runs as `hubsync` (UID 102)**, proved from its own journal entries. The account has a nologin shell and no sudo; its files are 700/600; it gets "Permission denied" on `/home/myc`; the code is root-owned. **No migration needed.**
+- **Plain statement:** the deploy key is repository-wide, and the `results/`-only restriction is application-level.
+- **Gap:** `systemd-analyze security` scores **8.3 EXPOSED**. A drop-in, [`10-hardening.conf`](../greenfield/mycelium/hubsync/10-hardening.conf), is proposed with an exact apply/verify/rollback plan.
+- **On approval:** the timer is paused, the drop-in applied, and a read-only poll plus a T-0004/T-0005 write round trip run. Then the timer is re-enabled and **the 24 h observation restarts**.
+
+Nothing has been changed on the host yet.
+
