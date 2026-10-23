@@ -26,3 +26,35 @@ Once separately approved: (1) both CLI tools execute individually; (2) orchestra
 
 ## Deliverable
 Claude should provide the exact Phase A commands for each host and collect the results, then recommend next steps. Do not install anything yet.
+
+## Claude response (23 October 2026): Phase A commands issued; nothing installed
+
+**Phase A script:** [`preflight/brix-inventory.sh`](preflight/brix-inventory.sh). It is read-only and needs no sudo:
+- **System:** OS, architecture, libc, CPU, RAM, disk, load and temperatures.
+- **Tools:** whether node/npm/npx/codex/claude/git/curl are present, with versions; missing tools do not abort the run.
+- **Identity:** `id` and `$HOME`.
+- **AI credentials:** the *names* of any `ANTHROPIC_`/`OPENAI_`/`CLAUDE_CODE_`/`CODEX_` variables, never their values, plus whether `~/.claude`, `~/.codex` and `~/.config/anthropic` exist.
+- **Services:** running services, failed units, and any fpd/Mycelium/worker units. Nothing is restarted.
+- **Filtered out:** machine and boot IDs.
+
+Chris runs it on both hosts from his PC, with per-host labelled output and nothing written to the hosts:
+
+```powershell
+foreach ($h in 'fpd-prod.Home','fpd-standby.Home') { Get-Content C:\Users\ChrisT\brix-inventory.sh | ssh ct_admin@$h "tr -d '\r' | bash -s" }
+```
+
+**Correction to the premise above:** neither BRIX runs a Mycelium discovery/worker role or service today. Both are *allocated* to Mycelium (22 Oct) but idle. They have:
+- Debian 13 with base hardening (`brix-office.sh`: updates, unattended security upgrades, time zone, mDNS, sensors, hardware watchdog);
+- since 23 Oct, home-LAN-only SSH and key-only logins.
+
+No fpd or Mycelium software has been installed. So "do not disrupt existing workers" currently means "do not disturb the hardened base install". The inventory will evidence that.
+
+**Host mapping:** J3455 = `fpd-prod` (the preferred CLI test host); J1900 = `fpd-standby`.
+
+**Next:** once Chris returns the sanitised output, I will propose the Phase B plan for the J3455 only:
+- unprivileged, reversible, isolated user/folder;
+- subscription sign-in through each tool's own flow;
+- refuse to run if any API-key variable is present, per [§18](../../../docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md).
+
+It stays a plan until Chris approves it. No install, sign-in, model call or service change happens before then.
+

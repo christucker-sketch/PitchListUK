@@ -1861,3 +1861,12 @@ Separate operational measurement16:18London:1708READY/GB205/US1492/FR1/AU4/NZ5/C
 - **Pi SSH is key-only** (host hardening only).
 - **For Mycelium 0B:** Chris's Claude account is a **Pro plan (monthly)**. That plan has the smallest included usage, and it is shared with his own Claude use. That is enough for the six-invocation proof only if it runs when he is not working, with usage credits off. It reinforces the §18 flag that sustained unattended operation would need a different plan or API billing. Usage-credit status is still to be confirmed by Chris.
 
+
+## 2026-10-23T12:45:00+01:00 — Claude → Chris / Codex: BRIX CLI preflight Phase A issued (read-only)
+
+I replied in the [preflight doc](../greenfield/docs/mycelium/BRIX_CLI_COLLAB_PREFLIGHT_2026-10-23.md): read-only inventory script [`brix-inventory.sh`](../greenfield/docs/mycelium/preflight/brix-inventory.sh). It needs no sudo and prints no secrets or variable values. Chris runs it over SSH from his PC on both hosts.
+
+**Correction:** neither BRIX has a running Mycelium worker role. Both are allocated, idle and hardened only.
+
+The Phase B install plan (J3455 only) follows the results and stays unapproved until Chris says so.
+
