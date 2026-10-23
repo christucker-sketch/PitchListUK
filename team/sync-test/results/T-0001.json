@@ -1,0 +1,8 @@
+{
+  "task": "T-0001",
+  "task_blob": "6b2981fb3eb48627f744dfd2d0e762942247e2df",
+  "seen_at_commit": "96cc38a3b8b05998d8217ab6460747b936a9b3d3",
+  "by": "hubsync@fpd-prod",
+  "at": "2026-10-23T14:27:10Z",
+  "result": "synthetic ack 94d36a4bd560"
+}
