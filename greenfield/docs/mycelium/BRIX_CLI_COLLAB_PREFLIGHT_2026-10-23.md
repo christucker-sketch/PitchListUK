@@ -58,3 +58,57 @@ No fpd or Mycelium software has been installed. So "do not disrupt existing work
 
 It stays a plan until Chris approves it. No install, sign-in, model call or service change happens before then.
 
+## Phase A results (host evidence, Chris, 23 Oct 12:41 London; sanitised, run as `ct_admin`, no sudo)
+
+| | `fpd-prod` (J3455) | `fpd-standby` (J1900) |
+| --- | --- | --- |
+| Hardware / firmware | GB-BPCE-3455, F13 | GB-BXBT-1900, F8 |
+| OS / kernel / libc | Debian 13, 6.12.113 amd64, glibc 2.41 | same |
+| CPU / RAM / swap | 4-core J3455; 7.6 GiB (7.2 available); 5.8 GiB | 4-core J1900; 7.7 GiB (7.3 available); 5.7 GiB |
+| Disk | 103 GB root, 97 GB free | 104 GB root, 98 GB free |
+| node / npm / codex / claude / git | all missing | all missing |
+| curl | 8.14.1 | 8.14.1 |
+| AI credential variables | none | none |
+| `~/.claude`, `~/.codex`, `~/.config/anthropic` | absent | absent |
+| Running services | base OS only (ssh, avahi, cron, smartmontools, timesyncd, unattended-upgrades …) | the same, plus `espeakup` (installer speech synthesiser; harmless, could be disabled later) |
+| Failed units / fpd·Mycelium·worker units | none / none | none / none |
+| Load, temperature | 0.00; 33–35 °C | 0.07; 35–36 °C |
+
+**Confirmed:** there is no existing worker, AI tool or AI credential on either host. Both meet Claude Code's stated requirements: Debian 10+, x64, 4 GB+ RAM ([setup docs](https://code.claude.com/docs/en/setup)).
+
+## Phase B — proposed installation plan, J3455 (`fpd-prod`) only. NOT AUTHORISED until Chris approves.
+
+**Preconditions:**
+- Chris confirms that Claude **usage credits are off** (Pro plan).
+- Chris confirms which ChatGPT plan Codex will use, and that any Codex extra-usage/credit purchase is off.
+- Codex confirms its install and sign-in route from OpenAI's current docs (below).
+
+1. **Isolation (the only sudo step):** create a dedicated user `myc`, with no sudo rights and no SSH login. It is reached only with `sudo -iu myc` from `ct_admin`. Nothing goes in `ct_admin`'s home or in system paths. To reverse: `sudo deluser --remove-home myc` removes everything.
+2. **Claude Code, unprivileged, as `myc`:**
+   - Install with the official native installer on the stable channel, `curl -fsSL https://claude.ai/install.sh | bash -s stable`, into `~/.local/bin` and `~/.local/share/claude`. No Node is needed.
+   - Pin the version for the test with `DISABLE_AUTOUPDATER=1` in `~/.claude/settings.json`.
+   - Check with `claude --version` and `claude doctor`.
+   - On Linux the binary is not code-signed, so verify the installed binary against the GPG-signed release manifest (fingerprint `31DD DE24 DDFA B679 F42D 7BD2 BAA9 29FF 1A7E CACE`), as documented.
+3. **Codex CLI, unprivileged, as `myc` (Codex to specify):** a user-level install of the official Codex CLI, without `sudo npm`. Prefer an official standalone binary in `~/.local/bin`. Node would need either an apt install (sudo, system-wide) or a user-level Node, so avoid it unless OpenAI requires it.
+   - Headless sign-in must use ChatGPT, via the device-code flow or OpenAI's documented remote method. Public issue reports say device-code sign-in can be blocked by workspace settings or require phone verification, so check that first.
+   - `codex login status` must report ChatGPT, not an API key.
+4. **Sign-in (Chris, interactively, once; no credential ever leaves `myc`'s home):**
+   - **Claude:** run `claude` and sign in through Anthropic's own flow. Over SSH it uses the paste-the-code variant. `/status` must show the claude.ai login as the active credential.
+   - Credential files stay mode 0600 under `/home/myc`. They never go into Git, chat, logs or a copy to another machine.
+5. **Billing guard (fail closed):** a small wrapper starts each CLI with a cleared environment (`env -i HOME=… PATH=… LANG=…`). Beforehand it refuses to run if any of these are set:
+   - `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_PROFILE`;
+   - `CLAUDE_CODE_USE_BEDROCK`, `CLAUDE_CODE_USE_VERTEX`, `CLAUDE_CODE_USE_FOUNDRY`;
+   - `OPENAI_API_KEY`, `CODEX_API_KEY`;
+   - an `apiKeyHelper` in Claude settings.
+
+   No `--bare`, because it ignores the subscription login. Hitting a usage limit is a stop, never a fallback.
+6. **Acceptance test harness (written only after approval):**
+   - A fixed, harmless prompt, run in an empty working folder, with tools disabled or read-only.
+   - Codex → Claude → Codex: at most 3 calls, 180 s per call, 15 min in total; aborts on the first error.
+   - It logs prompt, output, stderr, exit code, duration and any usage the tools report, under `/home/myc/preflight/run-<time>/`, with no secrets.
+   - Manual kill switch: `sudo pkill -u myc`.
+   - No repository, worker or service is touched, and no git is installed.
+7. **Rollback:** `sudo deluser --remove-home myc`, plus revoking the Claude and Codex sessions from the account settings pages.
+
+`fpd-standby` (J1900) is left exactly as it is.
+

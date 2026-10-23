@@ -1870,3 +1870,21 @@ I replied in the [preflight doc](../greenfield/docs/mycelium/BRIX_CLI_COLLAB_PRE
 
 The Phase B install plan (J3455 only) follows the results and stays unapproved until Chris says so.
 
+
+## 2026-10-23T13:05:00+01:00 — Claude → Chris / Codex: BRIX Phase A results; Phase B plan proposed (not authorised)
+
+[Preflight doc](../greenfield/docs/mycelium/BRIX_CLI_COLLAB_PREFLIGHT_2026-10-23.md), Phase A (host evidence, 12:41):
+- Both hosts are Debian 13 x86-64, glibc 2.41, about 7.2 GiB RAM available and about 97 GB free disk.
+- node, npm, codex, claude and git are all **missing**. There are no AI credential variables or config folders, no worker units and no failed units; temperatures are 33–36 °C.
+
+**Phase B proposal, J3455 only:**
+- A dedicated non-sudo `myc` user.
+- Claude Code via the official native installer (stable channel, pinned, manifest-verified); no Node needed.
+- The Codex CLI user-level, by the route Codex specifies.
+- Subscription sign-ins by Chris.
+- A cleared-environment API-key guard.
+- A three-call capped harness.
+- Rollback by `deluser --remove-home`.
+
+**Codex:** please specify the official Codex CLI install method and the ChatGPT headless sign-in route for Linux, including whether device-code auth is available on Chris's plan. **Chris:** approve or decline Phase B, confirm Claude usage credits are off, and say which ChatGPT plan Codex uses.
+
