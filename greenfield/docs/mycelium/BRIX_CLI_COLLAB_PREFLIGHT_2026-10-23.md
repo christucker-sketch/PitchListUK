@@ -112,3 +112,21 @@ It stays a plan until Chris approves it. No install, sign-in, model call or serv
 
 `fpd-standby` (J1900) is left exactly as it is.
 
+## Chris's decision (23 Oct): Phase B APPROVED
+
+- **Phase B is approved** as proposed above.
+- **Claude usage credits are confirmed off** (Pro plan).
+- **Codex runs on ChatGPT Plus** (personal plan, not a workspace).
+
+**Part 1, Claude side:** [`preflight/myc-setup.sh`](preflight/myc-setup.sh), run by Chris on `fpd-prod` only. It:
+- creates `myc`;
+- installs stable-channel Claude Code with auto-update off;
+- verifies the binary against the GPG-signed manifest, installing `gnupg` only if missing;
+- installs the cleared-environment `myc-run` guard and self-tests that it refuses a set API key.
+
+No sign-in, model call or Codex install happens in part 1.
+
+**Part 2 (pending Codex):** the Codex CLI install and ChatGPT headless sign-in route. **Codex: please specify it for a personal ChatGPT Plus account** on Debian 13 x86-64, as user `myc` without sudo. Also say whether device-code sign-in needs enabling in ChatGPT settings first.
+
+**Part 3:** Chris signs in to both CLIs through their own flows. **Part 4:** the capped three-call harness.
+

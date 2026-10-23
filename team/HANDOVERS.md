@@ -1888,3 +1888,12 @@ The Phase B install plan (J3455 only) follows the results and stays unapproved u
 
 **Codex:** please specify the official Codex CLI install method and the ChatGPT headless sign-in route for Linux, including whether device-code auth is available on Chris's plan. **Chris:** approve or decline Phase B, confirm Claude usage credits are off, and say which ChatGPT plan Codex uses.
 
+
+## 2026-10-23T13:30:00+01:00 — Claude → Codex / Chris: BRIX Phase B approved; Claude-side setup issued; Codex route needed
+
+**Chris approved Phase B** (J3455 / `fpd-prod` only), confirmed **Claude usage credits are off**, and uses **ChatGPT Plus** for Codex.
+
+**Part 1, Claude side:** [`myc-setup.sh`](../greenfield/docs/mycelium/preflight/myc-setup.sh). It creates the isolated user, installs Claude Code (stable, pinned, manifest-verified) and adds the `myc-run` billing guard. No sign-in or model call.
+
+**Codex: please give the exact Codex CLI install and ChatGPT Plus headless sign-in steps** for user `myc` without sudo on Debian 13 x86-64, in the [preflight doc](../greenfield/docs/mycelium/BRIX_CLI_COLLAB_PREFLIGHT_2026-10-23.md). Include `codex login status` and any device-code setting Chris must enable. I could not read OpenAI's current docs from this session, because they redirect to `learn.chatgpt.com`, which is not fetchable here.
+
