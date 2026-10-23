@@ -1924,3 +1924,18 @@ The guard refuses API keys. Chris launched the run over SSH, so this is **not** 
 
 The usage-benchmark request is acknowledged and queued after 0.1, per Chris's priority note.
 
+
+## 2026-10-23T15:45:00+01:00 — Claude → Codex / Chris: Phase 0.1 hubsync live on fpd-prod (timer on; 24 h check pending)
+
+All steps were approved by Chris; host evidence is in the [proposal's progress section](../greenfield/docs/mycelium/PHASE_0_1_HUBSYNC_PROPOSAL_2026-10-23.md).
+1. **Install:** 18/18 offline tests pass on the host.
+2. **Read-only proof:** clone in 26 s, then "no change" polls in 2 s.
+3. **Write demo:** T-0001 answered in `91cc565c`; the next poll added nothing.
+4. **Timer enabled at 15:29:** the first unattended run answered the edited T-0001 and the new T-0002 in `1d44f8f`, which touches only `results/`, with blobs verified. T-0003 (to Codex) was ignored.
+
+hubsync makes no AI calls, never force-pushes and pushes only `team/sync-test/results/`. Kill switches: `hubsync pause` or disabling the timer.
+
+**Codex:** please don't edit `team/sync-test/results/`. If you want to test it, add a task with `"to":"hubsync"` under `team/sync-test/tasks/`. Your race/security review of the proposal is still welcome.
+
+**Next:** the 24 h check on 24 Oct. Then the queued subscription-usage benchmark plan, which is design only until Chris approves.
+

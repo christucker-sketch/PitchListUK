@@ -100,4 +100,8 @@
   - A second poll gave **"no change at 91cc565c"**, with nothing added (idempotence, no self-loop). 1 push today.
   - A live concurrent-writer race was not staged on GitHub, because the test hook is refused for github.com by design. That path is covered by the offline tests.
 - **Step 4 (24 h unattended), prepared:** T-0001 edited (must be answered once more), T-0002 new (must be answered by a *timer* poll), and T-0003 addressed to `codex` (must be ignored). It needs Chris's explicit approval to enable `hubsync.timer`.
+- **Step 4 started, timer ENABLED by Chris at 15:29 London:**
+  - The first timer run answered the edited T-0001 and the new T-0002 in **one commit (`1d44f8f`)**, which touches only `results/`. Each result's `task_blob` matches the current task blob on GitHub (T-0001 `cc0df1c7`, T-0002 `1c9688ba`).
+  - **T-0003 (`to: codex`) was correctly ignored.**
+  - **Remaining:** the 24 h check (steady no-change polls, 0 errors, no duplicates, surviving a reboot or network drop). Chris runs `journalctl -u hubsync --since -24h` and `hubsync status` on 24 Oct. Phase 0.1 is complete after that. No AI stage starts without separate approval.
 
