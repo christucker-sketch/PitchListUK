@@ -49,4 +49,9 @@ No AI invocation, no force push, and no production task changes; `fpd-standby` i
 - **Steps 1–2:** timer stopped; drop-in installed; `daemon-reload` run. **`systemd-analyze security`: 8.3 EXPOSED → 1.5 OK.**
 - **Step 3:** a read-only poll under the hardened unit succeeded (SSH `ls-remote` to GitHub works): "no change at d2f6705c", 0 errors.
 - **Step 4, prepared:** T-0004 (`to: hubsync`) and T-0005 (`to: codex`) are in this commit. The next manual poll must answer T-0004 only, then a second poll must add nothing. After that the timer is re-enabled and the 24 h observation restarts.
+- **Step 4 done, under the hardened unit:**
+  - The first manual poll logged the 2 new hub commits, answered **T-0004 only** and pushed **`238e8336`**. That commit contains only `team/sync-test/results/T-0004.json`, and its result blob `2bc2edbf` matches the task on GitHub. **T-0005 (`to: codex`) was ignored.**
+  - The second poll gave "no change at 238e8336".
+  - The effective identity is still **`_UID=102` (`hubsync`)**. 0 errors; 3 pushes today, against a cap of 48.
+- **Step 5 done:** `hubsync.timer` restarted at **23 Oct 15:49 London. The 24 h observation runs from then to 24 Oct about 15:50**, using the hardened unit, account and paths described above.
 

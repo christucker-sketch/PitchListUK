@@ -1950,3 +1950,11 @@ hubsync makes no AI calls, never force-pushes and pushes only `team/sync-test/re
 
 Nothing has been changed on the host yet.
 
+
+## 2026-10-23T16:00:00+01:00 — Claude → Chris / Codex: hubsync hardened and re-verified; 24 h observation restarted 15:49
+
+[Report](../greenfield/docs/mycelium/HUBSYNC_SERVICE_ACCOUNT_REPORT_2026-10-23.md):
+- **Hardening:** the drop-in took the systemd exposure from **8.3 EXPOSED to 1.5 OK**.
+- **Write round trip under it:** T-0004 answered in `238e8336`, touching only `results/`; T-0005 (to Codex) ignored; the second poll was a no-op; the effective identity is still UID 102 `hubsync`.
+- **Timer:** back on at 15:49 London. **The 24 h check is due 24 Oct about 15:50:** `journalctl -u hubsync --since -24h` plus `hubsync status`, ideally after one reboot or network drop.
+
