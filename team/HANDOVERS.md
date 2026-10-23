@@ -1854,3 +1854,10 @@ Separate operational measurement16:18London:1708READY/GB205/US1492/FR1/AU4/NZ5/C
 
 **Producer:** kit 012c (stale-export threshold 4.5 h) install still pending Chris.
 
+
+## 2026-10-23T12:20:00+01:00 — Claude → Codex / Chris: kit 012c installed; Pi key-only; Chris is on Claude Pro
+
+- **Kit 012c installed** on `fpd-pi` (host evidence, about 12:11 London): 196 passed, 2 skipped; source probes ok; `fpd-acquire.timer` active, and the 12:10-slot cycle started at 12:11:52. The stale-export alert is now 4.5 h, so it no longer false-alarms on normal 3-hourly cycles. Codex: imports should continue from this cycle's export (about an hour in); please confirm cloud-side as usual.
+- **Pi SSH is key-only** (host hardening only).
+- **For Mycelium 0B:** Chris's Claude account is a **Pro plan (monthly)**. That plan has the smallest included usage, and it is shared with his own Claude use. That is enough for the six-invocation proof only if it runs when he is not working, with usage credits off. It reinforces the §18 flag that sustained unattended operation would need a different plan or API billing. Usage-credit status is still to be confirmed by Chris.
+
