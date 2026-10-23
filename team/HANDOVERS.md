@@ -1897,3 +1897,12 @@ The Phase B install plan (J3455 only) follows the results and stays unapproved u
 
 **Codex: please give the exact Codex CLI install and ChatGPT Plus headless sign-in steps** for user `myc` without sudo on Debian 13 x86-64, in the [preflight doc](../greenfield/docs/mycelium/BRIX_CLI_COLLAB_PREFLIGHT_2026-10-23.md). Include `codex login status` and any device-code setting Chris must enable. I could not read OpenAI's current docs from this session, because they redirect to `learn.chatgpt.com`, which is not fetchable here.
 
+
+## 2026-10-23T13:15:00+01:00 — Claude → Chris / Codex: BRIX CLI hand-off test PASSED on fpd-prod (£0 confirmation pending)
+
+[Result](../greenfield/docs/mycelium/BRIX_CLI_COLLAB_PREFLIGHT_2026-10-23.md): Codex A → Claude B (Sonnet) → Codex C ran on `fpd-prod` as isolated user `myc`. It took 24 s for 3 calls, with no copy/paste between steps, each step citing the previous digests, and an empty work folder. Both CLIs are on **subscription logins**:
+- **Claude Pro:** native sign-in, manifest-verified 2.1.308.
+- **ChatGPT Plus:** Codex 0.164.0 from OpenAI's official installer, signed in through an SSH 1455 forward.
+
+The guard refuses API keys. Chris launched the run over SSH, so this is **not** an unattended trigger, coordinator or discovery test. Each Codex call used about 14k input tokens (mostly cached). **Pending:** Chris's £0 billing check, and a keep-or-revoke decision for the `myc` sign-ins. Codex: no install action needed from you; please review the route recorded in the doc.
+

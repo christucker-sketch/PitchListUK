@@ -130,3 +130,38 @@ No sign-in, model call or Codex install happens in part 1.
 
 **Part 3:** Chris signs in to both CLIs through their own flows. **Part 4:** the capped three-call harness.
 
+## Result (23 Oct 13:04 London, host evidence): acceptance test PASSED on `fpd-prod`
+
+**How the Codex part was done:** Codex had not posted its route, so Claude used OpenAI's official standalone installer from the `@openai/codex` README. It installed **Codex CLI 0.164.0**, pinned, at user level as `myc`, with the installer's own SHA-256 check; no Node or sudo was needed ([`myc-part2.sh`](preflight/myc-part2.sh)). The guard self-tests refuse a set `ANTHROPIC_API_KEY` and a set `OPENAI_API_KEY`.
+
+**Sign-ins:**
+- **Claude:** Chris signed in through the native flow. `/status` shows `Login method: Claude Pro account`; Claude Code 2.1.308 is manifest-verified.
+- **Codex:** Chris signed in with ChatGPT (Plus) through an SSH local forward of port 1455 from his PC; device-code auth was not needed. `codex login status` reports "Logged in using ChatGPT".
+
+**Run** (`~/bin/myc-handoff`, launched by Chris over SSH, no relay between steps):
+
+| Step | Tool | Time | Usage reported | Check |
+| --- | --- | ---: | --- | --- |
+| A | Codex (read-only sandbox, ephemeral, empty folder) | 10 s | 14,208 input (12,288 cached) / 89 output | 3 risks + END-A |
+| B | Claude Sonnet (`claude-sonnet-5-5`; no tools, no MCP/connectors, no session saved) | 6 s | 2 input / 233 output | cites A's digest `e1ce7159f73a`; reviews each point and adds one (prompt injection) |
+| C | Codex | 8 s | 15,036 input (12,288 cached) / 128 output | cites A and B digests; ADOPT/REJECT per point |
+
+Total time was 24 s across 3 calls; the work folder stayed empty, and the chain was `e1ce7159f73a → 6a496aa8aec4 → 0b8d0039e4b7`. The Claude JSON's "API-equivalent" figure (about $0.012) is an estimate, not a charge, on a subscription.
+
+**Against the acceptance test:**
+1. Both CLIs execute — **yes**.
+2. The orchestrator passed results with no human copy/paste — **yes**.
+3. Outputs, errors, timing and usage were captured without secrets, under `/home/myc/preflight/run-20261023-130338/` (kept on the host, not in Git) — **yes**.
+4. No repository or worker mutation — **yes**: empty work folder, read-only or no tools.
+5. Aborts on the first error, with call/time caps and a kill switch — **implemented**. Abort and refusal paths were tested with mocks and the guard self-tests; no live failure occurred.
+
+**Not yet evidenced or still open:**
+- **£0:** Chris to confirm that the claude.ai usage and ChatGPT billing pages show no charge. Claude usage credits were confirmed off beforehand.
+- **Codex input cost:** about 14k input tokens per Codex call, mostly cached system context, even for a tiny prompt. This matters for Plus allowances at any real volume.
+- **Trivial reconciliation:** C adopted everything, so this proves the plumbing, not review quality.
+- **Not unattended:** the run was started by Chris over SSH. There is no trigger, no cloud coordinator and no restart handling; per the gates, BRIX remains replaceable local compute.
+
+**State left on the host:** both subscription sessions remain signed in under `myc` (files mode 0600, home 0700, no SSH login for `myc`). Nothing runs in the background; no service or timer was added. To revoke: `sudo deluser --remove-home myc`, plus sign-out from each account's sessions page. `fpd-standby` is unchanged.
+
+**Next (needs Chris):** decide whether to keep the `myc` sign-ins for the next approved stage or revoke them now. Any unattended trigger, cloud coordinator link or discovery work is a separate stage under the £0 gates.
+
