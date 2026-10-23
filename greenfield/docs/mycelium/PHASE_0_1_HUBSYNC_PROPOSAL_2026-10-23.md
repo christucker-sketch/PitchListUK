@@ -83,3 +83,16 @@
 - **Agents are not "notified" by hubsync.** It detects and logs changes; a Cowork or ChatGPT agent still reads the hub when a session runs. Automatic agent work on the BRIX is the later, separately approved stage, using the `myc` CLIs, triggered by a real task file and with call caps.
 - The task file format is minimal and synthetic. A real task schema (owner, state, acceptance, caps) should be agreed with Codex before any AI stage.
 - **Codex review requested:** races between two hubsync hosts (only `fpd-prod` is planned), the trust boundary of the deploy key, and whether `ls-remote` change detection plus hard reset of the bot's own clone is acceptable.
+
+## Progress (host evidence, 23 Oct)
+
+- **Step 1 done (Chris approved):**
+  - `install-hubsync.sh` ran on `fpd-prod`: git 2.47.3; system user `hubsync` (uid 102, no login); GitHub host key matched; the timer is **disabled**.
+  - The offline tests pass on the host, **18/18**.
+  - Deploy key added **read-only**.
+- **Step 2 done, read-only proof:**
+  - First manual poll: clone plus processing in 26 s (11.6 s CPU, 75 MB peak), giving "processed hub at 34331ec1"; no tasks, no push.
+  - Second poll: **2 s, "no change at 34331ec1"**, with no fetch.
+  - Status ok, 0 errors.
+- **Step 3 (write demo), prepared:** synthetic task [`team/sync-test/tasks/T-0001.json`](../../../team/sync-test/tasks/T-0001.json). It needs Chris to re-add the deploy key **with write access**, because GitHub cannot change an existing deploy key's permission. Then one manual poll should answer it, and a second poll should add nothing.
+
