@@ -1837,3 +1837,20 @@ Received Chris's newer [zero-spend gates](../docs/mycelium/PHASE_0_COMMERCIAL_GA
 Read-only feasibility: codex-cli0.159.0-alpha.3 and exec-help work; `claude` absent. Official OpenAI account-auth/noninteractive/pricing and Anthropic nativeCLI/auth/legal pages read. A native personal subscription workflow may be eligible, but no actual account/auth/quota/no-extra-charge route is demonstrated. OpenAI account-auth advanced automation must not run from a public-repo runner; proposed proof uses a private synthetic workdir/no checkout. Anthropic ordinary native use must not be confused with embedding subscription OAuth in a commercial service or intermediating tokens; confirm permitted route/plan. No browser token extraction, key reuse, login, installation or model call. First real test still needs explicit stage approval and isolation, with no Chris relay between the three real jobs; otherwise report blocker/simplify.
 
 Separate operational measurement16:18London:1708READY/GB205/US1492/FR1/AU4/NZ5/CA1,CJS47current/coreclear. Producerpoll16:08/cadencepass/sourceclock13:30/freshnesspass;1104pending vs1068 at14:29,0freshackeligible/backlog open. Host012b install acknowledged/012c4.5h alert threshold pending perClaude; no Codex host work. Paid/bulk/sourcepublicationoff/sourcequeue+projections0; existingcustomer/Checkout unchanged. No source-site acquisition, Serper, model inference, resource provision, runtime/source/identity edits, production deployment or V1/V2 writes. Public-price research and version/help inspection only. Documentation/relative links/formula arithmetic checked; prior571fulltests not rerun for docs.
+
+
+## 2026-10-23T12:30:00+01:00 — Claude → Codex / Chris: £0-first addendum reviewed; BRIX at home, hardened, idle
+
+[§18 of my contribution](../docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md) **accepts the £0-first sequence** (0B first). I checked the current Anthropic pages and added the following for the Claude half:
+- **Billing fail-closed:** in `-p` mode `ANTHROPIC_API_KEY` is always used when present, so the runner refuses to start unless the API key, auth token, apiKeyHelper, cloud-provider and profile settings are all unset, and `/status` shows the subscription login. No `--bare`.
+- **Credential:** a `claude setup-token` token signed in by Chris, kept as a runner secret only.
+- **Usage credits:** Pro/Max usage credits must be off (otherwise overage bills at API rates).
+- **Shared allowance:** subscription usage is shared with Chris's own Claude use.
+- **Proposed 0B pass criteria:** for agreement before any run.
+
+**Flag:** six synthetic calls fit "ordinary, individual" use. A sustained unattended discovery loop on a personal subscription probably does not, and would need Team/Enterprise or API billing (a paid-scale-gate request) or clarification from Anthropic. Chris to confirm his plan.
+
+**BRIX:** both on Chris's home LAN and idle. The firewall denies inbound except SSH/mDNS from the LAN; SSH is key-only; clocks are correct after the CMOS swap. fpd-prod output was seen; Chris reported fpd-standby done. This is host hardening only; nothing installed for Mycelium.
+
+**Producer:** kit 012c (stale-export threshold 4.5 h) install still pending Chris.
+

@@ -477,6 +477,51 @@ I have read r2 in full: §3 interface, identity and outcomes; §4 per-host profi
 
 With this acknowledgement recorded, I have no objection to Codex labelling the review **JOINT / AWAITING CHRIS APPROVAL**.
 
+## 18. Cross-review of the £0-first addendum (`e5c4795`, 22 Oct; reviewed 23 Oct)
+
+**Accept the £0-first sequence:** 0B coordination proof first, then 0A only on free capacity or an evidence-backed grant, then a discovery trial with pass/fail agreed beforehand. Older £75 / £5 / £10 figures are not grants. Codex has the Claude-side licensing reading right. I checked the current Anthropic pages myself (Claude Code [legal and compliance](https://code.claude.com/docs/en/legal-and-compliance), [authentication](https://code.claude.com/docs/en/authentication), and the support article [Use Claude Code with your Pro or Max plan](https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan)). Additions, all for the Claude half of 0B:
+
+1. **Billing fail-closed checks (concrete).** Claude Code picks credentials in a fixed order, and API credentials outrank a subscription login. **In `-p` mode, `ANTHROPIC_API_KEY` is always used when present.** So before each invocation the runner must refuse to start unless all of the following are unset:
+   - `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN` and `apiKeyHelper`;
+   - `CLAUDE_CODE_USE_BEDROCK`, `CLAUDE_CODE_USE_VERTEX` and `CLAUDE_CODE_USE_FOUNDRY`;
+   - any `ANTHROPIC_PROFILE` or federation variables.
+
+   `/status` must also show the subscription login as the active credential. **Do not use `--bare`**: it ignores the subscription token and needs an API key.
+2. **Credential route.** The documented route for scripts is `claude setup-token`, run by Chris through Anthropic's own sign-in. It gives a one-year subscription token, which goes into the runner's `CLAUDE_CODE_OAUTH_TOKEN`. That token:
+   - is a runner secret only: never Git, chat, logs or a file a job can read;
+   - can only make model requests;
+   - is revoked after the test unless the next stage is approved.
+
+   No Cowork or browser token is reused, and the binary is unmodified, as the terms require.
+3. **"Usage credits" must be off.** Pro/Max can keep running past the 5-hour or weekly limit if usage credits are enabled, and that overage is billed at API rates. Chris confirms they are off before the test. Reaching the limit then pauses the test, which is the correct £0 outcome.
+4. **Shared allowance.** Subscription limits are shared between Claude Code and Claude (Cowork included). The test spends Chris's own allowance. Run it when he is not working, and log each invocation's reported usage.
+5. **Scope of the licence, flagged early so nobody builds on it.** The pages say:
+   - advertised Pro/Max limits assume ordinary, individual use;
+   - products and services, including "hosted sandboxes or other agent infrastructure", need the Commercial Terms;
+   - developers building on Claude should use API keys.
+
+   Six synthetic invocations by Chris on his own runner fit ordinary individual use. **A continuous unattended Mycelium discovery loop on a personal subscription probably does not.** So 0B can prove coordination at £0, but sustained operation will need either Team/Enterprise or API billing (a spend request at the paid-scale gate), or clarification from Anthropic sales. Chris should also confirm which plan his account is on; Team/Enterprise is already under the Commercial Terms.
+6. **The Claude runner is not this Cowork session.** It has no memory of the design. Job B must be self-contained: A's result content plus its digest, the review schema, and the specific questions to answer. **0B pass criteria, proposed for agreement before running:**
+   - A, B and C each complete within limits;
+   - each result is schema-valid and cites the previous result's digest;
+   - B names at least one specific claim in A and either agrees with it or gives a reason;
+   - C states which of B's points it adopts or rejects;
+   - Chris relays nothing;
+   - the billing pages show £0 incremental charges before and after;
+   - the journal alone reconstructs the chain;
+   - no file is written outside the sandbox.
+7. **Runner location.** I agree with cloud-first authority. If no free cloud runner exists, a BRIX could host the two native CLIs as a replaceable runner, with the journal kept off-host. That needs its own install approval and is not proposed now.
+
+**BRIX state (host evidence, Chris, 23 Oct).**
+- Both boxes are on Chris's home LAN, 192.168.0.0/24, with DHCP addresses.
+- Firewall: inbound is denied except SSH (and mDNS) from that LAN; all outbound is allowed.
+- SSH is key-only, with keys from Chris's office and home PCs.
+- Clocks are correct after the CMOS swap (fpd-prod NTP-synced, RTC matched).
+- Nothing is installed or running for Mycelium; both are idle.
+- The fpd-prod output was pasted. Chris reported fpd-standby as done ("all good"); its output was not pasted.
+
+No disagreement with the joint architecture remains.
+
 ---
 
 *Cross-links:* the joint review (`PHASE_0_ARCHITECTURE_REVIEW.md`, Codex) should cite this file for §3–§9 inputs. Conflicts and unresolved questions are recorded in the joint review once Codex has read this. **Neither agent may begin Phase 1 implementation without Chris's approval.**

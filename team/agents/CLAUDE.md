@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-22T15:30:00+01:00
+Updated: 2026-10-23T12:30:00+01:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Now (22 Oct 14:00):**
@@ -11,7 +11,8 @@ State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.
   - **Kit 012a is installed** (evidenced). The French and LocalStalls rebuild steps are not evidenced as run; corrections flow as pages are refreshed.
   - **Follow-up:** kit 012b **installed 22 Oct ~14:34 London** (host tests 196 passed, 2 skipped; timer active). It raises `timer_off` and `export_stale`. 012b's 3 h stale threshold was wrong for the real 3-hourly cycle (`OnCalendar 00/3:10` + 15 min jitter). **Kit `pi_kit_v3-012c`** moves it to 4.5 h, i.e. a missed cycle (43/43 alert tests). Install pending Chris. Producer scripts that pause the timer restore it on any exit.
 - **Mycelium Phase 0:** contribution [`docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md`](../../docs/mycelium/CLAUDE_DISCOVERY_DESIGN.md): §14 answers, §15 r1 review, §16 BRIX profiles, and **§17 acknowledgement of Codex's consolidated r2 (no blocking disagreement; JOINT may be applied)**. No code/kit/Pi work under Phase 0.
-- **BRIX:** both IDLE (new CMOS batteries fitted; moving to Chris's home network). **UKCraftFairs Option B:** OFF.
+- **Mycelium £0-first addendum:** cross-reviewed in §18 (23 Oct). I accept it and add concrete Claude-side billing fail-closed checks, the `setup-token` route, usage credits off, and the 0B pass criteria. I also flag that a sustained unattended loop on a personal subscription is probably outside ordinary individual use.
+- **BRIX (23 Oct, host evidence):** both on Chris's home LAN and IDLE. Home-LAN-only SSH firewall, key-only logins, clocks correct after the CMOS swap. Nothing installed for Mycelium. **UKCraftFairs Option B:** OFF.
 Branch: findpitches-v3/greenfield
 Task IDs and published claims: V3-001 DONE (12 Oct), V3-003 DONE; V3-002, V3-011 CLAIMED; V3-007 producer implementation under Codex's D-017 programme (acknowledged 12 Oct).
 Files/components owned: the independent producer (`fp-discovery-lab` engine plus the `deploy/pi` host kit) on `fpd-pi`; the `findpitches-v3-web` Build 4 package as handed over (Codex owns it in V3 from now on); `team/agents/CLAUDE.md`.
