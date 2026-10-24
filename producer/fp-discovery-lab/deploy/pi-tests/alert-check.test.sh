@@ -28,7 +28,15 @@ case "$1" in
   is-active) if [[ ${2:-} == fpd-acquire.timer ]]; then cat $C/timer_active 2>/dev/null || echo active
              else cat $C/delivery_active 2>/dev/null || echo active; fi ;;
   list-units) cat $C/failed_units 2>/dev/null ;;
+  is-enabled) cat $C/delivery_enabled 2>/dev/null || echo enabled ;;
+  start) echo "$2" >> $C/started
+         if [[ $2 == fpd-v3-delivery ]]; then echo active > $C/delivery_active
+         elif [[ ! -f $C/mount_fails ]]; then rm -f $C/unmounted; fi ;;
 esac
+EOF
+cat > "$STUB/mountpoint" <<'EOF'
+#!/usr/bin/env bash
+[[ -f $CTL/unmounted ]] && exit 1 || exit 0
 EOF
 cat > "$STUB/journalctl" <<'EOF'
 #!/usr/bin/env bash
@@ -162,4 +170,25 @@ touch -d "@$((W+3600-3*3600-40*60))" $T/srv/export/full/current.jsonl
 ok "normal 3h40m gap is not stale" '! FPD_ALERT_NOW=$((W+3600)) bash "$CHECK" --show 2>/dev/null | grep -q "Newest full export"'
 touch -d "@$((W+3600-600))" $T/srv/export/full/current.jsonl
 ok "fresh export and timer on: no new problem" '! grep -q "Discovery timer is OFF" $T/out || [[ "$(subj)" == *RESOLVED* ]]'
+# 17. self-repair after a power cut (24 Oct): delivery enabled but dead -> started and reported once; not before go-live;
+#     never from --show; data disk unmounted -> mounted, or reported if the mount fails
+rm -f $T/state/state.json $T/ctl/started; H=$(date -d "2026-10-24 13:22" +%s)
+touch -d "@$H" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst" $T/srv/export/full/current.jsonl; offsite true "$(iso $H)" null; status "$(iso $H)" 0 0 600
+echo inactive > $T/ctl/delivery_active; FPD_ALERT_NOW=$H bash "$CHECK" --show > $T/show 2>&1
+ok "--show never repairs" '[[ ! -f $T/ctl/started ]] && grep -q "delivery_down" $T/show'
+b3=$(sends); run $H
+ok "dead delivery started" 'grep -qx fpd-v3-delivery $T/ctl/started && [[ $(cat $T/ctl/delivery_active) == active ]]'
+ok "repair reported by email" '[[ $(sends) == $((b3+1)) ]] && jq -r .text_body $T/ctl/last_body.json | grep -q "started it automatically"'
+ok "no delivery_down after repair" '! jq -r .text_body $T/ctl/last_body.json | grep -q "is not running"'
+touch -d "@$((H+900))" "$T/srv/backups/fpd-20261011T0320Z.sqlite.zst" $T/srv/export/full/current.jsonl; status "$(iso $((H+900)))" 0 0 600
+run $((H+900)); ok "repair then resolves" '[[ "$(subj)" == *RESOLVED* ]]'
+rm -f $T/ctl/started; echo inactive > $T/ctl/delivery_active; echo disabled > $T/ctl/delivery_enabled; run $((H+1000))
+ok "not enabled (pre go-live): never started" '[[ ! -f $T/ctl/started ]]'
+rm -f $T/ctl/delivery_enabled; echo activating > $T/ctl/delivery_active; run $((H+1100))
+ok "self-restarting unit left alone" '[[ ! -f $T/ctl/started ]]'
+echo active > $T/ctl/delivery_active; rm -f $T/state/state.json; touch $T/ctl/unmounted; b4=$(sends); run $((H+1200))
+ok "unmounted disk mounted and reported" '[[ ! -f $T/ctl/unmounted ]] && [[ $(sends) == $((b4+1)) ]] && jq -r .text_body $T/ctl/last_body.json | grep -q "mounted it automatically"'
+touch $T/ctl/unmounted $T/ctl/mount_fails; FPD_ALERT_NOW=$((H+1300)) bash "$CHECK" --show > $T/show 2>&1
+ok "failed mount reported as disk_unmounted" 'grep -q "is NOT mounted" $T/show'
+rm -f $T/ctl/unmounted $T/ctl/mount_fails
 echo "alert-check tests: $pass passed, $fail failed"; [[ $fail == 0 ]]

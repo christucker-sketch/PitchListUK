@@ -223,6 +223,9 @@ if [[ $NO_SYSTEMD -eq 0 ]]; then
   systemctl daemon-reload
   systemctl enable --now fpd-backup.timer fpd-v3-prune.timer fpd-offsite-backup.timer fpd-alert.timer >/dev/null
   if [[ -f "$SRV/data/fpd.sqlite" ]]; then systemctl enable --now fpd-acquire.timer >/dev/null; else warn "no database yet: fpd-acquire.timer not enabled"; fi
+  # Delivery already live: refresh its enable links so it is also wanted by srv-fpd.mount (starts when the data disk
+  # mounts late, e.g. after a power cut). Never enables a service that has not gone live.
+  if systemctl is-enabled --quiet fpd-v3-delivery 2>/dev/null; then systemctl reenable fpd-v3-delivery >/dev/null 2>&1 || warn "could not refresh fpd-v3-delivery enable links"; fi
   # The delivery runner is a long-lived loop: restart it (only if already live) so updated runner code takes effect.
   if systemctl is-active --quiet fpd-v3-delivery; then systemctl restart fpd-v3-delivery; echo "restarted fpd-v3-delivery (new runner code)"; fi
   systemctl list-timers 'fpd-*' --no-pager

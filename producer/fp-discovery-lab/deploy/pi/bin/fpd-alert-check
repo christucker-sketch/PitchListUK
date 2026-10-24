@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# FindPitches Pi health alerts by email (SMTP2GO HTTP API). Read-only checks; run every 15 min by fpd-alert.timer.
+# FindPitches Pi health alerts by email (SMTP2GO HTTP API). Run every 15 min by fpd-alert.timer. Checks are read-only,
+# except a narrow self-repair (see heal): re-mount the data disk, restart a live delivery service that has stopped.
 #   fpd-alert-check            check, then email new problems / reminders / resolutions (and the daily summary)
 #   fpd-alert-check --test     send one test email now
 #   fpd-alert-check --show     print current problems, send nothing
@@ -32,9 +33,34 @@ age_of() { local t; t=$(date -d "$1" +%s 2>/dev/null) || { echo -1; return; }; e
 hrs() { awk -v s="$1" 'BEGIN{printf "%.1f", s/3600}'; }
 clean() { grep -viE 'token|bearer|authoriz|api[-_]?key|password|secret' | cut -c1-300; }
 
+# ------------------------------------------------------------------ self-repair (normal check runs only, not --show)
+# 24 Oct: after a power cut the USB SSD dropped off the bus during the boot disk check, so /srv/fpd was not mounted at
+# boot; fpd-v3-delivery failed its mount dependency and never retried (a timer mounted the disk ~7 min later, but
+# delivery stayed down ~20 h). Each check now (1) mounts the data disk if it is not mounted and (2) starts delivery if
+# it is enabled (it has gone live) but stopped or failed, and reports what it did. A delivery service that is not
+# enabled (before fpd-go-live) is never started. A unit that is merely restarting on its own is left alone.
+HEALED=""
+heal() {
+  local mnt st
+  mnt=$(systemd-escape -p --suffix=mount "$SRV" 2>/dev/null) || mnt=srv-fpd.mount
+  if ! mountpoint -q "$SRV"; then
+    systemctl start "$mnt" >/dev/null 2>&1 && mountpoint -q "$SRV" && \
+      HEALED+="auto_mounted"$'\t'"Data disk $SRV was not mounted; the health check mounted it automatically"$'\n'
+  fi
+  mountpoint -q "$SRV" || return 0
+  [[ $(systemctl is-enabled fpd-v3-delivery 2>/dev/null) == enabled ]] || return 0
+  st=$(systemctl is-active fpd-v3-delivery 2>/dev/null)
+  if [[ $st == inactive || $st == failed ]]; then
+    systemctl start fpd-v3-delivery >/dev/null 2>&1 && \
+      HEALED+="auto_started_delivery"$'\t'"V3 delivery service was enabled but $st; the health check started it automatically"$'\n'
+  fi
+}
+
 # ------------------------------------------------------------------ checks: one line per problem, "key<TAB>message"
 problems() {
   local r a s
+  [[ -z $HEALED ]] || printf '%s' "$HEALED"
+  mountpoint -q "$SRV" || printf 'disk_unmounted\tData disk %s is NOT mounted: discovery, delivery and backups cannot run. Check: sudo journalctl -b | grep -E "srv-fpd|sda"\n' "$SRV"
   # discovery cycle
   r=$(systemctl show fpd-acquire -p ActiveState --value 2>/dev/null)
   if [[ $r == failed ]]; then
@@ -232,6 +258,7 @@ $(summary)"; exit $? ;;
 esac
 
 # ------------------------------------------------------------------ decide what to send
+heal
 P=$(problems)
 CUR=$(printf '%s\n' "$P" | jq -Rn '[inputs|select(length>0)|split("\t")|{key:.[0],value:(.[1:]|join(" "))}]|from_entries')
 S=$(cat "$STATE")

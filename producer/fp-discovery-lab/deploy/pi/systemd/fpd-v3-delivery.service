@@ -28,4 +28,5 @@ InaccessiblePaths=/srv/fpd/data /srv/fpd/backups
 UMask=0077
 
 [Install]
-WantedBy=multi-user.target
+# Also wanted by the data-disk mount: if /srv/fpd mounts late (24 Oct power cut), delivery starts when it does.
+WantedBy=multi-user.target srv-fpd.mount

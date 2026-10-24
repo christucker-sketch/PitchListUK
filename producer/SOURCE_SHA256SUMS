@@ -5,13 +5,13 @@
 6bdb044fddc4d7d89057a41a560b4311316b4c645587f7696969033b8581d8a1  ./README.md
 15e6657093d6738c2f1a69c09bdbb9dd45bf1d1e5147e4af109e65b85bb4751f  ./RESULTS.md
 acfc8998eeb156566a582140b98732110b95a7c98bbdc7479f8f21ef9663440f  ./RESULTS_R2.md
-e0b5f6aa5d7631eee92f50249cd5e907e5c7050d12a2e1850a829cba07126579  ./deploy/pi-tests/alert-check.test.sh
+3fd7b365c845793a82a35752131d48553c46480ceaff7144e3cbbdefeb644132  ./deploy/pi-tests/alert-check.test.sh
 e57a2f3b3d01b4df99015ccc517a0c41bf0801b27f3310ec62050b0ec7f1b718  ./deploy/pi-tests/prune.test.sh
 a400ce419909cc89513aacc55c1040ae60f196d5e19016ffd3b45fb8e9006801  ./deploy/pi-tests/source-key.test.sh
-e93d44f3d2137d9e2bdec4686b2e6e00dd8a103dcea700bf0b2dcace31104308  ./deploy/pi/README.md
-8a83418a997067c9520649cca6f6c939a48eea47982cc820aef5937a8a757dca  ./deploy/pi/SHA256SUMS
+4a7c11f75de02cbb3a1fff7603e430e17b99877e28ab16c014ad2dad67bf9971  ./deploy/pi/README.md
+b9c820bc7e208b310c64255a27c4605cf968b22e5451a47773cd35bbcac1d8c4  ./deploy/pi/SHA256SUMS
 fbc5ed0eb42bd2d5bc0ef60b2349096d2fc7d05f0db957e5279ce0c1aeb8e92b  ./deploy/pi/bin/fpd
-6e7b382cdaf40815f4b1bfb15cb5af10c3c1389fce5e55d1d89a2e8382e7b73b  ./deploy/pi/bin/fpd-alert-check
+9201cf79fff583e92b0e257c6ddd307c87ac7b370f17e7c121b2d7cd06e744fb  ./deploy/pi/bin/fpd-alert-check
 78cbefa873c475b99f17a98742575ba5d8e2bbaef890c0ef820bb7724d1cff84  ./deploy/pi/bin/fpd-alert-setup
 7e8be4d83baa291092e2eb7e6afec595789af0d664aa8d8b870e106c3d1e8352  ./deploy/pi/bin/fpd-backup
 d8ae6bc871ffc40adc9a6019173c1ebf9a71a93ea3bd8d7608e8158f856dd6af  ./deploy/pi/bin/fpd-cycle
@@ -34,7 +34,7 @@ dfc9de058de2bbe40dd80d07a38d4e1480f5985b15da173947e3d80ac1f16440  ./deploy/pi/bu
 d370e3c0fd1c3fb9956af88f8d4d30c0c932dcf5b03d4271005a75e3578baa6a  ./deploy/pi/delivery/producer-delivery.mjs
 6c485e090035ba8580f1e47ffa7da7ba18b6ef87cfa627de68d829793181b134  ./deploy/pi/delivery/producer-delivery.test.mjs
 b4978cb50a07996d6e5472cea192f6c9742f00ca83ac1f469a6402a2757f8f88  ./deploy/pi/delivery/producer-runner.mjs
-75633e2a53e162d9a111faa6fee63d2937fc3ed96cce88e9a5dbd29b4ac74643  ./deploy/pi/install.sh
+fa4698a0b8f884518e8e5f6a9dcd779fbc2a5866e4e3d632d73cca0c51455fe0  ./deploy/pi/install.sh
 a9da07ccd34685a6c94d49a099aca7e2221b740e0e58e6ec126d066b96012573  ./deploy/pi/lib/evidence.py
 c5f37b2ec3a06cfb21cef14f48622aec23b3882e477a836a2bcafd4b06a65b91  ./deploy/pi/systemd/fpd-acquire.service
 ae230896155f68a22a21acc3edb85387877729bce056df5c91a1378f20ebe087  ./deploy/pi/systemd/fpd-acquire.timer
@@ -44,7 +44,7 @@ a3bb4403af7b87adac0f6e7d851fe7dafcd51ca0266dbe04404f29339dbab6bf  ./deploy/pi/sy
 fe1d828a3957209b6d387766ae25731ec7e452903964dca33431c79ff2112cf4  ./deploy/pi/systemd/fpd-backup.timer
 4949dbc701be7166f1c330140b97440e188968cccb93cf37c018aa0136855e50  ./deploy/pi/systemd/fpd-offsite-backup.service
 65118f3d94a3642298d2b0b9278053cb9084a37c1360e89ce685a1f9f842c293  ./deploy/pi/systemd/fpd-offsite-backup.timer
-e51e8996071f15c4fb2a065050cbf8e8d550ef033fceebf4e8ed971e64767e72  ./deploy/pi/systemd/fpd-v3-delivery.service
+4a60992963277e9045ddbdd8f7f9166d4fc101f91fe6f67e5700d69cb657ee96  ./deploy/pi/systemd/fpd-v3-delivery.service
 3f23cf052583bdf0f7bcd7f6942717cb650a92060ae278b9723bfedb6fc3fd23  ./deploy/pi/systemd/fpd-v3-prune.service
 e4d7be8671618a186e23da6d73b5a4f79f143e17e5c4a6851b257ff5a6642183  ./deploy/pi/systemd/fpd-v3-prune.timer
 357a2add6556103fbc82aab16c58328e174f30c1bf53cef668cd1e3acd2b146f  ./fpd/__init__.py

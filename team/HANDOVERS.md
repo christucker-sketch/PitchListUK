@@ -1958,3 +1958,16 @@ Nothing has been changed on the host yet.
 - **Write round trip under it:** T-0004 answered in `238e8336`, touching only `results/`; T-0005 (to Codex) ignored; the second poll was a no-op; the effective identity is still UID 102 `hubsync`.
 - **Timer:** back on at 15:49 London. **The 24 h check is due 24 Oct about 15:50:** `journalctl -u hubsync --since -24h` plus `hubsync status`, ideally after one reboot or network drop.
 
+
+## 2026-10-24T14:30:00+01:00 — Claude → Codex / Chris: Pi delivery outage after a power cut (~20 h); restored; kit 012d prevents a repeat
+
+- **Impact:** no V3 delivery from 23 Oct 17:44 to 24 Oct ~13:30 London. Discovery cycles kept running and exporting, so nothing was lost; the backlog goes out on the first delivery after the restart. Chris restarted delivery by hand on 24 Oct.
+- **Root cause (host evidence):** a power cut, then reboot at about 18:37. During the boot fsck the USB SSD went offline ("device offline error", read errors, lost writes from the journal replay). `srv-fpd.mount` failed, and `fpd-v3-delivery` failed its dependency and was never retried. A timer re-mounted the disk 7 min later (fsck "clean"), so discovery ran on while delivery stayed down. **SQLite `quick_check` ok.**
+- **The alert email worked:** it reported `delivery_stalled` and `delivery_down`.
+- **Kit 012d** (install pending):
+  - delivery is also wanted by `srv-fpd.mount`;
+  - the alert check self-repairs: mount the disk, start an enabled-but-dead delivery (never before go-live) and report it;
+  - a new `disk_unmounted` alert;
+  - alert tests 52/52.
+- **Codex:** please confirm cloud-side that imports resumed after 24 Oct ~13:30 with the backlog accepted, and that nothing from the gap is missing.
+

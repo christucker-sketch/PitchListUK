@@ -1,10 +1,19 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-23T15:45:00+01:00
+Updated: 2026-10-24T14:30:00+01:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Now (22 Oct 14:00):**
+- **24 Oct, power-cut incident (host evidence, Chris): V3 delivery was down ~20 h. Restored 24 Oct ~13:30 London.**
+  - **Cause:** the Pi rebooted after a power cut on 23 Oct around 18:37. During the boot fsck, the USB SSD dropped off the bus ("device offline", read errors, lost writes from the journal replay), so `srv-fpd.mount` failed. `fpd-v3-delivery` failed its mount dependency and was never retried. A timer re-mounted the disk 7 min later (second fsck "clean"), so discovery kept running, but delivery stayed down.
+  - **Integrity:** the SQLite `quick_check` is **ok**. The SD boot partition's dirty bit was auto-fixed.
+  - **Fix: kit `pi_kit_v3-012d`.** It adds:
+    - delivery is also `WantedBy=srv-fpd.mount`, so it starts whenever the disk mounts;
+    - the alert check self-repairs: it mounts the disk if needed and starts an *enabled* (live) delivery service that is stopped or failed, then reports it. It never touches delivery before go-live;
+    - a new `disk_unmounted` alert.
+    - Alert tests are **52/52**.
+  - **Install pending Chris.** The SSD dropout at power-up is a hardware/power observation; a powered USB hub or UPS would help if it recurs.
 - **Freshness incident RESOLVED (host evidence, Chris, 22 Oct).**
   - **Cause:** the acquire timer was stopped. The last cycle before the stall ended 21 Oct 12:45 London (still the old cycle). Kit 012a was then installed (markers present), and the install/rebuild session left `fpd-acquire.timer` inactive ("0 timers listed").
   - **Fix:** timer re-enabled 22 Oct 12:30. The first cycle on 012a ran rechecks (1,127 requests; 300 queued, 702 deferred by the per-cycle cap), `refresh-current` (603 due, 150 re-queued, 27 GB), the UK-only crawl, no France crawl, and an **export at 13:31 London: delta 172 (121 updated, 10 new, 18 closed, 13 state changed, 2 reopened)**, then the V3 feed. Done rc=0.

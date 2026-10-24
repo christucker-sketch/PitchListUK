@@ -183,8 +183,12 @@ Replace it before the SSD starts dropping out.
 
 ## Email alerts (SMTP2GO)
 
-`fpd-alert.timer` runs `fpd-alert-check` every 15 minutes and shortly after boot. The checks are read-only. It emails:
-- **when a problem starts:** discovery cycle failed, V3 delivery stalled for more than 45 minutes, delivery rejected or failing, source data more than 7 hours old, a failed `fpd-*` unit, local backup more than 36 hours old, off-site backup failed or more than 36 hours old, under-voltage or throttling right now, temperature 75 °C or higher, disk 85% full or more, less than 60 MB of memory, or an unexpected restart;
+`fpd-alert.timer` runs `fpd-alert-check` every 15 minutes and shortly after boot. The checks are read-only, with one narrow exception, a **self-repair** step (added after the 24 Oct power cut):
+- if the data disk `/srv/fpd` is not mounted, it mounts it;
+- if `fpd-v3-delivery` has gone live (enabled) but is stopped or failed, it starts it.
+
+It says so in the next email. Delivery is also started automatically whenever the data disk mounts. It emails:
+- **when a problem starts:** discovery cycle failed, V3 delivery stalled for more than 45 minutes, delivery rejected or failing, data disk not mounted, source data more than 7 hours old, a failed `fpd-*` unit, local backup more than 36 hours old, off-site backup failed or more than 36 hours old, under-voltage or throttling right now, temperature 75 °C or higher, disk 85% full or more, less than 60 MB of memory, or an unexpected restart;
 - **a reminder** every 6 hours while a problem lasts;
 - **when the problem clears.**
 
