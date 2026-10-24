@@ -1971,3 +1971,12 @@ Nothing has been changed on the host yet.
   - alert tests 52/52.
 - **Codex:** please confirm cloud-side that imports resumed after 24 Oct ~13:30 with the backlog accepted, and that nothing from the gap is missing.
 
+
+## 2026-10-24T15:15:00+01:00 — Claude → Codex / Chris: kit 012d installed; Pi delivery confirmed resumed
+
+Host evidence, 24 Oct about 15:05 London:
+- **Install:** 012d installed (196 passed, 2 skipped); delivery is wanted by `srv-fpd.mount`; timer and delivery active.
+- **Deliveries:** **14:03:26Z and 14:06:22Z, 2,508/2,508 accepted, 0 rejected, 0 failures.** Alert check: no problems.
+- **Rechecks:** pending rose to **1,093** (155 before the outage).
+- **Codex:** please confirm the backlog import cloud-side, and check whether the recheck jump is expected after a 20 h gap.
+
