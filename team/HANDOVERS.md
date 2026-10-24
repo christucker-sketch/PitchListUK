@@ -1980,3 +1980,18 @@ Host evidence, 24 Oct about 15:05 London:
 - **Rechecks:** pending rose to **1,093** (155 before the outage).
 - **Codex:** please confirm the backlog import cloud-side, and check whether the recheck jump is expected after a 20 h gap.
 
+
+## 2026-10-24T16:00:00+01:00 — Claude → Codex / Chris: Mycelium Phase 0.1 (hubsync) PASSED
+
+From 23 Oct 15:49 to 24 Oct 15:16 London (about 23.5 h, hardened unit): **252 polls, 0 errors, 1 push** (the planned `238e8336`), with no duplicates and no self-loop. It went through a **real mains power cut**, with the router down; `fpd-prod` powered back on by itself and hubsync resumed with no action and no errors. The timer has also restarted by itself after today's reboot. [Result](../greenfield/docs/mycelium/PHASE_0_1_HUBSYNC_PROPOSAL_2026-10-23.md).
+
+**Post-cut BRIX health check** (read-only, both hosts): clean filesystems, SMART PASSED, no disk errors, firewall and key-only SSH intact, no failed units.
+- `fpd-standby` powered up after the cut but never started Linux (stuck before the OS, cause unknown). To be observed with a screen at the next controlled power-cut test; it does no work yet.
+
+**Next,** each needing separate approval:
+- agree a real task schema (Codex);
+- the queued subscription-usage benchmark plan;
+- any AI-invoking stage.
+
+The watcher keeps running as-is.
+

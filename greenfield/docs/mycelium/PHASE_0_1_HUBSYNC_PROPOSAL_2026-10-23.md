@@ -105,3 +105,17 @@
   - **T-0003 (`to: codex`) was correctly ignored.**
   - **Remaining:** the 24 h check (steady no-change polls, 0 errors, no duplicates, surviving a reboot or network drop). Chris runs `journalctl -u hubsync --since -24h` and `hubsync status` on 24 Oct. Phase 0.1 is complete after that. No AI stage starts without separate approval.
 
+## Result: Phase 0.1 PASSED (host evidence, 24 Oct)
+
+Chris agreed not to restart the observation: the original run already covered more than the plan asked.
+
+| Window | From 23 Oct 15:49 London (timer re-enabled on the hardened unit) to 24 Oct 15:16 (a power-button press shut `fpd-prod` down), about 23.5 h |
+| --- | --- |
+| Polls | **252**. That is the expected ~5.5-minute cadence, less ~43 min while the box had no power. |
+| Errors | **0** |
+| Pushes | **1** (`238e8336`, the hardened write round trip at 15:49). No duplicates, and no pushes on polls with no change. |
+| Real-world disruption | A mains power cut on 23 Oct around 17:55; the whole home network, including the router, was down. `fpd-prod` powered back on by itself at 18:38 and hubsync resumed by itself, with no manual action and no errors. |
+| After restart | It booted 24 Oct 15:21; the timer started by itself (2 polls, 0 errors at 15:34). It runs as UID 102 with the 1.5 OK sandbox. |
+
+**Success criterion met:** GitHub polling and safe test-message synchronisation work unattended without launching an AI, and the offline tests show concurrent updates do not overwrite each other. Next steps are by separate approval only: a real task schema with Codex, then any AI-invoking stage.
+
