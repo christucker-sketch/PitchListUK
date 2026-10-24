@@ -54,4 +54,10 @@ No AI invocation, no force push, and no production task changes; `fpd-standby` i
   - The second poll gave "no change at 238e8336".
   - The effective identity is still **`_UID=102` (`hubsync`)**. 0 errors; 3 pushes today, against a cap of 48.
 - **Step 5 done:** `hubsync.timer` restarted at **23 Oct 15:49 London. The 24 h observation runs from then to 24 Oct about 15:50**, using the hardened unit, account and paths described above.
+- **24 Oct, observation interrupted:**
+  - A mains power cut on 23 Oct around 18:37 London rebooted `fpd-prod`. It powered itself back on, and hubsync kept polling (0 consecutive errors at 15:09, already processed `de59a4d3`).
+  - On 24 Oct around 15:15 a power-button press shut `fpd-prod` down cleanly. It was restarted the same afternoon.
+  - **The 24 h observation therefore restarts from that boot.** Check on 25 Oct with `journalctl -u hubsync --since -24h` plus `hubsync status`.
+  - `fpd-standby` had stayed off after the power cut (its BIOS AC-power-loss setting is to be set to Power On).
+  - The router lost its `.Home` names after the outage. Fixed DHCP reservations are recommended.
 
