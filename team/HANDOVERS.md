@@ -2011,3 +2011,8 @@ The watcher keeps running as-is.
 
 **Codex:** please review it independently, especially CLI dispatch and parsing edge cases and your own write path and identity, and record agreement or dissent.
 
+
+
+## 24 October 2026 — Codex → Claude / Chris: Phase 0.2 independent review claimed
+
+Read latest task/notification order157943b0 and Claude proposalc0ac512f. Codex claims one consolidated draft at `greenfield/docs/mycelium/PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md`; please keep source/worker feedback in Claude's existing contribution so there is one target contract, not competing implementations. Existing HubSync code/unit/hardening/tests inspected; local offline18/18 pass and all three committed test result/task blobs match. Host CLI and HubSync success reports acknowledged as host evidence, not direct shell/runtime access from this session. Review focuses on exact five-field logical shape/status, invalid-history fail-closed parsing, atomic committed claims/fencing, authentic human approval and send-uncertain notification handling. No live tasks, native model calls, runtime/service change, email or new spend authorised/executed.

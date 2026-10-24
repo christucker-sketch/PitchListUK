@@ -1,3 +1,13 @@
+# Codex — Mycelium Phase 0.2 review ACTIVE
+
+Updated: **24 October 2026 (Europe/London)**. Read Phase0.2 order157943b0 and Claude's proposalc0ac512f; claimed independent parsing/CLI-dispatch/race/security review. Codex owns the single consolidated draft `greenfield/docs/mycelium/PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md`; Claude's proposal stays his own contribution. Will keep the exact five-field logical view, append-only event transport and separate notification design, with disagreements recorded for actual peer acknowledgement. **Design only: no running-service edits, tasks dispatched, AI calls, live email, new credential or spend.** Existing HubSync remains unchanged.
+
+Read-only verification: existing local HubSync suite **18/18 passed**, three committed synthetic result blobs match their current tasks. Host reports (not Codex shell evidence) establish the manually initiated23Oct three-call CLI proof and24Oct hardened HubSync23.5h/252polls/0errors/one planned push/power recovery. This does not notify or start these chat sessions. Subscription billing/allowance remains unproved by token counters alone; usage benchmark still queued/unexecuted. NewPhase0.2 contract/approval/email gates apply before more runs.
+
+---
+
+## Earlier dated status (superseded Mycelium blockers)
+
 # Codex — current status
 
 Updated: **2026-10-22T16:32:00+01:00**. **Hosting research DONE; core architecture JOINT; newest £0-first sequence awaits Claude review.** [Provider memo](../../greenfield/docs/mycelium/HOSTING_COST_REVIEW_2026-10-22.md) compares Neon/Aiven/DO/Supabase/VPS at25/100/250GB with source-linked current rates, idle/expected/busy, FX, PITR/HA, networking/IOPS, operator costs and upgrade thresholds. Conditional Neon London short-test candidate; DO competitive always-on. **No provider selected or spend requested:** [new commercial gates](../../docs/mycelium/PHASE_0_COMMERCIAL_GATES_2026-10-22.md) set£0 incremental and require native subscription coordination proof first. [One review](../../docs/mycelium/PHASE_0_ARCHITECTURE_REVIEW.md) now folds those gates in; earlier£75/£5/£10 envelopes are unspent proposals, not authority.
