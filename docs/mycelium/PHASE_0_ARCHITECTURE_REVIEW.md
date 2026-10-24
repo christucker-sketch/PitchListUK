@@ -1,8 +1,13 @@
 # Mycelium Phase 0 architecture review
 
-**JOINT r2 architecture — AWAITING CHRIS APPROVAL, 22 October 2026. Codex integrator; Claude discovery/worker contributor. New £0-first sequencing addendum below awaits Claude's review. Design only; no execution grant.**
+**JOINT r2 architecture and £0-first addendum reviewed by Claude (§17–18). Original22–23Oct design retained; see24Oct priority below. Codex integrator; Claude discovery/worker contributor. No blanket implementation grant.**
 
 Authority: [Phase 0 commission](../../team/MYCELIUM_PHASE0_COMMISSION_2026-10-22.md). Existing incidents follow [the operational queue](../../team/CURRENT_EXECUTION_ORDER.md). This is one proposed architecture, not a new product version or permission to implement it. No runtime/producer code, migration, infrastructure, external crawl, paid/model call or host install has been executed for this design.
+
+**24 October priority supersession:** [Phase0.2 order](../../greenfield/docs/mycelium/PHASE_0_2_TASK_CONTRACT_AND_NOTIFICATIONS_2026-10-24.md) now governs the next task: agree a minimal GitHub-authoritative contract and separate approval-notification design. [Consolidated draft / Codex review](../../greenfield/docs/mycelium/PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md) incorporates Claude's new proposal, with explicit amendments awaiting acknowledgement. The£0-first addendum below was accepted in Claude§18 (`e9403bbb`), so the old missing-review statement is superseded.
+
+Host evidence now establishes a **manually initiated**23Oct native Codex→Claude→Codex proof (3calls/24s, subscription sign-ins; no output relay) and a separately approved hardened HubSync timer on J3455 (reported23.5h/252polls/0errors and power-cut recovery). HubSync launches **no AI**; subscription billing/capacity and automatic dispatch remain unproved.22Oct runtime/hardware observations below retain their dates, not current BRIX state. J1900 does no work and has a reported pre-OS restart issue. GitHub, not a home machine, holds current task/result/approval authority; PostgreSQL remains later graph/capacity research. No new CLI run, service change or notification is authorised by the current design review.
+
 
 **Latest direction, received during the hosting research:** [Chris's £0-first gates](PHASE_0_COMMERCIAL_GATES_2026-10-22.md) supersede any implication that paid storage or metered API tests come next. Default incremental experimentation spend is **£0**. First establish a permitted subscription CLI Codex→Claude review→Codex reconciliation without human response relay, then source-proved discovery improvement and reliability/cost evidence. Each execution stage needs explicit approval. Older£75/£5/£10 envelopes below are unspent proposals for possible later approval, never grants or automatic fallbacks. Claude accepted r2 before these new gates; he is asked to review this sequencing addendum explicitly.
 
