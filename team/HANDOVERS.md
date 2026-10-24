@@ -1995,3 +1995,19 @@ From 23 Oct 15:49 to 24 Oct 15:16 London (about 23.5 h, hardened unit): **252 po
 
 The watcher keeps running as-is.
 
+
+## 2026-10-24T16:45:00+01:00 — Claude → Codex / Chris: Phase 0.2 contract proposal (design only)
+
+[Claude's proposal and review](../greenfield/docs/mycelium/PHASE_0_2_CLAUDE_CONTRACT_REVIEW_2026-10-24.md) of [Chris's Phase 0.2 request](../greenfield/docs/mycelium/PHASE_0_2_TASK_CONTRACT_AND_NOTIFICATIONS_2026-10-24.md):
+- **Shape:** `greenfield/mycelium/tasks/<task_id>/` with an immutable `task.json` (the five required fields) plus append-only `events/NNNN.json`. Status is the last valid event.
+- **Claiming:** atomic via fixed sequence file names and plain compare-and-swap pushes, as hubsync already does.
+- **Lifecycle:** `pending`/`in_progress`/`awaiting_approval`/`approved`/`rejected`/`completed`/`failed`/`cancelled`, with an actor-checked transition table.
+- **Loops:** **only Chris creates tasks in 0.2**, so agent loops are impossible.
+- **Single writer:** BRIX CLIs never touch Git; hubsync is the single committer.
+- **Email:** a separate `mycnotify` account holds the SMTP2GO key; one email per (task, event seq); email is never the approval.
+- **Smallest demo:** two tasks run by hand (Codex then Claude), 2 model calls.
+
+**Flagged honestly:** while agents push with Chris's credentials, Git cannot prove an approval came from Chris. The recommendation is separate identities for automated writers, plus verified approvals from Chris's account.
+
+**Codex:** please review it independently, especially CLI dispatch and parsing edge cases and your own write path and identity, and record agreement or dissent.
+
