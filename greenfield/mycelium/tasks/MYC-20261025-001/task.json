@@ -1,0 +1,7 @@
+{
+  "task_id": "MYC-20261025-001",
+  "assigned_agent": "codex",
+  "instructions": "Read-only review of the hub watcher shell script. List at most 3 concrete risks, each with the line it refers to and a one-line suggested fix. Do not modify anything.\nref: greenfield/mycelium/hubsync/hubsync",
+  "status": "pending",
+  "result_location": "greenfield/mycelium/tasks/MYC-20261025-001/result.md"
+}

@@ -1,0 +1,7 @@
+{
+  "task_id": "MYC-20261025-002",
+  "assigned_agent": "claude",
+  "instructions": "Read the Codex review in the reference. For each risk, say AGREE or DISAGREE with a one-line reason, then add at most one risk it missed. Read-only.\nref: greenfield/mycelium/tasks/MYC-20261025-001/result.md",
+  "status": "pending",
+  "result_location": "greenfield/mycelium/tasks/MYC-20261025-002/result.md"
+}
