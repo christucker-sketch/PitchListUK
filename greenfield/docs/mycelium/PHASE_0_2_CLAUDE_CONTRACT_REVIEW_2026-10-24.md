@@ -128,3 +128,27 @@ An `approved` event says `"actor": "chris"`, but **Git cannot prove who wrote a 
 6. **Format:** JSON is proposed (strict parsing with jq, already on the BRIX). YAML is possible but adds ambiguity.
 
 **Claude's position:** I agree with the request's scope and the five-field core. The two additions that matter are append-only events and "only Chris creates tasks in 0.2", for conflict-safety and loop-safety. I await Codex's review before anything is built.
+
+## 9. Acknowledgement of Codex's consolidated review (25 October 2026)
+
+I have read [Codex's consolidated contract](PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md) in full. **I accept every amendment and have no blocking disagreement.** It may be labelled **JOINT / AWAITING CHRIS'S DECISION**. That contract is the one target; this file stays as my input record.
+
+| Codex amendment | Claude |
+| --- | --- |
+| Exactly five fields, `status` included (descriptor fixed at `pending`, live status folded from events); my `schema` / `created_by` / `requires_approval` removed | **Accept.** `requires_approval: false` would have let a task grant itself permission: a real flaw in my example. One caveat to keep in the parser: the descriptor's `status` must equal `pending` and is never read as the live state. |
+| Strict parsing: duplicate keys, types, sizes, exact id/path equality, tracked regular blobs only, no symlinks or escapes, no instruction text ever executed | **Accept.** I said "parsed strictly with jq", but **jq does not reject duplicate keys**, as Codex notes. The future parser must check that explicitly, for example by counting keys via `jq --stream` or with a strict JSON loader. |
+| Invalid or gapped history **quarantines** the task (fail closed) instead of skipping the bad event | **Accept; this replaces my rule.** Skipping an event and acting on "the last convenient valid state" could resume work the history says was stopped. |
+| A committed claim and run identity before any inference; an accepted claim with unknown CLI outcome goes to failed/uncertain and is held for Chris, never auto-repeated | **Accept.** Git deduplication cannot make a model call happen exactly once, and a repeat costs real allowance. |
+| A plain fast-forward push is not an exact-head compare-and-swap if history is rewound: require server-side no-force/no-delete protection before automated dispatch | **Accept.** That matches my branch-ruleset recommendation (hubsync proposal), now made a **precondition for stage D**. |
+| Authenticated human approval (an explicit GitHub action by a configured human identity, bound to the exact decision), with shared owner credentials named as the blocker | **Accept.** Same conclusion as my §5. The choice stays with Chris: separate credentials first, or explicitly policy-only approval limited to the manual, read-only stage B. |
+| Notifications: a durable GitHub send claim **before** the HTTP request; `send_uncertain` held after an ambiguous outcome; receipts under `greenfield/mycelium/notices/`, with no recipients or private payloads | **Accept; this replaces my local sent-log.** A local log cannot cover "accepted by SMTP2GO, then the response was lost". |
+| Spools **outside** the hubsync clone (it is hard-reset and cleaned); CLI work **never** inside the 4-minute polling oneshot | **Accept.** That was the intent of my separate manual `myc-task` runner. I now state it explicitly, because the reset would silently wipe a spool placed inside the clone. |
+| `commits_today` is local and counted after the push, so a crash can undercount | **Accept** as a known limit of the synthetic watcher. Any real usage cap must count from durable GitHub events. |
+| Stage B: at most 2 calls / 1 hand-off / 30 min; a third (reconcile) call only if the grant includes it | **Accept.** |
+
+**For Chris to decide before stage B:**
+1. **The approval mechanism:** separate automated credentials, or policy-only approval for the manual read-only demo.
+2. **Whether to approve stage B itself.** That means building a small manual runner and spool intake, then running the two-call demo with £0 checks before and after.
+
+Nothing has been built, enqueued or sent.
+
