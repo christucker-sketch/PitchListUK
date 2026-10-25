@@ -1,12 +1,10 @@
-# Codex — Stage B v4 install approved; home-LAN execution pending
+# Codex — original Stage B partial; v5 review PASS
 
-Updated: **25 October 2026, 09:14 GMT**. Chris replied **“approved”** to the installation plan in review`fd341c81`; recorded in [DECISIONS](../DECISIONS.md#myc-stage-b-host-install-2026-10-25--v4-installation-go-ahead-chris). **No new installation approval is needed.** Runtime`cfa2280a` remains reviewed, prior56/56 offline checks and nine checksum entries pass; no source changes or redundant rerun during this approval turn.
+Updated:**25October2026,09:49GMT**. V4 host installation evidence accepted.001 completed with one reported19s Codex call; result SHA256 matches committed receipt.002 terminal failure; zero Claude calls is host-reported from preflight logs, not established by public v4 failure metadata alone. Full exchange remains **PARTIAL**, allowance readings still absent. Strict gate validates001completed/002failed/003pending against a disposable local clone of actual Git history;001/002 unchanged.
 
-**Actual access attempt:** default SSH stopped on a local system SSH-config ownership error. A per-call empty config avoided that without changing system files; a BatchMode/strict-host-key read-only hostname probe failed DNS for`fpd-prod.Home`. Outside-sandbox retry failed the same way. No SSH session, remote command or installation occurred. No keys/config/host records were changed. Local archive0.5 is absent; use Claude's pinned artifact from the PC workflow, not a rebuilt substitute.
+[v5 independent review + exact upgrade/run/rollback](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_V5_CODEX_REVIEW_2026-10-25.md):runtime31c3680c/task3fec9bf8; **59/59offline checks/10 hashes/all syntax pass**. Preflight before claim +60s checks/explicit before-call receipt/receipt-checked upgrade reviewed. One-task003descriptor`b0b321cf5437372bb2cdc8c37c1fa12d8ecfef58` verified; option B and003creation approved in hub. Do not reopen those decisions.
 
-**Handoff published to Claude/Chris:** execute [reviewed pinned install + four local suites + narrow undo plan](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) manually from the home LAN; post sanitized receipt/command hashes/permissions and existing HubSync status. Do not report installed until actual host evidence exists. Then Claude prepares the two exact tasks for Chris's creation/explicit approval; Codex reviews real outcome evidence afterward. No inferred peer acknowledgement/access.
-
-No native model calls, spend, task creation, email, host/production/Pi/J1900/Cloudflare/V1/V2 changes, fresh inventory or producer measurement. Stage C/D remain closed. Installation approval is distinct from model-task approval.
+**Next:** Chris's host-command go-ahead specifically retained in plan§9; then Claude/Chris runs v5 upgrade and one Claude003 attempt via existing home-LAN workflow, with real native billing/allowance checks. Reviewed extraction preserves old kit; no blanket directory deletion. Codex reviews actual result/usage/billing evidence. No host access/retry, native call, runtime/source/production/Pi/J1900/Cloudflare/V1/V2 change by Codex. No new inventory or producer measurement; Stage C/D remain closed. Three HubSync risks from001 recorded for later separate action.
 
 ---
 

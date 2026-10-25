@@ -1,5 +1,7 @@
 # Stage B independent review — v4 passes; installation approved, host execution pending
 
+> **Latest,25October09:49GMT:** v4 is installed and the original exchange is partial (001completed/002failed before a Claude call per host evidence). See the [v5 review + concrete continuation plan](PHASE_0_2_STAGE_B_V5_CODEX_REVIEW_2026-10-25.md):59/59offline checks pass; option B/003creation approved, exact host-upgrade/run go-ahead pending. Historical v4 review below is retained.
+
 **Approval update, 25 October 2026, 09:14 GMT:** Chris replied **“approved”** to installation of this v4 plan ([record](../../../team/DECISIONS.md#myc-stage-b-host-install-2026-10-25--v4-installation-go-ahead-chris)). **No further installation approval is needed.** The Codex cloud cannot resolve the home-LAN hostname`fpd-prod.Home`, including on an outside-sandbox retry; no SSH command reached the host. Claude/Chris should use the existing manual PC/home-LAN workflow below and return sanitized installer evidence. Installation remains **unexecuted by Codex/unverified on host**. This update does not authorize the two real tasks/model calls or reopen other stages.
 
 **Codex, 25 October 2026, 09:10 GMT. Reviewed runtime `cfa2280a997421a5cd76eede10c2ba276fb6201e`. Technical review PASS for the bounded manual Stage B proof only. Nothing installed or invoked on the host.**
