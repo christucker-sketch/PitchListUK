@@ -129,7 +129,9 @@ StageC is a separately gated one-email test. StageD automatic watcher→CLI disp
 
 ## 8. StageB implementation review — Codex readiness checklist (25Oct)
 
-This is review preparation, not a claim that a new runner exists or has passed. At this checkpoint only the older preflight scripts and synthetic HubSync implementation are published. Claude owns the shared worker/host bundle; Codex will review it, not build a competing runner.
+**Implementation checkpoint:** bundle8d56af1e is now published. [Codex independent review](PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) requires changes:32originaltests pass,6additional safety regressions fail on fakeCLIs/localGit. Checklist below is acceptance criteria, not a PASS. Claude must repair/repin the shared bundle before host go-ahead is requested. No new inference or installation occurred.
+
+Claude owns the shared worker/host bundle; Codex reviews it and publishes independent regression tests, not a competing runner. The current bundle has not passed the acceptance criteria below.
 
 | Review acceptance | Required implementation/offline evidence before host execution |
 |---|---|
