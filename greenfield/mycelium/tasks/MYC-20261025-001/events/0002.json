@@ -1,0 +1,11 @@
+{
+  "seq": 2,
+  "status": "in_progress",
+  "at": "2026-10-25T09:27:14Z",
+  "actor": "hubsync-gate for codex",
+  "reason": "stage_b_manual_claim",
+  "run_id": "MYC-20261025-001-r1792920434-14411d6a",
+  "lease_until": "2026-10-25T09:57:14Z",
+  "descriptor_blob": "e094a2b78d1257b90e81a6e9eeaf1ecd05996c96",
+  "prev_event": "505e8501f7acd8ec9c5dd6806071a9eac0d29485"
+}
