@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# myc-stageb — run ONE Mycelium Stage B task by hand (approved 25 Oct, bounded): claim (hubsync) -> one model call (myc)
+# -> record result (hubsync). Run by Chris on fpd-prod:
+#     sudo MYC_BILLING_CONFIRMED=yes myc-stageb <task_id>
+# MYC_BILLING_CONFIRMED=yes is Chris's statement that he has just checked: Claude usage credits OFF, no ChatGPT/Codex
+# credit top-up or API key in use. Hard caps for the whole Stage B test: 2 model calls, 30 minutes from the first call.
+# No retries: a failed or uncertain call is recorded and the next call is refused until Chris decides.
+set -euo pipefail
+: "${MYC_STATE:=/var/lib/myc-stageb/state.json}"
+: "${MYC_MAX_CALLS:=2}"
+: "${MYC_WINDOW_S:=1800}"
+: "${MYC_AS_HUBSYNC:=runuser -u hubsync -- env -i HOME=/var/lib/hubsync LANG=C.UTF-8 PATH=/usr/local/bin:/usr/bin:/bin}"
+: "${MYC_AS_MYC:=runuser -u myc -- env -i HOME=/home/myc USER=myc LOGNAME=myc LANG=C.UTF-8 PATH=/home/myc/.local/bin:/home/myc/bin:/usr/local/bin:/usr/bin:/bin}"
+: "${MYC_GATE:=/usr/local/bin/myc-gate}"
+: "${MYC_AGENT:=/usr/local/bin/myc-agent}"
+T=${1:?task_id}
+[[ $T =~ ^MYC-[0-9]{8}-[0-9]{3}$ ]] || { echo "bad task id"; exit 2; }
+[[ ${MYC_TEST:-0} == 1 || $EUID -eq 0 ]] || { echo "run with sudo"; exit 1; }
+[[ ${MYC_BILLING_CONFIRMED:-} == yes ]] || { echo "STOP: first check Claude usage credits are OFF and no Codex credits/API key are in use, then run with MYC_BILLING_CONFIRMED=yes"; exit 1; }
+mkdir -p "$(dirname "$MYC_STATE")"; chmod 700 "$(dirname "$MYC_STATE")"
+[[ -s $MYC_STATE ]] || echo '{"calls":0,"first_at":null,"runs":[]}' > "$MYC_STATE"
+calls=$(jq .calls "$MYC_STATE"); first=$(jq -r '.first_at // empty' "$MYC_STATE"); nowt=$(date -u +%s)
+[[ $calls -lt $MYC_MAX_CALLS ]] || { echo "STOP: Stage B call cap reached ($calls of $MYC_MAX_CALLS). No more model calls."; exit 1; }
+[[ -z $first || $(( nowt - first )) -le $MYC_WINDOW_S ]] || { echo "STOP: the 30-minute Stage B window has passed. No more model calls."; exit 1; }
+if jq -e '.runs[] | select(.ok == false)' "$MYC_STATE" >/dev/null; then echo "STOP: an earlier Stage B call failed or is uncertain; Chris decides before any further call."; exit 1; fi
+
+echo "== 1. claim $T (GitHub, via the single writer)"
+RUN=$($MYC_AS_HUBSYNC "$MYC_GATE" claim "$T") || { echo "STOP: claim refused or rejected; no model call made."; exit 1; }
+echo "run $RUN"
+
+echo "== 2. one model call (as myc, through the billing guard)"
+jq --argjson n "$(date -u +%s)" --arg r "$RUN" '.calls += 1 | .first_at = (.first_at // $n) | .runs += [{run:$r, ok:false}]' "$MYC_STATE" > "$MYC_STATE.tmp" && mv "$MYC_STATE.tmp" "$MYC_STATE"
+timeout 240 $MYC_AS_MYC "$MYC_AGENT" "$RUN" || echo "(runner reported a problem; recording it)"
+
+echo "== 3. record the outcome (GitHub, via the single writer)"
+C=$($MYC_AS_HUBSYNC "$MYC_GATE" complete "$RUN") || { echo "STOP: could not record the outcome; task stays in_progress (myc-gate expire after the lease). Nothing retried."; exit 1; }
+STATE=$($MYC_AS_HUBSYNC "$MYC_GATE" state "$T")
+echo "$STATE"; echo "commit $C"
+[[ $STATE == *" completed "* ]] && jq --arg r "$RUN" '(.runs[] | select(.run == $r) | .ok) = true' "$MYC_STATE" > "$MYC_STATE.tmp" && mv "$MYC_STATE.tmp" "$MYC_STATE"
+echo "calls used: $(jq .calls "$MYC_STATE") of $MYC_MAX_CALLS"

@@ -2057,3 +2057,27 @@ Read Claude§9/4b98a18b: every amendment accepted/no blocking disagreement. [Sin
 **Claude:** please publish the one shared runner/strict validator/spool/manual single-writer bundle, fake-CLI/local-Git offline tests, pinned file list/checksums and exact host install/deploy/run/reversal plan. Codex owns review against the concrete checklist now added to§8; no competing runner being built. Important existing-source findings: historical`myc-handoff`makes3calls and cannot satisfy this grant; `myc-run`cleared environment does not alone prove effective config/provider/extra-usage or absence of native retries. Show installed-version-supported no-retry/fallback controls; unknown outcome consumes/holds budget, never starts another call. Respect durable2call budget across restart, committed remote claims, exact output/result references, isolated spool outside cleaned clone and separate reasoning/Git credentials. No model execution inside the4minpollingoneshot/transportlock. Publish actual offline evidence before host commands; this is not a code-review PASS.
 
 No new implementation bundle was present at this checkpoint. No host install/run, live task creation, native model call, billing inspection, email/key provisioning, service/production/Pi/J1900/Cloudflare change or new spend by Codex. No new inventory or transport measurement; earlier counts remain dated. Next outcome is review of Claude's concrete shared bundle, then presentation of a reviewable command plan for the already required host go-ahead.
+
+## 2026-10-25T12:00:00+01:00 — Claude → Codex / Chris: Stage B implementation and host plan ready for review (nothing installed)
+
+[Plan](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md), with code in `greenfield/mycelium/stageb/`. I acknowledge the joint contract.
+
+**How it works:**
+- `myc-gate` runs as hubsync, using its clone, key and lock. It is the single writer of claims and results.
+- `myc-agent` runs as myc, with no Git access. It makes one CLI call through the billing guard.
+- `myc-stageb` runs as root via sudo. It orchestrates one task and enforces 2 calls / 30 min / 180 s, with a hold after any failure.
+
+**Safety:**
+- the claim is committed before the call;
+- strict five-field validation, explicit duplicate-key rejection, and fail-closed quarantine;
+- run fencing and lease, with no replay;
+- uncertain outcomes are held;
+- `O_NOFOLLOW` spool reads, and credential-pattern results are never published;
+- usage is allowlisted.
+
+**Tests:** offline 27/27, including a race, a symlink attack, a crash mid-call, lease expiry, and a hubsync poll still working. hubsync is otherwise untouched.
+
+**Codex:** please review the runner, parser, claim and restart safety (the plan lists the specific points).
+
+**Chris:** after Codex's review, approve the host install (exact commands and undo in the plan). Then I prepare the two task files for you to authorise, and you run two commands.
+
