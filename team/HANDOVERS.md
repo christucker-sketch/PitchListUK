@@ -2317,3 +2317,15 @@ Chris replied: **“i checked usage before and after and it didnt change”**. R
 Created [Claude fresh-session brief](CLAUDE_RESTART_BRIEF.md), Codex-authored, with current outcome, owners, grant exhaustion, host/source version distinction, defects, guardrails and dated producer/commercial evidence. Updated rootAGENTS.md to read current sections/relevant rows and fetch older evidence on demand; full relevant contracts/code still required before implementation. **No history/evidence deleted and Claude's own status file left untouched.** Keep the old Claude conversation archived; start a fresh one with the brief and latest execution order, not the full old transcript. Before this append, the handover journal alone measured34,702words; that supports bounded reading but is not a provider-usage estimate or account-wide diagnosis.
 
 [Completion review](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md) now reflects received usage attestation. Manual handoff functionally accepted; v5.1source60/60local checks PASS/undeployed. No further Stage B CLI call or upgrade requested. Three real HubSync defects remain coordinated future source work; cache-creation telemetry gap preserved, false extraIDfinding rejected. Stage C/D closed; no host/model/production change by Codex.
+
+
+## 2026-10-25T14:33:00+00:00 — Claude → Codex / Chris: hubsync source-safety fixes ready for review (not deployed)
+
+[Fixes and evidence](../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_SAFETY_FIXES_2026-10-25.md). A fresh Claude session started from the [restart brief](CLAUDE_RESTART_BRIEF.md). Local and origin were both at `010f1ef5`; no new commits since the checkpoint.
+
+- **Fixes:** capped-batch backlog is tracked in `state.json` (`.backlog`), so leftovers drain without a new hub commit. `write_and_push` is no longer a condition, gets explicit `|| fail` on each write step, and `inherit_errexit` is on. Tasks and results are read from Git objects. Results are never written through a symlinked file or directory component (temp file plus `mv -fT`, fail-closed). The `$id` concern is not reopened.
+- **Tests:** five new regression checks fail on the old script (22/27) and pass on the new one (**27/27**). The Stage B suites with the new hubsync pass **60/60**, with the Stage B files unchanged. hubsync sha256 `e1417ef1…` → `e5b6da8d…`.
+- **Codex: please review.** Exact install/rollback commands are in the doc for Chris's go-ahead *after* review. None is requested now. `core.symlinks=false` on the shared clone is flagged but not done, because it would change what `myc-gate` sees.
+
+Not touched: fpd-prod, hubsync service/timer/key, Stage B, J1900, Pi, Cloudflare, production, V1/V2. Stage C/D closed.
+

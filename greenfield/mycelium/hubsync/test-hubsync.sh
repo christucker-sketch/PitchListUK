@@ -3,7 +3,8 @@
 #   bash test-hubsync.sh
 # Covers: cold start, task processing, idempotence, changed task, foreign/invalid tasks, no loop on own commits,
 # concurrent writer (push rejected -> re-fetch -> success, other writer's commit kept), persistent conflict (stops,
-# never forces), pause, lost local state (no duplicates), daily cap.
+# never forces), pause, lost local state (no duplicates), daily cap, capped-batch backlog, write failures inside the
+# push step, and symlinked result files / result directory / task files.
 set -uo pipefail
 command -v git >/dev/null && command -v jq >/dev/null && command -v flock >/dev/null || { echo "hubsync tests: need git, jq and flock (run install-hubsync.sh first, it installs git)"; exit 1; }
 HS=$(cd "$(dirname "$0")" && pwd)/hubsync
@@ -86,5 +87,51 @@ run >/dev/null; [[ $(rcount) == 6 ]] && ok "task picked up by the next poll" || 
 
 echo "11. test hook refused against github.com"
 grep -q 'HUBSYNC_REMOTE != \*github.com\*' "$HS" && ok "test hook is ignored for a github.com remote" || bad "hook guard"
+
+echo "12. capped batch: leftovers are answered on later polls even when the hub has not moved"
+hmulti() { (cd "$T/human" && git pull -q --rebase origin "$B" && mkdir -p team/sync-test/tasks && for id in "$@"; do printf '{"id":"%s","to":"hubsync","body":"batch"}\n' "$id" > "team/sync-test/tasks/$id.json"; done && git add -A && git commit -qm "human: batch $*" && git push -q origin "$B"); }
+hmulti T-0030 T-0031 T-0032 T-0033 T-0034; r0=$(rcount)
+export HUBSYNC_MAX_TASKS=2
+run >/dev/null; [[ $(rcount) == $((r0 + 2)) ]] && ok "first poll answers the capped batch of 2" || { bad "capped first poll ($(rcount))"; cat "$T/out"; }
+run >/dev/null; run >/dev/null
+[[ $(rcount) == $((r0 + 5)) ]] && ok "backlog drained by the next polls with no new hub commit" || { bad "capped backlog starved ($(( $(rcount) - r0 ))/5 answered)"; cat "$T/out"; }
+c5=$(ncommits); run >/dev/null
+[[ $(ncommits) == "$c5" ]] && grep -q 'no change' "$HUBSYNC_HOME/status.json" && ok "drained backlog returns to the cheap no-change path" || { bad "after drain"; cat "$T/out"; }
+unset HUBSYNC_MAX_TASKS
+
+echo "13. a failing write inside the push step stops the poll (errexit is not suppressed)"
+hpush team/sync-test/results/T-0040.json/blocker x >/dev/null; task T-0040
+c6=$(ncommits); n6=$(jq -r '.commits // 0' "$HUBSYNC_HOME/state.json"); r=$(run)
+[[ $r != 0 ]] && grep -q 'T-0040.json is not a regular file' "$T/out" && ! grep -q 'pushed' "$T/out" && jq -e '.last_result=="error"' "$HUBSYNC_HOME/status.json" >/dev/null \
+  && [[ $(ncommits) == "$c6" && $(jq -r '.commits // 0' "$HUBSYNC_HOME/state.json") == "$n6" ]] \
+  && ok "write failure reported as an error; nothing pushed or counted" || { bad "write failure was swallowed (rc $r)"; cat "$T/out"; }
+(cd "$T/human" && git pull -q --rebase origin "$B" && git rm -rq team/sync-test/results/T-0040.json && git commit -qm 'human: unblock' && git push -q origin "$B")
+run >/dev/null; git --git-dir="$T/remote.git" show "$B:team/sync-test/results/T-0040.json" 2>/dev/null | jq -e '.task=="T-0040"' >/dev/null \
+  && ok "next poll answers the task once the blocker is removed" || { bad "recovery after write failure"; cat "$T/out"; }
+
+echo "14. a symlinked result file is never written through"
+echo untouched > "$T/canary"
+(cd "$T/human" && git pull -q --rebase origin "$B" && ln -s "$T/canary" team/sync-test/results/T-0050.json && git add -A && git commit -qm 'human: link' && git push -q origin "$B"); task T-0050
+c7=$(ncommits); r=$(run)
+[[ $(cat "$T/canary") == untouched && $r != 0 && $(ncommits) == "$c7" ]] && grep -q 'T-0050.json is a symlink' "$T/out" \
+  && ok "refused: target outside the repo untouched, nothing pushed" || { bad "wrote through result symlink (rc $r, canary: $(head -c 60 "$T/canary"))"; cat "$T/out"; }
+(cd "$T/human" && git pull -q --rebase origin "$B" && git rm -q team/sync-test/results/T-0050.json && git commit -qm 'human: unlink' && git push -q origin "$B")
+run >/dev/null; git --git-dir="$T/remote.git" show "$B:team/sync-test/results/T-0050.json" 2>/dev/null | jq -e '.task=="T-0050"' >/dev/null \
+  && ok "next poll answers it as a regular file once the link is gone" || { bad "recovery after symlink"; cat "$T/out"; }
+
+echo "15. a symlinked results directory is never written through"
+mkdir -p "$T/outside"
+(cd "$T/human" && git pull -q --rebase origin "$B" && ln -s "$T/outside" team/sync-test/linked && git add -A && git commit -qm 'human: dir link' && git push -q origin "$B")
+c8=$(ncommits); r=$(HUBSYNC_RESULTS=team/sync-test/linked "$HS" poll 2>&1)
+[[ -z $(ls -A "$T/outside") && $(ncommits) == "$c8" ]] && grep -q 'team/sync-test/linked is a symlink' <<<"$r" \
+  && ok "refused: nothing written outside the repo, nothing pushed" || { bad "wrote through directory symlink ($(ls "$T/outside" | wc -l) file(s) outside)"; echo "$r"; }
+(cd "$T/human" && git pull -q --rebase origin "$B" && git rm -q team/sync-test/linked && git commit -qm 'human: dir unlink' && git push -q origin "$B"); run >/dev/null
+
+echo "16. a symlinked task file is not read through"
+echo '{"id":"T-0060","to":"hubsync","body":"outside"}' > "$T/secret.json"
+(cd "$T/human" && git pull -q --rebase origin "$B" && ln -s "$T/secret.json" team/sync-test/tasks/T-0060.json && git add -A && git commit -qm 'human: task link' && git push -q origin "$B")
+r=$(run)
+[[ $r == 0 ]] && ! git --git-dir="$T/remote.git" cat-file -e "$B:team/sync-test/results/T-0060.json" 2>/dev/null \
+  && ok "task content comes from Git, not the link target; skipped" || { bad "followed task symlink (rc $r)"; cat "$T/out"; }
 
 echo; echo "hubsync tests: $pass passed, $failn failed"; [[ $failn == 0 ]]

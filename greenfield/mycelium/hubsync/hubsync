@@ -7,7 +7,11 @@
 #   hubsync pause | resume
 # Correctness does not depend on local state: whether a task is done is decided from the repository itself
 # (a result file recording the task's blob hash), so restarts, replays and lost state cannot duplicate work.
+# Safety (25 Oct fixes): task and result content is read from Git objects, never through work-tree files; results
+# are never written through a symlink; every write step fails the poll loudly; a capped batch is finished on the
+# following polls even if nobody else pushes.
 set -euo pipefail
+shopt -s inherit_errexit   # command substitutions fail the poll too
 umask 077
 
 : "${HUBSYNC_HOME:=/var/lib/hubsync}"
@@ -78,37 +82,71 @@ summarise() {  # log what changed on the hub since we last looked (no AI; just c
 }
 
 pending_tasks() {  # print "path blob id" for each synthetic task addressed to hubsync whose result is missing or stale
-  local f id to blob res
-  while IFS= read -r f; do
-    [[ -n $f ]] || continue
-    id=$(jq -r '.id // empty' "$REPO/$f" 2>/dev/null) || { log "skip $f: not valid JSON"; continue; }
-    to=$(jq -r '.to // empty' "$REPO/$f")
+  # Content comes from Git objects at HEAD, never from work-tree paths, so a symlink is never followed on read.
+  local tree line mode type blob f id to body done_blob
+  tree=$(G ls-tree -r HEAD -- "$HUBSYNC_TASKS/") || fail "cannot list $HUBSYNC_TASKS"
+  while IFS= read -r line; do
+    [[ -n $line ]] || continue
+    read -r mode type blob <<<"${line%%$'\t'*}"; f=${line#*$'\t'}
+    [[ $f == "$HUBSYNC_TASKS/"*.json ]] || continue
+    [[ $type == blob && ($mode == 100644 || $mode == 100755) ]] || { log "skip $f: not a regular file (mode $mode)"; continue; }
+    body=$(G cat-file blob "$blob") || fail "cannot read task blob $blob"
+    id=$(jq -r '.id // empty' <<<"$body" 2>/dev/null) || { log "skip $f: not valid JSON"; continue; }
+    to=$(jq -r '.to // empty' <<<"$body")
     [[ $id =~ ^T-[A-Za-z0-9_-]{1,40}$ && $f == "$HUBSYNC_TASKS/$id.json" ]] || { log "skip $f: id/filename mismatch"; continue; }
     [[ $to == "$HUBSYNC_NAME" ]] || continue
-    blob=$(G rev-parse "HEAD:$f")
-    res=$REPO/$HUBSYNC_RESULTS/$id.json
-    if [[ -f $res && $(jq -r '.task_blob // empty' "$res" 2>/dev/null) == "$blob" ]]; then continue; fi
+    # done = a committed regular-file result recording this exact task blob (anything else is re-answered)
+    done_blob=$(G cat-file blob "HEAD:$HUBSYNC_RESULTS/$id.json" 2>/dev/null | jq -r '.task_blob // empty' 2>/dev/null || true)
+    [[ $done_blob == "$blob" ]] && continue
     echo "$f $blob $id"
-  done < <(G ls-files -- "$HUBSYNC_TASKS/*.json")
+  done <<<"$tree"
+}
+
+results_dir() {  # the results directory, created if needed; refuses any symlinked or non-directory path component
+  local p=$REPO part parts
+  IFS=/ read -ra parts <<<"$HUBSYNC_RESULTS"
+  for part in "${parts[@]}"; do
+    [[ -n $part && $part != . && $part != .. ]] || fail "refusing to write: bad results path $HUBSYNC_RESULTS"
+    p=$p/$part
+    [[ ! -L $p ]] || fail "refusing to write: ${p#"$REPO"/} is a symlink"
+    [[ ! -e $p || -d $p ]] || fail "refusing to write: ${p#"$REPO"/} is not a directory"
+    [[ -d $p ]] || mkdir -- "$p" || fail "cannot create ${p#"$REPO"/}"
+  done
+  echo "$p"
 }
 
 commits_today() { jq -r --arg d "$(date -u +%F)" 'if .commit_day == $d then (.commits // 0) else 0 end' "$STATE"; }
 
-write_and_push() {  # returns 0 pushed / nothing to do, 1 non-fast-forward (retry), exits on other failures
-  local list n=0 f blob id head
+# Never call write_and_push as a condition (if/&&/||/!): that switches off errexit for everything inside it.
+# It sets REJECTED=1 for a non-fast-forward push (caller re-fetches and retries), BACKLOG to the number of pending
+# tasks left for the next poll by the per-poll cap, and exits via fail on any other failure.
+REJECTED=0 BACKLOG=0
+write_and_push() {
+  local list total n=0 f blob id head dir out tmp ack
+  REJECTED=0 BACKLOG=0
   list=$(pending_tasks)
   [[ -n $list ]] || { log "no pending synthetic tasks"; return 0; }
+  total=$(wc -l <<<"$list")
   head=$(G rev-parse HEAD)
-  mkdir -p "$REPO/$HUBSYNC_RESULTS"
+  dir=$(results_dir)
   while read -r f blob id; do
     [[ $n -lt $HUBSYNC_MAX_TASKS ]] || { log "task cap $HUBSYNC_MAX_TASKS reached; rest next poll"; break; }
+    out=$dir/$id.json
+    [[ ! -L $out ]] || fail "refusing to write: $HUBSYNC_RESULTS/$id.json is a symlink"
+    [[ ! -e $out || -f $out ]] || fail "refusing to write: $HUBSYNC_RESULTS/$id.json is not a regular file"
+    ack=$(G cat-file blob "$blob" | sha256sum | cut -c1-12) || fail "cannot hash task blob $blob"
+    tmp=$(mktemp "$dir/.hubsync.XXXXXX") || fail "cannot create a temp file in $HUBSYNC_RESULTS"
     jq -n --arg task "$id" --arg blob "$blob" --arg head "$head" --arg by "$HUBSYNC_NAME@$(hostname)" --arg at "$(now)" \
-      --arg ack "$(G cat-file -p "$blob" | sha256sum | cut -c1-12)" \
+      --arg ack "$ack" \
       '{task: $task, task_blob: $blob, seen_at_commit: $head, by: $by, at: $at, result: ("synthetic ack " + $ack)}' \
-      > "$REPO/$HUBSYNC_RESULTS/$id.json"
-    G add -- "$HUBSYNC_RESULTS/$id.json"; n=$((n + 1)); log "result written for $id (task blob ${blob:0:8})"
+      > "$tmp" || fail "cannot write result for $id"
+    mv -fT -- "$tmp" "$out" || fail "cannot place result for $id"   # rename replaces, never follows, a final link
+    G add -- "$HUBSYNC_RESULTS/$id.json" || fail "cannot stage result for $id"
+    n=$((n + 1)); log "result written for $id (task blob ${blob:0:8})"
   done <<<"$list"
-  G -c user.name="$HUBSYNC_NAME" -c user.email="$HUBSYNC_EMAIL" commit -q -m "hubsync: synthetic results ($n) [hubsync]"
+  BACKLOG=$((total - n))
+  G -c user.name="$HUBSYNC_NAME" -c user.email="$HUBSYNC_EMAIL" commit -q -m "hubsync: synthetic results ($n) [hubsync]" \
+    || fail "commit of $n result(s) failed"
   local bad; bad=$(G diff --name-only "origin/$B" HEAD | grep -v "^$HUBSYNC_RESULTS/" || true)
   [[ -z $bad ]] || fail "refusing to push: commit touches files outside $HUBSYNC_RESULTS: $bad"
   [[ $(commits_today) -lt $HUBSYNC_MAX_COMMITS_DAY ]] || fail "daily push cap $HUBSYNC_MAX_COMMITS_DAY reached; not pushing"
@@ -117,14 +155,14 @@ write_and_push() {  # returns 0 pushed / nothing to do, 1 non-fast-forward (retr
   fi
   # Plain push = compare-and-swap: GitHub accepts it only if our commit's parent is still the branch tip. Never --force.
   if timeout 120 git -C "$REPO" push -q origin "HEAD:refs/heads/$B" 2>"$HUBSYNC_HOME/push.err"; then
-    jstate "$STATE" --arg d "$(date -u +%F)" --arg h "$(G rev-parse HEAD)" \
-      '.commits = (if .commit_day == $d then (.commits // 0) + 1 else 1 end) | .commit_day = $d | .last_seen = $h'
+    jstate "$STATE" --arg d "$(date -u +%F)" --arg h "$(G rev-parse HEAD)" --argjson b "$BACKLOG" \
+      '.commits = (if .commit_day == $d then (.commits // 0) + 1 else 1 end) | .commit_day = $d | .last_seen = $h | .backlog = $b'
     jstate "$STATUS" --arg t "$(now)" --arg h "$(G rev-parse HEAD)" '.last_push = $t | .last_push_commit = $h'
     log "pushed $(G rev-parse --short HEAD) ($n result(s))"
     return 0
   fi
   if grep -qiE 'non-fast-forward|fetch first|rejected' "$HUBSYNC_HOME/push.err"; then
-    log "push rejected (someone else pushed first); will re-fetch and rebuild"; return 1
+    log "push rejected (someone else pushed first); will re-fetch and rebuild"; REJECTED=1; return 0
   fi
   fail "push failed: $(tr '\n' ' ' < "$HUBSYNC_HOME/push.err" | cut -c1-200)"
 }
@@ -133,27 +171,34 @@ poll() {
   init
   exec 9>"$LOCK"; flock -n 9 || { log "previous poll still running; skipping"; exit 0; }
   if [[ -e $PAUSE ]]; then log "paused ($PAUSE exists)"; set_status paused "paused by operator"; exit 0; fi
-  local remote last
+  local remote last backlog
   remote=$(timeout 60 git ls-remote "$HUBSYNC_REMOTE" "refs/heads/$B" | cut -f1) || fail "ls-remote failed (network/auth?)"
   [[ $remote =~ ^[0-9a-f]{40}$ ]] || fail "branch $B not found on remote"
   last=$(jq -r '.last_seen // ""' "$STATE")
-  if [[ $remote == "$last" ]]; then set_status ok "no change at ${remote:0:8}"; exit 0; fi
+  backlog=$(jq -r '.backlog // 0' "$STATE")
+  # the cheap shortcut is only safe when the previous poll left nothing behind because of the per-poll cap
+  if [[ $remote == "$last" && $backlog == 0 ]]; then set_status ok "no change at ${remote:0:8}"; exit 0; fi
   local attempt=1 sleeps=($HUBSYNC_RETRY_SLEEP)
   while :; do
     sync_repo
-    [[ $attempt -gt 1 ]] || summarise "$last" "$(G rev-parse HEAD)"
-    if write_and_push; then break; fi
+    [[ $attempt -gt 1 || $last == "$(G rev-parse HEAD)" ]] || summarise "$last" "$(G rev-parse HEAD)"
+    write_and_push
+    [[ $REJECTED == 1 ]] || break
     [[ $attempt -lt $HUBSYNC_PUSH_ATTEMPTS ]] || fail "push still rejected after $HUBSYNC_PUSH_ATTEMPTS attempts; stopped (no force push)"
     sleep "${sleeps[$((attempt - 1))]:-30}"; attempt=$((attempt + 1))
   done
-  # if we pushed, last_seen is already our commit; otherwise record the tip we processed
-  [[ $(jq -r '.last_seen // ""' "$STATE") == "$(G rev-parse HEAD)" ]] || jstate "$STATE" --arg h "$(G rev-parse HEAD)" '.last_seen = $h'
-  set_status ok "processed hub at $(G rev-parse --short HEAD)"
+  # record the tip we processed (our own commit if we pushed) and how much the cap left for the next poll
+  jstate "$STATE" --arg h "$(G rev-parse HEAD)" --argjson b "$BACKLOG" '.last_seen = $h | .backlog = $b'
+  local msg; msg="processed hub at $(G rev-parse --short HEAD)"
+  if [[ $BACKLOG -gt 0 ]]; then
+    msg+="; $BACKLOG task(s) left by the cap"; log "$BACKLOG task(s) left by the cap; next poll continues even if the hub is unchanged"
+  fi
+  set_status ok "$msg"
 }
 
 case "${1:-}" in
   poll)   poll ;;
-  status) init; jq --arg paused "$([[ -e $PAUSE ]] && echo yes || echo no)" '. + {paused: $paused}' "$STATUS"; jq '{last_seen, commit_day, commits}' "$STATE" ;;
+  status) init; jq --arg paused "$([[ -e $PAUSE ]] && echo yes || echo no)" '. + {paused: $paused}' "$STATUS"; jq '{last_seen, commit_day, commits, backlog}' "$STATE" ;;
   pause)  init; touch "$PAUSE"; log "paused" ;;
   resume) init; rm -f "$PAUSE"; log "resumed" ;;
   *) echo "usage: hubsync poll|status|pause|resume"; exit 2 ;;
