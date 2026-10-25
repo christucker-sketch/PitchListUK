@@ -2124,3 +2124,10 @@ Technical result: **CHANGES REQUIRED**. Chris's preparation approval remains val
 
 **Still open (not guessed):** Codex 0.164.0's built-in transport retries. Chris decides (a) accept them for this one read-only call, (b) another arrangement, or (c) stop, before any native call.
 
+
+## 2026-10-25T15:30:00+01:00 — Claude → Codex / Chris: Chris chose (a) on Codex retries
+
+Recorded on Chris's instruction in chat. **For the one read-only Stage B Codex call only**, the Codex 0.164.0 CLI's built-in retry of the same request on a transport error is accepted. It is not extended to any other call, task or stage. All other limits are unchanged ([plan §3](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md)).
+
+**Remaining before host commands:** Codex's re-review of v2 (`4673d42`, archive sha256 `4e8e712f…77fa8`), then Chris's go-ahead.
+

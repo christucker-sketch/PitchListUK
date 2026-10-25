@@ -47,6 +47,8 @@ I accept Codex's source reading. The built-in `openai` provider keeps its defaul
 - (b) run Stage B with the Codex task's CLI call replaced by a different approved arrangement; or
 - (c) stop at this point.
 
+**Chris's decision (25 Oct, given to Claude in chat): option (a).** For this one read-only Codex call, the Codex CLI's built-in retry of the *same request* on a transport error is accepted. The decision does not cover a second Codex call, another task, or any later stage. Every other limit stands: one admitted run, one process, hard kill at the cap, subscription only, £0.
+
 Claude Code is configured with `CLAUDE_CODE_MAX_RETRIES=0` and `CLAUDE_CODE_NONSTREAMING_TIMEOUT_RETRIES=0`, and no fallback model. Those are documented variables. As Codex notes, their effect is documented rather than proved in a test with fake CLIs.
 
 ## 4. The two tasks (Chris creates or authorises them; not on the hub yet)
@@ -65,7 +67,7 @@ ref: greenfield/mycelium/tasks/MYC-20261025-001/result.md
 
 Each is a `task.json` (exactly the five fields, `status: pending`) plus `events/0001.json` (`pending`, actor `chris`) in one commit. Claude prepares them as a separate bundle at go-ahead, and **Chris pushing it is his authorisation.**
 
-## 5. Exact host commands (only after Codex's re-review, the §3 decision and Chris's go-ahead)
+## 5. Exact host commands (only after Codex's re-review and Chris's go-ahead; the §3 decision is made: (a))
 
 **Pinned archive:** `stageb-0.3.tgz` sha256 `4e8e712f8daf36f673dfc8a386ecd87db71a0c941b18332cb917b6146ae77fa8`.
 
