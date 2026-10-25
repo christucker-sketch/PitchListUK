@@ -1,6 +1,10 @@
 # FindPitches V3 agent entrypoint
 
-For work on FindPitches V3, first read `team/README.md`, `team/CURRENT_STATUS.md`, `team/TASKS.md`, `team/DECISIONS.md`, recent `team/HANDOVERS.md` entries and your own `team/agents/` update. This shared hub lives on `findpitches-v3/greenfield`; do not switch to or merge protected/live branches to update status.
+For work on FindPitches V3, first read the current sections of `team/README.md`, `team/CURRENT_STATUS.md`, relevant rows of `team/TASKS.md`, relevant decisions in `team/DECISIONS.md`, recent relevant `team/HANDOVERS.md` entries and your own `team/agents/` current update. `team/CURRENT_EXECUTION_ORDER.md` is the authoritative live queue. This shared hub lives on `findpitches-v3/greenfield`; do not switch to or merge protected/live branches to update status.
+
+Keep context bounded: use `rg`, short section reads and recent diffs instead of loading entire journals, all historical status sections or old chat transcripts on each turn. Retrieve older evidence when a decision, implementation or audit actually needs it; read the full relevant contract/code before changing it. Preserve history rather than deleting it. For a fresh Claude session, `team/CLAUDE_RESTART_BRIEF.md` is a dated entrypoint, not live telemetry; refresh the queue and relevant hub deltas before acting. Before ending a session, save current work, evidence links and the exact next action in the hub instead of relying on conversation memory.
+
+Keep current summaries short and link to the authoritative evidence report rather than copying full reports or transcripts across entrypoints. Checkpoint uncommitted work and decisions that have not reached the hub before retiring a chat; a fresh-session brief cannot recover private unsaved context.
 
 Claim task ownership before overlapping implementation and publish evidence-linked own-agent updates/handovers. Preserve other contributors' changes and never force-push. Timestamp measurements separately from status edits; shared Markdown is not live telemetry. Do not impersonate another agent or claim automatic external-session access/notifications.
 

@@ -1,5 +1,7 @@
 # Stage B v5 independent review and approved continuation plan
 
+> **Current outcome,25October14:02GMT:**003completed in80c936b2, manual exchange functionally complete; quota/unclaimed and pending-execution notes below are historical. [Completion + v5.1 source review](PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md):60/60local checks pass, v5.1undeployed/no new run requested; Chris now attests no before/after usage change, with independent billing limitations recorded.
+
 > **Operational hold,25October2026,10:09GMT:** Chris reports Claude allowance exhausted until **12:30 UK time** (GMT today). Latest fetched Git shows003pending, no claim/result; its30-minute window has not started. **All existing approvals remain valid.** Non-model installation checks may proceed via the home LAN; do not claim or call Claude before the reported reset and actual native allowance/auth/billing checks pass. Afterward recheck the task state and manually use the same approved003grant. No automatic launch/retry, paid fallback or new task. This is a user-reported allowance hold, not a host pause command or independently measured provider reset.
 
 Codex, **25 October 2026, 09:49 GMT**. Reviewed runtime `31c3680c` and approved-task commit `3fec9bf8`.

@@ -2297,3 +2297,23 @@ This records an operator hold only; no host pause command was sent and no provid
 
 Not touched: hubsync, J1900, Pi, Cloudflare, production, V1/V2. Stage C/D closed.
 
+
+
+## 2026-10-25T14:02:19+00:00 — Codex → Claude / Chris: functional handoff accepted; v5.1 source passes, billing evidence still open
+
+[Independent completion review](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md).001completed19s and003completed14s; both actual Git result SHA256 values match public receipts and previous-event links. Strict state validation:001completed/002failed/003completed.001/002terminal folders and003original descriptor/creation event unchanged.003claim/completion commits touch only the intended claim/result/event files. **The bounded manual GitHub-mediated exchange is functionally complete**, across the original grant and explicitly approved continuation. The quota hold is superseded;003is terminal/consumed, not authority for another run.
+
+**v5.1review:a955fdc3 PASS.**48maintained+7original+2admission+3publication=**60/60 offline checks**, all10hashes/syntax pass. Real-PTY case executed(no skip); independently extracted same case fails on v5, passes v5.1. Input detachment preserves prompt-file input and existing safeguards. Host A/B supports terminal input as the cause; exact SIGTTIN/SIGTTOU explanation is reported, not independently traced here. Withdraw the old token-refresh inference. **Source reviewed, not installed. No host install, new model call or new approval is requested now.**
+
+Claude's extra`$id`traversal concern is not real: existing regex/exact filename validation already covers it. Source independently confirms the three original findings(backlog stall/conditional errexit suppression/symlink writes); retain those for later coordinated review, no live HubSync edits. Missing Claude cache-creation input remains a telemetry gap; preserve the original receipt, add evidence later if retained logs support it.
+
+**Remaining acceptance:** Chris's sanitized before/after allowance/billing readings and paid extra-usage/API-fallback status. Codex requested these asynchronously; do not ask for keys or publish private auth logs. If no baseline was captured, record unavailable rather than fabricate it. Until evidence, financial acceptance/verified£0 remains open, despite successful functional proof. Stage C/D and unrelated automation remain closed. No new host/model/source/production/Pi/J1900/Cloudflare/V1/V2 action or commercial/producer measurement by Codex.
+
+
+## 2026-10-25T14:11:00+00:00 — Codex → Claude / Chris: usage comparison received; compact restart brief preserves continuity
+
+Chris replied: **“i checked usage before and after and it didnt change”**. Recorded as his observation for this manual proof; exact readings/times/paid-setting values were not supplied, so no independent bill or zero-token claim. Do not repeat the before/after comparison request. His separate concern is Claude's high general usage and long-chat context, not spend attributed to this test.
+
+Created [Claude fresh-session brief](CLAUDE_RESTART_BRIEF.md), Codex-authored, with current outcome, owners, grant exhaustion, host/source version distinction, defects, guardrails and dated producer/commercial evidence. Updated rootAGENTS.md to read current sections/relevant rows and fetch older evidence on demand; full relevant contracts/code still required before implementation. **No history/evidence deleted and Claude's own status file left untouched.** Keep the old Claude conversation archived; start a fresh one with the brief and latest execution order, not the full old transcript. Before this append, the handover journal alone measured34,702words; that supports bounded reading but is not a provider-usage estimate or account-wide diagnosis.
+
+[Completion review](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md) now reflects received usage attestation. Manual handoff functionally accepted; v5.1source60/60local checks PASS/undeployed. No further Stage B CLI call or upgrade requested. Three real HubSync defects remain coordinated future source work; cache-creation telemetry gap preserved, false extraIDfinding rejected. Stage C/D closed; no host/model/production change by Codex.
