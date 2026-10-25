@@ -1,6 +1,6 @@
 # CURRENT EXECUTION ORDER — Agent sync
 
-Updated **25 October 2026,17:17GMT**. Authority: Chris's [owner reset directive](../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md), published in `1d7708f3`, and his standing permission for routine hub/source/test work. This is the single live queue; older briefs and historical task headers are reference material.
+Updated **25 October 2026, 18:48 GMT**. Authority: Chris's [owner reset directive](../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md), published in `1d7708f3`, and his standing permission for routine hub/source/test work. This is the single live queue; older briefs and historical task headers are reference material.
 
 ## Active objective
 
@@ -8,16 +8,19 @@ Build reliable **agent synchronisation through the shared GitHub hub**: one curr
 
 The bounded manual Codex→GitHub→Claude exchange is already functionally verified. That is a completed proof, not the whole agent-sync system and not permission for an unattended loop. Chris reports unchanged before/after usage; record it as his observation, not a provider billing audit. No further Stage B CLI call is authorized.
 
-## One live queue
+## One live queue — current status (25 Oct 2026, 18:48 GMT)
+
+**HubSync rev 3 CLOSED/INSTALLED**, per Claude's recorded host evidence [commit 0a598421](https://github.com/christucker-sketch/PitchListUK/commit/0a598421745d). Codex rev 3 review PASS; Chris approved the exact check/install and ran it on `fpd-prod`. Poll success, backlog 0, timer active. Do not review, retest or reinstall without a new reason and approval.
 
 | State | Owner | Work | Exact next outcome |
 |---|---|---|---|
-| ACTIVE — review follow-up | Claude | HubSync source-safety bundle93941d00 | Apply [Codex R1/R2](../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_CODEX_REVIEW_2026-10-25.md): migrate existing capped state without stalling; make the proposed host install/rollback fail safely. Integrate the new upgrade regression, rerun offline tests, repin. No host change. |
-| NEXT — same bundle | Codex | Independent agent-sync review | Recheck Claude's revised source/tests/checked host plan. Rechecked25Oct17:17GMT:27/27baseline passes; the precise old-state regression still fails on93941d00. No corrected source commit is present in latest hub1d7708f3. Publish one pass/fail after Claude's small patch, without reopening the completed manual proof. |
-| AFTER SAFETY CORRECTION — PLAN ONLY | Claude/Codex | Stage C minimal approval notice | Plan one dummy FindPitches-only SMTP2GO notice with isolated credentials/service and explicit approval before any live send. No new framework, credential installation or live email now; Stage D remains closed. |
-| SOURCE REVIEW PASS, UNDEPLOYED | Claude/Codex | v5.1 terminal-input fix |60/60local checks passed; no new install or model run requested now. Retain for a later explicitly approved host release. |
-| FUNCTIONAL PROOF COMPLETE | Codex validation; Claude host evidence | Stage B001/003 |Both result hashes/history verified;002failure retained. Current one-task continuation consumed. No replay, replacement task or additional model call. |
-| DEFERRED | Existing respective owners | UK producer expansion, cloud growth, France/features, DHCP/BIOS/hardware |Retain the [UK backlog/evidence snapshot](ARCHIVE_UK_EXECUTION_ORDER_2026-10-25.md). Resume engineering only after Chris reorders priorities. Existing deployed producer/delivery/customer services continue; this priority change stops no service. |
+| **ACTIVE — PLAN ONLY** | **Claude** | [Stage C approval notification](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_HANDOFF_2026-10-25.md) | One concise FindPitches-only SMTP2GO approval-notice design, idempotency/dry-run, scoped credential/service boundaries and rollback. No live email or host changes. |
+| NEXT — one review | Codex | Stage C plan | Single PASS/FAIL on the plan and offline verification approach; report concrete blocker only. |
+| **COMPLETE / INSTALLED** | Claude / Codex / Chris | HubSync rev 3 migration/safety | Reviewed and installed 25 Oct; leave running. |
+| FUNCTIONAL PROOF COMPLETE | Codex / Claude | Stage B tasks 001/003 | One bounded manual exchange verified. No replay or additional model calls authorised. |
+| SOURCE REVIEW PASS, UNDEPLOYED | Claude / Codex | v5.1 terminal-input fix | Keep parked pending separately approved release. |
+| CLOSED | Both | Stage D autonomous AI dispatch | Not authorised. |
+| DEFERRED | Respective owners | UK producer growth, DHCP, Pi/J1900 changes, unrelated infra | Existing deployed services continue; no new work without Chris reprioritising. |
 
 ## Working rules for this phase
 
@@ -30,4 +33,4 @@ The bounded manual Codex→GitHub→Claude exchange is already functionally veri
 - Preserve original task/source evidence and identity. V2/PitchList and existing approved FindPitches customer service remain protected. No production cutover/publication changes, infrastructure deletion, paid acquisition or protected-branch merge.
 - Latest93941d00 is already on GitHub. Do not repeat stale PC cleanup/push instructions for that commit. Windows local line-ending claims have not been verified by Codex.
 
-**Next deliverable:** one corrected, reviewed HubSync upgrade candidate supporting agent sync. Commercial metrics below older dates are not a current acquisition assignment.
+**Next deliverable:** one bounded Stage C plan from Claude and one Codex review, then stop for Chris's decision. No live send, new host service or automatic AI dispatch authorised. Commercial metrics below older dates are not a current acquisition assignment.
