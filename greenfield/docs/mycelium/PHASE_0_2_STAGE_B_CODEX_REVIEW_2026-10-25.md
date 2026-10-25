@@ -1,4 +1,80 @@
-# Stage B independent review — v3, one remaining publication deadline finding
+# Stage B independent review — v4 passes; explicit host go-ahead pending
+
+**Codex, 25 October 2026, 09:10 GMT. Reviewed runtime `cfa2280a997421a5cd76eede10c2ba276fb6201e`. Technical review PASS for the bounded manual Stage B proof only. Nothing installed or invoked on the host.**
+
+## Verified outcome
+
+Independently rerun against v4, with temporary local Git and fake/simulated CLI/clock fixtures:
+
+| Check | Result |
+|---|---:|
+| Maintained Stage B suite | 44/44 pass |
+| Original independent safety regressions | 7/7 pass |
+| Absolute admission-deadline regressions | 2/2 pass |
+| Shared publication-deadline regressions, including positive control | 3/3 pass |
+| Pinned source file checksums | 9/9 match |
+| Shell syntax | All nine scripts pass |
+
+**56/56 offline checks pass. All findings raised in the previous reviews are resolved for this limited manual test.** This is not evidence of real native provider behaviour, subscription allowance/billing, host installation, an actual GitHub-mediated model exchange, or unattended safety.
+
+The remaining R3 publication correction is now present in the shared source. `complete` passes the immutable absolute publication end into `commit_push`. The writer re-reads remaining time after local preparation/before push, then again before confirming fetch; TERM/KILL fit inside each remaining allowance. A final clock check prevents late confirmation being reported as success. Short time, failed confirmation and uncertain/late outcomes stop without an automatic retry. The three independent publication tests now pass unmodified on the actual shared bundle, rather than only a private proposed correction.
+
+Earlier admission, durable accounting, single-start, cancellation-boundary, strict parsing, safe public metadata and fresh-install/rollback repairs remain covered by the passing suites. No runtime changes were made by Codex. The stated post-admission cancellation limitation remains: cancellation can be too late to prevent a call, including during bounded preflight; changed history must prevent acceptance at completion. Strong approval authentication and broader unattended execution remain outside this proof.
+
+Chris's single-call same-request Codex transport-retry exception remains accepted; do not ask him to repeat it. Native subscription sessions, existing billing guard, disabled paid fallback/extra credits and before/after allowance readings remain host-run prerequisites. Fail closed on uncertainty. No claim of £0 billing verification is made from fake CLI tests.
+
+## Concrete installation approval scope
+
+The reviewed [v4 host plan](PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#5-exact-host-commands-only-after-codexs-re-review-and-chriss-go-ahead-the-3-decision-is-made-a) is ready for **Chris's installation go-ahead**. This means a fresh manual install on **fpd-prod (J3455) only**, with the nine pinned files, three root-owned commands, the new spool/state/allowlist directories and `mycspool` group memberships. It starts no model, timer or service and leaves the existing five-minute HubSync script/unit/key unchanged. Existing managed state causes refusal, not replacement. On a partial-install failure, stop and inspect; do not improvise cleanup.
+
+Declared Claude archive: **`stageb-0.5.tgz`**, SHA256 **`d35f98a9aefaa5ad92b70db18af9977def0f157556b3de5fa4328c9933687004`**. The archive itself is absent from this Codex workspace: individual source files are independently verified, while archive identity must be verified on transfer. Do not substitute an older archive or bypass checksum checks.
+
+PC transfer commands from the plan (after go-ahead):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File C:\Users\ChrisT\claude-sync.ps1
+scp C:\Users\ChrisT\stageb-0.5.tgz ct_admin@fpd-prod.Home:~/
+```
+
+Reviewed host install chain, including **all four** offline suites before sudo (python3 is required by the original regression fixture; missing prerequisites stop installation):
+
+```bash
+set -euo pipefail
+cd ~
+printf '%s\n' 'd35f98a9aefaa5ad92b70db18af9977def0f157556b3de5fa4328c9933687004  stageb-0.5.tgz' | sha256sum -c -
+tar -xzf stageb-0.5.tgz
+cd stageb
+sha256sum -c SHA256SUMS
+bash test-stageb.sh
+bash test-review-regressions.sh
+bash test-review-deadlines.sh
+bash test-review-publication.sh
+sudo bash install-stageb.sh
+```
+
+If a successfully installed bundle needs to be backed out, its reviewed narrow undo is:
+
+```bash
+sudo bash ~/stageb/uninstall-stageb.sh
+```
+
+That command requires the install receipt and refuses during a Stage B run. It removes only unchanged installed commands, the newly created allowlist/group, and moves spool/local state/private logs to a root-only evidence directory. GitHub task records and existing sign-ins/HubSync are retained. This is a reviewable reversibility plan, **not an instruction or approval to run rollback now**.
+
+## Remaining manual proof steps and gates
+
+1. Chris gives explicit go-ahead for the reviewed host installation. No host command has yet been run by Codex.
+2. Claude prepares the two task files described verbatim in [plan §4](PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#4-the-two-tasks-chris-creates-or-authorises-them-not-on-the-hub-yet). **Chris creates them or explicitly reviews/authorizes their creation.** No active task descriptors or allowlist hashes were fabricated by this review; the plan's placeholders must be replaced with the exact approved, pushed descriptor blobs before execution.
+3. With native billing/auth/allowance checks recorded, manually run the one Codex review and then the one Claude review of its GitHub result. Maximum two invocations total, 180s each, 30-minute grant, £0 incremental; on failure/uncertainty stop, do not advance. The scoped Codex transport exception is the only accepted retry exception.
+4. Publish the real task/event/result hashes, outcomes, call usage/timing, sanitized before/after allowance evidence and limitations. Failed/uncertain publication is a held outcome, not a passed proof. Do not retry/reconcile through another model invocation.
+
+The explicit gate comes from [Chris's Stage B authorization](PHASE_0_2_STAGE_B_AUTHORIZATION_2026-10-25.md): **“Before running commands on the host, present the exact implementation/deployment commands and reversibility plan to Chris for explicit go-ahead.”** Technical review completion does not remove it. Installation approval does not approve task creation, unattended triggers, email/Stage C, new paid services or changes to Pi/J1900/Cloudflare/V1/V2/production.
+
+**Actions this review:** local offline tests and GitHub documentation only. Zero native model calls, new spending, host install/run/rollback, real task creation, email or running-system changes. No new inventory/producer-health measurement is implied.
+
+---
+
+## Historical v3 review — findings repaired in v4
+
 
 **Codex, 25 October 2026, 08:59 GMT. Reviewed `030c7315`. Changes required before host execution.**
 

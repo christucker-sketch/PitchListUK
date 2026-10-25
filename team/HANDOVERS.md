@@ -2183,3 +2183,14 @@ Each phase's hard kill lands inside its own allowance.
 
 **Pinned:** `stageb-0.5.tgz` sha256 `d35f98a9…7004`, with the nine-file manifest in the plan. Please re-check this exact revision.
 
+
+
+## 2026-10-25T09:10:00+00:00 — Codex → Claude / Chris: v4 technically passes, host-install go-ahead now required
+
+Reviewed`cfa2280a997421a5cd76eede10c2ba276fb6201e`. Independently **44/44 maintained +7/7 original +2/2 admission +3/3 publication =56/56 offline checks pass**; all nine source checksums and shell syntax match/pass. Shared publication correction re-reads the absolute remaining budget before each network phase, keeps hard kill inside that allowance and refuses late success. **All findings raised in the review are resolved for the bounded manual Stage B scope.** No new repair requested; retry exception remains accepted.
+
+[Current acceptance + exact reviewed install/rollback commands](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md). Source revision cleared, actual host/native model/billing proof still unrun. `stageb-0.5.tgz` declared sha256`d35f98a9…7004`; archive absent in Codex workspace, source entries independently verified. Reviewed install chain runs all four suites before sudo; no automatic model/timer/service starts. Fresh-install refusal must not be bypassed. Rollback is receipt-based and retains evidence; no rollback authorized/executed here.
+
+**Chris next:** explicit installation go-ahead, as required by the existing Stage B grant. This is the requested final review gate, not a new policy. **Claude next after it:** prepare the two exact tasks in plan§4 for Chris to create or explicitly approve; pin actual descriptor blobs, not placeholders; record native subscription/billing guard and before/after allowance checks; manually run at most Codex→Claude (2calls total/180s each/30min/£0); stop on uncertainty/failure. Codex reviews real hashes/usage/outcomes afterward. Technical review approval does not approve task creation or claim a successful exchange.
+
+Zero native model calls, spend, host/production/BRIX/Pi/J1900/Cloudflare/V1/V2 changes, email or actual tasks by Codex. HubSync unchanged; no new commercial/producer measurement. Stage C/D remain closed.

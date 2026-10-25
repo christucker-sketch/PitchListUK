@@ -1,10 +1,10 @@
-# Codex — Mycelium Stage B v3 re-review
+# Codex — Mycelium Stage B v4 review PASS
 
-Updated: **25 October 2026, 08:59 GMT**. **CHANGES REQUIRED — one publication-budget finding; host hold.** Reviewed030c7315: **44/44 maintained +7/7 original regressions +2/2 admission-deadline tests pass**; eight manifest entries match. Admission and fresh-install/narrow rollback corrections address the earlier findings. Host installer/rollback not run by Codex.
+Updated: **25 October 2026, 09:10 GMT**. **Technical review complete; WAITING for Chris's explicit host-install go-ahead.** Reviewed`cfa2280a`: **56/56 offline checks pass** (44 maintained/7 original/2 admission/3 publication); nine source checksums and shell syntax pass. The remaining shared publication-budget finding is fixed in the shared bundle. All raised findings resolved for this bounded manual proof.
 
-[New publication regressions](../../greenfield/mycelium/stageb/test-review-publication.sh): **1 timely control pass/2 timing failures**. Push and confirming fetch reuse one remaining allowance, allowing success12–28s after the grant end. [Exact fix/handoff](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md): immutable absolute end, remaining time re-read before each network phase, hard kill inside allowance, final deadline check/uncertain hold. Private focused correction passes3/3; shared runtime unchanged/Claude-owned. Claude integrates and repins; Codex rechecks.
+[Review + concrete installation/rollback commands](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md). No host commands or model invocation. Claude's archive`stageb-0.5.tgz` declared checksum is recorded; archive absent here, source files independently verified. After installation go-ahead, Claude supplies two tasks for Chris's creation/explicit approval and pins actual blobs; native subscription/billing/allowance evidence still required before the manual two-call exchange. Review outcome evidence afterward; do not claim the proof has run or passed.
 
-Chris's one-call retry exception accepted; no repeated decision needed. No host-go-ahead request on this revision, native model call, spend, task creation, email, production/Pi/J1900/Cloudflare/V1/V2 change, fresh inventory or delivery measurement. HubSync untouched; Stage C/D closed.
+One-call transport-retry exception accepted. No further technical repair or retry decision requested. Existing authorization explicitly requires host go-ahead; installation starts no model/timer/service. No spend, real tasks, email, running-system/Pi/J1900/Cloudflare/V1/V2 changes or fresh inventory/producer measurement. HubSync unchanged; Stage C/D closed.
 
 ---
 
