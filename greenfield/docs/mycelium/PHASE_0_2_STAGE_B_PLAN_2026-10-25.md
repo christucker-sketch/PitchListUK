@@ -1,6 +1,6 @@
-# Mycelium Phase 0.2 Stage B: Claude's implementation and host plan (25 October 2026, revision v3)
+# Mycelium Phase 0.2 Stage B: Claude's implementation and host plan (25 October 2026, revision v4)
 
-**Status:** v3 READY FOR CODEX RE-REVIEW (v2 re-review follow-ups R3/R7 fixed), then Chris's go-ahead. Nothing is installed, no task exists on the hub, and no model has been called.
+**Status:** v4 READY FOR CODEX RE-REVIEW (v3 publication-budget finding fixed), then Chris's go-ahead. Nothing is installed, no task exists on the hub, and no model has been called.
 - **Answers:** [Chris's Stage B authorisation](PHASE_0_2_STAGE_B_AUTHORIZATION_2026-10-25.md), the [joint contract](PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md), and [Codex's review R1–R7](PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) of v1 (`8d56af1`).
 - **Code:** [`greenfield/mycelium/stageb/`](../../mycelium/stageb/).
 
@@ -27,6 +27,16 @@
 | R5 | Duplicate keys with different shapes were accepted | Duplicate members are detected **on the JSON token stream before normalisation**: a member path seen again after it was completed counts as a duplicate, at any depth, whatever the value shapes. Events also need ISO-8601 UTC `at`, string `reason`, object `usage`, the actor `hubsync-gate` for completed/failed, and a claim `run_id` of the form `<task_id>-r…`. | container→scalar, scalar→container, nested and identical-scalar duplicates; malformed time |
 | R6 | A CLI ignoring TERM outlived the cap | `timeout -k`: TERM at cap−10 s, **KILL at the cap**, to the whole process group. Short caps scale (70% / 20%). Auth and version checks are capped at 20 s. The call cap is min(180 s, time left in the grant). | a TERM-ignoring fake CLI is killed in 1.9 s for a 2 s cap |
 | R7 | `test | tail && install` ran the installer even if tests failed | The host commands below have **no pipes before `&&`**. Each step's own exit status gates the next. The archive hash is checked first, then the file checksums, then both test suites, then the install. The installer prints the before-state. | demonstrated by structure: every gate is a plain `&&` chain |
+
+**v4 (Codex's v3 review: the publication phases shared one allowance):**
+- `complete` passes the immutable **absolute publication end** to the writer.
+- `commit_push` re-reads the clock **after local preparation and right before the push**. If under 5 s remain, nothing is pushed (confirmed) and the task is held.
+- It re-reads the clock again **after the push and before the confirming fetch**. If under 3 s remain, the result is **published but unconfirmed** and held.
+- Each phase's hard kill (TERM at t−2 s, KILL at t) lands **inside** the time it was given.
+- **After confirmation the clock is checked once more.** If the absolute end has passed, the result is reported as **published late, held**, never as success.
+- Uncertain or late outcomes are held and never retried automatically. The messages keep "nothing pushed (confirmed)", "may or may not have landed (uncertain)" and "published but unconfirmed / late" distinct.
+- Codex's `test-review-publication.sh` (control + 2 timing cases) now passes **3/3** (was 1/3). It is part of the pinned manifest and of the host test chain.
+- All suites: Claude 44/44, regressions 7/7, deadlines 2/2, publication 3/3.
 
 **v3 (Codex's v2 re-review, R3/R7 follow-ups):**
 - **Absolute deadline.** `admit` now computes the deadline only from durable facts: **first claim on GitHub + window − publishing margin**, capped by the lease. It re-reads the clock **immediately before** the atomic admission (at least 20 s must remain). Time spent checking references can no longer stretch the grant, and a window that expires during those checks refuses admission. Codex's `test-review-deadlines.sh` now passes **2/2** (was 0/2).
@@ -80,11 +90,11 @@ Each is a `task.json` (exactly the five fields, `status: pending`) plus `events/
 
 ## 5. Exact host commands (only after Codex's re-review and Chris's go-ahead; the §3 decision is made: (a))
 
-**Pinned archive:** `stageb-0.4.tgz` sha256 `a6093e1115698ddb14be9b20eefa902d086d1c0fe211c21ab385a7666bd5d273`.
+**Pinned archive:** `stageb-0.5.tgz` sha256 `d35f98a9aefaa5ad92b70db18af9977def0f157556b3de5fa4328c9933687004`.
 
 **File checksums** (also in `stageb/SHA256SUMS`, inside the archive, re-checked by the installer):
 ```
-2b4cd7730144e3d749d831ee5cb0176f354165e00fa1c00612f7978cbd996302  myc-gate
+b8381493a38cc6648751149e4d96d8194179276ef9ba753e916a8c584308abfa  myc-gate
 14027469c640eea30abbea808c43e0b90fba68c1b2e1a61cfb7b428747635ec2  myc-agent
 c600ea9f4552581c1573d60a793f160fd2de34d3922f868678a81401368fdb5e  myc-stageb
 ef171d15f7bcad3ff437157d56b60d57aa30025c5f49a9ea0a26fc665916f1e8  install-stageb.sh
@@ -92,17 +102,18 @@ f39a65dcb8259fe75097886363de9bba64f060561699d0358a40272bad2b6513  uninstall-stag
 dc987872f0102f902e314e4cb11474d1f3489e1f14828a629939fec5b6c98867  test-stageb.sh
 adb3b216d16b275fb796e2c15ee623c1c5bc44b337be06884e01b5dfe3fbab6c  test-review-regressions.sh
 3f6869356947b93faecb72d1de88644d282cbf4a71c675ba60a429f29561b38f  test-review-deadlines.sh
+5dccdbf48d061bec95a181a4b1118f295a4bf5e3c6eef1799af95b9e4b2e0e64  test-review-publication.sh
 ```
 
 **On the PC:**
 ```
 powershell -ExecutionPolicy Bypass -File C:\Users\ChrisT\claude-sync.ps1
-scp C:\Users\ChrisT\stageb-0.4.tgz ct_admin@fpd-prod.Home:~/
+scp C:\Users\ChrisT\stageb-0.5.tgz ct_admin@fpd-prod.Home:~/
 ```
 
 **On `fpd-prod`:** every step must succeed for the next to run. There are no pipes before `&&`.
 ```
-cd ~ && echo "a6093e1115698ddb14be9b20eefa902d086d1c0fe211c21ab385a7666bd5d273  stageb-0.4.tgz" | sha256sum -c - && tar -xzf stageb-0.4.tgz && cd stageb && sha256sum -c SHA256SUMS && bash test-stageb.sh && bash test-review-deadlines.sh && sudo bash install-stageb.sh
+cd ~ && echo "d35f98a9aefaa5ad92b70db18af9977def0f157556b3de5fa4328c9933687004  stageb-0.5.tgz" | sha256sum -c - && tar -xzf stageb-0.5.tgz && cd stageb && sha256sum -c SHA256SUMS && bash test-stageb.sh && bash test-review-deadlines.sh && bash test-review-publication.sh && sudo bash install-stageb.sh
 ```
 - The installer prints the before-state, then installs three root-owned commands, group `mycspool`, `/var/lib/mycspool`, `/var/lib/myc-stageb` and an empty `/etc/myc-stageb/allowed`.
 - It **starts and enables nothing**.

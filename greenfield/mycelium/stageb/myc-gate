@@ -22,7 +22,7 @@ umask 027
 : "${MYC_WINDOW_S:=1800}"                   # whole Stage B test, from the FIRST claim recorded on GitHub
 : "${MYC_PUBLISH_MARGIN_S:=30}"             # time kept back inside the window for recording the outcome
 : "${MYC_MIN_CALL_S:=20}"                   # admission needs at least this much time left before the deadline
-PUSH_T=120; FETCH_T=60                      # network bounds; tightened to the absolute grant end when publishing a result
+PUSH_T=120; FETCH_T=60; PUB_END=""          # network bounds; PUB_END (absolute) is set only when publishing a result
 : "${MYC_NAME:=hubsync}"
 : "${MYC_EMAIL:=hubsync@$(hostname).invalid}"
 REPO=$MYC_HOME/repo; LOCK=$MYC_HOME/lock; B=$MYC_BRANCH
@@ -165,13 +165,28 @@ commit_push() {  # message files... -> commits exactly these NEW files and pushe
   G -c user.name="$MYC_NAME" -c user.email="$MYC_EMAIL" commit -q -m "$msg"
   [[ -z $(G diff --name-only "origin/$B" HEAD | grep -v "^$MYC_TASKS/MYC-[0-9]\{8\}-[0-9]\{3\}/\(events/[0-9]\{4\}\.json\|result\.md\)$" || true) ]] \
     || die "refusing to push files outside the task contract"
-  local c rc=0; c=$(G rev-parse HEAD)
-  timeout -k 5 "$PUSH_T" git -C "$REPO" push -q origin "HEAD:refs/heads/$B" 2>"$MYC_HOME/gate-push.err" || rc=$?
-  [[ $rc -ne 124 && $rc -ne 137 ]] || die "push of $c timed out after ${PUSH_T}s: publication outcome UNCERTAIN (it may or may not have landed); held, nothing retried. Re-run later to reconcile"
+  local c rc=0 rem; c=$(G rev-parse HEAD)
+  # Each network phase gets only the time left before the immutable publication end (if one applies), re-read right
+  # before that phase; its hard kill lands inside that allowance (TERM at t-2, KILL at t).
+  if [[ -n $PUB_END ]]; then
+    rem=$(( PUB_END - $(date -u +%s) ))
+    (( rem >= 5 )) || die "no time left before the Stage B grant end; NOTHING was pushed (confirmed); held for Chris"
+    PUSH_T=$(( rem < 120 ? rem : 120 ))
+  fi
+  timeout -k 2 "$(( PUSH_T - 2 ))" git -C "$REPO" push -q origin "HEAD:refs/heads/$B" 2>"$MYC_HOME/gate-push.err" || rc=$?
+  [[ $rc -ne 124 && $rc -ne 137 ]] || die "push of $c timed out: publication outcome UNCERTAIN (it may or may not have landed); held, nothing retried. Re-run later to reconcile"
   [[ $rc -eq 0 ]] || die "push rejected or failed ($(head -c 200 "$MYC_HOME/gate-push.err" | tr -cd '[:print:]')); nothing retried, nothing forced"
-  timeout -k 5 "$FETCH_T" git -C "$REPO" fetch -q --no-tags origin "+refs/heads/$B:refs/remotes/origin/$B" \
-    || die "pushed $c but could not re-read the remote within ${FETCH_T}s: outcome UNCERTAIN; held"
+  if [[ -n $PUB_END ]]; then
+    rem=$(( PUB_END - $(date -u +%s) ))
+    (( rem >= 3 )) || die "pushed $c but no time left to confirm it before the grant end: result PUBLISHED but UNCONFIRMED; held for Chris"
+    FETCH_T=$(( rem < 60 ? rem : 60 ))
+  fi
+  timeout -k 2 "$(( FETCH_T - 2 > 0 ? FETCH_T - 2 : 1 ))" git -C "$REPO" fetch -q --no-tags origin "+refs/heads/$B:refs/remotes/origin/$B" \
+    || die "pushed $c but could not confirm it in time: result PUBLISHED but UNCONFIRMED (outcome uncertain); held"
   G merge-base --is-ancestor "$c" "origin/$B" || die "pushed $c is not on the remote branch (history rewound?)"
+  if [[ -n $PUB_END && $(date -u +%s) -gt $PUB_END ]]; then
+    die "$c is published and confirmed, but only AFTER the Stage B grant end (late); held for Chris"
+  fi
   echo "$c"
 }
 event_json() { jq -n --arg at "$(now)" "$@"; }
@@ -301,10 +316,9 @@ cmd_complete() {
   fi
   n=$((SEQ + 1)); ev=$(printf '%s/events/%04d.json' "$d" $n)
   if $ok; then
-    # a RESULT is published only inside the absolute grant end: the push and the confirming fetch get only the time
-    # left. If they run out, the outcome is UNCERTAIN and held (commit_push stops; no automatic retry).
-    left_s=$(( pub_end - $(date -u +%s) )); PUSH_T=$(( left_s < 120 ? left_s : 120 )); FETCH_T=$(( left_s < 60 ? left_s : 60 ))
-    (( PUSH_T >= 5 && FETCH_T >= 5 )) || { ok=false; code=deadline_passed; PUSH_T=60; FETCH_T=60; rm -f "$REPO/$d/result.md"; }
+    # a RESULT is published only inside the absolute grant end: commit_push re-reads the clock before the push and
+    # again before the confirming fetch, and checks it once more before reporting success (no automatic retry).
+    (( pub_end - $(date -u +%s) >= 10 )) && PUB_END=$pub_end || { ok=false; code=deadline_passed; rm -f "$REPO/$d/result.md"; }
   fi
   if $ok; then
     event_json --argjson s $n --arg r "$run" --arg pe "$LAST_BLOB" --arg h "$sha" --argjson u "$usage" \
