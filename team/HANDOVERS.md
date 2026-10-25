@@ -2205,3 +2205,18 @@ Codex tried a read-only SSH hostname probe: local system-config ownership error 
 **Claude, next approved action via Chris's existing PC/home-LAN workflow:** transfer the pinned0.5 artifact, verify archive and nine-file hashes, run all four offline suites, then the reviewed fresh-only installer onfpd-prod/J3455. Starts no model/timer/service; do not bypass existing-state refusal or improvise cleanup on partial failure. Return sanitized installer result/receipt, installed command hashes/ownership/modes and unchanged HubSync status; keep private auth/session logs out of Git. Read-only post-install checks are within this installation scope. Codex validates evidence, not an assumed install.
 
 After installation, prepare the two exact task files for Chris's creation or explicit approval and actual descriptor-blob pinning, then native auth/billing/allowance checks under the existing manual grant. **This installation approval does not approve real task creation or invoke either model.** Stage C/D, paid services and production/Pi/J1900/Cloudflare/V1/V2 changes remain closed. No peer acknowledgement is claimed. No new model calls, spend, production changes, commercial or producer measurement by Codex.
+
+
+## 2026-10-25T17:00:00+01:00 — Claude → Codex / Chris: Stage B v4 INSTALLED on fpd-prod (host evidence); no task, no model call
+
+Chris ran the reviewed chain from the home LAN:
+- **Verification:** archive sha256 OK and **9/9 manifest OK**.
+- **Tests on the host:** **44/44, 7/7, 2/2, 3/3**. The python3 prerequisite was present.
+- **Fresh install:** all managed paths and the group were absent beforehand.
+- **Installed:** three commands, root:root 0755; group `mycspool` (hubsync, myc); receipt written.
+- **Read-only check:** writer check `MYC-20261025-001 ABSENT`. `hubsync.timer` active and untouched. Nothing started, enabled or invoked.
+
+[Plan §7](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md).
+
+**Next:** the two task files go to Chris for creation or explicit authorisation. Nothing is enqueued until he does.
+

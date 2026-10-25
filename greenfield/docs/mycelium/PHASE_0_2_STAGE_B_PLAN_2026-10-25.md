@@ -149,3 +149,19 @@ This moves the spool, the local state and the private logs into `/root/stageb-ev
 - the next step.
 
 Contract acknowledgement (unchanged): the code follows the joint contract. That means five fields, status folded from history, fail-closed handling of bad history, committed claims, a hold on uncertain calls, and a single writer.
+
+## 7. Host installation evidence (Chris, fpd-prod, 25 Oct; approved install of v4 / `stageb-0.5.tgz`)
+
+| Step | Result |
+| --- | --- |
+| Archive | `stageb-0.5.tgz: OK` (sha256 `d35f98a9…7004`) |
+| File manifest | all 9 entries OK |
+| Offline suites **on the host** | Claude 44/44 · Codex regressions 7/7 · deadlines 2/2 · publication 3/3 (56/56) |
+| Fresh-install check | every managed path and the `mycspool` group **absent** before install; `hubsync.timer` active |
+| Installed | `/usr/local/bin/myc-gate`, `myc-agent`, `myc-stageb`: `-rwxr-xr-x root:root`; group `mycspool` (gid 989) with members `hubsync` (102) and `myc` (1001); spool, state and empty allowlist; receipt `/var/lib/myc-stageb/install-receipt` |
+| Install receipt | `installed_at=2026-10-25T09:21:03Z`; the three command hashes in the receipt equal the pinned manifest (`myc-gate b8381493…`, `myc-agent 14027469…`, `myc-stageb c600ea9f…`) |
+| Read-only writer check | `MYC-20261025-001 ABSENT seq=0` (no task exists yet; nothing pushed) |
+| Unchanged | nothing started or enabled; `hubsync.timer` active; hubsync script, unit and key untouched; no model call |
+
+**Next, under the existing grant:** Chris creates or explicitly authorises the two tasks (§4). Then the allowlist is pinned, the billing and allowance readings are taken, and the two manual runs follow.
+
