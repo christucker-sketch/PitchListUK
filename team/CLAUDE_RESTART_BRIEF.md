@@ -1,6 +1,6 @@
 # Claude fresh-session brief
 
-Prepared by **Codex**, 25 October 2026, 14:11 GMT. This is a checkpoint for restarting a long chat, not Claude's own status or live telemetry. Keep the old conversation as an archive. Git history and linked evidence retain the detail.
+Prepared by **Codex**, updated25October2026,16:38GMT. This is a checkpoint for restarting a long chat, not Claude's own status or live telemetry. Keep the old conversation as an archive. Git history and linked evidence retain the detail.
 
 Before leaving the old chat, ask Claude to checkpoint uncommitted work, local artifact locations, unrecorded decisions, blockers and the next action in the hub. This brief covers committed shared state; Codex cannot see unsaved private-chat work.
 
@@ -8,9 +8,9 @@ Before leaving the old chat, ask Claude to checkpoint uncommitted work, local ar
 
 Use branch `findpitches-v3/greenfield` in `christucker-sketch/PitchListUK` with existing GitHub access. Read `AGENTS.md`, [CURRENT_EXECUTION_ORDER](CURRENT_EXECUTION_ORDER.md), and the current sections/rows/decisions of the required hub entrypoints. Check new commits since this checkpoint. Do not bulk-load the full handover journal or old conversation. Before implementation, retrieve the full relevant contract, source and tests. Older evidence stays available through links and `rg`.
 
-## Product and ownership
+## Active priority: agent sync
 
-FindPitches V3 is a commercial international product. The current commercial objective is sustained net-new, current, source-proved UK READY opportunities; distinguish new event identities from recoveries and new evidence versions. The existing public site and Checkout were approved LIVE: preserve them. Protect paying UK PitchList customers; V2 remains read-only and is not a V3 runtime dependency.
+Chris clarified: **“we were working on agent sync”**. That is the active assignment. Complete the HubSync/agent-handoff work; do not return to UK source discovery or router/hardware work. FindPitches commercial growth remains background context. Existing public site/Checkout and paying UK PitchList customers stay protected; V2 remains read-only.
 
 Claude owns the independent producer/Pi kit and contributes the shared Mycelium bundle. Codex owns V3 cloud verification/customer code and the authoritative execution register. ChatGPT coordinates priorities. Do not impersonate peers or assume acknowledgement. Claude's host evidence comes through Chris's manual home-LAN workflow; do not invent SSH/Cloudflare access.
 
@@ -28,10 +28,10 @@ The bounded manual GitHub handoff is functionally complete:
 - v5.1/`stageb-0.7.tgz`: terminal-input fix reviewed, **60/60 local checks pass**, NOT installed; no deployment requested now.
 - Chris reports he checked usage before/after and it did not change. Record that as his observation; exact provider figures and independent billing reconciliation are unavailable. API-equivalent estimates are not charges. Claude cache-creation input is missing from current telemetry; preserve old receipts.
 
-[Completion/source review](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md) contains hashes, limits and evidence. Three real HubSync issues remain for coordinated review: capped-batch starvation, conditional Bash errexit suppression and symlink writes. The extra `$id` traversal concern is already blocked by existing validation. No live HubSync change is authorized by the completed test.
+[Completion/source review](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md) contains hashes, limits and evidence. Claude has implemented three HubSync fixes in93941d00. [Codex review](../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_CODEX_REVIEW_2026-10-25.md):27/27baseline checks pass, but an old-state upgrade still stalls; fix migration and the checked host plan before clearance. The extra `$id` traversal concern is already blocked by existing validation. No live HubSync change is authorized by the completed test.
 
-## Producer continuity and next action
+## Retained producer context — not the current assignment
 
 Pi kit012d was installed after a power-cut/SSD-mount delivery outage. Discovery is three-hourly; delivery is fifteen-minute. Last cloud measurement was24October16:08London:2508accepted/0rejected, including2256duplicates;1099pending rechecks. These are dated evidence counts, not new READY inventory. Last commercial snapshot22October:UK205/global1708; remeasure before calling it current. Preserve source freshness, exact-ID recheck acknowledgements and proof expiry. France/extra features remain deferred under the UK-first queue.
 
-**Next:** refresh the execution order and recent handover entries; coordinate the three source-safety fixes before expanding Mycelium. Continue assigned producer/cloud work only in the correct ownership lane. No new spend or host change is implied by this brief. Before stopping, publish a short own-agent update, evidence links and one exact next action. Start another fresh chat when needed; do not paste the entire old transcript back in.
+**Next:** stay on agent sync. Address Codex's migration and safe-install-plan findings in the same HubSync bundle, then return it for independent review. Do not resume producer/cloud growth or hardware work as a substitute. Existing services keep running. No new spend/host/model invocation is implied. Checkpoint one short update with evidence and the next action; preserve old context without bulk reloading it.

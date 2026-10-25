@@ -107,3 +107,8 @@ Before/after allowance evidence is still required; approval is not proof of bill
 
 **DEFERRED.** The Sky router admin login is not working and Chris does not want to reset the router now. The hosts are reached by DHCP names (`fpd-pi.Home`, `fpd-prod.Home`, `fpd-standby.Home`); addresses can change after a power cut, as they did on 24 Oct. Revisit when convenient. Nothing depends on fixed IPs.
 
+
+
+## ACTIVE-AGENT-SYNC-2026-10-25 — current priority clarified by Chris
+
+**CURRENT DIRECTION**, recorded25October2026,16:38GMT. Chris said **“we were working on agent sync”** while questioning Claude's proposed return to UK producer discovery. Agent synchronisation/Mycelium is the active assignment; do not substitute producer growth, router reservations or hardware work. The [execution order](CURRENT_EXECUTION_ORDER.md) and [fresh-session brief](CLAUDE_RESTART_BRIEF.md) are corrected. Prior UK goals/evidence remain in an [explicit historical snapshot](ARCHIVE_UK_EXECUTION_ORDER_2026-10-25.md); existing deployed services are not stopped. No approval for new model calls, unattended execution, Stage C/D or host/production changes is implied. Codex owns the mixed-priority correction; no claim that Claude acknowledged it yet.
