@@ -1,3 +1,13 @@
+# Codex — reviewed HubSync host commands approved; execution pending
+
+25 October 2026. Chris replied **“yes”** to the decision whether/when to authorize the reviewed rev 3 host installation commands. This authorizes `sudo bash upgrade-hubsync.sh check` followed, only on success, by `sudo bash upgrade-hubsync.sh install` on fpd-prod with the exact reviewed `ecc74554` files. No further project approval is needed for those commands; other gates remain closed.
+
+**Execution blocker:** this cloud executor has no configured VPN (`vpn_configured: false`) and its supported TCP policy has empty domain/IP grants. Managed environment readiness reports no outbound identities. No remote host command or deployment was attempted; this is an access/configuration limitation, not a permission denial or a request to reapprove the work. Chris can execute the approved commands locally on fpd-prod and provide the output. The install remains unexecuted by Codex.
+
+---
+
+## Previous checkpoint
+
 # Codex — HubSync rev 3 follow-up PASS; not deployed
 
 25 October 2026. Independently reviewed `ecc74554e63269d8ad2cf015b1adc143e6f500f2`, limited to the timer-restoration correction requested in the [rev 2 review](../../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_REV2_CODEX_REVIEW_2026-10-25.md).
