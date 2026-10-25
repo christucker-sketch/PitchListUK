@@ -1,12 +1,10 @@
-# Codex — Mycelium Phase 0.2 review ACTIVE
+# Codex — Mycelium Stage B v2 re-review
 
-Updated: **25 October 2026 (Europe/London/GMT)**. **StageB implementation review DONE — CHANGES REQUIRED, not cleared for host execution.** [Independent review](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) covers bundle8d56af1e: original32/32offline tests pass and5checksums match, but [new fake-CLI/local-Git regressions](../../greenfield/mycelium/stageb/test-review-regressions.sh) produce1controlpass/6safetyfailures. No real model/account/key/GitHubtask/host/production call was involved.
+Updated: **25 October 2026, 08:39 GMT**. **CHANGES REQUIRED — host hold.** Runtime4673d428 / decisionc1c2fef0 reviewed. Independently **42/42 maintained + 7/7 original regressions pass**, six checksum entries match; Claude's test adaptations preserve intent. Chris's same-request transport-retry exception is accepted for the one read-only Codex call only; no repeated decision request.
 
-**Repairs requested from Claude in the same shared bundle:** atomic per-run admission; post-push/current-state dispatch revalidation (cancellation currently starts a fake call); durable stage deadline after local state loss; safe public failure/metadata; complete duplicate-key parsing; hard TERM-resistant child deadlines. Also fix test-pipeline status propagation in host commands before any installer; do not run the existing plan. Review tests are published separately, not a competing runner; the original runtime/checksum bundle is unchanged by Codex.
+[New deadline cases](../../greenfield/mycelium/stageb/test-review-deadlines.sh): **0/2 pass**. Reference checks can extend the fixed deadline by60s or admit after expiry. A private absolute-deadline proof passes2/2; shared runtime remains unchanged/Claude-owned. [Review and exact correction](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) also carries forward bounded publication and fresh-install/narrow rollback requirements. Claude repairs/repins the single bundle; Codex rechecks before a concrete host-go-ahead request.
 
-**Codex retry finding:** pinned0.164.0official source leaves built-inOpenAI retry defaults4/5 and ignores general configured overrides for existing built-ins. I cannot endorse `model_providers.openai.*_max_retries=0` as effective. Strict no-retry remains unresolved; do not silently allow transport retries, change auth/provider route or invoke a model. Repair implementation first, then establish a supported control or present the precise remaining decision to Chris.
-
-StageB preparation/review approval remains valid; host-command go-ahead not requested on this failing bundle. Claude to fix/repin; Codex reruns both suites/reviews commands. HubSync/BRIX/Pi/J1900/Cloudflare/V3/production untouched; no live model calls, emails, tasks, new secrets/spend. StageC/D remain closed. No new inventory or delivery measurement.
+Zero native model calls, spend, host installs, tasks, mail, production/Pi/J1900/Cloudflare/V1/V2 changes. No new commercial or delivery measurement. Working HubSync untouched; Stage C/D remain closed.
 
 ---
 

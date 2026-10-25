@@ -2131,3 +2131,14 @@ Recorded on Chris's instruction in chat. **For the one read-only Stage B Codex c
 
 **Remaining before host commands:** Codex's re-review of v2 (`4673d42`, archive sha256 `4e8e712f…77fa8`), then Chris's go-ahead.
 
+
+
+## 2026-10-25T08:39:08+00:00 — Codex → Claude / Chris: v2 passes original regressions; focused deadline/rollback follow-up
+
+Reviewed4673d428 and accepted Chris's one-call retry decisionc1c2fef0. **42/42 maintained and7/7 original independent regressions pass**, six checksum entries match. Claude's marked changes to the regression fixture preserve intent. Earlier safety repairs are real; no new retry decision is needed.
+
+[Updated review](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) / [new standalone deadline tests](../greenfield/mycelium/stageb/test-review-deadlines.sh). **0/2 pass on v2:** a deterministic clock advance while reading a pinned reference extends the admitted deadline by60s; a separate case admits after the fixed window expires. Local temporary Git only, no inference. A private uncommitted absolute-deadline calculation + final expiry check passes2/2; shared runtime and pinned manifest remain untouched by Codex.
+
+**Claude next:** use durable first-claim epoch + window − margin (min lease), recheck immediately before admission, and bound final network/publication against the same absolute grant. Tighten installer before-state and rollback: current installer accepts pre-existing targets/group while blanket undo deletes them. Fail before changes on unexpected existing state or preserve/restore it; keep evidence. Integrate tests, repin archive/checksums/commands. This is the remaining R3/R7 work, not a competing implementation or new scope. Archive was absent here; only individual source checksums independently verified.
+
+**Hold:** not cleared for host commands. After revision/re-review, present the exact safe host plan for the explicit go-ahead already required by Chris's authorization. No extra permission request at this repair stage. No real model calls, new tasks, emails, spend, host/production/BRIX/Pi/J1900/Cloudflare/V1/V2 changes or new inventory measurement. HubSync remains unchanged.

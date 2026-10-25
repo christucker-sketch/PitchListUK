@@ -1,4 +1,48 @@
-# Stage B independent review — changes required
+# Stage B independent review — v2 re-review, changes required
+
+**Codex, 25 October 2026, 08:39 GMT. Reviewed runtime revision `4673d428`, retry decision `c1c2fef0`. Host execution remains on hold.**
+
+## Current outcome
+
+The revised bundle is substantially safer. Independently rerun: **42/42 maintained checks and 7/7 original Codex regressions pass**. All six entries in its existing `SHA256SUMS` match. Claude's marked adaptations to the original Codex tests preserve their intent: fresh independent scenario grants and the new admission step before testing a worker. R1/R2/R4/R5/R6 regressions now pass; durable history-based accounting and host test-exit propagation are also repaired.
+
+Chris's option (a), recorded in `c1c2fef0` and the [plan](PHASE_0_2_STAGE_B_PLAN_2026-10-25.md), resolves the retry decision: native Codex retries of the **same request on transport error, for this one read-only Codex call only** are accepted. No second CLI invocation, task, reconciliation call or later-stage exception. Do not ask Chris to decide this again. All other limits and the separate host-command go-ahead remain in force.
+
+Two concrete implementation/host-plan items remain from R3/R7. No new approval is requested at this repair stage.
+
+### R3 follow-up — absolute grant deadline can move during admission
+
+[`myc-gate`](../../mycelium/stageb/myc-gate) calculates `GRANT.window_left_s` **before** validating pinned references, then calculates the deadline as **later current time + that stale remaining time − margin**. This extends the grant by time spent checking references. It also does not recheck expiry after those checks before creating `admitted` and `job.json`.
+
+[New independent deadline regressions](../../mycelium/stageb/test-review-deadlines.sh) use a disposable local Git repository and a deterministic forward clock advance at the pinned-reference read. **0/2 pass on v2:**
+
+- A 60-second advance extends the job deadline by **60–61 seconds** beyond first-claim time + window − publishing margin.
+- A 120-second advance in a 60-second test grant still creates admission and a job after the fixed grant has expired.
+
+Run: `bash greenfield/mycelium/stageb/test-review-deadlines.sh`. A nonzero exit currently denotes the reproduced failures. There are **no model calls**, host commands, real GitHub writes or real credentials in this test. Short configurable windows avoid waiting 30 minutes.
+
+**Required correction in the shared bundle:** derive an absolute deadline from durable `first_claim_epoch + window_s`, subtract the publishing margin, take the minimum with the lease, and recheck current time immediately before admission. Do not convert an old duration back into a new absolute deadline. A private, uncommitted copy using that calculation and an expiry check passes **2/2**; shared runtime remains Claude-owned and unchanged by Codex. The two tests are published for integration, not a second runner.
+
+Also finish the already-requested end-to-end bound: `complete` checks expiry before `commit_push`, but the push and confirming fetch can each wait up to 120/60 seconds beyond its 30-second reserve. Bound the remaining writer/network phases by the absolute grant end; if the outcome is uncertain, hold and report without retry. Do not claim a hard whole-test 30-minute limit from a check before potentially long network waits. That publication-time finding is from code review, not a new timed-network reproduction.
+
+### R7 follow-up — rollback still assumes everything was newly created
+
+The repaired test command now propagates failure correctly. However, `install-stageb.sh` still permits existing command files/group/spool/state/allowlist/log paths, while the plan's unconditional undo removes them and the entire `mycspool` group. Printing before-state does not make that rollback safe for pre-existing data/configuration.
+
+For this minimal first install, fail **before any mutation** if managed paths or the shared group already exist unexpectedly, or explicitly preserve and restore their prior state. Document a narrow rollback based on the successful install's receipt; retain task/evidence/private diagnostic records, and never delete pre-existing state or memberships. Do not run the present blanket cleanup. This is the existing R7 request for before-state/ownership checks and narrow rollback, not approval to delete infrastructure.
+
+## Next shared checkpoint
+
+**Claude:** repair the absolute deadline and remaining-time enforcement, tighten fresh-install/rollback semantics, integrate the two new cases, rerun all offline checks, and repin files/archive/commands. The six-file v2 checksum manifest still verifies; the newly added review-only deadline test is outside that manifest. The archive itself was not present in this workspace and its declared checksum has not been independently verified by Codex.
+
+**Codex:** recheck that exact revised bundle, then present the concrete reviewed host plan for the explicit go-ahead required by [Chris's Stage B authorization](PHASE_0_2_STAGE_B_AUTHORIZATION_2026-10-25.md). No task descriptors have been created or authorized here. Cancellation after the final admission boundary remains a stated manual-proof limitation: it may be too late to prevent a call, including during preflight; completion must refuse changed history. This review does not grant unattended execution.
+
+**Actions this review:** local fake/offline tests and GitHub review documents only. Zero native model calls, new spending, host installs, email, production/Pi/J1900/Cloudflare/V1/V2 changes. Working five-minute HubSync remains untouched. No new inventory or producer-health measurement is implied.
+
+---
+
+## Historical v1 review — superseded findings retained
+
 
 **Codex,25October2026. Reviewed bundle `8d56af1e949c5275791b2276490cddceebab5cc7`. Not cleared for host execution.**
 
