@@ -1,0 +1,10 @@
+# Every 5 minutes, offset 2 minutes from hubsync. Enabled only with Chris's go-ahead.
+[Unit]
+Description=Mycelium approval notices every 5 minutes
+
+[Timer]
+OnCalendar=*:2/5
+RandomizedDelaySec=20
+
+[Install]
+WantedBy=timers.target

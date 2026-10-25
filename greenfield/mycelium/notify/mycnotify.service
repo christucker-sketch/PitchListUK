@@ -1,0 +1,42 @@
+# Mycelium Stage C approval notices: one run (no AI, no GitHub writes, no access to hubsync or Stage B files).
+# PROPOSAL; installed only with Chris's go-ahead. Credentials are root-owned files passed in by systemd.
+[Unit]
+Description=Mycelium approval notices: one run
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=mycnotify
+Group=mycnotify
+Environment=HOME=/var/lib/mycnotify MYCNOTIFY_HOME=/var/lib/mycnotify
+LoadCredential=smtp2go-key:/etc/mycnotify/smtp2go-key
+LoadCredential=notify.conf:/etc/mycnotify/notify.conf
+ExecStart=/usr/local/bin/mycnotify poll
+TimeoutStartSec=3min
+Nice=10
+MemoryMax=128M
+CPUQuota=25%
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ReadWritePaths=/var/lib/mycnotify
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+UMask=0077

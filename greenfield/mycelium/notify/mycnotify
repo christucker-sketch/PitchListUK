@@ -1,0 +1,250 @@
+#!/usr/bin/env bash
+# mycnotify — Mycelium Stage C approval notices (PROPOSAL; not installed until Codex review + Chris's go-ahead).
+# Reads the public hub anonymously (no GitHub credential), finds tasks whose folded state is awaiting_approval, and
+# emails ONE plain-text notice per decision through SMTP2GO, using a dedicated FindPitches-only key and sender.
+# It never writes to GitHub, never approves anything, never starts an agent, and shares nothing with hubsync.
+#   mycnotify poll       one run (the timer runs it every 5 minutes)
+#   mycnotify baseline   record every decision outstanding NOW as already handled (no send); required before live
+#   mycnotify release    clear the global hold set by a provider auth/config refusal (after fixing the config)
+#   mycnotify status     print status
+# Safety model (Stage C): decision key = task id + awaiting event seq + event blob (+ descriptor blob in the record).
+# A local write-ahead ledger records a CLAIM before the HTTP request; an interrupted claim becomes "uncertain" and is
+# never resent. Only definitely-not-accepted failures retry (no connection; HTTP 429), at most 3 attempts. Timeouts,
+# 5xx and lost responses are "uncertain": no resend. A missing/lost ledger blocks live sending until `baseline`, so
+# state loss can cause a missed notice, never a duplicate. Mode is root-controlled (MODE= in the credential config);
+# anything other than MODE=live is a dry run that never calls the network for mail.
+set -euo pipefail
+shopt -s inherit_errexit
+umask 077
+
+: "${MYCNOTIFY_HOME:=/var/lib/mycnotify}"
+: "${MYCNOTIFY_REMOTE:=https://github.com/christucker-sketch/PitchListUK.git}"
+: "${MYCNOTIFY_BRANCH:=findpitches-v3/greenfield}"
+: "${MYCNOTIFY_TASKS:=greenfield/mycelium/notify-test/tasks}"   # Stage C test path; NOT Stage B's tasks/
+: "${MYCNOTIFY_WEB:=https://github.com/christucker-sketch/PitchListUK/tree}"
+: "${MYCNOTIFY_MAX_DAY:=5}"        # claims per London calendar day
+: "${MYCNOTIFY_MAX_ATTEMPTS:=3}"   # per decision, definitely-not-accepted failures only
+CRED=${CREDENTIALS_DIRECTORY:-/etc/mycnotify}   # systemd LoadCredential: smtp2go-key, notify.conf
+CURL=curl
+API=https://api.smtp2go.com/v3/email/send
+if [[ ${MYCNOTIFY_TEST:-0} == 1 ]]; then CURL=$MYCNOTIFY_TEST_CURL CRED=$MYCNOTIFY_TEST_CRED; fi
+
+H=$MYCNOTIFY_HOME HUB=$MYCNOTIFY_HOME/hub.git L=$MYCNOTIFY_HOME/ledger DRY=$MYCNOTIFY_HOME/dryrun
+STATUS=$MYCNOTIFY_HOME/status.json LOCK=$MYCNOTIFY_HOME/lock PAUSE=$MYCNOTIFY_HOME/PAUSE
+B=$MYCNOTIFY_BRANCH REV=refs/heads/$MYCNOTIFY_BRANCH
+
+log() { echo "mycnotify: $*" >&2; }
+G() { git --git-dir="$HUB" "$@"; }
+now() { if [[ ${MYCNOTIFY_TEST:-0} == 1 && -n ${MYCNOTIFY_TEST_NOW:-} ]]; then echo "$MYCNOTIFY_TEST_NOW"; else date -u +%s; fi; }
+iso() { date -u -d "@$1" +%Y-%m-%dT%H:%M:%SZ; }
+lday() { TZ=Europe/London date -d "@$1" +%F; }
+
+# ---------------------------------------------------------------- config (root-owned, read via systemd credentials)
+SENDER="" RECIPIENT="" MODE=dry-run CONF_ERR=""
+conf_get() { grep -m1 -E "^$1=" "$CRED/notify.conf" 2>/dev/null | cut -d= -f2- || true; }
+load_conf() {
+  [[ -r $CRED/notify.conf ]] || { CONF_ERR="no notify.conf credential"; return 0; }
+  SENDER=$(conf_get SENDER); RECIPIENT=$(conf_get RECIPIENT); MODE=$(conf_get MODE)
+  [[ $MODE == live ]] || MODE=dry-run
+  [[ $SENDER =~ ^[A-Za-z0-9._+-]+@findpitches\.com$ ]] || CONF_ERR="SENDER must be an address @findpitches.com"
+  [[ $RECIPIENT =~ ^[^[:space:],\;\<\>\"]+@[^[:space:],\;\<\>\"]+$ ]] || CONF_ERR="RECIPIENT must be exactly one address"
+}
+
+# ---------------------------------------------------------------- hub (anonymous, objects only, never a work tree)
+fetch() {
+  if [[ ! -d $HUB ]]; then
+    timeout 300 git clone -q --bare --single-branch --branch "$B" --no-tags "$MYCNOTIFY_REMOTE" "$HUB" || return 1
+  fi
+  timeout 120 git --git-dir="$HUB" fetch -q --no-tags origin "+refs/heads/$B:refs/heads/$B"
+}
+
+# Strict read-only fold of one task, following the agreed contract (descriptor + contiguous events). Anything
+# unexpected => QUARANTINE (no notice). Sets F_STATE F_WHY F_DESC F_EV F_SEQ F_AGENT F_REASON.
+allowed() {
+  case "$1>$2" in
+    ">pending"|"pending>in_progress"|"in_progress>awaiting_approval"|"in_progress>completed"|"in_progress>failed") ;;
+    "awaiting_approval>approved"|"awaiting_approval>rejected"|"approved>in_progress"|"failed>pending") ;;
+    "pending>cancelled"|"in_progress>cancelled"|"awaiting_approval>cancelled"|"approved>cancelled") ;;
+    *) return 1 ;;
+  esac
+}
+fold() {
+  local id=$1 d=$MYCNOTIFY_TASKS/$1 line meta mode type blob name n=0 st="" e want
+  F_STATE=QUARANTINE F_WHY="" F_DESC="" F_EV="" F_SEQ=0 F_AGENT="" F_REASON=""
+  [[ $id =~ ^MYC-[0-9]{8}-[0-9]{3}$ ]] || { F_WHY="bad task id"; return 0; }
+  line=$(G ls-tree "$REV" -- "$d/task.json")
+  read -r mode type blob <<<"${line%%$'\t'*}"
+  [[ $mode == 100644 && $type == blob ]] || { F_WHY="task.json missing or not a regular file"; return 0; }
+  [[ $(G cat-file -s "$blob") -le 8192 ]] || { F_WHY="task.json too large"; return 0; }
+  G cat-file blob "$blob" | jq -e --arg id "$id" 'type == "object"
+      and (keys == ["assigned_agent","instructions","result_location","status","task_id"])
+      and .task_id == $id and .status == "pending" and (.assigned_agent == "claude" or .assigned_agent == "codex")' \
+      >/dev/null 2>&1 || { F_WHY="task.json breaks the five-field contract"; return 0; }
+  F_DESC=$blob; F_AGENT=$(G cat-file blob "$blob" | jq -r .assigned_agent)
+  while IFS= read -r line; do
+    [[ -n $line ]] || continue
+    meta=${line%%$'\t'*}; name=${line#*$'\t'}; read -r mode type blob <<<"$meta"
+    n=$((n + 1))
+    [[ $name == "$d/events/$(printf %04d "$n").json" ]] || { F_WHY="gap or unexpected file in events at $n"; return 0; }
+    [[ $mode == 100644 && $type == blob && $(G cat-file -s "$blob") -le 4096 ]] || { F_WHY="event $n not a small regular file"; return 0; }
+    e=$(G cat-file blob "$blob")
+    jq -e --argjson n "$n" 'type == "object" and .seq == $n and (.status|type) == "string" and (.at|type) == "string"
+        and (.actor|type) == "string" and (.reason|type) == "string"' >/dev/null 2>&1 <<<"$e" || { F_WHY="event $n has bad fields"; return 0; }
+    want=$(jq -r .status <<<"$e")
+    allowed "$st" "$want" || { F_WHY="transition '${st:-none}' -> '$want' not allowed"; return 0; }
+    [[ $n -gt 1 || $(jq -r .actor <<<"$e") == chris ]] || { F_WHY="event 1 must be by chris"; return 0; }
+    st=$want; F_EV=$blob; F_REASON=$(jq -r .reason <<<"$e")
+  done < <(G ls-tree "$REV" -- "$d/events/")
+  [[ $n -ge 1 ]] || { F_WHY="no events"; return 0; }
+  [[ $st != awaiting_approval || -n $F_REASON ]] || { F_WHY="awaiting_approval without a summary"; return 0; }
+  F_STATE=$st F_SEQ=$n
+}
+
+# ---------------------------------------------------------------- ledger (local, write-ahead, fsync'd)
+ledger_all() { local f; for f in "$L"/*.json; do [[ -e $f ]] && cat "$f"; done; return 0; }
+rec_get() { [[ -f $L/$1.json ]] && jq -r ".$2 // empty" "$L/$1.json" || true; }
+rec_put() {  # key json
+  local t; t=$(mktemp "$L/.tmp.XXXXXX")
+  printf '%s\n' "$2" > "$t"; sync "$t"; mv -f "$t" "$L/$1.json"; sync "$L"
+}
+rec_update() {  # key jq-filter [args...]
+  local k=$1 f=$2; shift 2
+  rec_put "$k" "$(jq -c "$@" "$f" "$L/$k.json")"
+}
+
+# ---------------------------------------------------------------- send
+summary() { tr '\r\n\t' '   ' <<<"$1" | LC_ALL=C tr -d '\000-\037\177' | cut -c1-400; }
+body_json() {  # key id seq agent reason
+  local link="$MYCNOTIFY_WEB/$B/$MYCNOTIFY_TASKS/$2"
+  jq -n --arg from "$SENDER" --arg to "$RECIPIENT" --arg id "$2" --arg seq "$3" --arg agent "$4" --arg sum "$(summary "$5")" \
+    --arg link "$link" --arg key "$1" '{sender: $from, to: [$to], subject: ("[FindPitches Mycelium] Approval needed: " + $id),
+    text_body: ("A Mycelium task is waiting for your decision.\n\nTask: " + $id + " (assigned to " + $agent + ")\n"
+      + "Decision event: " + $seq + "\nSummary: " + $sum + "\n\nReview it here: " + $link + "\n\n"
+      + "Replying to this email does NOT approve or reject anything. A decision only counts when it is recorded through "
+      + "the separately approved GitHub mechanism.\n\nNotice key: " + $key + "\n")}'
+}
+send() {  # key id seq agent reason -> sets OUT (accepted|retry|permanent|permanent_hold|uncertain) DETAIL RETRY_AFTER
+  local apikey body resp hdr err code rc
+  OUT=uncertain DETAIL="" RETRY_AFTER=0
+  read -r apikey < "$CRED/smtp2go-key" || true
+  [[ ${apikey:-} =~ ^[A-Za-z0-9_-]{10,200}$ ]] || { OUT=permanent_hold DETAIL="smtp2go-key credential missing or malformed"; return 0; }
+  body=$(mktemp "$H/.body.XXXXXX"); resp=$(mktemp "$H/.resp.XXXXXX"); hdr=$(mktemp "$H/.hdr.XXXXXX"); err=$(mktemp "$H/.err.XXXXXX")
+  body_json "$@" > "$body"
+  set +e   # the key goes to curl on stdin (config), never on the command line, and is never logged
+  code=$(printf 'header = "X-Smtp2go-Api-Key: %s"\n' "$apikey" | "$CURL" -sS --max-time 25 -K - -H 'Content-Type: application/json' \
+    --data-binary @"$body" -D "$hdr" -o "$resp" -w '%{http_code}' "$API" 2>"$err"); rc=$?
+  set -e
+  if [[ $rc == 0 && $code == 200 ]] && jq -e '(.data.succeeded // 0) == 1 and (.data.failed // 0) == 0' "$resp" >/dev/null 2>&1; then
+    OUT=accepted DETAIL=$(jq -r '.data.email_id // ""' "$resp")
+  elif [[ $rc == 0 && $code == 200 ]]; then OUT=permanent DETAIL="provider refused: $(jq -c '.data.failures // .data' "$resp" 2>/dev/null | cut -c1-200)"
+  elif [[ $rc == 6 || $rc == 7 ]]; then OUT=retry DETAIL="no connection (curl $rc); request not sent"
+  elif [[ $rc == 0 && $code == 429 ]]; then OUT=retry DETAIL="HTTP 429"
+    RETRY_AFTER=$(grep -i -m1 '^retry-after:' "$hdr" | tr -dc '0-9' || true); RETRY_AFTER=${RETRY_AFTER:-0}
+  elif [[ $rc == 0 && ($code == 400 || $code == 401 || $code == 403) ]]; then OUT=permanent_hold DETAIL="HTTP $code: key/sender/config refused"
+  elif [[ $rc == 0 && $code == 4* ]]; then OUT=permanent DETAIL="HTTP $code"
+  else OUT=uncertain DETAIL="curl $rc, HTTP ${code:-none}: outcome unknown, not resent"
+  fi
+  rm -f "$body" "$resp" "$hdr" "$err"
+}
+
+# ---------------------------------------------------------------- commands
+init() { mkdir -p "$H" "$L" "$DRY"; }
+candidates() {  # "key id seq agent" lines for decisions outstanding now; quarantined tasks appended to $QFILE
+  local id
+  while IFS= read -r id; do
+    [[ -n $id ]] || continue
+    fold "$id"
+    if [[ $F_STATE == QUARANTINE ]]; then printf '%s\t%s\n' "$id" "$F_WHY" >> "$QFILE"; continue; fi
+    [[ $F_STATE == awaiting_approval ]] || continue
+    printf '%s %s %s %s %s %s\n' "$id-$(printf %04d "$F_SEQ")-${F_EV:0:12}" "$id" "$F_SEQ" "$F_AGENT" "$F_DESC" "$F_EV"
+  done < <(G ls-tree "$REV" -- "$MYCNOTIFY_TASKS/" | awk -F'\t' '$1 ~ / tree / {print $2}' | sed "s|^$MYCNOTIFY_TASKS/||")
+}
+write_status() {  # result message
+  jq -n --arg r "$1" --arg m "$2" --arg t "$(iso "$(now)")" --arg mode "$MODE" \
+    --arg init "$([[ -f $L/.initialized ]] && echo yes || echo no)" --arg hold "$([[ -f $L/HOLD ]] && cat "$L/HOLD" || true)" \
+    --arg head "$(G rev-parse -q --verify "$REV" 2>/dev/null || true)" --rawfile q "$QFILE" \
+    --argjson c "$(ledger_all | jq -s 'group_by(.state) | map({key: .[0].state, value: length}) | from_entries')" \
+    '{last_run: $t, result: $r, message: $m, mode: $mode, initialized: $init, hold: $hold, hub_commit: $head, ledger: $c,
+      quarantined: ($q | split("\n") | map(select(length > 0)))}' > "$STATUS.tmp" && mv -f "$STATUS.tmp" "$STATUS"
+}
+
+poll() {
+  init; exec 9>"$LOCK"; flock -n 9 || { log "previous run still active; skipping"; exit 0; }
+  QFILE=$(mktemp "$H/.q.XXXXXX"); trap 'rm -f "$QFILE"' EXIT
+  load_conf
+  if [[ -e $PAUSE ]]; then write_status paused "paused by operator"; exit 0; fi
+  fetch || { write_status error "hub fetch failed"; exit 1; }
+  # an interrupted claim (crash/reboot between claim and outcome) is uncertain and never resent
+  local k f
+  for f in "$L"/*.json; do
+    [[ -e $f ]] || continue; k=$(basename "$f" .json)
+    [[ $(jq -r .state "$f") == claimed ]] || continue
+    rec_update "$k" '.state = "uncertain" | .detail = "interrupted between claim and outcome; not resent" | .updated_at = $t' --arg t "$(iso "$(now)")"
+    log "UNCERTAIN $k: interrupted claim found; not resent"
+  done
+  local list; list=$(candidates)
+  if [[ $MODE != live ]]; then
+    local key id seq agent desc ev
+    while read -r key id seq agent desc ev; do
+      [[ -n ${key:-} && ! -f $DRY/$key.json ]] || continue
+      jq -nc --arg k "$key" --arg t "$(iso "$(now)")" '{key: $k, would_send_at: $t}' > "$DRY/$key.json"; log "DRY RUN: would notify $key"
+    done <<<"$list"
+    write_status ok "dry run${CONF_ERR:+ ($CONF_ERR)}"; exit 0
+  fi
+  [[ -z $CONF_ERR ]] || { write_status error "live mode refused: $CONF_ERR"; exit 1; }
+  [[ -f $L/.initialized ]] || { write_status error "ledger not initialised (new or lost): run 'mycnotify baseline' first; nothing sent"; exit 1; }
+  [[ ! -f $L/HOLD ]] || { write_status held "global hold: $(cat "$L/HOLD"); fix config, then 'mycnotify release'"; exit 0; }
+  local t today claimed_today sent=0 deferred=0 state att next ra key id seq agent desc ev
+  t=$(now); today=$(lday "$t")
+  claimed_today=$(ledger_all | jq -s --arg d "$today" '[.[] | select(.claim_day == $d)] | length')
+  while read -r key id seq agent desc ev; do
+    [[ -n ${key:-} ]] || continue
+    state=$(rec_get "$key" state); att=$(rec_get "$key" attempts); att=${att:-0}; next=$(rec_get "$key" next_at); next=${next:-0}
+    case $state in
+      accepted|permanent|uncertain|baseline) continue ;;
+      retry) [[ $t -ge $next ]] || continue ;;
+    esac
+    if [[ $sent -ge 1 || $claimed_today -ge $MYCNOTIFY_MAX_DAY ]]; then deferred=$((deferred + 1)); continue; fi
+    # CLAIM first (durable), then send
+    rec_put "$key" "$(jq -nc --arg k "$key" --arg id "$id" --arg seq "$seq" --arg desc "$desc" --arg ev "$ev" --argjson a "$((att + 1))" \
+      --arg t "$(iso "$t")" --arg d "$today" '{key: $k, task_id: $id, seq: ($seq|tonumber), descriptor_blob: $desc, event_blob: $ev,
+       state: "claimed", attempts: $a, claim_day: $d, claimed_at: $t, updated_at: $t}')"
+    sent=$((sent + 1)); claimed_today=$((claimed_today + 1))
+    send "$key" "$id" "$seq" "$agent" "$(G cat-file blob "$ev" | jq -r .reason)"
+    case $OUT in
+      retry)
+        if [[ $((att + 1)) -ge $MYCNOTIFY_MAX_ATTEMPTS ]]; then OUT=permanent DETAIL="$DETAIL; attempts exhausted"
+        else
+          ra=$(( att == 0 ? 30 : 120 )); [[ $RETRY_AFTER -le $ra ]] || ra=$(( RETRY_AFTER > 3600 ? 3600 : RETRY_AFTER ))
+          rec_update "$key" '.state = "retry" | .next_at = ($n|tonumber) | .detail = $d | .updated_at = $t' \
+            --arg n "$((t + ra))" --arg d "$DETAIL" --arg t "$(iso "$t")"
+          log "RETRY $key in ${ra}s: $DETAIL"; continue
+        fi ;;
+      permanent_hold) printf '%s\n' "$DETAIL" > "$L/HOLD"; OUT=permanent ;;
+    esac
+    rec_update "$key" '.state = $s | .detail = $d | .updated_at = $t' --arg s "$OUT" --arg d "$DETAIL" --arg t "$(iso "$t")"
+    log "$(tr a-z A-Z <<<"$OUT") $key"
+  done <<<"$list"
+  write_status ok "sent $sent, deferred $deferred (cap $MYCNOTIFY_MAX_DAY/day, 1/run)"
+}
+
+baseline() {
+  init; exec 9>"$LOCK"; flock -w 60 9 || { log "busy"; exit 1; }
+  QFILE=$(mktemp "$H/.q.XXXXXX"); trap 'rm -f "$QFILE"' EXIT
+  fetch || { log "hub fetch failed"; exit 1; }
+  local n=0 key id seq agent desc ev t; t=$(iso "$(now)")
+  while read -r key id seq agent desc ev; do
+    [[ -n ${key:-} && ! -f $L/$key.json ]] || continue
+    rec_put "$key" "$(jq -nc --arg k "$key" --arg id "$id" --arg t "$t" '{key: $k, task_id: $id, state: "baseline", updated_at: $t,
+       detail: "outstanding when baselined; not notified"}')"; n=$((n + 1))
+  done <<<"$(candidates)"
+  touch "$L/.initialized"; log "baseline: $n outstanding decision(s) recorded as not-to-notify; ledger initialised"
+}
+
+case "${1:-}" in
+  poll) poll ;;
+  baseline) baseline ;;
+  release) init; rm -f "$L/HOLD"; log "global hold cleared" ;;
+  status) init; cat "$STATUS" 2>/dev/null || echo '{}' ;;
+  *) echo "usage: mycnotify poll|baseline|release|status"; exit 2 ;;
+esac

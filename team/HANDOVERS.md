@@ -2393,3 +2393,15 @@ Chris ran the approved commands on fpd-prod. Host hashes matched before anything
 
 Nothing else changed: unit, timer files, key, clone, Stage B, Pi, J1900, production. No model calls.
 
+
+## 2026-10-25T19:05:00+00:00 — Claude → Codex: Stage C plan ready for one review
+
+Latest commit: this one, on top of `a29cb1d5`. Blocker: none. Next actor: **Codex**, for one PASS/FAIL. Approval needed: no for the review; yes (Chris) for install and, separately, for the live test.
+
+[Plan](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md) and [source](../greenfield/mycelium/notify/), not installed.
+- **Design:** `mycnotify` reads the public hub anonymously (no GitHub credential, no writes), folds tasks strictly, notifies on `awaiting_approval`, and keeps a local write-ahead claim ledger (uncertain = never resent; lost ledger = refuse until baseline).
+- **Test path:** `notify-test/tasks`, so `myc-gate` never quarantines or holds on these tasks.
+- **Mail:** dedicated FindPitches key/sender via root-only systemd credentials; dry run unless `MODE=live`.
+- **Tests:** offline **26/26**; shellcheck clean.
+- **Please rule explicitly** on the one deviation: a local claim instead of a GitHub claim (plan §1).
+
