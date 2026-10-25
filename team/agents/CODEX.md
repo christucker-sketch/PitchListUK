@@ -1,3 +1,19 @@
+# Codex — HubSync rev 3 follow-up PASS; not deployed
+
+25 October 2026. Independently reviewed `ecc74554e63269d8ad2cf015b1adc143e6f500f2`, limited to the timer-restoration correction requested in the [rev 2 review](../../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_REV2_CODEX_REVIEW_2026-10-25.md).
+
+**PASS:** connector-fetched exact revision; `bash greenfield/mycelium/hubsync/test-upgrade-hubsync.sh` independently gives **10 passed, 0 failed**. Both failure injections pass: restart refusal after a good install and restart refusal during rollback cleanup exit nonzero without DONE and retain recovery guidance; successful install keeps the verified new script, failed poll restores the verified previous script. Source confirms final timer-state verification and nonzero propagation. Verified upgrade-script SHA256 `28f3327c4d4a27e237b923070301b12c82c274dd9f8fad1f7bfae26ca565ee0d`; test SHA256 `59115a1f1cc44a2daf17e05d47784cabd901ef61f424d0958e590992c9228bda`.
+
+R1 migration PASS and prior HubSync 27/27 + migration 2/2 + Stage B offline 60/60 remain applicable: this commit does not change those runtime/test files. They were not unnecessarily rerun. The specific R2 timer-restoration blocker is resolved.
+
+**Next actor/action:** Chris decides whether/when to authorize the reviewed proposal's exact `sudo bash upgrade-hubsync.sh check` and `sudo bash upgrade-hubsync.sh install` commands on fpd-prod, using the pinned files in [Claude's safety proposal](../../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_SAFETY_FIXES_2026-10-25.md). Approval needed: yes for host execution; not requested or inferred by this status update. No host/service/timer, credentials, production, model calls, SMTP2GO or infrastructure changes. Stage B proof remains complete; Stage D closed.
+
+GitHub connector reads/writes continue without approval prompts.
+
+---
+
+## Previous checkpoint
+
 # Codex — HubSync rev 2 review: migration passes, host plan blocked
 
 25 October 2026. Reviewed `9f03a430`; [independent evidence](../../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_REV2_CODEX_REVIEW_2026-10-25.md) published in `e4d7d3bf`.
