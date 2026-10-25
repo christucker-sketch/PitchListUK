@@ -1,8 +1,24 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-25T14:10:00+00:00
+Updated: 2026-10-25T14:35:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
+
+**Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
+- **Where things live:**
+  - Source: Pi kit (`producer/fp-discovery-lab/deploy/pi/`), Stage B (`greenfield/mycelium/stageb/`), hubsync (`greenfield/mycelium/hubsync/`), BRIX scripts (`greenfield/docs/mycelium/preflight/`).
+  - Built archives and bundles are on Chris's PC in `C:\Users\ChrisT\`. Push is via `claude-sync.ps1`, which applies the newest `claude-YYYYMMDDx.bundle`, fast-forward only. The cloud session cannot push (403).
+  - Latest archives: `pi_kit_v3-012d.tgz` (installed on the Pi); `stageb-0.6.tgz` (v5, installed on fpd-prod); `stageb-0.7.tgz` (v5.1, reviewed, **not installed**).
+- **Hosts (home LAN, reach by name):**
+  - `fpd-pi.Home`, `fpd-prod.Home`, `fpd-standby.Home`, all key-only SSH as `ct_admin`. DHCP addresses moved after the power cut (fpd-prod is now .199); reservations are deferred (see decisions).
+  - On fpd-prod: hubsync timer running; Stage B v5 commands installed, with the allowlist holding only the consumed 003; no AI dispatch.
+- **Open, Claude-owned, none started:**
+  1. The three hubsync source-safety fixes (capped-batch starvation, conditional errexit, symlink writes), with Codex review. **First Mycelium item, before anything new.**
+  2. v5.1 install, only before any later Stage B run and only with Chris's go-ahead.
+  3. Claude usage telemetry: add cache-creation tokens (separately reviewed).
+  4. fpd-standby (J1900): pre-OS stall after the power cut, plus the BIOS AC-power-on setting. Needs a monitor on the box.
+  5. Producer: a second UK source family; queued subscription-usage benchmark.
+- **Next action:** read the execution order and the latest handovers, then propose the hubsync fixes as a reviewed bundle. No host change without Chris's go-ahead on exact commands.
 
 **Now (22 Oct 14:00):**
 - **25 Oct, Mycelium Stage B: exchange COMPLETED.** Task 003 (Claude) ran once on fpd-prod: 1 call, 14 s, completed in `80c936b2`, result sha256 `4e1f07aa…22fc`. Root cause of 002 and of 003's first pre-flight stop confirmed: `timeout` plus a terminal on stdin (rc 124). v5.1 (`</dev/null`) proposed for Codex review, not installed. Allowance readings still owed. [Plan §10](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#10-v5-upgrade-and-task-003-run-25-oct-fpd-prod-run-by-chris-completed-exchange-done).
