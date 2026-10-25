@@ -20,6 +20,7 @@ printf '#!/usr/bin/env bash\nexec "$@"\n' > "$T/myc/bin/myc-run"
 cat > "$T/stub/codex" <<'EOF'
 #!/usr/bin/env bash
 [[ $1 == login ]] && { echo "Logged in using ChatGPT"; exit 0; }
+[[ $1 == --version ]] && { echo "codex-cli 0.164.0"; exit 0; }
 [[ -f $CTL/codex_fail ]] && { echo "boom" >&2; exit 1; }
 out=""; prev=""; for a in "$@"; do [[ $prev == -o ]] && out=$a; prev=$a; done
 p=$(cat); printf '# Codex review\n1. risk one\n2. risk two\nsaw-instructions: %s\n' "$(grep -c 'Task' <<<"$p")" > "$out"
@@ -29,6 +30,8 @@ EOF
 cat > "$T/stub/claude" <<'EOF'
 #!/usr/bin/env bash
 [[ $1 == auth ]] && { echo '{"loggedIn":true,"authMethod":"claude.ai","apiProvider":"firstParty"}'; exit 0; }
+[[ $1 == --version ]] && { echo "2.1.308 (Claude Code)"; exit 0; }
+printf '%s\n' "$@" > $CTL/claude_argv
 p=$(cat); ref=$(grep -A2 '^## Reference: ' <<<"$p" | sed -n 3p)
 jq -n --arg r "# Claude review
 agree with: $ref" '{type:"result",is_error:false,result:$r,usage:{input_tokens:5,output_tokens:200,cache_read_input_tokens:0},modelUsage:{"claude-sonnet-5-5":{}},total_cost_usd:0.01}'
@@ -36,7 +39,8 @@ EOF
 chmod +x "$T/myc/bin/myc-run" "$T/stub/"*
 export PATH="$T/stub:$PATH" CTL=$T/ctl MYC_HOME=$T/hs MYC_SPOOL=$T/spool MYC_STATE=$T/state/state.json MYC_TEST=1 \
   MYC_AS_HUBSYNC="env HOME=$T/hs" MYC_AS_MYC="env HOME=$T/myc" MYC_GATE=$D/myc-gate MYC_AGENT=$D/myc-agent \
-  MYC_GUARD=$T/myc/bin/myc-run MYC_BILLING_CONFIRMED=yes
+  MYC_GUARD=$T/myc/bin/myc-run MYC_BILLING_CONFIRMED=yes MYC_ALLOW=$T/allowed
+: > "$T/allowed"
 GATE=$D/myc-gate; STAGEB=$D/myc-stageb
 
 mk_task() {  # id agent instructions [jq-filter applied to task.json] [actor of event 1]
@@ -46,6 +50,7 @@ mk_task() {  # id agent instructions [jq-filter applied to task.json] [actor of 
    && jq -n --arg who "${5:-chris}" '{seq:1, status:"pending", at:"2026-10-25T10:00:00Z", actor:$who, reason:"created by Chris"}' > "$TD/$1/events/0001.json" \
    && git add -A && git commit -qm "chris: task $1" && git push -q origin "$B")
 }
+allow() { echo "$1 $2 $(git --git-dir="$T/remote.git" rev-parse "$B:$TD/$1/task.json")" >> "$T/allowed"; }
 remote_has() { git --git-dir="$T/remote.git" cat-file -e "$B:$1" 2>/dev/null; }
 remote_cat() { git --git-dir="$T/remote.git" show "$B:$1"; }
 st() { "$GATE" state "$1" 2>/dev/null; }
@@ -55,6 +60,10 @@ echo "1. the two-task Stage B exchange (Codex -> Claude via GitHub)"
 mk_task MYC-20261025-001 codex $'Read-only review of the hub watcher. List at most 3 risks.\nref: greenfield/mycelium/hubsync/hubsync'
 (cd "$T/human" && mkdir -p greenfield/mycelium/hubsync && echo '#!/bin/sh # watcher' > greenfield/mycelium/hubsync/hubsync && git add -A && git commit -qm ref && git push -q origin "$B")
 mk_task MYC-20261025-002 claude $'Read the Codex review and say which risks you agree with.\nref: greenfield/mycelium/tasks/MYC-20261025-001/result.md'
+allow MYC-20261025-002 claude
+"$STAGEB" MYC-20261025-001 > "$T/out" 2>&1; [[ $? != 0 ]] && grep -q "not in the Stage B allowlist" "$T/out" && [[ $(jq .calls "$MYC_STATE") == 0 ]] \
+  && ok "task not in Chris's pinned allowlist is refused; no call used" || { bad "allowlist"; cat "$T/out"; }
+allow MYC-20261025-001 codex
 [[ $(st MYC-20261025-001) == *" pending seq=1"* ]] && ok "task 1 validates as pending" || bad "task 1 state: $(st MYC-20261025-001)"
 "$STAGEB" MYC-20261025-002 > "$T/out" 2>&1; [[ $? != 0 ]] && grep -q "not completed" "$T/out" && [[ $(jq .calls "$MYC_STATE") == 0 ]] \
   && ok "task 2 refused before task 1 is completed; no call used" || { bad "task 2 early"; cat "$T/out"; }
@@ -67,6 +76,11 @@ remote_cat "$TD/MYC-20261025-001/events/0003.json" | jq -e '.usage.input_tokens 
 [[ $(st MYC-20261025-002) == *" completed "* ]] && remote_cat "$TD/MYC-20261025-002/result.md" | grep -q "agree with: # Codex review" \
   && ok "task 2 (Claude) read task 1's result from GitHub, no relay" || { bad "task 2 run"; cat "$T/out"; }
 remote_cat "$TD/MYC-20261025-002/events/0003.json" | jq -e '.usage.api_equivalent_usd_not_billed == 0.01' >/dev/null && ok "API-equivalent estimate labelled not billed" || bad "estimate label"
+grep -qx -- '--settings' $T/ctl/claude_argv && grep -qx -- '--strict-mcp-config' $T/ctl/claude_argv && ! grep -q -- '--fallback-model' $T/ctl/claude_argv \
+  && ok "Claude ran with the no-retry settings file, no MCP, no fallback model" || bad "claude flags"
+remote_cat "$TD/MYC-20261025-001/events/0003.json" | jq -e '.usage.cli_version == "codex-cli 0.164.0"' >/dev/null && ok "CLI version recorded" || bad "version"
+"$GATE" complete "$(remote_cat "$TD/MYC-20261025-001/events/0002.json" | jq -r .run_id)" > "$T/out" 2>&1; grep -q "already recorded" "$T/out" \
+  && ok "re-running complete after success changes nothing (no second publish)" || { bad "complete rerun"; cat "$T/out"; }
 "$STAGEB" MYC-20261025-001 > "$T/out" 2>&1; grep -q "call cap reached" "$T/out" && ok "third call refused by the 2-call cap" || { bad "cap"; cat "$T/out"; }
 reset_caps; "$STAGEB" MYC-20261025-001 > "$T/out" 2>&1; [[ $? != 0 ]] && grep -q "only a pending task can be claimed" "$T/out" && [[ $(jq .calls "$MYC_STATE") == 0 ]] \
   && ok "completed task cannot be replayed; no call used" || { bad "replay"; cat "$T/out"; }
@@ -84,34 +98,37 @@ mk_task MYC-20261025-013 codex "x"; (cd "$T/human" && echo '{"seq":3,"status":"c
 [[ $(st MYC-20261025-013) == *QUARANTINE*gap* ]] && ok "gapped history quarantined" || bad "gap: $(st MYC-20261025-013)"
 mk_task MYC-20261025-014 codex "x"; (cd "$T/human" && echo '{"seq":2,"status":"approved","at":"x","actor":"chris"}' > "$TD/MYC-20261025-014/events/0002.json" && git add -A && git commit -qm appr && git push -q origin "$B")
 [[ $(st MYC-20261025-014) == *QUARANTINE*not\ allowed* ]] && ok "approval transitions not accepted in Stage B" || bad "approval: $(st MYC-20261025-014)"
+mk_task MYC-20261025-015 codex "x"; allow MYC-20261025-015 codex; (cd "$T/human" && echo '{"seq":2,"status":"cancelled","at":"x","actor":"chris"}' > "$TD/MYC-20261025-015/events/0002.json" && git add -A && git commit -qm cancel && git push -q origin "$B")
+reset_caps; "$STAGEB" MYC-20261025-015 > "$T/out" 2>&1; [[ $? != 0 && $(jq .calls "$MYC_STATE") == 0 ]] && [[ $(st MYC-20261025-015) == *QUARANTINE* ]] \
+  && ok "a cancel by Chris stops the task (fail closed, never run)" || { bad "cancel"; cat "$T/out"; }
 reset_caps; "$STAGEB" MYC-20261025-010 > "$T/out" 2>&1; [[ $? != 0 && $(jq .calls "$MYC_STATE") == 0 ]] && ok "quarantined task cannot be run" || bad "run quarantined"
 
 echo "3. failures are recorded once and stop further calls"
-mk_task MYC-20261025-020 codex "x"; touch "$T/ctl/codex_fail"; reset_caps
+mk_task MYC-20261025-020 codex "x"; allow MYC-20261025-020 codex; touch "$T/ctl/codex_fail"; reset_caps
 "$STAGEB" MYC-20261025-020 > "$T/out" 2>&1; rm -f "$T/ctl/codex_fail"
 [[ $(st MYC-20261025-020) == *" failed "* ]] && remote_cat "$TD/MYC-20261025-020/events/0003.json" | jq -e '.reason|test("codex call failed")' >/dev/null \
   && ok "failed call recorded as failed (no retry)" || { bad "fail record"; cat "$T/out"; }
-mk_task MYC-20261025-021 codex "x"; "$STAGEB" MYC-20261025-021 > "$T/out" 2>&1
+mk_task MYC-20261025-021 codex "x"; allow MYC-20261025-021 codex; "$STAGEB" MYC-20261025-021 > "$T/out" 2>&1
 grep -q "earlier Stage B call failed" "$T/out" && ok "after a failure, the next call is refused until Chris decides" || { bad "post-failure"; cat "$T/out"; }
 reset_caps; touch "$T/ctl/codex_secret"; "$STAGEB" MYC-20261025-021 > "$T/out" 2>&1; rm -f "$T/ctl/codex_secret"
 [[ $(st MYC-20261025-021) == *" failed "* ]] && ! remote_has "$TD/MYC-20261025-021/result.md" && ok "result containing a credential pattern is not published" || { bad "secret"; cat "$T/out"; }
 
 echo "4. uncertain outcomes, symlinks, leases"
-mk_task MYC-20261025-030 codex "x"; reset_caps
+mk_task MYC-20261025-030 codex "x"; allow MYC-20261025-030 codex; reset_caps
 printf '#!/usr/bin/env bash\ntouch "$MYC_SPOOL/$1/out/started"; exit 9\n' > "$T/agent-crash"; chmod +x "$T/agent-crash"
 MYC_AGENT=$T/agent-crash "$STAGEB" MYC-20261025-030 > "$T/out" 2>&1
 remote_cat "$TD/MYC-20261025-030/events/0003.json" | jq -e '.status == "failed" and (.reason|test("UNCERTAIN"))' >/dev/null && ok "crash after start recorded as UNCERTAIN, not retried" || { bad "uncertain"; cat "$T/out"; }
-mk_task MYC-20261025-031 codex "x"; reset_caps; echo "PRIVATE KEY MATERIAL" > "$T/hs/secret"
+mk_task MYC-20261025-031 codex "x"; allow MYC-20261025-031 codex; reset_caps; echo "PRIVATE KEY MATERIAL" > "$T/hs/secret"
 printf '#!/usr/bin/env bash\nO=$MYC_SPOOL/$1/out; ln -s %q "$O/result.md"; echo "{\\"ok\\":true,\\"agent\\":\\"codex\\",\\"seconds\\":1}" > "$O/meta.json"\n' "$T/hs/secret" > "$T/agent-link"; chmod +x "$T/agent-link"
 MYC_AGENT=$T/agent-link "$STAGEB" MYC-20261025-031 > "$T/out" 2>&1
 ! remote_has "$TD/MYC-20261025-031/result.md" && ! git --git-dir="$T/remote.git" log -p "$B" | grep -q "PRIVATE KEY MATERIAL" && ok "symlinked result.md rejected; private file never published" || { bad "symlink"; cat "$T/out"; }
-mk_task MYC-20261025-032 codex "x"; run=$(MYC_LEASE_MIN=0 "$GATE" claim MYC-20261025-032 2>/dev/null); sleep 1
+mk_task MYC-20261025-032 codex "x"; allow MYC-20261025-032 codex; run=$(MYC_LEASE_MIN=0 "$GATE" claim MYC-20261025-032 2>/dev/null); sleep 1
 "$D/myc-agent" "$run" >/dev/null 2>&1; [[ -f $T/spool/$run/out/started ]] && bad "agent started on an expired lease" || ok "agent refuses to call the model on an expired lease"
 c=$("$GATE" expire MYC-20261025-032 2>/dev/null); [[ $(st MYC-20261025-032) == *" failed "* ]] && ok "expire marks failed (uncertain, held for Chris)" || bad "expire"
 "$GATE" complete "$run" > "$T/out" 2>&1; grep -q "already recorded" "$T/out" && ok "late completion after expiry changes nothing" || { bad "late"; cat "$T/out"; }
 
 echo "5. concurrent writer: a racing claim is rejected, never forced"
-mk_task MYC-20261025-040 codex "x"
+mk_task MYC-20261025-040 codex "x"; allow MYC-20261025-040 codex
 git clone -q --branch "$B" "$T/remote.git" "$T/rival" 2>/dev/null
 cat > "$T/hs/repo/.git/hooks/pre-push" <<EOF
 #!/usr/bin/env bash

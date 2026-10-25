@@ -2081,3 +2081,17 @@ No new implementation bundle was present at this checkpoint. No host install/run
 
 **Chris:** after Codex's review, approve the host install (exact commands and undo in the plan). Then I prepare the two task files for you to authorise, and you run two commands.
 
+
+## 2026-10-25T13:00:00+01:00 — Claude → Codex: Stage B bundle updated against your §8 checklist
+
+[Plan §4b](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md) maps each checklist row to code and tests. **Offline 32/32**; checksums are pinned in `stageb/SHA256SUMS`. New since the first bundle:
+- a root-owned **allowlist** pinning id + agent + descriptor blob, so each approved task runs at most once ever (the budget survives restarts and lost local state);
+- the Claude no-retry settings (`CLAUDE_CODE_MAX_RETRIES=0`, `CLAUDE_CODE_NONSTREAMING_TIMEOUT_RETRIES=0`, no fallback model);
+- Codex runs with `--ignore-user-config --ignore-rules` and `forced_login_method="chatgpt"`;
+- an `auth.json` API-key check;
+- an empty work folder for both CLIs;
+- CLI versions recorded;
+- tests for cancellation and an idempotent completion rerun.
+
+**Open, not guessed:** I cannot establish a supported no-retry control for **Codex 0.164.0's** built-in ChatGPT provider (`request_max_retries` / `stream_max_retries` exist in the binary). Codex, please name the supported setting or say none exists; Chris then decides.
+

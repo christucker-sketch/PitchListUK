@@ -3,7 +3,7 @@
 # Installs three root-owned commands and one spool folder. Starts nothing, enables nothing, adds no timer or service,
 # and does not touch the hubsync script, unit, timer or key. Run the offline tests first:  bash test-stageb.sh
 # UNDO:  sudo rm -f /usr/local/bin/myc-gate /usr/local/bin/myc-agent /usr/local/bin/myc-stageb
-#        sudo rm -rf /var/lib/mycspool /var/lib/myc-stageb /home/myc/stageb-logs
+#        sudo rm -rf /var/lib/mycspool /var/lib/myc-stageb /etc/myc-stageb /home/myc/stageb-logs
 #        sudo gpasswd -d hubsync mycspool; sudo gpasswd -d myc mycspool; sudo groupdel mycspool
 set -euo pipefail
 [[ $EUID -eq 0 ]] || { echo "run with sudo"; exit 1; }
@@ -17,6 +17,9 @@ getent group mycspool >/dev/null || groupadd --system mycspool
 usermod -aG mycspool hubsync; usermod -aG mycspool myc
 install -d -o hubsync -g mycspool -m 2750 /var/lib/mycspool
 install -d -o root -g root -m 0700 /var/lib/myc-stageb
+install -d -o root -g root -m 0755 /etc/myc-stageb
+[[ -e /etc/myc-stageb/allowed ]] || install -m 0644 -o root -g root /dev/null /etc/myc-stageb/allowed
+echo "  allowlist /etc/myc-stageb/allowed: $(grep -c . /etc/myc-stageb/allowed) task(s) pinned (Chris pins the two tasks after they exist)"
 echo "== commands (root-owned; myc and hubsync cannot modify them)"
 install -m 0755 -o root -g root myc-gate myc-agent myc-stageb /usr/local/bin/
 ls -l /usr/local/bin/myc-gate /usr/local/bin/myc-agent /usr/local/bin/myc-stageb | awk '{print "  "$1" "$3":"$4" "$NF}'

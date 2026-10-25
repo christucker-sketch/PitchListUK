@@ -14,6 +14,7 @@ umask 027
 : "${MYC_BRANCH:=findpitches-v3/greenfield}"
 : "${MYC_TASKS:=greenfield/mycelium/tasks}"
 : "${MYC_LEASE_MIN:=30}"
+: "${MYC_ALLOW:=/etc/myc-stageb/allowed}"   # root-owned: "<task_id> <agent> <descriptor_blob>" per line
 : "${MYC_NAME:=hubsync}"
 : "${MYC_EMAIL:=hubsync@$(hostname).invalid}"
 REPO=$MYC_HOME/repo; LOCK=$MYC_HOME/lock; B=$MYC_BRANCH
@@ -133,6 +134,10 @@ cmd_claim() {
   local t=$1 d=$MYC_TASKS/$1 run lease refs='[]' line p o c ev
   lock; sync; load "$t"
   [[ $STATE == pending ]] || die "$t is ${STATE}${Q:+ ($Q)}; only a pending task can be claimed (no replay)"
+  # Stage B grant: only the task ids Chris pinned (with the agent and exact descriptor blob) in a root-owned allowlist.
+  # Each can be claimed once ever (GitHub history), so the 2-call budget survives restarts and lost local state.
+  [[ -r $MYC_ALLOW ]] || die "no Stage B allowlist at $MYC_ALLOW"
+  grep -qxF "$t $AGENT $DESC_BLOB" "$MYC_ALLOW" || die "$t ($AGENT, descriptor ${DESC_BLOB:0:12}) is not in the Stage B allowlist"
   # references: lines "ref: greenfield/mycelium/..." in the instructions; at most 2, each a tracked blob <= 32 KB;
   # another task's result.md may be referenced only once that task is validly completed
   while IFS= read -r line; do
@@ -187,7 +192,8 @@ cmd_complete() {
     usage=$(jq -c 'def num(f): ([f|numbers] | first) // null;
                    {agent: ((.agent // "")|tostring|.[0:16]), model: ((.model // "")|tostring|.[0:48]), seconds: num(.seconds),
                     input_tokens: num(.usage.input_tokens?), cached_input_tokens: num(.usage.cached_input_tokens?),
-                    output_tokens: num(.usage.output_tokens?), api_equivalent_usd_not_billed: num(.api_equivalent_usd)}' "$meta" 2>/dev/null) || usage=null
+                    output_tokens: num(.usage.output_tokens?), api_equivalent_usd_not_billed: num(.api_equivalent_usd),
+                    cli_version: ((.cli_version // "")|tostring|.[0:48])}' "$meta" 2>/dev/null) || usage=null
     [[ -n $usage ]] || usage=null
     [[ $(jq -r .ok "$meta") == true ]] && ok=true || reason="runner reported failure: $(jq -r '.error // "unknown"' "$meta" | tr -cd '[:print:]' | cut -c1-200)"
     rm -f "$meta"

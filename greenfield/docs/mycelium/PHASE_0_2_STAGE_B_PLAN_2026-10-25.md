@@ -18,7 +18,7 @@
 - CLI work never runs inside the polling oneshot;
 - the spool `/var/lib/mycspool` is **outside** hubsync's clone, which is reset on every poll.
 
-## 2. Safety properties, all covered by the offline tests (27/27 pass in Claude's workspace)
+## 2. Safety properties, all covered by the offline tests (32/32 pass in Claude's workspace)
 
 **Strict contract**
 - **Strict five-field descriptor:** exact keys, id and path equality, 4 KB instructions limit, UTF-8 only, no control bytes.
@@ -77,10 +77,13 @@ scp C:\Users\ChrisT\stageb-0.2.tgz ct_admin@fpd-prod.Home:~/
 ```
 On `fpd-prod` (install: three root-owned commands, one group, two folders; nothing started):
 ```
-tar -xzf ~/stageb-0.2.tgz -C ~ && bash ~/stageb/test-stageb.sh | tail -1 && sudo bash ~/stageb/install-stageb.sh
+tar -xzf ~/stageb-0.2.tgz -C ~ && (cd ~/stageb && sha256sum -c SHA256SUMS) && bash ~/stageb/test-stageb.sh | tail -1 && sudo bash ~/stageb/install-stageb.sh
 ```
 Then:
-1. Push the task bundle.
+1. Push the task bundle, then pin the two tasks. Claude supplies the exact two lines, `<task_id> <agent> <descriptor blob>`, computed from the pushed commit:
+```
+printf '%s\n' 'MYC-20261025-001 codex <blob>' 'MYC-20261025-002 claude <blob>' | sudo tee /etc/myc-stageb/allowed
+```
 2. Check that Claude usage credits are OFF and that no Codex credits or API key are in use.
 3. Run the two tasks, one at a time:
 ```
@@ -92,10 +95,34 @@ Each prints the run id, the call time and usage, the recording commit and the fi
 **Undo** (also in `install-stageb.sh`):
 ```
 sudo rm -f /usr/local/bin/myc-gate /usr/local/bin/myc-agent /usr/local/bin/myc-stageb
-sudo rm -rf /var/lib/mycspool /var/lib/myc-stageb /home/myc/stageb-logs
+sudo rm -rf /var/lib/mycspool /var/lib/myc-stageb /etc/myc-stageb /home/myc/stageb-logs
 sudo gpasswd -d hubsync mycspool; sudo gpasswd -d myc mycspool; sudo groupdel mycspool
 ```
 The task folders stay on the hub as the public record.
+
+## 4b. Response to Codex's §8 readiness checklist
+
+| Codex requirement | How the bundle meets it (tests in `test-stageb.sh`) |
+| --- | --- |
+| Two approved tasks only, across restarts | `myc-gate claim` refuses any task not in the **root-owned allowlist** `/etc/myc-stageb/allowed`. Each entry pins id + agent + exact descriptor blob. A task can be claimed only from `pending`, and Stage B has no `failed → pending`, so each id runs **at most once ever**. The budget is held by GitHub history, so deleting local state or inventing a new id cannot reset it. The root-held local counter (2 calls, 30 min, hold after any failure) is a second guard. *Tested:* not-allowlisted, replay, cap, post-failure hold. |
+| Strict validation before inference | Exact five keys and types, id/path/assignee equality, ≤ 4 KB, UTF-8, no control bytes, duplicate keys (explicit), tracked regular blobs only, unexpected files, gaps, wrong actor, altered descriptor (claim binds `descriptor_blob`), approval/cancel transitions. Any of these quarantines the task before a claim. *Tested:* each case. |
+| Claim and result custody | The claim is pushed, then the remote is re-read and the claim must be an ancestor of the branch before the job packet exists. Completion requires the same `run_id`, the claim as the last event, a live lease, and `prev_event` and `output_sha256` binding. Task 2's reference to task 1's result is allowed only once task 1 is validly `completed`, and its blob is pinned in the packet. If a push "failed" but in fact landed, re-running `complete` finds it already recorded and changes nothing. *Tested:* race, late result, expired lease, completion rerun, cancel. |
+| Crash / uncertain call | The orchestrator records the call in root-owned state **before** starting the runner, and the runner writes `started` before the CLI call. Missing metadata after a start is recorded as `failed`, "outcome UNCERTAIN", and all further calls are held. The spool output can be re-published only by `complete` for the same run inside its lease, with no new call. *Tested:* crash mid-call, expired lease. |
+| Single Git writer | Only `myc-gate`, as `hubsync`, holding hubsync's lock, writes. The model call happens **outside** that lock, between `claim` and `complete`. `myc` has no Git key. `hubsync` reads only the run's own spool files, with `O_NOFOLLOW`. hubsync's script, unit and timer are untouched. *Tested:* hubsync poll afterwards. |
+| Isolation and output | Spool `/var/lib/mycspool` is outside the clone. Both CLIs run from a fresh empty folder. Codex runs with `--ignore-user-config --ignore-rules --sandbox read-only --ephemeral`; Claude with `--tools "" --strict-mcp-config --setting-sources user --no-session-persistence`. No task text becomes a CLI argument; instructions go via stdin only. Only `result.md` (≤ 16 KB, UTF-8, no credential patterns) and allowlisted usage numbers are published. Raw logs stay in `/home/myc/stageb-logs` (0700). *Tested:* symlink, secret pattern. |
+| Actual subscription route | The `myc-run` guard clears the environment and refuses API-key variables. The runner also requires: Claude `auth status` = subscription, first-party; no `fallbackModel`/`apiKeyHelper`/`model`/provider overrides in user settings; Codex `login status` = ChatGPT; `auth.json` holds no API key (checked, never printed); `forced_login_method="chatgpt"`. CLI versions are recorded. **Chris's credit/allowance check stays a prerequisite** (`MYC_BILLING_CONFIRMED=yes`). |
+| No hidden retries / fallback | **Claude (established):** the run sets `CLAUDE_CODE_MAX_RETRIES=0` and `CLAUDE_CODE_NONSTREAMING_TIMEOUT_RETRIES=0` (documented in Claude Code's [environment-variable reference](https://code.claude.com/docs/en/env-vars)) through a per-run `--settings` file, and gives no `--fallback-model`. **Codex (NOT established):** 0.164.0 contains `request_max_retries` / `stream_max_retries` provider settings, but I cannot confirm from documentation available here that they can be set to 0 for the built-in ChatGPT provider. Per the checklist this is **stated, not guessed**. Codex is asked to name the supported control. Otherwise Chris decides whether transport-level re-sends of the same request are acceptable for this one read-only call. |
+| Time / budget / stop | 180 s per call (`timeout`, which kills the CLI). The runner as a whole has 240 s. 30-minute window, 2 calls, no third call, no retries. Manual only: no timer, service or trigger. |
+| Exact host plan | Pinned checksums below and in `stageb/SHA256SUMS`, verified before install. Every command and the full undo are in §4. No historical installer is re-run. |
+
+**Checksums (sha256) of the reviewed bundle:**
+```
+b23ae88600794c71461d9aa82bf041320856b6ac53689c57d867beb203b4948d  myc-gate
+3b2c524d8011bf889250d7433fcc782b1e721fcea0d363dad8b9f9af337f1404  myc-agent
+0539df0c53ebb745321734d86b330c7025423fa564f6f115e44eb133da23dd3d  myc-stageb
+a6fe60777a613a6ed1199308d91140991ccf6df59f8995f03d198f52d07e299e  install-stageb.sh
+1460cd1fd942cfdeb5cc34ffde06a82486fa2f4be319cae2bf77d9ea403e2ce2  test-stageb.sh
+```
 
 ## 5. Report after the run
 
