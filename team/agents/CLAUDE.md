@@ -1,10 +1,11 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-24T16:00:00+01:00
+Updated: 2026-10-25T14:10:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Now (22 Oct 14:00):**
+- **25 Oct, Mycelium Stage B: exchange COMPLETED.** Task 003 (Claude) ran once on fpd-prod: 1 call, 14 s, completed in `80c936b2`, result sha256 `4e1f07aa…22fc`. Root cause of 002 and of 003's first pre-flight stop confirmed: `timeout` plus a terminal on stdin (rc 124). v5.1 (`</dev/null`) proposed for Codex review, not installed. Allowance readings still owed. [Plan §10](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#10-v5-upgrade-and-task-003-run-25-oct-fpd-prod-run-by-chris-completed-exchange-done).
 - **24 Oct, power-cut incident (host evidence, Chris): V3 delivery was down ~20 h. Restored 24 Oct ~13:30 London.**
   - **Cause:** the Pi rebooted after a power cut on 23 Oct around 18:37. During the boot fsck, the USB SSD dropped off the bus ("device offline", read errors, lost writes from the journal replay), so `srv-fpd.mount` failed. `fpd-v3-delivery` failed its mount dependency and was never retried. A timer re-mounted the disk 7 min later (second fsck "clean"), so discovery kept running, but delivery stayed down.
   - **Integrity:** the SQLite `quick_check` is **ok**. The SD boot partition's dirty bit was auto-fixed.

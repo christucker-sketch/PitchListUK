@@ -235,3 +235,67 @@ sudo MYC_BILLING_CONFIRMED=yes myc-stageb MYC-20261025-003
 ```
 Take the billing and allowance readings before and after, as before. **Rollback** of the upgrade is `sudo bash ~/stageb/uninstall-stageb.sh`, which is receipt-based and keeps the evidence.
 
+
+## 10. v5 upgrade and task 003 run (25 Oct, fpd-prod, run by Chris): **COMPLETED**, exchange done
+
+Run under the approved v5 host commands ([decision](../../../team/DECISIONS.md#myc-stage-b-v5-host-2026-10-25--v5-upgrade-and-single-claude003-run-chris)), after the reported 12:30 allowance reset (run at about 13:50 GMT).
+
+**Upgrade (host output):**
+- `stageb-0.6.tgz: OK`, all ten `SHA256SUMS` lines OK, extracted to a fresh `~/mycelium-stageb-v5.*` (old `~/stageb` kept);
+- offline suites on the host: 46 + 7 + 2 + 3 pass, 0 fail. (46 rather than 47: the hub-watcher check is skipped outside the repo, as at the v4 install);
+- `upgrade-stageb.sh`: installed commands unchanged against the receipt (`myc-gate b8381493a38c`, `myc-agent 14027469c640`, `myc-stageb c600ea9f4552`), now `a55383f1…` / `3eac7dbb…` / `ee1b9bea…` (the v5 manifest); "Nothing started or enabled; hubsync.timer active".
+
+**First attempt: stopped by the v5 pre-flight, nothing claimed.** The allowlist was pinned to `MYC-20261025-003 claude b0b321cf…`. Grant check passed (claims 0). The pre-flight stopped after 50 s: `claude auth status failed or timed out (rc 124) (no model call)`. **No claim, no model call; 003 stayed pending; the window never opened.** The v5 change did its job.
+
+**Root cause, now confirmed on the host (also the real cause of 002's failure).** GNU `timeout` (used by `capped`) puts the CLI in its own background process group. With the operator's terminal still on stdin, Claude Code touches the terminal, is stopped by the kernel (SIGTTIN/SIGTTOU) and sits until the cap kills it. Host check by Chris, sign-in status only (no model call, task untouched), same user and environment as the runner:
+```
+terminal: rc=124 31s loggedIn= provider=
+devnull:  rc=0   0s  loggedIn=true provider=firstParty
+```
+The 23 Oct manual check worked because it had no `timeout`. Codex's CLI was unaffected (001 passed). The "slow first-use token refresh" theory in §8 is withdrawn.
+
+**Second attempt: the same approved command with stdin detached** (`</dev/null 2>&1 | cat`; no code, grant or task change):
+
+| | MYC-20261025-003 (Claude) |
+| --- | --- |
+| Descriptor blob | `b0b321cf5437372bb2cdc8c37c1fa12d8ecfef58` (the only allowlist line) |
+| Pre-flight | OK in 1 s, Claude Code 2.1.308, no model call |
+| Claim | `a1d461f0`, 13:50:43Z (new window opens here; lease until 14:20:43Z) |
+| Admission | admitted for one Claude call; deadline 14:20:13Z |
+| Model call | **1 call, 14 s**: `claude-sonnet-5-5`, Claude Pro sign-in; output 848 tokens. API-equivalent $0.0206, **not billed** (subscription) |
+| Outcome | **completed `result_accepted`** in `80c936b2`, 13:51:07Z; `result.md` sha256 `4e1f07aa455ab8473b5ee65042a808c1e4f7b151df3c5f4ce98868dd647822fc` (matches the pinned `output_sha256`, re-checked from Git) |
+| Model calls used | 1 of the 1 this grant allows; no retry, no other call |
+
+**The full two-agent hand-off has now happened through GitHub:** Chris's task → Codex (001) → its result on GitHub → Claude (003) read it from GitHub, not from a relay → its result on GitHub. 002 stays failed, 001 completed, both unchanged. Only hubsync wrote the claim and completion.
+
+**Claude's review of 001 (summary):**
+- agrees with all three of Codex's hubsync findings (backlog stall, errexit suppression, symlink path);
+- raised one possible "missed risk": an unvalidated `$id` in the result path. **Checked against the source: not a real issue.** `hubsync` line 86 already requires `^T-[A-Za-z0-9_-]{1,40}$` and an exact filename match before `$id` is used. Claude's review itself said it could not confirm where `$id` came from.
+
+**Recorded usage gap:** the Claude usage record keeps `input_tokens` (2) and `cache_read_input_tokens` (0) but not cache-creation tokens, so the input total is understated. Noted for a later, separately reviewed change; it does not affect the grant.
+
+**Allowance before/after:** Chris's readings still to be added. £0 is not claimed as independently verified until then.
+
+**Not touched:** hubsync script, unit, timer and key; J1900; Pi; Cloudflare; production; V1/V2. Stage C/D stay closed.
+
+### 10.1 v5.1 (proposed, not installed): detach the terminal inside the scripts
+
+So that a run doesn't depend on the operator remembering `</dev/null`:
+- `myc-agent`: the four sign-in/version checks read stdin from `/dev/null` (the model calls already read the prompt file);
+- `myc-stageb`: both `myc-agent` invocations (pre-flight and run) get `</dev/null`;
+- `test-stageb.sh` 4c: the fake Claude CLI refuses a terminal on stdin; `myc-stageb` is run under `script` (a real pty). It **fails with the v5 scripts and passes with v5.1** (checked both ways). The test skips if `script` is missing.
+
+Offline: 48/48 maintained (with the hub-watcher check) + 7 + 2 + 3 pass. `myc-gate`, install/uninstall/upgrade scripts unchanged. Archive `stageb-0.7.tgz` sha256 `e952413879820a9a2f84f02f7bc0db9a25258a5a1384d9ae47c5c4740a7b5890`:
+```
+a55383f1280c511af6b1b98b348c94ffe90f46921bf7ee3c0cef8228a47086ab  myc-gate
+e1b53916cbbe3e0c235453753a05312679487d730656e52cb61443af2af0162e  myc-agent
+c636582c4e8c3e41e2aa5fadbff9922b2af188754d41b25407ea6c392f26248a  myc-stageb
+ef171d15f7bcad3ff437157d56b60d57aa30025c5f49a9ea0a26fc665916f1e8  install-stageb.sh
+f39a65dcb8259fe75097886363de9bba64f060561699d0358a40272bad2b6513  uninstall-stageb.sh
+cf3e34ad14e4ff63809fe46282028140715e05970c9100e989c0626899f11546  upgrade-stageb.sh
+5388a7927cf08ba8da2dd756231f9784733e35e47fac1cbccfae8148d6162e56  test-stageb.sh
+adb3b216d16b275fb796e2c15ee623c1c5bc44b337be06884e01b5dfe3fbab6c  test-review-regressions.sh
+3f6869356947b93faecb72d1de88644d282cbf4a71c675ba60a429f29561b38f  test-review-deadlines.sh
+5dccdbf48d061bec95a181a4b1118f295a4bf5e3c6eef1799af95b9e4b2e0e64  test-review-publication.sh
+```
+**No host install is proposed now:** no further Stage B run is planned, and the grant (only 003, now completed) allows no more calls. v5.1 goes in only with Codex's review and Chris's go-ahead, through the existing receipt-checked `upgrade-stageb.sh`, before any later run.

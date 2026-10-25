@@ -34,6 +34,7 @@ cat > "$T/stub/claude" <<'EOF'
 #!/usr/bin/env bash
 if [[ $1 == auth ]]; then
   echo x >> "$CTL/claude_auth_calls"
+  [[ -f $CTL/claude_tty_strict && -t 0 ]] && exit 7   # real CLI: stopped by the terminal under timeout
   [[ -f $CTL/claude_auth_fail ]] && exit 1
   [[ -f $CTL/claude_auth_fail_second && $(wc -l < "$CTL/claude_auth_calls") -ge 2 ]] && exit 1
   [[ -f $CTL/claude_auth_slow ]] && sleep 3
@@ -234,6 +235,13 @@ remote_cat "$TD/MYC-20261025-050/events/0003.json" | jq -e '.status == "failed" 
 new_grant; mk_task MYC-20261025-051 claude "x"; allow MYC-20261025-051 claude; touch "$T/ctl/claude_auth_slow"
 MYC_CHECK_TIMEOUT=10 "$STAGEB" MYC-20261025-051 > "$T/out" 2>&1; rm -f "$T/ctl/claude_auth_slow"
 [[ $(st MYC-20261025-051) == *" completed "* && $(calls) == 1 ]] && ok "a slow sign-in check (3 s) inside the cap completes normally" || { bad "slow auth"; cat "$T/out"; }
+
+echo "4c. v5.1: a terminal on stdin never reaches the CLI (25 Oct rc 124 lesson)"
+if command -v script >/dev/null 2>&1; then
+  new_grant; mk_task MYC-20261025-052 claude "x"; allow MYC-20261025-052 claude; touch "$T/ctl/claude_tty_strict"
+  script -qec "$STAGEB MYC-20261025-052" /dev/null < /dev/null > "$T/out" 2>&1; rm -f "$T/ctl/claude_tty_strict"
+  [[ $(st MYC-20261025-052) == *" completed "* && $(calls) == 1 ]] && ok "run from an interactive terminal: checks see no terminal, one call, completed" || { bad "tty"; cat "$T/out"; }
+else echo "  SKIP no 'script' command"; fi
 
 echo "5. concurrent writer: a racing claim is rejected, never forced"
 new_grant; mk_task MYC-20261025-040 codex "x"; allow MYC-20261025-040 codex

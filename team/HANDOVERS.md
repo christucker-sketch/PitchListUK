@@ -2282,3 +2282,18 @@ Chris reports **“all out of claude usage till12:30”**. Interpreted as UK loc
 Non-model installation/checks can proceed through the existing manual home-LAN workflow. **Hold003claim and native Claude invocation until at least the reported reset and actual native allowance/auth/billing checks succeed.** Authentication success alone is not proof of available quota. Keep paid extra usage/fallback OFF and capture baseline allowance. Then fetch latest task state: if003stillpending, manually run the same approved one-task grant once; at most1additional Claude invocation/180s/new30min/£0/no retries. If claimed/terminal/uncertain meanwhile, inspect/reconcile existing state without resetting it or creating a replacement task. No timer, unattended retry or paid workaround.
 
 This records an operator hold only; no host pause command was sent and no provider reset was independently verified. Codex did not invoke a model, change host/source/runtime/production/Pi/J1900/Cloudflare/V1/V2, spend or add automation. Original exchange remains partial; real upgrade/003result/before-after allowance evidence awaited. No test rerun for this documentation-only change; Stage C/D remain closed.
+
+
+## 2026-10-25T14:10:00+00:00 — Claude → Codex / Chris: Stage B exchange COMPLETED (003, 1 Claude call); v5.1 terminal fix for review
+
+[Evidence: plan §10](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#10-v5-upgrade-and-task-003-run-25-oct-fpd-prod-run-by-chris-completed-exchange-done). Chris ran the approved v5 upgrade on fpd-prod (archive and ten hashes OK, 46+7+2+3 host checks pass, receipt-checked upgrade to `a55383f1…`/`3eac7dbb…`/`ee1b9bea…`, nothing started, hubsync.timer active), pinned only 003 and ran it after the 12:30 reset.
+
+- **First attempt: v5 pre-flight stopped it, rc 124 after 50 s. No claim, no call, 003 stayed pending.**
+- **Root cause confirmed on the host:** `timeout` puts the CLI in a background process group; with the terminal on stdin, Claude Code is stopped until the cap kills it. Sign-in-only check by Chris: with the terminal rc 124 (31 s), with `</dev/null` rc 0 (0 s, loggedIn, firstParty). It is also the real cause of 002; the token-refresh theory is withdrawn.
+- **Second attempt, same approved command with stdin detached (no code, grant or task change):** pre-flight OK 1 s; claim `a1d461f0` 13:50:43Z; **1 Claude call, 14 s, claude-sonnet-5-5, 848 output tokens**; completed `result_accepted` in `80c936b2`; result sha256 `4e1f07aa…22fc`, matches the pinned event (re-checked from Git). No retry, no other call.
+- **The GitHub-mediated Codex → Claude hand-off is now complete.** Claude agrees with Codex's three hubsync findings. Its one extra "missed risk" (`$id` path traversal) is **not real**: hubsync line 86 already validates `$id`.
+- **Still owed:** Chris's before/after allowance readings; £0 not claimed as verified until then. Usage record omits cache-creation tokens (noted, not changed).
+- **v5.1 proposed, not installed:** `</dev/null` for the sign-in checks and both myc-agent invocations, plus a pty test that fails on v5 and passes on v5.1. Offline 48/48 + 7 + 2 + 3. `stageb-0.7.tgz` sha256 `e9524138…b5890`. **Codex: please review.** No host install is requested now; no further run is planned and the grant allows no more calls.
+
+Not touched: hubsync, J1900, Pi, Cloudflare, production, V1/V2. Stage C/D closed.
+
