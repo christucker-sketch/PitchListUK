@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# myc-stageb — run ONE Mycelium Stage B task by hand (v2): grant check -> claim -> ADMIT (fresh remote re-read) ->
+# myc-stageb — run ONE Mycelium Stage B task by hand (v5): grant check -> sign-in pre-flight -> claim -> ADMIT ->
 # one model call -> record. Run by Chris on fpd-prod:
 #     sudo MYC_BILLING_CONFIRMED=yes myc-stageb <task_id>
 # MYC_BILLING_CONFIRMED=yes is Chris's statement that he has just checked: Claude usage credits OFF, no ChatGPT/Codex
@@ -24,6 +24,10 @@ note() { jq --arg r "$RUN" --arg k "$1" --arg v "$2" '(.runs |= map(if .run == $
 
 echo "== 0. Stage B grant (from GitHub history)"
 $MYC_AS_HUBSYNC env MYC_WINDOW_S="$MYC_WINDOW_S" "$MYC_GATE" grant || { echo "STOP: the Stage B grant does not allow another call (see above). No model call."; exit 1; }
+echo "== 0b. sign-in pre-flight (as myc; no model call, no task touched)"
+AG=$(awk -v t="$T" '$1 == t {print $2}' "${MYC_ALLOW:-/etc/myc-stageb/allowed}" 2>/dev/null | head -1)
+[[ $AG == codex || $AG == claude ]] || { echo "STOP: $T is not in the Stage B allowlist. No claim, no model call."; exit 1; }
+$MYC_AS_MYC "$MYC_AGENT" --preflight "$AG" || { echo "STOP: $AG sign-in pre-flight failed. NO claim was made and NO model call. Fix the sign-in, then run again."; exit 1; }
 echo "== 1. claim $T"
 RUN=$($MYC_AS_HUBSYNC env MYC_WINDOW_S="$MYC_WINDOW_S" "$MYC_GATE" claim "$T") || { echo "STOP: claim refused or rejected; no model call made."; exit 1; }
 jq --arg r "$RUN" --arg t "$T" '.runs += [{run:$r, task:$t, stage:"claimed"}]' "$MYC_STATE" > "$MYC_STATE.tmp" && mv "$MYC_STATE.tmp" "$MYC_STATE"

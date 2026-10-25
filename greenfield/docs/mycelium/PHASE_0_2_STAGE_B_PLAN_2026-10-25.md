@@ -195,3 +195,43 @@ They are recorded for a later hubsync fix and are not acted on here.
 
 **Allowance before/after:** Chris's readings to be added.
 
+## 9. v5: finish the Claude half (Chris chose option B, 25 Oct). Ready for Codex review
+
+**Chris's decision (chat, 25 Oct):** option **B**, meaning a small fix plus **one fresh Claude task**, with a new grant: 1 model call, a new 30-minute window, no retries. Codex reviews first; Chris's go-ahead is then needed for the host commands.
+
+**v5 changes:**
+- `myc-agent --preflight <agent>` runs only the sign-in and version checks (no model call, no spool, no task). `myc-stageb` runs it **before the claim**, so a failed or slow sign-in costs nothing: no claim, the task stays pending.
+- **Sign-in check cap 60 s** (was 20 s; TERM at 50, KILL at 58).
+- Run-mode checks are repeated after admission (fail closed). Any failure **before** the model call is marked `called:false`, and the public receipt reads **`failed_before_call`**, distinct from `runner_failed` (which now always means a call was attempted).
+- **`upgrade-stageb.sh`:** an in-place replacement of the three commands, only if each installed command still matches the install receipt and no run holds the lock. It updates the receipt so `uninstall-stageb.sh` stays exact. It touches nothing else. Simulated in Claude's workspace: upgrade, an idempotent re-run, and refusal on a tampered command.
+- **Tests:** Claude **47/47** (new: pre-flight failure means no claim and no call; sign-in lost between pre-flight and run means `failed_before_call` with no call; a slow 3 s sign-in check inside the cap completes). Codex 7/7, 2/2, 3/3.
+
+**The fresh task** `MYC-20261025-003` (Claude) has the same instructions as 002 and references the completed 001 result. It is created on Chris's approval of option B; descriptor blob `b0b321cf5437372bb2cdc8c37c1fa12d8ecfef58`.
+
+**The new grant** is an allowlist containing **only** `MYC-20261025-003`. Each task can be claimed once, so that means **1 claim, so at most 1 model call**, with the window starting at its claim. 001 stays completed and 002 stays failed (terminal, not retried); neither is in the new allowlist.
+
+**Pinned:** `stageb-0.6.tgz` sha256 `c761d989c33e58429dae1f7c5dd151c75eea7ca858c486f8e3153f52f2a3e9b0`.
+```
+a55383f1280c511af6b1b98b348c94ffe90f46921bf7ee3c0cef8228a47086ab  myc-gate
+3eac7dbbe92a791ed65d79a3ac3225f63cb5ee48a9f97ccb1bc475620a283bbc  myc-agent
+ee1b9bea1d8bc9a14e58f709e4d5a46fad427eeedadf694f21fec8c8c2d46dd6  myc-stageb
+ef171d15f7bcad3ff437157d56b60d57aa30025c5f49a9ea0a26fc665916f1e8  install-stageb.sh
+f39a65dcb8259fe75097886363de9bba64f060561699d0358a40272bad2b6513  uninstall-stageb.sh
+cf3e34ad14e4ff63809fe46282028140715e05970c9100e989c0626899f11546  upgrade-stageb.sh
+5a2374d44b0bea1bfd9fc2998fce05c21a7ca658cd18f1ea29623cf70832a344  test-stageb.sh
+adb3b216d16b275fb796e2c15ee623c1c5bc44b337be06884e01b5dfe3fbab6c  test-review-regressions.sh
+3f6869356947b93faecb72d1de88644d282cbf4a71c675ba60a429f29561b38f  test-review-deadlines.sh
+5dccdbf48d061bec95a181a4b1118f295a4bf5e3c6eef1799af95b9e4b2e0e64  test-review-publication.sh
+```
+
+**Host commands** (after Codex's review and Chris's go-ahead):
+```
+scp C:\Users\ChrisT\stageb-0.6.tgz ct_admin@fpd-prod.Home:~/
+```
+```
+bash -euo pipefail -c 'cd ~; printf "%s\n" "c761d989c33e58429dae1f7c5dd151c75eea7ca858c486f8e3153f52f2a3e9b0  stageb-0.6.tgz" | sha256sum -c -; rm -rf ~/stageb; tar -xzf stageb-0.6.tgz; cd stageb; sha256sum -c SHA256SUMS; bash test-stageb.sh; bash test-review-regressions.sh; bash test-review-deadlines.sh; bash test-review-publication.sh; sudo bash upgrade-stageb.sh'
+printf '%s\n' 'MYC-20261025-003 claude b0b321cf5437372bb2cdc8c37c1fa12d8ecfef58' | sudo tee /etc/myc-stageb/allowed
+sudo MYC_BILLING_CONFIRMED=yes myc-stageb MYC-20261025-003
+```
+Take the billing and allowance readings before and after, as before. **Rollback** of the upgrade is `sudo bash ~/stageb/uninstall-stageb.sh`, which is receipt-based and keeps the evidence.
+

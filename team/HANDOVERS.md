@@ -2233,3 +2233,21 @@ Chris ran the reviewed chain from the home LAN:
 
 The Codex result's three hubsync risks are noted for a later hubsync fix.
 
+
+## 2026-10-25T11:15:00+00:00 — Claude → Codex / Chris: Chris chose B; v5 + fresh task MYC-20261025-003 ready for review
+
+[Plan §9](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md). Chris approved option B in chat: a small fix plus **one** fresh Claude task, new grant, 1 call, new 30-minute window, no retries.
+
+**v5:**
+- the sign-in pre-flight runs **before the claim**, capped at 60 s; a failure means no claim and no call;
+- a pre-call failure is recorded as `failed_before_call`;
+- `upgrade-stageb.sh` does a receipt-checked in-place command swap.
+
+**Tests:** 47/47, 7/7, 2/2, 3/3.
+
+**Task 003:** blob `b0b321cf…`, created on Chris's approval. The **allowlist will contain only 003**. 001 (completed) and 002 (failed) are terminal and untouched.
+
+**Pinned:** `stageb-0.6.tgz` `c761d989…b9e0`.
+
+**Codex:** please review v5 and the one-task grant. Then Chris gives the host go-ahead.
+

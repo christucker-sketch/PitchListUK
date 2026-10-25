@@ -32,7 +32,13 @@ echo '{"type":"turn.completed","usage":{"input_tokens":14000,"cached_input_token
 EOF
 cat > "$T/stub/claude" <<'EOF'
 #!/usr/bin/env bash
-[[ $1 == auth ]] && { echo '{"loggedIn":true,"authMethod":"claude.ai","apiProvider":"firstParty"}'; exit 0; }
+if [[ $1 == auth ]]; then
+  echo x >> "$CTL/claude_auth_calls"
+  [[ -f $CTL/claude_auth_fail ]] && exit 1
+  [[ -f $CTL/claude_auth_fail_second && $(wc -l < "$CTL/claude_auth_calls") -ge 2 ]] && exit 1
+  [[ -f $CTL/claude_auth_slow ]] && sleep 3
+  echo '{"loggedIn":true,"authMethod":"claude.ai","apiProvider":"firstParty"}'; exit 0
+fi
 [[ $1 == --version ]] && { echo "2.1.308 (Claude Code)"; exit 0; }
 echo call >> "$CTL/calls"; printf '%s\n' "$@" > $CTL/claude_argv
 p=$(cat); ref=$(grep -A2 '^## Reference: ' <<<"$p" | sed -n 3p)
@@ -208,13 +214,26 @@ printf '#!/usr/bin/env bash\n[[ ${3:-} == push ]] && sleep 20\nexec /usr/bin/git
   && ok "R3: a push that cannot finish before the grant end stops as UNCERTAIN (held, no retry)" || { bad "R3 push bound"; cat "$T/out"; }
 # crash mid-call and symlink output
 new_grant; mk_task MYC-20261025-037 codex "x"; allow MYC-20261025-037 codex
-printf '#!/usr/bin/env bash\nmkdir "$MYC_SPOOL/$1/out/started"; exit 9\n' > "$T/agent-crash"; chmod +x "$T/agent-crash"
+printf '#!/usr/bin/env bash\n[[ $1 == --preflight ]] && exit 0\nmkdir "$MYC_SPOOL/$1/out/started"; exit 9\n' > "$T/agent-crash"; chmod +x "$T/agent-crash"
 MYC_AGENT=$T/agent-crash "$STAGEB" MYC-20261025-037 >/dev/null 2>&1
 remote_cat "$TD/MYC-20261025-037/events/0003.json" | jq -e '.status == "failed" and .reason == "outcome_uncertain"' >/dev/null && ok "crash after start recorded as outcome_uncertain, held" || bad "uncertain"
 new_grant; mk_task MYC-20261025-038 codex "x"; allow MYC-20261025-038 codex; echo "PRIVATE KEY MATERIAL" > "$T/hs/secret"
-printf '#!/usr/bin/env bash\nO=$MYC_SPOOL/$1/out; mkdir "$O/started"; ln -s %q "$O/result.md"; echo "{\\"ok\\":true,\\"agent\\":\\"codex\\",\\"seconds\\":1}" > "$O/meta.json"\n' "$T/hs/secret" > "$T/agent-link"; chmod +x "$T/agent-link"
+printf '#!/usr/bin/env bash\n[[ $1 == --preflight ]] && exit 0\nO=$MYC_SPOOL/$1/out; mkdir "$O/started"; ln -s %q "$O/result.md"; echo "{\\"ok\\":true,\\"agent\\":\\"codex\\",\\"seconds\\":1}" > "$O/meta.json"\n' "$T/hs/secret" > "$T/agent-link"; chmod +x "$T/agent-link"
 MYC_AGENT=$T/agent-link "$STAGEB" MYC-20261025-038 >/dev/null 2>&1
-! remote_has "$TD/MYC-20261025-038/result.md" && ! git --git-dir="$T/remote.git" log -p "$B" | grep -q "PRIVATE KEY MATERIAL" && ok "symlinked result.md rejected; private file never published" || bad "symlink"
+remote_cat "$TD/MYC-20261025-038/events/0003.json" | jq -e '.reason == "result_rejected"' >/dev/null && ! remote_has "$TD/MYC-20261025-038/result.md" && ! git --git-dir="$T/remote.git" log -p "$B" | grep -q "PRIVATE KEY MATERIAL" && ok "symlinked result.md rejected; private file never published" || bad "symlink"
+
+echo "4b. v5: sign-in pre-flight before the claim (25 Oct Stage B lesson)"
+new_grant; mk_task MYC-20261025-050 claude "x"; allow MYC-20261025-050 claude; touch "$T/ctl/claude_auth_fail"
+"$STAGEB" MYC-20261025-050 > "$T/out" 2>&1; rm -f "$T/ctl/claude_auth_fail"
+grep -q "pre-flight failed. NO claim" "$T/out" && [[ $(nev MYC-20261025-050) == 1 && $(calls) == 0 ]] \
+  && ok "failed sign-in pre-flight: no claim, no call, task still pending" || { bad "preflight"; cat "$T/out"; }
+rm -f "$T/ctl/claude_auth_calls"; touch "$T/ctl/claude_auth_fail_second"
+"$STAGEB" MYC-20261025-050 > "$T/out" 2>&1; rm -f "$T/ctl/claude_auth_fail_second"
+remote_cat "$TD/MYC-20261025-050/events/0003.json" | jq -e '.status == "failed" and .reason == "failed_before_call"' >/dev/null && [[ $(calls) == 0 ]] \
+  && ok "sign-in lost between pre-flight and run: failed_before_call, no model call" || { bad "failed_before_call"; cat "$T/out"; }
+new_grant; mk_task MYC-20261025-051 claude "x"; allow MYC-20261025-051 claude; touch "$T/ctl/claude_auth_slow"
+MYC_CHECK_TIMEOUT=10 "$STAGEB" MYC-20261025-051 > "$T/out" 2>&1; rm -f "$T/ctl/claude_auth_slow"
+[[ $(st MYC-20261025-051) == *" completed "* && $(calls) == 1 ]] && ok "a slow sign-in check (3 s) inside the cap completes normally" || { bad "slow auth"; cat "$T/out"; }
 
 echo "5. concurrent writer: a racing claim is rejected, never forced"
 new_grant; mk_task MYC-20261025-040 codex "x"; allow MYC-20261025-040 codex

@@ -296,7 +296,9 @@ cmd_complete() {
     [[ -n $usage ]] || usage=null
     # free-text fields that look like a credential are dropped, never published
     if LC_ALL=C grep -qaE -- "$SECRET_RE" <<<"$usage"; then usage=$(jq -c '.model = null | .cli_version = null' <<<"$usage"); fi
-    if [[ $(jq -r .ok "$meta") == true && $(jq -r '.agent // ""' "$meta") == "$ag" ]]; then ok=true; else code=runner_failed; fi
+    if [[ $(jq -r .ok "$meta") == true && $(jq -r '.agent // ""' "$meta") == "$ag" ]]; then ok=true
+    elif [[ $(jq -r '.called' "$meta") == false ]]; then code=failed_before_call   # the runner stopped before any model call
+    else code=runner_failed; fi
     rm -f "$meta"
   elif [[ -e $MYC_SPOOL/$run/out/started ]]; then code=outcome_uncertain
   elif [[ -e $MYC_SPOOL/$run/admitted ]]; then code=outcome_uncertain
