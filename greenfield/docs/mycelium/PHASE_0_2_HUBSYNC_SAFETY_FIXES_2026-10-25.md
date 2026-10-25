@@ -1,10 +1,10 @@
-# HubSync source-safety fixes — for Codex review (25 Oct 2026)
+# HubSync source-safety fixes — for Codex review (25 Oct 2026, revision 2: R1 + R2)
 
 Author: Claude. Source change and offline tests only. **Not deployed.** No host, service, timer, key, Pi, J1900, Cloudflare, production or V1/V2 change. No model call. This fixes the three real defects in the [completion review](PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md#review-quality-and-outstanding-evidence). The rejected `$id` concern is not reopened.
 
 | File | Before (deployed source, `34331ec1`) | After |
 |---|---|---|
-| `greenfield/mycelium/hubsync/hubsync` | `e1417ef1bc5cd44380dba1959e9385b444fd02cba23c44b2c124b0c2d6ef128e` | `e5b6da8d42d1948b4c55b7a2085d3a2467bb837f7aff2294b83913236a1da9b1` |
+| `greenfield/mycelium/hubsync/hubsync` | `e1417ef1bc5cd44380dba1959e9385b444fd02cba23c44b2c124b0c2d6ef128e` | `12a14b4ad8d14b4eb7de3e38e4ce1d00e839aa2354fb11ee6d22bf6e1f0e609d` (rev 2; rev 1 was `e5b6da8d…`) |
 | `greenfield/mycelium/hubsync/test-hubsync.sh` | `85decb247e22de534f4f382499e051b2099061c96c207d780ba332a965296adf` | `eedd39f2b439cb6ee574200d077f9cd2e9fb5a72c1266fd16305c7e5de8b2aab` |
 
 The "before" hash is the repository source. Confirm it matches `/usr/local/bin/hubsync` on fpd-prod before any install (step 2 below).
@@ -39,17 +39,37 @@ The "before" hash is the repository source. Confirm it matches `/usr/local/bin/h
 - Setting `core.symlinks=false` in the shared clone would remove symlinks from the work tree entirely. It also changes what `myc-gate` sees in that shared clone, so it is **not** done here; raise it separately if wanted.
 - Stage C/D, automatic dispatch and the v5.1 install stay closed. Merging this source authorises nothing on the host.
 
-## Proposed host install (only after Codex review, then Chris's explicit go-ahead on these exact commands)
+## Revision 2: Codex's review R1 and R2 ([review](PHASE_0_2_HUBSYNC_CODEX_REVIEW_2026-10-25.md))
 
-On fpd-prod, from a folder holding the reviewed `hubsync`:
+- **R1 (migration), fixed.** A missing `.backlog` field now means *unknown* (`// -1`), not empty. The first poll after an upgrade does one full scan and records the real value. Codex's [`test-review-upgrade.sh`](../../mycelium/hubsync/test-review-upgrade.sh) is unchanged and now passes both assertions; it failed on rev 1.
+- **R2 (checked host plan), done:** [`upgrade-hubsync.sh`](../../mycelium/hubsync/upgrade-hubsync.sh) `check | install | rollback`, replacing the loose commands of rev 1. What it does:
+  - asserts the exact old and new sha256 before touching anything;
+  - records the timer's prior state and stops the timer;
+  - waits until no poll is running;
+  - holds the shared writer lock (`/var/lib/hubsync/lock`, the one `hubsync poll` and `myc-gate` take) while it swaps;
+  - keeps a verified backup (hash plus `cmp`), then installs and verifies;
+  - runs one poll through the unit and checks the unit result, `last_result` and `backlog`;
+  - restores the recorded timer state.
+  - **Failure handling:** any failure after the swap reinstalls and verifies the previous script, then restores the timer. Every run leaves a log in `/var/lib/hubsync-upgrade/`. `rollback` uses the same checks in reverse. `check` is read-only.
+- **Upgrade-script tests:** [`test-upgrade-hubsync.sh`](../../mycelium/hubsync/test-upgrade-hubsync.sh), offline with a fake `systemctl`, **8/8**. It covers read-only check, wrong old/new hash (refused before the timer is touched), install, rollback, poll failure after the swap (previous restored, timer restored), a stopped timer staying stopped, and lock busy (refused, nothing replaced).
+
+### Revision 2 evidence (offline, Chris's PC Linux VM)
+HubSync 27/27 · Codex upgrade regression PASS · upgrade script 8/8 · Stage B 48+7+2+3 = 60/60, with Stage B `SHA256SUMS` verified unchanged.
+
+| File | sha256 |
+|---|---|
+| `hubsync` | `12a14b4ad8d14b4eb7de3e38e4ce1d00e839aa2354fb11ee6d22bf6e1f0e609d` |
+| `upgrade-hubsync.sh` | `9d20b1f85831bc3e33d4e4433f18c259618f93936de2deb185afeb843d2f90bd` |
+| `test-upgrade-hubsync.sh` | `ba8fb107855eabe5a77efbe355823a61255d086205f97f50adce5b45962edd14` |
+| `test-hubsync.sh` | `eedd39f2b439cb6ee574200d077f9cd2e9fb5a72c1266fd16305c7e5de8b2aab` |
+| `test-review-upgrade.sh` (Codex, unchanged) | `5d878472d93019b955ef5ff8ef2fce28fa716dd69019d1d1f4af44b09c7a937f` |
+
+## Proposed host step (only after Codex re-review, then Chris's explicit go-ahead)
+
+On fpd-prod, from a folder holding exactly `hubsync` and `upgrade-hubsync.sh` at the hashes above:
 ```
-sha256sum hubsync                                   # 1. expect e5b6da8d…a1da9b1
-sha256sum /usr/local/bin/hubsync                    # 2. expect e1417ef1…6ef128e (deployed = reviewed old source)
-sudo systemctl stop hubsync.timer; systemctl is-active hubsync.service    # 3. expect "inactive"
-sudo cp -p /usr/local/bin/hubsync /var/lib/hubsync-prefix.bak            # 4. rollback copy (root-owned)
-sudo install -m 755 -o root -g root hubsync /usr/local/bin/hubsync; sha256sum /usr/local/bin/hubsync   # 5. expect e5b6da8d…
-sudo systemctl start hubsync.service; journalctl -u hubsync.service -n 15 --no-pager                   # 6. one poll
-sudo -u hubsync env HUBSYNC_HOME=/var/lib/hubsync hubsync status                                        # 7. last_result ok, backlog 0
-sudo systemctl start hubsync.timer; systemctl is-active hubsync.timer                                   # 8. expect "active"
+sudo bash upgrade-hubsync.sh check      # read-only; must report both hashes as expected
+sudo bash upgrade-hubsync.sh install    # checked swap + one poll; restores the timer state either way
+# if ever needed:  sudo bash upgrade-hubsync.sh rollback
 ```
-Rollback: `sudo systemctl stop hubsync.timer; sudo install -m 755 -o root -g root /var/lib/hubsync-prefix.bak /usr/local/bin/hubsync; sudo systemctl start hubsync.timer`. The extra `.backlog` key in `state.json` is ignored by the old script.
+Nothing is requested now.

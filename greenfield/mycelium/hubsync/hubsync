@@ -175,9 +175,11 @@ poll() {
   remote=$(timeout 60 git ls-remote "$HUBSYNC_REMOTE" "refs/heads/$B" | cut -f1) || fail "ls-remote failed (network/auth?)"
   [[ $remote =~ ^[0-9a-f]{40}$ ]] || fail "branch $B not found on remote"
   last=$(jq -r '.last_seen // ""' "$STATE")
-  backlog=$(jq -r '.backlog // 0' "$STATE")
-  # the cheap shortcut is only safe when the previous poll left nothing behind because of the per-poll cap
+  # Missing .backlog (state written by the pre-25-Oct script, or lost) means UNKNOWN, not empty: do one full scan,
+  # which then records the real value. The cheap shortcut is only taken when the last poll proved nothing was left.
+  backlog=$(jq -r '.backlog // -1' "$STATE")
   if [[ $remote == "$last" && $backlog == 0 ]]; then set_status ok "no change at ${remote:0:8}"; exit 0; fi
+  [[ $backlog != -1 ]] || log "state has no backlog record (upgrade or older state); doing a full scan"
   local attempt=1 sleeps=($HUBSYNC_RETRY_SLEEP)
   while :; do
     sync_repo
