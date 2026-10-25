@@ -1,4 +1,47 @@
-# Stage B independent review — v2 re-review, changes required
+# Stage B independent review — v3, one remaining publication deadline finding
+
+**Codex, 25 October 2026, 08:59 GMT. Reviewed `030c7315`. Changes required before host execution.**
+
+## Confirmed repairs
+
+Independently rerun against this exact revision: **44/44 maintained tests, 7/7 original Codex regressions, and 2/2 admission-deadline regressions pass**. All **eight** entries in `SHA256SUMS` match. The two admission bugs reported in the v2 review are fixed: slow reference checks cannot extend the absolute deadline and an expired grant is not admitted.
+
+The installer now refuses existing managed paths/group before changes, and the new rollback uses a receipt, removes unchanged commands and retains spool/state/private logs as evidence. These source changes address the prior fresh-install/narrow-rollback finding for this first manual install. Claude reports a disposable simulation; Codex has reviewed the source, **not run the installer or rollback on the host**. Partial-install failures must stop for inspection; do not bypass a fresh-install refusal or improvise cleanup. No additional rollback finding is raised here.
+
+Chris's one-call same-request Codex transport-retry exception remains accepted. No further retry decision is needed. No new scope, approval, credential or spend is requested.
+
+## Remaining R3 finding — the publication phases reuse the same allowance
+
+In [`myc-gate`](../../mycelium/stageb/myc-gate), `cmd_complete` computes both `PUSH_T` and `FETCH_T` from the same `left_s`, **before** writing the event and making the local commit. `commit_push` then uses those two durations sequentially. It does not re-read the absolute deadline immediately before each phase or after confirmation. Each phase can fit its own timeout while their combined duration exceeds the remaining grant. Also, `timeout -k 5 <remaining>` permits five additional seconds after TERM for a resistant process.
+
+[New independent publication regressions](../../mycelium/stageb/test-review-publication.sh) reproduce the issue using only disposable local Git and a deterministic clock/timeout shim. Synthetic metadata represents a completed worker; **no model is invoked**. The genuine admitted deadline agrees with the durable first-claim time and a short 90-second grant; the test does not rewrite the job packet. The clock simulates elapsed phase durations, and the timeout shim rejects a phase whose simulated work exceeds its supplied cap. Initial sync/file reads still use real GNU timeout and local Git.
+
+On v3: **1 control passes, 2 cases fail**:
+
+| Case | 20 seconds remain at the initial check | Outcome on v3 |
+|---|---|---|
+| Control | Fast push and confirming fetch | Timely result accepted |
+| Local work consumes budget | Local commit consumes 16 s, then push and fetch consume 16 s each | Both still receive 20 s. Remote push occurs 12 s after grant end; gate reports success **28 s late**. |
+| Confirmation consumes budget | Push consumes 16 s, confirming fetch consumes 16 s | Both still receive 20 s. Gate reports success **12 s late**. |
+
+Run: `bash greenfield/mycelium/stageb/test-review-publication.sh`. The current nonzero exit is the reproduced failure, not a failed native proof. All remotes are temporary local repositories. The new review-only file is outside the eight-file pinned manifest; existing pinned source is unchanged by Codex.
+
+**Claude, exact correction:** carry the immutable absolute publication end into `commit_push`; re-read remaining time **after local preparation and immediately before the push**, then re-read it **after the push and before the confirming fetch**. Bound each phase's hard kill inside that remaining allowance, and check the absolute clock before reporting successful completion. If time is exhausted or the push may have landed without confirmation, stop with an explicit uncertain/held outcome and do not retry automatically. Preserve the distinction between an uncertain remote outcome and a confirmed failure; do not claim nothing was published after a timed-out push.
+
+A private, uncommitted source copy using those remaining-time checks, an immediate hard-kill bound and a final clock check passes **3/3**, including the positive control. That is a focused feasibility check, not a replacement runner, merged runtime fix or full validation of the proposed correction. Shared runtime remains Claude-owned and unchanged by Codex.
+
+## Next checkpoint
+
+Claude integrates this remaining correction into the same bundle, includes the two timing cases and control in maintained coverage, reruns the local suites and repins archive/manifest/commands. Codex rechecks that exact revision. **Do not request host go-ahead on v3 yet.** The archive itself is not available in this workspace, so Codex has verified individual file checksums only.
+
+Once technically cleared, [Chris's Stage B authorization](PHASE_0_2_STAGE_B_AUTHORIZATION_2026-10-25.md) still requires presentation of exact reviewed host commands and rollback for explicit go-ahead. That gate is unchanged, not a new approval flow. The two real task descriptors still require Chris's creation or explicit approval.
+
+Zero native model calls, new spending, host install/run/rollback, email, production/Pi/J1900/Cloudflare/V1/V2 changes. Existing HubSync is unchanged. No fresh commercial inventory or producer-health measurement is claimed.
+
+---
+
+## Historical v2 re-review — superseded by the v3 outcome above
+
 
 **Codex, 25 October 2026, 08:39 GMT. Reviewed runtime revision `4673d428`, retry decision `c1c2fef0`. Host execution remains on hold.**
 

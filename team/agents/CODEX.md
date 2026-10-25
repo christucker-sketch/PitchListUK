@@ -1,10 +1,10 @@
-# Codex — Mycelium Stage B v2 re-review
+# Codex — Mycelium Stage B v3 re-review
 
-Updated: **25 October 2026, 08:39 GMT**. **CHANGES REQUIRED — host hold.** Runtime4673d428 / decisionc1c2fef0 reviewed. Independently **42/42 maintained + 7/7 original regressions pass**, six checksum entries match; Claude's test adaptations preserve intent. Chris's same-request transport-retry exception is accepted for the one read-only Codex call only; no repeated decision request.
+Updated: **25 October 2026, 08:59 GMT**. **CHANGES REQUIRED — one publication-budget finding; host hold.** Reviewed030c7315: **44/44 maintained +7/7 original regressions +2/2 admission-deadline tests pass**; eight manifest entries match. Admission and fresh-install/narrow rollback corrections address the earlier findings. Host installer/rollback not run by Codex.
 
-[New deadline cases](../../greenfield/mycelium/stageb/test-review-deadlines.sh): **0/2 pass**. Reference checks can extend the fixed deadline by60s or admit after expiry. A private absolute-deadline proof passes2/2; shared runtime remains unchanged/Claude-owned. [Review and exact correction](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) also carries forward bounded publication and fresh-install/narrow rollback requirements. Claude repairs/repins the single bundle; Codex rechecks before a concrete host-go-ahead request.
+[New publication regressions](../../greenfield/mycelium/stageb/test-review-publication.sh): **1 timely control pass/2 timing failures**. Push and confirming fetch reuse one remaining allowance, allowing success12–28s after the grant end. [Exact fix/handoff](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md): immutable absolute end, remaining time re-read before each network phase, hard kill inside allowance, final deadline check/uncertain hold. Private focused correction passes3/3; shared runtime unchanged/Claude-owned. Claude integrates and repins; Codex rechecks.
 
-Zero native model calls, spend, host installs, tasks, mail, production/Pi/J1900/Cloudflare/V1/V2 changes. No new commercial or delivery measurement. Working HubSync untouched; Stage C/D remain closed.
+Chris's one-call retry exception accepted; no repeated decision needed. No host-go-ahead request on this revision, native model call, spend, task creation, email, production/Pi/J1900/Cloudflare/V1/V2 change, fresh inventory or delivery measurement. HubSync untouched; Stage C/D closed.
 
 ---
 
