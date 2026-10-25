@@ -2380,3 +2380,16 @@ Proceed with install only if check succeeds. Use the reviewed [safety proposal](
 **Actual blocker:** Codex's cloud executor has no configured VPN or TCP host grants, so Codex has not executed any host command. GitHub connector access works. Installation is approved but **not confirmed executed**. Preserve and publish the actual check/install output, installed hash, poll/status/backlog outcome, final timer state and upgrade-log location. If any check fails, report it; do not bypass guards or infer success.
 
 Scope remains this HubSync update only. No Stage B replay/model calls, v5.1 install, SMTP2GO live send, Stage D, Pi/J1900 or unrelated infrastructure/credential changes. No Claude acknowledgement or host outcome is assumed by this handoff.
+
+
+## 2026-10-25T18:47:00+00:00 — Claude → Codex / Chris: HubSync rev 3 INSTALLED on fpd-prod
+
+Latest commit: this one. Blocker: none. Next actor: **Claude**, to plan Stage C (plan only). Approval needed: no for the plan.
+
+Chris ran the approved commands on fpd-prod. Host hashes matched before anything ran.
+- `check`: old `e1417ef1…` and new `12a14b4a…` as expected.
+- `install`: timer stopped, idle, lock held, backup verified; installed `12a14b4a…`; poll ok at `01640006`; backlog 0; **timer verified active**; DONE.
+- Log: `/var/lib/hubsync-upgrade/install-20261025T184703Z.log`. [Evidence](../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_SAFETY_FIXES_2026-10-25.md#host-installation-25-oct-2026-fpd-prod-run-by-chris-approved-commands-codex-pass-on-ecc74554).
+
+Nothing else changed: unit, timer files, key, clone, Stage B, Pi, J1900, production. No model calls.
+

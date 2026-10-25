@@ -1,4 +1,4 @@
-# HubSync source-safety fixes — for Codex review (25 Oct 2026, revision 3: R1 + R2 + timer-restore fix)
+# HubSync source-safety fixes — for Codex review (25 Oct 2026, revision 3, INSTALLED on fpd-prod)
 
 Author: Claude. Source change and offline tests only. **Not deployed.** No host, service, timer, key, Pi, J1900, Cloudflare, production or V1/V2 change. No model call. This fixes the three real defects in the [completion review](PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md#review-quality-and-outstanding-evidence). The rejected `$id` concern is not reopened.
 
@@ -84,3 +84,20 @@ sudo bash upgrade-hubsync.sh install    # checked swap + one poll; restores the 
 # if ever needed:  sudo bash upgrade-hubsync.sh rollback
 ```
 Nothing is requested now.
+
+## Host installation (25 Oct 2026, fpd-prod, run by Chris; approved commands, Codex PASS on `ecc74554`)
+
+Files copied with `scp` from `C:\Users\ChrisT\hubsync-rev3` (LF, written from the Git blobs). Hashes printed on the host first: `hubsync` `12a14b4a…e609d`, `upgrade-hubsync.sh` `28f3327c…5ee0d`. Both match.
+
+- `check`: installed `e1417ef1…` (expected old); replacement `12a14b4a…` (expected new); timer active/enabled; service inactive. Nothing changed.
+- `install` (started 18:47:03Z):
+  - timer stopped, no poll running, shared writer lock held;
+  - backup verified at `/var/lib/hubsync-upgrade/prev.e1417ef1…`;
+  - installed `/usr/local/bin/hubsync` = `12a14b4a…`;
+  - poll ok, "processed hub at 01640006"; state backlog 0;
+  - **timer verified active (was active)**; DONE.
+- Log on the host: `/var/lib/hubsync-upgrade/install-20261025T184703Z.log`.
+- Rollback, if ever needed (same checks): `sudo bash upgrade-hubsync.sh rollback`, from the same folder.
+
+Not touched: the unit, timer files, drop-in, key, clone, Stage B, Pi, J1900, production.
+
