@@ -192,6 +192,20 @@ run=$("$GATE" claim MYC-20261025-036 2>/dev/null); "$GATE" admit "$run" >/dev/nu
 s0=$(date +%s%N); MYC_CALL_TIMEOUT=2 HOME=$T/myc "$AGENTX" "$run" >/dev/null 2>&1; el=$(( ($(date +%s%N) - s0) / 1000000 )); rm -f "$T/ctl/codex_ignore_term"
 [[ $el -le 2600 ]] && jq -e '.ok == false' "$T/spool/$run/out/meta.json" >/dev/null && ok "R6: TERM-ignoring CLI killed inside the cap (${el} ms for a 2 s cap)" || bad "R6: ${el} ms"
 "$GATE" complete "$run" >/dev/null 2>&1
+# R3 follow-up: publication is bounded by the absolute grant end
+new_grant; mk_task MYC-20261025-039 codex "x"; allow MYC-20261025-039 codex
+run=$("$GATE" claim MYC-20261025-039 2>/dev/null); "$GATE" admit "$run" >/dev/null 2>&1; HOME=$T/myc "$AGENTX" "$run" >/dev/null 2>&1
+jq --argjson d $(( $(date -u +%s) - 40 )) '.deadline_epoch = $d' "$T/spool/$run/job.json" > "$T/j" && mv "$T/j" "$T/spool/$run/job.json"
+"$GATE" complete "$run" >/dev/null 2>&1
+remote_cat "$TD/MYC-20261025-039/events/0003.json" | jq -e '.status == "failed" and .reason == "deadline_passed"' >/dev/null && ! remote_has "$TD/MYC-20261025-039/result.md" \
+  && ok "R3: a result arriving after the grant end is not published (deadline_passed)" || bad "R3 publish bound"
+new_grant; mk_task MYC-20261025-041 codex "x"; allow MYC-20261025-041 codex
+run=$("$GATE" claim MYC-20261025-041 2>/dev/null); "$GATE" admit "$run" >/dev/null 2>&1; HOME=$T/myc "$AGENTX" "$run" >/dev/null 2>&1
+jq --argjson d $(( $(date -u +%s) - 30 + 12 )) '.deadline_epoch = $d' "$T/spool/$run/job.json" > "$T/j" && mv "$T/j" "$T/spool/$run/job.json"
+printf '#!/usr/bin/env bash\n[[ ${3:-} == push ]] && sleep 20\nexec /usr/bin/git "$@"\n' > "$T/stub/git"; chmod +x "$T/stub/git"
+"$GATE" complete "$run" > "$T/out" 2>&1; r=$?; rm -f "$T/stub/git"
+[[ $r != 0 ]] && grep -q "outcome UNCERTAIN" "$T/out" && [[ $(st MYC-20261025-041) == *" in_progress "* ]] \
+  && ok "R3: a push that cannot finish before the grant end stops as UNCERTAIN (held, no retry)" || { bad "R3 push bound"; cat "$T/out"; }
 # crash mid-call and symlink output
 new_grant; mk_task MYC-20261025-037 codex "x"; allow MYC-20261025-037 codex
 printf '#!/usr/bin/env bash\nmkdir "$MYC_SPOOL/$1/out/started"; exit 9\n' > "$T/agent-crash"; chmod +x "$T/agent-crash"

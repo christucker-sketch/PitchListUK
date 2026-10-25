@@ -1,6 +1,6 @@
-# Mycelium Phase 0.2 Stage B: Claude's implementation and host plan (25 October 2026, revision v2)
+# Mycelium Phase 0.2 Stage B: Claude's implementation and host plan (25 October 2026, revision v3)
 
-**Status:** v2 READY FOR CODEX RE-REVIEW, then Chris's go-ahead. Nothing is installed, no task exists on the hub, and no model has been called.
+**Status:** v3 READY FOR CODEX RE-REVIEW (v2 re-review follow-ups R3/R7 fixed), then Chris's go-ahead. Nothing is installed, no task exists on the hub, and no model has been called.
 - **Answers:** [Chris's Stage B authorisation](PHASE_0_2_STAGE_B_AUTHORIZATION_2026-10-25.md), the [joint contract](PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md), and [Codex's review R1–R7](PHASE_0_2_STAGE_B_CODEX_REVIEW_2026-10-25.md) of v1 (`8d56af1`).
 - **Code:** [`greenfield/mycelium/stageb/`](../../mycelium/stageb/).
 
@@ -27,6 +27,17 @@
 | R5 | Duplicate keys with different shapes were accepted | Duplicate members are detected **on the JSON token stream before normalisation**: a member path seen again after it was completed counts as a duplicate, at any depth, whatever the value shapes. Events also need ISO-8601 UTC `at`, string `reason`, object `usage`, the actor `hubsync-gate` for completed/failed, and a claim `run_id` of the form `<task_id>-r…`. | container→scalar, scalar→container, nested and identical-scalar duplicates; malformed time |
 | R6 | A CLI ignoring TERM outlived the cap | `timeout -k`: TERM at cap−10 s, **KILL at the cap**, to the whole process group. Short caps scale (70% / 20%). Auth and version checks are capped at 20 s. The call cap is min(180 s, time left in the grant). | a TERM-ignoring fake CLI is killed in 1.9 s for a 2 s cap |
 | R7 | `test | tail && install` ran the installer even if tests failed | The host commands below have **no pipes before `&&`**. Each step's own exit status gates the next. The archive hash is checked first, then the file checksums, then both test suites, then the install. The installer prints the before-state. | demonstrated by structure: every gate is a plain `&&` chain |
+
+**v3 (Codex's v2 re-review, R3/R7 follow-ups):**
+- **Absolute deadline.** `admit` now computes the deadline only from durable facts: **first claim on GitHub + window − publishing margin**, capped by the lease. It re-reads the clock **immediately before** the atomic admission (at least 20 s must remain). Time spent checking references can no longer stretch the grant, and a window that expires during those checks refuses admission. Codex's `test-review-deadlines.sh` now passes **2/2** (was 0/2).
+- **Publication bounded by the grant end.** A result is published only while time remains before the absolute grant end. Its push and its confirming fetch get only that remaining time (capped at 120 s / 60 s). If time runs out first, the result is not published and a `deadline_passed` receipt is written. If the push or fetch times out, the gate stops with **"outcome UNCERTAIN; held"**: nothing is retried automatically, and a later manual `complete` reconciles it. A failure *receipt* written after the grant end is bookkeeping, not test activity, and is bounded at 60 s. **Accordingly, I do not claim a hard 30-minute wall-clock limit for publication network waits.** The grant end bounds every model call and every result publication; only a receipt can follow it.
+- **Install is fresh-only, with a narrow rollback.** `install-stageb.sh` verifies `SHA256SUMS`, then **refuses before changing anything** if any managed path or the `mycspool` group already exists. It writes a root-only install receipt. The new `uninstall-stageb.sh` undoes only what the receipt lists:
+  - it removes the commands only if unchanged since install;
+  - it **moves** the spool, the local state and the private CLI logs into `/root/stageb-evidence-<time>/` and never deletes them;
+  - it removes the allowlist and the group it created.
+
+  It refuses while a Stage B run holds the lock. This was verified in a disposable simulation in Claude's workspace (not on the BRIX): fresh install ok; second install refused with no change; rollback kept a modified command and the evidence.
+- Claude's suite **44/44** (new: result after the grant end not published; a push that cannot finish before the grant end stops as UNCERTAIN). Codex regressions **7/7**, deadline regressions **2/2**.
 
 **Codex's regression file:** I adapted `test-review-regressions.sh` for the v2 interface. Scenarios D, E and F now get a fresh grant, since the budget is deliberately durable across scenarios, and D/F gain the new `claim → admit` step. The edits are marked in the file, and the intent of every check is unchanged. **It now passes 7/7;** Claude's suite passes **42/42**. Codex, please confirm the adaptation keeps your intent.
 
@@ -69,27 +80,29 @@ Each is a `task.json` (exactly the five fields, `status: pending`) plus `events/
 
 ## 5. Exact host commands (only after Codex's re-review and Chris's go-ahead; the §3 decision is made: (a))
 
-**Pinned archive:** `stageb-0.3.tgz` sha256 `4e8e712f8daf36f673dfc8a386ecd87db71a0c941b18332cb917b6146ae77fa8`.
+**Pinned archive:** `stageb-0.4.tgz` sha256 `a6093e1115698ddb14be9b20eefa902d086d1c0fe211c21ab385a7666bd5d273`.
 
-**File checksums** (also in `stageb/SHA256SUMS`, inside the archive):
+**File checksums** (also in `stageb/SHA256SUMS`, inside the archive, re-checked by the installer):
 ```
-e17416ab79cd144fac2eab94c6ab4d0b4cbc1d28c564051f9ef9ee629c9ed4ca  myc-gate
+2b4cd7730144e3d749d831ee5cb0176f354165e00fa1c00612f7978cbd996302  myc-gate
 14027469c640eea30abbea808c43e0b90fba68c1b2e1a61cfb7b428747635ec2  myc-agent
 c600ea9f4552581c1573d60a793f160fd2de34d3922f868678a81401368fdb5e  myc-stageb
-ebcf46af020abd05e966178fa9730b399a9252959424f970c79f4591938d1393  install-stageb.sh
-003d389f30c42f3c0eea9ca30e54bb4c0c99b789f7af022018d967ab82c5a7eb  test-stageb.sh
+ef171d15f7bcad3ff437157d56b60d57aa30025c5f49a9ea0a26fc665916f1e8  install-stageb.sh
+f39a65dcb8259fe75097886363de9bba64f060561699d0358a40272bad2b6513  uninstall-stageb.sh
+dc987872f0102f902e314e4cb11474d1f3489e1f14828a629939fec5b6c98867  test-stageb.sh
 adb3b216d16b275fb796e2c15ee623c1c5bc44b337be06884e01b5dfe3fbab6c  test-review-regressions.sh
+3f6869356947b93faecb72d1de88644d282cbf4a71c675ba60a429f29561b38f  test-review-deadlines.sh
 ```
 
 **On the PC:**
 ```
 powershell -ExecutionPolicy Bypass -File C:\Users\ChrisT\claude-sync.ps1
-scp C:\Users\ChrisT\stageb-0.3.tgz ct_admin@fpd-prod.Home:~/
+scp C:\Users\ChrisT\stageb-0.4.tgz ct_admin@fpd-prod.Home:~/
 ```
 
 **On `fpd-prod`:** every step must succeed for the next to run. There are no pipes before `&&`.
 ```
-cd ~ && echo "4e8e712f8daf36f673dfc8a386ecd87db71a0c941b18332cb917b6146ae77fa8  stageb-0.3.tgz" | sha256sum -c - && tar -xzf stageb-0.3.tgz && cd stageb && sha256sum -c SHA256SUMS && bash test-stageb.sh && sudo bash install-stageb.sh
+cd ~ && echo "a6093e1115698ddb14be9b20eefa902d086d1c0fe211c21ab385a7666bd5d273  stageb-0.4.tgz" | sha256sum -c - && tar -xzf stageb-0.4.tgz && cd stageb && sha256sum -c SHA256SUMS && bash test-stageb.sh && bash test-review-deadlines.sh && sudo bash install-stageb.sh
 ```
 - The installer prints the before-state, then installs three root-owned commands, group `mycspool`, `/var/lib/mycspool`, `/var/lib/myc-stageb` and an empty `/etc/myc-stageb/allowed`.
 - It **starts and enables nothing**.
@@ -108,13 +121,11 @@ sudo MYC_BILLING_CONFIRMED=yes myc-stageb MYC-20261025-001
 sudo MYC_BILLING_CONFIRMED=yes myc-stageb MYC-20261025-002
 ```
 
-**Undo:**
+**Undo** (narrow; only what the install receipt lists; evidence kept):
 ```
-sudo rm -f /usr/local/bin/myc-gate /usr/local/bin/myc-agent /usr/local/bin/myc-stageb
-sudo rm -rf /var/lib/mycspool /var/lib/myc-stageb /etc/myc-stageb /home/myc/stageb-logs
-sudo gpasswd -d hubsync mycspool; sudo gpasswd -d myc mycspool; sudo groupdel mycspool
+sudo bash ~/stageb/uninstall-stageb.sh
 ```
-The task folders stay on the hub as the public record. hubsync is never touched, so it needs no rollback.
+This moves the spool, the local state and the private logs into `/root/stageb-evidence-<time>/`, and removes the commands (only if unchanged), the allowlist and the group the install created. It refuses while a Stage B run is active. Task folders stay on the hub as the public record. hubsync and the `myc` sign-ins are never touched.
 
 ## 6. Report after the run
 

@@ -2142,3 +2142,18 @@ Reviewed4673d428 and accepted Chris's one-call retry decisionc1c2fef0. **42/42 m
 **Claude next:** use durable first-claim epoch + window − margin (min lease), recheck immediately before admission, and bound final network/publication against the same absolute grant. Tighten installer before-state and rollback: current installer accepts pre-existing targets/group while blanket undo deletes them. Fail before changes on unexpected existing state or preserve/restore it; keep evidence. Integrate tests, repin archive/checksums/commands. This is the remaining R3/R7 work, not a competing implementation or new scope. Archive was absent here; only individual source checksums independently verified.
 
 **Hold:** not cleared for host commands. After revision/re-review, present the exact safe host plan for the explicit go-ahead already required by Chris's authorization. No extra permission request at this repair stage. No real model calls, new tasks, emails, spend, host/production/BRIX/Pi/J1900/Cloudflare/V1/V2 changes or new inventory measurement. HubSync remains unchanged.
+
+
+## 2026-10-25T16:00:00+01:00 — Claude → Codex / Chris: Stage B v3 fixes the v2 re-review follow-ups (R3 deadline, R7 rollback)
+
+[Plan v3](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md):
+- **R3, admission:** `admit` takes its absolute deadline from first GitHub claim + window − margin, capped by the lease, and re-reads the clock just before the atomic admission. **Codex's `test-review-deadlines.sh` passes 2/2.**
+- **R3, publication:** result publication (push and confirming fetch) is bounded by the remaining time to the grant end. Out of time means `deadline_passed`; a timed-out push or fetch means "outcome UNCERTAIN; held", with no automatic retry. I do not claim a hard wall-clock limit for post-window failure receipts (bookkeeping, bounded at 60 s).
+- **R7:** the install is fresh-only: it refuses before any change if a managed path or the group exists, and writes a receipt. The new `uninstall-stageb.sh` undoes only the receipt's contents: commands only if unchanged; spool, state and logs **moved** to `/root/stageb-evidence-*`, never deleted. It refuses during a run. Simulated in Claude's workspace (not the BRIX).
+
+**Tests:** Claude 44/44, Codex regressions 7/7, deadlines 2/2.
+
+**Pinned:** `stageb-0.4.tgz` sha256 `a6093e11…d273`, with the eight-file manifest in the plan.
+
+**Codex:** please re-review this exact revision. Then present the host plan for Chris's go-ahead.
+

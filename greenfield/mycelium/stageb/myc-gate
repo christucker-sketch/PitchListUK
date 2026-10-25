@@ -21,6 +21,8 @@ umask 027
 : "${MYC_MAX_CALLS:=2}"                     # claims (= at most one model call each) across the whole Stage B grant
 : "${MYC_WINDOW_S:=1800}"                   # whole Stage B test, from the FIRST claim recorded on GitHub
 : "${MYC_PUBLISH_MARGIN_S:=30}"             # time kept back inside the window for recording the outcome
+: "${MYC_MIN_CALL_S:=20}"                   # admission needs at least this much time left before the deadline
+PUSH_T=120; FETCH_T=60                      # network bounds; tightened to the absolute grant end when publishing a result
 : "${MYC_NAME:=hubsync}"
 : "${MYC_EMAIL:=hubsync@$(hostname).invalid}"
 REPO=$MYC_HOME/repo; LOCK=$MYC_HOME/lock; B=$MYC_BRANCH
@@ -163,10 +165,12 @@ commit_push() {  # message files... -> commits exactly these NEW files and pushe
   G -c user.name="$MYC_NAME" -c user.email="$MYC_EMAIL" commit -q -m "$msg"
   [[ -z $(G diff --name-only "origin/$B" HEAD | grep -v "^$MYC_TASKS/MYC-[0-9]\{8\}-[0-9]\{3\}/\(events/[0-9]\{4\}\.json\|result\.md\)$" || true) ]] \
     || die "refusing to push files outside the task contract"
-  timeout 120 git -C "$REPO" push -q origin "HEAD:refs/heads/$B" 2>"$MYC_HOME/gate-push.err" \
-    || die "push rejected or failed ($(head -c 200 "$MYC_HOME/gate-push.err" | tr -cd '[:print:]')); nothing retried, nothing forced"
-  local c; c=$(G rev-parse HEAD)
-  timeout 60 git -C "$REPO" fetch -q --no-tags origin "+refs/heads/$B:refs/remotes/origin/$B" || die "pushed $c but could not re-read the remote"
+  local c rc=0; c=$(G rev-parse HEAD)
+  timeout -k 5 "$PUSH_T" git -C "$REPO" push -q origin "HEAD:refs/heads/$B" 2>"$MYC_HOME/gate-push.err" || rc=$?
+  [[ $rc -ne 124 && $rc -ne 137 ]] || die "push of $c timed out after ${PUSH_T}s: publication outcome UNCERTAIN (it may or may not have landed); held, nothing retried. Re-run later to reconcile"
+  [[ $rc -eq 0 ]] || die "push rejected or failed ($(head -c 200 "$MYC_HOME/gate-push.err" | tr -cd '[:print:]')); nothing retried, nothing forced"
+  timeout -k 5 "$FETCH_T" git -C "$REPO" fetch -q --no-tags origin "+refs/heads/$B:refs/remotes/origin/$B" \
+    || die "pushed $c but could not re-read the remote within ${FETCH_T}s: outcome UNCERTAIN; held"
   G merge-base --is-ancestor "$c" "origin/$B" || die "pushed $c is not on the remote branch (history rewound?)"
   echo "$c"
 }
@@ -211,7 +215,7 @@ cmd_claim() {
 }
 
 cmd_admit() {  # the last gate before inference: everything is re-read from the remote now
-  local run=$1 cj t ag refs r p o deadline lease_e left
+  local run=$1 cj t ag refs r p o deadline lease_e
   [[ $run =~ $RUN_RE ]] || die "bad run id"
   cj=$MYC_SPOOL/$run/claim.json; [[ -f $cj && ! -L $cj ]] || die "no claim record for $run"
   t=$(jq -r .task_id "$cj"); ag=$(jq -r .agent "$cj"); [[ $t =~ $TASK_RE && $run == "$t-"* ]] || die "claim record mismatch"
@@ -233,8 +237,11 @@ cmd_admit() {  # the last gate before inference: everything is re-read from the 
     fi
     refs=$(jq -c --arg p "$p" --arg o "$o" --arg c "$(G cat-file -p "$o")" '. + [{path:$p, blob:$o, content:$c}]' <<<"$refs")
   done < <(jq -c '.refs[]' "$cj")
-  left=$(jq .window_left_s <<<"$GRANT")
-  deadline=$(( $(date -u +%s) + left - MYC_PUBLISH_MARGIN_S )); [[ $deadline -lt $lease_e ]] || deadline=$lease_e
+  # absolute deadline from durable facts only: first claim on GitHub + window, minus the publishing margin, capped by
+  # the lease. Time spent on the checks above can never extend it; the clock is re-read right before admission.
+  local first; first=$(jq -r .first_claim_epoch <<<"$GRANT"); [[ $first =~ ^[0-9]+$ ]] || die "no first claim time; not admitted"
+  deadline=$(( first + MYC_WINDOW_S - MYC_PUBLISH_MARGIN_S )); [[ $deadline -lt $lease_e ]] || deadline=$lease_e
+  [[ $(( $(date -u +%s) + MYC_MIN_CALL_S )) -lt $deadline ]] || die "the Stage B window has passed or too little time is left (deadline $(date -u -d "@$deadline" +%H:%M:%SZ)); not admitted"
   # admission happens at most once per run, atomically; a second admit (or a restart) can never re-open it
   mkdir "$MYC_SPOOL/$run/admitted" 2>/dev/null || die "$run was already admitted once; no replay"
   jq -n --arg run "$run" --arg t "$t" --arg a "$ag" --argjson dl "$deadline" --argjson refs "$refs" \
@@ -281,8 +288,10 @@ cmd_complete() {
   else code=not_admitted_no_call
   fi
   [[ -f $MYC_SPOOL/$run/job.json ]] && dl=$(jq -r .deadline_epoch "$MYC_SPOOL/$run/job.json") || dl=$(epoch "$LEASE")
+  local pub_end=$(( dl + MYC_PUBLISH_MARGIN_S )) left_s   # = the absolute grant end (or lease + margin), never later
+  left_s=$(( pub_end - $(date -u +%s) ))
   if [[ $(date -u +%s) -gt $(epoch "$LEASE") ]]; then ok=false; code=lease_expired
-  elif [[ $(date -u +%s) -gt $(( dl + MYC_PUBLISH_MARGIN_S )) ]]; then ok=false; code=deadline_passed; fi
+  elif [[ $left_s -lt 10 ]]; then ok=false; code=deadline_passed; fi
   if $ok; then
     if res=$(read_out "$MYC_SPOOL/$run/out/result.md" 16384) && [[ -s $res ]] && clean_text < "$res" && ! LC_ALL=C grep -qaE -- "$SECRET_RE" "$res"; then
       cp "$res" "$REPO/$d/result.md"; sha=$(sha256sum "$res" | cut -c1-64); rm -f "$res"
@@ -291,6 +300,12 @@ cmd_complete() {
     fi
   fi
   n=$((SEQ + 1)); ev=$(printf '%s/events/%04d.json' "$d" $n)
+  if $ok; then
+    # a RESULT is published only inside the absolute grant end: the push and the confirming fetch get only the time
+    # left. If they run out, the outcome is UNCERTAIN and held (commit_push stops; no automatic retry).
+    left_s=$(( pub_end - $(date -u +%s) )); PUSH_T=$(( left_s < 120 ? left_s : 120 )); FETCH_T=$(( left_s < 60 ? left_s : 60 ))
+    (( PUSH_T >= 5 && FETCH_T >= 5 )) || { ok=false; code=deadline_passed; PUSH_T=60; FETCH_T=60; rm -f "$REPO/$d/result.md"; }
+  fi
   if $ok; then
     event_json --argjson s $n --arg r "$run" --arg pe "$LAST_BLOB" --arg h "$sha" --argjson u "$usage" \
       '{seq:$s, status:"completed", at:$at, actor:"hubsync-gate", reason:"result_accepted", run_id:$r, prev_event:$pe, output_sha256:$h, usage:$u}' > "$REPO/$ev"
