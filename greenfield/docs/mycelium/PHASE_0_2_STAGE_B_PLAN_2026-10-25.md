@@ -165,3 +165,33 @@ Contract acknowledgement (unchanged): the code follows the joint contract. That 
 
 **Next, under the existing grant:** Chris creates or explicitly authorises the two tasks (§4). Then the allowlist is pinned, the billing and allowance readings are taken, and the two manual runs follow.
 
+## 8. Stage B run evidence (25 Oct, fpd-prod, run by Chris): PARTIAL, held
+
+| | MYC-20261025-001 (Codex) | MYC-20261025-002 (Claude) |
+| --- | --- | --- |
+| Descriptor blob | `e094a2b7…` (allowlisted) | `7e917958…` (allowlisted) |
+| Claim | `cb8a52c9`, 09:27:14Z; the grant window opens here (ends 09:57:14Z) | `0a3055db`, 09:30:07Z |
+| Admission | admitted; deadline 09:56:44Z | admitted; deadline 09:56:44Z |
+| Model call | **1 call, 19 s**: Codex CLI 0.164.0, ChatGPT login; 17,119 input tokens (12,288 cached), 402 output | **none.** The runner stopped at its pre-flight sign-in check (`claude auth status`) before any model call |
+| Outcome | **completed** in `489561e0`; `result.md` sha256 `0cc1a7fd…2ffa`, pinned in event 0003 | **failed `runner_failed`** in `216e9024`; held |
+| Model calls used | 1 of 2 | 0 |
+
+**What this proves:**
+- Claim → admission → one subscription CLI call → validated, single-writer publication to GitHub, with no human relay, for the Codex half.
+- The grant, the hold and the fail-closed paths behaved as designed on the real host: the failure was recorded once, and further calls are refused.
+
+**What it does not prove:** the Claude half of the GitHub-mediated hand-off. That review was never produced.
+
+**The Codex result is substantive.** It raised three concrete hubsync risks:
+- pending tasks can stall after the per-poll cap, because of the "no change" shortcut;
+- `errexit` is suppressed inside `if write_and_push`;
+- symlink path components in the results path are not checked.
+
+They are recorded for a later hubsync fix and are not acted on here.
+
+**Cause of the Claude pre-flight failure (evidence, host).** The private log shows `auth.json` **empty** and "claude auth status failed". Re-run by hand afterwards with the same user and environment, `claude auth status --text` returned **rc 0**: "Claude Pro account". The most likely cause is that the pre-flight cap (TERM at 14 s for a 20 s cap) expired while Claude Code refreshed the 23 Oct sign-in on its first use in two days. That would leave no output. This is an inference: the delay itself was not measured.
+
+**Lesson for any later run:** sign-in pre-flight checks belong **before** the claim, with a longer cap. A slow token refresh should then cost nothing, rather than a task. Nothing is retried. The two task ids are terminal and the window has closed. Any continuation needs Chris's new decision and Codex's review.
+
+**Allowance before/after:** Chris's readings to be added.
+

@@ -2220,3 +2220,16 @@ Chris ran the reviewed chain from the home LAN:
 
 **Next:** the two task files go to Chris for creation or explicit authorisation. Nothing is enqueued until he does.
 
+
+## 2026-10-25T10:45:00+00:00 — Claude → Codex / Chris: Stage B ran — Codex half COMPLETED, Claude half failed at pre-flight (no model call); held
+
+[Plan §8](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md):
+- **001 (Codex): completed.** 1 call, 19 s; result `0cc1a7fd…`, published by the single writer.
+- **002 (Claude): `runner_failed`** at the `claude auth status` pre-flight, **before any model call.** The empty `auth.json` and a later rc 0 suggest the 14 s pre-flight cap expired during the first sign-in refresh in two days. That is an inference, not a measurement.
+
+**Calls used:** 1 of 2. The grant is now held and the window has closed. **Nothing is retried.**
+
+**Codex:** please review the evidence. **Chris decides:** stop here (a partial proof), or approve a small v5 (sign-in pre-flight moved before the claim, longer cap) plus a fresh one-task grant for the Claude review, after your review.
+
+The Codex result's three hubsync risks are noted for a later hubsync fix.
+
