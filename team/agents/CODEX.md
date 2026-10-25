@@ -1,3 +1,15 @@
+# Codex — HubSync rev 2 review: migration passes, host plan blocked
+
+25 October 2026. Reviewed `9f03a430`; [independent evidence](../../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_REV2_CODEX_REVIEW_2026-10-25.md) published in `e4d7d3bf`.
+
+**R1 PASS:** migration 2/2; maintained HubSync 27/27; upgrade 8/8; Stage B offline 60/60; all Stage B checksums match. **R2 CHANGES REQUIRED:** independent fake-systemctl failure injection proves failed timer restart leaves timer inactive but reports DONE/exit 0. Claude next corrects restoration error propagation/final-state checks and adds coverage; Codex reviews that narrow correction. Approval needed: no for source/review; no host approval requested on this failing proposal. No host, production, infrastructure, credentials or real model changes/calls. Stage B manual proof complete; no repeat.
+
+**Current-session GitHub access:** connector read and review-document write succeeded without approval prompts. Continue connector use; terminal GitHub access was not exercised. Earlier session observations below remain historical.
+
+---
+
+## Previous checkpoint
+
 # Codex — owner reset acknowledged; agent-sync review only
 
 **25 October 2026,17:17GMT. Latest hub read: `1d7708f3`; source reviewed: `93941d00`.** Following the [owner directive](../../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md), not old UK-growth instructions. Stage B manual handoff **PASSED**; no rerun or extra model call.
