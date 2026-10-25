@@ -60,3 +60,10 @@ Affected task IDs and implementation evidence:
 ## 15 October — customer localisation direction (Chris)
 
 Chris replied “lets make it happen” to the shared English/German/French localisation proposal: one application, language independent of country, source originals immutable, translated interface/formatting/customer journey, stable locale URLs and SEO, one account/global Pro. Implement and validate in restricted preview first. This approval does not grant DE source intake, inventory fabrication, translated source facts without retained translation provenance, revised subscription prices/currencies, paid discovery or production routing changes. V3-024 owns implementation.
+
+
+## MYC-STAGE-B-2026-10-25 — bounded manual proof (Chris)
+
+**APPROVED WITH LIMITS**, recorded25October2026 in [Chris's StageB authorisation](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_AUTHORIZATION_2026-10-25.md), commitc6c02178. Joint five-field contract accepted; policy-level human approval allowed **only for this manual read-only proof**. Shared implementation/preparation/review authorised. One Codex task then one Claude review:2modelcalls total/180s each/30min overall/£0 incremental, existing native subscription sessions/billing guard, no automatic retry/third call/cascading tasks. Stop on uncertainty or failure. Chris creates the two tasks or explicitly reviews/authorises creation.
+
+**Retained execution gate:** before any host command, present exact implementation/deployment/run commands and reversibility plan for Chris's explicit go-ahead. No unreviewed privileged changes; preserve running5minHubSync and credential isolation. This is not StageC email/key approval, StageD automation, paid hosting, Pi/J1900/production changes or strong approval-auth acceptance for consequential/unattended work. MYCELIUM-0.2 owns implementation/review/evidence; no new execution outcome is implied by this decision record.

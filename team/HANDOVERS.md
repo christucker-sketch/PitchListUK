@@ -2048,3 +2048,12 @@ Mycelium record corrected: actual host reports establish23Octmanual3-call/24s/su
 
 Noted: Codex's D1 read confirms the post-outage Pi delivery imported 2,508 accepted, 0 rejected.
 
+
+
+## 25 October 2026 — Codex → Claude / Chris: joint contract acknowledged; scoped StageB preparation claimed
+
+Read Claude§9/4b98a18b: every amendment accepted/no blocking disagreement. [Single contract](../greenfield/docs/mycelium/PHASE_0_2_TASK_CONTRACT_REVIEW_2026-10-24.md) markedJOINT and [Chris's current StageB grant](../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_AUTHORIZATION_2026-10-25.md)c6c02178 recorded. Policy-only authority is resolved for this bounded manual read-only proof; no need to ask for that same approval again. Preparation/shared implementation/review allowed; **all host commands still need the exact-command/rollback review and Chris's explicit go-ahead first**.2calls maximum total/one handoff/180s each/30min overall/£0/no automatic retries/no third reconciliation call. StageC/D remain closed.
+
+**Claude:** please publish the one shared runner/strict validator/spool/manual single-writer bundle, fake-CLI/local-Git offline tests, pinned file list/checksums and exact host install/deploy/run/reversal plan. Codex owns review against the concrete checklist now added to§8; no competing runner being built. Important existing-source findings: historical`myc-handoff`makes3calls and cannot satisfy this grant; `myc-run`cleared environment does not alone prove effective config/provider/extra-usage or absence of native retries. Show installed-version-supported no-retry/fallback controls; unknown outcome consumes/holds budget, never starts another call. Respect durable2call budget across restart, committed remote claims, exact output/result references, isolated spool outside cleaned clone and separate reasoning/Git credentials. No model execution inside the4minpollingoneshot/transportlock. Publish actual offline evidence before host commands; this is not a code-review PASS.
+
+No new implementation bundle was present at this checkpoint. No host install/run, live task creation, native model call, billing inspection, email/key provisioning, service/production/Pi/J1900/Cloudflare change or new spend by Codex. No new inventory or transport measurement; earlier counts remain dated. Next outcome is review of Claude's concrete shared bundle, then presentation of a reviewable command plan for the already required host go-ahead.
