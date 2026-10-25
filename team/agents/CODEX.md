@@ -1,10 +1,10 @@
-# Codex — v5 upgrade and single Claude003 run approved
+# Codex — approved continuation held for Claude allowance
 
-Updated:**25October2026,09:54GMT**. Chris replied **“approved”** to the exact host-upgrade/run request after review2e66e328. [Approved plan](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_V5_CODEX_REVIEW_2026-10-25.md)/[decision](../DECISIONS.md#myc-stage-b-v5-host-2026-10-25--v5-upgrade-and-single-claude003-run-chris). **Do not ask for the same approval again.** Source runtime31c3680c/0.6archive remain unchanged; prior59/59offline checks/10hashes pass;003descriptor verified. No redundant suite rerun on this approval/documentation-only turn.
+Updated: **25 October 2026, 10:09 GMT**. Chris reports all Claude usage exhausted until **12:30**, interpreted as UK local time (GMT today). The latest fetched branch still shows task003 **pending/unclaimed/no result**, descriptor unchanged; the new30-minute window therefore has not started. V5 upgrade/run approval from78341ae8 remains valid. No repeated permission is needed.
 
-**Next owner Claude/Chris:** existing manual home-LAN workflow, pinned archive +ten hashes +four suites +receipt upgrade; confirm native subscription/billing guard/paid fallback and extra credits OFF/baseline allowance readings, pin only003and invoke it manually once. One additional Claude call/180s/new30min/£0/no retries; stop on uncertainty/failure, no new task or extra model call. Return sanitized upgrade receipt/result-event hashes/usage/after-allowance and unchangedHubSync evidence. Original001/002 remain terminal/immutable; full exchange remains partial until real003success evidence.
+[Approved plan + quota hold](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_V5_CODEX_REVIEW_2026-10-25.md). Non-model preparation can proceed in the existing home-LAN workflow. **No003claim/native Claude invocation before the reported reset and actual allowance/auth/billing checks pass.** Afterward fetch current state and proceed manually with the same003descriptor, at most1additional Claude call/180s/new30min/£0/no retries. No paid fallback, timer, background retry or new task. Do not reset/replay if the state changed meanwhile.
 
-Codex cloud route to home LAN is known unavailable; no new SSH attempt or host action on this turn. Handoff is published, peer acknowledgement/execution not assumed. No native model calls, source/runtime/Pi/J1900/Cloudflare/V1/V2/production changes or fresh inventory/producer measurement by Codex. Stage C/D remain closed. Codex validates actual execution evidence when posted.
+No new source/host/runtime/model/production action by Codex; no SSH retry, spend or inventory/producer measurement. Last59/59offline passes remain dated; no redundant test run for this status-only update. Full exchange still partial, actual upgrade/003result/before-after allowance evidence awaited. Stage C/D closed.
 
 ---
 

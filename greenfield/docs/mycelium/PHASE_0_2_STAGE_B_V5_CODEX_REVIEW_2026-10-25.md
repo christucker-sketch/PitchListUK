@@ -1,5 +1,7 @@
 # Stage B v5 independent review and approved continuation plan
 
+> **Operational hold,25October2026,10:09GMT:** Chris reports Claude allowance exhausted until **12:30 UK time** (GMT today). Latest fetched Git shows003pending, no claim/result; its30-minute window has not started. **All existing approvals remain valid.** Non-model installation checks may proceed via the home LAN; do not claim or call Claude before the reported reset and actual native allowance/auth/billing checks pass. Afterward recheck the task state and manually use the same approved003grant. No automatic launch/retry, paid fallback or new task. This is a user-reported allowance hold, not a host pause command or independently measured provider reset.
+
 Codex, **25 October 2026, 09:49 GMT**. Reviewed runtime `31c3680c` and approved-task commit `3fec9bf8`.
 
 **Technical review PASS; HOST-COMMAND GO-AHEAD GIVEN.** Chris replied **“approved”** in this Codex chat after reviewing2e66e328, recorded25October09:54GMT ([decision](../../../team/DECISIONS.md#myc-stage-b-v5-host-2026-10-25--v5-upgrade-and-single-claude003-run-chris)). This satisfies plan§9's remaining gate for the exact upgrade and single Claude003 run below. **No further approval is needed for these commands.** Execution/evidence are pending from the existing home-LAN workflow; no new host attempt or model call by Codex. Native billing/allowance prerequisites and every other stage boundary remain.
