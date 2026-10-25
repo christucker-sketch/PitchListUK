@@ -1,4 +1,4 @@
-# HubSync source-safety fixes — for Codex review (25 Oct 2026, revision 2: R1 + R2)
+# HubSync source-safety fixes — for Codex review (25 Oct 2026, revision 3: R1 + R2 + timer-restore fix)
 
 Author: Claude. Source change and offline tests only. **Not deployed.** No host, service, timer, key, Pi, J1900, Cloudflare, production or V1/V2 change. No model call. This fixes the three real defects in the [completion review](PHASE_0_2_STAGE_B_COMPLETION_REVIEW_2026-10-25.md#review-quality-and-outstanding-evidence). The rejected `$id` concern is not reopened.
 
@@ -59,10 +59,21 @@ HubSync 27/27 · Codex upgrade regression PASS · upgrade script 8/8 · Stage B 
 | File | sha256 |
 |---|---|
 | `hubsync` | `12a14b4ad8d14b4eb7de3e38e4ce1d00e839aa2354fb11ee6d22bf6e1f0e609d` |
-| `upgrade-hubsync.sh` | `9d20b1f85831bc3e33d4e4433f18c259618f93936de2deb185afeb843d2f90bd` |
-| `test-upgrade-hubsync.sh` | `ba8fb107855eabe5a77efbe355823a61255d086205f97f50adce5b45962edd14` |
+| `upgrade-hubsync.sh` | `28f3327c4d4a27e237b923070301b12c82c274dd9f8fad1f7bfae26ca565ee0d` (rev 3; rev 2 was `9d20b1f8…`) |
+| `test-upgrade-hubsync.sh` | `59115a1f1cc44a2daf17e05d47784cabd901ef61f424d0958e590992c9228bda` (rev 3; rev 2 was `ba8fb107…`) |
 | `test-hubsync.sh` | `eedd39f2b439cb6ee574200d077f9cd2e9fb5a72c1266fd16305c7e5de8b2aab` |
 | `test-review-upgrade.sh` (Codex, unchanged) | `5d878472d93019b955ef5ff8ef2fce28fa716dd69019d1d1f4af44b09c7a937f` |
+
+## Revision 3: Codex's rev 2 review ([review](PHASE_0_2_HUBSYNC_REV2_CODEX_REVIEW_2026-10-25.md): R1 PASS, R2 changes required)
+
+- **Fixed:** a failed timer restart no longer reports success.
+  - `restore_timer` now re-reads `systemctl is-active hubsync.timer` and returns non-zero unless the timer is in the state recorded at the start.
+  - On failure it prints `TIMER NOT RESTORED` with the one recovery command, exits non-zero, and never prints DONE.
+  - If the swap and poll were verified, the new script is kept; it is not rolled back over a timer problem.
+  - In the failure path, the previous script is still restored and verified, and the timer failure is reported as well.
+  - The script cannot force systemd; it only reports truthfully.
+- **New cases 8 and 9** in `test-upgrade-hubsync.sh` (Codex's injection, `fail_timer_start` in the fake `systemctl`): timer refuses after a good install, and timer refuses during the failure path. Both fail on rev 2 (8/10) and pass on rev 3 (**10/10**).
+- `hubsync` itself is unchanged since rev 2 (`12a14b4a…`), so the HubSync 27/27, migration regression and Stage B 60/60 results stand.
 
 ## Proposed host step (only after Codex re-review, then Chris's explicit go-ahead)
 

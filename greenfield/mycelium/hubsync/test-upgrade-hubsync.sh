@@ -26,6 +26,7 @@ case "$1" in
                 if [[ $(cat "$F/poll") == ok ]]; then echo success > "$F/result"
                   echo '{"last_result":"ok","message":"processed hub at abc"}' > "$T_HSHOME/status.json"; echo '{"backlog":0}' > "$T_HSHOME/state.json"
                 else echo exit-code > "$F/result"; exit 1; fi
+              elif [[ $2 == hubsync.timer && -f $F/fail_timer_start ]]; then exit 1
               else echo active > "$F/$2"; fi ;;
   show)       cat "$F/result" ;;
 esac
@@ -71,5 +72,15 @@ echo "7. shared lock held by another writer: stop, nothing replaced, timer resto
 reset; ( flock 9; sleep 6 ) 9>>"$T_HSHOME/lock" & sleep 0.5
 r=$(run "$U" install); wait
 [[ $r != 0 && $(sha "$T_BIN") == "$T_OLD" && $(cat "$F/hubsync.timer") == active ]] && grep -q 'shared lock busy' "$T/out" && ok "lock busy refused safely" || { bad "lock busy"; cat "$T/out"; }
+
+echo "8. timer refuses to restart after a good install: non-zero, no DONE, clear recovery step"
+reset; touch "$F/fail_timer_start"; r=$(run "$U" install)
+[[ $r != 0 && $(sha "$T_BIN") == "$T_NEW" && $(cat "$F/hubsync.timer") == inactive ]] && grep -q 'TIMER NOT RESTORED' "$T/out" \
+  && grep -q 'sudo systemctl start hubsync.timer' "$T/out" && ! grep -q 'DONE' "$T/out" && ok "restoration failure propagated; verified install kept" || { bad "timer restart failure (rc $r)"; cat "$T/out"; }
+
+echo "9. timer also refuses during the failure path: still non-zero, previous script restored, recovery step shown"
+reset; echo fail > "$F/poll"; touch "$F/fail_timer_start"; r=$(run "$U" install)
+[[ $r != 0 && $(sha "$T_BIN") == "$T_OLD" && $(cat "$F/hubsync.timer") == inactive ]] && grep -q 'previous script restored and verified' "$T/out" \
+  && grep -q 'TIMER NOT RESTORED' "$T/out" && ! grep -q 'DONE' "$T/out" && ok "both failures reported; old script verified" || { bad "double failure (rc $r)"; cat "$T/out"; }
 
 echo; echo "upgrade tests: $pass passed, $failn failed"; [[ $failn == 0 ]]

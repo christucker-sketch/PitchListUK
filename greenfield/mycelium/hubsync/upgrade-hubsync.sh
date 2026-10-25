@@ -8,8 +8,9 @@
 # state or Stage B. Sequence: assert hashes -> record timer state -> stop timer -> wait until no poll is running ->
 # hold the shared writer lock (the same lock hubsync poll and myc-gate take) -> back up and verify -> replace and
 # verify -> release lock -> one poll through the unit -> check status -> restore the timer state recorded at the start.
-# On any failure after the replacement, the previous script is put back and verified; the timer is always returned to
-# its recorded state; the log is kept.
+# On any failure after the replacement, the previous script is put back and verified. The script then tries to return
+# the timer to its recorded state and VERIFIES it; if systemctl refuses, it says so, exits non-zero and never prints
+# DONE (it cannot force systemd; the log keeps the evidence and the one recovery command).
 set -euo pipefail
 umask 077
 
@@ -59,13 +60,21 @@ exec > >(tee -a "$LOG") 2>&1
 say "$MODE started $(date -u +%FT%TZ); log $LOG"
 
 REPLACED=0
-restore_timer() {
+restore_timer() {  # returns non-zero unless hubsync.timer ends in the state recorded at the start
+  local now fix
   if [[ $TIMER_ACTIVE == active ]]; then
-    $SYSTEMCTL start hubsync.timer && say "timer restored: $($SYSTEMCTL is-active hubsync.timer || true)" \
-      || say "WARNING: could not restart hubsync.timer; start it by hand: sudo systemctl start hubsync.timer"
-  else
-    say "timer left $($SYSTEMCTL is-active hubsync.timer || true) (it was $TIMER_ACTIVE before)"
+    $SYSTEMCTL start hubsync.timer || say "systemctl start hubsync.timer failed"
   fi
+  now=$($SYSTEMCTL is-active hubsync.timer || true)
+  local want=inactive got=inactive
+  [[ $TIMER_ACTIVE != active ]] || want=active
+  [[ $now != active ]] || got=active
+  if [[ $want != "$got" ]]; then
+    [[ $TIMER_ACTIVE == active ]] && fix="sudo systemctl start hubsync.timer" || fix="sudo systemctl stop hubsync.timer"
+    say "TIMER NOT RESTORED: hubsync.timer is '$now', was '$TIMER_ACTIVE'. Recover by hand: $fix; check: systemctl is-active hubsync.timer"
+    return 1
+  fi
+  say "timer verified: $now (was $TIMER_ACTIVE)"
 }
 on_exit() {
   local rc=$?
@@ -81,7 +90,7 @@ on_exit() {
       say "WARNING: could not restore the previous script; $BIN is $(sha "$BIN" 2>/dev/null || echo missing). Copy: $prev"
     fi
   fi
-  restore_timer
+  restore_timer || say "the failure above stands; the timer also needs the manual step shown"
   exit "$rc"
 }
 trap on_exit EXIT   # any failure from here on (set -e or stop) restores as described above
@@ -128,6 +137,9 @@ if [[ $MODE == install ]]; then
   say "state backlog: $(jq '.backlog' "$HS_HOME/state.json")"
 fi
 
-trap - EXIT
-restore_timer
-say "DONE: $MODE complete; $BIN = $TO. Log: $LOG"
+trap - EXIT   # the swap and poll are verified; from here only the timer state is outstanding
+if ! restore_timer; then
+  say "FAILED: $MODE verified ($BIN = $TO, poll ok) but the timer was not restored; evidence in $LOG"
+  exit 1
+fi
+say "DONE: $MODE complete; $BIN = $TO; timer verified. Log: $LOG"

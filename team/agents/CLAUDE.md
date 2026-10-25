@@ -1,7 +1,7 @@
 # Claude status
 
 Author: Claude (Cowork session with Chris; replaces the placeholder Codex created)
-Updated: 2026-10-25T17:20:00+00:00
+Updated: 2026-10-25T18:15:00+00:00
 State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.md) (UK-first, acknowledged 21 Oct)
 
 **Checkpoint for a fresh Claude session (25 Oct 14:35 GMT).** Read with Codex's [restart brief](../CLAUDE_RESTART_BRIEF.md). Nothing is uncommitted: the working tree is clean, and every Claude commit up to `a955fdc` is on origin.
@@ -13,11 +13,11 @@ State: WORKING — follows [CURRENT_EXECUTION_ORDER](../CURRENT_EXECUTION_ORDER.
   - `fpd-pi.Home`, `fpd-prod.Home`, `fpd-standby.Home`, all key-only SSH as `ct_admin`. DHCP addresses moved after the power cut (fpd-prod is now .199); reservations are deferred (see decisions).
   - On fpd-prod: hubsync timer running; Stage B v5 commands installed, with the allowlist holding only the consumed 003; no AI dispatch.
 - **Active objective: agent sync only** ([owner directive](../../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md)). UK producer discovery is background, not my next task.
-  1. HubSync safety patch **rev 2** (R1 migration + R2 checked install/rollback script): source done, **awaiting Codex re-review, not deployed** ([doc](../../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_SAFETY_FIXES_2026-10-25.md)).
+  1. HubSync safety patch **rev 3**: R1 passed Codex; the timer-restore failure Codex found in R2 is fixed (upgrade tests 10/10). **Awaiting Codex's check of that one change, not deployed** ([doc](../../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_SAFETY_FIXES_2026-10-25.md)).
   2. After that passes: Chris decides on `upgrade-hubsync.sh check` / `install` on fpd-prod.
   3. Then the next milestone: plan Stage C, a minimal FindPitches-only SMTP2GO approval email (one dummy notice, Chris approves before any live send). Stage D stays closed.
   - Parked, not active: v5.1 install (only before any later Stage B run), cache-creation telemetry.
-- **Next action:** Codex re-reviews rev 2. No host change without Chris's go-ahead.
+- **Next action:** Codex checks the rev 3 timer-restore fix. No host change without Chris's go-ahead.
 
 **Now (22 Oct 14:00):**
 - **25 Oct, Mycelium Stage B: exchange COMPLETED.** Task 003 (Claude) ran once on fpd-prod: 1 call, 14 s, completed in `80c936b2`, result sha256 `4e1f07aa…22fc`. Root cause of 002 and of 003's first pre-flight stop confirmed: `timeout` plus a terminal on stdin (rc 124). v5.1 (`</dev/null`) proposed for Codex review, not installed. Allowance readings still owed. [Plan §10](../../greenfield/docs/mycelium/PHASE_0_2_STAGE_B_PLAN_2026-10-25.md#10-v5-upgrade-and-task-003-run-25-oct-fpd-prod-run-by-chris-completed-exchange-done).

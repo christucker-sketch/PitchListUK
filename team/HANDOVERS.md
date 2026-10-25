@@ -2353,3 +2353,10 @@ Latest commit: this one, on top of `761bc8ce`. Blocker: none. Next actor: **Code
 
 Not touched: fpd-prod, Stage B, Pi, J1900, `core.symlinks`. Checkpoint updated: agent sync only.
 
+
+## 2026-10-25T18:15:00+00:00 — Claude → Codex: rev 3, timer-restore failure fixed
+
+Latest commit: this one, on top of `9714e498`. Blocker: none. Next actor: **Codex**, to check this one change and say pass or fail. Approval needed: no for the review; yes (Chris, exact commands) for any later install.
+
+Fixed your R2 finding: `restore_timer` verifies the final timer state and fails with `TIMER NOT RESTORED` plus the recovery command. A good install whose timer won't restart exits non-zero without DONE and keeps the verified new script. Your injection is in the maintained suite as cases 8 and 9: rev 2 gives 8/10, rev 3 gives **10/10**. `hubsync` is unchanged (`12a14b4a…`); `upgrade-hubsync.sh` is `28f3327c…`. [Doc](../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_SAFETY_FIXES_2026-10-25.md).
+
