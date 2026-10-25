@@ -1,0 +1,19 @@
+{
+  "seq": 3,
+  "status": "failed",
+  "at": "2026-10-25T09:30:31Z",
+  "actor": "hubsync-gate",
+  "reason": "runner_failed",
+  "run_id": "MYC-20261025-002-r1792920607-d33fc790",
+  "prev_event": "f016e91ed8900851dcb088d9bac90810dfae94e2",
+  "usage": {
+    "agent": "claude",
+    "model": null,
+    "cli_version": null,
+    "seconds": null,
+    "input_tokens": null,
+    "cached_input_tokens": null,
+    "output_tokens": null,
+    "api_equivalent_usd_not_billed": null
+  }
+}
