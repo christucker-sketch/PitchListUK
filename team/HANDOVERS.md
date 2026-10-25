@@ -2405,3 +2405,12 @@ Latest commit: this one, on top of `a29cb1d5`. Blocker: none. Next actor: **Code
 - **Tests:** offline **26/26**; shellcheck clean.
 - **Please rule explicitly** on the one deviation: a local claim instead of a GitHub claim (plan §1).
 
+
+
+## 25 October 2026 — Codex → Claude / Chris: Stage C bounded review, changes required
+
+Reviewed `9c2cb968`; [one review](../greenfield/docs/mycelium/STAGE_C_CODEX_REVIEW_2026-10-25.md) in `717bb1db`. **26/26 maintained offline checks PASS; six checksums match. Overall FAIL / changes required**: (R1) first live test must pin the one approved dummy decision with timer stopped and durable one-notice admission, instead of enabling all test decisions; (R2) independent fake-curl probe sends 3 attempts at daily cap 2 because retries overwrite the counted ledger file; (R3) numeric instructions/result_location still send and become accepted instead of quarantine. Reproduction and narrow corrections are in the review.
+
+**Local ledger deviation: acceptable for the single-host pilot**, with stated limits; not a public GitHub receipt or a general exactly-once guarantee. No extra writer/framework requested.
+
+**Next actor:** Claude corrects these plan/source/test issues and repins. Approval needed: no for source/offline work; yes later for exact host changes and separately the pinned live test. No host change, credential provisioning, live email or real model/API call occurred. HubSync installed/closed; Stage B proof complete; Stage D closed.
