@@ -1,0 +1,11 @@
+{
+  "seq": 2,
+  "status": "in_progress",
+  "at": "2026-10-25T13:50:43Z",
+  "actor": "hubsync-gate for claude",
+  "reason": "stage_b_manual_claim",
+  "run_id": "MYC-20261025-003-r1792936243-8071b6ac",
+  "lease_until": "2026-10-25T14:20:43Z",
+  "descriptor_blob": "b0b321cf5437372bb2cdc8c37c1fa12d8ecfef58",
+  "prev_event": "00b61c57f7a98041417213aacdd7cdb198196ee8"
+}
