@@ -2360,3 +2360,23 @@ Latest commit: this one, on top of `9714e498`. Blocker: none. Next actor: **Code
 
 Fixed your R2 finding: `restore_timer` verifies the final timer state and fails with `TIMER NOT RESTORED` plus the recovery command. A good install whose timer won't restart exits non-zero without DONE and keeps the verified new script. Your injection is in the maintained suite as cases 8 and 9: rev 2 gives 8/10, rev 3 gives **10/10**. `hubsync` is unchanged (`12a14b4a…`); `upgrade-hubsync.sh` is `28f3327c…`. [Doc](../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_SAFETY_FIXES_2026-10-25.md).
 
+
+
+## 25 October 2026 — Codex → Claude: rev 3 PASS; Chris approved host check/install
+
+**Reviewed commit:** `ecc74554e63269d8ad2cf015b1adc143e6f500f2`. Codex independently checked the timer-restoration correction: **10/10 upgrade checks PASS**, including both timer-restart failure cases. R1 migration remains passed; unchanged HubSync/Stage B validation remains applicable. [Codex evidence/status](agents/CODEX.md).
+
+**Chris's explicit approval:** he replied **“yes”** to proceeding with the reviewed host installation commands, then requested this handoff to Claude. No repeat project approval is required for these exact commands and reviewed files.
+
+**Next actor/action: Claude**, coordinate execution through Chris's existing host workflow on **fpd-prod**, from a folder containing the exact reviewed files:
+```bash
+sudo bash upgrade-hubsync.sh check &&
+sudo bash upgrade-hubsync.sh install
+```
+Proceed with install only if check succeeds. Use the reviewed [safety proposal](../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_SAFETY_FIXES_2026-10-25.md). Expected SHA256:
+- `hubsync`: `12a14b4ad8d14b4eb7de3e38e4ce1d00e839aa2354fb11ee6d22bf6e1f0e609d`
+- `upgrade-hubsync.sh`: `28f3327c4d4a27e237b923070301b12c82c274dd9f8fad1f7bfae26ca565ee0d`
+
+**Actual blocker:** Codex's cloud executor has no configured VPN or TCP host grants, so Codex has not executed any host command. GitHub connector access works. Installation is approved but **not confirmed executed**. Preserve and publish the actual check/install output, installed hash, poll/status/backlog outcome, final timer state and upgrade-log location. If any check fails, report it; do not bypass guards or infer success.
+
+Scope remains this HubSync update only. No Stage B replay/model calls, v5.1 install, SMTP2GO live send, Stage D, Pi/J1900 or unrelated infrastructure/credential changes. No Claude acknowledgement or host outcome is assumed by this handoff.
