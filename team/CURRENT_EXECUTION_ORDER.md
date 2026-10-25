@@ -1,6 +1,6 @@
 # CURRENT EXECUTION ORDER — Agent sync
 
-Updated **25 October 2026,16:38GMT**. Authority: Chris's latest instruction, **“we were working on agent sync”**. This register supersedes conflicting priorities in historical entries, agent checkpoints and restart briefs.
+Updated **25 October 2026,17:17GMT**. Authority: Chris's [owner reset directive](../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md), published in `1d7708f3`, and his standing permission for routine hub/source/test work. This is the single live queue; older briefs and historical task headers are reference material.
 
 ## Active objective
 
@@ -13,7 +13,8 @@ The bounded manual Codex→GitHub→Claude exchange is already functionally veri
 | State | Owner | Work | Exact next outcome |
 |---|---|---|---|
 | ACTIVE — review follow-up | Claude | HubSync source-safety bundle93941d00 | Apply [Codex R1/R2](../greenfield/docs/mycelium/PHASE_0_2_HUBSYNC_CODEX_REVIEW_2026-10-25.md): migrate existing capped state without stalling; make the proposed host install/rollback fail safely. Integrate the new upgrade regression, rerun offline tests, repin. No host change. |
-| NEXT — same bundle | Codex | Independent agent-sync review | Recheck Claude's revised source/tests/checked host plan. Current27/27baseline passes, but the existing-state upgrade regression fails. Publish one concrete acceptance or remaining defect, not a new parallel framework. |
+| NEXT — same bundle | Codex | Independent agent-sync review | Recheck Claude's revised source/tests/checked host plan. Rechecked25Oct17:17GMT:27/27baseline passes; the precise old-state regression still fails on93941d00. No corrected source commit is present in latest hub1d7708f3. Publish one pass/fail after Claude's small patch, without reopening the completed manual proof. |
+| AFTER SAFETY CORRECTION — PLAN ONLY | Claude/Codex | Stage C minimal approval notice | Plan one dummy FindPitches-only SMTP2GO notice with isolated credentials/service and explicit approval before any live send. No new framework, credential installation or live email now; Stage D remains closed. |
 | SOURCE REVIEW PASS, UNDEPLOYED | Claude/Codex | v5.1 terminal-input fix |60/60local checks passed; no new install or model run requested now. Retain for a later explicitly approved host release. |
 | FUNCTIONAL PROOF COMPLETE | Codex validation; Claude host evidence | Stage B001/003 |Both result hashes/history verified;002failure retained. Current one-task continuation consumed. No replay, replacement task or additional model call. |
 | DEFERRED | Existing respective owners | UK producer expansion, cloud growth, France/features, DHCP/BIOS/hardware |Retain the [UK backlog/evidence snapshot](ARCHIVE_UK_EXECUTION_ORDER_2026-10-25.md). Resume engineering only after Chris reorders priorities. Existing deployed producer/delivery/customer services continue; this priority change stops no service. |
@@ -23,6 +24,7 @@ The bounded manual Codex→GitHub→Claude exchange is already functionally veri
 - Codex owns this execution register; Claude owns the current HubSync source bundle. Claim/coordinate overlapping edits and preserve peer work. Do not impersonate another agent or infer acknowledgement.
 - Read current sections and relevant recent diffs, not entire old conversations/journals. [Fresh Claude brief](CLAUDE_RESTART_BRIEF.md) follows this queue; checkpoint private/uncommitted work before changing chats.
 - Agent-sync source/test fixes are authorized reversible preparation. New host commands require a reviewed concrete plan and the retained explicit go-ahead. Do not request that go-ahead on a failing or incomplete plan.
+- Routine authorised hub reads/writes and offline engineering need no repeated project approval. Actual client/sandbox controls still apply; do not bypass them or conflate them with a new project gate. Codex's observed GitHub prompt mechanism is recorded in [own status](agents/CODEX.md).
 - Genuine service incidents may be triaged under existing authority and reported separately; that does not restart deferred growth engineering.
 - Existing five-minute HubSync remains a non-AI watcher. Do not enable automated AI dispatch, email/Stage C/D or new paid services under the consumed manual proof.
 - Preserve original task/source evidence and identity. V2/PitchList and existing approved FindPitches customer service remain protected. No production cutover/publication changes, infrastructure deletion, paid acquisition or protected-branch merge.

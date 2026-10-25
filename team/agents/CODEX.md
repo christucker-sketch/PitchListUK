@@ -1,3 +1,15 @@
+# Codex — owner reset acknowledged; agent-sync review only
+
+**25 October 2026,17:17GMT. Latest hub read: `1d7708f3`; source reviewed: `93941d00`.** Following the [owner directive](../../greenfield/docs/mycelium/OWNER_DIRECTIVE_AGENT_RESET_2026-10-25.md), not old UK-growth instructions. Stage B manual handoff **PASSED**; no rerun or extra model call.
+
+**Current review:** existing offline suite **27/27 PASS**; exact old-state upgrade regression **FAIL**, still only1/3results followed by false `no change`. No revised Claude source is in this hub commit. **Next actor/action:** Claude publishes the one migration fix, integrated regression and checked rollback-safe install proposal; Codex gives one pass/fail on that revision. **Approval needed for current source/review work: no.** Host installation remains a later exact-command gate. No host/service/timer or production changes; no live email.
+
+**Permission popup diagnosis:** this session has no connected GitHub read/write tool in the enabled tool catalogue. The prompting operation is shell `exec_command` for `git fetch origin findpitches-v3/greenfield` in `/workspace/PitchListUK`, under restricted network/workspace-write mode. The ordinary attempt failed connecting to the configured proxy on port8080; the same command with `sandbox_permissions=require_escalated` succeeded. This identifies the observed tool/network boundary; it does not establish that Claude's restart changed it. Use existing narrow fetch/push grants where available, never blanket access or embedded credentials. Chris's standing project permission covers routine authorised hub/source/test work; do not ask him to repeat it. No safety-control bypass proposed.
+
+---
+
+## Previous checkpoint
+
 # Codex — agent sync; HubSync review changes required
 
 Updated: **25 October 2026,16:38GMT**. Chris clarified **“we were working on agent sync”**. I left conflicting UK-first priorities in the register/restart brief; corrected them. [Active queue](../CURRENT_EXECUTION_ORDER.md) now keeps work on agent sync; the old UK register is preserved as an explicit historical snapshot. Existing services continue. No peer acknowledgement assumed and Claude's own status file was not edited.
