@@ -6,13 +6,17 @@
 #   mycnotify poll       one run (the timer runs it every 5 minutes)
 #   mycnotify baseline   record every decision outstanding NOW as already handled (no send); required before live
 #   mycnotify release    clear the global hold set by a provider auth/config refusal (after fixing the config)
+#   mycnotify decisions  list the decisions outstanding now, with their keys and ledger state (read-only)
 #   mycnotify status     print status
 # Safety model (Stage C): decision key = task id + awaiting event seq + event blob (+ descriptor blob in the record).
 # A local write-ahead ledger records a CLAIM before the HTTP request; an interrupted claim becomes "uncertain" and is
 # never resent. Only definitely-not-accepted failures retry (no connection; HTTP 429), at most 3 attempts. Timeouts,
-# 5xx and lost responses are "uncertain": no resend. A missing/lost ledger blocks live sending until `baseline`, so
-# state loss can cause a missed notice, never a duplicate. Mode is root-controlled (MODE= in the credential config);
-# anything other than MODE=live is a dry run that never calls the network for mail.
+# 5xx and lost responses are "uncertain": no resend. A totally missing ledger blocks live sending until `baseline`,
+# which deliberately suppresses what is outstanding (a missed notice, not a duplicate). Partial ledger deletion or
+# restoring an old ledger copy is NOT covered and could resend. Mode is root-controlled (MODE= in the credential
+# config); anything other than MODE=live is a dry run that never calls the mail API. Stage C live is PINNED: it admits
+# only the one decision named by PIN= (no PIN => live refused). Every HTTP attempt, retries included, is appended to a
+# per-London-day attempt log before the request, and the daily cap counts those attempts.
 set -euo pipefail
 shopt -s inherit_errexit
 umask 077
@@ -22,7 +26,7 @@ umask 077
 : "${MYCNOTIFY_BRANCH:=findpitches-v3/greenfield}"
 : "${MYCNOTIFY_TASKS:=greenfield/mycelium/notify-test/tasks}"   # Stage C test path; NOT Stage B's tasks/
 : "${MYCNOTIFY_WEB:=https://github.com/christucker-sketch/PitchListUK/tree}"
-: "${MYCNOTIFY_MAX_DAY:=5}"        # claims per London calendar day
+: "${MYCNOTIFY_MAX_DAY:=5}"        # HTTP attempts per London calendar day (retries included)
 : "${MYCNOTIFY_MAX_ATTEMPTS:=3}"   # per decision, definitely-not-accepted failures only
 CRED=${CREDENTIALS_DIRECTORY:-/etc/mycnotify}   # systemd LoadCredential: smtp2go-key, notify.conf
 CURL=curl
@@ -40,12 +44,13 @@ iso() { date -u -d "@$1" +%Y-%m-%dT%H:%M:%SZ; }
 lday() { TZ=Europe/London date -d "@$1" +%F; }
 
 # ---------------------------------------------------------------- config (root-owned, read via systemd credentials)
-SENDER="" RECIPIENT="" MODE=dry-run CONF_ERR=""
+SENDER="" RECIPIENT="" MODE=dry-run PIN="" CONF_ERR=""
 conf_get() { grep -m1 -E "^$1=" "$CRED/notify.conf" 2>/dev/null | cut -d= -f2- || true; }
 load_conf() {
   [[ -r $CRED/notify.conf ]] || { CONF_ERR="no notify.conf credential"; return 0; }
-  SENDER=$(conf_get SENDER); RECIPIENT=$(conf_get RECIPIENT); MODE=$(conf_get MODE)
+  SENDER=$(conf_get SENDER); RECIPIENT=$(conf_get RECIPIENT); MODE=$(conf_get MODE); PIN=$(conf_get PIN)
   [[ $MODE == live ]] || MODE=dry-run
+  [[ $PIN =~ ^MYC-[0-9]{8}-[0-9]{3}-[0-9]{4}-[0-9a-f]{12}$ ]] || CONF_ERR="Stage C live needs PIN=<one decision key> (see: mycnotify decisions)"
   [[ $SENDER =~ ^[A-Za-z0-9._+-]+@findpitches\.com$ ]] || CONF_ERR="SENDER must be an address @findpitches.com"
   [[ $RECIPIENT =~ ^[^[:space:],\;\<\>\"]+@[^[:space:],\;\<\>\"]+$ ]] || CONF_ERR="RECIPIENT must be exactly one address"
 }
@@ -78,7 +83,9 @@ fold() {
   [[ $(G cat-file -s "$blob") -le 8192 ]] || { F_WHY="task.json too large"; return 0; }
   G cat-file blob "$blob" | jq -e --arg id "$id" 'type == "object"
       and (keys == ["assigned_agent","instructions","result_location","status","task_id"])
-      and .task_id == $id and .status == "pending" and (.assigned_agent == "claude" or .assigned_agent == "codex")' \
+      and .task_id == $id and .status == "pending" and (.assigned_agent == "claude" or .assigned_agent == "codex")
+      and (.instructions | type) == "string" and (.instructions | length) > 0 and (.instructions | utf8bytelength) <= 4096
+      and .result_location == ($root + "/" + $id + "/result.md")' --arg root "$MYCNOTIFY_TASKS" \
       >/dev/null 2>&1 || { F_WHY="task.json breaks the five-field contract"; return 0; }
   F_DESC=$blob; F_AGENT=$(G cat-file blob "$blob" | jq -r .assigned_agent)
   while IFS= read -r line; do
@@ -194,22 +201,24 @@ poll() {
   [[ -z $CONF_ERR ]] || { write_status error "live mode refused: $CONF_ERR"; exit 1; }
   [[ -f $L/.initialized ]] || { write_status error "ledger not initialised (new or lost): run 'mycnotify baseline' first; nothing sent"; exit 1; }
   [[ ! -f $L/HOLD ]] || { write_status held "global hold: $(cat "$L/HOLD"); fix config, then 'mycnotify release'"; exit 0; }
-  local t today claimed_today sent=0 deferred=0 state att next ra key id seq agent desc ev
-  t=$(now); today=$(lday "$t")
-  claimed_today=$(ledger_all | jq -s --arg d "$today" '[.[] | select(.claim_day == $d)] | length')
+  local t today alog attempts_today sent=0 deferred=0 unpinned=0 state att next ra key id seq agent desc ev
+  t=$(now); today=$(lday "$t"); alog=$L/attempts-$today.log
+  attempts_today=0; [[ ! -f $alog ]] || attempts_today=$(wc -l < "$alog")
   while read -r key id seq agent desc ev; do
     [[ -n ${key:-} ]] || continue
+    [[ $key == "$PIN" ]] || { unpinned=$((unpinned + 1)); continue; }   # Stage C: only the pinned decision
     state=$(rec_get "$key" state); att=$(rec_get "$key" attempts); att=${att:-0}; next=$(rec_get "$key" next_at); next=${next:-0}
     case $state in
       accepted|permanent|uncertain|baseline) continue ;;
       retry) [[ $t -ge $next ]] || continue ;;
     esac
-    if [[ $sent -ge 1 || $claimed_today -ge $MYCNOTIFY_MAX_DAY ]]; then deferred=$((deferred + 1)); continue; fi
-    # CLAIM first (durable), then send
+    if [[ $sent -ge 1 || $attempts_today -ge $MYCNOTIFY_MAX_DAY ]]; then deferred=$((deferred + 1)); continue; fi
+    # count the attempt and CLAIM first (both durable), then send
+    printf '%s %s\n' "$(iso "$t")" "$key" >> "$alog"; sync "$alog"
     rec_put "$key" "$(jq -nc --arg k "$key" --arg id "$id" --arg seq "$seq" --arg desc "$desc" --arg ev "$ev" --argjson a "$((att + 1))" \
       --arg t "$(iso "$t")" --arg d "$today" '{key: $k, task_id: $id, seq: ($seq|tonumber), descriptor_blob: $desc, event_blob: $ev,
        state: "claimed", attempts: $a, claim_day: $d, claimed_at: $t, updated_at: $t}')"
-    sent=$((sent + 1)); claimed_today=$((claimed_today + 1))
+    sent=$((sent + 1)); attempts_today=$((attempts_today + 1))
     send "$key" "$id" "$seq" "$agent" "$(G cat-file blob "$ev" | jq -r .reason)"
     case $OUT in
       retry)
@@ -225,7 +234,8 @@ poll() {
     rec_update "$key" '.state = $s | .detail = $d | .updated_at = $t' --arg s "$OUT" --arg d "$DETAIL" --arg t "$(iso "$t")"
     log "$(tr a-z A-Z <<<"$OUT") $key"
   done <<<"$list"
-  write_status ok "sent $sent, deferred $deferred (cap $MYCNOTIFY_MAX_DAY/day, 1/run)"
+  local pinmsg=""; grep -q "^$PIN " <<<"$list" || pinmsg="; pinned decision is not outstanding"
+  write_status ok "sent $sent, deferred $deferred, not pinned $unpinned (cap $MYCNOTIFY_MAX_DAY attempts/day, 1/run)$pinmsg"
 }
 
 baseline() {
@@ -241,10 +251,23 @@ baseline() {
   touch "$L/.initialized"; log "baseline: $n outstanding decision(s) recorded as not-to-notify; ledger initialised"
 }
 
+decisions() {
+  init; exec 9>"$LOCK"; flock -w 60 9 || { log "busy"; exit 1; }
+  QFILE=$(mktemp "$H/.q.XXXXXX"); trap 'rm -f "$QFILE"' EXIT
+  fetch || { log "hub fetch failed"; exit 1; }
+  local key id seq agent desc ev
+  while read -r key id seq agent desc ev; do
+    [[ -n ${key:-} ]] || continue
+    echo "$key  ledger=$(rec_get "$key" state | grep . || echo none)"
+  done <<<"$(candidates)"
+  [[ ! -s $QFILE ]] || { echo "quarantined:"; sed 's/^/  /' "$QFILE"; }
+}
+
 case "${1:-}" in
   poll) poll ;;
   baseline) baseline ;;
+  decisions) decisions ;;
   release) init; rm -f "$L/HOLD"; log "global hold cleared" ;;
   status) init; cat "$STATUS" 2>/dev/null || echo '{}' ;;
-  *) echo "usage: mycnotify poll|baseline|release|status"; exit 2 ;;
+  *) echo "usage: mycnotify poll|baseline|release|decisions|status"; exit 2 ;;
 esac

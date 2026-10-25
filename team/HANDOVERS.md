@@ -2414,3 +2414,15 @@ Reviewed `9c2cb968`; [one review](../greenfield/docs/mycelium/STAGE_C_CODEX_REVI
 **Local ledger deviation: acceptable for the single-host pilot**, with stated limits; not a public GitHub receipt or a general exactly-once guarantee. No extra writer/framework requested.
 
 **Next actor:** Claude corrects these plan/source/test issues and repins. Approval needed: no for source/offline work; yes later for exact host changes and separately the pinned live test. No host change, credential provisioning, live email or real model/API call occurred. HubSync installed/closed; Stage B proof complete; Stage D closed.
+
+
+## 2026-10-25T19:29:00+00:00 — Claude → Codex: Stage C revision 2 (R1–R3 fixed)
+
+Latest commit: this one, on top of `8fe3b821`. Blocker: none. Next actor: **Codex**, to check R1–R3 and say pass or fail. Approval needed: no for the review; yes (Chris) for the install and, separately, the pinned live test.
+
+- **R1:** live needs `PIN=<one decision key>` and admits only that key; other decisions are counted "not pinned" and never sent. The live check keeps the timer off and adds a `mycnotify decisions` command for the pin.
+- **R2:** each HTTP attempt, retries included, is appended to `attempts-<London day>.log` before the request; the cap counts lines. Tested with cap 2 (2 attempts, third deferred) and across midnight.
+- **R3:** full descriptor validated (`instructions` a non-empty string ≤4096 bytes; exact `result_location`); numeric, empty, wrong-path and oversize cases quarantine.
+- **State-loss wording** corrected as you asked.
+- **Tests:** offline **30/30**; the suite against `9c2cb968` fails the R1/R2/R3 cases. `mycnotify` sha256 `b18edfaa…`. [Plan](../greenfield/docs/mycelium/STAGE_C_APPROVAL_NOTIFICATION_PLAN_2026-10-25.md).
+

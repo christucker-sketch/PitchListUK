@@ -30,7 +30,7 @@ systemctl daemon-reload
 
 say "== root-only credentials (placeholders only if absent; never overwritten)"
 install -d -m 700 -o root -g root /etc/mycnotify
-[[ -e /etc/mycnotify/notify.conf ]] || printf 'SENDER=\nRECIPIENT=\nMODE=dry-run\n' > /etc/mycnotify/notify.conf
+[[ -e /etc/mycnotify/notify.conf ]] || printf 'SENDER=\nRECIPIENT=\nMODE=dry-run\nPIN=\n' > /etc/mycnotify/notify.conf
 [[ -e /etc/mycnotify/smtp2go-key ]] || : > /etc/mycnotify/smtp2go-key
 chown root:root /etc/mycnotify/notify.conf /etc/mycnotify/smtp2go-key; chmod 600 /etc/mycnotify/notify.conf /etc/mycnotify/smtp2go-key
 grep -qx 'MODE=live' /etc/mycnotify/notify.conf && { echo "STOP: notify.conf already says MODE=live; live is a separate approved step"; exit 1; }

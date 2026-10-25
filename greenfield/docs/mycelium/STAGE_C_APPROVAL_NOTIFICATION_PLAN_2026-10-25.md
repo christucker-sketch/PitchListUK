@@ -1,4 +1,11 @@
-# Stage C — approval notification plan (Claude, 25 Oct 2026). For one Codex review
+# Stage C — approval notification plan (Claude, 25 Oct 2026, revision 2). For Codex to check the three corrections
+
+**Revision 2** answers the [Codex review](STAGE_C_CODEX_REVIEW_2026-10-25.md) (26/26 reproduced; FAIL on R1–R3; local-ledger deviation accepted for the single-host pilot):
+
+- **R1, pinned live:** Stage C live admits **only** the one decision named by `PIN=` in the root-only config. Without a PIN, live is refused. Any other outstanding decision is counted as "not pinned" and never sent. Once the pinned decision has a ledger record, repeated manual runs send nothing. The first live check keeps the **timer off** (see §5).
+- **R2, attempt cap:** every HTTP attempt, retries included, is appended (with `sync`) to `ledger/attempts-<London day>.log` **before** the request. The daily cap counts those lines. The 3-attempt and uncertain-never-resend rules are unchanged.
+- **R3, full descriptor:** `instructions` must be a non-empty string of at most 4096 UTF-8 bytes, and `result_location` must equal `<notify-test path>/<id>/result.md`. Otherwise the task is quarantined.
+- **Tests:** offline **30/30** on revision 2. The same suite against `9c2cb968` fails the R1/R2/R3 cases.
 
 Answers the [Stage C handoff](STAGE_C_APPROVAL_NOTIFICATION_HANDOFF_2026-10-25.md). The source and offline tests exist and are **not installed**:
 
@@ -29,7 +36,9 @@ Answers the [Stage C handoff](STAGE_C_APPROVAL_NOTIFICATION_HANDOFF_2026-10-25.m
 | `uncertain` | timeout, 5xx, lost response, or a claim found with no outcome (crash or reboot mid-send) | **never** (no exactly-once claim) |
 | `baseline` | outstanding when `mycnotify baseline` ran | never |
 
-- **State loss:** a missing ledger blocks live sending until `baseline`, which marks everything currently outstanding as handled. Losing state can cause a **missed** notice, never a **duplicate**.
+- **State loss:** a **totally** missing ledger blocks live sending until `baseline`, which deliberately suppresses everything currently outstanding (possibly a missed notice).
+  - **Not covered:** partial ledger deletion, or restoring an old ledger copy, could resend. Don't do either; use `baseline` after a total loss.
+  - This is not a general exactly-once guarantee.
 - **One instance only:** `flock`, and the install is hostname-guarded to fpd-prod.
 - **Deviation for Codex to accept or reject.** The contract review asked for a durable *GitHub* send claim. Stage C keeps the claim local because:
   - the only Git writer is HubSync, and this handoff forbids changing it;
@@ -50,7 +59,7 @@ Answers the [Stage C handoff](STAGE_C_APPROVAL_NOTIFICATION_HANDOFF_2026-10-25.m
 
 - **API call:** HTTPS `POST /v3/email/send`. The API key reaches curl on **stdin** (the pattern already proven in `fpd-alert-check`). It never appears in argv, logs, the body or Git; the tests assert this.
 - **Credentials:** root-owned files `/etc/mycnotify/{smtp2go-key,notify.conf}` (mode 0600), passed in only through systemd `LoadCredential`.
-  - `notify.conf` holds `SENDER=`, `RECIPIENT=` (exactly one address) and `MODE=`.
+  - `notify.conf` holds `SENDER=`, `RECIPIENT=` (exactly one address), `MODE=` and `PIN=` (the one decision key admitted for live).
   - The sender must match `@findpitches.com`, or live mode is refused. The `findpitches.com` domain is already verified in SMTP2GO.
   - Chris creates a **new, dedicated Mycelium API key** in the FindPitches SMTP2GO account (not the V3 Worker or Pi key). If the dashboard offers per-key permissions, allow email sending only.
   - Nothing from Managed Technology is used.
@@ -71,7 +80,7 @@ No instructions, results or secrets.
 
 ## 5. Dry-run evidence and the later live check
 
-**Offline suite (`bash greenfield/mycelium/notify/test-mycnotify.sh`): 26/26**, using a local bare repo, a fake curl, a fake clock and no network. It covers:
+**Offline suite (`bash greenfield/mycelium/notify/test-mycnotify.sh`): 30/30 (revision 2; revision 1 had 26)**, using a local bare repo, a fake curl, a fake clock and no network. It covers:
 
 - dry run never mails;
 - live refused before baseline;
@@ -95,17 +104,24 @@ No instructions, results or secrets.
 
 `shellcheck -S warning` is clean.
 
-**Later single live check (each step needs Chris's explicit go-ahead; none is requested by this plan):**
+**Later single live check (each step needs Chris's explicit go-ahead; none is requested by this plan). The timer stays OFF throughout:**
 
-1. **Install, dry run:** `sudo bash install-mycnotify.sh` from a folder holding the reviewed files. It verifies `SHA256SUMS`, does one dry-run poll and leaves the timer **off**.
-2. **Timer on, still dry run:** `sudo systemctl enable --now mycnotify.timer`. Status shows `mode: dry-run`.
-3. **Live test:**
-   1. Chris creates the dedicated key and edits the two credential files with `sudo nano`, so the key stays out of shell history.
-   2. `sudo runuser -u mycnotify -- env -i MYCNOTIFY_HOME=/var/lib/mycnotify PATH=/usr/local/bin:/usr/bin:/bin mycnotify baseline`
-   3. Set `MODE=live`.
-   4. Push one dummy task, `greenfield/mycelium/notify-test/tasks/MYC-2026MMDD-9NN/`: event 1 `pending` by `chris`, event 2 `in_progress`, event 3 `awaiting_approval` with the summary "Stage C live test: no action needed".
-   5. **Accept only if:** exactly one email arrives; the ledger says `accepted`; the next two runs plus one `systemctl start mycnotify.service` send nothing more; and `mycnotify status` shows no hold.
-   6. Afterwards, set `MODE=dry-run` again until Chris approves ongoing live use.
+1. **Install, dry run:** `sudo bash install-mycnotify.sh` from a folder holding the reviewed files. It verifies `SHA256SUMS` and HubSync rev 3, does one dry-run poll and leaves the timer **off**.
+2. **Preflight (Chris):**
+   - create the dedicated Mycelium key in the FindPitches SMTP2GO account;
+   - confirm the account's included quota has headroom for one email at no extra cost;
+   - put the key and `SENDER=notify@findpitches.com` (or another verified `@findpitches.com` address) plus `RECIPIENT=` into the two root files with `sudo nano`, keeping `MODE=dry-run` and `PIN=` empty.
+3. **Baseline:** `sudo runuser -u mycnotify -- env -i MYCNOTIFY_HOME=/var/lib/mycnotify PATH=/usr/local/bin:/usr/bin:/bin mycnotify baseline`
+4. **Dummy decision:** push one reviewed dummy task, `greenfield/mycelium/notify-test/tasks/MYC-2026MMDD-9NN/`: event 1 `pending` by `chris`, event 2 `in_progress`, event 3 `awaiting_approval` with the summary "Stage C live test: no action needed".
+5. **Pin it:** run `... mycnotify decisions` (same `runuser` prefix) and copy that task's key into `PIN=`, then set `MODE=live`.
+6. **One run:** `sudo systemctl start mycnotify.service`.
+7. **Accept only if:**
+   - exactly one email arrives;
+   - `mycnotify decisions` shows the pinned key with `ledger=accepted`;
+   - **two more** `sudo systemctl start mycnotify.service` runs send nothing;
+   - `mycnotify status` shows no hold and the attempt log has exactly one line.
+8. **Clean up (same session):** set `MODE=dry-run` and empty `PIN=`, run `mycnotify status`, and push a `cancelled` event by `chris` for the dummy task.
+   - Turning the timer on, or live use beyond this one pinned decision, is a separate later approval (and unpinned live would need a reviewed code change).
 
 ## 6. Disable, rollback, limits, logs, cost
 
@@ -116,16 +132,14 @@ No instructions, results or secrets.
   - `sudo bash uninstall-mycnotify.sh` (removes everything and shreds the key file), then delete the key in SMTP2GO.
 
   None of these touches HubSync or Stage B.
-- **Limits:** one send per run, **5 claims per London day**, 3 attempts per decision. A mail failure never blocks hub polling, never sends an alert email (no loop) and never restarts agent work.
-- **Logs:** journald plus `status.json` (counts by state, hold, quarantined tasks, hub commit). Never the key or recipient. The provider email id is kept only in the local ledger.
-- **Cost:** £0 incremental. It uses the existing FindPitches SMTP2GO account, at most 5 a day; no new paid service.
+- **Limits:** pinned decision only; one send per run; **5 HTTP attempts per London day** (retries included, counted before each request); 3 attempts per decision. A mail failure never blocks hub polling, never sends an alert email (no loop) and never restarts agent work.
+- **Logs:** journald, `status.json` (counts by state, hold, quarantined tasks, unpinned count, hub commit) and the attempt logs. Never the key or recipient. The provider email id is kept only in the local ledger.
+- **Cost:** £0 incremental. It uses the existing FindPitches SMTP2GO account, and Chris confirms quota headroom before the live check; no new paid service.
 
-## Acceptance checklist for Codex (one review)
+## Acceptance checklist for Codex (check of revision 2)
 
-- [ ] Fold and trigger match the contract; quarantine is fail-closed.
-- [ ] Classification: retry only on definitely-not-sent; uncertain never resends.
-- [ ] Local write-ahead ledger accepted as the Stage C claim (deviation in §1).
-- [ ] The `notify-test/tasks` path keeps Stage B unaffected.
-- [ ] Isolation: user, units and credentials; HubSync untouched.
-- [ ] Offline suite 26/26 reproduces.
-- [ ] Gates in §5 are correct; no live send without Chris.
+- [ ] R1: live is refused without a PIN; only the pinned key is admitted; repeated runs send nothing else; the timer stays off for the live check.
+- [ ] R2: the attempt log is written before every request; the cap counts attempts, retries included, per London day (tested across midnight).
+- [ ] R3: full descriptor validated; the negative cases quarantine.
+- [ ] State-loss wording corrected (total loss only; partial loss or an old restore is not covered).
+- [ ] Offline suite 30/30 reproduces; `SHA256SUMS` match.
